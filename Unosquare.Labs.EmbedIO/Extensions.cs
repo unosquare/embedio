@@ -22,6 +22,32 @@
         public const string BrowserTimeFormat = "ddd, dd MMM yyyy HH:mm:ss 'GMT'";
 
         /// <summary>
+        /// Gets the session object associated to the current context.
+        /// Returns null if the LocalSessionWebModule has not been loaded.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="server">The server.</param>
+        /// <returns></returns>
+        static public SessionInfo GetSession(this HttpListenerContext context, WebServer server)
+        {
+            var module = server.Module<Modules.LocalSessionWebModule>();
+            if (module == null) return null;
+            return module.GetSession(context);
+        }
+
+        /// <summary>
+        /// Gets the session object associated to the current context.
+        /// Returns null if the LocalSessionWebModule has not been loaded.
+        /// </summary>
+        /// <param name="server">The server.</param>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        static public SessionInfo GetSession(this WebServer server, HttpListenerContext context)
+        {
+            return context.GetSession(server);
+        }
+
+        /// <summary>
         /// Gets the request path for the specified context.
         /// </summary>
         /// <param name="context">The context.</param>

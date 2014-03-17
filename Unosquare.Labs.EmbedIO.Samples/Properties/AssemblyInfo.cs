@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Unosquare.Labs.EmbedIO")]
-[assembly: AssemblyDescription("EmbedIO is a tiny, portable web server")]
+[assembly: AssemblyTitle("Unosquare.Labs.EmbedIO.Samples")]
+[assembly: AssemblyDescription("EmbedIO Samples")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Unosquare SA de CV")]
-[assembly: AssemblyProduct("Unosquare.Labs.EmbedIO")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyProduct("Unosquare.Labs.EmbedIO.Samples")]
+[assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("975b5828-7440-4a78-bdfb-457f7aef9ba4")]
+[assembly: Guid("f827c8fd-bf81-4bcd-afbc-4a7f9e1c4d07")]
 
 // Version information for an assembly consists of the following four values:
 //
