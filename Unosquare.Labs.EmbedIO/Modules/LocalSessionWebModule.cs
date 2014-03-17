@@ -4,7 +4,11 @@
     using System.Linq;
     using System.Net;
     using Unosquare.Labs.EmbedIO;
-    using Unosquare.Labs.EmbedIO.Libraries;
+#if PATCH_COLLECTIONS
+    using Unosquare.Labs.EmbedIO.Collections.Concurrent;
+#else
+    using System.Collections.Concurrent;
+#endif
 
     /// <summary>
     /// A simple module to handle in-memory sessions. Do not use for distributed applications

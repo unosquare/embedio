@@ -5,7 +5,11 @@
     using System.IO;
     using System.Linq;
     using Unosquare.Labs.EmbedIO;
-    using Unosquare.Labs.EmbedIO.Libraries;
+#if PATCH_COLLECTIONS
+    using Unosquare.Labs.EmbedIO.Collections.Concurrent;
+#else
+    using System.Collections.Concurrent;
+#endif
 
     /// <summary>
     /// Represents a simple module to server static files from the file system.

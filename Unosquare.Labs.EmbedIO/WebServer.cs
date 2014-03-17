@@ -207,9 +207,9 @@
 
                                             // Generate an HTML response
                                             var response = "<html><head></head><body><h1>500 - Internal Server Error</h1><h2>Message</h2><pre>"
-                                                           + System.Web.HttpUtility.HtmlEncode(errorMessage)
+                                                           + System.Net.WebUtility.HtmlEncode(errorMessage)
                                                            + "</pre><h2>Stack Trace</h2><pre>\r\n"
-                                                           + System.Web.HttpUtility.HtmlEncode(ex.StackTrace) +
+                                                           + System.Net.WebUtility.HtmlEncode(ex.StackTrace) +
                                                            "</pre></body></html>";
 
                                             // Send the response over with the corresponding status code.

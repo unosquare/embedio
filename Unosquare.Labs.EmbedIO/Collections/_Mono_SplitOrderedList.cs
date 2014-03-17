@@ -28,7 +28,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Unosquare.Labs.EmbedIO.Libraries
+namespace Unosquare.Labs.EmbedIO.Collections.Concurrent
 {
     internal class SplitOrderedList<TKey, T>
     {

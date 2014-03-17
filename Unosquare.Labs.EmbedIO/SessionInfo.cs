@@ -1,7 +1,11 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using System;
-    using Unosquare.Labs.EmbedIO.Libraries;
+#if PATCH_COLLECTIONS
+    using Unosquare.Labs.EmbedIO.Collections.Concurrent;
+#else
+    using System.Collections.Concurrent;
+#endif
 
     /// <summary>
     /// Represents a Session and its contents

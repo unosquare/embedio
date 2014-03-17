@@ -28,7 +28,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Unosquare.Labs.EmbedIO.Libraries
+namespace Unosquare.Labs.EmbedIO.Collections.Concurrent
 {
     [Serializable]
     public class ConcurrentDictionary<TKey, TValue> : IDictionary<TKey, TValue>,
