@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Unosquare.Labs.EmbedIO")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("EmbedIO is a tiny, portable web server")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Unosquare, LLC")]
 [assembly: AssemblyProduct("Unosquare.Labs.EmbedIO")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
