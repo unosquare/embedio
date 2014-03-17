@@ -2,35 +2,51 @@
 {
     using log4net;
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     class Program
     {
         private static readonly ILog Log = Logger.For<Program>();
 
+        /// <summary>
+        /// Defines the entry point of the application.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
         static void Main(string[] args)
         {
+
+            // Our web server is disposable. Note that if you don't want to use logging,
+            // there are alternate constructors that allow you to skip specifying an ILog object.
             using (var server = new WebServer("http://localhost:9696/", Log))
             {
-
                 // First, we will configure our web server by adding Modules.
-                // Please not order does matter.
-
-                // If we want to enable sessions, wesimply register the LocalSessionModule
-                // Beware that this is an in-memory session storage mechanism
+                // Please note that order DOES matter.
+                // ================================================================================================
+                // If we want to enable sessions, we simply register the LocalSessionModule
+                // Beware that this is an in-memory session storage mechanism so, avoid storing very large objects.
                 // You can use the server.GetSession() method to get the SessionInfo object and manupulate it.
                 server.Modules.Add(new Modules.LocalSessionWebModule());
+
+                // Register the static files server. See the html folder of this project. Also notice that 
+                // the files under the html folder have Copy To Output Folder = Copy if Newer
+                StaticFilesSample.Setup(server);
 
                 // Register the Web Api Module. See the Setup method to find out how to do it
                 // It registers the WebApiModule and registers the controller(s) -- that's all.
                 RestApiSample.Setup(server);
 
+
+                // Once we've registered our modules and configured them, we call the Run() method.
+                // This is a non-blocking method (it return immediately) so in this case we avoid
+                // disposing of the object until a key is pressed.
                 server.Run();
+
+                // Wait for any key to be pressed before disposing of our web server.
+                // In a service we'd manage the lifecycle of of our web server using
+                // something like a BackgroundWorker or a ManualResetEvent.
                 Console.ReadKey(true);
             }
 
+            // Before exiting, we shutdown the logging subsystem.
             Logger.Shutdown();
         }
     }

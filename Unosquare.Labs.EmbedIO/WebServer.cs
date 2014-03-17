@@ -46,6 +46,27 @@
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
+        /// This constructor does not provide any Logging capabilities.
+        /// </summary>
+        public WebServer()
+            : this("http://*/", new NullLog())
+        {
+            // placeholder
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebServer"/> class.
+        /// This constructor does not provide any Logging capabilities.
+        /// </summary>
+        /// <param name="port">The port.</param>
+        public WebServer(int port)
+            : this(port, new NullLog())
+        {
+            // placeholder
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebServer"/> class.
         /// </summary>
         /// <param name="port">The port.</param>
         public WebServer(int port, ILog log)
@@ -54,6 +75,22 @@
             // placeholder
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebServer"/> class.
+        /// This constructor does not provide any Logging capabilities.
+        /// </summary>
+        /// <param name="urlPrefix">The URL prefix.</param>
+        public WebServer(string urlPrefix)
+            : this(urlPrefix, new NullLog())
+        {
+            // placeholder
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebServer"/> class.
+        /// </summary>
+        /// <param name="urlPrefix">The URL prefix.</param>
+        /// <param name="log">The log.</param>
         public WebServer(string urlPrefix, ILog log)
             : this(new string[] { urlPrefix }, log)
         {
@@ -62,8 +99,19 @@
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
+        /// This constructor does not provide any Logging capabilities.
+        /// </summary>
+        /// <param name="urlPrefixes">The URL prefixes.</param>
+        public WebServer(string[] urlPrefixes)
+            : this(urlPrefixes, new NullLog())
+        {
+            // placeholder
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebServer"/> class.
         /// NOTE: urlPrefix must be specified as something similar to: http://localhost:9696/
-        /// Please notice the ending slash.
+        /// Please notice the ending slash. -- It is important
         /// </summary>
         /// <param name="urlPrefix">The URL prefix.</param>
         /// <exception cref="System.InvalidOperationException">The HTTP Listener is not supported in this OS</exception>

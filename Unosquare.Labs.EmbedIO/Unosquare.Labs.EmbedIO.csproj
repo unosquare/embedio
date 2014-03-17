@@ -48,6 +48,7 @@
     <Compile Include="Modules\LocalSessionWebModule.cs" />
     <Compile Include="Modules\StaticFilesWebModule.cs" />
     <Compile Include="Modules\WebApiModule.cs" />
+    <Compile Include="NullLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SessionInfo.cs" />
     <Compile Include="WebServer.cs" />
