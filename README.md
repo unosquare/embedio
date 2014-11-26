@@ -1,7 +1,7 @@
 EmbedIO - Unosquare Labs
 ========================
 
-A tiny, cross-platform, module based web server
+A tiny, cross-platform, module based, MIT-licensed web server
 
 * Cross-platform (tested in Mono 3.10.x on Windows and on a custom Yocto image for the Raspberry Pi)
 * Extensible (Write your own modules like bearer token session handling, video streaming, UPnP, etc.)
