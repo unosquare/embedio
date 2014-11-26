@@ -1,0 +1,24 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Unosquare.Labs.EmbedIO.Command.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ServerAddress" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://localhost:9696/</Value>
+    </Setting>
+    <Setting Name="HtmlRootPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">c:\users\mario\desktop\webapp</Value>
+    </Setting>
+    <Setting Name="HtmlDefaultDocument" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">index.html</Value>
+    </Setting>
+    <Setting Name="HtmlDefaultExtension" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.html</Value>
+    </Setting>
+    <Setting Name="UseLocalSessionModule" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="UseRamCache" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

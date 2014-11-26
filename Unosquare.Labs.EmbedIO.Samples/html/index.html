@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" ng-app="app">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title ng-controller="TitleController as title">EmbedIO - {{title.content}} - Unosquare Labs</title>
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/theme.css">
+    
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0-beta.8/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0-beta.8/angular-route.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    
+    <script src="/scripts/app.constants.js"></script>
+    <script src="/scripts/app.services.js"></script>
+    <script src="/scripts/app.routes.js"></script>
+    
+    <script src="/scripts/app.filters.js"></script>
+    <script src="/scripts/app.controllers.js"></script>
+    <script src="/scripts/app.directives.js"></script>
+    <script src="/scripts/app.js"></script>
+</head>
+<body>
+    <app-menu></app-menu>
+    <div class="container" role="main" ng-view></div>
+    <div class="container">
+        <footer>
+            <a href="https://github.com/angular-app/angular-app" target="_blank">A more advanced example is available at angular-app on GitHub</a>
+        </footer>
+    </div>
+</body>
+</html>
