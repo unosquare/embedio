@@ -91,51 +91,51 @@ REST API Example:
 
 *During server setup:*
 ```csharp
-    server.RegisterModule(new WebApiModule());
-    server.Module<WebApiModule>().RegisterController<PeopleController>();
+server.RegisterModule(new WebApiModule());
+server.Module<WebApiModule>().RegisterController<PeopleController>();
 ```
 
 *And our controller class looks like:*
 
 ```csharp
-        public class PeopleController : WebApiController
+public class PeopleController : WebApiController
+{
+    [WebApiHandler(HttpVerbs.Get, "/api/people/*")]
+    public bool GetPeople(WebServer server, HttpListenerContext context)
+    {
+        try
         {
-            [WebApiHandler(HttpVerbs.Get, "/api/people/*")]
-            public bool GetPeople(WebServer server, HttpListenerContext context)
+            var lastSegment = context.Request.Url.Segments.Last();
+            if (lastSegment.EndsWith("/"))
+                return context.JsonResponse(People);
+
+            int key = 0;
+            if (int.TryParse(lastSegment, out key) && People.Any(p => p.Key == key))
             {
-                try
-                {
-                    var lastSegment = context.Request.Url.Segments.Last();
-                    if (lastSegment.EndsWith("/"))
-                        return context.JsonResponse(People);
-
-                    int key = 0;
-                    if (int.TryParse(lastSegment, out key) && People.Any(p => p.Key == key))
-                    {
-                        return context.JsonResponse(People.FirstOrDefault(p => p.Key == key));
-                    }
-
-                    throw new KeyNotFoundException("Key Not Found: " + lastSegment);
-                }
-                catch (Exception ex)
-                {
-                    return HandleError(context, ex, (int)HttpStatusCode.InternalServerError);
-                }
+                return context.JsonResponse(People.FirstOrDefault(p => p.Key == key));
             }
-            
-            protected bool HandleError(HttpListenerContext context, Exception ex, int statusCode = 500)
-            {
-                var errorResponse = new
-                {
-                    Title = "Unexpected Error",
-                    ErrorCode = ex.GetType().Name,
-                    Description = ex.ExceptionMessage(),
-                };
 
-                context.Response.StatusCode = statusCode;
-                return context.JsonResponse(errorResponse);
-            }
+            throw new KeyNotFoundException("Key Not Found: " + lastSegment);
         }
+        catch (Exception ex)
+        {
+            return HandleError(context, ex, (int)HttpStatusCode.InternalServerError);
+        }
+    }
+    
+    protected bool HandleError(HttpListenerContext context, Exception ex, int statusCode = 500)
+    {
+        var errorResponse = new
+        {
+            Title = "Unexpected Error",
+            ErrorCode = ex.GetType().Name,
+            Description = ex.ExceptionMessage(),
+        };
+
+        context.Response.StatusCode = statusCode;
+        return context.JsonResponse(errorResponse);
+    }
+}
 ```
 
 Web Sockets Example:
@@ -143,86 +143,85 @@ Web Sockets Example:
 
 *During server setup:*
 ```csharp
-    server.RegisterModule(new WebSocketsModule());
-    server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsChatServer>("/chat");
+server.RegisterModule(new WebSocketsModule());
+server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsChatServer>("/chat");
 ```
 
 *And our web sockets server class looks like:*
 
 ```csharp
 
-    /// <summary>
-    /// Defines a very simple chat server
-    /// </summary>
-    public class WebSocketsChatServer : WebSocketsServer
+/// <summary>
+/// Defines a very simple chat server
+/// </summary>
+public class WebSocketsChatServer : WebSocketsServer
+{
+
+    public WebSocketsChatServer()
+        : base(true, 0)
     {
+        // placeholder
+    }
 
-        public WebSocketsChatServer()
-            : base(true, 0)
+    /// <summary>
+    /// Called when this WebSockets Server receives a full message (EndOfMessage) form a WebSockets client.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="rxBuffer">The rx buffer.</param>
+    /// <param name="rxResult">The rx result.</param>
+    protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
+    {
+        var session = this.WebServer.GetSession(context);
+        foreach (var ws in this.WebSockets)
         {
-            // placeholder
-        }
-
-        /// <summary>
-        /// Called when this WebSockets Server receives a full message (EndOfMessage) form a WebSockets client.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="rxBuffer">The rx buffer.</param>
-        /// <param name="rxResult">The rx result.</param>
-        protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
-        {
-            var session = this.WebServer.GetSession(context);
-            foreach (var ws in this.WebSockets)
-            {
-                if (ws != context)
-                    this.Send(ws, Encoding.UTF8.GetString(rxBuffer));
-            }
-        }
-
-        /// <summary>
-        /// Gets the name of the server.
-        /// </summary>
-        /// <value>
-        /// The name of the server.
-        /// </value>
-        public override string ServerName
-        {
-            get { return "Chat Server"; }
-        }
-
-        /// <summary>
-        /// Called when this WebSockets Server accepts a new WebSockets client.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        protected override void OnClientConnected(WebSocketContext context)
-        {
-            this.Send(context, "Welcome to the chat room!");
-            foreach (var ws in this.WebSockets)
-            {
-                if (ws != context)
-                    this.Send(ws, "Someone joined the chat room.");
-            }
-        }
-
-        /// <summary>
-        /// Called when this WebSockets Server receives a message frame regardless if the frame represents the EndOfMessage.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="rxBuffer">The rx buffer.</param>
-        /// <param name="rxResult">The rx result.</param>
-        protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
-        {
-            return;
-        }
-
-        /// <summary>
-        /// Called when the server has removed a WebSockets connected client for any reason.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        protected override void OnClientDisconnected(WebSocketContext context)
-        {
-            this.Broadcast(string.Format("Someone left the chat room."));
+            if (ws != context)
+                this.Send(ws, Encoding.UTF8.GetString(rxBuffer));
         }
     }
 
+    /// <summary>
+    /// Gets the name of the server.
+    /// </summary>
+    /// <value>
+    /// The name of the server.
+    /// </value>
+    public override string ServerName
+    {
+        get { return "Chat Server"; }
+    }
+
+    /// <summary>
+    /// Called when this WebSockets Server accepts a new WebSockets client.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    protected override void OnClientConnected(WebSocketContext context)
+    {
+        this.Send(context, "Welcome to the chat room!");
+        foreach (var ws in this.WebSockets)
+        {
+            if (ws != context)
+                this.Send(ws, "Someone joined the chat room.");
+        }
+    }
+
+    /// <summary>
+    /// Called when this WebSockets Server receives a message frame regardless if the frame represents the EndOfMessage.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="rxBuffer">The rx buffer.</param>
+    /// <param name="rxResult">The rx result.</param>
+    protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
+    {
+        return;
+    }
+
+    /// <summary>
+    /// Called when the server has removed a WebSockets connected client for any reason.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    protected override void OnClientDisconnected(WebSocketContext context)
+    {
+        this.Broadcast(string.Format("Someone left the chat room."));
+    }
+}
 ```
