@@ -14,6 +14,12 @@ A tiny, cross-platform, module based, MIT-licensed web server
 
 *For detailed usage and REST API implementation, download the code and take a look at the Samples project*
 
+NuGet Installation:
+-------------------
+```
+PM> Install-Package EmbedIO
+```
+
 Basic Example:
 --------------
 
