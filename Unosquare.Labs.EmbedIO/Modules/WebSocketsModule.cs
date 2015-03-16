@@ -384,13 +384,29 @@
         /// <param name="context">The context.</param>
         protected abstract void OnClientDisconnected(WebSocketContext context);
 
+
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
-            if (isDisposing) return;
-            isDisposing = true;
+            if (this.isDisposing == false)
+            {
+                this.isDisposing = true;
+                this.Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposeAll"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposeAll)
+        {
+            // We only have managed resources here.
+            // if called with false, return.
+            if (disposeAll == false) return;
 
             foreach (var webSocket in this.m_WebSockets)
             {
