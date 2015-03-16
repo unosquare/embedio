@@ -58,14 +58,36 @@
         }
 
         /// <summary>
-        /// Registers the web sockets server type.
+        /// Registers the web sockets server given a WebSocketsServer Type.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="path">The path. For example: '/echo' </param>
+        /// <param name="path">The path. For example: '/echo'</param>
+        /// <exception cref="ArgumentException">Argument 'path' cannot be null;path</exception>
         public void RegisterWebSocketsServer<T>(string path)
             where T : WebSocketsServer, new()
         {
+            if (string.IsNullOrWhiteSpace(path))
+                throw new ArgumentException("Argument 'path' cannot be null", "path");
+
             this.ServerMap[path] = Activator.CreateInstance<T>();
+        }
+
+        /// <summary>
+        /// Registers the web sockets server.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="path">The path. For example: '/echo'</param>
+        /// <param name="server">The server.</param>
+        /// <exception cref="ArgumentException">Argument 'server' cannot be null;server</exception>
+        public void RegisterWebSocketsServer<T>(string path, T server)
+            where T: WebSocketsServer
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                throw new ArgumentException("Argument 'path' cannot be null", "path");
+            if (server == null) 
+                throw new ArgumentException("Argument 'server' cannot be null", "server");
+            
+            this.ServerMap[path] = server;
         }
     }
 
