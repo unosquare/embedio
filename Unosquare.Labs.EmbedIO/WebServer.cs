@@ -1,6 +1,5 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
-    using log4net;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;

@@ -1,96 +1,51 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Command
 {
-    using log4net;
-    using log4net.Appender;
-    using log4net.Core;
     using System;
-    using System.Collections.Generic;
 
-    static public class Logger
+    public class Logger : Unosquare.Labs.EmbedIO.ILog
     {
-        private const string LogPattern = "%-20date [%thread] %-5level %-20logger %message%newline";
-
-        /// <summary>
-        /// Retrieves a Logger for the given generic type
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        static public ILog For<T>()
+        public void Info(object message)
         {
-            if (LogManager.GetRepository().Configured == false)
-                ConfigureLogging();
-
-            return LogManager.GetLogger(typeof(T));
+            InfoFormat(message.ToString(), null);
         }
 
-        /// <summary>
-        /// Shutdowns the logging Subsystem.
-        /// </summary>
-        static public void Shutdown()
+        public void Error(object message)
         {
-            log4net.Repository.ILoggerRepository repository = LogManager.GetRepository();
-            if (repository != null)
-                repository.Shutdown();
-
-            LogManager.Shutdown();
+            ErrorFormat(message.ToString(), null);
         }
 
-        /// <summary>
-        /// Configures the logging subsystem.
-        /// </summary>
-        private static void ConfigureLogging()
+        public void Error(object message, Exception exception)
         {
-            var layout = new log4net.Layout.PatternLayout(LogPattern);
-            layout.ActivateOptions();
+            ErrorFormat(message.ToString(), null);
+            ErrorFormat(exception.ToString(), null);
+        }
 
-            // Create a list of appenders
-            var appenders = new List<AppenderSkeleton>();
+        private void WriteLine(ConsoleColor color, string format, params object[] args)
+        {
+            var current = Console.ForegroundColor;
+            Console.ForegroundColor = color;
+            Console.WriteLine(format, args);
+            Console.ForegroundColor = current;
+        }
 
+        public void InfoFormat(string format, params object[] args)
+        {
+            WriteLine(ConsoleColor.Blue, format, args);
+        }
 
-            var consoleAppender = new ManagedColoredConsoleAppender()
-            {
-                Layout = layout,
-                Threshold = Level.Debug,
-                Target = "Console.Out"
-            };
+        public void WarnFormat(string format, params object[] args)
+        {
+            WriteLine(ConsoleColor.Yellow, format, args);
+        }
 
-            consoleAppender.AddMapping(new ManagedColoredConsoleAppender.LevelColors()
-            {
-                Level = Level.Info,
-                ForeColor = ConsoleColor.Gray
-            });
-            consoleAppender.AddMapping(new ManagedColoredConsoleAppender.LevelColors()
-            {
-                Level = Level.Debug,
-                ForeColor = ConsoleColor.Green
-            });
-            consoleAppender.AddMapping(new ManagedColoredConsoleAppender.LevelColors()
-            {
-                Level = Level.Warn,
-                ForeColor = ConsoleColor.DarkYellow
-            });
-            consoleAppender.AddMapping(new ManagedColoredConsoleAppender.LevelColors()
-            {
-                Level = Level.Error,
-                ForeColor = ConsoleColor.Red
-            });
+        public void ErrorFormat(string format, params object[] args)
+        {
+            WriteLine(ConsoleColor.Red, format, args);
+        }
 
-            appenders.Add(consoleAppender);
-
-            // Configure the appenders in the list based on the build.
-            foreach (var appender in appenders)
-            {
-                appender.AddFilter(new log4net.Filter.LevelRangeFilter()
-                {
-                    LevelMin = Level.Debug,
-                    LevelMax = Level.Fatal
-                });
-
-                appender.ActivateOptions();
-            }
-
-            // Finally, perform the log configuration
-            log4net.Config.BasicConfigurator.Configure(appenders.ToArray());
+        public void DebugFormat(string format, params object[] args)
+        {
+            WriteLine(ConsoleColor.Cyan, format, args);
         }
     }
 }
