@@ -1,6 +1,5 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
-    using log4net;
     using System;
 
     class Program
@@ -14,6 +13,7 @@
         static void Main(string[] args)
         {
             var url = "http://localhost:9696/";
+
             if (args.Length > 0)
                 url = args[0];
 
