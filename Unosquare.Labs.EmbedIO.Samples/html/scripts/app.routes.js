@@ -19,6 +19,10 @@
                     templateUrl: '/views/cmd.html',
                     title: 'Command-Line Interface'
                 }).
+                when('/tubular', {
+                    templateUrl: '/views/tubular.html',
+                    title: 'Tubular Grid'
+                }).
                 otherwise({
                     redirectTo: '/'
                 });

@@ -42,6 +42,14 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Linq.Dynamic, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.4\lib\net40\System.Linq.Dynamic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Unosquare.Tubular, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tubular.ServerSide.0.9.4\lib\net45\Unosquare.Tubular.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logger.cs" />
@@ -52,6 +60,11 @@
     <Compile Include="WebSocketsSample.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="html\scripts\tubular\tubular-bundle.css" />
+    <Content Include="html\scripts\tubular\tubular-bundle.js" />
+    <Content Include="html\scripts\tubular\tubular-bundle.min.css" />
+    <Content Include="html\scripts\tubular\tubular-bundle.min.js" />
+    <Content Include="html\views\tubular.html" />
     <None Include="app.config" />
     <Content Include="html\scripts\app.constants.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -84,9 +97,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="html\scripts\app.directives.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="html\scripts\app.filters.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="html\scripts\app.js">
