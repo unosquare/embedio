@@ -1,316 +1,313 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <title>Embedio by unosquare</title>
-  </head>
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <!-- CSS (from CDN) -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.4/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.3.0/css/font-awesome.min.css" />
+        <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/lumen/bootstrap.min.css" rel="stylesheet">
+        <link href="//cdn.jsdelivr.net/highlight.js/8.5.0/styles/github.min.css" rel="stylesheet">
 
-  <body>
-    <div id="container">
-      <div class="inner">
+        <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
 
-        <header>
-          <h1>Embedio</h1>
-          <h2>A tiny, cross-platform, module based web server</h2>
-        </header>
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <script src="//cdn.jsdelivr.net/highlight.js/8.5.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
 
-        <section id="downloads" class="clearfix">
-          <a href="https://github.com/unosquare/embedio/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/unosquare/embedio/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/unosquare/embedio" id="view-on-github" class="button"><span>View on GitHub</span></a>
-        </section>
+        <title>Embedio by unosquare</title>
+    </head>
 
-        <hr>
+    <body>
+        <div id="wrapper">
+            <header class="navbar navbar-static-top" id="top" role="banner">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <a href="/embedio/" class="navbar-brand">EmbedIO</a>
+                    </div>
+                    <nav class="collapse navbar-collapse bs-navbar-collapse">
+                        <ul class="nav navbar-nav">
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="http://github.com/unosquare/embedio">EmbedIO @ GitHub</a></li>
+                            <li><a href="http://www.unosquare.com">Unosquare</a></li>
+                            <li><a href="http://unosquare.github.io/">UnoPage</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+            <div class="content-body">
+                <div class="jumbotron">
+                    <div class="container">
+                        <header>
+                            <h1>Embedio</h1>
+                            <h2>A tiny, cross-platform, module based web server</h2>
+                        </header>
+                    </div>
+                </div>
+                <div class="container">
+                    <section id="main_content">
+                        <h2>Features</h2>
 
-        <section id="main_content">
-          <h1>
-<a id="embedio---unosquare-labs" class="anchor" href="#embedio---unosquare-labs" aria-hidden="true"><span class="octicon octicon-link"></span></a>EmbedIO - Unosquare Labs</h1>
+                        <ul>
+                            <li>New Version: Network operations make heavy use of the relatively recent async/await pattern</li>
+                            <li>Cross-platform (tested in Mono 3.10.x on Windows and on a custom Yocto image for the Raspberry Pi)</li>
+                            <li>Extensible (Write your own modules like bearer token session handling, video streaming, UPnP, etc.)</li>
+                            <li>Small memory footprint</li>
+                            <li>Create REST APIs quickly with the built-in Web Api Module</li>
+                            <li>Serve static files with 1 line of code (built-in module)</li>
+                            <li>Handle sessions with the built-in LocalSessionWebModule</li>
+                            <li>Web Sockets support (Not available on Mono though)</li>
+                        </ul>
 
-<p>A tiny, cross-platform, module based, MIT-licensed web server</p>
+                        <p><em>For detailed usage and REST API implementation, download the code and take a look at the Samples project</em></p>
 
-<ul>
-<li>New Version: Network operations make heavy use of the relatively recent async/await pattern</li>
-<li>Cross-platform (tested in Mono 3.10.x on Windows and on a custom Yocto image for the Raspberry Pi)</li>
-<li>Extensible (Write your own modules like bearer token session handling, video streaming, UPnP, etc.)</li>
-<li>Small memory footprint</li>
-<li>Create REST APIs quickly with the built-in Web Api Module</li>
-<li>Serve static files with 1 line of code (built-in module)</li>
-<li>Handle sessions with the built-in LocalSessionWebModule</li>
-<li>Web Sockets support (Not available on Mono though)</li>
-</ul>
+                        <h2>
+                            <a id="nuget-installation" class="anchor" href="#nuget-installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>NuGet Installation:
+                        </h2>
 
-<p><em>For detailed usage and REST API implementation, download the code and take a look at the Samples project</em></p>
+                        <pre><code>PM&gt; Install-Package EmbedIO</code></pre>
 
-<h2>
-<a id="nuget-installation" class="anchor" href="#nuget-installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>NuGet Installation:</h2>
+                        <h2>
+                            <a id="basic-example" class="anchor" href="#basic-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Basic Example:
+                        </h2>
 
-<pre><code>PM&gt; Install-Package EmbedIO
-</code></pre>
+                        <p><em>Please note the comments are the important part here. More info is available in the samples.</em></p>
 
-<h2>
-<a id="basic-example" class="anchor" href="#basic-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Basic Example:</h2>
-
-<p><em>Please note the comments are the important part here. More info is available in the samples.</em></p>
-
-<div class="highlight highlight-csharp"><pre><span class="pl-k">namespace</span> <span class="pl-en">Company.Project</span>
+                        <pre><code class="csharp">namespace Company.Project
 {
-    <span class="pl-k">using</span> System;
-    <span class="pl-k">using</span> Unosquare.Labs.EmbedIO;
-
-    <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Logger</span> : <span class="pl-k">Unosquare</span>.<span class="pl-k">Labs</span>.<span class="pl-k">EmbedIO</span>.<span class="pl-k">ILog</span>
+    using System;
+    using Unosquare.Labs.EmbedIO;
+    public class Logger : Unosquare.Labs.EmbedIO.ILog
     {
-        <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">Info</span>(<span class="pl-k">object</span> <span class="pl-smi">message</span>)
+        public void Info(object message)
         {
-            InfoFormat(message.ToString(), <span class="pl-c1">null</span>);
+            InfoFormat(message.ToString(), null);
         }
-
-        <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">Error</span>(<span class="pl-k">object</span> <span class="pl-smi">message</span>)
+        public void Error(object message)
         {
-            ErrorFormat(message.ToString(), <span class="pl-c1">null</span>);
+            ErrorFormat(message.ToString(), null);
         }
-
-        <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">Error</span>(<span class="pl-k">object</span> <span class="pl-smi">message</span>, <span class="pl-k">Exception</span> <span class="pl-smi">exception</span>)
+        public void Error(object message, Exception exception)
         {
-            ErrorFormat(message.ToString(), <span class="pl-c1">null</span>);
-            ErrorFormat(exception.ToString(), <span class="pl-c1">null</span>);
+            ErrorFormat(message.ToString(), null);
+            ErrorFormat(exception.ToString(), null);
         }
-
-        <span class="pl-k">private</span> <span class="pl-k">void</span> <span class="pl-en">WriteLine</span>(<span class="pl-k">ConsoleColor</span> <span class="pl-smi">color</span>, <span class="pl-k">string</span> <span class="pl-smi">format</span>, <span class="pl-k">params</span> <span class="pl-k">object[]</span> <span class="pl-smi">args</span>)
+        private void WriteLine(ConsoleColor color, string format, params object[] args)
         {
-            <span class="pl-k">var</span> current = Console.ForegroundColor;
+            var current = Console.ForegroundColor;
             Console.ForegroundColor = color;
             Console.WriteLine(format, args);
             Console.ForegroundColor = current;
         }
-
-        <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">InfoFormat</span>(<span class="pl-k">string</span> <span class="pl-smi">format</span>, <span class="pl-k">params</span> <span class="pl-k">object[]</span> <span class="pl-smi">args</span>)
+        public void InfoFormat(string format, params object[] args)
         {
             WriteLine(ConsoleColor.Blue, format, args);
         }
-
-        <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">WarnFormat</span>(<span class="pl-k">string</span> <span class="pl-smi">format</span>, <span class="pl-k">params</span> <span class="pl-k">object[]</span> <span class="pl-smi">args</span>)
+        public void WarnFormat(string format, params object[] args)
         {
             WriteLine(ConsoleColor.Yellow, format, args);
         }
-
-        <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">ErrorFormat</span>(<span class="pl-k">string</span> <span class="pl-smi">format</span>, <span class="pl-k">params</span> <span class="pl-k">object[]</span> <span class="pl-smi">args</span>)
+        public void ErrorFormat(string format, params object[] args)
         {
             WriteLine(ConsoleColor.Red, format, args);
         }
-
-        <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">DebugFormat</span>(<span class="pl-k">string</span> <span class="pl-smi">format</span>, <span class="pl-k">params</span> <span class="pl-k">object[]</span> <span class="pl-smi">args</span>)
+        public void DebugFormat(string format, params object[] args)
         {
             WriteLine(ConsoleColor.Cyan, format, args);
         }
     }
-
-    <span class="pl-k">class</span> <span class="pl-en">Program</span>
+    class Program
     {
-        <span class="pl-c">/// &lt;<span class="pl-ent">summary</span>&gt;</span>
-        <span class="pl-c">/// Defines the entry point of the application.</span>
-        <span class="pl-c">/// &lt;/<span class="pl-ent">summary</span>&gt;</span>
-        <span class="pl-c">/// &lt;<span class="pl-ent">param</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>args<span class="pl-pds">"</span></span>&gt;The arguments.&lt;/<span class="pl-ent">param</span>&gt;</span>
-        <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">Main</span>(<span class="pl-k">string[]</span> <span class="pl-smi">args</span>)
+        /// &lt;summary&gt;
+        /// Defines the entry point of the application.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;args&quot;&gt;The arguments.&lt;/param&gt;
+        static void Main(string[] args)
         {
-            <span class="pl-k">var</span> url = <span class="pl-s"><span class="pl-pds">"</span>http://localhost:9696/<span class="pl-pds">"</span></span>;
-            <span class="pl-k">if</span> (args.Length &gt; <span class="pl-c1">0</span>)
-                url = args[<span class="pl-c1">0</span>];
-
-            <span class="pl-c">// Our web server is disposable. Note that if you don't want to use logging,</span>
-            <span class="pl-c">// there are alternate constructors that allow you to skip specifying an ILog object.</span>
-            <span class="pl-k">using</span> (<span class="pl-k">var</span> server = <span class="pl-k">new</span> WebServer(url, <span class="pl-k">new</span> Logger()))
+            var url = &quot;http://localhost:9696/&quot;;
+            if (args.Length &gt; 0)
+                url = args[0];
+            // Our web server is disposable. Note that if you don&#39;t want to use logging,
+            // there are alternate constructors that allow you to skip specifying an ILog object.
+            using (var server = new WebServer(url, new Logger()))
             {
-                <span class="pl-c">// First, we will configure our web server by adding Modules.</span>
-                <span class="pl-c">// Please note that order DOES matter.</span>
-                <span class="pl-c">// ================================================================================================</span>
-                <span class="pl-c">// If we want to enable sessions, we simply register the LocalSessionModule</span>
-                <span class="pl-c">// Beware that this is an in-memory session storage mechanism so, avoid storing very large objects.</span>
-                <span class="pl-c">// You can use the server.GetSession() method to get the SessionInfo object and manupulate it.</span>
-                <span class="pl-c">// You could potentially implement a distributed session module using something like Redis</span>
-                server.RegisterModule(<span class="pl-k">new</span> Modules.LocalSessionModule());
-
-                <span class="pl-c">// Here we setup serving of static files</span>
-                server.RegisterModule(<span class="pl-k">new</span> Modules.StaticFilesModule(<span class="pl-s"><span class="pl-pds">"</span>c:/inetpub/wwwroot<span class="pl-pds">"</span></span>));
-                <span class="pl-c">// The static files module will cache small files in ram until it detects they have been modified.</span>
-                server.Module&lt;Modules.StaticFilesModule&gt;().UseRamCache = <span class="pl-c1">true</span>;
-                server.Module&lt;Modules.StaticFilesModule&gt;().DefaultExtension = <span class="pl-s"><span class="pl-pds">"</span>.html<span class="pl-pds">"</span></span>;
-                <span class="pl-c">// We don't need to add the line below. The default document is always index.html.</span>
-                <span class="pl-c">//server.Module&lt;Modules.StaticFilesWebModule&gt;().DefaultDocument = "index.html";</span>
-
-                <span class="pl-c">// Once we've registered our modules and configured them, we call the RunAsync() method.</span>
-                <span class="pl-c">// This is a non-blocking method (it return immediately) so in this case we avoid</span>
-                <span class="pl-c">// disposing of the object until a key is pressed.</span>
-                <span class="pl-c">//server.Run();</span>
+                // First, we will configure our web server by adding Modules.
+                // Please note that order DOES matter.
+                // ================================================================================================
+                // If we want to enable sessions, we simply register the LocalSessionModule
+                // Beware that this is an in-memory session storage mechanism so, avoid storing very large objects.
+                // You can use the server.GetSession() method to get the SessionInfo object and manupulate it.
+                // You could potentially implement a distributed session module using something like Redis
+                server.RegisterModule(new Modules.LocalSessionModule());
+                // Here we setup serving of static files
+                server.RegisterModule(new Modules.StaticFilesModule(&quot;c:/inetpub/wwwroot&quot;));
+                // The static files module will cache small files in ram until it detects they have been modified.
+                server.Module&lt;modules.staticfilesmodule&gt;().UseRamCache = true;
+                server.Module&lt;modules.staticfilesmodule&gt;().DefaultExtension = &quot;.html&quot;;
+                // We don&#39;t need to add the line below. The default document is always index.html.
+                //server.Module&lt;modules.staticfileswebmodule&gt;().DefaultDocument = &quot;index.html&quot;;
+                // Once we&#39;ve registered our modules and configured them, we call the RunAsync() method.
+                // This is a non-blocking method (it return immediately) so in this case we avoid
+                // disposing of the object until a key is pressed.
+                //server.Run();
                 server.RunAsync();
-
-                <span class="pl-c">// Fire up the browser to show the content if we are debugging!</span>
-#if <span class="pl-en">DEBUG</span>
-                <span class="pl-k">var</span> browser = <span class="pl-k">new</span> System.Diagnostics.Process() { 
-                    StartInfo = <span class="pl-k">new</span> System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = <span class="pl-c1">true</span> } };
+                // Fire up the browser to show the content if we are debugging!
+#if DEBUG
+                var browser = new System.Diagnostics.Process() { 
+                    StartInfo = new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true } };
                 browser.Start();
 #endif
-                <span class="pl-c">// Wait for any key to be pressed before disposing of our web server.</span>
-                <span class="pl-c">// In a service we'd manage the lifecycle of of our web server using</span>
-                <span class="pl-c">// something like a BackgroundWorker or a ManualResetEvent.</span>
-                Console.ReadKey(<span class="pl-c1">true</span>);
+                // Wait for any key to be pressed before disposing of our web server.
+                // In a service we&#39;d manage the lifecycle of of our web server using
+                // something like a BackgroundWorker or a ManualResetEvent.
+                Console.ReadKey(true);
             }
-
-            <span class="pl-c">// Before exiting, we shutdown the logging subsystem.</span>
+            // Before exiting, we shutdown the logging subsystem.
             Logger.Shutdown();
         }
     }
-}</pre></div>
+}</code></pre>
 
-<h2>
-<a id="rest-api-example" class="anchor" href="#rest-api-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>REST API Example:</h2>
+                        <h2>
+                            <a id="rest-api-example" class="anchor" href="#rest-api-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>REST API Example:
+                        </h2>
 
-<p><em>During server setup:</em></p>
+                        <p><em>During server setup:</em></p>
 
-<div class="highlight highlight-csharp"><pre>server.RegisterModule(<span class="pl-k">new</span> WebApiModule());
-server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;();</pre></div>
+                        <pre><code class="csharp">server.RegisterModule(new WebApiModule());
+server.Module<webapimodule>().RegisterController<peoplecontroller>();</code></pre>
 
-<p><em>And our controller class looks like:</em></p>
+                        <p><em>And our controller class looks like:</em></p>
 
-<div class="highlight highlight-csharp"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">PeopleController</span> : <span class="pl-k">WebApiController</span>
+                        <pre><code class="csharp">public class PeopleController : WebApiController
 {
-    [WebApiHandler(HttpVerbs.Get, <span class="pl-s"><span class="pl-pds">"</span>/api/people/*<span class="pl-pds">"</span></span>)]
-    <span class="pl-k">public</span> <span class="pl-k">bool</span> <span class="pl-en">GetPeople</span>(<span class="pl-k">WebServer</span> <span class="pl-smi">server</span>, <span class="pl-k">HttpListenerContext</span> <span class="pl-smi">context</span>)
+    [WebApiHandler(HttpVerbs.Get, "/api/people/*")]
+    public bool GetPeople(WebServer server, HttpListenerContext context)
     {
-        <span class="pl-k">try</span>
+        try
         {
-            <span class="pl-k">var</span> lastSegment = context.Request.Url.Segments.Last();
-            <span class="pl-k">if</span> (lastSegment.EndsWith(<span class="pl-s"><span class="pl-pds">"</span>/<span class="pl-pds">"</span></span>))
-                <span class="pl-k">return</span> context.JsonResponse(People);
-
-            <span class="pl-k">int</span> key = <span class="pl-c1">0</span>;
-            <span class="pl-k">if</span> (<span class="pl-k">int</span>.TryParse(lastSegment, out key) &amp;&amp; People.Any(p =&gt; p.Key == key))
+            var lastSegment = context.Request.Url.Segments.Last();
+            if (lastSegment.EndsWith("/"))
+                return context.JsonResponse(People);
+            int key = 0;
+            if (int.TryParse(lastSegment, out key) && People.Any(p => p.Key == key))
             {
-                <span class="pl-k">return</span> context.JsonResponse(People.FirstOrDefault(p =&gt; p.Key == key));
+                return context.JsonResponse(People.FirstOrDefault(p => p.Key == key));
             }
-
-            <span class="pl-k">throw</span> <span class="pl-k">new</span> KeyNotFoundException(<span class="pl-s"><span class="pl-pds">"</span>Key Not Found: <span class="pl-pds">"</span></span> + lastSegment);
+            throw new KeyNotFoundException("Key Not Found: " + lastSegment);
         }
-        <span class="pl-k">catch</span> (Exception ex)
+        catch (Exception ex)
         {
-            <span class="pl-k">return</span> HandleError(context, ex, (<span class="pl-k">int</span>)HttpStatusCode.InternalServerError);
+            return HandleError(context, ex, (int)HttpStatusCode.InternalServerError);
         }
     }
-
-    <span class="pl-k">protected</span> <span class="pl-k">bool</span> <span class="pl-en">HandleError</span>(<span class="pl-k">HttpListenerContext</span> <span class="pl-smi">context</span>, <span class="pl-k">Exception</span> <span class="pl-smi">ex</span>, <span class="pl-k">int</span> <span class="pl-smi">statusCode</span> <span class="pl-k">=</span> <span class="pl-c1">500</span>)
+    protected bool HandleError(HttpListenerContext context, Exception ex, int statusCode = 500)
     {
-        <span class="pl-k">var</span> errorResponse = <span class="pl-k">new</span>
+        var errorResponse = new
         {
-            Title = <span class="pl-s"><span class="pl-pds">"</span>Unexpected Error<span class="pl-pds">"</span></span>,
+            Title = "Unexpected Error",
             ErrorCode = ex.GetType().Name,
             Description = ex.ExceptionMessage(),
         };
-
         context.Response.StatusCode = statusCode;
-        <span class="pl-k">return</span> context.JsonResponse(errorResponse);
+        return context.JsonResponse(errorResponse);
     }
-}</pre></div>
+}</code></pre>
 
-<h2>
-<a id="web-sockets-example" class="anchor" href="#web-sockets-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Web Sockets Example:</h2>
+                        <h2>
+                            <a id="web-sockets-example" class="anchor" href="#web-sockets-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Web Sockets Example:
+                        </h2>
+                        <p><em>During server setup:</em></p>
 
-<p><em>During server setup:</em></p>
+                        <pre><code class="csharp">server.RegisterModule(new WebSocketsModule());
+server.Module<websocketsmodule>().RegisterWebSocketsServer<websocketschatserver>("/chat");</code></pre>
 
-<div class="highlight highlight-csharp"><pre>server.RegisterModule(<span class="pl-k">new</span> WebSocketsModule());
-server.Module&lt;WebSocketsModule&gt;().RegisterWebSocketsServer&lt;WebSocketsChatServer&gt;(<span class="pl-s"><span class="pl-pds">"</span>/chat<span class="pl-pds">"</span></span>);</pre></div>
-
-<p><em>And our web sockets server class looks like:</em></p>
-
-<div class="highlight highlight-csharp"><pre>
-<span class="pl-c">/// &lt;<span class="pl-ent">summary</span>&gt;</span>
-<span class="pl-c">/// Defines a very simple chat server</span>
-<span class="pl-c">/// &lt;/<span class="pl-ent">summary</span>&gt;</span>
-<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">WebSocketsChatServer</span> : <span class="pl-k">WebSocketsServer</span>
+                        <p><em>And our web sockets server class looks like:</em></p>
+                        <pre><code class="csharp">/// &lt;summary&gt;
+/// Defines a very simple chat server
+/// &lt;/summary&gt;
+public class WebSocketsChatServer : WebSocketsServer
 {
-
-    <span class="pl-k">public</span> <span class="pl-en">WebSocketsChatServer</span>()
-        : <span class="pl-c1">base</span>(true, 0)
+    public WebSocketsChatServer()
+        : base(true, 0)
     {
-        <span class="pl-c">// placeholder</span>
+        // placeholder
     }
-
-    <span class="pl-c">/// &lt;<span class="pl-ent">summary</span>&gt;</span>
-    <span class="pl-c">/// Called when this WebSockets Server receives a full message (EndOfMessage) form a WebSockets client.</span>
-    <span class="pl-c">/// &lt;/<span class="pl-ent">summary</span>&gt;</span>
-    <span class="pl-c">/// &lt;<span class="pl-ent">param</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>context<span class="pl-pds">"</span></span>&gt;The context.&lt;/<span class="pl-ent">param</span>&gt;</span>
-    <span class="pl-c">/// &lt;<span class="pl-ent">param</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>rxBuffer<span class="pl-pds">"</span></span>&gt;The rx buffer.&lt;/<span class="pl-ent">param</span>&gt;</span>
-    <span class="pl-c">/// &lt;<span class="pl-ent">param</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>rxResult<span class="pl-pds">"</span></span>&gt;The rx result.&lt;/<span class="pl-ent">param</span>&gt;</span>
-    <span class="pl-k">protected</span> <span class="pl-k">override</span> <span class="pl-k">void</span> <span class="pl-en">OnMessageReceived</span>(<span class="pl-k">WebSocketContext</span> <span class="pl-smi">context</span>, <span class="pl-k">byte[]</span> <span class="pl-smi">rxBuffer</span>, <span class="pl-k">WebSocketReceiveResult</span> <span class="pl-smi">rxResult</span>)
+    /// &lt;summary&gt;
+    /// Called when this WebSockets Server receives a full message (EndOfMessage) form a WebSockets client.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
+    /// &lt;param name=&quot;rxBuffer&quot;&gt;The rx buffer.&lt;/param&gt;
+    /// &lt;param name=&quot;rxResult&quot;&gt;The rx result.&lt;/param&gt;
+    protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
     {
-        <span class="pl-k">var</span> session = <span class="pl-c1">this</span>.WebServer.GetSession(context);
-        <span class="pl-k">foreach</span> (<span class="pl-k">var</span> ws <span class="pl-k">in</span> <span class="pl-c1">this</span>.WebSockets)
+        var session = this.WebServer.GetSession(context);
+        foreach (var ws in this.WebSockets)
         {
-            <span class="pl-k">if</span> (ws != context)
-                <span class="pl-c1">this</span>.Send(ws, Encoding.UTF8.GetString(rxBuffer));
+            if (ws != context)
+                this.Send(ws, Encoding.UTF8.GetString(rxBuffer));
         }
     }
-
-    <span class="pl-c">/// &lt;<span class="pl-ent">summary</span>&gt;</span>
-    <span class="pl-c">/// Gets the name of the server.</span>
-    <span class="pl-c">/// &lt;/<span class="pl-ent">summary</span>&gt;</span>
-    <span class="pl-c">/// &lt;<span class="pl-ent">value</span>&gt;</span>
-    <span class="pl-c">/// The name of the server.</span>
-    <span class="pl-c">/// &lt;/<span class="pl-ent">value</span>&gt;</span>
-    <span class="pl-k">public</span> <span class="pl-k">override</span> <span class="pl-k">string</span> ServerName
+    /// &lt;summary&gt;
+    /// Gets the name of the server.
+    /// &lt;/summary&gt;
+    /// &lt;value&gt;
+    /// The name of the server.
+    /// &lt;/value&gt;
+    public override string ServerName
     {
-        <span class="pl-k">get</span> { <span class="pl-k">return</span> <span class="pl-s"><span class="pl-pds">"</span>Chat Server<span class="pl-pds">"</span></span>; }
+        get { return &quot;Chat Server&quot;; }
     }
-
-    <span class="pl-c">/// &lt;<span class="pl-ent">summary</span>&gt;</span>
-    <span class="pl-c">/// Called when this WebSockets Server accepts a new WebSockets client.</span>
-    <span class="pl-c">/// &lt;/<span class="pl-ent">summary</span>&gt;</span>
-    <span class="pl-c">/// &lt;<span class="pl-ent">param</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>context<span class="pl-pds">"</span></span>&gt;The context.&lt;/<span class="pl-ent">param</span>&gt;</span>
-    <span class="pl-k">protected</span> <span class="pl-k">override</span> <span class="pl-k">void</span> <span class="pl-en">OnClientConnected</span>(<span class="pl-k">WebSocketContext</span> <span class="pl-smi">context</span>)
+    /// &lt;summary&gt;
+    /// Called when this WebSockets Server accepts a new WebSockets client.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
+    protected override void OnClientConnected(WebSocketContext context)
     {
-        <span class="pl-c1">this</span>.Send(context, <span class="pl-s"><span class="pl-pds">"</span>Welcome to the chat room!<span class="pl-pds">"</span></span>);
-        <span class="pl-k">foreach</span> (<span class="pl-k">var</span> ws <span class="pl-k">in</span> <span class="pl-c1">this</span>.WebSockets)
+        this.Send(context, &quot;Welcome to the chat room!&quot;);
+        foreach (var ws in this.WebSockets)
         {
-            <span class="pl-k">if</span> (ws != context)
-                <span class="pl-c1">this</span>.Send(ws, <span class="pl-s"><span class="pl-pds">"</span>Someone joined the chat room.<span class="pl-pds">"</span></span>);
+            if (ws != context)
+                this.Send(ws, &quot;Someone joined the chat room.&quot;);
         }
     }
-
-    <span class="pl-c">/// &lt;<span class="pl-ent">summary</span>&gt;</span>
-    <span class="pl-c">/// Called when this WebSockets Server receives a message frame regardless if the frame represents the EndOfMessage.</span>
-    <span class="pl-c">/// &lt;/<span class="pl-ent">summary</span>&gt;</span>
-    <span class="pl-c">/// &lt;<span class="pl-ent">param</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>context<span class="pl-pds">"</span></span>&gt;The context.&lt;/<span class="pl-ent">param</span>&gt;</span>
-    <span class="pl-c">/// &lt;<span class="pl-ent">param</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>rxBuffer<span class="pl-pds">"</span></span>&gt;The rx buffer.&lt;/<span class="pl-ent">param</span>&gt;</span>
-    <span class="pl-c">/// &lt;<span class="pl-ent">param</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>rxResult<span class="pl-pds">"</span></span>&gt;The rx result.&lt;/<span class="pl-ent">param</span>&gt;</span>
-    <span class="pl-k">protected</span> <span class="pl-k">override</span> <span class="pl-k">void</span> <span class="pl-en">OnFrameReceived</span>(<span class="pl-k">WebSocketContext</span> <span class="pl-smi">context</span>, <span class="pl-k">byte[]</span> <span class="pl-smi">rxBuffer</span>, <span class="pl-k">WebSocketReceiveResult</span> <span class="pl-smi">rxResult</span>)
+    /// &lt;summary&gt;
+    /// Called when this WebSockets Server receives a message frame regardless if the frame represents the EndOfMessage.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
+    /// &lt;param name=&quot;rxBuffer&quot;&gt;The rx buffer.&lt;/param&gt;
+    /// &lt;param name=&quot;rxResult&quot;&gt;The rx result.&lt;/param&gt;
+    protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
     {
-        <span class="pl-k">return</span>;
+        return;
     }
-
-    <span class="pl-c">/// &lt;<span class="pl-ent">summary</span>&gt;</span>
-    <span class="pl-c">/// Called when the server has removed a WebSockets connected client for any reason.</span>
-    <span class="pl-c">/// &lt;/<span class="pl-ent">summary</span>&gt;</span>
-    <span class="pl-c">/// &lt;<span class="pl-ent">param</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>context<span class="pl-pds">"</span></span>&gt;The context.&lt;/<span class="pl-ent">param</span>&gt;</span>
-    <span class="pl-k">protected</span> <span class="pl-k">override</span> <span class="pl-k">void</span> <span class="pl-en">OnClientDisconnected</span>(<span class="pl-k">WebSocketContext</span> <span class="pl-smi">context</span>)
+    /// &lt;summary&gt;
+    /// Called when the server has removed a WebSockets connected client for any reason.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
+    protected override void OnClientDisconnected(WebSocketContext context)
     {
-        <span class="pl-c1">this</span>.Broadcast(<span class="pl-k">string</span>.Format(<span class="pl-s"><span class="pl-pds">"</span>Someone left the chat room.<span class="pl-pds">"</span></span>));
+        this.Broadcast(string.Format(&quot;Someone left the chat room.&quot;));
     }
-}</pre></div>
-        </section>
+}</code></pre>
+                    </section>
+                </div>
+                <footer>
+                    Brought to you by Unosquare<br />
+                    <a href="http://www.unosquare.com">
+                        <img src="images/logo_178.png" />
+                    </a>
+                </footer>
 
-        <footer>
-          Embedio is maintained by <a href="https://github.com/unosquare">unosquare</a><br>
-          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
 
-        
-      </div>
-    </div>
-  </body>
+            </div>
+        </div>
+    </body>
 </html>
