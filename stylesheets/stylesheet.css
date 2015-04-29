@@ -38,6 +38,7 @@ footer {
     padding-bottom: 4px;
     margin-bottom: 8px;
 }
+.nav .open>a, .nav .open>a:hover, .nav .open>a:focus,
 .navbar-nav>li>a:hover, .navbar-nav>li>a:focus {
     background-color: #333;
     border-bottom: 2px solid #44c5db;

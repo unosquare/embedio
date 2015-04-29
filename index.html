@@ -15,6 +15,9 @@
         <!--[if lt IE 9]>
             <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
+        
+        <script src="//cdn.jsdelivr.net/jquery/2.1.4/jquery.min.js"></script>
+        <script src="//cdn.jsdelivr.net/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <script src="//cdn.jsdelivr.net/highlight.js/8.5.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
 
@@ -33,6 +36,19 @@
                     </div>
                     <nav class="collapse navbar-collapse bs-navbar-collapse">
                         <ul class="nav navbar-nav">
+                            <li><a href="#features">Features</a></li>
+                            <li><a href="#nuget">NuGet Installation</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">
+                                    Examples<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#basic">Basic Example</a></li>
+                                    <li><a href="#rest">REST API Example</a></li>
+                                    <li><a href="#websocket">Web Sockets Example</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#cli">EmbedIO CLI</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="http://github.com/unosquare/embedio">EmbedIO @ GitHub</a></li>
@@ -53,7 +69,7 @@
                 </div>
                 <div class="container">
                     <section id="main_content">
-                        <h2>Features</h2>
+                        <h2 id="features">Features:</h2>
 
                         <ul>
                             <li>New Version: Network operations make heavy use of the relatively recent async/await pattern</li>
@@ -67,24 +83,25 @@
                         </ul>
 
                         <p><em>For detailed usage and REST API implementation, download the code and take a look at the Samples project</em></p>
+                        <hr />
+                        <h2 id="nuget">NuGet Installation:</h2>
 
-                        <h2>
-                            <a id="nuget-installation" class="anchor" href="#nuget-installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>NuGet Installation:
-                        </h2>
-
-                        <pre><code>PM&gt; Install-Package EmbedIO</code></pre>
-
-                        <h2>
-                            <a id="basic-example" class="anchor" href="#basic-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Basic Example:
-                        </h2>
+                        <div class="row">
+                            <div class="col-md-8"><pre><code>PM&gt; Install-Package EmbedIO</code></pre></div>
+                            <div class="col-md-4 text-center">
+                                <a href="http://badge.fury.io/nu/embedio"><img src="https://badge.fury.io/nu/embedio.svg" alt="NuGet version" height="18"></a>
+                            </div>
+                        </div>
+                        <hr />
+                        <h2 id="basic">Basic Example:</h2>
 
                         <p><em>Please note the comments are the important part here. More info is available in the samples.</em></p>
 
                         <pre><code class="csharp">namespace Company.Project
 {
     using System;
-    using Unosquare.Labs.EmbedIO;
-
+    using Unosquare.Labs.EmbedIO;                                 
+    using Unosquare.Labs.EmbedIO.Log;
     class Program
     {
         /// &lt;summary&gt;
@@ -136,15 +153,13 @@
         }
     }
 }</code></pre>
-
-                        <h2>
-                            <a id="rest-api-example" class="anchor" href="#rest-api-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>REST API Example:
-                        </h2>
+                        <hr />
+                        <h2 id="rest">REST API Example:</h2>
 
                         <p><em>During server setup:</em></p>
 
                         <pre><code class="csharp">server.RegisterModule(new WebApiModule());
-server.Module<webapimodule>().RegisterController<peoplecontroller>();</code></pre>
+server.Module&lt;webapimodule&gt;().RegisterController&lt;peoplecontroller&gt;();</code></pre>
 
                         <p><em>And our controller class looks like:</em></p>
 
@@ -182,14 +197,12 @@ server.Module<webapimodule>().RegisterController<peoplecontroller>();</code></pr
         return context.JsonResponse(errorResponse);
     }
 }</code></pre>
-
-                        <h2>
-                            <a id="web-sockets-example" class="anchor" href="#web-sockets-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Web Sockets Example:
-                        </h2>
+                        <hr />
+                        <h2 id="websocket">Web Sockets Example:</h2>
                         <p><em>During server setup:</em></p>
 
                         <pre><code class="csharp">server.RegisterModule(new WebSocketsModule());
-server.Module<websocketsmodule>().RegisterWebSocketsServer<websocketschatserver>("/chat");</code></pre>
+server.Module&lt;websocketsmodule&gt;().RegisterWebSocketsServer&lt;websocketschatserver&gt;(&quot;/chat&quot;);</code></pre>
 
                         <p><em>And our web sockets server class looks like:</em></p>
                         <pre><code class="csharp">/// &lt;summary&gt;
@@ -259,6 +272,19 @@ public class WebSocketsChatServer : WebSocketsServer
         this.Broadcast(string.Format(&quot;Someone left the chat room.&quot;));
     }
 }</code></pre>
+                        <hr />
+                        <h2 id="cli">EmbedIO CLI</h2>
+
+                        Start any web folder or EmbedIO-enabled DLL from command line.
+                        You can find <a href="https://github.com/unosquare/embedio/tree/master/Unosquare.Labs.EmbedIO.Command">EmbedIO CLI</a>.
+
+                        <h3>Run web folder (static content only)</h3>
+
+                        <pre><code>$ embediocli -p c:\wwwroot</code></pre>
+
+                        <h3>Run web folder with WebAPI or WebSocket Assembly</h3>
+
+                        <pre><code>$ embediocli -p c:\wwwroot --api mywebapi.dll</code></pre>
                     </section>
                 </div>
                 <footer>
@@ -267,8 +293,6 @@ public class WebSocketsChatServer : WebSocketsServer
                         <img src="images/logo_178.png" />
                     </a>
                 </footer>
-
-
             </div>
         </div>
     </body>
