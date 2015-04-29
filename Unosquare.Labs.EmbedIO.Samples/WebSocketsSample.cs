@@ -16,7 +16,7 @@
         public static void Setup(WebServer server)
         {
             server.RegisterModule(new WebSocketsModule());
-            server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsChatServer>("/chat");
+            server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsChatServer>();
             server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsTerminalServer>("/terminal");
         }
     }
@@ -24,6 +24,7 @@
     /// <summary>
     /// Defines a very simple chat server
     /// </summary>
+    [WebSocketHandler("/chat")]
     public class WebSocketsChatServer : WebSocketsServer
     {
 

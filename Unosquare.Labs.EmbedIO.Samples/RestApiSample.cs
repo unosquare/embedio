@@ -13,7 +13,13 @@
     public static class RestApiSample
     {
         private const string RelativePath = "/api/";
-        public static List<Person> People { get; private set; }
+
+        public static List<Person> People = new List<Person>
+        {
+            new Person() {Key = 1, Name = "Mario Di Vece", Age = 31, EmailAddress = "mario@unosquare.com"},
+            new Person() {Key = 2, Name = "Geovanni Perez", Age = 32, EmailAddress = "geovanni.perez@unosquare.com"},
+            new Person() {Key = 3, Name = "Luis Gonzalez", Age = 29, EmailAddress = "luis.gonzalez@unosquare.com"},
+        };
 
         /// <summary>
         /// Here we add the WebApiModule to our Web Server and register our controller classes.
@@ -23,13 +29,6 @@
         /// <param name="server">The server.</param>
         public static void Setup(WebServer server)
         {
-            People = new List<Person>()
-            {
-                new Person() {Key = 1, Name = "Mario Di Vece", Age = 31, EmailAddress = "mario@unosquare.com"},
-                new Person() {Key = 2, Name = "Geovanni Perez", Age = 32, EmailAddress = "geovanni.perez@unosquare.com"},
-                new Person() {Key = 3, Name = "Luis Gonzalez", Age = 29, EmailAddress = "luis.gonzalez@unosquare.com"},
-            };
-
             foreach (var person in People)
             {
                 person.PhotoUrl = GetGravatarUrl(person.EmailAddress);
@@ -41,22 +40,23 @@
 
         private static string GetGravatarUrl(string emailAddress)
         {
-            return string.Format("http://www.gravatar.com/avatar/{0}.png?s=100", HashMD5(emailAddress));
+            return string.Format("http://www.gravatar.com/avatar/{0}.png?s=100", HashMd5(emailAddress));
         }
 
-        private static string HashMD5(string input)
+        private static string HashMd5(string input)
         {
             // step 1, calculate MD5 hash from input
-            MD5 md5 = System.Security.Cryptography.MD5.Create();
-            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+            MD5 md5 = MD5.Create();
+            byte[] inputBytes = Encoding.ASCII.GetBytes(input);
             byte[] hash = md5.ComputeHash(inputBytes);
 
             // step 2, convert byte array to hex string
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             for (int i = 0; i < hash.Length; i++)
             {
                 sb.Append(hash[i].ToString("x2"));
             }
+
             return sb.ToString();
         }
 

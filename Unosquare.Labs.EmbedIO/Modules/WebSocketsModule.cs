@@ -65,6 +65,37 @@
         /// Registers the web sockets server given a WebSocketsServer Type.
         /// </summary>
         /// <typeparam name="T"></typeparam>
+        /// <exception cref="ArgumentException">Argument 'path' cannot be null;path</exception>
+        public void RegisterWebSocketsServer<T>()
+            where T : WebSocketsServer, new()
+        {
+            RegisterWebSocketsServer(typeof (T));
+        }
+
+        /// <summary>
+        /// Registers the web sockets server given a WebSocketsServer Type.
+        /// </summary>
+        /// <param name="socketType"></param>
+        /// <exception cref="ArgumentException">Argument 'socketType' cannot be null;socketType</exception>
+        public void RegisterWebSocketsServer(Type socketType)
+        {
+            if (socketType == null)
+                throw new ArgumentException("Argument 'socketType' cannot be null", "socketType");
+
+            var attribute =
+                socketType.GetCustomAttributes(typeof (WebSocketHandlerAttribute), true).FirstOrDefault() as
+                    WebSocketHandlerAttribute;
+
+            if (attribute == null)
+                throw new ArgumentException("Argument 'socketType' needs a WebSocketHandlerAttribute", "socketType");
+
+            this.ServerMap[attribute.Path] = (WebSocketsServer) Activator.CreateInstance(socketType);
+        }
+
+        /// <summary>
+        /// Registers the web sockets server given a WebSocketsServer Type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="path">The path. For example: '/echo'</param>
         /// <exception cref="ArgumentException">Argument 'path' cannot be null;path</exception>
         public void RegisterWebSocketsServer<T>(string path)
@@ -95,6 +126,34 @@
         }
     }
 
+    /// <summary>
+    /// Decorate methods within controllers with this attribute in order to make them callable from the Web API Module
+    /// Method Must match the WebServerModule.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    public class WebSocketHandlerAttribute : Attribute
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebSocketHandlerAttribute"/> class.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <exception cref="System.ArgumentException">The argument 'paths' must be specified.</exception>
+        public WebSocketHandlerAttribute(string path)
+        {
+            if (path == null || string.IsNullOrWhiteSpace(path))
+                throw new ArgumentException("The argument 'path' must be specified.");
+
+            this.Path = path;
+        }
+
+        /// <summary>
+        /// Gets or sets the path.
+        /// </summary>
+        /// <value>
+        /// The paths.
+        /// </value>
+        public string Path { get; protected set; }
+    }
 
     /// <summary>
     /// A base class that defines how to handle WebSockets connections.

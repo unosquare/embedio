@@ -90,10 +90,17 @@
             if (ControllerTypes.Contains(typeof (T)))
                 throw new ArgumentException("Controller types must be unique within the module");
 
+            RegisterController(typeof (T));
+        }
+
+        /// <summary>
+        /// Registers the controller.
+        /// </summary>
+        public void RegisterController(Type controllerType)
+        {
             var protoDelegate = new ResponseHandler((server, context) => true);
 
-            var methods = typeof (T).GetMethods(System.Reflection.BindingFlags.Instance |
-                                                System.Reflection.BindingFlags.Public)
+            var methods = controllerType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .Where(m => m.ReturnType == protoDelegate.Method.ReturnType
                             && m.GetParameters().Select(pi => pi.ParameterType)
                                 .SequenceEqual(protoDelegate.Method.GetParameters()
@@ -114,7 +121,7 @@
                     else
                         DelegateMap.Add(path, delegatePath); // add
 
-                    var delegatePair = new Tuple<Type, MethodInfo>(typeof (T), method);
+                    var delegatePair = new Tuple<Type, MethodInfo>(controllerType, method);
                     if (DelegateMap[path].ContainsKey(attribute.Verb))
                         DelegateMap[path][attribute.Verb] = delegatePair; // update
                     else
@@ -122,10 +129,8 @@
                 }
             }
 
-            ControllerTypes.Add(typeof (T));
-
+            ControllerTypes.Add(controllerType);
         }
-
     }
 
     /// <summary>

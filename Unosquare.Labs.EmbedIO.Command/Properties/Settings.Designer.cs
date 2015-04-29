@@ -34,15 +34,6 @@ namespace Unosquare.Labs.EmbedIO.Command.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\unosquare\\embedio\\Unosquare.Labs.EmbedIO.Samples\\html")]
-        public string HtmlRootPath {
-            get {
-                return ((string)(this["HtmlRootPath"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("index.html")]
         public string HtmlDefaultDocument {
             get {
