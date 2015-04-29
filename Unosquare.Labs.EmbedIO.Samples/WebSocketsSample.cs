@@ -66,11 +66,11 @@
         /// <param name="context">The context.</param>
         protected override void OnClientConnected(WebSocketContext context)
         {
-            this.Send(context, "Welcome to the chat room!");
+            this.Send(context, "Welcome to the chat room!");    
             foreach (var ws in this.WebSockets)
             {
                 if (ws != context)
-                    this.Send(ws, "Someone joined the chat room.");
+                    this.Send(ws, "Someone joined the chat room."); 
             }
         }
 

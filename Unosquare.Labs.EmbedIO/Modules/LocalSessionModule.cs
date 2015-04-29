@@ -48,20 +48,20 @@
         private void FixupSessionCookie(HttpListenerContext context)
         {
             // get the real "__session" cookie value because sometimes there's more than 1 value and System.Net.Cookie only supports 1 value per cookie
-            if (context.Request.Headers["Cookie"] != null)
+            if (context.Request.Headers["Cookie"] == null) return;
+
+            var cookieItems = context.Request.Headers["Cookie"].Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var cookieItem in cookieItems)
             {
-                var cookieItems = context.Request.Headers["Cookie"].Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var cookieItem in cookieItems)
+                var nameValue = cookieItem.Trim().Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
+                if (nameValue.Length == 2 && nameValue[0].Equals(SessionCookieName))
                 {
-                    var nameValue = cookieItem.Trim().Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (nameValue.Length == 2 && nameValue[0].Equals(SessionCookieName))
+                    var sessionIdValue = nameValue[1].Trim();
+                    if (this.Sessions.ContainsKey(sessionIdValue))
                     {
-                        var sessionIdValue = nameValue[1].Trim();
-                        if (this.Sessions.ContainsKey(sessionIdValue))
-                        {
-                            context.Request.Cookies[SessionCookieName].Value = sessionIdValue;
-                            break;
-                        }
+                        context.Request.Cookies[SessionCookieName].Value = sessionIdValue;
+                        break;
                     }
                 }
             }
@@ -73,7 +73,6 @@
         public LocalSessionModule()
             : base()
         {
-
             this.Expiration = TimeSpan.FromMinutes(30);
 
             this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
@@ -176,5 +175,4 @@
             get { return "Local Session Module"; }
         }
     }
-
 }

@@ -11,7 +11,7 @@
     /// <summary>
     /// Extension methods to help your coding!
     /// </summary>
-    static public class Extensions
+    public static class Extensions
     {
         public const string HeaderAcceptEncoding = "Accept-Encoding";
         public const string HeaderContentEncoding = "Content-Encoding";
@@ -23,18 +23,26 @@
         public const string BrowserTimeFormat = "ddd, dd MMM yyyy HH:mm:ss 'GMT'";
 
         /// <summary>
+        /// Default Http Status 404 response output
+        /// </summary>
+        public const string Response404 = "<html><head></head><body><h1>404 - Not Found</h1></body></html>";
+
+        /// <summary>
+        /// Default Http Status 500 response output
+        /// </summary>
+        public const string Response500 =
+            "<html><head></head><body><h1>500 - Internal Server Error</h1><h2>Message</h2><pre>{0}</pre><h2>Stack Trace</h2><pre>\r\n{1}</pre></body></html>";
+
+        /// <summary>
         /// Gets the session object associated to the current context.
         /// Returns null if the LocalSessionWebModule has not been loaded.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="server">The server.</param>
         /// <returns></returns>
-        static public SessionInfo GetSession(this HttpListenerContext context, WebServer server)
+        public static SessionInfo GetSession(this HttpListenerContext context, WebServer server)
         {
-            if (server.SessionModule == null)
-                return null;
-
-            return server.SessionModule.GetSession(context);
+            return server.SessionModule == null ? null : server.SessionModule.GetSession(context);
         }
 
         /// <summary>
@@ -44,12 +52,9 @@
         /// <param name="context">The context.</param>
         /// <param name="server">The server.</param>
         /// <returns></returns>
-        static public SessionInfo GetSession(this WebSocketContext context, WebServer server)
+        public static SessionInfo GetSession(this WebSocketContext context, WebServer server)
         {
-            if (server.SessionModule == null)
-                return null;
-
-            return server.SessionModule.GetSession(context);
+            return server.SessionModule == null ? null : server.SessionModule.GetSession(context);
         }
 
         /// <summary>
@@ -59,12 +64,9 @@
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        static public SessionInfo GetSession(this WebServer server, HttpListenerContext context)
+        public static SessionInfo GetSession(this WebServer server, HttpListenerContext context)
         {
-            if (server.SessionModule == null)
-                return null;
-
-            return server.SessionModule.GetSession(context);
+            return server.SessionModule == null ? null : server.SessionModule.GetSession(context);
         }
 
         /// <summary>
@@ -73,12 +75,9 @@
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        static public SessionInfo GetSession(this WebServer server, WebSocketContext context)
+        public static SessionInfo GetSession(this WebServer server, WebSocketContext context)
         {
-            if (server.SessionModule == null)
-                return null;
-
-            return server.SessionModule.GetSession(context);
+            return server.SessionModule == null ? null : server.SessionModule.GetSession(context);
         }
 
         /// <summary>
@@ -86,7 +85,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        static public string RequestPath(this HttpListenerContext context)
+        public static string RequestPath(this HttpListenerContext context)
         {
             return context.Request.Url.LocalPath.ToLowerInvariant();
         }
@@ -96,7 +95,7 @@
         /// </summary>
         /// <param name="ex">The ex.</param>
         /// <returns></returns>
-        static public string ExceptionMessage(this Exception ex)
+        public static string ExceptionMessage(this Exception ex)
         {
             return ex.ExceptionMessage(string.Empty);
         }
@@ -107,20 +106,20 @@
         /// <param name="ex">The ex.</param>
         /// <param name="priorMessage">The prior message.</param>
         /// <returns></returns>
-        static public string ExceptionMessage(this Exception ex, string priorMessage)
+        public static string ExceptionMessage(this Exception ex, string priorMessage)
         {
             var fullMessage = string.IsNullOrWhiteSpace(priorMessage) ? ex.Message : priorMessage + "\r\n" + ex.Message;
             if (ex.InnerException != null && string.IsNullOrWhiteSpace(ex.InnerException.Message) == false)
                 return ExceptionMessage(ex.InnerException, fullMessage);
-            else
-                return fullMessage;
+
+            return fullMessage;
         }
 
         /// <summary>
         /// Sends headers to disable caching on the client side.
         /// </summary>
         /// <param name="context">The context.</param>
-        static public void NoCache(this HttpListenerContext context)
+        public static void NoCache(this HttpListenerContext context)
         {
             context.Response.AddHeader(HeaderExpires, "Mon, 26 Jul 1997 05:00:00 GMT");
             context.Response.AddHeader(HeaderLastModified, DateTime.UtcNow.ToString(BrowserTimeFormat));
@@ -134,12 +133,9 @@
         /// <param name="context">The context.</param>
         /// <param name="key">The key.</param>
         /// <returns></returns>
-        static public string QueryString(this HttpListenerContext context, string key)
+        public static string QueryString(this HttpListenerContext context, string key)
         {
-            if (context.InQueryString(key))
-                return context.Request.QueryString[key];
-
-            return null;
+            return context.InQueryString(key) ? context.Request.QueryString[key] : null;
         }
 
         /// <summary>
@@ -148,7 +144,7 @@
         /// <param name="context">The context.</param>
         /// <param name="key">The key.</param>
         /// <returns></returns>
-        static public bool InQueryString(this HttpListenerContext context, string key)
+        public static bool InQueryString(this HttpListenerContext context, string key)
         {
             return context.Request.QueryString.AllKeys.Contains(key);
         }
@@ -158,7 +154,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        static public HttpVerbs RequestVerb(this HttpListenerContext context)
+        public static HttpVerbs RequestVerb(this HttpListenerContext context)
         {
             var verb = HttpVerbs.Get;
             Enum.TryParse<HttpVerbs>(context.Request.HttpMethod.ToLowerInvariant().Trim(), true, out verb);
@@ -171,7 +167,7 @@
         /// <param name="context">The context.</param>
         /// <param name="location">The location.</param>
         /// <param name="useAbsoluteUrl">if set to <c>true</c> [use absolute URL].</param>
-        static public void Redirect(this HttpListenerContext context, string location, bool useAbsoluteUrl)
+        public static void Redirect(this HttpListenerContext context, string location, bool useAbsoluteUrl)
         {
             if (useAbsoluteUrl)
             {
@@ -188,7 +184,7 @@
         /// </summary>
         /// <param name="json">The json.</param>
         /// <returns></returns>
-        static public string PrettifyJson(this string json)
+        public static string PrettifyJson(this string json)
         {
             dynamic parsedJson = JsonConvert.DeserializeObject(json);
             return JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
@@ -200,7 +196,7 @@
         /// <param name="context">The context.</param>
         /// <param name="data">The data.</param>
         /// <returns></returns>
-        static public bool JsonResponse(this HttpListenerContext context, object data)
+        public static bool JsonResponse(this HttpListenerContext context, object data)
         {
             var jsonFormatting = Formatting.None;
 #if DEBUG
@@ -216,7 +212,7 @@
         /// <param name="context">The context.</param>
         /// <param name="json">The json.</param>
         /// <returns></returns>
-        static public bool JsonResponse(this HttpListenerContext context, string json)
+        public static bool JsonResponse(this HttpListenerContext context, string json)
         {
             var buffer = System.Text.Encoding.UTF8.GetBytes(json);
 
@@ -232,13 +228,11 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        static public T ParseJson<T>(this HttpListenerContext context)
+        public static T ParseJson<T>(this HttpListenerContext context)
             where T : class
         {
             var body = context.RequestBody();
-            if (body == null) return null;
-
-            return JsonConvert.DeserializeObject<T>(body);
+            return body == null ? null : JsonConvert.DeserializeObject<T>(body);
         }
 
         /// <summary>
@@ -246,14 +240,14 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        static public string RequestBody(this HttpListenerContext context)
+        public static string RequestBody(this HttpListenerContext context)
         {
             if (context.Request.HasEntityBody == false)
                 return null;
 
             using (var body = context.Request.InputStream) // here we have data
             {
-                using (System.IO.StreamReader reader = new System.IO.StreamReader(body, context.Request.ContentEncoding))
+                using (var reader = new StreamReader(body, context.Request.ContentEncoding))
                 {
                     return reader.ReadToEnd();
                 }
@@ -266,10 +260,9 @@
         /// <param name="context">The context.</param>
         /// <param name="headerName">Name of the header.</param>
         /// <returns></returns>
-        static public string RequestHeader(this HttpListenerContext context, string headerName)
+        public static string RequestHeader(this HttpListenerContext context, string headerName)
         {
-            if (context.HasRequestHeader(headerName) == false) return string.Empty;
-            return context.Request.Headers[headerName];
+            return context.HasRequestHeader(headerName) == false ? string.Empty : context.Request.Headers[headerName];
         }
 
         /// <summary>
@@ -278,7 +271,7 @@
         /// <param name="context">The context.</param>
         /// <param name="headerName">Name of the header.</param>
         /// <returns></returns>
-        static public bool HasRequestHeader(this HttpListenerContext context, string headerName)
+        public static bool HasRequestHeader(this HttpListenerContext context, string headerName)
         {
             return context.Request.Headers[headerName] != null;
         }
@@ -288,10 +281,11 @@
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <returns></returns>
-        static public byte[] Compress(this byte[] buffer)
+        public static byte[] Compress(this byte[] buffer)
         {
             byte[] outputBuffer = null;
-            using (MemoryStream targetStream = new MemoryStream())
+
+            using (var targetStream = new MemoryStream())
             {
                 using (var compressor = new GZipStream(targetStream, CompressionMode.Compress, true))
                 {
@@ -303,5 +297,4 @@
             return outputBuffer;
         }
     }
-
 }

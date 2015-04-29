@@ -7,6 +7,7 @@
     using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
+    using Unosquare.Labs.EmbedIO.Log;
 
     /// <summary>
     /// Represents our tiny web server used to handle requests
@@ -31,7 +32,10 @@
         /// <value>
         /// The URL prefix.
         /// </value>
-        public HttpListenerPrefixCollection UrlPrefixes { get { return this.Listener.Prefixes; } }
+        public HttpListenerPrefixCollection UrlPrefixes
+        {
+            get { return this.Listener.Prefixes; }
+        }
 
         /// <summary>
         /// Gets a list of regitered modules
@@ -39,7 +43,10 @@
         /// <value>
         /// The modules.
         /// </value>
-        public ReadOnlyCollection<IWebModule> Modules { get { return m_Modules.AsReadOnly(); } }
+        public ReadOnlyCollection<IWebModule> Modules
+        {
+            get { return m_Modules.AsReadOnly(); }
+        }
 
         /// <summary>
         /// Gets registered the ISessionModule.
@@ -82,6 +89,7 @@
         /// Initializes a new instance of the <see cref="WebServer"/> class.
         /// </summary>
         /// <param name="port">The port.</param>
+        /// <param name="log"></param>
         public WebServer(int port, ILog log)
             : this("http://*:" + port.ToString() + "/", log)
         {
@@ -105,7 +113,7 @@
         /// <param name="urlPrefix">The URL prefix.</param>
         /// <param name="log">The log.</param>
         public WebServer(string urlPrefix, ILog log)
-            : this(new string[] { urlPrefix }, log)
+            : this(new[] {urlPrefix}, log)
         {
             // placeholder
         }
@@ -126,7 +134,8 @@
         /// NOTE: urlPrefix must be specified as something similar to: http://localhost:9696/
         /// Please notice the ending slash. -- It is important
         /// </summary>
-        /// <param name="urlPrefix">The URL prefix.</param>
+        /// <param name="urlPrefixes">The URL prefix.</param>
+        /// <param name="log">The Log component</param>
         /// <exception cref="System.InvalidOperationException">The HTTP Listener is not supported in this OS</exception>
         /// <exception cref="System.ArgumentException">Argument urlPrefix must be specified</exception>
         public WebServer(string[] urlPrefixes, ILog log)
@@ -134,7 +143,7 @@
             if (HttpListener.IsSupported == false)
                 throw new InvalidOperationException("The HTTP Listener is not supported in this OS");
 
-            if (urlPrefixes.Length <= 0)
+            if (urlPrefixes == null || urlPrefixes.Length <= 0)
                 throw new ArgumentException("At least 1 URL prefix in urlPrefixes must be specified");
 
             if (log == null)
@@ -154,7 +163,6 @@
             }
 
             this.Log.Info("Finished Loading Web Server.");
-
         }
 
         /// <summary>
@@ -166,7 +174,7 @@
         public T Module<T>()
             where T : class, IWebModule
         {
-            var module = this.Modules.FirstOrDefault(m => m.GetType() == typeof(T));
+            var module = this.Modules.FirstOrDefault(m => m.GetType() == typeof (T));
             if (module != null) return module as T;
             return null;
         }
@@ -180,8 +188,7 @@
         public IWebModule Module(Type moduleType)
         {
             var module = this.Modules.FirstOrDefault(m => m.GetType() == moduleType);
-            if (module != null) return module;
-            return null;
+            return module;
         }
 
         /// <summary>
@@ -196,12 +203,14 @@
             {
                 module.Server = this;
                 this.m_Modules.Add(module);
+
                 if (module as ISessionWebModule != null)
                     this.SessionModule = module as ISessionWebModule;
             }
             else
             {
-                Log.WarnFormat("Failed to register module '{0}' because a module with the same type already exists.", module.GetType());
+                Log.WarnFormat("Failed to register module '{0}' because a module with the same type already exists.",
+                    module.GetType());
             }
         }
 
@@ -214,7 +223,9 @@
             var existingModule = this.Module(moduleType);
             if (existingModule == null)
             {
-                Log.WarnFormat("Failed to unregister module '{0}' because no module with that type has been previously registered.", moduleType);
+                Log.WarnFormat(
+                    "Failed to unregister module '{0}' because no module with that type has been previously registered.",
+                    moduleType);
             }
             else
             {
@@ -232,7 +243,7 @@
         private void HandleClientRequest(HttpListenerContext context)
         {
             // start with an empty request ID
-            string requestId = "(not set)";
+            var requestId = "(not set)";
 
             try
             {
@@ -283,7 +294,8 @@
                             module.Server = this;
 
                         // Log the module and hanlder to be called and invoke as a callback.
-                        Log.DebugFormat("{0}::{1}.{2}", module.Name, callback.Method.DeclaringType.Name, callback.Method.Name);
+                        Log.DebugFormat("{0}::{1}.{2}", module.Name, callback.Method.DeclaringType.Name,
+                            callback.Method.Name);
 
                         // Execute the callback
                         var handleResult = callback.Invoke(this, context);
@@ -299,22 +311,19 @@
                     catch (Exception ex)
                     {
                         // Handle exceptions by returning a 500 (Internal Server Error) 
-                        if (context.Response.StatusCode != (int)HttpStatusCode.Unauthorized)
+                        if (context.Response.StatusCode != (int) HttpStatusCode.Unauthorized)
                         {
                             // Log the exception message.
                             var errorMessage = ex.ExceptionMessage("Failing module name: " + module.Name);
                             Log.Error(errorMessage, ex);
 
                             // Generate an HTML response
-                            var response = "<html><head></head><body><h1>500 - Internal Server Error</h1><h2>Message</h2><pre>"
-                                           + System.Net.WebUtility.HtmlEncode(errorMessage)
-                                           + "</pre><h2>Stack Trace</h2><pre>\r\n"
-                                           + System.Net.WebUtility.HtmlEncode(ex.StackTrace) +
-                                           "</pre></body></html>";
+                            var response = String.Format(Extensions.Response500, WebUtility.HtmlEncode(errorMessage),
+                                WebUtility.HtmlEncode(ex.StackTrace));
 
                             // Send the response over with the corresponding status code.
                             var responseBytes = System.Text.Encoding.UTF8.GetBytes(response);
-                            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                            context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                             context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
                         }
 
@@ -324,13 +333,12 @@
                     }
                 }
 
-                // Return a 404 (Not Found) response if no mudule/handler handled the response.
+                // Return a 404 (Not Found) response if no module/handler handled the response.
                 if (!handled)
                 {
                     Log.Error("No module generated a response. Sending 404 - Not Found");
-                    var response = "<html><head></head><body><h1>404 - Not Found</h1></body></html>";
-                    var responseBytes = System.Text.Encoding.UTF8.GetBytes(response);
-                    context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                    var responseBytes = System.Text.Encoding.UTF8.GetBytes(Extensions.Response404);
+                    context.Response.StatusCode = (int) HttpStatusCode.NotFound;
                     context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
                 }
 
@@ -367,10 +375,9 @@
                     try
                     {
                         var clientSocket = await Listener.GetContextAsync();
-                        var clientTask = Task.Factory.StartNew((context) =>
-                        {
-                            HandleClientRequest(context as HttpListenerContext);
-                        }, clientSocket);
+                        var clientTask =
+                            Task.Factory.StartNew((context) => HandleClientRequest(context as HttpListenerContext),
+                                clientSocket);
                     }
                     catch (Exception ex)
                     {
@@ -378,7 +385,6 @@
                     }
                 }
             });
-
         }
 
         /// <summary>
@@ -404,7 +410,8 @@
                             // get a reference to the HTTP Listener Context
                             var context = contextState as HttpListenerContext;
                             this.HandleClientRequest(context);
-                        }, this.Listener.GetContext()); // Retrieve and pass the listener context to the threadpool thread.
+                        }, this.Listener.GetContext());
+                            // Retrieve and pass the listener context to the threadpool thread.
                     }
                     catch
                     {
@@ -429,24 +436,21 @@
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                // free managed resources
-                if (this.Listener != null)
-                {
-                    this.Listener.Stop();
-                    this.Listener.Close();
-                    this.Listener = null;
-                    Log.Info("Listener Closed.");
-                }
+            if (!disposing) return;
 
-                if (ListenerTask != null)
-                {
-                    ListenerTask.Dispose();
-                }
+            // free managed resources
+            if (this.Listener != null)
+            {
+                this.Listener.Stop();
+                this.Listener.Close();
+                this.Listener = null;
+                Log.Info("Listener Closed.");
+            }
+
+            if (ListenerTask != null)
+            {
+                ListenerTask.Dispose();
             }
         }
-
     }
-
 }

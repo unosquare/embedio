@@ -7,6 +7,7 @@
     using Unosquare.Labs.EmbedIO;
 #if PATCH_COLLECTIONS
     using Unosquare.Labs.EmbedIO.Collections.Concurrent;
+
 #else
     using System.Collections.Concurrent;
 #endif
@@ -52,7 +53,10 @@
         /// <value>
         /// The MIME types.
         /// </value>
-        public Dictionary<string, string> MimeTypes { get { return m_MimeTypes; } }
+        public Dictionary<string, string> MimeTypes
+        {
+            get { return m_MimeTypes; }
+        }
 
         /// <summary>
         /// Gets the file system path from which files are retrieved.
@@ -124,11 +128,11 @@
             // When debugging, disable RamCache
             this.UseRamCache = false;
 #else
-                // Otherwise, enable it by default
+    // Otherwise, enable it by default
                 this.UseRamCache = true;
 #endif
             this.RamCache = new ConcurrentDictionary<string, RamCacheEntry>(StringComparer.InvariantCultureIgnoreCase);
-            this.MaxRamCacheFileSize = 250 * 1024;
+            this.MaxRamCacheFileSize = 250*1024;
             this.DefaultDocument = "index.html";
 
             this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (server, context) =>
@@ -139,13 +143,14 @@
                 if (urlPath.Last() == Path.DirectorySeparatorChar)
                     urlPath = urlPath + DefaultDocument;
 
-                urlPath = urlPath.TrimStart(new char[] { Path.DirectorySeparatorChar });
+                urlPath = urlPath.TrimStart(new char[] {Path.DirectorySeparatorChar});
 
                 var localPath = Path.Combine(FileSystemPath, urlPath);
                 byte[] buffer = null;
                 var fileDate = DateTime.Today;
 
-                if (string.IsNullOrWhiteSpace(DefaultExtension) == false && DefaultExtension.StartsWith(".") && File.Exists(localPath) == false)
+                if (string.IsNullOrWhiteSpace(DefaultExtension) == false && DefaultExtension.StartsWith(".") &&
+                    File.Exists(localPath) == false)
                 {
                     var newPath = localPath + DefaultExtension;
                     if (File.Exists(newPath))
@@ -167,7 +172,7 @@
                         buffer = File.ReadAllBytes(localPath);
                         if (UseRamCache && buffer.Length <= this.MaxRamCacheFileSize)
                         {
-                            RamCache[localPath] = new RamCacheEntry() { LastModified = fileDate, Buffer = buffer };
+                            RamCache[localPath] = new RamCacheEntry() {LastModified = fileDate, Buffer = buffer};
                         }
                     }
 
@@ -216,7 +221,9 @@
         }
 
         // taken from: http://stackoverflow.com/questions/1029740/get-mime-type-from-filename-extension
-        private Dictionary<string, string> m_MimeTypes = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) {
+        private Dictionary<string, string> m_MimeTypes =
+            new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
+            {
                 #region Big freaking list of mime types
                 // combination of values from Windows 7 Registry and 
                 // from C:\Windows\System32\inetsrv\config\applicationHost.config
@@ -780,8 +787,8 @@
                 {".xwd", "image/x-xwindowdump"},
                 {".z", "application/x-compress"},
                 {".zip", "application/x-zip-compressed"},
+
                 #endregion
             };
     }
-
 }

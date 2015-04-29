@@ -18,15 +18,19 @@
         /// <summary>
         /// Holds the collection of paths and WebSockets Servers registered
         /// </summary>
-        private readonly Dictionary<string, WebSocketsServer> ServerMap = new Dictionary<string, WebSocketsServer>(StringComparer.InvariantCultureIgnoreCase);
+        private readonly Dictionary<string, WebSocketsServer> ServerMap =
+            new Dictionary<string, WebSocketsServer>(StringComparer.InvariantCultureIgnoreCase);
 
+        /// <summary>
+        /// Initialize WebSocket module
+        /// </summary>
         public WebSocketsModule()
             : base()
         {
             this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
             {
 
-                // check if it is a WebSocket request
+                // check if it is a WebSocket request (this only works with Win8 and Windows 2012)
                 if (context.Request.IsWebSocketRequest == false)
                     return false;
 
@@ -80,13 +84,13 @@
         /// <param name="server">The server.</param>
         /// <exception cref="ArgumentException">Argument 'server' cannot be null;server</exception>
         public void RegisterWebSocketsServer<T>(string path, T server)
-            where T: WebSocketsServer
+            where T : WebSocketsServer
         {
             if (string.IsNullOrWhiteSpace(path))
                 throw new ArgumentException("Argument 'path' cannot be null", "path");
-            if (server == null) 
+            if (server == null)
                 throw new ArgumentException("Argument 'server' cannot be null", "server");
-            
+
             this.ServerMap[path] = server;
         }
     }
@@ -99,11 +103,11 @@
     /// </summary>
     public abstract class WebSocketsServer : IDisposable
     {
-        private bool isDisposing = false;
-        private bool enableDisconnectedSocketColletion = false;
-        private int maximumMessageSize = 0;
+        private bool isDisposing;
+        private bool enableDisconnectedSocketColletion;
+        private int maximumMessageSize;
         private readonly object SyncRoot = new object();
-        private readonly List<WebSocketContext> m_WebSockets = new List<WebSocketContext>(10);
+        private readonly List<WebSocketContext> _mWebSockets = new List<WebSocketContext>(10);
         public WebServer WebServer { get; protected set; }
 
         /// <summary>
@@ -118,7 +122,7 @@
             {
                 lock (SyncRoot)
                 {
-                    return new ReadOnlyCollection<WebSocketContext>(m_WebSockets);
+                    return new ReadOnlyCollection<WebSocketContext>(_mWebSockets);
                 }
             }
         }
@@ -159,7 +163,7 @@
                         CollectDisconnected();
 
                     // TODO: make this sleep configurable.
-                    System.Threading.Thread.Sleep(30 * 1000);
+                    Thread.Sleep(30*1000);
                 }
             })
             {
@@ -183,17 +187,21 @@
             // first, accept the websocket
             this.WebServer = server;
             server.Log.DebugFormat("{0} - Accepting WebSocket . . .", this.ServerName);
-            var webSocketContext = context.AcceptWebSocketAsync(subProtocol: null, keepAliveInterval: TimeSpan.FromSeconds(30)).GetAwaiter().GetResult();
+            var webSocketContext =
+                context.AcceptWebSocketAsync(subProtocol: null, keepAliveInterval: TimeSpan.FromSeconds(30))
+                    .GetAwaiter()
+                    .GetResult();
 
             // remove the disconnected clients
             this.CollectDisconnected();
             lock (SyncRoot)
             {
                 // add the newly-connected client
-                m_WebSockets.Add(webSocketContext);
+                _mWebSockets.Add(webSocketContext);
             }
 
-            server.Log.DebugFormat("{0} - WebSocket Accepted - There are " + WebSockets.Count + " sockets connected.", this.ServerName);
+            server.Log.DebugFormat("{0} - WebSocket Accepted - There are " + WebSockets.Count + " sockets connected.",
+                this.ServerName);
             // call the abstract member
             this.OnClientConnected(webSocketContext);
 
@@ -202,17 +210,20 @@
                 // define a receive buffer
                 var receiveBuffer = new byte[2048];
                 // define a dynamic buffer that holds multi-part receptions
-                var receivedMessage = new List<byte>(receiveBuffer.Length * 2);
+                var receivedMessage = new List<byte>(receiveBuffer.Length*2);
 
                 // poll the WebSockets connections for reception
                 while (webSocketContext.WebSocket.State == WebSocketState.Open)
                 {
                     // retrieve the result (blocking)
-                    var receiveResult = webSocketContext.WebSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), CancellationToken.None).GetAwaiter().GetResult();
+                    var receiveResult =
+                        webSocketContext.WebSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer),
+                            CancellationToken.None).GetAwaiter().GetResult();
                     if (receiveResult.MessageType == WebSocketMessageType.Close)
                     {
                         // close the connection if requested by the client
-                        webSocketContext.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None).GetAwaiter().GetResult();
+                        webSocketContext.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty,
+                            CancellationToken.None).GetAwaiter().GetResult();
                         return;
                     }
 
@@ -265,7 +276,7 @@
 
             lock (SyncRoot)
             {
-                m_WebSockets.Remove(webSocketContext);
+                _mWebSockets.Remove(webSocketContext);
             }
 
             this.OnClientDisconnected(webSocketContext);
@@ -280,9 +291,9 @@
             var collectedCount = 0;
             lock (SyncRoot)
             {
-                for (var i = this.m_WebSockets.Count - 1; i >= 0; i--)
+                for (var i = this._mWebSockets.Count - 1; i >= 0; i--)
                 {
-                    var currentSocket = this.m_WebSockets[i];
+                    var currentSocket = this._mWebSockets[i];
                     if (currentSocket.WebSocket != null && currentSocket.WebSocket.State != WebSocketState.Open)
                     {
                         RemoveWebSocket(currentSocket);
@@ -293,7 +304,8 @@
             }
 
             if (this.WebServer != null)
-                this.WebServer.Log.DebugFormat("{0} - Collected {1} sockets. WebSocket Count: {2}", this.ServerName, collectedCount, this.WebSockets.Count);
+                this.WebServer.Log.DebugFormat("{0} - Collected {1} sockets. WebSocket Count: {2}", this.ServerName,
+                    collectedCount, this.WebSockets.Count);
 
             return collectedCount;
         }
@@ -310,13 +322,14 @@
             {
                 if (payload == null) payload = string.Empty;
                 var buffer = System.Text.Encoding.UTF8.GetBytes(payload);
-                await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
+                await
+                    webSocket.WebSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true,
+                        CancellationToken.None);
             }
             catch (Exception ex)
             {
                 WebServer.Log.Error(ex);
             }
-
         }
 
         /// <summary>
@@ -329,7 +342,9 @@
             try
             {
                 if (payload == null) payload = new byte[0];
-                await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(payload), WebSocketMessageType.Binary, true, CancellationToken.None);
+                await
+                    webSocket.WebSocket.SendAsync(new ArraySegment<byte>(payload), WebSocketMessageType.Binary, true,
+                        CancellationToken.None);
             }
             catch (Exception ex)
             {
@@ -369,7 +384,9 @@
 
             try
             {
-                await webSocket.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+                await
+                    webSocket.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty,
+                        CancellationToken.None);
             }
             finally
             {
@@ -384,7 +401,8 @@
         /// <param name="context">The context.</param>
         /// <param name="rxBuffer">The rx buffer.</param>
         /// <param name="rxResult">The rx result.</param>
-        protected abstract void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult);
+        protected abstract void OnMessageReceived(WebSocketContext context, byte[] rxBuffer,
+            WebSocketReceiveResult rxResult);
 
         /// <summary>
         /// Called when this WebSockets Server receives a message frame regardless if the frame represents the EndOfMessage.
@@ -392,7 +410,8 @@
         /// <param name="context">The context.</param>
         /// <param name="rxBuffer">The rx buffer.</param>
         /// <param name="rxResult">The rx result.</param>
-        protected abstract void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult);
+        protected abstract void OnFrameReceived(WebSocketContext context, byte[] rxBuffer,
+            WebSocketReceiveResult rxResult);
 
         /// <summary>
         /// Called when this WebSockets Server accepts a new WebSockets client.
@@ -430,7 +449,7 @@
             // if called with false, return.
             if (disposeAll == false) return;
 
-            foreach (var webSocket in this.m_WebSockets)
+            foreach (var webSocket in this._mWebSockets)
             {
                 Close(webSocket);
             }

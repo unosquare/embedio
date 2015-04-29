@@ -14,8 +14,11 @@
     public class WebApiModule : WebModuleBase
     {
         private readonly List<Type> ControllerTypes = new List<Type>();
+
         private readonly Dictionary<string, Dictionary<HttpVerbs, Tuple<Type, MethodInfo>>> DelegateMap
-            = new Dictionary<string, Dictionary<HttpVerbs, Tuple<Type, MethodInfo>>>(StringComparer.InvariantCultureIgnoreCase);
+            =
+            new Dictionary<string, Dictionary<HttpVerbs, Tuple<Type, MethodInfo>>>(
+                StringComparer.InvariantCultureIgnoreCase);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebApiModule"/> class.
@@ -23,7 +26,6 @@
         public WebApiModule()
             : base()
         {
-
             this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
             {
 
@@ -57,11 +59,11 @@
                 var methodPair = DelegateMap[path][verb];
 
                 var controller = Activator.CreateInstance(methodPair.Item1);
-                var method = Delegate.CreateDelegate(typeof(ResponseHandler), controller, methodPair.Item2);
+                var method = Delegate.CreateDelegate(typeof (ResponseHandler), controller, methodPair.Item2);
 
                 server.Log.DebugFormat("Handler: {0}.{1}", method.Method.DeclaringType.FullName, method.Method.Name);
                 context.NoCache();
-                var returnValue = (bool)method.DynamicInvoke(server, context);
+                var returnValue = (bool) method.DynamicInvoke(server, context);
                 return returnValue;
             });
         }
@@ -85,20 +87,23 @@
         public void RegisterController<T>()
             where T : WebApiController, new()
         {
-            if (ControllerTypes.Contains(typeof(T)))
+            if (ControllerTypes.Contains(typeof (T)))
                 throw new ArgumentException("Controller types must be unique within the module");
 
-            var protoDelegate = new ResponseHandler((server, context) => { return true; });
+            var protoDelegate = new ResponseHandler((server, context) => true);
 
-            var methods = typeof(T).GetMethods(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public)
+            var methods = typeof (T).GetMethods(System.Reflection.BindingFlags.Instance |
+                                                System.Reflection.BindingFlags.Public)
                 .Where(m => m.ReturnType == protoDelegate.Method.ReturnType
-                    && m.GetParameters().Select(pi => pi.ParameterType)
-                    .SequenceEqual(protoDelegate.Method.GetParameters()
-                    .Select(pi => pi.ParameterType)));
+                            && m.GetParameters().Select(pi => pi.ParameterType)
+                                .SequenceEqual(protoDelegate.Method.GetParameters()
+                                    .Select(pi => pi.ParameterType)));
 
             foreach (var method in methods)
             {
-                var attribute = method.GetCustomAttributes(typeof(WebApiHandlerAttribute), true).FirstOrDefault() as WebApiHandlerAttribute;
+                var attribute =
+                    method.GetCustomAttributes(typeof (WebApiHandlerAttribute), true).FirstOrDefault() as
+                        WebApiHandlerAttribute;
                 if (attribute == null) continue;
 
                 foreach (var path in attribute.Paths)
@@ -109,7 +114,7 @@
                     else
                         DelegateMap.Add(path, delegatePath); // add
 
-                    var delegatePair = new Tuple<Type, MethodInfo>(typeof(T), method);
+                    var delegatePair = new Tuple<Type, MethodInfo>(typeof (T), method);
                     if (DelegateMap[path].ContainsKey(attribute.Verb))
                         DelegateMap[path][attribute.Verb] = delegatePair; // update
                     else
@@ -117,7 +122,7 @@
                 }
             }
 
-            ControllerTypes.Add(typeof(T));
+            ControllerTypes.Add(typeof (T));
 
         }
 
@@ -157,7 +162,7 @@
                 throw new ArgumentException("The argument 'path' must be specified.");
 
             this.Verb = verb;
-            this.Paths = new string[] { path };
+            this.Paths = new string[] {path};
         }
 
         /// <summary>

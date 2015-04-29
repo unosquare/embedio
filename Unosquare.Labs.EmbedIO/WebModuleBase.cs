@@ -1,7 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using System.Collections.Generic;
-    using System.Net;
 
     /// <summary>
     /// Base class to define custom web modules
@@ -53,7 +52,5 @@
         {
             this.Handlers[path] = new Dictionary<HttpVerbs, ResponseHandler>() { { verb, handler } };
         }
-
     }
-
 }

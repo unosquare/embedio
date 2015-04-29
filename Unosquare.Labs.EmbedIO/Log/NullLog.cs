@@ -1,4 +1,4 @@
-﻿namespace Unosquare.Labs.EmbedIO
+﻿namespace Unosquare.Labs.EmbedIO.Log
 {
     using System;
 
@@ -7,11 +7,6 @@
     /// </summary>
     public class NullLog : ILog
     {
-        public void Info(string message)
-        {
-            // placeholder
-        }
-
         public void Info(object message)
         {
             // placeholder

@@ -273,7 +273,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
     'use strict';
 
     angular.module('tubular.directives').directive('tbGrid', [
-            'tubularHttp', '$filter', function(tubularHttp, $filter) {
+            function() {
                 return {
                     template: '<div class="tubular-grid" ng-transclude></div>',
                     restrict: 'E',
@@ -287,12 +287,15 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                         onBeforeGetData: '=?',
                         requestMethod: '@',
                         gridDataService: '=?service',
+                        gridDataServiceName: '@?serviceName',
                         requireAuthentication: '@?',
-                        name: '@?gridName'
+                        name: '@?gridName',
+                        editorMode: '@?',
                     },
                     controller: [
-                        '$scope', 'localStorageService', 'tubularPopupService', 'tubularModel',
-                        function($scope, localStorageService, tubularPopupService, TubularModel) {
+                        '$scope', 'localStorageService', 'tubularPopupService', 'tubularModel', 'tubularHttp', 'tubularOData','$routeParams',
+                function ($scope, localStorageService, tubularPopupService, TubularModel, tubularHttp, tubularOData, $routeParams) {
+                           
                             $scope.tubularDirective = 'tubular-grid';
                             $scope.columns = [];
                             $scope.rows = [];
@@ -307,26 +310,33 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                             $scope.serverSaveMethod = $scope.serverSaveMethod || 'POST';
                             $scope.requestTimeout = 10000;
                             $scope.currentRequest = null;
+                            $scope.autoSearch = $routeParams.param || '';
                             $scope.search = {
-                                Argument: '',
-                                Operator: 'None'
+                                Text: $scope.autoSearch,
+                                Operator: $scope.autoSearch == '' ? 'None' : 'Auto'
                             };
                             $scope.isEmpty = false;
                             $scope.tempRow = new TubularModel($scope, {});
                             $scope.gridDataService = $scope.gridDataService || tubularHttp;
                             $scope.requireAuthentication = $scope.requireAuthentication || true;
                             $scope.name = $scope.name || 'tbgrid';
+                            $scope.editorMode = $scope.editorMode || 'none';
                             $scope.canSaveState = false;
                             $scope.groupBy = '';
 
-                            $scope.$watch('columns', function (val) {
+                            // Helper to use OData without controller
+                            if ($scope.gridDataServiceName === 'odata') {
+                                $scope.gridDataService = tubularOData;
+                            }
+
+                            $scope.$watch('columns', function() {
                                 if ($scope.hasColumnsDefinitions === false || $scope.canSaveState === false)
                                     return;
 
                                 localStorageService.set($scope.name + "_columns", $scope.columns);
                             }, true);
 
-                            $scope.addColumn = function (item) {
+                            $scope.addColumn = function(item) {
                                 if (item.Name === null) return;
 
                                 if ($scope.hasColumnsDefinitions !== false)
@@ -335,32 +345,16 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                                 $scope.columns.push(item);
                             };
 
-                            $scope.createRow = function() {
-                                var request = {
-                                    serverUrl: $scope.serverSaveUrl,
-                                    requestMethod: $scope.serverSaveMethod,
-                                    timeout: $scope.requestTimeout,
-                                    requireAuthentication: $scope.requireAuthentication,
-                                    data: $scope.tempRow
-                                };
-
-                                $scope.currentRequest = $scope.gridDataService.retrieveDataAsync(request);
-
-                                $scope.currentRequest.promise.then(
-                                    function(data) {
-                                        $scope.$emit('tbGrid_OnSuccessfulUpdate', data);
-                                        $scope.tempRow.$isEditing = false;
-                                    }, function(error) {
-                                        $scope.$emit('tbGrid_OnConnectionError', error);
-                                    }).then(function() {
-                                        $scope.currentRequest = null;
-                                        $scope.retrieveData();
-                                    });
-                            };
-
-                            $scope.newRow = function() {
-                                $scope.tempRow = new TubularModel($scope, {});
+                            $scope.newRow = function(template, popup) {
+                                $scope.tempRow = new TubularModel($scope, {}, $scope.gridDataService);
+                                $scope.tempRow.$isNew = true;
                                 $scope.tempRow.$isEditing = true;
+
+                                if (angular.isDefined(template)) {
+                                    if (angular.isDefined(popup) && popup) {
+                                        tubularPopupService.openDialog(template, $scope.tempRow);
+                                    }
+                                }
                             };
 
                             $scope.deleteRow = function(row) {
@@ -380,39 +374,12 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                                     }, function(error) {
                                         $scope.$emit('tbGrid_OnConnectionError', error);
                                     }).then(function() {
-                                        $scope.currentRequest = null;
-                                        $scope.retrieveData();
-                                    });
+                                    $scope.currentRequest = null;
+                                    $scope.retrieveData();
+                                });
                             };
 
-                            $scope.updateRow = function(row, externalSave) {
-                                row.$isLoading = true;
-
-                                var request = {
-                                    serverUrl: $scope.serverSaveUrl,
-                                    requestMethod: 'PUT',
-                                    timeout: $scope.requestTimeout,
-                                    requireAuthentication: $scope.requireAuthentication,
-                                };
-
-                                var requestObj = $scope.gridDataService.saveDataAsync(row, request);
-
-                                if (externalSave == false)
-                                    $scope.currentRequest = requestObj;
-
-                                requestObj.promise.then(
-                                        function(data) {
-                                            $scope.$emit('tbGrid_OnSuccessfulUpdate', data);
-                                        }, function(error) {
-                                            $scope.$emit('tbGrid_OnConnectionError', error);
-                                        })
-                                    .then(function() {
-                                        row.$isLoading = false;
-                                        $scope.currentRequest = null;
-                                    });
-                            };
-
-                            $scope.verifyColumns = function () {
+                            $scope.verifyColumns = function() {
                                 var columns = localStorageService.get($scope.name + "_columns");
                                 if (columns === null || columns === "") {
                                     // Nothing in settings, saving initial state
@@ -422,7 +389,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
 
                                 for (var index in columns) {
                                     var columnName = columns[index].Name;
-                                    var filtered = $scope.columns.filter(function (el) { return el.Name == columnName; });
+                                    var filtered = $scope.columns.filter(function(el) { return el.Name == columnName; });
 
                                     if (filtered.length == 0) continue;
 
@@ -433,7 +400,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                                 }
                             };
 
-                            $scope.retrieveData = function () {
+                            $scope.retrieveData = function() {
                                 $scope.canSaveState = true;
                                 $scope.verifyColumns();
 
@@ -483,9 +450,9 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                                         $scope.dataSource = data;
 
                                         $scope.rows = data.Payload.map(function(el) {
-                                            var model = new TubularModel($scope, el);
+                                            var model = new TubularModel($scope, el, $scope.gridDataService);
 
-                                            model.editPopup = function(template) {
+                                            model.editPopup = function (template) {
                                                 tubularPopupService.openDialog(template, model);
                                             };
 
@@ -501,8 +468,8 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                                         $scope.requestedPage = $scope.currentPage;
                                         $scope.$emit('tbGrid_OnConnectionError', error);
                                     }).then(function() {
-                                        $scope.currentRequest = null;
-                                    });
+                                    $scope.currentRequest = null;
+                                });
                             };
 
                             $scope.$watch('hasColumnsDefinitions', function(newVal) {
@@ -510,7 +477,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
 
                                 var isGrouping = false;
                                 // Check columns
-                                angular.forEach($scope.columns, function (column) {
+                                angular.forEach($scope.columns, function(column) {
                                     if (column.IsGrouping) {
                                         if (isGrouping)
                                             throw 'Only one column is allowed to grouping';
@@ -523,7 +490,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                                     }
                                 });
 
-                                angular.forEach($scope.columns, function (column) {
+                                angular.forEach($scope.columns, function(column) {
                                     if ($scope.groupBy == column.Name) return;
 
                                     if (column.Sortable && column.SortOrder > 0)
@@ -652,7 +619,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                                         Skip: 0,
                                         Take: -1,
                                         Search: {
-                                            Argument: '',
+                                            Text: '',
                                             Operator: 'None'
                                         }
                                     }
@@ -662,8 +629,8 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                                     }, function(error) {
                                         $scope.$emit('tbGrid_OnConnectionError', error);
                                     }).then(function() {
-                                        $scope.currentRequest = null;
-                                    });
+                                    $scope.currentRequest = null;
+                                });
                             };
 
                             $scope.$emit('tbGrid_OnGreetParentController', $scope);
@@ -671,7 +638,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     ]
                 };
             }
-    ])
+        ])
         .directive('tbGridPager', [
             '$timeout', function($timeout) {
                 return {
@@ -836,10 +803,10 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                                     $(icon).removeClass(tubularConst.downCssClass);
 
                                     var cssClass = "";
-                                    if (scope.$parent.column.SortDirection == 'Ascending')
+                                    if (scope.$parent.column.SortDirection === 'Ascending')
                                         cssClass = tubularConst.upCssClass;
 
-                                    if (scope.$parent.column.SortDirection == 'Descending')
+                                    if (scope.$parent.column.SortDirection === 'Descending')
                                         cssClass = tubularConst.downCssClass;
 
                                     $(icon).addClass(cssClass);
@@ -880,7 +847,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     transclude: true,
                     scope: false,
                     controller: [
-                        '$scope', function ($scope) {
+                        '$scope', function($scope) {
                             $scope.$component = $scope.$parent.$component || $scope.$parent.$parent.$component;
                             $scope.tubularDirective = 'tubular-row-set';
                         }
@@ -905,7 +872,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     },
                     controller: [
                         '$scope', function($scope) {
-                            $scope.selectableBool = $scope.selectable != "false";
+                            $scope.selectableBool = $scope.selectable !== "false";
                             $scope.$component = $scope.$parent.$parent.$parent.$component;
 
                             if ($scope.selectableBool && angular.isUndefined($scope.rowModel) === false) {
@@ -934,14 +901,14 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                         columnName: '@?'
                     },
                     controller: [
-                        '$scope', function ($scope) {
+                        '$scope', function($scope) {
                             $scope.column = { Visible: true };
                             $scope.columnName = $scope.columnName || null;
                             $scope.$component = $scope.$parent.$parent.$component;
 
                             if ($scope.columnName != null) {
                                 var columnModel = $scope.$component.columns
-                                    .filter(function (el) { return el.Name == $scope.columnName; });
+                                    .filter(function(el) { return el.Name === $scope.columnName; });
 
                                 if (columnModel.length > 0) {
                                     $scope.column = columnModel[0];
@@ -1022,7 +989,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                 };
             }
         ]).directive('tbRowGroupHeader', [
-            function () {
+            function() {
 
                 return {
                     require: '^tbRowTemplate',
@@ -1056,7 +1023,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                         '<button class="btn btn-default"><i class="fa fa-times-circle"></i></button>' +
                         '</span>' +
                         '<div>' +
-                    '<div>',
+                        '<div>',
                 restrict: 'E',
                 replace: true,
                 transclude: false,
@@ -1070,8 +1037,9 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                         $scope.tubularDirective = 'tubular-grid-text-search';
                         $scope.lastSearch = "";
 
-                        $scope.$watch("$component.search.Text", function(val) {
+                        $scope.$watch("$component.search.Text", function(val, prev) {
                             if (angular.isUndefined(val)) return;
+                            if (val === prev) return;
 
                             if ($scope.lastSearch !== "" && val === "") {
                                 $scope.$component.search.Operator = 'None';
@@ -1108,7 +1076,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     icon: '@'
                 },
                 controller: [
-                    '$scope', '$element', function ($scope, $element) {
+                    '$scope', '$element', function($scope, $element) {
                         $scope.showIcon = angular.isDefined($scope.icon);
                         $scope.showCaption = !($scope.showIcon && angular.isUndefined($scope.caption));
                         $scope.confirmDelete = function() {
@@ -1169,10 +1137,23 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
 
                         $scope.save = function() {
                             if ($scope.isNew) {
-                                $scope.component.createRow();
-                            } else {
-                                $scope.model.edit();
+                                $scope.model.$isNew = true;
                             }
+
+                            $scope.currentRequest = $scope.model.save();
+
+                            if ($scope.currentRequest === false) {
+                                $scope.$emit('tbGrid_OnSavingNoChanges', $scope.model);
+                                return;
+                            }
+
+                            $scope.currentRequest.then(
+                                function(data) {
+                                    $scope.model.$isEditing = false;
+                                    $scope.$emit('tbGrid_OnSuccessfulSave', data);
+                                }, function(error) {
+                                    $scope.$emit('tbGrid_OnConnectionError', error);
+                                });
                         };
 
                         $scope.cancel = function() {
@@ -1187,7 +1168,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
 
             return {
                 require: '^tbGrid',
-                template: '<button ng-click="model.edit()" class="btn btn-default {{ css || \'\' }}" ' +
+                template: '<button ng-click="edit()" class="btn btn-default {{ css || \'\' }}" ' +
                     'ng-hide="model.$isEditing">{{ caption || \'Edit\' }}</button>',
                 restrict: 'E',
                 replace: true,
@@ -1196,11 +1177,23 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     model: '=',
                     caption: '@',
                     css: '@'
-                }
+                },
+                controller: [
+                    '$scope', function($scope) {
+                        $scope.component = $scope.$parent.$parent.$component;
+                        $scope.edit = function() {
+                            if ($scope.component.editorMode == 'popup') {
+                                $scope.model.editPopup();
+                            } else {
+                                $scope.model.edit();
+                            }
+                        };
+                    }
+                ]
             };
         }
     ]).directive('tbPageSizeSelector', [
-        function () {
+        function() {
 
             return {
                 require: '^tbGrid',
@@ -1270,8 +1263,8 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
             return {
                 require: '^tbGrid',
                 template: '<button class="btn btn-default" ng-click="printGrid()">' +
-                        '<span class="fa fa-print"></span>&nbsp;Print' +
-                        '</button>',
+                    '<span class="fa fa-print"></span>&nbsp;Print' +
+                    '</button>',
                 restrict: 'E',
                 replace: true,
                 transclude: true,
@@ -1287,12 +1280,15 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                             $scope.$component.getFullDataSource(function(data) {
                                 var tableHtml = "<table class='table table-bordered table-striped'><thead><tr>"
                                     + $scope.$component.columns.map(function(el) {
-                                         return "<th>" + (el.Label || el.Name) + "</th>";
+                                        return "<th>" + (el.Label || el.Name) + "</th>";
                                     }).join(" ")
                                     + "</tr></thead>"
                                     + "<tbody>"
                                     + data.map(function(row) {
-                                         return "<tr>" + row.map(function(cell) { return "<td>" + cell + "</td>"; }).join(" ") + "</tr>";
+                                        if (typeof (row) === 'object')
+                                            row = $.map(row, function(el) { return el; });
+
+                                        return "<tr>" + row.map(function(cell) { return "<td>" + cell + "</td>"; }).join(" ") + "</tr>";
                                     }).join(" ")
                                     + "</tbody>"
                                     + "</table>";
@@ -1331,6 +1327,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     '<input type="{{editorType}}" placeholder="{{placeholder}}" ng-show="isEditing" ng-model="value" class="form-control" ' +
                     ' ng-required="required" ng-readonly="readOnly" />' +
                     '<span class="help-block error-block" ng-show="isEditing" ng-repeat="error in state.$errors">{{error}}</span>' +
+                    '<span class="help-block" ng-show="isEditing && help">{{help}}</span>' +
                     '</div>',
                 restrict: 'E',
                 replace: true,
@@ -1374,6 +1371,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     'ng-required="required" ng-readonly="readOnly" />' +
                     '</div>' +
                     '<span class="help-block error-block" ng-show="isEditing" ng-repeat="error in state.$errors">{{error}}</span>' +
+                    '<span class="help-block" ng-show="isEditing && help">{{help}}</span>' +
                     '</div>',
                 restrict: 'E',
                 replace: true,
@@ -1412,6 +1410,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     '<input type="datetime-local" ng-show="isEditing" ng-model="value" class="form-control" ' +
                     'ng-required="required" ng-readonly="readOnly" />' +
                     '<span class="help-block error-block" ng-show="isEditing" ng-repeat="error in state.$errors">{{error}}</span>' +
+                    '<span class="help-block" ng-show="isEditing && help">{{help}}</span>' +
                     '</div>',
                 restrict: 'E',
                 replace: true,
@@ -1419,7 +1418,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                 scope: tubularEditorService.defaultScope,
                 controller: [
                     '$scope', function($scope) {
-                        $scope.DataType = "numeric";
+                        $scope.DataType = "date";
 
                         $scope.validate = function() {
                             if (angular.isUndefined($scope.min) == false) {
@@ -1468,6 +1467,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     '<input type="date" ng-show="isEditing" ng-model="value" class="form-control" ' +
                     'ng-required="required" ng-readonly="readOnly" />' +
                     '<span class="help-block error-block" ng-show="isEditing" ng-repeat="error in state.$errors">{{error}}</span>' +
+                    '<span class="help-block" ng-show="isEditing && help">{{help}}</span>' +
                     '</div>',
                 restrict: 'E',
                 replace: true,
@@ -1532,11 +1532,12 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     '<select ng-options="d for d in options" ng-show="isEditing" ng-model="value" class="form-control" ' +
                     'ng-required="required" />' +
                     '<span class="help-block error-block" ng-show="isEditing" ng-repeat="error in state.$errors">{{error}}</span>' +
+                    '<span class="help-block" ng-show="isEditing && help">{{help}}</span>' +
                     '</div>',
                 restrict: 'E',
                 replace: true,
                 transclude: true,
-                scope: angular.extend({ options: '=?', optionsUrl: '@' }, tubularEditorService.defaultScope),
+                scope: angular.extend({ options: '=?', optionsUrl: '@', optionsMethod: '@?' }, tubularEditorService.defaultScope),
                 controller: [
                     '$scope', function($scope) {
                         tubularEditorService.setupScope($scope);
@@ -1548,7 +1549,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
 
                             var currentRequest = tubularHttp.retrieveDataAsync({
                                 serverUrl: $scope.optionsUrl,
-                                requestMethod: 'GET' // TODO: RequestMethod
+                                requestMethod: $scope.optionsMethod || 'GET'
                             });
 
                             var value = $scope.value;
@@ -1587,11 +1588,12 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     '<input ng-show="isEditing" ng-model="value" class="form-control" typeahead="o for o in getValues($viewValue)" ' +
                     'ng-required="required" />' +
                     '<span class="help-block error-block" ng-show="isEditing" ng-repeat="error in state.$errors">{{error}}</span>' +
+                    '<span class="help-block" ng-show="isEditing && help">{{help}}</span>' +
                     '</div>',
                 restrict: 'E',
                 replace: true,
                 transclude: true,
-                scope: angular.extend({ options: '=?', optionsUrl: '@' }, tubularEditorService.defaultScope),
+                scope: angular.extend({ options: '=?', optionsUrl: '@', optionsMethod: '@?' }, tubularEditorService.defaultScope),
                 controller: [
                     '$scope', function($scope) {
                         tubularEditorService.setupScope($scope);
@@ -1601,7 +1603,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                             if (angular.isDefined($scope.optionsUrl)) {
                                 return tubularHttp.retrieveDataAsync({
                                     serverUrl: $scope.optionsUrl + '?search=' + val,
-                                    requestMethod: 'GET' // TODO: RequestMethod
+                                    requestMethod: $scope.optionsMethod || 'GET'
                                 }).promise;
                             }
 
@@ -1666,6 +1668,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     '<textarea ng-show="isEditing" placeholder="{{placeholder}}" ng-model="value" class="form-control" ' +
                     ' ng-required="required" ng-readonly="readOnly"></textarea>' +
                     '<span class="help-block error-block" ng-show="isEditing" ng-repeat="error in state.$errors">{{error}}</span>' +
+                    '<span class="help-block" ng-show="isEditing && help">{{help}}</span>' +
                     '</div>',
                 restrict: 'E',
                 replace: true,
@@ -1877,6 +1880,8 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                             },
                             post: function(scope, lElement, lAttrs, lController, lTransclude) {
                                 tubularGridFilterService.createFilterModel(scope, lAttrs);
+
+                                scope.filter.Operator = 'Multiple';
                             }
                         };
                     }
@@ -1889,25 +1894,42 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
     'use strict';
 
     angular.module('tubular.directives').directive('tbForm',
-    ['tubularHttp', function(tubularHttp) {
+    [
+        function() {
             return {
-                template: '<form ng-transclude></form>',
+                template: '<form ng-transclude class="{{layout}}"></form>',
                 restrict: 'E',
                 replace: true,
                 transclude: true,
                 scope: {
-                    rowModel: '=?',
+                    model: '=?',
                     serverUrl: '@',
                     serverSaveUrl: '@',
-                    isNew: '@'
+                    serverSaveMethod: '@',
+                    isNew: '@',
+                    modelKey: '@?',
+                    gridDataService: '=?service',
+                    gridDataServiceName: '@?serviceName',
+                    layout: '@?'
                 },
                 controller: [
-                    '$scope', '$routeParams', '$location', 'tubularModel', function ($scope, $routeParams, $location, TubularModel) {
+                    '$scope', '$routeParams', 'tubularModel', 'tubularHttp', 'tubularOData',
+                    function($scope, $routeParams, TubularModel, tubularHttp, tubularOData) {
                         $scope.tubularDirective = 'tubular-form';
+                        $scope.serverSaveMethod = $scope.serverSaveMethod || 'POST';
+                        $scope.layout = $scope.layout || '';
                         $scope.fields = [];
                         $scope.hasFieldsDefinitions = false;
-                        $scope.modelKey = $routeParams.param;
-                        
+                        // Try to load a key from markup or route
+                        $scope.modelKey = $scope.modelKey || $routeParams.param;
+
+                        $scope.gridDataService = $scope.gridDataService || tubularHttp;
+
+                        // Helper to use OData without controller
+                        if ($scope.gridDataServiceName === 'odata') {
+                            $scope.gridDataService = tubularOData;
+                        }
+
                         $scope.addField = function(item) {
                             if (item.name === null) return;
 
@@ -1924,34 +1946,33 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                         });
 
                         $scope.bindFields = function() {
-                            angular.forEach($scope.fields, function (column) {
-                                column.$parent.Model = $scope.rowModel;
+                            angular.forEach($scope.fields, function(field) {
+                                field.$parent.Model = $scope.model;
 
-                                // TODO: this behavior is nice, but I don't know how to apply to inline editors
-                                if (column.$editorType == 'input' &&
-                                    angular.equals(column.value, $scope.rowModel[column.Name]) == false) {
-                                    column.value = $scope.rowModel[column.Name];
+                                if (field.$editorType == 'input' &&
+                                    angular.equals(field.value, $scope.model[field.Name]) == false) {
+                                    field.value = (field.DataType == 'date') ? new Date($scope.model[field.Name]) : $scope.model[field.Name];
 
                                     $scope.$watch(function() {
-                                        return column.value;
+                                        return field.value;
                                     }, function(value) {
-                                        $scope.rowModel[column.Name] = value;
+                                        $scope.model[field.Name] = value;
                                     });
                                 }
 
                                 // Ignores models without state
-                                if (angular.isUndefined($scope.rowModel.$state)) return;
+                                if (angular.isUndefined($scope.model.$state)) return;
 
-                                if (angular.equals(column.state, $scope.rowModel.$state[column.Name]) == false) {
-                                    column.state = $scope.rowModel.$state[column.Name];
+                                if (angular.equals(field.state, $scope.model.$state[field.Name]) == false) {
+                                    field.state = $scope.model.$state[field.Name];
                                 }
                             });
                         };
 
                         $scope.retrieveData = function() {
                             if (angular.isUndefined($scope.serverUrl)) {
-                                if (angular.isUndefined($scope.rowModel)) {
-                                    $scope.rowModel = new TubularModel($scope, {});
+                                if (angular.isUndefined($scope.model)) {
+                                    $scope.model = new TubularModel($scope, {}, $scope.gridDataService);
                                 }
 
                                 $scope.bindFields();
@@ -1959,59 +1980,49 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                                 return;
                             }
 
-                            tubularHttp.get($scope.serverUrl + $scope.modelKey).promise.then(
-                                function(data) {
-                                    $scope.rowModel = new TubularModel($scope, data);
+                            if (angular.isUndefined($scope.modelKey) || $scope.modelKey == null || $scope.modelKey == '')
+                                return;
 
+                            $scope.gridDataService.getByKey($scope.serverUrl, $scope.modelKey).promise.then(
+                                function(data) {
+                                    $scope.model = new TubularModel($scope, data, $scope.gridDataService);
                                     $scope.bindFields();
                                 }, function(error) {
-                                    $scope.$emit('tbGrid_OnConnectionError', error);
+                                    $scope.$emit('tbForm_OnConnectionError', error);
                                 });
                         };
 
-                        $scope.updateRow = function(row) {
-                            var request = {
-                                serverUrl: $scope.serverSaveUrl,
-                                requestMethod: 'PUT'
-                            };
+                        $scope.save = function() {
+                            $scope.currentRequest = $scope.model.save();
 
-                            $scope.currentRequest = tubularHttp.saveDataAsync(row, request);
-
-                            $scope.currentRequest.promise.then(
-                                    function(data) {
-                                        $scope.$emit('tbGrid_OnSuccessfulUpdate', data);
-                                        $scope.$emit('tGrid_OnSuccessfulForm', data);
-                                    }, function(error) {
-                                        $scope.$emit('tbGrid_OnConnectionError', error);
-                                    })
-                                .then(function() {
-                                    $scope.currentRequest = null;
-                                });
-                        };
-
-                        $scope.create = function () {
-                            // TODO: Method could be PUT?
-                            $scope.currentRequest = tubularHttp.post($scope.serverSaveUrl, $scope.rowModel).promise.then(
-                                    function(data) {
-                                        $scope.$emit('tbGrid_OnSuccessfulUpdate', data);
-                                        $scope.$emit('tGrid_OnSuccessfulForm', data);
-                                    }, function(error) {
-                                        $scope.$emit('tbGrid_OnConnectionError', error);
-                                    })
-                                .then(function() {
-                                    $scope.currentRequest = null;
-                                });
-                        };
-
-                        $scope.save = function () {
-                            // TODO: Why Save and Create is not the same?ñ
-                            if ($scope.rowModel.save() === false) {
-                                $scope.$emit('tbGrid_OnSavingNoChanges', $scope.rowModel);
+                            if ($scope.currentRequest === false) {
+                                $scope.$emit('tbForm_OnSavingNoChanges', $scope.model);
+                                return;
                             }
+
+                            $scope.currentRequest.then(
+                                    function(data) {
+                                        $scope.$emit('tbForm_OnSuccessfulSave', data);
+                                    }, function(error) {
+                                        $scope.$emit('tbForm_OnConnectionError', error);
+                                    })
+                                .then(function() {
+                                    $scope.model.$isLoading = false;
+                                    $scope.currentRequest = null;
+                                });
                         };
 
-                        $scope.gotoView = function(view) {
-                            $location.path(view);
+                        $scope.update = function() {
+                            $scope.save();
+                        };
+
+                        $scope.create = function() {
+                            $scope.model.$isNew = true;
+                            $scope.save();
+                        };
+
+                        $scope.cancel = function() {
+                            $scope.$emit('tbForm_OnCancel', $scope.model);
                         };
                     }
                 ],
@@ -2020,9 +2031,83 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                         pre: function(scope, lElement, lAttrs, lController, lTransclude) {},
                         post: function(scope, lElement, lAttrs, lController, lTransclude) {
                             scope.hasFieldsDefinitions = true;
+                            if (scope.layout == '') return;
+
+                            var colsByRow = scope.layout == 'two-columns' ? 6 : 4;
+
+                            var fieldNodes = scope.fields
+                                .map(function(el) {
+                                    var no = $(lElement).find('*[name=' + el.Name + '][type!=hidden]');
+                                    return no.length == 0 ? null : $(no[0]);
+                                })
+                                .filter(function(el) { return el != null; });
+
+                            var sum = 0;
+                            var count = 0;
+
+                            angular.forEach(fieldNodes, function(node) {
+                                sum += colsByRow;
+                                var lastNode = $(node).wrap('<div class="col-xs-' + colsByRow + '" />');
+                                var p = lastNode.parent();
+
+                                if (++count == fieldNodes.length && sum != 12) {
+                                    if (p.prev().is("div.col-xs-4"))
+                                        p.prev().andSelf().wrapAll('<div class="row" />');
+                                    else
+                                        p.wrap('<div class="row" />');
+
+                                    return;
+                                }
+
+                                if (sum == 12) {
+                                    if (colsByRow == 6)
+                                        p.prev().andSelf().wrapAll('<div class="row" />');
+                                    else
+                                        p.prev().andSelf().prev().andSelf().wrapAll('<div class="row" />');
+
+                                    sum = 0;
+                                }
+                            });
                         }
                     };
                 }
+            };
+        }
+    ]).directive('tbFormButtons',
+    [
+        function() {
+            return {
+                template: '<div>' +
+                    '<button class="btn btn-primary" ng-click="save()" ng-disabled="!form.model.$valid()">{{ saveCaption || \'Save\' }}</button>' +
+                    '<button class="btn btn-danger" ng-click="cancel()" ng-show="showCancel">{{ cancelCaption || \'Cancel\' }}</button>' +
+                    '</div>',
+                restrict: 'E',
+                replace: true,
+                transclude: true,
+                scope: {
+                    saveCaption: '@',
+                    cancelCaption: '@',
+                    saveAction: '&',
+                    cancelAction: '&',
+                    showCancel: '=?'
+                },
+                controller: [
+                    '$scope', '$attrs', function ($scope, $attrs) {
+                        $scope.form = $scope.$parent.$parent;
+                        $scope.showCancel = $scope.showCancel || true;
+
+                        $scope.save = function() {
+                            var func = ($attrs.saveAction ? $scope.saveAction : $scope.form.save);
+
+                            return func();
+                        };
+
+                        $scope.cancel = function() {
+                            var func = ($attrs.cancelAction ? $scope.cancelAction : $scope.form.cancel);
+                            return func();
+                        };
+                    }
+                ],
             };
         }
     ]);
@@ -2106,13 +2191,13 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                 return function(attrs) {
                     this.Text = attrs.text || null;
                     this.Argument = attrs.argument || null;
-                    this.Operator = attrs.operator || null;
+                    this.Operator = attrs.operator || 'Contains';
                     this.OptionsUrl = attrs.optionsUrl || null;
                 };
             })
             .factory('tubularModel', [
                 '$timeout', '$location', function ($timeout, $location) {
-                    return function ($scope, data) {
+                    return function ($scope, data, dataService) {
                         var obj = {
                             $key: "",
                             $count: 0,
@@ -2180,6 +2265,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                         obj.$isEditing = false;
                         obj.$hasChanges = false;
                         obj.$selected = false;
+                        obj.$isNew = false;
 
                         for (var k in obj) {
                             if (obj.hasOwnProperty(k)) {
@@ -2211,8 +2297,27 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                             return true;
                         };
 
-                        obj.save = function (externalSave) {
-                            return obj.$hasChanges ? $scope.updateRow(obj, externalSave) : false;
+                        // Returns a save promise
+                        obj.save = function() {
+                            if (angular.isUndefined(dataService) || dataService == null)
+                                throw 'Define DataService to your model.';
+
+                            if (obj.$hasChanges == false) return false;
+
+                            obj.$isLoading = true;
+
+                            if (obj.$isNew) {
+                                return dataService.retrieveDataAsync({
+                                    serverUrl: $scope.serverSaveUrl,
+                                    requestMethod: $scope.serverSaveMethod,
+                                    data: obj
+                                }).promise;
+                            } else {
+                                return dataService.saveDataAsync(obj, {
+                                    serverUrl: $scope.serverSaveUrl,
+                                    requestMethod: 'PUT'
+                                }).promise;
+                            }
                         };
 
                         obj.edit = function() {
@@ -2263,12 +2368,23 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
 (function() {
     'use strict';
 
-    angular.module('tubular.services', ['ui.bootstrap'])
+    angular.module('tubular.services', ['ui.bootstrap', 'ngCookies'])
         .service('tubularPopupService', [
-            '$modal', function tubularPopupService($modal) {
+            '$modal', '$rootScope', 'tubularTemplateService', function tubularPopupService($modal, $rootScope, tubularTemplateService) {
                 var me = this;
 
-                me.openDialog = function(template, model) {
+                me.onSuccessForm = function(callback) {
+                    $rootScope.$on('tbForm_OnSuccessfulSave', callback);
+                };
+
+                me.onConnectionError = function(callback) {
+                    $rootScope.$on('tbForm_OnConnectionError', callback);
+                };
+
+                me.openDialog = function (template, model) {
+                    if (angular.isUndefined(template))
+                        template = tubularTemplateService.generatePopup(model);
+
                     var dialog = $modal.open({
                         templateUrl: template,
                         backdropClass: 'fullHeight',
@@ -2276,17 +2392,25 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                             '$scope', function($scope) {
                                 $scope.Model = model;
 
-                                $scope.savePopup = function () {
-                                    $scope.Model.save(true);
-                                    
-                                    $scope.$on('tbGrid_OnSuccessfulUpdate', 
-                                        function () {
-                                            // TODO: Review this
+                                $scope.savePopup = function() {
+                                    var result = $scope.Model.save();
+
+                                    if (result === false) return;
+
+                                    result.then(
+                                        function(data) {
+                                            $scope.$emit('tbForm_OnSuccessfulSave', data);
+                                            $rootScope.$broadcast('tbForm_OnSuccessfulSave', data);
+                                            $scope.Model.$isLoading = false;
                                             dialog.close();
+                                        }, function(error) {
+                                            $scope.$emit('tbForm_OnConnectionError', error);
+                                            $rootScope.$broadcast('tbForm_OnConnectionError', error);
+                                            $scope.Model.$isLoading = false;
                                         });
                                 };
 
-                                $scope.closePopup = function () {
+                                $scope.closePopup = function() {
                                     if (angular.isDefined($scope.Model.revertChanges))
                                         $scope.Model.revertChanges();
 
@@ -2302,16 +2426,16 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
         ])
         .service('tubularGridExportService', function tubularGridExportService() {
             var me = this;
-            
-            me.getColumns = function (gridScope) {
+
+            me.getColumns = function(gridScope) {
                 return gridScope.columns
-                    .filter(function (c) { return c.Visible; })
-                    .map(function (c) { return c.Name.replace(/([a-z])([A-Z])/g, '$1 $2'); });
+                    .filter(function(c) { return c.Visible; })
+                    .map(function(c) { return c.Name.replace(/([a-z])([A-Z])/g, '$1 $2'); });
             };
 
-            me.getColumnsVisibility = function (gridScope) {
+            me.getColumnsVisibility = function(gridScope) {
                 return gridScope.columns
-                    .map(function (c) { return c.Visible; });
+                    .map(function(c) { return c.Visible; });
             };
 
             me.exportAllGridToCsv = function(filename, gridScope) {
@@ -2368,7 +2492,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
             'tubulargGridFilterModel', '$compile', '$modal', function tubularGridFilterService(FilterModel, $compile, $modal) {
                 var me = this;
 
-                me.applyFilterFuncs = function (scope, el, attributes, openCallback) {
+                me.applyFilterFuncs = function(scope, el, attributes, openCallback) {
                     scope.columnSelector = attributes.columnSelector || false;
                     scope.$component = scope.$parent.$component;
                     scope.filterTitle = "Filter";
@@ -2391,7 +2515,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                         $(el).find('[data-toggle="popover"]').popover('hide');
                     };
 
-                    scope.openColumnsSelector = function () {
+                    scope.openColumnsSelector = function() {
                         scope.close();
 
                         var model = scope.$component.columns;
@@ -2412,10 +2536,10 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                                 '<div class="modal-footer"><button class="btn btn-warning" ng-click="closePopup()">Close</button></div>',
                             backdropClass: 'fullHeight',
                             controller: [
-                                '$scope', function ($innerScope) {
+                                '$scope', function($innerScope) {
                                     $innerScope.Model = model;
 
-                                    $innerScope.closePopup = function () {
+                                    $innerScope.closePopup = function() {
                                         dialog.close();
                                     };
                                 }
@@ -2454,10 +2578,12 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
 
                     if (scope.dataType === 'datetime' || scope.dataType === 'date') {
                         scope.filter.Argument = [new Date()];
+                        scope.filter.Operator = 'Equals';
                     }
 
                     if (scope.dataType === 'numeric') {
                         scope.filter.Argument = [1];
+                        scope.filter.Operator = 'Equals';
                     }
 
                     scope.filterTitle = lAttrs.title || "Filter";
@@ -2476,7 +2602,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     showLabel: '=?',
                     label: '@?',
                     required: '=?',
-                    format: '=?',
+                    format: '@?',
                     min: '=?',
                     max: '=?',
                     name: '@',
@@ -2766,7 +2892,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     }
 
                     return response.data;
-                }, function(error) {
+                }, function (error) {
                     if (angular.isDefined(error) && angular.isDefined(error.status) && error.status == 401) {
                         if (me.isAuthenticated()) {
                             me.removeAuthentication();
@@ -2774,6 +2900,8 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                             document.location = document.location;
                         }
                     }
+
+                    return $q.reject(error);
                 });
 
                 request.timeout = request.timeout || 15000;
@@ -2788,11 +2916,9 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                 };
             };
 
-            me.get = function(url) {
-                return me.retrieveDataAsync({
-                    serverUrl: url,
-                    requestMethod: 'GET',
-                });
+            me.get = function (url) {
+                // TODO: How to know if we need Token
+                return { promise: $http.get(url) };
             };
 
             me.delete = function(url) {
@@ -2816,6 +2942,10 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     requestMethod: 'PUT',
                     data: data
                 });
+            };
+
+            me.getByKey = function (url, key) {
+                return { promise: me.get(url + key).promise.then(function (data) { return data.data; }) };
             };
         }
     ]);
@@ -2855,9 +2985,12 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     url += url.indexOf('?') > 0 ? '&' : '?';
                     url += '$format=json&$inlinecount=allpages';
 
-                    url += "&$select=" + params.Columns.map(function(el) { return el.Name; }).join(',');
-                    url += "&$skip=" + params.Skip;
-                    url += "&$top=" + params.Take;
+                    url += "&$select=" + params.Columns.map(function (el) { return el.Name; }).join(',');
+
+                    if (params.Take != -1) {
+                        url += "&$skip=" + params.Skip;
+                        url += "&$top=" + params.Take;
+                    }
 
                     var order = params.Columns
                         .filter(function(el) { return el.SortOrder > 0; })
@@ -2923,26 +3056,146 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
 
                 me.saveDataAsync = function (model, request) {
                     tubularHttp.setRequireAuthentication(request.requireAuthentication || me.requireAuthentication);
-                    tubularHttp.saveDataAsync(model, request); //TODO: Check how to handle
+                    return tubularHttp.saveDataAsync(model, request); //TODO: Check how to handle
                 };
 
                 me.get = function(url) {
-                    tubularHttp.get(url);
+                    return tubularHttp.get(url);
                 };
 
                 me.delete = function(url) {
-                    tubularHttp.delete(url);
+                    return tubularHttp.delete(url);
                 };
 
                 me.post = function(url, data) {
-                    tubularHttp.post(url, data);
+                    return tubularHttp.post(url, data);
                 };
 
                 me.put = function(url, data) {
-                    tubularHttp.put(url, data);
+                    return tubularHttp.put(url, data);
+                };
+
+                me.getByKey = function (url, key) {
+                    return { promise: tubularHttp.get(url + "(" + key + ")").promise.then(function (data) { return data.data; }) };
                 };
             }
         ]);
+})();
+///#source 1 1 tubular/tubular-services-template.js
+(function() {
+    'use strict';
+
+    angular.module('tubular.services').service('tubularTemplateService', [
+        '$templateCache',
+        function tubularTemplateService($templateCache) {
+            var me = this;
+
+            me.generatePopup = function(model, title) {
+                var templateName = 'temp' + (new Date().getTime()) + '.html';
+                var columns = me.createColumns(model);
+                
+                var template = '<tb-form model="Model">' +
+                    '<div class="modal-header"><h3 class="modal-title">' + (title || 'Edit Row') + '</h3></div>' +
+                    '<div class="modal-body">' +
+                    me.generateFields(columns) +
+                    '</div>' +
+                    '<tb-form-buttons class="modal-footer" save-action="savePopup()" cancel-action="closePopup()"></tb-form-buttons>' +
+                    '</tb-form>';
+
+                $templateCache.put(templateName, template);
+
+                return templateName;
+            };
+
+            me.generateFields = function(columns) {
+                return columns.map(function(el) {
+                    var editorTag = el.EditorType.replace(/([A-Z])/g, function($1) { return "-" + $1.toLowerCase(); });
+
+                    return '\r\n\t<' + editorTag + ' name="' + el.Name + '" label="' + el.Label + '" editor-type="' + el.DataType + '" ' +
+                        '\r\n\t\tshow-label="' + el.ShowLabel + '" placeholder="' + el.Placeholder + '" required="' + el.Required + '" ' +
+                        '\r\n\t\tread-only="' + el.ReadOnly + '" format="' + el.Format + '" help="' + el.Help + '">' +
+                        '\r\n\t</' + editorTag + '>';
+                }).join('');
+            };
+
+            me.getEditorTypeByDateType = function(dataType) {
+                switch (dataType) {
+                case 'date':
+                    return 'tbDateTimeEditor';
+                case 'numeric':
+                    return 'tbNumericEditor';
+                case 'boolean':
+                    return 'tbCheckboxField';
+                default:
+                    return 'tbSimpleEditor';
+                }
+            };
+
+            me.createColumns = function(model) {
+                var jsonModel = (angular.isArray(model) && model.length > 0) ? model[0] : model;
+                var columns = [];
+
+                for (var prop in jsonModel) {
+                    if (jsonModel.hasOwnProperty(prop)) {
+                        var value = jsonModel[prop];
+                        // Ignore functions
+                        if (prop[0] === '$' || typeof (value) === 'function') continue;
+                        // Ignore null value, but maybe evaluate another item if there is anymore
+                        if (value == null) continue;
+
+                        if (angular.isNumber(value) || parseFloat(value).toString() == value) {
+                            columns.push({ Name: prop, DataType: 'numeric', Template: '{{row.' + prop + '}}' });
+                        } else if (angular.isDate(value) || isNaN((new Date(value)).getTime()) == false) {
+                            columns.push({ Name: prop, DataType: 'date', Template: '{{row.' + prop + ' | date}}' });
+                        } else if (value.toLowerCase() == 'true' || value.toLowerCase() == 'false') {
+                            columns.push({ Name: prop, DataType: 'boolean', Template: '{{row.' + prop + ' ? "TRUE" : "FALSE" }}' });
+                        } else {
+                            var newColumn = { Name: prop, DataType: 'string', Template: '{{row.' + prop + '}}' };
+
+                            if ((/e(-|)mail/ig).test(newColumn.Name)) {
+                                newColumn.Template = '<a href="mailto:' + newColumn.Template + '">' + newColumn.Template + '</a>';
+                            }
+
+                            columns.push(newColumn);
+                        }
+                    }
+                }
+
+                var firstSort = false;
+
+                for (var column in columns) {
+                    if (columns.hasOwnProperty(column)) {
+                        var columnObj = columns[column];
+                        columnObj.Label = columnObj.Name.replace(/([a-z])([A-Z])/g, '$1 $2');
+                        columnObj.EditorType = me.getEditorTypeByDateType(columnObj.DataType);
+
+                        // Grid attributes
+                        columnObj.Searchable = columnObj.DataType === 'string';
+                        columnObj.Filter = true;
+                        columnObj.Visible = true;
+                        columnObj.Sortable = true;
+                        columnObj.IsKey = false;
+                        columnObj.SortOrder = -1;
+                        // Form attributes
+                        columnObj.ShowLabel = true;
+                        columnObj.Placeholder = '';
+                        columnObj.Format = '';
+                        columnObj.Help = '';
+                        columnObj.Required = true;
+                        columnObj.ReadOnly = false;
+
+                        if (firstSort === false) {
+                            columnObj.IsKey = true;
+                            columnObj.SortOrder = 1;
+                            firstSort = true;
+                        }
+                    }
+                }
+
+                return columns;
+            };
+        }
+    ]);
 })();
 ///#source 1 1 tadaaapickr/tadaaapickr.pack.js
 /**

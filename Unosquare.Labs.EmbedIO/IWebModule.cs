@@ -10,6 +10,9 @@
     /// <returns></returns>
     public delegate bool ResponseHandler(WebServer server, HttpListenerContext context);
 
+    /// <summary>
+    /// Interface to create web modules
+    /// </summary>
     public interface IWebModule
     {
         /// <summary>

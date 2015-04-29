@@ -9,7 +9,7 @@
     /// <summary>
     /// Wrapper to use Log4Net with EmbedIO
     /// </summary>
-    public class LoggerWrapper : Unosquare.Labs.EmbedIO.ILog
+    public class LoggerWrapper : Unosquare.Labs.EmbedIO.Log.ILog
     {
         private readonly ILog _logger;
 
@@ -54,7 +54,7 @@
         }
     }
 
-    static public class Logger
+    public static class Logger
     {
         private const string LogPattern = "%-20date [%thread] %-5level %-20logger %message%newline";
 
@@ -63,20 +63,21 @@
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        static public Unosquare.Labs.EmbedIO.ILog For<T>()
+        public static Unosquare.Labs.EmbedIO.Log.ILog For<T>()
         {
             if (LogManager.GetRepository().Configured == false)
                 ConfigureLogging();
 
-            return new LoggerWrapper(LogManager.GetLogger(typeof(T)));
+            return new LoggerWrapper(LogManager.GetLogger(typeof (T)));
         }
 
         /// <summary>
         /// Shutdowns the logging Subsystem.
         /// </summary>
-        static public void Shutdown()
+        public static void Shutdown()
         {
             log4net.Repository.ILoggerRepository repository = LogManager.GetRepository();
+
             if (repository != null)
                 repository.Shutdown();
 

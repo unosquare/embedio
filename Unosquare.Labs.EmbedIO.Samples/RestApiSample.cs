@@ -10,7 +10,7 @@
     using Unosquare.Tubular;
     using Unosquare.Tubular.ObjectModel;
 
-    public static partial class RestApiSample
+    public static class RestApiSample
     {
         private const string RelativePath = "/api/";
         public static List<Person> People { get; private set; }

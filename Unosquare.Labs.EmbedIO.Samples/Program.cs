@@ -1,8 +1,9 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
     using System;
+    using Unosquare.Labs.EmbedIO.Log;
 
-    class Program
+    internal class Program
     {
         private static readonly ILog Log = Logger.For<Program>();
 
@@ -10,7 +11,7 @@
         /// Defines the entry point of the application.
         /// </summary>
         /// <param name="args">The arguments.</param>
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var url = "http://localhost:9696/";
 
@@ -49,8 +50,10 @@
 
                 // Fire up the browser to show the content!
 #if DEBUG
-                var browser = new System.Diagnostics.Process() { 
-                    StartInfo = new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true } };
+                var browser = new System.Diagnostics.Process()
+                {
+                    StartInfo = new System.Diagnostics.ProcessStartInfo(url) {UseShellExecute = true}
+                };
                 browser.Start();
 #endif
                 // Wait for any key to be pressed before disposing of our web server.

@@ -12,10 +12,14 @@
     /// </summary>
     public class SessionInfo
     {
+        /// <summary>
+        /// Initialize Session data
+        /// </summary>
         public SessionInfo()
         {
             this.Data = new ConcurrentDictionary<string, object>(StringComparer.InvariantCultureIgnoreCase);
         }
+
         public string SessionId { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime LastActivity { get; set; }

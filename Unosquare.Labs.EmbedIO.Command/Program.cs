@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Command
 {
     using System;
+    using Unosquare.Labs.EmbedIO.Log;
 
     class Program
     {
@@ -9,7 +10,7 @@
             Console.WriteLine("Unosquare.Labs.EmbedIO Web Server");
             Console.WriteLine("  Command-Line Utility: Press any key to stop the server.");
 
-            using (var server = new WebServer(Properties.Settings.Default.ServerAddress, new Logger()))
+            using (var server = new WebServer(Properties.Settings.Default.ServerAddress, new SimpleConsoleLog()))
             {
                 if (Properties.Settings.Default.UseLocalSessionModule)
                     server.RegisterModule(new Modules.LocalSessionModule());
