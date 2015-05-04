@@ -1,6 +1,6 @@
 [![NuGet version](https://badge.fury.io/nu/embedio.svg)](https://www.nuget.org/packages/Embedio)
 
-EmbedIO - Unosquare Labs
+EmbedIO
 ========================
 
 A tiny, cross-platform, module based, MIT-licensed web server
