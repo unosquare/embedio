@@ -159,7 +159,7 @@
                         <p><em>During server setup:</em></p>
 
                         <pre><code class="csharp">server.RegisterModule(new WebApiModule());
-server.Module&lt;webapimodule&gt;().RegisterController&lt;peoplecontroller&gt;();</code></pre>
+server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;();</code></pre>
 
                         <p><em>And our controller class looks like:</em></p>
 
@@ -202,7 +202,7 @@ server.Module&lt;webapimodule&gt;().RegisterController&lt;peoplecontroller&gt;()
                         <p><em>During server setup:</em></p>
 
                         <pre><code class="csharp">server.RegisterModule(new WebSocketsModule());
-server.Module&lt;websocketsmodule&gt;().RegisterWebSocketsServer&lt;websocketschatserver&gt;(&quot;/chat&quot;);</code></pre>
+server.Module&lt;WebSocketsModule&gt;().RegisterWebSocketsServer&lt;WebSocketsChatServer&gt;(&quot;/chat&quot;);</code></pre>
 
                         <p><em>And our web sockets server class looks like:</em></p>
                         <pre><code class="csharp">/// &lt;summary&gt;
@@ -290,7 +290,7 @@ public class WebSocketsChatServer : WebSocketsServer
                 <footer>
                     Brought to you by Unosquare<br />
                     <a href="http://www.unosquare.com">
-                        <img src="images/logo_178.png" />
+                        <img alt="unosquare" src="images/logo_178.png" />
                     </a>
                 </footer>
             </div>
