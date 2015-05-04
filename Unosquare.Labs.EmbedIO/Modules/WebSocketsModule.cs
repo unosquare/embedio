@@ -246,8 +246,9 @@
             // first, accept the websocket
             this.WebServer = server;
             server.Log.DebugFormat("{0} - Accepting WebSocket . . .", this.ServerName);
+            const int receiveBufferSize = 2048;
             var webSocketContext =
-                context.AcceptWebSocketAsync(subProtocol: null, keepAliveInterval: TimeSpan.FromSeconds(30))
+                context.AcceptWebSocketAsync(subProtocol: null, receiveBufferSize: receiveBufferSize, keepAliveInterval: TimeSpan.FromSeconds(30))
                     .GetAwaiter()
                     .GetResult();
 
@@ -267,7 +268,7 @@
             try
             {
                 // define a receive buffer
-                var receiveBuffer = new byte[2048];
+                var receiveBuffer = new byte[receiveBufferSize];
                 // define a dynamic buffer that holds multi-part receptions
                 var receivedMessage = new List<byte>(receiveBuffer.Length*2);
 
