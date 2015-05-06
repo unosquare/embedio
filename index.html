@@ -10,7 +10,6 @@
         <link href="//cdn.jsdelivr.net/highlight.js/8.5.0/styles/github.min.css" rel="stylesheet">
 
         <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
 
         <!--[if lt IE 9]>
             <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -32,7 +31,9 @@
                         <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
                             <i class="fa fa-bars"></i>
                         </button>
-                        <a href="/embedio/" class="navbar-brand">EmbedIO</a>
+                        <a href="/embedio/" class="navbar-brand">
+                            <img src="images/embedio-icon.png" alt="Tubular" style="height: 38px; margin-top: -12px" />
+                        </a>
                     </div>
                     <nav class="collapse navbar-collapse bs-navbar-collapse">
                         <ul class="nav navbar-nav">
@@ -53,7 +54,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="http://github.com/unosquare/embedio">EmbedIO @ GitHub</a></li>
                             <li><a href="http://www.unosquare.com">Unosquare</a></li>
-                            <li><a href="http://unosquare.github.io/">UnoPage</a></li>
+                            <li><a href="http://unosquare.github.io/">Labs @ GitHub</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -62,7 +63,7 @@
                 <div class="jumbotron">
                     <div class="container">
                         <header>
-                            <h1>Embedio</h1>
+                            <img src="images/embedio.png" alt="EmbedIO" />
                             <h2>A tiny, cross-platform, module based web server</h2>
                         </header>
                     </div>
@@ -73,7 +74,7 @@
 
                         <ul>
                             <li>New Version: Network operations make heavy use of the relatively recent async/await pattern</li>
-                            <li>Cross-platform (tested in Mono 3.10.x on Windows and on a custom Yocto image for the Raspberry Pi)</li>
+                            <li>Cross-platform (tested in <a href="http://www.mono-project.com/" target="_blank">Mono</a> 3.10.x on Windows and on a custom Yocto image for the Raspberry Pi)</li>
                             <li>Extensible (Write your own modules like bearer token session handling, video streaming, UPnP, etc.)</li>
                             <li>Small memory footprint</li>
                             <li>Create REST APIs quickly with the built-in Web Api Module</li>
@@ -82,7 +83,12 @@
                             <li>Web Sockets support (Not available on Mono though)</li>
                         </ul>
 
-                        <p><em>For detailed usage and REST API implementation, download the code and take a look at the Samples project</em></p>
+                        <p>
+                            <em>
+                                For detailed usage and REST API implementation, download the
+                                code and take a look at the <a href="https://github.com/unosquare/embedio/tree/master/Unosquare.Labs.EmbedIO.Samples">Samples project</a>.
+                            </em>
+                        </p>
                         <hr />
                         <h2 id="nuget">NuGet Installation:</h2>
 
