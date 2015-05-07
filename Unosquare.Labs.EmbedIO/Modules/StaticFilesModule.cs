@@ -1,4 +1,6 @@
-﻿namespace Unosquare.Labs.EmbedIO.Modules
+﻿using System.Net;
+
+namespace Unosquare.Labs.EmbedIO.Modules
 {
     using System;
     using System.Collections.Generic;
@@ -132,115 +134,160 @@
             this.MaxRamCacheFileSize = 250*1024;
             this.DefaultDocument = "index.html";
 
-            this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (server, context) =>
+            //this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Head, (server, context) => HandleGet(context, server, false));
+            this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (server, context) => HandleGet(context, server));
+        }
+
+        private bool HandleGet(HttpListenerContext context, WebServer server, bool sendBuffer = true)
+        {
+            var urlPath = context.Request.Url.LocalPath.Replace('/', Path.DirectorySeparatorChar);
+
+            // adjust the path to see if we've got a default document
+            if (urlPath.Last() == Path.DirectorySeparatorChar)
+                urlPath = urlPath + DefaultDocument;
+
+            urlPath = urlPath.TrimStart(new char[] {Path.DirectorySeparatorChar});
+
+            var localPath = Path.Combine(FileSystemPath, urlPath);
+            var eTagValid = false;
+            byte[] buffer = null;
+            var fileDate = DateTime.Today;
+
+            if (string.IsNullOrWhiteSpace(DefaultExtension) == false && DefaultExtension.StartsWith(".") &&
+                File.Exists(localPath) == false)
             {
-                var urlPath = context.Request.Url.LocalPath.Replace('/', Path.DirectorySeparatorChar);
+                var newPath = localPath + DefaultExtension;
+                if (File.Exists(newPath))
+                    localPath = newPath;
+            }
 
-                // adjust the path to see if we've got a default document
-                if (urlPath.Last() == Path.DirectorySeparatorChar)
-                    urlPath = urlPath + DefaultDocument;
+            if (File.Exists(localPath))
+            {
+                fileDate = File.GetLastWriteTime(localPath);
+                var requestHash = context.RequestHeader(Extensions.HeaderIfNotMatch);
 
-                urlPath = urlPath.TrimStart(new char[] {Path.DirectorySeparatorChar});
-
-                var localPath = Path.Combine(FileSystemPath, urlPath);
-                byte[] buffer = null;
-                var fileDate = DateTime.Today;
-
-                if (string.IsNullOrWhiteSpace(DefaultExtension) == false && DefaultExtension.StartsWith(".") &&
-                    File.Exists(localPath) == false)
+                if (RamCache.ContainsKey(localPath) && RamCache[localPath].LastModified == fileDate)
                 {
-                    var newPath = localPath + DefaultExtension;
-                    if (File.Exists(newPath))
-                        localPath = newPath;
-                }
+                    server.Log.DebugFormat("RAM Cache: {0}", localPath);
+                    var currentHash = Extensions.HashMd5(RamCache[localPath].Buffer) + '-' + fileDate.Ticks;
 
-                if (File.Exists(localPath))
-                {
-                    fileDate = File.GetLastWriteTime(localPath);
-                    var requestHash = context.RequestHeader(Extensions.HeaderIfNotMatch);
-                    
-                    if (RamCache.ContainsKey(localPath) && RamCache[localPath].LastModified == fileDate)
+                    if (String.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
                     {
-                        server.Log.DebugFormat("RAM Cache: {0}", localPath);
-                        var currentHash = Extensions.HashMd5(RamCache[localPath].Buffer) + '-' + fileDate.Ticks;
-    
-                        if (String.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
-                        {
-                            buffer = RamCache[localPath].Buffer;
-                            context.Response.AddHeader(Extensions.HeaderETag, currentHash);
-                        }
-                        else
-                        {
-                            context.Response.ContentType = string.Empty;
-                            context.Response.StatusCode = 304;
-                            return true;
-                        }
+                        buffer = RamCache[localPath].Buffer;
+                        context.Response.AddHeader(Extensions.HeaderETag, currentHash);
                     }
                     else
                     {
-                        server.Log.DebugFormat("File System: {0}", localPath);
-                        buffer = File.ReadAllBytes(localPath);
-                        var currentHash = Extensions.HashMd5(buffer) + '-' + fileDate.Ticks;
-
-                        if (String.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
-                        {
-                            if (UseRamCache && buffer.Length <= MaxRamCacheFileSize)
-                            {
-                                RamCache[localPath] = new RamCacheEntry() {LastModified = fileDate, Buffer = buffer};
-                            }
-
-                            context.Response.AddHeader(Extensions.HeaderETag, currentHash);
-                        }
-                        else
-                        {
-                            context.Response.ContentType = string.Empty;
-                            context.Response.StatusCode = 304;
-                            return true;
-                        }
+                        eTagValid = true;
                     }
-
                 }
                 else
                 {
-                    return false;
-                }
+                    server.Log.DebugFormat("File System: {0}", localPath);
+                    buffer = File.ReadAllBytes(localPath);
+                    var currentHash = Extensions.HashMd5(buffer) + '-' + fileDate.Ticks;
 
-                // check to see if the file was modified
-                var utcFileDateString = fileDate.ToUniversalTime().ToString(Extensions.BrowserTimeFormat);
-                if (context.RequestHeader(Extensions.HeaderIfModifiedSince).Equals(utcFileDateString))
-                {
-                    context.Response.AddHeader(Extensions.HeaderCacheControl, "private");
-                    context.Response.AddHeader(Extensions.HeaderPragma, string.Empty);
-                    context.Response.AddHeader(Extensions.HeaderExpires, string.Empty);
-                    context.Response.ContentType = string.Empty;
-
-                    context.Response.StatusCode = 304;
-                }
-                else
-                {
-                    var extension = Path.GetExtension(localPath).ToLowerInvariant();
-                    if (MimeTypes.ContainsKey(extension))
-                        context.Response.ContentType = MimeTypes[extension];
-                    context.Response.ContentLength64 = buffer.LongLength;
-
-                    context.Response.AddHeader(Extensions.HeaderCacheControl, "private");
-                    context.Response.AddHeader(Extensions.HeaderPragma, string.Empty);
-                    context.Response.AddHeader(Extensions.HeaderExpires, string.Empty);
-                    context.Response.AddHeader(Extensions.HeaderLastModified, utcFileDateString);
-
-                    // Perform compression if available
-                    if (context.RequestHeader(Extensions.HeaderAcceptEncoding).Contains("gzip"))
+                    if (String.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
                     {
-                        buffer = buffer.Compress();
-                        context.Response.AddHeader(Extensions.HeaderContentEncoding, "gzip");
-                        context.Response.ContentLength64 = buffer.LongLength;
+                        if (UseRamCache && buffer.Length <= MaxRamCacheFileSize)
+                        {
+                            RamCache[localPath] = new RamCacheEntry() {LastModified = fileDate, Buffer = buffer};
+                        }
+
+                        context.Response.AddHeader(Extensions.HeaderETag, currentHash);
+                    }
+                    else
+                    {
+                        eTagValid = true;
+                    }
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+            // check to see if the file was modified or etag is the same
+            var utcFileDateString = fileDate.ToUniversalTime().ToString(Extensions.BrowserTimeFormat);
+            if (eTagValid || context.RequestHeader(Extensions.HeaderIfModifiedSince).Equals(utcFileDateString))
+            {
+                context.Response.AddHeader(Extensions.HeaderCacheControl, "private");
+                context.Response.AddHeader(Extensions.HeaderPragma, string.Empty);
+                context.Response.AddHeader(Extensions.HeaderExpires, string.Empty);
+                context.Response.ContentType = string.Empty;
+
+                context.Response.StatusCode = 304;
+            }
+            else
+            {
+                var extension = Path.GetExtension(localPath).ToLowerInvariant();
+                if (MimeTypes.ContainsKey(extension))
+                    context.Response.ContentType = MimeTypes[extension];
+                
+                context.Response.AddHeader(Extensions.HeaderCacheControl, "private");
+                context.Response.AddHeader(Extensions.HeaderPragma, string.Empty);
+                context.Response.AddHeader(Extensions.HeaderExpires, string.Empty);
+                context.Response.AddHeader(Extensions.HeaderLastModified, utcFileDateString);
+                context.Response.AddHeader(Extensions.HeaderAcceptRanges, "bytes");
+
+                if (sendBuffer)
+                {
+                    var lrange = 0;
+                    var urange = buffer.Length;
+                    var size = buffer.LongLength;
+                    var isPartial = false;
+                    var partialHeader = context.RequestHeader(Extensions.HeaderRange);
+
+                    if (String.IsNullOrWhiteSpace(partialHeader) == false && partialHeader.StartsWith("bytes="))
+                    {
+                        var range = partialHeader.Replace("bytes=", "").Split('-');
+                        if (range.Length == 2 && int.TryParse(range[0], out lrange) &&
+                            int.TryParse(range[1], out urange))
+                        {
+                            urange = urange > buffer.Length ? buffer.Length : urange;
+                            isPartial = true;
+                        }
+
+                        if ((range.Length == 2 && int.TryParse(range[0], out lrange) && String.IsNullOrWhiteSpace(range[1])) ||
+                            (range.Length == 1 && int.TryParse(range[0], out lrange)))
+                        {
+                            urange = buffer.Length - 1;
+                            isPartial = true;
+                        }
                     }
 
-                    context.Response.OutputStream.Write(buffer, 0, buffer.Length);
-                }
+                    if (isPartial)
+                    {
+                        size = (urange - lrange) + 1;
 
-                return true;
-            });
+                        context.Response.AddHeader(Extensions.HeaderContentRanges,
+                            String.Format("bytes {0}-{1}/{2}", lrange, urange - 1, buffer.Length));
+
+                        context.Response.StatusCode = 206;
+                    }
+                    else
+                    {
+                        // Perform compression if available
+                        if (context.RequestHeader(Extensions.HeaderAcceptEncoding).Contains("gzip"))
+                        {
+                            buffer = buffer.Compress();
+                            context.Response.AddHeader(Extensions.HeaderContentEncoding, "gzip");
+                            size = buffer.LongLength;
+                            lrange = 0;
+                            urange = buffer.Length;
+                        }
+                    }
+
+                    context.Response.ContentLength64 = size;
+                    context.Response.OutputStream.Write(buffer, lrange, (int) size);
+                }
+                else
+                {
+                    context.Response.ContentLength64 = buffer.LongLength;
+                }
+            }
+
+            return true;
         }
 
         // taken from: http://stackoverflow.com/questions/1029740/get-mime-type-from-filename-extension

@@ -60,6 +60,8 @@
     <Compile Include="WebSocketsSample.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="html\css\embedio-icon.png" />
+    <Content Include="html\css\embedio.png" />
     <Content Include="html\scripts\tubular\tubular-bundle.css" />
     <Content Include="html\scripts\tubular\tubular-bundle.js" />
     <Content Include="html\scripts\tubular\tubular-bundle.min.css" />
