@@ -5,9 +5,8 @@
     using System.IO;
     using System.Linq;
     using Unosquare.Labs.EmbedIO;
-#if PATCH_COLLECTIONS
+#if !PATCH_COLLECTIONS
     using Unosquare.Labs.EmbedIO.Collections.Concurrent;
-
 #else
     using System.Collections.Concurrent;
 #endif
@@ -17,8 +16,6 @@
     /// </summary>
     public class StaticFilesModule : WebModuleBase
     {
-        // TODO: Handle ETags
-
         /// <summary>
         /// Gets or sets the maximum size of the ram cache file.
         /// </summary>
@@ -160,19 +157,45 @@
                 if (File.Exists(localPath))
                 {
                     fileDate = File.GetLastWriteTime(localPath);
-
+                    var requestHash = context.RequestHeader(Extensions.HeaderIfNotMatch);
+                    
                     if (RamCache.ContainsKey(localPath) && RamCache[localPath].LastModified == fileDate)
                     {
                         server.Log.DebugFormat("RAM Cache: {0}", localPath);
-                        buffer = RamCache[localPath].Buffer;
+                        var currentHash = Extensions.HashMd5(RamCache[localPath].Buffer) + '-' + fileDate.Ticks;
+    
+                        if (String.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
+                        {
+                            buffer = RamCache[localPath].Buffer;
+                            context.Response.AddHeader(Extensions.HeaderETag, currentHash);
+                        }
+                        else
+                        {
+                            context.Response.ContentType = string.Empty;
+                            context.Response.StatusCode = 304;
+                            return true;
+                        }
                     }
                     else
                     {
                         server.Log.DebugFormat("File System: {0}", localPath);
                         buffer = File.ReadAllBytes(localPath);
-                        if (UseRamCache && buffer.Length <= this.MaxRamCacheFileSize)
+                        var currentHash = Extensions.HashMd5(buffer) + '-' + fileDate.Ticks;
+
+                        if (String.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
                         {
-                            RamCache[localPath] = new RamCacheEntry() {LastModified = fileDate, Buffer = buffer};
+                            if (UseRamCache && buffer.Length <= MaxRamCacheFileSize)
+                            {
+                                RamCache[localPath] = new RamCacheEntry() {LastModified = fileDate, Buffer = buffer};
+                            }
+
+                            context.Response.AddHeader(Extensions.HeaderETag, currentHash);
+                        }
+                        else
+                        {
+                            context.Response.ContentType = string.Empty;
+                            context.Response.StatusCode = 304;
+                            return true;
                         }
                     }
 

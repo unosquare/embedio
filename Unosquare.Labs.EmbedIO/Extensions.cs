@@ -7,6 +7,8 @@
     using System.Linq;
     using System.Net;
     using System.Net.WebSockets;
+    using System.Security.Cryptography;
+    using System.Text;
 
     /// <summary>
     /// Extension methods to help your coding!
@@ -20,8 +22,13 @@
         public const string HeaderPragma = "Pragma";
         public const string HeaderExpires = "Expires";
         public const string HeaderLastModified = "Last-Modified";
+        public const string HeaderIfNotMatch = "If-None-Match";
+        public const string HeaderETag = "ETag";
+        public const string HeaderAcceptRanges = "Accept-Ranges";
+        public const string HeaderRange = "Range";
+        public const string HeaderContentRanges = "Content-Range";
         public const string BrowserTimeFormat = "ddd, dd MMM yyyy HH:mm:ss 'GMT'";
-
+        
         /// <summary>
         /// Default Http Status 404 response output
         /// </summary>
@@ -295,6 +302,35 @@
             }
 
             return outputBuffer;
+        }
+
+        /// <summary>
+        /// Hash with MD5
+        /// </summary>
+        /// <param name="inputBytes"></param>
+        /// <returns></returns>
+        public static string HashMd5(byte[] inputBytes)
+        {
+            var hash = MD5.Create().ComputeHash(inputBytes);
+
+            // step 2, convert byte array to hex string
+            var sb = new StringBuilder();
+            for (int i = 0; i < hash.Length; i++)
+            {
+                sb.Append(hash[i].ToString("x2"));
+            }
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Hash with MD5
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static string HashMd5(string input)
+        {
+            return HashMd5(Encoding.ASCII.GetBytes(input));
         }
     }
 }
