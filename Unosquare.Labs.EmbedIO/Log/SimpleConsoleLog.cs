@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Log
 {
     using System;
+    using System.Threading;
 
     /// <summary>
     /// Simple logger with output to Console
@@ -9,10 +10,13 @@
     {
         private static void WriteLine(ConsoleColor color, string format, params object[] args)
         {
-            var current = Console.ForegroundColor;
-            Console.ForegroundColor = color;
-            Console.WriteLine(format, args);
-            Console.ForegroundColor = current;
+            ThreadPool.QueueUserWorkItem((context) =>
+            {
+                var current = Console.ForegroundColor;
+                Console.ForegroundColor = color;
+                Console.WriteLine(">> " + format, args);
+                Console.ForegroundColor = current;
+            });
         }
 
         public virtual void Info(object message)
