@@ -1,12 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unosquare.Labs.EmbedIO", "Unosquare.Labs.EmbedIO\Unosquare.Labs.EmbedIO.csproj", "{7D7C29B4-9493-4EBD-8F20-6FAC1E7161EE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{30385C15-237B-47F9-BBAD-46DFF2390A7A}"
 	ProjectSection(SolutionItems) = preProject
+		.travis.yml = .travis.yml
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
@@ -14,6 +15,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unosquare.Labs.EmbedIO.Samples", "Unosquare.Labs.EmbedIO.Samples\Unosquare.Labs.EmbedIO.Samples.csproj", "{847B5ACB-4634-40FA-8243-85D7F97AC707}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unosquare.Labs.EmbedIO.Command", "Unosquare.Labs.EmbedIO.Command\Unosquare.Labs.EmbedIO.Command.csproj", "{3ECDF1A8-BB27-484C-A943-1AE5CC8DB565}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unosquare.Labs.EmbedIO.Tests", "Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj", "{2E100548-08CD-4EFD-AD08-AF584081B098}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +36,10 @@ Global
 		{3ECDF1A8-BB27-484C-A943-1AE5CC8DB565}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3ECDF1A8-BB27-484C-A943-1AE5CC8DB565}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3ECDF1A8-BB27-484C-A943-1AE5CC8DB565}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E100548-08CD-4EFD-AD08-AF584081B098}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E100548-08CD-4EFD-AD08-AF584081B098}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E100548-08CD-4EFD-AD08-AF584081B098}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E100548-08CD-4EFD-AD08-AF584081B098}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
