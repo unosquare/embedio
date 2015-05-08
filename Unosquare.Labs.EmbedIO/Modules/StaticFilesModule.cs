@@ -1,13 +1,12 @@
-﻿using System.Net;
-
-namespace Unosquare.Labs.EmbedIO.Modules
+﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
+    using System.Net;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using Unosquare.Labs.EmbedIO;
-#if PATCH_COLLECTIONS
+#if !PATCH_COLLECTIONS
     using Unosquare.Labs.EmbedIO.Collections.Concurrent;
 #else
     using System.Collections.Concurrent;
@@ -133,7 +132,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
             this.MaxRamCacheFileSize = 250*1024;
             this.DefaultDocument = "index.html";
 
-            //this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Head, (server, context) => HandleGet(context, server, false));
+            this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Head, (server, context) => HandleGet(context, server, false));
             this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (server, context) => HandleGet(context, server));
         }
 

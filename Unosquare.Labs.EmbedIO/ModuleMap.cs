@@ -4,24 +4,33 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a 2-key dictionary binding Paths and Verbs to Method calls
+    /// Map object
     /// </summary>
-    public class ModuleMap :
-        Dictionary<string, Dictionary<HttpVerbs, ResponseHandler>>
+    public class Map
+    {
+        /// <summary>
+        /// Route path
+        /// </summary>
+        public string Path { get; set; }
+        /// <summary>
+        /// HTTP Verb
+        /// </summary>
+        public HttpVerbs Verb { get; set; }
+        /// <summary>
+        /// ResponseHandler method
+        /// </summary>
+        public ResponseHandler ResponseHandler { get; set; }
+
+    }
+    /// <summary>
+    /// Represents a list binding Paths and Verbs to Method calls
+    /// </summary>
+    public class ModuleMap : List<Map>
     {
 
         /// <summary>
         /// Defines the path used to bind to all paths
         /// </summary>
         public const string AnyPath = "*";
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleMap"/> class.
-        /// </summary>
-        public ModuleMap()
-            : base(StringComparer.InvariantCultureIgnoreCase)
-        {
-            // placeholder
-        }
     }
 }

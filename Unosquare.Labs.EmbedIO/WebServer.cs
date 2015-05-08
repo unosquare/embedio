@@ -271,21 +271,16 @@
                 // Iterate though the loaded modules to match up a request and possibly generate a response.
                 foreach (var module in this.Modules)
                 {
-                    // First, try to match to an All-Path (*) handler
-                    var isAllPathHandler = module.Handlers.ContainsKey(ModuleMap.AnyPath);
-                    if (module.Handlers.ContainsKey(path) == false && isAllPathHandler == false)
-                        continue;
-
                     // Establish the handler
-                    var handler = isAllPathHandler ? module.Handlers[ModuleMap.AnyPath] : module.Handlers[path];
+                    var handler = module.Handlers.FirstOrDefault(x => 
+                        x.Path == (x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : path) &&
+                        x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : verb));
 
-                    // Paths could also match an All-Verb handler (Any)
-                    var isAllVerbHandler = handler.ContainsKey(HttpVerbs.Any);
-                    if (handler.ContainsKey(verb) == false && isAllVerbHandler == false)
+                    if (handler == null || handler.ResponseHandler == null)
                         continue;
 
                     // Establish the callback
-                    var callback = isAllVerbHandler ? handler[HttpVerbs.Any] : handler[verb];
+                    var callback = handler.ResponseHandler;
 
                     try
                     {

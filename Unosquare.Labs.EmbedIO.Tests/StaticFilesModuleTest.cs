@@ -16,17 +16,10 @@
         [SetUp]
         public void Init()
         {
-            var assemblyPath = Path.GetDirectoryName(typeof (StaticFilesModuleTest).Assembly.Location);
-            RootPath = Path.Combine(assemblyPath, "html");
-
-            if (Directory.Exists(RootPath) == false)
-                Directory.CreateDirectory(RootPath);
-
-            if (File.Exists(Path.Combine(RootPath, "index.html")) == false)
-                File.WriteAllText(Path.Combine(RootPath, "index.html"), Resources.index);
+            RootPath = TestHelper.SetupStaticFolder();
 
             WebServer = new WebServer(Resources.ServerAddress, Logger);
-            WebServer.RegisterModule(new StaticFilesModule(RootPath));
+            WebServer.RegisterModule(new StaticFilesModule(RootPath) { UseRamCache = true });
             WebServer.RunAsync();
         }
 
@@ -92,6 +85,22 @@
 
                 Assert.IsNotNullOrEmpty(html, "HTML is not empty");
                 Assert.IsTrue(Resources.index.StartsWith(html), "Content starts at index.html");
+            }
+        }
+
+        [Test]
+        public void HeadIndex()
+        {
+            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress);
+            request.Method = HttpVerbs.Head.ToString();
+
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                var html = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+                Assert.IsNullOrEmpty(html, "Content Empty");
             }
         }
 

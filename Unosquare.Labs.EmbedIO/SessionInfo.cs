@@ -1,9 +1,8 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using System;
-#if PATCH_COLLECTIONS
+#if !PATCH_COLLECTIONS
     using Unosquare.Labs.EmbedIO.Collections.Concurrent;
-
 #else
     using System.Collections.Concurrent;
 #endif

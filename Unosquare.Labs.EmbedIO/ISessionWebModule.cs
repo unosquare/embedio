@@ -3,7 +3,11 @@
     using System;
     using System.Net;
     using System.Net.WebSockets;
+#if !PATCH_COLLECTIONS
     using Unosquare.Labs.EmbedIO.Collections.Concurrent;
+#else
+    using System.Collections.Concurrent;
+#endif
 
     /// <summary>
     /// Interface to create session modules
