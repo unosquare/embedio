@@ -89,9 +89,12 @@
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
 
                 var html = new StreamReader(response.GetResponseStream()).ReadToEnd();
-                var sub = Resources.index.Substring(0, maxLength + 1);
-                System.Console.WriteLine(html);
-                System.Console.WriteLine(sub);
+                Assert.IsNotNullOrEmpty(html, "HTML is not empty");
+
+                // Remove carryline before
+                var sub = Resources.index.Substring(0, maxLength + 1).Replace("\r\n", "");
+                html = html.Replace("\r\n", "");
+
                 Assert.AreEqual(sub, html, "Same content index.html");
             }
         }
