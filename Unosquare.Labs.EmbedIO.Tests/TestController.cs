@@ -17,7 +17,7 @@
             public string PhotoUrl { get; set; }
         }
 
-        public const string RelativePath = "/api/";
+        public const string RelativePath = "api/";
         public const string GetPath = RelativePath + "people/";
 
         public static List<Person> People = new List<Person>
@@ -27,7 +27,7 @@
             new Person() {Key = 3, Name = "Luis Gonzalez", Age = 29, EmailAddress = "luis.gonzalez@unosquare.com"},
         };
 
-        [WebApiHandler(HttpVerbs.Get, GetPath + "*")]
+        [WebApiHandler(HttpVerbs.Get, "/" + GetPath + "*")]
         public bool GetPeople(WebServer server, HttpListenerContext context)
         {
             try

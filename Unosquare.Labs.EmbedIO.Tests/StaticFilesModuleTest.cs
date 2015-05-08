@@ -89,8 +89,10 @@
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
 
                 var html = new StreamReader(response.GetResponseStream()).ReadToEnd();
-
-                Assert.AreEqual(html, Resources.index.Substring(0, maxLength + 1), "Same content index.html");
+                var sub = Resources.index.Substring(0, maxLength + 1);
+                System.Console.WriteLine(html);
+                System.Console.WriteLine(sub);
+                Assert.AreEqual(sub, html, "Same content index.html");
             }
         }
 
