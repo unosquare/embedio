@@ -162,11 +162,15 @@
     /// </summary>
     public abstract class WebSocketsServer : IDisposable
     {
-        private bool isDisposing;
-        private bool enableDisconnectedSocketColletion;
-        private int maximumMessageSize;
-        private readonly object SyncRoot = new object();
+        private bool _isDisposing;
+        private readonly bool _enableDisconnectedSocketColletion;
+        private readonly int _maximumMessageSize;
+        private readonly object _syncRoot = new object();
         private readonly List<WebSocketContext> _mWebSockets = new List<WebSocketContext>(10);
+
+        /// <summary>
+        /// WebServer internal instance
+        /// </summary>
         public WebServer WebServer { get; protected set; }
 
         /// <summary>
@@ -179,7 +183,7 @@
         {
             get
             {
-                lock (SyncRoot)
+                lock (_syncRoot)
                 {
                     return new ReadOnlyCollection<WebSocketContext>(_mWebSockets);
                 }
@@ -194,8 +198,8 @@
         public WebSocketsServer(bool enableConnectionWatchdog, int maxMessageSize)
             : base()
         {
-            this.enableDisconnectedSocketColletion = enableConnectionWatchdog;
-            this.maximumMessageSize = maxMessageSize;
+            this._enableDisconnectedSocketColletion = enableConnectionWatchdog;
+            this._maximumMessageSize = maxMessageSize;
             this.RunConnectionWatchdog();
         }
 
@@ -216,9 +220,9 @@
         {
             var t = new Thread(() =>
             {
-                while (isDisposing == false)
+                while (_isDisposing == false)
                 {
-                    if (isDisposing == false)
+                    if (_isDisposing == false)
                         CollectDisconnected();
 
                     // TODO: make this sleep configurable.
@@ -230,7 +234,7 @@
                 Priority = ThreadPriority.BelowNormal
             };
 
-            if (enableDisconnectedSocketColletion)
+            if (_enableDisconnectedSocketColletion)
                 t.Start();
         }
 
@@ -242,19 +246,19 @@
         /// <param name="context">The context.</param>
         public void AcceptWebSocket(WebServer server, HttpListenerContext context)
         {
-
             // first, accept the websocket
             this.WebServer = server;
             server.Log.DebugFormat("{0} - Accepting WebSocket . . .", this.ServerName);
             const int receiveBufferSize = 2048;
             var webSocketContext =
-                context.AcceptWebSocketAsync(subProtocol: null, receiveBufferSize: receiveBufferSize, keepAliveInterval: TimeSpan.FromSeconds(30))
+                context.AcceptWebSocketAsync(subProtocol: null, receiveBufferSize: receiveBufferSize,
+                    keepAliveInterval: TimeSpan.FromSeconds(30))
                     .GetAwaiter()
                     .GetResult();
 
             // remove the disconnected clients
             this.CollectDisconnected();
-            lock (SyncRoot)
+            lock (_syncRoot)
             {
                 // add the newly-connected client
                 _mWebSockets.Add(webSocketContext);
@@ -294,12 +298,12 @@
                     // add the response to the multi-part response
                     receivedMessage.AddRange(frameBytes);
 
-                    if (receivedMessage.Count > maximumMessageSize && maximumMessageSize > 0)
+                    if (receivedMessage.Count > _maximumMessageSize && _maximumMessageSize > 0)
                     {
                         // close the connection if message excceeds max length
                         webSocketContext.WebSocket.CloseAsync(
                             WebSocketCloseStatus.MessageTooBig,
-                            string.Format("Message too big. Maximum is {0} bytes.", maximumMessageSize),
+                            string.Format("Message too big. Maximum is {0} bytes.", _maximumMessageSize),
                             CancellationToken.None).GetAwaiter().GetResult();
 
                         // exit the loop; we're done
@@ -334,7 +338,7 @@
             if (webSocketContext.WebSocket != null)
                 webSocketContext.WebSocket.Dispose();
 
-            lock (SyncRoot)
+            lock (_syncRoot)
             {
                 _mWebSockets.Remove(webSocketContext);
             }
@@ -349,7 +353,7 @@
         private int CollectDisconnected()
         {
             var collectedCount = 0;
-            lock (SyncRoot)
+            lock (_syncRoot)
             {
                 for (var i = this._mWebSockets.Count - 1; i >= 0; i--)
                 {
@@ -491,9 +495,9 @@
         /// </summary>
         public void Dispose()
         {
-            if (this.isDisposing == false)
+            if (this._isDisposing == false)
             {
-                this.isDisposing = true;
+                this._isDisposing = true;
                 this.Dispose(true);
                 GC.SuppressFinalize(this);
             }

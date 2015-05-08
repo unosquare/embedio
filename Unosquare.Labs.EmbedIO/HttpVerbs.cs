@@ -5,6 +5,9 @@
     /// </summary>
     public enum HttpVerbs
     {
+        /// <summary>
+        /// Wildcard
+        /// </summary>
         Any,
         Delete,
         Get,

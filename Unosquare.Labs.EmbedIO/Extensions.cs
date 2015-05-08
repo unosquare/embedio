@@ -15,18 +15,57 @@
     /// </summary>
     public static class Extensions
     {
+        /// <summary>
+        /// Accept-Encoding HTTP Header
+        /// </summary>
         public const string HeaderAcceptEncoding = "Accept-Encoding";
+        /// <summary>
+        /// Content-Encoding HTTP Header
+        /// </summary>
         public const string HeaderContentEncoding = "Content-Encoding";
+        /// <summary>
+        /// If-Modified-Since HTTP Header
+        /// </summary>
         public const string HeaderIfModifiedSince = "If-Modified-Since";
+        /// <summary>
+        /// Cache-Control HTTP Header
+        /// </summary>
         public const string HeaderCacheControl = "Cache-Control";
+        /// <summary>
+        /// Pragma HTTP Header
+        /// </summary>
         public const string HeaderPragma = "Pragma";
+        /// <summary>
+        /// Expires HTTP Header
+        /// </summary>
         public const string HeaderExpires = "Expires";
+        /// <summary>
+        /// Last-Modified HTTP Header
+        /// </summary>
         public const string HeaderLastModified = "Last-Modified";
+        /// <summary>
+        /// If-None-Match HTTP Header
+        /// </summary>
         public const string HeaderIfNotMatch = "If-None-Match";
+        /// <summary>
+        /// ETag HTTP Header
+        /// </summary>
         public const string HeaderETag = "ETag";
+        /// <summary>
+        /// Accept-Ranges HTTP Header
+        /// </summary>
         public const string HeaderAcceptRanges = "Accept-Ranges";
+        /// <summary>
+        /// Range HTTP Header
+        /// </summary>
         public const string HeaderRange = "Range";
+        /// <summary>
+        /// Content-Range HTTP Header
+        /// </summary>
         public const string HeaderContentRanges = "Content-Range";
+        /// <summary>
+        ///  Default Browser time format
+        /// </summary>
         public const string BrowserTimeFormat = "ddd, dd MMM yyyy HH:mm:ss 'GMT'";
         
         /// <summary>
@@ -221,7 +260,7 @@
         /// <returns></returns>
         public static bool JsonResponse(this HttpListenerContext context, string json)
         {
-            var buffer = System.Text.Encoding.UTF8.GetBytes(json);
+            var buffer = Encoding.UTF8.GetBytes(json);
 
             context.Response.ContentType = "application/json";
             context.Response.OutputStream.Write(buffer, 0, buffer.Length);
@@ -313,7 +352,6 @@
         {
             var hash = MD5.Create().ComputeHash(inputBytes);
 
-            // step 2, convert byte array to hex string
             var sb = new StringBuilder();
             for (int i = 0; i < hash.Length; i++)
             {

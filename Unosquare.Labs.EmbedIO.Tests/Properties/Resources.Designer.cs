@@ -78,5 +78,14 @@ namespace Unosquare.Labs.EmbedIO.Tests.Properties {
                 return ResourceManager.GetString("index", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://localhost:7777/.
+        /// </summary>
+        internal static string ServerAddress {
+            get {
+                return ResourceManager.GetString("ServerAddress", resourceCulture);
+            }
+        }
     }
 }

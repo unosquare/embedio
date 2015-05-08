@@ -7,7 +7,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
     using System.IO;
     using System.Linq;
     using Unosquare.Labs.EmbedIO;
-#if !PATCH_COLLECTIONS
+#if PATCH_COLLECTIONS
     using Unosquare.Labs.EmbedIO.Collections.Concurrent;
 #else
     using System.Collections.Concurrent;
@@ -113,7 +113,6 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// <summary>
         /// Initializes a new instance of the <see cref="StaticFilesModule" /> class.
         /// </summary>
-        /// <param name="webServer">The web server.</param>
         /// <param name="fileSystemPath">The file system path.</param>
         /// <exception cref="System.ArgumentException">Path ' + fileSystemPath + ' does not exist.</exception>
         public StaticFilesModule(string fileSystemPath)
