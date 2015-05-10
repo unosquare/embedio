@@ -108,6 +108,7 @@
     using System;
     using Unosquare.Labs.EmbedIO;                                 
     using Unosquare.Labs.EmbedIO.Log;
+
     class Program
     {
         /// &lt;summary&gt;
@@ -154,8 +155,6 @@
                 // something like a BackgroundWorker or a ManualResetEvent.
                 Console.ReadKey(true);
             }
-            // Before exiting, we shutdown the logging subsystem.
-            Logger.Shutdown();
         }
     }
 }</code></pre>
