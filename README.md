@@ -32,7 +32,8 @@ namespace Company.Project
     using System;
     using Unosquare.Labs.EmbedIO;
     using Unosquare.Labs.EmbedIO.Log;
-    
+    using Unosquare.Labs.EmbedIO.Modules;
+
     class Program
     {
         /// <summary>
@@ -56,16 +57,16 @@ namespace Company.Project
                 // Beware that this is an in-memory session storage mechanism so, avoid storing very large objects.
                 // You can use the server.GetSession() method to get the SessionInfo object and manupulate it.
                 // You could potentially implement a distributed session module using something like Redis
-                server.RegisterModule(new Modules.LocalSessionModule());
+                server.RegisterModule(new LocalSessionModule());
 
                 // Here we setup serving of static files
-                server.RegisterModule(new Modules.StaticFilesModule("c:/inetpub/wwwroot"));
+                server.RegisterModule(new StaticFilesModule("c:/web"));
                 // The static files module will cache small files in ram until it detects they have been modified.
-                server.Module<Modules.StaticFilesModule>().UseRamCache = true;
-                server.Module<Modules.StaticFilesModule>().DefaultExtension = ".html";
+                server.Module<StaticFilesModule>().UseRamCache = true;
+                server.Module<StaticFilesModule>().DefaultExtension = ".html";
                 // We don't need to add the line below. The default document is always index.html.
                 //server.Module<Modules.StaticFilesWebModule>().DefaultDocument = "index.html";
-                
+
                 // Once we've registered our modules and configured them, we call the RunAsync() method.
                 // This is a non-blocking method (it return immediately) so in this case we avoid
                 // disposing of the object until a key is pressed.
@@ -74,8 +75,10 @@ namespace Company.Project
 
                 // Fire up the browser to show the content if we are debugging!
 #if DEBUG
-                var browser = new System.Diagnostics.Process() { 
-                    StartInfo = new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true } };
+                var browser = new System.Diagnostics.Process()
+                {
+                    StartInfo = new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true }
+                };
                 browser.Start();
 #endif
                 // Wait for any key to be pressed before disposing of our web server.
@@ -83,9 +86,6 @@ namespace Company.Project
                 // something like a BackgroundWorker or a ManualResetEvent.
                 Console.ReadKey(true);
             }
-
-            // Before exiting, we shutdown the logging subsystem.
-            Logger.Shutdown();
         }
     }
 }
