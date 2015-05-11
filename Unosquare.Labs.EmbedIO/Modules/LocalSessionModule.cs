@@ -1,15 +1,11 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Linq;
     using System.Net;
-    using Unosquare.Labs.EmbedIO;
     using System.Net.WebSockets;
-#if !PATCH_COLLECTIONS
-    using Unosquare.Labs.EmbedIO.Collections.Concurrent;
-#else
-    using System.Collections.Concurrent;
-#endif
+    using Unosquare.Labs.EmbedIO;
 
     /// <summary>
     /// A simple module to handle in-memory sessions. Do not use for distributed applications

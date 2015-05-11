@@ -1,16 +1,12 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
-    using System.Net;
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using Unosquare.Labs.EmbedIO;
-#if !PATCH_COLLECTIONS
-    using Unosquare.Labs.EmbedIO.Collections.Concurrent;
-#else
-    using System.Collections.Concurrent;
-#endif
 
     /// <summary>
     /// Represents a simple module to server static files from the file system.
@@ -126,7 +122,7 @@
             this.UseRamCache = false;
 #else
     // Otherwise, enable it by default
-                this.UseRamCache = true;
+            this.UseRamCache = true;
 #endif
             this.RamCache = new ConcurrentDictionary<string, RamCacheEntry>(StringComparer.InvariantCultureIgnoreCase);
             this.MaxRamCacheFileSize = 250*1024;
@@ -221,7 +217,7 @@
                 var extension = Path.GetExtension(localPath).ToLowerInvariant();
                 if (MimeTypes.ContainsKey(extension))
                     context.Response.ContentType = MimeTypes[extension];
-                
+
                 context.Response.AddHeader(Extensions.HeaderCacheControl, "private");
                 context.Response.AddHeader(Extensions.HeaderPragma, string.Empty);
                 context.Response.AddHeader(Extensions.HeaderExpires, string.Empty);
@@ -246,7 +242,8 @@
                             isPartial = true;
                         }
 
-                        if ((range.Length == 2 && int.TryParse(range[0], out lrange) && String.IsNullOrWhiteSpace(range[1])) ||
+                        if ((range.Length == 2 && int.TryParse(range[0], out lrange) &&
+                             String.IsNullOrWhiteSpace(range[1])) ||
                             (range.Length == 1 && int.TryParse(range[0], out lrange)))
                         {
                             urange = buffer.Length - 1;

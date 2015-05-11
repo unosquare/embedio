@@ -60,8 +60,6 @@
     <Compile Include="WebServer.cs" />
     <Compile Include="WebModuleBase.cs" />
     <Compile Include="ModuleMap.cs" />
-    <Compile Include="Collections\_Mono_ConcurrentDictionary.cs" />
-    <Compile Include="Collections\_Mono_SplitOrderedList.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
