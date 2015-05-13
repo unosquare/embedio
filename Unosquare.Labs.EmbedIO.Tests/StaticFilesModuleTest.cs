@@ -1,8 +1,10 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using NUnit.Framework;
+    using System;
     using System.IO;
     using System.Net;
+    using System.Threading;
     using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Labs.EmbedIO.Tests.Properties;
 
@@ -107,6 +109,7 @@
         [TearDown]
         public void Kill()
         {
+            Thread.Sleep(TimeSpan.FromSeconds(1));
             WebServer.Dispose();
         }
     }
