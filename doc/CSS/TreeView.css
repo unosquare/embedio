@@ -1,0 +1,86 @@
+/*
+ * Copyright 2007 - 2009 Marek St�j
+ * 
+ * This file is part of ImmDoc .NET.
+ *
+ * ImmDoc .NET is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * ImmDoc .NET is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with ImmDoc .NET; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
+body
+{
+    font-family: Verdana, Arial, Sans-Serif;
+    font-size: 8pt;
+}
+
+.TV_SubtreeContainer
+{
+    background-image: url('../GFX/TV_VerticalDots.gif');
+    background-repeat: repeat-y;
+	margin-left: 14.5pt;
+	visibility: hidden;
+	display: none;
+}
+
+.TV_NodeContainer
+{
+	white-space: nowrap;
+    padding-top: 3pt;
+}
+
+.TV_NodeLink
+{
+    text-decoration: none;
+    color: #000000;
+}
+
+.TV_NodeLink:visited
+{
+}
+
+.TV_NodeLink_Selected
+{
+	/* not supported yet because navigating in the main contents
+       window doesn't change selected nodes appropriately
+    text-decoration: none;
+    color: #000000;
+    padding: 1pt;
+    padding-top: 0.5pt;
+    padding-bottom: 0.5pt;
+    
+    background-color: #e0dfe3;
+    border: solid #919191 1px;
+	*/
+
+    text-decoration: none;
+    color: #000000;
+}
+
+.TV_NodeLink_Selected:visited
+{
+}
+
+/* as long as TV_NodeLink_Selected style is disabled this should be
+   disabled too
+:focus
+{
+	outline-style: none;
+}
+
+:active
+{
+	outline-style: none;
+	outline: expression(hideFocus='true');
+}
+*/

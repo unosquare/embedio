@@ -1,0 +1,489 @@
+/*
+ * Copyright 2007 - 2009 Marek St�j
+ * 
+ * This file is part of ImmDoc .NET.
+ *
+ * ImmDoc .NET is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * ImmDoc .NET is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with ImmDoc .NET; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
+/*****************************************************************************
+ *                                 Main                                      *
+ *****************************************************************************/
+
+/* Hack for IE */
+* html body
+{
+	padding: 77px 0 15px 0; 
+}
+
+/* Hack for IE */
+* html #Contents
+{
+	height: 100%; 
+	width: 100%; 
+}
+
+body
+{
+	font-family: Verdana, Tahoma, Arial, Sans-Serif;
+	font-size: 8pt;
+	color: #000000;
+	margin: 0px;
+	padding: 0px;
+	height: 100%;
+	max-height:100%; 
+	overflow: hidden;
+}
+
+/*****************************************************************************
+ *                                 Links                                     *
+ *****************************************************************************/
+a
+{
+	color: #0000ff;
+}
+
+a:visited
+{
+	color: #0000ff;
+}
+
+a:hover
+{
+	color: #3366ff;
+}
+
+a#ContentsAnchor
+{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+}
+
+/*****************************************************************************
+ *                                  Divs                                     *
+ *****************************************************************************/
+
+div#Header
+{
+	position:absolute; 
+	top: 0; 
+	left: 0; 
+	width: 100%; 
+	height: 77px; 
+	overflow: auto; 
+	background-color: #d4dfff;
+	border-bottom: solid #c8cdde 1px;
+}
+
+div#HeaderToolbar
+{
+	padding-left: 15px;
+	padding-right: 15px;
+	background-color: #d4dfff;
+	padding-top: 2px;
+}
+
+div#ProjectTitle
+{
+	font-family: Verdana, Tahoma, Arial, Sans-Serif;
+	font-size: 7.5pt;
+	color: #003399;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 5px;
+	margin-bottom: 3px;
+}
+
+div#PageTitle
+{
+	font-family: Verdana, Tahoma, Arial, Sans-Serif;
+	font-size: 9pt;
+	font-weight: bold;
+	color: #003399;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-bottom: 5px;	
+}
+
+div#HeaderShortcuts
+{
+	padding-left: 15px;
+	margin-bottom: 4px;
+	margin-top: 3px;
+}
+
+div#Contents
+{
+	position: fixed; 
+	top: 78px;
+	left: 0;
+	bottom: 18px; 
+	
+  * bottom: 15px; /* Hack for IE */
+	right: 0; 
+	overflow:auto; 
+	margin: 0px;
+	padding: 15px;
+	padding-top: 15px;
+}
+
+div#Footer
+{
+	position: absolute; 
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+	height: 14px;
+	overflow: hidden;
+	border-top: solid #bec7e4 1px;
+	padding-bottom: 3px;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+div#ItemLocation
+{
+	margin: 0px;
+	padding: 0px;
+	margin-top: 10px;
+}
+
+p + div#ItemLocation
+{
+	margin-top: 0px;
+}
+
+div.SectionContainer
+{
+	padding-left: 17px;
+	padding-right: 17px;
+
+    _width: 100%; /* Hack for IE 6 and below */
+}
+
+div.SectionHeader
+{
+	font-family: Verdana, Tahoma, Arial, Sans-Serif;
+	font-size: 11pt;
+	color: #003399;
+	font-weight: bold;
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+div.CommentHeader
+{
+	font-family: Verdana, Tahoma, Arial, Sans-Serif;
+	font-size: 10pt;
+	color: #000000;
+	font-weight: bold;
+	margin-top: 10px;
+	margin-bottom: 2px;
+}
+
+div.CommentParameterName
+{
+	font-family: Verdana, Tahoma, Arial, Sans-Serif;
+	font-style: italic;
+	margin: 0px;
+	padding: 0px;
+	margin-bottom: 2px;
+	margin-top: 10px;
+}
+
+div + div.CommentHeader
+{
+	margin-top: 15px;
+}
+
+div.CommentHeader + div.CommentParameterName
+{
+	margin-top: 5px;
+}
+
+p + div.CommentParameterName
+{
+	margin-top: 5px;
+}
+
+div.DarkLine
+{
+	border-top: solid #c8cdde 1px
+}
+
+div.LightLine
+{
+	border-top: solid #ffffff 1px
+}
+
+div.RemarksContainer
+{
+	margin: 0px;
+	padding: 0px;
+	margin-bottom: 10px;
+}
+
+div.ParameterCommentContainer
+{
+	margin: 0px;
+	padding: 0px;
+	margin-bottom: 10px;
+}
+
+div.TopLink
+{
+	margin-top: 10px;
+}
+
+/*****************************************************************************
+ *                                 Tables                                    *
+ *****************************************************************************/
+
+table.MembersTable
+{
+	width: 100%;
+}
+
+table.MembersTable th
+{
+	font-family: Verdana, Tahoma, Arial, Sans-Serif;
+	font-size: 8pt;
+	color: #000066;
+	font-weight: bold;
+	background-color: #efeff7;
+	border-bottom: solid #c8cdde 1px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+	text-align: left;
+}
+
+table.MembersTable td
+{
+	font-family: Verdana, Tahoma, Arial, Sans-Serif;
+	font-size: 8pt;
+	color: #000000;
+	background-color: #f7f7ff;
+	border-bottom: solid #d5d5d3 1px;
+	padding-top: 5px;
+	padding-bottom: 10px;
+	padding-left: 5px;
+	padding-right: 10px;
+	text-align: left;
+}
+
+table.MembersTable td.IconColumn
+{
+	padding-right: 5px;
+	white-space: nowrap;
+}
+
+table.CodeTable
+{
+	width: 100%;
+	margin-bottom: 0px;
+	font-family: Courier New, Monospace;
+	font-size: 9pt;
+}
+
+table.ExampleCodeTable
+{
+	width: 100%;
+	margin-bottom: 0px;
+	font-family: Courier New, Monospace;
+	font-size: 9pt;
+	
+	margin-top: 12px;
+}
+
+p + table.ExampleCodeTable
+{
+	margin-top: 0px;
+}
+
+th.CodeTable
+{
+	font-family: Verdana, Tahoma, Arial, Sans-Serif;
+	font-size: 8pt;
+	color: #000066;
+	font-weight: bold;
+	background-color: #efeff7;
+	border-bottom: solid #c8cdde 1px;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	padding-left: 5px;
+	padding-right: 5px;
+	text-align: left;
+}
+
+td.CodeTable
+{
+	color: #000066;
+	background-color: #f7f7ff;
+	border-bottom: solid #d5d5d3 1px;
+	padding-top: 5px;
+	padding-bottom: 15px;
+	padding-left: 5px;
+	padding-right: 10px;
+	text-align: left;
+}
+
+table.InsideCodeBlock
+{
+	font-size: 9pt;
+	
+    margin: 0px;
+    padding: 0px;
+}
+
+table.InsideCodeBlock tr
+{
+    margin: 0px;
+    padding: 0px;
+}
+
+table.InsideCodeBlock td
+{
+    margin: 0px;
+    padding: 0px;
+    border: none;
+}
+
+td.NoWrapTop
+{
+    white-space: nowrap;
+    vertical-align: top;
+}
+
+/*****************************************************************************
+ *                                  Spans                                    *
+ *****************************************************************************/
+
+span#ExpandCollapseAllSpan
+{
+	color: #0000ff;
+	cursor: default;
+}
+
+span.SectionHeader
+{
+	margin-left: 4px;
+}
+
+span.Footer
+{
+	font-family: Verdana, Tahoma, Arial, Sans-Serif;
+	font-size: 7.5pt;
+	margin: 0px;
+	margin-left: 5px;
+	padding: 0px;
+	padding-bottom: 5px;
+}
+
+span.PseudoLink
+{
+}
+
+span.Code
+{
+	font-family: Courier New, Monospace;
+}
+
+span.SeeAlsoInSectionHeader
+{
+	font-size: 9pt;
+}
+
+/*****************************************************************************
+ *                                  Paragraphs                               *
+ *****************************************************************************/
+
+p
+{
+	text-align: justify;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	margin: 0px;
+	margin-top: 12px;
+	margin-bottom: 12px;
+}
+
+a#ContentsAnchor + p
+{
+	margin-top: 0px;
+}
+
+td p
+{
+	margin: 0px;
+	padding: 0px;
+}
+
+div.ParameterCommentContainer p
+{
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
+
+/*****************************************************************************
+ *                                    Other                                  *
+ *****************************************************************************/
+
+pre
+{
+	font-family: Courier New, Monospace;
+	font-size: 9pt;
+	margin: 0px;
+	padding: 0px;
+}
+
+ul
+{
+	padding: 0px;
+	margin: 0px;
+	padding-left: 30px;
+	margin-top: 12px;
+	margin-bottom: 12px;
+}
+
+ol
+{
+	padding: 0px;
+	margin: 0px;
+	padding-left: 30px;
+	margin-top: 12px;
+	margin-bottom: 12px;
+}
+
+/*****************************************************************************
+ *                                  General classes                          *
+ *****************************************************************************/
+
+.ArrowCursor
+{
+	cursor: default;
+}
+
+.NoTopMargin
+{
+	margin-top: 0px;
+}
+
+.WithWrapping
+{
+	white-space: normal;
+}

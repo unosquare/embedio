@@ -1,0 +1,81 @@
+/*
+ * Copyright 2007 - 2009 Marek St�j
+ * 
+ * This file is part of ImmDoc .NET.
+ *
+ * ImmDoc .NET is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * ImmDoc .NET is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with ImmDoc .NET; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
+/*****************************************************************************
+ *                                 Main                                      *
+ *****************************************************************************/
+
+body
+{
+	font-family: Verdana, Tahoma, Arial, Sans-Serif;
+	font-size: 8pt;
+	color: #000000;
+	margin: 0px;
+	padding: 0px;
+}
+
+/*****************************************************************************
+ *                                  Divs                                     *
+ *****************************************************************************/
+
+#Contents
+{
+	padding: 10px;
+	padding-top: 4px;
+}
+
+#Header
+{
+	width: 100%;
+	background-color: #d4dfff;
+	border-bottom: solid #c8cdde 1px;
+	padding-bottom: 3px;
+	padding-left: 0px;
+	padding-top: 3px;
+  * padding-top: 2px; /* Hack for IE */
+}
+
+#HeaderTitle
+{
+	display: inline;
+	font-size: 7.5pt;
+	color: #003399;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-left: 5px;
+}
+
+#LeftMenuSwitcherContainer
+{
+	position:absolute;
+	right: 0px;
+	top: 0px;
+	_background-color: #d4dfff; /* Hack for IE 6 and below */
+	_border-bottom: solid #c8cdde 1px; /* Hack for IE 6 and below */
+}
+
+/*****************************************************************************
+ *                                  IMGs                                     *
+ *****************************************************************************/
+
+#LeftMenuSwitcherLink
+{
+	cursor: pointer;
+}

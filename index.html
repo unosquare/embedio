@@ -50,6 +50,7 @@
                                 </ul>
                             </li>
                             <li><a href="#cli">EmbedIO CLI</a></li>
+                            <li><a href="doc/index.html">Documentation</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="http://github.com/unosquare/embedio">EmbedIO @ GitHub</a></li>
@@ -108,7 +109,6 @@
     using System;
     using Unosquare.Labs.EmbedIO;                                 
     using Unosquare.Labs.EmbedIO.Log;
-
     class Program
     {
         /// &lt;summary&gt;
@@ -158,6 +158,48 @@
         }
     }
 }</code></pre>
+                        <hr />
+                        <h2>Fluent Example:</h2>
+                        <pre><code class="csharp">
+namespace Company.Project
+{
+    using System;
+    using Unosquare.Labs.EmbedIO;
+    internal class Program
+    {
+        /// &lt;summary&gt;
+        /// Defines the entry point of the application.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;args&quot;&gt;The arguments.&lt;/param&gt;
+        private static void Main(string[] args)
+        {
+            var url = &quot;http://localhost:9696/&quot;;
+            if (args.Length &gt; 0)
+                url = args[0];
+            // Create Webserver with console logger and attach LocalSession and Static
+            // files module
+            var server = WebServer
+                .CreateWithConsole(url)
+                .WithLocalSession()
+                .WithStaticFolderAt(&quot;c:/web&quot;);
+            server.RunAsync();
+            // Fire up the browser to show the content if we are debugging!
+#if DEBUG
+            var browser = new System.Diagnostics.Process()
+            {
+                StartInfo = new System.Diagnostics.ProcessStartInfo(url) {UseShellExecute = true}
+            };
+            browser.Start();
+#endif
+            // Wait for any key to be pressed before disposing of our web server.
+            // In a service we&#39;d manage the lifecycle of of our web server using
+            // something like a BackgroundWorker or a ManualResetEvent.
+            Console.ReadKey(true);
+            server.Dispose();
+        }
+    }
+}
+</code></pre>
                         <hr />
                         <h2 id="rest">REST API Example:</h2>
 
