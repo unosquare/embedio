@@ -1,4 +1,6 @@
-﻿namespace Unosquare.Labs.EmbedIO.Modules
+﻿using System.Threading.Tasks;
+
+namespace Unosquare.Labs.EmbedIO.Modules
 {
     using System;
     using System.Collections.Generic;
@@ -59,12 +61,30 @@
                 var methodPair = DelegateMap[path][verb];
 
                 var controller = Activator.CreateInstance(methodPair.Item1);
-                var method = Delegate.CreateDelegate(typeof (ResponseHandler), controller, methodPair.Item2);
 
-                server.Log.DebugFormat("Handler: {0}.{1}", method.Method.DeclaringType.FullName, method.Method.Name);
-                context.NoCache();
-                var returnValue = (bool) method.DynamicInvoke(server, context);
-                return returnValue;
+                if (methodPair.Item2.ReturnType == typeof (Task<bool>))
+                {
+                    var method = Delegate.CreateDelegate(typeof (AsyncResponseHandler), controller, methodPair.Item2);
+
+                    server.Log.DebugFormat("Handler: {0}.{1}", method.Method.DeclaringType.FullName, method.Method.Name);
+                    context.NoCache();
+                    var returnValue = Task.Run(async () =>
+                    {
+                        var task = await (Task<bool>) method.DynamicInvoke(server, context);
+                        return task;
+                    });
+
+                    return returnValue.Result;
+                }
+                else
+                {
+                    var method = Delegate.CreateDelegate(typeof (ResponseHandler), controller, methodPair.Item2);
+
+                    server.Log.DebugFormat("Handler: {0}.{1}", method.Method.DeclaringType.FullName, method.Method.Name);
+                    context.NoCache();
+                    var returnValue = (bool) method.DynamicInvoke(server, context);
+                    return returnValue;
+                }
             });
         }
 
@@ -99,12 +119,17 @@
         public void RegisterController(Type controllerType)
         {
             var protoDelegate = new ResponseHandler((server, context) => true);
+            var protoAsyncDelegate = new AsyncResponseHandler((server, context) => Task.FromResult(true));
 
-            var methods = controllerType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                .Where(m => m.ReturnType == protoDelegate.Method.ReturnType
-                            && m.GetParameters().Select(pi => pi.ParameterType)
-                                .SequenceEqual(protoDelegate.Method.GetParameters()
-                                    .Select(pi => pi.ParameterType)));
+            var methods = controllerType
+                .GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                .Where(
+                    m =>
+                        (m.ReturnType == protoDelegate.Method.ReturnType ||
+                         m.ReturnType == protoAsyncDelegate.Method.ReturnType)
+                        && m.GetParameters().Select(pi => pi.ParameterType)
+                            .SequenceEqual(protoDelegate.Method.GetParameters()
+                                .Select(pi => pi.ParameterType)));
 
             foreach (var method in methods)
             {

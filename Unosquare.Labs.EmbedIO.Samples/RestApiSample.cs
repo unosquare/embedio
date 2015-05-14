@@ -6,6 +6,7 @@
     using System.Net;
     using System.Security.Cryptography;
     using System.Text;
+    using System.Threading.Tasks;
     using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Tubular;
     using Unosquare.Tubular.ObjectModel;
@@ -20,6 +21,12 @@
             new Person() {Key = 2, Name = "Geovanni Perez", Age = 32, EmailAddress = "geovanni.perez@unosquare.com"},
             new Person() {Key = 3, Name = "Luis Gonzalez", Age = 29, EmailAddress = "luis.gonzalez@unosquare.com"},
         };
+
+        public static async Task<IQueryable<Person>> GetPeopleAsync()
+        {
+            await Task.Delay(TimeSpan.FromMilliseconds(300));
+            return People.AsQueryable();
+        }
 
         /// <summary>
         /// Here we add the WebApiModule to our Web Server and register our controller classes.
@@ -136,20 +143,21 @@
             /// <returns></returns>
             /// <exception cref="System.Collections.Generic.KeyNotFoundException">Key Not Found:  + lastSegment</exception>
             [WebApiHandler(HttpVerbs.Post, RelativePath + "people/*")]
-            public bool PostPeople(WebServer server, HttpListenerContext context)
+            public async Task<bool> PostPeople(WebServer server, HttpListenerContext context)
             {
                 try
                 {
                     var model = context.ParseJson<GridDataRequest>();
+                    var data = await GetPeopleAsync();
 
-                    return context.JsonResponse(model.CreateGridDataResponse(People.AsQueryable()));
+                    return context.JsonResponse(model.CreateGridDataResponse(data));
                 }
                 catch (Exception ex)
                 {
                     // here the error handler will respond with a generic 500 HTTP code a JSON-encoded object
                     // with error info. You will need to handle HTTP status codes correctly depending on the situation.
                     // For example, for keys that are not found, ou will need to respond with a 404 status code.
-                    return HandleError(context, ex, (int)HttpStatusCode.InternalServerError);
+                    return HandleError(context, ex);
                 }
             }
 
