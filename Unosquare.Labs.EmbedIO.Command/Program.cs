@@ -63,7 +63,7 @@
 
                 if (assembly == null) return;
 
-                server.LoadApiControllers(assembly, true).LoadWebSockets(assembly, true);
+                server.LoadApiControllers(assembly).LoadWebSockets(assembly);
             }
             catch (Exception ex)
             {

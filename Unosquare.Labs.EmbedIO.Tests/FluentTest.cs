@@ -43,7 +43,7 @@
         public void FluentWithWebApi()
         {
             var webServer = WebServer.Create(Resources.ServerAddress)
-                .WithWebApi(autoload: true, assembly: typeof(FluentTest).Assembly);
+                .WithWebApi(typeof(FluentTest).Assembly);
 
             Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
             Assert.IsNotNull(webServer.Module<WebApiModule>(), "It has WebApiModule");
