@@ -6,14 +6,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
 <link rel="stylesheet" type="text/css" href="../../CSS/Contents.css"></link>
 <script type="text/javascript" src="../../JS/Common.js"></script>
-<title>WebApiHandlerAttribute Constructor (HttpVerbs, string[])</title>
+<title>LocalSessionModule.GetSession Method</title>
 </head>
 <body>
 <div id="Header">
 <div id="ProjectTitle">Documentation Project</div>
-<div id="PageTitle">WebApiHandlerAttribute Constructor (HttpVerbs, string[])</div>
+<div id="PageTitle">LocalSessionModule.GetSession Method</div>
 <div id="HeaderShortcuts">
-<a href="#SectionHeader0" onclick="javascript: SetSectionVisibility(0, true); SetExpandCollapseAllToCollapseAll();">Syntax</a>&nbsp;
+<a href="#SectionHeader0" onclick="javascript: SetSectionVisibility(0, true); SetExpandCollapseAllToCollapseAll();">Overload List</a>&nbsp;
 </div>
 <div class="DarkLine"></div>
 <div class="LightLine"></div>
@@ -24,9 +24,10 @@
 </div>
 <div id="Contents">
 <a id="ContentsAnchor">&nbsp;</a>
-<p>There is no summary.</p>
+Gets a session object for the given server context.
+            If no session exists for the context, then null is returned
 <div id="ItemLocation">
-<b>Declaring type:</b> <a href="../../Contents/1/167.html">WebApiHandlerAttribute</a><br />
+<b>Declaring type:</b> <a href="../../Contents/1/189.html">LocalSessionModule</a><br />
 <b>Namespace:</b> <a href="../../Contents/1/4.html">Unosquare.Labs.EmbedIO.Modules</a><br />
 <b>Assembly:</b> <a href="../../Contents/1/1.html">Unosquare.Labs.EmbedIO</a>
 </div>
@@ -34,25 +35,35 @@
 <img id="SectionExpanderImg0" src="../../GFX/BigSquareExpanded.gif" alt="Collapse/Expand" onclick="javascript: ToggleSectionVisibility(0);" />
 <span class="SectionHeader">
 <span class="ArrowCursor" onclick="javascript: ToggleSectionVisibility(0);">
-Syntax
+Overload List
 </span>
 </span>
 </div>
 
 <div id="SectionContainerDiv0" class="SectionContainer">
-<table class="CodeTable"><col width="100%" /><tr class="CodeTable"><th class="CodeTable">C#</th></tr><tr class="CodeTable"><td class="CodeTable"><pre style="margin-left: 2px;">public WebApiHandlerAttribute (
-        HttpVerbs <i>verb</i>,
-        string[] <i>paths</i>
-) </pre></td></tr></table>
-<div class="CommentHeader">Parameters</div>
-<div class="CommentParameterName">verb</div>
-<div class="ParameterCommentContainer">
-<p>There is no description.</p>
-</div>
-<div class="CommentParameterName">paths</div>
-<div class="ParameterCommentContainer">
-<p>There is no description.</p>
-</div>
+<table class="MembersTable">
+<col width="7%" />
+<col width="38%" />
+<col width="55%" />
+<tr>
+<th>&nbsp;</th>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td class="IconColumn">
+<img src="../../GFX/PublicMethod.gif" alt="Public Method" /></td>
+<td><a href="../../Contents/1/209.html">LocalSessionModule.GetSession (HttpListenerContext)</a></td>
+<td>Gets a session object for the given server context.
+            If no session exists for the context, then null is returned</td>
+</tr>
+<tr>
+<td class="IconColumn">
+<img src="../../GFX/PublicMethod.gif" alt="Public Method" /></td>
+<td><a href="../../Contents/1/210.html">LocalSessionModule.GetSession (WebSocketContext)</a></td>
+<td>Gets the session.</td>
+</tr>
+</table>
 <div class="TopLink"><a href="#ContentsAnchor">Top</a></div></div>
 </div>
 <div id="Footer">

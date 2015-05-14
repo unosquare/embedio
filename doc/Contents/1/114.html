@@ -6,12 +6,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
 <link rel="stylesheet" type="text/css" href="../../CSS/Contents.css"></link>
 <script type="text/javascript" src="../../JS/Common.js"></script>
-<title>IWebModule.AddHandler Method (string, HttpVerbs, ResponseHandler)</title>
+<title>WebServer.Modules Property </title>
 </head>
 <body>
 <div id="Header">
 <div id="ProjectTitle">Documentation Project</div>
-<div id="PageTitle">IWebModule.AddHandler Method (string, HttpVerbs, ResponseHandler)</div>
+<div id="PageTitle">WebServer.Modules Property </div>
 <div id="HeaderShortcuts">
 <a href="#SectionHeader0" onclick="javascript: SetSectionVisibility(0, true); SetExpandCollapseAllToCollapseAll();">Syntax</a>&nbsp;
 </div>
@@ -24,9 +24,9 @@
 </div>
 <div id="Contents">
 <a id="ContentsAnchor">&nbsp;</a>
-<p>There is no summary.</p>
+Gets a list of regitered modules
 <div id="ItemLocation">
-<b>Declaring type:</b> <a href="../../Contents/1/13.html">IWebModule</a><br />
+<b>Declaring type:</b> <a href="../../Contents/1/11.html">WebServer</a><br />
 <b>Namespace:</b> <a href="../../Contents/1/2.html">Unosquare.Labs.EmbedIO</a><br />
 <b>Assembly:</b> <a href="../../Contents/1/1.html">Unosquare.Labs.EmbedIO</a>
 </div>
@@ -40,23 +40,10 @@ Syntax
 </div>
 
 <div id="SectionContainerDiv0" class="SectionContainer">
-<table class="CodeTable"><col width="100%" /><tr class="CodeTable"><th class="CodeTable">C#</th></tr><tr class="CodeTable"><td class="CodeTable"><pre style="margin-left: 2px;">public abstract void AddHandler (
-        string <i>path</i>,
-        HttpVerbs <i>verb</i>,
-        ResponseHandler <i>handler</i>
-) </pre></td></tr></table>
-<div class="CommentHeader">Parameters</div>
-<div class="CommentParameterName">path</div>
+<table class="CodeTable"><col width="100%" /><tr class="CodeTable"><th class="CodeTable">C#</th></tr><tr class="CodeTable"><td class="CodeTable"><pre style="margin-left: 2px;">public ReadOnlyCollection&lt;IWebModule&gt; Modules { get; }</pre></td></tr></table>
+<div class="CommentHeader">Property Value</div>
 <div class="ParameterCommentContainer">
-<p>There is no description.</p>
-</div>
-<div class="CommentParameterName">verb</div>
-<div class="ParameterCommentContainer">
-<p>There is no description.</p>
-</div>
-<div class="CommentParameterName">handler</div>
-<div class="ParameterCommentContainer">
-<p>There is no description.</p>
+The modules.
 </div>
 <div class="TopLink"><a href="#ContentsAnchor">Top</a></div></div>
 </div>

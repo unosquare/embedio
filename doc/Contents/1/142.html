@@ -6,14 +6,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
 <link rel="stylesheet" type="text/css" href="../../CSS/Contents.css"></link>
 <script type="text/javascript" src="../../JS/Common.js"></script>
-<title>SimpleConsoleLog.WarnFormat Method (string, object[])</title>
+<title>ISessionWebModule Interface Members</title>
 </head>
 <body>
 <div id="Header">
 <div id="ProjectTitle">Documentation Project</div>
-<div id="PageTitle">SimpleConsoleLog.WarnFormat Method (string, object[])</div>
+<div id="PageTitle">ISessionWebModule Interface Members</div>
 <div id="HeaderShortcuts">
-<a href="#SectionHeader0" onclick="javascript: SetSectionVisibility(0, true); SetExpandCollapseAllToCollapseAll();">Syntax</a>&nbsp;
+<a href="#SectionHeader35" onclick="javascript: SetSectionVisibility(35, true); SetExpandCollapseAllToCollapseAll();">Methods</a>&nbsp;
+<a href="#SectionHeader40" onclick="javascript: SetSectionVisibility(40, true); SetExpandCollapseAllToCollapseAll();">Properties</a>&nbsp;
 </div>
 <div class="DarkLine"></div>
 <div class="LightLine"></div>
@@ -24,35 +25,72 @@
 </div>
 <div id="Contents">
 <a id="ContentsAnchor">&nbsp;</a>
-<p>There is no summary.</p>
+Interface to create session modules
 <div id="ItemLocation">
-<b>Declaring type:</b> <a href="../../Contents/1/133.html">SimpleConsoleLog</a><br />
-<b>Namespace:</b> <a href="../../Contents/1/3.html">Unosquare.Labs.EmbedIO.Log</a><br />
+<b>Declaring type:</b> <a href="../../Contents/1/12.html">ISessionWebModule</a><br />
+<b>Namespace:</b> <a href="../../Contents/1/2.html">Unosquare.Labs.EmbedIO</a><br />
 <b>Assembly:</b> <a href="../../Contents/1/1.html">Unosquare.Labs.EmbedIO</a>
 </div>
-<div id="SectionHeader0" class="SectionHeader">
-<img id="SectionExpanderImg0" src="../../GFX/BigSquareExpanded.gif" alt="Collapse/Expand" onclick="javascript: ToggleSectionVisibility(0);" />
+<div id="SectionHeader35" class="SectionHeader">
+<img id="SectionExpanderImg35" src="../../GFX/BigSquareExpanded.gif" alt="Collapse/Expand" onclick="javascript: ToggleSectionVisibility(35);" />
 <span class="SectionHeader">
-<span class="ArrowCursor" onclick="javascript: ToggleSectionVisibility(0);">
-Syntax
+<span class="ArrowCursor" onclick="javascript: ToggleSectionVisibility(35);">
+Public Methods
 </span>
 </span>
 </div>
 
-<div id="SectionContainerDiv0" class="SectionContainer">
-<table class="CodeTable"><col width="100%" /><tr class="CodeTable"><th class="CodeTable">C#</th></tr><tr class="CodeTable"><td class="CodeTable"><pre style="margin-left: 2px;">public virtual void WarnFormat (
-        string <i>format</i>,
-        params object[] <i>args</i>
-) </pre></td></tr></table>
-<div class="CommentHeader">Parameters</div>
-<div class="CommentParameterName">format</div>
-<div class="ParameterCommentContainer">
-<p>There is no description.</p>
+<div id="SectionContainerDiv35" class="SectionContainer">
+<table class="MembersTable">
+<col width="7%" />
+<col width="38%" />
+<col width="55%" />
+<tr>
+<th>&nbsp;</th>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td class="IconColumn">
+<img src="../../GFX/PublicMethod.gif" alt="Public Method" />&nbsp;<img src="../../GFX/Abstract.gif" alt="Abstract" /></td>
+<td><a href="../../Contents/1/143.html">GetSession</a></td>
+<td>Overloaded. Gets a session object for the given server context.
+            If no session exists for the context, then null is returned</td>
+</tr>
+</table>
+<div class="TopLink"><a href="#ContentsAnchor">Top</a></div></div>
+<div id="SectionHeader40" class="SectionHeader">
+<img id="SectionExpanderImg40" src="../../GFX/BigSquareExpanded.gif" alt="Collapse/Expand" onclick="javascript: ToggleSectionVisibility(40);" />
+<span class="SectionHeader">
+<span class="ArrowCursor" onclick="javascript: ToggleSectionVisibility(40);">
+Public Properties
+</span>
+</span>
 </div>
-<div class="CommentParameterName">args</div>
-<div class="ParameterCommentContainer">
-<p>There is no description.</p>
-</div>
+
+<div id="SectionContainerDiv40" class="SectionContainer">
+<table class="MembersTable">
+<col width="7%" />
+<col width="38%" />
+<col width="55%" />
+<tr>
+<th>&nbsp;</th>
+<th>Name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td class="IconColumn">
+<img src="../../GFX/PublicProperty.gif" alt="Public Property" />&nbsp;<img src="../../GFX/Abstract.gif" alt="Abstract" /></td>
+<td><a href="../../Contents/1/144.html">Expiration</a></td>
+<td>Gets or sets the expiration.</td>
+</tr>
+<tr>
+<td class="IconColumn">
+<img src="../../GFX/PublicProperty.gif" alt="Public Property" />&nbsp;<img src="../../GFX/Abstract.gif" alt="Abstract" /></td>
+<td><a href="../../Contents/1/145.html">Sessions</a></td>
+<td>The concurrent dictionary holding the sessions</td>
+</tr>
+</table>
 <div class="TopLink"><a href="#ContentsAnchor">Top</a></div></div>
 </div>
 <div id="Footer">

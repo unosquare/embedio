@@ -6,12 +6,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
 <link rel="stylesheet" type="text/css" href="../../CSS/Contents.css"></link>
 <script type="text/javascript" src="../../JS/Common.js"></script>
-<title>WebSocketsServer Constructor (bool, int)</title>
+<title>StaticFilesModule.UseRamCache Property </title>
 </head>
 <body>
 <div id="Header">
 <div id="ProjectTitle">Documentation Project</div>
-<div id="PageTitle">WebSocketsServer Constructor (bool, int)</div>
+<div id="PageTitle">StaticFilesModule.UseRamCache Property </div>
 <div id="HeaderShortcuts">
 <a href="#SectionHeader0" onclick="javascript: SetSectionVisibility(0, true); SetExpandCollapseAllToCollapseAll();">Syntax</a>&nbsp;
 </div>
@@ -24,9 +24,10 @@
 </div>
 <div id="Contents">
 <a id="ContentsAnchor">&nbsp;</a>
-<p>There is no summary.</p>
+Gets or sets a value indicating whether or not to use the RAM Cache feature
+            RAM Cache will only cache files that are MaxRamCacheSize in bytes or less
 <div id="ItemLocation">
-<b>Declaring type:</b> <a href="../../Contents/1/171.html">WebSocketsServer</a><br />
+<b>Declaring type:</b> <a href="../../Contents/1/190.html">StaticFilesModule</a><br />
 <b>Namespace:</b> <a href="../../Contents/1/4.html">Unosquare.Labs.EmbedIO.Modules</a><br />
 <b>Assembly:</b> <a href="../../Contents/1/1.html">Unosquare.Labs.EmbedIO</a>
 </div>
@@ -40,18 +41,10 @@ Syntax
 </div>
 
 <div id="SectionContainerDiv0" class="SectionContainer">
-<table class="CodeTable"><col width="100%" /><tr class="CodeTable"><th class="CodeTable">C#</th></tr><tr class="CodeTable"><td class="CodeTable"><pre style="margin-left: 2px;">public WebSocketsServer (
-        bool <i>enableConnectionWatchdog</i>,
-        int <i>maxMessageSize</i>
-) </pre></td></tr></table>
-<div class="CommentHeader">Parameters</div>
-<div class="CommentParameterName">enableConnectionWatchdog</div>
+<table class="CodeTable"><col width="100%" /><tr class="CodeTable"><th class="CodeTable">C#</th></tr><tr class="CodeTable"><td class="CodeTable"><pre style="margin-left: 2px;">public bool UseRamCache { get; set; }</pre></td></tr></table>
+<div class="CommentHeader">Property Value</div>
 <div class="ParameterCommentContainer">
-<p>There is no description.</p>
-</div>
-<div class="CommentParameterName">maxMessageSize</div>
-<div class="ParameterCommentContainer">
-<p>There is no description.</p>
+<span class="Code">true</span> if [use ram cache]; otherwise, <span class="Code">false</span>.
 </div>
 <div class="TopLink"><a href="#ContentsAnchor">Top</a></div></div>
 </div>
