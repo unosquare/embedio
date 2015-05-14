@@ -15,8 +15,7 @@
     public class WebServer : IDisposable
     {
         private readonly List<IWebModule> m_Modules = new List<IWebModule>(4);
-
-        private Task ListenerTask = null;
+        private Task ListenerTask;
 
         /// <summary>
         /// Gets the underlying HTTP listener.
@@ -272,7 +271,7 @@
                 foreach (var module in this.Modules)
                 {
                     // Establish the handler
-                    var handler = module.Handlers.FirstOrDefault(x => 
+                    var handler = module.Handlers.FirstOrDefault(x =>
                         x.Path == (x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : path) &&
                         x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : verb));
 
@@ -406,7 +405,7 @@
                             var context = contextState as HttpListenerContext;
                             this.HandleClientRequest(context);
                         }, this.Listener.GetContext());
-                            // Retrieve and pass the listener context to the threadpool thread.
+                        // Retrieve and pass the listener context to the threadpool thread.
                     }
                     catch
                     {
@@ -446,6 +445,38 @@
             {
                 ListenerTask.Dispose();
             }
+        }
+
+        /// <summary>
+        /// Static method to create webserver instance
+        /// </summary>
+        /// <param name="urlPrefix">The URL prefix.</param>
+        /// <param name="log">The log.</param>
+        /// <returns>The webserver instance.</returns>
+        public static WebServer Create(string urlPrefix, ILog log = null)
+        {
+            return new WebServer(urlPrefix, log ?? new NullLog());
+        }
+
+        /// <summary>
+        /// Static method to create webserver instance
+        /// </summary>
+        /// <param name="port">The port.</param>
+        /// <param name="log">The log.</param>
+        /// <returns>The webserver instance.</returns>
+        public static WebServer Create(int port, ILog log = null)
+        {
+            return new WebServer(port, log ?? new NullLog());
+        }
+
+        /// <summary>
+        /// Static method to create webser instance with SimpleConsoleLog
+        /// </summary>
+        /// <param name="urlPrefix"></param>
+        /// <returns>The webserver instance.</returns>
+        public static WebServer CreateWithConsole(string urlPrefix)
+        {
+            return new WebServer(urlPrefix, new SimpleConsoleLog());
         }
     }
 }

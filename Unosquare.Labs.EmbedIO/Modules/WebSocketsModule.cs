@@ -196,7 +196,6 @@
         /// <param name="enableConnectionWatchdog">if set to <c>true</c> [enable connection watchdog].</param>
         /// <param name="maxMessageSize">Maximum size of the message in bytes. Enter 0 or negative number to prevent checks.</param>
         public WebSocketsServer(bool enableConnectionWatchdog, int maxMessageSize)
-            : base()
         {
             this._enableDisconnectedSocketColletion = enableConnectionWatchdog;
             this._maximumMessageSize = maxMessageSize;

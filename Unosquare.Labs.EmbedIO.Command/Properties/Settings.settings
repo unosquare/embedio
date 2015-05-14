@@ -2,9 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Unosquare.Labs.EmbedIO.Command.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ServerAddress" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://localhost:9696/</Value>
-    </Setting>
     <Setting Name="HtmlDefaultDocument" Type="System.String" Scope="Application">
       <Value Profile="(Default)">index.html</Value>
     </Setting>

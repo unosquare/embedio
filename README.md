@@ -91,6 +91,55 @@ namespace Company.Project
 }
 ```
 
+Fluent Example:
+---------------
+
+```csharp
+namespace Company.Project
+{
+    using System;
+    using Unosquare.Labs.EmbedIO;
+
+    internal class Program
+    {
+        /// <summary>
+        /// Defines the entry point of the application.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        private static void Main(string[] args)
+        {
+            var url = "http://localhost:9696/";
+            if (args.Length > 0)
+                url = args[0];
+
+            // Create Webserver with console logger and attach LocalSession and Static
+            // files module
+            var server = WebServer
+                .CreateWithConsole(url)
+                .WithLocalSession()
+                .WithStaticFolderAt("c:/web");
+
+            server.RunAsync();
+
+            // Fire up the browser to show the content if we are debugging!
+#if DEBUG
+            var browser = new System.Diagnostics.Process()
+            {
+                StartInfo = new System.Diagnostics.ProcessStartInfo(url) {UseShellExecute = true}
+            };
+            browser.Start();
+#endif
+            // Wait for any key to be pressed before disposing of our web server.
+            // In a service we'd manage the lifecycle of of our web server using
+            // something like a BackgroundWorker or a ManualResetEvent.
+            Console.ReadKey(true);
+
+            server.Dispose();
+        }
+    }
+}
+```
+
 REST API Example:
 -----------------
 

@@ -14,6 +14,11 @@
     public class StaticFilesModule : WebModuleBase
     {
         /// <summary>
+        /// Default document constant to "index.html"
+        /// </summary>
+        public const string DefaultDocumentName = "index.html";
+
+        /// <summary>
         /// Gets or sets the maximum size of the ram cache file.
         /// </summary>
         /// <value>
@@ -126,7 +131,7 @@
 #endif
             this.RamCache = new ConcurrentDictionary<string, RamCacheEntry>(StringComparer.InvariantCultureIgnoreCase);
             this.MaxRamCacheFileSize = 250*1024;
-            this.DefaultDocument = "index.html";
+            this.DefaultDocument = DefaultDocumentName;
 
             this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Head, (server, context) => HandleGet(context, server, false));
             this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (server, context) => HandleGet(context, server));

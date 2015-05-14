@@ -13,10 +13,11 @@ namespace Unosquare.Labs.EmbedIO.Command
         [Option('p', "path", Required = true, HelpText = "WWW-root path.")]
         public string RootPath { get; set; }
 
+        [Option('o', "port", HelpText = "HTTP port.", DefaultValue=9696)]
+        public int Port { get; set; }
+
         [OptionList('a', "api", Separator = ',', HelpText = "Specify assemblies to load, separated by a comma.")]
         public IList<string> ApiAssemblies { get; set; }
-
-        // TODO: Add url
 
         [HelpOption]
         public string GetUsage()

@@ -1,11 +1,10 @@
-﻿using System.Threading.Tasks;
-
-namespace Unosquare.Labs.EmbedIO.Modules
+﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Threading.Tasks;
     using Unosquare.Labs.EmbedIO;
 
     /// <summary>
@@ -30,7 +29,6 @@ namespace Unosquare.Labs.EmbedIO.Modules
         {
             this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
             {
-
                 var path = context.RequestPath();
                 var verb = context.RequestVerb();
                 var wildcardPaths = DelegateMap.Keys
@@ -97,6 +95,14 @@ namespace Unosquare.Labs.EmbedIO.Modules
         public override string Name
         {
             get { return "Web API Module"; }
+        }
+
+        /// <summary>
+        /// Gets the controllers count
+        /// </summary>
+        public int ControllersCount
+        {
+            get { return ControllerTypes.Count; }
         }
 
         /// <summary>

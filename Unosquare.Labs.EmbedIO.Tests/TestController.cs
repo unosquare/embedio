@@ -8,6 +8,8 @@
 
     public class TestController : WebApiController
     {
+        // TODO: Test Async mode
+
         public class Person
         {
             public int Key { get; set; }

@@ -25,15 +25,6 @@ namespace Unosquare.Labs.EmbedIO.Command.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:9696/")]
-        public string ServerAddress {
-            get {
-                return ((string)(this["ServerAddress"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("index.html")]
         public string HtmlDefaultDocument {
             get {

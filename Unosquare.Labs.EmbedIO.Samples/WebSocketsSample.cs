@@ -17,7 +17,7 @@
         {
             server.RegisterModule(new WebSocketsModule());
             server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsChatServer>();
-            server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsTerminalServer>("/terminal");
+            server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsTerminalServer>();
         }
     }
 
@@ -27,7 +27,6 @@
     [WebSocketHandler("/chat")]
     public class WebSocketsChatServer : WebSocketsServer
     {
-
         public WebSocketsChatServer()
             : base(true, 0)
         {
@@ -99,6 +98,7 @@
     /// <summary>
     /// Define a command-line interface terminal
     /// </summary>
+    [WebSocketHandler("/terminal")]
     public class WebSocketsTerminalServer : WebSocketsServer
     {
 

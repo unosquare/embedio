@@ -2,15 +2,18 @@
 {
     using CommandLine;
     using System;
-    using System.Linq;
     using System.Reflection;
-    using Unosquare.Labs.EmbedIO.Log;
     using Unosquare.Labs.EmbedIO.Modules;
 
+    /// <summary>
+    /// Entry poing
+    /// </summary>
     internal class Program
     {
-        private static readonly SimpleConsoleLog Log = new SimpleConsoleLog();
-
+        /// <summary>
+        /// Load WebServer instance
+        /// </summary>
+        /// <param name="args"></param>
         private static void Main(string[] args)
         {
             var options = new Options();
@@ -21,25 +24,22 @@
 
             Console.WriteLine("  Command-Line Utility: Press any key to stop the server.");
 
-            using (var server = new WebServer(Properties.Settings.Default.ServerAddress, Log))
+            using (var server = WebServer.CreateWithConsole("http://localhost:" + options.Port + "/"))
             {
                 if (Properties.Settings.Default.UseLocalSessionModule)
-                    server.RegisterModule(new LocalSessionModule());
+                    server.WithLocalSession();
 
-                var staticFilesModule = new StaticFilesModule(options.RootPath)
-                {
-                    DefaultDocument = Properties.Settings.Default.HtmlDefaultDocument,
-                    DefaultExtension = Properties.Settings.Default.HtmlDefaultExtension,
-                    UseRamCache = Properties.Settings.Default.UseRamCache
-                };
+                server.WithStaticFolderAt(options.RootPath,
+                    defaultDocument: Properties.Settings.Default.HtmlDefaultDocument);
 
-                server.RegisterModule(staticFilesModule);
+                server.Module<StaticFilesModule>().DefaultExtension = Properties.Settings.Default.HtmlDefaultExtension;
+                server.Module<StaticFilesModule>().UseRamCache = Properties.Settings.Default.UseRamCache;
 
                 if (options.ApiAssemblies != null && options.ApiAssemblies.Count > 0)
                 {
                     foreach (var api in options.ApiAssemblies)
                     {
-                        Log.DebugFormat("Checking API {0}", api);
+                        server.Log.DebugFormat("Registering Assembly {0}", api);
                         LoadApi(api, server);
                     }
                 }
@@ -50,6 +50,11 @@
             }
         }
 
+        /// <summary>
+        /// Load an Assembly
+        /// </summary>
+        /// <param name="apiPath"></param>
+        /// <param name="server"></param>
         private static void LoadApi(string apiPath, WebServer server)
         {
             try
@@ -58,48 +63,12 @@
 
                 if (assembly == null) return;
 
-                var types = assembly.GetTypes();
-
-                // Load WebApiModules
-                var apiControllers =
-                    types.Where(x => x.IsClass && !x.IsAbstract && x.IsSubclassOf(typeof (WebApiController))).ToArray();
-
-                if (apiControllers.Any())
-                {
-                    server.RegisterModule(new WebApiModule());
-
-                    foreach (var apiController in apiControllers)
-                    {
-                        server.Module<WebApiModule>().RegisterController(apiController);
-                        Log.DebugFormat("Registering {0} WebAPI", apiController.Name);
-                    }
-                }
-                else
-                {
-                    Log.DebugFormat("{0} does not have any WebAPI", apiPath);
-                }
-
-                // Load WebSocketsModules
-                var sockerServers = types.Where(x => x.BaseType == typeof (WebSocketsServer)).ToArray();
-
-                if (sockerServers.Any())
-                {
-                    server.RegisterModule(new WebSocketsModule());
-
-                    foreach (var socketServer in sockerServers)
-                    {
-                        server.Module<WebSocketsModule>().RegisterWebSocketsServer(socketServer);
-                        Log.DebugFormat("Registering {0} WebSocket", socketServer.Name);
-                    }
-                }
-                else
-                {
-                    Log.DebugFormat("{0} does not have any WebSocket", apiPath);
-                }
+                server.LoadApiControllers(assembly, true).LoadWebSockets(assembly, true);
             }
             catch (Exception ex)
             {
-                Log.Error(ex.Message);
+                server.Log.Error(ex.Message);
+                server.Log.Error(ex.StackTrace);
             }
         }
     }
