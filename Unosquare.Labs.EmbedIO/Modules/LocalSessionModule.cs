@@ -52,12 +52,12 @@
             // get the real "__session" cookie value because sometimes there's more than 1 value and System.Net.Cookie only supports 1 value per cookie
             if (context.Request.Headers["Cookie"] == null) return;
 
-            var cookieItems = context.Request.Headers["Cookie"].Split(new[] {';', ','},
+            var cookieItems = context.Request.Headers["Cookie"].Split(new[] { ';', ',' },
                 StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var cookieItem in cookieItems)
             {
-                var nameValue = cookieItem.Trim().Split(new[] {'='}, StringSplitOptions.RemoveEmptyEntries);
+                var nameValue = cookieItem.Trim().Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
                 if (nameValue.Length == 2 && nameValue[0].Equals(SessionCookieName))
                 {
                     var sessionIdValue = nameValue[1].Trim();

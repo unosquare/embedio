@@ -4,17 +4,30 @@
     using System.Threading;
 
     /// <summary>
-    /// Simple logger with output to Console
+    /// Provides a simple logger with colored console output.
     /// </summary>
     public class SimpleConsoleLog : ILog
     {
+        /// <summary>
+        /// Writes the given line. This method is used by all other methods and it is asynchronous.
+        /// </summary>
+        /// <param name="color">The color.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="args">The arguments.</param>
         private static void WriteLine(ConsoleColor color, string format, params object[] args)
         {
+            var d = DateTime.Now;
+            var dateTimeString = string.Format("{0}-{1}-{2} {3}:{4}:{5}.{6}",
+                d.Year.ToString("0000"), d.Month.ToString("00"), d.Day.ToString("00"), d.Hour.ToString("00"),
+                d.Minute.ToString("00"), d.Second.ToString("00"), d.Millisecond.ToString("000"));
+
+            format = dateTimeString + "\t" + format;
+
             ThreadPool.QueueUserWorkItem((context) =>
             {
                 var current = Console.ForegroundColor;
                 Console.ForegroundColor = color;
-                Console.WriteLine(">> " + format, args);
+                Console.WriteLine(format, args);
                 Console.ForegroundColor = current;
             });
         }
@@ -55,17 +68,17 @@
         /// <param name="args"></param>
         public virtual void InfoFormat(string format, params object[] args)
         {
-            WriteLine(ConsoleColor.Blue, format, args);
+            WriteLine(ConsoleColor.Gray, format, args);
         }
 
         /// <summary>
-        /// Writes an Warn level message with format
+        /// Writes a Warning level message with format
         /// </summary>
         /// <param name="format"></param>
         /// <param name="args"></param>
         public virtual void WarnFormat(string format, params object[] args)
         {
-            WriteLine(ConsoleColor.Yellow, format, args);
+            WriteLine(ConsoleColor.DarkYellow, format, args);
         }
 
         /// <summary>
@@ -85,7 +98,7 @@
         /// <param name="args"></param>
         public virtual void DebugFormat(string format, params object[] args)
         {
-            WriteLine(ConsoleColor.Cyan, format, args);
+            WriteLine(ConsoleColor.Green, format, args);
         }
     }
 }

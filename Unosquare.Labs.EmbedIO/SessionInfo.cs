@@ -4,7 +4,7 @@
     using System.Collections.Concurrent;
 
     /// <summary>
-    /// Represents a Session and its contents
+    /// Represents the contents of an HTTP Session
     /// </summary>
     public class SessionInfo
     {
@@ -37,7 +37,7 @@
         public ConcurrentDictionary<string, object> Data { get; protected set; }
 
         /// <summary>
-        /// Retrieve an item
+        /// Retrieve an item. If the key does not exist, it return null.
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>

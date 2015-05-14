@@ -57,18 +57,17 @@
                 }
 
                 var methodPair = DelegateMap[path][verb];
-
                 var controller = Activator.CreateInstance(methodPair.Item1);
 
-                if (methodPair.Item2.ReturnType == typeof (Task<bool>))
+                if (methodPair.Item2.ReturnType == typeof(Task<bool>))
                 {
-                    var method = Delegate.CreateDelegate(typeof (AsyncResponseHandler), controller, methodPair.Item2);
+                    var method = Delegate.CreateDelegate(typeof(AsyncResponseHandler), controller, methodPair.Item2);
 
                     server.Log.DebugFormat("Handler: {0}.{1}", method.Method.DeclaringType.FullName, method.Method.Name);
                     context.NoCache();
                     var returnValue = Task.Run(async () =>
                     {
-                        var task = await (Task<bool>) method.DynamicInvoke(server, context);
+                        var task = await (Task<bool>)method.DynamicInvoke(server, context);
                         return task;
                     });
 
@@ -76,11 +75,11 @@
                 }
                 else
                 {
-                    var method = Delegate.CreateDelegate(typeof (ResponseHandler), controller, methodPair.Item2);
+                    var method = Delegate.CreateDelegate(typeof(ResponseHandler), controller, methodPair.Item2);
 
                     server.Log.DebugFormat("Handler: {0}.{1}", method.Method.DeclaringType.FullName, method.Method.Name);
                     context.NoCache();
-                    var returnValue = (bool) method.DynamicInvoke(server, context);
+                    var returnValue = (bool)method.DynamicInvoke(server, context);
                     return returnValue;
                 }
             });
@@ -113,10 +112,10 @@
         public void RegisterController<T>()
             where T : WebApiController, new()
         {
-            if (ControllerTypes.Contains(typeof (T)))
+            if (ControllerTypes.Contains(typeof(T)))
                 throw new ArgumentException("Controller types must be unique within the module");
 
-            RegisterController(typeof (T));
+            RegisterController(typeof(T));
         }
 
         /// <summary>
@@ -140,7 +139,7 @@
             foreach (var method in methods)
             {
                 var attribute =
-                    method.GetCustomAttributes(typeof (WebApiHandlerAttribute), true).FirstOrDefault() as
+                    method.GetCustomAttributes(typeof(WebApiHandlerAttribute), true).FirstOrDefault() as
                         WebApiHandlerAttribute;
                 if (attribute == null) continue;
 
@@ -198,7 +197,7 @@
                 throw new ArgumentException("The argument 'path' must be specified.");
 
             this.Verb = verb;
-            this.Paths = new string[] {path};
+            this.Paths = new string[] { path };
         }
 
         /// <summary>

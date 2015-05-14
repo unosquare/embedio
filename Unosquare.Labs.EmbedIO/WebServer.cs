@@ -112,7 +112,7 @@
         /// <param name="urlPrefix">The URL prefix.</param>
         /// <param name="log">The log.</param>
         public WebServer(string urlPrefix, ILog log)
-            : this(new[] {urlPrefix}, log)
+            : this(new[] { urlPrefix }, log)
         {
             // placeholder
         }
@@ -173,7 +173,7 @@
         public T Module<T>()
             where T : class, IWebModule
         {
-            var module = this.Modules.FirstOrDefault(m => m.GetType() == typeof (T));
+            var module = this.Modules.FirstOrDefault(m => m.GetType() == typeof(T));
             if (module != null) return module as T;
             return null;
         }
@@ -305,19 +305,19 @@
                     catch (Exception ex)
                     {
                         // Handle exceptions by returning a 500 (Internal Server Error) 
-                        if (context.Response.StatusCode != (int) HttpStatusCode.Unauthorized)
+                        if (context.Response.StatusCode != (int)HttpStatusCode.Unauthorized)
                         {
                             // Log the exception message.
                             var errorMessage = ex.ExceptionMessage("Failing module name: " + module.Name);
                             Log.Error(errorMessage, ex);
 
                             // Generate an HTML response
-                            var response = String.Format(Extensions.Response500, WebUtility.HtmlEncode(errorMessage),
+                            var response = String.Format(Constants.Response500HtmlFormat, WebUtility.HtmlEncode(errorMessage),
                                 WebUtility.HtmlEncode(ex.StackTrace));
 
                             // Send the response over with the corresponding status code.
                             var responseBytes = System.Text.Encoding.UTF8.GetBytes(response);
-                            context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                             context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
                         }
 
@@ -331,8 +331,8 @@
                 if (!handled)
                 {
                     Log.Error("No module generated a response. Sending 404 - Not Found");
-                    var responseBytes = System.Text.Encoding.UTF8.GetBytes(Extensions.Response404);
-                    context.Response.StatusCode = (int) HttpStatusCode.NotFound;
+                    var responseBytes = System.Text.Encoding.UTF8.GetBytes(Constants.Response404Html);
+                    context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                     context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
                 }
 

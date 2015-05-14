@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// This interface represents all needed for logging
+    /// This interface represents all that is needed for logging
     /// </summary>
     public interface ILog
     {

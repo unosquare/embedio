@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// A Null Log. Useful if you don't want to pass a logger to the Web Server constructor.
+    /// A Null Log. Useful if you don't want to pass a real logger to the Web Server constructor.
     /// </summary>
     public class NullLog : ILog
     {
@@ -26,7 +26,7 @@
         }
 
         /// <summary>
-        /// Writes an Error message with Exception
+        /// Writes an Error message with a given Exception
         /// </summary>
         /// <param name="message"></param>
         /// <param name="exception"></param>
@@ -46,7 +46,7 @@
         }
 
         /// <summary>
-        /// Writes an Warn level message with format
+        /// Writes a Warning level message with format
         /// </summary>
         /// <param name="format"></param>
         /// <param name="args"></param>
@@ -66,7 +66,7 @@
         }
 
         /// <summary>
-        /// Writes an Debug level message with format
+        /// Writes a Debug level message with format
         /// </summary>
         /// <param name="format"></param>
         /// <param name="args"></param>

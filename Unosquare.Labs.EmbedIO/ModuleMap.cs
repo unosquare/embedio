@@ -4,26 +4,26 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Map object
+    /// Represents a binding of path and verb to a given method call (delegate)
     /// </summary>
     public class Map
     {
         /// <summary>
-        /// Route path
+        /// The HTTP resource path
         /// </summary>
         public string Path { get; set; }
         /// <summary>
-        /// HTTP Verb
+        /// The HTTP Verb of this Map
         /// </summary>
         public HttpVerbs Verb { get; set; }
         /// <summary>
-        /// ResponseHandler method
+        /// The delegate to call for the given path and verb.
         /// </summary>
         public ResponseHandler ResponseHandler { get; set; }
 
     }
     /// <summary>
-    /// Represents a list binding Paths and Verbs to Method calls
+    /// Represents a list which binds Paths and their corresponding HTTP Verbs to Method calls
     /// </summary>
     public class ModuleMap : List<Map>
     {

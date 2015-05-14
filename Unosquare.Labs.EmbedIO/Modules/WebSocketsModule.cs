@@ -69,7 +69,7 @@
         public void RegisterWebSocketsServer<T>()
             where T : WebSocketsServer, new()
         {
-            RegisterWebSocketsServer(typeof (T));
+            RegisterWebSocketsServer(typeof(T));
         }
 
         /// <summary>
@@ -83,13 +83,13 @@
                 throw new ArgumentException("Argument 'socketType' cannot be null", "socketType");
 
             var attribute =
-                socketType.GetCustomAttributes(typeof (WebSocketHandlerAttribute), true).FirstOrDefault() as
+                socketType.GetCustomAttributes(typeof(WebSocketHandlerAttribute), true).FirstOrDefault() as
                     WebSocketHandlerAttribute;
 
             if (attribute == null)
                 throw new ArgumentException("Argument 'socketType' needs a WebSocketHandlerAttribute", "socketType");
 
-            this.ServerMap[attribute.Path] = (WebSocketsServer) Activator.CreateInstance(socketType);
+            this.ServerMap[attribute.Path] = (WebSocketsServer)Activator.CreateInstance(socketType);
         }
 
         /// <summary>
@@ -225,7 +225,7 @@
                         CollectDisconnected();
 
                     // TODO: make this sleep configurable.
-                    Thread.Sleep(30*1000);
+                    Thread.Sleep(30 * 1000);
                 }
             })
             {
@@ -273,7 +273,7 @@
                 // define a receive buffer
                 var receiveBuffer = new byte[receiveBufferSize];
                 // define a dynamic buffer that holds multi-part receptions
-                var receivedMessage = new List<byte>(receiveBuffer.Length*2);
+                var receivedMessage = new List<byte>(receiveBuffer.Length * 2);
 
                 // poll the WebSockets connections for reception
                 while (webSocketContext.WebSocket.State == WebSocketState.Open)

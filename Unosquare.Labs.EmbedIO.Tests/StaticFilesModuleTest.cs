@@ -49,12 +49,12 @@
             using (var response = (HttpWebResponse)request.GetResponse())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-                Assert.NotNull(response.Headers[EmbedIO.Extensions.HeaderETag], "ETag is not null");
-                eTag = response.Headers[EmbedIO.Extensions.HeaderETag];
+                Assert.NotNull(response.Headers[EmbedIO.Constants.HeaderETag], "ETag is not null");
+                eTag = response.Headers[EmbedIO.Constants.HeaderETag];
             }
 
             var secondRequest = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress);
-            secondRequest.Headers.Add(EmbedIO.Extensions.HeaderIfNotMatch, eTag);
+            secondRequest.Headers.Add(EmbedIO.Constants.HeaderIfNotMatch, eTag);
 
             try
             {

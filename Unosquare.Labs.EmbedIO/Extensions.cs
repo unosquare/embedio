@@ -15,70 +15,7 @@
     /// </summary>
     public static class Extensions
     {
-        /// <summary>
-        /// Accept-Encoding HTTP Header
-        /// </summary>
-        public const string HeaderAcceptEncoding = "Accept-Encoding";
-        /// <summary>
-        /// Content-Encoding HTTP Header
-        /// </summary>
-        public const string HeaderContentEncoding = "Content-Encoding";
-        /// <summary>
-        /// If-Modified-Since HTTP Header
-        /// </summary>
-        public const string HeaderIfModifiedSince = "If-Modified-Since";
-        /// <summary>
-        /// Cache-Control HTTP Header
-        /// </summary>
-        public const string HeaderCacheControl = "Cache-Control";
-        /// <summary>
-        /// Pragma HTTP Header
-        /// </summary>
-        public const string HeaderPragma = "Pragma";
-        /// <summary>
-        /// Expires HTTP Header
-        /// </summary>
-        public const string HeaderExpires = "Expires";
-        /// <summary>
-        /// Last-Modified HTTP Header
-        /// </summary>
-        public const string HeaderLastModified = "Last-Modified";
-        /// <summary>
-        /// If-None-Match HTTP Header
-        /// </summary>
-        public const string HeaderIfNotMatch = "If-None-Match";
-        /// <summary>
-        /// ETag HTTP Header
-        /// </summary>
-        public const string HeaderETag = "ETag";
-        /// <summary>
-        /// Accept-Ranges HTTP Header
-        /// </summary>
-        public const string HeaderAcceptRanges = "Accept-Ranges";
-        /// <summary>
-        /// Range HTTP Header
-        /// </summary>
-        public const string HeaderRange = "Range";
-        /// <summary>
-        /// Content-Range HTTP Header
-        /// </summary>
-        public const string HeaderContentRanges = "Content-Range";
-        /// <summary>
-        ///  Default Browser time format
-        /// </summary>
-        public const string BrowserTimeFormat = "ddd, dd MMM yyyy HH:mm:ss 'GMT'";
         
-        /// <summary>
-        /// Default Http Status 404 response output
-        /// </summary>
-        public const string Response404 = "<html><head></head><body><h1>404 - Not Found</h1></body></html>";
-
-        /// <summary>
-        /// Default Http Status 500 response output
-        /// </summary>
-        public const string Response500 =
-            "<html><head></head><body><h1>500 - Internal Server Error</h1><h2>Message</h2><pre>{0}</pre><h2>Stack Trace</h2><pre>\r\n{1}</pre></body></html>";
-
         /// <summary>
         /// Gets the session object associated to the current context.
         /// Returns null if the LocalSessionWebModule has not been loaded.
@@ -167,10 +104,10 @@
         /// <param name="context">The context.</param>
         public static void NoCache(this HttpListenerContext context)
         {
-            context.Response.AddHeader(HeaderExpires, "Mon, 26 Jul 1997 05:00:00 GMT");
-            context.Response.AddHeader(HeaderLastModified, DateTime.UtcNow.ToString(BrowserTimeFormat));
-            context.Response.AddHeader(HeaderCacheControl, "no-store, no-cache, must-revalidate");
-            context.Response.AddHeader(HeaderPragma, "no-cache");
+            context.Response.AddHeader(Constants.HeaderExpires, "Mon, 26 Jul 1997 05:00:00 GMT");
+            context.Response.AddHeader(Constants.HeaderLastModified, DateTime.UtcNow.ToString(Constants.BrowserTimeFormat));
+            context.Response.AddHeader(Constants.HeaderCacheControl, "no-store, no-cache, must-revalidate");
+            context.Response.AddHeader(Constants.HeaderPragma, "no-cache");
         }
 
         /// <summary>
@@ -348,7 +285,7 @@
         /// </summary>
         /// <param name="inputBytes"></param>
         /// <returns></returns>
-        public static string HashMd5(byte[] inputBytes)
+        public static string ComputeMd5Hash(byte[] inputBytes)
         {
             var hash = MD5.Create().ComputeHash(inputBytes);
 
@@ -366,9 +303,9 @@
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static string HashMd5(string input)
+        public static string ComputeMd5Hash(string input)
         {
-            return HashMd5(Encoding.ASCII.GetBytes(input));
+            return ComputeMd5Hash(Encoding.ASCII.GetBytes(input));
         }
     }
 }

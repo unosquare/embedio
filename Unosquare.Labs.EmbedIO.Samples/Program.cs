@@ -20,7 +20,7 @@
 
             // Our web server is disposable. Note that if you don't want to use logging,
             // there are alternate constructors that allow you to skip specifying an ILog object.
-            using (var server = new WebServer(url, Log))
+            using (var server = new WebServer(url, new SimpleConsoleLog()))
             {
                 // First, we will configure our web server by adding Modules.
                 // Please note that order DOES matter.
