@@ -2,6 +2,7 @@
 {
     using Newtonsoft.Json;
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
@@ -15,7 +16,7 @@
     /// </summary>
     public static class Extensions
     {
-        
+
         /// <summary>
         /// Gets the session object associated to the current context.
         /// Returns null if the LocalSessionWebModule has not been loaded.
@@ -105,7 +106,8 @@
         public static void NoCache(this HttpListenerContext context)
         {
             context.Response.AddHeader(Constants.HeaderExpires, "Mon, 26 Jul 1997 05:00:00 GMT");
-            context.Response.AddHeader(Constants.HeaderLastModified, DateTime.UtcNow.ToString(Constants.BrowserTimeFormat));
+            context.Response.AddHeader(Constants.HeaderLastModified,
+                DateTime.UtcNow.ToString(Constants.BrowserTimeFormat));
             context.Response.AddHeader(Constants.HeaderCacheControl, "no-store, no-cache, must-revalidate");
             context.Response.AddHeader(Constants.HeaderPragma, "no-cache");
         }
@@ -139,8 +141,8 @@
         /// <returns></returns>
         public static HttpVerbs RequestVerb(this HttpListenerContext context)
         {
-            var verb = HttpVerbs.Get;
-            Enum.TryParse<HttpVerbs>(context.Request.HttpMethod.ToLowerInvariant().Trim(), true, out verb);
+            HttpVerbs verb;
+            Enum.TryParse(context.Request.HttpMethod.ToLowerInvariant().Trim(), true, out verb);
             return verb;
         }
 
@@ -257,6 +259,31 @@
         public static bool HasRequestHeader(this HttpListenerContext context, string headerName)
         {
             return context.Request.Headers[headerName] != null;
+        }
+
+        /// <summary>
+        /// Returns dictionary from Request POST data
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> RequestFormData(this HttpListenerContext context)
+        {
+            var request = context.Request;
+            if (request.HasEntityBody == false) return null;
+
+            using (var body = request.InputStream)
+            {
+                using (var reader = new StreamReader(body, request.ContentEncoding))
+                {
+                    var stringData = reader.ReadToEnd();
+
+                    if (String.IsNullOrWhiteSpace(stringData)) return null;
+
+                    return stringData.Split('&')
+                        .ToDictionary(c => c.Split('=')[0],
+                            c => Uri.UnescapeDataString(c.Split('=')[1]));
+                }
+            }
         }
 
         /// <summary>
