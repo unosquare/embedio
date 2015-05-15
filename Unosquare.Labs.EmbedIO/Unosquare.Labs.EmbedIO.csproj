@@ -52,6 +52,7 @@
     <Compile Include="ISessionWebModule.cs" />
     <Compile Include="IWebModule.cs" />
     <Compile Include="Log\SimpleConsoleLog.cs" />
+    <Compile Include="Modules\CorsModule.cs" />
     <Compile Include="Modules\LocalSessionModule.cs" />
     <Compile Include="Modules\StaticFilesModule.cs" />
     <Compile Include="Modules\WebApiModule.cs" />

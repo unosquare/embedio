@@ -30,6 +30,9 @@
                 // You can use the server.GetSession() method to get the SessionInfo object and manupulate it.
                 server.RegisterModule(new Modules.LocalSessionModule());
 
+                // Set the CORS Rules, Origins separated by comma without last slash
+                server.RegisterModule(new Modules.CorsModule("http://client.cors-api.appspot.com,http://unosquare.github.io,http://run.plnkr.co"));
+
                 // Register the static files server. See the html folder of this project. Also notice that 
                 // the files under the html folder have Copy To Output Folder = Copy if Newer
                 StaticFilesSample.Setup(server);

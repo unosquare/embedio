@@ -29,7 +29,7 @@
         /// <returns></returns>
         private Cookie CreateSession()
         {
-            var sessionId = System.Convert.ToBase64String(
+            var sessionId = Convert.ToBase64String(
                 System.Text.Encoding.UTF8.GetBytes(
                     Guid.NewGuid().ToString() + DateTime.Now.Millisecond.ToString() + DateTime.Now.Ticks.ToString()));
             var sessionCookie = new Cookie(SessionCookieName, sessionId);
@@ -74,7 +74,6 @@
         /// Initializes a new instance of the <see cref="LocalSessionModule"/> class.
         /// </summary>
         public LocalSessionModule()
-            : base()
         {
             this.Expiration = TimeSpan.FromMinutes(30);
 
@@ -101,8 +100,7 @@
                     context.Request.Cookies.Add(sessionCookie);
                     server.Log.DebugFormat("Created session identifier '{0}'", sessionCookie.Value);
                 }
-                else if (requestCookie != null &&
-                         this.Sessions.ContainsKey(context.Request.Cookies[SessionCookieName].Value) == false)
+                else if (this.Sessions.ContainsKey(context.Request.Cookies[SessionCookieName].Value) == false)
                 {
                     //update session value
                     var sessionCookie = CreateSession();
@@ -110,8 +108,7 @@
                     context.Request.Cookies[SessionCookieName].Value = sessionCookie.Value;
                     server.Log.DebugFormat("Updated session identifier to '{0}'", sessionCookie.Value);
                 }
-                else if (requestCookie != null &&
-                         this.Sessions.ContainsKey(context.Request.Cookies[SessionCookieName].Value) == true)
+                else if (this.Sessions.ContainsKey(context.Request.Cookies[SessionCookieName].Value) == true)
                 {
                     // If it does exist in the request, check if we're tracking it
                     var requestSessionId = context.Request.Cookies[SessionCookieName].Value;
