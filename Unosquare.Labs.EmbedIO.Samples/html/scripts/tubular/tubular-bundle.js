@@ -11,7 +11,7 @@ var tubularTemplateServiceModule = {
         httpMethods: ['POST', 'PUT', 'GET', 'DELETE'],
         gridModes: ['Read-Only', 'Inline', 'Popup', 'Page'],
         formLayouts: ['Simple', 'Two-columns', 'Three-columns'],
-        sortDirections: ['Ascending','Descending']
+        sortDirections: ['Ascending', 'Descending']
     },
 
     defaults: {
@@ -31,6 +31,88 @@ var tubularTemplateServiceModule = {
             Layout: 'Simple',
             ModelKey: '',
             RequireAuthentication: false
+        },
+        fieldsSettings: {
+            'tbSimpleEditor': {
+                ShowLabel: true,
+                Placeholder: true,
+                Format: false,
+                Help: true,
+                Required: true,
+                ReadOnly: true,
+                EditorType: true
+            },
+            'tbNumericEditor': {
+                ShowLabel: true,
+                Placeholder: true,
+                Format: true,
+                Help: true,
+                Required: true,
+                ReadOnly: true,
+                EditorType: false
+            },
+            'tbDateTimeEditor': {
+                ShowLabel: true,
+                Placeholder: false,
+                Format: true,
+                Help: true,
+                Required: true,
+                ReadOnly: true,
+                EditorType: false
+            },
+            'tbDateEditor': {
+                ShowLabel: true,
+                Placeholder: false,
+                Format: true,
+                Help: true,
+                Required: true,
+                ReadOnly: true,
+                EditorType: false
+            },
+            'tbDropdownEditor': {
+                ShowLabel: true,
+                Placeholder: false,
+                Format: false,
+                Help: true,
+                Required: true,
+                ReadOnly: true,
+                EditorType: false
+            },
+            'tbTypeaheadEditor': {
+                ShowLabel: true,
+                Placeholder: true,
+                Format: false,
+                Help: true,
+                Required: true,
+                ReadOnly: true,
+                EditorType: false
+            },
+            'tbHiddenField': {
+                ShowLabel: false,
+                Placeholder: false,
+                Format: false,
+                Help: false,
+                Required: false,
+                ReadOnly: false,
+                EditorType: false
+            },
+            'tbCheckboxField': {
+                ShowLabel: false,
+                Placeholder: false,
+                Format: false,
+                Help: true,
+                Required: false,
+                ReadOnly: true,
+                EditorType: false
+            },
+            'tbTextArea': {
+                ShowLabel: true,
+                Placeholder: true,
+                Help: true,
+                Required: true,
+                ReadOnly: true,
+                EditorType: false
+            }
         }
     },
 
@@ -85,7 +167,7 @@ var tubularTemplateServiceModule = {
                 columnObj.Sortable = true;
                 columnObj.IsKey = false;
                 columnObj.SortOrder = 0;
-                columnObj.SortDirection = 'Ascending';
+                columnObj.SortDirection = '';
                 // Form attributes
                 columnObj.ShowLabel = true;
                 columnObj.Placeholder = '';
@@ -97,6 +179,7 @@ var tubularTemplateServiceModule = {
                 if (firstSort === false) {
                     columnObj.IsKey = true;
                     columnObj.SortOrder = 1;
+                    columnObj.SortDirection = 'Ascending';
                     firstSort = true;
                 }
             }
@@ -108,11 +191,17 @@ var tubularTemplateServiceModule = {
     generateFieldsArray: function(columns) {
         return columns.map(function(el) {
             var editorTag = el.EditorType.replace(/([A-Z])/g, function($1) { return "-" + $1.toLowerCase(); });
-
-            return '\r\n\t<' + editorTag + ' name="' + el.Name + '" label="' + el.Label + '" editor-type="' + el.DataType + '" ' +
-                '\r\n\t\tshow-label="' + el.ShowLabel + '" placeholder="' + el.Placeholder + '" required="' + el.Required + '" ' +
-                '\r\n\t\tread-only="' + el.ReadOnly + '" format="' + el.Format + '" help="' + el.Help + '">' +
-                '\r\n\t</' + editorTag + '>';
+            var defaults = tubularTemplateServiceModule.defaults.fieldsSettings[el.EditorType];
+            
+            return '\r\n\t<' + editorTag + ' name="' + el.Name + '"' +
+                (defaults.EditorType ? '\r\n\t\teditor-type="' + el.DataType + '" ' : '') +
+                (defaults.ShowLabel ? '\r\n\t\tlabel="' + el.Label + '" show-label="' + el.ShowLabel + '"' : '') +
+                (defaults.Placeholder ? '\r\n\t\tplaceholder="' + el.Placeholder + '"' : '') +
+                (defaults.Required ? '\r\n\t\trequired="' + el.Required + '"' : '') +
+                (defaults.ReadOnly ? '\r\n\t\tread-only="' + el.ReadOnly + '"' : '') +
+                (defaults.Format ? '\r\n\t\tformat="' + el.Format + '"' : '') +
+                (defaults.Help ? '\r\n\t\thelp="' + el.Help + '"' : '') +
+                '>\r\n\t</' + editorTag + '>';
         });
     },
 
@@ -186,6 +275,20 @@ var tubularTemplateServiceModule = {
             '\r\n</tb-form>';
     },
 
+    generateCells: function(columns, mode) {
+        return columns.map(function(el) {
+            var editorTag = el.EditorType.replace(/([A-Z])/g, function($1) { return "-" + $1.toLowerCase(); });
+
+            return '\r\n\t\t<tb-cell-template column-name="' + el.Name + '">' +
+                '\r\n\t\t\t' +
+                (mode == 'Inline' ?
+                    '<' + editorTag + ' is-editing="row.$isEditing" value="row.' + el.Name + '">' +
+                    '</' + editorTag + '>' :
+                     el.Template) +
+                '\r\n\t\t</tb-cell-template>';
+        }).join('');
+    },
+
     generateGrid: function(columns, options) {
         var topToolbar = '';
         var bottomToolbar = '';
@@ -232,9 +335,11 @@ var tubularTemplateServiceModule = {
             '\r\n\t<tb-column-definitions>' +
             (options.Mode != 'Read-Only' ? '\r\n\t\t<tb-column label="Actions"><tb-column-header>{{label}}</tb-column-header></tb-column>' : '') +
             columns.map(function(el) {
-                return '\r\n\t\t<tb-column name="' + el.Name + '" label="' + el.Label + '" column-type="' + el.DataType + '" sort-direction="' + el.SortDirection + '" sortable="' + el.Sortable + '" ' +
-                    '\r\n\t\t\tsort-order="' + el.SortOrder + '" is-key="' + el.IsKey + '" searchable="' + el.Searchable + '" visible="' + el.Visible + '">' +
-                    (el.Filter ? '<tb-column-filter></tb-column-filter>' : '') +
+                return '\r\n\t\t<tb-column name="' + el.Name + '" label="' + el.Label + '" column-type="' + el.DataType + '" sortable="' + el.Sortable + '" ' +
+                    '\r\n\t\t\tis-key="' + el.IsKey + '" searchable="' + el.Searchable + '" ' +
+                    (el.Sortable ? '\r\n\t\t\tsort-direction="' + el.SortDirection + '" sort-order="' + el.SortOrder + '" ' : ' ') +
+                    'visible="' + el.Visible + '">' +
+                    (el.Filter ? '\r\n\t\t\t<tb-column-filter></tb-column-filter>' : '') +
                     '\r\n\t\t\t<tb-column-header>{{label}}</tb-column-header>' +
                     '\r\n\t\t</tb-column>';
             }).join('') +
@@ -245,15 +350,7 @@ var tubularTemplateServiceModule = {
                 (options.Mode == 'Inline' ? '\r\n\t\t\t<tb-save-button model="row"></tb-save-button>' : '') +
                 '\r\n\t\t\t<tb-edit-button model="row"></tb-edit-button>' +
                 '\r\n\t\t</tb-cell-template>' : '') +
-            columns.map(function(el) {
-                var editorTag = el.EditorType.replace(/([A-Z])/g, function($1) { return "-" + $1.toLowerCase(); });
-
-                return '\r\n\t\t<tb-cell-template column-name="' + el.Name + '">' +
-                    (options.Mode == 'Inline' ?
-                        '<' + editorTag + ' is-editing="row.$isEditing" value="row.' + el.Name + '"></' + editorTag + '>' :
-                        '\r\n\t\t\t' + el.Template) +
-                    '\r\n\t\t</tb-cell-template>';
-            }).join('') +
+            this.generateCells(columns, options.Mode) +
             '\r\n\t</tb-row-template>' +
             '\r\n\t</tb-row-set>' +
             '\r\n\t</tb-grid-table>' +
@@ -983,6 +1080,10 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                                 });
                             };
 
+                            $scope.visibleColumns = function() {
+                                return $scope.columns.filter(function(el) { return el.Visible; }).length;
+                            }
+
                             $scope.$emit('tbGrid_OnGreetParentController', $scope);
                         }
                     ]
@@ -1069,8 +1170,19 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
          * All the attributes are used to generate a `ColumnModel`.
          * 
          * This directive is replace by a `th` HTML element.
-         * TODO: Document ColumnModel attributes
+         * 
          * @scope
+         * 
+         * @param {string} name Set the column name.
+         * @param {string} label Set the column label, if empty column's name is used.
+         * @param {boolean} sortable Set if column is sortable.
+         * @param {number} sortOrder Set the sorting order, -1 if you don't want to set one.
+         * @param {string} sortDirection Set the sorting direction, empty for none and valid values: Ascending and Descending.
+         * @param {boolean} isKey Set if column is Model's key.
+         * @param {boolean} searchable Set if column is searchable.
+         * @param {boolean} visible Set if column is visible.
+         * @param {string} columnType Set the column data type. Values: string, numeric, date, datetime, or boolean.
+         * @param {boolean} isGrouping Define a group key.
          */
         .directive('tbColumn', [
             'tubulargGridColumnModel', function(ColumnModel) {
@@ -1240,13 +1352,28 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     replace: true,
                     transclude: true,
                     scope: {
-                        rowModel: '=',
+                        model: '=rowModel',
                         selectable: '@'
                     },
                     controller: [
-                        '$scope', function($scope) {
+                        '$scope', function ($scope) {
+                            $scope.tubularDirective = 'tubular-rowset';
+                            $scope.fields = [];
+                            $scope.hasFieldsDefinitions = false;
                             $scope.selectableBool = $scope.selectable !== "false";
                             $scope.$component = $scope.$parent.$parent.$parent.$component;
+
+                            $scope.$watch('hasFieldsDefinitions', function (newVal) {
+                                if (newVal !== true || angular.isUndefined($scope.model)) return;
+
+                                $scope.bindFields();
+                            });
+
+                            $scope.bindFields = function () {
+                                angular.forEach($scope.fields, function (field) {
+                                    field.bindScope();
+                                });
+                            }
 
                             if ($scope.selectableBool && angular.isUndefined($scope.rowModel) === false) {
                                 $scope.$component.selectFromSession($scope.rowModel);
@@ -1257,7 +1384,15 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                                 $scope.$component.changeSelection(rowModel);
                             };
                         }
-                    ]
+                    ],
+                    compile: function compile(cElement, cAttrs) {
+                        return {
+                            pre: function (scope, lElement, lAttrs, lController, lTransclude) { },
+                            post: function (scope, lElement, lAttrs, lController, lTransclude) {
+                                scope.hasFieldsDefinitions = true;
+                            }
+                        };
+                    }
                 };
             }
         ])
@@ -1351,7 +1486,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
 
                 return {
                     require: '^tbRowTemplate',
-                    template: '<td class="row-group" colspan="{{$parent.$component.columns.length + 1}}">' +
+                    template: '<td class="row-group" colspan="{{$parent.$component.visibleColumns()}}">' +
                         '<ng-transclude></ng-transclude>' +
                         '</td>',
                     restrict: 'E',
@@ -1908,9 +2043,20 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
          * The `tbSimpleEditor` directive is the basic input to show in a grid or form.
          * It uses the `TubularModel` to retrieve column or field information.
          * 
-         * TODO: Define attributes
-         * 
          * @scope
+         * 
+         * @param {string} name Set the field name.
+         * @param {object} value Set the value.
+         * @param {boolean} isEditing Indicate if the field is showing editor.
+         * @param {string} editorType Set what HTML input type should display.
+         * @param {boolean} showLabel Set if the label should be display.
+         * @param {string} label Set the field's label otherwise the name is used.
+         * @param {string} placeholder Set the placeholder text.
+         * @param {string} help Set the help text.
+         * @param {boolean} required Set if the field is required.
+         * @param {boolean} readOnly Set if the field is read-only.
+         * @param {number} min Set the minimum characters.
+         * @param {number} max Set the maximum characters.
          */
         .directive('tbSimpleEditor', [
             'tubularEditorService', function(tubularEditorService) {
@@ -1966,6 +2112,19 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
          * It uses the `TubularModel` to retrieve column or field information.
          * 
          * @scope
+         * 
+         * @param {string} name Set the field name.
+         * @param {object} value Set the value.
+         * @param {boolean} isEditing Indicate if the field is showing editor.
+         * @param {boolean} showLabel Set if the label should be display.
+         * @param {string} label Set the field's label otherwise the name is used.
+         * @param {string} placeholder Set the placeholder text.
+         * @param {string} help Set the help text.
+         * @param {boolean} required Set if the field is required.
+         * @param {string} format Indicate the format to use, C for currency otherwise number.
+         * @param {boolean} readOnly Set if the field is read-only.
+         * @param {number} min Set the minimum value.
+         * @param {number} max Set the maximum value.
          */
         .directive('tbNumericEditor', [
             'tubularEditorService', function(tubularEditorService) {
@@ -2022,6 +2181,18 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
          * It uses the `TubularModel` to retrieve column or field information.
          * 
          * @scope
+         * 
+         * @param {string} name Set the field name.
+         * @param {object} value Set the value.
+         * @param {boolean} isEditing Indicate if the field is showing editor.
+         * @param {boolean} showLabel Set if the label should be display.
+         * @param {string} label Set the field's label otherwise the name is used.
+         * @param {string} help Set the help text.
+         * @param {boolean} required Set if the field is required.
+         * @param {string} format Indicate the format to use, default "yyyy-MM-dd HH:mm".
+         * @param {boolean} readOnly Set if the field is read-only.
+         * @param {number} min Set the minimum value.
+         * @param {number} max Set the maximum value.
          */
         .directive('tbDateTimeEditor', [
             'tubularEditorService', function(tubularEditorService) {
@@ -2097,6 +2268,18 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
          * It uses the `TubularModel` to retrieve column or field information.
          * 
          * @scope
+         * 
+         * @param {string} name Set the field name.
+         * @param {object} value Set the value.
+         * @param {boolean} isEditing Indicate if the field is showing editor.
+         * @param {boolean} showLabel Set if the label should be display.
+         * @param {string} label Set the field's label otherwise the name is used.
+         * @param {string} help Set the help text.
+         * @param {boolean} required Set if the field is required.
+         * @param {string} format Indicate the format to use, default "yyyy-MM-dd".
+         * @param {boolean} readOnly Set if the field is read-only.
+         * @param {number} min Set the minimum value.
+         * @param {number} max Set the maximum value.
          */
         .directive('tbDateEditor', [
             'tubularEditorService', function(tubularEditorService) {
@@ -2178,6 +2361,17 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
          * It uses the `TubularModel` to retrieve column or field information.
          * 
          * @scope
+         * 
+         * @param {string} name Set the field name.
+         * @param {object} value Set the value.
+         * @param {boolean} isEditing Indicate if the field is showing editor.
+         * @param {boolean} showLabel Set if the label should be display.
+         * @param {string} label Set the field's label otherwise the name is used.
+         * @param {string} help Set the help text.
+         * @param {boolean} required Set if the field is required.
+         * @param {object} options Set the options to display.
+         * @param {string} optionsUrl Set the Http Url where to retrieve the values.
+         * @param {string} optionsMethod Set the Http Method where to retrieve the values.
          */
         .directive('tbDropdownEditor', [
             'tubularEditorService', 'tubularHttp', function(tubularEditorService, tubularHttp) {
@@ -2200,7 +2394,6 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     controller: [
                         '$scope', function($scope) {
                             tubularEditorService.setupScope($scope);
-                            $scope.$editorType = 'select';
                             $scope.dataIsLoaded = false;
 
                             $scope.loadData = function() {
@@ -2250,6 +2443,17 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
          * It uses the `TubularModel` to retrieve column or field information.
          * 
          * @scope
+         * 
+         * @param {string} name Set the field name.
+         * @param {object} value Set the value.
+         * @param {boolean} isEditing Indicate if the field is showing editor.
+         * @param {boolean} showLabel Set if the label should be display.
+         * @param {string} label Set the field's label otherwise the name is used.
+         * @param {string} help Set the help text.
+         * @param {boolean} required Set if the field is required.
+         * @param {object} options Set the options to display.
+         * @param {string} optionsUrl Set the Http Url where to retrieve the values.
+         * @param {string} optionsMethod Set the Http Method where to retrieve the values.
          */
         .directive('tbTypeaheadEditor', [
             'tubularEditorService', 'tubularHttp', '$q', function(tubularEditorService, tubularHttp, $q) {
@@ -2276,7 +2480,6 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     controller: [
                         '$scope', function($scope) {
                             tubularEditorService.setupScope($scope);
-                            $scope.$editorType = 'select';
 
                             $scope.getValues = function(val) {
                                 if (angular.isDefined($scope.optionsUrl)) {
@@ -2306,12 +2509,14 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
          * It uses the `TubularModel` to retrieve column or field information.
          * 
          * @scope
+         * @param {string} name Set the field name.
+         * @param {object} value Set the value.
          */
         .directive('tbHiddenField', [
             'tubularEditorService', function(tubularEditorService) {
 
                 return {
-                    template: '<input type="hidden" ng-show="isEditing" ng-model="value" class="form-control"  />',
+                    template: '<input type="hidden" ng-model="value" class="form-control"  />',
                     restrict: 'E',
                     replace: true,
                     transclude: true,
@@ -2335,18 +2540,28 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
          * It uses the `TubularModel` to retrieve column or field information.
          * 
          * @scope
+         * @param {string} name Set the field name.
+         * @param {object} value Set the value.
+         * @param {object} checkedValue Set the checked value.
+         * @param {object} uncheckedValue Set the unchecked value.
+         * @param {boolean} isEditing Indicate if the field is showing editor.
+         * @param {boolean} showLabel Set if the label should be display.
+         * @param {string} label Set the field's label otherwise the name is used.
+         * @param {string} help Set the help text.
          */
         .directive('tbCheckboxField', [
             'tubularEditorService', function(tubularEditorService) {
 
                 return {
-                    template: '<div ng-class="{ \'form-group\' : isEditing, \'has-error\' : !$valid }">' +
-                        '<span ng-hide="isEditing">{{value}}</span>' +
-                        '<label>' +
-                        '<input type="checkbox" ng-show="isEditing" ng-model="value" ng-required="required" /> ' +
-                        '<span ng-show="showLabel">{{label}}</span>' +
+                    template: '<div ng-class="{ \'form-group\' : isEditing, \'has-error\' : !$valid }" class="checkbox">' +
+                        '<span ng-hide="isEditing">{{value ? checkedValue : uncheckedValue}}</span>' +
+                        '<input ng-show="isEditing" type="checkbox" ng-model="value" ng-disabled="readOnly"' +
+                        'class="tubular-checkbox" id="{{name}}" /> ' +
+                        '<label ng-show="isEditing" for="{{name}}">' +
+                        '{{label}}' +
                         '</label>' +
-                        '<span class="help-block error-block" ng-show="isEditing" ng-repeat="error in state.$errors">' +
+                        '<span class="help-block error-block" ng-show="isEditing" ' +
+                        'ng-repeat="error in state.$errors">' +
                         '{{error}}' +
                         '</span>' +
                         '<span class="help-block" ng-show="isEditing && help">{{help}}</span>' +
@@ -2354,9 +2569,15 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     restrict: 'E',
                     replace: true,
                     transclude: true,
-                    scope: tubularEditorService.defaultScope,
+                    scope: angular.extend({
+                        checkedValue: '=?',
+                        uncheckedValue: '=?'
+                    }, tubularEditorService.defaultScope),
                     controller: [
-                        '$scope', function($scope) {
+                        '$scope', '$element', function ($scope, $element) {
+                            $scope.checkedValue = angular.isDefined($scope.checkedValue) ? $scope.checkedValue : true;
+                            $scope.uncheckedValue = angular.isDefined($scope.uncheckedValue) ? $scope.uncheckedValue : false;
+
                             tubularEditorService.setupScope($scope);
                         }
                     ]
@@ -2375,6 +2596,18 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
          * It uses the `TubularModel` to retrieve column or field information.
          * 
          * @scope
+         * 
+         * @param {string} name Set the field name.
+         * @param {object} value Set the value.
+         * @param {boolean} isEditing Indicate if the field is showing editor.
+         * @param {boolean} showLabel Set if the label should be display.
+         * @param {string} label Set the field's label otherwise the name is used.
+         * @param {string} placeholder Set the placeholder text.
+         * @param {string} help Set the help text.
+         * @param {boolean} required Set if the field is required.
+         * @param {boolean} readOnly Set if the field is read-only.
+         * @param {number} min Set the minimum characters.
+         * @param {number} max Set the maximum characters.
          */
         .directive('tbTextArea', [
             'tubularEditorService', function(tubularEditorService) {
@@ -2485,8 +2718,10 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                         '<h4>{{filterTitle}}</h4>' +
                         '<form class="tubular-column-filter-form" onsubmit="return false;">' +
                         '<select class="form-control" ng-model="filter.Operator" ng-hide="dataType == \'boolean\'"></select>' +
+                        '<div  ng-class="{ \'checkbox\': dataType == \'boolean\' }">' +
                         '<input class="form-control" type="{{ dataType == \'boolean\' ? \'checkbox\' : \'search\'}}" ng-model="filter.Text" placeholder="Value" ' +
-                        'ng-disabled="filter.Operator == \'None\'" />' +
+                        'ng-disabled="filter.Operator == \'None\'" />'+
+                        '<label ng-show="dataType == \'boolean\'">Check to filter</label></div>' +
                         '<input type="search" class="form-control" ng-model="filter.Argument[0]" ng-show="filter.Operator == \'Between\'" />' +
                         '<hr />' +
                         '<tb-column-filter-buttons></tb-column-filter-buttons>' +
@@ -2594,6 +2829,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
          * @description
          * The `tbColumnOptionsFilter` directive is a filter with an dropdown listing all the possible values to filter.
          * 
+         * @scope
          * TODO: List params from tubularGridFilterService
          */
         .directive('tbColumnOptionsFilter', [
@@ -2712,16 +2948,6 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                             $scope.requireAuthentication = angular.isUndefined($scope.requireAuthentication) ? true : $scope.requireAuthentication;
                             $scope.gridDataService.setRequireAuthentication($scope.requireAuthentication);
 
-                            $scope.addField = function(item) {
-                                if (item.name === null) return;
-
-                                if ($scope.hasFieldsDefinitions !== false)
-                                    throw 'Cannot define more fields. Field definitions have been sealed';
-
-                                item.Name = item.name;
-                                $scope.fields.push(item);
-                            };
-
                             $scope.$watch('hasFieldsDefinitions', function(newVal) {
                                 if (newVal !== true) return;
                                 $scope.retrieveData();
@@ -2729,25 +2955,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
 
                             $scope.bindFields = function() {
                                 angular.forEach($scope.fields, function(field) {
-                                    field.$parent.Model = $scope.model;
-
-                                    if (field.$editorType == 'input' &&
-                                        angular.equals(field.value, $scope.model[field.Name]) == false) {
-                                        field.value = (field.DataType == 'date') ? new Date($scope.model[field.Name]) : $scope.model[field.Name];
-
-                                        $scope.$watch(function() {
-                                            return field.value;
-                                        }, function(value) {
-                                            $scope.model[field.Name] = value;
-                                        });
-                                    }
-
-                                    // Ignores models without state
-                                    if (angular.isUndefined($scope.model.$state)) return;
-
-                                    if (angular.equals(field.state, $scope.model.$state[field.Name]) == false) {
-                                        field.state = $scope.model.$state[field.Name];
-                                    }
+                                    field.bindScope();
                                 });
                             };
 
@@ -2942,10 +3150,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                 return function($scope, data, dataService) {
                     var obj = {
                         $key: "",
-                        $count: 0,
                         $addField: function(key, value) {
-                            this.$count++;
-
                             this[key] = value;
                             if (angular.isUndefined(this.$original)) this.$original = {};
                             this.$original[key] = value;
@@ -3336,6 +3541,11 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                             return $compile($(this).next().html())(scope);
                         },
                     });
+                    
+                    $(el).find('[data-toggle="popover"]').on('show.bs.popover', function (e) {
+                        $("[rel=popover]").not(e.target).popover("destroy");
+                        $(".popover").remove();
+                    });
 
                     $(el).find('[data-toggle="popover"]').on('shown.bs.popover', openCallback);
                 };
@@ -3359,7 +3569,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                         scope.filter.Operator = 'Equals';
                     }
 
-                    if (scope.dataType === 'numeric') {
+                    if (scope.dataType === 'numeric' || scope.dataType === 'boolean') {
                         scope.filter.Argument = [1];
                         scope.filter.Operator = 'Equals';
                     }
@@ -3381,7 +3591,6 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
 
                 me.defaultScope = {
                     value: '=?',
-                    state: '=?',
                     isEditing: '=?',
                     editorType: '@',
                     showLabel: '=?',
@@ -3391,8 +3600,6 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     min: '=?',
                     max: '=?',
                     name: '@',
-                    defaultValue: '=?',
-                    IsKey: '@',
                     placeholder: '@?',
                     readOnly: '=?',
                     help: '@?'
@@ -3406,15 +3613,10 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     scope.readOnly = scope.readOnly || false;
                     scope.format = scope.format || defaultFormat;
                     scope.$valid = true;
-                    scope.$editorType = 'input';
-
-                    if (angular.isUndefined(scope.defaultValue) == false && angular.isUndefined(scope.value)) {
-                        scope.value = scope.defaultValue;
-                    }
 
                     scope.$watch('value', function(newValue, oldValue) {
                         if (angular.isUndefined(oldValue) && angular.isUndefined(newValue)) return;
-
+                        
                         if (angular.isUndefined(scope.state)) {
                             scope.state = {
                                 $valid: function() {
@@ -3426,11 +3628,12 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
 
                         scope.$valid = true;
                         scope.state.$errors = [];
-
+                        
                         // Try to match the model to the parent, if it exists
                         if (angular.isDefined(scope.$parent.Model)) {
                             if (angular.isDefined(scope.$parent.Model[scope.name])) {
                                 scope.$parent.Model[scope.name] = newValue;
+                                scope.$parent.Model.$state[scope.Name] = scope.state;
                             } else if (angular.isDefined(scope.$parent.Model.$addField)) {
                                 scope.$parent.Model.$addField(scope.name, newValue);
                             }
@@ -3439,6 +3642,7 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                         if (angular.isUndefined(scope.value) && scope.required) {
                             scope.$valid = false;
                             scope.state.$errors = ["Field is required"];
+                            scope.$parent.Model.$state[scope.Name] = scope.state;
                             return;
                         }
 
@@ -3454,8 +3658,37 @@ angular.module('a8m.group-by', ['a8m.filter-watcher'])
                     while (true) {
                         if (parent == null) break;
                         if (angular.isUndefined(parent.tubularDirective) == false &&
-                            parent.tubularDirective === 'tubular-form') {
-                            parent.addField(scope);
+                            (parent.tubularDirective === 'tubular-form' ||
+                            parent.tubularDirective === 'tubular-rowset')) {
+                            if (scope.name === null) return;
+
+                            if (parent.hasFieldsDefinitions !== false)
+                                throw 'Cannot define more fields. Field definitions have been sealed';
+
+                            scope.Name = scope.name;
+                            scope.bindScope = function() {
+                                scope.$parent.Model = parent.model;
+
+                                if (angular.equals(scope.value, parent.model[scope.Name]) == false) {
+                                    scope.value = (scope.DataType == 'date') ? new Date(parent.model[scope.Name]) : parent.model[scope.Name];
+
+                                    parent.$watch(function() {
+                                        return scope.value;
+                                    }, function(value) {
+                                        parent.model[scope.Name] = value;
+                                    });
+                                }
+
+                                // Ignores models without state
+                                if (angular.isUndefined(parent.model.$state)) return;
+
+                                if (angular.equals(scope.state, parent.model.$state[scope.Name]) == false) {
+                                    scope.state = parent.model.$state[scope.Name];
+                                }
+                            };
+
+                            parent.fields.push(scope);
+
                             break;
                         }
 

@@ -4,12 +4,11 @@ using System.Collections.Generic;
 
 namespace Unosquare.Labs.EmbedIO.Command
 {
+    /// <summary>
+    /// CLI options container
+    /// </summary>
     internal class Options
     {
-        // TODO: Get a JSON file?
-        //[ValueList(typeof (List<string>), MaximumElements = 1)]
-        //public IList<string> Items { get; set; }
-
         [Option('p', "path", Required = true, HelpText = "WWW-root path.")]
         public string RootPath { get; set; }
 
@@ -23,7 +22,7 @@ namespace Unosquare.Labs.EmbedIO.Command
         public string GetUsage()
         {
             return HelpText.AutoBuild(this,
-                (HelpText current) => HelpText.DefaultParsingErrorsHandler(this, current));
+                current => HelpText.DefaultParsingErrorsHandler(this, current));
         }
     }
 }

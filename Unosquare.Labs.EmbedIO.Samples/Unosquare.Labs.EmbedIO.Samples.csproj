@@ -62,10 +62,18 @@
   <ItemGroup>
     <Content Include="html\css\embedio-icon.png" />
     <Content Include="html\css\embedio.png" />
-    <Content Include="html\scripts\tubular\tubular-bundle.css" />
-    <Content Include="html\scripts\tubular\tubular-bundle.js" />
-    <Content Include="html\scripts\tubular\tubular-bundle.min.css" />
-    <Content Include="html\scripts\tubular\tubular-bundle.min.js" />
+    <Content Include="html\scripts\tubular\tubular-bundle.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\scripts\tubular\tubular-bundle.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\scripts\tubular\tubular-bundle.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\scripts\tubular\tubular-bundle.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="html\views\tubular.html" />
     <None Include="app.config" />
     <Content Include="html\scripts\app.constants.js">
