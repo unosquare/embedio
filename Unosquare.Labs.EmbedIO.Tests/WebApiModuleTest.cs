@@ -2,10 +2,12 @@
 {
     using Newtonsoft.Json;
     using NUnit.Framework;
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Net;
+    using System.Threading;
     using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Labs.EmbedIO.Tests.Properties;
 
@@ -64,5 +66,12 @@
         }
 
         // TODO: Test POST
+
+        [TearDown]
+        public void Kill()
+        {
+            Thread.Sleep(TimeSpan.FromSeconds(1));
+            WebServer.Dispose();
+        }
     }
 }

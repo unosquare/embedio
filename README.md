@@ -4,7 +4,7 @@
 
 ![EmbedIO](http://unosquare.github.io/embedio/images/embedio.png)
 
-A tiny, cross-platform, module based, MIT-licensed web server
+A tiny, cross-platform, module based, MIT-licensed web server.
 
 * New Version: Network operations make heavy use of the relatively recent async/await pattern
 * Cross-platform (tested in Mono 3.10.x on Windows and on a custom Yocto image for the Raspberry Pi)
@@ -14,6 +14,7 @@ A tiny, cross-platform, module based, MIT-licensed web server
 * Serve static files with 1 line of code (built-in module)
 * Handle sessions with the built-in LocalSessionWebModule
 * Web Sockets support (Not available on Mono though)
+* CORS support. Origin, Headers and Methods validation with OPTIONS preflight
 
 *For detailed usage and REST API implementation, download the code and take a look at the Samples project*
 
@@ -115,9 +116,10 @@ namespace Company.Project
                 url = args[0];
 
             // Create Webserver with console logger and attach LocalSession and Static
-            // files module
+            // files module and CORS enabled
             var server = WebServer
                 .CreateWithConsole(url)
+                .EnableCors()
                 .WithLocalSession()
                 .WithStaticFolderAt("c:/web");
 

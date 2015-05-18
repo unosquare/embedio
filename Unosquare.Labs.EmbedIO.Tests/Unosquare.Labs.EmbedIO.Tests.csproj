@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CorsModuleTest.cs" />
     <Compile Include="FluentTest.cs" />
     <Compile Include="LocalSessionModuleTest.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

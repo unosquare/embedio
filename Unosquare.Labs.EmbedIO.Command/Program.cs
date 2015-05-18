@@ -29,7 +29,7 @@
                 if (Properties.Settings.Default.UseLocalSessionModule)
                     server.WithLocalSession();
 
-                server.WithStaticFolderAt(options.RootPath,
+                server.EnableCors().WithStaticFolderAt(options.RootPath,
                     defaultDocument: Properties.Settings.Default.HtmlDefaultDocument);
 
                 server.Module<StaticFilesModule>().DefaultExtension = Properties.Settings.Default.HtmlDefaultExtension;

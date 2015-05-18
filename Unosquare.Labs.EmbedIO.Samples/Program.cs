@@ -20,7 +20,7 @@
 
             // Our web server is disposable. Note that if you don't want to use logging,
             // there are alternate constructors that allow you to skip specifying an ILog object.
-            using (var server = new WebServer(url, new SimpleConsoleLog()))
+            using (var server = new WebServer(url, Log))
             {
                 // First, we will configure our web server by adding Modules.
                 // Please note that order DOES matter.
@@ -30,8 +30,14 @@
                 // You can use the server.GetSession() method to get the SessionInfo object and manupulate it.
                 server.RegisterModule(new Modules.LocalSessionModule());
 
-                // Set the CORS Rules, Origins separated by comma without last slash
-                server.RegisterModule(new Modules.CorsModule("http://client.cors-api.appspot.com,http://unosquare.github.io,http://run.plnkr.co"));
+                // Set the CORS Rules
+                server.RegisterModule(new Modules.CorsModule(
+                    // Origins, separated by comma without last slash
+                    "http://client.cors-api.appspot.com,http://unosquare.github.io,http://run.plnkr.co", 
+                    // Allowed headers
+                    "content-type, accept",
+                    // Allowed methods
+                    "post"));
 
                 // Register the static files server. See the html folder of this project. Also notice that 
                 // the files under the html folder have Copy To Output Folder = Copy if Newer

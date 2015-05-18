@@ -100,7 +100,6 @@
         /// </summary>
         /// <param name="webserver">The webserver instance.</param>
         /// <param name="assembly">The assembly to load WebSocketsServer types from. Leave null to load from the currently executing assembly.</param>
-        /// <param name="verbose">Set verbose</param>
         /// <returns>The webserver instance.</returns>
         public static WebServer LoadWebSockets(this WebServer webserver, Assembly assembly = null)
         {
@@ -120,6 +119,25 @@
                     webserver.Log.DebugFormat("Registering WebSocket Server '{0}'", socketServer.Name);
                 }
             }
+
+            return webserver;
+        }
+
+        /// <summary>
+        /// Enables CORS in the WebServer
+        /// </summary>
+        /// <param name="webserver">The webserver instance.</param>
+        /// <param name="origins">The valid origins, default all</param>
+        /// <param name="headers">The valid headers, default all</param>
+        /// <param name="methods">The valid method, default all</param>
+        /// <returns></returns>
+        public static WebServer EnableCors(this WebServer webserver, string origins = Constants.CorsWildcard,
+            string headers = Constants.CorsWildcard,
+            string methods = Constants.CorsWildcard)
+        {
+            if (webserver == null) throw new ArgumentException("Argument cannot be null.", "webserver");
+
+            webserver.RegisterModule(new CorsModule(origins, headers, methods));
 
             return webserver;
         }
