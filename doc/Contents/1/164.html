@@ -6,12 +6,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
 <link rel="stylesheet" type="text/css" href="../../CSS/Contents.css"></link>
 <script type="text/javascript" src="../../JS/Common.js"></script>
-<title>SimpleConsoleLog.Info Method (object)</title>
+<title>ISessionWebModule.GetSession Method (WebSocketContext)</title>
 </head>
 <body>
 <div id="Header">
 <div id="ProjectTitle">Documentation Project</div>
-<div id="PageTitle">SimpleConsoleLog.Info Method (object)</div>
+<div id="PageTitle">ISessionWebModule.GetSession Method (WebSocketContext)</div>
 <div id="HeaderShortcuts">
 <a href="#SectionHeader0" onclick="javascript: SetSectionVisibility(0, true); SetExpandCollapseAllToCollapseAll();">Syntax</a>&nbsp;
 </div>
@@ -24,10 +24,10 @@
 </div>
 <div id="Contents">
 <a id="ContentsAnchor">&nbsp;</a>
-Writes an Info level message
+Gets the session.
 <div id="ItemLocation">
-<b>Declaring type:</b> <a href="../../Contents/1/157.html">SimpleConsoleLog</a><br />
-<b>Namespace:</b> <a href="../../Contents/1/3.html">Unosquare.Labs.EmbedIO.Log</a><br />
+<b>Declaring type:</b> <a href="../../Contents/1/13.html">ISessionWebModule</a><br />
+<b>Namespace:</b> <a href="../../Contents/1/2.html">Unosquare.Labs.EmbedIO</a><br />
 <b>Assembly:</b> <a href="../../Contents/1/1.html">Unosquare.Labs.EmbedIO</a>
 </div>
 <div id="SectionHeader0" class="SectionHeader">
@@ -40,11 +40,15 @@ Syntax
 </div>
 
 <div id="SectionContainerDiv0" class="SectionContainer">
-<table class="CodeTable"><col width="100%" /><tr class="CodeTable"><th class="CodeTable">C#</th></tr><tr class="CodeTable"><td class="CodeTable"><pre style="margin-left: 2px;">public virtual void Info (
-        object <i>message</i>
+<table class="CodeTable"><col width="100%" /><tr class="CodeTable"><th class="CodeTable">C#</th></tr><tr class="CodeTable"><td class="CodeTable"><pre style="margin-left: 2px;">public abstract SessionInfo GetSession (
+        WebSocketContext <i>context</i>
 ) </pre></td></tr></table>
 <div class="CommentHeader">Parameters</div>
-<div class="CommentParameterName">message</div>
+<div class="CommentParameterName">context</div>
+<div class="ParameterCommentContainer">
+The context.
+</div>
+<div class="CommentHeader">Return Value</div>
 <div class="ParameterCommentContainer">
 <p>There is no description.</p>
 </div>

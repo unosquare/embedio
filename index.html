@@ -82,6 +82,7 @@
                             <li>Serve static files with 1 line of code (built-in module)</li>
                             <li>Handle sessions with the built-in LocalSessionWebModule</li>
                             <li>Web Sockets support (Not available on Mono though)</li>
+                            <li>CORS support. Origin, Headers and Methods validation with OPTIONS preflight</li>
                         </ul>
 
                         <p>
@@ -179,7 +180,8 @@ namespace Company.Project
             // Create Webserver with console logger and attach LocalSession and Static
             // files module
             var server = WebServer
-                .CreateWithConsole(url)
+                .CreateWithConsole(url)                                 
+                .EnableCors()
                 .WithLocalSession()
                 .WithStaticFolderAt(&quot;c:/web&quot;);
             server.RunAsync();

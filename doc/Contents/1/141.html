@@ -6,12 +6,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
 <link rel="stylesheet" type="text/css" href="../../CSS/Contents.css"></link>
 <script type="text/javascript" src="../../JS/Common.js"></script>
-<title>IWebModule.Server Property </title>
+<title>WebServer.Create Method (string, ILog)</title>
 </head>
 <body>
 <div id="Header">
 <div id="ProjectTitle">Documentation Project</div>
-<div id="PageTitle">IWebModule.Server Property </div>
+<div id="PageTitle">WebServer.Create Method (string, ILog)</div>
 <div id="HeaderShortcuts">
 <a href="#SectionHeader0" onclick="javascript: SetSectionVisibility(0, true); SetExpandCollapseAllToCollapseAll();">Syntax</a>&nbsp;
 </div>
@@ -24,9 +24,9 @@
 </div>
 <div id="Contents">
 <a id="ContentsAnchor">&nbsp;</a>
-Gets the server owning this module. This property is set automatically after registering the module.
+Static method to create webserver instance
 <div id="ItemLocation">
-<b>Declaring type:</b> <a href="../../Contents/1/13.html">IWebModule</a><br />
+<b>Declaring type:</b> <a href="../../Contents/1/12.html">WebServer</a><br />
 <b>Namespace:</b> <a href="../../Contents/1/2.html">Unosquare.Labs.EmbedIO</a><br />
 <b>Assembly:</b> <a href="../../Contents/1/1.html">Unosquare.Labs.EmbedIO</a>
 </div>
@@ -40,10 +40,22 @@ Syntax
 </div>
 
 <div id="SectionContainerDiv0" class="SectionContainer">
-<table class="CodeTable"><col width="100%" /><tr class="CodeTable"><th class="CodeTable">C#</th></tr><tr class="CodeTable"><td class="CodeTable"><pre style="margin-left: 2px;">public abstract WebServer Server { get; set; }</pre></td></tr></table>
-<div class="CommentHeader">Property Value</div>
+<table class="CodeTable"><col width="100%" /><tr class="CodeTable"><th class="CodeTable">C#</th></tr><tr class="CodeTable"><td class="CodeTable"><pre style="margin-left: 2px;">public static WebServer Create (
+        string <i>urlPrefix</i>,
+        ILog <i>log</i>
+) </pre></td></tr></table>
+<div class="CommentHeader">Parameters</div>
+<div class="CommentParameterName">urlPrefix</div>
 <div class="ParameterCommentContainer">
-The server.
+The URL prefix.
+</div>
+<div class="CommentParameterName">log</div>
+<div class="ParameterCommentContainer">
+The log.
+</div>
+<div class="CommentHeader">Return Value</div>
+<div class="ParameterCommentContainer">
+The webserver instance.
 </div>
 <div class="TopLink"><a href="#ContentsAnchor">Top</a></div></div>
 </div>

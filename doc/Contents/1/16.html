@@ -6,15 +6,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
 <link rel="stylesheet" type="text/css" href="../../CSS/Contents.css"></link>
 <script type="text/javascript" src="../../JS/Common.js"></script>
-<title>HttpVerbs Enumeration</title>
+<title>ResponseHandler Delegate</title>
 </head>
 <body>
 <div id="Header">
 <div id="ProjectTitle">Documentation Project</div>
-<div id="PageTitle">HttpVerbs Enumeration</div>
+<div id="PageTitle">ResponseHandler Delegate</div>
 <div id="HeaderShortcuts">
 <a href="#SectionHeader0" onclick="javascript: SetSectionVisibility(0, true); SetExpandCollapseAllToCollapseAll();">Syntax</a>&nbsp;
-<a href="#SectionHeader1" onclick="javascript: SetSectionVisibility(1, true); SetExpandCollapseAllToCollapseAll();">Members</a>&nbsp;
 </div>
 <div class="DarkLine"></div>
 <div class="LightLine"></div>
@@ -25,7 +24,7 @@
 </div>
 <div id="Contents">
 <a id="ContentsAnchor">&nbsp;</a>
-Enumerates the different HTTP Verbs
+A delegate that handles certain action in a module given a path and a verb
 <div id="ItemLocation">
 <b>Namespace:</b> <a href="../../Contents/1/2.html">Unosquare.Labs.EmbedIO</a><br />
 <b>Assembly:</b> <a href="../../Contents/1/1.html">Unosquare.Labs.EmbedIO</a>
@@ -40,86 +39,23 @@ Syntax
 </div>
 
 <div id="SectionContainerDiv0" class="SectionContainer">
-<table class="CodeTable"><col width="100%" /><tr class="CodeTable"><th class="CodeTable">C#</th></tr><tr class="CodeTable"><td class="CodeTable"><table style="width: 100%;" class="InsideCodeBlock">
-<col width="0%" />
-<col width="100%" />
-<tr>
-<td class="NoWrapTop">public enum HttpVerbs :&nbsp;</td>
-<td>
-int
-</td>
-</tr>
-</table>
-</td></tr></table>
-<div class="TopLink"><a href="#ContentsAnchor">Top</a></div></div>
-<div id="SectionHeader1" class="SectionHeader">
-<img id="SectionExpanderImg1" src="../../GFX/BigSquareExpanded.gif" alt="Collapse/Expand" onclick="javascript: ToggleSectionVisibility(1);" />
-<span class="SectionHeader">
-<span class="ArrowCursor" onclick="javascript: ToggleSectionVisibility(1);">
-Members
-</span>
-</span>
+<table class="CodeTable"><col width="100%" /><tr class="CodeTable"><th class="CodeTable">C#</th></tr><tr class="CodeTable"><td class="CodeTable"><pre style="margin-left: 2px;">public delegate bool ResponseHandler (
+        WebServer <i>server</i>,
+        HttpListenerContext <i>context</i>
+) </pre></td></tr></table>
+<div class="CommentHeader">Parameters</div>
+<div class="CommentParameterName">server</div>
+<div class="ParameterCommentContainer">
+The server.
 </div>
-
-<div id="SectionContainerDiv1" class="SectionContainer">
-<table class="MembersTable">
-<col width="2%" />
-<col width="38%" />
-<col width="60%" />
-<tr>
-<th>&nbsp;</th>
-<th>Member name</th>
-<th>Description</th>
-</tr>
-<tr>
-<td class="IconColumn">
-<img src="../../GFX/EnumField.gif" alt="Enum Field" /></td>
-<td><a href="../../Contents/1/148.html">Any</a></td>
-<td>Wildcard Method</td>
-</tr>
-<tr>
-<td class="IconColumn">
-<img src="../../GFX/EnumField.gif" alt="Enum Field" /></td>
-<td><a href="../../Contents/1/149.html">Delete</a></td>
-<td>DELETE Method</td>
-</tr>
-<tr>
-<td class="IconColumn">
-<img src="../../GFX/EnumField.gif" alt="Enum Field" /></td>
-<td><a href="../../Contents/1/150.html">Get</a></td>
-<td>GET Method</td>
-</tr>
-<tr>
-<td class="IconColumn">
-<img src="../../GFX/EnumField.gif" alt="Enum Field" /></td>
-<td><a href="../../Contents/1/151.html">Head</a></td>
-<td>HEAD method</td>
-</tr>
-<tr>
-<td class="IconColumn">
-<img src="../../GFX/EnumField.gif" alt="Enum Field" /></td>
-<td><a href="../../Contents/1/152.html">Options</a></td>
-<td>OPTIONS method</td>
-</tr>
-<tr>
-<td class="IconColumn">
-<img src="../../GFX/EnumField.gif" alt="Enum Field" /></td>
-<td><a href="../../Contents/1/153.html">Patch</a></td>
-<td>PATCH method</td>
-</tr>
-<tr>
-<td class="IconColumn">
-<img src="../../GFX/EnumField.gif" alt="Enum Field" /></td>
-<td><a href="../../Contents/1/154.html">Post</a></td>
-<td>POST method</td>
-</tr>
-<tr>
-<td class="IconColumn">
-<img src="../../GFX/EnumField.gif" alt="Enum Field" /></td>
-<td><a href="../../Contents/1/155.html">Put</a></td>
-<td>PUT method</td>
-</tr>
-</table>
+<div class="CommentParameterName">context</div>
+<div class="ParameterCommentContainer">
+The context.
+</div>
+<div class="CommentHeader">Return Value</div>
+<div class="ParameterCommentContainer">
+<p>There is no description.</p>
+</div>
 <div class="TopLink"><a href="#ContentsAnchor">Top</a></div></div>
 </div>
 <div id="Footer">

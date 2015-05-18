@@ -6,12 +6,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
 <link rel="stylesheet" type="text/css" href="../../CSS/Contents.css"></link>
 <script type="text/javascript" src="../../JS/Common.js"></script>
-<title>WebServer.<Log>k__BackingField Field</title>
+<title>WebModuleBase.AddHandler Method (string, HttpVerbs, ResponseHandler)</title>
 </head>
 <body>
 <div id="Header">
 <div id="ProjectTitle">Documentation Project</div>
-<div id="PageTitle">WebServer.<Log>k__BackingField Field</div>
+<div id="PageTitle">WebModuleBase.AddHandler Method (string, HttpVerbs, ResponseHandler)</div>
 <div id="HeaderShortcuts">
 <a href="#SectionHeader0" onclick="javascript: SetSectionVisibility(0, true); SetExpandCollapseAllToCollapseAll();">Syntax</a>&nbsp;
 </div>
@@ -24,9 +24,9 @@
 </div>
 <div id="Contents">
 <a id="ContentsAnchor">&nbsp;</a>
-<p>There is no summary.</p>
+Adds a method handler for a given path and verb
 <div id="ItemLocation">
-<b>Declaring type:</b> <a href="../../Contents/1/11.html">WebServer</a><br />
+<b>Declaring type:</b> <a href="../../Contents/1/11.html">WebModuleBase</a><br />
 <b>Namespace:</b> <a href="../../Contents/1/2.html">Unosquare.Labs.EmbedIO</a><br />
 <b>Assembly:</b> <a href="../../Contents/1/1.html">Unosquare.Labs.EmbedIO</a>
 </div>
@@ -40,7 +40,24 @@ Syntax
 </div>
 
 <div id="SectionContainerDiv0" class="SectionContainer">
-<table class="CodeTable"><col width="100%" /><tr class="CodeTable"><th class="CodeTable">C#</th></tr><tr class="CodeTable"><td class="CodeTable">private ILog <Log>k__BackingField</td></tr></table>
+<table class="CodeTable"><col width="100%" /><tr class="CodeTable"><th class="CodeTable">C#</th></tr><tr class="CodeTable"><td class="CodeTable"><pre style="margin-left: 2px;">public void AddHandler (
+        string <i>path</i>,
+        HttpVerbs <i>verb</i>,
+        ResponseHandler <i>handler</i>
+) </pre></td></tr></table>
+<div class="CommentHeader">Parameters</div>
+<div class="CommentParameterName">path</div>
+<div class="ParameterCommentContainer">
+The path.
+</div>
+<div class="CommentParameterName">verb</div>
+<div class="ParameterCommentContainer">
+The verb.
+</div>
+<div class="CommentParameterName">handler</div>
+<div class="ParameterCommentContainer">
+The handler.
+</div>
 <div class="TopLink"><a href="#ContentsAnchor">Top</a></div></div>
 </div>
 <div id="Footer">
