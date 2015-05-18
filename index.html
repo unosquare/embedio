@@ -51,6 +51,7 @@
                             </li>
                             <li><a href="#cli">EmbedIO CLI</a></li>
                             <li><a href="doc/index.html">Documentation</a></li>
+                            <li><a href="https://github.com/unosquare/embedio-extras">Extras</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="http://github.com/unosquare/embedio">EmbedIO @ GitHub</a></li>
@@ -76,7 +77,11 @@
                         <ul>
                             <li>New Version: Network operations make heavy use of the relatively recent async/await pattern</li>
                             <li>Cross-platform (tested in <a href="http://www.mono-project.com/" target="_blank">Mono</a> 3.10.x on Windows and on a custom Yocto image for the Raspberry Pi)</li>
-                            <li>Extensible (Write your own modules like bearer token session handling, video streaming, UPnP, etc.)</li>
+                            <li>
+                                Extensible (Write your own modules like bearer token session handling, video streaming, UPnP, etc.). Check
+                                <a href="https://github.com/unosquare/embedio-extras" target="_blank">EmbedIO Extras</a> for more
+                                modules.
+                            </li>
                             <li>Small memory footprint</li>
                             <li>Create REST APIs quickly with the built-in Web Api Module</li>
                             <li>Serve static files with 1 line of code (built-in module)</li>
@@ -344,5 +349,16 @@ public class WebSocketsChatServer : WebSocketsServer
                 </footer>
             </div>
         </div>
+        <script>
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+            ga('create', 'UA-62522091-1', 'auto');
+            ga('send', 'pageview');
+        </script>
     </body>
 </html>
