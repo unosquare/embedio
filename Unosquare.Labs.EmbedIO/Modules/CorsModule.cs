@@ -1,9 +1,8 @@
-﻿using System.Net;
-
-namespace Unosquare.Labs.EmbedIO.Modules
+﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
     using System;
     using System.Linq;
+    using System.Net;
 
     /// <summary>
     /// CORS control Module
