@@ -96,6 +96,31 @@
         }
 
         /// <summary>
+        /// Load all the WebApi Controllers in an assembly
+        /// </summary>
+        /// <param name="apiModule">The apíModule instance.</param>
+        /// <param name="assembly">The assembly to load WebApi Controllers from. Leave null to load from the currently executing assembly.</param>
+        /// <returns>The webserver instance.</returns>
+        public static WebApiModule LoadApiControllers(this WebApiModule apiModule, Assembly assembly = null)
+        {
+            if (apiModule == null) throw new ArgumentException("Argument cannot be null.", "apiModule");
+
+            var types = (assembly ?? Assembly.GetExecutingAssembly()).GetTypes();
+            var apiControllers =
+                types.Where(x => x.IsClass && !x.IsAbstract && x.IsSubclassOf(typeof(WebApiController))).ToArray();
+
+            if (apiControllers.Any())
+            {
+                foreach (var apiController in apiControllers)
+                {
+                    apiModule.RegisterController(apiController);
+                }
+            }
+
+            return apiModule;
+        }
+
+        /// <summary>
         /// Load all the WebSockets in an assembly
         /// </summary>
         /// <param name="webserver">The webserver instance.</param>

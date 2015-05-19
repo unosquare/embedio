@@ -8,7 +8,7 @@ A tiny, cross-platform, module based, MIT-licensed web server.
 
 * New Version: Network operations make heavy use of the relatively recent async/await pattern
 * Cross-platform (tested in Mono 3.10.x on Windows and on a custom Yocto image for the Raspberry Pi)
-* Extensible (Write your own modules like bearer token session handling, video streaming, UPnP, etc.)
+* Extensible (Write your own modules like bearer token session handling, video streaming, UPnP, etc.). Check <a href="https://github.com/unosquare/embedio-extras" target="_blank">EmbedIO Extras</a> for more modules.
 * Small memory footprint
 * Create REST APIs quickly with the built-in Web Api Module
 * Serve static files with 1 line of code (built-in module)

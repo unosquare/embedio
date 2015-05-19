@@ -239,18 +239,22 @@
         /// Handles the client request.
         /// </summary>
         /// <param name="context">The context.</param>
-        private void HandleClientRequest(HttpListenerContext context)
+        /// <param name="app"></param>
+        private void HandleClientRequest(HttpListenerContext context, Middleware app)
         {
             // start with an empty request ID
             var requestId = "(not set)";
 
             try
             {
-                // Extract path and verb for matching
-                var path = context.RequestPath();
-                var verb = context.RequestVerb();
+                // Generate a MiddlewareContext and expected the result
+                if (app != null)
+                {
+                    var middlewareContext = new MiddlewareContext(context, this);
+                    app.Invoke(middlewareContext);
 
-                var handled = false;
+                    if (middlewareContext.Handled) return;
+                }
 
                 // Create a request endpoint string
                 var requestEndpoint = string.Join(":",
@@ -264,78 +268,17 @@
                 Log.DebugFormat("Start of Request {0}", requestId);
                 Log.DebugFormat("Source {0} - {1}: {2}",
                     requestEndpoint,
-                    verb.ToString().ToUpperInvariant(),
-                    path);
-
-                // Iterate though the loaded modules to match up a request and possibly generate a response.
-                foreach (var module in this.Modules)
-                {
-                    // Establish the handler
-                    var handler = module.Handlers.FirstOrDefault(x =>
-                        x.Path == (x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : path) &&
-                        x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : verb));
-
-                    if (handler == null || handler.ResponseHandler == null)
-                        continue;
-
-                    // Establish the callback
-                    var callback = handler.ResponseHandler;
-
-                    try
-                    {
-                        // Inject the Server property of the module via reflection if not already there. (mini IoC ;))
-                        if (module.Server == null)
-                            module.Server = this;
-
-                        // Log the module and hanlder to be called and invoke as a callback.
-                        Log.DebugFormat("{0}::{1}.{2}", module.Name, callback.Method.DeclaringType.Name,
-                            callback.Method.Name);
-
-                        // Execute the callback
-                        var handleResult = callback.Invoke(this, context);
-                        Log.DebugFormat("Result: {0}", handleResult.ToString());
-
-                        // callbacks can instruct the server to stop bubbling the request through the rest of the modules by returning true;
-                        if (handleResult)
-                        {
-                            handled = true;
-                            break;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        // Handle exceptions by returning a 500 (Internal Server Error) 
-                        if (context.Response.StatusCode != (int)HttpStatusCode.Unauthorized)
-                        {
-                            // Log the exception message.
-                            var errorMessage = ex.ExceptionMessage("Failing module name: " + module.Name);
-                            Log.Error(errorMessage, ex);
-
-                            // Generate an HTML response
-                            var response = String.Format(Constants.Response500HtmlFormat, WebUtility.HtmlEncode(errorMessage),
-                                WebUtility.HtmlEncode(ex.StackTrace));
-
-                            // Send the response over with the corresponding status code.
-                            var responseBytes = System.Text.Encoding.UTF8.GetBytes(response);
-                            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                            context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
-                        }
-
-                        // Finally set the handled flag to true and exit.
-                        handled = true;
-                        break;
-                    }
-                }
+                    context.RequestVerb().ToString().ToUpperInvariant(),
+                    context.RequestPath());
 
                 // Return a 404 (Not Found) response if no module/handler handled the response.
-                if (!handled)
+                if (ProcessRequest(context) == false)
                 {
                     Log.Error("No module generated a response. Sending 404 - Not Found");
                     var responseBytes = System.Text.Encoding.UTF8.GetBytes(Constants.Response404Html);
-                    context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                    context.Response.StatusCode = (int) HttpStatusCode.NotFound;
                     context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
                 }
-
             }
             catch (Exception ex)
             {
@@ -350,10 +293,78 @@
         }
 
         /// <summary>
+        /// Process HttpListener Request and returns true if it was handled
+        /// </summary>
+        /// <param name="context">The HttpListenerContext</param>
+        public bool ProcessRequest(HttpListenerContext context)
+        {
+            // Iterate though the loaded modules to match up a request and possibly generate a response.
+            foreach (var module in this.Modules)
+            {
+                // Establish the handler
+                var handler = module.Handlers.FirstOrDefault(x =>
+                    x.Path == (x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath()) &&
+                    x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
+
+                if (handler == null || handler.ResponseHandler == null)
+                    continue;
+
+                // Establish the callback
+                var callback = handler.ResponseHandler;
+
+                try
+                {
+                    // Inject the Server property of the module via reflection if not already there. (mini IoC ;))
+                    if (module.Server == null)
+                        module.Server = this;
+
+                    // Log the module and hanlder to be called and invoke as a callback.
+                    Log.DebugFormat("{0}::{1}.{2}", module.Name, callback.Method.DeclaringType.Name,
+                        callback.Method.Name);
+
+                    // Execute the callback
+                    var handleResult = callback.Invoke(this, context);
+                    Log.DebugFormat("Result: {0}", handleResult.ToString());
+
+                    // callbacks can instruct the server to stop bubbling the request through the rest of the modules by returning true;
+                    if (handleResult)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions by returning a 500 (Internal Server Error) 
+                    if (context.Response.StatusCode != (int) HttpStatusCode.Unauthorized)
+                    {
+                        // Log the exception message.
+                        var errorMessage = ex.ExceptionMessage("Failing module name: " + module.Name);
+                        Log.Error(errorMessage, ex);
+
+                        // Generate an HTML response
+                        var response = String.Format(Constants.Response500HtmlFormat,
+                            WebUtility.HtmlEncode(errorMessage),
+                            WebUtility.HtmlEncode(ex.StackTrace));
+
+                        // Send the response over with the corresponding status code.
+                        var responseBytes = System.Text.Encoding.UTF8.GetBytes(response);
+                        context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                        context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
+                    }
+
+                    // Finally set the handled flag to true and exit.
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Starts the listener and the registered modules
         /// </summary>
         /// <exception cref="System.InvalidOperationException">The method was already called.</exception>
-        public void RunAsync()
+        public void RunAsync(CancellationToken ct = default(CancellationToken), Middleware app = null)
         {
             if (ListenerTask != null)
                 throw new InvalidOperationException("The method was already called.");
@@ -370,15 +381,15 @@
                     {
                         var clientSocket = await Listener.GetContextAsync();
                         var clientTask =
-                            Task.Factory.StartNew((context) => HandleClientRequest(context as HttpListenerContext),
-                                clientSocket);
+                            Task.Factory.StartNew((context) => HandleClientRequest(context as HttpListenerContext, app),
+                                clientSocket, ct);
                     }
                     catch (Exception ex)
                     {
                         Log.Error(ex);
                     }
                 }
-            });
+            }, ct);
         }
 
         /// <summary>
@@ -403,7 +414,7 @@
                         {
                             // get a reference to the HTTP Listener Context
                             var context = contextState as HttpListenerContext;
-                            this.HandleClientRequest(context);
+                            this.HandleClientRequest(context, null);
                         }, this.Listener.GetContext());
                         // Retrieve and pass the listener context to the threadpool thread.
                     }

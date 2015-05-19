@@ -9,6 +9,11 @@
     public static class Constants
     {
         /// <summary>
+        /// Content-Length HTTP Header
+        /// </summary>
+        public const string HeaderContentLength = "Content-Length";
+
+        /// <summary>
         /// Accept-Encoding HTTP Header
         /// </summary>
         public const string HeaderAcceptEncoding = "Accept-Encoding";

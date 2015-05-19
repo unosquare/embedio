@@ -1,4 +1,6 @@
-﻿namespace Unosquare.Labs.EmbedIO.Modules
+﻿using System.Net;
+
+namespace Unosquare.Labs.EmbedIO.Modules
 {
     using System;
     using System.Linq;
@@ -56,17 +58,8 @@
                         {
                             if (String.IsNullOrWhiteSpace(currentHeader) == false)
                             {
-                                var currentHeaders = currentHeader.ToLower()
-                                    .Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
-
-                                if (headers == Constants.CorsWildcard || currentHeaders.All(validHeaders.Contains))
-                                {
-                                    context.Response.Headers.Add(Constants.HeaderAccessControlAllowHeaders + currentHeader);
-                                }
-                                else
-                                {
-                                    return false;
-                                }
+                                // TODO: I need to remove headers out from AllowHeaders
+                                context.Response.Headers.Add(Constants.HeaderAccessControlAllowHeaders + currentHeader);
                             }
 
                             if (String.IsNullOrWhiteSpace(currentMethod) == false)
@@ -80,6 +73,7 @@
                                 }
                                 else
                                 {
+                                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                                     return false;
                                 }
                             }
