@@ -1,4 +1,6 @@
-﻿namespace Unosquare.Labs.EmbedIO
+﻿using System.Globalization;
+
+namespace Unosquare.Labs.EmbedIO
 {
     using System;
     using System.Collections.Generic;
@@ -240,7 +242,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="app"></param>
-        private void HandleClientRequest(HttpListenerContext context, Middleware app)
+        private async void HandleClientRequest(HttpListenerContext context, Middleware app)
         {
             // start with an empty request ID
             var requestId = "(not set)";
@@ -251,7 +253,7 @@
                 if (app != null)
                 {
                     var middlewareContext = new MiddlewareContext(context, this);
-                    app.Invoke(middlewareContext);
+                    await app.Invoke(middlewareContext);
 
                     if (middlewareContext.Handled) return;
                 }
@@ -259,7 +261,7 @@
                 // Create a request endpoint string
                 var requestEndpoint = string.Join(":",
                     context.Request.RemoteEndPoint.Address.ToString(),
-                    context.Request.RemoteEndPoint.Port.ToString());
+                    context.Request.RemoteEndPoint.Port.ToString(CultureInfo.InvariantCulture));
 
                 // Generate a random request ID. It's currently not important butit could be useful in the future.
                 requestId = string.Concat(DateTime.Now.Ticks.ToString(), requestEndpoint).GetHashCode().ToString("x2");

@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using System.Net;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Represents a Middleware abstract class
@@ -11,7 +12,7 @@
         /// Invokes the Middleware with a context
         /// </summary>
         /// <param name="context">The Middleware context</param>
-        public abstract void Invoke(MiddlewareContext context);
+        public abstract Task Invoke(MiddlewareContext context);
     }
 
     /// <summary>
