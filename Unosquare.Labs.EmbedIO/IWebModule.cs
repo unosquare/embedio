@@ -1,8 +1,7 @@
-﻿using System.Threading.Tasks;
-
-namespace Unosquare.Labs.EmbedIO
+﻿namespace Unosquare.Labs.EmbedIO
 {
     using System.Net;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// A delegate that handles certain action in a module given a path and a verb

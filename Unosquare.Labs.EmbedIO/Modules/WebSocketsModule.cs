@@ -131,7 +131,7 @@
     /// Method Must match the WebServerModule.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class WebSocketHandlerAttribute : Attribute
+    public sealed class WebSocketHandlerAttribute : Attribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WebSocketHandlerAttribute"/> class.
@@ -152,7 +152,7 @@
         /// <value>
         /// The paths.
         /// </value>
-        public string Path { get; protected set; }
+        public string Path { get; private set; }
     }
 
     /// <summary>
@@ -195,7 +195,7 @@
         /// </summary>
         /// <param name="enableConnectionWatchdog">if set to <c>true</c> [enable connection watchdog].</param>
         /// <param name="maxMessageSize">Maximum size of the message in bytes. Enter 0 or negative number to prevent checks.</param>
-        public WebSocketsServer(bool enableConnectionWatchdog, int maxMessageSize)
+        protected WebSocketsServer(bool enableConnectionWatchdog, int maxMessageSize)
         {
             this._enableDisconnectedSocketColletion = enableConnectionWatchdog;
             this._maximumMessageSize = maxMessageSize;
@@ -205,7 +205,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="WebSocketsServer"/> class. With dead connection watchdog and no message size checks.
         /// </summary>
-        public WebSocketsServer()
+        protected WebSocketsServer()
             : this(true, 0)
         {
             // placeholder
@@ -373,7 +373,6 @@
             return collectedCount;
         }
 
-
         /// <summary>
         /// Sends a UTF-8 payload
         /// </summary>
@@ -455,7 +454,6 @@
             {
                 RemoveWebSocket(webSocket);
             }
-
         }
 
         /// <summary>
@@ -487,7 +485,6 @@
         /// </summary>
         /// <param name="context">The context.</param>
         protected abstract void OnClientDisconnected(WebSocketContext context);
-
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

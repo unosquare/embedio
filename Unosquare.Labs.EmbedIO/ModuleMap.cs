@@ -1,6 +1,5 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
-    using System;
     using System.Collections.Generic;
 
     /// <summary>

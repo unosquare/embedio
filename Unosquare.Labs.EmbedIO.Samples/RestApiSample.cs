@@ -4,8 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
-    using System.Security.Cryptography;
-    using System.Text;
     using System.Threading.Tasks;
     using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Tubular;
@@ -47,24 +45,8 @@
 
         private static string GetGravatarUrl(string emailAddress)
         {
-            return string.Format("http://www.gravatar.com/avatar/{0}.png?s=100", HashMd5(emailAddress));
-        }
-
-        private static string HashMd5(string input)
-        {
-            // step 1, calculate MD5 hash from input
-            MD5 md5 = MD5.Create();
-            byte[] inputBytes = Encoding.ASCII.GetBytes(input);
-            byte[] hash = md5.ComputeHash(inputBytes);
-
-            // step 2, convert byte array to hex string
-            var sb = new StringBuilder();
-            for (int i = 0; i < hash.Length; i++)
-            {
-                sb.Append(hash[i].ToString("x2"));
-            }
-
-            return sb.ToString();
+            return string.Format("http://www.gravatar.com/avatar/{0}.png?s=100",
+                EmbedIO.Extensions.ComputeMd5Hash(emailAddress));
         }
 
         /// <summary>
@@ -125,7 +107,7 @@
                     // here the error handler will respond with a generic 500 HTTP code a JSON-encoded object
                     // with error info. You will need to handle HTTP status codes correctly depending on the situation.
                     // For example, for keys that are not found, ou will need to respond with a 404 status code.
-                    return HandleError(context, ex, (int)HttpStatusCode.InternalServerError);
+                    return HandleError(context, ex, (int) HttpStatusCode.InternalServerError);
                 }
             }
 

@@ -48,7 +48,7 @@
         /// <param name="handler">The handler.</param>
         public void AddHandler(string path, HttpVerbs verb, ResponseHandler handler)
         {
-            this.Handlers.Add(new Map { Path = path, Verb = verb, ResponseHandler = handler });
+            this.Handlers.Add(new Map {Path = path, Verb = verb, ResponseHandler = handler});
         }
     }
 }

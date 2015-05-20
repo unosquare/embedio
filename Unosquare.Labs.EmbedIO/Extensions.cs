@@ -293,7 +293,7 @@
         /// <returns></returns>
         public static byte[] Compress(this byte[] buffer)
         {
-            byte[] outputBuffer = null;
+            byte[] outputBuffer;
 
             using (var targetStream = new MemoryStream())
             {
@@ -317,7 +317,8 @@
             var hash = MD5.Create().ComputeHash(inputBytes);
 
             var sb = new StringBuilder();
-            for (int i = 0; i < hash.Length; i++)
+
+            for (var i = 0; i < hash.Length; i++)
             {
                 sb.Append(i.ToString("x2"));
             }

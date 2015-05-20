@@ -13,7 +13,7 @@
         /// </summary>
         public SessionInfo()
         {
-            this.Data = new ConcurrentDictionary<string, object>(StringComparer.InvariantCultureIgnoreCase);
+            Data = new ConcurrentDictionary<string, object>(StringComparer.InvariantCultureIgnoreCase);
         }
 
         /// <summary>

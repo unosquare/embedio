@@ -1,10 +1,9 @@
-﻿using System.Globalization;
-
-namespace Unosquare.Labs.EmbedIO
+﻿namespace Unosquare.Labs.EmbedIO
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Threading;
@@ -16,8 +15,8 @@ namespace Unosquare.Labs.EmbedIO
     /// </summary>
     public class WebServer : IDisposable
     {
-        private readonly List<IWebModule> m_Modules = new List<IWebModule>(4);
-        private Task ListenerTask;
+        private readonly List<IWebModule> _modules = new List<IWebModule>(4);
+        private Task _listenerTask;
 
         /// <summary>
         /// Gets the underlying HTTP listener.
@@ -46,7 +45,7 @@ namespace Unosquare.Labs.EmbedIO
         /// </value>
         public ReadOnlyCollection<IWebModule> Modules
         {
-            get { return m_Modules.AsReadOnly(); }
+            get { return _modules.AsReadOnly(); }
         }
 
         /// <summary>
@@ -114,7 +113,7 @@ namespace Unosquare.Labs.EmbedIO
         /// <param name="urlPrefix">The URL prefix.</param>
         /// <param name="log">The log.</param>
         public WebServer(string urlPrefix, ILog log)
-            : this(new[] { urlPrefix }, log)
+            : this(new[] {urlPrefix}, log)
         {
             // placeholder
         }
@@ -175,7 +174,7 @@ namespace Unosquare.Labs.EmbedIO
         public T Module<T>()
             where T : class, IWebModule
         {
-            var module = this.Modules.FirstOrDefault(m => m.GetType() == typeof(T));
+            var module = this.Modules.FirstOrDefault(m => m.GetType() == typeof (T));
             if (module != null) return module as T;
             return null;
         }
@@ -203,7 +202,7 @@ namespace Unosquare.Labs.EmbedIO
             if (existingModule == null)
             {
                 module.Server = this;
-                this.m_Modules.Add(module);
+                this._modules.Add(module);
 
                 if (module as ISessionWebModule != null)
                     this.SessionModule = module as ISessionWebModule;
@@ -231,7 +230,7 @@ namespace Unosquare.Labs.EmbedIO
             else
             {
                 var module = this.Module(moduleType);
-                this.m_Modules.Remove(module);
+                this._modules.Remove(module);
                 if (module == SessionModule)
                     SessionModule = null;
             }
@@ -368,14 +367,14 @@ namespace Unosquare.Labs.EmbedIO
         /// <exception cref="System.InvalidOperationException">The method was already called.</exception>
         public void RunAsync(CancellationToken ct = default(CancellationToken), Middleware app = null)
         {
-            if (ListenerTask != null)
+            if (_listenerTask != null)
                 throw new InvalidOperationException("The method was already called.");
 
             this.Listener.IgnoreWriteExceptions = true;
             this.Listener.Start();
 
             this.Log.Info("Started HTTP Listener");
-            this.ListenerTask = Task.Factory.StartNew(async () =>
+            this._listenerTask = Task.Factory.StartNew(async () =>
             {
                 while (this.Listener != null && this.Listener.IsListening)
                 {
@@ -454,9 +453,9 @@ namespace Unosquare.Labs.EmbedIO
                 Log.Info("Listener Closed.");
             }
 
-            if (ListenerTask != null)
+            if (_listenerTask != null)
             {
-                ListenerTask.Dispose();
+                _listenerTask.Dispose();
             }
         }
 
