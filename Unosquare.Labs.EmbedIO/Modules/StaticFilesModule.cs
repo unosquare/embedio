@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
     using System;
+    using System.Globalization;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
@@ -217,7 +218,7 @@
             }
 
             // check to see if the file was modified or etag is the same
-            var utcFileDateString = fileDate.ToUniversalTime().ToString(Constants.BrowserTimeFormat);
+            var utcFileDateString = fileDate.ToUniversalTime().ToString(Constants.BrowserTimeFormat, CultureInfo.InvariantCulture);
             if (eTagValid || context.RequestHeader(Constants.HeaderIfModifiedSince).Equals(utcFileDateString))
             {
                 context.Response.AddHeader(Constants.HeaderCacheControl, "private");
