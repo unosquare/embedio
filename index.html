@@ -2,7 +2,10 @@
 <html>
     <head>
         <meta charset='utf-8'>
-        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="EmbedIO Webserver">
+
         <!-- CSS (from CDN) -->
         <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.4/css/bootstrap.min.css" />
         <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.3.0/css/font-awesome.min.css" />
@@ -14,9 +17,9 @@
         <!--[if lt IE 9]>
             <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-        
-        <script src="//cdn.jsdelivr.net/jquery/2.1.4/jquery.min.js"></script>
-        <script src="//cdn.jsdelivr.net/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+        <!-- JS (from CDN) -->
+        <script src="//cdn.jsdelivr.net/g/jquery,bootstrap"></script>
         <script src="//cdn.jsdelivr.net/highlight.js/8.5.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
         <!-- Favicons -->
@@ -26,15 +29,6 @@
     </head>
 
     <body>
-        <script>
-          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-        
-          ga('create', 'UA-8535255-2', 'auto');
-          ga('send', 'pageview');
-        </script>
         <div id="wrapper">
             <header class="navbar navbar-static-top" id="top" role="banner">
                 <div class="container">
@@ -75,10 +69,17 @@
             <div class="content-body">
                 <div class="jumbotron">
                     <div class="container">
-                        <header>
-                            <img src="images/embedio.png" alt="EmbedIO" />
-                            <h2>A tiny, cross-platform, module based web server</h2>
-                        </header>
+                        <div class="row">
+                            <div class="col-md-4 col-xs-12">
+                                <div class="text-center">
+                                    <img src="images/embedio.png" alt="EmbedIO" />
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-xs-12">
+                                <h1 class="hidden-sm hidden-xs">EmbedIO</h1>
+                                <h2>A tiny, cross-platform, module based web server</h2>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="container">
@@ -371,7 +372,7 @@ public class WebSocketsChatServer : WebSocketsServer
                 m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
             })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-            ga('create', 'UA-62522091-1', 'auto');
+            ga('create', 'UA-8535255-2', 'auto');
             ga('send', 'pageview');
         </script>
     </body>
