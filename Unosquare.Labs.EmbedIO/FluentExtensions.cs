@@ -166,5 +166,20 @@
 
             return webserver;
         }
+
+        /// <summary>
+        /// Add WebApi Controller to WebServer
+        /// </summary>
+        /// <param name="webserver">The webserver instance.</param>
+        /// <returns>The webserver instance.</returns>
+        public static WebServer WithWebApiController<T>(this WebServer webserver) where T : WebApiController, new()
+        {
+            if (webserver == null) throw new ArgumentException("Argument cannot be null.", "webserver");
+
+            if (webserver.Module<WebApiModule>() == null) webserver = webserver.WithWebApi();
+            webserver.Module<WebApiModule>().RegisterController<T>();
+
+            return webserver;
+        }
     }
 }

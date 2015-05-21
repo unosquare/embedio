@@ -57,5 +57,21 @@
                 return context.JsonResponse(ex);
             }
         }
+
+        [WebApiHandler(HttpVerbs.Post, "/" + GetPath + "*")]
+        public bool PostPeople(WebServer server, HttpListenerContext context)
+        {
+            try
+            {
+                var content = context.ParseJson<Person>();
+
+                return context.JsonResponse(content);
+            }
+            catch (Exception ex)
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return context.JsonResponse(ex);
+            }
+        }
     }
 }

@@ -7,8 +7,8 @@
     using System.IO;
     using System.Linq;
     using System.Net;
+    using System.Text;
     using System.Threading;
-    using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Labs.EmbedIO.Tests.Properties;
 
     [TestFixture]
@@ -20,9 +20,7 @@
         [SetUp]
         public void Init()
         {
-            WebServer = new WebServer(Resources.ServerAddress, Logger);
-            WebServer.RegisterModule(new WebApiModule());
-            WebServer.Module<WebApiModule>().RegisterController<TestController>();
+            WebServer = new WebServer(Resources.ServerAddress, Logger).WithWebApiController<TestController>();
             WebServer.RunAsync();
         }
 
@@ -31,7 +29,7 @@
         {
             List<TestController.Person> remoteList = null;
 
-            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + TestController.GetPath);
+            var request = (HttpWebRequest) WebRequest.Create(Resources.ServerAddress + TestController.GetPath);
 
             using (var response = (HttpWebResponse) request.GetResponse())
             {
@@ -41,15 +39,17 @@
 
                 Assert.IsNotNullOrEmpty(jsonBody, "Json Body is not null or empty");
 
-                remoteList = JsonConvert.DeserializeObject <List<TestController.Person>>(jsonBody);
+                remoteList = JsonConvert.DeserializeObject<List<TestController.Person>>(jsonBody);
 
                 Assert.IsNotNull(remoteList, "Json Object is not null");
                 Assert.AreEqual(remoteList.Count, TestController.People.Count, "Remote list count equals local list");
             }
 
-            var singleRequest = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + TestController.GetPath + remoteList.First().Key);
+            var singleRequest =
+                (HttpWebRequest)
+                    WebRequest.Create(Resources.ServerAddress + TestController.GetPath + remoteList.First().Key);
 
-            using (var response = (HttpWebResponse)singleRequest.GetResponse())
+            using (var response = (HttpWebResponse) singleRequest.GetResponse())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
@@ -65,7 +65,31 @@
             }
         }
 
-        // TODO: Test POST
+        [Test]
+        public void PostJsonData()
+        {
+            var model = new TestController.Person() {Key = 10, Name = "Test"};
+            var request = (HttpWebRequest) WebRequest.Create(Resources.ServerAddress + TestController.GetPath);
+            request.Method = "POST";
+
+            using (var dataStream = request.GetRequestStream())
+            {
+                var byteArray = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(model));
+                dataStream.Write(byteArray, 0, byteArray.Length);
+            }
+
+            using (var response = (HttpWebResponse) request.GetResponse())
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                var jsonString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                Assert.IsNotNullOrEmpty(jsonString);
+
+                var json = JsonConvert.DeserializeObject<TestController.Person>(jsonString);
+                Assert.IsNotNull(json);
+                Assert.AreEqual(json.Name, model.Name);
+            }
+        }
 
         [TearDown]
         public void Kill()

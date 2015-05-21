@@ -95,7 +95,6 @@
             // Create a list of appenders
             var appenders = new List<AppenderSkeleton>();
 
-
             var consoleAppender = new ManagedColoredConsoleAppender()
             {
                 Layout = layout,
