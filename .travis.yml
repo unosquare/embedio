@@ -3,6 +3,34 @@ solution: Unosquare.Labs.EmbedIO.sln
 install:
   - nuget restore Unosquare.Labs.EmbedIO.sln
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+  - nuget install coveralls.net -Version 0.5.0 -OutputDirectory coveralls
+  - sudo apt-get install nunit-console
+  - sudo apt-get install gtk-sharp2
+  - curl -sS https://api.nuget.org/packages/mono.cecil.0.9.5.4.nupkg > /tmp/mono.cecil.0.9.5.4.nupkg.zip
+  - unzip /tmp/mono.cecil.0.9.5.4.nupkg.zip -d /tmp/cecil
+  - cp /tmp/cecil/lib/net40/Mono.Cecil.dll .
+  - cp /tmp/cecil/lib/net40/Mono.Cecil.dll /tmp/cecil/
+  - git clone --depth=50 git://github.com/csMACnz/monocov.git ../../unosquare/monocov
+  - cd ../../unosquare/monocov
+  - cp /tmp/cecil/Mono.Cecil.dll .
+  - ./configure
+  - make
+  - sudo make install
+  - cd ../../unosquare/embedio
 script:
   - xbuild /p:Configuration=Release Unosquare.Labs.EmbedIO.sln
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./Unosquare.Labs.EmbedIO.Tests/bin/Release/Unosquare.Labs.EmbedIO.Tests.dll
+  - export LD_LIBRARY_PATH=/usr/local/lib
+  - mono --debug --profile=monocov:outfile=monocovCoverage.cov,+GameOfLife ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe --process=Single ./Unosquare.Labs.EmbedIO.Tests/bin/Release/Unosquare.Labs.EmbedIO.Tests.dll
+  - monocov --export-xml=monocovCoverage monocovCoverage.cov
+  - cat monocovCoverage.cov
+  - ls monocovCoverage
+  - REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
+  - REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
+  - REPO_COMMIT_MESSAGE=$(git show -s --pretty=format:"%s")
+  - echo $TRAVIS_COMMIT
+  - echo $TRAVIS_BRANCH
+  - echo $REPO_COMMIT_AUTHOR
+  - echo $REPO_COMMIT_AUTHOR_EMAIL
+  - echo $REPO_COMMIT_MESSAGE
+  - echo $TRAVIS_JOB_ID
+  - mono ./coveralls/coveralls.net.0.5.0/csmacnz.Coveralls.exe --monocov -i ./monocovCoverage --repoToken $COVERALLS_REPO_TOKEN --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID  --serviceName travis-ci  --useRelativePaths
