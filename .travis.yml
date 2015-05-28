@@ -19,9 +19,8 @@ install:
 script:
   - xbuild /p:Configuration=Release Unosquare.Labs.EmbedIO.sln
   - export LD_LIBRARY_PATH=/usr/local/lib
-  - mono --debug --profile=monocov:outfile=monocovCoverage.cov,+Unosquare.Labs.EmbedIO ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe --process=Single ./Unosquare.Labs.EmbedIO.Tests/bin/Release/Unosquare.Labs.EmbedIO.Tests.dll
+  - mono --debug --profile=monocov:outfile=monocovCoverage.cov,+[Unosquare.Labs.EmbedIO] ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe --process=Single ./Unosquare.Labs.EmbedIO.Tests/bin/Release/Unosquare.Labs.EmbedIO.Tests.dll
   - monocov --export-xml=monocovCoverage monocovCoverage.cov
-  - cat monocovCoverage.cov
   - ls monocovCoverage
   - REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
   - REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
