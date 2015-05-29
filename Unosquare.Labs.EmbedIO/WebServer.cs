@@ -185,10 +185,9 @@
         /// </summary>
         /// <param name="moduleType">Type of the module.</param>
         /// <returns></returns>
-        public IWebModule Module(Type moduleType)
+        private IWebModule Module(Type moduleType)
         {
-            var module = this.Modules.FirstOrDefault(m => m.GetType() == moduleType);
-            return module;
+            return Modules.FirstOrDefault(m => m.GetType() == moduleType);
         }
 
         /// <summary>

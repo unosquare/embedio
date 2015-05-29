@@ -62,6 +62,7 @@
     <Compile Include="TestHelper.cs" />
     <Compile Include="WebApiModuleTest.cs" />
     <Compile Include="WebServerTest.cs" />
+    <Compile Include="WebSocketsModuleTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

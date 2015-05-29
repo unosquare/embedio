@@ -51,5 +51,31 @@
 
             webServer.Dispose();
         }
+
+        [Test]
+        public void FluentWithWebSockets()
+        {
+            var webServer = WebServer.Create(Resources.ServerAddress)
+                .WithWebSocket(typeof(FluentTest).Assembly);
+
+            Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
+            Assert.IsNotNull(webServer.Module<WebSocketsModule>(), "It has WebSocketsModule");
+
+            webServer.Dispose();
+        }
+
+        [Test]
+        public void FluentLoadWebApiControllers()
+        {
+            var webServer = WebServer.Create(Resources.ServerAddress)
+                .WithWebApi();
+            webServer.Module<WebApiModule>().LoadApiControllers(typeof (FluentTest).Assembly);
+
+            Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
+            Assert.IsNotNull(webServer.Module<WebApiModule>(), "It has WebApiModule");
+            Assert.AreEqual(webServer.Module<WebApiModule>().ControllersCount, 1, "It has one controller");
+
+            webServer.Dispose();
+        }
     }
 }

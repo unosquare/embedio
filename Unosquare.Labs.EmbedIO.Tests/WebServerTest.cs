@@ -15,7 +15,9 @@
         [Test]
         public void WebServerDefaultConstructor()
         {
-            Assert.AreEqual((new WebServer()).Log.GetType(), typeof (NullLog), "Default log is NullLog");
+            var instance = new WebServer();
+            Assert.AreEqual(instance.Log.GetType(), typeof (NullLog), "Default log is NullLog");
+            Assert.IsNotNull(instance.Listener, "It has a HttpListener");
         }
 
         [Test]

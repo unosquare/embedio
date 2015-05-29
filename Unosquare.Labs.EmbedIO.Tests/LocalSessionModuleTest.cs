@@ -1,7 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
-    using System.Net;
     using NUnit.Framework;
+    using System.Net;
     using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Labs.EmbedIO.Tests.Properties;
 
@@ -21,6 +21,12 @@
             WebServer.RegisterModule(new LocalSessionModule());
             WebServer.RegisterModule(new StaticFilesModule(RootPath));
             WebServer.RunAsync();
+        }
+
+        [Test]
+        public void HasSessionModule()
+        {
+            Assert.IsNotNull(WebServer.SessionModule, "Session module is not null");
         }
 
         [Test]
