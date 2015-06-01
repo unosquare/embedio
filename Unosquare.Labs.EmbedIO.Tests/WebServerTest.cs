@@ -18,6 +18,7 @@
             var instance = new WebServer();
             Assert.AreEqual(instance.Log.GetType(), typeof (NullLog), "Default log is NullLog");
             Assert.IsNotNull(instance.Listener, "It has a HttpListener");
+            Assert.IsNotNull(Constants.DefaultMimeTypes, "It has MimeTypes");
         }
 
         [Test]
@@ -65,8 +66,26 @@
         [Test]
         public void WebServerStaticMethodWithConsole()
         {
-            Assert.AreEqual(WebServer.CreateWithConsole(Resources.ServerAddress).Log.GetType(),
-                typeof (SimpleConsoleLog), "Default log is NullLog");
+            const string errorMessage = "THIS IS AN ERROR";
+            var instance = WebServer.CreateWithConsole(Resources.ServerAddress);
+
+            Assert.AreEqual(instance.Log.GetType(), typeof(SimpleConsoleLog), "Log is SimpleConsoleLog");
+
+            // TODO: Grab console output
+            instance.Log.Error(errorMessage);
+            instance.Log.DebugFormat("Test {0}", errorMessage);
+        }
+
+        [Test]
+        public void WebModuleAddHandler()
+        {
+            const string defaultPath = "/";
+            var webModule = new TestWebModule();
+            webModule.AddHandler(defaultPath, HttpVerbs.Any, (ctx, ws) => false);
+
+            Assert.AreEqual(webModule.Handlers.Count, 1, "WebModule has one handler");
+            Assert.AreEqual(webModule.Handlers.First().Path, defaultPath, "Default Path is correct");
+            Assert.AreEqual(webModule.Handlers.First().Verb, HttpVerbs.Any, "Default Verb is correct");
         }
     }
 }

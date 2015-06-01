@@ -1,4 +1,6 @@
-﻿namespace Unosquare.Labs.EmbedIO.Tests
+﻿using Unosquare.Labs.EmbedIO.Modules;
+
+namespace Unosquare.Labs.EmbedIO.Tests
 {
     using Newtonsoft.Json;
     using NUnit.Framework;
@@ -22,6 +24,15 @@
         {
             WebServer = new WebServer(Resources.ServerAddress, Logger).WithWebApiController<TestController>();
             WebServer.RunAsync();
+        }
+
+
+        [Test]
+        public void TestWebApi()
+        {
+            Assert.IsNotNull(WebServer.Module<WebApiModule>(), "WebServer has WebApiModule");
+
+            Assert.AreEqual(WebServer.Module<WebApiModule>().ControllersCount, 1, "WebApiModule has one controller");
         }
 
         [Test]

@@ -1,7 +1,9 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using NUnit.Framework;
+    using System;
     using System.Net;
+    using System.Threading;
     using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Labs.EmbedIO.Tests.Properties;
 
@@ -27,6 +29,7 @@
         public void HasSessionModule()
         {
             Assert.IsNotNull(WebServer.SessionModule, "Session module is not null");
+            Assert.AreEqual(WebServer.SessionModule.Handlers.Count, 1, "Session module has one handler");
         }
 
         [Test]
@@ -52,6 +55,7 @@
         [TearDown]
         public void Kill()
         {
+            Thread.Sleep(TimeSpan.FromSeconds(1));
             WebServer.Dispose();
         }
     }

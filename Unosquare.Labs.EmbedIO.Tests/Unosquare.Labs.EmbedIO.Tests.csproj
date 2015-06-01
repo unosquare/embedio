@@ -50,6 +50,7 @@
     <Compile Include="CorsModuleTest.cs" />
     <Compile Include="FluentTest.cs" />
     <Compile Include="LocalSessionModuleTest.cs" />
+    <Compile Include="MiddlewareTest.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -60,6 +61,8 @@
     <Compile Include="TestConsoleLog.cs" />
     <Compile Include="TestController.cs" />
     <Compile Include="TestHelper.cs" />
+    <Compile Include="TestMiddleware.cs" />
+    <Compile Include="TestWebModule.cs" />
     <Compile Include="WebApiModuleTest.cs" />
     <Compile Include="WebServerTest.cs" />
     <Compile Include="WebSocketsModuleTest.cs" />
