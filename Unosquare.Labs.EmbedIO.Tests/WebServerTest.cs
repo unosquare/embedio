@@ -1,4 +1,6 @@
-﻿namespace Unosquare.Labs.EmbedIO.Tests
+﻿using Unosquare.Labs.EmbedIO.Tests.TestObjects;
+
+namespace Unosquare.Labs.EmbedIO.Tests
 {
     using NUnit.Framework;
     using System.Globalization;
@@ -11,6 +13,7 @@
     public class WebServerTest
     {
         private const int DefaultPort = 8888;
+        private const string DefaultPath = "/";
 
         [Test]
         public void WebServerDefaultConstructor()
@@ -74,17 +77,29 @@
             // TODO: Grab console output
             instance.Log.Error(errorMessage);
             instance.Log.DebugFormat("Test {0}", errorMessage);
+            instance.Log.ErrorFormat("Test {0}", errorMessage);
+            instance.Log.Info(errorMessage);
+            instance.Log.InfoFormat("Test {0}", errorMessage);
+            instance.Log.WarnFormat("Test {0}", errorMessage);
+        }
+
+        [Test]
+        public void WebMap()
+        {
+            var map = new Map() {Path = DefaultPath, ResponseHandler = (ctx, ws) => false, Verb = HttpVerbs.Any};
+
+            Assert.AreEqual(map.Path, DefaultPath, "Default Path is correct");
+            Assert.AreEqual(map.Verb, HttpVerbs.Any, "Default Verb is correct");
         }
 
         [Test]
         public void WebModuleAddHandler()
         {
-            const string defaultPath = "/";
             var webModule = new TestWebModule();
-            webModule.AddHandler(defaultPath, HttpVerbs.Any, (ctx, ws) => false);
+            webModule.AddHandler(DefaultPath, HttpVerbs.Any, (ctx, ws) => false);
 
             Assert.AreEqual(webModule.Handlers.Count, 1, "WebModule has one handler");
-            Assert.AreEqual(webModule.Handlers.First().Path, defaultPath, "Default Path is correct");
+            Assert.AreEqual(webModule.Handlers.First().Path, DefaultPath, "Default Path is correct");
             Assert.AreEqual(webModule.Handlers.First().Verb, HttpVerbs.Any, "Default Verb is correct");
         }
     }

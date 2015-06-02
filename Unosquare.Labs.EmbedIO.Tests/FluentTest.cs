@@ -4,6 +4,7 @@
     using System.Net;
     using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Labs.EmbedIO.Tests.Properties;
+    using Unosquare.Labs.EmbedIO.Tests.TestObjects;
 
     [TestFixture]
     public class FluentTest

@@ -1,4 +1,4 @@
-﻿namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
     using System.IO;
     using Unosquare.Labs.EmbedIO.Tests.Properties;

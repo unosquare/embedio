@@ -1,5 +1,4 @@
-﻿
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
     public class TestWebModule : WebModuleBase
     {

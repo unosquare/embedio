@@ -1,4 +1,5 @@
 ﻿using Unosquare.Labs.EmbedIO.Modules;
+using Unosquare.Labs.EmbedIO.Tests.TestObjects;
 
 namespace Unosquare.Labs.EmbedIO.Tests
 {
@@ -25,7 +26,6 @@ namespace Unosquare.Labs.EmbedIO.Tests
             WebServer = new WebServer(Resources.ServerAddress, Logger).WithWebApiController<TestController>();
             WebServer.RunAsync();
         }
-
 
         [Test]
         public void TestWebApi()

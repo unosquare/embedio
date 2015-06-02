@@ -58,11 +58,12 @@
     </Compile>
     <Compile Include="StaticFilesModuleTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestConsoleLog.cs" />
-    <Compile Include="TestController.cs" />
-    <Compile Include="TestHelper.cs" />
-    <Compile Include="TestMiddleware.cs" />
-    <Compile Include="TestWebModule.cs" />
+    <Compile Include="TestObjects\TestConsoleLog.cs" />
+    <Compile Include="TestObjects\TestController.cs" />
+    <Compile Include="TestObjects\TestHelper.cs" />
+    <Compile Include="TestObjects\TestMiddleware.cs" />
+    <Compile Include="TestObjects\TestWebModule.cs" />
+    <Compile Include="TestObjects\TestWebSocket.cs" />
     <Compile Include="WebApiModuleTest.cs" />
     <Compile Include="WebServerTest.cs" />
     <Compile Include="WebSocketsModuleTest.cs" />
@@ -87,6 +88,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

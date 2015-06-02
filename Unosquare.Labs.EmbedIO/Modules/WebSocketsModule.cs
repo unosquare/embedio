@@ -18,7 +18,7 @@
         /// <summary>
         /// Holds the collection of paths and WebSockets Servers registered
         /// </summary>
-        private readonly Dictionary<string, WebSocketsServer> ServerMap =
+        private readonly Dictionary<string, WebSocketsServer> _serverMap =
             new Dictionary<string, WebSocketsServer>(StringComparer.InvariantCultureIgnoreCase);
 
         /// <summary>
@@ -38,10 +38,10 @@
                 var path = context.RequestPath();
 
                 // match the request path
-                if (ServerMap.ContainsKey(path))
+                if (_serverMap.ContainsKey(path))
                 {
                     // Accept the WebSocket -- this is a blocking method until the WebSocketCloses
-                    ServerMap[path].AcceptWebSocket(server, context);
+                    _serverMap[path].AcceptWebSocket(server, context);
                     return true;
                 }
 
@@ -89,7 +89,7 @@
             if (attribute == null)
                 throw new ArgumentException("Argument 'socketType' needs a WebSocketHandlerAttribute", "socketType");
 
-            this.ServerMap[attribute.Path] = (WebSocketsServer)Activator.CreateInstance(socketType);
+            this._serverMap[attribute.Path] = (WebSocketsServer)Activator.CreateInstance(socketType);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@
             if (string.IsNullOrWhiteSpace(path))
                 throw new ArgumentException("Argument 'path' cannot be null", "path");
 
-            this.ServerMap[path] = Activator.CreateInstance<T>();
+            this._serverMap[path] = Activator.CreateInstance<T>();
         }
 
         /// <summary>
@@ -122,7 +122,7 @@
             if (server == null)
                 throw new ArgumentException("Argument 'server' cannot be null", "server");
 
-            this.ServerMap[path] = server;
+            this._serverMap[path] = server;
         }
     }
 
@@ -199,7 +199,8 @@
         {
             this._enableDisconnectedSocketColletion = enableConnectionWatchdog;
             this._maximumMessageSize = maxMessageSize;
-            this.RunConnectionWatchdog();
+            
+            RunConnectionWatchdog();
         }
 
         /// <summary>
@@ -342,7 +343,7 @@
                 _mWebSockets.Remove(webSocketContext);
             }
 
-            this.OnClientDisconnected(webSocketContext);
+            OnClientDisconnected(webSocketContext);
         }
 
         /// <summary>
