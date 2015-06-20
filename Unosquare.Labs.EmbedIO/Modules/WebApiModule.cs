@@ -117,40 +117,52 @@
 
             RegisterController(typeof(T));
         }
-        
+
         /// <summary>
         /// Registers the controller.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="controllerFactory"></param>
         /// <exception cref="System.ArgumentException">Controller types must be unique within the module</exception>
-        public void RegisterController<T>(Func<T> controllerFactory) 
+        public void RegisterController<T>(Func<T> controllerFactory)
             where T : WebApiController
         {
             if (ControllerTypes.Contains(typeof(T)))
                 throw new ArgumentException("Controller types must be unique within the module");
-            
+
             RegisterController(typeof(T), controllerFactory);
         }
 
         /// <summary>
         /// Registers the controller.
         /// </summary>
-        public void RegisterController(Type controllerType, Func<object> controllerFactory = null)
+        /// <param name="controllerType">Type of the controller.</param>
+        public void RegisterController(Type controllerType)
         {
-            if (controllerFactory == null) controllerFactory = () => Activator.CreateInstance(controllerType);
+            Func<object> controllerFactory = () => Activator.CreateInstance(controllerType);
+            this.RegisterController(controllerType, controllerFactory);
+        }
+
+
+        /// <summary>
+        /// Registers the controller.
+        /// </summary>
+        /// <param name="controllerType">Type of the controller.</param>
+        /// <param name="controllerFactory">The controller factory method.</param>
+        public void RegisterController(Type controllerType, Func<object> controllerFactory)
+        {
             var protoDelegate = new ResponseHandler((server, context) => true);
             var protoAsyncDelegate = new AsyncResponseHandler((server, context) => Task.FromResult(true));
 
             var methods = controllerType
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .Where(
-                    m =>
-                        (m.ReturnType == protoDelegate.Method.ReturnType ||
-                         m.ReturnType == protoAsyncDelegate.Method.ReturnType)
-                        && m.GetParameters().Select(pi => pi.ParameterType)
+                    m => (m.ReturnType == protoDelegate.Method.ReturnType
+                         || m.ReturnType == protoAsyncDelegate.Method.ReturnType)
+                         && m.GetParameters()
+                            .Select(pi => pi.ParameterType)
                             .SequenceEqual(protoDelegate.Method.GetParameters()
-                                .Select(pi => pi.ParameterType)));
+                            .Select(pi => pi.ParameterType)));
 
             foreach (var method in methods)
             {
