@@ -24,9 +24,14 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="WebApiModule"/> class.
         /// </summary>
-        public WebApiModule()
+        /// <param name="injectController">
+        /// Optionally allows you to customize the creation of the controllers (for example, hooking
+        /// up a Dependency Injection libarary like SimpleInjector).
+        /// </param>
+        public WebApiModule(Func<Type, WebApiController> injectController = null)
             : base()
         {
+            if (injectController == null) injectController = t => (WebApiController) Activator.CreateInstance(t);
             this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
             {
                 var path = context.RequestPath();
@@ -57,7 +62,7 @@
                 }
 
                 var methodPair = DelegateMap[path][verb];
-                var controller = Activator.CreateInstance(methodPair.Item1);
+                var controller = injectController(methodPair.Item1);
 
                 if (methodPair.Item2.ReturnType == typeof(Task<bool>))
                 {
