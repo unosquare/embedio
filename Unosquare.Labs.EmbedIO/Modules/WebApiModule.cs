@@ -16,9 +16,9 @@
     {
         private readonly List<Type> ControllerTypes = new List<Type>();
 
-        private readonly Dictionary<string, Dictionary<HttpVerbs, Tuple<Type, MethodInfo>>> DelegateMap
+        private readonly Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>> DelegateMap
             =
-            new Dictionary<string, Dictionary<HttpVerbs, Tuple<Type, MethodInfo>>>(
+            new Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>>(
                 StringComparer.InvariantCultureIgnoreCase);
 
         /// <summary>
@@ -57,7 +57,7 @@
                 }
 
                 var methodPair = DelegateMap[path][verb];
-                var controller = Activator.CreateInstance(methodPair.Item1);
+                var controller = methodPair.Item1();
 
                 if (methodPair.Item2.ReturnType == typeof(Task<bool>))
                 {
@@ -117,12 +117,28 @@
 
             RegisterController(typeof(T));
         }
+        
+        /// <summary>
+        /// Registers the controller.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="controllerFactory"></param>
+        /// <exception cref="System.ArgumentException">Controller types must be unique within the module</exception>
+        public void RegisterController<T>(Func<T> controllerFactory) 
+            where T : WebApiController
+        {
+            if (ControllerTypes.Contains(typeof(T)))
+                throw new ArgumentException("Controller types must be unique within the module");
+            
+            RegisterController(typeof(T), controllerFactory);
+        }
 
         /// <summary>
         /// Registers the controller.
         /// </summary>
-        public void RegisterController(Type controllerType)
+        public void RegisterController(Type controllerType, Func<object> controllerFactory = null)
         {
+            if (controllerFactory == null) controllerFactory = () => Activator.CreateInstance(controllerType);
             var protoDelegate = new ResponseHandler((server, context) => true);
             var protoAsyncDelegate = new AsyncResponseHandler((server, context) => Task.FromResult(true));
 
@@ -145,13 +161,13 @@
 
                 foreach (var path in attribute.Paths)
                 {
-                    var delegatePath = new Dictionary<HttpVerbs, Tuple<Type, MethodInfo>>();
+                    var delegatePath = new Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>();
                     if (DelegateMap.ContainsKey(path))
                         delegatePath = DelegateMap[path]; // update
                     else
                         DelegateMap.Add(path, delegatePath); // add
 
-                    var delegatePair = new Tuple<Type, MethodInfo>(controllerType, method);
+                    var delegatePair = new Tuple<Func<object>, MethodInfo>(controllerFactory, method);
                     if (DelegateMap[path].ContainsKey(attribute.Verb))
                         DelegateMap[path][attribute.Verb] = delegatePair; // update
                     else
