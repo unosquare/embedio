@@ -221,7 +221,7 @@
         /// <exception cref="System.ArgumentException">The argument 'path' must be specified.</exception>
         public WebApiHandlerAttribute(HttpVerbs verb, string path)
         {
-            if (path == null || string.IsNullOrWhiteSpace(path))
+            if (string.IsNullOrWhiteSpace(path))
                 throw new ArgumentException("The argument 'path' must be specified.");
 
             this.Verb = verb;

@@ -74,4 +74,20 @@
             }
         }
     }
+
+    public class TestControllerWithConstructor : WebApiController
+    {
+        public string WebName { get; set; }
+
+        public TestControllerWithConstructor(string name)
+        {
+            WebName = name;
+        }
+
+        [WebApiHandler(HttpVerbs.Get, "/name")]
+        public bool GetPeople(WebServer server, HttpListenerContext context)
+        {
+            return context.JsonResponse(WebName);
+        }
+    }
 }

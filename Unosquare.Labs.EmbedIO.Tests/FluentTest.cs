@@ -48,7 +48,7 @@
 
             Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
             Assert.IsNotNull(webServer.Module<WebApiModule>(), "It has WebApiModule");
-            Assert.AreEqual(webServer.Module<WebApiModule>().ControllersCount, 1, "It has one controller");
+            Assert.AreEqual(webServer.Module<WebApiModule>().ControllersCount, 2, "It has two controllers");
 
             webServer.Dispose();
         }
@@ -74,7 +74,7 @@
 
             Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
             Assert.IsNotNull(webServer.Module<WebApiModule>(), "It has WebApiModule");
-            Assert.AreEqual(webServer.Module<WebApiModule>().ControllersCount, 1, "It has one controller");
+            Assert.AreEqual(webServer.Module<WebApiModule>().ControllersCount, 2, "It has two controllers");
 
             webServer.Dispose();
         }

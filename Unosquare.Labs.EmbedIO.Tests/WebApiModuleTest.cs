@@ -102,6 +102,25 @@ namespace Unosquare.Labs.EmbedIO.Tests
             }
         }
 
+        [Test]
+        public void TestWebApiWithConstructor()
+        {
+            const string name = "Test";
+
+            WebServer.Module<WebApiModule>().RegisterController(() => new TestControllerWithConstructor(name));
+
+            var request = (HttpWebRequest) WebRequest.Create(Resources.ServerAddress + "name");
+
+            using (var response = (HttpWebResponse) request.GetResponse())
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                var body = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+                Assert.AreEqual(body, name);
+            }
+        }
+
         [TearDown]
         public void Kill()
         {
