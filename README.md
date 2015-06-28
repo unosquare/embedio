@@ -8,16 +8,16 @@
 
 A tiny, cross-platform, module based, MIT-licensed web server.
 
-* New Version: Network operations make heavy use of the relatively recent async/await pattern
+* Network operations use the relatively recent async/await pattern
 * Cross-platform (tested in Mono 3.10.x on Windows and on a custom Yocto image for the Raspberry Pi)
-* Extensible (Write your own modules like bearer token session handling, video streaming, UPnP, etc.). Check <a href="https://github.com/unosquare/embedio-extras" target="_blank">EmbedIO Extras</a> for more modules.
+* Extensible (Write your own modules. For example, video streaming, UPnP, etc.). Check <a href="https://github.com/unosquare/embedio-extras" target="_blank">EmbedIO Extras</a> for more modules.
 * Small memory footprint
-* Create REST APIs quickly with the built-in Web Api Module
-* Serve static files with 1 line of code (built-in module)
+* Create REST APIs quickly with the out-of-the-box Web Api module
+* Serve static files with 1 line of code (also out-of-the-box)
 * Handle sessions with the built-in LocalSessionWebModule
 * Web Sockets support (Not available on Mono though)
 * CORS support. Origin, Headers and Methods validation with OPTIONS preflight
-* [OWIN](http://owin.org/) support by [Extra module](https://github.com/unosquare/embedio-extras/tree/master/Unosquare.Labs.EmbedIO.OwinMiddleware).
+* [OWIN](http://owin.org/) Middleware support via [Owin Middleware Module](https://github.com/unosquare/embedio-extras/tree/master/Unosquare.Labs.EmbedIO.OwinMiddleware).
 
 *For detailed usage and REST API implementation, download the code and take a look at the Samples project*
 
