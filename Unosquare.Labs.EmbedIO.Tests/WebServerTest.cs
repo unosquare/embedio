@@ -8,6 +8,8 @@ namespace Unosquare.Labs.EmbedIO.Tests
     using Unosquare.Labs.EmbedIO.Log;
     using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Labs.EmbedIO.Tests.Properties;
+  using System.Threading;
+  using System;
 
     [TestFixture]
     public class WebServerTest
@@ -18,10 +20,35 @@ namespace Unosquare.Labs.EmbedIO.Tests
         [Test]
         public void WebServerDefaultConstructor()
         {
+
             var instance = new WebServer();
             Assert.AreEqual(instance.Log.GetType(), typeof (NullLog), "Default log is NullLog");
             Assert.IsNotNull(instance.Listener, "It has a HttpListener");
             Assert.IsNotNull(Constants.DefaultMimeTypes, "It has MimeTypes");
+        }
+
+        [Test]
+        public void WebserverCanBeDisposed()
+        {
+          CancellationTokenSource cts = new CancellationTokenSource();
+          var instance = new WebServer("http://localhost:" + DefaultPort);
+          var task = instance.RunAsync(cts.Token);
+          cts.Cancel();
+          try
+          {
+            task.Wait();
+          } catch (AggregateException e)
+          {
+            if (e.GetBaseException() is OperationCanceledException)
+            {
+              instance.Dispose();
+              return;
+            } else
+            {
+              Assert.Fail("Must fail because of an OperationCanceledException");
+            }
+          }
+          Assert.Fail("Must throw an AggregateException");
         }
 
         [Test]

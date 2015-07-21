@@ -363,8 +363,12 @@
         /// <summary>
         /// Starts the listener and the registered modules
         /// </summary>
+        /// <returns>
+        /// Returns the task that the HTTP listener is 
+        /// running inside of, so that it can be waited upon after it's been canceled.
+        /// </returns>
         /// <exception cref="System.InvalidOperationException">The method was already called.</exception>
-        public void RunAsync(CancellationToken ct = default(CancellationToken), Middleware app = null)
+        public Task RunAsync(CancellationToken ct = default(CancellationToken), Middleware app = null)
         {
             if (_listenerTask != null)
                 throw new InvalidOperationException("The method was already called.");
@@ -390,6 +394,7 @@
                     }
                 }
             }, ct);
+            return this._listenerTask;
         }
 
         /// <summary>
