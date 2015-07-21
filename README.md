@@ -126,7 +126,8 @@ namespace Company.Project
                 .WithLocalSession()
                 .WithStaticFolderAt("c:/web");
 
-            server.RunAsync();
+			var cts = new CancellationTokenSource();
+            var task = server.RunAsync(cts);
 
             // Fire up the browser to show the content if we are debugging!
 #if DEBUG
@@ -140,8 +141,16 @@ namespace Company.Project
             // In a service we'd manage the lifecycle of of our web server using
             // something like a BackgroundWorker or a ManualResetEvent.
             Console.ReadKey(true);
-
-            server.Dispose();
+			cts.Cancel();
+			try
+			{
+				task.Wait();
+			} catch (AggregateException)
+			{
+				// We'd also actually verify the exception cause was that the task
+				// was cancelled.
+				server.Dispose();
+			}
         }
     }
 }
