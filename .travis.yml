@@ -1,5 +1,4 @@
 language: csharp
-sudo: false
 solution: Unosquare.Labs.EmbedIO.sln
 install:
   - nuget restore Unosquare.Labs.EmbedIO.sln
