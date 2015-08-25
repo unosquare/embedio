@@ -381,6 +381,8 @@
             {
                 while (this.Listener != null && this.Listener.IsListening)
                 {
+                    ct.ThrowIfCancellationRequested();
+
                     try
                     {
                         var clientSocket = await Listener.GetContextAsync();

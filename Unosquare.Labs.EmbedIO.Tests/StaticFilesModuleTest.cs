@@ -1,6 +1,4 @@
-﻿using Unosquare.Labs.EmbedIO.Tests.TestObjects;
-
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using NUnit.Framework;
     using System;
@@ -9,6 +7,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
     using System.Threading;
     using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Labs.EmbedIO.Tests.Properties;
+    using Unosquare.Labs.EmbedIO.Tests.TestObjects;
 
     [TestFixture]
     public class StaticFilesModuleTest
@@ -75,20 +74,67 @@ namespace Unosquare.Labs.EmbedIO.Tests
         }
 
         [Test]
-        public void GetPartial()
+        public void GetInitialPartial()
         {
             const int maxLength = 100;
-            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress);
+            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
             request.AddRange(0, maxLength);
 
             using (var response = (HttpWebResponse)request.GetResponse())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
 
-                var html = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                var ms = new MemoryStream();
+                response.GetResponseStream().CopyTo(ms);
+                var data = ms.ToArray();
 
-                Assert.IsNotNullOrEmpty(html, "HTML is not empty");
-                Assert.IsTrue(Resources.index.StartsWith(html), "Content starts at index.html");
+                Assert.IsNotNull(data, "Data is not empty");
+                var subset = new byte[maxLength + 1];
+                var originalSet = TestHelper.GetBigData();
+                Buffer.BlockCopy(originalSet, 0, subset, 0, maxLength +1);
+                Assert.AreEqual(subset, data);
+            }
+        }
+
+        [Test]
+        public void GetMiddlePartial()
+        {
+            const int offset = 50;
+            const int maxLength = 100;
+            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
+            request.AddRange(offset, maxLength + offset);
+
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
+
+                var ms = new MemoryStream();
+                response.GetResponseStream().CopyTo(ms);
+                var data = ms.ToArray();
+
+                Assert.IsNotNull(data, "Data is not empty");
+                var subset = new byte[maxLength + 1];
+                var originalSet = TestHelper.GetBigData();
+                Buffer.BlockCopy(originalSet, offset, subset, 0, maxLength + 1);
+                Assert.AreEqual(subset, data);
+            }
+        }
+
+        [Test]
+        public void GetNotPartial()
+        {
+            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
+
+            using (var response = (HttpWebResponse) request.GetResponse())
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                var ms = new MemoryStream();
+                response.GetResponseStream().CopyTo(ms);
+                var data = ms.ToArray();
+
+                Assert.IsNotNull(data, "Data is not empty");
+                Assert.AreEqual(TestHelper.GetBigData(), data);
             }
         }
 

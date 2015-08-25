@@ -162,6 +162,8 @@
             var eTagValid = false;
             byte[] buffer = null;
             var fileDate = DateTime.Today;
+            var partialHeader = context.RequestHeader(Constants.HeaderRange);
+            var usingPartial = String.IsNullOrWhiteSpace(partialHeader) == false && partialHeader.StartsWith("bytes=");
 
             if (string.IsNullOrWhiteSpace(DefaultExtension) == false && DefaultExtension.StartsWith(".") &&
                 File.Exists(localPath) == false)
@@ -171,7 +173,9 @@
                     localPath = newPath;
             }
 
-            if (File.Exists(localPath))
+            if (File.Exists(localPath) == false) return false;
+
+            if (usingPartial == false)
             {
                 fileDate = File.GetLastWriteTime(localPath);
                 var requestHash = context.RequestHeader(Constants.HeaderIfNotMatch);
@@ -212,14 +216,10 @@
                     }
                 }
             }
-            else
-            {
-                return false;
-            }
 
             // check to see if the file was modified or etag is the same
             var utcFileDateString = fileDate.ToUniversalTime().ToString(Constants.BrowserTimeFormat, CultureInfo.InvariantCulture);
-            if (eTagValid || context.RequestHeader(Constants.HeaderIfModifiedSince).Equals(utcFileDateString))
+            if (usingPartial == false && (eTagValid || context.RequestHeader(Constants.HeaderIfModifiedSince).Equals(utcFileDateString)))
             {
                 context.Response.AddHeader(Constants.HeaderCacheControl, "private");
                 context.Response.AddHeader(Constants.HeaderPragma, string.Empty);
@@ -243,26 +243,26 @@
                 if (sendBuffer)
                 {
                     var lrange = 0;
-                    var urange = buffer.Length;
-                    var size = buffer.LongLength;
+                    var urange = 0;
+                    var size = (long) 0;
                     var isPartial = false;
-                    var partialHeader = context.RequestHeader(Constants.HeaderRange);
+                    var fileSize = new FileInfo(localPath).Length;
 
-                    if (String.IsNullOrWhiteSpace(partialHeader) == false && partialHeader.StartsWith("bytes="))
+                    if (usingPartial)
                     {
                         var range = partialHeader.Replace("bytes=", "").Split('-');
                         if (range.Length == 2 && int.TryParse(range[0], out lrange) &&
                             int.TryParse(range[1], out urange))
                         {
-                            urange = urange > buffer.Length ? buffer.Length : urange;
+                            urange = urange > fileSize ? (int)fileSize : urange;
                             isPartial = true;
                         }
 
                         if ((range.Length == 2 && int.TryParse(range[0], out lrange) &&
-                             String.IsNullOrWhiteSpace(range[1])) ||
+                             string.IsNullOrWhiteSpace(range[1])) ||
                             (range.Length == 1 && int.TryParse(range[0], out lrange)))
                         {
-                            urange = buffer.Length - 1;
+                            urange = (int) fileSize - 1;
                             isPartial = true;
                         }
                     }
@@ -272,12 +272,30 @@
                         size = (urange - lrange) + 1;
 
                         context.Response.AddHeader(Constants.HeaderContentRanges,
-                            String.Format("bytes {0}-{1}/{2}", lrange, urange - 1, buffer.Length));
+                            string.Format("bytes {0}-{1}/{2}", lrange, urange, fileSize));
 
                         context.Response.StatusCode = 206;
+
+                        server.Log.DebugFormat("Opening stream {0} bytes {1}-{2} size {3}", localPath, lrange, urange,
+                            size);
+
+                        buffer = new byte[size];
+
+                        // Open FileStream with FileShare
+                        using (var fs = new FileStream(localPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        {
+                            fs.Seek(lrange, SeekOrigin.Begin);
+                            fs.Read(buffer, 0, (int) size);
+                            fs.Close();
+                        }
+
+                        // Reset lower range
+                        lrange = 0;
                     }
                     else
                     {
+                        size = buffer.LongLength;
+
                         // Perform compression if available
                         if (context.RequestHeader(Constants.HeaderAcceptEncoding).Contains("gzip"))
                         {
@@ -285,7 +303,6 @@
                             context.Response.AddHeader(Constants.HeaderContentEncoding, "gzip");
                             size = buffer.LongLength;
                             lrange = 0;
-                            urange = buffer.Length;
                         }
                     }
 

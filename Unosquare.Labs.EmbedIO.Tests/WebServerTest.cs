@@ -28,14 +28,15 @@
         [Test]
         public void WebserverCanBeDisposed()
         {
-            // TODO: I need to test
             var cts = new CancellationTokenSource();
             var instance = new WebServer("http://localhost:" + DefaultPort);
             var task = instance.RunAsync(cts.Token);
+
             cts.Cancel();
 
             try
             {
+                Thread.Sleep(2000);
                 task.Wait();
             }
             catch (AggregateException e)
@@ -45,7 +46,7 @@
                     instance.Dispose();
                     return;
                 }
-                
+
                 Assert.Fail("Must fail because of an OperationCanceledException");
             }
 
