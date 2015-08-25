@@ -1,15 +1,14 @@
-﻿using Unosquare.Labs.EmbedIO.Tests.TestObjects;
-
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using NUnit.Framework;
+    using System;
     using System.Globalization;
     using System.Linq;
+    using System.Threading;
     using Unosquare.Labs.EmbedIO.Log;
     using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Labs.EmbedIO.Tests.Properties;
-  using System.Threading;
-  using System;
+    using Unosquare.Labs.EmbedIO.Tests.TestObjects;
 
     [TestFixture]
     public class WebServerTest
@@ -20,7 +19,6 @@ namespace Unosquare.Labs.EmbedIO.Tests
         [Test]
         public void WebServerDefaultConstructor()
         {
-
             var instance = new WebServer();
             Assert.AreEqual(instance.Log.GetType(), typeof (NullLog), "Default log is NullLog");
             Assert.IsNotNull(instance.Listener, "It has a HttpListener");
@@ -30,25 +28,28 @@ namespace Unosquare.Labs.EmbedIO.Tests
         [Test]
         public void WebserverCanBeDisposed()
         {
-          CancellationTokenSource cts = new CancellationTokenSource();
-          var instance = new WebServer("http://localhost:" + DefaultPort);
-          var task = instance.RunAsync(cts.Token);
-          cts.Cancel();
-          try
-          {
-            task.Wait();
-          } catch (AggregateException e)
-          {
-            if (e.GetBaseException() is OperationCanceledException)
+            // TODO: I need to test
+            var cts = new CancellationTokenSource();
+            var instance = new WebServer("http://localhost:" + DefaultPort);
+            var task = instance.RunAsync(cts.Token);
+            cts.Cancel();
+
+            try
             {
-              instance.Dispose();
-              return;
-            } else
-            {
-              Assert.Fail("Must fail because of an OperationCanceledException");
+                task.Wait();
             }
-          }
-          Assert.Fail("Must throw an AggregateException");
+            catch (AggregateException e)
+            {
+                if (e.GetBaseException() is OperationCanceledException)
+                {
+                    instance.Dispose();
+                    return;
+                }
+                
+                Assert.Fail("Must fail because of an OperationCanceledException");
+            }
+
+            Assert.Fail("Must throw an AggregateException");
         }
 
         [Test]
@@ -99,7 +100,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
             const string errorMessage = "THIS IS AN ERROR";
             var instance = WebServer.CreateWithConsole(Resources.ServerAddress);
 
-            Assert.AreEqual(instance.Log.GetType(), typeof(SimpleConsoleLog), "Log is SimpleConsoleLog");
+            Assert.AreEqual(instance.Log.GetType(), typeof (SimpleConsoleLog), "Log is SimpleConsoleLog");
 
             // TODO: Grab console output
             instance.Log.Error(errorMessage);

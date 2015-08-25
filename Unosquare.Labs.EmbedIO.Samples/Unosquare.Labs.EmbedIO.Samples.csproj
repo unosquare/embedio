@@ -47,7 +47,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Unosquare.Tubular, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tubular.ServerSide.0.9.14\lib\net45\Unosquare.Tubular.dll</HintPath>
+      <HintPath>..\packages\Tubular.ServerSide.0.9.23\lib\net45\Unosquare.Tubular.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -75,6 +75,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="html\views\tubular.html" />
+    <Content Include="Scripts\tubular\tubular-bundle.css" />
+    <Content Include="Scripts\tubular\tubular-bundle.js" />
+    <Content Include="Scripts\tubular\tubular-bundle.min.css" />
+    <Content Include="Scripts\tubular\tubular-bundle.min.js" />
     <None Include="app.config" />
     <Content Include="html\scripts\app.constants.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
