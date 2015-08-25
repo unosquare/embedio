@@ -124,4 +124,7 @@
   <data name="ServerAddress" xml:space="preserve">
     <value>http://localhost:7777/</value>
   </data>
+  <data name="WsServerAddress" xml:space="preserve">
+    <value>ws://localhost:7778/</value>
+  </data>
 </root>

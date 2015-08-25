@@ -17,24 +17,20 @@
         [SetUp]
         public void Init()
         {
-            WebServer = new WebServer(Resources.ServerAddress, Logger).WithWebSocket(typeof (TestWebSocket).Assembly);
+            WebServer = new WebServer(Resources.WsServerAddress.Replace("ws", "http"), Logger).WithWebSocket(typeof (TestWebSocket).Assembly);
             WebServer.RunAsync();
-        }
-
-        [Test]
-        public void TestWebSocket()
-        {
-            Assert.IsNotNull(WebServer.Module<WebSocketsModule>(), "WebServer has WebSocketsModule");
-
-            Assert.AreEqual(WebServer.Module<WebSocketsModule>().Handlers.Count, 1, "WebSocketModule has one handler");
         }
 
         [Test]
         public async void TestConnectWebSocket()
         {
+            Assert.IsNotNull(WebServer.Module<WebSocketsModule>(), "WebServer has WebSocketsModule");
+
+            Assert.AreEqual(WebServer.Module<WebSocketsModule>().Handlers.Count, 1, "WebSocketModule has one handler");
+
             var clientSocket = new ClientWebSocket();
             var ct = new CancellationTokenSource();
-            await clientSocket.ConnectAsync(new Uri(Resources.ServerAddress.Replace("http", "ws") + "/test"), ct.Token);
+            await clientSocket.ConnectAsync(new Uri(Resources.WsServerAddress + "/test"), ct.Token);
 
             Assert.AreEqual(clientSocket.State, WebSocketState.Open, "Connection is open");
 
@@ -46,6 +42,13 @@
 
             Assert.IsTrue(result.EndOfMessage);
             Assert.IsTrue(System.Text.Encoding.UTF8.GetString(buffer.Array).TrimEnd((char) 0) == "WELCOME");
+        }
+
+        [TearDown]
+        public void Kill()
+        {
+            Thread.Sleep(TimeSpan.FromSeconds(1));
+            WebServer.Dispose();
         }
     }
 }
