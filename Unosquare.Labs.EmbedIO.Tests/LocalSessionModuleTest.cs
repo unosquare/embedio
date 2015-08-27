@@ -1,7 +1,6 @@
-﻿using Unosquare.Labs.EmbedIO.Tests.TestObjects;
-
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
+    using Unosquare.Labs.EmbedIO.Tests.TestObjects;
     using NUnit.Framework;
     using System;
     using System.Net;

@@ -8,6 +8,8 @@
     {
         public const string BigDataFile = "bigdata.bin";
 
+        public const string SmallDataFile = "smalldata.bin";
+
         private static string RootPath()
         {
             var assemblyPath = Path.GetDirectoryName(typeof(StaticFilesModuleTest).Assembly.Location);
@@ -17,6 +19,11 @@
         public static byte[] GetBigData()
         {
             return File.Exists(Path.Combine(RootPath(), BigDataFile)) ? File.ReadAllBytes(Path.Combine(RootPath(), BigDataFile)) : null;
+        }
+
+        public static byte[] GetSmallData()
+        {
+            return File.Exists(Path.Combine(RootPath(), SmallDataFile)) ? File.ReadAllBytes(Path.Combine(RootPath(), SmallDataFile)) : null;
         }
 
         public static string SetupStaticFolder()
@@ -31,6 +38,9 @@
 
             if (File.Exists(Path.Combine(rootPath, BigDataFile)) == false)
                 CreateTempBinaryFile(Path.Combine(rootPath, BigDataFile), 100);
+
+            if (File.Exists(Path.Combine(rootPath, SmallDataFile)) == false)
+                CreateTempBinaryFile(Path.Combine(rootPath, SmallDataFile), 2);
 
             return rootPath;
         }

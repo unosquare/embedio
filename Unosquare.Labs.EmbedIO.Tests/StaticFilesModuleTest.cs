@@ -121,9 +121,43 @@
         }
 
         [Test]
+        public void GetEntireFileWithChunks()
+        {
+            var originalSet = TestHelper.GetBigData();
+            var requestHead = (HttpWebRequest) WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
+            requestHead.Method = "HEAD";
+
+            var remoteSize = ((HttpWebResponse) requestHead.GetResponse()).ContentLength;
+            Assert.AreEqual(remoteSize, originalSet.Length);
+
+            var buffer = new byte[remoteSize];
+            const int chunkSize = 50000;
+
+            for (var i = 0; i < remoteSize/chunkSize + 1; i++)
+            {
+                var request = (HttpWebRequest) WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
+                var top = ((i + 1)*chunkSize) - 1;
+
+                request.AddRange(i*chunkSize, top > remoteSize ? remoteSize : top);
+
+                using (var response = (HttpWebResponse) request.GetResponse())
+                {
+                    Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
+
+                    var ms = new MemoryStream();
+                    response.GetResponseStream().CopyTo(ms);
+                    var data = ms.ToArray();
+                    Buffer.BlockCopy(data, 0, buffer, i * chunkSize, data.Length);
+                }
+            }
+
+            Assert.AreEqual(originalSet, buffer);
+        }
+
+        [Test]
         public void GetNotPartial()
         {
-            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
+            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.SmallDataFile);
 
             using (var response = (HttpWebResponse) request.GetResponse())
             {
@@ -134,7 +168,7 @@
                 var data = ms.ToArray();
 
                 Assert.IsNotNull(data, "Data is not empty");
-                Assert.AreEqual(TestHelper.GetBigData(), data);
+                Assert.AreEqual(TestHelper.GetSmallData(), data);
             }
         }
 

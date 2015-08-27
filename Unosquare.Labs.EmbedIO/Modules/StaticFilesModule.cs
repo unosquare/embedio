@@ -48,7 +48,7 @@
         public string DefaultExtension { get; set; }
 
 
-        private Dictionary<string, string> m_MimeTypes;
+        private readonly Dictionary<string, string> m_MimeTypes;
 
         /// <summary>
         /// Gets the collection holding the MIME types.
@@ -134,7 +134,7 @@
             this.UseRamCache = true;
 #endif
             this.RamCache = new ConcurrentDictionary<string, RamCacheEntry>(StringComparer.InvariantCultureIgnoreCase);
-            this.MaxRamCacheFileSize = 250 * 1024;
+            this.MaxRamCacheFileSize = 250*1024;
             this.DefaultDocument = DefaultDocumentName;
 
             // Populate the default MIME types
@@ -156,7 +156,7 @@
             if (urlPath.Last() == Path.DirectorySeparatorChar)
                 urlPath = urlPath + DefaultDocument;
 
-            urlPath = urlPath.TrimStart(new char[] { Path.DirectorySeparatorChar });
+            urlPath = urlPath.TrimStart(new char[] {Path.DirectorySeparatorChar});
 
             var localPath = Path.Combine(FileSystemPath, urlPath);
             var eTagValid = false;
@@ -198,28 +198,34 @@
                 else
                 {
                     server.Log.DebugFormat("File System: {0}", localPath);
-                    buffer = File.ReadAllBytes(localPath);
-                    var currentHash = Extensions.ComputeMd5Hash(buffer) + '-' + fileDate.Ticks;
-
-                    if (String.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
+                    if (sendBuffer)
                     {
-                        if (UseRamCache && buffer.Length <= MaxRamCacheFileSize)
+                        buffer = File.ReadAllBytes(localPath);
+
+                        var currentHash = Extensions.ComputeMd5Hash(buffer) + '-' + fileDate.Ticks;
+
+                        if (String.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
                         {
-                            RamCache[localPath] = new RamCacheEntry() { LastModified = fileDate, Buffer = buffer };
-                        }
+                            if (UseRamCache && buffer.Length <= MaxRamCacheFileSize)
+                            {
+                                RamCache[localPath] = new RamCacheEntry() {LastModified = fileDate, Buffer = buffer};
+                            }
 
-                        context.Response.AddHeader(Constants.HeaderETag, currentHash);
-                    }
-                    else
-                    {
-                        eTagValid = true;
+                            context.Response.AddHeader(Constants.HeaderETag, currentHash);
+                        }
+                        else
+                        {
+                            eTagValid = true;
+                        }
                     }
                 }
             }
 
             // check to see if the file was modified or etag is the same
-            var utcFileDateString = fileDate.ToUniversalTime().ToString(Constants.BrowserTimeFormat, CultureInfo.InvariantCulture);
-            if (usingPartial == false && (eTagValid || context.RequestHeader(Constants.HeaderIfModifiedSince).Equals(utcFileDateString)))
+            var utcFileDateString = fileDate.ToUniversalTime()
+                .ToString(Constants.BrowserTimeFormat, CultureInfo.InvariantCulture);
+            if (usingPartial == false &&
+                (eTagValid || context.RequestHeader(Constants.HeaderIfModifiedSince).Equals(utcFileDateString)))
             {
                 context.Response.AddHeader(Constants.HeaderCacheControl, "private");
                 context.Response.AddHeader(Constants.HeaderPragma, string.Empty);
@@ -254,7 +260,7 @@
                         if (range.Length == 2 && int.TryParse(range[0], out lrange) &&
                             int.TryParse(range[1], out urange))
                         {
-                            urange = urange > fileSize ? (int)fileSize : urange;
+                            urange = urange > fileSize ? (int) fileSize : urange;
                             isPartial = true;
                         }
 
@@ -284,6 +290,7 @@
                         // Open FileStream with FileShare
                         using (var fs = new FileStream(localPath, FileMode.Open, FileAccess.Read, FileShare.Read))
                         {
+                            if (lrange + size > fs.Length) size = fs.Length - lrange;
                             fs.Seek(lrange, SeekOrigin.Begin);
                             fs.Read(buffer, 0, (int) size);
                             fs.Close();
@@ -307,17 +314,17 @@
                     }
 
                     context.Response.ContentLength64 = size;
-                    context.Response.OutputStream.Write(buffer, lrange, (int)size);
+                    context.Response.OutputStream.Write(buffer, lrange, (int) size);
                 }
                 else
                 {
-                    context.Response.ContentLength64 = buffer.LongLength;
+                    context.Response.ContentLength64 = buffer == null
+                        ? new FileInfo(localPath).Length
+                        : buffer.LongLength;
                 }
             }
 
             return true;
         }
-
-
     }
 }
