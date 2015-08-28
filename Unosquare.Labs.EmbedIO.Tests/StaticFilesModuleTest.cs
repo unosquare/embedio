@@ -70,7 +70,10 @@
                 var response = (HttpWebResponse)ex.Response;
 
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.NotModified, "Status Code NotModified");
+                return;
             }
+
+            Assert.Fail("The Exception should raise");
         }
 
         [Test]
@@ -121,6 +124,29 @@
         }
 
         [Test]
+        public void GetLastPart()
+        {
+            const int maxLength = 100;
+            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
+            request.AddRange(-maxLength);
+
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
+
+                var ms = new MemoryStream();
+                response.GetResponseStream().CopyTo(ms);
+                var data = ms.ToArray();
+
+                Assert.IsNotNull(data, "Data is not empty");
+                var subset = new byte[maxLength];
+                var originalSet = TestHelper.GetBigData();
+                Buffer.BlockCopy(originalSet, originalSet.Length - maxLength, subset, 0, maxLength);
+                Assert.AreEqual(subset, data);
+            }
+        }
+
+        [Test]
         public void GetEntireFileWithChunks()
         {
             var originalSet = TestHelper.GetBigData();
@@ -152,6 +178,39 @@
             }
 
             Assert.AreEqual(originalSet, buffer);
+        }
+
+        [Test]
+        public void GetInvalidChunk()
+        {
+            var originalSet = TestHelper.GetBigData();
+            var requestHead = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
+            requestHead.Method = "HEAD";
+
+            var remoteSize = ((HttpWebResponse)requestHead.GetResponse()).ContentLength;
+            Assert.AreEqual(remoteSize, originalSet.Length);
+
+            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
+            request.AddRange(0, remoteSize + 10);
+
+            try
+            {
+                request.GetResponse();
+            }
+            catch (WebException ex)
+            {
+                if (ex.Response == null || ex.Status != WebExceptionStatus.ProtocolError)
+                    throw;
+
+                var response = (HttpWebResponse)ex.Response;
+
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.RequestedRangeNotSatisfiable, "Status Code RequestedRangeNotSatisfiable");
+                Assert.AreEqual(response.Headers["Content-Range"],
+                    string.Format("bytes */{0}", remoteSize));
+                return;
+            }
+
+            Assert.Fail("The Exception should raise");
         }
 
         [Test]

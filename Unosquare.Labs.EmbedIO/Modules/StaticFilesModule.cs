@@ -260,7 +260,6 @@
                         if (range.Length == 2 && int.TryParse(range[0], out lrange) &&
                             int.TryParse(range[1], out urange))
                         {
-                            urange = urange > fileSize ? (int) fileSize : urange;
                             isPartial = true;
                         }
 
@@ -271,10 +270,26 @@
                             urange = (int) fileSize - 1;
                             isPartial = true;
                         }
+
+                        if (range.Length == 2 && string.IsNullOrWhiteSpace(range[0]) &&
+                            int.TryParse(range[1], out urange))
+                        {
+                            lrange = (int) fileSize - urange;
+                            urange = (int)fileSize - 1;
+                            isPartial = true;
+                        }
                     }
 
                     if (isPartial)
                     {
+                        if (urange > fileSize)
+                        {
+                            context.Response.StatusCode = 416;
+                            context.Response.AddHeader(Constants.HeaderContentRanges,
+                                string.Format("bytes */{0}", fileSize));
+                            return true;
+                        }
+
                         size = (urange - lrange) + 1;
 
                         context.Response.AddHeader(Constants.HeaderContentRanges,
