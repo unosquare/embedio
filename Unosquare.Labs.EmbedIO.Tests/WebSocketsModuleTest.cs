@@ -24,6 +24,11 @@
         [Test]
         public async void TestConnectWebSocket()
         {
+            if (TestHelper.IsMono)
+            {
+                Assert.Inconclusive("Mono doesn't have support to WebSockets");
+            }
+
             Assert.IsNotNull(WebServer.Module<WebSocketsModule>(), "WebServer has WebSocketsModule");
 
             Assert.AreEqual(WebServer.Module<WebSocketsModule>().Handlers.Count, 1, "WebSocketModule has one handler");

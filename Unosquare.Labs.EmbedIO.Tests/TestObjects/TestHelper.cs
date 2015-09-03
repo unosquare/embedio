@@ -6,6 +6,8 @@
 
     public static class TestHelper
     {
+        public static readonly bool IsMono = Type.GetType("Mono.Runtime") != null;
+
         public const string BigDataFile = "bigdata.bin";
 
         public const string SmallDataFile = "smalldata.bin";

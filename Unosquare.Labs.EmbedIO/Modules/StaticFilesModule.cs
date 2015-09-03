@@ -329,7 +329,15 @@
                     }
 
                     context.Response.ContentLength64 = size;
-                    context.Response.OutputStream.Write(buffer, lrange, (int) size);
+
+                    try
+                    {
+                        context.Response.OutputStream.Write(buffer, lrange, (int) size);
+                    }
+                    catch (HttpListenerException)
+                    {
+                        // Connection error, nothing else to do
+                    }
                 }
                 else
                 {

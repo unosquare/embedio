@@ -24,7 +24,11 @@
 
             Console.WriteLine("  Command-Line Utility: Press any key to stop the server.");
 
-            using (var server = WebServer.CreateWithConsole("http://localhost:" + options.Port + "/"))
+            var serverUrl = "http://localhost:" + options.Port + "/";
+            using (
+                var server = options.NoVerbose
+                    ? WebServer.Create(serverUrl)
+                    : WebServer.CreateWithConsole(serverUrl))
             {
                 if (Properties.Settings.Default.UseLocalSessionModule)
                     server.WithLocalSession();

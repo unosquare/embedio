@@ -18,6 +18,9 @@ namespace Unosquare.Labs.EmbedIO.Command
         [OptionList('a', "api", Separator = ',', HelpText = "Specify assemblies to load, separated by a comma.")]
         public IList<string> ApiAssemblies { get; set; }
 
+        [Option('v', "noverb", HelpText = "Output Web server info.", DefaultValue = false)]
+        public bool NoVerbose { get; set; }
+
         [HelpOption]
         public string GetUsage()
         {
