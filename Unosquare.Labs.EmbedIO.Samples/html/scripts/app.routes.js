@@ -1,5 +1,5 @@
 (function () {
-    angular.module('app.routes', ['app.constants', 'ngRoute'])
+    angular.module('app.routes', ['ngRoute'])
 
         .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
             $routeProvider.

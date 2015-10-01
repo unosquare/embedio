@@ -1,7 +1,4 @@
-﻿using Unosquare.Labs.EmbedIO.Modules;
-using Unosquare.Labs.EmbedIO.Tests.TestObjects;
-
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using Newtonsoft.Json;
     using NUnit.Framework;
@@ -13,6 +10,8 @@ namespace Unosquare.Labs.EmbedIO.Tests
     using System.Text;
     using System.Threading;
     using Unosquare.Labs.EmbedIO.Tests.Properties;
+    using Unosquare.Labs.EmbedIO.Modules;
+    using Unosquare.Labs.EmbedIO.Tests.TestObjects;
 
     [TestFixture]
     public class WebApiModuleTest

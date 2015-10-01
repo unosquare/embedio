@@ -1,5 +1,5 @@
 (function() {
-    angular.module('app.directives', ['app.constants', 'ngRoute'])
+    angular.module('app.directives', ['ngRoute'])
     
         .directive('appPerson', function() {
             return {

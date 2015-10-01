@@ -1,5 +1,5 @@
 (function () {
-    angular.module('app.controllers', ['app.constants', 'app.services', 'ngRoute'])
+    angular.module('app.controllers', ['app.services', 'ngRoute'])
         
         .controller('TitleController', ['$scope', '$route', function ($scope, $route) {
             var me = this;
