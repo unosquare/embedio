@@ -17,6 +17,7 @@ A tiny, cross-platform, module based, MIT-licensed web server.
 * Handle sessions with the built-in LocalSessionWebModule
 * Web Sockets support (Not available on Mono though)
 * CORS support. Origin, Headers and Methods validation with OPTIONS preflight
+* Supports HTTP 206 Partial Content
 * [OWIN](http://owin.org/) Middleware support via [Owin Middleware Module](https://github.com/unosquare/embedio-extras/tree/master/Unosquare.Labs.EmbedIO.OwinMiddleware).
 
 *For detailed usage and REST API implementation, download the code and take a look at the Samples project*
