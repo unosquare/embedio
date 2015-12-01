@@ -36,7 +36,7 @@
 
             try
             {
-                Thread.Sleep(2000);
+                //Thread.Sleep(2000);
                 task.Wait();
             }
             catch (AggregateException e)

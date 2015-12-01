@@ -65,6 +65,7 @@
     <Compile Include="TestObjects\TestWebModule.cs" />
     <Compile Include="TestObjects\TestWebSocket.cs" />
     <Compile Include="WebApiModuleTest.cs" />
+    <Compile Include="WebServerCultureTest.cs" />
     <Compile Include="WebServerTest.cs" />
     <Compile Include="WebSocketsModuleTest.cs" />
   </ItemGroup>
