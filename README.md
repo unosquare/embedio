@@ -126,8 +126,8 @@ namespace Company.Project
                 .WithLocalSession()
                 .WithStaticFolderAt("c:/web");
 
-			var cts = new CancellationTokenSource();
-            var task = server.RunAsync(cts);
+	    var cts = new CancellationTokenSource();
+            var task = server.RunAsync(cts.Token);
 
             // Fire up the browser to show the content if we are debugging!
 #if DEBUG
