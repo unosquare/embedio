@@ -32,11 +32,16 @@
                 var path = context.RequestPath();
                 var verb = context.RequestVerb();
                 var wildcardPaths = DelegateMap.Keys
-                    .Where(k => k.EndsWith("/" + ModuleMap.AnyPath))
+                    .Where(k => k.Contains("/" + ModuleMap.AnyPath))
                     .Select(s => s.ToLowerInvariant())
                     .ToArray();
 
-                var wildcardMatch = wildcardPaths.FirstOrDefault(p => path.StartsWith(p.Substring(0, p.Length - 1)));
+                var wildcardMatch = wildcardPaths.FirstOrDefault(p => // wildcard at the end
+                    path.StartsWith(p.Substring(0, p.Length - ModuleMap.AnyPath.Length))
+                        // wildcard in the middle so check both start/end
+                    || (path.StartsWith(p.Substring(0, p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal)))
+                        && path.EndsWith(p.Substring(p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal) + 1)))
+                    );
 
                 if (string.IsNullOrWhiteSpace(wildcardMatch) == false)
                     path = wildcardMatch;
@@ -59,15 +64,15 @@
                 var methodPair = DelegateMap[path][verb];
                 var controller = methodPair.Item1();
 
-                if (methodPair.Item2.ReturnType == typeof(Task<bool>))
+                if (methodPair.Item2.ReturnType == typeof (Task<bool>))
                 {
-                    var method = Delegate.CreateDelegate(typeof(AsyncResponseHandler), controller, methodPair.Item2);
+                    var method = Delegate.CreateDelegate(typeof (AsyncResponseHandler), controller, methodPair.Item2);
 
                     server.Log.DebugFormat("Handler: {0}.{1}", method.Method.DeclaringType.FullName, method.Method.Name);
                     context.NoCache();
                     var returnValue = Task.Run(async () =>
                     {
-                        var task = await (Task<bool>)method.DynamicInvoke(server, context);
+                        var task = await (Task<bool>) method.DynamicInvoke(server, context);
                         return task;
                     });
 
@@ -75,11 +80,11 @@
                 }
                 else
                 {
-                    var method = Delegate.CreateDelegate(typeof(ResponseHandler), controller, methodPair.Item2);
+                    var method = Delegate.CreateDelegate(typeof (ResponseHandler), controller, methodPair.Item2);
 
                     server.Log.DebugFormat("Handler: {0}.{1}", method.Method.DeclaringType.FullName, method.Method.Name);
                     context.NoCache();
-                    var returnValue = (bool)method.DynamicInvoke(server, context);
+                    var returnValue = (bool) method.DynamicInvoke(server, context);
                     return returnValue;
                 }
             });

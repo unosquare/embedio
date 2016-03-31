@@ -21,6 +21,7 @@
 
         public const string RelativePath = "api/";
         public const string GetPath = RelativePath + "people/";
+        public const string GetMiddlePath = RelativePath + "person/*/select";
 
         public static List<Person> People = new List<Person>
         {
@@ -28,6 +29,31 @@
             new Person() {Key = 2, Name = "Geovanni Perez", Age = 32, EmailAddress = "geovanni.perez@unosquare.com"},
             new Person() {Key = 3, Name = "Luis Gonzalez", Age = 29, EmailAddress = "luis.gonzalez@unosquare.com"},
         };
+
+        [WebApiHandler(HttpVerbs.Get, "/" + GetMiddlePath)]
+        public bool GetPerson(WebServer server, HttpListenerContext context)
+        {
+            try
+            {
+                // read the middle segment
+                var segment = context.Request.Url.Segments.Reverse().Skip(1).First().Replace("/", "");
+                
+                // otherwise, we need to parse the key and respond with the entity accordingly
+                int key;
+
+                if (int.TryParse(segment, out key) && People.Any(p => p.Key == key))
+                {
+                    return context.JsonResponse(People.FirstOrDefault(p => p.Key == key));
+                }
+
+                throw new KeyNotFoundException("Key Not Found: " + segment);
+            }
+            catch (Exception ex)
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return context.JsonResponse(ex);
+            }
+        }
 
         [WebApiHandler(HttpVerbs.Get, "/" + GetPath + "*")]
         public bool GetPeople(WebServer server, HttpListenerContext context)

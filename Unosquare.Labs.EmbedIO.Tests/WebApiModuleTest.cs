@@ -76,6 +76,31 @@
         }
 
         [Test]
+        public void GetJsonDataWithMiddleUrl()
+        {
+            var person = TestController.People.First();
+
+            var singleRequest =
+                (HttpWebRequest)
+                    WebRequest.Create(Resources.ServerAddress + TestController.GetMiddlePath.Replace("*", person.Key.ToString()));
+
+            using (var response = (HttpWebResponse) singleRequest.GetResponse())
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                var jsonBody = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+                Assert.IsNotNullOrEmpty(jsonBody, "Json Body is not null or empty");
+
+                var item = JsonConvert.DeserializeObject<TestController.Person>(jsonBody);
+
+                Assert.IsNotNull(item, "Json Object is not null");
+                Assert.AreEqual(item.Name, person.Name, "Remote objects equality");
+                Assert.AreEqual(item.Name, TestController.People.First().Name, "Remote and local objects equality");
+            }
+        }
+
+        [Test]
         public void PostJsonData()
         {
             var model = new TestController.Person() {Key = 10, Name = "Test"};
