@@ -281,7 +281,7 @@
 
                     return stringData.Split('&')
                         .ToDictionary(c => c.Split('=')[0],
-                            c => Uri.UnescapeDataString(c.Split('=')[1]));
+                            c => WebUtility.UrlDecode(c.Split('=')[1]));
                 }
             }
         }
