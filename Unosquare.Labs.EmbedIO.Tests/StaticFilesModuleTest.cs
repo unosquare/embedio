@@ -126,9 +126,10 @@
         [Test]
         public void GetLastPart()
         {
-            const int maxLength = 100;
+            const int startByteIndex = 100;
+            const int byteLength = 100;
             var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
-            request.AddRange(-maxLength);
+            request.AddRange(startByteIndex, startByteIndex + byteLength - 1);
 
             using (var response = (HttpWebResponse)request.GetResponse())
             {
@@ -139,9 +140,9 @@
                 var data = ms.ToArray();
 
                 Assert.IsNotNull(data, "Data is not empty");
-                var subset = new byte[maxLength];
+                var subset = new byte[byteLength];
                 var originalSet = TestHelper.GetBigData();
-                Buffer.BlockCopy(originalSet, originalSet.Length - maxLength, subset, 0, maxLength);
+                Buffer.BlockCopy(originalSet, startByteIndex, subset, 0, byteLength);
                 Assert.AreEqual(subset, data);
             }
         }
