@@ -1,13 +1,12 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
+    using EmbedIO;
     using System;
-    using System.Globalization;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Net;
-    using Unosquare.Labs.EmbedIO;
 
     /// <summary>
     /// Represents a simple module to server static files from the file system.
@@ -223,7 +222,7 @@
 
             // check to see if the file was modified or etag is the same
             var utcFileDateString = fileDate.ToUniversalTime()
-                .ToString(Constants.BrowserTimeFormat, CultureInfo.InvariantCulture);
+                .ToString(Constants.BrowserTimeFormat, Constants.StandardCultureInfo);
             if (usingPartial == false &&
                 (eTagValid || context.RequestHeader(Constants.HeaderIfModifiedSince).Equals(utcFileDateString)))
             {
@@ -236,9 +235,9 @@
             }
             else
             {
-                var extension = Path.GetExtension(localPath).ToLowerInvariant();
-                if (MimeTypes.ContainsKey(extension))
-                    context.Response.ContentType = MimeTypes[extension];
+                var fileExtension = Path.GetExtension(localPath).ToLowerInvariant();
+                if (MimeTypes.ContainsKey(fileExtension))
+                    context.Response.ContentType = MimeTypes[fileExtension];
 
                 context.Response.AddHeader(Constants.HeaderCacheControl, "private");
                 context.Response.AddHeader(Constants.HeaderPragma, string.Empty);
@@ -248,41 +247,41 @@
 
                 if (sendBuffer)
                 {
-                    var lrange = 0;
-                    var urange = 0;
-                    var size = (long) 0;
+                    var lowerByteIndex = 0;
+                    var upperByteIndex = 0;
+                    var byteLength = (long) 0;
                     var isPartial = false;
                     var fileSize = new FileInfo(localPath).Length;
 
                     if (usingPartial)
                     {
                         var range = partialHeader.Replace("bytes=", "").Split('-');
-                        if (range.Length == 2 && int.TryParse(range[0], out lrange) &&
-                            int.TryParse(range[1], out urange))
+                        if (range.Length == 2 && int.TryParse(range[0], out lowerByteIndex) &&
+                            int.TryParse(range[1], out upperByteIndex))
                         {
                             isPartial = true;
                         }
 
-                        if ((range.Length == 2 && int.TryParse(range[0], out lrange) &&
+                        if ((range.Length == 2 && int.TryParse(range[0], out lowerByteIndex) &&
                              string.IsNullOrWhiteSpace(range[1])) ||
-                            (range.Length == 1 && int.TryParse(range[0], out lrange)))
+                            (range.Length == 1 && int.TryParse(range[0], out lowerByteIndex)))
                         {
-                            urange = (int) fileSize - 1;
+                            upperByteIndex = (int) fileSize - 1;
                             isPartial = true;
                         }
 
                         if (range.Length == 2 && string.IsNullOrWhiteSpace(range[0]) &&
-                            int.TryParse(range[1], out urange))
+                            int.TryParse(range[1], out upperByteIndex))
                         {
-                            lrange = (int) fileSize - urange;
-                            urange = (int)fileSize - 1;
+                            lowerByteIndex = (int) fileSize - upperByteIndex;
+                            upperByteIndex = (int)fileSize - 1;
                             isPartial = true;
                         }
                     }
 
                     if (isPartial)
                     {
-                        if (urange > fileSize)
+                        if (upperByteIndex > fileSize)
                         {
                             context.Response.StatusCode = 416;
                             context.Response.AddHeader(Constants.HeaderContentRanges,
@@ -290,49 +289,49 @@
                             return true;
                         }
 
-                        size = (urange - lrange) + 1;
+                        byteLength = (upperByteIndex - lowerByteIndex) + 1;
 
                         context.Response.AddHeader(Constants.HeaderContentRanges,
-                            string.Format("bytes {0}-{1}/{2}", lrange, urange, fileSize));
+                            string.Format("bytes {0}-{1}/{2}", lowerByteIndex, upperByteIndex, fileSize));
 
                         context.Response.StatusCode = 206;
 
-                        server.Log.DebugFormat("Opening stream {0} bytes {1}-{2} size {3}", localPath, lrange, urange,
-                            size);
+                        server.Log.DebugFormat("Opening stream {0} bytes {1}-{2} size {3}", localPath, lowerByteIndex, upperByteIndex,
+                            byteLength);
 
-                        buffer = new byte[size];
+                        buffer = new byte[byteLength];
 
                         // Open FileStream with FileShare
                         using (var fs = new FileStream(localPath, FileMode.Open, FileAccess.Read, FileShare.Read))
                         {
-                            if (lrange + size > fs.Length) size = fs.Length - lrange;
-                            fs.Seek(lrange, SeekOrigin.Begin);
-                            fs.Read(buffer, 0, (int) size);
+                            if (lowerByteIndex + byteLength > fs.Length) byteLength = fs.Length - lowerByteIndex;
+                            fs.Seek(lowerByteIndex, SeekOrigin.Begin);
+                            fs.Read(buffer, 0, (int) byteLength);
                             fs.Close();
                         }
 
                         // Reset lower range
-                        lrange = 0;
+                        lowerByteIndex = 0;
                     }
                     else
                     {
-                        size = buffer.LongLength;
+                        byteLength = buffer.LongLength;
 
                         // Perform compression if available
                         if (context.RequestHeader(Constants.HeaderAcceptEncoding).Contains("gzip"))
                         {
                             buffer = buffer.Compress();
                             context.Response.AddHeader(Constants.HeaderContentEncoding, "gzip");
-                            size = buffer.LongLength;
-                            lrange = 0;
+                            byteLength = buffer.LongLength;
+                            lowerByteIndex = 0;
                         }
                     }
 
-                    context.Response.ContentLength64 = size;
+                    context.Response.ContentLength64 = byteLength;
 
                     try
                     {
-                        context.Response.OutputStream.Write(buffer, lrange, (int) size);
+                        context.Response.OutputStream.Write(buffer, lowerByteIndex, (int) byteLength);
                     }
                     catch (HttpListenerException)
                     {

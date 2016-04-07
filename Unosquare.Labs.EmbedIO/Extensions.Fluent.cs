@@ -1,14 +1,14 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
+    using Modules;
     using System;
     using System.Linq;
     using System.Reflection;
-    using Unosquare.Labs.EmbedIO.Modules;
 
     /// <summary>
-    /// Extensions methods to Fluent Interface
+    /// Extensions methods to EmbedIO's Fluent Interface
     /// </summary>
-    public static class FluentExtensions
+    public static partial class Extensions
     {
         /// <summary>
         /// Add the StaticFilesModule to the specified WebServer
@@ -16,11 +16,14 @@
         /// <param name="webserver">The webserver instance.</param>
         /// <param name="rootPath">The static folder path.</param>
         /// <param name="defaultDocument">The default document name</param>
-        /// <returns>The webserver instance.</returns>
+        /// <returns>
+        /// The webserver instance.
+        /// </returns>
+        /// <exception cref="System.ArgumentException">Argument cannot be null.;webserver</exception>
         public static WebServer WithStaticFolderAt(this WebServer webserver, string rootPath,
             string defaultDocument = StaticFilesModule.DefaultDocumentName)
         {
-            if (webserver == null) throw new ArgumentException("Argument cannot be null.", "webserver");
+            if (webserver == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
 
             webserver.RegisterModule(new StaticFilesModule(rootPath) { DefaultDocument = defaultDocument });
             return webserver;
@@ -33,7 +36,7 @@
         /// <returns></returns>
         public static WebServer WithLocalSession(this WebServer webserver)
         {
-            if (webserver == null) throw new ArgumentException("Argument cannot be null.", "webserver");
+            if (webserver == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
 
             webserver.RegisterModule(new LocalSessionModule());
             return webserver;
@@ -47,7 +50,7 @@
         /// <returns>The webserver instance.</returns>
         public static WebServer WithWebApi(this WebServer webserver, Assembly assembly = null)
         {
-            if (webserver == null) throw new ArgumentException("Argument cannot be null.", "webserver");
+            if (webserver == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
 
             webserver.RegisterModule(new WebApiModule());
             return (assembly != null) ? webserver.LoadApiControllers(assembly) : webserver;
@@ -61,7 +64,7 @@
         /// <returns>The webserver instance.</returns>
         public static WebServer WithWebSocket(this WebServer webserver, Assembly assembly = null)
         {
-            if (webserver == null) throw new ArgumentException("Argument cannot be null.", "webserver");
+            if (webserver == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
 
             webserver.RegisterModule(new WebSocketsModule());
             return (assembly != null) ? webserver.LoadWebSockets(assembly) : webserver;
@@ -75,7 +78,7 @@
         /// <returns>The webserver instance.</returns>
         public static WebServer LoadApiControllers(this WebServer webserver, Assembly assembly = null)
         {
-            if (webserver == null) throw new ArgumentException("Argument cannot be null.", "webserver");
+            if (webserver == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
 
             var types = (assembly ?? Assembly.GetExecutingAssembly()).GetTypes();
             var apiControllers =
@@ -103,7 +106,7 @@
         /// <returns>The webserver instance.</returns>
         public static WebApiModule LoadApiControllers(this WebApiModule apiModule, Assembly assembly = null)
         {
-            if (apiModule == null) throw new ArgumentException("Argument cannot be null.", "apiModule");
+            if (apiModule == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(apiModule));
 
             var types = (assembly ?? Assembly.GetExecutingAssembly()).GetTypes();
             var apiControllers =
@@ -128,7 +131,7 @@
         /// <returns>The webserver instance.</returns>
         public static WebServer LoadWebSockets(this WebServer webserver, Assembly assembly = null)
         {
-            if (webserver == null) throw new ArgumentException("Argument cannot be null.", "webserver");
+            if (webserver == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
 
             var types = (assembly ?? Assembly.GetExecutingAssembly()).GetTypes();
             var sockerServers =
@@ -160,7 +163,7 @@
             string headers = Constants.CorsWildcard,
             string methods = Constants.CorsWildcard)
         {
-            if (webserver == null) throw new ArgumentException("Argument cannot be null.", "webserver");
+            if (webserver == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
 
             webserver.RegisterModule(new CorsModule(origins, headers, methods));
 
@@ -174,7 +177,7 @@
         /// <returns>The webserver instance.</returns>
         public static WebServer WithWebApiController<T>(this WebServer webserver) where T : WebApiController, new()
         {
-            if (webserver == null) throw new ArgumentException("Argument cannot be null.", "webserver");
+            if (webserver == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
 
             if (webserver.Module<WebApiModule>() == null) webserver = webserver.WithWebApi();
             webserver.Module<WebApiModule>().RegisterController<T>();

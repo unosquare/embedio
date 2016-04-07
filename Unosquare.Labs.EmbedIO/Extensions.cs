@@ -14,7 +14,7 @@
     /// <summary>
     /// Extension methods to help your coding!
     /// </summary>
-    public static class Extensions
+    public static partial class Extensions
     {
 
         /// <summary>
@@ -107,7 +107,7 @@
         {
             context.Response.AddHeader(Constants.HeaderExpires, "Mon, 26 Jul 1997 05:00:00 GMT");
             context.Response.AddHeader(Constants.HeaderLastModified,
-                DateTime.UtcNow.ToString(Constants.BrowserTimeFormat));
+                DateTime.UtcNow.ToString(Constants.BrowserTimeFormat, Constants.StandardCultureInfo));
             context.Response.AddHeader(Constants.HeaderCacheControl, "no-store, no-cache, must-revalidate");
             context.Response.AddHeader(Constants.HeaderPragma, "no-cache");
         }

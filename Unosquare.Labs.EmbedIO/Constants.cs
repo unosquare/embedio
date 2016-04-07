@@ -2,16 +2,34 @@
 {
     using System;
     using System.Collections.Generic;
-
+    using System.Globalization;
     /// <summary>
     /// Defines assembly-wide constants
     /// </summary>
     public static class Constants
     {
+
+        public static readonly char[] CommaSplitChar = new[] { ',' };
+
+        /// <summary>
+        /// The standard argument null exception message
+        /// </summary>
+        public const string ArgumentNullExceptionMessage = "Argument cannot be null.";
+
+        /// <summary>
+        /// The format culture used for header outputs
+        /// </summary>
+        public static readonly CultureInfo StandardCultureInfo = CultureInfo.CreateSpecificCulture("en-US");
+
         /// <summary>
         /// Content-Length HTTP Header
         /// </summary>
         public const string HeaderContentLength = "Content-Length";
+
+        /// <summary>
+        /// The cookie header
+        /// </summary>
+        public const string CookieHeader = "Cookie";
 
         /// <summary>
         /// Accept-Encoding HTTP Header
