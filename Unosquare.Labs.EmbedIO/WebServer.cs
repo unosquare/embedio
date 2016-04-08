@@ -359,7 +359,7 @@
 
             return false;
         }
-
+   
         /// <summary>
         /// Starts the listener and the registered modules
         /// </summary>
@@ -458,8 +458,7 @@
             // free managed resources
             if (this.Listener != null)
             {
-                this.Listener.Stop();
-                this.Listener.Close();
+                ((IDisposable) this.Listener).Dispose();
                 this.Listener = null;
                 Log.Info("Listener Closed.");
             }
