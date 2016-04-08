@@ -462,11 +462,6 @@
                 this.Listener = null;
                 Log.Info("Listener Closed.");
             }
-
-            if (_listenerTask != null)
-            {
-                _listenerTask.Dispose();
-            }
         }
 
         /// <summary>
