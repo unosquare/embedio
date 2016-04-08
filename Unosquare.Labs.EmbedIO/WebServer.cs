@@ -377,7 +377,7 @@
             this.Listener.Start();
 
             this.Log.Info("Started HTTP Listener");
-            this._listenerTask = Task.Factory.StartNew(async () =>
+            this._listenerTask = Task.Run(async () =>
             {
                 while (this.Listener != null && this.Listener.IsListening)
                 {
