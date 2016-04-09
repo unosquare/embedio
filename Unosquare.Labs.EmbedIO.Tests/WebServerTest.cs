@@ -54,8 +54,52 @@
             {
                 Assert.Fail($"Must have thrown AggregateException and threw '{ex.GetType().ToString()}' instead.");
             }
-            
+
         }
+        [Test]
+        public void WebServerCanBeRestarted() {
+            var cts = new CancellationTokenSource();
+            var instance = new WebServer("http://localhost:" + DefaultPort);
+            var task = instance.RunAsync(cts.Token);
+
+            //need to make a request here for it to fail before the cancellation changes, null works, yay
+            instance.ProcessRequest(null);
+
+
+            cts.Cancel();
+
+            try {
+                //Thread.Sleep(2000);
+                task.Wait();
+            } 
+            catch (AggregateException e)
+            {
+                var baseEx = e.GetBaseException();
+                if (baseEx is OperationCanceledException) {
+                    instance.Dispose();
+                    return;
+                }
+            }
+            cts = new CancellationTokenSource();
+            instance = new WebServer("http://localhost:" + DefaultPort);
+            task = instance.RunAsync(cts.Token);
+
+            cts.Cancel();
+
+            try {
+                //Thread.Sleep(2000);
+                task.Wait();
+            } 
+            catch (AggregateException e) 
+            {
+                var baseEx = e.GetBaseException();
+                if (baseEx is OperationCanceledException) {
+                    instance.Dispose();
+                    return;
+                }
+            }
+        }
+
 
         [Test]
         public void WebServerConstructorWithPortParam()
