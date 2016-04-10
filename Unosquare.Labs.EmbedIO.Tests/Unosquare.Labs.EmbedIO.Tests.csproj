@@ -56,12 +56,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RegexRoutesTest.cs" />
     <Compile Include="StaticFilesModuleTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestObjects\PeopleRepository.cs" />
     <Compile Include="TestObjects\TestConsoleLog.cs" />
     <Compile Include="TestObjects\TestController.cs" />
     <Compile Include="TestObjects\TestHelper.cs" />
     <Compile Include="TestObjects\TestMiddleware.cs" />
+    <Compile Include="TestObjects\TestRegexController.cs" />
     <Compile Include="TestObjects\TestWebModule.cs" />
     <Compile Include="TestObjects\TestWebSocket.cs" />
     <Compile Include="WebApiModuleTest.cs" />

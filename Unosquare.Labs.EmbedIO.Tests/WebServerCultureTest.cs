@@ -44,10 +44,10 @@ namespace Unosquare.Labs.EmbedIO.Tests
 
                 Assert.IsNotNullOrEmpty(jsonBody, "Json Body is not null or empty");
 
-                var remoteList = JsonConvert.DeserializeObject<List<TestController.Person>>(jsonBody);
+                var remoteList = JsonConvert.DeserializeObject<List<Person>>(jsonBody);
 
                 Assert.IsNotNull(remoteList, "Json Object is not null");
-                Assert.AreEqual(remoteList.Count, TestController.People.Count, "Remote list count equals local list");
+                Assert.AreEqual(remoteList.Count, PeopleRepository.Database.Count, "Remote list count equals local list");
             }
         }
         

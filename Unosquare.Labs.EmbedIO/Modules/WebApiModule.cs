@@ -1,4 +1,7 @@
-﻿namespace Unosquare.Labs.EmbedIO.Modules
+﻿using System.Net;
+using System.Text.RegularExpressions;
+
+namespace Unosquare.Labs.EmbedIO.Modules
 {
     using System;
     using System.Collections.Generic;
@@ -29,37 +32,12 @@
         {
             this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
             {
-                var path = context.RequestPath();
                 var verb = context.RequestVerb();
-                var wildcardPaths = DelegateMap.Keys
-                    .Where(k => k.Contains("/" + ModuleMap.AnyPath))
-                    .Select(s => s.ToLowerInvariant())
-                    .ToArray();
+                 var path = server.RoutingStrategy == RoutingStrategyEnum.Wildcard ? 
+                    GetPathByWildcard(verb, context) :
+                    GetPathByRegex(verb, context);
 
-                var wildcardMatch = wildcardPaths.FirstOrDefault(p => // wildcard at the end
-                    path.StartsWith(p.Substring(0, p.Length - ModuleMap.AnyPath.Length))
-                        // wildcard in the middle so check both start/end
-                    || (path.StartsWith(p.Substring(0, p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal)))
-                        && path.EndsWith(p.Substring(p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal) + 1)))
-                    );
-
-                if (string.IsNullOrWhiteSpace(wildcardMatch) == false)
-                    path = wildcardMatch;
-
-                if (DelegateMap.ContainsKey(path) == false)
-                    return false;
-
-                if (DelegateMap[path].ContainsKey(verb) == false) // TODO: Fix Any Verb
-                {
-                    var originalPath = context.RequestPath();
-                    if (DelegateMap.ContainsKey(originalPath) &&
-                        DelegateMap[originalPath].ContainsKey(verb))
-                    {
-                        path = originalPath;
-                    }
-                    else
-                        return false;
-                }
+                if (path == null) return false;
 
                 var methodPair = DelegateMap[path][verb];
                 var controller = methodPair.Item1();
@@ -80,6 +58,7 @@
                 }
                 else
                 {
+                    // try to handle with a param[]
                     var method = Delegate.CreateDelegate(typeof (ResponseHandler), controller, methodPair.Item2);
 
                     server.Log.DebugFormat("Handler: {0}.{1}", method.Method.DeclaringType.FullName, method.Method.Name);
@@ -88,6 +67,66 @@
                     return returnValue;
                 }
             });
+        }
+
+        private static readonly Regex RouteParamRegex = new Regex(@"\{.*\}");
+        private const string RegexRouteReplace = "(.*)";
+
+        private string GetPathByRegex(HttpVerbs verb, HttpListenerContext context)
+        {
+            var path = context.RequestPath();
+            
+            foreach (var route in DelegateMap.Keys)
+            {
+                var regex = new Regex(RouteParamRegex.Replace(route, RegexRouteReplace));
+                var match = regex.Match(path);
+
+                if (!match.Success) continue;
+
+                if (DelegateMap[route].Keys.Contains(verb) || DelegateMap[route].Keys.Contains(HttpVerbs.Any))
+                {
+                    return route;
+                }
+            }
+            
+            return null;
+        }
+
+        private string GetPathByWildcard(HttpVerbs verb, HttpListenerContext context)
+        {
+            var path = context.RequestPath();
+
+            var wildcardPaths = DelegateMap.Keys
+                .Where(k => k.Contains("/" + ModuleMap.AnyPath))
+                .Select(s => s.ToLowerInvariant())
+                .ToArray();
+
+            var wildcardMatch = wildcardPaths.FirstOrDefault(p => // wildcard at the end
+                path.StartsWith(p.Substring(0, p.Length - ModuleMap.AnyPath.Length))
+                    // wildcard in the middle so check both start/end
+                || (path.StartsWith(p.Substring(0, p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal)))
+                    && path.EndsWith(p.Substring(p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal) + 1)))
+                );
+
+            if (string.IsNullOrWhiteSpace(wildcardMatch) == false)
+                path = wildcardMatch;
+
+            if (DelegateMap.ContainsKey(path) == false)
+                return null;
+
+            if (DelegateMap[path].ContainsKey(verb) == false) // TODO: Fix Any Verb
+            {
+                var originalPath = context.RequestPath();
+                if (DelegateMap.ContainsKey(originalPath) &&
+                    DelegateMap[originalPath].ContainsKey(verb))
+                {
+                    path = originalPath;
+                }
+                else
+                    return null;
+            }
+
+            return path;
         }
 
         /// <summary>
@@ -158,7 +197,7 @@
         {
             var protoDelegate = new ResponseHandler((server, context) => true);
             var protoAsyncDelegate = new AsyncResponseHandler((server, context) => Task.FromResult(true));
-
+            
             var methods = controllerType
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .Where(
@@ -166,6 +205,7 @@
                          || m.ReturnType == protoAsyncDelegate.Method.ReturnType)
                          && m.GetParameters()
                             .Select(pi => pi.ParameterType)
+                            .Take(2)
                             .SequenceEqual(protoDelegate.Method.GetParameters()
                             .Select(pi => pi.ParameterType)));
 

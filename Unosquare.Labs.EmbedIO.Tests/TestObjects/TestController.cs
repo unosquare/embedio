@@ -9,27 +9,10 @@
     public class TestController : WebApiController
     {
         // TODO: Test Async mode
-
-        public class Person
-        {
-            public int Key { get; set; }
-            public string Name { get; set; }
-            public int Age { get; set; }
-            public string EmailAddress { get; set; }
-            public string PhotoUrl { get; set; }
-        }
-
         public const string RelativePath = "api/";
         public const string GetPath = RelativePath + "people/";
         public const string GetMiddlePath = RelativePath + "person/*/select";
-
-        public static List<Person> People = new List<Person>
-        {
-            new Person() {Key = 1, Name = "Mario Di Vece", Age = 31, EmailAddress = "mario@unosquare.com"},
-            new Person() {Key = 2, Name = "Geovanni Perez", Age = 32, EmailAddress = "geovanni.perez@unosquare.com"},
-            new Person() {Key = 3, Name = "Luis Gonzalez", Age = 29, EmailAddress = "luis.gonzalez@unosquare.com"},
-        };
-
+        
         [WebApiHandler(HttpVerbs.Get, "/" + GetMiddlePath)]
         public bool GetPerson(WebServer server, HttpListenerContext context)
         {
@@ -41,9 +24,9 @@
                 // otherwise, we need to parse the key and respond with the entity accordingly
                 int key;
 
-                if (int.TryParse(segment, out key) && People.Any(p => p.Key == key))
+                if (int.TryParse(segment, out key) && PeopleRepository.Database.Any(p => p.Key == key))
                 {
-                    return context.JsonResponse(People.FirstOrDefault(p => p.Key == key));
+                    return context.JsonResponse(PeopleRepository.Database.FirstOrDefault(p => p.Key == key));
                 }
 
                 throw new KeyNotFoundException("Key Not Found: " + segment);
@@ -65,14 +48,14 @@
 
                 // if it ends with a / means we need to list people
                 if (lastSegment.EndsWith("/"))
-                    return context.JsonResponse(People);
+                    return context.JsonResponse(PeopleRepository.Database);
 
                 // otherwise, we need to parse the key and respond with the entity accordingly
                 int key;
 
-                if (int.TryParse(lastSegment, out key) && People.Any(p => p.Key == key))
+                if (int.TryParse(lastSegment, out key) && PeopleRepository.Database.Any(p => p.Key == key))
                 {
-                    return context.JsonResponse(People.FirstOrDefault(p => p.Key == key));
+                    return context.JsonResponse(PeopleRepository.Database.FirstOrDefault(p => p.Key == key));
                 }
 
                 throw new KeyNotFoundException("Key Not Found: " + lastSegment);

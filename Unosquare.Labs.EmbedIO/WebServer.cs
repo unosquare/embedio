@@ -65,11 +65,16 @@
         public ILog Log { get; protected set; }
 
         /// <summary>
+        /// Gets the RoutingStrategy used in this instance
+        /// </summary>
+        public RoutingStrategyEnum RoutingStrategy { get; protected set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
         /// This constructor does not provide any Logging capabilities.
         /// </summary>
         public WebServer()
-            : this("http://*/", new NullLog())
+            : this("http://*/", new NullLog(), RoutingStrategyEnum.Wildcard)
         {
             // placeholder
         }
@@ -91,7 +96,19 @@
         /// <param name="port">The port.</param>
         /// <param name="log"></param>
         public WebServer(int port, ILog log)
-            : this("http://*:" + port.ToString() + "/", log)
+            : this("http://*:" + port.ToString() + "/", log, RoutingStrategyEnum.Wildcard)
+        {
+            // placeholder
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebServer"/> class.
+        /// </summary>
+        /// <param name="port">The port.</param>
+        /// <param name="log"></param>
+        /// <param name="routingStrategy">The routing strategy</param>
+        public WebServer(int port, ILog log, RoutingStrategyEnum routingStrategy)
+            : this("http://*:" + port.ToString() + "/", log, routingStrategy)
         {
             // placeholder
         }
@@ -102,7 +119,7 @@
         /// </summary>
         /// <param name="urlPrefix">The URL prefix.</param>
         public WebServer(string urlPrefix)
-            : this(urlPrefix, new NullLog())
+            : this(urlPrefix, new NullLog(), RoutingStrategyEnum.Wildcard)
         {
             // placeholder
         }
@@ -113,7 +130,19 @@
         /// <param name="urlPrefix">The URL prefix.</param>
         /// <param name="log">The log.</param>
         public WebServer(string urlPrefix, ILog log)
-            : this(new[] {urlPrefix}, log)
+            : this(new[] { urlPrefix }, log, RoutingStrategyEnum.Wildcard)
+        {
+            // placeholder
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebServer"/> class.
+        /// </summary>
+        /// <param name="urlPrefix">The URL prefix.</param>
+        /// <param name="log">The log.</param>
+        /// <param name="routingStrategy">The routing strategy</param>
+        public WebServer(string urlPrefix, ILog log, RoutingStrategyEnum routingStrategy)
+            : this(new[] {urlPrefix}, log, routingStrategy)
         {
             // placeholder
         }
@@ -124,7 +153,7 @@
         /// </summary>
         /// <param name="urlPrefixes">The URL prefixes.</param>
         public WebServer(string[] urlPrefixes)
-            : this(urlPrefixes, new NullLog())
+            : this(urlPrefixes, new NullLog(), RoutingStrategyEnum.Wildcard)
         {
             // placeholder
         }
@@ -136,9 +165,10 @@
         /// </summary>
         /// <param name="urlPrefixes">The URL prefix.</param>
         /// <param name="log">The Log component</param>
+        /// <param name="routingStrategy">The routing strategy</param>
         /// <exception cref="System.InvalidOperationException">The HTTP Listener is not supported in this OS</exception>
         /// <exception cref="System.ArgumentException">Argument urlPrefix must be specified</exception>
-        public WebServer(string[] urlPrefixes, ILog log)
+        public WebServer(string[] urlPrefixes, ILog log, RoutingStrategyEnum routingStrategy)
         {
             if (HttpListener.IsSupported == false)
                 throw new InvalidOperationException("The HTTP Listener is not supported in this OS");
@@ -149,6 +179,7 @@
             if (log == null)
                 throw new ArgumentException("Argument log must be specified");
 
+            this.RoutingStrategy = routingStrategy;
             this.Listener = new HttpListener();
             this.Log = log;
 
@@ -175,8 +206,7 @@
             where T : class, IWebModule
         {
             var module = this.Modules.FirstOrDefault(m => m.GetType() == typeof (T));
-            if (module != null) return module as T;
-            return null;
+            return module as T;
         }
 
         /// <summary>
@@ -203,7 +233,7 @@
                 module.Server = this;
                 this._modules.Add(module);
 
-                if (module as ISessionWebModule != null)
+                if (module is ISessionWebModule)
                     this.SessionModule = module as ISessionWebModule;
             }
             else

@@ -16,7 +16,6 @@
     /// </summary>
     public static class Extensions
     {
-
         /// <summary>
         /// Gets the session object associated to the current context.
         /// Returns null if the LocalSessionWebModule has not been loaded.
@@ -277,7 +276,7 @@
                 {
                     var stringData = reader.ReadToEnd();
 
-                    if (String.IsNullOrWhiteSpace(stringData)) return null;
+                    if (string.IsNullOrWhiteSpace(stringData)) return null;
 
                     return stringData.Split('&')
                         .ToDictionary(c => c.Split('=')[0],

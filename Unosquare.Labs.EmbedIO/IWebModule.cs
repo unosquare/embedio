@@ -18,7 +18,7 @@
     /// <param name="context">The context.</param>
     /// <returns></returns>
     public delegate Task<bool> AsyncResponseHandler(WebServer server, HttpListenerContext context);
-
+    
     /// <summary>
     /// Interface to create web modules
     /// </summary>

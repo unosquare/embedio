@@ -701,4 +701,19 @@
             };
 
     }
+
+    /// <summary>
+    /// Defines the routing strategy enumeration
+    /// </summary>
+    public enum RoutingStrategyEnum
+    {
+        /// <summary>
+        /// The wildcard strategy, default one
+        /// </summary>
+        Wildcard,
+        /// <summary>
+        /// The Regex strategy
+        /// </summary>
+        Regex
+    }
 }
