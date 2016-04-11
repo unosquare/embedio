@@ -53,7 +53,7 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="FluentExtensions.cs" />
+    <Compile Include="Extensions.Fluent.cs" />
     <Compile Include="HttpVerbs.cs" />
     <Compile Include="Log\ILog.cs" />
     <Compile Include="ISessionWebModule.cs" />

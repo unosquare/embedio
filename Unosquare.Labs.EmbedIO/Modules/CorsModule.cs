@@ -6,6 +6,8 @@
 
     /// <summary>
     /// CORS control Module
+    /// Cross-origin resource sharing (CORS) is a mechanism that allows restricted resources (e.g. fonts) 
+    /// on a web page to be requested from another domain outside the domain from which the resource originated.
     /// </summary>
     public class CorsModule : WebModuleBase
     {
@@ -24,13 +26,13 @@
             string methods = Constants.CorsWildcard)
         {
 
-            if (origins == null) throw new ArgumentException("Argument cannot be null.", "origins");
-            if (headers == null) throw new ArgumentException("Argument cannot be null.", "headers");
-            if (methods == null) throw new ArgumentException("Argument cannot be null.", "methods");
+            if (origins == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(origins));
+            if (headers == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(headers));
+            if (methods == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(methods));
 
-            var validOrigins = origins.ToLower().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
-            var validHeaders = headers.ToLower().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
-            var validMethods = methods.ToLower().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
+            var validOrigins = origins.ToLower().Split(Constants.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
+            var validHeaders = headers.ToLower().Split(Constants.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
+            var validMethods = methods.ToLower().Split(Constants.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
 
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
             {
@@ -64,7 +66,7 @@
                             if (String.IsNullOrWhiteSpace(currentMethod) == false)
                             {
                                 var currentMethods = currentMethod.ToLower()
-                                    .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
+                                    .Split(Constants.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
 
                                 if (methods == Constants.CorsWildcard || currentMethods.All(validMethods.Contains))
                                 {

@@ -41,16 +41,20 @@
             }
             catch (AggregateException e)
             {
-                if (e.GetBaseException() is OperationCanceledException)
+                var baseEx = e.GetBaseException();
+                if (baseEx is OperationCanceledException)
                 {
                     instance.Dispose();
                     return;
                 }
 
-                Assert.Fail("Must fail because of an OperationCanceledException");
+                Assert.Fail($"Must have thrown OperationCanceledException and trhew '{baseEx.GetType().ToString()}' instead.");
             }
-
-            Assert.Fail("Must throw an AggregateException");
+            catch (Exception ex)
+            {
+                Assert.Fail($"Must have thrown AggregateException and threw '{ex.GetType().ToString()}' instead.");
+            }
+            
         }
 
         [Test]

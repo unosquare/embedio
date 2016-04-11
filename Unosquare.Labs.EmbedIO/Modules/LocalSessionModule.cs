@@ -1,11 +1,11 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
+    using EmbedIO;
     using System;
     using System.Collections.Concurrent;
     using System.Linq;
     using System.Net;
     using System.Net.WebSockets;
-    using Unosquare.Labs.EmbedIO;
 
     /// <summary>
     /// A simple module to handle in-memory sessions. Do not use for distributed applications
@@ -50,9 +50,9 @@
         private void FixupSessionCookie(HttpListenerContext context)
         {
             // get the real "__session" cookie value because sometimes there's more than 1 value and System.Net.Cookie only supports 1 value per cookie
-            if (context.Request.Headers["Cookie"] == null) return;
+            if (context.Request.Headers[Constants.CookieHeader] == null) return;
 
-            var cookieItems = context.Request.Headers["Cookie"].Split(new[] { ';', ',' },
+            var cookieItems = context.Request.Headers[Constants.CookieHeader].Split(new[] { ';', ',' },
                 StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var cookieItem in cookieItems)
