@@ -4,15 +4,16 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
+    using System.Threading.Tasks;
     using Unosquare.Labs.EmbedIO.Modules;
 
     public class TestController : WebApiController
     {
-        // TODO: Test Async mode
         public const string RelativePath = "api/";
         public const string GetPath = RelativePath + "people/";
+        public const string GetAsyncPath = RelativePath + "asyncpeople/";
         public const string GetMiddlePath = RelativePath + "person/*/select";
-        
+
         [WebApiHandler(HttpVerbs.Get, "/" + GetMiddlePath)]
         public bool GetPerson(WebServer server, HttpListenerContext context)
         {
@@ -20,7 +21,7 @@
             {
                 // read the middle segment
                 var segment = context.Request.Url.Segments.Reverse().Skip(1).First().Replace("/", "");
-                
+
                 // otherwise, we need to parse the key and respond with the entity accordingly
                 int key;
 
@@ -33,7 +34,7 @@
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                 return context.JsonResponse(ex);
             }
         }
@@ -62,7 +63,7 @@
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                 return context.JsonResponse(ex);
             }
         }
@@ -78,7 +79,40 @@
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                return context.JsonResponse(ex);
+            }
+        }
+
+
+        [WebApiHandler(HttpVerbs.Get, "/" + GetAsyncPath + "*")]
+        public async Task<bool> GetPeopleAsync(WebServer server, HttpListenerContext context)
+        {
+            try
+            {
+                // sleep because task
+                await Task.Delay(TimeSpan.FromSeconds(1));
+
+                // read the last segment
+                var lastSegment = context.Request.Url.Segments.Last();
+
+                // if it ends with a / means we need to list people
+                if (lastSegment.EndsWith("/"))
+                    return context.JsonResponse(PeopleRepository.Database);
+
+                // otherwise, we need to parse the key and respond with the entity accordingly
+                int key;
+
+                if (int.TryParse(lastSegment, out key) && PeopleRepository.Database.Any(p => p.Key == key))
+                {
+                    return context.JsonResponse(PeopleRepository.Database.FirstOrDefault(p => p.Key == key));
+                }
+
+                throw new KeyNotFoundException("Key Not Found: " + lastSegment);
+            }
+            catch (Exception ex)
+            {
+                context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                 return context.JsonResponse(ex);
             }
         }

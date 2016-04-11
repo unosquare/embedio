@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 using NUnit.Framework;
 using Unosquare.Labs.EmbedIO.Modules;
 using Unosquare.Labs.EmbedIO.Tests.Properties;
@@ -36,40 +30,24 @@ namespace Unosquare.Labs.EmbedIO.Tests
 
             Assert.AreEqual(WebServer.Module<WebApiModule>().ControllersCount, 1, "WebApiModule has one controller");
         }
-
-        private static void ValidatePerson(string url)
-        {
-            var person = PeopleRepository.Database.First();
-
-            var singleRequest = (HttpWebRequest) WebRequest.Create(url);
-
-            using (var response = (HttpWebResponse) singleRequest.GetResponse())
-            {
-                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
-                var jsonBody = new StreamReader(response.GetResponseStream()).ReadToEnd();
-
-                Assert.IsNotNullOrEmpty(jsonBody, "Json Body is not null or empty");
-
-                var item = JsonConvert.DeserializeObject<Person>(jsonBody);
-
-                Assert.IsNotNull(item, "Json Object is not null");
-                Assert.AreEqual(item.Name, person.Name, "Remote objects equality");
-                Assert.AreEqual(item.Name, PeopleRepository.Database.First().Name, "Remote and local objects equality");
-            }
-        }
-
+        
         [Test]
         public void GetJsonDataWithRegexId()
         {
-            ValidatePerson(Resources.ServerAddress + TestRegexController.RelativePath + "regex/1");
+            TestHelper.ValidatePerson(Resources.ServerAddress + TestRegexController.RelativePath + "regex/1");
+        }
+
+        [Test]
+        public void GetJsonDatAsyncaWithRegexId()
+        {
+            TestHelper.ValidatePerson(Resources.ServerAddress + TestRegexController.RelativePath + "regexasync/1");
         }
 
         [Test]
         public void GetJsonDataWithRegexDate()
         {
             var person = PeopleRepository.Database.First();
-            ValidatePerson(Resources.ServerAddress + TestRegexController.RelativePath + "regexdate/" +
+            TestHelper.ValidatePerson(Resources.ServerAddress + TestRegexController.RelativePath + "regexdate/" +
                            person.DoB.ToString("yyyy-MM-dd"));
         }
 
@@ -77,7 +55,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
         public void GetJsonDataWithRegexWithTwoParams()
         {
             var person = PeopleRepository.Database.First();
-            ValidatePerson(Resources.ServerAddress + TestRegexController.RelativePath + "regextwo/" +
+            TestHelper.ValidatePerson(Resources.ServerAddress + TestRegexController.RelativePath + "regextwo/" +
                            person.MainSkill + "/" + person.Age);
         }
 

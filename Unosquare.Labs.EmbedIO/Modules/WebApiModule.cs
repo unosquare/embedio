@@ -42,50 +42,57 @@
                 var methodPair = DelegateMap[path][verb];
                 var controller = methodPair.Item1();
 
-                if (methodPair.Item2.ReturnType == typeof (Task<bool>))
+                context.NoCache();
+
+                if (server.RoutingStrategy == RoutingStrategyEnum.Regex)
                 {
-                    var method = Delegate.CreateDelegate(typeof (AsyncResponseHandler), controller, methodPair.Item2);
+                    server.Log.DebugFormat("Handler: {0}.{1}", methodPair.Item2.DeclaringType.FullName,
+                        methodPair.Item2.Name);
 
-                    server.Log.DebugFormat("Handler: {0}.{1}", method.Method.DeclaringType.FullName, method.Method.Name);
-                    context.NoCache();
-                    var returnValue = Task.Run(async () =>
+                    var args = new List<object>() {server, context};
+
+                    foreach (var arg in methodPair.Item2.GetParameters().Skip(2))
                     {
-                        var task = await (Task<bool>) method.DynamicInvoke(server, context);
-                        return task;
-                    });
+                        if (routeParams.ContainsKey(arg.Name) == false) continue;
 
-                    return returnValue.Result;
-                }
-                else
-                {
-                    // try to handle with a param[]
-                    if (server.RoutingStrategy == RoutingStrategyEnum.Regex)
+                        var m = arg.ParameterType.GetMethod(nameof(int.Parse), new[] {typeof (string)});
+
+                        args.Add(m != null ? m.Invoke(null, new[] {routeParams[arg.Name]}) : routeParams[arg.Name]);
+                    }
+
+                    if (methodPair.Item2.ReturnType == typeof (Task<bool>))
                     {
-                        server.Log.DebugFormat("Handler: {0}.{1}", methodPair.Item2.DeclaringType.FullName,
-                            methodPair.Item2.Name);
-
-                        context.NoCache();
-                        var args = new List<object>() {server, context};
-
-                        foreach (var arg in methodPair.Item2.GetParameters().Skip(2))
+                        var returnValue = Task.Run(async () =>
                         {
-                            if (routeParams.ContainsKey(arg.Name) == false) continue;
+                            var task = await (Task<bool>) methodPair.Item2.Invoke(controller, args.ToArray());
+                            return task;
+                        });
 
-                            var m = arg.ParameterType.GetMethod(nameof(int.Parse), new[] {typeof (string)});
-
-                            if (m != null)
-                            {
-                                args.Add(m.Invoke(null, new[] {routeParams[arg.Name]}));
-                            }
-                            else
-                            {
-                                args.Add(routeParams[arg.Name]);
-                            }
-                        }
-
+                        return returnValue.Result;
+                    }
+                    else
+                    {
                         var returnValue = (bool) methodPair.Item2.Invoke(controller, args.ToArray());
 
                         return returnValue;
+                    }
+                }
+                else
+                {
+                    if (methodPair.Item2.ReturnType == typeof (Task<bool>))
+                    {
+                        var method = Delegate.CreateDelegate(typeof (AsyncResponseHandler), controller, methodPair.Item2);
+
+                        server.Log.DebugFormat("Handler: {0}.{1}", method.Method.DeclaringType.FullName,
+                            method.Method.Name);
+
+                        var returnValue = Task.Run(async () =>
+                        {
+                            var task = await (Task<bool>) method.DynamicInvoke(server, context);
+                            return task;
+                        });
+
+                        return returnValue.Result;
                     }
                     else
                     {
@@ -93,7 +100,7 @@
 
                         server.Log.DebugFormat("Handler: {0}.{1}", method.Method.DeclaringType.FullName,
                             method.Method.Name);
-                        context.NoCache();
+
                         var returnValue = (bool) method.DynamicInvoke(server, context);
                         return returnValue;
                     }

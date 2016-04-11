@@ -9,6 +9,7 @@
     using System.Net;
     using System.Net.WebSockets;
     using System.Security.Cryptography;
+    using System.Threading.Tasks;
     using System.Text;
 
     /// <summary>
@@ -25,7 +26,7 @@
         /// <returns></returns>
         public static SessionInfo GetSession(this HttpListenerContext context, WebServer server)
         {
-            return server.SessionModule == null ? null : server.SessionModule.GetSession(context);
+            return server.SessionModule?.GetSession(context);
         }
 
         /// <summary>
@@ -37,7 +38,7 @@
         /// <returns></returns>
         public static SessionInfo GetSession(this WebSocketContext context, WebServer server)
         {
-            return server.SessionModule == null ? null : server.SessionModule.GetSession(context);
+            return server.SessionModule?.GetSession(context);
         }
 
         /// <summary>
@@ -49,7 +50,7 @@
         /// <returns></returns>
         public static SessionInfo GetSession(this WebServer server, HttpListenerContext context)
         {
-            return server.SessionModule == null ? null : server.SessionModule.GetSession(context);
+            return server.SessionModule?.GetSession(context);
         }
 
         /// <summary>
@@ -60,7 +61,7 @@
         /// <returns></returns>
         public static SessionInfo GetSession(this WebServer server, WebSocketContext context)
         {
-            return server.SessionModule == null ? null : server.SessionModule.GetSession(context);
+            return server.SessionModule?.GetSession(context);
         }
 
         /// <summary>
@@ -134,7 +135,7 @@
         }
 
         /// <summary>
-        /// Retrieves the Request Verb of this contetext.
+        /// Retrieves the Request Verb of this context.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
@@ -205,7 +206,7 @@
 
             return true;
         }
-
+        
         /// <summary>
         /// Parses the json as a given type from the request body.
         /// </summary>
@@ -239,7 +240,7 @@
         }
 
         /// <summary>
-        /// Retrieves the spcified request the header.
+        /// Retrieves the specified request the header.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="headerName">Name of the header.</param>

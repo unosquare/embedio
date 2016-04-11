@@ -33,11 +33,11 @@
 
             Assert.AreEqual(WebServer.Module<WebApiModule>().ControllersCount, 1, "WebApiModule has one controller");
         }
-
+        
         [Test]
         public void GetJsonData()
         {
-            List<Person> remoteList = null;
+            List<Person> remoteList;
 
             var request = (HttpWebRequest) WebRequest.Create(Resources.ServerAddress + TestController.GetPath);
 
@@ -55,50 +55,21 @@
                 Assert.AreEqual(remoteList.Count, PeopleRepository.Database.Count, "Remote list count equals local list");
             }
 
-            var singleRequest =
-                (HttpWebRequest)
-                    WebRequest.Create(Resources.ServerAddress + TestController.GetPath + remoteList.First().Key);
-
-            using (var response = (HttpWebResponse) singleRequest.GetResponse())
-            {
-                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
-                var jsonBody = new StreamReader(response.GetResponseStream()).ReadToEnd();
-
-                Assert.IsNotNullOrEmpty(jsonBody, "Json Body is not null or empty");
-
-                var item = JsonConvert.DeserializeObject<Person>(jsonBody);
-
-                Assert.IsNotNull(item, "Json Object is not null");
-                Assert.AreEqual(item.Name, remoteList.First().Name, "Remote objects equality");
-                Assert.AreEqual(item.Name, PeopleRepository.Database.First().Name, "Remote and local objects equality");
-            }
+            TestHelper.ValidatePerson(Resources.ServerAddress + TestController.GetPath + remoteList.First().Key);
         }
 
         [Test]
         public void GetJsonDataWithMiddleUrl()
         {
             var person = PeopleRepository.Database.First();
+            TestHelper.ValidatePerson(Resources.ServerAddress + TestController.GetMiddlePath.Replace("*", person.Key.ToString()));
+        }
 
-            var singleRequest =
-                (HttpWebRequest)
-                    WebRequest.Create(Resources.ServerAddress +
-                                      TestController.GetMiddlePath.Replace("*", person.Key.ToString()));
-
-            using (var response = (HttpWebResponse) singleRequest.GetResponse())
-            {
-                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
-                var jsonBody = new StreamReader(response.GetResponseStream()).ReadToEnd();
-
-                Assert.IsNotNullOrEmpty(jsonBody, "Json Body is not null or empty");
-
-                var item = JsonConvert.DeserializeObject<Person>(jsonBody);
-
-                Assert.IsNotNull(item, "Json Object is not null");
-                Assert.AreEqual(item.Name, person.Name, "Remote objects equality");
-                Assert.AreEqual(item.Name, PeopleRepository.Database.First().Name, "Remote and local objects equality");
-            }
+        [Test]
+        public void GetJsonAsyncData()
+        {
+            var person = PeopleRepository.Database.First();
+            TestHelper.ValidatePerson(Resources.ServerAddress + TestController.GetAsyncPath + person.Key);
         }
 
         [Test]

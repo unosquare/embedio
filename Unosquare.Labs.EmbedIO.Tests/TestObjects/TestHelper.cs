@@ -1,4 +1,9 @@
-﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
+﻿using System.Linq;
+using System.Net;
+using Newtonsoft.Json;
+using NUnit.Framework;
+
+namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
     using System;
     using System.IO;
@@ -63,6 +68,28 @@
                     rng.NextBytes(data);
                     stream.Write(data, 0, data.Length);
                 }
+            }
+        }
+
+        public static void ValidatePerson(string url, Person person = null)
+        {
+            person = person ?? PeopleRepository.Database.First();
+
+            var singleRequest = (HttpWebRequest)WebRequest.Create(url);
+
+            using (var response = (HttpWebResponse)singleRequest.GetResponse())
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                var jsonBody = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+                Assert.IsNotNullOrEmpty(jsonBody, "Json Body is not null or empty");
+
+                var item = JsonConvert.DeserializeObject<Person>(jsonBody);
+
+                Assert.IsNotNull(item, "Json Object is not null");
+                Assert.AreEqual(item.Name, person.Name, "Remote objects equality");
+                Assert.AreEqual(item.Name, PeopleRepository.Database.First().Name, "Remote and local objects equality");
             }
         }
     }

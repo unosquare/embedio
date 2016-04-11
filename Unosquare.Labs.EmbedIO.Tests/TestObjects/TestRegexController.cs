@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using Unosquare.Labs.EmbedIO.Modules;
 
 namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
@@ -25,6 +27,27 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
             catch (Exception ex)
             {
                 context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                return context.JsonResponse(ex);
+            }
+        }
+
+        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexasync/{id}")]
+        public async Task<bool> GetPersonAsync(WebServer server, HttpListenerContext context, int id)
+        {
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(1));
+
+                if (PeopleRepository.Database.Any(p => p.Key == id))
+                {
+                    return context.JsonResponse(PeopleRepository.Database.FirstOrDefault(p => p.Key == id));
+                }
+
+                throw new KeyNotFoundException("Key Not Found: " + id);
+            }
+            catch (Exception ex)
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 return context.JsonResponse(ex);
             }
         }
