@@ -142,7 +142,7 @@
         /// <param name="log">The log.</param>
         /// <param name="routingStrategy">The routing strategy</param>
         public WebServer(string urlPrefix, ILog log, RoutingStrategyEnum routingStrategy)
-            : this(new[] {urlPrefix}, log, routingStrategy)
+            : this(new[] { urlPrefix }, log, routingStrategy)
         {
             // placeholder
         }
@@ -205,7 +205,7 @@
         public T Module<T>()
             where T : class, IWebModule
         {
-            var module = this.Modules.FirstOrDefault(m => m.GetType() == typeof (T));
+            var module = this.Modules.FirstOrDefault(m => m.GetType() == typeof(T));
             return module as T;
         }
 
@@ -306,7 +306,7 @@
                 {
                     Log.Error("No module generated a response. Sending 404 - Not Found");
                     var responseBytes = System.Text.Encoding.UTF8.GetBytes(Constants.Response404Html);
-                    context.Response.StatusCode = (int) HttpStatusCode.NotFound;
+                    context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                     context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
                 }
             }
@@ -365,7 +365,7 @@
                 catch (Exception ex)
                 {
                     // Handle exceptions by returning a 500 (Internal Server Error) 
-                    if (context.Response.StatusCode != (int) HttpStatusCode.Unauthorized)
+                    if (context.Response.StatusCode != (int)HttpStatusCode.Unauthorized)
                     {
                         // Log the exception message.
                         var errorMessage = ex.ExceptionMessage("Failing module name: " + module.Name);
@@ -378,7 +378,7 @@
 
                         // Send the response over with the corresponding status code.
                         var responseBytes = System.Text.Encoding.UTF8.GetBytes(response);
-                        context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
                     }
 
@@ -389,7 +389,7 @@
 
             return false;
         }
-   
+
         /// <summary>
         /// Starts the listener and the registered modules
         /// </summary>
@@ -416,11 +416,11 @@
                         var clientSocketTask = Listener.GetContextAsync();
                         clientSocketTask.Wait(ct);
                         var clientSocket = clientSocketTask.Result;
-                        
+
                         var clientTask =
                             Task.Factory.StartNew((context) => HandleClientRequest(context as HttpListenerContext, app),
                                 clientSocket, ct);
-                    } 
+                    }
                     catch (OperationCanceledException)
                     {
                         throw;
@@ -488,8 +488,15 @@
             // free managed resources
             if (this.Listener != null)
             {
-                ((IDisposable) this.Listener).Dispose();
-                this.Listener = null;
+                try
+                {
+                    (this.Listener as IDisposable).Dispose();
+                }
+                finally
+                {
+                    this.Listener = null;
+                }
+
                 Log.Info("Listener Closed.");
             }
         }
