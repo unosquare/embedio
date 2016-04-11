@@ -2,6 +2,6 @@
     <h1>Remote Command-Line Interface</h1>
     <pre id="cliOutput" style="height:400px; overflow: auto;">{{me.commands}}</pre>
     <form name="cmdForm" novalidate ng-submit="cmdForm.$valid && me.submit()">
-        <input required type="text" class="form-control" ng-model="me.command" />
+        <input required type="text" class="form-control" ng-model="me.command" placeholder="Command" />
     </form>
  </div>
