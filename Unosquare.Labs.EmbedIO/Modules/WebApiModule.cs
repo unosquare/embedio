@@ -1,8 +1,7 @@
-﻿using System.Net;
-using System.Text.RegularExpressions;
-
-namespace Unosquare.Labs.EmbedIO.Modules
+﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
+    using System.Net;
+    using System.Text.RegularExpressions;
     using EmbedIO;
     using System;
     using System.Collections.Generic;
@@ -34,9 +33,9 @@ namespace Unosquare.Labs.EmbedIO.Modules
             {
                 var verb = context.RequestVerb();
                 var routeParams = new Dictionary<string, object>();
-                 var path = server.RoutingStrategy == RoutingStrategyEnum.Wildcard ? 
-                    GetPathByWildcard(verb, context) :
-                    GetPathByRegex(verb, context, routeParams);
+                var path = server.RoutingStrategy == RoutingStrategyEnum.Wildcard
+                    ? GetPathByWildcard(verb, context)
+                    : GetPathByRegex(verb, context, routeParams);
 
                 if (path == null) return false;
 
@@ -72,17 +71,11 @@ namespace Unosquare.Labs.EmbedIO.Modules
                         {
                             if (routeParams.ContainsKey(arg.Name) == false) continue;
 
-                            if (arg.ParameterType == typeof (Int32))
+                            var m = arg.ParameterType.GetMethod(nameof(int.Parse), new[] {typeof (string)});
+
+                            if (m != null)
                             {
-                                args.Add(Convert.ToInt32(routeParams[arg.Name]));
-                            }
-                            else if (arg.ParameterType == typeof(Decimal))
-                            {
-                                args.Add(Convert.ToDecimal(routeParams[arg.Name]));
-                            }
-                            else if(arg.ParameterType == typeof(DateTime))
-                            {
-                                args.Add(Convert.ToDateTime(routeParams[arg.Name]));
+                                args.Add(m.Invoke(null, new[] {routeParams[arg.Name]}));
                             }
                             else
                             {
@@ -108,20 +101,21 @@ namespace Unosquare.Labs.EmbedIO.Modules
             });
         }
 
-        private static readonly Regex RouteParamRegex = new Regex(@"\{.*\}");
+        private static readonly Regex RouteParamRegex = new Regex(@"\{[^\/]*\}");
         private const string RegexRouteReplace = "(.*)";
 
-        private string GetPathByRegex(HttpVerbs verb, HttpListenerContext context, Dictionary<string, object> routeParams)
+        private string GetPathByRegex(HttpVerbs verb, HttpListenerContext context,
+            Dictionary<string, object> routeParams)
         {
             var path = context.RequestPath();
-            
+
             foreach (var route in DelegateMap.Keys)
             {
                 var regex = new Regex(RouteParamRegex.Replace(route, RegexRouteReplace));
                 var match = regex.Match(path);
 
                 if (!match.Success || !DelegateMap[route].Keys.Contains(verb)) continue;
-                
+
                 var pathParts = route.Split('/');
                 var i = 1; // match group index
 
@@ -132,7 +126,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
 
                 return route;
             }
-            
+
             return null;
         }
 
@@ -179,18 +173,12 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// <value>
         /// The name.
         /// </value>
-        public override string Name
-        {
-            get { return "Web API Module"; }
-        }
+        public override string Name => "Web API Module";
 
         /// <summary>
         /// Gets the controllers count
         /// </summary>
-        public int ControllersCount
-        {
-            get { return ControllerTypes.Count; }
-        }
+        public int ControllersCount => ControllerTypes.Count;
 
         /// <summary>
         /// Registers the controller.
@@ -200,10 +188,10 @@ namespace Unosquare.Labs.EmbedIO.Modules
         public void RegisterController<T>()
             where T : WebApiController, new()
         {
-            if (ControllerTypes.Contains(typeof(T)))
+            if (ControllerTypes.Contains(typeof (T)))
                 throw new ArgumentException("Controller types must be unique within the module");
 
-            RegisterController(typeof(T));
+            RegisterController(typeof (T));
         }
 
         /// <summary>
@@ -215,10 +203,10 @@ namespace Unosquare.Labs.EmbedIO.Modules
         public void RegisterController<T>(Func<T> controllerFactory)
             where T : WebApiController
         {
-            if (ControllerTypes.Contains(typeof(T)))
+            if (ControllerTypes.Contains(typeof (T)))
                 throw new ArgumentException("Controller types must be unique within the module");
 
-            RegisterController(typeof(T), controllerFactory);
+            RegisterController(typeof (T), controllerFactory);
         }
 
         /// <summary>
@@ -231,7 +219,6 @@ namespace Unosquare.Labs.EmbedIO.Modules
             this.RegisterController(controllerType, controllerFactory);
         }
 
-
         /// <summary>
         /// Registers the controller.
         /// </summary>
@@ -241,28 +228,29 @@ namespace Unosquare.Labs.EmbedIO.Modules
         {
             var protoDelegate = new ResponseHandler((server, context) => true);
             var protoAsyncDelegate = new AsyncResponseHandler((server, context) => Task.FromResult(true));
-            
+
             var methods = controllerType
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .Where(
                     m => (m.ReturnType == protoDelegate.Method.ReturnType
-                         || m.ReturnType == protoAsyncDelegate.Method.ReturnType)
+                          || m.ReturnType == protoAsyncDelegate.Method.ReturnType)
                          && m.GetParameters()
-                            .Select(pi => pi.ParameterType)
-                            .Take(2)
-                            .SequenceEqual(protoDelegate.Method.GetParameters()
-                            .Select(pi => pi.ParameterType)));
+                             .Select(pi => pi.ParameterType)
+                             .Take(2)
+                             .SequenceEqual(protoDelegate.Method.GetParameters()
+                                 .Select(pi => pi.ParameterType)));
 
             foreach (var method in methods)
             {
                 var attribute =
-                    method.GetCustomAttributes(typeof(WebApiHandlerAttribute), true).FirstOrDefault() as
+                    method.GetCustomAttributes(typeof (WebApiHandlerAttribute), true).FirstOrDefault() as
                         WebApiHandlerAttribute;
                 if (attribute == null) continue;
 
                 foreach (var path in attribute.Paths)
                 {
                     var delegatePath = new Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>();
+
                     if (DelegateMap.ContainsKey(path))
                         delegatePath = DelegateMap[path]; // update
                     else
@@ -314,7 +302,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
                 throw new ArgumentException("The argument 'path' must be specified.");
 
             this.Verb = verb;
-            this.Paths = new string[] { path };
+            this.Paths = new string[] {path};
         }
 
         /// <summary>
@@ -348,5 +336,4 @@ namespace Unosquare.Labs.EmbedIO.Modules
             // placeholder
         }
     }
-
 }

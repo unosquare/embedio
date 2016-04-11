@@ -27,9 +27,6 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
             this.Send(context, "ADIOS");
         }
 
-        public override string ServerName
-        {
-            get { return "TestWebSocket"; }
-        }
+        public override string ServerName => "TestWebSocket";
     }
 }

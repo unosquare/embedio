@@ -1,6 +1,4 @@
-﻿using Unosquare.Labs.EmbedIO.Tests.TestObjects;
-
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using NUnit.Framework;
     using System;
@@ -8,6 +6,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
     using System.Threading;
     using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Labs.EmbedIO.Tests.Properties;
+    using Unosquare.Labs.EmbedIO.Tests.TestObjects;
 
     [TestFixture]
     public class CorsModuleTest

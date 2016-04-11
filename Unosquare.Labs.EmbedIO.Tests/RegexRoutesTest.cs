@@ -36,17 +36,14 @@ namespace Unosquare.Labs.EmbedIO.Tests
 
             Assert.AreEqual(WebServer.Module<WebApiModule>().ControllersCount, 1, "WebApiModule has one controller");
         }
-        
-        [Test]
-        public void GetJsonDataWithRegexId()
+
+        private static void ValidatePerson(string url)
         {
             var person = PeopleRepository.Database.First();
 
-            var singleRequest =
-                (HttpWebRequest)
-                    WebRequest.Create(Resources.ServerAddress + TestRegexController.RelativePath + "regex/1");
+            var singleRequest = (HttpWebRequest) WebRequest.Create(url);
 
-            using (var response = (HttpWebResponse)singleRequest.GetResponse())
+            using (var response = (HttpWebResponse) singleRequest.GetResponse())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
@@ -60,6 +57,28 @@ namespace Unosquare.Labs.EmbedIO.Tests
                 Assert.AreEqual(item.Name, person.Name, "Remote objects equality");
                 Assert.AreEqual(item.Name, PeopleRepository.Database.First().Name, "Remote and local objects equality");
             }
+        }
+
+        [Test]
+        public void GetJsonDataWithRegexId()
+        {
+            ValidatePerson(Resources.ServerAddress + TestRegexController.RelativePath + "regex/1");
+        }
+
+        [Test]
+        public void GetJsonDataWithRegexDate()
+        {
+            var person = PeopleRepository.Database.First();
+            ValidatePerson(Resources.ServerAddress + TestRegexController.RelativePath + "regexdate/" +
+                           person.DoB.ToString("yyyy-MM-dd"));
+        }
+
+        [Test]
+        public void GetJsonDataWithRegexWithTwoParams()
+        {
+            var person = PeopleRepository.Database.First();
+            ValidatePerson(Resources.ServerAddress + TestRegexController.RelativePath + "regextwo/" +
+                           person.MainSkill + "/" + person.Age);
         }
 
         [TearDown]

@@ -2,9 +2,6 @@
 {
     public class TestWebModule : WebModuleBase
     {
-        public override string Name
-        {
-            get { return "TestWebModule"; }
-        }
+        public override string Name => "TestWebModule";
     }
 }
