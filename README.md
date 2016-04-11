@@ -101,6 +101,8 @@ namespace Company.Project
 Fluent Example:
 ---------------
 
+Many extensions methods are available to allow to create a web server instance with fluent method syntax.
+
 ```csharp
 namespace Company.Project
 {
@@ -160,13 +162,62 @@ namespace Company.Project
 REST API Example:
 -----------------
 
+The WebApi module support two routing strategies: Wildcard and Regex. By default the WebApi module will use the Wildcard strategy and
+look for routes in your registered controllers by a simple contains filtering to match a route. **For example:** the route `/api/people/*` will match
+with any request starting with the two first URL segments and a route `/api/people/*/details` will match requests starting with the two first segments and ending
+with a "details" segment. Most of the REST services can be designed with this strategy.
+
+**Regex strategy** will try to match and resolve the values from a route template, pretty similar to Microsoft Web API 2. A method with the next routing
+`/api/people/{id}` is going to match any request with the three segments and the last one is going to try to parse to match the data type in the method signature.
+You can put multiples values to match, for example `/api/people/{mainSkill}/{age}`, and receive the values from the URL to the Web Api method.
+
 *During server setup:*
+
 ```csharp
+// You can change to RoutingStrategyEnum.Wildcard
+var server =  new WebServer("http://localhost:9696/", new NullLog(), RoutingStrategyEnum.Regex);
+
 server.RegisterModule(new WebApiModule());
 server.Module<WebApiModule>().RegisterController<PeopleController>();
 ```
 
-*And our controller class looks like:*
+*And our controller class (using Regex Strategy) looks like:*
+
+```csharp
+public class PeopleController : WebApiController
+{
+    [WebApiHandler(HttpVerbs.Get, "/api/people/{id}")]
+    public bool GetPeople(WebServer server, HttpListenerContext context, int id)
+    {
+        try
+        {
+            if (People.Any(p => p.Key == id))
+            {
+                return context.JsonResponse(People.FirstOrDefault(p => p.Key == id));
+            }
+        }
+        catch (Exception ex)
+        {
+            return HandleError(context, ex, (int)HttpStatusCode.InternalServerError);
+        }
+    }
+    
+    protected bool HandleError(HttpListenerContext context, Exception ex, int statusCode = 500)
+    {
+        var errorResponse = new
+        {
+            Title = "Unexpected Error",
+            ErrorCode = ex.GetType().Name,
+            Description = ex.ExceptionMessage(),
+        };
+
+        context.Response.StatusCode = statusCode;
+        return context.JsonResponse(errorResponse);
+    }
+}
+```
+
+*Or if you want to use the Wildcard strategy:*
 
 ```csharp
 public class PeopleController : WebApiController
@@ -213,6 +264,7 @@ Web Sockets Example:
 -----------------
 
 *During server setup:*
+
 ```csharp
 server.RegisterModule(new WebSocketsModule());
 server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsChatServer>("/chat");
