@@ -8,6 +8,7 @@
     /// </summary>
     public static class Constants
     {
+
         /// <summary>
         /// The comma split character for String.Split method calls.
         /// </summary>
