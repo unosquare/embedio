@@ -389,7 +389,7 @@
 
             return false;
         }
-
+   
         /// <summary>
         /// Starts the listener and the registered modules
         /// </summary>
@@ -407,18 +407,23 @@
             this.Listener.Start();
 
             this.Log.Info("Started HTTP Listener");
-            this._listenerTask = Task.Factory.StartNew(async () =>
+            this._listenerTask = Task.Factory.StartNew(() =>
             {
                 while (this.Listener != null && this.Listener.IsListening)
                 {
-                    ct.ThrowIfCancellationRequested();
-
                     try
                     {
-                        var clientSocket = await Listener.GetContextAsync();
+                        var clientSocketTask = Listener.GetContextAsync();
+                        clientSocketTask.Wait(ct);
+                        var clientSocket = clientSocketTask.Result;
+                        
                         var clientTask =
                             Task.Factory.StartNew((context) => HandleClientRequest(context as HttpListenerContext, app),
                                 clientSocket, ct);
+                    } 
+                    catch (OperationCanceledException)
+                    {
+                        throw;
                     }
                     catch (Exception ex)
                     {
@@ -483,15 +488,9 @@
             // free managed resources
             if (this.Listener != null)
             {
-                this.Listener.Stop();
-                this.Listener.Close();
+                ((IDisposable) this.Listener).Dispose();
                 this.Listener = null;
                 Log.Info("Listener Closed.");
-            }
-
-            if (_listenerTask != null)
-            {
-                _listenerTask.Dispose();
             }
         }
 
