@@ -33,9 +33,10 @@ namespace Unosquare.Labs.EmbedIO.Modules
             this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
             {
                 var verb = context.RequestVerb();
+                var routeParams = new Dictionary<string, object>();
                  var path = server.RoutingStrategy == RoutingStrategyEnum.Wildcard ? 
                     GetPathByWildcard(verb, context) :
-                    GetPathByRegex(verb, context);
+                    GetPathByRegex(verb, context, routeParams);
 
                 if (path == null) return false;
 
@@ -59,12 +60,50 @@ namespace Unosquare.Labs.EmbedIO.Modules
                 else
                 {
                     // try to handle with a param[]
-                    var method = Delegate.CreateDelegate(typeof (ResponseHandler), controller, methodPair.Item2);
+                    if (server.RoutingStrategy == RoutingStrategyEnum.Regex)
+                    {
+                        server.Log.DebugFormat("Handler: {0}.{1}", methodPair.Item2.DeclaringType.FullName,
+                            methodPair.Item2.Name);
 
-                    server.Log.DebugFormat("Handler: {0}.{1}", method.Method.DeclaringType.FullName, method.Method.Name);
-                    context.NoCache();
-                    var returnValue = (bool) method.DynamicInvoke(server, context);
-                    return returnValue;
+                        context.NoCache();
+                        var args = new List<object>() {server, context};
+
+                        foreach (var arg in methodPair.Item2.GetParameters().Skip(2))
+                        {
+                            if (routeParams.ContainsKey(arg.Name) == false) continue;
+
+                            if (arg.ParameterType == typeof (Int32))
+                            {
+                                args.Add(Convert.ToInt32(routeParams[arg.Name]));
+                            }
+                            else if (arg.ParameterType == typeof(Decimal))
+                            {
+                                args.Add(Convert.ToDecimal(routeParams[arg.Name]));
+                            }
+                            else if(arg.ParameterType == typeof(DateTime))
+                            {
+                                args.Add(Convert.ToDateTime(routeParams[arg.Name]));
+                            }
+                            else
+                            {
+                                args.Add(routeParams[arg.Name]);
+                            }
+                        }
+
+                        var returnValue = (bool) methodPair.Item2.Invoke(controller, args.ToArray());
+
+                        return returnValue;
+                    }
+                    else
+                    {
+                        var method = Delegate.CreateDelegate(typeof (ResponseHandler), controller, methodPair.Item2);
+
+                        server.Log.DebugFormat("Handler: {0}.{1}", method.Method.DeclaringType.FullName,
+                            method.Method.Name);
+                        context.NoCache();
+                        var returnValue = (bool) method.DynamicInvoke(server, context);
+                        return returnValue;
+                    }
                 }
             });
         }
@@ -72,7 +111,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
         private static readonly Regex RouteParamRegex = new Regex(@"\{.*\}");
         private const string RegexRouteReplace = "(.*)";
 
-        private string GetPathByRegex(HttpVerbs verb, HttpListenerContext context)
+        private string GetPathByRegex(HttpVerbs verb, HttpListenerContext context, Dictionary<string, object> routeParams)
         {
             var path = context.RequestPath();
             
@@ -81,12 +120,17 @@ namespace Unosquare.Labs.EmbedIO.Modules
                 var regex = new Regex(RouteParamRegex.Replace(route, RegexRouteReplace));
                 var match = regex.Match(path);
 
-                if (!match.Success) continue;
+                if (!match.Success || !DelegateMap[route].Keys.Contains(verb)) continue;
+                
+                var pathParts = route.Split('/');
+                var i = 1; // match group index
 
-                if (DelegateMap[route].Keys.Contains(verb) || DelegateMap[route].Keys.Contains(HttpVerbs.Any))
+                foreach (var pathPart in pathParts.Where(x => x.StartsWith("{")))
                 {
-                    return route;
+                    routeParams.Add(pathPart.Replace("{", "").Replace("}", ""), match.Groups[i++].Value);
                 }
+
+                return route;
             }
             
             return null;

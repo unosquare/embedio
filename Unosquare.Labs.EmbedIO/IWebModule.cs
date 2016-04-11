@@ -11,6 +11,8 @@
     /// <returns></returns>
     public delegate bool ResponseHandler(WebServer server, HttpListenerContext context);
 
+    public delegate bool ResponseHandlerWithParams(params object[] args);
+
     /// <summary>
     /// An async delegate that handles certain action in a module given a path and a verb
     /// </summary>
