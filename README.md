@@ -6,8 +6,9 @@
 
 ![EmbedIO](http://unosquare.github.io/embedio/images/embedio.png)
 
-A tiny, cross-platform, module based, MIT-licensed web server.
+A tiny, cross-platform, module based, MIT-licensed web server for .NET
 
+* Written entirely in C#
 * Network operations use the async/await pattern: Responses are handled asynchronously
 * Cross-platform: tested in Mono 3.10.x on Windows and on a custom Yocto image for the Raspberry Pi
 * Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras" target="_blank">EmbedIO Extras</a> for additional modules.
@@ -21,6 +22,13 @@ A tiny, cross-platform, module based, MIT-licensed web server.
 * [OWIN](http://owin.org/) Middleware support via [Owin Middleware Module](https://github.com/unosquare/embedio-extras/tree/master/Unosquare.Labs.EmbedIO.OwinMiddleware).
 
 *For detailed usage and REST API implementation, download the code and take a look at the Samples project*
+
+**Some usage scenarios**:
+
+* Write a cross-platform GUI entirely in CSS/HTML/JS
+* Write a game using Babylon.js and make EmbedIO your serve your code and assets
+* Create GUIs for Windows services or Linux daemons
+* Write client applications with real-time communication between them
 
 NuGet Installation:
 -------------------
