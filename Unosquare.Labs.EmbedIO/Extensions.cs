@@ -206,9 +206,10 @@
 
             return true;
         }
-        
+
         /// <summary>
         /// Parses the json as a given type from the request body.
+        /// Please note the underlying input stream is not rewindable.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="context">The context.</param>
@@ -216,12 +217,26 @@
         public static T ParseJson<T>(this HttpListenerContext context)
             where T : class
         {
-            var body = context.RequestBody();
-            return body == null ? null : JsonConvert.DeserializeObject<T>(body);
+            var requestBody = context.RequestBody();
+            return requestBody == null ? null : JsonConvert.DeserializeObject<T>(requestBody);
         }
 
         /// <summary>
-        /// Retrieves the request body
+        /// Parses the json as a given type from the request body string.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="requestBody">The request body.</param>
+        /// <returns></returns>
+        public static T ParseJson<T>(this string requestBody)
+            where T : class
+        {
+            return requestBody == null ? null : JsonConvert.DeserializeObject<T>(requestBody);
+        }
+
+        /// <summary>
+        /// Retrieves the request body as a string.
+        /// Note that once this method returns, the underlying input stream cannot be read again as 
+        /// it is not rewindable for obvious reasons. This functionality is by design.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
@@ -263,6 +278,7 @@
 
         /// <summary>
         /// Returns dictionary from Request POST data
+        /// Please note the underlying input stream is not rewindable.
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
@@ -276,14 +292,33 @@
                 using (var reader = new StreamReader(body, request.ContentEncoding))
                 {
                     var stringData = reader.ReadToEnd();
-
-                    if (string.IsNullOrWhiteSpace(stringData)) return null;
-
-                    return stringData.Split('&')
-                        .ToDictionary(c => c.Split('=')[0],
-                            c => WebUtility.UrlDecode(c.Split('=')[1]));
+                    return ParseFormData(stringData);
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns dictionary from Request POST data
+        /// </summary>
+        /// <param name="requestBody">The request body.</param>
+        /// <returns></returns>
+        public static Dictionary<string, string> RequestFormData(this string requestBody)
+        {
+            return ParseFormData(requestBody);
+        }
+
+        /// <summary>
+        /// Parses the form data given the request body string.
+        /// </summary>
+        /// <param name="requestBody">The request body.</param>
+        /// <returns></returns>
+        private static Dictionary<string, string> ParseFormData(string requestBody)
+        {
+            if (string.IsNullOrWhiteSpace(requestBody)) return null;
+
+            return requestBody.Split('&')
+                .ToDictionary(c => c.Split('=')[0],
+                    c => WebUtility.UrlDecode(c.Split('=')[1]));
         }
 
         /// <summary>
