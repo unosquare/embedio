@@ -9,7 +9,7 @@ using Unosquare.Labs.EmbedIO.Tests.TestObjects;
 namespace Unosquare.Labs.EmbedIO.Tests
 {
     [TestFixture]
-    public class RegexRoutesTest
+    public class RegExRoutesTest
     {
         protected WebServer WebServer;
         protected TestConsoleLog Logger = new TestConsoleLog();
@@ -18,7 +18,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
         public void Init()
         {
             WebServer =
-                new WebServer(Resources.ServerAddress, Logger, RoutingStrategyEnum.Regex)
+                new WebServer(Resources.ServerAddress, Logger, RoutingStrategy.RegEx)
                     .WithWebApiController<TestRegexController>();
             WebServer.RunAsync();
         }

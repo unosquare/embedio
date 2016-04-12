@@ -16,12 +16,18 @@
     /// </summary>
     public class WebApiModule : WebModuleBase
     {
+        #region Inmutable Declarations
+
         private readonly List<Type> ControllerTypes = new List<Type>();
 
         private readonly Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>> DelegateMap
-            =
-            new Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>>(
-                StringComparer.InvariantCultureIgnoreCase);
+            = new Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>>(StringComparer.InvariantCultureIgnoreCase);
+
+        private static readonly Regex RouteParamRegEx = new Regex(@"\{[^\/]*\}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private const string RegExRouteReplace = "(.*)";
+
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebApiModule"/> class.
@@ -32,39 +38,49 @@
             this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
             {
                 var verb = context.RequestVerb();
-                var routeParams = new Dictionary<string, object>();
-                var path = server.RoutingStrategy == RoutingStrategyEnum.Wildcard
-                    ? GetPathByWildcard(verb, context)
-                    : GetPathByRegex(verb, context, routeParams);
+                var regExRouteParams = new Dictionary<string, object>();
+                var path = server.RoutingStrategy == RoutingStrategy.Wildcard
+                    ? NormalizeWildcardPath(verb, context)
+                    : NormalizeRegExPath(verb, context, regExRouteParams);
 
+                // return a non-math if no handler hold the route
                 if (path == null) return false;
 
                 var methodPair = DelegateMap[path][verb];
                 var controller = methodPair.Item1();
 
+                // ensure module does not retun cached responses
                 context.NoCache();
 
-                if (server.RoutingStrategy == RoutingStrategyEnum.Regex)
+                // Log the handler to be used
+                server.Log.DebugFormat("Handler: {0}.{1}", methodPair.Item2.DeclaringType.FullName, methodPair.Item2.Name);
+
+                // Select the routing strategy
+                if (server.RoutingStrategy == RoutingStrategy.RegEx)
                 {
-                    server.Log.DebugFormat("Handler: {0}.{1}", methodPair.Item2.DeclaringType.FullName,
-                        methodPair.Item2.Name);
+                    // Initially, only the server and context objects will be available
+                    var args = new List<object>() { server, context };
 
-                    var args = new List<object>() {server, context};
-
+                    // Parse the arguments to their intended type skipping the first two.
                     foreach (var arg in methodPair.Item2.GetParameters().Skip(2))
                     {
-                        if (routeParams.ContainsKey(arg.Name) == false) continue;
-
-                        var m = arg.ParameterType.GetMethod(nameof(int.Parse), new[] {typeof (string)});
-
-                        args.Add(m != null ? m.Invoke(null, new[] {routeParams[arg.Name]}) : routeParams[arg.Name]);
+                        if (regExRouteParams.ContainsKey(arg.Name) == false) continue;
+                        // get a reference to the parse method
+                        var parseMethod = arg.ParameterType.GetMethod(nameof(int.Parse), new[] { typeof(string) });
+                        
+                        // add the parsed argument to the argument list if available
+                        args.Add(parseMethod != null ? 
+                            parseMethod.Invoke(null, new[] { regExRouteParams[arg.Name] }) : 
+                            regExRouteParams[arg.Name]);
                     }
 
-                    if (methodPair.Item2.ReturnType == typeof (Task<bool>))
+                    // Now, check if the call is handled asynchronously.
+                    if (methodPair.Item2.ReturnType == typeof(Task<bool>))
                     {
+                        // Run the method asynchronously
                         var returnValue = Task.Run(async () =>
                         {
-                            var task = await (Task<bool>) methodPair.Item2.Invoke(controller, args.ToArray());
+                            var task = await (Task<bool>)methodPair.Item2.Invoke(controller, args.ToArray());
                             return task;
                         });
 
@@ -72,53 +88,60 @@
                     }
                     else
                     {
-                        var returnValue = (bool) methodPair.Item2.Invoke(controller, args.ToArray());
+                        // If the handler is not asynchronous, simply call the method.
+                        var returnValue = (bool)methodPair.Item2.Invoke(controller, args.ToArray());
+                        return returnValue;
+                    }
+                }
+                else if (server.RoutingStrategy == RoutingStrategy.Wildcard)
+                {
+                    if (methodPair.Item2.ReturnType == typeof(Task<bool>))
+                    {
+                        // Asynchronous handling of wildcard matching strategy
+                        var method = Delegate.CreateDelegate(typeof(AsyncResponseHandler), controller, methodPair.Item2);
+                        var returnValue = Task.Run(async () =>
+                        {
+                            var task = await (Task<bool>)method.DynamicInvoke(server, context);
+                            return task;
+                        });
 
+                        return returnValue.Result;
+                    }
+                    else
+                    {
+                        // Regular handling of wildcard matching strategy
+                        var method = Delegate.CreateDelegate(typeof(ResponseHandler), controller, methodPair.Item2);
+                        var returnValue = (bool)method.DynamicInvoke(server, context);
                         return returnValue;
                     }
                 }
                 else
                 {
-                    if (methodPair.Item2.ReturnType == typeof (Task<bool>))
-                    {
-                        var method = Delegate.CreateDelegate(typeof (AsyncResponseHandler), controller, methodPair.Item2);
-
-                        server.Log.DebugFormat("Handler: {0}.{1}", method.Method.DeclaringType.FullName,
-                            method.Method.Name);
-
-                        var returnValue = Task.Run(async () =>
-                        {
-                            var task = await (Task<bool>) method.DynamicInvoke(server, context);
-                            return task;
-                        });
-
-                        return returnValue.Result;
-                    }
-                    else
-                    {
-                        var method = Delegate.CreateDelegate(typeof (ResponseHandler), controller, methodPair.Item2);
-
-                        server.Log.DebugFormat("Handler: {0}.{1}", method.Method.DeclaringType.FullName,
-                            method.Method.Name);
-
-                        var returnValue = (bool) method.DynamicInvoke(server, context);
-                        return returnValue;
-                    }
+                    // Log the handler to be used
+                    server.Log.WarnFormat($"Routing strategy '{server.RoutingStrategy}' is not supported by this module.");
+                    return false;
                 }
             });
         }
 
-        private static readonly Regex RouteParamRegex = new Regex(@"\{[^\/]*\}");
-        private const string RegexRouteReplace = "(.*)";
 
-        private string GetPathByRegex(HttpVerbs verb, HttpListenerContext context,
+
+        /// <summary>
+        /// Normalizes a path meant for RegEx matching, extracts the route parameters, and returns the registered
+        /// path in the internal delegate map.
+        /// </summary>
+        /// <param name="verb">The verb.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="routeParams">The route parameters.</param>
+        /// <returns></returns>
+        private string NormalizeRegExPath(HttpVerbs verb, HttpListenerContext context,
             Dictionary<string, object> routeParams)
         {
             var path = context.RequestPath();
 
             foreach (var route in DelegateMap.Keys)
             {
-                var regex = new Regex(RouteParamRegex.Replace(route, RegexRouteReplace));
+                var regex = new Regex(RouteParamRegEx.Replace(route, RegExRouteReplace));
                 var match = regex.Match(path);
 
                 if (!match.Success || !DelegateMap[route].Keys.Contains(verb)) continue;
@@ -137,7 +160,14 @@
             return null;
         }
 
-        private string GetPathByWildcard(HttpVerbs verb, HttpListenerContext context)
+        /// <summary>
+        /// Normalizes a URL request path meant for Wildcard matching and returns the registered
+        /// path in the internal delegate map.
+        /// </summary>
+        /// <param name="verb">The verb.</param>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        private string NormalizeWildcardPath(HttpVerbs verb, HttpListenerContext context)
         {
             var path = context.RequestPath();
 
@@ -148,7 +178,7 @@
 
             var wildcardMatch = wildcardPaths.FirstOrDefault(p => // wildcard at the end
                 path.StartsWith(p.Substring(0, p.Length - ModuleMap.AnyPath.Length))
-                    // wildcard in the middle so check both start/end
+                // wildcard in the middle so check both start/end
                 || (path.StartsWith(p.Substring(0, p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal)))
                     && path.EndsWith(p.Substring(p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal) + 1)))
                 );
@@ -183,7 +213,7 @@
         public override string Name => "Web API Module";
 
         /// <summary>
-        /// Gets the controllers count
+        /// Gets the number of controller objects registered in this API
         /// </summary>
         public int ControllersCount => ControllerTypes.Count;
 
@@ -195,10 +225,10 @@
         public void RegisterController<T>()
             where T : WebApiController, new()
         {
-            if (ControllerTypes.Contains(typeof (T)))
+            if (ControllerTypes.Contains(typeof(T)))
                 throw new ArgumentException("Controller types must be unique within the module");
 
-            RegisterController(typeof (T));
+            RegisterController(typeof(T));
         }
 
         /// <summary>
@@ -210,10 +240,10 @@
         public void RegisterController<T>(Func<T> controllerFactory)
             where T : WebApiController
         {
-            if (ControllerTypes.Contains(typeof (T)))
+            if (ControllerTypes.Contains(typeof(T)))
                 throw new ArgumentException("Controller types must be unique within the module");
 
-            RegisterController(typeof (T), controllerFactory);
+            RegisterController(typeof(T), controllerFactory);
         }
 
         /// <summary>
@@ -250,7 +280,7 @@
             foreach (var method in methods)
             {
                 var attribute =
-                    method.GetCustomAttributes(typeof (WebApiHandlerAttribute), true).FirstOrDefault() as
+                    method.GetCustomAttributes(typeof(WebApiHandlerAttribute), true).FirstOrDefault() as
                         WebApiHandlerAttribute;
                 if (attribute == null) continue;
 
@@ -309,7 +339,7 @@
                 throw new ArgumentException("The argument 'path' must be specified.");
 
             this.Verb = verb;
-            this.Paths = new string[] {path};
+            this.Paths = new string[] { path };
         }
 
         /// <summary>

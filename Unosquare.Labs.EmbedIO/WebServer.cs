@@ -65,16 +65,17 @@
         public ILog Log { get; protected set; }
 
         /// <summary>
-        /// Gets the RoutingStrategy used in this instance
+        /// Gets the URL RoutingStrategy used in this instance.
+        /// By default it is set to Wildcard, but RegEx is the the recommended value.
         /// </summary>
-        public RoutingStrategyEnum RoutingStrategy { get; protected set; }
+        public RoutingStrategy RoutingStrategy { get; protected set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
         /// This constructor does not provide any Logging capabilities.
         /// </summary>
         public WebServer()
-            : this("http://*/", new NullLog(), RoutingStrategyEnum.Wildcard)
+            : this("http://*/", new NullLog(), RoutingStrategy.Wildcard)
         {
             // placeholder
         }
@@ -96,7 +97,7 @@
         /// <param name="port">The port.</param>
         /// <param name="log"></param>
         public WebServer(int port, ILog log)
-            : this("http://*:" + port.ToString() + "/", log, RoutingStrategyEnum.Wildcard)
+            : this("http://*:" + port.ToString() + "/", log, RoutingStrategy.Wildcard)
         {
             // placeholder
         }
@@ -107,7 +108,7 @@
         /// <param name="port">The port.</param>
         /// <param name="log"></param>
         /// <param name="routingStrategy">The routing strategy</param>
-        public WebServer(int port, ILog log, RoutingStrategyEnum routingStrategy)
+        public WebServer(int port, ILog log, RoutingStrategy routingStrategy)
             : this("http://*:" + port.ToString() + "/", log, routingStrategy)
         {
             // placeholder
@@ -119,7 +120,7 @@
         /// </summary>
         /// <param name="urlPrefix">The URL prefix.</param>
         public WebServer(string urlPrefix)
-            : this(urlPrefix, new NullLog(), RoutingStrategyEnum.Wildcard)
+            : this(urlPrefix, new NullLog(), RoutingStrategy.Wildcard)
         {
             // placeholder
         }
@@ -130,7 +131,7 @@
         /// <param name="urlPrefix">The URL prefix.</param>
         /// <param name="log">The log.</param>
         public WebServer(string urlPrefix, ILog log)
-            : this(new[] { urlPrefix }, log, RoutingStrategyEnum.Wildcard)
+            : this(new[] { urlPrefix }, log, RoutingStrategy.Wildcard)
         {
             // placeholder
         }
@@ -141,7 +142,7 @@
         /// <param name="urlPrefix">The URL prefix.</param>
         /// <param name="log">The log.</param>
         /// <param name="routingStrategy">The routing strategy</param>
-        public WebServer(string urlPrefix, ILog log, RoutingStrategyEnum routingStrategy)
+        public WebServer(string urlPrefix, ILog log, RoutingStrategy routingStrategy)
             : this(new[] { urlPrefix }, log, routingStrategy)
         {
             // placeholder
@@ -153,7 +154,7 @@
         /// </summary>
         /// <param name="urlPrefixes">The URL prefixes.</param>
         public WebServer(string[] urlPrefixes)
-            : this(urlPrefixes, new NullLog(), RoutingStrategyEnum.Wildcard)
+            : this(urlPrefixes, new NullLog(), RoutingStrategy.Wildcard)
         {
             // placeholder
         }
@@ -168,7 +169,7 @@
         /// <param name="routingStrategy">The routing strategy</param>
         /// <exception cref="System.InvalidOperationException">The HTTP Listener is not supported in this OS</exception>
         /// <exception cref="System.ArgumentException">Argument urlPrefix must be specified</exception>
-        public WebServer(string[] urlPrefixes, ILog log, RoutingStrategyEnum routingStrategy)
+        public WebServer(string[] urlPrefixes, ILog log, RoutingStrategy routingStrategy)
         {
             if (HttpListener.IsSupported == false)
                 throw new InvalidOperationException("The HTTP Listener is not supported in this OS");
@@ -524,13 +525,28 @@
         }
 
         /// <summary>
-        /// Static method to create webser instance with SimpleConsoleLog
+        /// Static method to create a webserver instance using a simple console output.
+        /// This method is useful for fluent configuration.
         /// </summary>
         /// <param name="urlPrefix"></param>
         /// <returns>The webserver instance.</returns>
         public static WebServer CreateWithConsole(string urlPrefix)
         {
             return new WebServer(urlPrefix, new SimpleConsoleLog());
+        }
+
+        /// <summary>
+        /// Static method to create a webserver instance using a simple console output.
+        /// This method is useful for fluent configuration.
+        /// </summary>
+        /// <param name="urlPrefix">The URL prefix.</param>
+        /// <param name="routingStrategy">The routing strategy.</param>
+        /// <returns>
+        /// The webserver instance.
+        /// </returns>
+        public static WebServer CreateWithConsole(string urlPrefix, RoutingStrategy routingStrategy)
+        {
+            return new WebServer(urlPrefix, new SimpleConsoleLog(), routingStrategy);
         }
     }
 }
