@@ -8,15 +8,15 @@
 
 A tiny, cross-platform, module based, MIT-licensed web server.
 
-* Network operations use the relatively recent async/await pattern
-* Cross-platform (tested in Mono 3.10.x on Windows and on a custom Yocto image for the Raspberry Pi)
-* Extensible (Write your own modules. For example, video streaming, UPnP, etc.). Check <a href="https://github.com/unosquare/embedio-extras" target="_blank">EmbedIO Extras</a> for more modules.
+* Network operations use the async/await pattern: Responses are handled asynchronously
+* Cross-platform: tested in Mono 3.10.x on Windows and on a custom Yocto image for the Raspberry Pi
+* Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras" target="_blank">EmbedIO Extras</a> for additional modules.
 * Small memory footprint
 * Create REST APIs quickly with the out-of-the-box Web Api module
 * Serve static files with 1 line of code (also out-of-the-box)
 * Handle sessions with the built-in LocalSessionWebModule
-* Web Sockets support (Not available on Mono though)
-* CORS support. Origin, Headers and Methods validation with OPTIONS preflight
+* Web Sockets support (Not available on Mono 3.x though)
+* CORS support. Origin, Header and Method validation with OPTIONS preflight
 * Supports HTTP 206 Partial Content
 * [OWIN](http://owin.org/) Middleware support via [Owin Middleware Module](https://github.com/unosquare/embedio-extras/tree/master/Unosquare.Labs.EmbedIO.OwinMiddleware).
 
@@ -101,7 +101,7 @@ namespace Company.Project
 Fluent Example:
 ---------------
 
-Many extensions methods are available to allow to create a web server instance with fluent method syntax.
+Many extension methods are available. This allows you to create a web server instance in a fluent style by dotting in configuration options.
 
 ```csharp
 namespace Company.Project
@@ -162,26 +162,25 @@ namespace Company.Project
 REST API Example:
 -----------------
 
-The WebApi module support two routing strategies: Wildcard and Regex. By default the WebApi module will use the Wildcard strategy and
-look for routes in your registered controllers by a simple contains filtering to match a route. **For example:** the route `/api/people/*` will match
-with any request starting with the two first URL segments and a route `/api/people/*/details` will match requests starting with the two first segments and ending
-with a "details" segment. Most of the REST services can be designed with this strategy.
+The WebApi module supports two routing strategies: Wildcard and RegEx. By default, and in order to maintain backwards compatibility, the WebApi module will use the **Wildcard Routing Strategy** and match routes using the asterisk `*` character in the route. **For example:** 
+- The route `/api/people/*` will match any request with a URL starting with the two first URL segments `api` and `people` and ending with anything. The route `/api/people/hello` will be matched.
+- You can also use wildcards in the middle of the route. The route `/api/people/*/details` will match requests starting with the two first URL segments `api` and `people`, and ending with a `details` segment. The route `/api/people/hello/details` will be matched. 
 
-**Regex strategy** will try to match and resolve the values from a route template, pretty similar to Microsoft Web API 2. A method with the next routing
-`/api/people/{id}` is going to match any request with the three segments and the last one is going to try to parse to match the data type in the method signature.
-You can put multiples values to match, for example `/api/people/{mainSkill}/{age}`, and receive the values from the URL to the Web Api method.
+*Note that most REST services can be designed with this simpler Wildcard routing startegy. However, the RegEx matching strategy is the current recommended approach as we might be deprecating the Wildcard strategy altogether*
+
+On the other hand, the **RegEx Routing Strategy** will try to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API 2. A method with the following route `/api/people/{id}` is going to match any request URL with three segments: the first two `api` and `people` and the last one is going to be parsed or converted to the type in the `id` argument of the handling method signature. Please read on if this was confusing as it is much simpler than it sounds. Additionally, you can put multiple values to match, for example `/api/people/{mainSkill}/{age}`, and receive the parsed values from the URL straight into the arguments of your handler method.
 
 *During server setup:*
 
 ```csharp
-// You can change to RoutingStrategyEnum.Wildcard
-var server =  new WebServer("http://localhost:9696/", new NullLog(), RoutingStrategyEnum.Regex);
+// The routing strategy is Wildcard by default, but you can change it to RegEx as follows:
+var server =  new WebServer("http://localhost:9696/", new NullLog(), RoutingStrategy.RegEx);
 
 server.RegisterModule(new WebApiModule());
 server.Module<WebApiModule>().RegisterController<PeopleController>();
 ```
 
-*And our controller class (using Regex Strategy) looks like:*
+*And our controller class (using RegEx Strategy) looks like:*
 
 ```csharp
 public class PeopleController : WebApiController
@@ -217,7 +216,7 @@ public class PeopleController : WebApiController
 }
 ```
 
-*Or if you want to use the Wildcard strategy:*
+*Or if you want to use the Wildcard strategy (which is the default):*
 
 ```csharp
 public class PeopleController : WebApiController
