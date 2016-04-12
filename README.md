@@ -162,25 +162,25 @@ namespace Company.Project
 REST API Example:
 -----------------
 
-The WebApi module supports two routing strategies: Wildcard and RegEx. By default, and in order to maintain backwards compatibility, the WebApi module will use the **Wildcard Routing Strategy** and match routes using the asterisk `*` character in the route. **For example:** 
+The WebApi module supports two routing strategies: Wildcard and Regex. By default, and in order to maintain backwards compatibility, the WebApi module will use the **Wildcard Routing Strategy** and match routes using the asterisk `*` character in the route. **For example:** 
 - The route `/api/people/*` will match any request with a URL starting with the two first URL segments `api` and `people` and ending with anything. The route `/api/people/hello` will be matched.
 - You can also use wildcards in the middle of the route. The route `/api/people/*/details` will match requests starting with the two first URL segments `api` and `people`, and ending with a `details` segment. The route `/api/people/hello/details` will be matched. 
 
-*Note that most REST services can be designed with this simpler Wildcard routing startegy. However, the RegEx matching strategy is the current recommended approach as we might be deprecating the Wildcard strategy altogether*
+*Note that most REST services can be designed with this simpler Wildcard routing startegy. However, the Regex matching strategy is the current recommended approach as we might be deprecating the Wildcard strategy altogether*
 
-On the other hand, the **RegEx Routing Strategy** will try to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API 2. A method with the following route `/api/people/{id}` is going to match any request URL with three segments: the first two `api` and `people` and the last one is going to be parsed or converted to the type in the `id` argument of the handling method signature. Please read on if this was confusing as it is much simpler than it sounds. Additionally, you can put multiple values to match, for example `/api/people/{mainSkill}/{age}`, and receive the parsed values from the URL straight into the arguments of your handler method.
+On the other hand, the **Regex Routing Strategy** will try to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API 2. A method with the following route `/api/people/{id}` is going to match any request URL with three segments: the first two `api` and `people` and the last one is going to be parsed or converted to the type in the `id` argument of the handling method signature. Please read on if this was confusing as it is much simpler than it sounds. Additionally, you can put multiple values to match, for example `/api/people/{mainSkill}/{age}`, and receive the parsed values from the URL straight into the arguments of your handler method.
 
 *During server setup:*
 
 ```csharp
-// The routing strategy is Wildcard by default, but you can change it to RegEx as follows:
-var server =  new WebServer("http://localhost:9696/", new NullLog(), RoutingStrategy.RegEx);
+// The routing strategy is Wildcard by default, but you can change it to Regex as follows:
+var server =  new WebServer("http://localhost:9696/", new NullLog(), RoutingStrategy.Regex);
 
 server.RegisterModule(new WebApiModule());
 server.Module<WebApiModule>().RegisterController<PeopleController>();
 ```
 
-*And our controller class (using RegEx Strategy) looks like:*
+*And our controller class (using Regex Strategy) looks like:*
 
 ```csharp
 public class PeopleController : WebApiController

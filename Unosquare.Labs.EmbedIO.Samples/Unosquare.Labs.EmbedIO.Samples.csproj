@@ -51,7 +51,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Unosquare.Tubular, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tubular.ServerSide.0.9.42\lib\net45\Unosquare.Tubular.dll</HintPath>
+      <HintPath>..\packages\Tubular.ServerSide.0.9.47\lib\net45\Unosquare.Tubular.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>

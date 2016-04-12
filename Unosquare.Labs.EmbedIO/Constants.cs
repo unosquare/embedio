@@ -736,6 +736,6 @@
         /// <summary>
         /// The Regex strategy
         /// </summary>
-        RegEx
+        Regex
     }
 }

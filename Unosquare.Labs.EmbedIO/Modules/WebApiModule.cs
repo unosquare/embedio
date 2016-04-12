@@ -23,9 +23,9 @@
         private readonly Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>> DelegateMap
             = new Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>>(StringComparer.InvariantCultureIgnoreCase);
 
-        private static readonly Regex RouteParamRegEx = new Regex(@"\{[^\/]*\}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex RouteParamRegex = new Regex(@"\{[^\/]*\}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private const string RegExRouteReplace = "(.*)";
+        private const string RegexRouteReplace = "(.*)";
 
         #endregion
 
@@ -41,7 +41,7 @@
                 var regExRouteParams = new Dictionary<string, object>();
                 var path = server.RoutingStrategy == RoutingStrategy.Wildcard
                     ? NormalizeWildcardPath(verb, context)
-                    : NormalizeRegExPath(verb, context, regExRouteParams);
+                    : NormalizeRegexPath(verb, context, regExRouteParams);
 
                 // return a non-math if no handler hold the route
                 if (path == null) return false;
@@ -49,14 +49,14 @@
                 var methodPair = DelegateMap[path][verb];
                 var controller = methodPair.Item1();
 
-                // ensure module does not retun cached responses
+                // ensure module does not return cached responses
                 context.NoCache();
 
                 // Log the handler to be used
                 server.Log.DebugFormat("Handler: {0}.{1}", methodPair.Item2.DeclaringType.FullName, methodPair.Item2.Name);
 
                 // Select the routing strategy
-                if (server.RoutingStrategy == RoutingStrategy.RegEx)
+                if (server.RoutingStrategy == RoutingStrategy.Regex)
                 {
                     // Initially, only the server and context objects will be available
                     var args = new List<object>() { server, context };
@@ -123,25 +123,23 @@
                 }
             });
         }
-
-
-
+        
         /// <summary>
-        /// Normalizes a path meant for RegEx matching, extracts the route parameters, and returns the registered
+        /// Normalizes a path meant for Regex matching, extracts the route parameters, and returns the registered
         /// path in the internal delegate map.
         /// </summary>
         /// <param name="verb">The verb.</param>
         /// <param name="context">The context.</param>
         /// <param name="routeParams">The route parameters.</param>
         /// <returns></returns>
-        private string NormalizeRegExPath(HttpVerbs verb, HttpListenerContext context,
+        private string NormalizeRegexPath(HttpVerbs verb, HttpListenerContext context,
             Dictionary<string, object> routeParams)
         {
             var path = context.RequestPath();
 
             foreach (var route in DelegateMap.Keys)
             {
-                var regex = new Regex(RouteParamRegEx.Replace(route, RegExRouteReplace));
+                var regex = new Regex(RouteParamRegex.Replace(route, RegexRouteReplace));
                 var match = regex.Match(path);
 
                 if (!match.Success || !DelegateMap[route].Keys.Contains(verb)) continue;

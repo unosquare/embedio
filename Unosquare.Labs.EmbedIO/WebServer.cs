@@ -66,7 +66,7 @@
 
         /// <summary>
         /// Gets the URL RoutingStrategy used in this instance.
-        /// By default it is set to Wildcard, but RegEx is the the recommended value.
+        /// By default it is set to Wildcard, but Regex is the the recommended value.
         /// </summary>
         public RoutingStrategy RoutingStrategy { get; protected set; }
 

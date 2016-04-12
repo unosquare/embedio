@@ -56,7 +56,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RegExRoutingTest.cs" />
+    <Compile Include="RegexRoutingTest.cs" />
     <Compile Include="StaticFilesModuleTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestObjects\PeopleRepository.cs" />
