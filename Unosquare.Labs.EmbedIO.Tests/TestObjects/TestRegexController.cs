@@ -31,6 +31,30 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
             }
         }
 
+        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexopt/{id?}")]
+        public bool GetPerson(WebServer server, HttpListenerContext context, int? id)
+        {
+            try
+            {
+                if (id.HasValue == false)
+                {
+                    return context.JsonResponse(PeopleRepository.Database);
+                }
+
+                if (PeopleRepository.Database.Any(p => p.Key == id))
+                {
+                    return context.JsonResponse(PeopleRepository.Database.FirstOrDefault(p => p.Key == id));
+                }
+
+                throw new KeyNotFoundException("Key Not Found: " + id);
+            }
+            catch (Exception ex)
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return context.JsonResponse(ex);
+            }
+        }
+
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexasync/{id}")]
         public async Task<bool> GetPersonAsync(WebServer server, HttpListenerContext context, int id)
         {

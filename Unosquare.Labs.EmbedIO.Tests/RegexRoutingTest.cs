@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using Unosquare.Labs.EmbedIO.Modules;
 using Unosquare.Labs.EmbedIO.Tests.Properties;
@@ -35,6 +39,30 @@ namespace Unosquare.Labs.EmbedIO.Tests
         public void GetJsonDataWithRegexId()
         {
             TestHelper.ValidatePerson(Resources.ServerAddress + TestRegexController.RelativePath + "regex/1");
+        }
+
+        [Test]
+        public void GetJsonDataWithOptRegexId()
+        {
+            // using null value
+            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + TestRegexController.RelativePath + "regexopt");
+
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                var jsonBody = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+                Assert.IsNotNullOrEmpty(jsonBody, "Json Body is not null or empty");
+
+                var remoteList = JsonConvert.DeserializeObject<List<Person>>(jsonBody);
+
+                Assert.IsNotNull(remoteList, "Json Object is not null");
+                Assert.AreEqual(remoteList.Count, PeopleRepository.Database.Count, "Remote list count equals local list");
+            }
+
+            // using a value
+            TestHelper.ValidatePerson(Resources.ServerAddress + TestRegexController.RelativePath + "regexopt/1");
         }
 
         [Test]

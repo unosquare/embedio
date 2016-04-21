@@ -24,6 +24,7 @@
             = new Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>>(StringComparer.InvariantCultureIgnoreCase);
 
         private static readonly Regex RouteParamRegex = new Regex(@"\{[^\/]*\}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private const string RegexRouteReplace = "(.*)";
 
@@ -66,12 +67,29 @@
                     {
                         if (regExRouteParams.ContainsKey(arg.Name) == false) continue;
                         // get a reference to the parse method
-                        var parseMethod = arg.ParameterType.GetMethod(nameof(int.Parse), new[] { typeof(string) });
-                        
+                        var parameterTypeNullable = Nullable.GetUnderlyingType(arg.ParameterType);
+                        var parseMethod = parameterTypeNullable != null
+                            ? parameterTypeNullable.GetMethod(nameof(int.Parse), new[] {typeof (string)})
+                            : arg.ParameterType.GetMethod(nameof(int.Parse), new[] {typeof (string)});
+
                         // add the parsed argument to the argument list if available
-                        args.Add(parseMethod != null ? 
-                            parseMethod.Invoke(null, new[] { regExRouteParams[arg.Name] }) : 
-                            regExRouteParams[arg.Name]);
+                        if (parseMethod != null)
+                        {
+                            // parameter is nullable and value is empty, so force null
+                            if (parameterTypeNullable != null &&
+                                string.IsNullOrWhiteSpace((string) regExRouteParams[arg.Name]))
+                            {
+                                args.Add(null);
+                            }
+                            else
+                            {
+                                args.Add(parseMethod.Invoke(null, new[] {regExRouteParams[arg.Name]}));
+                            }
+                        }
+                        else
+                        {
+                            args.Add(regExRouteParams[arg.Name]);
+                        }
                     }
 
                     // Now, check if the call is handled asynchronously.
@@ -123,7 +141,7 @@
                 }
             });
         }
-        
+
         /// <summary>
         /// Normalizes a path meant for Regex matching, extracts the route parameters, and returns the registered
         /// path in the internal delegate map.
@@ -136,20 +154,47 @@
             Dictionary<string, object> routeParams)
         {
             var path = context.RequestPath();
-
+            
             foreach (var route in DelegateMap.Keys)
             {
                 var regex = new Regex(RouteParamRegex.Replace(route, RegexRouteReplace));
                 var match = regex.Match(path);
 
-                if (!match.Success || !DelegateMap[route].Keys.Contains(verb)) continue;
-
                 var pathParts = route.Split('/');
+
+                if (!match.Success || !DelegateMap[route].Keys.Contains(verb))
+                {
+                    var optionalPath = RouteOptionalParamRegex.Replace(route, string.Empty);
+                    var tempPath = path;
+
+                    if (optionalPath.Last() == '/' && path.Last() != '/')
+                    {
+                        tempPath += "/";
+                    }
+
+                    if (optionalPath == tempPath)
+                    {
+                        foreach (var pathPart in pathParts.Where(x => x.StartsWith("{")))
+                        {
+                            routeParams.Add(
+                                pathPart.Replace("{", string.Empty)
+                                    .Replace("}", string.Empty)
+                                    .Replace("?", string.Empty), null);
+                        }
+
+                        return route;
+                    }
+
+                    continue;
+                }
+
                 var i = 1; // match group index
 
                 foreach (var pathPart in pathParts.Where(x => x.StartsWith("{")))
                 {
-                    routeParams.Add(pathPart.Replace("{", "").Replace("}", ""), match.Groups[i++].Value);
+                    routeParams.Add(
+                        pathPart.Replace("{", string.Empty).Replace("}", string.Empty).Replace("?", string.Empty),
+                        match.Groups[i++].Value);
                 }
 
                 return route;
