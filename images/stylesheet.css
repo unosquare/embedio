@@ -11,6 +11,18 @@ body {
 div.content-body {
     padding-bottom:150px;
 }
+.jumbotron {
+    background-image: url('science.jpg');
+    padding-top: 0;
+    margin: 0;
+    min-height: 400px;
+}
+.jumbotron-fade {
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 90%, rgba(255,255,255,1));
+    min-height: 400px;
+    position: absolute;
+    width: 100%;
+}
 footer {
     background-color: #333;
     color: #FFF;
@@ -22,26 +34,29 @@ footer {
     width:100%;
 	min-height:120px;
 }
+.navbar-fade {
+    background-color: #333;
+    opacity: 0.5;
+    position: absolute;
+    min-height: 50px;
+    width: 100%;
+}
 .navbar {
     margin: 0;
     border-width: 0;
-    background-color: #333;
+    background: transparent;
     color: #FFF;
     text-transform: lowercase;
 }
-.jumbotron {
-    background-image: url('background.png');
-}
 .navbar-nav>li>a {
     color: white;
-    border-bottom: 2px solid #333;
     padding-bottom: 4px;
     margin-bottom: 8px;
 }
 .nav .open>a, .nav .open>a:hover, .nav .open>a:focus,
 .navbar-nav>li>a:hover, .navbar-nav>li>a:focus {
-    background-color: #333;
-    border-bottom: 2px solid #44c5db;
+    color: #44c5db;
+    background-color: transparent;
 }
 a.navbar-brand {
     color: white;
@@ -63,7 +78,6 @@ ul.sociallist a {
 footer img {
     width: 100px;
 }
-
 @media only screen and (min-width : 768px) {
     footer img {
         width: 178px;
