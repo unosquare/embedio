@@ -7,6 +7,7 @@
     using System.Net;
     using System.Net.WebSockets;
     using System.Threading;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// A WebSockets module confirming to RFC 6455
@@ -38,15 +39,11 @@
                 var path = context.RequestPath();
 
                 // match the request path
-                if (_serverMap.ContainsKey(path))
-                {
-                    // Accept the WebSocket -- this is a blocking method until the WebSocketCloses
-                    _serverMap[path].AcceptWebSocket(server, context);
-                    return true;
-                }
+                if (!_serverMap.ContainsKey(path)) return false;
 
-                return false;
-
+                // Accept the WebSocket -- this is a blocking method until the WebSocketCloses
+                _serverMap[path].AcceptWebSocket(server, context);
+                return true;
             });
         }
 
@@ -56,10 +53,7 @@
         /// <value>
         /// The name.
         /// </value>
-        public override string Name
-        {
-            get { return "WebSockets Module"; }
-        }
+        public override string Name => "WebSockets Module";
 
         /// <summary>
         /// Registers the web sockets server given a WebSocketsServer Type.
@@ -80,14 +74,14 @@
         public void RegisterWebSocketsServer(Type socketType)
         {
             if (socketType == null)
-                throw new ArgumentException("Argument 'socketType' cannot be null", "socketType");
+                throw new ArgumentException("Argument 'socketType' cannot be null", nameof(socketType));
 
             var attribute =
                 socketType.GetCustomAttributes(typeof(WebSocketHandlerAttribute), true).FirstOrDefault() as
                     WebSocketHandlerAttribute;
 
             if (attribute == null)
-                throw new ArgumentException("Argument 'socketType' needs a WebSocketHandlerAttribute", "socketType");
+                throw new ArgumentException("Argument 'socketType' needs a WebSocketHandlerAttribute", nameof(socketType));
 
             this._serverMap[attribute.Path] = (WebSocketsServer)Activator.CreateInstance(socketType);
         }
@@ -102,7 +96,7 @@
             where T : WebSocketsServer, new()
         {
             if (string.IsNullOrWhiteSpace(path))
-                throw new ArgumentException("Argument 'path' cannot be null", "path");
+                throw new ArgumentException("Argument 'path' cannot be null", nameof(path));
 
             this._serverMap[path] = Activator.CreateInstance<T>();
         }
@@ -118,9 +112,9 @@
             where T : WebSocketsServer
         {
             if (string.IsNullOrWhiteSpace(path))
-                throw new ArgumentException("Argument 'path' cannot be null", "path");
+                throw new ArgumentException("Argument 'path' cannot be null", nameof(path));
             if (server == null)
-                throw new ArgumentException("Argument 'server' cannot be null", "server");
+                throw new ArgumentException("Argument 'server' cannot be null", nameof(server));
 
             this._serverMap[path] = server;
         }
@@ -140,7 +134,7 @@
         /// <exception cref="System.ArgumentException">The argument 'paths' must be specified.</exception>
         public WebSocketHandlerAttribute(string path)
         {
-            if (path == null || string.IsNullOrWhiteSpace(path))
+            if (string.IsNullOrWhiteSpace(path))
                 throw new ArgumentException("The argument 'path' must be specified.");
 
             this.Path = path;
@@ -218,7 +212,7 @@
         /// </summary>
         private void RunConnectionWatchdog()
         {
-            var t = new Thread(() =>
+            var t = new Thread(async () =>
             {
                 while (_isDisposing == false)
                 {
@@ -226,7 +220,7 @@
                         CollectDisconnected();
 
                     // TODO: make this sleep configurable.
-                    Thread.Sleep(30 * 1000);
+                    await Task.Delay(30*1000);
                 }
             })
             {
@@ -303,7 +297,7 @@
                         // close the connection if message excceeds max length
                         webSocketContext.WebSocket.CloseAsync(
                             WebSocketCloseStatus.MessageTooBig,
-                            string.Format("Message too big. Maximum is {0} bytes.", _maximumMessageSize),
+                            $"Message too big. Maximum is {_maximumMessageSize} bytes.",
                             CancellationToken.None).GetAwaiter().GetResult();
 
                         // exit the loop; we're done
@@ -335,8 +329,7 @@
         /// <param name="webSocketContext">The web socket context.</param>
         private void RemoveWebSocket(WebSocketContext webSocketContext)
         {
-            if (webSocketContext.WebSocket != null)
-                webSocketContext.WebSocket.Dispose();
+            webSocketContext.WebSocket?.Dispose();
 
             lock (_syncRoot)
             {
@@ -350,7 +343,7 @@
         /// Removes and disposes all disconnected sockets
         /// </summary>
         /// <returns></returns>
-        private int CollectDisconnected()
+        private void CollectDisconnected()
         {
             var collectedCount = 0;
             lock (_syncRoot)
@@ -367,11 +360,8 @@
                 }
             }
 
-            if (this.WebServer != null)
-                this.WebServer.Log.DebugFormat("{0} - Collected {1} sockets. WebSocket Count: {2}", this.ServerName,
-                    collectedCount, this.WebSockets.Count);
-
-            return collectedCount;
+            this.WebServer?.Log.DebugFormat("{0} - Collected {1} sockets. WebSocket Count: {2}", this.ServerName,
+                collectedCount, this.WebSockets.Count);
         }
 
         /// <summary>
@@ -405,6 +395,7 @@
             try
             {
                 if (payload == null) payload = new byte[0];
+
                 await
                     webSocket.WebSocket.SendAsync(new ArraySegment<byte>(payload), WebSocketMessageType.Binary, true,
                         CancellationToken.None);
@@ -450,6 +441,10 @@
                 await
                     webSocket.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty,
                         CancellationToken.None);
+            }
+            catch (Exception ex)
+            {
+                WebServer.Log.Error(ex);
             }
             finally
             {
