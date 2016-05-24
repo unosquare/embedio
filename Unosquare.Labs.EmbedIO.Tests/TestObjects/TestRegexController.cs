@@ -55,7 +55,7 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
             }
         }
 
-        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexasync/{id}")]
+        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexAsync/{id}")]
         public async Task<bool> GetPersonAsync(WebServer server, HttpListenerContext context, int id)
         {
             try

@@ -16,11 +16,11 @@
     /// </summary>
     public class WebApiModule : WebModuleBase
     {
-        #region Inmutable Declarations
+        #region Immutable Declarations
 
-        private readonly List<Type> ControllerTypes = new List<Type>();
+        private readonly List<Type> _controllerTypes = new List<Type>();
 
-        private readonly Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>> DelegateMap
+        private readonly Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>> _delegateMap
             = new Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>>(StringComparer.InvariantCultureIgnoreCase);
 
         private static readonly Regex RouteParamRegex = new Regex(@"\{[^\/]*\}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -34,7 +34,6 @@
         /// Initializes a new instance of the <see cref="WebApiModule"/> class.
         /// </summary>
         public WebApiModule()
-            : base()
         {
             this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
             {
@@ -47,7 +46,7 @@
                 // return a non-math if no handler hold the route
                 if (path == null) return false;
 
-                var methodPair = DelegateMap[path][verb];
+                var methodPair = _delegateMap[path][verb];
                 var controller = methodPair.Item1();
 
                 // ensure module does not return cached responses
@@ -153,16 +152,16 @@
         private string NormalizeRegexPath(HttpVerbs verb, HttpListenerContext context,
             Dictionary<string, object> routeParams)
         {
-            var path = context.RequestPath();
+            var path = context.Request.Url.LocalPath;
             
-            foreach (var route in DelegateMap.Keys)
+            foreach (var route in _delegateMap.Keys)
             {
                 var regex = new Regex(RouteParamRegex.Replace(route, RegexRouteReplace));
                 var match = regex.Match(path);
 
                 var pathParts = route.Split('/');
 
-                if (!match.Success || !DelegateMap[route].Keys.Contains(verb))
+                if (!match.Success || !_delegateMap[route].Keys.Contains(verb))
                 {
                     var optionalPath = RouteOptionalParamRegex.Replace(route, string.Empty);
                     var tempPath = path;
@@ -214,7 +213,7 @@
         {
             var path = context.RequestPath();
 
-            var wildcardPaths = DelegateMap.Keys
+            var wildcardPaths = _delegateMap.Keys
                 .Where(k => k.Contains("/" + ModuleMap.AnyPath))
                 .Select(s => s.ToLowerInvariant())
                 .ToArray();
@@ -229,14 +228,14 @@
             if (string.IsNullOrWhiteSpace(wildcardMatch) == false)
                 path = wildcardMatch;
 
-            if (DelegateMap.ContainsKey(path) == false)
+            if (_delegateMap.ContainsKey(path) == false)
                 return null;
 
-            if (DelegateMap[path].ContainsKey(verb) == false) // TODO: Fix Any Verb
+            if (_delegateMap[path].ContainsKey(verb) == false) // TODO: Fix Any Verb
             {
                 var originalPath = context.RequestPath();
-                if (DelegateMap.ContainsKey(originalPath) &&
-                    DelegateMap[originalPath].ContainsKey(verb))
+                if (_delegateMap.ContainsKey(originalPath) &&
+                    _delegateMap[originalPath].ContainsKey(verb))
                 {
                     path = originalPath;
                 }
@@ -258,7 +257,7 @@
         /// <summary>
         /// Gets the number of controller objects registered in this API
         /// </summary>
-        public int ControllersCount => ControllerTypes.Count;
+        public int ControllersCount => _controllerTypes.Count;
 
         /// <summary>
         /// Registers the controller.
@@ -268,7 +267,7 @@
         public void RegisterController<T>()
             where T : WebApiController, new()
         {
-            if (ControllerTypes.Contains(typeof(T)))
+            if (_controllerTypes.Contains(typeof(T)))
                 throw new ArgumentException("Controller types must be unique within the module");
 
             RegisterController(typeof(T));
@@ -283,7 +282,7 @@
         public void RegisterController<T>(Func<T> controllerFactory)
             where T : WebApiController
         {
-            if (ControllerTypes.Contains(typeof(T)))
+            if (_controllerTypes.Contains(typeof(T)))
                 throw new ArgumentException("Controller types must be unique within the module");
 
             RegisterController(typeof(T), controllerFactory);
@@ -331,20 +330,20 @@
                 {
                     var delegatePath = new Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>();
 
-                    if (DelegateMap.ContainsKey(path))
-                        delegatePath = DelegateMap[path]; // update
+                    if (_delegateMap.ContainsKey(path))
+                        delegatePath = _delegateMap[path]; // update
                     else
-                        DelegateMap.Add(path, delegatePath); // add
+                        _delegateMap.Add(path, delegatePath); // add
 
                     var delegatePair = new Tuple<Func<object>, MethodInfo>(controllerFactory, method);
-                    if (DelegateMap[path].ContainsKey(attribute.Verb))
-                        DelegateMap[path][attribute.Verb] = delegatePair; // update
+                    if (_delegateMap[path].ContainsKey(attribute.Verb))
+                        _delegateMap[path][attribute.Verb] = delegatePair; // update
                     else
-                        DelegateMap[path].Add(attribute.Verb, delegatePair); // add
+                        _delegateMap[path].Add(attribute.Verb, delegatePair); // add
                 }
             }
 
-            ControllerTypes.Add(controllerType);
+            _controllerTypes.Add(controllerType);
         }
     }
 

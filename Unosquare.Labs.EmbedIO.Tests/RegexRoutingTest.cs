@@ -68,7 +68,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
         [Test]
         public void GetJsonDatAsyncaWithRegexId()
         {
-            TestHelper.ValidatePerson(Resources.ServerAddress + TestRegexController.RelativePath + "regexasync/1");
+            TestHelper.ValidatePerson(Resources.ServerAddress + TestRegexController.RelativePath + "regexAsync/1");
         }
 
         [Test]

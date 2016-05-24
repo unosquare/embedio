@@ -73,7 +73,7 @@
         {
             return context.Request.Url.LocalPath.ToLowerInvariant();
         }
-
+        
         /// <summary>
         /// Retrieves the exception message, plus all the inner exception messages separated by new lines
         /// </summary>

@@ -11,7 +11,7 @@
     {
         public const string RelativePath = "api/";
         public const string GetPath = RelativePath + "people/";
-        public const string GetAsyncPath = RelativePath + "asyncpeople/";
+        public const string GetAsyncPath = RelativePath + "asyncPeople/";
         public const string GetMiddlePath = RelativePath + "person/*/select";
 
         [WebApiHandler(HttpVerbs.Get, "/" + GetMiddlePath)]
