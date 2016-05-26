@@ -78,15 +78,17 @@
         public bool UseRamCache { get; set; }
 
         /// <summary>
+        /// The default headers
+        /// </summary>
+        public Dictionary<string, string> DefaultHeaders = new Dictionary<string, string>();
+
+        /// <summary>
         /// Gets the name of this module.
         /// </summary>
         /// <value>
         /// The name.
         /// </value>
-        public override string Name
-        {
-            get { return "Static Files Module"; }
-        }
+        public override string Name => "Static Files Module";
 
         /// <summary>
         /// Clears the RAM cache.
@@ -117,8 +119,9 @@
         /// Initializes a new instance of the <see cref="StaticFilesModule" /> class.
         /// </summary>
         /// <param name="fileSystemPath">The file system path.</param>
+        /// <param name="headers">The headers to set in every request.</param>
         /// <exception cref="System.ArgumentException">Path ' + fileSystemPath + ' does not exist.</exception>
-        public StaticFilesModule(string fileSystemPath)
+        public StaticFilesModule(string fileSystemPath, Dictionary<string, string> headers = null)
             : base()
         {
             if (Directory.Exists(fileSystemPath) == false)
@@ -143,6 +146,14 @@
                 this.m_MimeTypes.Add(kvp.Key, kvp.Value);
             }
 
+            if (headers != null)
+            {
+                foreach (var header in headers)
+                {
+                    this.DefaultHeaders.Add(header.Key, header.Value);
+                }
+            }
+
             this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Head, (server, context) => HandleGet(context, server, false));
             this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (server, context) => HandleGet(context, server));
         }
@@ -162,17 +173,30 @@
             byte[] buffer = null;
             var fileDate = DateTime.Today;
             var partialHeader = context.RequestHeader(Constants.HeaderRange);
-            var usingPartial = String.IsNullOrWhiteSpace(partialHeader) == false && partialHeader.StartsWith("bytes=");
+            var usingPartial = string.IsNullOrWhiteSpace(partialHeader) == false && partialHeader.StartsWith("bytes=");
 
             if (string.IsNullOrWhiteSpace(DefaultExtension) == false && DefaultExtension.StartsWith(".") &&
                 File.Exists(localPath) == false)
             {
                 var newPath = localPath + DefaultExtension;
+
                 if (File.Exists(newPath))
+                {
                     localPath = newPath;
+                }
             }
 
-            if (File.Exists(localPath) == false) return false;
+            if (File.Exists(localPath) == false)
+            {
+                if (Directory.Exists(localPath) && File.Exists(Path.Combine(localPath, DefaultDocument)))
+                {
+                    localPath = Path.Combine(localPath, DefaultDocument);
+                }
+                else
+                {
+                    return false;
+                }
+            }
 
             if (usingPartial == false)
             {
@@ -184,7 +208,7 @@
                     server.Log.DebugFormat("RAM Cache: {0}", localPath);
                     var currentHash = Extensions.ComputeMd5Hash(RamCache[localPath].Buffer) + '-' + fileDate.Ticks;
 
-                    if (String.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
+                    if (string.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
                     {
                         buffer = RamCache[localPath].Buffer;
                         context.Response.AddHeader(Constants.HeaderETag, currentHash);
@@ -197,13 +221,14 @@
                 else
                 {
                     server.Log.DebugFormat("File System: {0}", localPath);
+
                     if (sendBuffer)
                     {
                         buffer = File.ReadAllBytes(localPath);
 
                         var currentHash = Extensions.ComputeMd5Hash(buffer) + '-' + fileDate.Ticks;
 
-                        if (String.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
+                        if (string.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
                         {
                             if (UseRamCache && buffer.Length <= MaxRamCacheFileSize)
                             {
@@ -226,9 +251,21 @@
             if (usingPartial == false &&
                 (eTagValid || context.RequestHeader(Constants.HeaderIfModifiedSince).Equals(utcFileDateString)))
             {
-                context.Response.AddHeader(Constants.HeaderCacheControl, "private");
-                context.Response.AddHeader(Constants.HeaderPragma, string.Empty);
-                context.Response.AddHeader(Constants.HeaderExpires, string.Empty);
+                context.Response.AddHeader(Constants.HeaderCacheControl,
+                    DefaultHeaders.ContainsKey(Constants.HeaderCacheControl)
+                        ? DefaultHeaders[Constants.HeaderCacheControl]
+                        : "private");
+
+                context.Response.AddHeader(Constants.HeaderPragma,
+                    DefaultHeaders.ContainsKey(Constants.HeaderPragma)
+                        ? DefaultHeaders[Constants.HeaderPragma]
+                        : string.Empty);
+
+                context.Response.AddHeader(Constants.HeaderExpires,
+                    DefaultHeaders.ContainsKey(Constants.HeaderExpires)
+                        ? DefaultHeaders[Constants.HeaderExpires]
+                        : string.Empty);
+
                 context.Response.ContentType = string.Empty;
 
                 context.Response.StatusCode = 304;
@@ -239,9 +276,21 @@
                 if (MimeTypes.ContainsKey(fileExtension))
                     context.Response.ContentType = MimeTypes[fileExtension];
 
-                context.Response.AddHeader(Constants.HeaderCacheControl, "private");
-                context.Response.AddHeader(Constants.HeaderPragma, string.Empty);
-                context.Response.AddHeader(Constants.HeaderExpires, string.Empty);
+                context.Response.AddHeader(Constants.HeaderCacheControl,
+                    DefaultHeaders.ContainsKey(Constants.HeaderCacheControl)
+                        ? DefaultHeaders[Constants.HeaderCacheControl]
+                        : "private");
+
+                context.Response.AddHeader(Constants.HeaderPragma,
+                    DefaultHeaders.ContainsKey(Constants.HeaderPragma)
+                        ? DefaultHeaders[Constants.HeaderPragma]
+                        : string.Empty);
+
+                context.Response.AddHeader(Constants.HeaderExpires,
+                    DefaultHeaders.ContainsKey(Constants.HeaderExpires)
+                        ? DefaultHeaders[Constants.HeaderExpires]
+                        : string.Empty);
+                
                 context.Response.AddHeader(Constants.HeaderLastModified, utcFileDateString);
                 context.Response.AddHeader(Constants.HeaderAcceptRanges, "bytes");
 

@@ -43,6 +43,12 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
             if (File.Exists(Path.Combine(rootPath, "index.html")) == false)
                 File.WriteAllText(Path.Combine(rootPath, "index.html"), Resources.index);
 
+            if (Directory.Exists(Path.Combine(rootPath, "sub")) == false)
+                Directory.CreateDirectory(Path.Combine(rootPath, "sub"));
+
+            if (File.Exists(Path.Combine(rootPath, "sub", "index.html")) == false)
+                File.WriteAllText(Path.Combine(rootPath, "sub", "index.html"), Resources.subIndex);
+
             if (File.Exists(Path.Combine(rootPath, BigDataFile)) == false)
                 CreateTempBinaryFile(Path.Combine(rootPath, BigDataFile), 100);
 

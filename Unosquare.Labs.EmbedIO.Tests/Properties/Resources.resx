@@ -127,4 +127,7 @@
   <data name="WsServerAddress" xml:space="preserve">
     <value>ws://localhost:7778/</value>
   </data>
+  <data name="subIndex" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\html\sub\index.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
 </root>

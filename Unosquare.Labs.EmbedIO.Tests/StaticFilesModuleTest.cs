@@ -12,6 +12,8 @@
     [TestFixture]
     public class StaticFilesModuleTest
     {
+        const string HeaderPragmaValue = "no-cache";
+
         protected string RootPath;
         protected WebServer WebServer;
         protected TestConsoleLog Logger = new TestConsoleLog();
@@ -38,14 +40,40 @@
                 var html = new StreamReader(response.GetResponseStream()).ReadToEnd();
 
                 Assert.AreEqual(html, Resources.index, "Same content index.html");
+
+                Assert.IsNullOrEmpty(response.Headers[Constants.HeaderPragma], "Pragma empty");
             }
+            
+            WebServer.Module<StaticFilesModule>().DefaultHeaders.Add(Constants.HeaderPragma, HeaderPragmaValue);
+
+            request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress);
+
+            using (var response = (HttpWebResponse) request.GetResponse())
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                Assert.AreEqual(HeaderPragmaValue, response.Headers[Constants.HeaderPragma]);
+            }
+        }
+
+        [Test]
+        public async void GetSubFolderIndex()
+        {
+            var webClient = new WebClient();
+
+            var html = await webClient.DownloadStringTaskAsync(Resources.ServerAddress + "sub/");
+
+            Assert.AreEqual(html, Resources.subIndex, "Same content index.html");
+            
+            html = await webClient.DownloadStringTaskAsync(Resources.ServerAddress + "sub");
+
+            Assert.AreEqual(html, Resources.subIndex, "Same content index.html without trailing");
         }
 
         [Test]
         public void GetEtag()
         {
             var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress);
-            var eTag = "";
+            string eTag;
 
             using (var response = (HttpWebResponse)request.GetResponse())
             {
