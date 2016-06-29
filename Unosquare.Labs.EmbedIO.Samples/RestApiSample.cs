@@ -6,7 +6,7 @@
     using System.Net;
     using System.Threading.Tasks;
     using Unosquare.Labs.EmbedIO.Modules;
-    using Unosquare.Tubular;
+    using Tubular;
     using Unosquare.Tubular.ObjectModel;
 
     public static class RestApiSample

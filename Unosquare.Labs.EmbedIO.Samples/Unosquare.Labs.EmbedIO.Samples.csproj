@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Unosquare.Labs.EmbedIO.Samples</RootNamespace>
     <AssemblyName>Unosquare.Labs.EmbedIO.Samples</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -48,6 +48,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Linq.Dynamic, Version=1.1.14.15853, Culture=neutral, PublicKeyToken=b72be0322d1b32a8, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Linq.Dynamic.Library.1.1.14\lib\net40\System.Linq.Dynamic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Linq.Dynamic.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.Core.1.0.4.0\lib\net461\System.Linq.Dynamic.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Unosquare.Tubular, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
