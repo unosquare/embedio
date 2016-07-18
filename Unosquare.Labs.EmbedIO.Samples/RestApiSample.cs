@@ -1,12 +1,15 @@
-﻿namespace Unosquare.Labs.EmbedIO.Samples
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Unosquare.Labs.LiteLib;
+
+namespace Unosquare.Labs.EmbedIO.Samples
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
-    using Unosquare.Labs.EmbedIO.Modules;
     using Tubular;
+    using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Tubular.ObjectModel;
 
     public static class RestApiSample
@@ -52,11 +55,14 @@
         /// <summary>
         /// A simple model representing a person
         /// </summary>
+        [Table("Persons")]
         public class Person
         {
+            [LiteUnique]
             public int Key { get; set; }
             public string Name { get; set; }
             public int Age { get; set; }
+            [LiteIndex]
             public string EmailAddress { get; set; }
             public string PhotoUrl { get; set; }
         }
@@ -80,7 +86,7 @@
             /// <param name="server">The server.</param>
             /// <param name="context">The context.</param>
             /// <returns></returns>
-            /// <exception cref="System.Collections.Generic.KeyNotFoundException">Key Not Found:  + lastSegment</exception>
+            /// <exception cref="KeyNotFoundException">Key Not Found:  + lastSegment</exception>
             [WebApiHandler(HttpVerbs.Get, RelativePath + "people/*")]
             public bool GetPeople(WebServer server, HttpListenerContext context)
             {

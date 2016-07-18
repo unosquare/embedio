@@ -11,13 +11,15 @@
 
     public static class TestHelper
     {
+        const string Placeholder = "This is a placeholder";
+
         public static readonly bool IsMono = Type.GetType("Mono.Runtime") != null;
 
         public const string BigDataFile = "bigdata.bin";
 
         public const string SmallDataFile = "smalldata.bin";
 
-        private static string RootPath()
+        public static string RootPath()
         {
             var assemblyPath = Path.GetDirectoryName(typeof (StaticFilesModuleTest).Assembly.Location);
             return Path.Combine(assemblyPath, "html");
@@ -65,19 +67,21 @@
         public static string GetStaticFolderInstanceIndexFileContents(string instanceName)
         {
             var content = Resources.index;
-            const string placeholder = "This is a placeholder";
-
-            Assert.AreEqual(true, content.Contains(placeholder), "Setup error");
-            content = content.Replace(placeholder, "Instance name is " + instanceName);
+            if (string.IsNullOrWhiteSpace(instanceName)) return content;
+            
+            Assert.AreEqual(true, content.Contains(Placeholder), "Setup error");
+            content = content.Replace(Placeholder, "Instance name is " + instanceName);
             return content;
         }
 
         public static string SetupStaticFolderInstance(string instanceName)
         {
-            var rootPath = RootPath();
             var folderName = instanceName.Replace('/', Path.DirectorySeparatorChar);
-            var folder = Path.Combine(rootPath, "Instance" + folderName);
-            Directory.CreateDirectory(folder);
+            var folder = Path.Combine(Path.GetDirectoryName(typeof(StaticFilesModuleTest).Assembly.Location), folderName);
+
+            if (Directory.Exists(folder) == false)
+                Directory.CreateDirectory(folder);
+
             var fileName = Path.Combine(folder, StaticFilesModule.DefaultDocumentName);
 
             File.WriteAllText(fileName, GetStaticFolderInstanceIndexFileContents(instanceName));

@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
+    using System.Collections.ObjectModel;
     using EmbedIO;
     using System;
     using System.Collections.Concurrent;
@@ -46,7 +47,6 @@
         /// </value>
         public string DefaultExtension { get; set; }
 
-
         private readonly Dictionary<string, string> m_MimeTypes;
 
         /// <summary>
@@ -83,6 +83,11 @@
         public Dictionary<string, string> DefaultHeaders = new Dictionary<string, string>();
 
         /// <summary>
+        /// The additional paths
+        /// </summary>
+        public Dictionary<string, string> AdditionalPaths = new Dictionary<string, string>();
+
+        /// <summary>
         /// Gets the name of this module.
         /// </summary>
         /// <value>
@@ -116,23 +121,32 @@
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="StaticFilesModule"/> class.
+        /// </summary>
+        /// <param name="paths">The paths.</param>
+        public StaticFilesModule(Dictionary<string, string> paths) : this(paths.First().Value, null, paths)
+        {
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="StaticFilesModule" /> class.
         /// </summary>
         /// <param name="fileSystemPath">The file system path.</param>
         /// <param name="headers">The headers to set in every request.</param>
+        /// <param name="additionalPaths">The additional paths.</param>
         /// <exception cref="System.ArgumentException">Path ' + fileSystemPath + ' does not exist.</exception>
-        public StaticFilesModule(string fileSystemPath, Dictionary<string, string> headers = null)
-            : base()
+        public StaticFilesModule(string fileSystemPath, Dictionary<string, string> headers = null,
+            Dictionary<string, string> additionalPaths = null)
         {
             if (Directory.Exists(fileSystemPath) == false)
-                throw new ArgumentException("Path '" + fileSystemPath + "' does not exist.");
+                throw new ArgumentException($"Path '{fileSystemPath}' does not exist.");
 
             this.FileSystemPath = fileSystemPath;
 #if DEBUG
             // When debugging, disable RamCache
             this.UseRamCache = false;
 #else
-            // Otherwise, enable it by default
+    // Otherwise, enable it by default
             this.UseRamCache = true;
 #endif
             this.RamCache = new ConcurrentDictionary<string, RamCacheEntry>(StringComparer.InvariantCultureIgnoreCase);
@@ -154,43 +168,37 @@
                 }
             }
 
+            if (additionalPaths != null)
+            {
+                foreach (var path in additionalPaths)
+                {
+                    // Ignore base path
+                    if (path.Key == "/") continue;
+
+                    this.AdditionalPaths.Add(path.Key.ToLowerInvariant(), path.Value);
+                }
+            }
+
             this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Head, (server, context) => HandleGet(context, server, false));
             this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (server, context) => HandleGet(context, server));
         }
 
-        /// <summary>
-        ///  find matching UrlRoot for it and remove it from requestPath
-        /// </summary>
-        /// <param name="requestPath"></param>
-        /// <param name="urlRoots"></param>
-        /// <returns></returns>
-        private string RemoveServerRootFromRequestUrl(string requestPath, IEnumerable<string> urlRoots)
-        {
-            var url = requestPath.ToLowerInvariant();
-            if (requestPath == string.Empty || requestPath[0] != '/') url = "/" + url;
-            var urlRootsWithoutLastSlash = urlRoots.Select(x => x.Substring(0, x.Length - 1)); //all url roots end with slash; request might or might not end with slash
-            var urlRootMatch = urlRootsWithoutLastSlash.Where(x => url.StartsWith(x)).OrderByDescending(x => x.Length).FirstOrDefault();
-            //OrderByDescending : the longest match rule applies when routing requests in HTTP.sys, I'm consistent with it; This matter only if there are multiple prefixes in webserver and they have common start, like: /AAA/ and /AAA/BBB/ or / and /AAA
-            if (urlRootMatch == null)
-            {
-                //should never happen, such requests would never reach HttpListener, unless there is bug this code
-                throw new ArgumentException("Could not find UrlRoot for request url " + url + ". UrlRoots are :" + String.Join(", ", urlRoots));
-            }
-            else
-            {
-                var shortened = url.Substring(urlRootMatch.Length);
-                if (shortened == string.Empty || shortened[0] != '/')
-                {
-                    shortened = "/" + shortened;
-                }
-                return shortened;
-            }
-        }
-
         private bool HandleGet(HttpListenerContext context, WebServer server, bool sendBuffer = true)
         {
-            var urlPath = RemoveServerRootFromRequestUrl(context.RequestPath(), server.UrlRoots);
-            urlPath = urlPath.Replace('/', Path.DirectorySeparatorChar);
+            var rootFs = FileSystemPath;
+            var urlPath = context.RequestPath().Replace('/', Path.DirectorySeparatorChar);
+
+            if (AdditionalPaths.Any(x => context.RequestPath().StartsWith(x.Key)))
+            {
+                var additionalPath = AdditionalPaths.FirstOrDefault(x => context.RequestPath().StartsWith(x.Key));
+                rootFs = additionalPath.Value;
+                urlPath = urlPath.Replace(additionalPath.Key.Replace('/', Path.DirectorySeparatorChar), "");
+
+                if (string.IsNullOrWhiteSpace(urlPath))
+                {
+                    urlPath = Path.DirectorySeparatorChar.ToString();
+                }
+            }
 
             // adjust the path to see if we've got a default document
             if (urlPath.Last() == Path.DirectorySeparatorChar)
@@ -198,7 +206,7 @@
 
             urlPath = urlPath.TrimStart(new char[] {Path.DirectorySeparatorChar});
 
-            var localPath = Path.Combine(FileSystemPath, urlPath);
+            var localPath = Path.Combine(rootFs, urlPath);
             var eTagValid = false;
             byte[] buffer = null;
             var fileDate = DateTime.Today;
@@ -224,7 +232,21 @@
                 }
                 else
                 {
-                    return false;
+                    // Try to fall-back to root
+                    var rootLocalPath = Path.Combine(FileSystemPath, urlPath);
+
+                    if (File.Exists(rootLocalPath))
+                    {
+                        localPath = rootLocalPath;
+                    }
+                    else if (Directory.Exists(rootLocalPath) && File.Exists(Path.Combine(rootLocalPath, DefaultDocument)))
+                    {
+                        localPath = Path.Combine(rootLocalPath, DefaultDocument);
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
 
@@ -320,7 +342,7 @@
                     DefaultHeaders.ContainsKey(Constants.HeaderExpires)
                         ? DefaultHeaders[Constants.HeaderExpires]
                         : string.Empty);
-                
+
                 context.Response.AddHeader(Constants.HeaderLastModified, utcFileDateString);
                 context.Response.AddHeader(Constants.HeaderAcceptRanges, "bytes");
 
@@ -353,7 +375,7 @@
                             int.TryParse(range[1], out upperByteIndex))
                         {
                             lowerByteIndex = (int) fileSize - upperByteIndex;
-                            upperByteIndex = (int)fileSize - 1;
+                            upperByteIndex = (int) fileSize - 1;
                             isPartial = true;
                         }
                     }
@@ -375,7 +397,8 @@
 
                         context.Response.StatusCode = 206;
 
-                        server.Log.DebugFormat("Opening stream {0} bytes {1}-{2} size {3}", localPath, lowerByteIndex, upperByteIndex,
+                        server.Log.DebugFormat("Opening stream {0} bytes {1}-{2} size {3}", localPath, lowerByteIndex,
+                            upperByteIndex,
                             byteLength);
 
                         buffer = new byte[byteLength];

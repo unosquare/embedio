@@ -16,7 +16,6 @@
     public class WebServer : IDisposable
     {
         private readonly List<IWebModule> _modules = new List<IWebModule>(4);
-        private readonly List<string> _urlRoots = new List<string>();
         private Task _listenerTask;
 
         /// <summary>
@@ -42,11 +41,6 @@
         /// The modules.
         /// </value>
         public ReadOnlyCollection<IWebModule> Modules => _modules.AsReadOnly();
-
-        /// <summary>
-        /// Gets Url part after the port on which the server is listening (every item correspond to Url prefix).
-        /// </summary>
-        public ReadOnlyCollection<string> UrlRoots => _urlRoots.AsReadOnly();
 
         /// <summary>
         /// Gets registered the ISessionModule.
@@ -190,38 +184,11 @@
                 if (urlPrefix.EndsWith("/") == false) urlPrefix = urlPrefix + "/";
                 urlPrefix = urlPrefix.ToLowerInvariant();
 
-                this._urlRoots.Add(UrlPrefixToUrlRoot(urlPrefix));
                 this.Listener.Prefixes.Add(urlPrefix);
                 this.Log.InfoFormat("Web server prefix '{0}' added.", urlPrefix);
             }
 
             this.Log.Info("Finished Loading Web Server.");
-        }
-
-
-        /// <summary>
-        /// maps HttpListener Prefix to url root, which is part after port and third slash
-        /// </summary>
-        /// <returns></returns>
-        protected string UrlPrefixToUrlRoot(string prefix)
-        {
-            var countOfSlashes = 3;
-            var slashesFound = 0;
-            int i;
-
-            for (i = 0; i < prefix.Length; i++)
-            {
-                if (prefix[i] == '/') slashesFound++;
-                if (slashesFound == countOfSlashes) break;
-            }
-
-            if (slashesFound != countOfSlashes)
-            {
-                //misformated prefix?
-                return "/";
-            }
-
-            return new string(prefix.Skip(i).ToArray()).ToLowerInvariant();
         }
         
         /// <summary>
