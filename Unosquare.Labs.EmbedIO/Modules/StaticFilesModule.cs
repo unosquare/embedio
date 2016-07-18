@@ -14,6 +14,12 @@
     /// </summary>
     public class StaticFilesModule : WebModuleBase
     {
+        private readonly Dictionary<string, string> m_VirtualPaths =
+            new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+
+        private readonly Dictionary<string, string> m_MimeTypes =
+            new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+
         /// <summary>
         /// Default document constant to "index.html"
         /// </summary>
@@ -47,18 +53,13 @@
         /// </value>
         public string DefaultExtension { get; set; }
 
-        private readonly Dictionary<string, string> m_MimeTypes;
-
         /// <summary>
         /// Gets the collection holding the MIME types.
         /// </summary>
         /// <value>
         /// The MIME types.
         /// </value>
-        public Dictionary<string, string> MimeTypes
-        {
-            get { return m_MimeTypes; }
-        }
+        public ReadOnlyDictionary<string, string> MimeTypes => new ReadOnlyDictionary<string, string>(m_MimeTypes);
 
         /// <summary>
         /// Gets the file system path from which files are retrieved.
@@ -83,9 +84,13 @@
         public Dictionary<string, string> DefaultHeaders = new Dictionary<string, string>();
 
         /// <summary>
-        /// The additional paths
+        /// Gets the virtual paths.
         /// </summary>
-        public Dictionary<string, string> AdditionalPaths = new Dictionary<string, string>();
+        /// <value>
+        /// The virtual paths.
+        /// </value>
+        public ReadOnlyDictionary<string, string> VirtualPaths => new ReadOnlyDictionary<string, string>(m_VirtualPaths)
+            ;
 
         /// <summary>
         /// Gets the name of this module.
@@ -154,7 +159,6 @@
             this.DefaultDocument = DefaultDocumentName;
 
             // Populate the default MIME types
-            this.m_MimeTypes = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
             foreach (var kvp in Constants.DefaultMimeTypes)
             {
                 this.m_MimeTypes.Add(kvp.Key, kvp.Value);
@@ -175,7 +179,7 @@
                     // Ignore base path
                     if (path.Key == "/") continue;
 
-                    this.AdditionalPaths.Add(path.Key.ToLowerInvariant(), path.Value);
+                    RegisterVirtualPath(path.Key.ToLowerInvariant(), path.Value);
                 }
             }
 
@@ -188,9 +192,9 @@
             var rootFs = FileSystemPath;
             var urlPath = context.RequestPath().Replace('/', Path.DirectorySeparatorChar);
 
-            if (AdditionalPaths.Any(x => context.RequestPath().StartsWith(x.Key)))
+            if (m_VirtualPaths.Any(x => context.RequestPath().StartsWith(x.Key)))
             {
-                var additionalPath = AdditionalPaths.FirstOrDefault(x => context.RequestPath().StartsWith(x.Key));
+                var additionalPath = m_VirtualPaths.FirstOrDefault(x => context.RequestPath().StartsWith(x.Key));
                 rootFs = additionalPath.Value;
                 urlPath = urlPath.Replace(additionalPath.Key.Replace('/', Path.DirectorySeparatorChar), "");
 
@@ -297,9 +301,10 @@
                 }
             }
 
-            // check to see if the file was modified or etag is the same
+            // check to see if the file was modified or e-tag is the same
             var utcFileDateString = fileDate.ToUniversalTime()
                 .ToString(Constants.BrowserTimeFormat, Constants.StandardCultureInfo);
+
             if (usingPartial == false &&
                 (eTagValid || context.RequestHeader(Constants.HeaderIfModifiedSince).Equals(utcFileDateString)))
             {
@@ -420,10 +425,10 @@
                         byteLength = buffer.LongLength;
 
                         // Perform compression if available
-                        if (context.RequestHeader(Constants.HeaderAcceptEncoding).Contains("gzip"))
+                        if (context.RequestHeader(Constants.HeaderAcceptEncoding).Contains(Constants.HeaderCompressionGzip))
                         {
                             buffer = buffer.Compress();
-                            context.Response.AddHeader(Constants.HeaderContentEncoding, "gzip");
+                            context.Response.AddHeader(Constants.HeaderContentEncoding, Constants.HeaderCompressionGzip);
                             byteLength = buffer.LongLength;
                             lowerByteIndex = 0;
                         }
@@ -449,6 +454,40 @@
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Registers the virtual path.
+        /// </summary>
+        /// <param name="virtualPath">The virtual path.</param>
+        /// <param name="physicalPath">The physical path.</param>
+        /// <exception cref="System.InvalidOperationException">
+        /// </exception>
+        public void RegisterVirtualPath(string virtualPath, string physicalPath)
+        {
+            if (string.IsNullOrWhiteSpace(virtualPath) || virtualPath == "/")
+                throw new InvalidOperationException($"The virtual path {virtualPath} is invalid");
+
+            if (m_VirtualPaths.ContainsKey(virtualPath))
+                throw new InvalidOperationException($"The virtual path {virtualPath} already exists");
+
+            if (Directory.Exists(physicalPath) == false)
+                throw new InvalidOperationException($"The physical path {physicalPath} doesn't exist");
+
+            m_VirtualPaths.Add(virtualPath, physicalPath);
+        }
+
+        /// <summary>
+        /// Unregisters the virtual path.
+        /// </summary>
+        /// <param name="virtualPath">The virtual path.</param>
+        /// <exception cref="System.InvalidOperationException"></exception>
+        public void UnregisterVirtualPath(string virtualPath)
+        {
+            if (m_VirtualPaths.ContainsKey(virtualPath) == false)
+                throw new InvalidOperationException($"The virtual path {virtualPath} doesn't exists");
+
+            m_VirtualPaths.Remove(virtualPath);
         }
     }
 }

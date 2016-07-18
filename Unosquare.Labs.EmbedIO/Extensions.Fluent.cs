@@ -4,6 +4,7 @@
     using System;
     using System.Linq;
     using System.Reflection;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Extensions methods to EmbedIO's Fluent Interface
@@ -26,6 +27,24 @@
             if (webserver == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
 
             webserver.RegisterModule(new StaticFilesModule(rootPath) { DefaultDocument = defaultDocument });
+            return webserver;
+        }
+
+        /// <summary>
+        /// Add the StaticFilesModule with Multiple paths
+        /// </summary>
+        /// <param name="webserver">The webserver.</param>
+        /// <param name="virtualPaths">The virtual paths.</param>
+        /// <param name="defaultDocument">The default document.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentException"></exception>
+        public static WebServer WithVirtualPaths(this WebServer webserver, Dictionary<string, string> virtualPaths,
+            string defaultDocument = StaticFilesModule.DefaultDocumentName)
+        {
+            if (webserver == null)
+                throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
+
+            webserver.RegisterModule(new StaticFilesModule(virtualPaths) {DefaultDocument = defaultDocument});
             return webserver;
         }
 

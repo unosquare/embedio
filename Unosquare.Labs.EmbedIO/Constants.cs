@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+
     /// <summary>
     /// Defines assembly-wide constants
     /// </summary>
@@ -93,6 +94,11 @@
         /// Content-Range HTTP Header
         /// </summary>
         public const string HeaderContentRanges = "Content-Range";
+
+        /// <summary>
+        /// The header compression gzip
+        /// </summary>
+        public const string HeaderCompressionGzip = "gzip";
 
         /// <summary>
         ///  Default Browser time format
