@@ -1,12 +1,12 @@
-﻿using System.Linq;
-using System.Net;
-using Newtonsoft.Json;
-using NUnit.Framework;
-
-namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
+﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
+    using Newtonsoft.Json;
+    using NUnit.Framework;
     using System;
     using System.IO;
+    using System.Linq;
+    using System.Net;
+    using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Labs.EmbedIO.Tests.Properties;
 
     public static class TestHelper
@@ -19,18 +19,22 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 
         private static string RootPath()
         {
-            var assemblyPath = Path.GetDirectoryName(typeof(StaticFilesModuleTest).Assembly.Location);
+            var assemblyPath = Path.GetDirectoryName(typeof (StaticFilesModuleTest).Assembly.Location);
             return Path.Combine(assemblyPath, "html");
         }
 
         public static byte[] GetBigData()
         {
-            return File.Exists(Path.Combine(RootPath(), BigDataFile)) ? File.ReadAllBytes(Path.Combine(RootPath(), BigDataFile)) : null;
+            return File.Exists(Path.Combine(RootPath(), BigDataFile))
+                ? File.ReadAllBytes(Path.Combine(RootPath(), BigDataFile))
+                : null;
         }
 
         public static byte[] GetSmallData()
         {
-            return File.Exists(Path.Combine(RootPath(), SmallDataFile)) ? File.ReadAllBytes(Path.Combine(RootPath(), SmallDataFile)) : null;
+            return File.Exists(Path.Combine(RootPath(), SmallDataFile))
+                ? File.ReadAllBytes(Path.Combine(RootPath(), SmallDataFile))
+                : null;
         }
 
         public static string SetupStaticFolder()
@@ -40,13 +44,13 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
             if (Directory.Exists(rootPath) == false)
                 Directory.CreateDirectory(rootPath);
 
-            if (File.Exists(Path.Combine(rootPath, "index.html")) == false)
+            if (File.Exists(Path.Combine(rootPath, StaticFilesModule.DefaultDocumentName)) == false)
                 File.WriteAllText(Path.Combine(rootPath, "index.html"), Resources.index);
 
             if (Directory.Exists(Path.Combine(rootPath, "sub")) == false)
                 Directory.CreateDirectory(Path.Combine(rootPath, "sub"));
 
-            if (File.Exists(Path.Combine(rootPath, "sub", "index.html")) == false)
+            if (File.Exists(Path.Combine(rootPath, "sub", StaticFilesModule.DefaultDocumentName)) == false)
                 File.WriteAllText(Path.Combine(rootPath, "sub", "index.html"), Resources.subIndex);
 
             if (File.Exists(Path.Combine(rootPath, BigDataFile)) == false)
@@ -58,18 +62,41 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
             return rootPath;
         }
 
+        public static string GetStaticFolderInstanceIndexFileContents(string instanceName)
+        {
+            var content = Resources.index;
+            const string placeholder = "This is a placeholder";
+
+            Assert.AreEqual(true, content.Contains(placeholder), "Setup error");
+            content = content.Replace(placeholder, "Instance name is " + instanceName);
+            return content;
+        }
+
+        public static string SetupStaticFolderInstance(string instanceName)
+        {
+            var rootPath = RootPath();
+            var folderName = instanceName.Replace('/', Path.DirectorySeparatorChar);
+            var folder = Path.Combine(rootPath, "Instance" + folderName);
+            Directory.CreateDirectory(folder);
+            var fileName = Path.Combine(folder, StaticFilesModule.DefaultDocumentName);
+
+            File.WriteAllText(fileName, GetStaticFolderInstanceIndexFileContents(instanceName));
+
+            return folder;
+        }
+
         public static void CreateTempBinaryFile(string fileName, int sizeInMb)
         {
             // Note: block size must be a factor of 1MB to avoid rounding errors :)
             const int blockSize = 1024*8;
             const int blocksPerMb = (1024*1024)/blockSize;
-            byte[] data = new byte[blockSize];
+            var data = new byte[blockSize];
 
             var rng = new Random();
-            using (FileStream stream = File.OpenWrite(fileName))
+            using (var stream = File.OpenWrite(fileName))
             {
                 // There 
-                for (int i = 0; i < sizeInMb*blocksPerMb; i++)
+                for (var i = 0; i < sizeInMb*blocksPerMb; i++)
                 {
                     rng.NextBytes(data);
                     stream.Write(data, 0, data.Length);
@@ -81,9 +108,9 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
         {
             person = person ?? PeopleRepository.Database.First();
 
-            var singleRequest = (HttpWebRequest)WebRequest.Create(url);
+            var singleRequest = (HttpWebRequest) WebRequest.Create(url);
 
-            using (var response = (HttpWebResponse)singleRequest.GetResponse())
+            using (var response = (HttpWebResponse) singleRequest.GetResponse())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 

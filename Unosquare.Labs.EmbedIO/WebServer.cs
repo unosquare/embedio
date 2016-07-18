@@ -16,6 +16,7 @@
     public class WebServer : IDisposable
     {
         private readonly List<IWebModule> _modules = new List<IWebModule>(4);
+        private readonly List<string> _urlRoots = new List<string>();
         private Task _listenerTask;
 
         /// <summary>
@@ -32,21 +33,20 @@
         /// <value>
         /// The URL prefix.
         /// </value>
-        public HttpListenerPrefixCollection UrlPrefixes
-        {
-            get { return this.Listener.Prefixes; }
-        }
+        public HttpListenerPrefixCollection UrlPrefixes => this.Listener.Prefixes;
 
         /// <summary>
-        /// Gets a list of regitered modules
+        /// Gets a list of registered modules
         /// </summary>
         /// <value>
         /// The modules.
         /// </value>
-        public ReadOnlyCollection<IWebModule> Modules
-        {
-            get { return _modules.AsReadOnly(); }
-        }
+        public ReadOnlyCollection<IWebModule> Modules => _modules.AsReadOnly();
+
+        /// <summary>
+        /// Gets Url part after the port on which the server is listening (every item correspond to Url prefix).
+        /// </summary>
+        public ReadOnlyCollection<string> UrlRoots => _urlRoots.AsReadOnly();
 
         /// <summary>
         /// Gets registered the ISessionModule.
@@ -131,7 +131,7 @@
         /// <param name="urlPrefix">The URL prefix.</param>
         /// <param name="log">The log.</param>
         public WebServer(string urlPrefix, ILog log)
-            : this(new[] { urlPrefix }, log, RoutingStrategy.Wildcard)
+            : this(new[] {urlPrefix}, log, RoutingStrategy.Wildcard)
         {
             // placeholder
         }
@@ -143,7 +143,7 @@
         /// <param name="log">The log.</param>
         /// <param name="routingStrategy">The routing strategy</param>
         public WebServer(string urlPrefix, ILog log, RoutingStrategy routingStrategy)
-            : this(new[] { urlPrefix }, log, routingStrategy)
+            : this(new[] {urlPrefix}, log, routingStrategy)
         {
             // placeholder
         }
@@ -190,6 +190,7 @@
                 if (urlPrefix.EndsWith("/") == false) urlPrefix = urlPrefix + "/";
                 urlPrefix = urlPrefix.ToLowerInvariant();
 
+                this._urlRoots.Add(UrlPrefixToUrlRoot(urlPrefix));
                 this.Listener.Prefixes.Add(urlPrefix);
                 this.Log.InfoFormat("Web server prefix '{0}' added.", urlPrefix);
             }
@@ -197,6 +198,32 @@
             this.Log.Info("Finished Loading Web Server.");
         }
 
+
+        /// <summary>
+        /// maps HttpListener Prefix to url root, which is part after port and third slash
+        /// </summary>
+        /// <returns></returns>
+        protected string UrlPrefixToUrlRoot(string prefix)
+        {
+            var countOfSlashes = 3;
+            var slashesFound = 0;
+            int i;
+
+            for (i = 0; i < prefix.Length; i++)
+            {
+                if (prefix[i] == '/') slashesFound++;
+                if (slashesFound == countOfSlashes) break;
+            }
+
+            if (slashesFound != countOfSlashes)
+            {
+                //misformated prefix?
+                return "/";
+            }
+
+            return new string(prefix.Skip(i).ToArray()).ToLowerInvariant();
+        }
+        
         /// <summary>
         /// Gets the module registered for the given type.
         /// Returns null if no module matches the given type.
@@ -206,7 +233,7 @@
         public T Module<T>()
             where T : class, IWebModule
         {
-            var module = this.Modules.FirstOrDefault(m => m.GetType() == typeof(T));
+            var module = this.Modules.FirstOrDefault(m => m.GetType() == typeof (T));
             return module as T;
         }
 
@@ -307,7 +334,7 @@
                 {
                     Log.Error("No module generated a response. Sending 404 - Not Found");
                     var responseBytes = System.Text.Encoding.UTF8.GetBytes(Constants.Response404Html);
-                    context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                    context.Response.StatusCode = (int) HttpStatusCode.NotFound;
                     context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
                 }
             }
@@ -366,7 +393,7 @@
                 catch (Exception ex)
                 {
                     // Handle exceptions by returning a 500 (Internal Server Error) 
-                    if (context.Response.StatusCode != (int)HttpStatusCode.Unauthorized)
+                    if (context.Response.StatusCode != (int) HttpStatusCode.Unauthorized)
                     {
                         // Log the exception message.
                         var errorMessage = ex.ExceptionMessage("Failing module name: " + module.Name);
@@ -379,7 +406,7 @@
 
                         // Send the response over with the corresponding status code.
                         var responseBytes = System.Text.Encoding.UTF8.GetBytes(response);
-                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                         context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
                     }
 
@@ -452,7 +479,7 @@
                 {
                     try
                     {
-                        // Asynchrounously queue a response by using a thread from the thread pool
+                        // Asynchronously queue a response by using a thread from the thread pool
                         ThreadPool.QueueUserWorkItem((contextState) =>
                         {
                             // get a reference to the HTTP Listener Context

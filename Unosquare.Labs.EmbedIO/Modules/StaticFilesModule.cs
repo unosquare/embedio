@@ -158,9 +158,39 @@
             this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (server, context) => HandleGet(context, server));
         }
 
+        /// <summary>
+        ///  find matching UrlRoot for it and remove it from requestPath
+        /// </summary>
+        /// <param name="requestPath"></param>
+        /// <param name="urlRoots"></param>
+        /// <returns></returns>
+        private string RemoveServerRootFromRequestUrl(string requestPath, IEnumerable<string> urlRoots)
+        {
+            var url = requestPath.ToLowerInvariant();
+            if (requestPath == string.Empty || requestPath[0] != '/') url = "/" + url;
+            var urlRootsWithoutLastSlash = urlRoots.Select(x => x.Substring(0, x.Length - 1)); //all url roots end with slash; request might or might not end with slash
+            var urlRootMatch = urlRootsWithoutLastSlash.Where(x => url.StartsWith(x)).OrderByDescending(x => x.Length).FirstOrDefault();
+            //OrderByDescending : the longest match rule applies when routing requests in HTTP.sys, I'm consistent with it; This matter only if there are multiple prefixes in webserver and they have common start, like: /AAA/ and /AAA/BBB/ or / and /AAA
+            if (urlRootMatch == null)
+            {
+                //should never happen, such requests would never reach HttpListener, unless there is bug this code
+                throw new ArgumentException("Could not find UrlRoot for request url " + url + ". UrlRoots are :" + String.Join(", ", urlRoots));
+            }
+            else
+            {
+                var shortened = url.Substring(urlRootMatch.Length);
+                if (shortened == string.Empty || shortened[0] != '/')
+                {
+                    shortened = "/" + shortened;
+                }
+                return shortened;
+            }
+        }
+
         private bool HandleGet(HttpListenerContext context, WebServer server, bool sendBuffer = true)
         {
-            var urlPath = context.Request.Url.LocalPath.Replace('/', Path.DirectorySeparatorChar);
+            var urlPath = RemoveServerRootFromRequestUrl(context.RequestPath(), server.UrlRoots);
+            urlPath = urlPath.Replace('/', Path.DirectorySeparatorChar);
 
             // adjust the path to see if we've got a default document
             if (urlPath.Last() == Path.DirectorySeparatorChar)
