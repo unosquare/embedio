@@ -11,10 +11,10 @@ namespace Unosquare.Labs.EmbedIO.Samples
     {
         public string Name { get; set; }
         public int Age { get; set; }
+
         [LiteIndex]
         public string EmailAddress { get; set; }
 
-        // http://www.gravatar.com/avatar/{Extensions.ComputeMd5Hash(EmailAddress)}.png?s=100
-        public string PhotoUrl { get; set; }
+        public string PhotoUrl => $"http://www.gravatar.com/avatar/{Extensions.ComputeMd5Hash(EmailAddress)}.png?s=100";
     }
 }

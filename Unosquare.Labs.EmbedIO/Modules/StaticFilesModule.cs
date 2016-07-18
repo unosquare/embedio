@@ -1,10 +1,10 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
-    using System.Collections.ObjectModel;
     using EmbedIO;
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
     using System.Net;
@@ -465,7 +465,7 @@
         /// </exception>
         public void RegisterVirtualPath(string virtualPath, string physicalPath)
         {
-            if (string.IsNullOrWhiteSpace(virtualPath) || virtualPath == "/")
+            if (string.IsNullOrWhiteSpace(virtualPath) || virtualPath == "/" || virtualPath[0] != '/')
                 throw new InvalidOperationException($"The virtual path {virtualPath} is invalid");
 
             if (m_VirtualPaths.ContainsKey(virtualPath))
