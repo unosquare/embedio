@@ -18,6 +18,21 @@
             if (args.Length > 0)
                 url = args[0];
 
+            var dbContext = new AppDbContext();
+            
+            foreach (var person in dbContext.People.SelectAll())
+                dbContext.People.Delete(person);
+
+            dbContext.People.Insert(new Person() { Name = "Mario Di Vece", Age = 31, EmailAddress = "mario@unosquare.com" });
+            dbContext.People.Insert(new Person()
+            {
+                Name = "Geovanni Perez",
+                Age = 32,
+                EmailAddress = "geovanni.perez@unosquare.com"
+            });
+
+            dbContext.People.Insert(new Person() { Name = "Luis Gonzalez", Age = 29, EmailAddress = "luis.gonzalez@unosquare.com" });
+
             // Our web server is disposable. Note that if you don't want to use logging,
             // there are alternate constructors that allow you to skip specifying an ILog object.
             using (var server = new WebServer(url, Log))
@@ -45,7 +60,7 @@
 
                 // Register the Web Api Module. See the Setup method to find out how to do it
                 // It registers the WebApiModule and registers the controller(s) -- that's all.
-                RestApiSample.Setup(server);
+                server.WithWebApiController<PeopleController>();
 
                 // Register the WebSockets module. See the Setup method to find out how to do it
                 // It registers the WebSocketsModule and registers the server for the given paths(s)

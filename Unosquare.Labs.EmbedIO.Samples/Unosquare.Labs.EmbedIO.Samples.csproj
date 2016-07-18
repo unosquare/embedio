@@ -61,7 +61,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Unosquare.Labs.LiteLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\LiteLib.0.8.0\lib\net45\Unosquare.Labs.LiteLib.dll</HintPath>
+      <HintPath>..\packages\LiteLib.0.8.2\lib\net45\Unosquare.Labs.LiteLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Unosquare.Tubular, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -72,9 +72,10 @@
   <ItemGroup>
     <Compile Include="AppDbContext.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="Person.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RestApiSample.cs" />
+    <Compile Include="PeopleController.cs" />
     <Compile Include="StaticFilesSample.cs" />
     <Compile Include="WebSocketsSample.cs" />
   </ItemGroup>
