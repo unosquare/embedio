@@ -3,10 +3,10 @@ solution: Unosquare.Labs.EmbedIO.sln
 install:
   - nuget restore Unosquare.Labs.EmbedIO.sln
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
-  - nuget install coveralls.net -Version 0.5.0 -OutputDirectory coveralls
+  - nuget install coveralls.net -Version 0.6.0 -OutputDirectory coveralls
   - sudo apt-get install gtk-sharp2
-  - curl -sS https://api.nuget.org/packages/mono.cecil.0.9.5.4.nupkg > /tmp/mono.cecil.0.9.5.4.nupkg.zip
-  - unzip /tmp/mono.cecil.0.9.5.4.nupkg.zip -d /tmp/cecil
+  - curl -sS https://api.nuget.org/packages/mono.cecil.0.9.6.3.nupkg > /tmp/mono.cecil.0.9.6.3.nupkg.zip
+  - unzip /tmp/mono.cecil.0.9.6.3.nupkg.zip -d /tmp/cecil
   - cp /tmp/cecil/lib/net40/Mono.Cecil.dll .
   - cp /tmp/cecil/lib/net40/Mono.Cecil.dll /tmp/cecil/
   - git clone --depth=50 git://github.com/csMACnz/monocov.git ../../unosquare/monocov
