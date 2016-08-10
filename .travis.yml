@@ -1,5 +1,8 @@
 language: csharp
 solution: Unosquare.Labs.EmbedIO.Lib.sln
+mono:
+  - latest
+  - 4.2.0
 install:
   - nuget restore Unosquare.Labs.EmbedIO.Lib.sln
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
