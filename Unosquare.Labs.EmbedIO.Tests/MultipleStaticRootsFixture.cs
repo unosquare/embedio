@@ -15,7 +15,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
     {
         protected string RootPath;
         protected WebServer WebServer;
-        protected string[] InstancesNames = {string.Empty, "A/", "B/", "C/", "A/C/", "AAA/A/B/C", "A/B/C/"};
+        protected string[] InstancesNames = {string.Empty, "A/", "B/", "C/", "A/C/", "AAA/A/B/C/", "A/B/C/"};
 
         [SetUp]
         public void Init()
