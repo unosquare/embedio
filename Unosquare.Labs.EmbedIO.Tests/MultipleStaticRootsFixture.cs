@@ -16,8 +16,8 @@ namespace Unosquare.Labs.EmbedIO.Tests
         protected string RootPath;
         protected WebServer WebServer;
         protected TestConsoleLog Logger = new TestConsoleLog();
-        protected string[] InstancesNames = { string.Empty, "A/", "B/", "C/", "A/C", "AAA/A/B/C", "A/B/C/"};
-        
+        protected string[] InstancesNames = {string.Empty, "A/", "B/", "C/", "A/C", "AAA/A/B/C", "A/B/C/"};
+
         [SetUp]
         public void Init()
         {
@@ -26,25 +26,20 @@ namespace Unosquare.Labs.EmbedIO.Tests
             var additionalPaths = InstancesNames.ToDictionary(x => "/" + x, TestHelper.SetupStaticFolderInstance);
 
             WebServer = new WebServer(Resources.ServerAddress, Logger);
-            WebServer.RegisterModule(new StaticFilesModule(additionalPaths) { UseRamCache = true });
+            WebServer.RegisterModule(new StaticFilesModule(additionalPaths) {UseRamCache = true});
             WebServer.RunAsync();
         }
 
         [Test]
-        public void FileContentsMatchInstanceName()
+        public async void FileContentsMatchInstanceName()
         {
             foreach (var item in InstancesNames)
             {
-                var request = (HttpWebRequest) WebRequest.Create(Resources.ServerAddress + item);
+                Console.WriteLine("Retrieving {0}", Resources.ServerAddress + item);
+                var html = await (new WebClient().DownloadStringTaskAsync(Resources.ServerAddress + item));
 
-                using (var response = (HttpWebResponse) request.GetResponse())
-                {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-                    var html = new StreamReader(response.GetResponseStream()).ReadToEnd();
-                    
-                    Assert.AreEqual(html, TestHelper.GetStaticFolderInstanceIndexFileContents(item),
-                        "index.html contents match instance name");
-                }
+                Assert.AreEqual(html, TestHelper.GetStaticFolderInstanceIndexFileContents(item),
+                    "index.html contents match instance name");
             }
         }
 
