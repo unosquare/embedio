@@ -15,7 +15,6 @@ namespace Unosquare.Labs.EmbedIO.Tests
     {
         protected string RootPath;
         protected WebServer WebServer;
-        protected TestConsoleLog Logger = new TestConsoleLog();
         protected string[] InstancesNames = {string.Empty, "A/", "B/", "C/", "A/C", "AAA/A/B/C", "A/B/C/"};
 
         [SetUp]
@@ -25,7 +24,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
 
             var additionalPaths = InstancesNames.ToDictionary(x => "/" + x, TestHelper.SetupStaticFolderInstance);
 
-            WebServer = new WebServer(Resources.ServerAddress, Logger);
+            WebServer = new WebServer(Resources.ServerAddress, new TestConsoleLog());
             WebServer.RegisterModule(new StaticFilesModule(additionalPaths) {UseRamCache = true});
             WebServer.RunAsync();
         }

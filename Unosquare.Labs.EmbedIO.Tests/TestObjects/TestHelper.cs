@@ -78,15 +78,14 @@
         {
             var folderName = instanceName.Replace('/', Path.DirectorySeparatorChar);
             var folder = Path.Combine(Path.GetDirectoryName(typeof(StaticFilesModuleTest).Assembly.Location), folderName);
-            Console.WriteLine(folder);
-
+            
             if (Directory.Exists(folder) == false)
                 Directory.CreateDirectory(folder);
 
             var fileName = Path.Combine(folder, StaticFilesModule.DefaultDocumentName);
 
             File.WriteAllText(fileName, GetStaticFolderInstanceIndexFileContents(instanceName));
-
+            Console.WriteLine(fileName);
             return folder;
         }
 
