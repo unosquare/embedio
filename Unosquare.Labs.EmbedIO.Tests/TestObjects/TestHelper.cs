@@ -78,6 +78,7 @@
         {
             var folderName = instanceName.Replace('/', Path.DirectorySeparatorChar);
             var folder = Path.Combine(Path.GetDirectoryName(typeof(StaticFilesModuleTest).Assembly.Location), folderName);
+            Console.WriteLine(folder);
 
             if (Directory.Exists(folder) == false)
                 Directory.CreateDirectory(folder);
