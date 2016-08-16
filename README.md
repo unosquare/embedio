@@ -359,4 +359,4 @@ public class WebSocketsChatServer : WebSocketsServer
 ```
 
 ## Notes
-[1] - EmbedIO uses lowercase URL parts. In Windows systems this is the expected behaviour but in Unix systems using MONO please refer to [Mono IOMap](http://www.mono-project.com/docs/advanced/iomap/) if you want to work with insensitive case URL parts.
+[1] - EmbedIO uses lowercase URL parts. In Windows systems this is the expected behaviour but in Unix systems using MONO please refer to [Mono IOMap](http://www.mono-project.com/docs/advanced/iomap/) if you want to work with case insensitive URL parts.
