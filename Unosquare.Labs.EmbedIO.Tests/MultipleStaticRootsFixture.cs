@@ -15,7 +15,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
     {
         protected string RootPath;
         protected WebServer WebServer;
-        protected string[] InstancesNames = {string.Empty, "A/", "B/", "C/", "A/C/", "AAA/A/B/C/", "A/B/C/"};
+        protected string[] InstancesNames = {string.Empty, "A/", "B/", "C/", "A/C", "AAA/A/B/C/", "A/B/C"};
 
         [SetUp]
         public void Init()
@@ -34,7 +34,6 @@ namespace Unosquare.Labs.EmbedIO.Tests
         {
             foreach (var item in InstancesNames)
             {
-                Console.WriteLine("Retrieving {0}", Resources.ServerAddress + item);
                 var html = await (new WebClient().DownloadStringTaskAsync(Resources.ServerAddress + item));
 
                 Assert.AreEqual(html, TestHelper.GetStaticFolderInstanceIndexFileContents(item),

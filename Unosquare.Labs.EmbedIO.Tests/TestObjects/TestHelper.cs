@@ -85,7 +85,6 @@
             var fileName = Path.Combine(folder, StaticFilesModule.DefaultDocumentName);
 
             File.WriteAllText(fileName, GetStaticFolderInstanceIndexFileContents(instanceName));
-            Console.WriteLine(fileName);
             return folder;
         }
 
