@@ -12,7 +12,7 @@ A tiny, cross-platform, module based, MIT-licensed web server for .NET
 
 * Written entirely in C#
 * Network operations use the async/await pattern: Responses are handled asynchronously
-* Cross-platform: tested in Mono 3.10.x on Windows and on a custom Yocto image for the Raspberry Pi
+* Cross-platform[1]: tested in Mono 3.10.x on Windows and on a custom Yocto image for the Raspberry Pi
 * Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras" target="_blank">EmbedIO Extras</a> for additional modules.
 * Small memory footprint
 * Create REST APIs quickly with the out-of-the-box Web Api module
@@ -357,3 +357,6 @@ public class WebSocketsChatServer : WebSocketsServer
     }
 }
 ```
+
+## Notes
+[1] - EmbedIO uses lowercase URL parts. In Windows systems this is the expected behaviour but in Unix systems using MONO please refer to [Mono IOMap](http://www.mono-project.com/docs/advanced/iomap/) if you want to work with insensitive case URL parts.
