@@ -73,7 +73,7 @@
         {
             return context.Request.Url.LocalPath.ToLowerInvariant();
         }
-        
+
         /// <summary>
         /// Retrieves the exception message, plus all the inner exception messages separated by new lines
         /// </summary>
@@ -326,21 +326,60 @@
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <returns></returns>
-        public static byte[] Compress(this byte[] buffer)
+        public static MemoryStream Compress(this Stream buffer)
         {
-            byte[] outputBuffer;
+            var targetStream = new MemoryStream();
 
-            using (var targetStream = new MemoryStream())
+            using (var compressor = new GZipStream(targetStream, CompressionMode.Compress, true))
             {
-                using (var compressor = new GZipStream(targetStream, CompressionMode.Compress, true))
-                {
-                    compressor.Write(buffer, 0, buffer.Length);
-                }
-                outputBuffer = targetStream.ToArray();
+                buffer.CopyTo(compressor);
             }
 
-            return outputBuffer;
+            return targetStream;
         }
+
+        /// <summary>
+        /// Computes the MD5 hash.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <returns></returns>
+        public static string ComputeMd5Hash(Stream stream)
+        {
+            var md5 = MD5.Create();
+            const int bufferSize = 4096;
+
+            var readAheadBuffer = new byte[bufferSize];
+            var readAheadBytesRead = stream.Read(readAheadBuffer, 0, readAheadBuffer.Length);
+
+            do
+            {
+                var bytesRead = readAheadBytesRead;
+                var buffer = readAheadBuffer;
+
+                readAheadBuffer = new byte[bufferSize];
+                readAheadBytesRead = stream.Read(readAheadBuffer, 0, readAheadBuffer.Length);
+
+                if (readAheadBytesRead == 0)
+                    md5.TransformFinalBlock(buffer, 0, bytesRead);
+                else
+                    md5.TransformBlock(buffer, 0, bytesRead, buffer, 0);
+            } while (readAheadBytesRead != 0);
+
+            return GetHashString(md5.Hash);
+        }
+
+        private static string GetHashString(byte[] hash)
+        {
+            var sb = new StringBuilder();
+
+            for (var i = 0; i < hash.Length; i++)
+            {
+                sb.Append(i.ToString("x2"));
+            }
+
+            return sb.ToString();
+        }
+
 
         /// <summary>
         /// Hash with MD5
@@ -351,14 +390,7 @@
         {
             var hash = MD5.Create().ComputeHash(inputBytes);
 
-            var sb = new StringBuilder();
-
-            for (var i = 0; i < hash.Length; i++)
-            {
-                sb.Append(i.ToString("x2"));
-            }
-
-            return sb.ToString();
+            return GetHashString(hash);
         }
 
         /// <summary>

@@ -14,6 +14,8 @@
     /// </summary>
     public class StaticFilesModule : WebModuleBase
     {
+        private const int chuckSize = 256*1024;
+
         private readonly Dictionary<string, string> m_VirtualPaths =
             new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
 
@@ -122,7 +124,7 @@
         private class RamCacheEntry
         {
             public DateTime LastModified { get; set; }
-            public byte[] Buffer { get; set; }
+            public MemoryStream Buffer { get; set; }
         }
 
         /// <summary>
@@ -193,7 +195,7 @@
             var urlPath = GetUrlPath(context, ref rootFs);
             var localPath = Path.Combine(rootFs, urlPath);
             var eTagValid = false;
-            byte[] buffer = null;
+            Stream buffer = null;
             var partialHeader = context.RequestHeader(Constants.HeaderRange);
             var usingPartial = string.IsNullOrWhiteSpace(partialHeader) == false && partialHeader.StartsWith("bytes=");
 
@@ -201,41 +203,48 @@
 
             var fileDate = File.GetLastWriteTime(localPath);
 
-            if (usingPartial == false)
+            var requestHash = context.RequestHeader(Constants.HeaderIfNotMatch);
+
+            if (RamCache.ContainsKey(localPath) && RamCache[localPath].LastModified == fileDate)
             {
-                var requestHash = context.RequestHeader(Constants.HeaderIfNotMatch);
+                server.Log.DebugFormat("RAM Cache: {0}", localPath);
 
-                if (RamCache.ContainsKey(localPath) && RamCache[localPath].LastModified == fileDate)
+                var currentHash = Extensions.ComputeMd5Hash(RamCache[localPath].Buffer.ToArray()) + '-' + fileDate.Ticks;
+
+                if (string.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
                 {
-                    server.Log.DebugFormat("RAM Cache: {0}", localPath);
-
-                    var currentHash = Extensions.ComputeMd5Hash(RamCache[localPath].Buffer) + '-' + fileDate.Ticks;
-
-                    if (string.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
-                    {
-                        buffer = RamCache[localPath].Buffer; // TODO: Check
-                        context.Response.AddHeader(Constants.HeaderETag, currentHash);
-                    }
-                    else
-                    {
-                        eTagValid = true;
-                    }
+                    buffer = RamCache[localPath].Buffer;
+                    context.Response.AddHeader(Constants.HeaderETag, currentHash);
                 }
                 else
                 {
-                    server.Log.DebugFormat("File System: {0}", localPath);
+                    eTagValid = true;
+                }
+            }
+            else
+            {
+                server.Log.DebugFormat("File System: {0}", localPath);
 
-                    if (sendBuffer)
+                if (sendBuffer)
+                {
+                    buffer = new FileStream(localPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+
+                    if (usingPartial == false)
                     {
-                        buffer = File.ReadAllBytes(localPath);
-
                         var currentHash = Extensions.ComputeMd5Hash(buffer) + '-' + fileDate.Ticks;
 
                         if (string.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
                         {
                             if (UseRamCache && buffer.Length <= MaxRamCacheFileSize)
                             {
-                                RamCache[localPath] = new RamCacheEntry() {LastModified = fileDate, Buffer = buffer};
+                                var memoryStream = new MemoryStream();
+                                buffer.CopyTo(memoryStream);
+
+                                RamCache[localPath] = new RamCacheEntry()
+                                {
+                                    LastModified = fileDate,
+                                    Buffer = memoryStream
+                                };
                             }
 
                             context.Response.AddHeader(Constants.HeaderETag, currentHash);
@@ -286,16 +295,20 @@
 
             if (sendBuffer == false)
             {
-                context.Response.ContentLength64 = buffer?.LongLength ?? fileSize;
+                context.Response.ContentLength64 = buffer?.Length ?? fileSize;
 
                 return true;
             }
 
+            // If buffer is null something is really wrong
+            if (buffer == null) return false;
+
             var lowerByteIndex = 0;
             var upperByteIndex = 0;
             var byteLength = (long) 0;
-            var isPartial = usingPartial && CalculateRange(partialHeader, fileSize, out lowerByteIndex, out upperByteIndex);
-            
+            var isPartial = usingPartial &&
+                            CalculateRange(partialHeader, fileSize, out lowerByteIndex, out upperByteIndex);
+
             if (isPartial)
             {
                 if (upperByteIndex > fileSize)
@@ -317,68 +330,56 @@
                 server.Log.DebugFormat("Opening stream {0} bytes {1}-{2} size {3}", localPath, lowerByteIndex,
                     upperByteIndex,
                     byteLength);
-
-                const int chuckSize = 256*1024;
-                buffer = new byte[chuckSize];
-                context.Response.ContentLength64 = byteLength;
-
-                // Open FileStream with FileShare
-                using (var fs = new FileStream(localPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                {
-                    try
-                    {
-                        var sendData = 0;
-                        while (true)
-                        {
-                            var readBufferSize = chuckSize;
-                            if (sendData + chuckSize > byteLength) readBufferSize = (int) (byteLength - sendData);
-
-                            fs.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
-                            var read = fs.Read(buffer, 0, readBufferSize);
-
-                            if (read == 0) break;
-                            
-                            context.Response.OutputStream.Write(buffer, sendData, readBufferSize);
-                            sendData += read;
-                        }
-                    }
-                    catch (HttpListenerException)
-                    {
-                        // Connection error, nothing else to do
-                    }
-                    
-                    fs.Close();
-                }
             }
             else
             {
-                byteLength = buffer.LongLength;
-
-                // Perform compression if available
                 if (context.RequestHeader(Constants.HeaderAcceptEncoding).Contains(Constants.HeaderCompressionGzip))
                 {
+                    // Perform compression if available
                     buffer = buffer.Compress();
                     context.Response.AddHeader(Constants.HeaderContentEncoding, Constants.HeaderCompressionGzip);
-                    byteLength = buffer.LongLength;
                     lowerByteIndex = 0;
                 }
 
-                context.Response.ContentLength64 = byteLength;
-
-                try
-                {
-                    context.Response.OutputStream.Write(buffer, lowerByteIndex, (int)byteLength);
-                }
-                catch (HttpListenerException)
-                {
-                    // Connection error, nothing else to do
-                }
+                byteLength = buffer.Length;
             }
 
+            var streamBuffer = new byte[chuckSize];
+            context.Response.ContentLength64 = byteLength;
+
+            try
+            {
+                var sendData = 0;
+
+                while (true)
+                {
+                    var readBufferSize = chuckSize;
+                    if (sendData + chuckSize > byteLength) readBufferSize = (int) (byteLength - sendData);
+
+                    buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
+                    var read = buffer.Read(streamBuffer, 0, readBufferSize);
+
+                    if (read == 0) break;
+
+                    context.Response.OutputStream.Write(streamBuffer, sendData, readBufferSize);
+                    sendData += read;
+                }
+            }
+            catch (HttpListenerException)
+            {
+                // Connection error, nothing else to do
+            }
+            finally
+            {
+                buffer.Close();
+                buffer.Dispose();
+            }
+            
             return true;
         }
 
-        private static bool CalculateRange(string partialHeader, long fileSize, out int lowerByteIndex, out int upperByteIndex)
+        private static bool CalculateRange(string partialHeader, long fileSize, out int lowerByteIndex,
+            out int upperByteIndex)
         {
             lowerByteIndex = 0;
             upperByteIndex = 0;

@@ -39,7 +39,7 @@
 
                 var html = new StreamReader(response.GetResponseStream()).ReadToEnd();
 
-                Assert.AreEqual(html, Resources.index, "Same content index.html");
+                Assert.AreEqual(Resources.index, html, "Same content index.html");
 
                 Assert.IsNullOrEmpty(response.Headers[Constants.HeaderPragma], "Pragma empty");
             }
