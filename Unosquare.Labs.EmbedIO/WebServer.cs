@@ -331,7 +331,7 @@
                     x.Path == (x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath()) &&
                     x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
 
-                if (handler == null || handler.ResponseHandler == null)
+                if (handler?.ResponseHandler == null)
                     continue;
 
                 // Establish the callback
@@ -367,7 +367,7 @@
                         Log.Error(errorMessage, ex);
 
                         // Generate an HTML response
-                        var response = String.Format(Constants.Response500HtmlFormat,
+                        var response = string.Format(Constants.Response500HtmlFormat,
                             WebUtility.HtmlEncode(errorMessage),
                             WebUtility.HtmlEncode(ex.StackTrace));
 
@@ -426,6 +426,7 @@
                     }
                 }
             }, ct);
+
             return this._listenerTask;
         }
 

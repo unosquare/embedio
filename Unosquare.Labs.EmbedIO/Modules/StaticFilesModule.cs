@@ -307,7 +307,7 @@
                     return true;
                 }
 
-                byteLength = (upperByteIndex - lowerByteIndex) + 1;
+                byteLength = upperByteIndex - lowerByteIndex;
 
                 context.Response.AddHeader(Constants.HeaderContentRanges,
                     $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
@@ -318,19 +318,37 @@
                     upperByteIndex,
                     byteLength);
 
-                buffer = new byte[byteLength];
+                const int chuckSize = 256*1024;
+                buffer = new byte[chuckSize];
+                context.Response.ContentLength64 = byteLength;
 
                 // Open FileStream with FileShare
                 using (var fs = new FileStream(localPath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    if (lowerByteIndex + byteLength > fs.Length) byteLength = fs.Length - lowerByteIndex;
-                    fs.Seek(lowerByteIndex, SeekOrigin.Begin);
-                    fs.Read(buffer, 0, (int) byteLength);
+                    try
+                    {
+                        var sendData = 0;
+                        while (true)
+                        {
+                            var readBufferSize = chuckSize;
+                            if (sendData + chuckSize > byteLength) readBufferSize = (int) (byteLength - sendData);
+
+                            fs.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
+                            var read = fs.Read(buffer, 0, readBufferSize);
+
+                            if (read == 0) break;
+                            
+                            context.Response.OutputStream.Write(buffer, sendData, readBufferSize);
+                            sendData += read;
+                        }
+                    }
+                    catch (HttpListenerException)
+                    {
+                        // Connection error, nothing else to do
+                    }
+                    
                     fs.Close();
                 }
-
-                // Reset lower range
-                lowerByteIndex = 0;
             }
             else
             {
@@ -344,17 +362,17 @@
                     byteLength = buffer.LongLength;
                     lowerByteIndex = 0;
                 }
-            }
 
-            context.Response.ContentLength64 = byteLength;
+                context.Response.ContentLength64 = byteLength;
 
-            try
-            {
-                context.Response.OutputStream.Write(buffer, lowerByteIndex, (int) byteLength);
-            }
-            catch (HttpListenerException)
-            {
-                // Connection error, nothing else to do
+                try
+                {
+                    context.Response.OutputStream.Write(buffer, lowerByteIndex, (int)byteLength);
+                }
+                catch (HttpListenerException)
+                {
+                    // Connection error, nothing else to do
+                }
             }
 
             return true;

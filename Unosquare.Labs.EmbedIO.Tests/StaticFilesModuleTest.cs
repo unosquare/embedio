@@ -120,9 +120,9 @@
                 var data = ms.ToArray();
 
                 Assert.IsNotNull(data, "Data is not empty");
-                var subset = new byte[maxLength + 1];
+                var subset = new byte[maxLength];
                 var originalSet = TestHelper.GetBigData();
-                Buffer.BlockCopy(originalSet, 0, subset, 0, maxLength +1);
+                Buffer.BlockCopy(originalSet, 0, subset, 0, maxLength);
                 Assert.AreEqual(subset, data);
             }
         }
@@ -144,9 +144,9 @@
                 var data = ms.ToArray();
 
                 Assert.IsNotNull(data, "Data is not empty");
-                var subset = new byte[maxLength + 1];
+                var subset = new byte[maxLength];
                 var originalSet = TestHelper.GetBigData();
-                Buffer.BlockCopy(originalSet, offset, subset, 0, maxLength + 1);
+                Buffer.BlockCopy(originalSet, offset, subset, 0, maxLength);
                 Assert.AreEqual(subset, data);
             }
         }
@@ -157,7 +157,7 @@
             const int startByteIndex = 100;
             const int byteLength = 100;
             var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
-            request.AddRange(startByteIndex, startByteIndex + byteLength - 1);
+            request.AddRange(startByteIndex, startByteIndex + byteLength);
 
             using (var response = (HttpWebResponse)request.GetResponse())
             {
@@ -191,7 +191,7 @@
             for (var i = 0; i < remoteSize/chunkSize + 1; i++)
             {
                 var request = (HttpWebRequest) WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
-                var top = ((i + 1)*chunkSize) - 1;
+                var top = (i + 1)*chunkSize;
 
                 request.AddRange(i*chunkSize, top > remoteSize ? remoteSize : top);
 
