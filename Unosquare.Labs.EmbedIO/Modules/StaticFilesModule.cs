@@ -350,10 +350,10 @@
             try
             {
                 var sendData = 0;
+                var readBufferSize = chuckSize;
 
                 while (true)
                 {
-                    var readBufferSize = chuckSize;
                     if (sendData + chuckSize > byteLength) readBufferSize = (int) (byteLength - sendData);
 
                     buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
@@ -361,8 +361,8 @@
 
                     if (read == 0) break;
 
-                    context.Response.OutputStream.Write(streamBuffer, sendData, readBufferSize);
                     sendData += read;
+                    context.Response.OutputStream.Write(streamBuffer, 0, readBufferSize);
                 }
             }
             catch (HttpListenerException)
