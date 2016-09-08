@@ -103,7 +103,7 @@
 
             Assert.Fail("The Exception should raise");
         }
-
+        
         [Test]
         public void GetInitialPartial()
         {
@@ -245,7 +245,7 @@
         [Test]
         public void GetNotPartial()
         {
-            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.SmallDataFile);
+            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
 
             using (var response = (HttpWebResponse) request.GetResponse())
             {
@@ -256,7 +256,7 @@
                 var data = ms.ToArray();
 
                 Assert.IsNotNull(data, "Data is not empty");
-                Assert.AreEqual(TestHelper.GetSmallData(), data);
+                Assert.AreEqual(TestHelper.GetBigData(), data);
             }
         }
 

@@ -190,83 +190,30 @@
         private bool HandleGet(HttpListenerContext context, WebServer server, bool sendBuffer = true)
         {
             var rootFs = FileSystemPath;
-            var urlPath = context.RequestPath().Replace('/', Path.DirectorySeparatorChar);
-
-            if (m_VirtualPaths.Any(x => context.RequestPath().StartsWith(x.Key)))
-            {
-                var additionalPath = m_VirtualPaths.FirstOrDefault(x => context.RequestPath().StartsWith(x.Key));
-                rootFs = additionalPath.Value;
-                urlPath = urlPath.Replace(additionalPath.Key.Replace('/', Path.DirectorySeparatorChar), "");
-
-                if (string.IsNullOrWhiteSpace(urlPath))
-                {
-                    urlPath = Path.DirectorySeparatorChar.ToString();
-                }
-            }
-
-            // adjust the path to see if we've got a default document
-            if (urlPath.Last() == Path.DirectorySeparatorChar)
-                urlPath = urlPath + DefaultDocument;
-
-            urlPath = urlPath.TrimStart(new char[] {Path.DirectorySeparatorChar});
-
+            var urlPath = GetUrlPath(context, ref rootFs);
             var localPath = Path.Combine(rootFs, urlPath);
             var eTagValid = false;
             byte[] buffer = null;
-            var fileDate = DateTime.Today;
             var partialHeader = context.RequestHeader(Constants.HeaderRange);
             var usingPartial = string.IsNullOrWhiteSpace(partialHeader) == false && partialHeader.StartsWith("bytes=");
 
-            if (string.IsNullOrWhiteSpace(DefaultExtension) == false && DefaultExtension.StartsWith(".") &&
-                File.Exists(localPath) == false)
-            {
-                var newPath = localPath + DefaultExtension;
+            if (ExistsLocalPath(urlPath, ref localPath) == false) return false;
 
-                if (File.Exists(newPath))
-                {
-                    localPath = newPath;
-                }
-            }
-
-            if (File.Exists(localPath) == false)
-            {
-                if (Directory.Exists(localPath) && File.Exists(Path.Combine(localPath, DefaultDocument)))
-                {
-                    localPath = Path.Combine(localPath, DefaultDocument);
-                }
-                else
-                {
-                    // Try to fall-back to root
-                    var rootLocalPath = Path.Combine(FileSystemPath, urlPath);
-
-                    if (File.Exists(rootLocalPath))
-                    {
-                        localPath = rootLocalPath;
-                    }
-                    else if (Directory.Exists(rootLocalPath) && File.Exists(Path.Combine(rootLocalPath, DefaultDocument)))
-                    {
-                        localPath = Path.Combine(rootLocalPath, DefaultDocument);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
+            var fileDate = File.GetLastWriteTime(localPath);
 
             if (usingPartial == false)
             {
-                fileDate = File.GetLastWriteTime(localPath);
                 var requestHash = context.RequestHeader(Constants.HeaderIfNotMatch);
 
                 if (RamCache.ContainsKey(localPath) && RamCache[localPath].LastModified == fileDate)
                 {
                     server.Log.DebugFormat("RAM Cache: {0}", localPath);
+
                     var currentHash = Extensions.ComputeMd5Hash(RamCache[localPath].Buffer) + '-' + fileDate.Ticks;
 
                     if (string.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
                     {
-                        buffer = RamCache[localPath].Buffer;
+                        buffer = RamCache[localPath].Buffer; // TODO: Check
                         context.Response.AddHeader(Constants.HeaderETag, currentHash);
                     }
                     else
@@ -308,152 +255,228 @@
             if (usingPartial == false &&
                 (eTagValid || context.RequestHeader(Constants.HeaderIfModifiedSince).Equals(utcFileDateString)))
             {
-                context.Response.AddHeader(Constants.HeaderCacheControl,
-                    DefaultHeaders.ContainsKey(Constants.HeaderCacheControl)
-                        ? DefaultHeaders[Constants.HeaderCacheControl]
-                        : "private");
+                SetStatusCode304(context);
+                return true;
+            }
 
-                context.Response.AddHeader(Constants.HeaderPragma,
-                    DefaultHeaders.ContainsKey(Constants.HeaderPragma)
-                        ? DefaultHeaders[Constants.HeaderPragma]
-                        : string.Empty);
+            var fileExtension = Path.GetExtension(localPath).ToLowerInvariant();
 
-                context.Response.AddHeader(Constants.HeaderExpires,
-                    DefaultHeaders.ContainsKey(Constants.HeaderExpires)
-                        ? DefaultHeaders[Constants.HeaderExpires]
-                        : string.Empty);
+            if (MimeTypes.ContainsKey(fileExtension))
+                context.Response.ContentType = MimeTypes[fileExtension];
 
-                context.Response.ContentType = string.Empty;
+            context.Response.AddHeader(Constants.HeaderCacheControl,
+                DefaultHeaders.ContainsKey(Constants.HeaderCacheControl)
+                    ? DefaultHeaders[Constants.HeaderCacheControl]
+                    : "private");
 
-                context.Response.StatusCode = 304;
+            context.Response.AddHeader(Constants.HeaderPragma,
+                DefaultHeaders.ContainsKey(Constants.HeaderPragma)
+                    ? DefaultHeaders[Constants.HeaderPragma]
+                    : string.Empty);
+
+            context.Response.AddHeader(Constants.HeaderExpires,
+                DefaultHeaders.ContainsKey(Constants.HeaderExpires)
+                    ? DefaultHeaders[Constants.HeaderExpires]
+                    : string.Empty);
+
+            context.Response.AddHeader(Constants.HeaderLastModified, utcFileDateString);
+            context.Response.AddHeader(Constants.HeaderAcceptRanges, "bytes");
+
+            var fileSize = new FileInfo(localPath).Length;
+
+            if (sendBuffer == false)
+            {
+                context.Response.ContentLength64 = buffer?.LongLength ?? fileSize;
+
+                return true;
+            }
+
+            var lowerByteIndex = 0;
+            var upperByteIndex = 0;
+            var byteLength = (long) 0;
+            var isPartial = usingPartial && CalculateRange(partialHeader, fileSize, out lowerByteIndex, out upperByteIndex);
+            
+            if (isPartial)
+            {
+                if (upperByteIndex > fileSize)
+                {
+                    context.Response.StatusCode = 416;
+                    context.Response.AddHeader(Constants.HeaderContentRanges,
+                        $"bytes */{fileSize}");
+
+                    return true;
+                }
+
+                byteLength = (upperByteIndex - lowerByteIndex) + 1;
+
+                context.Response.AddHeader(Constants.HeaderContentRanges,
+                    $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
+
+                context.Response.StatusCode = 206;
+
+                server.Log.DebugFormat("Opening stream {0} bytes {1}-{2} size {3}", localPath, lowerByteIndex,
+                    upperByteIndex,
+                    byteLength);
+
+                buffer = new byte[byteLength];
+
+                // Open FileStream with FileShare
+                using (var fs = new FileStream(localPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    if (lowerByteIndex + byteLength > fs.Length) byteLength = fs.Length - lowerByteIndex;
+                    fs.Seek(lowerByteIndex, SeekOrigin.Begin);
+                    fs.Read(buffer, 0, (int) byteLength);
+                    fs.Close();
+                }
+
+                // Reset lower range
+                lowerByteIndex = 0;
             }
             else
             {
-                var fileExtension = Path.GetExtension(localPath).ToLowerInvariant();
-                if (MimeTypes.ContainsKey(fileExtension))
-                    context.Response.ContentType = MimeTypes[fileExtension];
+                byteLength = buffer.LongLength;
 
-                context.Response.AddHeader(Constants.HeaderCacheControl,
-                    DefaultHeaders.ContainsKey(Constants.HeaderCacheControl)
-                        ? DefaultHeaders[Constants.HeaderCacheControl]
-                        : "private");
-
-                context.Response.AddHeader(Constants.HeaderPragma,
-                    DefaultHeaders.ContainsKey(Constants.HeaderPragma)
-                        ? DefaultHeaders[Constants.HeaderPragma]
-                        : string.Empty);
-
-                context.Response.AddHeader(Constants.HeaderExpires,
-                    DefaultHeaders.ContainsKey(Constants.HeaderExpires)
-                        ? DefaultHeaders[Constants.HeaderExpires]
-                        : string.Empty);
-
-                context.Response.AddHeader(Constants.HeaderLastModified, utcFileDateString);
-                context.Response.AddHeader(Constants.HeaderAcceptRanges, "bytes");
-
-                if (sendBuffer)
+                // Perform compression if available
+                if (context.RequestHeader(Constants.HeaderAcceptEncoding).Contains(Constants.HeaderCompressionGzip))
                 {
-                    var lowerByteIndex = 0;
-                    var upperByteIndex = 0;
-                    var byteLength = (long) 0;
-                    var isPartial = false;
-                    var fileSize = new FileInfo(localPath).Length;
+                    buffer = buffer.Compress();
+                    context.Response.AddHeader(Constants.HeaderContentEncoding, Constants.HeaderCompressionGzip);
+                    byteLength = buffer.LongLength;
+                    lowerByteIndex = 0;
+                }
+            }
 
-                    if (usingPartial)
-                    {
-                        var range = partialHeader.Replace("bytes=", "").Split('-');
-                        if (range.Length == 2 && int.TryParse(range[0], out lowerByteIndex) &&
-                            int.TryParse(range[1], out upperByteIndex))
-                        {
-                            isPartial = true;
-                        }
+            context.Response.ContentLength64 = byteLength;
 
-                        if ((range.Length == 2 && int.TryParse(range[0], out lowerByteIndex) &&
-                             string.IsNullOrWhiteSpace(range[1])) ||
-                            (range.Length == 1 && int.TryParse(range[0], out lowerByteIndex)))
-                        {
-                            upperByteIndex = (int) fileSize - 1;
-                            isPartial = true;
-                        }
+            try
+            {
+                context.Response.OutputStream.Write(buffer, lowerByteIndex, (int) byteLength);
+            }
+            catch (HttpListenerException)
+            {
+                // Connection error, nothing else to do
+            }
 
-                        if (range.Length == 2 && string.IsNullOrWhiteSpace(range[0]) &&
-                            int.TryParse(range[1], out upperByteIndex))
-                        {
-                            lowerByteIndex = (int) fileSize - upperByteIndex;
-                            upperByteIndex = (int) fileSize - 1;
-                            isPartial = true;
-                        }
-                    }
+            return true;
+        }
 
-                    if (isPartial)
-                    {
-                        if (upperByteIndex > fileSize)
-                        {
-                            context.Response.StatusCode = 416;
-                            context.Response.AddHeader(Constants.HeaderContentRanges,
-                                string.Format("bytes */{0}", fileSize));
-                            return true;
-                        }
+        private static bool CalculateRange(string partialHeader, long fileSize, out int lowerByteIndex, out int upperByteIndex)
+        {
+            lowerByteIndex = 0;
+            upperByteIndex = 0;
 
-                        byteLength = (upperByteIndex - lowerByteIndex) + 1;
+            var range = partialHeader.Replace("bytes=", "").Split('-');
 
-                        context.Response.AddHeader(Constants.HeaderContentRanges,
-                            string.Format("bytes {0}-{1}/{2}", lowerByteIndex, upperByteIndex, fileSize));
+            if (range.Length == 2 && int.TryParse(range[0], out lowerByteIndex) &&
+                int.TryParse(range[1], out upperByteIndex))
+            {
+                return true;
+            }
 
-                        context.Response.StatusCode = 206;
+            if ((range.Length == 2 && int.TryParse(range[0], out lowerByteIndex) &&
+                 string.IsNullOrWhiteSpace(range[1])) ||
+                (range.Length == 1 && int.TryParse(range[0], out lowerByteIndex)))
+            {
+                upperByteIndex = (int) fileSize - 1;
+                return true;
+            }
 
-                        server.Log.DebugFormat("Opening stream {0} bytes {1}-{2} size {3}", localPath, lowerByteIndex,
-                            upperByteIndex,
-                            byteLength);
+            if (range.Length == 2 && string.IsNullOrWhiteSpace(range[0]) &&
+                int.TryParse(range[1], out upperByteIndex))
+            {
+                lowerByteIndex = (int) fileSize - upperByteIndex;
+                upperByteIndex = (int) fileSize - 1;
+                return true;
+            }
 
-                        buffer = new byte[byteLength];
+            return false;
+        }
 
-                        // Open FileStream with FileShare
-                        using (var fs = new FileStream(localPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                        {
-                            if (lowerByteIndex + byteLength > fs.Length) byteLength = fs.Length - lowerByteIndex;
-                            fs.Seek(lowerByteIndex, SeekOrigin.Begin);
-                            fs.Read(buffer, 0, (int) byteLength);
-                            fs.Close();
-                        }
+        private bool ExistsLocalPath(string urlPath, ref string localPath)
+        {
+            if (string.IsNullOrWhiteSpace(DefaultExtension) == false && DefaultExtension.StartsWith(".") &&
+                File.Exists(localPath) == false)
+            {
+                var newPath = localPath + DefaultExtension;
 
-                        // Reset lower range
-                        lowerByteIndex = 0;
-                    }
-                    else
-                    {
-                        byteLength = buffer.LongLength;
+                if (File.Exists(newPath))
+                {
+                    localPath = newPath;
+                }
+            }
 
-                        // Perform compression if available
-                        if (context.RequestHeader(Constants.HeaderAcceptEncoding).Contains(Constants.HeaderCompressionGzip))
-                        {
-                            buffer = buffer.Compress();
-                            context.Response.AddHeader(Constants.HeaderContentEncoding, Constants.HeaderCompressionGzip);
-                            byteLength = buffer.LongLength;
-                            lowerByteIndex = 0;
-                        }
-                    }
+            if (File.Exists(localPath)) return true;
 
-                    context.Response.ContentLength64 = byteLength;
+            if (Directory.Exists(localPath) && File.Exists(Path.Combine(localPath, DefaultDocument)))
+            {
+                localPath = Path.Combine(localPath, DefaultDocument);
+            }
+            else
+            {
+                // Try to fall-back to root
+                var rootLocalPath = Path.Combine(FileSystemPath, urlPath);
 
-                    try
-                    {
-                        context.Response.OutputStream.Write(buffer, lowerByteIndex, (int) byteLength);
-                    }
-                    catch (HttpListenerException)
-                    {
-                        // Connection error, nothing else to do
-                    }
+                if (File.Exists(rootLocalPath))
+                {
+                    localPath = rootLocalPath;
+                }
+                else if (Directory.Exists(rootLocalPath) && File.Exists(Path.Combine(rootLocalPath, DefaultDocument)))
+                {
+                    localPath = Path.Combine(rootLocalPath, DefaultDocument);
                 }
                 else
                 {
-                    context.Response.ContentLength64 = buffer == null
-                        ? new FileInfo(localPath).Length
-                        : buffer.LongLength;
+                    return false;
                 }
             }
 
             return true;
+        }
+
+        private string GetUrlPath(HttpListenerContext context, ref string rootFs)
+        {
+            var urlPath = context.RequestPath().Replace('/', Path.DirectorySeparatorChar);
+
+            if (m_VirtualPaths.Any(x => context.RequestPath().StartsWith(x.Key)))
+            {
+                var additionalPath = m_VirtualPaths.FirstOrDefault(x => context.RequestPath().StartsWith(x.Key));
+                rootFs = additionalPath.Value;
+                urlPath = urlPath.Replace(additionalPath.Key.Replace('/', Path.DirectorySeparatorChar), "");
+
+                if (string.IsNullOrWhiteSpace(urlPath))
+                {
+                    urlPath = Path.DirectorySeparatorChar.ToString();
+                }
+            }
+
+            // adjust the path to see if we've got a default document
+            if (urlPath.Last() == Path.DirectorySeparatorChar)
+                urlPath = urlPath + DefaultDocument;
+
+            urlPath = urlPath.TrimStart(new char[] {Path.DirectorySeparatorChar});
+            return urlPath;
+        }
+
+        private void SetStatusCode304(HttpListenerContext context)
+        {
+            context.Response.AddHeader(Constants.HeaderCacheControl,
+                DefaultHeaders.ContainsKey(Constants.HeaderCacheControl)
+                    ? DefaultHeaders[Constants.HeaderCacheControl]
+                    : "private");
+
+            context.Response.AddHeader(Constants.HeaderPragma,
+                DefaultHeaders.ContainsKey(Constants.HeaderPragma)
+                    ? DefaultHeaders[Constants.HeaderPragma]
+                    : string.Empty);
+
+            context.Response.AddHeader(Constants.HeaderExpires,
+                DefaultHeaders.ContainsKey(Constants.HeaderExpires)
+                    ? DefaultHeaders[Constants.HeaderExpires]
+                    : string.Empty);
+
+            context.Response.ContentType = string.Empty;
+
+            context.Response.StatusCode = 304;
         }
 
         /// <summary>
