@@ -153,7 +153,7 @@
             // When debugging, disable RamCache
             this.UseRamCache = false;
 #else
-    // Otherwise, enable it by default
+            // Otherwise, enable it by default
             this.UseRamCache = true;
 #endif
             this.RamCache = new ConcurrentDictionary<string, RamCacheEntry>(StringComparer.InvariantCultureIgnoreCase);
@@ -176,11 +176,8 @@
 
             if (additionalPaths != null)
             {
-                foreach (var path in additionalPaths)
+                foreach (var path in additionalPaths.Where(path => path.Key != "/"))
                 {
-                    // Ignore base path
-                    if (path.Key == "/") continue;
-
                     RegisterVirtualPath(path.Key.ToLowerInvariant(), path.Value);
                 }
             }
@@ -209,7 +206,7 @@
             {
                 server.Log.DebugFormat("RAM Cache: {0}", localPath);
 
-                var currentHash = Extensions.ComputeMd5Hash(RamCache[localPath].Buffer.ToArray()) + '-' + fileDate.Ticks;
+                var currentHash = Extensions.ComputeMd5Hash(RamCache[localPath].Buffer) + '-' + fileDate.Ticks;
 
                 if (string.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
                 {
@@ -231,31 +228,7 @@
 
                     if (usingPartial == false)
                     {
-                        var currentHash = Extensions.ComputeMd5Hash(buffer) + '-' + fileDate.Ticks;
-
-                        if (string.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
-                        {
-                            if (UseRamCache && buffer.Length <= MaxRamCacheFileSize)
-                            {
-                                using (var memoryStream = new MemoryStream())
-                                {
-                                    buffer.Position = 0;
-                                    buffer.CopyTo(memoryStream);
-
-                                    RamCache[localPath] = new RamCacheEntry()
-                                    {
-                                        LastModified = fileDate,
-                                        Buffer = memoryStream.ToArray()
-                                    };
-                                }
-                            }
-
-                            context.Response.AddHeader(Constants.HeaderETag, currentHash);
-                        }
-                        else
-                        {
-                            eTagValid = true;
-                        }
+                        eTagValid = UpdateFileCache(context, buffer, fileDate, requestHash, localPath);
                     }
                 }
             }
@@ -271,35 +244,13 @@
                 return true;
             }
 
-            var fileExtension = Path.GetExtension(localPath).ToLowerInvariant();
-
-            if (MimeTypes.ContainsKey(fileExtension))
-                context.Response.ContentType = MimeTypes[fileExtension];
-
-            context.Response.AddHeader(Constants.HeaderCacheControl,
-                DefaultHeaders.ContainsKey(Constants.HeaderCacheControl)
-                    ? DefaultHeaders[Constants.HeaderCacheControl]
-                    : "private");
-
-            context.Response.AddHeader(Constants.HeaderPragma,
-                DefaultHeaders.ContainsKey(Constants.HeaderPragma)
-                    ? DefaultHeaders[Constants.HeaderPragma]
-                    : string.Empty);
-
-            context.Response.AddHeader(Constants.HeaderExpires,
-                DefaultHeaders.ContainsKey(Constants.HeaderExpires)
-                    ? DefaultHeaders[Constants.HeaderExpires]
-                    : string.Empty);
-
-            context.Response.AddHeader(Constants.HeaderLastModified, utcFileDateString);
-            context.Response.AddHeader(Constants.HeaderAcceptRanges, "bytes");
+            SetHeaders(context, localPath, utcFileDateString);
 
             var fileSize = new FileInfo(localPath).Length;
 
             if (sendBuffer == false)
             {
                 context.Response.ContentLength64 = buffer?.Length ?? fileSize;
-
                 return true;
             }
 
@@ -346,27 +297,12 @@
 
                 byteLength = buffer.Length;
             }
-
-            var streamBuffer = new byte[chuckSize];
+            
             context.Response.ContentLength64 = byteLength;
 
             try
             {
-                var sendData = 0;
-                var readBufferSize = chuckSize;
-
-                while (true)
-                {
-                    if (sendData + chuckSize > byteLength) readBufferSize = (int) (byteLength - sendData);
-
-                    buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
-                    var read = buffer.Read(streamBuffer, 0, readBufferSize);
-
-                    if (read == 0) break;
-
-                    sendData += read;
-                    context.Response.OutputStream.Write(streamBuffer, 0, readBufferSize);
-                }
+                WriteToOutputStream(context, byteLength, buffer, lowerByteIndex);
             }
             catch (HttpListenerException)
             {
@@ -379,6 +315,83 @@
             }
             
             return true;
+        }
+
+        private static void WriteToOutputStream(HttpListenerContext context, long byteLength, Stream buffer,
+            int lowerByteIndex)
+        {
+            var streamBuffer = new byte[chuckSize];
+            var sendData = 0;
+            var readBufferSize = chuckSize;
+
+            while (true)
+            {
+                if (sendData + chuckSize > byteLength) readBufferSize = (int) (byteLength - sendData);
+
+                buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
+                var read = buffer.Read(streamBuffer, 0, readBufferSize);
+
+                if (read == 0) break;
+
+                sendData += read;
+                context.Response.OutputStream.Write(streamBuffer, 0, readBufferSize);
+            }
+        }
+
+        private void SetHeaders(HttpListenerContext context, string localPath, string utcFileDateString)
+        {
+            var fileExtension = Path.GetExtension(localPath).ToLowerInvariant();
+
+            if (MimeTypes.ContainsKey(fileExtension))
+                context.Response.ContentType = MimeTypes[fileExtension];
+
+            context.Response.AddHeader(Constants.HeaderCacheControl,
+                DefaultHeaders.ContainsKey(Constants.HeaderCacheControl)
+                    ? DefaultHeaders[Constants.HeaderCacheControl]
+                    : "private");
+
+            context.Response.AddHeader(Constants.HeaderPragma,
+                DefaultHeaders.ContainsKey(Constants.HeaderPragma)
+                    ? DefaultHeaders[Constants.HeaderPragma]
+                    : string.Empty);
+
+            context.Response.AddHeader(Constants.HeaderExpires,
+                DefaultHeaders.ContainsKey(Constants.HeaderExpires)
+                    ? DefaultHeaders[Constants.HeaderExpires]
+                    : string.Empty);
+
+            context.Response.AddHeader(Constants.HeaderLastModified, utcFileDateString);
+            context.Response.AddHeader(Constants.HeaderAcceptRanges, "bytes");
+        }
+
+        private bool UpdateFileCache(HttpListenerContext context, Stream buffer, DateTime fileDate, string requestHash,
+            string localPath)
+        {
+            var currentHash = Extensions.ComputeMd5Hash(buffer) + '-' + fileDate.Ticks;
+
+            if (!string.IsNullOrWhiteSpace(requestHash) && requestHash == currentHash)
+            {
+                return true;
+            }
+
+            if (UseRamCache && buffer.Length <= MaxRamCacheFileSize)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    buffer.Position = 0;
+                    buffer.CopyTo(memoryStream);
+
+                    RamCache[localPath] = new RamCacheEntry()
+                    {
+                        LastModified = fileDate,
+                        Buffer = memoryStream.ToArray()
+                    };
+                }
+            }
+
+            context.Response.AddHeader(Constants.HeaderETag, currentHash);
+
+            return false;
         }
 
         private static bool CalculateRange(string partialHeader, long fileSize, out int lowerByteIndex,
@@ -475,7 +488,7 @@
             if (urlPath.Last() == Path.DirectorySeparatorChar)
                 urlPath = urlPath + DefaultDocument;
 
-            urlPath = urlPath.TrimStart(new char[] {Path.DirectorySeparatorChar});
+            urlPath = urlPath.TrimStart(Path.DirectorySeparatorChar);
             return urlPath;
         }
 
