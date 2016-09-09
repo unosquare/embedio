@@ -26,11 +26,9 @@
         /// Initialize WebSocket module
         /// </summary>
         public WebSocketsModule()
-            : base()
         {
             this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
             {
-
                 // check if it is a WebSocket request (this only works with Win8 and Windows 2012)
                 if (context.Request.IsWebSocketRequest == false)
                     return false;
@@ -63,7 +61,7 @@
         public void RegisterWebSocketsServer<T>()
             where T : WebSocketsServer, new()
         {
-            RegisterWebSocketsServer(typeof(T));
+            RegisterWebSocketsServer(typeof (T));
         }
 
         /// <summary>
@@ -77,13 +75,14 @@
                 throw new ArgumentException("Argument 'socketType' cannot be null", nameof(socketType));
 
             var attribute =
-                socketType.GetCustomAttributes(typeof(WebSocketHandlerAttribute), true).FirstOrDefault() as
+                socketType.GetCustomAttributes(typeof (WebSocketHandlerAttribute), true).FirstOrDefault() as
                     WebSocketHandlerAttribute;
 
             if (attribute == null)
-                throw new ArgumentException("Argument 'socketType' needs a WebSocketHandlerAttribute", nameof(socketType));
+                throw new ArgumentException("Argument 'socketType' needs a WebSocketHandlerAttribute",
+                    nameof(socketType));
 
-            this._serverMap[attribute.Path] = (WebSocketsServer)Activator.CreateInstance(socketType);
+            this._serverMap[attribute.Path] = (WebSocketsServer) Activator.CreateInstance(socketType);
         }
 
         /// <summary>
@@ -124,7 +123,7 @@
     /// Decorate methods within controllers with this attribute in order to make them callable from the Web API Module
     /// Method Must match the WebServerModule.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class)]
     public sealed class WebSocketHandlerAttribute : Attribute
     {
         /// <summary>
@@ -146,7 +145,7 @@
         /// <value>
         /// The paths.
         /// </value>
-        public string Path { get; private set; }
+        public string Path { get; }
     }
 
     /// <summary>
@@ -193,7 +192,7 @@
         {
             this._enableDisconnectedSocketColletion = enableConnectionWatchdog;
             this._maximumMessageSize = maxMessageSize;
-            
+
             RunConnectionWatchdog();
         }
 
@@ -268,7 +267,7 @@
                 // define a receive buffer
                 var receiveBuffer = new byte[receiveBufferSize];
                 // define a dynamic buffer that holds multi-part receptions
-                var receivedMessage = new List<byte>(receiveBuffer.Length * 2);
+                var receivedMessage = new List<byte>(receiveBuffer.Length*2);
 
                 // poll the WebSockets connections for reception
                 while (webSocketContext.WebSocket.State == WebSocketState.Open)

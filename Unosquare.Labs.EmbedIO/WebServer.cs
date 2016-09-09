@@ -181,6 +181,8 @@
             foreach (var prefix in urlPrefixes)
             {
                 var urlPrefix = prefix.Clone() as string;
+                if (urlPrefix == null) continue;
+
                 if (urlPrefix.EndsWith("/") == false) urlPrefix = urlPrefix + "/";
                 urlPrefix = urlPrefix.ToLowerInvariant();
 
@@ -190,7 +192,7 @@
 
             this.Log.Info("Finished Loading Web Server.");
         }
-        
+
         /// <summary>
         /// Gets the module registered for the given type.
         /// Returns null if no module matches the given type.
@@ -228,8 +230,10 @@
                 module.Server = this;
                 this._modules.Add(module);
 
-                if (module is ISessionWebModule)
-                    this.SessionModule = module as ISessionWebModule;
+                var webModule = module as ISessionWebModule;
+
+                if (webModule != null)
+                    this.SessionModule = webModule;
             }
             else
             {
@@ -412,9 +416,8 @@
                         clientSocketTask.Wait(ct);
                         var clientSocket = clientSocketTask.Result;
 
-                        var clientTask =
-                            Task.Factory.StartNew((context) => HandleClientRequest(context as HttpListenerContext, app),
-                                clientSocket, ct);
+                        Task.Factory.StartNew(context => HandleClientRequest(context as HttpListenerContext, app),
+                            clientSocket, ct);
                     }
                     catch (OperationCanceledException)
                     {
@@ -441,14 +444,14 @@
 
             this.Log.Info("Started HTTP Listener");
 
-            ThreadPool.QueueUserWorkItem((o) =>
+            ThreadPool.QueueUserWorkItem(o =>
             {
                 while (this.Listener != null && this.Listener.IsListening)
                 {
                     try
                     {
                         // Asynchronously queue a response by using a thread from the thread pool
-                        ThreadPool.QueueUserWorkItem((contextState) =>
+                        ThreadPool.QueueUserWorkItem(contextState =>
                         {
                             // get a reference to the HTTP Listener Context
                             var context = contextState as HttpListenerContext;

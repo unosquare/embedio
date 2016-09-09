@@ -31,7 +31,6 @@
             if (methods == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(methods));
 
             var validOrigins = origins.ToLower().Split(Constants.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
-            var validHeaders = headers.ToLower().Split(Constants.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
             var validMethods = methods.ToLower().Split(Constants.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
 
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
@@ -47,7 +46,7 @@
                 var currentHeader = context.RequestHeader(Constants.HeaderAccessControlRequestHeaders);
                 var currentMethod = context.RequestHeader(Constants.HeaderAccessControlRequestMethod);
 
-                if (String.IsNullOrWhiteSpace(currentOrigin) && context.Request.IsLocal) return false;
+                if (string.IsNullOrWhiteSpace(currentOrigin) && context.Request.IsLocal) return false;
 
                 if (origins != Constants.CorsWildcard)
                 {

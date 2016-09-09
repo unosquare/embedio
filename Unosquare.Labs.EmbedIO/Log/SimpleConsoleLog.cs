@@ -23,7 +23,7 @@
 
             format = dateTimeString + "\t" + format;
 
-            ThreadPool.QueueUserWorkItem((context) =>
+            ThreadPool.QueueUserWorkItem(context =>
             {
                 var current = Console.ForegroundColor;
                 Console.ForegroundColor = color;

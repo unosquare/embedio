@@ -231,17 +231,17 @@
             if (_delegateMap.ContainsKey(path) == false)
                 return null;
 
-            if (_delegateMap[path].ContainsKey(verb) == false) // TODO: Fix Any Verb
+            if (_delegateMap[path].ContainsKey(verb)) return path;
+
+            var originalPath = context.RequestPath();
+
+            if (_delegateMap.ContainsKey(originalPath) &&
+                _delegateMap[originalPath].ContainsKey(verb))
             {
-                var originalPath = context.RequestPath();
-                if (_delegateMap.ContainsKey(originalPath) &&
-                    _delegateMap[originalPath].ContainsKey(verb))
-                {
-                    path = originalPath;
-                }
-                else
-                    return null;
+                path = originalPath;
             }
+            else
+                return null;
 
             return path;
         }
@@ -328,14 +328,13 @@
 
                 foreach (var path in attribute.Paths)
                 {
-                    var delegatePath = new Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>();
-
-                    if (_delegateMap.ContainsKey(path))
-                        delegatePath = _delegateMap[path]; // update
-                    else
-                        _delegateMap.Add(path, delegatePath); // add
+                    if (_delegateMap.ContainsKey(path) == false)
+                    {
+                        _delegateMap.Add(path, new Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>()); // add
+                    }
 
                     var delegatePair = new Tuple<Func<object>, MethodInfo>(controllerFactory, method);
+
                     if (_delegateMap[path].ContainsKey(attribute.Verb))
                         _delegateMap[path][attribute.Verb] = delegatePair; // update
                     else
@@ -410,7 +409,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="WebApiController"/> class.
         /// </summary>
-        public WebApiController()
+        protected WebApiController()
         {
             // placeholder
         }

@@ -14,7 +14,10 @@
     /// </summary>
     public class StaticFilesModule : WebModuleBase
     {
-        private const int chuckSize = 256*1024;
+        /// <summary>
+        /// The chuck size for sending files
+        /// </summary>
+        private const int ChuckSize = 256*1024;
 
         private readonly Dictionary<string, string> m_VirtualPaths =
             new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
@@ -91,8 +94,7 @@
         /// <value>
         /// The virtual paths.
         /// </value>
-        public ReadOnlyDictionary<string, string> VirtualPaths => new ReadOnlyDictionary<string, string>(m_VirtualPaths)
-            ;
+        public ReadOnlyDictionary<string, string> VirtualPaths => new ReadOnlyDictionary<string, string>(m_VirtualPaths);
 
         /// <summary>
         /// Gets the name of this module.
@@ -116,7 +118,7 @@
         /// <value>
         /// The ram cache.
         /// </value>
-        private ConcurrentDictionary<string, RamCacheEntry> RamCache { get; set; }
+        private ConcurrentDictionary<string, RamCacheEntry> RamCache { get; }
 
         /// <summary>
         /// Represents a RAM Cache dictionary entry
@@ -259,7 +261,7 @@
 
             var lowerByteIndex = 0;
             var upperByteIndex = 0;
-            var byteLength = (long) 0;
+            long byteLength;
             var isPartial = usingPartial &&
                             CalculateRange(partialHeader, fileSize, out lowerByteIndex, out upperByteIndex);
 
@@ -320,13 +322,13 @@
         private static void WriteToOutputStream(HttpListenerContext context, long byteLength, Stream buffer,
             int lowerByteIndex)
         {
-            var streamBuffer = new byte[chuckSize];
+            var streamBuffer = new byte[ChuckSize];
             var sendData = 0;
-            var readBufferSize = chuckSize;
+            var readBufferSize = ChuckSize;
 
             while (true)
             {
-                if (sendData + chuckSize > byteLength) readBufferSize = (int) (byteLength - sendData);
+                if (sendData + ChuckSize > byteLength) readBufferSize = (int) (byteLength - sendData);
 
                 buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
                 var read = buffer.Read(streamBuffer, 0, readBufferSize);
@@ -432,12 +434,7 @@
             if (string.IsNullOrWhiteSpace(DefaultExtension) == false && DefaultExtension.StartsWith(".") &&
                 File.Exists(localPath) == false)
             {
-                var newPath = localPath + DefaultExtension;
-
-                if (File.Exists(newPath))
-                {
-                    localPath = newPath;
-                }
+                localPath += DefaultExtension;
             }
 
             if (File.Exists(localPath)) return true;

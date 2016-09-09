@@ -61,6 +61,7 @@
                 if (nameValue.Length == 2 && nameValue[0].Equals(SessionCookieName))
                 {
                     var sessionIdValue = nameValue[1].Trim();
+
                     if (this.Sessions.ContainsKey(sessionIdValue))
                     {
                         context.Request.Cookies[SessionCookieName].Value = sessionIdValue;
@@ -94,7 +95,7 @@
 
                 if (requestCookie == null)
                 {
-                    // create the session if sesison not available on the request
+                    // create the session if session not available on the request
                     var sessionCookie = CreateSession();
                     context.Response.SetCookie(sessionCookie);
                     context.Request.Cookies.Add(sessionCookie);
@@ -108,7 +109,7 @@
                     context.Request.Cookies[SessionCookieName].Value = sessionCookie.Value;
                     server.Log.DebugFormat("Updated session identifier to '{0}'", sessionCookie.Value);
                 }
-                else if (this.Sessions.ContainsKey(context.Request.Cookies[SessionCookieName].Value) == true)
+                else if (this.Sessions.ContainsKey(context.Request.Cookies[SessionCookieName].Value))
                 {
                     // If it does exist in the request, check if we're tracking it
                     var requestSessionId = context.Request.Cookies[SessionCookieName].Value;
@@ -116,7 +117,7 @@
                     server.Log.DebugFormat("Session Identified '{0}'", requestSessionId);
                 }
 
-                // Always returns false because we need it to handle the rest fo the modules
+                // Always returns false because we need it to handle the rest for the modules
                 return false;
             });
 
@@ -128,10 +129,7 @@
         /// <value>
         /// The sessions.
         /// </value>
-        public ConcurrentDictionary<string, SessionInfo> Sessions
-        {
-            get { return this.m_Sessions; }
-        }
+        public ConcurrentDictionary<string, SessionInfo> Sessions => this.m_Sessions;
 
         /// <summary>
         /// Gets a session object for the given server context.
@@ -177,9 +175,6 @@
         /// <value>
         /// The name.
         /// </value>
-        public override string Name
-        {
-            get { return "Local Session Module"; }
-        }
+        public override string Name => "Local Session Module";
     }
 }
