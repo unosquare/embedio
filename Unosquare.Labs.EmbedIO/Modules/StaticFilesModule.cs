@@ -124,7 +124,7 @@
         private class RamCacheEntry
         {
             public DateTime LastModified { get; set; }
-            public MemoryStream Buffer { get; set; }
+            public byte[] Buffer { get; set; }
         }
 
         /// <summary>
@@ -213,7 +213,7 @@
 
                 if (string.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
                 {
-                    buffer = RamCache[localPath].Buffer;
+                    buffer = new MemoryStream(RamCache[localPath].Buffer);
                     context.Response.AddHeader(Constants.HeaderETag, currentHash);
                 }
                 else
@@ -237,14 +237,17 @@
                         {
                             if (UseRamCache && buffer.Length <= MaxRamCacheFileSize)
                             {
-                                var memoryStream = new MemoryStream();
-                                buffer.CopyTo(memoryStream);
-
-                                RamCache[localPath] = new RamCacheEntry()
+                                using (var memoryStream = new MemoryStream())
                                 {
-                                    LastModified = fileDate,
-                                    Buffer = memoryStream
-                                };
+                                    buffer.Position = 0;
+                                    buffer.CopyTo(memoryStream);
+
+                                    RamCache[localPath] = new RamCacheEntry()
+                                    {
+                                        LastModified = fileDate,
+                                        Buffer = memoryStream.ToArray()
+                                    };
+                                }
                             }
 
                             context.Response.AddHeader(Constants.HeaderETag, currentHash);

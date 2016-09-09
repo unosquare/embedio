@@ -62,11 +62,11 @@
 
             var html = await webClient.DownloadStringTaskAsync(Resources.ServerAddress + "sub/");
 
-            Assert.AreEqual(html, Resources.subIndex, "Same content index.html");
-            
+            Assert.AreEqual(Resources.subIndex, html, "Same content index.html");
+
             html = await webClient.DownloadStringTaskAsync(Resources.ServerAddress + "sub");
 
-            Assert.AreEqual(html, Resources.subIndex, "Same content index.html without trailing");
+            Assert.AreEqual(Resources.subIndex, html, "Same content index.html without trailing");
         }
 
         [Test]
