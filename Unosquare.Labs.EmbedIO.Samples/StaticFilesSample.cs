@@ -4,7 +4,7 @@
     using Unosquare.Labs.EmbedIO.Modules;
 
     /// <summary>
-    /// 
+    /// Sample helper
     /// </summary>
     public static class StaticFilesSample
     {
@@ -23,7 +23,7 @@
                 // This lets you edit the files without restarting the server.
                 return Path.GetFullPath(Path.Combine(assemblyPath, "..\\..\\html"));
 #else
-                // This is when you have deployed ythe server.
+                // This is when you have deployed the server.
                 return Path.Combine(assemblyPath, "html");
 #endif
             }
@@ -38,7 +38,6 @@
             server.RegisterModule(new StaticFilesModule(HtmlRootPath));
             // The static files module will cache small files in ram until it detects they have been modified.
             server.Module<StaticFilesModule>().UseRamCache = false;
-            server.Module<StaticFilesModule>().UseGzip = false;
             server.Module<StaticFilesModule>().DefaultExtension = ".html"; 
             // We don't need to add the line below. The default document is always index.html.
             //server.Module<StaticFilesWebModule>().DefaultDocument = "index.html";

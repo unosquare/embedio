@@ -19,6 +19,11 @@
         /// </summary>
         private const int ChuckSize = 256*1024;
 
+        /// <summary>
+        /// The maximum gzip input length
+        /// </summary>
+        private const int MaxGzipInputLength = 4*1024*1024;
+
         private readonly Dictionary<string, string> m_VirtualPaths =
             new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
 
@@ -298,7 +303,9 @@
             }
             else
             {
-                if (UseGzip && context.RequestHeader(Constants.HeaderAcceptEncoding).Contains(Constants.HeaderCompressionGzip))
+                if (UseGzip &&
+                    context.RequestHeader(Constants.HeaderAcceptEncoding).Contains(Constants.HeaderCompressionGzip) &&
+                    buffer.Length < MaxGzipInputLength)
                 {
                     // Perform compression if available
                     buffer = buffer.Compress();
