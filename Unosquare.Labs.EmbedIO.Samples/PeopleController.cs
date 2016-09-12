@@ -84,7 +84,7 @@
             try
             {
                 var model = context.ParseJson<GridDataRequest>();
-                var data = await _dbContext.People.SelectAsync(null, null);
+                var data = await _dbContext.People.SelectAllAsync();
 
                 return context.JsonResponse(model.CreateGridDataResponse(data.AsQueryable()));
             }

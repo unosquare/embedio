@@ -12,7 +12,7 @@
                     <div class="panel panel-default panel-rounded">
                         <tb-grid-table class="table-bordered">
                             <tb-column-definitions>
-                                <tb-column name="Key" sortable="true" sort-order="1"
+                                <tb-column name="RowId" sortable="true" sort-order="1"
                                           sort-direction="Ascending" column-type="numeric">
                                     <tb-column-filter operator="Equals"></tb-column-filter>
                                     <tb-column-header>
@@ -41,7 +41,7 @@
                                 <tb-row-template ng-repeat="cells in $component.rows"
                                                  row-model="cells" selectable="false">
                                     <tb-cell-template>
-                                        {{cells.Key}}
+                                        {{cells.RowId}}
                                     </tb-cell-template>
                                     <tb-cell-template>
                                         {{cells.Name}}
