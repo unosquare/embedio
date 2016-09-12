@@ -1,4 +1,7 @@
-﻿namespace Unosquare.Labs.EmbedIO.Tests
+﻿using System.IO.Compression;
+using System.Text;
+
+namespace Unosquare.Labs.EmbedIO.Tests
 {
     using NUnit.Framework;
     using System;
@@ -235,7 +238,7 @@
 
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.RequestedRangeNotSatisfiable, "Status Code RequestedRangeNotSatisfiable");
                 Assert.AreEqual(response.Headers["Content-Range"],
-                    string.Format("bytes */{0}", remoteSize));
+                    $"bytes */{remoteSize}");
                 return;
             }
 
@@ -260,6 +263,26 @@
             }
         }
 
+        [Test]
+        public void GetGzipCompressFile()
+        {
+            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress);
+            request.AutomaticDecompression = DecompressionMethods.GZip;
+
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                var responseStream = response.GetResponseStream();
+                //Assert.IsTrue(response.ContentEncoding.ToLower().Contains("gzip"), "Request is gziped");
+                //var responseStream = new GZipStream(response.GetResponseStream(), CompressionMode.Decompress);
+                var reader =  new StreamReader(responseStream, Encoding.Default);
+                var html = reader.ReadToEnd();
+
+                Assert.IsNotNull(html, "Data is not empty");
+                Assert.AreEqual(Resources.index, html);
+            }
+        }
         [Test]
         public void HeadIndex()
         {

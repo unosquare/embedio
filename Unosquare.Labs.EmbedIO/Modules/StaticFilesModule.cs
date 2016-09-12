@@ -84,6 +84,14 @@
         public bool UseRamCache { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether [use gzip].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [use gzip]; otherwise, <c>false</c>.
+        /// </value>
+        public bool UseGzip { get; set; }
+
+        /// <summary>
         /// The default headers
         /// </summary>
         public Dictionary<string, string> DefaultHeaders = new Dictionary<string, string>();
@@ -151,6 +159,7 @@
                 throw new ArgumentException($"Path '{fileSystemPath}' does not exist.");
 
             this.FileSystemPath = fileSystemPath;
+            this.UseGzip = true;
 #if DEBUG
             // When debugging, disable RamCache
             this.UseRamCache = false;
@@ -289,7 +298,7 @@
             }
             else
             {
-                if (context.RequestHeader(Constants.HeaderAcceptEncoding).Contains(Constants.HeaderCompressionGzip))
+                if (UseGzip && context.RequestHeader(Constants.HeaderAcceptEncoding).Contains(Constants.HeaderCompressionGzip))
                 {
                     // Perform compression if available
                     buffer = buffer.Compress();

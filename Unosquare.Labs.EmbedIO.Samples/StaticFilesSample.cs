@@ -37,7 +37,8 @@
         {
             server.RegisterModule(new StaticFilesModule(HtmlRootPath));
             // The static files module will cache small files in ram until it detects they have been modified.
-            server.Module<StaticFilesModule>().UseRamCache = true;
+            server.Module<StaticFilesModule>().UseRamCache = false;
+            server.Module<StaticFilesModule>().UseGzip = false;
             server.Module<StaticFilesModule>().DefaultExtension = ".html"; 
             // We don't need to add the line below. The default document is always index.html.
             //server.Module<StaticFilesWebModule>().DefaultDocument = "index.html";

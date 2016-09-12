@@ -328,6 +328,7 @@
         /// <returns></returns>
         public static MemoryStream Compress(this Stream buffer)
         {
+            buffer.Position = 0;
             var targetStream = new MemoryStream();
 
             using (var compressor = new GZipStream(targetStream, CompressionMode.Compress, true))

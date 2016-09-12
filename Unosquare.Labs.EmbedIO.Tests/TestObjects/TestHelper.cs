@@ -88,6 +88,11 @@
             return folder;
         }
 
+        /// <summary>
+        /// Creates the temporary binary file.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="sizeInMb">The size in mb.</param>
         public static void CreateTempBinaryFile(string fileName, int sizeInMb)
         {
             // Note: block size must be a factor of 1MB to avoid rounding errors :)
