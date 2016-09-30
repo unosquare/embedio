@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using System.Net.Http;
     using NUnit.Framework;
@@ -9,7 +7,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
     using System.Net;
     using System.Threading;
     using Unosquare.Labs.EmbedIO.Modules;
-    
+    using System.Threading.Tasks;
     using Unosquare.Labs.EmbedIO.Tests.TestObjects;
 
     [TestFixture]

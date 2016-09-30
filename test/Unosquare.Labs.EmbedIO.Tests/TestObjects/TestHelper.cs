@@ -1,18 +1,15 @@
-﻿using System.Net.Http;
-using System.Threading.Tasks;
-
-namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
+﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
+    using System.Net.Http;
+    using System.Threading.Tasks;
     using Newtonsoft.Json;
     using NUnit.Framework;
     using System;
     using System.IO;
     using System.Linq;
-    using System.Net;
     using System.Reflection;
     using Unosquare.Labs.EmbedIO.Modules;
-
-
+    
     public static class TestHelper
     {
         private const string Placeholder = "This is a placeholder";
