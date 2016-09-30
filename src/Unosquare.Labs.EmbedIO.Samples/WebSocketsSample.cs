@@ -1,4 +1,5 @@
-﻿namespace Unosquare.Labs.EmbedIO.Samples
+﻿#if NET46
+namespace Unosquare.Labs.EmbedIO.Samples
 {
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -244,3 +245,4 @@
         }
     }
 }
+#endif

@@ -16,6 +16,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{39AC0FCD-3
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Unosquare.Labs.EmbedIO.Tests", "test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.xproj", "{C91F303C-DFF3-4260-8A66-0EBEF53F69F5}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Unosquare.Labs.EmbedIO.Command", "src\Unosquare.Labs.EmbedIO.Command\Unosquare.Labs.EmbedIO.Command.xproj", "{852D375B-DCFE-49A6-BA71-7EF936ACF50C}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Unosquare.Labs.EmbedIO.Samples", "src\Unosquare.Labs.EmbedIO.Samples\Unosquare.Labs.EmbedIO.Samples.xproj", "{5B312B76-1C92-4C50-9A44-BAF738377306}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +34,14 @@ Global
 		{C91F303C-DFF3-4260-8A66-0EBEF53F69F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C91F303C-DFF3-4260-8A66-0EBEF53F69F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C91F303C-DFF3-4260-8A66-0EBEF53F69F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{852D375B-DCFE-49A6-BA71-7EF936ACF50C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{852D375B-DCFE-49A6-BA71-7EF936ACF50C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{852D375B-DCFE-49A6-BA71-7EF936ACF50C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{852D375B-DCFE-49A6-BA71-7EF936ACF50C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B312B76-1C92-4C50-9A44-BAF738377306}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B312B76-1C92-4C50-9A44-BAF738377306}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B312B76-1C92-4C50-9A44-BAF738377306}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B312B76-1C92-4C50-9A44-BAF738377306}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,5 +49,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{76B8EFC5-EDEF-4E31-9E78-164E8687B1AB} = {97BC259A-4E78-4BA8-8F4D-2656BC78BB34}
 		{C91F303C-DFF3-4260-8A66-0EBEF53F69F5} = {39AC0FCD-3DBB-4C9B-87EE-873D31165F28}
+		{852D375B-DCFE-49A6-BA71-7EF936ACF50C} = {97BC259A-4E78-4BA8-8F4D-2656BC78BB34}
+		{5B312B76-1C92-4C50-9A44-BAF738377306} = {97BC259A-4E78-4BA8-8F4D-2656BC78BB34}
 	EndGlobalSection
 EndGlobal

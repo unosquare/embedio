@@ -1,12 +1,10 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
+    using Log;
     using System;
-    using Unosquare.Labs.EmbedIO.Log;
 
     internal class Program
     {
-        private static readonly ILog Log = Logger.For<Program>();
-
         /// <summary>
         /// Defines the entry point of the application.
         /// </summary>
@@ -19,11 +17,16 @@
                 url = args[0];
 
             var dbContext = new AppDbContext();
-            
+
             foreach (var person in dbContext.People.SelectAll())
                 dbContext.People.Delete(person);
 
-            dbContext.People.Insert(new Person() { Name = "Mario Di Vece", Age = 31, EmailAddress = "mario@unosquare.com" });
+            dbContext.People.Insert(new Person()
+            {
+                Name = "Mario Di Vece",
+                Age = 31,
+                EmailAddress = "mario@unosquare.com"
+            });
             dbContext.People.Insert(new Person()
             {
                 Name = "Geovanni Perez",
@@ -31,11 +34,16 @@
                 EmailAddress = "geovanni.perez@unosquare.com"
             });
 
-            dbContext.People.Insert(new Person() { Name = "Luis Gonzalez", Age = 29, EmailAddress = "luis.gonzalez@unosquare.com" });
+            dbContext.People.Insert(new Person()
+            {
+                Name = "Luis Gonzalez",
+                Age = 29,
+                EmailAddress = "luis.gonzalez@unosquare.com"
+            });
 
             // Our web server is disposable. Note that if you don't want to use logging,
             // there are alternate constructors that allow you to skip specifying an ILog object.
-            using (var server = new WebServer(url, Log))
+            using (var server = new WebServer(url, new SimpleConsoleLog()))
             {
                 // First, we will configure our web server by adding Modules.
                 // Please note that order DOES matter.
@@ -48,7 +56,7 @@
                 // Set the CORS Rules
                 server.RegisterModule(new Modules.CorsModule(
                     // Origins, separated by comma without last slash
-                    "http://client.cors-api.appspot.com,http://unosquare.github.io,http://run.plnkr.co", 
+                    "http://client.cors-api.appspot.com,http://unosquare.github.io,http://run.plnkr.co",
                     // Allowed headers
                     "content-type, accept",
                     // Allowed methods
@@ -62,9 +70,11 @@
                 // It registers the WebApiModule and registers the controller(s) -- that's all.
                 server.WithWebApiController<PeopleController>();
 
+#if NET46
                 // Register the WebSockets module. See the Setup method to find out how to do it
                 // It registers the WebSocketsModule and registers the server for the given paths(s)
                 WebSocketsSample.Setup(server);
+#endif
 
                 // Once we've registered our modules and configured them, we call the Run() method.
                 // This is a non-blocking method (it return immediately) so in this case we avoid
@@ -76,7 +86,10 @@
 #if DEBUG
                 var browser = new System.Diagnostics.Process()
                 {
-                    StartInfo = new System.Diagnostics.ProcessStartInfo(url) {UseShellExecute = true}
+                    StartInfo = new System.Diagnostics.ProcessStartInfo(url)
+                    {
+                        UseShellExecute = true
+                    }
                 };
                 browser.Start();
 #endif
@@ -85,9 +98,6 @@
                 // something like a BackgroundWorker or a ManualResetEvent.
                 Console.ReadKey(true);
             }
-
-            // Before exiting, we shutdown the logging subsystem.
-            Logger.Shutdown();
         }
     }
 }
