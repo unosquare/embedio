@@ -37,7 +37,7 @@
         /// </summary>
         protected WebModuleBase()
         {
-            this.Handlers = new ModuleMap();
+            Handlers = new ModuleMap();
         }
 
         /// <summary>
@@ -48,7 +48,7 @@
         /// <param name="handler">The handler.</param>
         public void AddHandler(string path, HttpVerbs verb, ResponseHandler handler)
         {
-            this.Handlers.Add(new Map {Path = path, Verb = verb, ResponseHandler = handler});
+            Handlers.Add(new Map {Path = path, Verb = verb, ResponseHandler = handler});
         }
     }
 }

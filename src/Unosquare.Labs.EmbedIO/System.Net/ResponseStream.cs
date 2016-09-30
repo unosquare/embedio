@@ -27,13 +27,9 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace System.Net
 {
@@ -43,33 +39,24 @@ namespace System.Net
     // what if we don't set content-length at all?
     public class ResponseStream : Stream
     {
-        HttpListenerResponse response;
-        bool ignore_errors;
-        bool disposed;
-        bool trailer_sent;
-        Stream stream;
+        readonly HttpListenerResponse _response;
+        readonly bool _ignoreErrors;
+        bool _disposed;
+        bool _trailerSent;
+        readonly Stream _stream;
 
-        internal ResponseStream(Stream stream, HttpListenerResponse response, bool ignore_errors)
+        internal ResponseStream(Stream stream, HttpListenerResponse response, bool ignoreErrors)
         {
-            this.response = response;
-            this.ignore_errors = ignore_errors;
-            this.stream = stream;
+            _response = response;
+            _ignoreErrors = ignoreErrors;
+            _stream = stream;
         }
 
-        public override bool CanRead
-        {
-            get { return false; }
-        }
+        public override bool CanRead => false;
 
-        public override bool CanSeek
-        {
-            get { return false; }
-        }
+        public override bool CanSeek => false;
 
-        public override bool CanWrite
-        {
-            get { return true; }
-        }
+        public override bool CanWrite => true;
 
         public override long Length
         {
@@ -84,33 +71,33 @@ namespace System.Net
         
         public void Close()
         {
-            if (disposed == false)
+            if (_disposed == false)
             {
-                disposed = true;
+                _disposed = true;
                 byte[] bytes = null;
-                MemoryStream ms = GetHeaders(true);
-                bool chunked = response.SendChunked;
-                if (stream.CanWrite)
+                var ms = GetHeaders(true);
+                var chunked = _response.SendChunked;
+                if (_stream.CanWrite)
                 {
                     try
                     {
                         if (ms != null)
                         {
-                            long start = ms.Position;
-                            if (chunked && !trailer_sent)
+                            var start = ms.Position;
+                            if (chunked && !_trailerSent)
                             {
                                 bytes = GetChunkSizeBytes(0, true);
                                 ms.Position = ms.Length;
                                 ms.Write(bytes, 0, bytes.Length);
                             }
                             InternalWrite(ms.GetBuffer(), (int)start, (int)(ms.Length - start));
-                            trailer_sent = true;
+                            _trailerSent = true;
                         }
-                        else if (chunked && !trailer_sent)
+                        else if (chunked && !_trailerSent)
                         {
                             bytes = GetChunkSizeBytes(0, true);
                             InternalWrite(bytes, 0, bytes.Length);
-                            trailer_sent = true;
+                            _trailerSent = true;
                         }
                     }
                     catch (IOException)
@@ -118,19 +105,19 @@ namespace System.Net
                         // Ignore error due to connection reset by peer
                     }
                 }
-                response.Close();
+                _response.Close();
             }
         }
 
         MemoryStream GetHeaders(bool closing)
         {
             // SendHeaders works on shared headers
-            lock (response.headers_lock)
+            lock (_response.HeadersLock)
             {
-                if (response.HeadersSent)
+                if (_response.HeadersSent)
                     return null;
-                MemoryStream ms = new MemoryStream();
-                response.SendHeaders(closing, ms);
+                var ms = new MemoryStream();
+                _response.SendHeaders(closing, ms);
                 return ms;
             }
         }
@@ -139,40 +126,43 @@ namespace System.Net
         {
         }
 
-        static byte[] crlf = new byte[] { 13, 10 };
+        static readonly byte[] _crlf = { 13, 10 };
         static byte[] GetChunkSizeBytes(int size, bool final)
         {
-            string str = String.Format("{0:x}\r\n{1}", size, final ? "\r\n" : "");
+            var str = string.Format("{0:x}\r\n{1}", size, final ? "\r\n" : "");
             return Encoding.GetEncoding(0).GetBytes(str);
         }
 
         internal void InternalWrite(byte[] buffer, int offset, int count)
         {
-            if (ignore_errors)
+            if (_ignoreErrors)
             {
                 try
                 {
-                    stream.Write(buffer, offset, count);
+                    _stream.Write(buffer, offset, count);
                 }
-                catch { }
+                catch
+                {
+                    // ignored
+                }
             }
             else
             {
-                stream.Write(buffer, offset, count);
+                _stream.Write(buffer, offset, count);
             }
         }
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            if (disposed)
+            if (_disposed)
                 throw new ObjectDisposedException(GetType().ToString());
 
             byte[] bytes = null;
-            MemoryStream ms = GetHeaders(false);
-            bool chunked = response.SendChunked;
+            var ms = GetHeaders(false);
+            var chunked = _response.SendChunked;
             if (ms != null)
             {
-                long start = ms.Position; // After the possible preamble for the encoding
+                var start = ms.Position; // After the possible preamble for the encoding
                 ms.Position = ms.Length;
                 if (chunked)
                 {
@@ -180,10 +170,10 @@ namespace System.Net
                     ms.Write(bytes, 0, bytes.Length);
                 }
 
-                int new_count = Math.Min(count, 16384 - (int)ms.Position + (int)start);
-                ms.Write(buffer, offset, new_count);
-                count -= new_count;
-                offset += new_count;
+                var newCount = Math.Min(count, 16384 - (int)ms.Position + (int)start);
+                ms.Write(buffer, offset, newCount);
+                count -= newCount;
+                offset += newCount;
                 InternalWrite(ms.GetBuffer(), (int)start, (int)(ms.Length - start));
                 ms.SetLength(0);
                 ms.Capacity = 0; // 'dispose' the buffer in ms.
@@ -197,7 +187,7 @@ namespace System.Net
             if (count > 0)
                 InternalWrite(buffer, offset, count);
             if (chunked)
-                InternalWrite(crlf, 0, 2);
+                InternalWrite(_crlf, 0, 2);
         }
 
         //public IAsyncResult BeginWrite(byte[] buffer, int offset, int count,
@@ -259,18 +249,7 @@ namespace System.Net
         {
             throw new NotSupportedException();
         }
-
-        //public override IAsyncResult BeginRead(byte[] buffer, int offset, int count,
-        //                    AsyncCallback cback, object state)
-        //{
-        //    throw new NotSupportedException();
-        //}
-
-        //public override int EndRead(IAsyncResult ares)
-        //{
-        //    throw new NotSupportedException();
-        //}
-
+        
         public override long Seek(long offset, SeekOrigin origin)
         {
             throw new NotSupportedException();

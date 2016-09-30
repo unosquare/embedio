@@ -32,9 +32,9 @@ namespace System.Net
 {
     class HttpStreamAsyncResult : IAsyncResult
     {
-        object locker = new object();
-        ManualResetEvent handle;
-        bool completed;
+        readonly object _locker = new object();
+        ManualResetEvent _handle;
+        bool _completed;
 
         internal byte[] Buffer;
         internal int Offset;
@@ -52,51 +52,43 @@ namespace System.Net
 
         public void Complete()
         {
-            lock (locker)
+            lock (_locker)
             {
-                if (completed)
+                if (_completed)
                     return;
 
-                completed = true;
-                if (handle != null)
-                    handle.Set();
+                _completed = true;
+                _handle?.Set();
 
-                if (Callback != null)
-                    Callback.BeginInvoke(this, null, null);
+                Callback?.BeginInvoke(this, null, null);
             }
         }
 
-        public object AsyncState
-        {
-            get { return State; }
-        }
+        public object AsyncState => State;
 
         public WaitHandle AsyncWaitHandle
         {
             get
             {
-                lock (locker)
+                lock (_locker)
                 {
-                    if (handle == null)
-                        handle = new ManualResetEvent(completed);
+                    if (_handle == null)
+                        _handle = new ManualResetEvent(_completed);
                 }
 
-                return handle;
+                return _handle;
             }
         }
 
-        public bool CompletedSynchronously
-        {
-            get { return (SynchRead == Count); }
-        }
+        public bool CompletedSynchronously => (SynchRead == Count);
 
         public bool IsCompleted
         {
             get
             {
-                lock (locker)
+                lock (_locker)
                 {
-                    return completed;
+                    return _completed;
                 }
             }
         }

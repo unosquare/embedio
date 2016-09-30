@@ -27,21 +27,28 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System.Security.Principal;
+
 namespace System.Net
 {
     public class HttpListenerBasicIdentity : GenericIdentity
     {
-        string password;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HttpListenerBasicIdentity"/> class.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="password">The password.</param>
         public HttpListenerBasicIdentity(string username, string password) : base(username, "Basic")
         {
-            this.password = password;
+            Password = password;
         }
 
-        public virtual string Password
-        {
-            get { return password; }
-        }
+        /// <summary>
+        /// Gets the password.
+        /// </summary>
+        /// <value>
+        /// The password.
+        /// </value>
+        public virtual string Password { get; }
     }
 }
 #endif

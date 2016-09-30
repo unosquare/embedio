@@ -28,57 +28,47 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Sockets;
-using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace System.Net
 {
-    sealed class HttpConnection
+    internal sealed class HttpConnection
     {
-        static AsyncCallback onread_cb = new AsyncCallback(OnRead);
-        const int BufferSize = 8192;
-        Socket sock;
-        Stream stream;
-        EndPointListener epl;
-        MemoryStream ms;
-        byte[] buffer;
-        HttpListenerContext context;
-        StringBuilder current_line;
-        ListenerPrefix prefix;
-        RequestStream i_stream;
-        ResponseStream o_stream;
-        bool chunked;
-        int reuses;
-        bool context_bound;
-        bool secure;
-        X509Certificate cert;
-        int s_timeout = 90000; // 90k ms for first request, 15k ms from then on
-        Timer timer;
-        IPEndPoint local_ep;
-        HttpListener last_listener;
-        int[] client_cert_errors;
-        X509Certificate2 client_cert;
+        private static readonly AsyncCallback _onreadCb = OnRead;
+        private const int BufferSize = 8192;
+        private Socket _sock;
+        private readonly Stream _stream;
+        private readonly EndPointListener _epl;
+        private MemoryStream _ms;
+        private byte[] _buffer;
+        private HttpListenerContext _context;
+        private StringBuilder _currentLine;
+        private RequestStream _iStream;
+        private ResponseStream _oStream;
+        private bool _chunked;
+        private bool _contextBound;
+        private X509Certificate _cert;
+        private int _sTimeout = 90000; // 90k ms for first request, 15k ms from then on
+        private readonly Timer _timer;
+        private IPEndPoint _localEp;
+        private HttpListener _lastListener;
 #if SSL
         IMonoSslStream ssl_stream;
 #endif
 
         public HttpConnection(Socket sock, EndPointListener epl, bool secure, X509Certificate cert)
         {
-            this.sock = sock;
-            this.epl = epl;
-            this.secure = secure;
-            this.cert = cert;
+            _sock = sock;
+            _epl = epl;
+            IsSecure = secure;
+            _cert = cert;
             if (secure == false)
             {
-                stream = new NetworkStream(sock, false);
+                _stream = new NetworkStream(sock, false);
             }
             else
             {
@@ -99,21 +89,15 @@ namespace System.Net
                 throw new Exception("SSL is not supported");
 #endif
             }
-            timer = new Timer(OnTimeout, null, Timeout.Infinite, Timeout.Infinite);
+            _timer = new Timer(OnTimeout, null, Timeout.Infinite, Timeout.Infinite);
             Init();
         }
 
-        internal int[] ClientCertificateErrors
-        {
-            get { return client_cert_errors; }
-        }
+        internal int[] ClientCertificateErrors { get; }
 
-        internal X509Certificate2 ClientCertificate
-        {
-            get { return client_cert; }
-        }
+        internal X509Certificate2 ClientCertificate { get; }
 
-        void Init()
+        private void Init()
         {
 #if SSL
             if (ssl_stream != null)
@@ -121,57 +105,41 @@ namespace System.Net
                 ssl_stream.AuthenticateAsServer(cert, true, (SslProtocols)ServicePointManager.SecurityProtocol, false);
             }
 #endif
-            context_bound = false;
-            i_stream = null;
-            o_stream = null;
-            prefix = null;
-            chunked = false;
-            ms = new MemoryStream();
-            position = 0;
-            input_state = InputState.RequestLine;
-            line_state = LineState.None;
-            context = new HttpListenerContext(this);
+            _contextBound = false;
+            _iStream = null;
+            _oStream = null;
+            Prefix = null;
+            _chunked = false;
+            _ms = new MemoryStream();
+            _position = 0;
+            _inputState = InputState.RequestLine;
+            _lineState = LineState.None;
+            _context = new HttpListenerContext(this);
         }
 
-        public bool IsClosed
-        {
-            get { return (sock == null); }
-        }
+        public bool IsClosed => (_sock == null);
 
-        public int Reuses
-        {
-            get { return reuses; }
-        }
+        public int Reuses { get; private set; }
 
         public IPEndPoint LocalEndPoint
         {
             get
             {
-                if (local_ep != null)
-                    return local_ep;
+                if (_localEp != null)
+                    return _localEp;
 
-                local_ep = (IPEndPoint)sock.LocalEndPoint;
-                return local_ep;
+                _localEp = (IPEndPoint) _sock.LocalEndPoint;
+                return _localEp;
             }
         }
 
-        public IPEndPoint RemoteEndPoint
-        {
-            get { return (IPEndPoint)sock.RemoteEndPoint; }
-        }
+        public IPEndPoint RemoteEndPoint => (IPEndPoint) _sock.RemoteEndPoint;
 
-        public bool IsSecure
-        {
-            get { return secure; }
-        }
+        public bool IsSecure { get; }
 
-        public ListenerPrefix Prefix
-        {
-            get { return prefix; }
-            set { prefix = value; }
-        }
+        public ListenerPrefix Prefix { get; set; }
 
-        void OnTimeout(object unused)
+        private void OnTimeout(object unused)
         {
             CloseSocket();
             Unbind();
@@ -179,18 +147,18 @@ namespace System.Net
 
         public void BeginReadRequest()
         {
-            if (buffer == null)
-                buffer = new byte[BufferSize];
+            if (_buffer == null)
+                _buffer = new byte[BufferSize];
             try
             {
-                if (reuses == 1)
-                    s_timeout = 15000;
-                timer.Change(s_timeout, Timeout.Infinite);
-                stream.BeginRead(buffer, 0, BufferSize, onread_cb, this);
+                if (Reuses == 1)
+                    _sTimeout = 15000;
+                _timer.Change(_sTimeout, Timeout.Infinite);
+                _stream.BeginRead(_buffer, 0, BufferSize, _onreadCb, this);
             }
             catch
             {
-                timer.Change(Timeout.Infinite, Timeout.Infinite);
+                _timer.Change(Timeout.Infinite, Timeout.Infinite);
                 CloseSocket();
                 Unbind();
             }
@@ -198,55 +166,55 @@ namespace System.Net
 
         public RequestStream GetRequestStream(bool chunked, long contentlength)
         {
-            if (i_stream == null)
+            if (_iStream == null)
             {
-                byte[] buffer = ms.GetBuffer();
-                int length = (int)ms.Length;
-                ms = null;
+                var buffer = _ms.GetBuffer();
+                var length = (int) _ms.Length;
+                _ms = null;
                 if (chunked)
                 {
-                    this.chunked = true;
-                    context.Response.SendChunked = true;
-                    i_stream = new ChunkedInputStream(context, stream, buffer, position, length - position);
+                    _chunked = true;
+                    _context.Response.SendChunked = true;
+                    _iStream = new ChunkedInputStream(_context, _stream, buffer, _position, length - _position);
                 }
                 else
                 {
-                    i_stream = new RequestStream(stream, buffer, position, length - position, contentlength);
+                    _iStream = new RequestStream(_stream, buffer, _position, length - _position, contentlength);
                 }
             }
-            return i_stream;
+            return _iStream;
         }
 
         public ResponseStream GetResponseStream()
         {
             // TODO: can we get this stream before reading the input?
-            if (o_stream == null)
+            if (_oStream == null)
             {
-                HttpListener listener = context.Listener;
+                var listener = _context.Listener;
 
                 if (listener == null)
-                    return new ResponseStream(stream, context.Response, true);
+                    return new ResponseStream(_stream, _context.Response, true);
 
-                o_stream = new ResponseStream(stream, context.Response, listener.IgnoreWriteExceptions);
+                _oStream = new ResponseStream(_stream, _context.Response, listener.IgnoreWriteExceptions);
             }
-            return o_stream;
+            return _oStream;
         }
 
-        static void OnRead(IAsyncResult ares)
+        private static void OnRead(IAsyncResult ares)
         {
-            HttpConnection cnc = (HttpConnection)ares.AsyncState;
+            var cnc = (HttpConnection) ares.AsyncState;
             cnc.OnReadInternal(ares);
         }
 
-        void OnReadInternal(IAsyncResult ares)
+        private void OnReadInternal(IAsyncResult ares)
         {
-            timer.Change(Timeout.Infinite, Timeout.Infinite);
-            int nread = -1;
+            _timer.Change(Timeout.Infinite, Timeout.Infinite);
+            var nread = -1;
             try
             {
-                nread = stream.EndRead(ares);
-                ms.Write(buffer, 0, nread);
-                if (ms.Length > 32768)
+                nread = _stream.EndRead(ares);
+                _ms.Write(_buffer, 0, nread);
+                if (_ms.Length > 32768)
                 {
                     SendError("Bad request", 400);
                     Close(true);
@@ -255,9 +223,9 @@ namespace System.Net
             }
             catch
             {
-                if (ms != null && ms.Length > 0)
+                if (_ms != null && _ms.Length > 0)
                     SendError();
-                if (sock != null)
+                if (_sock != null)
                 {
                     CloseSocket();
                     Unbind();
@@ -274,90 +242,90 @@ namespace System.Net
                 return;
             }
 
-            if (ProcessInput(ms))
+            if (ProcessInput(_ms))
             {
-                if (!context.HaveError)
-                    context.Request.FinishInitialization();
+                if (!_context.HaveError)
+                    _context.Request.FinishInitialization();
 
-                if (context.HaveError)
+                if (_context.HaveError)
                 {
                     SendError();
                     Close(true);
                     return;
                 }
 
-                if (!epl.BindContext(context))
+                if (!_epl.BindContext(_context))
                 {
                     SendError("Invalid host", 400);
                     Close(true);
                     return;
                 }
-                HttpListener listener = context.Listener;
-                if (last_listener != listener)
+                var listener = _context.Listener;
+                if (_lastListener != listener)
                 {
                     RemoveConnection();
                     listener.AddConnection(this);
-                    last_listener = listener;
+                    _lastListener = listener;
                 }
 
-                context_bound = true;
-                listener.RegisterContext(context);
+                _contextBound = true;
+                listener.RegisterContext(_context);
                 return;
             }
-            stream.BeginRead(buffer, 0, BufferSize, onread_cb, this);
+            _stream.BeginRead(_buffer, 0, BufferSize, _onreadCb, this);
         }
 
-        void RemoveConnection()
+        private void RemoveConnection()
         {
-            if (last_listener == null)
-                epl.RemoveConnection(this);
+            if (_lastListener == null)
+                _epl.RemoveConnection(this);
             else
-                last_listener.RemoveConnection(this);
+                _lastListener.RemoveConnection(this);
         }
 
-        enum InputState
+        private enum InputState
         {
             RequestLine,
             Headers
         }
 
-        enum LineState
+        private enum LineState
         {
             None,
-            CR,
-            LF
+            Cr,
+            Lf
         }
 
-        InputState input_state = InputState.RequestLine;
-        LineState line_state = LineState.None;
-        int position;
+        private InputState _inputState = InputState.RequestLine;
+        private LineState _lineState = LineState.None;
+        private int _position;
 
         // true -> done processing
         // false -> need more input
-        bool ProcessInput(MemoryStream ms)
+        private bool ProcessInput(MemoryStream ms)
         {
-            byte[] buffer = ms.GetBuffer();
-            int len = (int)ms.Length;
-            int used = 0;
+            var buffer = ms.GetBuffer();
+            var len = (int) ms.Length;
+            var used = 0;
             string line;
 
             while (true)
             {
-                if (context.HaveError)
+                if (_context.HaveError)
                     return true;
 
-                if (position >= len)
+                if (_position >= len)
                     break;
 
                 try
                 {
-                    line = ReadLine(buffer, position, len - position, ref used);
-                    position += used;
+                    line = ReadLine(buffer, _position, len - _position, ref used);
+                    _position += used;
                 }
                 catch
                 {
-                    context.ErrorMessage = "Bad request";
-                    context.ErrorStatus = 400;
+                    _context.ErrorMessage = "Bad request";
+                    _context.ErrorStatus = 400;
                     return true;
                 }
 
@@ -366,28 +334,28 @@ namespace System.Net
 
                 if (line == "")
                 {
-                    if (input_state == InputState.RequestLine)
+                    if (_inputState == InputState.RequestLine)
                         continue;
-                    current_line = null;
+                    _currentLine = null;
                     ms = null;
                     return true;
                 }
 
-                if (input_state == InputState.RequestLine)
+                if (_inputState == InputState.RequestLine)
                 {
-                    context.Request.SetRequestLine(line);
-                    input_state = InputState.Headers;
+                    _context.Request.SetRequestLine(line);
+                    _inputState = InputState.Headers;
                 }
                 else
                 {
                     try
                     {
-                        context.Request.AddHeader(line);
+                        _context.Request.AddHeader(line);
                     }
                     catch (Exception e)
                     {
-                        context.ErrorMessage = e.Message;
-                        context.ErrorStatus = 400;
+                        _context.ErrorMessage = e.Message;
+                        _context.ErrorStatus = 400;
                         return true;
                     }
                 }
@@ -396,41 +364,41 @@ namespace System.Net
             if (used == len)
             {
                 ms.SetLength(0);
-                position = 0;
+                _position = 0;
             }
             return false;
         }
 
-        string ReadLine(byte[] buffer, int offset, int len, ref int used)
+        private string ReadLine(byte[] buffer, int offset, int len, ref int used)
         {
-            if (current_line == null)
-                current_line = new StringBuilder(128);
-            int last = offset + len;
+            if (_currentLine == null)
+                _currentLine = new StringBuilder(128);
+            var last = offset + len;
             used = 0;
-            for (int i = offset; i < last && line_state != LineState.LF; i++)
+            for (var i = offset; i < last && _lineState != LineState.Lf; i++)
             {
                 used++;
-                byte b = buffer[i];
+                var b = buffer[i];
                 if (b == 13)
                 {
-                    line_state = LineState.CR;
+                    _lineState = LineState.Cr;
                 }
                 else if (b == 10)
                 {
-                    line_state = LineState.LF;
+                    _lineState = LineState.Lf;
                 }
                 else
                 {
-                    current_line.Append((char)b);
+                    _currentLine.Append((char) b);
                 }
             }
 
             string result = null;
-            if (line_state == LineState.LF)
+            if (_lineState == LineState.Lf)
             {
-                line_state = LineState.None;
-                result = current_line.ToString();
-                current_line.Length = 0;
+                _lineState = LineState.None;
+                result = _currentLine.ToString();
+                _currentLine.Length = 0;
             }
 
             return result;
@@ -440,17 +408,15 @@ namespace System.Net
         {
             try
             {
-                HttpListenerResponse response = context.Response;
+                var response = _context.Response;
                 response.StatusCode = status;
                 response.ContentType = "text/html";
-                string description = HttpListenerResponseHelper.GetStatusDescription(status);
-                string str;
-                if (msg != null)
-                    str = String.Format("<h1>{0} ({1})</h1>", description, msg);
-                else
-                    str = String.Format("<h1>{0}</h1>", description);
+                var description = HttpListenerResponseHelper.GetStatusDescription(status);
+                var str = msg != null
+                    ? string.Format("<h1>{0} ({1})</h1>", description, msg)
+                    : string.Format("<h1>{0}</h1>", description);
 
-                byte[] error = context.Response.ContentEncoding.GetBytes(str);
+                var error = _context.Response.ContentEncoding.GetBytes(str);
                 response.Close(error, false);
             }
             catch
@@ -461,15 +427,15 @@ namespace System.Net
 
         public void SendError()
         {
-            SendError(context.ErrorMessage, context.ErrorStatus);
+            SendError(_context.ErrorMessage, _context.ErrorStatus);
         }
 
-        void Unbind()
+        private void Unbind()
         {
-            if (context_bound)
+            if (_contextBound)
             {
-                epl.UnbindContext(context);
-                context_bound = false;
+                _epl.UnbindContext(_context);
+                _contextBound = false;
             }
         }
 
@@ -478,41 +444,41 @@ namespace System.Net
             Close(false);
         }
 
-        void CloseSocket()
+        private void CloseSocket()
         {
-            if (sock == null)
+            if (_sock == null)
                 return;
 
             try
             {
-                sock.Dispose();
+                _sock.Dispose();
             }
             catch
             {
+                // ignored
             }
             finally
             {
-                sock = null;
+                _sock = null;
             }
             RemoveConnection();
         }
 
-        internal void Close(bool force_close)
+        internal void Close(bool forceClose)
         {
-            if (sock != null)
+            if (_sock != null)
             {
                 Stream st = GetResponseStream();
-                if (st != null)
-                    st.Dispose();
+                st?.Dispose();
 
-                o_stream = null;
+                _oStream = null;
             }
 
-            if (sock != null)
+            if (_sock != null)
             {
-                force_close |= !context.Request.KeepAlive;
-                if (!force_close)
-                    force_close = (context.Response.Headers["connection"] == "close");
+                forceClose |= !_context.Request.KeepAlive;
+                if (!forceClose)
+                    forceClose = (_context.Response.Headers["connection"] == "close");
                 /*
 				if (!force_close) {
 //					bool conn_close = (status_code == 400 || status_code == 408 || status_code == 411 ||
@@ -522,45 +488,44 @@ namespace System.Net
 				}
 				*/
 
-                if (!force_close && context.Request.FlushInput())
+                if (!forceClose && _context.Request.FlushInput())
                 {
-                    if (chunked && context.Response.ForceCloseChunked == false)
+                    if (_chunked && _context.Response.ForceCloseChunked == false)
                     {
                         // Don't close. Keep working.
-                        reuses++;
+                        Reuses++;
                         Unbind();
                         Init();
                         BeginReadRequest();
                         return;
                     }
 
-                    reuses++;
+                    Reuses++;
                     Unbind();
                     Init();
                     BeginReadRequest();
                     return;
                 }
 
-                Socket s = sock;
-                sock = null;
+                var s = _sock;
+                _sock = null;
                 try
                 {
-                    if (s != null)
-                        s.Shutdown(SocketShutdown.Both);
+                    s?.Shutdown(SocketShutdown.Both);
                 }
                 catch
                 {
+                    // ignored
                 }
                 finally
                 {
-                    if (s != null)
-                        s.Dispose();
+                    s?.Dispose();
                 }
                 Unbind();
                 RemoveConnection();
-                return;
             }
         }
     }
 }
+
 #endif

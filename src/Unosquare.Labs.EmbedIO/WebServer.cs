@@ -8,7 +8,7 @@
     using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
-    using Unosquare.Labs.EmbedIO.Log;
+    using Log;
 
     /// <summary>
     /// Represents our tiny web server used to handle requests
@@ -32,7 +32,7 @@
         /// <value>
         /// The URL prefix.
         /// </value>
-        public HttpListenerPrefixCollection UrlPrefixes => this.Listener.Prefixes;
+        public HttpListenerPrefixCollection UrlPrefixes => Listener.Prefixes;
 
         /// <summary>
         /// Gets a list of registered modules
@@ -174,9 +174,9 @@
             if (log == null)
                 throw new ArgumentException("Argument log must be specified");
 
-            this.RoutingStrategy = routingStrategy;
-            this.Listener = new HttpListener();
-            this.Log = log;
+            RoutingStrategy = routingStrategy;
+            Listener = new HttpListener();
+            Log = log;
 
             foreach (var prefix in urlPrefixes)
             {
@@ -187,11 +187,11 @@
                 if (urlPrefix.EndsWith("/") == false) urlPrefix = urlPrefix + "/";
                 urlPrefix = urlPrefix.ToLowerInvariant();
 
-                this.Listener.Prefixes.Add(urlPrefix);
-                this.Log.InfoFormat("Web server prefix '{0}' added.", urlPrefix);
+                Listener.Prefixes.Add(urlPrefix);
+                Log.InfoFormat("Web server prefix '{0}' added.", urlPrefix);
             }
 
-            this.Log.Info("Finished Loading Web Server.");
+            Log.Info("Finished Loading Web Server.");
         }
 
         /// <summary>
@@ -203,7 +203,7 @@
         public T Module<T>()
             where T : class, IWebModule
         {
-            var module = this.Modules.FirstOrDefault(m => m.GetType() == typeof (T));
+            var module = Modules.FirstOrDefault(m => m.GetType() == typeof (T));
             return module as T;
         }
 
@@ -225,16 +225,16 @@
         public void RegisterModule(IWebModule module)
         {
             if (module == null) return;
-            var existingModule = this.Module(module.GetType());
+            var existingModule = Module(module.GetType());
             if (existingModule == null)
             {
                 module.Server = this;
-                this._modules.Add(module);
+                _modules.Add(module);
 
                 var webModule = module as ISessionWebModule;
 
                 if (webModule != null)
-                    this.SessionModule = webModule;
+                    SessionModule = webModule;
             }
             else
             {
@@ -249,7 +249,7 @@
         /// <param name="moduleType">Type of the module.</param>
         public void UnregisterModule(Type moduleType)
         {
-            var existingModule = this.Module(moduleType);
+            var existingModule = Module(moduleType);
             if (existingModule == null)
             {
                 Log.WarnFormat(
@@ -258,8 +258,8 @@
             }
             else
             {
-                var module = this.Module(moduleType);
-                this._modules.Remove(module);
+                var module = Module(moduleType);
+                _modules.Remove(module);
                 if (module == SessionModule)
                     SessionModule = null;
             }
@@ -330,7 +330,7 @@
         public bool ProcessRequest(HttpListenerContext context)
         {
             // Iterate though the loaded modules to match up a request and possibly generate a response.
-            foreach (var module in this.Modules)
+            foreach (var module in Modules)
             {
                 // Establish the handler
                 var handler = module.Handlers.FirstOrDefault(x =>
@@ -406,13 +406,13 @@
             if (_listenerTask != null)
                 throw new InvalidOperationException("The method was already called.");
 
-            this.Listener.IgnoreWriteExceptions = true;
-            this.Listener.Start();
+            Listener.IgnoreWriteExceptions = true;
+            Listener.Start();
 
-            this.Log.Info("Started HTTP Listener");
-            this._listenerTask = Task.Factory.StartNew(() =>
+            Log.Info("Started HTTP Listener");
+            _listenerTask = Task.Factory.StartNew(() =>
             {
-                while (this.Listener != null && this.Listener.IsListening)
+                while (Listener != null && Listener.IsListening)
                 {
                     try
                     {
@@ -434,7 +434,7 @@
                 }
             }, ct);
 
-            return this._listenerTask;
+            return _listenerTask;
         }
 
         /// <summary>
@@ -443,14 +443,14 @@
         [Obsolete("Use the RunAsync method instead.", true)]
         public void Run()
         {
-            this.Listener.IgnoreWriteExceptions = true;
-            this.Listener.Start();
+            Listener.IgnoreWriteExceptions = true;
+            Listener.Start();
 
-            this.Log.Info("Started HTTP Listener");
+            Log.Info("Started HTTP Listener");
 
             ThreadPool.QueueUserWorkItem(o =>
             {
-                while (this.Listener != null && this.Listener.IsListening)
+                while (Listener != null && Listener.IsListening)
                 {
                     try
                     {
@@ -459,8 +459,8 @@
                         {
                             // get a reference to the HTTP Listener Context
                             var context = contextState as HttpListenerContext;
-                            this.HandleClientRequest(context, null);
-                        }, this.Listener.GetContext());
+                            HandleClientRequest(context, null);
+                        }, Listener.GetContext());
                         // Retrieve and pass the listener context to the threadpool thread.
                     }
                     catch
@@ -468,7 +468,7 @@
                         // swallow IO exceptions
                     }
                 }
-            }, this.Listener); // Retrieve and pass the HTTP Listener
+            }, Listener); // Retrieve and pass the HTTP Listener
         }
 
         /// <summary>
@@ -476,7 +476,7 @@
         /// </summary>
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -489,15 +489,15 @@
             if (!disposing) return;
 
             // free managed resources
-            if (this.Listener != null)
+            if (Listener != null)
             {
                 try
                 {
-                    (this.Listener as IDisposable).Dispose();
+                    (Listener as IDisposable).Dispose();
                 }
                 finally
                 {
-                    this.Listener = null;
+                    Listener = null;
                 }
 
                 Log.Info("Listener Closed.");

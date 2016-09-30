@@ -27,76 +27,65 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace System.Net
 {
     public sealed class HttpListenerResponse : IDisposable
     {
-        bool disposed;
-        Encoding content_encoding;
-        long content_length;
-        bool cl_set;
-        string content_type;
-        CookieCollection cookies;
-        WebHeaderCollection headers = new WebHeaderCollection();
-        bool keep_alive = true;
-        ResponseStream output_stream;
-        Version version = HttpVersion.Version11;
-        string location;
-        int status_code = 200;
-        string status_description = "OK";
-        bool chunked;
-        HttpListenerContext context;
+        bool _disposed;
+        Encoding _contentEncoding;
+        long _contentLength;
+        bool _clSet;
+        string _contentType;
+        CookieCollection _cookies;
+        bool _keepAlive = true;
+        ResponseStream _outputStream;
+        Version _version = HttpVersion.Version11;
+        string _location;
+        int _statusCode = 200;
+        bool _chunked;
+        readonly HttpListenerContext _context;
 
         internal bool HeadersSent;
-        internal object headers_lock = new object();
-
-        bool force_close_chunked;
+        internal object HeadersLock = new object();
 
         internal HttpListenerResponse(HttpListenerContext context)
         {
-            this.context = context;
+            _context = context;
         }
 
-        internal bool ForceCloseChunked
-        {
-            get { return force_close_chunked; }
-        }
+        internal bool ForceCloseChunked { get; private set; }
 
         public Encoding ContentEncoding
         {
             get
             {
-                if (content_encoding == null)
-                    content_encoding = Encoding.GetEncoding(0);
-                return content_encoding;
+                if (_contentEncoding == null)
+                    _contentEncoding = Encoding.GetEncoding(0);
+                return _contentEncoding;
             }
             set
             {
-                if (disposed)
+                if (_disposed)
                     throw new ObjectDisposedException(GetType().ToString());
 
                 //TODO: is null ok?
                 if (HeadersSent)
                     throw new InvalidOperationException("Cannot be changed after headers are sent.");
 
-                content_encoding = value;
+                _contentEncoding = value;
             }
         }
 
         public long ContentLength64
         {
-            get { return content_length; }
+            get { return _contentLength; }
             set
             {
-                if (disposed)
+                if (_disposed)
                     throw new ObjectDisposedException(GetType().ToString());
 
                 if (HeadersSent)
@@ -105,24 +94,24 @@ namespace System.Net
                 if (value < 0)
                     throw new ArgumentOutOfRangeException("Must be >= 0", "value");
 
-                cl_set = true;
-                content_length = value;
+                _clSet = true;
+                _contentLength = value;
             }
         }
 
         public string ContentType
         {
-            get { return content_type; }
+            get { return _contentType; }
             set
             {
                 // TODO: is null ok?
-                if (disposed)
+                if (_disposed)
                     throw new ObjectDisposedException(GetType().ToString());
 
                 if (HeadersSent)
                     throw new InvalidOperationException("Cannot be changed after headers are sent.");
 
-                content_type = value;
+                _contentType = value;
             }
         }
 
@@ -131,114 +120,95 @@ namespace System.Net
         {
             get
             {
-                if (cookies == null)
-                    cookies = new CookieCollection();
-                return cookies;
+                if (_cookies == null)
+                    _cookies = new CookieCollection();
+                return _cookies;
             }
-            set { cookies = value; } // null allowed?
+            set { _cookies = value; } // null allowed?
         }
 
-        public WebHeaderCollection Headers
-        {
-            get { return headers; }
-            set
-            {
-                /**
-                 *	"If you attempt to set a Content-Length, Keep-Alive, Transfer-Encoding, or
-                 *	WWW-Authenticate header using the Headers property, an exception will be
-                 *	thrown. Use the KeepAlive or ContentLength64 properties to set these headers.
-                 *	You cannot set the Transfer-Encoding or WWW-Authenticate headers manually."
-                */
-                // TODO: check if this is marked readonly after headers are sent.
-                headers = value;
-            }
-        }
+        public WebHeaderCollection Headers { get; set; } = new WebHeaderCollection();
 
         public bool KeepAlive
         {
-            get { return keep_alive; }
+            get { return _keepAlive; }
             set
             {
-                if (disposed)
+                if (_disposed)
                     throw new ObjectDisposedException(GetType().ToString());
 
                 if (HeadersSent)
                     throw new InvalidOperationException("Cannot be changed after headers are sent.");
 
-                keep_alive = value;
+                _keepAlive = value;
             }
         }
 
         public ResponseStream OutputStream
         {
-            get
-            {
-                if (output_stream == null)
-                    output_stream = context.Connection.GetResponseStream();
-                return output_stream;
-            }
+            get { return _outputStream ?? (_outputStream = _context.Connection.GetResponseStream()); }
         }
 
         public Version ProtocolVersion
         {
-            get { return version; }
+            get { return _version; }
             set
             {
-                if (disposed)
+                if (_disposed)
                     throw new ObjectDisposedException(GetType().ToString());
 
                 if (HeadersSent)
                     throw new InvalidOperationException("Cannot be changed after headers are sent.");
 
                 if (value == null)
-                    throw new ArgumentNullException("value");
+                    throw new ArgumentNullException(nameof(value));
 
                 if (value.Major != 1 || (value.Minor != 0 && value.Minor != 1))
-                    throw new ArgumentException("Must be 1.0 or 1.1", "value");
+                    throw new ArgumentException("Must be 1.0 or 1.1", nameof(value));
 
-                if (disposed)
+                if (_disposed)
                     throw new ObjectDisposedException(GetType().ToString());
 
-                version = value;
+                _version = value;
             }
         }
 
         public string RedirectLocation
         {
-            get { return location; }
+            get { return _location; }
             set
             {
-                if (disposed)
+                if (_disposed)
                     throw new ObjectDisposedException(GetType().ToString());
 
                 if (HeadersSent)
                     throw new InvalidOperationException("Cannot be changed after headers are sent.");
 
-                location = value;
+                _location = value;
             }
         }
 
         public bool SendChunked
         {
-            get { return chunked; }
+            get { return _chunked; }
             set
             {
-                if (disposed)
+                if (_disposed)
                     throw new ObjectDisposedException(GetType().ToString());
 
                 if (HeadersSent)
                     throw new InvalidOperationException("Cannot be changed after headers are sent.");
 
-                chunked = value;
+                _chunked = value;
             }
         }
 
         public int StatusCode
         {
-            get { return status_code; }
+            get { return _statusCode; }
             set
             {
-                if (disposed)
+                if (_disposed)
                     throw new ObjectDisposedException(GetType().ToString());
 
                 if (HeadersSent)
@@ -246,19 +216,12 @@ namespace System.Net
 
                 if (value < 100 || value > 999)
                     throw new ProtocolViolationException("StatusCode must be between 100 and 999.");
-                status_code = value;
-                status_description = HttpListenerResponseHelper.GetStatusDescription(value);
+                _statusCode = value;
+                StatusDescription = HttpListenerResponseHelper.GetStatusDescription(value);
             }
         }
 
-        public string StatusDescription
-        {
-            get { return status_description; }
-            set
-            {
-                status_description = value;
-            }
-        }
+        public string StatusDescription { get; set; } = "OK";
 
         void IDisposable.Dispose()
         {
@@ -267,7 +230,7 @@ namespace System.Net
 
         public void Abort()
         {
-            if (disposed)
+            if (_disposed)
                 return;
 
             Close(true);
@@ -276,22 +239,22 @@ namespace System.Net
         public void AddHeader(string name, string value)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
 
             if (name == "")
-                throw new ArgumentException("'name' cannot be empty", "name");
+                throw new ArgumentException("'name' cannot be empty", nameof(name));
 
             //TODO: check for forbidden headers and invalid characters
             if (value.Length > 65535)
-                throw new ArgumentOutOfRangeException("value");
+                throw new ArgumentOutOfRangeException(nameof(value));
 
-            headers[name] = value;
+            Headers[name] = value;
         }
 
         public void AppendCookie(Cookie cookie)
         {
             if (cookie == null)
-                throw new ArgumentNullException("cookie");
+                throw new ArgumentNullException(nameof(cookie));
 
             Cookies.Add(cookie);
         }
@@ -299,26 +262,29 @@ namespace System.Net
         public void AppendHeader(string name, string value)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
 
             if (name == "")
-                throw new ArgumentException("'name' cannot be empty", "name");
+                throw new ArgumentException("'name' cannot be empty", nameof(name));
 
             if (value.Length > 65535)
-                throw new ArgumentOutOfRangeException("value");
+                throw new ArgumentOutOfRangeException(nameof(value));
 
-            headers[name] = value;
+            Headers[name] = value;
         }
 
         void Close(bool force)
         {
-            disposed = true;
-            context.Connection.Close(force);
+            _disposed = true;
+            _context.Connection.Close(force);
         }
 
+        /// <summary>
+        /// Closes this instance.
+        /// </summary>
         public void Close()
         {
-            if (disposed)
+            if (_disposed)
                 return;
 
             Close(false);
@@ -326,42 +292,42 @@ namespace System.Net
 
         public void Close(byte[] responseEntity, bool willBlock)
         {
-            if (disposed)
+            if (_disposed)
                 return;
 
             if (responseEntity == null)
-                throw new ArgumentNullException("responseEntity");
+                throw new ArgumentNullException(nameof(responseEntity));
 
             //TODO: if willBlock -> BeginWrite + Close ?
             ContentLength64 = responseEntity.Length;
-            OutputStream.Write(responseEntity, 0, (int)content_length);
+            OutputStream.Write(responseEntity, 0, (int)_contentLength);
             Close(false);
         }
 
         public void CopyFrom(HttpListenerResponse templateResponse)
         {
-            headers = new WebHeaderCollection();
-            foreach(var header in templateResponse.headers)
-            headers.Add(header.ToString());
-            content_length = templateResponse.content_length;
-            status_code = templateResponse.status_code;
-            status_description = templateResponse.status_description;
-            keep_alive = templateResponse.keep_alive;
-            version = templateResponse.version;
+            Headers = new WebHeaderCollection();
+            foreach(var header in templateResponse.Headers)
+            Headers.Add(header.ToString());
+            _contentLength = templateResponse._contentLength;
+            _statusCode = templateResponse._statusCode;
+            StatusDescription = templateResponse.StatusDescription;
+            _keepAlive = templateResponse._keepAlive;
+            _version = templateResponse._version;
         }
 
         public void Redirect(string url)
         {
             StatusCode = 302; // Found
-            location = url;
+            _location = url;
         }
 
         bool FindCookie(Cookie cookie)
         {
-            string name = cookie.Name;
-            string domain = cookie.Domain;
-            string path = cookie.Path;
-            foreach (Cookie c in cookies)
+            var name = cookie.Name;
+            var domain = cookie.Domain;
+            var path = cookie.Path;
+            foreach (Cookie c in _cookies)
             {
                 if (name != c.Name)
                     continue;
@@ -376,45 +342,45 @@ namespace System.Net
 
         internal void SendHeaders(bool closing, MemoryStream ms)
         {
-            Encoding encoding = content_encoding;
+            var encoding = _contentEncoding;
             if (encoding == null)
                 encoding = Encoding.GetEncoding(0);
 
-            if (content_type != null)
+            if (_contentType != null)
             {
-                if (content_encoding != null && content_type.IndexOf("charset=", StringComparison.Ordinal) == -1)
+                if (_contentEncoding != null && _contentType.IndexOf("charset=", StringComparison.Ordinal) == -1)
                 {
-                    string enc_name = content_encoding.WebName;
-                    headers.SetInternal("Content-Type", content_type + "; charset=" + enc_name);
+                    var encName = _contentEncoding.WebName;
+                    Headers.SetInternal("Content-Type", _contentType + "; charset=" + encName);
                 }
                 else
                 {
-                    headers.SetInternal("Content-Type", content_type);
+                    Headers.SetInternal("Content-Type", _contentType);
                 }
             }
 
-            if (headers["Server"] == null)
-                headers.SetInternal("Server", "Mono-HTTPAPI/1.0");
+            if (Headers["Server"] == null)
+                Headers.SetInternal("Server", "Mono-HTTPAPI/1.0");
 
-            CultureInfo inv = CultureInfo.InvariantCulture;
-            if (headers["Date"] == null)
-                headers.SetInternal("Date", DateTime.UtcNow.ToString("r", inv));
+            var inv = CultureInfo.InvariantCulture;
+            if (Headers["Date"] == null)
+                Headers.SetInternal("Date", DateTime.UtcNow.ToString("r", inv));
 
-            if (!chunked)
+            if (!_chunked)
             {
-                if (!cl_set && closing)
+                if (!_clSet && closing)
                 {
-                    cl_set = true;
-                    content_length = 0;
+                    _clSet = true;
+                    _contentLength = 0;
                 }
 
-                if (cl_set)
-                    headers.SetInternal("Content-Length", content_length.ToString(inv));
+                if (_clSet)
+                    Headers.SetInternal("Content-Length", _contentLength.ToString(inv));
             }
 
-            Version v = context.Request.ProtocolVersion;
-            if (!cl_set && !chunked && v >= HttpVersion.Version11)
-                chunked = true;
+            var v = _context.Request.ProtocolVersion;
+            if (!_clSet && !_chunked && v >= HttpVersion.Version11)
+                _chunked = true;
 
             /* Apache forces closing the connection for these status codes:
 			 *	HttpStatusCode.BadRequest 		400
@@ -425,58 +391,58 @@ namespace System.Net
 			 *	HttpStatusCode.InternalServerError 	500
 			 *	HttpStatusCode.ServiceUnavailable 	503
 			 */
-            bool conn_close = (status_code == 400 || status_code == 408 || status_code == 411 ||
-                    status_code == 413 || status_code == 414 || status_code == 500 ||
-                    status_code == 503);
+            var connClose = (_statusCode == 400 || _statusCode == 408 || _statusCode == 411 ||
+                    _statusCode == 413 || _statusCode == 414 || _statusCode == 500 ||
+                    _statusCode == 503);
 
-            if (conn_close == false)
-                conn_close = !context.Request.KeepAlive;
+            if (connClose == false)
+                connClose = !_context.Request.KeepAlive;
 
             // They sent both KeepAlive: true and Connection: close!?
-            if (!keep_alive || conn_close)
+            if (!_keepAlive || connClose)
             {
-                headers.SetInternal("Connection", "close");
-                conn_close = true;
+                Headers.SetInternal("Connection", "close");
+                connClose = true;
             }
 
-            if (chunked)
-                headers.SetInternal("Transfer-Encoding", "chunked");
+            if (_chunked)
+                Headers.SetInternal("Transfer-Encoding", "chunked");
 
-            int reuses = context.Connection.Reuses;
+            var reuses = _context.Connection.Reuses;
             if (reuses >= 100)
             {
-                force_close_chunked = true;
-                if (!conn_close)
+                ForceCloseChunked = true;
+                if (!connClose)
                 {
-                    headers.SetInternal("Connection", "close");
-                    conn_close = true;
+                    Headers.SetInternal("Connection", "close");
+                    connClose = true;
                 }
             }
 
-            if (!conn_close)
+            if (!connClose)
             {
-                headers.SetInternal("Keep-Alive", String.Format("timeout=15,max={0}", 100 - reuses));
-                if (context.Request.ProtocolVersion <= HttpVersion.Version10)
-                    headers.SetInternal("Connection", "keep-alive");
+                Headers.SetInternal("Keep-Alive", string.Format("timeout=15,max={0}", 100 - reuses));
+                if (_context.Request.ProtocolVersion <= HttpVersion.Version10)
+                    Headers.SetInternal("Connection", "keep-alive");
             }
 
-            if (location != null)
-                headers.SetInternal("Location", location);
+            if (_location != null)
+                Headers.SetInternal("Location", _location);
 
-            if (cookies != null)
+            if (_cookies != null)
             {
-                foreach (Cookie cookie in cookies)
-                    headers.SetInternal("Set-Cookie", CookieToClientString(cookie));
+                foreach (Cookie cookie in _cookies)
+                    Headers.SetInternal("Set-Cookie", CookieToClientString(cookie));
             }
 
-            StreamWriter writer = new StreamWriter(ms, encoding, 256);
-            writer.Write("HTTP/{0} {1} {2}\r\n", version, status_code, status_description);
-            string headers_str = FormatHeaders(headers);
-            writer.Write(headers_str);
+            var writer = new StreamWriter(ms, encoding, 256);
+            writer.Write("HTTP/{0} {1} {2}\r\n", _version, _statusCode, StatusDescription);
+            var headersStr = FormatHeaders(Headers);
+            writer.Write(headersStr);
             writer.Flush();
-            int preamble = encoding.GetPreamble().Length;
-            if (output_stream == null)
-                output_stream = context.Connection.GetResponseStream();
+            var preamble = encoding.GetPreamble().Length;
+            if (_outputStream == null)
+                _outputStream = _context.Connection.GetResponseStream();
 
             /* Assumes that the ms was at position 0 */
             ms.Position = preamble;
@@ -511,22 +477,22 @@ namespace System.Net
         static string CookieToClientString(Cookie cookie)
         {
             if (cookie.Name.Length == 0)
-                return String.Empty;
+                return string.Empty;
 
-            StringBuilder result = new StringBuilder(64);
+            var result = new StringBuilder(64);
 
             if (cookie.Version > 0)
                 result.Append("Version=").Append(cookie.Version).Append(";");
 
             result.Append(cookie.Name).Append("=").Append(cookie.Value);
 
-            if (cookie.Path != null && cookie.Path.Length != 0)
+            if (!string.IsNullOrEmpty(cookie.Path))
                 result.Append(";Path=").Append(QuotedString(cookie, cookie.Path));
 
-            if (cookie.Domain != null && cookie.Domain.Length != 0)
+            if (!string.IsNullOrEmpty(cookie.Domain))
                 result.Append(";Domain=").Append(QuotedString(cookie, cookie.Domain));
 
-            if (cookie.Port != null && cookie.Port.Length != 0)
+            if (!string.IsNullOrEmpty(cookie.Port))
                 result.Append(";Port=").Append(cookie.Port);
 
             return result.ToString();
@@ -536,19 +502,18 @@ namespace System.Net
         {
             if (cookie.Version == 0 || IsToken(value))
                 return value;
-            else
-                return "\"" + value.Replace("\"", "\\\"") + "\"";
+            return "\"" + value.Replace("\"", "\\\"") + "\"";
         }
 
-        static string tspecials = "()<>@,;:\\\"/[]?={} \t";   // from RFC 2965, 2068
+        static readonly string _tspecials = "()<>@,;:\\\"/[]?={} \t";   // from RFC 2965, 2068
 
         static bool IsToken(string value)
         {
-            int len = value.Length;
-            for (int i = 0; i < len; i++)
+            var len = value.Length;
+            for (var i = 0; i < len; i++)
             {
-                char c = value[i];
-                if (c < 0x20 || c >= 0x7f || tspecials.IndexOf(c) != -1)
+                var c = value[i];
+                if (c < 0x20 || c >= 0x7f || _tspecials.IndexOf(c) != -1)
                     return false;
             }
             return true;
@@ -557,19 +522,19 @@ namespace System.Net
         public void SetCookie(Cookie cookie)
         {
             if (cookie == null)
-                throw new ArgumentNullException("cookie");
+                throw new ArgumentNullException(nameof(cookie));
 
-            if (cookies != null)
+            if (_cookies != null)
             {
                 if (FindCookie(cookie))
                     throw new ArgumentException("The cookie already exists.");
             }
             else
             {
-                cookies = new CookieCollection();
+                _cookies = new CookieCollection();
             }
 
-            cookies.Add(cookie);
+            _cookies.Add(cookie);
         }
     }
 }

@@ -29,13 +29,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Security.Authentication.ExtendedProtection;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace System.Net
@@ -44,41 +39,43 @@ namespace System.Net
 
     public sealed class HttpListener : IDisposable
     {
-        AuthenticationSchemes auth_schemes;
-        HttpListenerPrefixCollection prefixes;
-        AuthenticationSchemeSelector auth_selector;
-        string realm;
-        bool ignore_write_exceptions;
-        bool unsafe_ntlm_auth;
-        bool listening;
-        bool disposed;
+        AuthenticationSchemes _authSchemes;
+        readonly HttpListenerPrefixCollection _prefixes;
+        AuthenticationSchemeSelector _authSelector;
+        string _realm;
+        bool _ignoreWriteExceptions;
+        bool _unsafeNtlmAuth;
+        bool _disposed;
 #if SSL
         IMonoTlsProvider tlsProvider;
         MSI.MonoTlsSettings tlsSettings;
         X509Certificate certificate;
 #endif
 
-        Hashtable registry;   // Dictionary<HttpListenerContext,HttpListenerContext> 
-        ArrayList ctx_queue;  // List<HttpListenerContext> ctx_queue;
-        ArrayList wait_queue; // List<ListenerAsyncResult> wait_queue;
-        Hashtable connections;
+        readonly Hashtable _registry;   // Dictionary<HttpListenerContext,HttpListenerContext> 
+        readonly ArrayList _ctxQueue;  // List<HttpListenerContext> ctx_queue;
+        readonly ArrayList _waitQueue; // List<ListenerAsyncResult> wait_queue;
+        readonly Hashtable _connections;
 
         //ServiceNameStore defaultServiceNames;
-        ExtendedProtectionPolicy extendedProtectionPolicy;
-        ExtendedProtectionSelector extendedProtectionSelectorDelegate;
+        //ExtendedProtectionPolicy _extendedProtectionPolicy;
+        ExtendedProtectionSelector _extendedProtectionSelectorDelegate;
 
         public delegate ExtendedProtectionPolicy ExtendedProtectionSelector(HttpListenerRequest request);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HttpListener"/> class.
+        /// </summary>
         public HttpListener()
         {
-            prefixes = new HttpListenerPrefixCollection(this);
-            registry = new Hashtable();
-            connections = Hashtable.Synchronized(new Hashtable());
-            ctx_queue = new ArrayList();
-            wait_queue = new ArrayList();
-            auth_schemes = AuthenticationSchemes.Anonymous;
+            _prefixes = new HttpListenerPrefixCollection(this);
+            _registry = new Hashtable();
+            _connections = Hashtable.Synchronized(new Hashtable());
+            _ctxQueue = new ArrayList();
+            _waitQueue = new ArrayList();
+            _authSchemes = AuthenticationSchemes.Anonymous;
             //defaultServiceNames = new ServiceNameStore();
-            extendedProtectionPolicy = new ExtendedProtectionPolicy(PolicyEnforcement.Never);
+            //_extendedProtectionPolicy = new ExtendedProtectionPolicy(PolicyEnforcement.Never);
         }
 
 #if SSL
@@ -140,21 +137,21 @@ namespace System.Net
         // TODO: Digest, NTLM and Negotiate require ControlPrincipal
         public AuthenticationSchemes AuthenticationSchemes
         {
-            get { return auth_schemes; }
+            get { return _authSchemes; }
             set
             {
                 CheckDisposed();
-                auth_schemes = value;
+                _authSchemes = value;
             }
         }
 
         public AuthenticationSchemeSelector AuthenticationSchemeSelectorDelegate
         {
-            get { return auth_selector; }
+            get { return _authSelector; }
             set
             {
                 CheckDisposed();
-                auth_selector = value;
+                _authSelector = value;
             }
         }
 
@@ -176,102 +173,53 @@ namespace System.Net
 
         public bool IgnoreWriteExceptions
         {
-            get { return ignore_write_exceptions; }
+            get { return _ignoreWriteExceptions; }
             set
             {
                 CheckDisposed();
-                ignore_write_exceptions = value;
+                _ignoreWriteExceptions = value;
             }
         }
 
-        public bool IsListening
-        {
-            get { return listening; }
-        }
+        public bool IsListening { get; private set; }
 
-        public static bool IsSupported
-        {
-            get { return true; }
-        }
+        public static bool IsSupported => true;
 
         public HttpListenerPrefixCollection Prefixes
         {
             get
             {
                 CheckDisposed();
-                return prefixes;
+                return _prefixes;
             }
         }
-
-        //[MonoTODO]
-        //public HttpListenerTimeoutManager TimeoutManager
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //[MonoTODO("not used anywhere in the implementation")]
-        //public ExtendedProtectionPolicy ExtendedProtectionPolicy
-        //{
-        //    get
-        //    {
-        //        return extendedProtectionPolicy;
-        //    }
-        //    set
-        //    {
-        //        CheckDisposed();
-
-        //        if (value == null)
-        //            throw new ArgumentNullException("value");
-
-        //        if (!AuthenticationManager.OSSupportsExtendedProtection && value.PolicyEnforcement == PolicyEnforcement.Always)
-        //            throw new PlatformNotSupportedException(SR.GetString(SR.security_ExtendedProtection_NoOSSupport));
-
-        //        if (value.CustomChannelBinding != null)
-        //            throw new ArgumentException(SR.GetString(SR.net_listener_cannot_set_custom_cbt), "CustomChannelBinding");
-
-        //        extendedProtectionPolicy = value;
-        //    }
-        //}
-
-        //public ServiceNameCollection DefaultServiceNames
-        //{
-        //    get
-        //    {
-        //        return defaultServiceNames.ServiceNames;
-        //    }
-        //}
-
-        // TODO: use this
+        
         public string Realm
         {
-            get { return realm; }
+            get { return _realm; }
             set
             {
                 CheckDisposed();
-                realm = value;
+                _realm = value;
             }
         }
-
-        [MonoTODO("Support for NTLM needs some loving.")]
+        
         public bool UnsafeConnectionNtlmAuthentication
         {
-            get { return unsafe_ntlm_auth; }
+            get { return _unsafeNtlmAuth; }
             set
             {
                 CheckDisposed();
-                unsafe_ntlm_auth = value;
+                _unsafeNtlmAuth = value;
             }
         }
 
         public void Abort()
         {
-            if (disposed)
+            if (_disposed)
                 return;
 
-            if (!listening)
+            if (!IsListening)
             {
                 return;
             }
@@ -281,17 +229,17 @@ namespace System.Net
 
         public void Close()
         {
-            if (disposed)
+            if (_disposed)
                 return;
 
-            if (!listening)
+            if (!IsListening)
             {
-                disposed = true;
+                _disposed = true;
                 return;
             }
 
             Close(true);
-            disposed = true;
+            _disposed = true;
         }
 
         void Close(bool force)
@@ -301,64 +249,64 @@ namespace System.Net
             Cleanup(force);
         }
 
-        void Cleanup(bool close_existing)
+        void Cleanup(bool closeExisting)
         {
-            lock (registry)
+            lock (_registry)
             {
-                if (close_existing)
+                if (closeExisting)
                 {
                     // Need to copy this since closing will call UnregisterContext
-                    ICollection keys = registry.Keys;
+                    var keys = _registry.Keys;
                     var all = new HttpListenerContext[keys.Count];
                     keys.CopyTo(all, 0);
-                    registry.Clear();
-                    for (int i = all.Length - 1; i >= 0; i--)
+                    _registry.Clear();
+                    for (var i = all.Length - 1; i >= 0; i--)
                         all[i].Connection.Close(true);
                 }
 
-                lock (connections.SyncRoot)
+                lock (_connections.SyncRoot)
                 {
-                    ICollection keys = connections.Keys;
+                    var keys = _connections.Keys;
                     var conns = new HttpConnection[keys.Count];
                     keys.CopyTo(conns, 0);
-                    connections.Clear();
-                    for (int i = conns.Length - 1; i >= 0; i--)
+                    _connections.Clear();
+                    for (var i = conns.Length - 1; i >= 0; i--)
                         conns[i].Close(true);
                 }
-                lock (ctx_queue)
+                lock (_ctxQueue)
                 {
-                    var ctxs = (HttpListenerContext[])ctx_queue.ToArray(typeof(HttpListenerContext));
-                    ctx_queue.Clear();
-                    for (int i = ctxs.Length - 1; i >= 0; i--)
+                    var ctxs = (HttpListenerContext[])_ctxQueue.ToArray(typeof(HttpListenerContext));
+                    _ctxQueue.Clear();
+                    for (var i = ctxs.Length - 1; i >= 0; i--)
                         ctxs[i].Connection.Close(true);
                 }
 
-                lock (wait_queue)
+                lock (_waitQueue)
                 {
                     Exception exc = new ObjectDisposedException("listener");
-                    foreach (ListenerAsyncResult ares in wait_queue)
+                    foreach (ListenerAsyncResult ares in _waitQueue)
                     {
                         ares.Complete(exc);
                     }
-                    wait_queue.Clear();
+                    _waitQueue.Clear();
                 }
             }
         }
 
-        public IAsyncResult BeginGetContext(AsyncCallback callback, Object state)
+        public IAsyncResult BeginGetContext(AsyncCallback callback, object state)
         {
             CheckDisposed();
-            if (!listening)
+            if (!IsListening)
                 throw new InvalidOperationException("Please, call Start before using this method.");
 
-            ListenerAsyncResult ares = new ListenerAsyncResult(callback, state);
+            var ares = new ListenerAsyncResult(callback, state);
 
             // lock wait_queue early to avoid race conditions
-            lock (wait_queue)
+            lock (_waitQueue)
             {
-                lock (ctx_queue)
+                lock (_ctxQueue)
                 {
-                    HttpListenerContext ctx = GetContextFromQueue();
+                    var ctx = GetContextFromQueue();
                     if (ctx != null)
                     {
                         ares.Complete(ctx, true);
@@ -366,7 +314,7 @@ namespace System.Net
                     }
                 }
 
-                wait_queue.Add(ares);
+                _waitQueue.Add(ares);
             }
 
             return ares;
@@ -374,13 +322,13 @@ namespace System.Net
 
         public HttpListenerContext EndGetContext(IAsyncResult asyncResult)
         {
-            if (disposed) return null;
+            if (_disposed) return null;
             if (asyncResult == null)
-                throw new ArgumentNullException("asyncResult");
+                throw new ArgumentNullException(nameof(asyncResult));
 
-            ListenerAsyncResult ares = asyncResult as ListenerAsyncResult;
+            var ares = asyncResult as ListenerAsyncResult;
             if (ares == null)
-                throw new ArgumentException("Wrong IAsyncResult.", "asyncResult");
+                throw new ArgumentException("Wrong IAsyncResult.", nameof(asyncResult));
             if (ares.EndCalled)
                 throw new ArgumentException("Cannot reuse this IAsyncResult");
             ares.EndCalled = true;
@@ -388,33 +336,30 @@ namespace System.Net
             if (!ares.IsCompleted)
                 ares.AsyncWaitHandle.WaitOne();
 
-            lock (wait_queue)
+            lock (_waitQueue)
             {
-                int idx = wait_queue.IndexOf(ares);
+                var idx = _waitQueue.IndexOf(ares);
                 if (idx >= 0)
-                    wait_queue.RemoveAt(idx);
+                    _waitQueue.RemoveAt(idx);
             }
 
-            HttpListenerContext context = ares.GetContext();
+            var context = ares.GetContext();
             context.ParseAuthentication(SelectAuthenticationScheme(context));
             return context; // This will throw on error.
         }
 
         internal AuthenticationSchemes SelectAuthenticationScheme(HttpListenerContext context)
         {
-            if (AuthenticationSchemeSelectorDelegate != null)
-                return AuthenticationSchemeSelectorDelegate(context.Request);
-            else
-                return auth_schemes;
+            return AuthenticationSchemeSelectorDelegate?.Invoke(context.Request) ?? _authSchemes;
         }
 
         public HttpListenerContext GetContext()
         {
             // The prefixes are not checked when using the async interface!?
-            if (prefixes.Count == 0)
+            if (_prefixes.Count == 0)
                 throw new InvalidOperationException("Please, call AddPrefix before using this method.");
 
-            ListenerAsyncResult ares = (ListenerAsyncResult)BeginGetContext(null, null);
+            var ares = (ListenerAsyncResult)BeginGetContext(null, null);
             ares.InGet = true;
             return EndGetContext(ares);
         }
@@ -422,27 +367,27 @@ namespace System.Net
         public void Start()
         {
             CheckDisposed();
-            if (listening)
+            if (IsListening)
                 return;
 
             EndPointManager.AddListener(this);
-            listening = true;
+            IsListening = true;
         }
 
         public void Stop()
         {
             CheckDisposed();
-            listening = false;
+            IsListening = false;
             Close(false);
         }
 
         void IDisposable.Dispose()
         {
-            if (disposed)
+            if (_disposed)
                 return;
 
             Close(true); //TODO: Should we force here or not?
-            disposed = true;
+            _disposed = true;
         }
 
         public Task<HttpListenerContext> GetContextAsync()
@@ -459,57 +404,56 @@ namespace System.Net
         // Must be called with a lock on ctx_queue
         HttpListenerContext GetContextFromQueue()
         {
-            if (ctx_queue.Count == 0)
+            if (_ctxQueue.Count == 0)
                 return null;
 
-            HttpListenerContext context = (HttpListenerContext)ctx_queue[0];
-            ctx_queue.RemoveAt(0);
+            var context = (HttpListenerContext)_ctxQueue[0];
+            _ctxQueue.RemoveAt(0);
             return context;
         }
 
         internal void RegisterContext(HttpListenerContext context)
         {
-            lock (registry)
-                registry[context] = context;
+            lock (_registry)
+                _registry[context] = context;
 
             ListenerAsyncResult ares = null;
-            lock (wait_queue)
+            lock (_waitQueue)
             {
-                if (wait_queue.Count == 0)
+                if (_waitQueue.Count == 0)
                 {
-                    lock (ctx_queue)
-                        ctx_queue.Add(context);
+                    lock (_ctxQueue)
+                        _ctxQueue.Add(context);
                 }
                 else
                 {
-                    ares = (ListenerAsyncResult)wait_queue[0];
-                    wait_queue.RemoveAt(0);
+                    ares = (ListenerAsyncResult)_waitQueue[0];
+                    _waitQueue.RemoveAt(0);
                 }
             }
-            if (ares != null)
-                ares.Complete(context);
+            ares?.Complete(context);
         }
 
         internal void UnregisterContext(HttpListenerContext context)
         {
-            lock (registry)
-                registry.Remove(context);
-            lock (ctx_queue)
+            lock (_registry)
+                _registry.Remove(context);
+            lock (_ctxQueue)
             {
-                int idx = ctx_queue.IndexOf(context);
+                var idx = _ctxQueue.IndexOf(context);
                 if (idx >= 0)
-                    ctx_queue.RemoveAt(idx);
+                    _ctxQueue.RemoveAt(idx);
             }
         }
 
         internal void AddConnection(HttpConnection cnc)
         {
-            connections[cnc] = cnc;
+            _connections[cnc] = cnc;
         }
 
         internal void RemoveConnection(HttpConnection cnc)
         {
-            connections.Remove(cnc);
+            _connections.Remove(cnc);
         }
     }
 }

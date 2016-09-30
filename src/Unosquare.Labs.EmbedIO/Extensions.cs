@@ -1,14 +1,14 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
-    using global::System.Collections.Generic;
-    using global::System.Net;
+    using System.Collections.Generic;
+    using System.Net;
     using Newtonsoft.Json;
-    using global::System;
-    using global::System.IO;
-    using global::System.IO.Compression;
-    using global::System.Linq;
-    using global::System.Security.Cryptography;
-    using global::System.Text;
+    using System;
+    using System.IO;
+    using System.IO.Compression;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
 
 #if NET452
     using System.Net.WebSockets;

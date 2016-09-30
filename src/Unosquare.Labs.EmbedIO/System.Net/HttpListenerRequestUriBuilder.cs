@@ -1,8 +1,8 @@
 ﻿#if !NET452
-using System.Diagnostics;
-using System.Text;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
+using System.Text;
 
 namespace System.Net
 {
@@ -13,18 +13,18 @@ namespace System.Net
     // Utf-8 characters.
     internal sealed class HttpListenerRequestUriBuilder
     {
-        private static readonly bool useCookedRequestUrl;
-        private static readonly Encoding utf8Encoding;
-        private static readonly Encoding ansiEncoding;
+        private static readonly bool UseCookedRequestUrl;
+        private static readonly Encoding Utf8Encoding;
+        private static readonly Encoding AnsiEncoding;
 
-        private readonly string rawUri;
-        private readonly string cookedUriScheme;
-        private readonly string cookedUriHost;
-        private readonly string cookedUriPath;
-        private readonly string cookedUriQuery;
+        private readonly string _rawUri;
+        private readonly string _cookedUriScheme;
+        private readonly string _cookedUriHost;
+        private readonly string _cookedUriPath;
+        private readonly string _cookedUriQuery;
 
         // This field is used to build the final request Uri string from the Uri parts passed to the ctor.
-        private StringBuilder requestUriString;
+        private StringBuilder _requestUriString;
 
         // The raw path is parsed by looping through all characters from left to right. 'rawOctets'
         // is used to store consecutive percent encoded octets as actual byte values: e.g. for path /pa%C3%84th%2F/
@@ -36,17 +36,17 @@ namespace System.Net
         // we reach 't', the content of rawOctets { 0xC4 } will be fed into the ANSI encoding. The resulting 
         // string '�' will be percent encoded into UTF-8 octets and appended to requestUriString. The final
         // path will be '/pa%C3%84th/', where '%C3%84' is the UTF-8 percent encoded character '�'.
-        private List<byte> rawOctets;
-        private string rawPath;
+        private List<byte> _rawOctets;
+        private string _rawPath;
 
         // Holds the final request Uri.
-        private Uri requestUri;
+        private Uri _requestUri;
 
         static HttpListenerRequestUriBuilder()
         {
             //useCookedRequestUrl = SettingsSectionInternal.Section.HttpListenerUnescapeRequestUrl;
-            utf8Encoding = new UTF8Encoding(false, true);
-            ansiEncoding = Encoding.GetEncoding(0, new EncoderExceptionFallback(), new DecoderExceptionFallback());
+            Utf8Encoding = new UTF8Encoding(false, true);
+            AnsiEncoding = Encoding.GetEncoding(0, new EncoderExceptionFallback(), new DecoderExceptionFallback());
         }
 
         private HttpListenerRequestUriBuilder(string rawUri, string cookedUriScheme, string cookedUriHost,
@@ -57,25 +57,18 @@ namespace System.Net
             Debug.Assert(!string.IsNullOrEmpty(cookedUriHost), "Empty cooked URL host.");
             Debug.Assert(!string.IsNullOrEmpty(cookedUriPath), "Empty cooked URL path.");
 
-            this.rawUri = rawUri;
-            this.cookedUriScheme = cookedUriScheme;
-            this.cookedUriHost = cookedUriHost;
-            this.cookedUriPath = AddSlashToAsteriskOnlyPath(cookedUriPath);
+            _rawUri = rawUri;
+            _cookedUriScheme = cookedUriScheme;
+            _cookedUriHost = cookedUriHost;
+            _cookedUriPath = AddSlashToAsteriskOnlyPath(cookedUriPath);
 
-            if (cookedUriQuery == null)
-            {
-                this.cookedUriQuery = string.Empty;
-            }
-            else
-            {
-                this.cookedUriQuery = cookedUriQuery;
-            }
+            _cookedUriQuery = cookedUriQuery ?? string.Empty;
         }
 
         public static Uri GetRequestUri(string rawUri, string cookedUriScheme, string cookedUriHost,
             string cookedUriPath, string cookedUriQuery)
         {
-            HttpListenerRequestUriBuilder builder = new HttpListenerRequestUriBuilder(rawUri,
+            var builder = new HttpListenerRequestUriBuilder(rawUri,
                 cookedUriScheme, cookedUriHost, cookedUriPath, cookedUriQuery);
 
             return builder.Build();
@@ -85,12 +78,12 @@ namespace System.Net
         {
             // if the user enabled the "use raw Uri" setting in <httpListener> section, we'll use the raw
             // path rather than the cooked path.
-            if (useCookedRequestUrl)
+            if (UseCookedRequestUrl)
             {
                 // corresponds to pre-4.0 behavior: use the cooked URI.
                 BuildRequestUriUsingCookedPath();
 
-                if (requestUri == null)
+                if (_requestUri == null)
                 {
                     BuildRequestUriUsingRawPath();
                 }
@@ -99,19 +92,20 @@ namespace System.Net
             {
                 BuildRequestUriUsingRawPath();
 
-                if (requestUri == null)
+                if (_requestUri == null)
                 {
                     BuildRequestUriUsingCookedPath();
                 }
             }
 
-            return requestUri;
+            return _requestUri;
         }
 
         private void BuildRequestUriUsingCookedPath()
         {
-            bool isValid = Uri.TryCreate(cookedUriScheme + Extensions.SchemeDelimiter + cookedUriHost + cookedUriPath +
-                cookedUriQuery, UriKind.Absolute, out requestUri);
+            var isValid =
+                Uri.TryCreate(_cookedUriScheme + Extensions.SchemeDelimiter + _cookedUriHost + _cookedUriPath +
+                              _cookedUriQuery, UriKind.Absolute, out _requestUri);
 
             // Creating a Uri from the cooked Uri should really always work: If not, we log at least.
             if (!isValid)
@@ -123,33 +117,35 @@ namespace System.Net
 
         private void BuildRequestUriUsingRawPath()
         {
-            bool isValid = false;
+            var isValid = false;
 
             // Initialize 'rawPath' only if really needed; i.e. if we build the request Uri from the raw Uri.
-            rawPath = GetPath(rawUri);
+            _rawPath = GetPath(_rawUri);
 
             // If HTTP.sys only parses Utf-8, we can safely use the raw path: it must be a valid Utf-8 string.
-            if (!HttpSysSettings.EnableNonUtf8 || (rawPath == string.Empty))
+            if (!HttpSysSettings.EnableNonUtf8 || (_rawPath == string.Empty))
             {
-                string path = rawPath;
+                var path = _rawPath;
                 if (path == string.Empty)
                 {
                     path = "/";
-                    Debug.Assert(cookedUriQuery == string.Empty,
+                    Debug.Assert(_cookedUriQuery == string.Empty,
                         "Query is only allowed if there is a non-empty path. At least '/' path required.");
                 }
 
-                isValid = Uri.TryCreate(cookedUriScheme + Extensions.SchemeDelimiter + cookedUriHost + path + cookedUriQuery,
-                    UriKind.Absolute, out requestUri);
+                isValid =
+                    Uri.TryCreate(
+                        _cookedUriScheme + Extensions.SchemeDelimiter + _cookedUriHost + path + _cookedUriQuery,
+                        UriKind.Absolute, out _requestUri);
             }
             else
             {
                 // Try to check the raw path using first the primary encoding (according to http.sys settings);
                 // if it fails try the secondary encoding.
-                ParsingResult result = BuildRequestUriUsingRawPath(GetEncoding(EncodingType.Primary));
+                var result = BuildRequestUriUsingRawPath(GetEncoding(EncodingType.Primary));
                 if (result == ParsingResult.EncodingError)
                 {
-                    Encoding secondaryEncoding = GetEncoding(EncodingType.Secondary);
+                    var secondaryEncoding = GetEncoding(EncodingType.Secondary);
                     result = BuildRequestUriUsingRawPath(secondaryEncoding);
                 }
                 isValid = (result == ParsingResult.Success) ? true : false;
@@ -173,34 +169,31 @@ namespace System.Net
             if (((type == EncodingType.Primary) && (!HttpSysSettings.FavorUtf8)) ||
                 ((type == EncodingType.Secondary) && (HttpSysSettings.FavorUtf8)))
             {
-                return ansiEncoding;
+                return AnsiEncoding;
             }
-            else
-            {
-                return utf8Encoding;
-            }
+            return Utf8Encoding;
         }
 
         private ParsingResult BuildRequestUriUsingRawPath(Encoding encoding)
         {
             Debug.Assert(encoding != null, "'encoding' must be assigned.");
-            Debug.Assert(!string.IsNullOrEmpty(rawPath), "'rawPath' must have at least one character.");
+            Debug.Assert(!string.IsNullOrEmpty(_rawPath), "'rawPath' must have at least one character.");
 
-            rawOctets = new List<byte>();
-            requestUriString = new StringBuilder();
-            requestUriString.Append(cookedUriScheme);
-            requestUriString.Append(Extensions.SchemeDelimiter);
-            requestUriString.Append(cookedUriHost);
+            _rawOctets = new List<byte>();
+            _requestUriString = new StringBuilder();
+            _requestUriString.Append(_cookedUriScheme);
+            _requestUriString.Append(Extensions.SchemeDelimiter);
+            _requestUriString.Append(_cookedUriHost);
 
-            ParsingResult result = ParseRawPath(encoding);
+            var result = ParseRawPath(encoding);
             if (result == ParsingResult.Success)
             {
-                requestUriString.Append(cookedUriQuery);
+                _requestUriString.Append(_cookedUriQuery);
 
-                Debug.Assert(rawOctets.Count == 0,
+                Debug.Assert(_rawOctets.Count == 0,
                     "Still raw octets left. They must be added to the result path.");
 
-                if (!Uri.TryCreate(requestUriString.ToString(), UriKind.Absolute, out requestUri))
+                if (!Uri.TryCreate(_requestUriString.ToString(), UriKind.Absolute, out _requestUri))
                 {
                     // If we can't create a Uri from the string, this is an invalid string and it doesn't make 
                     // sense to try another encoding.
@@ -221,22 +214,22 @@ namespace System.Net
         {
             Debug.Assert(encoding != null, "'encoding' must be assigned.");
 
-            int index = 0;
-            char current = '\0';
-            while (index < rawPath.Length)
+            var index = 0;
+            var current = '\0';
+            while (index < _rawPath.Length)
             {
-                current = rawPath[index];
+                current = _rawPath[index];
                 if (current == '%')
                 {
                     // Assert is enough, since http.sys accepted the request string already. This should never happen.
-                    Debug.Assert(index + 2 < rawPath.Length, "Expected >=2 characters after '%' (e.g. %2F)");
+                    Debug.Assert(index + 2 < _rawPath.Length, "Expected >=2 characters after '%' (e.g. %2F)");
 
                     index++;
-                    current = rawPath[index];
+                    current = _rawPath[index];
                     if (current == 'u' || current == 'U')
                     {
                         // We found "%u" which means, we have a Unicode code point of the form "%uXXXX".
-                        Debug.Assert(index + 4 < rawPath.Length, "Expected >=4 characters after '%u' (e.g. %u0062)");
+                        Debug.Assert(index + 4 < _rawPath.Length, "Expected >=4 characters after '%u' (e.g. %u0062)");
 
                         // Decode the content of rawOctets into percent encoded UTF-8 characters and append them
                         // to requestUriString.
@@ -244,7 +237,7 @@ namespace System.Net
                         {
                             return ParsingResult.EncodingError;
                         }
-                        if (!AppendUnicodeCodePointValuePercentEncoded(rawPath.Substring(index + 1, 4)))
+                        if (!AppendUnicodeCodePointValuePercentEncoded(_rawPath.Substring(index + 1, 4)))
                         {
                             return ParsingResult.InvalidString;
                         }
@@ -253,7 +246,7 @@ namespace System.Net
                     else
                     {
                         // We found '%', but not followed by 'u', i.e. we have a percent encoded octed: %XX 
-                        if (!AddPercentEncodedOctetToRawOctetsList(encoding, rawPath.Substring(index, 2)))
+                        if (!AddPercentEncodedOctetToRawOctetsList(encoding, _rawPath.Substring(index, 2)))
                         {
                             return ParsingResult.InvalidString;
                         }
@@ -269,7 +262,7 @@ namespace System.Net
                         return ParsingResult.EncodingError;
                     }
                     // Append the current character to the result.
-                    requestUriString.Append(current);
+                    _requestUriString.Append(current);
                     index++;
                 }
             }
@@ -300,7 +293,7 @@ namespace System.Net
             try
             {
                 unicodeString = char.ConvertFromUtf32(codePointValue);
-                AppendOctetsPercentEncoded(requestUriString, utf8Encoding.GetBytes(unicodeString));
+                AppendOctetsPercentEncoded(_requestUriString, Utf8Encoding.GetBytes(unicodeString));
 
                 return true;
             }
@@ -329,35 +322,28 @@ namespace System.Net
                 return false;
             }
 
-            rawOctets.Add(encodedValue);
+            _rawOctets.Add(encodedValue);
 
             return true;
         }
 
         private bool EmptyDecodeAndAppendRawOctetsList(Encoding encoding)
         {
-            if (rawOctets.Count == 0)
+            if (_rawOctets.Count == 0)
             {
                 return true;
             }
 
-            string decodedString = null;
             try
             {
                 // If the encoding can get a string out of the byte array, this is a valid string in the
                 // 'encoding' encoding.
-                decodedString = encoding.GetString(rawOctets.ToArray());
+                var decodedString = encoding.GetString(_rawOctets.ToArray());
 
-                if (encoding == utf8Encoding)
-                {
-                    AppendOctetsPercentEncoded(requestUriString, rawOctets.ToArray());
-                }
-                else
-                {
-                    AppendOctetsPercentEncoded(requestUriString, utf8Encoding.GetBytes(decodedString));
-                }
+                AppendOctetsPercentEncoded(_requestUriString,
+                    encoding == Utf8Encoding ? _rawOctets.ToArray() : Utf8Encoding.GetBytes(decodedString));
 
-                rawOctets.Clear();
+                _rawOctets.Clear();
 
                 return true;
             }
@@ -378,7 +364,7 @@ namespace System.Net
 
         private static void AppendOctetsPercentEncoded(StringBuilder target, IEnumerable<byte> octets)
         {
-            foreach (byte octet in octets)
+            foreach (var octet in octets)
             {
                 target.Append('%');
                 target.Append(octet.ToString("X2", CultureInfo.InvariantCulture));
@@ -387,10 +373,10 @@ namespace System.Net
 
         private static string GetOctetsAsString(IEnumerable<byte> octets)
         {
-            StringBuilder octetString = new StringBuilder();
+            var octetString = new StringBuilder();
 
-            bool first = true;
-            foreach (byte octet in octets)
+            var first = true;
+            foreach (var octet in octets)
             {
                 if (first)
                 {
@@ -411,7 +397,7 @@ namespace System.Net
             Debug.Assert(uriString != null, "uriString must not be null");
             Debug.Assert(uriString.Length > 0, "uriString must not be empty");
 
-            int pathStartIndex = 0;
+            var pathStartIndex = 0;
 
             // Perf. improvement: nearly all strings are relative Uris. So just look if the
             // string starts with '/'. If so, we have a relative Uri and the path starts at position 0.
@@ -421,7 +407,7 @@ namespace System.Net
                 // We can't check against cookedUriScheme, since http.sys allows for request http://myserver/ to
                 // use a request line 'GET https://myserver/' (note http vs. https). Therefore check if the
                 // Uri starts with either http:// or https://.
-                int authorityStartIndex = 0;
+                var authorityStartIndex = 0;
                 if (uriString.StartsWith("http://", StringComparison.OrdinalIgnoreCase))
                 {
                     authorityStartIndex = 7;
@@ -465,7 +451,7 @@ namespace System.Net
             // - the first '#' character: This is never the case here, since http.sys won't accept 
             //   Uris containing fragments. Also, RFC2616 doesn't allow fragments in request Uris.
             // - end of Uri string
-            int queryIndex = uriString.IndexOf('?');
+            var queryIndex = uriString.IndexOf('?');
             if (queryIndex == -1)
             {
                 queryIndex = uriString.Length;
@@ -489,14 +475,6 @@ namespace System.Net
             return path;
         }
 
-        private void LogWarning(string methodName, string message, params object[] args)
-        {
-            //if (Logging.On)
-            //{
-            //    Logging.PrintWarning(Logging.HttpListener, this, methodName, SR.GetString(message, args));
-            //}
-        }
-
         private enum ParsingResult
         {
             Success,
@@ -511,4 +489,5 @@ namespace System.Net
         }
     }
 }
+
 #endif

@@ -36,7 +36,7 @@
         /// </summary>
         public WebApiModule()
         {
-            this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
+            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
             {
                 var verb = context.RequestVerb();
                 var regExRouteParams = new Dictionary<string, object>();
@@ -296,7 +296,7 @@
         public void RegisterController(Type controllerType)
         {
             Func<object> controllerFactory = () => Activator.CreateInstance(controllerType);
-            this.RegisterController(controllerType, controllerFactory);
+            RegisterController(controllerType, controllerFactory);
         }
 
         /// <summary>
@@ -375,8 +375,8 @@
             if (paths == null || paths.Length == 0)
                 throw new ArgumentException("The argument 'paths' must be specified.");
 
-            this.Verb = verb;
-            this.Paths = paths;
+            Verb = verb;
+            Paths = paths;
         }
 
         /// <summary>
@@ -390,8 +390,8 @@
             if (string.IsNullOrWhiteSpace(path))
                 throw new ArgumentException("The argument 'path' must be specified.");
 
-            this.Verb = verb;
-            this.Paths = new string[] { path };
+            Verb = verb;
+            Paths = new string[] { path };
         }
 
         /// <summary>

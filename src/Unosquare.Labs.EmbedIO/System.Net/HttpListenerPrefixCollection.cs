@@ -27,97 +27,85 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace System.Net
 {
-    public class HttpListenerPrefixCollection : ICollection<string>, IEnumerable<string>, IEnumerable
+    public class HttpListenerPrefixCollection : ICollection<string>
     {
-        List<string> prefixes = new List<string>();
+        readonly List<string> _prefixes = new List<string>();
 
-        HttpListener listener;
+        readonly HttpListener _listener;
 
         internal HttpListenerPrefixCollection(HttpListener listener)
         {
-            this.listener = listener;
+            _listener = listener;
         }
 
-        public int Count
-        {
-            get { return prefixes.Count; }
-        }
+        public int Count => _prefixes.Count;
 
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
-        public bool IsSynchronized
-        {
-            get { return false; }
-        }
+        public bool IsSynchronized => false;
 
         public void Add(string uriPrefix)
         {
-            listener.CheckDisposed();
+            _listener.CheckDisposed();
             ListenerPrefix.CheckUri(uriPrefix);
-            if (prefixes.Contains(uriPrefix))
+            if (_prefixes.Contains(uriPrefix))
                 return;
 
-            prefixes.Add(uriPrefix);
-            if (listener.IsListening)
-                EndPointManager.AddPrefix(uriPrefix, listener);
+            _prefixes.Add(uriPrefix);
+            if (_listener.IsListening)
+                EndPointManager.AddPrefix(uriPrefix, _listener);
         }
 
         public void Clear()
         {
-            listener.CheckDisposed();
-            prefixes.Clear();
-            if (listener.IsListening)
-                EndPointManager.RemoveListener(listener);
+            _listener.CheckDisposed();
+            _prefixes.Clear();
+            if (_listener.IsListening)
+                EndPointManager.RemoveListener(_listener);
         }
 
         public bool Contains(string uriPrefix)
         {
-            listener.CheckDisposed();
-            return prefixes.Contains(uriPrefix);
+            _listener.CheckDisposed();
+            return _prefixes.Contains(uriPrefix);
         }
 
         public void CopyTo(string[] array, int offset)
         {
-            listener.CheckDisposed();
-            prefixes.CopyTo(array, offset);
+            _listener.CheckDisposed();
+            _prefixes.CopyTo(array, offset);
         }
 
         public void CopyTo(Array array, int offset)
         {
-            listener.CheckDisposed();
-            ((ICollection)prefixes).CopyTo(array, offset);
+            _listener.CheckDisposed();
+            ((ICollection)_prefixes).CopyTo(array, offset);
         }
         
         public IEnumerator<string> GetEnumerator()
         {
-            return prefixes.GetEnumerator();
+            return _prefixes.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return prefixes.GetEnumerator();
+            return _prefixes.GetEnumerator();
         }
 
         public bool Remove(string uriPrefix)
         {
-            listener.CheckDisposed();
+            _listener.CheckDisposed();
             if (uriPrefix == null)
-                throw new ArgumentNullException("uriPrefix");
+                throw new ArgumentNullException(nameof(uriPrefix));
 
-            bool result = prefixes.Remove(uriPrefix);
-            if (result && listener.IsListening)
-                EndPointManager.RemovePrefix(uriPrefix, listener);
+            var result = _prefixes.Remove(uriPrefix);
+            if (result && _listener.IsListening)
+                EndPointManager.RemovePrefix(uriPrefix, _listener);
 
             return result;
         }

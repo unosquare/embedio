@@ -28,27 +28,22 @@
 //
 
 using System.Collections;
-using System.Collections.Generic;
 
 namespace System.Net
 {
-    sealed class EndPointManager
+    static class EndPointManager
     {
         // Dictionary<IPAddress, Dictionary<int, EndPointListener>>
-        static Hashtable ip_to_endpoints = new Hashtable();
-
-        private EndPointManager()
-        {
-        }
+        static readonly Hashtable _ipToEndpoints = new Hashtable();
 
         public static void AddListener(HttpListener listener)
         {
-            ArrayList added = new ArrayList();
+            var added = new ArrayList();
             try
             {
-                lock (ip_to_endpoints)
+                lock (_ipToEndpoints)
                 {
-                    foreach (string prefix in listener.Prefixes)
+                    foreach (var prefix in listener.Prefixes)
                     {
                         AddPrefixInternal(prefix, listener);
                         added.Add(prefix);
@@ -67,7 +62,7 @@ namespace System.Net
 
         public static void AddPrefix(string prefix, HttpListener listener)
         {
-            lock (ip_to_endpoints)
+            lock (_ipToEndpoints)
             {
                 AddPrefixInternal(prefix, listener);
             }
@@ -75,7 +70,7 @@ namespace System.Net
 
         static void AddPrefixInternal(string p, HttpListener listener)
         {
-            ListenerPrefix lp = new ListenerPrefix(p);
+            var lp = new ListenerPrefix(p);
             if (lp.Path.IndexOf('%') != -1)
                 throw new HttpListenerException(400, "Invalid path.");
 
@@ -83,11 +78,11 @@ namespace System.Net
                 throw new HttpListenerException(400, "Invalid path.");
 
             // listens on all the interfaces if host name cannot be parsed by IPAddress.
-            EndPointListener epl = GetEPListener(lp.Host, lp.Port, listener, lp.Secure);
+            var epl = GetEpListener(lp.Host, lp.Port, listener, lp.Secure);
             epl.AddPrefix(lp, listener);
         }
 
-        static EndPointListener GetEPListener(string host, int port, HttpListener listener, bool secure)
+        static EndPointListener GetEpListener(string host, int port, HttpListener listener, bool secure)
         {
             IPAddress addr;
             if (host == "*")
@@ -96,16 +91,13 @@ namespace System.Net
             {
                 try
                 {
-                    IPHostEntry iphost = new IPHostEntry
+                    var iphost = new IPHostEntry
                     {
                         HostName = host,
                         AddressList = Dns.GetHostAddressesAsync(host).Result
                     };
 
-                    if (iphost != null)
-                        addr = iphost.AddressList[0];
-                    else
-                        addr = IPAddress.Any;
+                    addr = iphost.AddressList[0];
                 }
                 catch
                 {
@@ -113,14 +105,14 @@ namespace System.Net
                 }
             }
             Hashtable p = null;  // Dictionary<int, EndPointListener>
-            if (ip_to_endpoints.ContainsKey(addr))
+            if (_ipToEndpoints.ContainsKey(addr))
             {
-                p = (Hashtable)ip_to_endpoints[addr];
+                p = (Hashtable)_ipToEndpoints[addr];
             }
             else
             {
                 p = new Hashtable();
-                ip_to_endpoints[addr] = p;
+                _ipToEndpoints[addr] = p;
             }
 
             EndPointListener epl = null;
@@ -139,15 +131,15 @@ namespace System.Net
 
         public static void RemoveEndPoint(EndPointListener epl, IPEndPoint ep)
         {
-            lock (ip_to_endpoints)
+            lock (_ipToEndpoints)
             {
                 // Dictionary<int, EndPointListener> p
                 Hashtable p = null;
-                p = (Hashtable)ip_to_endpoints[ep.Address];
+                p = (Hashtable)_ipToEndpoints[ep.Address];
                 p.Remove(ep.Port);
                 if (p.Count == 0)
                 {
-                    ip_to_endpoints.Remove(ep.Address);
+                    _ipToEndpoints.Remove(ep.Address);
                 }
                 epl.Close();
             }
@@ -155,9 +147,9 @@ namespace System.Net
 
         public static void RemoveListener(HttpListener listener)
         {
-            lock (ip_to_endpoints)
+            lock (_ipToEndpoints)
             {
-                foreach (string prefix in listener.Prefixes)
+                foreach (var prefix in listener.Prefixes)
                 {
                     RemovePrefixInternal(prefix, listener);
                 }
@@ -166,7 +158,7 @@ namespace System.Net
 
         public static void RemovePrefix(string prefix, HttpListener listener)
         {
-            lock (ip_to_endpoints)
+            lock (_ipToEndpoints)
             {
                 RemovePrefixInternal(prefix, listener);
             }
@@ -174,14 +166,14 @@ namespace System.Net
 
         static void RemovePrefixInternal(string prefix, HttpListener listener)
         {
-            ListenerPrefix lp = new ListenerPrefix(prefix);
+            var lp = new ListenerPrefix(prefix);
             if (lp.Path.IndexOf('%') != -1)
                 return;
 
             if (lp.Path.IndexOf("//", StringComparison.Ordinal) != -1)
                 return;
 
-            EndPointListener epl = GetEPListener(lp.Host, lp.Port, listener, lp.Secure);
+            var epl = GetEpListener(lp.Host, lp.Port, listener, lp.Secure);
             epl.RemovePrefix(lp, listener);
         }
     }

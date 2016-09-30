@@ -28,12 +28,8 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Security.Authentication.ExtendedProtection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -71,51 +67,42 @@ namespace System.Net
             }
         }
 
-        string[] accept_types;
-        Encoding content_encoding;
-        long content_length;
-        bool cl_set;
-        CookieCollection cookies;
-        NameValueCollection headers;
-        string method;
-        Stream input_stream;
-        Version version;
-        NameValueCollection query_string; // check if null is ok, check if read-only, check case-sensitiveness
-        string raw_url;
-        Uri url;
-        Uri referrer;
-        string[] user_languages;
-        HttpListenerContext context;
-        bool is_chunked;
-        bool ka_set;
-        bool keep_alive;
-        delegate X509Certificate2 GCCDelegate();
-        GCCDelegate gcc_delegate;
+        Encoding _contentEncoding;
+        bool _clSet;
+        CookieCollection _cookies;
+        Stream _inputStream;
+        Uri _url;
+        readonly HttpListenerContext _context;
+        bool _isChunked;
+        bool _kaSet;
+        bool _keepAlive;
+        delegate X509Certificate2 GccDelegate();
+        GccDelegate _gccDelegate;
 
-        static byte[] _100continue = Encoding.GetEncoding(0).GetBytes("HTTP/1.1 100 Continue\r\n\r\n");
+        static readonly byte[] _100Continue = Encoding.GetEncoding(0).GetBytes("HTTP/1.1 100 Continue\r\n\r\n");
 
         internal HttpListenerRequest(HttpListenerContext context)
         {
-            this.context = context;
-            headers = new NameValueCollection();
-            version = HttpVersion.Version10;
+            _context = context;
+            Headers = new NameValueCollection();
+            ProtocolVersion = HttpVersion.Version10;
         }
 
-        static char[] separators = new char[] { ' ' };
+        static readonly char[] Separators = { ' ' };
 
         internal void SetRequestLine(string req)
         {
-            string[] parts = req.Split(separators, 3);
+            var parts = req.Split(Separators, 3);
             if (parts.Length != 3)
             {
-                context.ErrorMessage = "Invalid request line (parts).";
+                _context.ErrorMessage = "Invalid request line (parts).";
                 return;
             }
 
-            method = parts[0];
-            foreach (char c in method)
+            HttpMethod = parts[0];
+            foreach (var c in HttpMethod)
             {
-                int ic = (int)c;
+                var ic = (int)c;
 
                 if ((ic >= 'A' && ic <= 'Z') ||
                     (ic > 32 && c < 127 && c != '(' && c != ')' && c != '<' &&
@@ -124,62 +111,61 @@ namespace System.Net
                      c != ']' && c != '?' && c != '=' && c != '{' && c != '}'))
                     continue;
 
-                context.ErrorMessage = "(Invalid verb)";
+                _context.ErrorMessage = "(Invalid verb)";
                 return;
             }
 
-            raw_url = parts[1];
+            RawUrl = parts[1];
             if (parts[2].Length != 8 || !parts[2].StartsWith("HTTP/"))
             {
-                context.ErrorMessage = "Invalid request line (version).";
+                _context.ErrorMessage = "Invalid request line (version).";
                 return;
             }
 
             try
             {
-                version = new Version(parts[2].Substring(5));
-                if (version.Major < 1)
+                ProtocolVersion = new Version(parts[2].Substring(5));
+                if (ProtocolVersion.Major < 1)
                     throw new Exception();
             }
             catch
             {
-                context.ErrorMessage = "Invalid request line (version).";
-                return;
+                _context.ErrorMessage = "Invalid request line (version).";
             }
         }
 
         void CreateQueryString(string query)
         {
-            if (query == null || query.Length == 0)
+            if (string.IsNullOrEmpty(query))
             {
-                query_string = new NameValueCollection(1);
+                QueryString = new NameValueCollection(1);
                 return;
             }
 
-            query_string = new NameValueCollection();
+            QueryString = new NameValueCollection();
             if (query[0] == '?')
                 query = query.Substring(1);
-            string[] components = query.Split('&');
-            foreach (string kv in components)
+            var components = query.Split('&');
+            foreach (var kv in components)
             {
-                int pos = kv.IndexOf('=');
+                var pos = kv.IndexOf('=');
                 if (pos == -1)
                 {
-                    query_string.Add(null, WebUtility.UrlDecode(kv));
+                    QueryString.Add(null, WebUtility.UrlDecode(kv));
                 }
                 else
                 {
-                    string key = WebUtility.UrlDecode(kv.Substring(0, pos));
-                    string val = WebUtility.UrlDecode(kv.Substring(pos + 1));
+                    var key = WebUtility.UrlDecode(kv.Substring(0, pos));
+                    var val = WebUtility.UrlDecode(kv.Substring(pos + 1));
 
-                    query_string.Add(key, val);
+                    QueryString.Add(key, val);
                 }
             }
         }
 
         static bool MaybeUri(string s)
         {
-            int p = s.IndexOf(':');
+            var p = s.IndexOf(':');
             if (p == -1)
                 return false;
 
@@ -205,7 +191,7 @@ namespace System.Net
             if (scheme == null || scheme.Length < 3)
                 return false;
 
-            char c = scheme[0];
+            var c = scheme[0];
             if (c == 'h')
                 return (scheme == "http" || scheme == "https");
             if (c == 'f')
@@ -228,80 +214,80 @@ namespace System.Net
 
         internal void FinishInitialization()
         {
-            string host = UserHostName;
-            if (version > HttpVersion.Version10 && (host == null || host.Length == 0))
+            var host = UserHostName;
+            if (ProtocolVersion > HttpVersion.Version10 && string.IsNullOrEmpty(host))
             {
-                context.ErrorMessage = "Invalid host name";
+                _context.ErrorMessage = "Invalid host name";
                 return;
             }
 
             string path;
-            Uri raw_uri = null;
-            if (MaybeUri(raw_url.ToLowerInvariant()) && Uri.TryCreate(raw_url, UriKind.Absolute, out raw_uri))
-                path = raw_uri.PathAndQuery;
+            Uri rawUri = null;
+            if (MaybeUri(RawUrl.ToLowerInvariant()) && Uri.TryCreate(RawUrl, UriKind.Absolute, out rawUri))
+                path = rawUri.PathAndQuery;
             else
-                path = raw_url;
+                path = RawUrl;
 
-            if ((host == null || host.Length == 0))
+            if (string.IsNullOrEmpty(host))
                 host = UserHostAddress;
 
-            if (raw_uri != null)
-                host = raw_uri.Host;
+            if (rawUri != null)
+                host = rawUri.Host;
 
-            int colon = host.IndexOf(':');
+            var colon = host.IndexOf(':');
             if (colon >= 0)
                 host = host.Substring(0, colon);
 
-            string base_uri = String.Format("{0}://{1}:{2}",
+            var baseUri = string.Format("{0}://{1}:{2}",
                                 (IsSecureConnection) ? "https" : "http",
                                 host, LocalEndPoint.Port);
 
-            if (!Uri.TryCreate(base_uri + path, UriKind.Absolute, out url))
+            if (!Uri.TryCreate(baseUri + path, UriKind.Absolute, out _url))
             {
-                context.ErrorMessage = WebUtility.HtmlEncode("Invalid url: " + base_uri + path);
+                _context.ErrorMessage = WebUtility.HtmlEncode("Invalid url: " + baseUri + path);
                 return;
             }
 
-            CreateQueryString(url.Query);
+            CreateQueryString(_url.Query);
 
             // Use reference source HttpListenerRequestUriBuilder to process url.
             // Fixes #29927
-            url = HttpListenerRequestUriBuilder.GetRequestUri(raw_url, url.Scheme,
-                                url.Authority, url.LocalPath, url.Query);
+            _url = HttpListenerRequestUriBuilder.GetRequestUri(RawUrl, _url.Scheme,
+                                _url.Authority, _url.LocalPath, _url.Query);
 
-            if (version >= HttpVersion.Version11)
+            if (ProtocolVersion >= HttpVersion.Version11)
             {
-                string t_encoding = Headers["Transfer-Encoding"];
-                is_chunked = (t_encoding != null && String.Compare(t_encoding, "chunked", StringComparison.OrdinalIgnoreCase) == 0);
+                var tEncoding = Headers["Transfer-Encoding"];
+                _isChunked = (tEncoding != null && string.Compare(tEncoding, "chunked", StringComparison.OrdinalIgnoreCase) == 0);
                 // 'identity' is not valid!
-                if (t_encoding != null && !is_chunked)
+                if (tEncoding != null && !_isChunked)
                 {
-                    context.Connection.SendError(null, 501);
+                    _context.Connection.SendError(null, 501);
                     return;
                 }
             }
 
-            if (!is_chunked && !cl_set)
+            if (!_isChunked && !_clSet)
             {
-                if (String.Compare(method, "POST", StringComparison.OrdinalIgnoreCase) == 0 ||
-                    String.Compare(method, "PUT", StringComparison.OrdinalIgnoreCase) == 0)
+                if (string.Compare(HttpMethod, "POST", StringComparison.OrdinalIgnoreCase) == 0 ||
+                    string.Compare(HttpMethod, "PUT", StringComparison.OrdinalIgnoreCase) == 0)
                 {
-                    context.Connection.SendError(null, 411);
+                    _context.Connection.SendError(null, 411);
                     return;
                 }
             }
 
-            if (String.Compare(Headers["Expect"], "100-continue", StringComparison.OrdinalIgnoreCase) == 0)
+            if (string.Compare(Headers["Expect"], "100-continue", StringComparison.OrdinalIgnoreCase) == 0)
             {
-                ResponseStream output = context.Connection.GetResponseStream();
-                output.InternalWrite(_100continue, 0, _100continue.Length);
+                var output = _context.Connection.GetResponseStream();
+                output.InternalWrite(_100Continue, 0, _100Continue.Length);
             }
         }
 
-        internal static string Unquote(String str)
+        internal static string Unquote(string str)
         {
-            int start = str.IndexOf('\"');
-            int end = str.LastIndexOf('\"');
+            var start = str.IndexOf('\"');
+            var end = str.LastIndexOf('\"');
             if (start >= 0 && end >= 0)
                 str = str.Substring(start + 1, end - 1);
             return str.Trim();
@@ -309,66 +295,66 @@ namespace System.Net
 
         internal void AddHeader(string header)
         {
-            int colon = header.IndexOf(':');
+            var colon = header.IndexOf(':');
             if (colon == -1 || colon == 0)
             {
-                context.ErrorMessage = "Bad Request";
-                context.ErrorStatus = 400;
+                _context.ErrorMessage = "Bad Request";
+                _context.ErrorStatus = 400;
                 return;
             }
 
-            string name = header.Substring(0, colon).Trim();
-            string val = header.Substring(colon + 1).Trim();
-            string lower = name.ToLowerInvariant();
-            headers.Set(name, val);
+            var name = header.Substring(0, colon).Trim();
+            var val = header.Substring(colon + 1).Trim();
+            var lower = name.ToLowerInvariant();
+            Headers.Set(name, val);
             switch (lower)
             {
                 case "accept-language":
-                    user_languages = val.Split(','); // yes, only split with a ','
+                    UserLanguages = val.Split(','); // yes, only split with a ','
                     break;
                 case "accept":
-                    accept_types = val.Split(','); // yes, only split with a ','
+                    AcceptTypes = val.Split(','); // yes, only split with a ','
                     break;
                 case "content-length":
                     try
                     {
                         //TODO: max. content_length?
-                        content_length = Int64.Parse(val.Trim());
-                        if (content_length < 0)
-                            context.ErrorMessage = "Invalid Content-Length.";
-                        cl_set = true;
+                        ContentLength64 = long.Parse(val.Trim());
+                        if (ContentLength64 < 0)
+                            _context.ErrorMessage = "Invalid Content-Length.";
+                        _clSet = true;
                     }
                     catch
                     {
-                        context.ErrorMessage = "Invalid Content-Length.";
+                        _context.ErrorMessage = "Invalid Content-Length.";
                     }
 
                     break;
                 case "referer":
                     try
                     {
-                        referrer = new Uri(val);
+                        UrlReferrer = new Uri(val);
                     }
                     catch
                     {
-                        referrer = new Uri("http://someone.is.screwing.with.the.headers.com/");
+                        UrlReferrer = new Uri("http://someone.is.screwing.with.the.headers.com/");
                     }
                     break;
                 case "cookie":
-                    if (cookies == null)
-                        cookies = new CookieCollection();
+                    if (_cookies == null)
+                        _cookies = new CookieCollection();
 
-                    string[] cookieStrings = val.Split(new char[] { ',', ';' });
+                    var cookieStrings = val.Split(',', ';');
                     Cookie current = null;
-                    int version = 0;
-                    foreach (string cookieString in cookieStrings)
+                    var version = 0;
+                    foreach (var cookieString in cookieStrings)
                     {
-                        string str = cookieString.Trim();
+                        var str = cookieString.Trim();
                         if (str.Length == 0)
                             continue;
                         if (str.StartsWith("$Version"))
                         {
-                            version = Int32.Parse(Unquote(str.Substring(str.IndexOf('=') + 1)));
+                            version = int.Parse(Unquote(str.Substring(str.IndexOf('=') + 1)));
                         }
                         else if (str.StartsWith("$Path"))
                         {
@@ -389,10 +375,10 @@ namespace System.Net
                         {
                             if (current != null)
                             {
-                                cookies.Add(current);
+                                _cookies.Add(current);
                             }
                             current = new Cookie();
-                            int idx = str.IndexOf('=');
+                            var idx = str.IndexOf('=');
                             if (idx > 0)
                             {
                                 current.Name = str.Substring(0, idx).Trim();
@@ -401,14 +387,14 @@ namespace System.Net
                             else
                             {
                                 current.Name = str.Trim();
-                                current.Value = String.Empty;
+                                current.Value = string.Empty;
                             }
                             current.Version = version;
                         }
                     }
                     if (current != null)
                     {
-                        cookies.Add(current);
+                        _cookies.Add(current);
                     }
                     break;
             }
@@ -420,17 +406,17 @@ namespace System.Net
             if (!HasEntityBody)
                 return true;
 
-            int length = 2048;
-            if (content_length > 0)
-                length = (int)Math.Min(content_length, (long)length);
+            var length = 2048;
+            if (ContentLength64 > 0)
+                length = (int)Math.Min(ContentLength64, length);
 
-            byte[] bytes = new byte[length];
+            var bytes = new byte[length];
             while (true)
             {
                 // TODO: test if MS has a timeout when doing this
                 try
                 {
-                    IAsyncResult ares = InputStream.BeginRead(bytes, 0, length, null, null);
+                    var ares = InputStream.BeginRead(bytes, 0, length, null, null);
                     if (!ares.IsCompleted && !ares.AsyncWaitHandle.WaitOne(1000))
                         return false;
                     if (InputStream.EndRead(ares) <= 0)
@@ -438,7 +424,7 @@ namespace System.Net
                 }
                 catch (ObjectDisposedException e)
                 {
-                    input_stream = null;
+                    _inputStream = null;
                     return true;
                 }
                 catch
@@ -448,19 +434,16 @@ namespace System.Net
             }
         }
 
-        public string[] AcceptTypes
-        {
-            get { return accept_types; }
-        }
+        public string[] AcceptTypes { get; private set; }
 
         public int ClientCertificateError
         {
             get
             {
-                HttpConnection cnc = context.Connection;
+                var cnc = _context.Connection;
                 if (cnc.ClientCertificate == null)
                     throw new InvalidOperationException("No client certificate");
-                int[] errors = cnc.ClientCertificateErrors;
+                var errors = cnc.ClientCertificateErrors;
                 if (errors != null && errors.Length > 0)
                     return errors[0];
                 return 0;
@@ -471,219 +454,137 @@ namespace System.Net
         {
             get
             {
-                if (content_encoding == null)
-                    content_encoding = Encoding.GetEncoding(0);
-                return content_encoding;
+                if (_contentEncoding == null)
+                    _contentEncoding = Encoding.GetEncoding(0);
+                return _contentEncoding;
             }
         }
 
-        public long ContentLength64
-        {
-            get { return content_length; }
-        }
+        public long ContentLength64 { get; private set; }
 
-        public string ContentType
-        {
-            get { return headers["content-type"]; }
-        }
+        public string ContentType => Headers["content-type"];
 
         public CookieCollection Cookies
         {
             get
             {
                 // TODO: check if the collection is read-only
-                if (cookies == null)
-                    cookies = new CookieCollection();
-                return cookies;
+                if (_cookies == null)
+                    _cookies = new CookieCollection();
+                return _cookies;
             }
         }
 
-        public bool HasEntityBody
-        {
-            get { return (content_length > 0 || is_chunked); }
-        }
+        public bool HasEntityBody => (ContentLength64 > 0 || _isChunked);
 
-        public NameValueCollection Headers
-        {
-            get { return headers; }
-        }
+        public NameValueCollection Headers { get; }
 
-        public string HttpMethod
-        {
-            get { return method; }
-        }
+        public string HttpMethod { get; private set; }
 
         public Stream InputStream
         {
             get
             {
-                if (input_stream == null)
+                if (_inputStream == null)
                 {
-                    if (is_chunked || content_length > 0)
-                        input_stream = context.Connection.GetRequestStream(is_chunked, content_length);
+                    if (_isChunked || ContentLength64 > 0)
+                        _inputStream = _context.Connection.GetRequestStream(_isChunked, ContentLength64);
                     else
-                        input_stream = Stream.Null;
+                        _inputStream = Stream.Null;
                 }
 
-                return input_stream;
+                return _inputStream;
             }
         }
+        
+        public bool IsAuthenticated => false;
 
-        [MonoTODO("Always returns false")]
-        public bool IsAuthenticated
-        {
-            get { return false; }
-        }
+        public bool IsLocal => LocalEndPoint.Address.Equals(RemoteEndPoint.Address);
 
-        public bool IsLocal
-        {
-            get { return LocalEndPoint.Address.Equals(RemoteEndPoint.Address); }
-        }
-
-        public bool IsSecureConnection
-        {
-            get { return context.Connection.IsSecure; }
-        }
+        public bool IsSecureConnection => _context.Connection.IsSecure;
 
         public bool KeepAlive
         {
             get
             {
-                if (ka_set)
-                    return keep_alive;
+                if (_kaSet)
+                    return _keepAlive;
 
-                ka_set = true;
+                _kaSet = true;
                 // 1. Connection header
                 // 2. Protocol (1.1 == keep-alive by default)
                 // 3. Keep-Alive header
-                string cnc = headers["Connection"];
-                if (!String.IsNullOrEmpty(cnc))
+                var cnc = Headers["Connection"];
+                if (!string.IsNullOrEmpty(cnc))
                 {
-                    keep_alive = (0 == String.Compare(cnc, "keep-alive", StringComparison.OrdinalIgnoreCase));
+                    _keepAlive = (0 == string.Compare(cnc, "keep-alive", StringComparison.OrdinalIgnoreCase));
                 }
-                else if (version == HttpVersion.Version11)
+                else if (ProtocolVersion == HttpVersion.Version11)
                 {
-                    keep_alive = true;
+                    _keepAlive = true;
                 }
                 else
                 {
-                    cnc = headers["keep-alive"];
-                    if (!String.IsNullOrEmpty(cnc))
-                        keep_alive = (0 != String.Compare(cnc, "closed", StringComparison.OrdinalIgnoreCase));
+                    cnc = Headers["keep-alive"];
+                    if (!string.IsNullOrEmpty(cnc))
+                        _keepAlive = (0 != string.Compare(cnc, "closed", StringComparison.OrdinalIgnoreCase));
                 }
-                return keep_alive;
+                return _keepAlive;
             }
         }
 
-        public IPEndPoint LocalEndPoint
-        {
-            get { return context.Connection.LocalEndPoint; }
-        }
+        public IPEndPoint LocalEndPoint => _context.Connection.LocalEndPoint;
 
-        public Version ProtocolVersion
-        {
-            get { return version; }
-        }
+        public Version ProtocolVersion { get; private set; }
 
-        public NameValueCollection QueryString
-        {
-            get { return query_string; }
-        }
+        public NameValueCollection QueryString { get; private set; }
 
-        public string RawUrl
-        {
-            get { return raw_url; }
-        }
+        public string RawUrl { get; private set; }
 
-        public IPEndPoint RemoteEndPoint
-        {
-            get { return context.Connection.RemoteEndPoint; }
-        }
+        public IPEndPoint RemoteEndPoint => _context.Connection.RemoteEndPoint;
 
-        [MonoTODO("Always returns Guid.Empty")]
-        public Guid RequestTraceIdentifier
-        {
-            get { return Guid.Empty; }
-        }
+        public Guid RequestTraceIdentifier => Guid.Empty;
 
-        public Uri Url
-        {
-            get { return url; }
-        }
+        public Uri Url => _url;
 
-        public Uri UrlReferrer
-        {
-            get { return referrer; }
-        }
+        public Uri UrlReferrer { get; private set; }
 
-        public string UserAgent
-        {
-            get { return headers["user-agent"]; }
-        }
+        public string UserAgent => Headers["user-agent"];
 
-        public string UserHostAddress
-        {
-            get { return LocalEndPoint.ToString(); }
-        }
+        public string UserHostAddress => LocalEndPoint.ToString();
 
-        public string UserHostName
-        {
-            get { return headers["host"]; }
-        }
+        public string UserHostName => Headers["host"];
 
-        public string[] UserLanguages
-        {
-            get { return user_languages; }
-        }
+        public string[] UserLanguages { get; private set; }
 
         public IAsyncResult BeginGetClientCertificate(AsyncCallback requestCallback, object state)
         {
-            if (gcc_delegate == null)
-                gcc_delegate = new GCCDelegate(GetClientCertificate);
-            return gcc_delegate.BeginInvoke(requestCallback, state);
+            if (_gccDelegate == null)
+                _gccDelegate = GetClientCertificate;
+            return _gccDelegate.BeginInvoke(requestCallback, state);
         }
 
         public X509Certificate2 EndGetClientCertificate(IAsyncResult asyncResult)
         {
             if (asyncResult == null)
-                throw new ArgumentNullException("asyncResult");
+                throw new ArgumentNullException(nameof(asyncResult));
 
-            if (gcc_delegate == null)
+            if (_gccDelegate == null)
                 throw new InvalidOperationException();
 
-            return gcc_delegate.EndInvoke(asyncResult);
+            return _gccDelegate.EndInvoke(asyncResult);
         }
 
         public X509Certificate2 GetClientCertificate()
         {
-            return context.Connection.ClientCertificate;
+            return _context.Connection.ClientCertificate;
         }
+        
+        public string ServiceName => null;
 
-        [MonoTODO]
-        public string ServiceName
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public TransportContext TransportContext => new Context();
 
-        public TransportContext TransportContext
-        {
-            get
-            {
-                return new Context();
-            }
-        }
-
-        [MonoTODO]
-        public bool IsWebSocketRequest
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public bool IsWebSocketRequest => false;
 
         public Task<X509Certificate2> GetClientCertificateAsync()
         {

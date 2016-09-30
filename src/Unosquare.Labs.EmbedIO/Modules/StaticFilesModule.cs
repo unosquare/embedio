@@ -122,7 +122,7 @@
         /// </summary>
         public void ClearRamCache()
         {
-            this.RamCache.Clear();
+            RamCache.Clear();
         }
 
         /// <summary>
@@ -163,30 +163,30 @@
             if (Directory.Exists(fileSystemPath) == false)
                 throw new ArgumentException($"Path '{fileSystemPath}' does not exist.");
 
-            this.FileSystemPath = fileSystemPath;
-            this.UseGzip = true;
+            FileSystemPath = fileSystemPath;
+            UseGzip = true;
 #if DEBUG
             // When debugging, disable RamCache
-            this.UseRamCache = false;
+            UseRamCache = false;
 #else
             // Otherwise, enable it by default
             this.UseRamCache = true;
 #endif
-            this.RamCache = new ConcurrentDictionary<string, RamCacheEntry>(Constants.StandardStringComparer);
-            this.MaxRamCacheFileSize = 250*1024;
-            this.DefaultDocument = DefaultDocumentName;
+            RamCache = new ConcurrentDictionary<string, RamCacheEntry>(Constants.StandardStringComparer);
+            MaxRamCacheFileSize = 250*1024;
+            DefaultDocument = DefaultDocumentName;
 
             // Populate the default MIME types
             foreach (var kvp in Constants.DefaultMimeTypes)
             {
-                this.m_MimeTypes.Add(kvp.Key, kvp.Value);
+                m_MimeTypes.Add(kvp.Key, kvp.Value);
             }
 
             if (headers != null)
             {
                 foreach (var header in headers)
                 {
-                    this.DefaultHeaders.Add(header.Key, header.Value);
+                    DefaultHeaders.Add(header.Key, header.Value);
                 }
             }
 
@@ -198,8 +198,8 @@
                 }
             }
 
-            this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Head, (server, context) => HandleGet(context, server, false));
-            this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (server, context) => HandleGet(context, server));
+            AddHandler(ModuleMap.AnyPath, HttpVerbs.Head, (server, context) => HandleGet(context, server, false));
+            AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (server, context) => HandleGet(context, server));
         }
 
         private bool HandleGet(HttpListenerContext context, WebServer server, bool sendBuffer = true)

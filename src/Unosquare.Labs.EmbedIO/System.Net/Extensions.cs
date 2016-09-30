@@ -1,7 +1,6 @@
 ﻿#if !NET452
 using System.Collections.Specialized;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,53 +32,30 @@ namespace System.Net
 
     public class AsyncResult : IAsyncResult
     {
-        private bool _IsCompleted;
-        private object _state;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AsyncResult"/> class.
+        /// </summary>
+        /// <param name="state">The state.</param>
         public AsyncResult(object state)
         {
-            _state = state;
+            AsyncState = state;
         }
 
         public void Complete(object data)
         {
-            _IsCompleted = true;
+            CompletedSynchronously = true;
             Data = data;
         }
 
-        public object AsyncState
-        {
-            get
-            {
-                return _state;
-            }
-        }
+        public object AsyncState { get; }
 
-        public WaitHandle AsyncWaitHandle
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public WaitHandle AsyncWaitHandle => null;
 
-        public bool CompletedSynchronously
-        {
-            get
-            {
-                return _IsCompleted;
-            }
-        }
+        public bool CompletedSynchronously { get; private set; }
 
         public object Data { get; internal set; }
 
-        public bool IsCompleted
-        {
-            get
-            {
-                return _IsCompleted;
-            }
-        }
+        public bool IsCompleted => CompletedSynchronously;
     }
 
     public static class Extensions
@@ -151,19 +127,19 @@ namespace System.Net
 
         private struct UriScheme
         {
-            public string scheme;
-            public string delimiter;
-            public int defaultPort;
+            public readonly string Scheme;
+            public readonly string Delimiter;
+            public readonly int DefaultPort;
 
             public UriScheme(string s, string d, int p)
             {
-                scheme = s;
-                delimiter = d;
-                defaultPort = p;
+                Scheme = s;
+                Delimiter = d;
+                DefaultPort = p;
             }
         };
 
-        static UriScheme[] schemes = new UriScheme[] {
+        static readonly UriScheme[] _schemes = {
             new UriScheme (UriSchemeHttp, SchemeDelimiter, 80),
             new UriScheme (UriSchemeHttps, SchemeDelimiter, 443),
             new UriScheme (UriSchemeFtp, SchemeDelimiter, 21),
@@ -171,22 +147,22 @@ namespace System.Net
             new UriScheme (UriSchemeMailto, ":", 25),
             new UriScheme (UriSchemeNews, ":", -1),
             new UriScheme (UriSchemeNntp, SchemeDelimiter, 119),
-            new UriScheme (UriSchemeGopher, SchemeDelimiter, 70),
+            new UriScheme (UriSchemeGopher, SchemeDelimiter, 70)
         };
 
         internal static string GetSchemeDelimiter(string scheme)
         {
-            for (int i = 0; i < schemes.Length; i++)
-                if (schemes[i].scheme == scheme)
-                    return schemes[i].delimiter;
+            for (var i = 0; i < _schemes.Length; i++)
+                if (_schemes[i].Scheme == scheme)
+                    return _schemes[i].Delimiter;
             return SchemeDelimiter;
         }
 
         internal static int GetDefaultPort(string scheme)
         {
-            for (int i = 0; i < schemes.Length; i++)
-                if (schemes[i].scheme == scheme)
-                    return schemes[i].defaultPort;
+            for (var i = 0; i < _schemes.Length; i++)
+                if (_schemes[i].Scheme == scheme)
+                    return _schemes[i].DefaultPort;
             return -1;
         }
 
@@ -194,8 +170,7 @@ namespace System.Net
         {
             if (isOpaquePart)
                 return ":";
-            else
-                return GetSchemeDelimiter(scheme);
+            return GetSchemeDelimiter(scheme);
         }
 
         public static string GetLeftPart(this Uri uri, UriPartial part)
@@ -206,12 +181,12 @@ namespace System.Net
                 case UriPartial.Scheme:
                     return uri.Scheme + GetOpaqueWiseSchemeDelimiter(uri.Scheme);
                 case UriPartial.Authority:
-                    if (uri.Host == String.Empty ||
+                    if (uri.Host == string.Empty ||
                         uri.Scheme == UriSchemeMailto ||
                         uri.Scheme == UriSchemeNews)
-                        return String.Empty;
+                        return string.Empty;
 
-                    StringBuilder s = new StringBuilder();
+                    var s = new StringBuilder();
                     s.Append(uri.Scheme);
                     s.Append(GetOpaqueWiseSchemeDelimiter(uri.Scheme));
                     if (uri.AbsolutePath.Length > 1 && uri.AbsolutePath[1] == ':' && (UriSchemeFile == uri.Scheme))
@@ -224,7 +199,7 @@ namespace System.Net
                         s.Append(':').Append(uri.Port);
                     return s.ToString();
                 case UriPartial.Path:
-                    StringBuilder sb = new StringBuilder();
+                    var sb = new StringBuilder();
                     sb.Append(uri.Scheme);
                     sb.Append(GetOpaqueWiseSchemeDelimiter(uri.Scheme));
                     if (uri.AbsolutePath.Length > 1 && uri.AbsolutePath[1] == ':' && (UriSchemeFile == uri.Scheme))

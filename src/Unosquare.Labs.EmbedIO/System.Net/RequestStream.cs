@@ -27,22 +27,19 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
+
 namespace System.Net
 {
     class RequestStream : Stream
     {
-        byte[] buffer;
-        int offset;
-        int length;
-        long remaining_body;
-        bool disposed;
-        Stream stream;
+        readonly byte[] _buffer;
+        int _offset;
+        int _length;
+        long _remainingBody;
+        bool _disposed;
+        readonly Stream _stream;
 
         internal RequestStream(Stream stream, byte[] buffer, int offset, int length)
             : this(stream, buffer, offset, length, -1)
@@ -51,27 +48,18 @@ namespace System.Net
 
         internal RequestStream(Stream stream, byte[] buffer, int offset, int length, long contentlength)
         {
-            this.stream = stream;
-            this.buffer = buffer;
-            this.offset = offset;
-            this.length = length;
-            this.remaining_body = contentlength;
+            _stream = stream;
+            _buffer = buffer;
+            _offset = offset;
+            _length = length;
+            _remainingBody = contentlength;
         }
 
-        public override bool CanRead
-        {
-            get { return true; }
-        }
+        public override bool CanRead => true;
 
-        public override bool CanSeek
-        {
-            get { return false; }
-        }
+        public override bool CanSeek => false;
 
-        public override bool CanWrite
-        {
-            get { return false; }
-        }
+        public override bool CanWrite => false;
 
         public override long Length
         {
@@ -95,94 +83,97 @@ namespace System.Net
         int FillFromBuffer(byte[] buffer, int off, int count)
         {
             if (buffer == null)
-                throw new ArgumentNullException("buffer");
+                throw new ArgumentNullException(nameof(buffer));
             if (off < 0)
                 throw new ArgumentOutOfRangeException("offset", "< 0");
             if (count < 0)
-                throw new ArgumentOutOfRangeException("count", "< 0");
-            int len = buffer.Length;
+                throw new ArgumentOutOfRangeException(nameof(count), "< 0");
+            var len = buffer.Length;
             if (off > len)
                 throw new ArgumentException("destination offset is beyond array size");
             if (off > len - count)
                 throw new ArgumentException("Reading would overrun buffer");
 
-            if (this.remaining_body == 0)
+            if (_remainingBody == 0)
                 return -1;
 
-            if (this.length == 0)
+            if (_length == 0)
                 return 0;
 
-            int size = Math.Min(this.length, count);
-            if (this.remaining_body > 0)
-                size = (int)Math.Min(size, this.remaining_body);
+            var size = Math.Min(_length, count);
+            if (_remainingBody > 0)
+                size = (int)Math.Min(size, _remainingBody);
 
-            if (this.offset > this.buffer.Length - size)
+            if (_offset > _buffer.Length - size)
             {
-                size = Math.Min(size, this.buffer.Length - this.offset);
+                size = Math.Min(size, _buffer.Length - _offset);
             }
             if (size == 0)
                 return 0;
 
-            Buffer.BlockCopy(this.buffer, this.offset, buffer, off, size);
-            this.offset += size;
-            this.length -= size;
-            if (this.remaining_body > 0)
-                remaining_body -= size;
+            Buffer.BlockCopy(_buffer, _offset, buffer, off, size);
+            _offset += size;
+            _length -= size;
+            if (_remainingBody > 0)
+                _remainingBody -= size;
             return size;
         }
 
         public override int Read([In, Out] byte[] buffer, int offset, int count)
         {
-            if (disposed)
+            if (_disposed)
                 throw new ObjectDisposedException(typeof(RequestStream).ToString());
 
             // Call FillFromBuffer to check for buffer boundaries even when remaining_body is 0
-            int nread = FillFromBuffer(buffer, offset, count);
+            var nread = FillFromBuffer(buffer, offset, count);
             if (nread == -1)
             { // No more bytes available (Content-Length)
                 return 0;
             }
-            else if (nread > 0)
+            if (nread > 0)
             {
                 return nread;
             }
 
-            nread = stream.Read(buffer, offset, count);
-            if (nread > 0 && remaining_body > 0)
-                remaining_body -= nread;
+            nread = _stream.Read(buffer, offset, count);
+            if (nread > 0 && _remainingBody > 0)
+                _remainingBody -= nread;
             return nread;
         }
 
         public IAsyncResult BeginRead(byte[] buffer, int offset, int count,
                             AsyncCallback cback, object state)
         {
-            if (disposed)
+            if (_disposed)
                 throw new ObjectDisposedException(typeof(RequestStream).ToString());
 
-            int nread = FillFromBuffer(buffer, offset, count);
+            var nread = FillFromBuffer(buffer, offset, count);
             if (nread > 0 || nread == -1)
             {
-                HttpStreamAsyncResult ares = new HttpStreamAsyncResult();
-                ares.Buffer = buffer;
-                ares.Offset = offset;
-                ares.Count = count;
-                ares.Callback = cback;
-                ares.State = state;
-                ares.SynchRead = Math.Max(0, nread);
+                var ares = new HttpStreamAsyncResult
+                {
+                    Buffer = buffer,
+                    Offset = offset,
+                    Count = count,
+                    Callback = cback,
+                    State = state,
+                    SynchRead = Math.Max(0, nread)
+                };
+
                 ares.Complete();
                 return ares;
             }
 
             // Avoid reading past the end of the request to allow
             // for HTTP pipelining
-            if (remaining_body >= 0 && count > remaining_body)
-                count = (int)Math.Min(Int32.MaxValue, remaining_body);
-            return stream.BeginRead(buffer, offset, count, cback, state);
+            if (_remainingBody >= 0 && count > _remainingBody)
+                count = (int)Math.Min(int.MaxValue, _remainingBody);
+            return _stream.BeginRead(buffer, offset, count, cback, state);
         }
 
         public int EndRead(IAsyncResult ares)
         {
-            if (disposed)
+            if (_disposed)
                 throw new ObjectDisposedException(typeof(RequestStream).ToString());
 
             if (ares == null)
@@ -190,16 +181,16 @@ namespace System.Net
 
             if (ares is HttpStreamAsyncResult)
             {
-                HttpStreamAsyncResult r = (HttpStreamAsyncResult)ares;
+                var r = (HttpStreamAsyncResult)ares;
                 if (!ares.IsCompleted)
                     ares.AsyncWaitHandle.WaitOne();
                 return r.SynchRead;
             }
 
             // Close on exception?
-            int nread = stream.EndRead(ares);
-            if (remaining_body > 0 && nread > 0)
-                remaining_body -= nread;
+            var nread = _stream.EndRead(ares);
+            if (_remainingBody > 0 && nread > 0)
+                _remainingBody -= nread;
             return nread;
         }
 
@@ -217,17 +208,6 @@ namespace System.Net
         {
             throw new NotSupportedException();
         }
-
-        //public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count,
-        //                    AsyncCallback cback, object state)
-        //{
-        //    throw new NotSupportedException();
-        //}
-
-        //public override void EndWrite(IAsyncResult async_result)
-        //{
-        //    throw new NotSupportedException();
-        //}
     }
 }
 #endif

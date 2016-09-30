@@ -1,8 +1,8 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
-    using global::System;
-    using global::System.Collections.Concurrent;
-    using global::System.Net;
+    using System;
+    using System.Collections.Concurrent;
+    using System.Net;
 #if NET452
     using System.Net.WebSockets;
 #endif

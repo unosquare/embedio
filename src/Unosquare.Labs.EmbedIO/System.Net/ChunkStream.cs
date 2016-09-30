@@ -7,7 +7,6 @@
 //
 // (C) 2003 Ximian, Inc (http://www.ximian.com)
 //
-
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -38,9 +37,9 @@ using System.Text;
 
 namespace System.Net
 {
-    class ChunkStream
+    internal class ChunkStream
     {
-        enum State
+        private enum State
         {
             None,
             PartialSize,
@@ -49,58 +48,57 @@ namespace System.Net
             Trailer
         }
 
-        class Chunk
+        private class Chunk
         {
-            public byte[] Bytes;
+            public readonly byte[] Bytes;
             public int Offset;
 
             public Chunk(byte[] chunk)
             {
-                this.Bytes = chunk;
+                Bytes = chunk;
             }
 
             public int Read(byte[] buffer, int offset, int size)
             {
-                int nread = (size > Bytes.Length - Offset) ? Bytes.Length - Offset : size;
+                var nread = (size > Bytes.Length - Offset) ? Bytes.Length - Offset : size;
                 Buffer.BlockCopy(Bytes, Offset, buffer, offset, nread);
                 Offset += nread;
                 return nread;
             }
         }
 
-        internal NameValueCollection headers;
-        int chunkSize;
-        int chunkRead;
-        int totalWritten;
-        State state;
+        internal NameValueCollection Headers;
+        private int _chunkSize;
+        private int _chunkRead;
+        private State _state;
         //byte [] waitBuffer;
-        StringBuilder saved;
-        bool sawCR;
-        bool gotit;
-        int trailerState;
-        ArrayList chunks;
+        private readonly StringBuilder _saved;
+        private bool _sawCr;
+        private bool _gotit;
+        private int _trailerState;
+        private readonly ArrayList _chunks;
 
         public ChunkStream(byte[] buffer, int offset, int size, NameValueCollection headers)
-                    : this(headers)
+            : this(headers)
         {
             Write(buffer, offset, size);
         }
 
         public ChunkStream(NameValueCollection headers)
         {
-            this.headers = headers;
-            saved = new StringBuilder();
-            chunks = new ArrayList();
-            chunkSize = -1;
-            totalWritten = 0;
+            Headers = headers;
+            _saved = new StringBuilder();
+            _chunks = new ArrayList();
+            _chunkSize = -1;
+            TotalDataSize = 0;
         }
 
         public void ResetBuffer()
         {
-            chunkSize = -1;
-            chunkRead = 0;
-            totalWritten = 0;
-            chunks.Clear();
+            _chunkSize = -1;
+            _chunkRead = 0;
+            TotalDataSize = 0;
+            _chunks.Clear();
         }
 
         public void WriteAndReadBack(byte[] buffer, int offset, int size, ref int read)
@@ -115,15 +113,15 @@ namespace System.Net
             return ReadFromChunks(buffer, offset, size);
         }
 
-        int ReadFromChunks(byte[] buffer, int offset, int size)
+        private int ReadFromChunks(byte[] buffer, int offset, int size)
         {
-            int count = chunks.Count;
-            int nread = 0;
+            var count = _chunks.Count;
+            var nread = 0;
 
             var chunksForRemoving = new List<Chunk>(count);
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
-                Chunk chunk = (Chunk)chunks[i];
+                var chunk = (Chunk) _chunks[i];
 
                 if (chunk.Offset == chunk.Bytes.Length)
                 {
@@ -137,7 +135,7 @@ namespace System.Net
             }
 
             foreach (var chunk in chunksForRemoving)
-                chunks.Remove(chunk);
+                _chunks.Remove(chunk);
 
             return nread;
         }
@@ -148,141 +146,130 @@ namespace System.Net
                 InternalWrite(buffer, ref offset, size);
         }
 
-        void InternalWrite(byte[] buffer, ref int offset, int size)
+        private void InternalWrite(byte[] buffer, ref int offset, int size)
         {
-            if (state == State.None || state == State.PartialSize)
+            if (_state == State.None || _state == State.PartialSize)
             {
-                state = GetChunkSize(buffer, ref offset, size);
-                if (state == State.PartialSize)
+                _state = GetChunkSize(buffer, ref offset, size);
+                if (_state == State.PartialSize)
                     return;
 
-                saved.Length = 0;
-                sawCR = false;
-                gotit = false;
+                _saved.Length = 0;
+                _sawCr = false;
+                _gotit = false;
             }
 
-            if (state == State.Body && offset < size)
+            if (_state == State.Body && offset < size)
             {
-                state = ReadBody(buffer, ref offset, size);
-                if (state == State.Body)
+                _state = ReadBody(buffer, ref offset, size);
+                if (_state == State.Body)
                     return;
             }
 
-            if (state == State.BodyFinished && offset < size)
+            if (_state == State.BodyFinished && offset < size)
             {
-                state = ReadCRLF(buffer, ref offset, size);
-                if (state == State.BodyFinished)
+                _state = ReadCrlf(buffer, ref offset, size);
+                if (_state == State.BodyFinished)
                     return;
 
-                sawCR = false;
+                _sawCr = false;
             }
 
-            if (state == State.Trailer && offset < size)
+            if (_state == State.Trailer && offset < size)
             {
-                state = ReadTrailer(buffer, ref offset, size);
-                if (state == State.Trailer)
+                _state = ReadTrailer(buffer, ref offset, size);
+                if (_state == State.Trailer)
                     return;
 
-                saved.Length = 0;
-                sawCR = false;
-                gotit = false;
+                _saved.Length = 0;
+                _sawCr = false;
+                _gotit = false;
             }
 
             if (offset < size)
                 InternalWrite(buffer, ref offset, size);
         }
 
-        public bool WantMore
-        {
-            get { return (chunkRead != chunkSize || chunkSize != 0 || state != State.None); }
-        }
+        public bool WantMore => (_chunkRead != _chunkSize || _chunkSize != 0 || _state != State.None);
 
         public bool DataAvailable
         {
             get
             {
-                int count = chunks.Count;
-                for (int i = 0; i < count; i++)
+                var count = _chunks.Count;
+                for (var i = 0; i < count; i++)
                 {
-                    Chunk ch = (Chunk)chunks[i];
-                    if (ch == null || ch.Bytes == null)
-                        continue;
-                    if (ch.Bytes.Length > 0 && ch.Offset < ch.Bytes.Length)
-                        return (state != State.Body);
+                    var ch = (Chunk) _chunks[i];
+                    if (ch?.Bytes?.Length > 0 && ch.Offset < ch.Bytes.Length)
+                        return (_state != State.Body);
                 }
                 return false;
             }
         }
 
-        public int TotalDataSize
-        {
-            get { return totalWritten; }
-        }
+        public int TotalDataSize { get; private set; }
 
-        public int ChunkLeft
-        {
-            get { return chunkSize - chunkRead; }
-        }
+        public int ChunkLeft => _chunkSize - _chunkRead;
 
-        State ReadBody(byte[] buffer, ref int offset, int size)
+        private State ReadBody(byte[] buffer, ref int offset, int size)
         {
-            if (chunkSize == 0)
+            if (_chunkSize == 0)
                 return State.BodyFinished;
 
-            int diff = size - offset;
-            if (diff + chunkRead > chunkSize)
-                diff = chunkSize - chunkRead;
+            var diff = size - offset;
+            if (diff + _chunkRead > _chunkSize)
+                diff = _chunkSize - _chunkRead;
 
-            byte[] chunk = new byte[diff];
+            var chunk = new byte[diff];
             Buffer.BlockCopy(buffer, offset, chunk, 0, diff);
-            chunks.Add(new Chunk(chunk));
+            _chunks.Add(new Chunk(chunk));
             offset += diff;
-            chunkRead += diff;
-            totalWritten += diff;
-            return (chunkRead == chunkSize) ? State.BodyFinished : State.Body;
+            _chunkRead += diff;
+            TotalDataSize += diff;
+            return (_chunkRead == _chunkSize) ? State.BodyFinished : State.Body;
 
         }
 
-        State GetChunkSize(byte[] buffer, ref int offset, int size)
+        private State GetChunkSize(byte[] buffer, ref int offset, int size)
         {
-            chunkRead = 0;
-            chunkSize = 0;
-            char c = '\0';
+            _chunkRead = 0;
+            _chunkSize = 0;
+            var c = '\0';
             while (offset < size)
             {
-                c = (char)buffer[offset++];
+                c = (char) buffer[offset++];
                 if (c == '\r')
                 {
-                    if (sawCR)
+                    if (_sawCr)
                         ThrowProtocolViolation("2 CR found");
 
-                    sawCR = true;
+                    _sawCr = true;
                     continue;
                 }
 
-                if (sawCR && c == '\n')
+                if (_sawCr && c == '\n')
                     break;
 
                 if (c == ' ')
-                    gotit = true;
+                    _gotit = true;
 
-                if (!gotit)
-                    saved.Append(c);
+                if (!_gotit)
+                    _saved.Append(c);
 
-                if (saved.Length > 20)
+                if (_saved.Length > 20)
                     ThrowProtocolViolation("chunk size too long.");
             }
 
-            if (!sawCR || c != '\n')
+            if (!_sawCr || c != '\n')
             {
                 if (offset < size)
                     ThrowProtocolViolation("Missing \\n");
 
                 try
                 {
-                    if (saved.Length > 0)
+                    if (_saved.Length > 0)
                     {
-                        chunkSize = Int32.Parse(RemoveChunkExtension(saved.ToString()), NumberStyles.HexNumber);
+                        _chunkSize = int.Parse(RemoveChunkExtension(_saved.ToString()), NumberStyles.HexNumber);
                     }
                 }
                 catch (Exception)
@@ -293,60 +280,58 @@ namespace System.Net
                 return State.PartialSize;
             }
 
-            chunkRead = 0;
+            _chunkRead = 0;
             try
             {
-                chunkSize = Int32.Parse(RemoveChunkExtension(saved.ToString()), NumberStyles.HexNumber);
+                _chunkSize = int.Parse(RemoveChunkExtension(_saved.ToString()), NumberStyles.HexNumber);
             }
             catch (Exception)
             {
                 ThrowProtocolViolation("Cannot parse chunk size.");
             }
 
-            if (chunkSize == 0)
+            if (_chunkSize == 0)
             {
-                trailerState = 2;
+                _trailerState = 2;
                 return State.Trailer;
             }
 
             return State.Body;
         }
 
-        static string RemoveChunkExtension(string input)
+        private static string RemoveChunkExtension(string input)
         {
-            int idx = input.IndexOf(';');
-            if (idx == -1)
-                return input;
-            return input.Substring(0, idx);
+            var idx = input.IndexOf(';');
+            return idx == -1 ? input : input.Substring(0, idx);
         }
 
-        State ReadCRLF(byte[] buffer, ref int offset, int size)
+        private State ReadCrlf(byte[] buffer, ref int offset, int size)
         {
-            if (!sawCR)
+            if (!_sawCr)
             {
-                if ((char)buffer[offset++] != '\r')
+                if ((char) buffer[offset++] != '\r')
                     ThrowProtocolViolation("Expecting \\r");
 
-                sawCR = true;
+                _sawCr = true;
                 if (offset == size)
                     return State.BodyFinished;
             }
 
-            if (sawCR && (char)buffer[offset++] != '\n')
+            if (_sawCr && (char) buffer[offset++] != '\n')
                 ThrowProtocolViolation("Expecting \\n");
 
             return State.None;
         }
 
-        State ReadTrailer(byte[] buffer, ref int offset, int size)
+        private State ReadTrailer(byte[] buffer, ref int offset, int size)
         {
-            char c = '\0';
+            var c = '\0';
 
             // short path
-            if (trailerState == 2 && (char)buffer[offset] == '\r' && saved.Length == 0)
+            if (_trailerState == 2 && (char) buffer[offset] == '\r' && _saved.Length == 0)
             {
                 offset++;
-                if (offset < size && (char)buffer[offset] == '\n')
+                if (offset < size && (char) buffer[offset] == '\n')
                 {
                     offset++;
                     return State.None;
@@ -354,11 +339,11 @@ namespace System.Net
                 offset--;
             }
 
-            int st = trailerState;
-            string stString = "\r\n\r";
+            var st = _trailerState;
+            var stString = "\r\n\r";
             while (offset < size && st < 4)
             {
-                c = (char)buffer[offset++];
+                c = (char) buffer[offset++];
                 if ((st == 0 || st == 2) && c == '\r')
                 {
                     st++;
@@ -373,35 +358,36 @@ namespace System.Net
 
                 if (st > 0)
                 {
-                    saved.Append(stString.Substring(0, saved.Length == 0 ? st - 2 : st));
+                    _saved.Append(stString.Substring(0, _saved.Length == 0 ? st - 2 : st));
                     st = 0;
-                    if (saved.Length > 4196)
+                    if (_saved.Length > 4196)
                         ThrowProtocolViolation("Error reading trailer (too long).");
                 }
             }
 
             if (st < 4)
             {
-                trailerState = st;
+                _trailerState = st;
                 if (offset < size)
                     ThrowProtocolViolation("Error reading trailer.");
 
                 return State.Trailer;
             }
 
-            StringReader reader = new StringReader(saved.ToString());
+            var reader = new StringReader(_saved.ToString());
             string line;
             while ((line = reader.ReadLine()) != null && line != "")
-                headers.Add(line);
+                Headers.Add(line);
 
             return State.None;
         }
 
-        static void ThrowProtocolViolation(string message)
+        private static void ThrowProtocolViolation(string message)
         {
-            WebException we = new WebException(message, null, WebExceptionStatus.ServerProtocolViolation, null);
+            var we = new WebException(message, null, WebExceptionStatus.ServerProtocolViolation, null);
             throw we;
         }
     }
 }
+
 #endif

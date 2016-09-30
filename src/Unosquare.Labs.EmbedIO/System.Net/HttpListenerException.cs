@@ -1,4 +1,7 @@
-﻿#if !NET452
+﻿using System.ComponentModel;
+using System.Runtime.InteropServices;
+
+#if !NET452
 //------------------------------------------------------------------------------
 // <copyright file="HttpListenerException.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation.  All rights reserved.
@@ -7,23 +10,30 @@
 
 namespace System.Net
 {
-    using System;
-    using System.ComponentModel;
-    using System.Runtime.Serialization;
-    using System.Runtime.InteropServices;
-    
     public class HttpListenerException : Win32Exception
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HttpListenerException"/> class.
+        /// </summary>
         public HttpListenerException() : base(Marshal.GetLastWin32Error())
         {
             //GlobalLog.Print("HttpListenerException::.ctor() " + NativeErrorCode.ToString() + ":" + Message);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HttpListenerException"/> class.
+        /// </summary>
+        /// <param name="errorCode">The error code.</param>
         public HttpListenerException(int errorCode) : base(errorCode)
         {
             //GlobalLog.Print("HttpListenerException::.ctor(int) " + NativeErrorCode.ToString() + ":" + Message);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HttpListenerException"/> class.
+        /// </summary>
+        /// <param name="errorCode">The error code.</param>
+        /// <param name="message">The message.</param>
         public HttpListenerException(int errorCode, string message) : base(errorCode, message)
         {
             //GlobalLog.Print("HttpListenerException::.ctor(int) " + NativeErrorCode.ToString() + ":" + Message);
@@ -35,17 +45,13 @@ namespace System.Net
         //    //GlobalLog.Print("HttpListenerException::.ctor(serialized) " + NativeErrorCode.ToString() + ":" + Message);
         //}
 
-        public int ErrorCode
-        {
-            //
-            // the base class returns the HResult with this property
-            // we need the Win32 Error Code, hence the override.
-            //
-            get
-            {
-                return NativeErrorCode;
-            }
-        }
+        /// <summary>
+        /// Gets the error code.
+        /// </summary>
+        /// <value>
+        /// The error code.
+        /// </value>
+        public int ErrorCode => NativeErrorCode;
     }
 }
 #endif
