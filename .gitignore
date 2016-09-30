@@ -153,3 +153,4 @@ $RECYCLE.BIN/
 # NuGet Package Manager
 packages/*
 !packages/repositories.config
+project.lock.json

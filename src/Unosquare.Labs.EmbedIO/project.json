@@ -1,0 +1,33 @@
+{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+    "Newtonsoft.Json": "9.0.1"
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": "dnxcore50",
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+      "type": "platform",
+      "version": "1.0.1"
+    },
+    "System.Security.Cryptography.Primitives": "4.0.0",
+    "System.Net.Primitives": "4.0.11",
+    "System.Collections.Specialized": "4.0.1",
+    "System.Collections.NonGeneric": "4.0.1",
+    "System.Security.Claims": "4.0.1"
+      }
+    },
+    "net452": {
+      
+    }
+  },
+  "runtimes": {
+    "win": {}
+  }
+}

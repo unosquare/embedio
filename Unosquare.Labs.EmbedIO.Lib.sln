@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unosquare.Labs.EmbedIO", "Unosquare.Labs.EmbedIO\Unosquare.Labs.EmbedIO.csproj", "{7D7C29B4-9493-4EBD-8F20-6FAC1E7161EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unosquare.Labs.EmbedIO", "src\Unosquare.Labs.EmbedIO\Unosquare.Labs.EmbedIO.csproj", "{7D7C29B4-9493-4EBD-8F20-6FAC1E7161EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unosquare.Labs.EmbedIO.Tests", "Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj", "{2E100548-08CD-4EFD-AD08-AF584081B098}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unosquare.Labs.EmbedIO.Tests", "test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj", "{2E100548-08CD-4EFD-AD08-AF584081B098}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
