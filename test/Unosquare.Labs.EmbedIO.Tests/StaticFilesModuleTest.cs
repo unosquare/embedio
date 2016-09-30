@@ -42,7 +42,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
 
                 var html = new StreamReader(response.GetResponseStream()).ReadToEnd();
 
-                Assert.AreEqual(Resources.index, html, "Same content index.html");
+                Assert.AreEqual(Resources.Index, html, "Same content index.html");
 
                 Assert.IsNull(response.Headers[Constants.HeaderPragma], "Pragma empty");
             }
@@ -65,11 +65,11 @@ namespace Unosquare.Labs.EmbedIO.Tests
 
             var html = await webClient.GetStringAsync(Resources.ServerAddress + "sub/");
 
-            Assert.AreEqual(Resources.subIndex, html, "Same content index.html");
+            Assert.AreEqual(Resources.SubIndex, html, "Same content index.html");
 
             html = await webClient.GetStringAsync(Resources.ServerAddress + "sub");
 
-            Assert.AreEqual(Resources.subIndex, html, "Same content index.html without trailing");
+            Assert.AreEqual(Resources.SubIndex, html, "Same content index.html without trailing");
         }
 
         [Test]
@@ -283,7 +283,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
                 var html = reader.ReadToEnd();
 
                 Assert.IsNotNull(html, "Data is not empty");
-                Assert.AreEqual(Resources.index, html);
+                Assert.AreEqual(Resources.Index, html);
             }
         }
 #endif

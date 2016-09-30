@@ -51,13 +51,13 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
                 Directory.CreateDirectory(rootPath);
 
             if (File.Exists(Path.Combine(rootPath, StaticFilesModule.DefaultDocumentName)) == false)
-                File.WriteAllText(Path.Combine(rootPath, "index.html"), Resources.index);
+                File.WriteAllText(Path.Combine(rootPath, "index.html"), Resources.Index);
 
             if (Directory.Exists(Path.Combine(rootPath, "sub")) == false)
                 Directory.CreateDirectory(Path.Combine(rootPath, "sub"));
 
             if (File.Exists(Path.Combine(rootPath, "sub", StaticFilesModule.DefaultDocumentName)) == false)
-                File.WriteAllText(Path.Combine(rootPath, "sub", "index.html"), Resources.subIndex);
+                File.WriteAllText(Path.Combine(rootPath, "sub", "index.html"), Resources.SubIndex);
 
             if (File.Exists(Path.Combine(rootPath, BigDataFile)) == false)
                 CreateTempBinaryFile(Path.Combine(rootPath, BigDataFile), 100);
@@ -70,7 +70,7 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 
         public static string GetStaticFolderInstanceIndexFileContents(string instanceName)
         {
-            var content = Resources.index;
+            var content = Resources.Index;
             if (string.IsNullOrWhiteSpace(instanceName)) return content;
 
             Assert.AreEqual(true, content.Contains(Placeholder), "Setup error");
