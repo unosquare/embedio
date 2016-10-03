@@ -1,8 +1,15 @@
-﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
+﻿using System.Threading;
+
+namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
     public static class Resources
     {
-        public const string ServerAddress = "http://localhost:7777/";
+        private const string ServerAddress = "http://localhost:{0}/";
+        public static string GetServerAddress(){
+            Interlocked.Increment(ref Counter);
+            return string.Format(ServerAddress, Counter);
+        }
+        public static int Counter = 9699;
         public const string WsServerAddress = "ws://localhost:7777/";
         
         public static readonly string SubIndex = @"<!DOCTYPE html>

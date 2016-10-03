@@ -16,6 +16,8 @@ namespace Unosquare.Labs.EmbedIO.Tests
         private const string CookieName = "__session";
         protected string RootPath;
         protected WebServer WebServer;
+        
+        protected string WebServerUrl = Resources.GetServerAddress();
         protected TestConsoleLog Logger = new TestConsoleLog();
 
         [SetUp]
@@ -23,7 +25,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
         {
             RootPath = TestHelper.SetupStaticFolder();
 
-            WebServer = new WebServer(Resources.ServerAddress, Logger);
+            WebServer = new WebServer(WebServerUrl, Logger);
             WebServer.RegisterModule(new LocalSessionModule());
             WebServer.RegisterModule(new StaticFilesModule(RootPath));
             WebServer.RunAsync();
@@ -39,7 +41,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
         [Test]
         public async Task GetCookie()
         {
-            var request = (HttpWebRequest) WebRequest.Create(Resources.ServerAddress);
+            var request = (HttpWebRequest) WebRequest.Create(WebServerUrl);
             request.CookieContainer = new CookieContainer();
 
             using (var response = (HttpWebResponse) await request.GetResponseAsync())

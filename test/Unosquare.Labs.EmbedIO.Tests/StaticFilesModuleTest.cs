@@ -17,6 +17,8 @@
 
         protected string RootPath;
         protected WebServer WebServer;
+        
+        protected string WebServerUrl = Resources.GetServerAddress();
         protected TestConsoleLog Logger = new TestConsoleLog();
 
         [SetUp]
@@ -24,7 +26,7 @@
         {
             RootPath = TestHelper.SetupStaticFolder();
 
-            WebServer = new WebServer(Resources.ServerAddress, Logger);
+            WebServer = new WebServer(WebServerUrl, Logger);
             WebServer.RegisterModule(new StaticFilesModule(RootPath) { UseRamCache = true });
             WebServer.RunAsync();
         }
@@ -32,7 +34,7 @@
         [Test]
         public async Task GetIndex()
         {
-            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress);
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
 
             using (var response = (HttpWebResponse) await request.GetResponseAsync())
             {
@@ -47,7 +49,7 @@
             
             WebServer.Module<StaticFilesModule>().DefaultHeaders.Add(Constants.HeaderPragma, HeaderPragmaValue);
 
-            request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress);
+            request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
 
             using (var response = (HttpWebResponse) await request.GetResponseAsync())
             {
@@ -61,11 +63,11 @@
         {
             var webClient = new HttpClient();
 
-            var html = await webClient.GetStringAsync(Resources.ServerAddress + "sub/");
+            var html = await webClient.GetStringAsync(WebServerUrl + "sub/");
 
             Assert.AreEqual(Resources.SubIndex, html, "Same content index.html");
 
-            html = await webClient.GetStringAsync(Resources.ServerAddress + "sub");
+            html = await webClient.GetStringAsync(WebServerUrl + "sub");
 
             Assert.AreEqual(Resources.SubIndex, html, "Same content index.html without trailing");
         }
@@ -73,7 +75,7 @@
         [Test]
         public async Task GetEtag()
         {
-            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress);
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
             string eTag;
 
             using (var response = (HttpWebResponse)await request.GetResponseAsync())
@@ -83,7 +85,7 @@
                 eTag = response.Headers[EmbedIO.Constants.HeaderETag];
             }
 
-            var secondRequest = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress);
+            var secondRequest = (HttpWebRequest)WebRequest.Create(WebServerUrl);
             secondRequest.Headers[Constants.HeaderIfNotMatch] = eTag;
 
             try
@@ -110,7 +112,7 @@
         public void GetInitialPartial()
         {
             const int maxLength = 100;
-            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
             request.AddRange(0, maxLength);
 
             using (var response = (HttpWebResponse)request.GetResponse())
@@ -134,7 +136,7 @@
         {
             const int offset = 50;
             const int maxLength = 100;
-            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
             request.AddRange(offset, maxLength + offset);
 
             using (var response = (HttpWebResponse)request.GetResponse())
@@ -158,7 +160,7 @@
         {
             const int startByteIndex = 100;
             const int byteLength = 100;
-            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
             request.AddRange(startByteIndex, startByteIndex + byteLength);
 
             using (var response = (HttpWebResponse)request.GetResponse())
@@ -181,7 +183,7 @@
         public void GetEntireFileWithChunks()
         {
             var originalSet = TestHelper.GetBigData();
-            var requestHead = (HttpWebRequest) WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
+            var requestHead = (HttpWebRequest) WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
             requestHead.Method = "HEAD";
 
             var remoteSize = ((HttpWebResponse) requestHead.GetResponse()).ContentLength;
@@ -192,7 +194,7 @@
 
             for (var i = 0; i < remoteSize/chunkSize + 1; i++)
             {
-                var request = (HttpWebRequest) WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
+                var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
                 var top = (i + 1)*chunkSize;
 
                 request.AddRange(i*chunkSize, top > remoteSize ? remoteSize : top);
@@ -215,13 +217,13 @@
         public async Task GetInvalidChunk()
         {
             var originalSet = TestHelper.GetBigData();
-            var requestHead = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
+            var requestHead = (HttpWebRequest)WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
             requestHead.Method = "HEAD";
 
             var remoteSize = ((HttpWebResponse)await requestHead.GetResponseAsync()).ContentLength;
             Assert.AreEqual(remoteSize, originalSet.Length);
 
-            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
             request.AddRange(0, remoteSize + 10);
 
             try
@@ -248,7 +250,7 @@
         [Test]
         public async Task GetNotPartial()
         {
-            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + "/" + TestHelper.BigDataFile);
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
 
             using (var response = (HttpWebResponse) await request.GetResponseAsync())
             {
@@ -267,7 +269,7 @@
         [Test]
         public async Task GetGzipCompressFile()
         {
-            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress);
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
             request.AutomaticDecompression = DecompressionMethods.GZip;
 
             using (var response = (HttpWebResponse)await request.GetResponseAsync())
@@ -289,7 +291,7 @@
         [Test]
         public async Task HeadIndex()
         {
-            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress);
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
             request.Method = HttpVerbs.Head.ToString();
 
             using (var response = (HttpWebResponse)await request.GetResponseAsync())
@@ -306,7 +308,7 @@
         public void Kill()
         {
             Thread.Sleep(TimeSpan.FromSeconds(1));
-            WebServer.Dispose();
+            WebServer?.Dispose();
         }
     }
 }

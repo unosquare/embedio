@@ -17,6 +17,8 @@ namespace Unosquare.Labs.EmbedIO.Tests
     {
         protected WebServer WebServer;
         protected TestConsoleLog Logger = new TestConsoleLog();
+
+        protected string WebServerUrl = Resources.GetServerAddress();
         private const string KoreanDate = "목";
 
         [SetUp]
@@ -25,7 +27,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
 
             Thread.CurrentThread.CurrentCulture = new CultureInfo("ko");
 
-            WebServer = new WebServer(Resources.ServerAddress, Logger).WithWebApiController<TestController>();
+            WebServer = new WebServer(WebServerUrl, Logger).WithWebApiController<TestController>();
             WebServer.RunAsync();
         }
 
@@ -36,7 +38,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
             var stringDate = customDate.ToString("ddd");
             Assert.AreEqual(stringDate, KoreanDate, "Korean date by default in thread");
 
-            var request = (HttpWebRequest) WebRequest.Create(Resources.ServerAddress + TestController.GetPath);
+            var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + TestController.GetPath);
 
             using (var response = (HttpWebResponse) await request.GetResponseAsync())
             {

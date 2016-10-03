@@ -13,6 +13,8 @@
     public class WebServerTest
     {
         private const int DefaultPort = 8888;
+
+        protected string WebServerUrl = Resources.GetServerAddress();
         private const string DefaultPath = "/";
 
         [Test]
@@ -146,7 +148,7 @@
         public void WebServerStaticMethodWithConsole()
         {
             const string errorMessage = "THIS IS AN ERROR";
-            var instance = WebServer.CreateWithConsole(Resources.ServerAddress);
+            var instance = WebServer.CreateWithConsole(WebServerUrl);
 
             Assert.AreEqual(instance.Log.GetType(), typeof (SimpleConsoleLog), "Log is SimpleConsoleLog");
 

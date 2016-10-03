@@ -16,13 +16,14 @@ namespace Unosquare.Labs.EmbedIO.Tests
     public class RegexRoutingTest
     {
         protected WebServer WebServer;
+        protected string WebServerUrl = Resources.GetServerAddress();
         protected TestConsoleLog Logger = new TestConsoleLog();
 
         [SetUp]
         public void Init()
         {
             WebServer =
-                new WebServer(Resources.ServerAddress, Logger, RoutingStrategy.Regex)
+                new WebServer(WebServerUrl, Logger, RoutingStrategy.Regex)
                     .WithWebApiController<TestRegexController>();
             WebServer.RunAsync();
         }
@@ -38,14 +39,14 @@ namespace Unosquare.Labs.EmbedIO.Tests
         [Test]
         public async Task GetJsonDataWithRegexId()
         {
-            await TestHelper.ValidatePerson(Resources.ServerAddress + TestRegexController.RelativePath + "regex/1");
+            await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regex/1");
         }
 
         [Test]
         public async Task GetJsonDataWithOptRegexId()
         {
             // using null value
-            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress + TestRegexController.RelativePath + "regexopt");
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestRegexController.RelativePath + "regexopt");
 
             using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {
@@ -63,20 +64,20 @@ namespace Unosquare.Labs.EmbedIO.Tests
             }
 
             // using a value
-            await TestHelper.ValidatePerson(Resources.ServerAddress + TestRegexController.RelativePath + "regexopt/1");
+            await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regexopt/1");
         }
 
         [Test]
         public async Task GetJsonDatAsyncWithRegexId()
         {
-            await TestHelper.ValidatePerson(Resources.ServerAddress + TestRegexController.RelativePath + "regexAsync/1");
+            await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regexAsync/1");
         }
 
         [Test]
         public async Task GetJsonDataWithRegexDate()
         {
             var person = PeopleRepository.Database.First();
-            await TestHelper.ValidatePerson(Resources.ServerAddress + TestRegexController.RelativePath + "regexdate/" +
+            await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regexdate/" +
                            person.DoB.ToString("yyyy-MM-dd"));
         }
 
@@ -84,7 +85,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
         public async Task GetJsonDataWithRegexWithTwoParams()
         {
             var person = PeopleRepository.Database.First();
-            await TestHelper.ValidatePerson(Resources.ServerAddress + TestRegexController.RelativePath + "regextwo/" +
+            await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regextwo/" +
                            person.MainSkill + "/" + person.Age);
         }
 

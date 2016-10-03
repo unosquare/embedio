@@ -9,7 +9,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
         public static void Main()
         {
             var webServer =
-                new WebServer(Resources.ServerAddress, new SimpleConsoleLog(), RoutingStrategy.Regex)
+                new WebServer(Resources.GetServerAddress(), new SimpleConsoleLog(), RoutingStrategy.Regex)
                     .WithWebApiController<TestRegexController>();
 
             webServer.RunAsync();

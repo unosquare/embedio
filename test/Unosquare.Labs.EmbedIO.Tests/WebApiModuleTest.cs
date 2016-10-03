@@ -17,12 +17,13 @@
     public class WebApiModuleTest
     {
         protected WebServer WebServer;
+        protected string WebServerUrl = Resources.GetServerAddress();
         protected TestConsoleLog Logger = new TestConsoleLog();
 
         [SetUp]
         public void Init()
         {
-            WebServer = new WebServer(Resources.ServerAddress, Logger)
+            WebServer = new WebServer(WebServerUrl, Logger)
                 .WithWebApiController<TestController>();
             WebServer.RunAsync();
         }
@@ -40,7 +41,7 @@
         {
             List<Person> remoteList;
 
-            var request = (HttpWebRequest) WebRequest.Create(Resources.ServerAddress + TestController.GetPath);
+            var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + TestController.GetPath);
 
             using (var response = (HttpWebResponse) await request.GetResponseAsync())
             {
@@ -57,28 +58,28 @@
                 Assert.AreEqual(remoteList.Count, PeopleRepository.Database.Count, "Remote list count equals local list");
             }
 
-            await TestHelper.ValidatePerson(Resources.ServerAddress + TestController.GetPath + remoteList.First().Key);
+            await TestHelper.ValidatePerson(WebServerUrl + TestController.GetPath + remoteList.First().Key);
         }
 
         [Test]
         public async Task GetJsonDataWithMiddleUrl()
         {
             var person = PeopleRepository.Database.First();
-            await TestHelper.ValidatePerson(Resources.ServerAddress + TestController.GetMiddlePath.Replace("*", person.Key.ToString()));
+            await TestHelper.ValidatePerson(WebServerUrl + TestController.GetMiddlePath.Replace("*", person.Key.ToString()));
         }
 
         [Test]
         public async Task GetJsonAsyncData()
         {
             var person = PeopleRepository.Database.First();
-            await TestHelper.ValidatePerson(Resources.ServerAddress + TestController.GetAsyncPath + person.Key);
+            await TestHelper.ValidatePerson(WebServerUrl + TestController.GetAsyncPath + person.Key);
         }
 
         [Test]
         public async Task PostJsonData()
         {
             var model = new Person() {Key = 10, Name = "Test"};
-            var request = (HttpWebRequest) WebRequest.Create(Resources.ServerAddress + TestController.GetPath);
+            var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + TestController.GetPath);
             request.Method = "POST";
 
             using (var dataStream = await request.GetRequestStreamAsync())
@@ -108,7 +109,7 @@
 
             WebServer.Module<WebApiModule>().RegisterController(() => new TestControllerWithConstructor(name));
 
-            var request = (HttpWebRequest) WebRequest.Create(Resources.ServerAddress + "name");
+            var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + "name");
 
             using (var response = (HttpWebResponse) await request.GetResponseAsync())
             {

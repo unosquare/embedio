@@ -14,19 +14,20 @@ namespace Unosquare.Labs.EmbedIO.Tests
     {
         protected TestMiddleware Middleware = new TestMiddleware();
         protected WebServer WebServer;
+        protected string WebServerUrl = Resources.GetServerAddress();
         protected TestConsoleLog Logger = new TestConsoleLog();
 
         [SetUp]
         public void Init()
         {
-            WebServer = new WebServer(Resources.ServerAddress, Logger);
+            WebServer = new WebServer(WebServerUrl, Logger);
             WebServer.RunAsync(app: Middleware);
         }
 
         [Test]
         public async Task GetIndex()
         {
-            var request = (HttpWebRequest) WebRequest.Create(Resources.ServerAddress);
+            var request = (HttpWebRequest) WebRequest.Create(WebServerUrl);
 
             using (var response = (HttpWebResponse) await request.GetResponseAsync())
             {

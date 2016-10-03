@@ -12,12 +12,13 @@
     public class CorsModuleTest
     {
         protected WebServer WebServer;
+        protected string WebServerUrl = Resources.GetServerAddress();
         protected TestConsoleLog Logger = new TestConsoleLog();
 
         [SetUp]
         public void Init()
         {
-            WebServer = new WebServer(Resources.ServerAddress, Logger)
+            WebServer = new WebServer(WebServerUrl, Logger)
                 .EnableCors(
                     "http://client.cors-api.appspot.com,http://unosquare.github.io,http://run.plnkr.co",
                     "content-type",
@@ -31,7 +32,7 @@
         [Test]
         public async Task PreFlight()
         {
-            var request = (HttpWebRequest) WebRequest.Create(Resources.ServerAddress + TestController.GetPath);
+            var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + TestController.GetPath);
             request.Headers[Constants.HeaderOrigin] = "http://unosquare.github.io";
             request.Headers[Constants.HeaderAccessControlRequestMethod] = "post";
             request.Headers[Constants.HeaderAccessControlRequestHeaders] = "content-type";

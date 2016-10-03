@@ -11,6 +11,8 @@
     {
         protected string RootPath;
 
+        protected string WebServerUrl = Resources.GetServerAddress();
+
         [SetUp]
         public void Init()
         {
@@ -21,7 +23,7 @@
         [Test]
         public void FluentWithStaticFolder()
         {
-            var webServer = WebServer.Create(Resources.ServerAddress)
+            var webServer = WebServer.Create(WebServerUrl)
                 .WithLocalSession()
                 .WithStaticFolderAt(RootPath);
 
@@ -31,7 +33,7 @@
 
             webServer.RunAsync();
 
-            var request = (HttpWebRequest)WebRequest.Create(Resources.ServerAddress);
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
 
             using (var response = (HttpWebResponse)request.GetResponse())
             {
@@ -44,7 +46,7 @@
         [Test]
         public void FluentWithWebApi()
         {
-            var webServer = WebServer.Create(Resources.ServerAddress)
+            var webServer = WebServer.Create(WebServerUrl)
                 .WithWebApi(typeof(FluentTest).Assembly);
 
             Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
@@ -57,7 +59,7 @@
         [Test]
         public void FluentWithWebSockets()
         {
-            var webServer = WebServer.Create(Resources.ServerAddress)
+            var webServer = WebServer.Create(WebServerUrl)
                 .WithWebSocket(typeof(FluentTest).Assembly);
 
             Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
@@ -69,7 +71,7 @@
         [Test]
         public void FluentLoadWebApiControllers()
         {
-            var webServer = WebServer.Create(Resources.ServerAddress)
+            var webServer = WebServer.Create(WebServerUrl)
                 .WithWebApi();
             webServer.Module<WebApiModule>().LoadApiControllers(typeof(FluentTest).Assembly);
 

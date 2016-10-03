@@ -16,6 +16,8 @@ namespace Unosquare.Labs.EmbedIO.Tests
     {
         protected string RootPath;
         protected WebServer WebServer;
+        
+        protected string WebServerUrl = Resources.GetServerAddress();
         protected string[] InstancesNames = {string.Empty, "A/", "B/", "C/", "A/C", "AAA/A/B/C/", "A/B/C"};
 
         [SetUp]
@@ -25,7 +27,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
 
             var additionalPaths = InstancesNames.ToDictionary(x => "/" + x, TestHelper.SetupStaticFolderInstance);
 
-            WebServer = new WebServer(Resources.ServerAddress, new TestConsoleLog());
+            WebServer = new WebServer(WebServerUrl, new TestConsoleLog());
             WebServer.RegisterModule(new StaticFilesModule(additionalPaths) {UseRamCache = true});
             WebServer.RunAsync();
         }
@@ -37,7 +39,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
             {
                 using (var htmlClient = new HttpClient())
                 {
-                    var html = await htmlClient.GetStringAsync(Resources.ServerAddress + item);
+                    var html = await htmlClient.GetStringAsync(WebServerUrl + item);
 
                     Assert.AreEqual(html, TestHelper.GetStaticFolderInstanceIndexFileContents(item),
                         "index.html contents match instance name");
