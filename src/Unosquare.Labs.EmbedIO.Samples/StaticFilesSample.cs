@@ -24,7 +24,7 @@
                 // This lets you edit the files without restarting the server.
                 return Path.GetFullPath(Path.Combine(assemblyPath, "..\\..\\html"));
 #else
-    // This is when you have deployed the server.
+                // This is when you have deployed the server.
                 return Path.Combine(assemblyPath, "html");
 #endif
             }

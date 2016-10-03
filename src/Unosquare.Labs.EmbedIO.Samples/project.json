@@ -6,8 +6,8 @@
   },
 
   "dependencies": {
+    "LiteLib": "0.9.1",
     "Newtonsoft.Json": "9.0.1",
-    "LiteLib": "0.9.0",
     "System.Linq.Dynamic.Core": "1.0.6.4",
     "Tubular.ServerSide": "1.0.5",
     "Unosquare.Labs.EmbedIO": "1.0.0-*"
