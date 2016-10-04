@@ -325,8 +325,6 @@ namespace System.Net
 
         private State ReadTrailer(byte[] buffer, ref int offset, int size)
         {
-            var c = '\0';
-
             // short path
             if (_trailerState == 2 && (char) buffer[offset] == '\r' && _saved.Length == 0)
             {
@@ -343,7 +341,7 @@ namespace System.Net
             var stString = "\r\n\r";
             while (offset < size && st < 4)
             {
-                c = (char) buffer[offset++];
+                var c = (char) buffer[offset++];
                 if ((st == 0 || st == 2) && c == '\r')
                 {
                     st++;

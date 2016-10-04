@@ -51,7 +51,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
                 Assert.IsNotNull(response.Cookies, "Cookies are not null");
                 Assert.Greater(response.Cookies.Count, 0, "Cookies are not empty");
 
-                var content = response.Cookies[CookieName].Value;
+                var content = response.Cookies[CookieName]?.Value;
 
                 Assert.IsNotEmpty(content, "Cookie content is not null");
             }

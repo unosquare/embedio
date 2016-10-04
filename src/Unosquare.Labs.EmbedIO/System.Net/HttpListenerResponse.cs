@@ -59,14 +59,17 @@ namespace System.Net
 
         internal bool ForceCloseChunked { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the content encoding.
+        /// </summary>
+        /// <value>
+        /// The content encoding.
+        /// </value>
+        /// <exception cref="System.ObjectDisposedException"></exception>
+        /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public Encoding ContentEncoding
         {
-            get
-            {
-                if (_contentEncoding == null)
-                    _contentEncoding = Encoding.GetEncoding(0);
-                return _contentEncoding;
-            }
+            get { return _contentEncoding ?? (_contentEncoding = Encoding.GetEncoding(0)); }
             set
             {
                 if (_disposed)
@@ -144,10 +147,7 @@ namespace System.Net
             }
         }
 
-        public ResponseStream OutputStream
-        {
-            get { return _outputStream ?? (_outputStream = _context.Connection.GetResponseStream()); }
-        }
+        public ResponseStream OutputStream => _outputStream ?? (_outputStream = _context.Connection.GetResponseStream());
 
         public Version ProtocolVersion
         {
@@ -188,6 +188,14 @@ namespace System.Net
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [send chunked].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [send chunked]; otherwise, <c>false</c>.
+        /// </value>
+        /// <exception cref="System.ObjectDisposedException"></exception>
+        /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public bool SendChunked
         {
             get { return _chunked; }
@@ -203,6 +211,15 @@ namespace System.Net
             }
         }
 
+        /// <summary>
+        /// Gets or sets the status code.
+        /// </summary>
+        /// <value>
+        /// The status code.
+        /// </value>
+        /// <exception cref="System.ObjectDisposedException"></exception>
+        /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
+        /// <exception cref="ProtocolViolationException">StatusCode must be between 100 and 999.</exception>
         public int StatusCode
         {
             get { return _statusCode; }
@@ -221,6 +238,12 @@ namespace System.Net
             }
         }
 
+        /// <summary>
+        /// Gets or sets the status description.
+        /// </summary>
+        /// <value>
+        /// The status description.
+        /// </value>
         public string StatusDescription { get; set; } = "OK";
 
         void IDisposable.Dispose()
@@ -228,6 +251,9 @@ namespace System.Net
             Close(true); //TODO: Abort or Close?
         }
 
+        /// <summary>
+        /// Aborts this instance.
+        /// </summary>
         public void Abort()
         {
             if (_disposed)
@@ -236,6 +262,14 @@ namespace System.Net
             Close(true);
         }
 
+        /// <summary>
+        /// Adds the header.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        /// <exception cref="System.ArgumentException">'name' cannot be empty</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException"></exception>
         public void AddHeader(string name, string value)
         {
             if (name == null)
@@ -251,6 +285,11 @@ namespace System.Net
             Headers[name] = value;
         }
 
+        /// <summary>
+        /// Appends the cookie.
+        /// </summary>
+        /// <param name="cookie">The cookie.</param>
+        /// <exception cref="System.ArgumentNullException"></exception>
         public void AppendCookie(Cookie cookie)
         {
             if (cookie == null)
@@ -259,6 +298,14 @@ namespace System.Net
             Cookies.Add(cookie);
         }
 
+        /// <summary>
+        /// Appends the header.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        /// <exception cref="System.ArgumentException">'name' cannot be empty</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException"></exception>
         public void AppendHeader(string name, string value)
         {
             if (name == null)
@@ -290,6 +337,12 @@ namespace System.Net
             Close(false);
         }
 
+        /// <summary>
+        /// Closes the specified response entity.
+        /// </summary>
+        /// <param name="responseEntity">The response entity.</param>
+        /// <param name="willBlock">if set to <c>true</c> [will block].</param>
+        /// <exception cref="System.ArgumentNullException"></exception>
         public void Close(byte[] responseEntity, bool willBlock)
         {
             if (_disposed)
@@ -304,6 +357,10 @@ namespace System.Net
             Close(false);
         }
 
+        /// <summary>
+        /// Copies from.
+        /// </summary>
+        /// <param name="templateResponse">The template response.</param>
         public void CopyFrom(HttpListenerResponse templateResponse)
         {
             Headers = new WebHeaderCollection();
@@ -316,6 +373,10 @@ namespace System.Net
             _version = templateResponse._version;
         }
 
+        /// <summary>
+        /// Redirects the specified URL.
+        /// </summary>
+        /// <param name="url">The URL.</param>
         public void Redirect(string url)
         {
             StatusCode = 302; // Found
@@ -519,6 +580,12 @@ namespace System.Net
             return true;
         }
 
+        /// <summary>
+        /// Sets the cookie.
+        /// </summary>
+        /// <param name="cookie">The cookie.</param>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        /// <exception cref="System.ArgumentException">The cookie already exists.</exception>
         public void SetCookie(Cookie cookie)
         {
             if (cookie == null)

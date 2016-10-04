@@ -92,9 +92,6 @@
         /// <summary>
         /// Module's name
         /// </summary>
-        public override string Name
-        {
-            get { return "CORS Module"; }
-        }
+        public override string Name => "CORS Module";
     }
 }

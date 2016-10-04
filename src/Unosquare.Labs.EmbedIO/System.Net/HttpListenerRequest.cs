@@ -450,15 +450,13 @@ namespace System.Net
             }
         }
 
-        public Encoding ContentEncoding
-        {
-            get
-            {
-                if (_contentEncoding == null)
-                    _contentEncoding = Encoding.GetEncoding(0);
-                return _contentEncoding;
-            }
-        }
+        /// <summary>
+        /// Gets the content encoding.
+        /// </summary>
+        /// <value>
+        /// The content encoding.
+        /// </value>
+        public Encoding ContentEncoding => _contentEncoding ?? (_contentEncoding = Encoding.GetEncoding(0));
 
         public long ContentLength64 { get; private set; }
 

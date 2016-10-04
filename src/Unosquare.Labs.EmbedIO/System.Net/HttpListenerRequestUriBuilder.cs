@@ -215,10 +215,9 @@ namespace System.Net
             Debug.Assert(encoding != null, "'encoding' must be assigned.");
 
             var index = 0;
-            var current = '\0';
             while (index < _rawPath.Length)
             {
-                current = _rawPath[index];
+                var current = _rawPath[index];
                 if (current == '%')
                 {
                     // Assert is enough, since http.sys accepted the request string already. This should never happen.
@@ -269,12 +268,7 @@ namespace System.Net
 
             // if the raw path ends with a sequence of percent encoded octets, make sure those get added to the
             // result (requestUriString).
-            if (!EmptyDecodeAndAppendRawOctetsList(encoding))
-            {
-                return ParsingResult.EncodingError;
-            }
-
-            return ParsingResult.Success;
+            return !EmptyDecodeAndAppendRawOctetsList(encoding) ? ParsingResult.EncodingError : ParsingResult.Success;
         }
 
         private bool AppendUnicodeCodePointValuePercentEncoded(string codePoint)
@@ -289,10 +283,9 @@ namespace System.Net
                 return false;
             }
 
-            string unicodeString = null;
             try
             {
-                unicodeString = char.ConvertFromUtf32(codePointValue);
+                var unicodeString = char.ConvertFromUtf32(codePointValue);
                 AppendOctetsPercentEncoded(_requestUriString, Utf8Encoding.GetBytes(unicodeString));
 
                 return true;

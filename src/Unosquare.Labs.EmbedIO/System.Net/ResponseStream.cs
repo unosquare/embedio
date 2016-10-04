@@ -74,13 +74,13 @@ namespace System.Net
             if (_disposed == false)
             {
                 _disposed = true;
-                byte[] bytes = null;
                 var ms = GetHeaders(true);
                 var chunked = _response.SendChunked;
                 if (_stream.CanWrite)
                 {
                     try
                     {
+                        byte[] bytes = null;
                         if (ms != null)
                         {
                             var start = ms.Position;

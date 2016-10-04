@@ -307,7 +307,6 @@ namespace System.Net
             var buffer = ms.GetBuffer();
             var len = (int) ms.Length;
             var used = 0;
-            string line;
 
             while (true)
             {
@@ -317,6 +316,7 @@ namespace System.Net
                 if (_position >= len)
                     break;
 
+                string line;
                 try
                 {
                     line = ReadLine(buffer, _position, len - _position, ref used);

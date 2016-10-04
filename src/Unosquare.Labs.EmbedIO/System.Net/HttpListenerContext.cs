@@ -32,6 +32,9 @@ using System.Text;
 
 namespace System.Net
 {
+    /// <summary>
+    /// Provides access to the request and response objects used by the HttpListener class. This class cannot be inherited.
+    /// </summary>
     public sealed class HttpListenerContext
     {
         internal HttpListener Listener;
@@ -51,10 +54,28 @@ namespace System.Net
 
         internal HttpConnection Connection { get; }
 
+        /// <summary>
+        /// Gets the request.
+        /// </summary>
+        /// <value>
+        /// The request.
+        /// </value>
         public HttpListenerRequest Request { get; }
 
+        /// <summary>
+        /// Gets the response.
+        /// </summary>
+        /// <value>
+        /// The response.
+        /// </value>
         public HttpListenerResponse Response { get; }
 
+        /// <summary>
+        /// Gets the user.
+        /// </summary>
+        /// <value>
+        /// The user.
+        /// </value>
         public IPrincipal User { get; private set; }
 
         internal void ParseAuthentication(AuthenticationSchemes expectedSchemes)
@@ -68,7 +89,7 @@ namespace System.Net
                 return;
 
             var authenticationData = header.Split(new[] {' '}, 2);
-            if (string.Compare(authenticationData[0], "basic", true) == 0)
+            if (string.Compare(authenticationData[0], "basic", StringComparison.OrdinalIgnoreCase) == 0)
             {
                 User = ParseBasicAuthentication(authenticationData[1]);
             }

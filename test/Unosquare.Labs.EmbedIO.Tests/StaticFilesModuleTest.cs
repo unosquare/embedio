@@ -9,6 +9,7 @@
     using Unosquare.Labs.EmbedIO.Modules;
     using System.Threading.Tasks;
     using Unosquare.Labs.EmbedIO.Tests.TestObjects;
+    using System.IO.Compression;
 
     [TestFixture]
     public class StaticFilesModuleTest
@@ -45,7 +46,7 @@
 
                 Assert.AreEqual(Resources.Index, html, "Same content index.html");
 
-                Assert.IsNull(response.Headers[Constants.HeaderPragma], "Pragma empty");
+                Assert.IsTrue(string.IsNullOrWhiteSpace(response.Headers[Constants.HeaderPragma]), "Pragma empty");
             }
             
             WebServer.Module<StaticFilesModule>().DefaultHeaders.Add(Constants.HeaderPragma, HeaderPragmaValue);
@@ -120,15 +121,17 @@
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
 
-                var ms = new MemoryStream();
-                response.GetResponseStream().CopyTo(ms);
-                var data = ms.ToArray();
+                using (var ms = new MemoryStream())
+                {
+                    response.GetResponseStream()?.CopyTo(ms);
+                    var data = ms.ToArray();
 
-                Assert.IsNotNull(data, "Data is not empty");
-                var subset = new byte[maxLength];
-                var originalSet = TestHelper.GetBigData();
-                Buffer.BlockCopy(originalSet, 0, subset, 0, maxLength);
-                Assert.AreEqual(subset, data);
+                    Assert.IsNotNull(data, "Data is not empty");
+                    var subset = new byte[maxLength];
+                    var originalSet = TestHelper.GetBigData();
+                    Buffer.BlockCopy(originalSet, 0, subset, 0, maxLength);
+                    Assert.AreEqual(subset, data);
+                }
             }
         }
 
@@ -144,15 +147,17 @@
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
 
-                var ms = new MemoryStream();
-                response.GetResponseStream().CopyTo(ms);
-                var data = ms.ToArray();
+                using (var ms = new MemoryStream())
+                {
+                    response.GetResponseStream()?.CopyTo(ms);
+                    var data = ms.ToArray();
 
-                Assert.IsNotNull(data, "Data is not empty");
-                var subset = new byte[maxLength];
-                var originalSet = TestHelper.GetBigData();
-                Buffer.BlockCopy(originalSet, offset, subset, 0, maxLength);
-                Assert.AreEqual(subset, data);
+                    Assert.IsNotNull(data, "Data is not empty");
+                    var subset = new byte[maxLength];
+                    var originalSet = TestHelper.GetBigData();
+                    Buffer.BlockCopy(originalSet, offset, subset, 0, maxLength);
+                    Assert.AreEqual(subset, data);
+                }
             }
         }
 
@@ -168,15 +173,17 @@
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
 
-                var ms = new MemoryStream();
-                response.GetResponseStream().CopyTo(ms);
-                var data = ms.ToArray();
+                using (var ms = new MemoryStream())
+                {
+                    response.GetResponseStream()?.CopyTo(ms);
+                    var data = ms.ToArray();
 
-                Assert.IsNotNull(data, "Data is not empty");
-                var subset = new byte[byteLength];
-                var originalSet = TestHelper.GetBigData();
-                Buffer.BlockCopy(originalSet, startByteIndex, subset, 0, byteLength);
-                Assert.AreEqual(subset, data);
+                    Assert.IsNotNull(data, "Data is not empty");
+                    var subset = new byte[byteLength];
+                    var originalSet = TestHelper.GetBigData();
+                    Buffer.BlockCopy(originalSet, startByteIndex, subset, 0, byteLength);
+                    Assert.AreEqual(subset, data);
+                }
             }
         }
 
@@ -204,10 +211,12 @@
                 {
                     Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
 
-                    var ms = new MemoryStream();
-                    response.GetResponseStream().CopyTo(ms);
-                    var data = ms.ToArray();
-                    Buffer.BlockCopy(data, 0, buffer, i * chunkSize, data.Length);
+                    using (var ms = new MemoryStream())
+                    {
+                        response.GetResponseStream()?.CopyTo(ms);
+                        var data = ms.ToArray();
+                        Buffer.BlockCopy(data, 0, buffer, i*chunkSize, data.Length);
+                    }
                 }
             }
 
@@ -257,12 +266,14 @@
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
-                var ms = new MemoryStream();
-                response.GetResponseStream().CopyTo(ms);
-                var data = ms.ToArray();
+                using (var ms = new MemoryStream())
+                {
+                    response.GetResponseStream()?.CopyTo(ms);
+                    var data = ms.ToArray();
 
-                Assert.IsNotNull(data, "Data is not empty");
-                Assert.AreEqual(TestHelper.GetBigData(), data);
+                    Assert.IsNotNull(data, "Data is not empty");
+                    Assert.AreEqual(TestHelper.GetBigData(), data);
+                }
             }
         }
 
@@ -276,10 +287,11 @@
             using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
-                var responseStream = response.GetResponseStream();
+                
+                // TODO: I need to fix this
                 //Assert.IsTrue(response.ContentEncoding.ToLower().Contains("gzip"), "Request is gziped");
                 //var responseStream = new GZipStream(response.GetResponseStream(), CompressionMode.Decompress);
+                var responseStream = response.GetResponseStream();
                 var reader =  new StreamReader(responseStream, Constants.DefaultEncoding);
                 var html = reader.ReadToEnd();
 
