@@ -18,12 +18,13 @@
         protected string RootPath;
         protected WebServer WebServer;
         
-        protected string WebServerUrl = Resources.GetServerAddress();
+        protected string WebServerUrl;
         protected TestConsoleLog Logger = new TestConsoleLog();
 
         [SetUp]
         public void Init()
         {
+            WebServerUrl = Resources.GetServerAddress();
             RootPath = TestHelper.SetupStaticFolder();
 
             WebServer = new WebServer(WebServerUrl, Logger);
