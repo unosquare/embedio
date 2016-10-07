@@ -8,9 +8,10 @@
 
 *:star:Please star this project if you find it useful!*
 
-A tiny, cross-platform, module based, MIT-licensed web server for .NET
+A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework and .NET Core
 
 * Written entirely in C#
+* .NET Core portable library
 * Network operations use the async/await pattern: Responses are handled asynchronously
 * Cross-platform[1]: tested in Mono 3.10.x on Windows and on a custom Yocto image for the Raspberry Pi
 * Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras" target="_blank">EmbedIO Extras</a> for additional modules.
