@@ -317,6 +317,30 @@
             }
         }
 
+        [Test]
+        public async Task FileWritable()
+        {
+            var endpoint = Resources.GetServerAddress();
+            var root = Path.GetTempPath();
+            var file = Path.Combine(root, "index.html");
+            File.WriteAllText(file, Resources.Index);
+
+            using (var server = new WebServer(endpoint, Logger))
+            {
+                server.RegisterModule(new StaticFilesModule(root));
+                server.RunAsync();
+
+                var webClient = new HttpClient();
+                var remoteFile = await webClient.GetStringAsync(endpoint);
+                File.WriteAllText(file, Resources.SubIndex);
+                var remoteUpdatedFile = await webClient.GetStringAsync(endpoint);
+                File.WriteAllText(file, nameof(WebServer));
+
+                Assert.AreEqual(Resources.Index, remoteFile);
+                Assert.AreEqual(Resources.SubIndex, remoteUpdatedFile);
+            }
+        }
+
         [TearDown]
         public void Kill()
         {

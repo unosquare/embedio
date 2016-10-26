@@ -240,7 +240,7 @@
 
                 if (sendBuffer)
                 {
-                    buffer = new FileStream(localPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    buffer = new FileStream(localPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
                     if (usingPartial == false)
                     {
