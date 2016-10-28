@@ -29,5 +29,8 @@
         "System.Net.Http": ""
       }
     }
+  },
+  "runtimes": {
+    "win": {}
   }
 }
