@@ -38,7 +38,7 @@ namespace System.Net
         int _offset;
         int _length;
         long _remainingBody;
-        bool _disposed;
+        bool _disposed = false;
         readonly Stream _stream;
 
         internal RequestStream(Stream stream, byte[] buffer, int offset, int length)

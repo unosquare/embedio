@@ -30,6 +30,10 @@ using System.Security.Principal;
 
 namespace System.Net
 {
+    /// <summary>
+    /// Represents a basic context's identity
+    /// </summary>
+    /// <seealso cref="System.Security.Principal.GenericIdentity" />
     public class HttpListenerBasicIdentity : GenericIdentity
     {
         /// <summary>

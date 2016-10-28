@@ -57,6 +57,9 @@ namespace System.Net
 
     }// class HttpVersion
 
+    /// <summary>
+    /// Represents an HTTP Listener's request
+    /// </summary>
     public sealed class HttpListenerRequest
     {
         class Context : TransportContext
@@ -422,7 +425,7 @@ namespace System.Net
                     if (InputStream.EndRead(ares) <= 0)
                         return true;
                 }
-                catch (ObjectDisposedException e)
+                catch (ObjectDisposedException)
                 {
                     _inputStream = null;
                     return true;
@@ -434,8 +437,21 @@ namespace System.Net
             }
         }
 
+        /// <summary>
+        /// Gets the MIME accept types.
+        /// </summary>
+        /// <value>
+        /// The accept types.
+        /// </value>
         public string[] AcceptTypes { get; private set; }
 
+        /// <summary>
+        /// Gets the client certificate error code.
+        /// </summary>
+        /// <value>
+        /// The client certificate error.
+        /// </value>
+        /// <exception cref="System.InvalidOperationException">No client certificate</exception>
         public int ClientCertificateError
         {
             get
@@ -458,10 +474,28 @@ namespace System.Net
         /// </value>
         public Encoding ContentEncoding => _contentEncoding ?? (_contentEncoding = Encoding.GetEncoding(0));
 
+        /// <summary>
+        /// Gets the content length in a 64-bit integer
+        /// </summary>
+        /// <value>
+        /// The content length64.
+        /// </value>
         public long ContentLength64 { get; private set; }
 
+        /// <summary>
+        /// Gets the MIME type of the content.
+        /// </summary>
+        /// <value>
+        /// The type of the content.
+        /// </value>
         public string ContentType => Headers["content-type"];
 
+        /// <summary>
+        /// Gets the cookies collection.
+        /// </summary>
+        /// <value>
+        /// The cookies.
+        /// </value>
         public CookieCollection Cookies
         {
             get
@@ -473,12 +507,36 @@ namespace System.Net
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance has entity body.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance has entity body; otherwise, <c>false</c>.
+        /// </value>
         public bool HasEntityBody => (ContentLength64 > 0 || _isChunked);
 
+        /// <summary>
+        /// Gets the request headers.
+        /// </summary>
+        /// <value>
+        /// The headers.
+        /// </value>
         public NameValueCollection Headers { get; }
 
+        /// <summary>
+        /// Gets the HTTP method.
+        /// </summary>
+        /// <value>
+        /// The HTTP method.
+        /// </value>
         public string HttpMethod { get; private set; }
 
+        /// <summary>
+        /// Gets the input stream.
+        /// </summary>
+        /// <value>
+        /// The input stream.
+        /// </value>
         public Stream InputStream
         {
             get
@@ -494,13 +552,37 @@ namespace System.Net
                 return _inputStream;
             }
         }
-        
+
+        /// <summary>
+        /// Gets a value indicating whether this request is authenticated.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is authenticated; otherwise, <c>false</c>.
+        /// </value>
         public bool IsAuthenticated => false;
 
+        /// <summary>
+        /// Gets a value indicating whether this request is local.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is local; otherwise, <c>false</c>.
+        /// </value>
         public bool IsLocal => LocalEndPoint.Address.Equals(RemoteEndPoint.Address);
 
+        /// <summary>
+        /// Gets a value indicating whether this request is under a secure connection.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is secure connection; otherwise, <c>false</c>.
+        /// </value>
         public bool IsSecureConnection => _context.Connection.IsSecure;
 
+        /// <summary>
+        /// Gets the Keep-Alive value for this request
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [keep alive]; otherwise, <c>false</c>.
+        /// </value>
         public bool KeepAlive
         {
             get
@@ -531,30 +613,108 @@ namespace System.Net
             }
         }
 
+        /// <summary>
+        /// Gets the local end point.
+        /// </summary>
+        /// <value>
+        /// The local end point.
+        /// </value>
         public IPEndPoint LocalEndPoint => _context.Connection.LocalEndPoint;
 
+        /// <summary>
+        /// Gets the protocol version.
+        /// </summary>
+        /// <value>
+        /// The protocol version.
+        /// </value>
         public Version ProtocolVersion { get; private set; }
 
+        /// <summary>
+        /// Gets the query string.
+        /// </summary>
+        /// <value>
+        /// The query string.
+        /// </value>
         public NameValueCollection QueryString { get; private set; }
 
+        /// <summary>
+        /// Gets the raw URL.
+        /// </summary>
+        /// <value>
+        /// The raw URL.
+        /// </value>
         public string RawUrl { get; private set; }
 
+        /// <summary>
+        /// Gets the remote end point.
+        /// </summary>
+        /// <value>
+        /// The remote end point.
+        /// </value>
         public IPEndPoint RemoteEndPoint => _context.Connection.RemoteEndPoint;
 
+        /// <summary>
+        /// Gets the request trace identifier.
+        /// </summary>
+        /// <value>
+        /// The request trace identifier.
+        /// </value>
         public Guid RequestTraceIdentifier => Guid.Empty;
 
+        /// <summary>
+        /// Gets the URL.
+        /// </summary>
+        /// <value>
+        /// The URL.
+        /// </value>
         public Uri Url => _url;
 
+        /// <summary>
+        /// Gets the URL referrer.
+        /// </summary>
+        /// <value>
+        /// The URL referrer.
+        /// </value>
         public Uri UrlReferrer { get; private set; }
 
+        /// <summary>
+        /// Gets the user agent.
+        /// </summary>
+        /// <value>
+        /// The user agent.
+        /// </value>
         public string UserAgent => Headers["user-agent"];
 
+        /// <summary>
+        /// Gets the user host address.
+        /// </summary>
+        /// <value>
+        /// The user host address.
+        /// </value>
         public string UserHostAddress => LocalEndPoint.ToString();
 
+        /// <summary>
+        /// Gets the name of the user host.
+        /// </summary>
+        /// <value>
+        /// The name of the user host.
+        /// </value>
         public string UserHostName => Headers["host"];
 
+        /// <summary>
+        /// Gets the user languages.
+        /// </summary>
+        /// <value>
+        /// The user languages.
+        /// </value>
         public string[] UserLanguages { get; private set; }
 
+        /// <summary>
+        /// Begins to the get client certificate asynchronously.
+        /// </summary>
+        /// <param name="requestCallback">The request callback.</param>
+        /// <param name="state">The state.</param>
+        /// <returns></returns>
         public IAsyncResult BeginGetClientCertificate(AsyncCallback requestCallback, object state)
         {
             if (_gccDelegate == null)
@@ -562,6 +722,13 @@ namespace System.Net
             return _gccDelegate.BeginInvoke(requestCallback, state);
         }
 
+        /// <summary>
+        /// Finishes the get client certificate asynchronous operation.
+        /// </summary>
+        /// <param name="asyncResult">The asynchronous result.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">asyncResult</exception>
+        /// <exception cref="System.InvalidOperationException"></exception>
         public X509Certificate2 EndGetClientCertificate(IAsyncResult asyncResult)
         {
             if (asyncResult == null)
@@ -573,17 +740,43 @@ namespace System.Net
             return _gccDelegate.EndInvoke(asyncResult);
         }
 
+        /// <summary>
+        /// Gets the client certificate.
+        /// </summary>
+        /// <returns></returns>
         public X509Certificate2 GetClientCertificate()
         {
             return _context.Connection.ClientCertificate;
         }
-        
+
+        /// <summary>
+        /// Gets the name of the service.
+        /// </summary>
+        /// <value>
+        /// The name of the service.
+        /// </value>
         public string ServiceName => null;
 
+        /// <summary>
+        /// Gets the transport context.
+        /// </summary>
+        /// <value>
+        /// The transport context.
+        /// </value>
         public TransportContext TransportContext => new Context();
 
+        /// <summary>
+        /// Gets a value indicating whether this request is a web socket request.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is web socket request; otherwise, <c>false</c>.
+        /// </value>
         public bool IsWebSocketRequest => false;
 
+        /// <summary>
+        /// Gets the client certificate asynchronously.
+        /// </summary>
+        /// <returns></returns>
         public Task<X509Certificate2> GetClientCertificateAsync()
         {
             return Task<X509Certificate2>.Factory.FromAsync(BeginGetClientCertificate, EndGetClientCertificate, null);

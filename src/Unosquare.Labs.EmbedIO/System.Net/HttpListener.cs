@@ -35,8 +35,17 @@ using System.Threading.Tasks;
 
 namespace System.Net
 {
+    /// <summary>
+    /// A delegate that selects the authentication scheme based on the supplied request
+    /// </summary>
+    /// <param name="httpRequest">The HTTP request.</param>
+    /// <returns></returns>
     public delegate AuthenticationSchemes AuthenticationSchemeSelector(HttpListenerRequest httpRequest);
 
+    /// <summary>
+    /// The MONO implementation of the standard Http Listener class
+    /// </summary>
+    /// <seealso cref="System.IDisposable" />
     public sealed class HttpListener : IDisposable
     {
         AuthenticationSchemes _authSchemes;
@@ -59,8 +68,13 @@ namespace System.Net
 
         //ServiceNameStore defaultServiceNames;
         //ExtendedProtectionPolicy _extendedProtectionPolicy;
-        ExtendedProtectionSelector _extendedProtectionSelectorDelegate;
+        //ExtendedProtectionSelector _extendedProtectionSelectorDelegate = null;
 
+        /// <summary>
+        /// The EPP selector delegate for the supplied request
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns></returns>
         public delegate ExtendedProtectionPolicy ExtendedProtectionSelector(HttpListenerRequest request);
 
         /// <summary>
@@ -134,7 +148,13 @@ namespace System.Net
             }
         }
 #endif
-        // TODO: Digest, NTLM and Negotiate require ControlPrincipal
+        /// <summary>
+        /// Gets or sets the authentication schemes.
+        /// TODO: Digest, NTLM and Negotiate require ControlPrincipal
+        /// </summary>
+        /// <value>
+        /// The authentication schemes.
+        /// </value>
         public AuthenticationSchemes AuthenticationSchemes
         {
             get { return _authSchemes; }
@@ -145,6 +165,12 @@ namespace System.Net
             }
         }
 
+        /// <summary>
+        /// Gets or sets the authentication scheme selector delegate.
+        /// </summary>
+        /// <value>
+        /// The authentication scheme selector delegate.
+        /// </value>
         public AuthenticationSchemeSelector AuthenticationSchemeSelectorDelegate
         {
             get { return _authSelector; }
@@ -171,6 +197,12 @@ namespace System.Net
         //    }
         //}
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the listener should ignore write exceptions.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [ignore write exceptions]; otherwise, <c>false</c>.
+        /// </value>
         public bool IgnoreWriteExceptions
         {
             get { return _ignoreWriteExceptions; }
@@ -181,10 +213,28 @@ namespace System.Net
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance is listening.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is listening; otherwise, <c>false</c>.
+        /// </value>
         public bool IsListening { get; private set; }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance is supported.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is supported; otherwise, <c>false</c>.
+        /// </value>
         public static bool IsSupported => true;
 
+        /// <summary>
+        /// Gets the prefixes.
+        /// </summary>
+        /// <value>
+        /// The prefixes.
+        /// </value>
         public HttpListenerPrefixCollection Prefixes
         {
             get
@@ -193,7 +243,13 @@ namespace System.Net
                 return _prefixes;
             }
         }
-        
+
+        /// <summary>
+        /// Gets or sets the realm.
+        /// </summary>
+        /// <value>
+        /// The realm.
+        /// </value>
         public string Realm
         {
             get { return _realm; }
@@ -203,7 +259,13 @@ namespace System.Net
                 _realm = value;
             }
         }
-        
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [unsafe connection NTLM authentication].
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [unsafe connection NTLM authentication]; otherwise, <c>false</c>.
+        /// </value>
         public bool UnsafeConnectionNtlmAuthentication
         {
             get { return _unsafeNtlmAuth; }
@@ -214,6 +276,9 @@ namespace System.Net
             }
         }
 
+        /// <summary>
+        /// Aborts this listener.
+        /// </summary>
         public void Abort()
         {
             if (_disposed)
@@ -227,6 +292,9 @@ namespace System.Net
             Close(true);
         }
 
+        /// <summary>
+        /// Closes this listener.
+        /// </summary>
         public void Close()
         {
             if (_disposed)
@@ -293,6 +361,13 @@ namespace System.Net
             }
         }
 
+        /// <summary>
+        /// Begins the asynchronous operation of retrieving an HTTP conext
+        /// </summary>
+        /// <param name="callback">The callback.</param>
+        /// <param name="state">The state.</param>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Please, call Start before using this method.</exception>
         public IAsyncResult BeginGetContext(AsyncCallback callback, object state)
         {
             CheckDisposed();
@@ -320,6 +395,17 @@ namespace System.Net
             return ares;
         }
 
+        /// <summary>
+        /// Ends the asynchronous operation of retrieving an HTTP conext
+        /// </summary>
+        /// <param name="asyncResult">The asynchronous result.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">asyncResult</exception>
+        /// <exception cref="System.ArgumentException">
+        /// Wrong IAsyncResult. - asyncResult
+        /// or
+        /// Cannot reuse this IAsyncResult
+        /// </exception>
         public HttpListenerContext EndGetContext(IAsyncResult asyncResult)
         {
             if (_disposed) return null;
@@ -353,6 +439,11 @@ namespace System.Net
             return AuthenticationSchemeSelectorDelegate?.Invoke(context.Request) ?? _authSchemes;
         }
 
+        /// <summary>
+        /// Gets the HTTP Listener's conext
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Please, call AddPrefix before using this method.</exception>
         public HttpListenerContext GetContext()
         {
             // The prefixes are not checked when using the async interface!?
@@ -364,6 +455,9 @@ namespace System.Net
             return EndGetContext(ares);
         }
 
+        /// <summary>
+        /// Starts this listener.
+        /// </summary>
         public void Start()
         {
             CheckDisposed();
@@ -374,6 +468,9 @@ namespace System.Net
             IsListening = true;
         }
 
+        /// <summary>
+        /// Stops this listener.
+        /// </summary>
         public void Stop()
         {
             CheckDisposed();
@@ -390,6 +487,10 @@ namespace System.Net
             _disposed = true;
         }
 
+        /// <summary>
+        /// Gets the HTTP context asynchronously.
+        /// </summary>
+        /// <returns></returns>
         public Task<HttpListenerContext> GetContextAsync()
         {
             return Task<HttpListenerContext>.Factory.FromAsync(BeginGetContext, EndGetContext, null);

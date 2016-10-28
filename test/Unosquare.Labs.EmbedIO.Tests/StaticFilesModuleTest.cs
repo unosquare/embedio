@@ -328,7 +328,7 @@
             using (var server = new WebServer(endpoint, Logger))
             {
                 server.RegisterModule(new StaticFilesModule(root));
-                server.RunAsync();
+                await server.RunAsync();
 
                 var webClient = new HttpClient();
                 var remoteFile = await webClient.GetStringAsync(endpoint);

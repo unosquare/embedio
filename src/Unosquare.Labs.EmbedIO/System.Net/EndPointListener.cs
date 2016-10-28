@@ -46,8 +46,8 @@ namespace System.Net
         private Hashtable _prefixes; // Dictionary <ListenerPrefix, HttpListener>
         private ArrayList _unhandled; // List<ListenerPrefix> unhandled; host = '*'
         private ArrayList _all; // List<ListenerPrefix> all;  host = '+'
-        private X509Certificate _cert;
-        private bool _secure;
+        private X509Certificate _cert = null;
+        private bool _secure = false;
 
         private readonly Dictionary<HttpConnection, HttpConnection> _unregistered;
 

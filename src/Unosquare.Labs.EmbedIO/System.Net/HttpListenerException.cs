@@ -10,6 +10,10 @@ using System.Runtime.InteropServices;
 
 namespace System.Net
 {
+    /// <summary>
+    /// Represents an HTTP Listener's exception
+    /// </summary>
+    /// <seealso cref="System.ComponentModel.Win32Exception" />
     public class HttpListenerException : Win32Exception
     {
         /// <summary>

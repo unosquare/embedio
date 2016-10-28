@@ -32,6 +32,9 @@ using System.Collections.Generic;
 
 namespace System.Net
 {
+    /// <summary>
+    /// Represents a collection of HTTP listener profixes
+    /// </summary>
     public class HttpListenerPrefixCollection : ICollection<string>
     {
         readonly List<string> _prefixes = new List<string>();
@@ -43,12 +46,28 @@ namespace System.Net
             _listener = listener;
         }
 
+        /// <summary>
+        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
+        /// </summary>
         public int Count => _prefixes.Count;
 
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
+        /// </summary>
         public bool IsReadOnly => false;
 
+        /// <summary>
+        /// Gets a value indicating whether this instance is synchronized.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is synchronized; otherwise, <c>false</c>.
+        /// </value>
         public bool IsSynchronized => false;
 
+        /// <summary>
+        /// Adds the specified URI prefix.
+        /// </summary>
+        /// <param name="uriPrefix">The URI prefix.</param>
         public void Add(string uriPrefix)
         {
             _listener.CheckDisposed();
@@ -61,6 +80,9 @@ namespace System.Net
                 EndPointManager.AddPrefix(uriPrefix, _listener);
         }
 
+        /// <summary>
+        /// Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1" />.
+        /// </summary>
         public void Clear()
         {
             _listener.CheckDisposed();
@@ -69,24 +91,47 @@ namespace System.Net
                 EndPointManager.RemoveListener(_listener);
         }
 
+        /// <summary>
+        /// Determines whether [contains] [the specified URI prefix].
+        /// </summary>
+        /// <param name="uriPrefix">The URI prefix.</param>
+        /// <returns>
+        ///   <c>true</c> if [contains] [the specified URI prefix]; otherwise, <c>false</c>.
+        /// </returns>
         public bool Contains(string uriPrefix)
         {
             _listener.CheckDisposed();
             return _prefixes.Contains(uriPrefix);
         }
 
+        /// <summary>
+        /// Copies the prefixes to the specified string array
+        /// </summary>
+        /// <param name="array">The array.</param>
+        /// <param name="offset">The offset.</param>
         public void CopyTo(string[] array, int offset)
         {
             _listener.CheckDisposed();
             _prefixes.CopyTo(array, offset);
         }
 
+        /// <summary>
+        /// Copies the prefixes to the specified string
+        /// </summary>
+        /// <param name="array">The array.</param>
+        /// <param name="offset">The offset.</param>
         public void CopyTo(Array array, int offset)
         {
             _listener.CheckDisposed();
             ((ICollection)_prefixes).CopyTo(array, offset);
         }
-        
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// An enumerator that can be used to iterate through the collection.
+        /// </returns>
         public IEnumerator<string> GetEnumerator()
         {
             return _prefixes.GetEnumerator();
@@ -97,6 +142,12 @@ namespace System.Net
             return _prefixes.GetEnumerator();
         }
 
+        /// <summary>
+        /// Removes the specified URI prefix.
+        /// </summary>
+        /// <param name="uriPrefix">The URI prefix.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">uriPrefix</exception>
         public bool Remove(string uriPrefix)
         {
             _listener.CheckDisposed();

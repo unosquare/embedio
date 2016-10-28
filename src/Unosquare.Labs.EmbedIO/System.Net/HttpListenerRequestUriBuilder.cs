@@ -13,7 +13,7 @@ namespace System.Net
     // Utf-8 characters.
     internal sealed class HttpListenerRequestUriBuilder
     {
-        private static readonly bool UseCookedRequestUrl;
+        private static readonly bool UseCookedRequestUrl = false;
         private static readonly Encoding Utf8Encoding;
         private static readonly Encoding AnsiEncoding;
 
@@ -295,7 +295,7 @@ namespace System.Net
                 //LogWarning("AppendUnicodeCodePointValuePercentEncoded", SR.net_log_listener_cant_convert_percent_value,
                 //    codePoint);
             }
-            catch (EncoderFallbackException e)
+            catch (EncoderFallbackException)
             {
                 // If utf8Encoding.GetBytes() fails
                 //LogWarning("AppendUnicodeCodePointValuePercentEncoded", SR.net_log_listener_cant_convert_to_utf8,
@@ -340,12 +340,12 @@ namespace System.Net
 
                 return true;
             }
-            catch (DecoderFallbackException e)
+            catch (DecoderFallbackException)
             {
                 //LogWarning("EmptyDecodeAndAppendRawOctetsList", SR.net_log_listener_cant_convert_bytes,
                 //    GetOctetsAsString(rawOctets), e.Message);
             }
-            catch (EncoderFallbackException e)
+            catch (EncoderFallbackException)
             {
                 // If utf8Encoding.GetBytes() fails
                 //LogWarning("EmptyDecodeAndAppendRawOctetsList", SR.net_log_listener_cant_convert_to_utf8,

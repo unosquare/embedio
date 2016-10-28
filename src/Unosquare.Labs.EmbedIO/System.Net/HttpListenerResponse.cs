@@ -33,6 +33,10 @@ using System.Text;
 
 namespace System.Net
 {
+    /// <summary>
+    /// Represents an HTTP Listener's response
+    /// </summary>
+    /// <seealso cref="System.IDisposable" />
     public sealed class HttpListenerResponse : IDisposable
     {
         bool _disposed;
@@ -83,6 +87,15 @@ namespace System.Net
             }
         }
 
+        /// <summary>
+        /// Gets or sets the content length.
+        /// </summary>
+        /// <value>
+        /// The content length64.
+        /// </value>
+        /// <exception cref="System.ObjectDisposedException"></exception>
+        /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">Must be >= 0 - value</exception>
         public long ContentLength64
         {
             get { return _contentLength; }
@@ -102,6 +115,14 @@ namespace System.Net
             }
         }
 
+        /// <summary>
+        /// Gets or sets the MIME type of the content.
+        /// </summary>
+        /// <value>
+        /// The type of the content.
+        /// </value>
+        /// <exception cref="System.ObjectDisposedException"></exception>
+        /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public string ContentType
         {
             get { return _contentType; }
@@ -119,6 +140,12 @@ namespace System.Net
         }
 
         // RFC 2109, 2965 + the netscape specification at http://wp.netscape.com/newsref/std/cookie_spec.html
+        /// <summary>
+        /// Gets or sets the cookies collection.
+        /// </summary>
+        /// <value>
+        /// The cookies.
+        /// </value>
         public CookieCollection Cookies
         {
             get
@@ -130,8 +157,22 @@ namespace System.Net
             set { _cookies = value; } // null allowed?
         }
 
+        /// <summary>
+        /// Gets or sets the headers.
+        /// </summary>
+        /// <value>
+        /// The headers.
+        /// </value>
         public WebHeaderCollection Headers { get; set; } = new WebHeaderCollection();
 
+        /// <summary>
+        /// Gets or sets the Keep-Alive value.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [keep alive]; otherwise, <c>false</c>.
+        /// </value>
+        /// <exception cref="System.ObjectDisposedException"></exception>
+        /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public bool KeepAlive
         {
             get { return _keepAlive; }
@@ -147,8 +188,25 @@ namespace System.Net
             }
         }
 
+        /// <summary>
+        /// Gets the output stream.
+        /// </summary>
+        /// <value>
+        /// The output stream.
+        /// </value>
         public ResponseStream OutputStream => _outputStream ?? (_outputStream = _context.Connection.GetResponseStream());
 
+        /// <summary>
+        /// Gets or sets the protocol version.
+        /// </summary>
+        /// <value>
+        /// The protocol version.
+        /// </value>
+        /// <exception cref="System.ObjectDisposedException">
+        /// </exception>
+        /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
+        /// <exception cref="System.ArgumentNullException">value</exception>
+        /// <exception cref="System.ArgumentException">Must be 1.0 or 1.1 - value</exception>
         public Version ProtocolVersion
         {
             get { return _version; }
@@ -173,6 +231,14 @@ namespace System.Net
             }
         }
 
+        /// <summary>
+        /// Gets or sets the redirect location.
+        /// </summary>
+        /// <value>
+        /// The redirect location.
+        /// </value>
+        /// <exception cref="System.ObjectDisposedException"></exception>
+        /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public string RedirectLocation
         {
             get { return _location; }
