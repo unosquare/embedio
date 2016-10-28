@@ -324,7 +324,7 @@
             if (string.IsNullOrWhiteSpace(requestBody)) return null;
 
             return requestBody.Split('&')
-                .ToDictionary(c => c.Split('=')[0],
+                .ToDictionary(c => WebUtility.UrlDecode(c.Split('=')[0]),
                     c => WebUtility.UrlDecode(c.Split('=')[1]));
         }
 
