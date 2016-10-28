@@ -10,6 +10,7 @@
     public class TestController : WebApiController
     {
         public const string RelativePath = "api/";
+        public const string EchoPath = RelativePath + "echo/";
         public const string GetPath = RelativePath + "people/";
         public const string GetAsyncPath = RelativePath + "asyncPeople/";
         public const string GetMiddlePath = RelativePath + "person/*/select";
@@ -84,7 +85,22 @@
             }
         }
 
+        [WebApiHandler(HttpVerbs.Post, "/" + EchoPath + "*")]
+        public bool PostEcho(WebServer server, HttpListenerContext context)
+        {
+            try
+            {
+                var content = context.RequestFormDataDictionary();
 
+                return context.JsonResponse(content);
+            }
+            catch (Exception ex)
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return context.JsonResponse(ex);
+            }
+        }
+        
         [WebApiHandler(HttpVerbs.Get, "/" + GetAsyncPath + "*")]
         public async Task<bool> GetPeopleAsync(WebServer server, HttpListenerContext context)
         {

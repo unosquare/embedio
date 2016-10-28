@@ -400,7 +400,9 @@
                     continue;
 
                 // Decode the key and the value. Discard Special Characters
-                var key = WebUtility.UrlDecode(kvpsParts[0]).Replace("[", "").Replace("]", "");
+                var key = WebUtility.UrlDecode(kvpsParts[0]);
+                if (key.IndexOf("[") > 0) key = key.Substring(0, key.IndexOf("["));
+
                 var value = kvpsParts.Length >= 2 ? WebUtility.UrlDecode(kvpsParts[1]) : null;
 
                 // If the result already contains the key, then turn the value of that key into a List of strings

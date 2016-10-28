@@ -1,14 +1,12 @@
-﻿using System.Threading.Tasks;
-
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
-    using Unosquare.Labs.EmbedIO.Tests.TestObjects;
     using NUnit.Framework;
     using System;
     using System.Net;
     using System.Threading;
+    using System.Threading.Tasks;
     using Unosquare.Labs.EmbedIO.Modules;
-    
+    using Unosquare.Labs.EmbedIO.Tests.TestObjects;
 
     [TestFixture]
     public class LocalSessionModuleTest
@@ -56,7 +54,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
                 Assert.IsNotEmpty(content, "Cookie content is not null");
             }
         }
-
+        
         [TearDown]
         public void Kill()
         {

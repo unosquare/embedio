@@ -12,6 +12,7 @@
     using System.Threading;
     using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Labs.EmbedIO.Tests.TestObjects;
+    using System.Net.Http;
 
     [TestFixture]
     public class WebApiModuleTest
@@ -35,15 +36,15 @@
 
             Assert.AreEqual(WebServer.Module<WebApiModule>().ControllersCount, 1, "WebApiModule has one controller");
         }
-        
+
         [Test]
         public async Task GetJsonData()
         {
             List<Person> remoteList;
 
-            var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + TestController.GetPath);
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestController.GetPath);
 
-            using (var response = (HttpWebResponse) await request.GetResponseAsync())
+            using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
@@ -78,8 +79,8 @@
         [Test]
         public async Task PostJsonData()
         {
-            var model = new Person() {Key = 10, Name = "Test"};
-            var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + TestController.GetPath);
+            var model = new Person() { Key = 10, Name = "Test" };
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestController.GetPath);
             request.Method = "POST";
 
             using (var dataStream = await request.GetRequestStreamAsync())
@@ -88,7 +89,7 @@
                 dataStream.Write(byteArray, 0, byteArray.Length);
             }
 
-            using (var response = (HttpWebResponse) await request.GetResponseAsync())
+            using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
@@ -109,15 +110,70 @@
 
             WebServer.Module<WebApiModule>().RegisterController(() => new TestControllerWithConstructor(name));
 
-            var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + "name");
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + "name");
 
-            using (var response = (HttpWebResponse) await request.GetResponseAsync())
+            using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
                 var body = new StreamReader(response.GetResponseStream()).ReadToEnd();
 
                 Assert.AreEqual(body, name);
+            }
+        }
+
+        [Test]
+        public async Task TestDictionaryFormData()
+        {
+            using (var webClient = new HttpClient())
+            {
+                var content = new[]
+                {
+                    new KeyValuePair<string, string>("test", "data"),
+                    new KeyValuePair<string, string>("id", "1")
+                };
+
+                var formContent = new FormUrlEncodedContent(content);
+
+                var result = await webClient.PostAsync(WebServerUrl + TestController.EchoPath, formContent);
+                Assert.IsNotNull(result);
+                var data = await result.Content.ReadAsStringAsync();
+                var obj = JsonConvert.DeserializeObject<Dictionary<string, string>>(data);
+                Assert.AreEqual(2, obj.Keys.Count);
+
+                Assert.AreEqual(content.First().Key, obj.First().Key);
+                Assert.AreEqual(content.First().Value, obj.First().Value);
+            }
+        }
+
+        internal class FormDataSample
+        {
+            public string test { get; set; }
+            public List<string> id { get; set; }
+        }
+
+        [TestCase("id", "id")]
+        [TestCase("id[0]", "id[1]")]
+        public async Task TestMultipleIndexedValuesFormData(string label1, string label2)
+        {
+            using (var webClient = new HttpClient())
+            {
+                var content = new[] {
+                    new KeyValuePair<string, string>("test", "data"),
+                    new KeyValuePair<string, string>(label1, "1"),
+                    new KeyValuePair<string, string>(label2, "2")
+                };
+
+                var formContent = new FormUrlEncodedContent(content);
+
+                var result = await webClient.PostAsync(WebServerUrl + TestController.EchoPath, formContent);
+                Assert.IsNotNull(result);
+                var data = await result.Content.ReadAsStringAsync();
+                var obj = JsonConvert.DeserializeObject<FormDataSample>(data);
+                Assert.IsNotNull(obj);
+                Assert.AreEqual(content.First().Value, obj.test);
+                Assert.AreEqual(2, obj.id.Count);
+                Assert.AreEqual(content.Last().Value, obj.id.Last());
             }
         }
 
