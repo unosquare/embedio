@@ -155,3 +155,4 @@ packages/*
 !packages/repositories.config
 project.lock.json
 TestResult.xml
+/.vs/restore.dg
