@@ -9,6 +9,7 @@
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
+    using System.Dynamic;
 
 #if NET452
     using System.Net.WebSockets;
@@ -283,12 +284,15 @@
             return context.Request.Headers[headerName] != null;
         }
 
+        #region Data Parsing Methods
+
         /// <summary>
         /// Returns dictionary from Request POST data
         /// Please note the underlying input stream is not rewindable.
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
+        [Obsolete("Use RequestFormDataDictionary methods instead")]
         public static Dictionary<string, string> RequestFormData(this HttpListenerContext context)
         {
             var request = context.Request;
@@ -299,19 +303,66 @@
                 using (var reader = new StreamReader(body, request.ContentEncoding))
                 {
                     var stringData = reader.ReadToEnd();
-                    return ParseFormData(stringData);
+                    return RequestFormData(stringData);
                 }
             }
         }
 
         /// <summary>
-        /// Returns dictionary from Request POST data
+        /// Returns a dictionary of KVPs from Request data
         /// </summary>
         /// <param name="requestBody">The request body.</param>
         /// <returns></returns>
+        [Obsolete("Use RequestFormDataDictionary methods instead")]
         public static Dictionary<string, string> RequestFormData(this string requestBody)
         {
-            return ParseFormData(requestBody);
+            var dictionary = ParseFormDataAsDictionary(requestBody);
+            var result = new Dictionary<string, string>();
+            foreach (var kvp in dictionary)
+            {
+                var listValue = kvp.Value as List<string>;
+                if (listValue == null)
+                {
+                    result[kvp.Key] = kvp.Value as string;
+                }
+                else
+                {
+                    result[kvp.Key] = string.Join("\r\n", listValue.ToArray());
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a dictionary of KVPs from Request data
+        /// </summary>
+        /// <param name="requestBody">The request body.</param>
+        /// <returns></returns>
+        public static Dictionary<string, object> RequestFormDataDictionary(this string requestBody)
+        {
+            return ParseFormDataAsDictionary(requestBody);
+        }
+
+        /// <summary>
+        /// Returns dictionary from Request POST data
+        /// Please note the underlying input stream is not rewindable.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static Dictionary<string, object> RequestFormDataDictionary(this HttpListenerContext context)
+        {
+            var request = context.Request;
+            if (request.HasEntityBody == false) return null;
+
+            using (var body = request.InputStream)
+            {
+                using (var reader = new StreamReader(body, request.ContentEncoding))
+                {
+                    var stringData = reader.ReadToEnd();
+                    return RequestFormDataDictionary(stringData);
+                }
+            }
         }
 
         /// <summary>
@@ -319,14 +370,68 @@
         /// </summary>
         /// <param name="requestBody">The request body.</param>
         /// <returns></returns>
-        private static Dictionary<string, string> ParseFormData(string requestBody)
+        private static Dictionary<string, object> ParseFormDataAsDictionary(string requestBody)
         {
+            // verify there is data to parse
             if (string.IsNullOrWhiteSpace(requestBody)) return null;
 
-            return requestBody.Split('&')
-                .ToDictionary(c => WebUtility.UrlDecode(c.Split('=')[0]),
-                    c => WebUtility.UrlDecode(c.Split('=')[1]));
+            // define a character for KV pairs
+            var kvpSeparator = new char[] { '=' };
+
+            // Create the result object
+            var resultDictionary = new Dictionary<string, object>();
+
+            // Split the request body into key-value pair strings
+            var keyValuePairStrings = requestBody.Split('&');
+
+            foreach (var kvps in keyValuePairStrings)
+            {
+                // Skip KVP strings if they are empty
+                if (string.IsNullOrWhiteSpace(kvps))
+                    continue;
+
+                // Split by the equals char into key values.
+                // Some KVPS will have only their key, some will have both key and value
+                // Some other might be repeated which really means an array
+                var kvpsParts = kvps.Split(kvpSeparator, 2);
+
+                // We don't want empty KVPs
+                if (kvpsParts.Length == 0)
+                    continue;
+
+                // Decode the key and the value. Discard Special Characters
+                var key = WebUtility.UrlDecode(kvpsParts[0]).Replace("[", "").Replace("]", "");
+                var value = kvpsParts.Length >= 2 ? WebUtility.UrlDecode(kvpsParts[1]) : null;
+
+                // If the result already contains the key, then turn the value of that key into a List of strings
+                if (resultDictionary.ContainsKey(key))
+                {
+                    // Check if this key has a List value already
+                    var listValue = resultDictionary[key] as List<string>;
+                    if (listValue == null)
+                    {
+                        // if we don't have a list value for this key, then create one and add the existing item
+                        var existingValue = resultDictionary[key] as string;
+                        resultDictionary[key] = new List<string>();
+                        listValue = resultDictionary[key] as List<string>;
+                        listValue.Add(existingValue);
+                    }
+
+                    // By this time, we are sure listValue exists. Simply add the item
+                    listValue.Add(value);
+                }
+                else
+                {
+                    // Simply set the key to the parsed value
+                    resultDictionary[key] = value;
+                }
+
+            }
+
+            return resultDictionary;
         }
+
+        #endregion
 
         /// <summary>
         /// Compresses the specified buffer using the G-Zip compression algorithm.
