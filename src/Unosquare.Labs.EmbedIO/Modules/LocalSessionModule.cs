@@ -28,7 +28,7 @@
         /// <summary>
         /// Creates a session ID, registers the session info in the Sessions collection, and returns the appropriate session cookie.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The sessions.</returns>
         private Cookie CreateSession()
         {
             var sessionId = Convert.ToBase64String(
@@ -42,6 +42,25 @@
                 LastActivity = DateTime.Now
             };
             return sessionCookie;
+        }
+
+        /// <summary>
+        /// Delete the session object for the given context
+        /// </summary>
+        public void DeleteSession(HttpListenerContext context)
+        {
+            DeleteSession(GetSession(context));
+        }
+
+        /// <summary>
+        /// Delete a session for the given session info
+        /// </summary>
+        /// <param name="session">The session info.</param>
+        public void DeleteSession(SessionInfo session)
+        {
+            if (session == null) return;
+            var sessionInfo = new SessionInfo();
+            Sessions.TryRemove(session.SessionId, out sessionInfo);
         }
 
         /// <summary>

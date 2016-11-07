@@ -28,6 +28,17 @@
         /// <returns></returns>
         SessionInfo GetSession(HttpListenerContext context);
 
+        /// <summary>
+        /// Delete the session object for the given context
+        /// </summary>
+        void DeleteSession(HttpListenerContext context);
+
+        /// <summary>
+        /// Delete a session for the given session info
+        /// </summary>
+        /// <param name="session">The session info.</param>
+        void DeleteSession(SessionInfo session);
+
 #if NET452
         /// <summary>
         /// Gets the session.
