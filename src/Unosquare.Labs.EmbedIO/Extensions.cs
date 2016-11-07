@@ -80,25 +80,25 @@
         }
 #endif
 
-    /// <summary>
-    /// Gets the session object associated to the current context.
-    /// Returns null if the LocalSessionWebModule has not been loaded.
-    /// </summary>
-    /// <param name="server">The server.</param>
-    /// <param name="context">The context.</param>
-    /// <returns></returns>
-    public static SessionInfo GetSession(this WebServer server, HttpListenerContext context)
+        /// <summary>
+        /// Gets the session object associated to the current context.
+        /// Returns null if the LocalSessionWebModule has not been loaded.
+        /// </summary>
+        /// <param name="server">The server.</param>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        public static SessionInfo GetSession(this WebServer server, HttpListenerContext context)
         {
             return server.SessionModule?.GetSession(context);
         }
 
 #if NET452
-    /// <summary>
-    /// Gets the session.
-    /// </summary>
-    /// <param name="server">The server.</param>
-    /// <param name="context">The context.</param>
-    /// <returns></returns>
+        /// <summary>
+        /// Gets the session.
+        /// </summary>
+        /// <param name="server">The server.</param>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
         public static SessionInfo GetSession(this WebServer server, WebSocketContext context)
         {
             return server.SessionModule?.GetSession(context);
