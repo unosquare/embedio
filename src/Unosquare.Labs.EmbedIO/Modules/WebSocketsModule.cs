@@ -31,7 +31,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
             this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
             {
                 // check if it is a WebSocket request (this only works with Win8 and Windows 2012)
-                if (context.Request.IsWebSocketRequest == false)
+                if (context.Request.IsWebSocketRequest() == false)
                     return false;
 
                 // retrieve the request path

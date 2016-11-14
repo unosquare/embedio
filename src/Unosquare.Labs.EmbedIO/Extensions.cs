@@ -33,6 +33,22 @@
             return server.SessionModule?.GetSession(context);
         }
 
+        /// <summary>
+        /// Determines whether [is web socket request] by identifying the Upgrade: websocket header.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>
+        ///   <c>true</c> if [is web socket request] [the specified request]; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsWebSocketRequest(this HttpListenerRequest request)
+        {
+            var upgradeKey = request.Headers.AllKeys.FirstOrDefault(k => k.ToLowerInvariant().Equals("upgrade"));
+            if (request.Headers[upgradeKey].Equals("websocket"))
+                return true;
+
+            return false;
+        }
+
 #if NET452
     /// <summary>
     /// Gets the session object associated to the current context.
