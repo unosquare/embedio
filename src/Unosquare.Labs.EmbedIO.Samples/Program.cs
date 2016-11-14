@@ -84,6 +84,7 @@
 
                 // Fire up the browser to show the content!
 #if DEBUG
+#if NET46
                 var browser = new System.Diagnostics.Process()
                 {
                     StartInfo = new System.Diagnostics.ProcessStartInfo(url)
@@ -92,6 +93,7 @@
                     }
                 };
                 browser.Start();
+#endif
 #endif
                 // Wait for any key to be pressed before disposing of our web server.
                 // In a service we'd manage the lifecycle of of our web server using

@@ -1,13 +1,70 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Log
 {
     using System;
-    using System.Threading;
+    using System.Collections.Concurrent;
+    using System.Diagnostics;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Provides a simple logger with colored console output.
     /// </summary>
     public class SimpleConsoleLog : ILog
     {
+
+        private static readonly ConcurrentQueue<OutputContext> OutputQueue = new ConcurrentQueue<OutputContext>();
+        private static readonly Task OutputTask;
+
+        /// <summary>
+        /// Globally enables or disables Debug messages on the output of the console.
+        /// By default, debug messages are disabled.
+        /// </summary>
+        public static bool IsDebugEnabled { get; set; } = Debugger.IsAttached;
+
+        /// <summary>
+        /// asynchronous output context
+        /// </summary>
+        private class OutputContext
+        {
+            public ConsoleColor OriginalColor { get; set; }
+            public ConsoleColor OutputColor { get; set; }
+            public string OutputText { get; set; }
+        }
+
+        /// <summary>
+        /// Initializes the <see cref="SimpleConsoleLog"/> class.
+        /// </summary>
+        static SimpleConsoleLog()
+        {
+            OutputTask = Task.Factory.StartNew(async () =>
+            {
+                while (true)
+                {
+                    if (OutputQueue.Count <= 0)
+                        await Task.Delay(10);
+
+                    while (OutputQueue.Count > 0)
+                    {
+                        OutputContext context = null;
+                        if (OutputQueue.TryDequeue(out context) == false)
+                            continue;
+
+                        Console.ForegroundColor = context.OutputColor;
+                        Console.WriteLine(context.OutputText);
+                        Console.ResetColor();
+                        Console.ForegroundColor = context.OriginalColor;
+                    }
+                }
+            });
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SimpleConsoleLog"/> class.
+        /// </summary>
+        public SimpleConsoleLog()
+        {
+            // placeholder
+        }
+
         /// <summary>
         /// Writes the given line. This method is used by all other methods and it is asynchronous.
         /// </summary>
@@ -22,14 +79,11 @@
                 d.Minute.ToString("00"), d.Second.ToString("00"), d.Millisecond.ToString("000"));
 
             format = dateTimeString + "\t" + format;
+            if (args == null) args = new object[] { };
+            format = string.Format(format, args);
 
-            ThreadPool.QueueUserWorkItem(context =>
-            {
-                var current = Console.ForegroundColor;
-                Console.ForegroundColor = color;
-                Console.WriteLine(format, args);
-                Console.ForegroundColor = current;
-            });
+            var context = new OutputContext() { OriginalColor = Console.ForegroundColor, OutputColor = color, OutputText = format };
+            OutputQueue.Enqueue(context);
         }
 
         /// <summary>
@@ -98,7 +152,8 @@
         /// <param name="args"></param>
         public virtual void DebugFormat(string format, params object[] args)
         {
-            WriteLine(ConsoleColor.Green, format, args);
+            if (IsDebugEnabled)
+                WriteLine(ConsoleColor.Green, format, args);
         }
     }
 }

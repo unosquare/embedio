@@ -85,7 +85,7 @@ namespace System.Net
     }
 
     /// <summary>
-    /// Extension MEthods for System.Net
+    /// Extension Methods for System.Net
     /// </summary>
     public static class Extensions
     {
@@ -113,7 +113,7 @@ namespace System.Net
                 {
                     var data = stream.Read(buffer, offset, count);
                     result.Complete(data);
-                    callback(result);
+                    callback?.Invoke(result);
                 }
                 catch (IOException)
                 {

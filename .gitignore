@@ -156,3 +156,5 @@ packages/*
 project.lock.json
 TestResult.xml
 /.vs/restore.dg
+/src/Unosquare.Labs.EmbedIO.Samples/mydbfile.db
+/.vs/config

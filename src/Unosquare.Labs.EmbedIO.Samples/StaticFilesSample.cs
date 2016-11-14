@@ -20,10 +20,14 @@
             get
             {
                 var assemblyPath = Path.GetDirectoryName(typeof (Program).GetTypeInfo().Assembly.Location);
-                
+
 #if DEBUG
+#if NET46
                 // This lets you edit the files without restarting the server.
+                return Path.Combine(Directory.GetParent(assemblyPath).Parent.Parent.Parent.FullName, "html");
+#else
                 return Path.Combine(Directory.GetParent(assemblyPath).Parent.Parent.FullName, "html");
+#endif
 #else
                 // This is when you have deployed the server.
                 return Path.Combine(assemblyPath, "html");
