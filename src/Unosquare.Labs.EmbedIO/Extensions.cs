@@ -21,6 +21,26 @@
     /// </summary>
     public static partial class Extensions
     {
+
+        /// <summary>
+        /// Determines whether [is web socket request] by identifying the Upgrade: websocket header.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>
+        ///   <c>true</c> if [is web socket request] [the specified request]; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsWebSocketRequest(this HttpListenerRequest request)
+        {
+            return request.IsWebSocketRequest;
+            /* // TODO: https://github.com/sta/websocket-sharp/blob/master/websocket-sharp/HttpRequest.cs#L99
+            var upgradeKey = request.Headers.AllKeys.FirstOrDefault(k => k.ToLowerInvariant().Equals("upgrade"));
+            if (request.Headers[upgradeKey].Equals("websocket"))
+                return true;
+
+            return false;
+            */
+        }
+
         /// <summary>
         /// Gets the session object associated to the current context.
         /// Returns null if the LocalSessionWebModule has not been loaded.
@@ -64,22 +84,6 @@
         public static void DeleteSession(this WebServer server, SessionInfo session)
         {
             server.SessionModule?.DeleteSession(session);
-        }
-
-        /// <summary>
-        /// Determines whether [is web socket request] by identifying the Upgrade: websocket header.
-        /// </summary>
-        /// <param name="request">The request.</param>
-        /// <returns>
-        ///   <c>true</c> if [is web socket request] [the specified request]; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool IsWebSocketRequest(this HttpListenerRequest request)
-        {
-            var upgradeKey = request.Headers.AllKeys.FirstOrDefault(k => k.ToLowerInvariant().Equals("upgrade"));
-            if (request.Headers[upgradeKey].Equals("websocket"))
-                return true;
-
-            return false;
         }
 
 #if NET452
