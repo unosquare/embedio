@@ -197,7 +197,7 @@
 
         /// <summary>
         /// Gets or sets the cookie path.
-        /// Inf left empty, a cookie will be created for each path. The default value is "/"
+        /// If left empty, a cookie will be created for each path. The default value is "/"
         /// If a route is specified, then session cookies will be created only for the given path.
         /// Examples of this are:
         ///     "/"
