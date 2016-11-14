@@ -34,6 +34,39 @@
         }
 
         /// <summary>
+        /// Deletes the session object associated to the current context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="server">The server.</param>
+        /// <returns></returns>
+        public static void DeleteSession(this HttpListenerContext context, WebServer server)
+        {
+            server.SessionModule?.DeleteSession(context);
+        }
+
+        /// <summary>
+        /// Deletes the session object associated to the current context.
+        /// </summary>
+        /// <param name="server">The server.</param>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        public static void DeleteSession(this WebServer server, HttpListenerContext context)
+        {
+            server.SessionModule?.DeleteSession(context);
+        }
+
+        /// <summary>
+        /// Deletes the given session object.
+        /// </summary>
+        /// <param name="server">The server.</param>
+        /// <param name="session">The session info.</param>
+        /// <returns></returns>
+        public static void DeleteSession(this WebServer server, SessionInfo session)
+        {
+            server.SessionModule?.DeleteSession(session);
+        }
+
+        /// <summary>
         /// Determines whether [is web socket request] by identifying the Upgrade: websocket header.
         /// </summary>
         /// <param name="request">The request.</param>
@@ -50,13 +83,13 @@
         }
 
 #if NET452
-    /// <summary>
-    /// Gets the session object associated to the current context.
-    /// Returns null if the LocalSessionWebModule has not been loaded.
-    /// </summary>
-    /// <param name="context">The context.</param>
-    /// <param name="server">The server.</param>
-    /// <returns></returns>
+        /// <summary>
+        /// Gets the session object associated to the current context.
+        /// Returns null if the LocalSessionWebModule has not been loaded.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="server">The server.</param>
+        /// <returns></returns>
         public static SessionInfo GetSession(this WebSocketContext context, WebServer server)
         {
             return server.SessionModule?.GetSession(context);
@@ -76,17 +109,19 @@
         }
 
 #if NET452
-    /// <summary>
-    /// Gets the session.
-    /// </summary>
-    /// <param name="server">The server.</param>
-    /// <param name="context">The context.</param>
-    /// <returns></returns>
+        /// <summary>
+        /// Gets the session.
+        /// </summary>
+        /// <param name="server">The server.</param>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
         public static SessionInfo GetSession(this WebServer server, WebSocketContext context)
         {
             return server.SessionModule?.GetSession(context);
         }
 #endif
+
+
 
         /// <summary>
         /// Gets the request path for the specified context.
@@ -416,7 +451,9 @@
                     continue;
 
                 // Decode the key and the value. Discard Special Characters
-                var key = WebUtility.UrlDecode(kvpsParts[0]).Replace("[", "").Replace("]", "");
+                var key = WebUtility.UrlDecode(kvpsParts[0]);
+                if (key.IndexOf("[") > 0) key = key.Substring(0, key.IndexOf("["));
+
                 var value = kvpsParts.Length >= 2 ? WebUtility.UrlDecode(kvpsParts[1]) : null;
 
                 // If the result already contains the key, then turn the value of that key into a List of strings

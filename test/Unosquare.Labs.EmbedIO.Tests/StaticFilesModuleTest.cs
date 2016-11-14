@@ -333,6 +333,7 @@
                 var webClient = new HttpClient();
                 var remoteFile = await webClient.GetStringAsync(endpoint);
                 File.WriteAllText(file, Resources.SubIndex);
+                await Task.Delay(100);
                 var remoteUpdatedFile = await webClient.GetStringAsync(endpoint);
                 File.WriteAllText(file, nameof(WebServer));
 
