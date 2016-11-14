@@ -34,13 +34,17 @@
             var sessionId = Convert.ToBase64String(
                 System.Text.Encoding.UTF8.GetBytes(
                     Guid.NewGuid().ToString() + DateTime.Now.Millisecond.ToString() + DateTime.Now.Ticks.ToString()));
-            var sessionCookie = new Cookie(SessionCookieName, sessionId);
+            var sessionCookie = string.IsNullOrWhiteSpace(CookiePath) ? 
+                new Cookie(SessionCookieName, sessionId) : 
+                new Cookie(SessionCookieName, sessionId, CookiePath);
+
             Sessions[sessionId] = new SessionInfo()
             {
                 SessionId = sessionId,
                 DateCreated = DateTime.Now,
                 LastActivity = DateTime.Now
             };
+
             return sessionCookie;
         }
 
@@ -190,6 +194,19 @@
         /// The expiration.
         /// </value>
         public TimeSpan Expiration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the cookie path.
+        /// Inf left empty, a cookie will be created for each path. The default value is "/"
+        /// If a route is specified, then session cookies will be created only for the given path.
+        /// Examples of this are:
+        ///     "/"
+        ///     "/app1/"
+        /// </summary>
+        /// <value>
+        /// The cookie path.
+        /// </value>
+        public string CookiePath { get; set; } = "/";
 
         /// <summary>
         /// Gets the name of this module.
