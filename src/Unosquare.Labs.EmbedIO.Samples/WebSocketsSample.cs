@@ -1,4 +1,4 @@
-﻿#if NET46
+﻿#if NET452
 namespace Unosquare.Labs.EmbedIO.Samples
 {
     using System.Collections.Generic;

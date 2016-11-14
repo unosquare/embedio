@@ -22,7 +22,7 @@
                 var assemblyPath = Path.GetDirectoryName(typeof (Program).GetTypeInfo().Assembly.Location);
 
 #if DEBUG
-#if NET46
+#if NET452
                 // This lets you edit the files without restarting the server.
                 return Path.Combine(Directory.GetParent(assemblyPath).Parent.Parent.Parent.FullName, "html");
 #else
