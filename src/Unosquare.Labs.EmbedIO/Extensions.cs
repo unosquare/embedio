@@ -408,6 +408,12 @@
         public static Dictionary<string, object> RequestFormDataDictionary(this HttpListenerContext context)
         {
             var request = context.Request;
+            if (request.ContentType.ToLowerInvariant().StartsWith("multipart/form-data"))
+                throw new NotImplementedException("multipart/form-data Content Type parsing is not yet implemented");
+
+            // TODO: implement multipart/form-data parsing
+            // example available here: http://stackoverflow.com/questions/5483851/manually-parse-raw-http-data-with-php
+
             if (request.HasEntityBody == false) return null;
 
             using (var body = request.InputStream)
