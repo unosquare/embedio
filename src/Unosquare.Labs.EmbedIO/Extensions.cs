@@ -22,24 +22,13 @@
     public static partial class Extensions
     {
 
-        /// <summary>
-        /// Determines whether [is web socket request] by identifying the Upgrade: websocket header.
-        /// </summary>
-        /// <param name="request">The request.</param>
-        /// <returns>
-        ///   <c>true</c> if [is web socket request] [the specified request]; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool IsWebSocketRequest(this HttpListenerRequest request)
-        {
-            return request.IsWebSocketRequest;
-            /* // TODO: https://github.com/sta/websocket-sharp/blob/master/websocket-sharp/HttpRequest.cs#L99
-            var upgradeKey = request.Headers.AllKeys.FirstOrDefault(k => k.ToLowerInvariant().Equals("upgrade"));
-            if (request.Headers[upgradeKey].Equals("websocket"))
-                return true;
+        #region Constants
 
-            return false;
-            */
-        }
+        private const string UrlEncodedContentType = "application/x-www-form-urlencoded";
+
+        #endregion
+
+        #region Session Management Methods
 
         /// <summary>
         /// Gets the session object associated to the current context.
@@ -86,20 +75,6 @@
             server.SessionModule?.DeleteSession(session);
         }
 
-#if NET452
-        /// <summary>
-        /// Gets the session object associated to the current context.
-        /// Returns null if the LocalSessionWebModule has not been loaded.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="server">The server.</param>
-        /// <returns></returns>
-        public static SessionInfo GetSession(this WebSocketContext context, WebServer server)
-        {
-            return server.SessionModule?.GetSession(context);
-        }
-#endif
-
         /// <summary>
         /// Gets the session object associated to the current context.
         /// Returns null if the LocalSessionWebModule has not been loaded.
@@ -114,6 +89,18 @@
 
 #if NET452
         /// <summary>
+        /// Gets the session object associated to the current context.
+        /// Returns null if the LocalSessionWebModule has not been loaded.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="server">The server.</param>
+        /// <returns></returns>
+        public static SessionInfo GetSession(this WebSocketContext context, WebServer server)
+        {
+            return server.SessionModule?.GetSession(context);
+        }
+
+        /// <summary>
         /// Gets the session.
         /// </summary>
         /// <param name="server">The server.</param>
@@ -125,7 +112,28 @@
         }
 #endif
 
+        #endregion
 
+        #region HTTP Request Helpers
+
+        /// <summary>
+        /// Determines whether [is web socket request] by identifying the Upgrade: websocket header.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>
+        ///   <c>true</c> if [is web socket request] [the specified request]; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsWebSocketRequest(this HttpListenerRequest request)
+        {
+            return request.IsWebSocketRequest;
+            /* // TODO: https://github.com/sta/websocket-sharp/blob/master/websocket-sharp/HttpRequest.cs#L99
+            var upgradeKey = request.Headers.AllKeys.FirstOrDefault(k => k.ToLowerInvariant().Equals("upgrade"));
+            if (request.Headers[upgradeKey].Equals("websocket"))
+                return true;
+
+            return false;
+            */
+        }
 
         /// <summary>
         /// Gets the request path for the specified context.
@@ -136,6 +144,124 @@
         {
             return context.Request.Url.LocalPath.ToLowerInvariant();
         }
+
+        /// <summary>
+        /// Retrieves the Request HTTP Verb (also called Method) of this context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        public static HttpVerbs RequestVerb(this HttpListenerContext context)
+        {
+            HttpVerbs verb;
+            Enum.TryParse(context.Request.HttpMethod.ToLowerInvariant().Trim(), true, out verb);
+            return verb;
+        }
+
+        /// <summary>
+        /// Gets the value for the specified query string key.
+        /// If the value does not exist it returns null.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
+        public static string QueryString(this HttpListenerContext context, string key)
+        {
+            return context.InQueryString(key) ? context.Request.QueryString[key] : null;
+        }
+
+        /// <summary>
+        /// Determines if a key exists within the Request's query string
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
+        public static bool InQueryString(this HttpListenerContext context, string key)
+        {
+            return context.Request.QueryString.AllKeys.Contains(key);
+        }
+
+        /// <summary>
+        /// Retrieves the specified request the header.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="headerName">Name of the header.</param>
+        /// <returns></returns>
+        public static string RequestHeader(this HttpListenerContext context, string headerName)
+        {
+            return context.HasRequestHeader(headerName) == false ? string.Empty : context.Request.Headers[headerName];
+        }
+
+        /// <summary>
+        /// Determines whether [has request header] [the specified context].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="headerName">Name of the header.</param>
+        /// <returns></returns>
+        public static bool HasRequestHeader(this HttpListenerContext context, string headerName)
+        {
+            return context.Request.Headers[headerName] != null;
+        }
+
+        /// <summary>
+        /// Retrieves the request body as a string.
+        /// Note that once this method returns, the underlying input stream cannot be read again as 
+        /// it is not rewindable for obvious reasons. This functionality is by design.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        public static string RequestBody(this HttpListenerContext context)
+        {
+            if (context.Request.HasEntityBody == false)
+                return null;
+
+            using (var body = context.Request.InputStream) // here we have data
+            {
+                using (var reader = new StreamReader(body, context.Request.ContentEncoding))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
+        }
+
+        #endregion
+
+        #region HTTP Response Manipulation Methods
+
+        /// <summary>
+        /// Sends headers to disable caching on the client side.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        public static void NoCache(this HttpListenerContext context)
+        {
+            context.Response.AddHeader(Constants.HeaderExpires, "Mon, 26 Jul 1997 05:00:00 GMT");
+            context.Response.AddHeader(Constants.HeaderLastModified,
+                DateTime.UtcNow.ToString(Constants.BrowserTimeFormat, Constants.StandardCultureInfo));
+            context.Response.AddHeader(Constants.HeaderCacheControl, "no-store, no-cache, must-revalidate");
+            context.Response.AddHeader(Constants.HeaderPragma, "no-cache");
+        }
+
+        /// <summary>
+        /// Sets a response statis code of 302 and adds a Location header to the response
+        /// in order to direct the client to a different URL
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="location">The location.</param>
+        /// <param name="useAbsoluteUrl">if set to <c>true</c> [use absolute URL].</param>
+        public static void Redirect(this HttpListenerContext context, string location, bool useAbsoluteUrl)
+        {
+            if (useAbsoluteUrl)
+            {
+                var hostPath = context.Request.Url.GetLeftPart(UriPartial.Authority);
+                location = hostPath + location;
+            }
+
+            context.Response.StatusCode = 302;
+            context.Response.AddHeader("Location", location);
+        }
+
+        #endregion
+
+        #region JSON and Exception Extensions
 
         /// <summary>
         /// Retrieves the exception message, plus all the inner exception messages separated by new lines
@@ -162,81 +288,6 @@
             return fullMessage;
         }
 
-        /// <summary>
-        /// Sends headers to disable caching on the client side.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        public static void NoCache(this HttpListenerContext context)
-        {
-            context.Response.AddHeader(Constants.HeaderExpires, "Mon, 26 Jul 1997 05:00:00 GMT");
-            context.Response.AddHeader(Constants.HeaderLastModified,
-                DateTime.UtcNow.ToString(Constants.BrowserTimeFormat, Constants.StandardCultureInfo));
-            context.Response.AddHeader(Constants.HeaderCacheControl, "no-store, no-cache, must-revalidate");
-            context.Response.AddHeader(Constants.HeaderPragma, "no-cache");
-        }
-
-        /// <summary>
-        /// Gets the value for the specified query string key.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="key">The key.</param>
-        /// <returns></returns>
-        public static string QueryString(this HttpListenerContext context, string key)
-        {
-            return context.InQueryString(key) ? context.Request.QueryString[key] : null;
-        }
-
-        /// <summary>
-        /// Determines if a key exists within the Request's query string
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="key">The key.</param>
-        /// <returns></returns>
-        public static bool InQueryString(this HttpListenerContext context, string key)
-        {
-            return context.Request.QueryString.AllKeys.Contains(key);
-        }
-
-        /// <summary>
-        /// Retrieves the Request Verb of this context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns></returns>
-        public static HttpVerbs RequestVerb(this HttpListenerContext context)
-        {
-            HttpVerbs verb;
-            Enum.TryParse(context.Request.HttpMethod.ToLowerInvariant().Trim(), true, out verb);
-            return verb;
-        }
-
-        /// <summary>
-        /// Redirects the specified context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="location">The location.</param>
-        /// <param name="useAbsoluteUrl">if set to <c>true</c> [use absolute URL].</param>
-        public static void Redirect(this HttpListenerContext context, string location, bool useAbsoluteUrl)
-        {
-            if (useAbsoluteUrl)
-            {
-                var hostPath = context.Request.Url.GetLeftPart(UriPartial.Authority);
-                location = hostPath + location;
-            }
-
-            context.Response.StatusCode = 302;
-            context.Response.AddHeader("Location", location);
-        }
-
-        /// <summary>
-        /// Prettifies the json.
-        /// </summary>
-        /// <param name="json">The json.</param>
-        /// <returns></returns>
-        public static string PrettifyJson(this string json)
-        {
-            dynamic parsedJson = JsonConvert.DeserializeObject(json);
-            return JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
-        }
 
         /// <summary>
         /// Outputs a Json Response given a data object
@@ -296,48 +347,19 @@
             return requestBody == null ? null : JsonConvert.DeserializeObject<T>(requestBody);
         }
 
-        /// <summary>
-        /// Retrieves the request body as a string.
-        /// Note that once this method returns, the underlying input stream cannot be read again as 
-        /// it is not rewindable for obvious reasons. This functionality is by design.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns></returns>
-        public static string RequestBody(this HttpListenerContext context)
-        {
-            if (context.Request.HasEntityBody == false)
-                return null;
-
-            using (var body = context.Request.InputStream) // here we have data
-            {
-                using (var reader = new StreamReader(body, context.Request.ContentEncoding))
-                {
-                    return reader.ReadToEnd();
-                }
-            }
-        }
 
         /// <summary>
-        /// Retrieves the specified request the header.
+        /// Prettifies the given JSON string by adding indenting.
         /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="headerName">Name of the header.</param>
+        /// <param name="json">The json.</param>
         /// <returns></returns>
-        public static string RequestHeader(this HttpListenerContext context, string headerName)
+        public static string PrettifyJson(this string json)
         {
-            return context.HasRequestHeader(headerName) == false ? string.Empty : context.Request.Headers[headerName];
+            dynamic parsedJson = JsonConvert.DeserializeObject(json);
+            return JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
         }
 
-        /// <summary>
-        /// Determines whether [has request header] [the specified context].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="headerName">Name of the header.</param>
-        /// <returns></returns>
-        public static bool HasRequestHeader(this HttpListenerContext context, string headerName)
-        {
-            return context.Request.Headers[headerName] != null;
-        }
+        #endregion
 
         #region Data Parsing Methods
 
@@ -424,9 +446,17 @@
         /// Parses the form data given the request body string.
         /// </summary>
         /// <param name="requestBody">The request body.</param>
+        /// <param name="contentTypeHeader">The content type header.</param>
         /// <returns></returns>
-        private static Dictionary<string, object> ParseFormDataAsDictionary(string requestBody)
+        /// <exception cref="System.NotImplementedException">multipart/form-data Content Type parsing is not yet implemented</exception>
+        private static Dictionary<string, object> ParseFormDataAsDictionary(string requestBody, string contentTypeHeader = UrlEncodedContentType)
         {
+            // TODO: implement multipart/form-data parsing
+            // example available here: http://stackoverflow.com/questions/5483851/manually-parse-raw-http-data-with-php
+
+            if (contentTypeHeader.ToLowerInvariant().StartsWith("multipart/form-data"))
+                throw new NotImplementedException("multipart/form-data Content Type parsing is not yet implemented");
+
             // verify there is data to parse
             if (string.IsNullOrWhiteSpace(requestBody)) return null;
 
@@ -490,8 +520,10 @@
 
         #endregion
 
+        #region Hashing and Compression Methods
+
         /// <summary>
-        /// Compresses the specified buffer using the G-Zip compression algorithm.
+        /// Compresses the specified buffer stream using the G-Zip compression algorithm.
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <returns></returns>
@@ -509,7 +541,8 @@
         }
 
         /// <summary>
-        /// Computes the MD5 hash.
+        /// Computes the MD5 hash of the given stream.
+        /// Do not use for large streams as this reads ALL bytes at once
         /// </summary>
         /// <param name="stream">The stream.</param>
         /// <returns></returns>
@@ -548,6 +581,11 @@
 #endif
         }
 
+        /// <summary>
+        /// Gets a hexadecimal representation of the hash bytes
+        /// </summary>
+        /// <param name="hash">The hash.</param>
+        /// <returns></returns>
         private static string GetHashString(byte[] hash)
         {
             var sb = new StringBuilder();
@@ -560,21 +598,19 @@
             return sb.ToString();
         }
 
-
         /// <summary>
-        /// Hash with MD5
+        /// Computes the MD5 hash of the given byte array
         /// </summary>
         /// <param name="inputBytes"></param>
         /// <returns></returns>
         public static string ComputeMd5Hash(byte[] inputBytes)
         {
             var hash = MD5.Create().ComputeHash(inputBytes);
-
             return GetHashString(hash);
         }
 
         /// <summary>
-        /// Hash with MD5
+        /// Computes the MD5 hash of the given input string
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
@@ -582,5 +618,7 @@
         {
             return ComputeMd5Hash(Constants.DefaultEncoding.GetBytes(input));
         }
+
+        #endregion
     }
 }

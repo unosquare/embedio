@@ -98,6 +98,27 @@
         }
 
         /// <summary>
+        /// Echoes the request form data in JSON format
+        /// </summary>
+        /// <param name="server">The server.</param>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        [WebApiHandler(HttpVerbs.Post, RelativePath + "echo/*")]
+        public bool Echo(WebServer server, HttpListenerContext context)
+        {
+            try
+            {
+                var content = context.RequestFormDataDictionary();
+
+                return context.JsonResponse(content);
+            }
+            catch (Exception ex)
+            {
+                return HandleError(context, ex);
+            }
+        }
+
+        /// <summary>
         /// Handles the error returning an error status code and json-encoded body.
         /// </summary>
         /// <param name="context">The context.</param>
