@@ -19,7 +19,5 @@ build_script:
 - dotnet build "src\Unosquare.Labs.EmbedIO" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
 test_script:
 - dotnet test "test\Unosquare.Labs.EmbedIO.Tests" -c %CONFIGURATION%
-artifacts:
-- path: artifacts\**\*.*
 cache:
 - '%USERPROFILE%\.nuget\packages'
