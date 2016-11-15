@@ -7,8 +7,8 @@
                 templateUrl: '/partials/app-person.html',
                 controller: function () {
                     var me = this;
-                    me.showInfo = function(item) { 
-                        alert(item.Name + ': My id is ' + item.Key + ' and my age is ' + item.Age); 
+                    me.showInfo = function (item) {
+                        alert(item.Name + ': My email is ' + item.EmailAddress + ' and my age is ' + item.Age); 
                     };
                 },
                 controllerAs: 'person'

@@ -158,3 +158,7 @@ TestResult.xml
 /.vs/restore.dg
 /src/Unosquare.Labs.EmbedIO.Samples/mydbfile.db
 /.vs/config
+/src/Unosquare.Labs.EmbedIO.Command/nuget.config
+/src/Unosquare.Labs.EmbedIO/nuget.config
+/src/Unosquare.Labs.EmbedIO.Samples/nuget.config
+/test/Unosquare.Labs.EmbedIO.Tests/nuget.config

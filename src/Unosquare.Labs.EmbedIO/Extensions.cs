@@ -554,7 +554,7 @@
 
             for (var i = 0; i < hash.Length; i++)
             {
-                sb.Append(i.ToString("x2"));
+                sb.Append(hash[i].ToString("x2"));
             }
 
             return sb.ToString();

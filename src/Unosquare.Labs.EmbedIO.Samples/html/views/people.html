@@ -1,18 +1,18 @@
-<div class="row" ng-init="orderProp = 'Key'">
+<div ng-init="orderProp = 'Key'">
     <div class="form-group">
         <label>Search People:</label> 
         <input type="text" class="form-control" ng-model="query" />
     </div>
     <div class="form-group">
         <label>Sort By:</label> 
-        <select class="form-control" ng-model="orderProp">
+        <select class="form-control" ng-model="orderProp" size="1">
             <option value="Name">Alphabetical</option>
             <option value="Key">Key</option>
         </select>
     </div>
 </div>
-<div class="row" ng-controller="PeopleController as people">
-    <div ng-repeat="item in people.items | filter:query | orderBy:orderProp">
+<div ng-controller="PeopleController as people">
+    <div class="row" ng-repeat="item in people.items | filter:query | orderBy:orderProp">
         <app-person></app-person>
     </div>
 </div>

@@ -1,70 +1,58 @@
-﻿<div class="row">
-    <div class="col-md-12">
-        <tb-grid server-url="/api/people/" require-authentication="false">
-            <div class="row">
-                <tb-grid-pager class="col-md-6 col-xs-12"></tb-grid-pager>
-                <tb-page-size-selector class="col-md-3 col-xs-6" selectorcss="input-sm">
-                </tb-page-size-selector>
-                <tb-grid-pager-info class="col-md-3 col-xs-6"></tb-grid-pager-info>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="panel panel-default panel-rounded">
-                        <tb-grid-table class="table-bordered">
-                            <tb-column-definitions>
-                                <tb-column name="RowId" sortable="true" sort-order="1"
-                                          sort-direction="Ascending" column-type="numeric">
-                                    <tb-column-filter operator="Equals"></tb-column-filter>
-                                    <tb-column-header>
-                                        <span>{{label}}</span>
-                                    </tb-column-header>
-                                </tb-column>
-                                <tb-column name="Name" sortable="true">
-                                    <tb-column-filter operator="Contains"></tb-column-filter>
-                                    <tb-column-header>
-                                        <span>{{label}}</span>
-                                    </tb-column-header>
-                                </tb-column>
-                                <tb-column name="Age" sortable="true">
-                                    <tb-column-header>
-                                        <span>{{label}}</span>
-                                    </tb-column-header>
-                                </tb-column>
-                                <tb-column name="EmailAddress" sortable="true">
-                                    <tb-column-filter operator="Contains"></tb-column-filter>
-                                    <tb-column-header>
-                                        <span>{{label}}</span>
-                                    </tb-column-header>
-                                </tb-column>
-                            </tb-column-definitions>
-                            <tb-row-set>
-                                <tb-row-template ng-repeat="cells in $component.rows"
-                                                 row-model="cells" selectable="false">
-                                    <tb-cell-template>
-                                        {{cells.RowId}}
-                                    </tb-cell-template>
-                                    <tb-cell-template>
-                                        {{cells.Name}}
-                                    </tb-cell-template>
-                                    <tb-cell-template>
-                                        {{cells.Age}}
-                                    </tb-cell-template>
-                                    <tb-cell-template>
-                                        {{cells.EmailAddress}}
-                                    </tb-cell-template>
-                                </tb-row-template>
-                            </tb-row-set>
-                        </tb-grid-table>
-                    </div>
-                </div>
-            </div>
-        </tb-grid>
+﻿<tb-grid server-url="/api/people/" require-authentication="false">
+    <div class="row">
+        <tb-grid-pager class="col-md-6 col-xs-12"></tb-grid-pager>
+        <tb-page-size-selector class="col-md-3 col-xs-6" selectorcss="input-sm">
+        </tb-page-size-selector>
+        <tb-grid-pager-info class="col-md-3 col-xs-6"></tb-grid-pager-info>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="alert alert-default">
-            If you want to know more about this Grid component, visit <a href="http://unosquare.github.io/tubular/#/">Tubular's Git Pages</a>.
-        </div>
+    <div class="panel panel-default panel-rounded">
+        <tb-grid-table class="table-bordered">
+            <tb-column-definitions>
+                <tb-column name="RowId" sortable="true" sort-order="1"
+                           sort-direction="Ascending" column-type="numeric">
+                    <tb-column-filter operator="Equals"></tb-column-filter>
+                    <tb-column-header>
+                        <span>{{label}}</span>
+                    </tb-column-header>
+                </tb-column>
+                <tb-column name="Name" sortable="true">
+                    <tb-column-filter operator="Contains"></tb-column-filter>
+                    <tb-column-header>
+                        <span>{{label}}</span>
+                    </tb-column-header>
+                </tb-column>
+                <tb-column name="Age" sortable="true">
+                    <tb-column-header>
+                        <span>{{label}}</span>
+                    </tb-column-header>
+                </tb-column>
+                <tb-column name="EmailAddress" sortable="true">
+                    <tb-column-filter operator="Contains"></tb-column-filter>
+                    <tb-column-header>
+                        <span>{{label}}</span>
+                    </tb-column-header>
+                </tb-column>
+            </tb-column-definitions>
+            <tb-row-set>
+                <tb-row-template ng-repeat="cells in $component.rows"
+                                 row-model="cells" selectable="false">
+                    <tb-cell-template>
+                        {{cells.RowId}}
+                    </tb-cell-template>
+                    <tb-cell-template>
+                        {{cells.Name}}
+                    </tb-cell-template>
+                    <tb-cell-template>
+                        {{cells.Age}}
+                    </tb-cell-template>
+                    <tb-cell-template>
+                        {{cells.EmailAddress}}
+                    </tb-cell-template>
+                </tb-row-template>
+            </tb-row-set>
+        </tb-grid-table>
     </div>
+</tb-grid>
+<div class="alert alert-default">
+    If you want to know more about this Grid component, visit <a href="http://unosquare.github.io/tubular/#/">Tubular's Git Pages</a>.
 </div>
