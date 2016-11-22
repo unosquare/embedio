@@ -19,7 +19,7 @@
             RootPath = TestHelper.SetupStaticFolder();
         }
 
-#if NET452
+#if !NETCOREAPP1_0
         [Test]
         public void FluentWithStaticFolder()
         {

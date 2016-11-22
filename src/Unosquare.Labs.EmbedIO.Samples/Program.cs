@@ -70,7 +70,7 @@
                 // It registers the WebApiModule and registers the controller(s) -- that's all.
                 server.WithWebApiController<PeopleController>();
 
-#if NET452
+#if !NETCOREAPP1_0
                 // Register the WebSockets module. See the Setup method to find out how to do it
                 // It registers the WebSocketsModule and registers the server for the given paths(s)
                 WebSocketsSample.Setup(server);
@@ -84,7 +84,7 @@
 
                 // Fire up the browser to show the content!
 #if DEBUG
-#if NET452
+#if !NETCOREAPP1_0
                 var browser = new System.Diagnostics.Process()
                 {
                     StartInfo = new System.Diagnostics.ProcessStartInfo(url)

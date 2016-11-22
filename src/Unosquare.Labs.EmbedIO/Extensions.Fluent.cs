@@ -3,7 +3,7 @@
     using Modules;
     using System;
     using System.Collections.Generic;
-#if NET452
+#if !NETCOREAPP1_0
     using System.Linq;
     using System.Reflection;
 #endif
@@ -63,7 +63,7 @@
             return webserver;
         }
 
-#if NET452
+#if !NETCOREAPP1_0
         /// <summary>
         /// Add WebApiModule to WebServer
         /// </summary>

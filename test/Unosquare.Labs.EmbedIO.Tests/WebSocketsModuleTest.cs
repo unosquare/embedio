@@ -1,4 +1,4 @@
-﻿#if NET452
+﻿#if !NETCOREAPP1_0
 namespace Unosquare.Labs.EmbedIO.Tests
 {
     using System;

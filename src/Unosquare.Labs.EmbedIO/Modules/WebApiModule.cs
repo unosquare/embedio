@@ -314,7 +314,7 @@
 
             var methods = controllerType
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
-#if NET452
+#if !NETCOREAPP1_0
                 .Where(
                     m => (m.ReturnType == protoDelegate.Method.ReturnType
                           || m.ReturnType == protoAsyncDelegate.Method.ReturnType)

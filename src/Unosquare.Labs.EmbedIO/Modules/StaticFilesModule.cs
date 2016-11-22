@@ -332,7 +332,7 @@
             }
             finally
             {
-#if NET452
+#if !NETCOREAPP1_0
                 buffer.Close();
 #endif
                 buffer.Dispose();
