@@ -3,15 +3,17 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Unosquare.Labs.EmbedIO.Modules;
 #if NET46
     using System.Net;
 #else
     using Unosquare.Net;
 #endif
     using System.Threading.Tasks;
+#if !MONO
     using Tubular;
-    using Unosquare.Labs.EmbedIO.Modules;
-    using Unosquare.Tubular.ObjectModel;
+        using Unosquare.Tubular.ObjectModel;
+#endif
 
     /// <summary>
     /// A very simple controller to handle People CRUD.
@@ -20,9 +22,12 @@
     /// </summary>
     public class PeopleController : WebApiController
     {
+#if !MONO
         private readonly AppDbContext _dbContext = new AppDbContext();
+#endif
         private const string RelativePath = "/api/";
-        
+
+#if !MONO
         /// <summary>
         /// Gets the people.
         /// This will respond to 
@@ -100,7 +105,7 @@
                 return HandleError(context, ex);
             }
         }
-
+#endif
         /// <summary>
         /// Echoes the request form data in JSON format
         /// </summary>

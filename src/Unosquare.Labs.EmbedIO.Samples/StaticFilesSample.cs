@@ -19,10 +19,10 @@
         {
             get
             {
-                var assemblyPath = Path.GetDirectoryName(typeof (Program).GetTypeInfo().Assembly.Location);
+                var assemblyPath = Path.GetDirectoryName(typeof(Program).GetTypeInfo().Assembly.Location);
 
                 // This lets you edit the files without restarting the server.
-#if DEBUG
+#if DEBUG && !MONO
 #if NETCOREAPP1_0
                 return Path.Combine(Directory.GetParent(assemblyPath).Parent.Parent.FullName, "html");
 #else
@@ -39,12 +39,13 @@
         /// Setups the specified server.
         /// </summary>
         /// <param name="server">The server.</param>
-        public static void Setup(WebServer server)
+        public static void Setup(WebServer server, bool useGzip)
         {
             server.RegisterModule(new StaticFilesModule(HtmlRootPath));
             // The static files module will cache small files in ram until it detects they have been modified.
             server.Module<StaticFilesModule>().UseRamCache = false;
             server.Module<StaticFilesModule>().DefaultExtension = ".html";
+            server.Module<StaticFilesModule>().UseGzip = useGzip;
             // We don't need to add the line below. The default document is always index.html.
             //server.Module<StaticFilesWebModule>().DefaultDocument = "index.html";
         }

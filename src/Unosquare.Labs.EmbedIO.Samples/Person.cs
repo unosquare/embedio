@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿#if !MONO
+using System.ComponentModel.DataAnnotations.Schema;
 using Unosquare.Labs.LiteLib;
 
 namespace Unosquare.Labs.EmbedIO.Samples
@@ -18,3 +19,4 @@ namespace Unosquare.Labs.EmbedIO.Samples
         public string PhotoUrl => $"http://www.gravatar.com/avatar/{Extensions.ComputeMd5Hash(EmailAddress)}.png?s=100";
     }
 }
+#endif

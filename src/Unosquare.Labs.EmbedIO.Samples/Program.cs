@@ -5,41 +5,47 @@
 
     internal class Program
     {
+        public static readonly bool IsMono = Type.GetType("Mono.Runtime") != null;
+
         /// <summary>
         /// Defines the entry point of the application.
         /// </summary>
         /// <param name="args">The arguments.</param>
         private static void Main(string[] args)
         {
+            Console.WriteLine("Running at MONO: {0}", IsMono);
+
             var url = "http://localhost:9696/";
 
             if (args.Length > 0)
                 url = args[0];
 
-            var dbContext = new AppDbContext();
+#if !MONO
+                var dbContext = new AppDbContext();
 
-            foreach (var person in dbContext.People.SelectAll())
-                dbContext.People.Delete(person);
+                foreach (var person in dbContext.People.SelectAll())
+                    dbContext.People.Delete(person);
 
-            dbContext.People.Insert(new Person()
-            {
-                Name = "Mario Di Vece",
-                Age = 31,
-                EmailAddress = "mario@unosquare.com"
-            });
-            dbContext.People.Insert(new Person()
-            {
-                Name = "Geovanni Perez",
-                Age = 32,
-                EmailAddress = "geovanni.perez@unosquare.com"
-            });
+                dbContext.People.Insert(new Person()
+                {
+                    Name = "Mario Di Vece",
+                    Age = 31,
+                    EmailAddress = "mario@unosquare.com"
+                });
+                dbContext.People.Insert(new Person()
+                {
+                    Name = "Geovanni Perez",
+                    Age = 32,
+                    EmailAddress = "geovanni.perez@unosquare.com"
+                });
 
-            dbContext.People.Insert(new Person()
-            {
-                Name = "Luis Gonzalez",
-                Age = 29,
-                EmailAddress = "luis.gonzalez@unosquare.com"
-            });
+                dbContext.People.Insert(new Person()
+                {
+                    Name = "Luis Gonzalez",
+                    Age = 29,
+                    EmailAddress = "luis.gonzalez@unosquare.com"
+                });
+#endif
 
             // Our web server is disposable. Note that if you don't want to use logging,
             // there are alternate constructors that allow you to skip specifying an ILog object.
@@ -64,7 +70,7 @@
 
                 // Register the static files server. See the html folder of this project. Also notice that 
                 // the files under the html folder have Copy To Output Folder = Copy if Newer
-                StaticFilesSample.Setup(server);
+                StaticFilesSample.Setup(server, !IsMono);
 
                 // Register the Web Api Module. See the Setup method to find out how to do it
                 // It registers the WebApiModule and registers the controller(s) -- that's all.

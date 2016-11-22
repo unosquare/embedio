@@ -162,3 +162,4 @@ TestResult.xml
 /src/Unosquare.Labs.EmbedIO/nuget.config
 /src/Unosquare.Labs.EmbedIO.Samples/nuget.config
 /test/Unosquare.Labs.EmbedIO.Tests/nuget.config
+*.targets

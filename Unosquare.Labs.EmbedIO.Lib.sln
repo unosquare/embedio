@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unosquare.Labs.EmbedIO", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unosquare.Labs.EmbedIO.Tests", "test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj", "{2E100548-08CD-4EFD-AD08-AF584081B098}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unosquare.Labs.EmbedIO.Samples", "src\Unosquare.Labs.EmbedIO.Samples\Unosquare.Labs.EmbedIO.Samples.csproj", "{A45D13E0-4138-41A1-9C42-8F6BB9474BA6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2E100548-08CD-4EFD-AD08-AF584081B098}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E100548-08CD-4EFD-AD08-AF584081B098}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E100548-08CD-4EFD-AD08-AF584081B098}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A45D13E0-4138-41A1-9C42-8F6BB9474BA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A45D13E0-4138-41A1-9C42-8F6BB9474BA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A45D13E0-4138-41A1-9C42-8F6BB9474BA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A45D13E0-4138-41A1-9C42-8F6BB9474BA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
