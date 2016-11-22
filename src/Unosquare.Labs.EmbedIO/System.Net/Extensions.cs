@@ -123,18 +123,7 @@ namespace Unosquare.Net
         {
             return ms.ToArray();
         }
-
-        /// <summary>
-        /// Sets the value for a header KVP
-        /// </summary>
-        /// <param name="coll">The coll.</param>
-        /// <param name="key">The key.</param>
-        /// <param name="data">The data.</param>
-        public static void SetInternal(this WebHeaderCollection coll, string key, string data)
-        {
-            coll[key] = data;
-        }
-
+        
         /// <summary>
         /// Parses and adds the data from a string into the specified Name-Value collection
         /// </summary>

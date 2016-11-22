@@ -135,32 +135,27 @@ namespace Unosquare.Net
             }
         }
 #endif
-        
+
         /// <summary>
         /// Accepts a WebSocket handshake request.
         /// </summary>
+        /// <param name="protocol">A <see cref="string" /> that represents the subprotocol supported on
+        /// this WebSocket connection.</param>
+        /// <param name="log">The log.</param>
         /// <returns>
-        /// A <see cref="HttpListenerWebSocketContext"/> that represents
+        /// A <see cref="WebSocketContext" /> that represents
         /// the WebSocket handshake request.
         /// </returns>
-        /// <param name="protocol">
-        /// A <see cref="string"/> that represents the subprotocol supported on
-        /// this WebSocket connection.
-        /// </param>
-        /// <exception cref="ArgumentException">
-        ///   <para>
-        ///   <paramref name="protocol"/> is empty.
-        ///   </para>
-        ///   <para>
-        ///   -or-
-        ///   </para>
-        ///   <para>
-        ///   <paramref name="protocol"/> contains an invalid character.
-        ///   </para>
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// This method has already been called.
-        /// </exception>
+        /// <exception cref="ArgumentException"><para>
+        ///   <paramref name="protocol" /> is empty.
+        /// </para>
+        /// <para>
+        /// -or-
+        /// </para>
+        /// <para>
+        ///   <paramref name="protocol" /> contains an invalid character.
+        /// </para></exception>
+        /// <exception cref="InvalidOperationException">This method has already been called.</exception>
         public WebSocketContext AcceptWebSocket(string protocol, ILog log)
         {
             if (_websocketContext != null)
@@ -176,6 +171,8 @@ namespace Unosquare.Net
             }
 
             _websocketContext = new WebSocketContext(this, protocol, log);
+            _websocketContext.WebSocket.InternalAccept();
+
             return _websocketContext;
         }
     }

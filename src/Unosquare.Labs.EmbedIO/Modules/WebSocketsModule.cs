@@ -249,7 +249,9 @@
             // first, accept the websocket
             this.WebServer = server;
             server.Log.DebugFormat("{0} - Accepting WebSocket . . .", ServerName);
+#if NET46
             const int receiveBufferSize = 2048;
+#endif
 
             var webSocketContext =
 #if NET46
@@ -269,13 +271,13 @@
                 _mWebSockets.Add(webSocketContext);
             }
 
-            server.Log.DebugFormat("{0} - WebSocket Accepted - There are " + WebSockets.Count + " sockets connected.",
-                this.ServerName);
+            server.Log.DebugFormat($"{ServerName} - WebSocket Accepted - There are {WebSockets.Count} sockets connected.");
             // call the abstract member
             this.OnClientConnected(webSocketContext);
 
             try
             {
+#if NET46
                 // define a receive buffer
                 var receiveBuffer = new byte[receiveBufferSize];
                 // define a dynamic buffer that holds multi-part receptions
@@ -285,7 +287,6 @@
                 while (webSocketContext.WebSocket.State == WebSocketState.Open)
                 {
                     // retrieve the result (blocking)
-#if NET46
                     var receiveResult =
                         webSocketContext.WebSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer),
                             CancellationToken.None).GetAwaiter().GetResult();
@@ -306,7 +307,7 @@
 
                     if (receivedMessage.Count > _maximumMessageSize && _maximumMessageSize > 0)
                     {
-                        // close the connection if message excceeds max length
+                        // close the connection if message exceeds max length
                         webSocketContext.WebSocket.CloseAsync(
                             WebSocketCloseStatus.MessageTooBig,
                             $"Message too big. Maximum is {_maximumMessageSize} bytes.",
@@ -322,9 +323,10 @@
                         this.OnMessageReceived(webSocketContext, receivedMessage.ToArray(), receiveResult);
                         receivedMessage.Clear();
                     }
+                }
 #else
-                    // TODO: Pending OnFrameReceived
-                    webSocketContext.WebSocket.OnMessage += (s, e) =>
+                // TODO: Pending OnFrameReceived
+                webSocketContext.WebSocket.OnMessage += (s, e) =>
                     {
                         var isText = e.IsText ? WebSocketMessageType.Text : WebSocketMessageType.Binary;
 
@@ -332,8 +334,12 @@
                             e.RawData,
                             new WebSocketReceiveResult(e.RawData.Length, isText, e.Opcode == Opcode.Close));
                     };
-#endif
+
+                while (webSocketContext.WebSocket.IsConnected)
+                {
+                    Task.Delay(100).Wait();
                 }
+#endif
             }
             catch (Exception ex)
             {
@@ -342,7 +348,7 @@
             finally
             {
                 // once the loop is completed or connection aborted, remove the WebSocket
-                this.RemoveWebSocket(webSocketContext);
+                RemoveWebSocket(webSocketContext);
             }
         }
 
@@ -399,12 +405,12 @@
             try
             {
                 if (payload == null) payload = string.Empty;
-                var buffer = System.Text.Encoding.UTF8.GetBytes(payload);
 #if NET46
+                var buffer = System.Text.Encoding.UTF8.GetBytes(payload);
                 await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true,
                         CancellationToken.None);
 #else
-                webSocket.WebSocket.SendAsync(buffer, null);
+                webSocket.WebSocket.SendAsync(payload, null);
 #endif
             }
             catch (Exception ex)

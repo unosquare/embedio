@@ -349,7 +349,7 @@ namespace Unosquare.Net
         }
 
         // As server
-        internal bool IgnoreExtensions { get; set; }
+        internal bool IgnoreExtensions { get; set; } = true;
 
         internal bool IsConnected => _readyState == WebSocketState.Open || _readyState == WebSocketState.Closing;
 

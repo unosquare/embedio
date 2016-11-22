@@ -573,6 +573,11 @@ namespace Unosquare.Net
         {
         }
 
+        internal void SetInternal(string key, string value)
+        {
+            AddWithoutValidate(key, value);
+        }
+
         #endregion
 
         #region Internal Properties

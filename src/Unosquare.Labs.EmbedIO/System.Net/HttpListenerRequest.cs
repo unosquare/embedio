@@ -773,7 +773,7 @@ namespace Unosquare.Net
         /// <value>
         /// <c>true</c> if this instance is web socket request; otherwise, <c>false</c>.
         /// </value>
-        public bool IsWebSocketRequest => false;
+        public bool IsWebSocketRequest => HttpMethod == "GET" && ProtocolVersion > HttpVersion.Version10 && Headers.Contains("Upgrade", "websocket") && Headers.Contains("Connection", "Upgrade");
 
         /// <summary>
         /// Gets the client certificate asynchronously.

@@ -489,7 +489,7 @@ namespace Unosquare.Net
             }
 
             if (Headers["Server"] == null)
-                Headers.AddWithoutValidate("Server", "embedio");
+                Headers.SetInternal("Server", "embedio/1.0");
 
             var inv = CultureInfo.InvariantCulture;
             if (Headers["Date"] == null)
