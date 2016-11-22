@@ -1,4 +1,4 @@
-﻿#if !NET452
+﻿#if !NET46
 //
 // System.Net.HttpListenerContext
 //
@@ -27,10 +27,11 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System;
 using System.Security.Principal;
-using System.Text;
+using Unosquare.Labs.EmbedIO.Log;
 
-namespace System.Net
+namespace Unosquare.Net
 {
     /// <summary>
     /// Provides access to the request and response objects used by the HttpListener class. This class cannot be inherited.
@@ -38,6 +39,8 @@ namespace System.Net
     public sealed class HttpListenerContext
     {
         internal HttpListener Listener;
+
+        private WebSocketContext _websocketContext;
 
         internal HttpListenerContext(HttpConnection cnc)
         {
@@ -78,6 +81,7 @@ namespace System.Net
         /// </value>
         public IPrincipal User { get; private set; }
 
+#if AUTHENTICATION
         internal void ParseAuthentication(AuthenticationSchemes expectedSchemes)
         {
             if (expectedSchemes == AuthenticationSchemes.Anonymous)
@@ -129,6 +133,50 @@ namespace System.Net
                 // Invalid auth data is swallowed silently
                 return null;
             }
+        }
+#endif
+        
+        /// <summary>
+        /// Accepts a WebSocket handshake request.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="HttpListenerWebSocketContext"/> that represents
+        /// the WebSocket handshake request.
+        /// </returns>
+        /// <param name="protocol">
+        /// A <see cref="string"/> that represents the subprotocol supported on
+        /// this WebSocket connection.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        ///   <para>
+        ///   <paramref name="protocol"/> is empty.
+        ///   </para>
+        ///   <para>
+        ///   -or-
+        ///   </para>
+        ///   <para>
+        ///   <paramref name="protocol"/> contains an invalid character.
+        ///   </para>
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// This method has already been called.
+        /// </exception>
+        public WebSocketContext AcceptWebSocket(string protocol, ILog log)
+        {
+            if (_websocketContext != null)
+                throw new InvalidOperationException("The accepting is already in progress.");
+
+            if (protocol != null)
+            {
+                if (protocol.Length == 0)
+                    throw new ArgumentException("An empty string.", "protocol");
+
+                //if (!protocol.IsToken())
+                //    throw new ArgumentException("Contains an invalid character.", "protocol");
+            }
+
+            _websocketContext = new WebSocketContext(this, protocol, log);
+            return _websocketContext;
         }
     }
 }

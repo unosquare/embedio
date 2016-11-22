@@ -1,4 +1,4 @@
-﻿#if !NET452
+﻿#if !NET46
 //
 // System.Net.RequestStream
 //
@@ -27,10 +27,12 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System;
 using System.IO;
+using System.Net;
 using System.Runtime.InteropServices;
 
-namespace System.Net
+namespace Unosquare.Net
 {
     class RequestStream : Stream
     {

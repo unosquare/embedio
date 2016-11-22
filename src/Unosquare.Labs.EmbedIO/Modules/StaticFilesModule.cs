@@ -7,7 +7,11 @@
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
+#if NET46
     using System.Net;
+#else
+    using Net;
+#endif
 
     /// <summary>
     /// Represents a simple module to server static files from the file system.

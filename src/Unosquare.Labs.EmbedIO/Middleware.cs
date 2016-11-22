@@ -1,6 +1,10 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
+#if NET46
     using System.Net;
+#else
+    using Net;
+#endif
     using System.Threading.Tasks;
 
     /// <summary>

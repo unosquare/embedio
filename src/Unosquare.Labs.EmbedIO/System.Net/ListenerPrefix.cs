@@ -1,4 +1,4 @@
-﻿#if !NET452
+﻿#if !NET46
 //
 // System.Net.ListenerPrefix
 //
@@ -28,7 +28,10 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace System.Net
+using System;
+using System.Net;
+
+namespace Unosquare.Net
 {
     sealed class ListenerPrefix
     {

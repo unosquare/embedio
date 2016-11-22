@@ -1,4 +1,4 @@
-﻿#if !NET452
+﻿#if !NET46
 //
 // System.Net.EndPointManager
 //
@@ -27,9 +27,11 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System;
 using System.Collections;
+using System.Net;
 
-namespace System.Net
+namespace Unosquare.Net
 {
     static class EndPointManager
     {

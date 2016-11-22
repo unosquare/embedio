@@ -1,4 +1,4 @@
-﻿#if !NET452
+﻿#if !NET46
 //
 // System.Net.HttpListenerResponse
 //
@@ -27,11 +27,12 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System;
 using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace System.Net
+namespace Unosquare.Net
 {
     /// <summary>
     /// Represents an HTTP Listener's response
@@ -298,7 +299,7 @@ namespace System.Net
                     throw new InvalidOperationException("Cannot be changed after headers are sent.");
 
                 if (value < 100 || value > 999)
-                    throw new ProtocolViolationException("StatusCode must be between 100 and 999.");
+                    throw new System.Net.ProtocolViolationException("StatusCode must be between 100 and 999.");
                 _statusCode = value;
                 StatusDescription = HttpListenerResponseHelper.GetStatusDescription(value);
             }
@@ -356,7 +357,7 @@ namespace System.Net
         /// </summary>
         /// <param name="cookie">The cookie.</param>
         /// <exception cref="System.ArgumentNullException"></exception>
-        public void AppendCookie(Cookie cookie)
+        public void AppendCookie(System.Net.Cookie cookie)
         {
             if (cookie == null)
                 throw new ArgumentNullException(nameof(cookie));
@@ -449,12 +450,13 @@ namespace System.Net
             _location = url;
         }
 
-        bool FindCookie(Cookie cookie)
+        bool FindCookie(System.Net.Cookie cookie)
         {
             var name = cookie.Name;
             var domain = cookie.Domain;
             var path = cookie.Path;
-            foreach (Cookie c in _cookies)
+
+            foreach (System.Net.Cookie c in _cookies)
             {
                 if (name != c.Name)
                     continue;
@@ -487,7 +489,7 @@ namespace System.Net
             }
 
             if (Headers["Server"] == null)
-                Headers.SetInternal("Server", "Mono-HTTPAPI/1.0");
+                Headers.AddWithoutValidate("Server", "embedio");
 
             var inv = CultureInfo.InvariantCulture;
             if (Headers["Date"] == null)
@@ -558,7 +560,7 @@ namespace System.Net
 
             if (_cookies != null)
             {
-                foreach (Cookie cookie in _cookies)
+                foreach (System.Net.Cookie cookie in _cookies)
                     Headers.SetInternal("Set-Cookie", CookieToClientString(cookie));
             }
 
@@ -601,7 +603,7 @@ namespace System.Net
             return sb.Append("\r\n").ToString();
         }
 
-        static string CookieToClientString(Cookie cookie)
+        static string CookieToClientString(System.Net.Cookie cookie)
         {
             if (cookie.Name.Length == 0)
                 return string.Empty;
@@ -625,7 +627,7 @@ namespace System.Net
             return result.ToString();
         }
 
-        static string QuotedString(Cookie cookie, string value)
+        static string QuotedString(System.Net.Cookie cookie, string value)
         {
             if (cookie.Version == 0 || IsToken(value))
                 return value;
@@ -652,7 +654,7 @@ namespace System.Net
         /// <param name="cookie">The cookie.</param>
         /// <exception cref="System.ArgumentNullException"></exception>
         /// <exception cref="System.ArgumentException">The cookie already exists.</exception>
-        public void SetCookie(Cookie cookie)
+        public void SetCookie(System.Net.Cookie cookie)
         {
             if (cookie == null)
                 throw new ArgumentNullException(nameof(cookie));

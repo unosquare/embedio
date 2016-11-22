@@ -1,4 +1,4 @@
-﻿#if !NET452
+﻿#if !NET46
 //
 // System.Net.ListenerAsyncResult
 //
@@ -29,9 +29,10 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System;
 using System.Threading;
 
-namespace System.Net
+namespace Unosquare.Net
 {
     internal class ListenerAsyncResult : IAsyncResult
     {
@@ -108,6 +109,7 @@ namespace System.Net
             _context = context;
             lock (_locker)
             {
+#if AUTHENTICATION
                 var schemes = context.Listener.SelectAuthenticationScheme(context);
                 if ((schemes == AuthenticationSchemes.Basic ||
                      context.Listener.AuthenticationSchemes == AuthenticationSchemes.Negotiate) &&
@@ -133,6 +135,7 @@ namespace System.Net
                 }
                 else
                 {
+#endif
                     _completed = true;
                     _synch = false;
 
@@ -140,7 +143,9 @@ namespace System.Net
 
                     if (_cb != null)
                         ThreadPool.QueueUserWorkItem(_invokeCb, this);
+                    #if AUTHENTICATION
                 }
+#endif
             }
         }
 

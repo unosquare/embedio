@@ -2,7 +2,7 @@
   "version": "1.0.0-*",
   "buildOptions": {
     "emitEntryPoint": true,
-    "copyToOutput": [ "html"]
+    "copyToOutput": [ "html" ]
   },
   "dependencies": {
     "dotnet-test-nunit": "3.4.0-beta-1",
@@ -25,6 +25,14 @@
       }
     },
     "net452": {
+      "frameworkAssemblies": {
+        "System.Net.Http": ""
+      },
+      "dependencies": {
+        "Microsoft.NETCore.Platforms": "1.0.1-*"
+      }
+    },
+    "net46": {
       "frameworkAssemblies": {
         "System.Net.Http": ""
       },

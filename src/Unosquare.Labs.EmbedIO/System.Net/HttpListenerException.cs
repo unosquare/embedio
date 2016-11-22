@@ -1,14 +1,15 @@
-﻿using System.ComponentModel;
+﻿#if !NET46
+using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 
-#if !NET452
 //------------------------------------------------------------------------------
 // <copyright file="HttpListenerException.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation.  All rights reserved.
 // </copyright>                                                                
 //------------------------------------------------------------------------------
 
-namespace System.Net
+namespace Unosquare.Net
 {
     /// <summary>
     /// Represents an HTTP Listener's exception

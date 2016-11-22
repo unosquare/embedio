@@ -1,6 +1,9 @@
-﻿#if NET452
-using System;
+﻿using System;
+#if NET46
 using System.Net.WebSockets;
+#else
+using Unosquare.Net;
+#endif
 using Unosquare.Labs.EmbedIO.Modules;
 
 namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
@@ -31,4 +34,3 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
         public override string ServerName => "TestWebSocket";
     }
 }
-#endif

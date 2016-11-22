@@ -1,4 +1,4 @@
-﻿#if !NET452
+﻿#if !NET46
 //
 // System.Net.ChunkStream
 //
@@ -28,6 +28,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -35,7 +36,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace System.Net
+namespace Unosquare.Net
 {
     internal class ChunkStream
     {
@@ -121,7 +122,7 @@ namespace System.Net
             var chunksForRemoving = new List<Chunk>(count);
             for (var i = 0; i < count; i++)
             {
-                var chunk = (Chunk) _chunks[i];
+                var chunk = (Chunk)_chunks[i];
 
                 if (chunk.Offset == chunk.Bytes.Length)
                 {
@@ -199,7 +200,7 @@ namespace System.Net
                 var count = _chunks.Count;
                 for (var i = 0; i < count; i++)
                 {
-                    var ch = (Chunk) _chunks[i];
+                    var ch = (Chunk)_chunks[i];
                     if (ch?.Bytes?.Length > 0 && ch.Offset < ch.Bytes.Length)
                         return (_state != State.Body);
                 }
@@ -237,7 +238,7 @@ namespace System.Net
             var c = '\0';
             while (offset < size)
             {
-                c = (char) buffer[offset++];
+                c = (char)buffer[offset++];
                 if (c == '\r')
                 {
                     if (_sawCr)
@@ -309,7 +310,7 @@ namespace System.Net
         {
             if (!_sawCr)
             {
-                if ((char) buffer[offset++] != '\r')
+                if ((char)buffer[offset++] != '\r')
                     ThrowProtocolViolation("Expecting \\r");
 
                 _sawCr = true;
@@ -317,7 +318,7 @@ namespace System.Net
                     return State.BodyFinished;
             }
 
-            if (_sawCr && (char) buffer[offset++] != '\n')
+            if (_sawCr && (char)buffer[offset++] != '\n')
                 ThrowProtocolViolation("Expecting \\n");
 
             return State.None;
@@ -326,10 +327,10 @@ namespace System.Net
         private State ReadTrailer(byte[] buffer, ref int offset, int size)
         {
             // short path
-            if (_trailerState == 2 && (char) buffer[offset] == '\r' && _saved.Length == 0)
+            if (_trailerState == 2 && (char)buffer[offset] == '\r' && _saved.Length == 0)
             {
                 offset++;
-                if (offset < size && (char) buffer[offset] == '\n')
+                if (offset < size && (char)buffer[offset] == '\n')
                 {
                     offset++;
                     return State.None;
@@ -341,7 +342,7 @@ namespace System.Net
             var stString = "\r\n\r";
             while (offset < size && st < 4)
             {
-                var c = (char) buffer[offset++];
+                var c = (char)buffer[offset++];
                 if ((st == 0 || st == 2) && c == '\r')
                 {
                     st++;
@@ -382,10 +383,9 @@ namespace System.Net
 
         private static void ThrowProtocolViolation(string message)
         {
-            var we = new WebException(message, null, WebExceptionStatus.ServerProtocolViolation, null);
+            var we = new System.Net.WebException(message, null, System.Net.WebExceptionStatus.ServerProtocolViolation, null);
             throw we;
         }
     }
 }
-
 #endif

@@ -1,4 +1,4 @@
-﻿#if !NET452
+﻿#if !NET46
 //
 // System.Net.HttpConnection
 //
@@ -28,13 +28,15 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System;
 using System.IO;
+using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 
-namespace System.Net
+namespace Unosquare.Net
 {
     internal sealed class HttpConnection
     {
@@ -120,6 +122,14 @@ namespace System.Net
         public bool IsClosed => (_sock == null);
 
         public int Reuses { get; private set; }
+
+        public Stream Stream
+        {
+            get
+            {
+                return _stream;
+            }
+        }
 
         public IPEndPoint LocalEndPoint
         {

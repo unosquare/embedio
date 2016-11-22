@@ -1,10 +1,12 @@
-﻿#if !NET452
+﻿#if !NET46
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Net;
 using System.Text;
 
-namespace System.Net
+namespace Unosquare.Net
 {
     // We don't use the cooked URL because http.sys unescapes all percent-encoded values. However,
     // we also can't just use the raw Uri, since http.sys supports not only Utf-8, but also ANSI/DBCS and

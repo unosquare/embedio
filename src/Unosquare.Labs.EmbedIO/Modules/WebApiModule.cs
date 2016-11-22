@@ -1,6 +1,5 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
-    using System.Net;
     using System.Text.RegularExpressions;
     using EmbedIO;
     using System;
@@ -8,7 +7,11 @@
     using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
-    using System.Linq.Expressions;
+#if NET46
+    using System.Net;
+#else
+    using Net;
+#endif
 
     /// <summary>
     /// A very simple module to register class methods as handlers.

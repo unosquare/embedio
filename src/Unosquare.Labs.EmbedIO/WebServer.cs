@@ -5,10 +5,14 @@
     using System.Collections.ObjectModel;
     using System.Globalization;
     using System.Linq;
-    using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
     using Log;
+#if NET46
+    using System.Net;
+#else
+    using Net;
+#endif
 
     /// <summary>
     /// Represents our tiny web server used to handle requests
@@ -306,7 +310,7 @@
                 {
                     Log.Error("No module generated a response. Sending 404 - Not Found");
                     var responseBytes = System.Text.Encoding.UTF8.GetBytes(Constants.Response404Html);
-                    context.Response.StatusCode = (int) HttpStatusCode.NotFound;
+                    context.Response.StatusCode = (int)System.Net.HttpStatusCode.NotFound;
                     context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
                 }
             }
@@ -368,7 +372,7 @@
                 catch (Exception ex)
                 {
                     // Handle exceptions by returning a 500 (Internal Server Error) 
-                    if (context.Response.StatusCode != (int) HttpStatusCode.Unauthorized)
+                    if (context.Response.StatusCode != (int)System.Net.HttpStatusCode.Unauthorized)
                     {
                         // Log the exception message.
                         var errorMessage = ex.ExceptionMessage("Failing module name: " + module.Name);
@@ -376,12 +380,12 @@
 
                         // Generate an HTML response
                         var response = string.Format(Constants.Response500HtmlFormat,
-                            WebUtility.HtmlEncode(errorMessage),
-                            WebUtility.HtmlEncode(ex.StackTrace));
+                            System.Net.WebUtility.HtmlEncode(errorMessage),
+                            System.Net.WebUtility.HtmlEncode(ex.StackTrace));
 
                         // Send the response over with the corresponding status code.
                         var responseBytes = System.Text.Encoding.UTF8.GetBytes(response);
-                        context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                        context.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
                         context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
                     }
 

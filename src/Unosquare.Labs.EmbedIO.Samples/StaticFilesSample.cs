@@ -21,12 +21,12 @@
             {
                 var assemblyPath = Path.GetDirectoryName(typeof (Program).GetTypeInfo().Assembly.Location);
 
-#if DEBUG
-#if NET452
                 // This lets you edit the files without restarting the server.
-                return Path.Combine(Directory.GetParent(assemblyPath).Parent.Parent.Parent.FullName, "html");
-#else
+#if DEBUG
+#if NETCOREAPP1_0
                 return Path.Combine(Directory.GetParent(assemblyPath).Parent.Parent.FullName, "html");
+#else
+                return Path.Combine(Directory.GetParent(assemblyPath).Parent.Parent.Parent.FullName, "html");
 #endif
 #else
                 // This is when you have deployed the server.
