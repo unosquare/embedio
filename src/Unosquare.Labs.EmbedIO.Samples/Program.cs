@@ -69,12 +69,10 @@
                 // Register the Web Api Module. See the Setup method to find out how to do it
                 // It registers the WebApiModule and registers the controller(s) -- that's all.
                 server.WithWebApiController<PeopleController>();
-
-#if !NETCOREAPP1_0
+                
                 // Register the WebSockets module. See the Setup method to find out how to do it
                 // It registers the WebSocketsModule and registers the server for the given paths(s)
                 WebSocketsSample.Setup(server);
-#endif
 
                 // Once we've registered our modules and configured them, we call the Run() method.
                 // This is a non-blocking method (it return immediately) so in this case we avoid
