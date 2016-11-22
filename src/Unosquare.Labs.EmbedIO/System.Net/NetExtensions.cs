@@ -371,8 +371,7 @@ namespace Unosquare.Net
 
                       if (nread == 0 || nread == length)
                       {
-                          if (completed != null)
-                              completed(buff.SubArray(0, offset + nread));
+                          completed?.Invoke(buff.SubArray(0, offset + nread));
 
                           return;
                       }
@@ -386,8 +385,7 @@ namespace Unosquare.Net
                   }
                   catch (Exception ex)
                   {
-                      if (error != null)
-                          error(ex);
+                      error?.Invoke(ex);
                   }
               };
 
@@ -397,8 +395,7 @@ namespace Unosquare.Net
             }
             catch (Exception ex)
             {
-                if (error != null)
-                    error(ex);
+                error?.Invoke(ex);
             }
         }
 
@@ -488,19 +485,7 @@ namespace Unosquare.Net
         {
             return BitConverter.ToUInt64(source.ToHostOrder(sourceOrder), 0);
         }
-
-        internal static string UTF8Decode(this byte[] bytes)
-        {
-            try
-            {
-                return Encoding.UTF8.GetString(bytes);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
+        
         internal static bool IsReserved(this ushort code)
         {
             return code == (ushort)CloseStatusCode.Undefined ||

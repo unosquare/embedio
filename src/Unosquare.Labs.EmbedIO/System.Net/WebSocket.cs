@@ -1053,7 +1053,7 @@ namespace Unosquare.Net
 
             try
             {
-                OnClose(this, e);
+                OnClose?.Invoke(this, e);
             }
             catch (Exception ex)
             {
@@ -1558,7 +1558,7 @@ namespace Unosquare.Net
 
         private bool ProcessUnsupportedFrame(WebSocketFrame frame)
         {
-            _logger.Error("An unsupported frame:" + frame.PrintToString(false));
+            _logger.Error("An unsupported frame:" + frame.PrintToString());
             Fatal("There is no way to handle it.", CloseStatusCode.PolicyViolation);
 
             return false;
@@ -1858,9 +1858,9 @@ namespace Unosquare.Net
         // As client
         private HttpResponse SendHttpRequest(HttpRequest request, int millisecondsTimeout)
         {
-            _logger.DebugFormat("A request to the server:\n" + request.ToString());
+            _logger.DebugFormat("A request to the server:\n" + request);
             var res = request.GetResponse(_stream, millisecondsTimeout);
-            _logger.DebugFormat("A response to this request:\n" + res.ToString());
+            _logger.DebugFormat("A response to this request:\n" + res);
 
             return res;
         }
@@ -1868,7 +1868,7 @@ namespace Unosquare.Net
         // As server
         private bool SendHttpResponse(HttpResponse response)
         {
-            _logger.DebugFormat("A response to this request:\n" + response.ToString());
+            _logger.DebugFormat("A response to this request:\n" + response);
             return SendBytes(response.ToByteArray());
         }
 
@@ -2070,11 +2070,11 @@ namespace Unosquare.Net
 
 
         // As server
-        private bool ValidateSecWebSocketKeyHeader(string value)
+        private static bool ValidateSecWebSocketKeyHeader(string value)
         {
-            return value != null && value.Length > 0;
+            return !string.IsNullOrEmpty(value);
         }
-        private bool ValidateSecWebSocketProtocolClientHeader(string value)
+        private static bool ValidateSecWebSocketProtocolClientHeader(string value)
         {
             return value == null || value.Length > 0;
         }
@@ -2902,7 +2902,7 @@ namespace Unosquare.Net
         /// </param>
         public bool Ping(string message)
         {
-            if (message == null || message.Length == 0)
+            if (string.IsNullOrEmpty(message))
                 return Ping();
 
             byte[] data;
@@ -2918,7 +2918,7 @@ namespace Unosquare.Net
             return Ping(WebSocketFrame.CreatePingFrame(data, _client).ToArray(), _waitTime);
         }
 
-        static string CheckIfAvailable(WebSocketState state, bool connecting, bool open, bool closing, bool closed)
+        private static string CheckIfAvailable(WebSocketState state, bool connecting, bool open, bool closing, bool closed)
         {
             return (!connecting && state == WebSocketState.Connecting) ||
                    (!open && state == WebSocketState.Open) ||
@@ -3136,8 +3136,7 @@ namespace Unosquare.Net
                             len);
 
                     var sent = send(Opcode.Binary, new MemoryStream(data));
-                    if (completed != null)
-                        completed(sent);
+                    completed?.Invoke(sent);
                 },
                 ex =>
                 {

@@ -161,14 +161,11 @@ namespace Unosquare.Net
             if (_websocketContext != null)
                 throw new InvalidOperationException("The accepting is already in progress.");
 
-            if (protocol != null)
-            {
-                if (protocol.Length == 0)
-                    throw new ArgumentException("An empty string.", "protocol");
+            if (protocol?.Length == 0)
+                throw new ArgumentException("An empty string.", nameof(protocol));
 
-                //if (!protocol.IsToken())
-                //    throw new ArgumentException("Contains an invalid character.", "protocol");
-            }
+            //if (!protocol.IsToken())
+            //    throw new ArgumentException("Contains an invalid character.", "protocol");
 
             _websocketContext = new WebSocketContext(this, protocol, log);
             _websocketContext.WebSocket.InternalAccept();

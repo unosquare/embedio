@@ -150,7 +150,7 @@ namespace Unosquare.Net
                     var secondaryEncoding = GetEncoding(EncodingType.Secondary);
                     result = BuildRequestUriUsingRawPath(secondaryEncoding);
                 }
-                isValid = (result == ParsingResult.Success) ? true : false;
+                isValid = result == ParsingResult.Success;
             }
 
             // Log that we weren't able to create a Uri from the raw string.
@@ -247,7 +247,7 @@ namespace Unosquare.Net
                     else
                     {
                         // We found '%', but not followed by 'u', i.e. we have a percent encoded octed: %XX 
-                        if (!AddPercentEncodedOctetToRawOctetsList(encoding, _rawPath.Substring(index, 2)))
+                        if (!AddPercentEncodedOctetToRawOctetsList(_rawPath.Substring(index, 2)))
                         {
                             return ParsingResult.InvalidString;
                         }
@@ -307,7 +307,7 @@ namespace Unosquare.Net
             return false;
         }
 
-        private bool AddPercentEncodedOctetToRawOctetsList(Encoding encoding, string escapedCharacter)
+        private bool AddPercentEncodedOctetToRawOctetsList(string escapedCharacter)
         {
             byte encodedValue;
             if (!byte.TryParse(escapedCharacter, NumberStyles.HexNumber, null, out encodedValue))

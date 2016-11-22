@@ -90,6 +90,7 @@ namespace Unosquare.Net
             }
             catch
             {
+                // ignored
             }
         }
 

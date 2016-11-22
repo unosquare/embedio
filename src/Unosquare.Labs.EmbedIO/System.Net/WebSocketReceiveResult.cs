@@ -9,6 +9,9 @@ using System;
 
 namespace Unosquare.Net
 {
+    /// <summary>
+    /// Enums WS Message Type
+    /// </summary>
     public enum WebSocketMessageType
     {
         Text = 0,
@@ -16,6 +19,9 @@ namespace Unosquare.Net
         Close = 2
     }
 
+    /// <summary>
+    /// Enums WS Close Status
+    /// </summary>
     public enum WebSocketCloseStatus
     {
         NormalClosure = 1000,
@@ -41,22 +47,39 @@ namespace Unosquare.Net
         //             of these codes is undefined by this protocol.
     }
 
+    /// <summary>
+    /// Represents a WS Receive result
+    /// </summary>
     public class WebSocketReceiveResult
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebSocketReceiveResult" /> class.
+        /// </summary>
+        /// <param name="count">The count.</param>
+        /// <param name="messageType">Type of the message.</param>
+        /// <param name="endOfMessage">if set to <c>true</c> [end of message].</param>
         public WebSocketReceiveResult(int count, WebSocketMessageType messageType, bool endOfMessage)
-            : this(count, messageType, endOfMessage, null, null)
+                    : this(count, messageType, endOfMessage, null, null)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebSocketReceiveResult" /> class.
+        /// </summary>
+        /// <param name="count">The count.</param>
+        /// <param name="messageType">Type of the message.</param>
+        /// <param name="endOfMessage">if set to <c>true</c> [end of message].</param>
+        /// <param name="closeStatus">The close status.</param>
+        /// <param name="closeStatusDescription">The close status description.</param>
         public WebSocketReceiveResult(int count,
-            WebSocketMessageType messageType,
-            bool endOfMessage,
-            Nullable<WebSocketCloseStatus> closeStatus,
-            string closeStatusDescription)
+                    WebSocketMessageType messageType,
+                    bool endOfMessage,
+                    WebSocketCloseStatus? closeStatus,
+                    string closeStatusDescription)
         {
             if (count < 0)
             {
-                throw new ArgumentOutOfRangeException("count");
+                throw new ArgumentOutOfRangeException(nameof(count));
             }
 
             this.Count = count;
@@ -66,21 +89,41 @@ namespace Unosquare.Net
             this.CloseStatusDescription = closeStatusDescription;
         }
 
+        /// <summary>
+        /// Gets the count.
+        /// </summary>
+        /// <value>
+        /// The count.
+        /// </value>
         public int Count { get; private set; }
-        public bool EndOfMessage { get; private set; }
-        public WebSocketMessageType MessageType { get; private set; }
-        public Nullable<WebSocketCloseStatus> CloseStatus { get; private set; }
-        public string CloseStatusDescription { get; private set; }
-
-        internal WebSocketReceiveResult Copy(int count)
-        {
-            this.Count -= count;
-            return new WebSocketReceiveResult(count,
-                this.MessageType,
-                this.Count == 0 && this.EndOfMessage,
-                this.CloseStatus,
-                this.CloseStatusDescription);
-        }
+        /// <summary>
+        /// Gets a value indicating whether [end of message].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [end of message]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EndOfMessage { get; }
+        /// <summary>
+        /// Gets the type of the message.
+        /// </summary>
+        /// <value>
+        /// The type of the message.
+        /// </value>
+        public WebSocketMessageType MessageType { get; }
+        /// <summary>
+        /// Gets the close status.
+        /// </summary>
+        /// <value>
+        /// The close status.
+        /// </value>
+        public WebSocketCloseStatus? CloseStatus { get; }
+        /// <summary>
+        /// Gets the close status description.
+        /// </summary>
+        /// <value>
+        /// The close status description.
+        /// </value>
+        public string CloseStatusDescription { get; }
     }
 }
 #endif

@@ -14,11 +14,11 @@ namespace Unosquare.Net
     /// </summary>
     /// <seealso cref="System.Collections.ICollection" />
     /// <seealso cref="System.Collections.IEnumerable" />
-    public class CookieCollection : ICollection, IEnumerable
+    public class CookieCollection : ICollection
     {
         #region Private Fields
 
-        private List<Cookie> _list;
+        private readonly List<Cookie> _list;
         private object _sync;
 
         #endregion
@@ -37,13 +37,7 @@ namespace Unosquare.Net
 
         #region Internal Properties
 
-        internal IList<Cookie> List
-        {
-            get
-            {
-                return _list;
-            }
-        }
+        internal IList<Cookie> List => _list;
 
         internal IEnumerable<Cookie> Sorted
         {
@@ -51,7 +45,7 @@ namespace Unosquare.Net
             {
                 var list = new List<Cookie>(_list);
                 if (list.Count > 1)
-                    list.Sort(compareCookieWithinSorted);
+                    list.Sort(CompareCookieWithinSorted);
 
                 return list;
             }
@@ -67,13 +61,7 @@ namespace Unosquare.Net
         /// <value>
         /// An <see cref="int"/> that represents the number of cookies in the collection.
         /// </value>
-        public int Count
-        {
-            get
-            {
-                return _list.Count;
-            }
-        }
+        public int Count => _list.Count;
 
         /// <summary>
         /// Gets a value indicating whether the collection is read-only.
@@ -82,15 +70,7 @@ namespace Unosquare.Net
         /// <c>true</c> if the collection is read-only; otherwise, <c>false</c>.
         /// The default value is <c>true</c>.
         /// </value>
-        public bool IsReadOnly
-        {
-            // LAMESPEC: So how is one supposed to create a writable CookieCollection instance?
-            // We simply ignore this property, as this collection is always writable.
-            get
-            {
-                return true;
-            }
-        }
+        public bool IsReadOnly => true;
 
         /// <summary>
         /// Gets a value indicating whether the access to the collection is thread safe.
@@ -99,13 +79,7 @@ namespace Unosquare.Net
         /// <c>true</c> if the access to the collection is thread safe; otherwise, <c>false</c>.
         /// The default value is <c>false</c>.
         /// </value>
-        public bool IsSynchronized
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public bool IsSynchronized => false;
 
         /// <summary>
         /// Gets the <see cref="Cookie"/> at the specified <paramref name="index"/> from
@@ -126,7 +100,7 @@ namespace Unosquare.Net
             get
             {
                 if (index < 0 || index >= _list.Count)
-                    throw new ArgumentOutOfRangeException("index");
+                    throw new ArgumentOutOfRangeException(nameof(index));
 
                 return _list[index];
             }
@@ -150,7 +124,7 @@ namespace Unosquare.Net
             get
             {
                 if (name == null)
-                    throw new ArgumentNullException("name");
+                    throw new ArgumentNullException(nameof(name));
 
                 foreach (var cookie in Sorted)
                     if (cookie.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
@@ -166,49 +140,44 @@ namespace Unosquare.Net
         /// <value>
         /// An <see cref="Object"/> used to synchronize access to the collection.
         /// </value>
-        public Object SyncRoot
-        {
-            get
-            {
-                return _sync ?? (_sync = ((ICollection)_list).SyncRoot);
-            }
-        }
+        public Object SyncRoot => _sync ?? (_sync = ((ICollection) _list).SyncRoot);
 
         #endregion
 
         #region Private Methods
 
-        private static int compareCookieWithinSort(Cookie x, Cookie y)
+        private static int CompareCookieWithinSort(Cookie x, Cookie y)
         {
             return (x.Name.Length + x.Value.Length) - (y.Name.Length + y.Value.Length);
         }
 
-        private static int compareCookieWithinSorted(Cookie x, Cookie y)
+        private static int CompareCookieWithinSorted(Cookie x, Cookie y)
         {
             var ret = 0;
             return (ret = x.Version - y.Version) != 0
-                   ? ret
-                   : (ret = x.Name.CompareTo(y.Name)) != 0
-                     ? ret
-                     : y.Path.Length - x.Path.Length;
+                ? ret
+                : (ret = x.Name.CompareTo(y.Name)) != 0
+                    ? ret
+                    : y.Path.Length - x.Path.Length;
         }
 
-        private static CookieCollection parseRequest(string value)
+        private static CookieCollection ParseRequest(string value)
         {
             var cookies = new CookieCollection();
 
             Cookie cookie = null;
             var ver = 0;
-            var pairs = splitCookieHeaderValue(value);
-            for (var i = 0; i < pairs.Length; i++)
+            var pairs = SplitCookieHeaderValue(value);
+
+            foreach (var t in pairs)
             {
-                var pair = pairs[i].Trim();
+                var pair = t.Trim();
                 if (pair.Length == 0)
                     continue;
 
                 if (pair.StartsWith("$version", StringComparison.OrdinalIgnoreCase))
                 {
-                    ver = Int32.Parse(GetValue(pair, '=', true));
+                    ver = int.Parse(GetValue(pair, '=', true));
                 }
                 else if (pair.StartsWith("$path", StringComparison.OrdinalIgnoreCase))
                 {
@@ -223,8 +192,8 @@ namespace Unosquare.Net
                 else if (pair.StartsWith("$port", StringComparison.OrdinalIgnoreCase))
                 {
                     var port = pair.Equals("$port", StringComparison.OrdinalIgnoreCase)
-                               ? "\"\""
-                               : GetValue(pair, '=');
+                        ? "\"\""
+                        : GetValue(pair, '=');
 
                     if (cookie != null)
                         cookie.Port = port;
@@ -235,7 +204,7 @@ namespace Unosquare.Net
                         cookies.Add(cookie);
 
                     string name;
-                    string val = String.Empty;
+                    var val = String.Empty;
 
                     var pos = pair.IndexOf('=');
                     if (pos == -1)
@@ -274,12 +243,12 @@ namespace Unosquare.Net
             return unquote ? val.Unquote() : val;
         }
 
-        private static CookieCollection parseResponse(string value)
+        private static CookieCollection ParseResponse(string value)
         {
             var cookies = new CookieCollection();
 
             Cookie cookie = null;
-            var pairs = splitCookieHeaderValue(value);
+            var pairs = SplitCookieHeaderValue(value);
             for (var i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i].Trim();
@@ -299,11 +268,11 @@ namespace Unosquare.Net
 
                     DateTime expires;
                     if (!DateTime.TryParseExact(
-                      buff.ToString(),
-                      new[] { "ddd, dd'-'MMM'-'yyyy HH':'mm':'ss 'GMT'", "r" },
-                      new CultureInfo("en-US"),
-                      DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal,
-                      out expires))
+                        buff.ToString(),
+                        new[] {"ddd, dd'-'MMM'-'yyyy HH':'mm':'ss 'GMT'", "r"},
+                        new CultureInfo("en-US"),
+                        DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal,
+                        out expires))
                         expires = DateTime.Now;
 
                     if (cookie != null && cookie.Expires == DateTime.MinValue)
@@ -312,7 +281,7 @@ namespace Unosquare.Net
                 else if (pair.StartsWith("max-age", StringComparison.OrdinalIgnoreCase))
                 {
                     var max = Int32.Parse(GetValue(pair, '=', true));
-                    var expires = DateTime.Now.AddSeconds((double)max);
+                    var expires = DateTime.Now.AddSeconds(max);
                     if (cookie != null)
                         cookie.Expires = expires;
                 }
@@ -329,8 +298,8 @@ namespace Unosquare.Net
                 else if (pair.StartsWith("port", StringComparison.OrdinalIgnoreCase))
                 {
                     var port = pair.Equals("port", StringComparison.OrdinalIgnoreCase)
-                               ? "\"\""
-                               : GetValue(pair, '=');
+                        ? "\"\""
+                        : GetValue(pair, '=');
 
                     if (cookie != null)
                         cookie.Port = port;
@@ -393,7 +362,7 @@ namespace Unosquare.Net
             return cookies;
         }
 
-        private int searchCookie(Cookie cookie)
+        private int SearchCookie(Cookie cookie)
         {
             var name = cookie.Name;
             var path = cookie.Path;
@@ -413,7 +382,7 @@ namespace Unosquare.Net
             return -1;
         }
 
-        private static string[] splitCookieHeaderValue(string value)
+        private static string[] SplitCookieHeaderValue(string value)
         {
             return new List<string>(value.SplitHeaderValue(',', ';')).ToArray();
         }
@@ -425,13 +394,13 @@ namespace Unosquare.Net
         internal static CookieCollection Parse(string value, bool response)
         {
             return response
-                   ? parseResponse(value)
-                   : parseRequest(value);
+                ? ParseResponse(value)
+                : ParseRequest(value);
         }
 
         internal void SetOrRemove(Cookie cookie)
         {
-            var pos = searchCookie(cookie);
+            var pos = SearchCookie(cookie);
             if (pos == -1)
             {
                 if (!cookie.Expired)
@@ -458,7 +427,7 @@ namespace Unosquare.Net
         internal void Sort()
         {
             if (_list.Count > 1)
-                _list.Sort(compareCookieWithinSort);
+                _list.Sort(CompareCookieWithinSort);
         }
 
         #endregion
@@ -477,9 +446,9 @@ namespace Unosquare.Net
         public void Add(Cookie cookie)
         {
             if (cookie == null)
-                throw new ArgumentNullException("cookie");
+                throw new ArgumentNullException(nameof(cookie));
 
-            var pos = searchCookie(cookie);
+            var pos = SearchCookie(cookie);
             if (pos == -1)
             {
                 _list.Add(cookie);
@@ -501,7 +470,7 @@ namespace Unosquare.Net
         public void Add(CookieCollection cookies)
         {
             if (cookies == null)
-                throw new ArgumentNullException("cookies");
+                throw new ArgumentNullException(nameof(cookies));
 
             foreach (Cookie cookie in cookies)
                 Add(cookie);
@@ -544,23 +513,23 @@ namespace Unosquare.Net
         public void CopyTo(Array array, int index)
         {
             if (array == null)
-                throw new ArgumentNullException("array");
+                throw new ArgumentNullException(nameof(array));
 
             if (index < 0)
-                throw new ArgumentOutOfRangeException("index", "Less than zero.");
+                throw new ArgumentOutOfRangeException(nameof(index), "Less than zero.");
 
             if (array.Rank > 1)
-                throw new ArgumentException("Multidimensional.", "array");
+                throw new ArgumentException("Multidimensional.", nameof(array));
 
             if (array.Length - index < _list.Count)
                 throw new ArgumentException(
-                  "The number of elements in this collection is greater than the available space of the destination array.");
+                    "The number of elements in this collection is greater than the available space of the destination array.");
 
             if (!array.GetType().GetElementType().IsAssignableFrom(typeof(Cookie)))
                 throw new InvalidCastException(
-                  "The elements in this collection cannot be cast automatically to the type of the destination array.");
+                    "The elements in this collection cannot be cast automatically to the type of the destination array.");
 
-            ((IList)_list).CopyTo(array, index);
+            ((IList) _list).CopyTo(array, index);
         }
 
         /// <summary>
@@ -588,14 +557,14 @@ namespace Unosquare.Net
         public void CopyTo(Cookie[] array, int index)
         {
             if (array == null)
-                throw new ArgumentNullException("array");
+                throw new ArgumentNullException(nameof(array));
 
             if (index < 0)
-                throw new ArgumentOutOfRangeException("index", "Less than zero.");
+                throw new ArgumentOutOfRangeException(nameof(index), "Less than zero.");
 
             if (array.Length - index < _list.Count)
                 throw new ArgumentException(
-                  "The number of elements in this collection is greater than the available space of the destination array.");
+                    "The number of elements in this collection is greater than the available space of the destination array.");
 
             _list.CopyTo(array, index);
         }
@@ -614,4 +583,5 @@ namespace Unosquare.Net
         #endregion
     }
 }
+
 #endif

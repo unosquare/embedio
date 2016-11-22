@@ -109,7 +109,7 @@ namespace Unosquare.Net
                     throw new InvalidOperationException("Cannot be changed after headers are sent.");
 
                 if (value < 0)
-                    throw new ArgumentOutOfRangeException("Must be >= 0", "value");
+                    throw new ArgumentOutOfRangeException(nameof(value), "Must be >= 0");
 
                 _clSet = true;
                 _contentLength = value;
@@ -149,12 +149,7 @@ namespace Unosquare.Net
         /// </value>
         public CookieCollection Cookies
         {
-            get
-            {
-                if (_cookies == null)
-                    _cookies = new CookieCollection();
-                return _cookies;
-            }
+            get { return _cookies ?? (_cookies = new CookieCollection()); }
             set { _cookies = value; } // null allowed?
         }
 
@@ -286,7 +281,7 @@ namespace Unosquare.Net
         /// </value>
         /// <exception cref="System.ObjectDisposedException"></exception>
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
-        /// <exception cref="ProtocolViolationException">StatusCode must be between 100 and 999.</exception>
+        /// <exception cref="System.Net.ProtocolViolationException">StatusCode must be between 100 and 999.</exception>
         public int StatusCode
         {
             get { return _statusCode; }
@@ -450,7 +445,7 @@ namespace Unosquare.Net
             _location = url;
         }
 
-        bool FindCookie(System.Net.Cookie cookie)
+        private bool FindCookie(System.Net.Cookie cookie)
         {
             var name = cookie.Name;
             var domain = cookie.Domain;
@@ -471,9 +466,7 @@ namespace Unosquare.Net
 
         internal void SendHeaders(bool closing, MemoryStream ms)
         {
-            var encoding = _contentEncoding;
-            if (encoding == null)
-                encoding = Encoding.GetEncoding(0);
+            var encoding = _contentEncoding ?? Encoding.GetEncoding(0);
 
             if (_contentType != null)
             {
@@ -578,7 +571,7 @@ namespace Unosquare.Net
             HeadersSent = true;
         }
 
-        static string FormatHeaders(WebHeaderCollection headers)
+        private static string FormatHeaders(WebHeaderCollection headers)
         {
             var sb = new StringBuilder();
 
@@ -636,7 +629,7 @@ namespace Unosquare.Net
 
         static readonly string _tspecials = "()<>@,;:\\\"/[]?={} \t";   // from RFC 2965, 2068
 
-        static bool IsToken(string value)
+        private static bool IsToken(string value)
         {
             var len = value.Length;
             for (var i = 0; i < len; i++)

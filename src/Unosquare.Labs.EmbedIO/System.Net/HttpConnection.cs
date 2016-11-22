@@ -123,13 +123,7 @@ namespace Unosquare.Net
 
         public int Reuses { get; private set; }
 
-        public Stream Stream
-        {
-            get
-            {
-                return _stream;
-            }
-        }
+        public Stream Stream => _stream;
 
         public IPEndPoint LocalEndPoint
         {
@@ -176,21 +170,20 @@ namespace Unosquare.Net
 
         public RequestStream GetRequestStream(bool chunked, long contentlength)
         {
-            if (_iStream == null)
+            if (_iStream != null) return _iStream;
+
+            var buffer = _ms.GetBuffer();
+            var length = (int) _ms.Length;
+            _ms = null;
+            if (chunked)
             {
-                var buffer = _ms.GetBuffer();
-                var length = (int) _ms.Length;
-                _ms = null;
-                if (chunked)
-                {
-                    _chunked = true;
-                    _context.Response.SendChunked = true;
-                    _iStream = new ChunkedInputStream(_context, _stream, buffer, _position, length - _position);
-                }
-                else
-                {
-                    _iStream = new RequestStream(_stream, buffer, _position, length - _position, contentlength);
-                }
+                _chunked = true;
+                _context.Response.SendChunked = true;
+                _iStream = new ChunkedInputStream(_context, _stream, buffer, _position, length - _position);
+            }
+            else
+            {
+                _iStream = new RequestStream(_stream, buffer, _position, length - _position, contentlength);
             }
             return _iStream;
         }

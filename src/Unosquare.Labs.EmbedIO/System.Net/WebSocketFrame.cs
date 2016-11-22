@@ -256,127 +256,7 @@ namespace Unosquare.Net
 
             return key;
         }
-
-        private static string Dump(WebSocketFrame frame)
-        {
-            var len = frame.Length;
-            var cnt = (long)(len / 4);
-            var rem = (int)(len % 4);
-
-            int cntDigit;
-            string cntFmt;
-            if (cnt < 10000)
-            {
-                cntDigit = 4;
-                cntFmt = "{0,4}";
-            }
-            else if (cnt < 0x010000)
-            {
-                cntDigit = 4;
-                cntFmt = "{0,4:X}";
-            }
-            else if (cnt < 0x0100000000)
-            {
-                cntDigit = 8;
-                cntFmt = "{0,8:X}";
-            }
-            else
-            {
-                cntDigit = 16;
-                cntFmt = "{0,16:X}";
-            }
-
-            var spFmt = String.Format("{{0,{0}}}", cntDigit);
-            var headerFmt = String.Format(@"
-{0} 01234567 89ABCDEF 01234567 89ABCDEF
-{0}+--------+--------+--------+--------+\n", spFmt);
-            var lineFmt = String.Format("{0}|{{1,8}} {{2,8}} {{3,8}} {{4,8}}|\n", cntFmt);
-            var footerFmt = String.Format("{0}+--------+--------+--------+--------+", spFmt);
-
-            var output = new StringBuilder(64);
-            Func<Action<string, string, string, string>> linePrinter = () =>
-            {
-                long lineCnt = 0;
-                return (arg1, arg2, arg3, arg4) =>
-                  output.AppendFormat(lineFmt, ++lineCnt, arg1, arg2, arg3, arg4);
-            };
-            var printLine = linePrinter();
-
-            output.AppendFormat(headerFmt, String.Empty);
-
-            var bytes = frame.ToArray();
-            for (long i = 0; i <= cnt; i++)
-            {
-                var j = i * 4;
-                if (i < cnt)
-                {
-                    printLine(
-                      Convert.ToString(bytes[j], 2).PadLeft(8, '0'),
-                      Convert.ToString(bytes[j + 1], 2).PadLeft(8, '0'),
-                      Convert.ToString(bytes[j + 2], 2).PadLeft(8, '0'),
-                      Convert.ToString(bytes[j + 3], 2).PadLeft(8, '0'));
-
-                    continue;
-                }
-
-                if (rem > 0)
-                    printLine(
-                      Convert.ToString(bytes[j], 2).PadLeft(8, '0'),
-                      rem >= 2 ? Convert.ToString(bytes[j + 1], 2).PadLeft(8, '0') : String.Empty,
-                      rem == 3 ? Convert.ToString(bytes[j + 2], 2).PadLeft(8, '0') : String.Empty,
-                      string.Empty);
-            }
-
-            output.AppendFormat(footerFmt, string.Empty);
-            return output.ToString();
-        }
-
-        private static string print(WebSocketFrame frame)
-        {
-            // Payload Length
-            var payloadLen = frame.PayloadLength;
-
-            // Extended Payload Length
-            var extPayloadLen = payloadLen > 125 ? frame.FullPayloadLength.ToString() : String.Empty;
-
-            // Masking Key
-            var maskingKey = BitConverter.ToString(frame.MaskingKey);
-
-            // Payload Data
-            var payload = payloadLen == 0
-                          ? string.Empty
-                          : payloadLen > 125
-                            ? "---"
-                            : frame.IsText && !(frame.IsFragment || frame.IsMasked || frame.IsCompressed)
-                              ? frame.PayloadData.ApplicationData.UTF8Decode()
-                              : frame.PayloadData.ToString();
-
-            const string fmt = @"
-                    FIN: {0}
-                   RSV1: {1}
-                   RSV2: {2}
-                   RSV3: {3}
-                 Opcode: {4}
-                   MASK: {5}
-         Payload Length: {6}
-Extended Payload Length: {7}
-            Masking Key: {8}
-           Payload Data: {9}";
-
-            return string.Format(
-              fmt,
-              frame.Fin,
-              frame.Rsv1,
-              frame.Rsv2,
-              frame.Rsv3,
-              frame.Opcode,
-              frame.Mask,
-              payloadLen,
-              extPayloadLen,
-              maskingKey,
-              payload);
-        }
-
+        
         private static WebSocketFrame ProcessHeader(byte[] header)
         {
             if (header.Length != 2)
@@ -673,15 +553,38 @@ Extended Payload Length: {7}
         {
             return ((IEnumerable<byte>) ToArray()).GetEnumerator();
         }
-
-        public void Print(bool dumped)
+        
+        public string PrintToString()
         {
-            Console.WriteLine(dumped ? Dump(this) : print(this));
-        }
+            // Payload Length
+            var payloadLen = PayloadLength;
 
-        public string PrintToString(bool dumped)
-        {
-            return dumped ? Dump(this) : print(this);
+            // Extended Payload Length
+            var extPayloadLen = payloadLen > 125 ? FullPayloadLength.ToString() : string.Empty;
+
+            // Masking Key
+            var maskingKey = BitConverter.ToString(MaskingKey);
+
+            // Payload Data
+            var payload = payloadLen == 0
+                          ? string.Empty
+                          : payloadLen > 125
+                            ? "---"
+                            : IsText && !(IsFragment || IsMasked || IsCompressed)
+                              ? Encoding.UTF8.GetString(PayloadData.ApplicationData)
+                              : PayloadData.ToString();
+            
+            return $@"
+                    FIN: {Fin}
+                   RSV1: {Rsv1}
+                   RSV2: {Rsv2}
+                   RSV3: {Rsv3}
+                 Opcode: {Opcode}
+                   MASK: {Mask}
+         Payload Length: {payloadLen}
+Extended Payload Length: {extPayloadLen}
+            Masking Key: {maskingKey}
+           Payload Data: {payload}";
         }
 
         public byte[] ToArray()

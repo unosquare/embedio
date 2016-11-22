@@ -150,7 +150,7 @@ namespace Unosquare.Net
             var buff = ToByteArray();
             stream.Write(buff, 0, buff.Length);
 
-            return Read<HttpResponse>(stream, HttpResponse.Parse, millisecondsTimeout);
+            return Read(stream, HttpResponse.Parse, millisecondsTimeout);
         }
 
         internal static HttpRequest Parse(string[] headerParts)

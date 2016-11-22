@@ -498,16 +498,7 @@ namespace Unosquare.Net
         /// <value>
         /// The cookies.
         /// </value>
-        public CookieCollection Cookies
-        {
-            get
-            {
-                // TODO: check if the collection is read-only
-                if (_cookies == null)
-                    _cookies = new CookieCollection();
-                return _cookies;
-            }
-        }
+        public CookieCollection Cookies => _cookies ?? (_cookies = new CookieCollection());
 
         /// <summary>
         /// Gets a value indicating whether this instance has entity body.

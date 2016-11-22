@@ -87,7 +87,7 @@ namespace Unosquare.Net
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
             if (off < 0)
-                throw new ArgumentOutOfRangeException("offset", "< 0");
+                throw new ArgumentOutOfRangeException(nameof(off), "< 0");
             if (count < 0)
                 throw new ArgumentOutOfRangeException(nameof(count), "< 0");
             var len = buffer.Length;
@@ -179,11 +179,13 @@ namespace Unosquare.Net
                 throw new ObjectDisposedException(typeof(RequestStream).ToString());
 
             if (ares == null)
-                throw new ArgumentNullException("async_result");
+                throw new ArgumentNullException(nameof(ares));
 
-            if (ares is HttpStreamAsyncResult)
+            var result = ares as HttpStreamAsyncResult;
+
+            if (result != null)
             {
-                var r = (HttpStreamAsyncResult)ares;
+                var r = result;
                 if (!ares.IsCompleted)
                     ares.AsyncWaitHandle.WaitOne();
                 return r.SynchRead;

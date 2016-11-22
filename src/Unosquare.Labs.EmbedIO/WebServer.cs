@@ -184,10 +184,8 @@
 
             foreach (var prefix in urlPrefixes)
             {
-                // TODO: Previous clone
                 var urlPrefix =new String(prefix?.ToCharArray());
-                if (urlPrefix == null) continue;
-
+                
                 if (urlPrefix.EndsWith("/") == false) urlPrefix = urlPrefix + "/";
                 urlPrefix = urlPrefix.ToLowerInvariant();
 

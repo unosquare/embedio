@@ -364,7 +364,7 @@
     /// Decorate methods within controllers with this attribute in order to make them callable from the Web API Module
     /// Method Must match the WebServerModule.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Method)]
     public class WebApiHandlerAttribute : Attribute
     {
         /// <summary>
@@ -394,7 +394,7 @@
                 throw new ArgumentException("The argument 'path' must be specified.");
 
             Verb = verb;
-            Paths = new string[] { path };
+            Paths = new [] { path };
         }
 
         /// <summary>

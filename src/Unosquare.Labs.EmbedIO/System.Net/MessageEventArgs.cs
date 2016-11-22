@@ -28,6 +28,7 @@
 #endregion
 
 using System;
+using System.Text;
 
 namespace Unosquare.Net
 {
@@ -160,7 +161,7 @@ namespace Unosquare.Net
                 return;
             }
 
-            _data = _rawData.UTF8Decode();
+            _data = Encoding.UTF8.GetString(_rawData);
             _dataSet = true;
         }
 

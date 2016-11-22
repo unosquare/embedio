@@ -12,6 +12,7 @@
     using System.Net.WebSockets;
 #else
     using Net;
+
 #endif
 
     /// <summary>
@@ -66,7 +67,7 @@
         public void RegisterWebSocketsServer<T>()
             where T : WebSocketsServer, new()
         {
-            RegisterWebSocketsServer(typeof (T));
+            RegisterWebSocketsServer(typeof(T));
         }
 
         /// <summary>
@@ -80,7 +81,8 @@
                 throw new ArgumentException("Argument 'socketType' cannot be null", nameof(socketType));
 
             var attribute =
-                socketType.GetTypeInfo().GetCustomAttributes(typeof (WebSocketHandlerAttribute), true).FirstOrDefault() as
+                socketType.GetTypeInfo().GetCustomAttributes(typeof(WebSocketHandlerAttribute), true).FirstOrDefault()
+                    as
                     WebSocketHandlerAttribute;
 
             if (attribute == null)
@@ -271,14 +273,15 @@
                 _mWebSockets.Add(webSocketContext);
             }
 
-            server.Log.DebugFormat($"{ServerName} - WebSocket Accepted - There are {WebSockets.Count} sockets connected.");
+            server.Log.DebugFormat(
+                $"{ServerName} - WebSocket Accepted - There are {WebSockets.Count} sockets connected.");
             // call the abstract member
             this.OnClientConnected(webSocketContext);
 
             try
             {
 #if NET46
-                // define a receive buffer
+// define a receive buffer
                 var receiveBuffer = new byte[receiveBufferSize];
                 // define a dynamic buffer that holds multi-part receptions
                 var receivedMessage = new List<byte>(receiveBuffer.Length * 2);
@@ -327,13 +330,13 @@
 #else
                 // TODO: Pending OnFrameReceived
                 webSocketContext.WebSocket.OnMessage += (s, e) =>
-                    {
-                        var isText = e.IsText ? WebSocketMessageType.Text : WebSocketMessageType.Binary;
+                {
+                    var isText = e.IsText ? WebSocketMessageType.Text : WebSocketMessageType.Binary;
 
-                        OnMessageReceived(webSocketContext,
-                            e.RawData,
-                            new WebSocketReceiveResult(e.RawData.Length, isText, e.Opcode == Opcode.Close));
-                    };
+                    OnMessageReceived(webSocketContext,
+                        e.RawData,
+                        new WebSocketReceiveResult(e.RawData.Length, isText, e.Opcode == Opcode.Close));
+                };
 
                 while (webSocketContext.WebSocket.IsConnected)
                 {

@@ -30,6 +30,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Unosquare.Net
 {
@@ -148,7 +149,7 @@ namespace Unosquare.Net
                 if (!_reasonSet)
                 {
                     _reason = _length > 2
-                              ? _data.SubArray(2, _length - 2).UTF8Decode()
+                              ? Encoding.UTF8.GetString(_data.SubArray(2, _length - 2))
                               : string.Empty;
 
                     _reasonSet = true;

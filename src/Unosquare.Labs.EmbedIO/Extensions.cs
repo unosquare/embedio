@@ -438,7 +438,7 @@
             if (string.IsNullOrWhiteSpace(requestBody)) return null;
 
             // define a character for KV pairs
-            var kvpSeparator = new char[] { '=' };
+            var kvpSeparator = new [] { '=' };
 
             // Create the result object
             var resultDictionary = new Dictionary<string, object>();
@@ -463,7 +463,7 @@
 
                 // Decode the key and the value. Discard Special Characters
                 var key = System.Net.WebUtility.UrlDecode(kvpsParts[0]);
-                if (key.IndexOf("[") > 0) key = key.Substring(0, key.IndexOf("["));
+                if (key.IndexOf("[", StringComparison.OrdinalIgnoreCase) > 0) key = key.Substring(0, key.IndexOf("[", StringComparison.OrdinalIgnoreCase));
 
                 var value = kvpsParts.Length >= 2 ? System.Net.WebUtility.UrlDecode(kvpsParts[1]) : null;
 
@@ -477,7 +477,7 @@
                         // if we don't have a list value for this key, then create one and add the existing item
                         var existingValue = resultDictionary[key] as string;
                         resultDictionary[key] = new List<string>();
-                        listValue = resultDictionary[key] as List<string>;
+                        listValue = (List<string>) resultDictionary[key];
                         listValue.Add(existingValue);
                     }
 
@@ -567,9 +567,9 @@
         {
             var sb = new StringBuilder();
 
-            for (var i = 0; i < hash.Length; i++)
+            foreach (var t in hash)
             {
-                sb.Append(hash[i].ToString("x2"));
+                sb.Append(t.ToString("x2"));
             }
 
             return sb.ToString();
