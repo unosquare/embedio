@@ -1,5 +1,4 @@
-﻿#if !MONO
-using Unosquare.Labs.LiteLib;
+﻿using Unosquare.Labs.LiteLib;
 
 namespace Unosquare.Labs.EmbedIO.Samples
 {
@@ -14,4 +13,3 @@ namespace Unosquare.Labs.EmbedIO.Samples
         public LiteDbSet<Person> People { get; set; }
     }
 }
-#endif

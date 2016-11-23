@@ -4,15 +4,13 @@
     using System.Collections.Generic;
     using System.Linq;
     using Unosquare.Labs.EmbedIO.Modules;
+    using System.Threading.Tasks;
+    using Tubular;
+    using Unosquare.Tubular.ObjectModel;
 #if NET46
     using System.Net;
 #else
     using Unosquare.Net;
-#endif
-    using System.Threading.Tasks;
-#if !MONO
-    using Tubular;
-        using Unosquare.Tubular.ObjectModel;
 #endif
 
     /// <summary>
@@ -22,12 +20,9 @@
     /// </summary>
     public class PeopleController : WebApiController
     {
-#if !MONO
         private readonly AppDbContext _dbContext = new AppDbContext();
-#endif
         private const string RelativePath = "/api/";
 
-#if !MONO
         /// <summary>
         /// Gets the people.
         /// This will respond to 
@@ -105,7 +100,7 @@
                 return HandleError(context, ex);
             }
         }
-#endif
+
         /// <summary>
         /// Echoes the request form data in JSON format
         /// </summary>
