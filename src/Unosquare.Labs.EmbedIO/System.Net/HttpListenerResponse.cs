@@ -596,7 +596,7 @@ namespace Unosquare.Net
             return sb.Append("\r\n").ToString();
         }
 
-        static string CookieToClientString(System.Net.Cookie cookie)
+        private static string CookieToClientString(System.Net.Cookie cookie)
         {
             if (cookie.Name.Length == 0)
                 return string.Empty;
@@ -620,27 +620,11 @@ namespace Unosquare.Net
             return result.ToString();
         }
 
-        static string QuotedString(System.Net.Cookie cookie, string value)
+        private static string QuotedString(System.Net.Cookie cookie, string value)
         {
-            if (cookie.Version == 0 || IsToken(value))
-                return value;
-            return "\"" + value.Replace("\"", "\\\"") + "\"";
+            return cookie.Version == 0 || value.IsToken() ? value : "\"" + value.Replace("\"", "\\\"") + "\"";
         }
-
-        static readonly string _tspecials = "()<>@,;:\\\"/[]?={} \t";   // from RFC 2965, 2068
-
-        private static bool IsToken(string value)
-        {
-            var len = value.Length;
-            for (var i = 0; i < len; i++)
-            {
-                var c = value[i];
-                if (c < 0x20 || c >= 0x7f || _tspecials.IndexOf(c) != -1)
-                    return false;
-            }
-            return true;
-        }
-
+        
         /// <summary>
         /// Sets the cookie.
         /// </summary>

@@ -89,7 +89,7 @@
                 throw new ArgumentException("Argument 'socketType' needs a WebSocketHandlerAttribute",
                     nameof(socketType));
 
-            this._serverMap[attribute.Path] = (WebSocketsServer) Activator.CreateInstance(socketType);
+            _serverMap[attribute.Path] = (WebSocketsServer) Activator.CreateInstance(socketType);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@
             if (string.IsNullOrWhiteSpace(path))
                 throw new ArgumentException("Argument 'path' cannot be null", nameof(path));
 
-            this._serverMap[path] = Activator.CreateInstance<T>();
+            _serverMap[path] = Activator.CreateInstance<T>();
         }
 
         /// <summary>
@@ -122,7 +122,7 @@
             if (server == null)
                 throw new ArgumentException("Argument 'server' cannot be null", nameof(server));
 
-            this._serverMap[path] = server;
+            _serverMap[path] = server;
         }
     }
 
@@ -143,7 +143,7 @@
             if (string.IsNullOrWhiteSpace(path))
                 throw new ArgumentException("The argument 'path' must be specified.");
 
-            this.Path = path;
+            Path = path;
         }
 
         /// <summary>
@@ -197,8 +197,8 @@
         /// <param name="maxMessageSize">Maximum size of the message in bytes. Enter 0 or negative number to prevent checks.</param>
         protected WebSocketsServer(bool enableConnectionWatchdog, int maxMessageSize)
         {
-            this._enableDisconnectedSocketColletion = enableConnectionWatchdog;
-            this._maximumMessageSize = maxMessageSize;
+            _enableDisconnectedSocketColletion = enableConnectionWatchdog;
+            _maximumMessageSize = maxMessageSize;
 
             RunConnectionWatchdog();
         }
@@ -249,7 +249,7 @@
         public void AcceptWebSocket(WebServer server, HttpListenerContext context)
         {
             // first, accept the websocket
-            this.WebServer = server;
+            WebServer = server;
             server.Log.DebugFormat("{0} - Accepting WebSocket . . .", ServerName);
 #if NET46
             const int receiveBufferSize = 2048;
@@ -266,7 +266,7 @@
 #endif
 
             // remove the disconnected clients
-            this.CollectDisconnected();
+            CollectDisconnected();
             lock (_syncRoot)
             {
                 // add the newly-connected client
@@ -276,7 +276,7 @@
             server.Log.DebugFormat(
                 $"{ServerName} - WebSocket Accepted - There are {WebSockets.Count} sockets connected.");
             // call the abstract member
-            this.OnClientConnected(webSocketContext);
+            OnClientConnected(webSocketContext);
 
             try
             {
@@ -346,7 +346,7 @@
             }
             catch (Exception ex)
             {
-                server.Log.ErrorFormat("{0} - Error: {1}", this.ServerName, ex);
+                server.Log.ErrorFormat("{0} - Error: {1}", ServerName, ex);
             }
             finally
             {
@@ -382,9 +382,9 @@
             var collectedCount = 0;
             lock (_syncRoot)
             {
-                for (var i = this._mWebSockets.Count - 1; i >= 0; i--)
+                for (var i = _mWebSockets.Count - 1; i >= 0; i--)
                 {
-                    var currentSocket = this._mWebSockets[i];
+                    var currentSocket = _mWebSockets[i];
                     if (currentSocket.WebSocket != null &&
                         currentSocket.WebSocket.State != WebSocketState.Open)
                     {
@@ -394,8 +394,8 @@
                 }
             }
 
-            this.WebServer?.Log.DebugFormat("{0} - Collected {1} sockets. WebSocket Count: {2}", this.ServerName,
-                collectedCount, this.WebSockets.Count);
+            WebServer?.Log.DebugFormat("{0} - Collected {1} sockets. WebSocket Count: {2}", ServerName,
+                collectedCount, WebSockets.Count);
         }
 
         /// <summary>
@@ -452,9 +452,9 @@
         /// <param name="payload">The payload.</param>
         protected virtual void Broadcast(byte[] payload)
         {
-            var sockets = this.WebSockets.ToArray();
+            var sockets = WebSockets.ToArray();
             foreach (var wsc in sockets)
-                this.Send(wsc, payload);
+                Send(wsc, payload);
         }
 
         /// <summary>
@@ -463,9 +463,9 @@
         /// <param name="payload">The payload.</param>
         protected virtual void Broadcast(string payload)
         {
-            var sockets = this.WebSockets.ToArray();
+            var sockets = WebSockets.ToArray();
             foreach (var wsc in sockets)
-                this.Send(wsc, payload);
+                Send(wsc, payload);
         }
 
         /// <summary>
@@ -530,10 +530,10 @@
         /// </summary>
         public void Dispose()
         {
-            if (this._isDisposing == false)
+            if (_isDisposing == false)
             {
-                this._isDisposing = true;
-                this.Dispose(true);
+                _isDisposing = true;
+                Dispose(true);
                 GC.SuppressFinalize(this);
             }
         }
@@ -548,7 +548,7 @@
             // if called with false, return.
             if (disposeAll == false) return;
 
-            foreach (var webSocket in this._mWebSockets)
+            foreach (var webSocket in _mWebSockets)
             {
                 Close(webSocket);
             }

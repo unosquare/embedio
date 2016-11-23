@@ -288,16 +288,7 @@ namespace Unosquare.Net
                 output.InternalWrite(_100Continue, 0, _100Continue.Length);
             }
         }
-
-        internal static string Unquote(string str)
-        {
-            var start = str.IndexOf('\"');
-            var end = str.LastIndexOf('\"');
-            if (start >= 0 && end >= 0)
-                str = str.Substring(start + 1, end - 1);
-            return str.Trim();
-        }
-
+        
         internal void AddHeader(string header)
         {
             var colon = header.IndexOf(':');
@@ -359,7 +350,7 @@ namespace Unosquare.Net
                             continue;
                         if (str.StartsWith("$Version"))
                         {
-                            version = int.Parse(Unquote(str.Substring(str.IndexOf('=') + 1)));
+                            version = int.Parse(str.Substring(str.IndexOf('=') + 1).Unquote());
                         }
                         else if (str.StartsWith("$Path"))
                         {

@@ -106,7 +106,7 @@ namespace Unosquare.Net
                 {
                     try
                     {
-                        byte[] bytes = null;
+                        byte[] bytes;
                         if (ms != null)
                         {
                             var start = ms.Position;
@@ -156,7 +156,8 @@ namespace Unosquare.Net
         }
 
         static readonly byte[] _crlf = { 13, 10 };
-        static byte[] GetChunkSizeBytes(int size, bool final)
+
+        private static byte[] GetChunkSizeBytes(int size, bool final)
         {
             var str = string.Format("{0:x}\r\n{1}", size, final ? "\r\n" : "");
             return Encoding.GetEncoding(0).GetBytes(str);

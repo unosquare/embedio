@@ -80,10 +80,6 @@ namespace Unosquare.Net
         /// <summary>
         /// Gets the opcode for the message.
         /// </summary>
-        /// <value>
-        /// <see cref="Opcode.Text"/>, <see cref="Opcode.Binary"/>,
-        /// or <see cref="Opcode.Ping"/>.
-        /// </value>
         internal Opcode Opcode { get; }
 
 #endregion

@@ -9,12 +9,10 @@
     using System.Linq;
     using System.Reflection;
     using Unosquare.Labs.EmbedIO.Modules;
-    
+
     public static class TestHelper
     {
         private const string Placeholder = "This is a placeholder";
-
-        public static readonly bool IsMono = Type.GetType("Mono.Runtime") != null;
 
         public const string BigDataFile = "bigdata.bin";
 
@@ -22,7 +20,7 @@
 
         public static string RootPath()
         {
-            var assemblyPath = Path.GetDirectoryName(typeof (StaticFilesModuleTest).GetTypeInfo().Assembly.Location);
+            var assemblyPath = Path.GetDirectoryName(typeof(StaticFilesModuleTest).GetTypeInfo().Assembly.Location);
             return Path.Combine(assemblyPath, "html");
         }
 
@@ -79,7 +77,7 @@
         {
             var folderName = instanceName.Replace('/', Path.DirectorySeparatorChar);
             var folder =
-                Path.Combine(Path.GetDirectoryName(typeof (StaticFilesModuleTest).GetTypeInfo().Assembly.Location),
+                Path.Combine(Path.GetDirectoryName(typeof(StaticFilesModuleTest).GetTypeInfo().Assembly.Location),
                     folderName);
 
             if (Directory.Exists(folder) == false)

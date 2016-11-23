@@ -156,20 +156,14 @@ namespace Unosquare.Net
                 yield return buff.ToString();
         }
 
-        internal static string Unquote(this string value)
+        internal static string Unquote(this string str)
         {
-            var start = value.IndexOf('"');
-            if (start < 0)
-                return value;
+            var start = str.IndexOf('\"');
+            var end = str.LastIndexOf('\"');
 
-            var end = value.LastIndexOf('"');
-            var len = end - start - 1;
-
-            return len < 0
-                   ? value
-                   : len == 0
-                     ? string.Empty
-                     : value.Substring(start + 1, len).Replace("\\\"", "\"");
+            if (start >= 0 && end >= 0)
+                str = str.Substring(start + 1, end - 1);
+            return str.Trim();
         }
 
         /// <summary>

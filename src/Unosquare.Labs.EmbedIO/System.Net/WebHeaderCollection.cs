@@ -957,7 +957,7 @@ namespace Unosquare.Net
         /// the specified <paramref name="value"/> to the collection.
         /// </summary>
         /// <param name="header">
-        /// One of the <see cref="HttpResponseHeader"/> enum values, represents
+        /// One of the <see cref="System.Net.HttpResponseHeader"/> enum values, represents
         /// the response header to add.
         /// </param>
         /// <param name="value">
@@ -1133,7 +1133,7 @@ namespace Unosquare.Net
         /// Removes the specified response <paramref name="header"/> from the collection.
         /// </summary>
         /// <param name="header">
-        /// One of the <see cref="HttpResponseHeader"/> enum values, represents
+        /// One of the <see cref="System.Net.HttpResponseHeader"/> enum values, represents
         /// the response header to remove.
         /// </param>
         /// <exception cref="ArgumentException">
@@ -1214,7 +1214,7 @@ namespace Unosquare.Net
         /// Sets the specified response <paramref name="header"/> to the specified value.
         /// </summary>
         /// <param name="header">
-        /// One of the <see cref="HttpResponseHeader"/> enum values, represents
+        /// One of the <see cref="System.Net.HttpResponseHeader"/> enum values, represents
         /// the response header to set.
         /// </param>
         /// <param name="value">

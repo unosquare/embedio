@@ -1,10 +1,12 @@
-﻿#if !NETCOREAPP1_0
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using System;
+#if !NETCOREAPP1_0
     using System.Net.WebSockets;
+#endif
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Reflection;
     using NUnit.Framework;
     using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Labs.EmbedIO.Tests.TestObjects;
@@ -18,25 +20,21 @@ namespace Unosquare.Labs.EmbedIO.Tests
         [SetUp]
         public void Init()
         {
-            WebServer = new WebServer(Resources.WsServerAddress.Replace("ws", "http"), Logger).WithWebSocket(typeof (TestWebSocket).Assembly);
+            WebServer = new WebServer(Resources.WsServerAddress.Replace("ws", "http"), Logger).WithWebSocket(typeof (TestWebSocket).GetTypeInfo().Assembly);
             WebServer.RunAsync();
         }
 
         [Test]
         public async Task TestConnectWebSocket()
         {
-            if (TestHelper.IsMono)
-            {
-                Assert.Inconclusive("Mono doesn't have support to WebSockets");
-            }
-
             Assert.IsNotNull(WebServer.Module<WebSocketsModule>(), "WebServer has WebSocketsModule");
 
             Assert.AreEqual(WebServer.Module<WebSocketsModule>().Handlers.Count, 1, "WebSocketModule has one handler");
 
+#if !NETCOREAPP1_0
             var clientSocket = new ClientWebSocket();
             var ct = new CancellationTokenSource();
-            await clientSocket.ConnectAsync(new Uri(Resources.WsServerAddress + "/test"), ct.Token);
+            await clientSocket.ConnectAsync(new Uri(Resources.WsServerAddress + "test"), ct.Token);
 
             Assert.AreEqual(clientSocket.State, WebSocketState.Open, "Connection is open");
 
@@ -48,6 +46,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
 
             Assert.IsTrue(result.EndOfMessage);
             Assert.IsTrue(System.Text.Encoding.UTF8.GetString(buffer.Array).TrimEnd((char) 0) == "WELCOME");
+#endif
         }
 
         [TearDown]
@@ -58,4 +57,3 @@ namespace Unosquare.Labs.EmbedIO.Tests
         }
     }
 }
-#endif

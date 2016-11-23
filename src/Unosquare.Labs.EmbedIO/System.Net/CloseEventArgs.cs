@@ -51,12 +51,7 @@ namespace Unosquare.Net
         {
             PayloadData = PayloadData.Empty;
         }
-
-        internal CloseEventArgs(ushort code)
-          : this(code, null)
-        {
-        }
-
+        
         internal CloseEventArgs(CloseStatusCode code)
           : this((ushort)code, null)
         {

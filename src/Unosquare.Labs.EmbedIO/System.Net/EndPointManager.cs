@@ -33,7 +33,7 @@ using System.Net;
 
 namespace Unosquare.Net
 {
-    static class EndPointManager
+    internal static class EndPointManager
     {
         // Dictionary<IPAddress, Dictionary<int, EndPointListener>>
         static readonly Hashtable _ipToEndpoints = new Hashtable();
@@ -84,7 +84,7 @@ namespace Unosquare.Net
             epl.AddPrefix(lp, listener);
         }
 
-        static EndPointListener GetEpListener(string host, int port, HttpListener listener, bool secure)
+        private static EndPointListener GetEpListener(string host, int port, HttpListener listener, bool secure)
         {
             IPAddress addr;
             if (host == "*")
@@ -117,7 +117,7 @@ namespace Unosquare.Net
                 _ipToEndpoints[addr] = p;
             }
 
-            EndPointListener epl = null;
+            EndPointListener epl;
             if (p.ContainsKey(port))
             {
                 epl = (EndPointListener)p[port];
@@ -166,7 +166,7 @@ namespace Unosquare.Net
             }
         }
 
-        static void RemovePrefixInternal(string prefix, HttpListener listener)
+        private static void RemovePrefixInternal(string prefix, HttpListener listener)
         {
             var lp = new ListenerPrefix(prefix);
             if (lp.Path.IndexOf('%') != -1)

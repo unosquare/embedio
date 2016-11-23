@@ -14,8 +14,17 @@ namespace Unosquare.Net
     /// </summary>
     public enum WebSocketMessageType
     {
+        /// <summary>
+        /// The text
+        /// </summary>
         Text = 0,
+        /// <summary>
+        /// The binary
+        /// </summary>
         Binary = 1,
+        /// <summary>
+        /// The close
+        /// </summary>
         Close = 2
     }
 
@@ -82,11 +91,11 @@ namespace Unosquare.Net
                 throw new ArgumentOutOfRangeException(nameof(count));
             }
 
-            this.Count = count;
-            this.EndOfMessage = endOfMessage;
-            this.MessageType = messageType;
-            this.CloseStatus = closeStatus;
-            this.CloseStatusDescription = closeStatusDescription;
+            Count = count;
+            EndOfMessage = endOfMessage;
+            MessageType = messageType;
+            CloseStatus = closeStatus;
+            CloseStatusDescription = closeStatusDescription;
         }
 
         /// <summary>
