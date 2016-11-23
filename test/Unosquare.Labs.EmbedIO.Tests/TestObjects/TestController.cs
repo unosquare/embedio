@@ -3,9 +3,13 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Net;
     using System.Threading.Tasks;
     using Unosquare.Labs.EmbedIO.Modules;
+#if NET46
+    using System.Net;
+#else
+    using Unosquare.Net;
+#endif
 
     public class TestController : WebApiController
     {
@@ -35,7 +39,7 @@
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                context.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
                 return context.JsonResponse(ex);
             }
         }
@@ -64,7 +68,7 @@
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                context.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
                 return context.JsonResponse(ex);
             }
         }
@@ -80,7 +84,7 @@
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                context.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
                 return context.JsonResponse(ex);
             }
         }
@@ -96,11 +100,11 @@
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
                 return context.JsonResponse(ex);
             }
         }
-        
+
         [WebApiHandler(HttpVerbs.Get, "/" + GetAsyncPath + "*")]
         public async Task<bool> GetPeopleAsync(WebServer server, HttpListenerContext context)
         {
@@ -128,7 +132,7 @@
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                context.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
                 return context.JsonResponse(ex);
             }
         }

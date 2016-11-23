@@ -1,11 +1,14 @@
-﻿#if NET452
-namespace Unosquare.Labs.EmbedIO.Samples
+﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Net.WebSockets;
-    using System.Text;
+#if NET46
     using System.Threading;
+    using System.Net.WebSockets;
+#else
+    using Net;
+#endif
+    using System.Text;
     using Unosquare.Labs.EmbedIO.Modules;
 
     public static class WebSocketsSample
@@ -42,7 +45,7 @@ namespace Unosquare.Labs.EmbedIO.Samples
         /// <param name="rxResult">The rx result.</param>
         protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
         {
-            var session = this.WebServer.GetSession(context);
+            var session = WebServer.GetSession(context);
             foreach (var ws in this.WebSockets)
             {
                 if (ws != context)
@@ -56,10 +59,7 @@ namespace Unosquare.Labs.EmbedIO.Samples
         /// <value>
         /// The name of the server.
         /// </value>
-        public override string ServerName
-        {
-            get { return "Chat Server"; }
-        }
+        public override string ServerName => "Chat Server";
 
         /// <summary>
         /// Called when this WebSockets Server accepts a new WebSockets client.
@@ -166,7 +166,9 @@ namespace Unosquare.Labs.EmbedIO.Samples
                 StartInfo = new ProcessStartInfo()
                 {
                     CreateNoWindow = true,
+#if !NETCOREAPP1_0
                     ErrorDialog = false,
+#endif
                     FileName = "cmd.exe",
                     RedirectStandardError = true,
                     RedirectStandardInput = true,
@@ -204,7 +206,11 @@ namespace Unosquare.Labs.EmbedIO.Samples
                 {
                     var ws = FindContext(s as Process);
                     if (ws != null && ws.WebSocket.State == WebSocketState.Open)
+#if NET46
                         ws.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Process exited", CancellationToken.None).GetAwaiter().GetResult();
+#else
+                        ws.WebSocket.Close();
+#endif
                 }
             };
 
@@ -239,10 +245,6 @@ namespace Unosquare.Labs.EmbedIO.Samples
         /// <value>
         /// The name of the server.
         /// </value>
-        public override string ServerName
-        {
-            get { return "Command-Line Terminal Server"; }
-        }
+        public override string ServerName => "Command-Line Terminal Server";
     }
 }
-#endif

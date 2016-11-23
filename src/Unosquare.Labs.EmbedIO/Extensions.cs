@@ -1,7 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using System.Collections.Generic;
-    using System.Net;
     using Newtonsoft.Json;
     using System;
     using System.IO;
@@ -9,11 +8,11 @@
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
-    using System.Dynamic;
-
-#if NET452
+#if NET46
+    using System.Net;
     using System.Net.WebSockets;
-    using System.Threading.Tasks;
+#else
+    using Net;
 #endif
 
     /// <summary>
@@ -21,7 +20,6 @@
     /// </summary>
     public static partial class Extensions
     {
-
         #region Constants
 
         private const string UrlEncodedContentType = "application/x-www-form-urlencoded";
@@ -86,8 +84,7 @@
         {
             return server.SessionModule?.GetSession(context);
         }
-
-#if NET452
+        
         /// <summary>
         /// Gets the session object associated to the current context.
         /// Returns null if the LocalSessionWebModule has not been loaded.
@@ -110,31 +107,11 @@
         {
             return server.SessionModule?.GetSession(context);
         }
-#endif
 
         #endregion
 
         #region HTTP Request Helpers
-
-        /// <summary>
-        /// Determines whether [is web socket request] by identifying the Upgrade: websocket header.
-        /// </summary>
-        /// <param name="request">The request.</param>
-        /// <returns>
-        ///   <c>true</c> if [is web socket request] [the specified request]; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool IsWebSocketRequest(this HttpListenerRequest request)
-        {
-            return request.IsWebSocketRequest;
-            /* // TODO: https://github.com/sta/websocket-sharp/blob/master/websocket-sharp/HttpRequest.cs#L99
-            var upgradeKey = request.Headers.AllKeys.FirstOrDefault(k => k.ToLowerInvariant().Equals("upgrade"));
-            if (request.Headers[upgradeKey].Equals("websocket"))
-                return true;
-
-            return false;
-            */
-        }
-
+        
         /// <summary>
         /// Gets the request path for the specified context.
         /// </summary>
@@ -461,7 +438,7 @@
             if (string.IsNullOrWhiteSpace(requestBody)) return null;
 
             // define a character for KV pairs
-            var kvpSeparator = new char[] { '=' };
+            var kvpSeparator = new [] { '=' };
 
             // Create the result object
             var resultDictionary = new Dictionary<string, object>();
@@ -485,10 +462,10 @@
                     continue;
 
                 // Decode the key and the value. Discard Special Characters
-                var key = WebUtility.UrlDecode(kvpsParts[0]);
-                if (key.IndexOf("[") > 0) key = key.Substring(0, key.IndexOf("["));
+                var key = System.Net.WebUtility.UrlDecode(kvpsParts[0]);
+                if (key.IndexOf("[", StringComparison.OrdinalIgnoreCase) > 0) key = key.Substring(0, key.IndexOf("[", StringComparison.OrdinalIgnoreCase));
 
-                var value = kvpsParts.Length >= 2 ? WebUtility.UrlDecode(kvpsParts[1]) : null;
+                var value = kvpsParts.Length >= 2 ? System.Net.WebUtility.UrlDecode(kvpsParts[1]) : null;
 
                 // If the result already contains the key, then turn the value of that key into a List of strings
                 if (resultDictionary.ContainsKey(key))
@@ -500,7 +477,7 @@
                         // if we don't have a list value for this key, then create one and add the existing item
                         var existingValue = resultDictionary[key] as string;
                         resultDictionary[key] = new List<string>();
-                        listValue = resultDictionary[key] as List<string>;
+                        listValue = (List<string>) resultDictionary[key];
                         listValue.Add(existingValue);
                     }
 
@@ -549,7 +526,7 @@
         public static string ComputeMd5Hash(Stream stream)
         {
             var md5 = MD5.Create();
-#if NET452
+#if !NETCOREAPP1_0
             const int bufferSize = 4096;
 
             var readAheadBuffer = new byte[bufferSize];
@@ -590,9 +567,9 @@
         {
             var sb = new StringBuilder();
 
-            for (var i = 0; i < hash.Length; i++)
+            foreach (var t in hash)
             {
-                sb.Append(hash[i].ToString("x2"));
+                sb.Append(t.ToString("x2"));
             }
 
             return sb.ToString();

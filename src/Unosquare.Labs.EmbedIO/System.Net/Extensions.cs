@@ -1,35 +1,13 @@
-﻿#if !NET452
+﻿#if !NET46
+using System;
 using System.Collections.Specialized;
 using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace System.Net
+namespace Unosquare.Net
 {
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public enum UriPartial
-    {
-        /// <devdoc>
-        ///    <para>[To be supplied.]</para>
-        /// </devdoc>
-        Scheme,
-        /// <devdoc>
-        ///    <para>[To be supplied.]</para>
-        /// </devdoc>
-        Authority,
-        /// <devdoc>
-        ///    <para>[To be supplied.]</para>
-        /// </devdoc>
-        Path,
-        /// <devdoc>
-        ///    <para> Denotes a left part of a uri up to and including the query </para>
-        /// </devdoc>
-        Query
-    }
-
     /// <summary>
     /// Represents an asynchronous operation result.
     /// </summary>
@@ -145,18 +123,7 @@ namespace System.Net
         {
             return ms.ToArray();
         }
-
-        /// <summary>
-        /// Sets the value for a header KVP
-        /// </summary>
-        /// <param name="coll">The coll.</param>
-        /// <param name="key">The key.</param>
-        /// <param name="data">The data.</param>
-        public static void SetInternal(this WebHeaderCollection coll, string key, string data)
-        {
-            coll[key] = data;
-        }
-
+        
         /// <summary>
         /// Parses and adds the data from a string into the specified Name-Value collection
         /// </summary>

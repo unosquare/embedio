@@ -8,12 +8,9 @@ namespace Unosquare.Labs.EmbedIO.Tests
     {
         public static void Main()
         {
-            var webServer =
-                new WebServer(Resources.GetServerAddress(), new SimpleConsoleLog(), RoutingStrategy.Regex)
-                    .WithWebApiController<TestRegexController>();
-
-            webServer.RunAsync();
-            
+            var ws = new WebSocketsModuleTest();
+            ws.Init();
+            ws.TestConnectWebSocket();
             Console.ReadLine();
         }
     }

@@ -3,10 +3,8 @@
     using Modules;
     using System;
     using System.Collections.Generic;
-#if NET452
     using System.Linq;
     using System.Reflection;
-#endif
 
     /// <summary>
     /// Extensions methods to EmbedIO's Fluent Interface
@@ -26,9 +24,10 @@
         public static WebServer WithStaticFolderAt(this WebServer webserver, string rootPath,
             string defaultDocument = StaticFilesModule.DefaultDocumentName)
         {
-            if (webserver == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
+            if (webserver == null)
+                throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
 
-            webserver.RegisterModule(new StaticFilesModule(rootPath) { DefaultDocument = defaultDocument });
+            webserver.RegisterModule(new StaticFilesModule(rootPath) {DefaultDocument = defaultDocument});
             return webserver;
         }
 
@@ -46,7 +45,7 @@
             if (webserver == null)
                 throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
 
-            webserver.RegisterModule(new StaticFilesModule(virtualPaths) { DefaultDocument = defaultDocument });
+            webserver.RegisterModule(new StaticFilesModule(virtualPaths) {DefaultDocument = defaultDocument});
             return webserver;
         }
 
@@ -57,13 +56,13 @@
         /// <returns></returns>
         public static WebServer WithLocalSession(this WebServer webserver)
         {
-            if (webserver == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
+            if (webserver == null)
+                throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
 
             webserver.RegisterModule(new LocalSessionModule());
             return webserver;
         }
 
-#if NET452
         /// <summary>
         /// Add WebApiModule to WebServer
         /// </summary>
@@ -72,7 +71,8 @@
         /// <returns>The webserver instance.</returns>
         public static WebServer WithWebApi(this WebServer webserver, Assembly assembly = null)
         {
-            if (webserver == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
+            if (webserver == null)
+                throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
 
             webserver.RegisterModule(new WebApiModule());
             return (assembly != null) ? webserver.LoadApiControllers(assembly) : webserver;
@@ -86,7 +86,8 @@
         /// <returns>The webserver instance.</returns>
         public static WebServer WithWebSocket(this WebServer webserver, Assembly assembly = null)
         {
-            if (webserver == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
+            if (webserver == null)
+                throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
 
             webserver.RegisterModule(new WebSocketsModule());
             return (assembly != null) ? webserver.LoadWebSockets(assembly) : webserver;
@@ -100,11 +101,14 @@
         /// <returns>The webserver instance.</returns>
         public static WebServer LoadApiControllers(this WebServer webserver, Assembly assembly = null)
         {
-            if (webserver == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
+            if (webserver == null)
+                throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
 
-            var types = (assembly ?? Assembly.GetExecutingAssembly()).GetTypes();
+            var types = (assembly ?? Assembly.GetEntryAssembly()).GetTypes();
             var apiControllers =
-                types.Where(x => x.IsClass && !x.IsAbstract && x.IsSubclassOf(typeof(WebApiController))).ToArray();
+                types.Where(x => x.GetTypeInfo().IsClass
+                                 && !x.GetTypeInfo().IsAbstract
+                                 && x.GetTypeInfo().IsSubclassOf(typeof(WebApiController))).ToArray();
 
             if (apiControllers.Any())
             {
@@ -128,11 +132,14 @@
         /// <returns>The webserver instance.</returns>
         public static WebApiModule LoadApiControllers(this WebApiModule apiModule, Assembly assembly = null)
         {
-            if (apiModule == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(apiModule));
+            if (apiModule == null)
+                throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(apiModule));
 
-            var types = (assembly ?? Assembly.GetExecutingAssembly()).GetTypes();
+            var types = (assembly ?? Assembly.GetEntryAssembly()).GetTypes();
             var apiControllers =
-                types.Where(x => x.IsClass && !x.IsAbstract && x.IsSubclassOf(typeof(WebApiController))).ToArray();
+                types.Where(x => x.GetTypeInfo().IsClass
+                                 && !x.GetTypeInfo().IsAbstract
+                                 && x.GetTypeInfo().IsSubclassOf(typeof(WebApiController))).ToArray();
 
             if (apiControllers.Any())
             {
@@ -144,7 +151,7 @@
 
             return apiModule;
         }
-        
+
         /// <summary>
         /// Load all the WebSockets in an assembly
         /// </summary>
@@ -153,11 +160,12 @@
         /// <returns>The webserver instance.</returns>
         public static WebServer LoadWebSockets(this WebServer webserver, Assembly assembly = null)
         {
-            if (webserver == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
+            if (webserver == null)
+                throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
 
-            var types = (assembly ?? Assembly.GetExecutingAssembly()).GetTypes();
+            var types = (assembly ?? Assembly.GetEntryAssembly()).GetTypes();
             var sockerServers =
-                types.Where(x => x.BaseType == typeof(WebSocketsServer)).ToArray();
+                types.Where(x => x.GetTypeInfo().BaseType == typeof(WebSocketsServer)).ToArray();
 
             if (sockerServers.Any())
             {
@@ -172,7 +180,6 @@
 
             return webserver;
         }
-#endif
 
         /// <summary>
         /// Enables CORS in the WebServer
@@ -186,7 +193,8 @@
             string headers = Constants.CorsWildcard,
             string methods = Constants.CorsWildcard)
         {
-            if (webserver == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
+            if (webserver == null)
+                throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
 
             webserver.RegisterModule(new CorsModule(origins, headers, methods));
 
@@ -200,7 +208,8 @@
         /// <returns>The webserver instance.</returns>
         public static WebServer WithWebApiController<T>(this WebServer webserver) where T : WebApiController, new()
         {
-            if (webserver == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
+            if (webserver == null)
+                throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
 
             if (webserver.Module<WebApiModule>() == null)
             {

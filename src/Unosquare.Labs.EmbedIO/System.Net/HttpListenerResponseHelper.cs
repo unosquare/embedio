@@ -1,4 +1,4 @@
-﻿#if !NET452
+﻿#if !NET46
 //
 // System.Net.HttpListenerResponseHelper
 //
@@ -28,7 +28,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace System.Net
+namespace Unosquare.Net
 {
     // do not inline into HttpListenerResponse as this recursively brings everything that's
     // reachable by IDisposable.Dispose (and that's quite a lot in this case).

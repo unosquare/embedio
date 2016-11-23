@@ -1,4 +1,4 @@
-﻿#if !NET452
+﻿#if !NET46
 //
 // System.Net.HttpListenerRequest
 //
@@ -28,14 +28,16 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+using System;
 using System.Collections.Specialized;
 using System.IO;
+using System.Net;
 using System.Security.Authentication.ExtendedProtection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace System.Net
+namespace Unosquare.Net
 {
     /// <devdoc>
     ///    <para>
@@ -286,16 +288,7 @@ namespace System.Net
                 output.InternalWrite(_100Continue, 0, _100Continue.Length);
             }
         }
-
-        internal static string Unquote(string str)
-        {
-            var start = str.IndexOf('\"');
-            var end = str.LastIndexOf('\"');
-            if (start >= 0 && end >= 0)
-                str = str.Substring(start + 1, end - 1);
-            return str.Trim();
-        }
-
+        
         internal void AddHeader(string header)
         {
             var colon = header.IndexOf(':');
@@ -357,7 +350,7 @@ namespace System.Net
                             continue;
                         if (str.StartsWith("$Version"))
                         {
-                            version = int.Parse(Unquote(str.Substring(str.IndexOf('=') + 1)));
+                            version = int.Parse(str.Substring(str.IndexOf('=') + 1).Unquote());
                         }
                         else if (str.StartsWith("$Path"))
                         {
@@ -496,16 +489,7 @@ namespace System.Net
         /// <value>
         /// The cookies.
         /// </value>
-        public CookieCollection Cookies
-        {
-            get
-            {
-                // TODO: check if the collection is read-only
-                if (_cookies == null)
-                    _cookies = new CookieCollection();
-                return _cookies;
-            }
-        }
+        public CookieCollection Cookies => _cookies ?? (_cookies = new CookieCollection());
 
         /// <summary>
         /// Gets a value indicating whether this instance has entity body.
@@ -771,7 +755,7 @@ namespace System.Net
         /// <value>
         /// <c>true</c> if this instance is web socket request; otherwise, <c>false</c>.
         /// </value>
-        public bool IsWebSocketRequest => false;
+        public bool IsWebSocketRequest => HttpMethod == "GET" && ProtocolVersion > HttpVersion.Version10 && Headers.Contains("Upgrade", "websocket") && Headers.Contains("Connection", "Upgrade");
 
         /// <summary>
         /// Gets the client certificate asynchronously.

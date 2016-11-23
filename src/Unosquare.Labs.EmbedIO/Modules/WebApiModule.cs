@@ -1,6 +1,5 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
-    using System.Net;
     using System.Text.RegularExpressions;
     using EmbedIO;
     using System;
@@ -8,7 +7,11 @@
     using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
-    using System.Linq.Expressions;
+#if NET46
+    using System.Net;
+#else
+    using Net;
+#endif
 
     /// <summary>
     /// A very simple module to register class methods as handlers.
@@ -311,7 +314,7 @@
 
             var methods = controllerType
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
-#if NET452
+#if !NETCOREAPP1_0
                 .Where(
                     m => (m.ReturnType == protoDelegate.Method.ReturnType
                           || m.ReturnType == protoAsyncDelegate.Method.ReturnType)
@@ -361,7 +364,7 @@
     /// Decorate methods within controllers with this attribute in order to make them callable from the Web API Module
     /// Method Must match the WebServerModule.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Method)]
     public class WebApiHandlerAttribute : Attribute
     {
         /// <summary>
@@ -391,7 +394,7 @@
                 throw new ArgumentException("The argument 'path' must be specified.");
 
             Verb = verb;
-            Paths = new string[] { path };
+            Paths = new [] { path };
         }
 
         /// <summary>

@@ -1,14 +1,19 @@
-﻿#if NET452
-namespace Unosquare.Labs.EmbedIO.Modules
+﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
-    using System.Net;
-    using System.Net.WebSockets;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Reflection;
+#if NET46
+    using System.Net;
+    using System.Net.WebSockets;
+#else
+    using Net;
+
+#endif
 
     /// <summary>
     /// A WebSockets module conforming to RFC 6455
@@ -21,17 +26,17 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// Holds the collection of paths and WebSockets Servers registered
         /// </summary>
         private readonly Dictionary<string, WebSocketsServer> _serverMap =
-            new Dictionary<string, WebSocketsServer>(StringComparer.InvariantCultureIgnoreCase);
+            new Dictionary<string, WebSocketsServer>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Initialize WebSocket module
         /// </summary>
         public WebSocketsModule()
         {
-            this.AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
+            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
             {
                 // check if it is a WebSocket request (this only works with Win8 and Windows 2012)
-                if (context.Request.IsWebSocketRequest() == false)
+                if (context.Request.IsWebSocketRequest == false)
                     return false;
 
                 // retrieve the request path
@@ -62,7 +67,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
         public void RegisterWebSocketsServer<T>()
             where T : WebSocketsServer, new()
         {
-            RegisterWebSocketsServer(typeof (T));
+            RegisterWebSocketsServer(typeof(T));
         }
 
         /// <summary>
@@ -76,14 +81,15 @@ namespace Unosquare.Labs.EmbedIO.Modules
                 throw new ArgumentException("Argument 'socketType' cannot be null", nameof(socketType));
 
             var attribute =
-                socketType.GetCustomAttributes(typeof (WebSocketHandlerAttribute), true).FirstOrDefault() as
+                socketType.GetTypeInfo().GetCustomAttributes(typeof(WebSocketHandlerAttribute), true).FirstOrDefault()
+                    as
                     WebSocketHandlerAttribute;
 
             if (attribute == null)
                 throw new ArgumentException("Argument 'socketType' needs a WebSocketHandlerAttribute",
                     nameof(socketType));
 
-            this._serverMap[attribute.Path] = (WebSocketsServer) Activator.CreateInstance(socketType);
+            _serverMap[attribute.Path] = (WebSocketsServer) Activator.CreateInstance(socketType);
         }
 
         /// <summary>
@@ -98,7 +104,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
             if (string.IsNullOrWhiteSpace(path))
                 throw new ArgumentException("Argument 'path' cannot be null", nameof(path));
 
-            this._serverMap[path] = Activator.CreateInstance<T>();
+            _serverMap[path] = Activator.CreateInstance<T>();
         }
 
         /// <summary>
@@ -116,7 +122,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
             if (server == null)
                 throw new ArgumentException("Argument 'server' cannot be null", nameof(server));
 
-            this._serverMap[path] = server;
+            _serverMap[path] = server;
         }
     }
 
@@ -137,7 +143,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
             if (string.IsNullOrWhiteSpace(path))
                 throw new ArgumentException("The argument 'path' must be specified.");
 
-            this.Path = path;
+            Path = path;
         }
 
         /// <summary>
@@ -191,8 +197,8 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// <param name="maxMessageSize">Maximum size of the message in bytes. Enter 0 or negative number to prevent checks.</param>
         protected WebSocketsServer(bool enableConnectionWatchdog, int maxMessageSize)
         {
-            this._enableDisconnectedSocketColletion = enableConnectionWatchdog;
-            this._maximumMessageSize = maxMessageSize;
+            _enableDisconnectedSocketColletion = enableConnectionWatchdog;
+            _maximumMessageSize = maxMessageSize;
 
             RunConnectionWatchdog();
         }
@@ -225,7 +231,9 @@ namespace Unosquare.Labs.EmbedIO.Modules
             })
             {
                 IsBackground = true,
+#if NET46
                 Priority = ThreadPriority.BelowNormal
+#endif
             };
 
             if (_enableDisconnectedSocketColletion)
@@ -241,34 +249,42 @@ namespace Unosquare.Labs.EmbedIO.Modules
         public void AcceptWebSocket(WebServer server, HttpListenerContext context)
         {
             // first, accept the websocket
-            this.WebServer = server;
-            server.Log.DebugFormat("{0} - Accepting WebSocket . . .", this.ServerName);
+            WebServer = server;
+            server.Log.DebugFormat("{0} - Accepting WebSocket . . .", ServerName);
+#if NET46
             const int receiveBufferSize = 2048;
+#endif
+
             var webSocketContext =
+#if NET46
                 context.AcceptWebSocketAsync(subProtocol: null, receiveBufferSize: receiveBufferSize,
                     keepAliveInterval: TimeSpan.FromSeconds(30))
                     .GetAwaiter()
                     .GetResult();
+#else
+                context.AcceptWebSocket(null, WebServer.Log);
+#endif
 
             // remove the disconnected clients
-            this.CollectDisconnected();
+            CollectDisconnected();
             lock (_syncRoot)
             {
                 // add the newly-connected client
                 _mWebSockets.Add(webSocketContext);
             }
 
-            server.Log.DebugFormat("{0} - WebSocket Accepted - There are " + WebSockets.Count + " sockets connected.",
-                this.ServerName);
+            server.Log.DebugFormat(
+                $"{ServerName} - WebSocket Accepted - There are {WebSockets.Count} sockets connected.");
             // call the abstract member
-            this.OnClientConnected(webSocketContext);
+            OnClientConnected(webSocketContext);
 
             try
             {
-                // define a receive buffer
+#if NET46
+// define a receive buffer
                 var receiveBuffer = new byte[receiveBufferSize];
                 // define a dynamic buffer that holds multi-part receptions
-                var receivedMessage = new List<byte>(receiveBuffer.Length*2);
+                var receivedMessage = new List<byte>(receiveBuffer.Length * 2);
 
                 // poll the WebSockets connections for reception
                 while (webSocketContext.WebSocket.State == WebSocketState.Open)
@@ -294,7 +310,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
 
                     if (receivedMessage.Count > _maximumMessageSize && _maximumMessageSize > 0)
                     {
-                        // close the connection if message excceeds max length
+                        // close the connection if message exceeds max length
                         webSocketContext.WebSocket.CloseAsync(
                             WebSocketCloseStatus.MessageTooBig,
                             $"Message too big. Maximum is {_maximumMessageSize} bytes.",
@@ -311,15 +327,31 @@ namespace Unosquare.Labs.EmbedIO.Modules
                         receivedMessage.Clear();
                     }
                 }
+#else
+                // TODO: Pending OnFrameReceived
+                webSocketContext.WebSocket.OnMessage += (s, e) =>
+                {
+                    var isText = e.IsText ? WebSocketMessageType.Text : WebSocketMessageType.Binary;
+
+                    OnMessageReceived(webSocketContext,
+                        e.RawData,
+                        new WebSocketReceiveResult(e.RawData.Length, isText, e.Opcode == Opcode.Close));
+                };
+
+                while (webSocketContext.WebSocket.IsConnected)
+                {
+                    Task.Delay(100).Wait();
+                }
+#endif
             }
             catch (Exception ex)
             {
-                server.Log.ErrorFormat("{0} - Error: {1}", this.ServerName, ex);
+                server.Log.ErrorFormat("{0} - Error: {1}", ServerName, ex);
             }
             finally
             {
                 // once the loop is completed or connection aborted, remove the WebSocket
-                this.RemoveWebSocket(webSocketContext);
+                RemoveWebSocket(webSocketContext);
             }
         }
 
@@ -329,7 +361,9 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// <param name="webSocketContext">The web socket context.</param>
         private void RemoveWebSocket(WebSocketContext webSocketContext)
         {
+#if NET46
             webSocketContext.WebSocket?.Dispose();
+#endif
 
             lock (_syncRoot)
             {
@@ -348,20 +382,20 @@ namespace Unosquare.Labs.EmbedIO.Modules
             var collectedCount = 0;
             lock (_syncRoot)
             {
-                for (var i = this._mWebSockets.Count - 1; i >= 0; i--)
+                for (var i = _mWebSockets.Count - 1; i >= 0; i--)
                 {
-                    var currentSocket = this._mWebSockets[i];
-                    if (currentSocket.WebSocket != null && currentSocket.WebSocket.State != WebSocketState.Open)
+                    var currentSocket = _mWebSockets[i];
+                    if (currentSocket.WebSocket != null &&
+                        currentSocket.WebSocket.State != WebSocketState.Open)
                     {
                         RemoveWebSocket(currentSocket);
                         collectedCount++;
                     }
-
                 }
             }
 
-            this.WebServer?.Log.DebugFormat("{0} - Collected {1} sockets. WebSocket Count: {2}", this.ServerName,
-                collectedCount, this.WebSockets.Count);
+            WebServer?.Log.DebugFormat("{0} - Collected {1} sockets. WebSocket Count: {2}", ServerName,
+                collectedCount, WebSockets.Count);
         }
 
         /// <summary>
@@ -374,10 +408,13 @@ namespace Unosquare.Labs.EmbedIO.Modules
             try
             {
                 if (payload == null) payload = string.Empty;
+#if NET46
                 var buffer = System.Text.Encoding.UTF8.GetBytes(payload);
-                await
-                    webSocket.WebSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true,
+                await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true,
                         CancellationToken.None);
+#else
+                webSocket.WebSocket.SendAsync(payload, null);
+#endif
             }
             catch (Exception ex)
             {
@@ -396,9 +433,12 @@ namespace Unosquare.Labs.EmbedIO.Modules
             {
                 if (payload == null) payload = new byte[0];
 
-                await
-                    webSocket.WebSocket.SendAsync(new ArraySegment<byte>(payload), WebSocketMessageType.Binary, true,
+#if NET46
+                await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(payload), WebSocketMessageType.Binary, true,
                         CancellationToken.None);
+#else
+                webSocket.WebSocket.SendAsync(payload, null);
+#endif
             }
             catch (Exception ex)
             {
@@ -412,9 +452,9 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// <param name="payload">The payload.</param>
         protected virtual void Broadcast(byte[] payload)
         {
-            var sockets = this.WebSockets.ToArray();
+            var sockets = WebSockets.ToArray();
             foreach (var wsc in sockets)
-                this.Send(wsc, payload);
+                Send(wsc, payload);
         }
 
         /// <summary>
@@ -423,9 +463,9 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// <param name="payload">The payload.</param>
         protected virtual void Broadcast(string payload)
         {
-            var sockets = this.WebSockets.ToArray();
+            var sockets = WebSockets.ToArray();
             foreach (var wsc in sockets)
-                this.Send(wsc, payload);
+                Send(wsc, payload);
         }
 
         /// <summary>
@@ -438,9 +478,12 @@ namespace Unosquare.Labs.EmbedIO.Modules
 
             try
             {
-                await
-                    webSocket.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty,
+#if NET46
+                await webSocket.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty,
                         CancellationToken.None);
+#else
+                webSocket.WebSocket.CloseAsync();
+#endif
             }
             catch (Exception ex)
             {
@@ -487,10 +530,10 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// </summary>
         public void Dispose()
         {
-            if (this._isDisposing == false)
+            if (_isDisposing == false)
             {
-                this._isDisposing = true;
-                this.Dispose(true);
+                _isDisposing = true;
+                Dispose(true);
                 GC.SuppressFinalize(this);
             }
         }
@@ -505,7 +548,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
             // if called with false, return.
             if (disposeAll == false) return;
 
-            foreach (var webSocket in this._mWebSockets)
+            foreach (var webSocket in _mWebSockets)
             {
                 Close(webSocket);
             }
@@ -522,4 +565,3 @@ namespace Unosquare.Labs.EmbedIO.Modules
         public abstract string ServerName { get; }
     }
 }
-#endif

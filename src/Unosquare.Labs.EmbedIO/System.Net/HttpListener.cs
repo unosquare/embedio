@@ -1,4 +1,4 @@
-﻿#if !NET452
+﻿#if !NET46
 //
 // System.Net.HttpListener
 //
@@ -29,18 +29,21 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System;
 using System.Collections;
 using System.Security.Authentication.ExtendedProtection;
 using System.Threading.Tasks;
 
-namespace System.Net
+namespace Unosquare.Net
 {
+#if AUTHENTICATION
     /// <summary>
     /// A delegate that selects the authentication scheme based on the supplied request
     /// </summary>
     /// <param name="httpRequest">The HTTP request.</param>
     /// <returns></returns>
     public delegate AuthenticationSchemes AuthenticationSchemeSelector(HttpListenerRequest httpRequest);
+#endif
 
     /// <summary>
     /// The MONO implementation of the standard Http Listener class
@@ -48,9 +51,11 @@ namespace System.Net
     /// <seealso cref="System.IDisposable" />
     public sealed class HttpListener : IDisposable
     {
+        #if AUTHENTICATION
         AuthenticationSchemes _authSchemes;
-        readonly HttpListenerPrefixCollection _prefixes;
         AuthenticationSchemeSelector _authSelector;
+#endif
+        readonly HttpListenerPrefixCollection _prefixes;
         string _realm;
         bool _ignoreWriteExceptions;
         bool _unsafeNtlmAuth;
@@ -87,7 +92,9 @@ namespace System.Net
             _connections = Hashtable.Synchronized(new Hashtable());
             _ctxQueue = new ArrayList();
             _waitQueue = new ArrayList();
+            #if AUTHENTICATION
             _authSchemes = AuthenticationSchemes.Anonymous;
+#endif
             //defaultServiceNames = new ServiceNameStore();
             //_extendedProtectionPolicy = new ExtendedProtectionPolicy(PolicyEnforcement.Never);
         }
@@ -148,6 +155,9 @@ namespace System.Net
             }
         }
 #endif
+
+
+#if AUTHENTICATION
         /// <summary>
         /// Gets or sets the authentication schemes.
         /// TODO: Digest, NTLM and Negotiate require ControlPrincipal
@@ -164,7 +174,6 @@ namespace System.Net
                 _authSchemes = value;
             }
         }
-
         /// <summary>
         /// Gets or sets the authentication scheme selector delegate.
         /// </summary>
@@ -180,6 +189,7 @@ namespace System.Net
                 _authSelector = value;
             }
         }
+#endif
 
         //public ExtendedProtectionSelector ExtendedProtectionSelectorDelegate
         //{
@@ -430,14 +440,18 @@ namespace System.Net
             }
 
             var context = ares.GetContext();
+#if AUTHENTICATION
             context.ParseAuthentication(SelectAuthenticationScheme(context));
+#endif
             return context; // This will throw on error.
         }
 
+#if AUTHENTICATION
         internal AuthenticationSchemes SelectAuthenticationScheme(HttpListenerContext context)
         {
             return AuthenticationSchemeSelectorDelegate?.Invoke(context.Request) ?? _authSchemes;
         }
+#endif
 
         /// <summary>
         /// Gets the HTTP Listener's conext

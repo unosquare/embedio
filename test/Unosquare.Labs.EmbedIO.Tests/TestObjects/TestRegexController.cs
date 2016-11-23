@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 using Unosquare.Labs.EmbedIO.Modules;
+#if NET46
+    using System.Net;
+#else
+using Unosquare.Net;
+#endif
 
 namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
     public class TestRegexController : WebApiController
     {
         public const string RelativePath = "api/";
+        public int errorCode = (int)System.Net.HttpStatusCode.InternalServerError;
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regex/{id}")]
         public bool GetPerson(WebServer server, HttpListenerContext context, int id)
@@ -26,7 +30,7 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                context.Response.StatusCode = errorCode;
                 return context.JsonResponse(ex);
             }
         }
@@ -50,7 +54,7 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.Response.StatusCode = errorCode;
                 return context.JsonResponse(ex);
             }
         }
@@ -71,7 +75,7 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.Response.StatusCode = errorCode;
                 return context.JsonResponse(ex);
             }
         }
@@ -90,11 +94,10 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                context.Response.StatusCode = errorCode;
                 return context.JsonResponse(ex);
             }
         }
-
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regextwo/{skill}/{age}")]
         public bool GetPerson(WebServer server, HttpListenerContext context, string skill, int age)
@@ -110,7 +113,7 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.Response.StatusCode = errorCode;
                 return context.JsonResponse(ex);
             }
         }

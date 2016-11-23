@@ -1,4 +1,4 @@
-﻿#if !NET452
+﻿#if !NET46
 //
 // System.Net.EndPointListener
 //
@@ -28,8 +28,10 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
@@ -37,7 +39,7 @@ using System.Threading;
 using System.Security.Cryptography;
 #endif
 
-namespace System.Net
+namespace Unosquare.Net
 {
     internal sealed class EndPointListener
     {

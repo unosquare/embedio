@@ -1,10 +1,12 @@
-﻿#if !NET452
+﻿#if !NET46
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Net;
 using System.Text;
 
-namespace System.Net
+namespace Unosquare.Net
 {
     // We don't use the cooked URL because http.sys unescapes all percent-encoded values. However,
     // we also can't just use the raw Uri, since http.sys supports not only Utf-8, but also ANSI/DBCS and
@@ -148,7 +150,7 @@ namespace System.Net
                     var secondaryEncoding = GetEncoding(EncodingType.Secondary);
                     result = BuildRequestUriUsingRawPath(secondaryEncoding);
                 }
-                isValid = (result == ParsingResult.Success) ? true : false;
+                isValid = result == ParsingResult.Success;
             }
 
             // Log that we weren't able to create a Uri from the raw string.
@@ -245,7 +247,7 @@ namespace System.Net
                     else
                     {
                         // We found '%', but not followed by 'u', i.e. we have a percent encoded octed: %XX 
-                        if (!AddPercentEncodedOctetToRawOctetsList(encoding, _rawPath.Substring(index, 2)))
+                        if (!AddPercentEncodedOctetToRawOctetsList(_rawPath.Substring(index, 2)))
                         {
                             return ParsingResult.InvalidString;
                         }
@@ -305,7 +307,7 @@ namespace System.Net
             return false;
         }
 
-        private bool AddPercentEncodedOctetToRawOctetsList(Encoding encoding, string escapedCharacter)
+        private bool AddPercentEncodedOctetToRawOctetsList(string escapedCharacter)
         {
             byte encodedValue;
             if (!byte.TryParse(escapedCharacter, NumberStyles.HexNumber, null, out encodedValue))

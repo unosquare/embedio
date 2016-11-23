@@ -5,10 +5,14 @@
     using System.Collections.ObjectModel;
     using System.Globalization;
     using System.Linq;
-    using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
     using Log;
+#if NET46
+    using System.Net;
+#else
+    using Net;
+#endif
 
     /// <summary>
     /// Represents our tiny web server used to handle requests
@@ -180,10 +184,8 @@
 
             foreach (var prefix in urlPrefixes)
             {
-                // TODO: Previous clone
                 var urlPrefix =new String(prefix?.ToCharArray());
-                if (urlPrefix == null) continue;
-
+                
                 if (urlPrefix.EndsWith("/") == false) urlPrefix = urlPrefix + "/";
                 urlPrefix = urlPrefix.ToLowerInvariant();
 
@@ -306,7 +308,7 @@
                 {
                     Log.Error("No module generated a response. Sending 404 - Not Found");
                     var responseBytes = System.Text.Encoding.UTF8.GetBytes(Constants.Response404Html);
-                    context.Response.StatusCode = (int) HttpStatusCode.NotFound;
+                    context.Response.StatusCode = (int)System.Net.HttpStatusCode.NotFound;
                     context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
                 }
             }
@@ -350,7 +352,7 @@
                         module.Server = this;
 
                     // Log the module and hanlder to be called and invoke as a callback.
-#if NET452
+#if !NETCOREAPP1_0
                     Log.DebugFormat("{0}::{1}.{2}", module.Name, callback.Method.DeclaringType.Name,
                         callback.Method.Name);
 #endif
@@ -368,7 +370,7 @@
                 catch (Exception ex)
                 {
                     // Handle exceptions by returning a 500 (Internal Server Error) 
-                    if (context.Response.StatusCode != (int) HttpStatusCode.Unauthorized)
+                    if (context.Response.StatusCode != (int)System.Net.HttpStatusCode.Unauthorized)
                     {
                         // Log the exception message.
                         var errorMessage = ex.ExceptionMessage("Failing module name: " + module.Name);
@@ -376,12 +378,12 @@
 
                         // Generate an HTML response
                         var response = string.Format(Constants.Response500HtmlFormat,
-                            WebUtility.HtmlEncode(errorMessage),
-                            WebUtility.HtmlEncode(ex.StackTrace));
+                            System.Net.WebUtility.HtmlEncode(errorMessage),
+                            System.Net.WebUtility.HtmlEncode(ex.StackTrace));
 
                         // Send the response over with the corresponding status code.
                         var responseBytes = System.Text.Encoding.UTF8.GetBytes(response);
-                        context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                        context.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
                         context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
                     }
 

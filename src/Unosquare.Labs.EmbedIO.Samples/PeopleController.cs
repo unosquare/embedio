@@ -3,11 +3,15 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Net;
+    using Unosquare.Labs.EmbedIO.Modules;
     using System.Threading.Tasks;
     using Tubular;
-    using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Tubular.ObjectModel;
+#if NET46
+    using System.Net;
+#else
+    using Unosquare.Net;
+#endif
 
     /// <summary>
     /// A very simple controller to handle People CRUD.
@@ -18,7 +22,7 @@
     {
         private readonly AppDbContext _dbContext = new AppDbContext();
         private const string RelativePath = "/api/";
-        
+
         /// <summary>
         /// Gets the people.
         /// This will respond to 
@@ -61,7 +65,7 @@
                 // here the error handler will respond with a generic 500 HTTP code a JSON-encoded object
                 // with error info. You will need to handle HTTP status codes correctly depending on the situation.
                 // For example, for keys that are not found, ou will need to respond with a 404 status code.
-                return HandleError(context, ex, (int) HttpStatusCode.InternalServerError);
+                return HandleError(context, ex, (int)System.Net.HttpStatusCode.InternalServerError);
             }
         }
 

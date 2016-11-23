@@ -1,4 +1,4 @@
-﻿#if !NET452
+﻿#if !NET46
 //
 // System.Net.HttpListenerResponse
 //
@@ -27,11 +27,12 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System;
 using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace System.Net
+namespace Unosquare.Net
 {
     /// <summary>
     /// Represents an HTTP Listener's response
@@ -108,7 +109,7 @@ namespace System.Net
                     throw new InvalidOperationException("Cannot be changed after headers are sent.");
 
                 if (value < 0)
-                    throw new ArgumentOutOfRangeException("Must be >= 0", "value");
+                    throw new ArgumentOutOfRangeException(nameof(value), "Must be >= 0");
 
                 _clSet = true;
                 _contentLength = value;
@@ -148,12 +149,7 @@ namespace System.Net
         /// </value>
         public CookieCollection Cookies
         {
-            get
-            {
-                if (_cookies == null)
-                    _cookies = new CookieCollection();
-                return _cookies;
-            }
+            get { return _cookies ?? (_cookies = new CookieCollection()); }
             set { _cookies = value; } // null allowed?
         }
 
@@ -285,7 +281,7 @@ namespace System.Net
         /// </value>
         /// <exception cref="System.ObjectDisposedException"></exception>
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
-        /// <exception cref="ProtocolViolationException">StatusCode must be between 100 and 999.</exception>
+        /// <exception cref="System.Net.ProtocolViolationException">StatusCode must be between 100 and 999.</exception>
         public int StatusCode
         {
             get { return _statusCode; }
@@ -298,7 +294,7 @@ namespace System.Net
                     throw new InvalidOperationException("Cannot be changed after headers are sent.");
 
                 if (value < 100 || value > 999)
-                    throw new ProtocolViolationException("StatusCode must be between 100 and 999.");
+                    throw new System.Net.ProtocolViolationException("StatusCode must be between 100 and 999.");
                 _statusCode = value;
                 StatusDescription = HttpListenerResponseHelper.GetStatusDescription(value);
             }
@@ -356,7 +352,7 @@ namespace System.Net
         /// </summary>
         /// <param name="cookie">The cookie.</param>
         /// <exception cref="System.ArgumentNullException"></exception>
-        public void AppendCookie(Cookie cookie)
+        public void AppendCookie(System.Net.Cookie cookie)
         {
             if (cookie == null)
                 throw new ArgumentNullException(nameof(cookie));
@@ -449,12 +445,13 @@ namespace System.Net
             _location = url;
         }
 
-        bool FindCookie(Cookie cookie)
+        private bool FindCookie(System.Net.Cookie cookie)
         {
             var name = cookie.Name;
             var domain = cookie.Domain;
             var path = cookie.Path;
-            foreach (Cookie c in _cookies)
+
+            foreach (System.Net.Cookie c in _cookies)
             {
                 if (name != c.Name)
                     continue;
@@ -469,9 +466,7 @@ namespace System.Net
 
         internal void SendHeaders(bool closing, MemoryStream ms)
         {
-            var encoding = _contentEncoding;
-            if (encoding == null)
-                encoding = Encoding.GetEncoding(0);
+            var encoding = _contentEncoding ?? Encoding.GetEncoding(0);
 
             if (_contentType != null)
             {
@@ -487,7 +482,7 @@ namespace System.Net
             }
 
             if (Headers["Server"] == null)
-                Headers.SetInternal("Server", "Mono-HTTPAPI/1.0");
+                Headers.SetInternal("Server", "embedio/1.0");
 
             var inv = CultureInfo.InvariantCulture;
             if (Headers["Date"] == null)
@@ -558,7 +553,7 @@ namespace System.Net
 
             if (_cookies != null)
             {
-                foreach (Cookie cookie in _cookies)
+                foreach (System.Net.Cookie cookie in _cookies)
                     Headers.SetInternal("Set-Cookie", CookieToClientString(cookie));
             }
 
@@ -576,7 +571,7 @@ namespace System.Net
             HeadersSent = true;
         }
 
-        static string FormatHeaders(WebHeaderCollection headers)
+        private static string FormatHeaders(WebHeaderCollection headers)
         {
             var sb = new StringBuilder();
 
@@ -601,7 +596,7 @@ namespace System.Net
             return sb.Append("\r\n").ToString();
         }
 
-        static string CookieToClientString(Cookie cookie)
+        private static string CookieToClientString(System.Net.Cookie cookie)
         {
             if (cookie.Name.Length == 0)
                 return string.Empty;
@@ -625,34 +620,18 @@ namespace System.Net
             return result.ToString();
         }
 
-        static string QuotedString(Cookie cookie, string value)
+        private static string QuotedString(System.Net.Cookie cookie, string value)
         {
-            if (cookie.Version == 0 || IsToken(value))
-                return value;
-            return "\"" + value.Replace("\"", "\\\"") + "\"";
+            return cookie.Version == 0 || value.IsToken() ? value : "\"" + value.Replace("\"", "\\\"") + "\"";
         }
-
-        static readonly string _tspecials = "()<>@,;:\\\"/[]?={} \t";   // from RFC 2965, 2068
-
-        static bool IsToken(string value)
-        {
-            var len = value.Length;
-            for (var i = 0; i < len; i++)
-            {
-                var c = value[i];
-                if (c < 0x20 || c >= 0x7f || _tspecials.IndexOf(c) != -1)
-                    return false;
-            }
-            return true;
-        }
-
+        
         /// <summary>
         /// Sets the cookie.
         /// </summary>
         /// <param name="cookie">The cookie.</param>
         /// <exception cref="System.ArgumentNullException"></exception>
         /// <exception cref="System.ArgumentException">The cookie already exists.</exception>
-        public void SetCookie(Cookie cookie)
+        public void SetCookie(System.Net.Cookie cookie)
         {
             if (cookie == null)
                 throw new ArgumentNullException(nameof(cookie));

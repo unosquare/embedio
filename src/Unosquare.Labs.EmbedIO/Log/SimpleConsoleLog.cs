@@ -44,7 +44,7 @@
 
                     while (OutputQueue.Count > 0)
                     {
-                        OutputContext context = null;
+                        OutputContext context;
                         if (OutputQueue.TryDequeue(out context) == false)
                             continue;
 
@@ -74,9 +74,8 @@
         private static void WriteLine(ConsoleColor color, string format, params object[] args)
         {
             var d = DateTime.Now;
-            var dateTimeString = string.Format("{0}-{1}-{2} {3}:{4}:{5}.{6}",
-                d.Year.ToString("0000"), d.Month.ToString("00"), d.Day.ToString("00"), d.Hour.ToString("00"),
-                d.Minute.ToString("00"), d.Second.ToString("00"), d.Millisecond.ToString("000"));
+            var dateTimeString =
+                $"{d.Year:0000}-{d.Month:00}-{d.Day:00} {d.Hour:00}:{d.Minute:00}:{d.Second:00}.{d.Millisecond:000}";
 
             format = dateTimeString + "\t" + format;
             if (args == null) args = new object[] { };

@@ -19,7 +19,7 @@ A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework
 * Create REST APIs quickly with the out-of-the-box Web Api module
 * Serve static files with 1 line of code (also out-of-the-box)
 * Handle sessions with the built-in LocalSessionWebModule
-* Web Sockets support (Not available on Mono 3.x though)
+* WebSockets support (see notes below)
 * CORS support. Origin, Header and Method validation with OPTIONS preflight
 * Supports HTTP 206 Partial Content
 * [OWIN](http://owin.org/) Middleware support via [Owin Middleware Module](https://github.com/unosquare/embedio-extras/tree/master/Unosquare.Labs.EmbedIO.OwinMiddleware).
@@ -32,6 +32,15 @@ A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework
 * Write a game using Babylon.js and make EmbedIO your serve your code and assets
 * Create GUIs for Windows services or Linux daemons
 * Write client applications with real-time communication between them
+
+Some notes regarding WebSocket support:
+
+| Runtime | WebSocket support | Notes |
+| --- | --- | --- |
+| NET452 | Yes | Support Win7+ OS using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
+| NET46 | Yes | Support Win8+ OS using native System.Net library |
+| MONO | Yes | Support Windows and Linux using custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
+| NETCORE10 | Yes | Support using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
 
 NuGet Installation:
 -------------------
@@ -270,7 +279,7 @@ public class PeopleController : WebApiController
 }
 ```
 
-Web Sockets Example:
+WebSockets Example:
 -----------------
 
 *During server setup:*

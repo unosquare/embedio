@@ -1,5 +1,5 @@
-﻿#if !NET452
-namespace System.Net
+﻿#if !NET46
+namespace Unosquare.Net
 {
     static class HttpSysSettings
     {

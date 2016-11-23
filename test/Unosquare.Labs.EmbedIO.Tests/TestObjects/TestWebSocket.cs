@@ -1,6 +1,10 @@
-﻿#if NET452
-using System;
+﻿using System;
+using System.Text;
+#if NET46
 using System.Net.WebSockets;
+#else
+using Unosquare.Net;
+#endif
 using Unosquare.Labs.EmbedIO.Modules;
 
 namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
@@ -10,25 +14,24 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
     {
         protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
         {
-            this.Send(context, "HELLO");
+            Send(context, "HELLO");
         }
 
         protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
         {
-            throw new NotImplementedException();
+            WebServer.Log.DebugFormat("Data frame: {0}", Encoding.UTF8.GetString(rxBuffer));
         }
 
         protected override void OnClientConnected(WebSocketContext context)
         {
-            this.Send(context, "WELCOME");
+            Send(context, "WELCOME");
         }
 
         protected override void OnClientDisconnected(WebSocketContext context)
         {
-            this.Send(context, "ADIOS");
+            Send(context, "ADIOS");
         }
 
         public override string ServerName => "TestWebSocket";
     }
 }
-#endif

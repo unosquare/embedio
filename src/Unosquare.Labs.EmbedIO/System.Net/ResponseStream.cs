@@ -1,4 +1,4 @@
-﻿#if !NET452
+﻿#if !NET46
 //
 // System.Net.ResponseStream
 //
@@ -27,11 +27,13 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System;
 using System.IO;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace System.Net
+namespace Unosquare.Net
 {
     /// <summary>
     /// FIXME: Does this buffer the response until Close?
@@ -104,7 +106,7 @@ namespace System.Net
                 {
                     try
                     {
-                        byte[] bytes = null;
+                        byte[] bytes;
                         if (ms != null)
                         {
                             var start = ms.Position;
@@ -154,7 +156,8 @@ namespace System.Net
         }
 
         static readonly byte[] _crlf = { 13, 10 };
-        static byte[] GetChunkSizeBytes(int size, bool final)
+
+        private static byte[] GetChunkSizeBytes(int size, bool final)
         {
             var str = string.Format("{0:x}\r\n{1}", size, final ? "\r\n" : "");
             return Encoding.GetEncoding(0).GetBytes(str);

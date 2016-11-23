@@ -4,9 +4,11 @@
     using System;
     using System.Collections.Concurrent;
     using System.Linq;
+#if NET46
     using System.Net;
-#if NET452
     using System.Net.WebSockets;
+#else
+    using Net;
 #endif
 
     /// <summary>
@@ -29,14 +31,14 @@
         /// Creates a session ID, registers the session info in the Sessions collection, and returns the appropriate session cookie.
         /// </summary>
         /// <returns>The sessions.</returns>
-        private Cookie CreateSession()
+        private System.Net.Cookie CreateSession()
         {
             var sessionId = Convert.ToBase64String(
                 System.Text.Encoding.UTF8.GetBytes(
                     Guid.NewGuid().ToString() + DateTime.Now.Millisecond.ToString() + DateTime.Now.Ticks.ToString()));
-            var sessionCookie = string.IsNullOrWhiteSpace(CookiePath) ? 
-                new Cookie(SessionCookieName, sessionId) : 
-                new Cookie(SessionCookieName, sessionId, CookiePath);
+            var sessionCookie = string.IsNullOrWhiteSpace(CookiePath) ?
+                new System.Net.Cookie(SessionCookieName, sessionId) :
+                new System.Net.Cookie(SessionCookieName, sessionId, CookiePath);
 
             Sessions[sessionId] = new SessionInfo()
             {
@@ -170,7 +172,6 @@
             return Sessions[context.Request.Cookies[SessionCookieName].Value];
         }
 
-#if NET452
         /// <summary>
         /// Gets the session.
         /// </summary>
@@ -184,7 +185,6 @@
 
             return Sessions[context.CookieCollection[SessionCookieName].Value];
         }
-#endif
 
         /// <summary>
         /// Gets or sets the expiration.

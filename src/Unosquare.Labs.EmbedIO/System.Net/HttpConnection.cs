@@ -1,4 +1,4 @@
-﻿#if !NET452
+﻿#if !NET46
 //
 // System.Net.HttpConnection
 //
@@ -28,13 +28,15 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System;
 using System.IO;
+using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 
-namespace System.Net
+namespace Unosquare.Net
 {
     internal sealed class HttpConnection
     {
@@ -121,6 +123,8 @@ namespace System.Net
 
         public int Reuses { get; private set; }
 
+        public Stream Stream => _stream;
+
         public IPEndPoint LocalEndPoint
         {
             get
@@ -166,21 +170,20 @@ namespace System.Net
 
         public RequestStream GetRequestStream(bool chunked, long contentlength)
         {
-            if (_iStream == null)
+            if (_iStream != null) return _iStream;
+
+            var buffer = _ms.GetBuffer();
+            var length = (int) _ms.Length;
+            _ms = null;
+            if (chunked)
             {
-                var buffer = _ms.GetBuffer();
-                var length = (int) _ms.Length;
-                _ms = null;
-                if (chunked)
-                {
-                    _chunked = true;
-                    _context.Response.SendChunked = true;
-                    _iStream = new ChunkedInputStream(_context, _stream, buffer, _position, length - _position);
-                }
-                else
-                {
-                    _iStream = new RequestStream(_stream, buffer, _position, length - _position, contentlength);
-                }
+                _chunked = true;
+                _context.Response.SendChunked = true;
+                _iStream = new ChunkedInputStream(_context, _stream, buffer, _position, length - _position);
+            }
+            else
+            {
+                _iStream = new RequestStream(_stream, buffer, _position, length - _position, contentlength);
             }
             return _iStream;
         }

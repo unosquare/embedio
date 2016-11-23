@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Concurrent;
+#if NET46
     using System.Net;
-#if NET452
     using System.Net.WebSockets;
+#else
+    using Net;
 #endif
 
     /// <summary>
@@ -38,15 +40,14 @@
         /// </summary>
         /// <param name="session">The session info.</param>
         void DeleteSession(SessionInfo session);
-
-#if NET452
+        
         /// <summary>
         /// Gets the session.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
         SessionInfo GetSession(WebSocketContext context);
-#endif
+
         /// <summary>
         /// Gets or sets the expiration.
         /// </summary>

@@ -1,4 +1,4 @@
-﻿#if !NET452
+﻿#if !NET46
 //
 // System.Net.HttpListenerBasicIdentity
 //
@@ -28,7 +28,7 @@
 //
 using System.Security.Principal;
 
-namespace System.Net
+namespace Unosquare.Net
 {
     /// <summary>
     /// Represents a basic context's identity
