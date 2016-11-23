@@ -52,6 +52,7 @@ using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Unosquare.Labs.EmbedIO;
 using Unosquare.Labs.EmbedIO.Log;
 
@@ -1741,26 +1742,21 @@ namespace Unosquare.Net
             }
         }
 
-        private void sendAsync(Opcode opcode, Stream stream, Action<bool> completed)
+        private Task SendAsync(Opcode opcode, Stream stream, Action<bool> completed)
         {
-            Func<Opcode, Stream, bool> sender = send;
-            sender.BeginInvoke(
-                opcode,
-                stream,
-                ar =>
+            return Task.Factory.StartNew(() =>
+            {
+                try
                 {
-                    try
-                    {
-                        var sent = sender.EndInvoke(ar);
-                        completed?.Invoke(sent);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.Error(ex.ToString());
-                        Error("An exception has occurred during a send callback.", ex);
-                    }
-                },
-                null);
+                    var sent = send(opcode, stream);
+                    completed?.Invoke(sent);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error(ex.ToString());
+                    Error("An exception has occurred during a send callback.", ex);
+                }
+            });
         }
 
         private bool SendBytes(byte[] bytes)
@@ -3021,7 +3017,7 @@ namespace Unosquare.Net
                 return;
             }
 
-            sendAsync(Opcode.Binary, new MemoryStream(data), completed);
+            SendAsync(Opcode.Binary, new MemoryStream(data), completed);
         }
 
         /// <summary>
@@ -3052,7 +3048,7 @@ namespace Unosquare.Net
                 return;
             }
 
-            sendAsync(Opcode.Binary, file.OpenRead(), completed);
+            SendAsync(Opcode.Binary, file.OpenRead(), completed);
         }
 
         /// <summary>
@@ -3082,7 +3078,7 @@ namespace Unosquare.Net
                 return;
             }
 
-            sendAsync(Opcode.Text, new MemoryStream(Encoding.UTF8.GetBytes(data)), completed);
+            SendAsync(Opcode.Text, new MemoryStream(Encoding.UTF8.GetBytes(data)), completed);
         }
 
         /// <summary>

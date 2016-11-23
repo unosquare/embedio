@@ -40,7 +40,7 @@ Some notes regarding WebSocket support:
 | NET452 | Yes | Support Win7+ OS using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
 | NET46 | Yes | Support Win8+ OS using native System.Net library |
 | MONO | Yes | Support Windows and Linux using custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
-| NETCORE10 | No | WIP |
+| NETCORE10 | Yes | Support using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
 
 NuGet Installation:
 -------------------
