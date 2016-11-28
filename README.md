@@ -31,6 +31,7 @@ A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework
 * Write a cross-platform GUI entirely in CSS/HTML/JS
 * Write a game using Babylon.js and make EmbedIO your serve your code and assets
 * Create GUIs for Windows services or Linux daemons
+* Works well with <a href="https://github.com/unosquare/litelib" target="_blank">LiteLib</a> - add SQLite support in minutes!
 * Write client applications with real-time communication between them
 
 Some notes regarding WebSocket support:
