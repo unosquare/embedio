@@ -1,32 +1,35 @@
 ﻿<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset='utf-8'>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="EmbedIO Webserver">
 
-        <!-- CSS (from CDN) -->
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.4/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.3.0/css/font-awesome.min.css" />
-        <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/lumen/bootstrap.min.css" rel="stylesheet">
-        <link href="//cdn.jsdelivr.net/highlight.js/8.5.0/styles/github.min.css" rel="stylesheet">
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="EmbedIO Webserver">
 
-        <link rel="stylesheet" type="text/css" href="images/stylesheet.css" media="screen">
+    <!-- CSS (from CDN) -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.4/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.3.0/css/font-awesome.min.css" />
+    <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/lumen/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.jsdelivr.net/highlight.js/8.5.0/styles/github.min.css" rel="stylesheet">
 
-        <!--[if lt IE 9]>
+    <link rel="stylesheet" type="text/css" href="images/stylesheet.css" media="screen">
+
+    <!--[if lt IE 9]>
             <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 
-        <!-- JS (from CDN) -->
-        <script src="//cdn.jsdelivr.net/g/jquery@2.1.4,bootstrap"></script>
-        <script src="//cdn.jsdelivr.net/highlight.js/8.5.0/highlight.min.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script>
-        <!-- Favicons -->
-        <link rel="icon" href="favicon.ico" />
+    <!-- JS (from CDN) -->
+    <script src="//cdn.jsdelivr.net/g/jquery@2.1.4,bootstrap"></script>
+    <script src="//cdn.jsdelivr.net/highlight.js/8.5.0/highlight.min.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script>
+    <!-- Favicons -->
+    <link rel="icon" href="favicon.ico" />
 
-        <title>EmbedIO - A tiny, cross-platform, module based web server by unosquare</title>
-    </head>
+    <title>EmbedIO - A tiny, cross-platform, module based web server by unosquare</title>
+</head>
 
 <body>
     <div id="wrapper">
@@ -84,26 +87,18 @@
                 <h2 id="features">Features:</h2>
                 <ul>
                     <li>Written entirely in C#</li>
+                    <li>.NET Core portable library</li>
                     <li>Network operations use the async/await pattern: Responses are handled asynchronously</li>
-                    <li>
-                        Cross-platform: tested in <a href="http://www.mono-project.com/" target="_blank">Mono</a>
-                        3.10.x on Windows and on a custom Yocto image for the Raspberry Pi
-                    </li>
-                    <li>
-                        Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out
-                        <a href="https://github.com/unosquare/embedio-extras" target="_blank">EmbedIO Extras</a> for more
-                        modules.
-                    </li>
+                    <li>Cross-platform[1]: tested in Mono 3.10.x on Windows and on a custom Yocto image for the Raspberry Pi</li>
+                    <li>Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras">EmbedIO Extras</a> for additional modules.</li>
                     <li>Small memory footprint</li>
                     <li>Create REST APIs quickly with the out-of-the-box Web Api module</li>
                     <li>Serve static files with 1 line of code (also out-of-the-box)</li>
                     <li>Handle sessions with the built-in LocalSessionWebModule</li>
-                    <li>Web Sockets support (Not available on Mono 3.x though)</li>
-                    <li>CORS support. Origin, Headers and Methods validation with OPTIONS preflight</li>
+                    <li>WebSockets support (see notes below)</li>
+                    <li>CORS support. Origin, Header and Method validation with OPTIONS preflight</li>
                     <li>Supports HTTP 206 Partial Content</li>
-                    <li>
-                        <a href="http://owin.org/">OWIN</a> Middleware support via <a href="https://github.com/unosquare/embedio-extras/tree/master/Unosquare.Labs.EmbedIO.OwinMiddleware">Owin Middleware Module</a>.
-                    </li>
+                    <li><a href="http://owin.org/">OWIN</a> Middleware support via <a href="https://github.com/unosquare/embedio-extras/tree/master/Unosquare.Labs.EmbedIO.OwinMiddleware">Owin Middleware Module</a>.</li>
                 </ul>
 
                 <p>
@@ -119,8 +114,43 @@
                     <li>Write a cross-platform GUI entirely in CSS/HTML/JS</li>
                     <li>Write a game using Babylon.js and make EmbedIO your serve your code and assets</li>
                     <li>Create GUIs for Windows services or Linux daemons</li>
+                    <li>Works well with <a href="https://github.com/unosquare/litelib">LiteLib</a> - add SQLite support in minutes!</li>
                     <li>Write client applications with real-time communication between them</li>
                 </ul>
+
+                <p>Some notes regarding WebSocket support:</p>
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Runtime</th>
+                            <th>WebSocket support</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>NET452</td>
+                            <td>Yes</td>
+                            <td>Support Win7+ OS using a custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a></td>
+                        </tr>
+                        <tr>
+                            <td>NET46</td>
+                            <td>Yes</td>
+                            <td>Support Win8+ OS using native System.Net library</td>
+                        </tr>
+                        <tr>
+                            <td>MONO</td>
+                            <td>Yes</td>
+                            <td>Support Windows and Linux using custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a></td>
+                        </tr>
+                        <tr>
+                            <td>NETCORE10</td>
+                            <td>Yes</td>
+                            <td>Support using a custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a></td>
+                        </tr>
+                    </tbody>
+                </table>
                 <hr />
                 <h2 id="nuget">NuGet Installation:</h2>
 
@@ -251,11 +281,12 @@ namespace Company.Project
                 <h2 id="rest">REST API Example:</h2>
 
                 <p>
-                    The WebApi module supports two routing strategies: Wildcard and Regex. By default, and in order to maintain backwards compatibility, the WebApi module will use the <strong>Wildcard Routing Strategy</strong> and match routes using the asterisk <code>*</code> character in the route. <strong>For example:</strong>
+                    The WebApi module supports two routing strategies: Wildcard and Regex. By default, and in order to maintain backwards compatibility, the WebApi module will use the <strong>Wildcard Routing Strategy</strong> and match routes using the
+                    asterisk <code>*</code> character in the route. <strong>For example:</strong>
                 </p>
                 <ul>
                     <li>The route <code>/api/people/*</code> will match any request with a URL starting with the two first URL segments <code>api</code> and <code>people</code> and ending with anything. The route <code>/api/people/hello</code> will be matched.</li>
-                    <li>You can also use wildcards in the middle of the route. The route <code>/api/people/*/details</code> will match requests starting with the two first URL segments <code>api</code> and <code>people</code>, and ending with a <code>details</code> segment. The route <code>/api/people/hello/details</code> will be matched. </li>
+                    <li>You can also use wildcards in the middle of the route. The route <code>/api/people/*/details</code> will match requests starting with the two first URL segments <code>api</code> and <code>people</code>, and ending with a <code>details</code>                        segment. The route <code>/api/people/hello/details</code> will be matched. </li>
                 </ul>
 
                 <p>
@@ -263,7 +294,9 @@ namespace Company.Project
 
                 </p>
                 <p>
-                    On the other hand, the <strong>Regex Routing Strategy</strong> will try to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API 2. A method with the following route <code>/api/people/{id}</code> is going to match any request URL with three segments: the first two <code>api</code> and <code>people</code> and the last one is going to be parsed or converted to the type in the <code>id</code> argument of the handling method signature. Please read on if this was confusing as it is much simpler than it sounds. Additionally, you can put multiple values to match, for example <code>/api/people/{mainSkill}/{age}</code>, and receive the parsed values from the URL straight into the arguments of your handler method.
+                    On the other hand, the <strong>Regex Routing Strategy</strong> will try to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API 2. A method with the following route <code>/api/people/{id}</code>                    is going to match any request URL with three segments: the first two <code>api</code> and <code>people</code> and the last one is going to be parsed or converted to the type in the <code>id</code> argument of the handling method signature.
+                    Please read on if this was confusing as it is much simpler than it sounds. Additionally, you can put multiple values to match, for example <code>/api/people/{mainSkill}/{age}</code>, and receive the parsed values from the URL straight
+                    into the arguments of your handler method.
                 </p>
 
                 <p>
@@ -276,7 +309,7 @@ server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;()
                 <p>
                     <em>And our controller class (using Regex Strategy) looks like:</em>
                 </p>
-            <pre><code class="csharp">public class PeopleController : WebApiController
+                <pre><code class="csharp">public class PeopleController : WebApiController
 {
     [WebApiHandler(HttpVerbs.Get, "/api/people/{id}")]
     public bool GetPeople(WebServer server, HttpListenerContext context, int id)
@@ -343,12 +376,12 @@ server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;()
                 <hr />
                 <h2 id="websocket">Web Sockets Example:</h2>
                 <p>
-                <em>During server setup:</em>
+                    <em>During server setup:</em>
                 </p>
                 <pre><code class="csharp">server.RegisterModule(new WebSocketsModule());
 server.Module&lt;WebSocketsModule&gt;().RegisterWebSocketsServer&lt;WebSocketsChatServer&gt;(&quot;/chat&quot;);</code></pre>
                 <p>
-                <em>And our web sockets server class looks like:</em>
+                    <em>And our web sockets server class looks like:</em>
                 </p>
                 <pre><code class="csharp">/// &lt;summary&gt;
 /// Defines a very simple chat server
@@ -419,8 +452,7 @@ public class WebSocketsChatServer : WebSocketsServer
 }</code></pre>
                 <hr />
                 <h2 id="cli">EmbedIO CLI</h2>
-                Start any web folder or EmbedIO-enabled DLL from command line.
-                You can find <a href="https://github.com/unosquare/embedio/tree/master/Unosquare.Labs.EmbedIO.Command">EmbedIO CLI</a>.
+                Start any web folder or EmbedIO-enabled DLL from command line. You can find <a href="https://github.com/unosquare/embedio/tree/master/Unosquare.Labs.EmbedIO.Command">EmbedIO CLI</a>.
                 <h3>Run web folder (static content only)</h3>
                 <pre><code>$ embediocli -p c:\wwwroot</code></pre>
                 <h3>Run web folder with WebAPI or WebSocket Assembly</h3>
@@ -435,11 +467,16 @@ public class WebSocketsChatServer : WebSocketsServer
         </div>
     </div>
     <script>
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+        (function(i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function() {
                 (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date(); a = s.createElement(o),
-            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
         })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
         ga('create', 'UA-8535255-2', 'auto');
