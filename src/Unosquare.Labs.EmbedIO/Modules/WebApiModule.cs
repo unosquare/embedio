@@ -71,10 +71,16 @@
                         if (regExRouteParams.ContainsKey(arg.Name) == false) continue;
                         // get a reference to the parse method
                         var parameterTypeNullable = Nullable.GetUnderlyingType(arg.ParameterType);
+#if NETSTANDARD1_6
+                        var parseMethod = parameterTypeNullable != null
+                            ? parameterTypeNullable.GetTypeInfo().GetMethod(nameof(int.Parse), new[] { typeof(string) })
+                            : arg.ParameterType.GetTypeInfo().GetMethod(nameof(int.Parse), new[] { typeof(string) });
+#else
+
                         var parseMethod = parameterTypeNullable != null
                             ? parameterTypeNullable.GetMethod(nameof(int.Parse), new[] { typeof(string) })
                             : arg.ParameterType.GetMethod(nameof(int.Parse), new[] { typeof(string) });
-
+#endif
                         // add the parsed argument to the argument list if available
                         if (parseMethod != null)
                         {
@@ -311,10 +317,14 @@
         {
             var protoDelegate = new ResponseHandler((server, context) => true);
             var protoAsyncDelegate = new AsyncResponseHandler((server, context) => Task.FromResult(true));
-
+#if NETSTANDARD1_6
+            var methods = controllerType.GetTypeInfo()
+                .GetMethods(BindingFlags.Instance | BindingFlags.Public)
+#else
             var methods = controllerType
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
-#if !NETCOREAPP1_0
+#endif
+#if !NETCOREAPP1_0 && !NETSTANDARD1_6
                 .Where(
                     m => (m.ReturnType == protoDelegate.Method.ReturnType
                           || m.ReturnType == protoAsyncDelegate.Method.ReturnType)

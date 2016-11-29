@@ -88,7 +88,7 @@
 
                 // Fire up the browser to show the content!
 #if DEBUG
-#if !NETCOREAPP1_0
+#if !NETCOREAPP1_0 && !NETSTANDARD1_6
                 var browser = new System.Diagnostics.Process()
                 {
                     StartInfo = new System.Diagnostics.ProcessStartInfo(url)

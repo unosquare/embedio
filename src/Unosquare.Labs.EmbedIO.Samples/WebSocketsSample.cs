@@ -166,7 +166,7 @@
                 StartInfo = new ProcessStartInfo()
                 {
                     CreateNoWindow = true,
-#if !NETCOREAPP1_0
+#if !NETCOREAPP1_0 && !NETSTANDARD1_6
                     ErrorDialog = false,
 #endif
                     FileName = "cmd.exe",

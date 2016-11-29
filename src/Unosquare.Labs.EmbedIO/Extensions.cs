@@ -526,7 +526,7 @@
         public static string ComputeMd5Hash(Stream stream)
         {
             var md5 = MD5.Create();
-#if !NETCOREAPP1_0
+#if !NETCOREAPP1_0 && !NETSTANDARD1_6 && !NETSTANDARD1_6
             const int bufferSize = 4096;
 
             var readAheadBuffer = new byte[bufferSize];
