@@ -29,7 +29,6 @@
 
 using System;
 using System.IO;
-using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -226,62 +225,7 @@ namespace Unosquare.Net
             if (chunked)
                 InternalWrite(_crlf, 0, 2);
         }
-
-        //public IAsyncResult BeginWrite(byte[] buffer, int offset, int count,
-        //                    AsyncCallback cback, object state)
-        //{
-        //    if (disposed)
-        //        throw new ObjectDisposedException(GetType().ToString());
-
-        //    byte[] bytes = null;
-        //    MemoryStream ms = GetHeaders(false);
-        //    bool chunked = response.SendChunked;
-        //    if (ms != null)
-        //    {
-        //        long start = ms.Position;
-        //        ms.Position = ms.Length;
-        //        if (chunked)
-        //        {
-        //            bytes = GetChunkSizeBytes(count, false);
-        //            ms.Write(bytes, 0, bytes.Length);
-        //        }
-        //        ms.Write(buffer, offset, count);
-        //        buffer = ms.GetBuffer();
-        //        offset = (int)start;
-        //        count = (int)(ms.Position - start);
-        //    }
-        //    else if (chunked)
-        //    {
-        //        bytes = GetChunkSizeBytes(count, false);
-        //        InternalWrite(bytes, 0, bytes.Length);
-        //    }
-
-        //    return stream.BeginWrite(buffer, offset, count, cback, state);
-        //}
-
-        //public void EndWrite(IAsyncResult ares)
-        //{
-        //    if (disposed)
-        //        throw new ObjectDisposedException(GetType().ToString());
-
-        //    if (ignore_errors)
-        //    {
-        //        try
-        //        {
-        //            stream.EndWrite(ares);
-        //            if (response.SendChunked)
-        //                stream.Write(crlf, 0, 2);
-        //        }
-        //        catch { }
-        //    }
-        //    else
-        //    {
-        //        stream.EndWrite(ares);
-        //        if (response.SendChunked)
-        //            stream.Write(crlf, 0, 2);
-        //    }
-        //}
-
+        
         /// <summary>
         /// When overridden in a derived class, reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.
         /// </summary>

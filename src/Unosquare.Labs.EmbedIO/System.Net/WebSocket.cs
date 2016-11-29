@@ -163,10 +163,7 @@ namespace Unosquare.Net
     public class WebSocket : IDisposable
     {
         #region Private Fields
-
-#if AUTHENTICATION
-        private AuthenticationChallenge _authChallenge;
-#endif
+        
         private string _base64Key;
         private readonly bool _client;
         private Action _closeContext;
@@ -187,9 +184,10 @@ namespace Unosquare.Net
         private volatile bool _inMessage;
         private Action<MessageEventArgs> _message;
         private Queue<MessageEventArgs> _messageEventQueue;
-        private uint _nonceCount;
         private string _origin;
 #if AUTHENTICATION
+        private AuthenticationChallenge _authChallenge;
+        private uint _nonceCount;
         private bool _preAuth;
 #endif
         private string _protocol;

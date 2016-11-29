@@ -8,9 +8,6 @@ namespace Unosquare.Labs.EmbedIO.Tests
     {
         public static void Main()
         {
-            var ws = new WebSocketsModuleTest();
-            ws.Init();
-            ws.TestConnectWebSocket();
             Console.ReadLine();
         }
     }
