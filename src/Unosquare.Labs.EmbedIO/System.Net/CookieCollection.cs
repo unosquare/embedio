@@ -524,11 +524,15 @@ namespace Unosquare.Net
             if (array.Length - index < _list.Count)
                 throw new ArgumentException(
                     "The number of elements in this collection is greater than the available space of the destination array.");
-
+#if NETSTANDARD1_6
+            if (!array.GetType().GetElementType().GetTypeInfo().IsAssignableFrom(typeof(Cookie)))
+                throw new InvalidCastException(
+                    "The elements in this collection cannot be cast automatically to the type of the destination array.");
+#else
             if (!array.GetType().GetElementType().IsAssignableFrom(typeof(Cookie)))
                 throw new InvalidCastException(
                     "The elements in this collection cannot be cast automatically to the type of the destination array.");
-
+#endif
             ((IList) _list).CopyTo(array, index);
         }
 
@@ -580,7 +584,7 @@ namespace Unosquare.Net
             return _list.GetEnumerator();
         }
 
-        #endregion
+#endregion
     }
 }
 

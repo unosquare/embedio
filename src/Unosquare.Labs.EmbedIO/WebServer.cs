@@ -352,7 +352,7 @@
                         module.Server = this;
 
                     // Log the module and hanlder to be called and invoke as a callback.
-#if !NETCOREAPP1_0
+#if !NETCOREAPP1_0 && !NETSTANDARD1_6
                     Log.DebugFormat("{0}::{1}.{2}", module.Name, callback.Method.DeclaringType.Name,
                         callback.Method.Name);
 #endif

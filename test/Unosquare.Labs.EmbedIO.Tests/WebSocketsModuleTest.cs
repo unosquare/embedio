@@ -1,7 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using System;
-#if !NETCOREAPP1_0
+#if !NETCOREAPP1_0 && !NETSTANDARD1_6
     using System.Net.WebSockets;
 #endif
     using System.Threading;
@@ -31,7 +31,7 @@
 
             Assert.AreEqual(WebServer.Module<WebSocketsModule>().Handlers.Count, 1, "WebSocketModule has one handler");
 
-#if !NETCOREAPP1_0
+#if !NETCOREAPP1_0 && !NETSTANDARD1_6
             var clientSocket = new ClientWebSocket();
             var ct = new CancellationTokenSource();
             await clientSocket.ConnectAsync(new Uri(Resources.WsServerAddress + "test"), ct.Token);
