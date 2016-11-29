@@ -154,5 +154,14 @@
             if (IsDebugEnabled)
                 WriteLine(ConsoleColor.Green, format, args);
         }
+
+        /// <summary>
+        ///  Writes an Debug level message
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public void Debug(string message)
+        {
+            DebugFormat(message);
+        }
     }
 }

@@ -44,7 +44,9 @@ namespace Unosquare.Net
         private Exception _exception;
         private HttpListenerContext _context;
         private readonly object _locker = new object();
+#if AUTHENTICATION
         private ListenerAsyncResult _forward;
+#endif
         internal bool EndCalled;
         internal bool InGet;
 
@@ -56,11 +58,13 @@ namespace Unosquare.Net
 
         internal void Complete(Exception exc)
         {
+#if AUTHENTICATION
             if (_forward != null)
             {
                 _forward.Complete(exc);
                 return;
             }
+#endif
             _exception = exc;
             if (InGet && (exc is ObjectDisposedException))
                 _exception = new HttpListenerException(500, "Listener closed");
@@ -79,11 +83,15 @@ namespace Unosquare.Net
         private static void InvokeCallback(object o)
         {
             var ares = (ListenerAsyncResult) o;
+
+#if AUTHENTICATION
             if (ares._forward != null)
             {
                 InvokeCallback(ares._forward);
                 return;
             }
+#endif
+
             try
             {
                 ares._cb(ares);
@@ -101,11 +109,13 @@ namespace Unosquare.Net
 
         internal void Complete(HttpListenerContext context, bool synch)
         {
+#if AUTHENTICATION
             if (_forward != null)
             {
                 _forward.Complete(context, synch);
                 return;
             }
+#endif
             _synch = synch;
             _context = context;
             lock (_locker)
@@ -144,7 +154,7 @@ namespace Unosquare.Net
 
                     if (_cb != null)
                         ThreadPool.QueueUserWorkItem(_invokeCb, this);
-                    #if AUTHENTICATION
+#if AUTHENTICATION
                 }
 #endif
             }
@@ -152,8 +162,10 @@ namespace Unosquare.Net
 
         internal HttpListenerContext GetContext()
         {
+#if AUTHENTICATION
             if (_forward != null)
                 return _forward.GetContext();
+#endif
             if (_exception != null)
                 throw _exception;
 
@@ -164,8 +176,10 @@ namespace Unosquare.Net
         {
             get
             {
+#if AUTHENTICATION
                 if (_forward != null)
                     return _forward.AsyncState;
+#endif
                 return _state;
             }
         }
@@ -174,9 +188,10 @@ namespace Unosquare.Net
         {
             get
             {
+#if AUTHENTICATION
                 if (_forward != null)
                     return _forward.AsyncWaitHandle;
-
+#endif
                 lock (_locker)
                 {
                     if (_handle == null)
@@ -187,15 +202,20 @@ namespace Unosquare.Net
             }
         }
 
-        public bool CompletedSynchronously => _forward?.CompletedSynchronously ?? _synch;
+        public bool CompletedSynchronously =>
+#if AUTHENTICATION
+            _forward?.CompletedSynchronously ?? 
+#endif
+            _synch;
 
         public bool IsCompleted
         {
             get
             {
+#if AUTHENTICATION
                 if (_forward != null)
                     return _forward.IsCompleted;
-
+#endif
                 lock (_locker)
                 {
                     return _completed;

@@ -74,5 +74,14 @@
         {
             // placeholder
         }
+
+        /// <summary>
+        ///  Writes an Debug level message
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public void Debug(string message)
+        {
+            // placeholder
+        }
     }
 }

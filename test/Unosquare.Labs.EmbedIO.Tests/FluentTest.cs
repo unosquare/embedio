@@ -1,16 +1,14 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using NUnit.Framework;
-    using System.Net;
+    using System.Reflection;
     using Unosquare.Labs.EmbedIO.Modules;
-    
     using Unosquare.Labs.EmbedIO.Tests.TestObjects;
 
     [TestFixture]
     public class FluentTest
     {
         protected string RootPath;
-
         protected string WebServerUrl = Resources.GetServerAddress();
 
         [SetUp]
@@ -18,8 +16,7 @@
         {
             RootPath = TestHelper.SetupStaticFolder();
         }
-
-#if !NETCOREAPP1_0 && !NETSTANDARD1_6
+        
         [Test]
         public void FluentWithStaticFolder()
         {
@@ -30,24 +27,13 @@
             Assert.AreEqual(webServer.Modules.Count, 2, "It has 2 modules loaded");
             Assert.IsNotNull(webServer.Module<StaticFilesModule>(), "It has StaticFilesModule");
             Assert.AreEqual(webServer.Module<StaticFilesModule>().FileSystemPath, RootPath, "StaticFilesModule root path is equal to RootPath");
-
-            webServer.RunAsync();
-
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
-
-            using (var response = (HttpWebResponse)request.GetResponse())
-            {
-                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-            }
-
-            webServer.Dispose();
         }
 
         [Test]
         public void FluentWithWebApi()
         {
             var webServer = WebServer.Create(WebServerUrl)
-                .WithWebApi(typeof(FluentTest).Assembly);
+                .WithWebApi(typeof(FluentTest).GetTypeInfo().Assembly);
 
             Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
             Assert.IsNotNull(webServer.Module<WebApiModule>(), "It has WebApiModule");
@@ -60,7 +46,7 @@
         public void FluentWithWebSockets()
         {
             var webServer = WebServer.Create(WebServerUrl)
-                .WithWebSocket(typeof(FluentTest).Assembly);
+                .WithWebSocket(typeof(FluentTest).GetTypeInfo().Assembly);
 
             Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
             Assert.IsNotNull(webServer.Module<WebSocketsModule>(), "It has WebSocketsModule");
@@ -73,7 +59,7 @@
         {
             var webServer = WebServer.Create(WebServerUrl)
                 .WithWebApi();
-            webServer.Module<WebApiModule>().LoadApiControllers(typeof(FluentTest).Assembly);
+            webServer.Module<WebApiModule>().LoadApiControllers(typeof(FluentTest).GetTypeInfo().Assembly);
 
             Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
             Assert.IsNotNull(webServer.Module<WebApiModule>(), "It has WebApiModule");
@@ -81,6 +67,5 @@
 
             webServer.Dispose();
         }
-#endif
     }
 }

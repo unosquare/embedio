@@ -53,5 +53,11 @@
         /// <param name="format"></param>
         /// <param name="args"></param>
         void DebugFormat(string format, params object[] args);
+
+        /// <summary>
+        ///  Writes an Debug level message
+        /// </summary>
+        /// <param name="message">The message.</param>
+        void Debug(string message);
     }
 }

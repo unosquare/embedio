@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Concurrent;
 
-    public class TestConsoleLog : Unosquare.Labs.EmbedIO.Log.ILog
+    public class TestConsoleLog : Log.ILog
     {
         public static ConcurrentBag<string> Data = new ConcurrentBag<string>();
 
@@ -41,6 +41,11 @@
         public void DebugFormat(string format, params object[] args)
         {
             Data.Add(String.Format(format, args));
+        }
+
+        public void Debug(string message)
+        {
+            DebugFormat(message);
         }
     }
 }

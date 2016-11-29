@@ -6,6 +6,7 @@
     using System.Globalization;
     using System.Linq;
     using System.Threading;
+    using System.Reflection;
     using System.Threading.Tasks;
     using Log;
 #if NET46
@@ -129,7 +130,7 @@
         /// <param name="urlPrefix">The URL prefix.</param>
         /// <param name="log">The log.</param>
         public WebServer(string urlPrefix, ILog log)
-            : this(new[] {urlPrefix}, log, RoutingStrategy.Wildcard)
+            : this(new[] { urlPrefix }, log, RoutingStrategy.Wildcard)
         {
             // placeholder
         }
@@ -141,7 +142,7 @@
         /// <param name="log">The log.</param>
         /// <param name="routingStrategy">The routing strategy</param>
         public WebServer(string urlPrefix, ILog log, RoutingStrategy routingStrategy)
-            : this(new[] {urlPrefix}, log, routingStrategy)
+            : this(new[] { urlPrefix }, log, routingStrategy)
         {
             // placeholder
         }
@@ -184,8 +185,8 @@
 
             foreach (var prefix in urlPrefixes)
             {
-                var urlPrefix =new String(prefix?.ToCharArray());
-                
+                var urlPrefix = new String(prefix?.ToCharArray());
+
                 if (urlPrefix.EndsWith("/") == false) urlPrefix = urlPrefix + "/";
                 urlPrefix = urlPrefix.ToLowerInvariant();
 
@@ -205,7 +206,7 @@
         public T Module<T>()
             where T : class, IWebModule
         {
-            var module = Modules.FirstOrDefault(m => m.GetType() == typeof (T));
+            var module = Modules.FirstOrDefault(m => m.GetType() == typeof(T));
             return module as T;
         }
 
@@ -352,10 +353,8 @@
                         module.Server = this;
 
                     // Log the module and hanlder to be called and invoke as a callback.
-#if !NETCOREAPP1_0 && !NETSTANDARD1_6
-                    Log.DebugFormat("{0}::{1}.{2}", module.Name, callback.Method.DeclaringType.Name,
-                        callback.Method.Name);
-#endif
+                    Log.DebugFormat("{0}::{1}.{2}", module.Name, callback.GetMethodInfo().DeclaringType.Name,
+                        callback.GetMethodInfo().Name);
 
                     // Execute the callback
                     var handleResult = callback.Invoke(this, context);

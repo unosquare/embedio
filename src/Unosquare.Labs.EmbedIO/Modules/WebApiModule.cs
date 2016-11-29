@@ -71,16 +71,11 @@
                         if (regExRouteParams.ContainsKey(arg.Name) == false) continue;
                         // get a reference to the parse method
                         var parameterTypeNullable = Nullable.GetUnderlyingType(arg.ParameterType);
-#if NETSTANDARD1_6
+
                         var parseMethod = parameterTypeNullable != null
                             ? parameterTypeNullable.GetTypeInfo().GetMethod(nameof(int.Parse), new[] { typeof(string) })
                             : arg.ParameterType.GetTypeInfo().GetMethod(nameof(int.Parse), new[] { typeof(string) });
-#else
 
-                        var parseMethod = parameterTypeNullable != null
-                            ? parameterTypeNullable.GetMethod(nameof(int.Parse), new[] { typeof(string) })
-                            : arg.ParameterType.GetMethod(nameof(int.Parse), new[] { typeof(string) });
-#endif
                         // add the parsed argument to the argument list if available
                         if (parseMethod != null)
                         {
@@ -150,7 +145,7 @@
                 }
             });
         }
-        
+
         /// <summary>
         /// Normalizes a path meant for Regex matching, extracts the route parameters, and returns the registered
         /// path in the internal delegate map.
@@ -317,22 +312,8 @@
         {
             var protoDelegate = new ResponseHandler((server, context) => true);
             var protoAsyncDelegate = new AsyncResponseHandler((server, context) => Task.FromResult(true));
-#if NETSTANDARD1_6
             var methods = controllerType.GetTypeInfo()
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
-#else
-            var methods = controllerType
-                .GetMethods(BindingFlags.Instance | BindingFlags.Public)
-#endif
-#if !NETCOREAPP1_0 && !NETSTANDARD1_6
-                .Where(
-                    m => (m.ReturnType == protoDelegate.Method.ReturnType
-                          || m.ReturnType == protoAsyncDelegate.Method.ReturnType)
-                         && m.GetParameters()
-                             .Select(pi => pi.ParameterType)
-                             .Take(2)
-                             .SequenceEqual(protoDelegate.Method.GetParameters()
-#else
                 .Where(
                     m => (m.ReturnType == protoDelegate.GetMethodInfo().ReturnType
                           || m.ReturnType == protoAsyncDelegate.GetMethodInfo().ReturnType)
@@ -340,7 +321,6 @@
                              .Select(pi => pi.ParameterType)
                              .Take(2)
                              .SequenceEqual(protoDelegate.GetMethodInfo().GetParameters()
-#endif
                                  .Select(pi => pi.ParameterType)));
 
             foreach (var method in methods)

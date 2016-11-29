@@ -25,7 +25,7 @@ namespace Unosquare.Labs.EmbedIO
         /// The format culture used for header outputs
         /// </summary>
         public static readonly CultureInfo StandardCultureInfo =
-#if !NETCOREAPP1_0 && !NETSTANDARD1_6 && !NETSTANDARD1_6
+#if !NETCOREAPP1_0 && !NETSTANDARD1_6
             CultureInfo.CreateSpecificCulture("en-US");
 #else
             new CultureInfo("en-US");
@@ -35,7 +35,7 @@ namespace Unosquare.Labs.EmbedIO
         /// The standard string comparer
         /// </summary>
         public static StringComparer StandardStringComparer =
-#if !NETCOREAPP1_0 && !NETSTANDARD1_6 && !NETSTANDARD1_6
+#if !NETCOREAPP1_0 && !NETSTANDARD1_6
             StringComparer.InvariantCultureIgnoreCase;
 #else
             StringComparer.OrdinalIgnoreCase;
@@ -45,7 +45,7 @@ namespace Unosquare.Labs.EmbedIO
         /// The default encoding
         /// </summary>
         public static Encoding DefaultEncoding =
-#if !NETCOREAPP1_0 && !NETSTANDARD1_6 && !NETSTANDARD1_6
+#if !NETCOREAPP1_0 && !NETSTANDARD1_6
             Encoding.Default;
 #else
             Encoding.GetEncoding(0);
