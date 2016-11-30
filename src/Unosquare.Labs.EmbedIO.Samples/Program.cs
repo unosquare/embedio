@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
     using Log;
+    using Modules;
     using System;
 
     internal class Program
@@ -21,30 +22,30 @@
                 url = args[0];
 
 #if !MONO
-                var dbContext = new AppDbContext();
+            var dbContext = new AppDbContext();
 
-                foreach (var person in dbContext.People.SelectAll())
-                    dbContext.People.Delete(person);
+            foreach (var person in dbContext.People.SelectAll())
+                dbContext.People.Delete(person);
 
-                dbContext.People.Insert(new Person()
-                {
-                    Name = "Mario Di Vece",
-                    Age = 31,
-                    EmailAddress = "mario@unosquare.com"
-                });
-                dbContext.People.Insert(new Person()
-                {
-                    Name = "Geovanni Perez",
-                    Age = 32,
-                    EmailAddress = "geovanni.perez@unosquare.com"
-                });
+            dbContext.People.Insert(new Person()
+            {
+                Name = "Mario Di Vece",
+                Age = 31,
+                EmailAddress = "mario@unosquare.com"
+            });
+            dbContext.People.Insert(new Person()
+            {
+                Name = "Geovanni Perez",
+                Age = 32,
+                EmailAddress = "geovanni.perez@unosquare.com"
+            });
 
-                dbContext.People.Insert(new Person()
-                {
-                    Name = "Luis Gonzalez",
-                    Age = 29,
-                    EmailAddress = "luis.gonzalez@unosquare.com"
-                });
+            dbContext.People.Insert(new Person()
+            {
+                Name = "Luis Gonzalez",
+                Age = 29,
+                EmailAddress = "luis.gonzalez@unosquare.com"
+            });
 #endif
 
             // Our web server is disposable. Note that if you don't want to use logging,
@@ -75,10 +76,16 @@
                 // Register the Web Api Module. See the Setup method to find out how to do it
                 // It registers the WebApiModule and registers the controller(s) -- that's all.
                 server.WithWebApiController<PeopleController>();
-                
+
                 // Register the WebSockets module. See the Setup method to find out how to do it
                 // It registers the WebSocketsModule and registers the server for the given paths(s)
                 WebSocketsSample.Setup(server);
+
+                server.RegisterModule(new FallbackModule((ws, ctx) =>
+                {
+                    ctx.JsonResponse(new { Message = "Error " });
+                    return true;
+                }));
 
                 // Once we've registered our modules and configured them, we call the Run() method.
                 // This is a non-blocking method (it return immediately) so in this case we avoid
@@ -87,8 +94,7 @@
                 server.RunAsync();
 
                 // Fire up the browser to show the content!
-#if DEBUG
-#if !NETCOREAPP1_0 && !NETSTANDARD1_6
+#if DEBUG && !NETCOREAPP1_0 && !NETSTANDARD1_6
                 var browser = new System.Diagnostics.Process()
                 {
                     StartInfo = new System.Diagnostics.ProcessStartInfo(url)
@@ -97,7 +103,6 @@
                     }
                 };
                 browser.Start();
-#endif
 #endif
                 // Wait for any key to be pressed before disposing of our web server.
                 // In a service we'd manage the lifecycle of of our web server using

@@ -30,6 +30,7 @@
 
             WebServer = new WebServer(WebServerUrl, Logger);
             WebServer.RegisterModule(new StaticFilesModule(RootPath) { UseRamCache = true });
+            WebServer.RegisterModule(new FallbackModule("/index.html"));
             WebServer.RunAsync();
         }
 
@@ -72,6 +73,16 @@
             html = await webClient.GetStringAsync(WebServerUrl + "sub");
 
             Assert.AreEqual(Resources.SubIndex, html, "Same content index.html without trailing");
+        }
+
+        [Test]
+        public async Task GetFallbackIndex()
+        {
+            var webClient = new HttpClient();
+
+            var html = await webClient.GetStringAsync(WebServerUrl + "invalidpath");
+
+            Assert.AreEqual(Resources.Index, html, "Same content index.html");
         }
 
         [Test]
