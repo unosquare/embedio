@@ -61,6 +61,7 @@
     <Compile Include="Log\SimpleConsoleLog.cs" />
     <Compile Include="Middleware.cs" />
     <Compile Include="Modules\CorsModule.cs" />
+    <Compile Include="Modules\FallbackModule.cs" />
     <Compile Include="Modules\LocalSessionModule.cs" />
     <Compile Include="Modules\StaticFilesModule.cs" />
     <Compile Include="Modules\WebApiModule.cs" />
