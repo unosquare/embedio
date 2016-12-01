@@ -1,6 +1,5 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
-
 #if NET46
     using System.Net;
 #else
