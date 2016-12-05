@@ -1,15 +1,14 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
-    using System.Net.Http;
     using NUnit.Framework;
     using System;
     using System.IO;
     using System.Net;
+    using System.Net.Http;
     using System.Threading;
-    using Unosquare.Labs.EmbedIO.Modules;
     using System.Threading.Tasks;
+    using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Labs.EmbedIO.Tests.TestObjects;
-    using System.IO.Compression;
 
     [TestFixture]
     public class StaticFilesModuleTest
@@ -126,7 +125,7 @@
         {
             const int maxLength = 100;
             var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
-            request.AddRange(0, maxLength);
+            request.AddRange(0, maxLength - 1);
 
             using (var response = (HttpWebResponse)request.GetResponse())
             {
@@ -152,7 +151,7 @@
             const int offset = 50;
             const int maxLength = 100;
             var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
-            request.AddRange(offset, maxLength + offset);
+            request.AddRange(offset, maxLength + offset - 1);
 
             using (var response = (HttpWebResponse)request.GetResponse())
             {
@@ -178,7 +177,7 @@
             const int startByteIndex = 100;
             const int byteLength = 100;
             var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
-            request.AddRange(startByteIndex, startByteIndex + byteLength);
+            request.AddRange(startByteIndex, startByteIndex + byteLength - 1);
 
             using (var response = (HttpWebResponse)request.GetResponse())
             {
@@ -202,31 +201,32 @@
         public void GetEntireFileWithChunks()
         {
             var originalSet = TestHelper.GetBigData();
-            var requestHead = (HttpWebRequest) WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
+            var requestHead = (HttpWebRequest)WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
             requestHead.Method = "HEAD";
 
-            var remoteSize = ((HttpWebResponse) requestHead.GetResponse()).ContentLength;
+            var remoteSize = ((HttpWebResponse)requestHead.GetResponse()).ContentLength;
             Assert.AreEqual(remoteSize, originalSet.Length);
 
             var buffer = new byte[remoteSize];
             const int chunkSize = 50000;
 
-            for (var i = 0; i < remoteSize/chunkSize + 1; i++)
+            for (var i = 0; i < remoteSize / chunkSize + 1; i++)
             {
-                var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
-                var top = (i + 1)*chunkSize;
+                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
+                var top = (i + 1) * chunkSize;
 
-                request.AddRange(i*chunkSize, top > remoteSize ? remoteSize : top);
+                request.AddRange(i * chunkSize, (top > remoteSize ? remoteSize : top) - 1);
 
-                using (var response = (HttpWebResponse) request.GetResponse())
+                using (var response = (HttpWebResponse)request.GetResponse())
                 {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
+                    if (remoteSize < top)
+                        Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
 
                     using (var ms = new MemoryStream())
                     {
                         response.GetResponseStream()?.CopyTo(ms);
                         var data = ms.ToArray();
-                        Buffer.BlockCopy(data, 0, buffer, i*chunkSize, data.Length);
+                        Buffer.BlockCopy(data, 0, buffer, i * chunkSize, data.Length);
                     }
                 }
             }
