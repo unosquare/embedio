@@ -294,22 +294,32 @@
                     return true;
                 }
 
-                byteLength = upperByteIndex - lowerByteIndex;
+                if (upperByteIndex == fileSize)
+                {
+                    byteLength = buffer.Length;
+                }
+                else
+                {
+                    byteLength = upperByteIndex - lowerByteIndex + 1;
 
-                context.Response.AddHeader(Constants.HeaderContentRanges,
-                    $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
+                    context.Response.AddHeader(Constants.HeaderContentRanges,
+                        $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
 
-                context.Response.StatusCode = 206;
+                    context.Response.StatusCode = 206;
 
-                server.Log.DebugFormat("Opening stream {0} bytes {1}-{2} size {3}", localPath, lowerByteIndex,
-                    upperByteIndex,
-                    byteLength);
+                    server.Log.DebugFormat("Opening stream {0} bytes {1}-{2} size {3}", localPath, lowerByteIndex,
+                        upperByteIndex,
+                        byteLength);
+                }
             }
             else
             {
                 if (UseGzip &&
                     context.RequestHeader(Constants.HeaderAcceptEncoding).Contains(Constants.HeaderCompressionGzip) &&
-                    buffer.Length < MaxGzipInputLength)
+                    buffer.Length < MaxGzipInputLength &&
+                    // Ignore audio/video from compression
+                    context.Response.ContentType?.StartsWith("audio") == false &&
+                    context.Response.ContentType?.StartsWith("video") == false)
                 {
                     // Perform compression if available
                     buffer = buffer.Compress();
@@ -467,7 +477,7 @@
             }
             else
             {
-                // Try to fall-back to root
+                // Try to fallback to root
                 var rootLocalPath = Path.Combine(FileSystemPath, urlPath);
 
                 if (File.Exists(rootLocalPath))

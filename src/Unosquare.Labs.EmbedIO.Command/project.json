@@ -7,7 +7,7 @@
   "dependencies": {
     "Newtonsoft.Json": "9.0.1",
     "CommandLineParser": "1.9.71",
-    "Unosquare.Labs.EmbedIO": "1.0.0-*"
+    "Unosquare.Labs.EmbedIO": "1.2.4-*"
   },
 
   "frameworks": {
