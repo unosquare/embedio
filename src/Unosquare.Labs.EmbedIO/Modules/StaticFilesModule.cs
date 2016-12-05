@@ -436,7 +436,7 @@
                  string.IsNullOrWhiteSpace(range[1])) ||
                 (range.Length == 1 && int.TryParse(range[0], out lowerByteIndex)))
             {
-                upperByteIndex = (int) fileSize - 1;
+                upperByteIndex = (int) fileSize;
                 return true;
             }
 
@@ -444,7 +444,7 @@
                 int.TryParse(range[1], out upperByteIndex))
             {
                 lowerByteIndex = (int) fileSize - upperByteIndex;
-                upperByteIndex = (int) fileSize - 1;
+                upperByteIndex = (int) fileSize;
                 return true;
             }
 

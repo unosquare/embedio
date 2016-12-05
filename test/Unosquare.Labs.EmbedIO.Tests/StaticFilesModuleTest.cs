@@ -338,13 +338,13 @@
 
             using (var server = new WebServer(endpoint, Logger))
             {
-                server.RegisterModule(new StaticFilesModule(root));
+                server.RegisterModule(new StaticFilesModule(root) { UseRamCache = false });
                 var serverTask = server.RunAsync();
 
                 var webClient = new HttpClient();
                 var remoteFile = await webClient.GetStringAsync(endpoint);
                 File.WriteAllText(file, Resources.SubIndex);
-                await Task.Delay(100);
+                
                 var remoteUpdatedFile = await webClient.GetStringAsync(endpoint);
                 File.WriteAllText(file, nameof(WebServer));
 
