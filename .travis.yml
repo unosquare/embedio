@@ -2,32 +2,52 @@ language: csharp
 solution: Unosquare.Labs.EmbedIO.Lib.sln
 notifications:
   slack: unolabs:cbusXPH6pBwZ35rVDzi4k4ve
-mono:
-  - latest
-  - 4.2.1
+matrix:
+  include:
+    - os: linux
+      dotnet: 1.0.0-preview2-003131
+      mono: none
+      env: DOTNETCORE=1
+      dist: trusty
+      sudo: false
+    - os: linux
+      mono: 4.2.1
+      env: TRAVIS_NODE_VERSION=4
+    - os: linux
+      mono: latest
+    - os: osx
+      dotnet: 1.0.0-preview2-003131
+      mono: none
+      env: DOTNETCORE=1
+    - os: osx
+      mono: latest
 install:
-  - nuget restore Unosquare.Labs.EmbedIO.Lib.sln
-  - nuget install NUnit.ConsoleRunner -OutputDirectory testrunner
-  - nuget install coveralls.net -Version 0.6.0 -OutputDirectory coveralls
-  - sudo apt-get install gtk-sharp2
-  - curl -sS https://api.nuget.org/packages/mono.cecil.0.9.6.4.nupkg > /tmp/mono.cecil.0.9.6.4.nupkg.zip
-  - unzip /tmp/mono.cecil.0.9.6.4.nupkg.zip -d /tmp/cecil
-  - cp /tmp/cecil/lib/net40/Mono.Cecil.dll .
-  - cp /tmp/cecil/lib/net40/Mono.Cecil.dll /tmp/cecil/
-  - git clone --depth=50 git://github.com/csMACnz/monocov.git ../../unosquare/monocov
-  - cd ../../unosquare/monocov
-  - cp /tmp/cecil/Mono.Cecil.dll .
-  - ./configure
-  - make
-  - sudo make install
-  - cd ../../unosquare/embedio
+  - if [[ $TRAVIS_OS_NAME == "osx" ]]; then mkdir -p /usr/local/lib; fi
+  - if [[ $TRAVIS_OS_NAME == "osx" ]]; then ln -s /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib /usr/local/lib/; fi
+  - if [[ $TRAVIS_OS_NAME == "osx" ]]; then ln -s /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib/; fi
+  - if [[ $DOTNETCORE == "1" ]]; then dotnet restore; else nuget restore Unosquare.Labs.EmbedIO.Lib.sln; fi
+  - if [[ $DOTNETCORE == "" ]]; then nuget install NUnit.ConsoleRunner -OutputDirectory testrunner; fi
+  - if [[ $DOTNETCORE == "" ]]; then nuget install coveralls.net -Version 0.6.0 -OutputDirectory coveralls; fi
+  - if [[ $DOTNETCORE == "" ]]; then sudo apt-get install gtk-sharp2; fi
+  - if [[ $DOTNETCORE == "" ]]; then curl -sS https://api.nuget.org/packages/mono.cecil.0.9.6.4.nupkg > /tmp/mono.cecil.0.9.6.4.nupkg.zip; fi
+  - if [[ $DOTNETCORE == "" ]]; then unzip /tmp/mono.cecil.0.9.6.4.nupkg.zip -d /tmp/cecil; fi
+  - if [[ $DOTNETCORE == "" ]]; then cp /tmp/cecil/lib/net40/Mono.Cecil.dll .; fi
+  - if [[ $DOTNETCORE == "" ]]; then cp /tmp/cecil/lib/net40/Mono.Cecil.dll /tmp/cecil/; fi
+  - if [[ $DOTNETCORE == "" ]]; then git clone --depth=50 git://github.com/csMACnz/monocov.git ../../unosquare/monocov; fi
+  - if [[ $DOTNETCORE == "" ]]; then cd ../../unosquare/monocov; fi
+  - if [[ $DOTNETCORE == "" ]]; then cp /tmp/cecil/Mono.Cecil.dll .; fi
+  - if [[ $DOTNETCORE == "" ]]; then ./configure; fi
+  - if [[ $DOTNETCORE == "" ]]; then make; fi
+  - if [[ $DOTNETCORE == "" ]]; then sudo make install; fi
+  - if [[ $DOTNETCORE == "" ]]; then cd ../../unosquare/embedio; fi
+before_script:
+  - if [[ $DOTNETCORE == "" ]]; then export LD_LIBRARY_PATH=/usr/local/lib; fi
+  - if [[ $DOTNETCORE == "" ]]; then export MONO_IOMAP=all; fi
+  - if [[ $DOTNETCORE == "" ]]; then REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn"); fi
+  - if [[ $DOTNETCORE == "" ]]; then REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce"); fi
+  - if [[ $DOTNETCORE == "" ]]; then REPO_COMMIT_MESSAGE=$(git show -s --pretty=format:"%s"); fi
 script:
-  - xbuild  Unosquare.Labs.EmbedIO.Lib.sln /p:"TargetFrameworkVersion=v4.5;Configuration=Release"
-  - export LD_LIBRARY_PATH=/usr/local/lib
-  - export MONO_IOMAP=all
-  - mono --debug --profile=monocov:outfile=monocovCoverage.cov,+[Unosquare.Labs.EmbedIO] ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe --process=Single ./test/Unosquare.Labs.EmbedIO.Tests/bin/Release/Unosquare.Labs.EmbedIO.Tests.dll
-  - monocov --export-xml=monocovCoverage monocovCoverage.cov
-  - REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
-  - REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
-  - REPO_COMMIT_MESSAGE=$(git show -s --pretty=format:"%s")
-  - mono ./coveralls/coveralls.net.0.6.0/tools/csmacnz.Coveralls.exe --monocov -i ./monocovCoverage --repoToken wB56cdByaIbXNGH3VeniQ1XC7NiuT5cqd --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID  --serviceName travis-ci  --useRelativePaths
+  - if [[ $DOTNETCORE == "" ]]; then xbuild Unosquare.Labs.EmbedIO.Lib.sln /p:"TargetFrameworkVersion=v4.5;Configuration=Release"; else dotnet test ./test/Unosquare.Labs.EmbedIO.Tests -f netcoreapp1.0; fi
+  - if [[ $DOTNETCORE == "" ]]; then mono --debug --profile=monocov:outfile=monocovCoverage.cov,+[Unosquare.Labs.EmbedIO] ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe --process=Single ./test/Unosquare.Labs.EmbedIO.Tests/bin/Release/Unosquare.Labs.EmbedIO.Tests.dll; fi
+  - if [[ $DOTNETCORE == "" ]]; then monocov --export-xml=monocovCoverage monocovCoverage.cov; fi
+  - if [[ $DOTNETCORE == "" ]]; then mono ./coveralls/coveralls.net.0.6.0/tools/csmacnz.Coveralls.exe --monocov -i ./monocovCoverage --repoToken wB56cdByaIbXNGH3VeniQ1XC7NiuT5cqd --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID  --serviceName travis-ci  --useRelativePaths; fi
