@@ -3,10 +3,9 @@ solution: Unosquare.Labs.EmbedIO.Lib.sln
 notifications:
   slack: unolabs:cbusXPH6pBwZ35rVDzi4k4ve
 matrix:
-  allow_failures:
+  include:
     - os: linux
       mono: latest
-  include:
     - os: linux
       dotnet: 1.0.0-preview2-003131
       mono: none
