@@ -3,6 +3,9 @@ solution: Unosquare.Labs.EmbedIO.Lib.sln
 notifications:
   slack: unolabs:cbusXPH6pBwZ35rVDzi4k4ve
 matrix:
+  allow_failures:
+    - os: linux
+      mono: latest
   include:
     - os: linux
       dotnet: 1.0.0-preview2-003131
@@ -12,9 +15,6 @@ matrix:
       sudo: false
     - os: linux
       mono: 4.2.1
-      env: TRAVIS_NODE_VERSION=4
-    - os: linux
-      mono: latest
     - os: osx
       dotnet: 1.0.0-preview2-003131
       mono: none
@@ -28,18 +28,18 @@ install:
   - if [[ $DOTNETCORE == "1" ]]; then dotnet restore; else nuget restore Unosquare.Labs.EmbedIO.Lib.sln; fi
   - if [[ $DOTNETCORE == "" ]]; then nuget install NUnit.ConsoleRunner -OutputDirectory testrunner; fi
   - if [[ $DOTNETCORE == "" ]]; then nuget install coveralls.net -Version 0.6.0 -OutputDirectory coveralls; fi
-  - if [[ $DOTNETCORE == "" ]]; then sudo apt-get install gtk-sharp2; fi
-  - if [[ $DOTNETCORE == "" ]]; then curl -sS https://api.nuget.org/packages/mono.cecil.0.9.6.4.nupkg > /tmp/mono.cecil.0.9.6.4.nupkg.zip; fi
-  - if [[ $DOTNETCORE == "" ]]; then unzip /tmp/mono.cecil.0.9.6.4.nupkg.zip -d /tmp/cecil; fi
-  - if [[ $DOTNETCORE == "" ]]; then cp /tmp/cecil/lib/net40/Mono.Cecil.dll .; fi
-  - if [[ $DOTNETCORE == "" ]]; then cp /tmp/cecil/lib/net40/Mono.Cecil.dll /tmp/cecil/; fi
-  - if [[ $DOTNETCORE == "" ]]; then git clone --depth=50 git://github.com/csMACnz/monocov.git ../../unosquare/monocov; fi
-  - if [[ $DOTNETCORE == "" ]]; then cd ../../unosquare/monocov; fi
-  - if [[ $DOTNETCORE == "" ]]; then cp /tmp/cecil/Mono.Cecil.dll .; fi
-  - if [[ $DOTNETCORE == "" ]]; then ./configure; fi
-  - if [[ $DOTNETCORE == "" ]]; then make; fi
-  - if [[ $DOTNETCORE == "" ]]; then sudo make install; fi
-  - if [[ $DOTNETCORE == "" ]]; then cd ../../unosquare/embedio; fi
+  - if [[ $DOTNETCORE == "" ]] && [[ $TRAVIS_OS_NAME == "linux" ]]; then sudo apt-get install gtk-sharp2; fi
+  - if [[ $DOTNETCORE == "" ]] && [[ $TRAVIS_OS_NAME == "linux" ]]; then curl -sS https://api.nuget.org/packages/mono.cecil.0.9.6.4.nupkg > /tmp/mono.cecil.0.9.6.4.nupkg.zip; fi
+  - if [[ $DOTNETCORE == "" ]] && [[ $TRAVIS_OS_NAME == "linux" ]]; then unzip /tmp/mono.cecil.0.9.6.4.nupkg.zip -d /tmp/cecil; fi
+  - if [[ $DOTNETCORE == "" ]] && [[ $TRAVIS_OS_NAME == "linux" ]]; then cp /tmp/cecil/lib/net40/Mono.Cecil.dll .; fi
+  - if [[ $DOTNETCORE == "" ]] && [[ $TRAVIS_OS_NAME == "linux" ]]; then cp /tmp/cecil/lib/net40/Mono.Cecil.dll /tmp/cecil/; fi
+  - if [[ $DOTNETCORE == "" ]] && [[ $TRAVIS_OS_NAME == "linux" ]]; then git clone --depth=50 git://github.com/csMACnz/monocov.git ../../unosquare/monocov; fi
+  - if [[ $DOTNETCORE == "" ]] && [[ $TRAVIS_OS_NAME == "linux" ]]; then cd ../../unosquare/monocov; fi
+  - if [[ $DOTNETCORE == "" ]] && [[ $TRAVIS_OS_NAME == "linux" ]]; then cp /tmp/cecil/Mono.Cecil.dll .; fi
+  - if [[ $DOTNETCORE == "" ]] && [[ $TRAVIS_OS_NAME == "linux" ]]; then ./configure; fi
+  - if [[ $DOTNETCORE == "" ]] && [[ $TRAVIS_OS_NAME == "linux" ]]; then make; fi
+  - if [[ $DOTNETCORE == "" ]] && [[ $TRAVIS_OS_NAME == "linux" ]]; then sudo make install; fi
+  - if [[ $DOTNETCORE == "" ]] && [[ $TRAVIS_OS_NAME == "linux" ]]; then cd ../../unosquare/embedio; fi
 before_script:
   - if [[ $DOTNETCORE == "" ]]; then export LD_LIBRARY_PATH=/usr/local/lib; fi
   - if [[ $DOTNETCORE == "" ]]; then export MONO_IOMAP=all; fi
