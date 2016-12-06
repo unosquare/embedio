@@ -14,13 +14,14 @@
     public class CorsModuleTest
     {
         protected WebServer WebServer;
-        protected string WebServerUrl = Resources.GetServerAddress();
+        protected string WebServerUrl;
         protected TestConsoleLog Logger = new TestConsoleLog();
         protected object TestObj = new { Message = "OK" };
 
         [SetUp]
         public void Init()
         {
+            WebServerUrl = Resources.GetServerAddress();
             WebServer = new WebServer(WebServerUrl, Logger)
                 .EnableCors(
                     "http://client.cors-api.appspot.com,http://unosquare.github.io,http://run.plnkr.co",

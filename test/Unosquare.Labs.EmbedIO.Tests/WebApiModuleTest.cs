@@ -1,29 +1,30 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using Newtonsoft.Json;
-    using System.Threading.Tasks;
     using NUnit.Framework;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Net;
+    using System.Net.Http;
     using System.Text;
     using System.Threading;
+    using System.Threading.Tasks;
     using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Labs.EmbedIO.Tests.TestObjects;
-    using System.Net.Http;
 
     [TestFixture]
     public class WebApiModuleTest
     {
         protected WebServer WebServer;
-        protected string WebServerUrl = Resources.GetServerAddress();
+        protected string WebServerUrl;
         protected TestConsoleLog Logger = new TestConsoleLog();
 
         [SetUp]
         public void Init()
         {
+            WebServerUrl = Resources.GetServerAddress();
             WebServer = new WebServer(WebServerUrl, Logger)
                 .WithWebApiController<TestController>();
             WebServer.RunAsync();

@@ -1,27 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using NUnit.Framework;
-using Unosquare.Labs.EmbedIO.Modules;
-using Unosquare.Labs.EmbedIO.Tests.TestObjects;
-
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
+    using Newtonsoft.Json;
+    using NUnit.Framework;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Unosquare.Labs.EmbedIO.Modules;
+    using Unosquare.Labs.EmbedIO.Tests.TestObjects;
+
     [TestFixture]
     public class RegexRoutingTest
     {
         protected WebServer WebServer;
-        protected string WebServerUrl = Resources.GetServerAddress();
+        protected string WebServerUrl;
         protected TestConsoleLog Logger = new TestConsoleLog();
 
         [SetUp]
         public void Init()
         {
+            WebServerUrl = Resources.GetServerAddress();
             WebServer =
                 new WebServer(WebServerUrl, Logger, RoutingStrategy.Regex)
                     .WithWebApiController<TestRegexController>();

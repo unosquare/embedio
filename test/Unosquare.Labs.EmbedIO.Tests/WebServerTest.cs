@@ -14,14 +14,13 @@
     {
         private const int DefaultPort = 8888;
 
-        protected string WebServerUrl = Resources.GetServerAddress();
         private const string DefaultPath = "/";
 
         [Test]
         public void WebServerDefaultConstructor()
         {
             var instance = new WebServer();
-            Assert.AreEqual(instance.Log.GetType(), typeof (NullLog), "Default log is NullLog");
+            Assert.AreEqual(instance.Log.GetType(), typeof(NullLog), "Default log is NullLog");
             Assert.IsNotNull(instance.Listener, "It has a HttpListener");
             Assert.IsNotNull(Constants.DefaultMimeTypes, "It has MimeTypes");
         }
@@ -66,7 +65,7 @@
 
             //need to make a request here for it to fail before the cancellation changes, null works, yay
             instance.ProcessRequest(null);
-            
+
             cts.Cancel();
 
             try
@@ -125,7 +124,7 @@
             Assert.IsTrue(
                 instance.UrlPrefixes.First().Contains(DefaultPort.ToString(CultureInfo.InvariantCulture)),
                 "Port number is correct");
-            Assert.AreEqual(instance.Log.GetType(), typeof (TestConsoleLog), "Log type is correct");
+            Assert.AreEqual(instance.Log.GetType(), typeof(TestConsoleLog), "Log type is correct");
         }
 
         [Test]
@@ -136,7 +135,7 @@
 
             Assert.AreEqual(instance.Modules.Count, 1, "It has one module");
 
-            instance.UnregisterModule(typeof (LocalSessionModule));
+            instance.UnregisterModule(typeof(LocalSessionModule));
 
             Assert.AreEqual(instance.Modules.Count, 0, "It has not modules");
         }
@@ -144,16 +143,16 @@
         [Test]
         public void WebServerStaticMethodWithPortParam()
         {
-            Assert.AreEqual(WebServer.Create(DefaultPort).Log.GetType(), typeof (NullLog), "Default log is NullLog");
+            Assert.AreEqual(WebServer.Create(DefaultPort).Log.GetType(), typeof(NullLog), "Default log is NullLog");
         }
 
         [Test]
         public void WebServerStaticMethodWithConsole()
         {
             const string errorMessage = "THIS IS AN ERROR";
-            var instance = WebServer.CreateWithConsole(WebServerUrl);
+            var instance = WebServer.CreateWithConsole(Resources.GetServerAddress());
 
-            Assert.AreEqual(instance.Log.GetType(), typeof (SimpleConsoleLog), "Log is SimpleConsoleLog");
+            Assert.AreEqual(instance.Log.GetType(), typeof(SimpleConsoleLog), "Log is SimpleConsoleLog");
 
             // TODO: Grab console output
             instance.Log.Error(errorMessage);
@@ -167,7 +166,7 @@
         [Test]
         public void WebMap()
         {
-            var map = new Map() {Path = DefaultPath, ResponseHandler = (ctx, ws) => false, Verb = HttpVerbs.Any};
+            var map = new Map() { Path = DefaultPath, ResponseHandler = (ctx, ws) => false, Verb = HttpVerbs.Any };
 
             Assert.AreEqual(map.Path, DefaultPath, "Default Path is correct");
             Assert.AreEqual(map.Verb, HttpVerbs.Any, "Default Verb is correct");

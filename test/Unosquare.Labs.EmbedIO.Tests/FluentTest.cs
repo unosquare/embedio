@@ -9,11 +9,12 @@
     public class FluentTest
     {
         protected string RootPath;
-        protected string WebServerUrl = Resources.GetServerAddress();
+        protected string WebServerUrl;
 
         [SetUp]
         public void Init()
         {
+            WebServerUrl = Resources.GetServerAddress();
             RootPath = TestHelper.SetupStaticFolder();
         }
         

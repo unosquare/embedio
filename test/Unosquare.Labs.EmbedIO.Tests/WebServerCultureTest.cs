@@ -18,13 +18,13 @@ namespace Unosquare.Labs.EmbedIO.Tests
         protected WebServer WebServer;
         protected TestConsoleLog Logger = new TestConsoleLog();
 
-        protected string WebServerUrl = Resources.GetServerAddress();
+        protected string WebServerUrl;
         private const string KoreanDate = "목";
 
         [SetUp]
         public void Init()
         {
-
+            WebServerUrl = Resources.GetServerAddress();
             Thread.CurrentThread.CurrentCulture = new CultureInfo("ko");
 
             WebServer = new WebServer(WebServerUrl, Logger).WithWebApiController<TestController>();
