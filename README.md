@@ -281,7 +281,7 @@ public class PeopleController : WebApiController
 ```
 
 WebSockets Example:
------------------
+-------------------
 
 *During server setup:*
 
