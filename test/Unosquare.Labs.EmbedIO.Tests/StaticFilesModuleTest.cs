@@ -353,6 +353,30 @@
             }
         }
 
+        [Test]
+        public async Task TestCaseSensitiveFile()
+        {
+            var file = Path.GetTempPath() + Guid.NewGuid().ToString().ToLower();
+            File.WriteAllText(file, "");
+
+            if (File.Exists(file.ToUpper()))
+            {
+                Assert.Ignore("File-system is not case sensitive, ignoring");
+            }
+            else
+            {
+                var webClient = new HttpClient();
+
+                var htmlLowerCase = await webClient.GetStringAsync(WebServerUrl + TestHelper.LowercaseFile);
+
+                Assert.AreEqual(nameof(TestHelper.LowercaseFile), htmlLowerCase, "Same content lower case");
+
+                var htmlUpperCase = await webClient.GetStringAsync(WebServerUrl + TestHelper.UppercaseFile);
+
+                Assert.AreEqual(nameof(TestHelper.UppercaseFile), htmlUpperCase, "Same content upper case");
+            }
+        }
+
         [TearDown]
         public void Kill()
         {

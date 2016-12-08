@@ -18,6 +18,10 @@
 
         public const string SmallDataFile = "smalldata.bin";
 
+        public const string LowercaseFile = "abcdef.txt";
+
+        public const string UppercaseFile = "ABCDEF.txt";
+
         public static string RootPath()
         {
             var assemblyPath = Path.GetDirectoryName(typeof(StaticFilesModuleTest).GetTypeInfo().Assembly.Location);
@@ -59,6 +63,12 @@
 
             if (File.Exists(Path.Combine(rootPath, SmallDataFile)) == false)
                 CreateTempBinaryFile(Path.Combine(rootPath, SmallDataFile), 2);
+
+            if (File.Exists(Path.Combine(rootPath, LowercaseFile)) == false)
+                File.WriteAllText(Path.Combine(rootPath, LowercaseFile), nameof(LowercaseFile));
+
+            if (File.Exists(Path.Combine(rootPath, UppercaseFile)) == false)
+                File.WriteAllText(Path.Combine(rootPath, UppercaseFile), nameof(UppercaseFile));
 
             return rootPath;
         }
