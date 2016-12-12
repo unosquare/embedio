@@ -5,9 +5,9 @@
     "copyToOutput": [ "html" ]
   },
   "dependencies": {
-    "dotnet-test-nunit": "3.4.0-beta-1",
+    "dotnet-test-nunit": "3.4.0-beta-3",
     "Newtonsoft.Json": "9.0.1",
-    "Unosquare.Labs.EmbedIO": "1.0.0-*",
+    "Unosquare.Labs.EmbedIO": { "target": "project" },
     "NUnit": "3.5.0"
   },
 
