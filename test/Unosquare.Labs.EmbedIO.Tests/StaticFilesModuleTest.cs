@@ -119,7 +119,7 @@
             Assert.Fail("The Exception should raise");
         }
 
-#if !NETCOREAPP1_0 && !NETSTANDARD1_6
+#if !NETCOREAPP1_1 && !NETSTANDARD1_6
         [Test]
         public void GetInitialPartial()
         {
@@ -288,7 +288,7 @@
             }
         }
 
-#if !NETCOREAPP1_0 && !NETSTANDARD1_6
+#if !NETCOREAPP1_1 && !NETSTANDARD1_6
         [Test]
         public async Task GetGzipCompressFile()
         {
@@ -358,6 +358,8 @@
         {
             var file = Path.GetTempPath() + Guid.NewGuid().ToString().ToLower();
             File.WriteAllText(file, "");
+
+            Assert.IsTrue(File.Exists(file), "File was created");
 
             if (File.Exists(file.ToUpper()))
             {

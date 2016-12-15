@@ -1,21 +1,22 @@
 {
-  "version": "1.0.0-*",
-  "buildOptions": {
-    "emitEntryPoint": true
-  },
+    "version": "1.0.0-*",
+    "buildOptions": {
+        "emitEntryPoint": true
+    },
 
-  "dependencies": {
-    "Newtonsoft.Json": "9.0.1",
-    "CommandLineParser": "1.9.71",
-    "Unosquare.Labs.EmbedIO": { "target": "project" }
-  },
+    "dependencies": {
+        "Newtonsoft.Json": "9.0.1",
+        "CommandLineParser": "1.9.71",
+        "Unosquare.Swan": "0.9.0",
+        "Unosquare.Labs.EmbedIO": { "target": "project" }
+    },
 
-  "frameworks": {
-    "net452": {
-      
+    "frameworks": {
+        "net452": {
+
+        }
+    },
+    "runtimes": {
+        "win": {}
     }
-  },
-  "runtimes": {
-    "win": {}
-  }
 }

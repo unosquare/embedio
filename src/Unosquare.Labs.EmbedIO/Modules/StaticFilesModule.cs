@@ -342,7 +342,7 @@
             }
             finally
             {
-#if !NETCOREAPP1_0 && !NETSTANDARD1_6
+#if !NETCOREAPP1_1 && !NETSTANDARD1_6
                 buffer.Close();
 #endif
                 buffer.Dispose();

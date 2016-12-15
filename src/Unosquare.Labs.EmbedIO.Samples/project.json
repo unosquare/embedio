@@ -1,40 +1,37 @@
 {
-  "version": "1.0.0-*",
-  "buildOptions": {
-    "emitEntryPoint": true,
-    "copyToOutput": ["html\\"]
-  },
+    "version": "1.0.0-*",
+    "buildOptions": {
+        "emitEntryPoint": true,
+        "copyToOutput": ["html\\"]
+    },
 
-  "dependencies": {
-    "LiteLib": "0.9.1",
-    "Newtonsoft.Json": "9.0.1",
-    "Tubular.ServerSide": "1.0.8",
-    "Unosquare.Labs.EmbedIO": { "target": "project" }
-  },
+    "dependencies": {
+        "LiteLib": "0.9.2",
+        "Newtonsoft.Json": "9.0.1",
+        "Tubular.ServerSide": "1.0.8",
+        "Unosquare.Labs.EmbedIO": { "target": "project" }
+    },
 
-  "frameworks": {
-    "netcoreapp1.0": {
-      "imports": "dnxcore50",
-      "dependencies": {
-        "Microsoft.NETCore.App": {
-          "type": "platform",
-          "version": "1.0.1"
+    "frameworks": {
+        "netcoreapp1.1": {
+            "imports": "dnxcore50",
+            "dependencies": {
+                "Microsoft.NETCore.App": "1.1.0"
+            }
+        },
+        "net452": {
+            "frameworkAssemblies": {
+                "System.ComponentModel.DataAnnotations": ""
+            }
+        },
+        "net46": {
+            "frameworkAssemblies": {
+                "System.ComponentModel.DataAnnotations": ""
+            }
         }
-      }
     },
-    "net452": {
-      "frameworkAssemblies": {
-        "System.ComponentModel.DataAnnotations": ""
-      }
-    },
-    "net46": {
-      "frameworkAssemblies": {
-        "System.ComponentModel.DataAnnotations": ""
-      }
+    "runtimes": {
+        "win": {},
+        "win81-x64": {}
     }
-  },
-  "runtimes": {
-    "win": {},
-    "win81-x64": {}
-  }
 }

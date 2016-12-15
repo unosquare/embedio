@@ -1,12 +1,13 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Command
 {
     using CommandLine;
+    using Swan;
     using System;
     using System.Reflection;
     using Unosquare.Labs.EmbedIO.Modules;
 
     /// <summary>
-    /// Entry poing
+    /// Entry point
     /// </summary>
     internal class Program
     {
@@ -18,13 +19,14 @@
         {
             var options = new Options();
 
-            Console.WriteLine("Unosquare.Labs.EmbedIO Web Server");
+            "Unosquare.Labs.EmbedIO Web Server".Info();
 
             if (!Parser.Default.ParseArguments(args, options)) return;
 
-            Console.WriteLine("  Command-Line Utility: Press any key to stop the server.");
+            "  Command-Line Utility: Press any key to stop the server.".Info();
 
             var serverUrl = "http://localhost:" + options.Port + "/";
+
             using (
                 var server = options.NoVerbose
                     ? WebServer.Create(serverUrl)
@@ -43,14 +45,14 @@
                 {
                     foreach (var api in options.ApiAssemblies)
                     {
-                        server.Log.DebugFormat("Registering Assembly {0}", api);
+                        $"Registering Assembly {api}".Debug();
                         LoadApi(api, server);
                     }
                 }
 
                 // start the server
                 server.RunAsync();
-                Console.ReadKey(true);
+                Terminal.ReadKey(true);
             }
         }
 

@@ -163,3 +163,4 @@ TestResult.xml
 /src/Unosquare.Labs.EmbedIO.Samples/nuget.config
 /test/Unosquare.Labs.EmbedIO.Tests/nuget.config
 *.targets
+/.vscode
