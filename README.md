@@ -6,7 +6,7 @@
 
 ![EmbedIO](http://unosquare.github.io/embedio/images/embedio.png)
 
-*:star:Please star this project if you find it useful!*
+*:star: Please star this project if you find it useful!*
 
 A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework and .NET Core
 
