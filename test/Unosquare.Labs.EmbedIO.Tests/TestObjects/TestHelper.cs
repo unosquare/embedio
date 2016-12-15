@@ -59,7 +59,7 @@
                 File.WriteAllText(Path.Combine(rootPath, "sub", "index.html"), Resources.SubIndex);
 
             if (File.Exists(Path.Combine(rootPath, BigDataFile)) == false)
-                CreateTempBinaryFile(Path.Combine(rootPath, BigDataFile), 100);
+                CreateTempBinaryFile(Path.Combine(rootPath, BigDataFile), 20);
 
             if (File.Exists(Path.Combine(rootPath, SmallDataFile)) == false)
                 CreateTempBinaryFile(Path.Combine(rootPath, SmallDataFile), 2);

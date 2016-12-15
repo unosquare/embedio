@@ -8,6 +8,10 @@ namespace Unosquare.Labs.EmbedIO.Tests
     {
         public static void Main()
         {
+            var test = new LocalSessionModuleTest();
+            test.Init();
+            test.GetDifferentSession().Wait();
+            Console.Write("Completed");
             Console.ReadLine();
         }
     }

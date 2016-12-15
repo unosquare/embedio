@@ -14,9 +14,10 @@
         private const string CookieName = "__session";
         protected string RootPath;
         protected WebServer WebServer;
-        
+
         protected string WebServerUrl;
         protected TestConsoleLog Logger = new TestConsoleLog();
+        protected TimeSpan WaitTimeSpan = TimeSpan.FromSeconds(1);
 
         [SetUp]
         public void Init()
@@ -25,7 +26,7 @@
             RootPath = TestHelper.SetupStaticFolder();
 
             WebServer = new WebServer(WebServerUrl, Logger);
-            WebServer.RegisterModule(new LocalSessionModule());
+            WebServer.RegisterModule(new LocalSessionModule() { Expiration = WaitTimeSpan });
             WebServer.RegisterModule(new StaticFilesModule(RootPath));
             WebServer.RunAsync();
         }
@@ -40,10 +41,10 @@
         [Test]
         public async Task GetCookie()
         {
-            var request = (HttpWebRequest) WebRequest.Create(WebServerUrl);
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
             request.CookieContainer = new CookieContainer();
 
-            using (var response = (HttpWebResponse) await request.GetResponseAsync())
+            using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
@@ -55,7 +56,51 @@
                 Assert.IsNotEmpty(content, "Cookie content is not null");
             }
         }
-        
+
+        [Test]
+        public async Task GetDifferentSession()
+        {
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
+            request.CookieContainer = new CookieContainer();
+            string content;
+
+            using (var response = (HttpWebResponse)await request.GetResponseAsync())
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                Assert.IsNotNull(response.Cookies, "Cookies are not null");
+                Assert.Greater(response.Cookies.Count, 0, "Cookies are not empty");
+
+                content = response.Cookies[CookieName]?.Value;
+            }
+
+            await Task.Delay(WaitTimeSpan);
+
+            Task.WaitAll(new[] {
+                Task.Factory.StartNew(() => GetFile(content)),
+                Task.Factory.StartNew(() => GetFile(content)),
+                Task.Factory.StartNew(() => GetFile(content)),
+                Task.Factory.StartNew(() => GetFile(content)),
+                Task.Factory.StartNew(() => GetFile(content)),
+            });
+        }
+
+        protected async Task GetFile(string content)
+        {
+            var secondRequest = (HttpWebRequest)WebRequest.Create(WebServerUrl);
+            secondRequest.CookieContainer = new CookieContainer();
+
+            using (var response = (HttpWebResponse)await secondRequest.GetResponseAsync())
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                Assert.IsNotNull(response.Cookies, "Cookies are not null");
+                Assert.Greater(response.Cookies.Count, 0, "Cookies are not empty");
+
+                Assert.AreNotEqual(content, response.Cookies[CookieName]?.Value);
+            }
+        }
+
         [TearDown]
         public void Kill()
         {
