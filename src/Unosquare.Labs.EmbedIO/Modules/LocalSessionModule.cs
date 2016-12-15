@@ -111,9 +111,12 @@
                 var allKeys = Sessions.Keys.ToArray();
                 foreach (var key in allKeys)
                 {
-                    var sessionInfo = Sessions[key];
-                    if (DateTime.Now.Subtract(sessionInfo.LastActivity) > Expiration)
-                        Sessions.TryRemove(key, out sessionInfo);
+                    SessionInfo sessionInfo;
+                    if (Sessions.TryGetValue(key, out sessionInfo))
+                    {
+                        if (DateTime.Now.Subtract(sessionInfo.LastActivity) > Expiration)
+                            Sessions.TryRemove(key, out sessionInfo);
+                    }
                 }
 
                 var requestCookie = context.Request.Cookies[SessionCookieName];
