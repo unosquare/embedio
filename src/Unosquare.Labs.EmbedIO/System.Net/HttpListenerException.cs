@@ -56,6 +56,9 @@ namespace Unosquare.Net
         /// <value>
         /// The error code.
         /// </value>
+#if !NETCOREAPP1_1 && !NETSTANDARD1_6
+        new 
+#endif
         public int ErrorCode => NativeErrorCode;
     }
 }

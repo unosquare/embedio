@@ -129,7 +129,7 @@ namespace Unosquare.Net
 
         private void OnRead(IAsyncResult baseAres)
         {
-            var rb = (ReadBufferState) baseAres.AsyncState;
+            var rb = (ReadBufferState)baseAres.AsyncState;
             var ares = rb.Ares;
             try
             {
@@ -174,6 +174,9 @@ namespace Unosquare.Net
             return myAres.Count;
         }
 
+#if !NETCOREAPP1_1 && !NETSTANDARD1_6
+        new 
+#endif
         public void Close()
         {
             if (!_disposed)
