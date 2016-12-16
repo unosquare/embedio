@@ -12,7 +12,6 @@
     using System.Net.WebSockets;
 #else
     using Net;
-
 #endif
 
     /// <summary>
@@ -499,8 +498,8 @@
         /// Called when this WebSockets Server receives a full message (EndOfMessage) form a WebSockets client.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="rxBuffer">The rx buffer.</param>
-        /// <param name="rxResult">The rx result.</param>
+        /// <param name="rxBuffer">The response buffer.</param>
+        /// <param name="rxResult">The response result.</param>
         protected abstract void OnMessageReceived(WebSocketContext context, byte[] rxBuffer,
             WebSocketReceiveResult rxResult);
 
@@ -508,8 +507,8 @@
         /// Called when this WebSockets Server receives a message frame regardless if the frame represents the EndOfMessage.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="rxBuffer">The rx buffer.</param>
-        /// <param name="rxResult">The rx result.</param>
+        /// <param name="rxBuffer">The response buffer.</param>
+        /// <param name="rxResult">The response result.</param>
         protected abstract void OnFrameReceived(WebSocketContext context, byte[] rxBuffer,
             WebSocketReceiveResult rxResult);
 
