@@ -2,8 +2,8 @@
 {
     using EmbedIO;
     using System;
-    using System.Collections.Concurrent;
-    using System.Linq;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 #if NET46
     using System.Net;
     using System.Net.WebSockets;
@@ -24,8 +24,13 @@
         /// <summary>
         /// The concurrent dictionary holding the sessions
         /// </summary>
-        protected ConcurrentDictionary<string, SessionInfo> m_Sessions =
-            new ConcurrentDictionary<string, SessionInfo>(Constants.StandardStringComparer);
+        protected readonly Dictionary<string, SessionInfo> m_Sessions =
+            new Dictionary<string, SessionInfo>(Constants.StandardStringComparer);
+
+        /// <summary>
+        /// The sessions dictionary synchronization lock
+        /// </summary>
+        protected readonly object SessionsSyncLock = new object();
 
         /// <summary>
         /// Creates a session ID, registers the session info in the Sessions collection, and returns the appropriate session cookie.
@@ -33,21 +38,24 @@
         /// <returns>The sessions.</returns>
         private System.Net.Cookie CreateSession()
         {
-            var sessionId = Convert.ToBase64String(
-                System.Text.Encoding.UTF8.GetBytes(
-                    Guid.NewGuid().ToString() + DateTime.Now.Millisecond.ToString() + DateTime.Now.Ticks.ToString()));
-            var sessionCookie = string.IsNullOrWhiteSpace(CookiePath) ?
+            lock (SessionsSyncLock)
+            {
+                var sessionId = Convert.ToBase64String(
+                    System.Text.Encoding.UTF8.GetBytes(
+                        Guid.NewGuid().ToString() + DateTime.Now.Millisecond.ToString() + DateTime.Now.Ticks.ToString()));
+                var sessionCookie = string.IsNullOrWhiteSpace(CookiePath) ?
                 new System.Net.Cookie(SessionCookieName, sessionId) :
                 new System.Net.Cookie(SessionCookieName, sessionId, CookiePath);
 
-            Sessions[sessionId] = new SessionInfo()
-            {
-                SessionId = sessionId,
-                DateCreated = DateTime.Now,
-                LastActivity = DateTime.Now
-            };
+                m_Sessions[sessionId] = new SessionInfo()
+                {
+                    SessionId = sessionId,
+                    DateCreated = DateTime.Now,
+                    LastActivity = DateTime.Now
+                };
 
-            return sessionCookie;
+                return sessionCookie;
+            }
         }
 
         /// <summary>
@@ -64,9 +72,13 @@
         /// <param name="session">The session info.</param>
         public void DeleteSession(SessionInfo session)
         {
-            if (session == null) return;
-            var sessionInfo = new SessionInfo();
-            Sessions.TryRemove(session.SessionId, out sessionInfo);
+            lock (SessionsSyncLock)
+            {
+                if (session == null) return;
+                if (string.IsNullOrWhiteSpace(session.SessionId)) return;
+                if (m_Sessions.ContainsKey(session.SessionId) == false) return;
+                m_Sessions.Remove(session.SessionId);
+            }
         }
 
         /// <summary>
@@ -89,7 +101,7 @@
                 {
                     var sessionIdValue = nameValue[1].Trim();
 
-                    if (Sessions.ContainsKey(sessionIdValue))
+                    if (m_Sessions.ContainsKey(sessionIdValue))
                     {
                         context.Request.Cookies[SessionCookieName].Value = sessionIdValue;
                         break;
@@ -107,58 +119,94 @@
 
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
             {
-                // expire old sessions
-                var allKeys = Sessions.Keys.ToArray();
-                foreach (var key in allKeys)
+                lock (SessionsSyncLock)
                 {
-                    SessionInfo sessionInfo;
-                    if (Sessions.TryGetValue(key, out sessionInfo))
+                    // expire old sessions
+                    foreach (var session in m_Sessions)
                     {
-                        if (DateTime.Now.Subtract(sessionInfo.LastActivity) > Expiration)
-                            Sessions.TryRemove(key, out sessionInfo);
+                        if (session.Value == null) continue;
+
+                        if (DateTime.Now.Subtract(session.Value.LastActivity) > Expiration)
+                            DeleteSession(session.Value);
                     }
-                }
 
-                var requestCookie = context.Request.Cookies[SessionCookieName];
-                if (requestCookie != null)
-                    FixupSessionCookie(context);
+                    var requestSessionCookie = context.Request.Cookies[SessionCookieName];
+                    var isSessionRegistered = false;
 
-                if (requestCookie == null)
-                {
-                    // create the session if session not available on the request
-                    var sessionCookie = CreateSession();
-                    context.Response.SetCookie(sessionCookie);
-                    context.Request.Cookies.Add(sessionCookie);
-                    server.Log.DebugFormat("Created session identifier '{0}'", sessionCookie.Value);
-                }
-                else if (Sessions.ContainsKey(context.Request.Cookies[SessionCookieName].Value) == false)
-                {
-                    //update session value
-                    var sessionCookie = CreateSession();
-                    context.Response.SetCookie(sessionCookie); // = sessionCookie.Value;
-                    context.Request.Cookies[SessionCookieName].Value = sessionCookie.Value;
-                    server.Log.DebugFormat("Updated session identifier to '{0}'", sessionCookie.Value);
-                }
-                else if (Sessions.ContainsKey(context.Request.Cookies[SessionCookieName].Value))
-                {
-                    // If it does exist in the request, check if we're tracking it
-                    var requestSessionId = context.Request.Cookies[SessionCookieName].Value;
-                    Sessions[requestSessionId].LastActivity = DateTime.Now;
-                    server.Log.DebugFormat("Session Identified '{0}'", requestSessionId);
-                }
+                    if (requestSessionCookie != null)
+                    {
+                        FixupSessionCookie(context);
+                        isSessionRegistered = m_Sessions.ContainsKey(requestSessionCookie.Value);
+                    }
 
-                // Always returns false because we need it to handle the rest for the modules
-                return false;
+
+                    if (requestSessionCookie == null)
+                    {
+                        // create the session if session not available on the request
+                        var sessionCookie = CreateSession();
+                        context.Response.SetCookie(sessionCookie);
+                        context.Request.Cookies.Add(sessionCookie);
+                        server.Log.DebugFormat("Created session identifier '{0}'", sessionCookie.Value);
+                    }
+                    else if (isSessionRegistered == false)
+                    {
+                        //update session value
+                        var sessionCookie = CreateSession();
+                        context.Response.SetCookie(sessionCookie); // = sessionCookie.Value;
+                        context.Request.Cookies[SessionCookieName].Value = sessionCookie.Value;
+                        server.Log.DebugFormat("Updated session identifier to '{0}'", sessionCookie.Value);
+                    }
+                    else if (isSessionRegistered)
+                    {
+                        // If it does exist in the request, check if we're tracking it
+                        var requestSessionId = context.Request.Cookies[SessionCookieName].Value;
+                        m_Sessions[requestSessionId].LastActivity = DateTime.Now;
+                        server.Log.DebugFormat("Session Identified '{0}'", requestSessionId);
+                    }
+
+                    // Always returns false because we need it to handle the rest for the modules
+                    return false;
+                }
             });
         }
 
+
         /// <summary>
-        /// The concurrent dictionary holding the sessions
+        /// The dictionary holding the sessions
         /// </summary>
         /// <value>
         /// The sessions.
         /// </value>
-        public ConcurrentDictionary<string, SessionInfo> Sessions => m_Sessions;
+        public IReadOnlyDictionary<string, SessionInfo> Sessions
+        {
+            get
+            {
+                lock (SessionsSyncLock)
+                {
+                    return new ReadOnlyDictionary<string, SessionInfo>(m_Sessions);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="SessionInfo"/> with the specified cookie value.
+        /// Returns null when the sesison is not found.
+        /// </summary>
+        /// <value>
+        /// The <see cref="SessionInfo"/>.
+        /// </value>
+        /// <param name="cookieValue">The cookie value.</param>
+        /// <returns></returns>
+        public SessionInfo this[string cookieValue]
+        {
+            get
+            {
+                lock (SessionsSyncLock)
+                {
+                    return m_Sessions.ContainsKey(cookieValue) ? m_Sessions[cookieValue] : null;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets a session object for the given server context.
@@ -168,11 +216,14 @@
         /// <returns></returns>
         public SessionInfo GetSession(HttpListenerContext context)
         {
-            if (context.Request.Cookies[SessionCookieName] == null ||
-                Sessions.ContainsKey(context.Request.Cookies[SessionCookieName].Value) == false)
-                return null;
+            lock (SessionsSyncLock)
+            {
+                if (context.Request.Cookies[SessionCookieName] == null) return null;
 
-            return Sessions[context.Request.Cookies[SessionCookieName].Value];
+                var cookieValue = context.Request.Cookies[SessionCookieName].Value;
+                return this[cookieValue];
+            }
+
         }
 
         /// <summary>
@@ -182,11 +233,13 @@
         /// <returns></returns>
         public SessionInfo GetSession(WebSocketContext context)
         {
-            if (context.CookieCollection[SessionCookieName] == null ||
-                Sessions.ContainsKey(context.CookieCollection[SessionCookieName].Value) == false)
-                return null;
+            lock (SessionsSyncLock)
+            {
+                if (context.CookieCollection[SessionCookieName] == null) return null;
 
-            return Sessions[context.CookieCollection[SessionCookieName].Value];
+                var cookieValue = context.CookieCollection[SessionCookieName].Value;
+                return this[cookieValue];
+            }
         }
 
         /// <summary>
@@ -218,5 +271,6 @@
         /// The name.
         /// </value>
         public override string Name => "Local Session Module";
+
     }
 }

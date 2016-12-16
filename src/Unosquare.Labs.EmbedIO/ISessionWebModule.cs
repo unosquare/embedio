@@ -1,7 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using System;
-    using System.Collections.Concurrent;
+    using System.Collections.Generic;
 #if NET46
     using System.Net;
     using System.Net.WebSockets;
@@ -15,12 +15,13 @@
     public interface ISessionWebModule : IWebModule
     {
         /// <summary>
-        /// The concurrent dictionary holding the sessions
+        /// The dictionary holding the sessions
+        /// Direct access is guaranteed to be thread-safe
         /// </summary>
         /// <value>
         /// The sessions.
         /// </value>
-        ConcurrentDictionary<string, SessionInfo> Sessions { get; }
+        IReadOnlyDictionary<string, SessionInfo> Sessions { get; }
 
         /// <summary>
         /// Gets a session object for the given server context.
@@ -32,24 +33,27 @@
 
         /// <summary>
         /// Delete the session object for the given context
+        /// If no session exists for the context, then null is returned
         /// </summary>
         void DeleteSession(HttpListenerContext context);
 
         /// <summary>
         /// Delete a session for the given session info
+        /// No exceptions are thrown if the session is not found
         /// </summary>
         /// <param name="session">The session info.</param>
         void DeleteSession(SessionInfo session);
-        
+
         /// <summary>
-        /// Gets the session.
+        /// Gets a session object for the given WebSocket context.
+        /// If no session exists for the context, then null is returned
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
         SessionInfo GetSession(WebSocketContext context);
 
         /// <summary>
-        /// Gets or sets the expiration.
+        /// Gets or sets the expiration time for the sessions.
         /// </summary>
         /// <value>
         /// The expiration.

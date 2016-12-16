@@ -14,7 +14,7 @@
         /// <param name="args">The arguments.</param>
         private static void Main(string[] args)
         {
-            Console.WriteLine("Running at MONO: {0}", IsMono);
+            Console.WriteLine("Running on Mono Runtime: {0}", IsMono);
 
             var url = "http://localhost:9696/";
 
