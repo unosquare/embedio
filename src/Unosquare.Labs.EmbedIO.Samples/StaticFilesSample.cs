@@ -23,11 +23,7 @@
 
                 // This lets you edit the files without restarting the server.
 #if DEBUG && !MONO
-#if NETCOREAPP1_1
-                return Path.Combine(Directory.GetParent(assemblyPath).Parent.Parent.FullName, "html");
-#else
                 return Path.Combine(Directory.GetParent(assemblyPath).Parent.Parent.Parent.FullName, "html");
-#endif
 #else
                 // This is when you have deployed the server.
                 return Path.Combine(assemblyPath, "html");
