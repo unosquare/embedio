@@ -16,12 +16,12 @@
     {
         /// <summary>
         /// The dictionary holding the sessions
-        /// Direct manipulation is not guaranteed to be thread-safe
+        /// Direct access is guaranteed to be thread-safe
         /// </summary>
         /// <value>
         /// The sessions.
         /// </value>
-        IDictionary<string, SessionInfo> Sessions { get; }
+        IReadOnlyDictionary<string, SessionInfo> Sessions { get; }
 
         /// <summary>
         /// Gets a session object for the given server context.

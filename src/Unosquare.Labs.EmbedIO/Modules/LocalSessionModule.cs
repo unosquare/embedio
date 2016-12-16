@@ -3,13 +3,12 @@
     using EmbedIO;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using System.Collections.ObjectModel;
 #if NET46
     using System.Net;
     using System.Net.WebSockets;
 #else
     using Net;
-
 #endif
 
     /// <summary>
@@ -48,7 +47,7 @@
                 new System.Net.Cookie(SessionCookieName, sessionId) :
                 new System.Net.Cookie(SessionCookieName, sessionId, CookiePath);
 
-                Sessions[sessionId] = new SessionInfo()
+                m_Sessions[sessionId] = new SessionInfo()
                 {
                     SessionId = sessionId,
                     DateCreated = DateTime.Now,
@@ -102,7 +101,7 @@
                 {
                     var sessionIdValue = nameValue[1].Trim();
 
-                    if (Sessions.ContainsKey(sessionIdValue))
+                    if (m_Sessions.ContainsKey(sessionIdValue))
                     {
                         context.Request.Cookies[SessionCookieName].Value = sessionIdValue;
                         break;
@@ -161,7 +160,7 @@
                     {
                         // If it does exist in the request, check if we're tracking it
                         var requestSessionId = context.Request.Cookies[SessionCookieName].Value;
-                        Sessions[requestSessionId].LastActivity = DateTime.Now;
+                        m_Sessions[requestSessionId].LastActivity = DateTime.Now;
                         server.Log.DebugFormat("Session Identified '{0}'", requestSessionId);
                     }
 
@@ -171,14 +170,23 @@
             });
         }
 
+
         /// <summary>
         /// The dictionary holding the sessions
-        /// Direct manipulation is not guaranteed to be thread-safe
         /// </summary>
         /// <value>
         /// The sessions.
         /// </value>
-        public IDictionary<string, SessionInfo> Sessions => m_Sessions;
+        public IReadOnlyDictionary<string, SessionInfo> Sessions
+        {
+            get
+            {
+                lock (SessionsSyncLock)
+                {
+                    return new ReadOnlyDictionary<string, SessionInfo>(m_Sessions);
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the <see cref="SessionInfo"/> with the specified cookie value.

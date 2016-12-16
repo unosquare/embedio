@@ -413,7 +413,7 @@
                 await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true,
                         CancellationToken.None);
 #else
-                webSocket.WebSocket.SendAsync(payload, null);
+                await Task.Factory.StartNew(() => { webSocket.WebSocket.SendAsync(payload, null); });
 #endif
             }
             catch (Exception ex)
@@ -437,7 +437,7 @@
                 await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(payload), WebSocketMessageType.Binary, true,
                         CancellationToken.None);
 #else
-                webSocket.WebSocket.SendAsync(payload, null);
+                await Task.Factory.StartNew(() => { webSocket.WebSocket.SendAsync(payload, null); });
 #endif
             }
             catch (Exception ex)
@@ -482,7 +482,7 @@
                 await webSocket.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty,
                         CancellationToken.None);
 #else
-                webSocket.WebSocket.CloseAsync();
+                await Task.Factory.StartNew(() => { webSocket.WebSocket.CloseAsync(); });
 #endif
             }
             catch (Exception ex)

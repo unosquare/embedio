@@ -46,6 +46,8 @@
 
             Assert.IsTrue(result.EndOfMessage, "End of message is true");
             Assert.IsTrue(System.Text.Encoding.UTF8.GetString(buffer.Array).TrimEnd((char) 0) == "WELCOME", "Final message is WELCOME");
+#else
+            await Task.Factory.StartNew(() => { });
 #endif
         }
 
