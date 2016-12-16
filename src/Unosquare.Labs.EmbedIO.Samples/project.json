@@ -19,16 +19,18 @@
                 "Microsoft.NETCore.App": "1.1.0"
             }
         },
-        "net452": {
-            "frameworkAssemblies": {
-                "System.ComponentModel.DataAnnotations": ""
-            }
-        },
-        "net46": {
-            "frameworkAssemblies": {
-                "System.ComponentModel.DataAnnotations": ""
-            }
+      "net452": {
+        "dependencies": { "Microsoft.Data.SQLite": "1.1.0" },
+        "frameworkAssemblies": {
+          "System.ComponentModel.DataAnnotations": ""
         }
+      },
+      "net46": {
+        "dependencies": { "Microsoft.Data.SQLite": "1.1.0" },
+        "frameworkAssemblies": {
+          "System.ComponentModel.DataAnnotations": ""
+        }
+      }
     },
     "runtimes": {
         "win": {},

@@ -75,6 +75,7 @@
     <Compile Include="System.Net\CookieCollection.cs" />
     <Compile Include="System.Net\EndPointListener.cs" />
     <Compile Include="System.Net\EndPointManager.cs" />
+    <Compile Include="System.Net\ErrorEventArgs.cs" />
     <Compile Include="System.Net\Extensions.cs" />
     <Compile Include="System.Net\HttpBase.cs" />
     <Compile Include="System.Net\HttpConnection.cs" />
