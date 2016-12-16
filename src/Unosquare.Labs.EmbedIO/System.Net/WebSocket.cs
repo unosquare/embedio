@@ -1240,7 +1240,7 @@ namespace Unosquare.Net
         {
             try
             {
-                OnError?.Invoke(this, new ErrorEventArgs(exception ?? new Exception(message)));
+                OnError?.Invoke(this, new ErrorEventArgs(message, exception));
             }
             catch (Exception ex)
             {

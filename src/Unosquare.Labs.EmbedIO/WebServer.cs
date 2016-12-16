@@ -65,7 +65,7 @@
 
         /// <summary>
         /// Gets the URL RoutingStrategy used in this instance.
-        /// By default it is set to Wildcard, but Regex is the the recommended value.
+        /// By default it is set to Wildcard, but Regex is the recommended value.
         /// </summary>
         public RoutingStrategy RoutingStrategy { get; protected set; }
 
@@ -294,7 +294,7 @@
                     context.Request.RemoteEndPoint.Address.ToString(),
                     context.Request.RemoteEndPoint.Port.ToString(CultureInfo.InvariantCulture));
 
-                // Generate a random request ID. It's currently not important butit could be useful in the future.
+                // Generate a random request ID. It's currently not important but could be useful in the future.
                 requestId = string.Concat(DateTime.Now.Ticks.ToString(), requestEndpoint).GetHashCode().ToString("x2");
 
                 // Log the request and its ID
@@ -352,7 +352,7 @@
                     if (module.Server == null)
                         module.Server = this;
 
-                    // Log the module and hanlder to be called and invoke as a callback.
+                    // Log the module and handler to be called and invoke as a callback.
                     Log.DebugFormat("{0}::{1}.{2}", module.Name, callback.GetMethodInfo().DeclaringType.Name,
                         callback.GetMethodInfo().Name);
 
@@ -462,7 +462,7 @@
                             var context = contextState as HttpListenerContext;
                             HandleClientRequest(context, null);
                         }, Listener.GetContext());
-                        // Retrieve and pass the listener context to the threadpool thread.
+                        // Retrieve and pass the listener context to the thread-pool thread.
                     }
                     catch
                     {
