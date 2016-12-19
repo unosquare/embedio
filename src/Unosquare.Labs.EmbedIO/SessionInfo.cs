@@ -44,7 +44,15 @@
         public object this[string key]
         {
             get { return (Data.ContainsKey(key)) ? Data[key] : null; }
-            set { Data.TryAdd(key, value); }
+            set { 
+                if (Data.ContainsKey(key)) {
+                    Data.TryUpdate(key, value, value);
+                }
+                else {
+                    Data.TryAdd(key, value);
+                }
+            }
         }
+        
     }
 }
