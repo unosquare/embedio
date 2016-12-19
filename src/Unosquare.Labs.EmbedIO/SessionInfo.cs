@@ -46,7 +46,7 @@
             get { return (Data.ContainsKey(key)) ? Data[key] : null; }
             set { 
                 if (Data.ContainsKey(key)) {
-                    Data.TryUpdate(key, value);
+                    Data.TryUpdate(key, value, value);
                 }
                 else {
                     Data.TryAdd(key, value);
