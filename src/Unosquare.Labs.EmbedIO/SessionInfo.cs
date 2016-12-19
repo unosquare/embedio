@@ -37,21 +37,15 @@
         public ConcurrentDictionary<string, object> Data { get; protected set; }
 
         /// <summary>
-        /// Retrieve an item. If the key does not exist, it return null.
+        /// Retrieve an item or set an item. If the key does not exist, it returns null.
+        /// This is an indexer providing a shortcut to the underlying Data dictionary
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
         public object this[string key]
         {
             get { return (Data.ContainsKey(key)) ? Data[key] : null; }
-            set { 
-                if (Data.ContainsKey(key)) {
-                    Data.TryUpdate(key, value, value);
-                }
-                else {
-                    Data.TryAdd(key, value);
-                }
-            }
+            set { Data[key] = value; }
         }
         
     }
