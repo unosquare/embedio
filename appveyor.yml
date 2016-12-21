@@ -11,13 +11,19 @@ notifications:
 environment:
   # Don't report back to the mothership
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  COVERALLS_REPO_TOKEN:  
+       secure: 1Ce1wX4c2duHsRshiJRZFVIe6VI/r0WTAUG/tXuGFue9CmTI13NJRgZbl9irVKBA
 init:
 - ps: $Env:LABEL = "CI" + $Env:APPVEYOR_BUILD_NUMBER.PadLeft(5, "0")
 before_build:
 - appveyor-retry dotnet restore -v Minimal
+- mkdir tools
+- nuget install OpenCover -Version 4.6.519 -OutputDirectory tools
+- nuget install coveralls.net -Version 0.7.0 -OutputDirectory tools
 build_script:
 - dotnet build "src\Unosquare.Labs.EmbedIO" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
 test_script:
-- dotnet test "test\Unosquare.Labs.EmbedIO.Tests" -c %CONFIGURATION%
+- tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test test\Unosquare.Labs.EmbedIO.Tests -c %CONFIGURATION%" -output:coverage.xml -register:userdotnet
+- tools\coveralls.net.0.7.0\tools\csmacnz.Coveralls.exe --opencover -i coverage.xml --serviceName appveyor --jobId %APPVEYOR_BUILD_NUMBER%
 cache:
 - '%USERPROFILE%\.nuget\packages'
