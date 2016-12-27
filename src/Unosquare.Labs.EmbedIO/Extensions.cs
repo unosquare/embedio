@@ -123,6 +123,16 @@
         }
 
         /// <summary>
+        /// Gets the request path for the specified context case sensitive.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        public static string RequestPathCaseSensitive(this HttpListenerContext context)
+        {
+            return context.Request.Url.LocalPath;
+        }
+
+        /// <summary>
         /// Retrieves the Request HTTP Verb (also called Method) of this context.
         /// </summary>
         /// <param name="context">The context.</param>

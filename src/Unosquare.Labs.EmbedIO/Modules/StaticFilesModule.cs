@@ -198,7 +198,7 @@
             {
                 foreach (var path in additionalPaths.Where(path => path.Key != "/"))
                 {
-                    RegisterVirtualPath(path.Key.ToLowerInvariant(), path.Value);
+                    RegisterVirtualPath(path.Key, path.Value);
                 }
             }
 
@@ -374,7 +374,7 @@
 
         private void SetHeaders(HttpListenerContext context, string localPath, string utcFileDateString)
         {
-            var fileExtension = Path.GetExtension(localPath).ToLowerInvariant();
+            var fileExtension = Path.GetExtension(localPath);
 
             if (MimeTypes.ContainsKey(fileExtension))
                 context.Response.ContentType = MimeTypes[fileExtension];
@@ -499,11 +499,11 @@
 
         private string GetUrlPath(HttpListenerContext context, ref string rootFs)
         {
-            var urlPath = context.RequestPath().Replace('/', Path.DirectorySeparatorChar);
+            var urlPath = context.RequestPathCaseSensitive().Replace('/', Path.DirectorySeparatorChar);
 
-            if (m_VirtualPaths.Any(x => context.RequestPath().StartsWith(x.Key)))
+            if (m_VirtualPaths.Any(x => context.RequestPathCaseSensitive().StartsWith(x.Key)))
             {
-                var additionalPath = m_VirtualPaths.FirstOrDefault(x => context.RequestPath().StartsWith(x.Key));
+                var additionalPath = m_VirtualPaths.FirstOrDefault(x => context.RequestPathCaseSensitive().StartsWith(x.Key));
                 rootFs = additionalPath.Value;
                 urlPath = urlPath.Replace(additionalPath.Key.Replace('/', Path.DirectorySeparatorChar), "");
 
