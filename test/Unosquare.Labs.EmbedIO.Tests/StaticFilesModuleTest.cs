@@ -369,13 +369,13 @@
             {
                 var webClient = new HttpClient();
 
-                var htmlLowerCase = await webClient.GetStringAsync(WebServerUrl + TestHelper.LowercaseFile);
-
-                Assert.AreEqual(nameof(TestHelper.LowercaseFile), htmlLowerCase, "Same content lower case");
-
                 var htmlUpperCase = await webClient.GetStringAsync(WebServerUrl + TestHelper.UppercaseFile);
 
                 Assert.AreEqual(nameof(TestHelper.UppercaseFile), htmlUpperCase, "Same content upper case");
+                
+                var htmlLowerCase = await webClient.GetStringAsync(WebServerUrl + TestHelper.LowercaseFile);
+
+                Assert.AreEqual(nameof(TestHelper.LowercaseFile), htmlLowerCase, "Same content lower case");
             }
         }
 
