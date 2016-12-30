@@ -4,7 +4,6 @@
     using System.Collections.Generic;
 #if NET46
     using System.Net;
-    using System.Net.WebSockets;
 #else
     using Net;
 #endif
@@ -50,7 +49,11 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        SessionInfo GetSession(WebSocketContext context);
+#if NET46
+        SessionInfo GetSession(System.Net.WebSockets.WebSocketContext context);
+#else
+        SessionInfo GetSession(Unosquare.Net.WebSocketContext context);
+#endif
 
         /// <summary>
         /// Gets or sets the expiration time for the sessions.

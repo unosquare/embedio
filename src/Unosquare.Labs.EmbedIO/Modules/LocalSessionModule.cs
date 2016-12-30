@@ -6,7 +6,6 @@
     using System.Collections.ObjectModel;
 #if NET46
     using System.Net;
-    using System.Net.WebSockets;
 #else
     using Net;
 #endif
@@ -231,7 +230,11 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        public SessionInfo GetSession(WebSocketContext context)
+#if NET46
+        public SessionInfo GetSession(System.Net.WebSockets.WebSocketContext context)
+#else
+        public SessionInfo GetSession(Unosquare.Net.WebSocketContext context)
+#endif
         {
             lock (SessionsSyncLock)
             {

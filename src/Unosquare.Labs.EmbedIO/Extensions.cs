@@ -10,7 +10,6 @@
     using System.Text;
 #if NET46
     using System.Net;
-    using System.Net.WebSockets;
 #else
     using Net;
 #endif
@@ -20,13 +19,13 @@
     /// </summary>
     public static partial class Extensions
     {
-        #region Constants
+#region Constants
 
         private const string UrlEncodedContentType = "application/x-www-form-urlencoded";
 
-        #endregion
+#endregion
 
-        #region Session Management Methods
+#region Session Management Methods
 
         /// <summary>
         /// Gets the session object associated to the current context.
@@ -84,7 +83,7 @@
         {
             return server.SessionModule?.GetSession(context);
         }
-        
+
         /// <summary>
         /// Gets the session object associated to the current context.
         /// Returns null if the LocalSessionWebModule has not been loaded.
@@ -92,7 +91,11 @@
         /// <param name="context">The context.</param>
         /// <param name="server">The server.</param>
         /// <returns></returns>
-        public static SessionInfo GetSession(this WebSocketContext context, WebServer server)
+#if NET46
+        public static SessionInfo GetSession(this System.Net.WebSockets.WebSocketContext context, WebServer server)
+#else
+        public static SessionInfo GetSession(this Unosquare.Net.WebSocketContext context, WebServer server)
+#endif
         {
             return server.SessionModule?.GetSession(context);
         }
@@ -103,14 +106,18 @@
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        public static SessionInfo GetSession(this WebServer server, WebSocketContext context)
+#if NET46
+        public static SessionInfo GetSession(this WebServer server, System.Net.WebSockets.WebSocketContext context)
+#else
+        public static SessionInfo GetSession(this WebServer server, Unosquare.Net.WebSocketContext context)
+#endif
         {
             return server.SessionModule?.GetSession(context);
         }
 
-        #endregion
+#endregion
 
-        #region HTTP Request Helpers
+#region HTTP Request Helpers
         
         /// <summary>
         /// Gets the request path for the specified context.
@@ -210,9 +217,9 @@
             }
         }
 
-        #endregion
+#endregion
 
-        #region HTTP Response Manipulation Methods
+#region HTTP Response Manipulation Methods
 
         /// <summary>
         /// Sends headers to disable caching on the client side.
@@ -246,9 +253,9 @@
             context.Response.AddHeader("Location", location);
         }
 
-        #endregion
+#endregion
 
-        #region JSON and Exception Extensions
+#region JSON and Exception Extensions
 
         /// <summary>
         /// Retrieves the exception message, plus all the inner exception messages separated by new lines
@@ -346,9 +353,9 @@
             return JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
         }
 
-        #endregion
+#endregion
 
-        #region Data Parsing Methods
+#region Data Parsing Methods
 
         /// <summary>
         /// Returns dictionary from Request POST data
@@ -505,9 +512,9 @@
             return resultDictionary;
         }
 
-        #endregion
+#endregion
 
-        #region Hashing and Compression Methods
+#region Hashing and Compression Methods
 
         /// <summary>
         /// Compresses the specified buffer stream using the G-Zip compression algorithm.
@@ -606,6 +613,6 @@
             return ComputeMd5Hash(Constants.DefaultEncoding.GetBytes(input));
         }
 
-        #endregion
+#endregion
     }
 }

@@ -8,7 +8,6 @@
     using System.Threading.Tasks;
     using System.Reflection;
 #if NET46
-    using System.Net;
     using System.Net.WebSockets;
 #else
     using Net;
@@ -245,7 +244,11 @@
         /// </summary>
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
-        public void AcceptWebSocket(WebServer server, HttpListenerContext context)
+#if NET46
+        public void AcceptWebSocket(WebServer server, System.Net.HttpListenerContext context)
+#else
+        public void AcceptWebSocket(WebServer server, Unosquare.Net.HttpListenerContext context)
+#endif
         {
             // first, accept the websocket
             WebServer = server;
