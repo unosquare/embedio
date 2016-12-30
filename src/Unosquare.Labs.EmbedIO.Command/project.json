@@ -1,22 +1,31 @@
 {
-    "version": "1.0.0-*",
-    "buildOptions": {
-        "emitEntryPoint": true
-    },
+  "description": "Portable web server ready to use",
+  "version": "1.0.0-*",
+  "title": "EmbedIO CLI",
+  "copyright": "Copyright (c) 2016 - Unosquare",
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
 
-    "dependencies": {
-        "Newtonsoft.Json": "9.0.1",
-        "CommandLineParser": "1.9.71",
-        "Unosquare.Swan": "0.9.1",
-        "Unosquare.Labs.EmbedIO": { "target": "project" }
-    },
+  "dependencies": {
+    "Newtonsoft.Json": "9.0.1",
+    "Unosquare.Swan": "0.9.10",
+    "Unosquare.Labs.EmbedIO": { "target": "project" }
+  },
 
-    "frameworks": {
-        "net452": {
+  "frameworks": {
+    "net452": {
 
-        }
     },
-    "runtimes": {
-        "win": {}
+    "netcoreapp1.1": {
+      "dependencies": {
+        "Microsoft.NETCore.App": "1.1.0"
+      }
     }
+  },
+  "runtimes": {
+    "win81-x64": {},
+    "ubuntu.14.04-x64": {},
+    "osx.10.11-x64": {}
+  }
 }

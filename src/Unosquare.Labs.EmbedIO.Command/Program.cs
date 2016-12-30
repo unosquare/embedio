@@ -1,10 +1,8 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Command
 {
-    using CommandLine;
     using Swan;
     using System;
     using System.Reflection;
-    using Unosquare.Labs.EmbedIO.Modules;
 
     /// <summary>
     /// Entry point
@@ -19,9 +17,9 @@
         {
             var options = new Options();
 
-            "Unosquare.Labs.EmbedIO Web Server".Info();
+            CurrentApp.WriteWelcomeBanner();
 
-            if (!Parser.Default.ParseArguments(args, options)) return;
+            if (!Swan.Runtime.ArgumentParser.Default.ParseArguments(args, options)) return;
 
             "  Command-Line Utility: Press any key to stop the server.".Info();
 
@@ -32,22 +30,25 @@
                     ? WebServer.Create(serverUrl)
                     : WebServer.CreateWithConsole(serverUrl))
             {
-                if (Properties.Settings.Default.UseLocalSessionModule)
-                    server.WithLocalSession();
+                // TODO: Add AppSettings file
+                //if (Properties.Settings.Default.UseLocalSessionModule)
+                //    server.WithLocalSession();
 
-                server.EnableCors().WithStaticFolderAt(options.RootPath,
-                    defaultDocument: Properties.Settings.Default.HtmlDefaultDocument);
+                server.EnableCors().WithStaticFolderAt(options.RootPath);
+                //server.EnableCors().WithStaticFolderAt(options.RootPath,
+                //    defaultDocument: Properties.Settings.Default.HtmlDefaultDocument);
 
-                server.Module<StaticFilesModule>().DefaultExtension = Properties.Settings.Default.HtmlDefaultExtension;
-                server.Module<StaticFilesModule>().UseRamCache = Properties.Settings.Default.UseRamCache;
+                //server.Module<StaticFilesModule>().DefaultExtension = Properties.Settings.Default.HtmlDefaultExtension;
+                //server.Module<StaticFilesModule>().UseRamCache = Properties.Settings.Default.UseRamCache;
 
-                if (options.ApiAssemblies != null && options.ApiAssemblies.Count > 0)
+                if (string.IsNullOrEmpty(options.ApiAssemblies))
                 {
-                    foreach (var api in options.ApiAssemblies)
-                    {
-                        $"Registering Assembly {api}".Debug();
-                        LoadApi(api, server);
-                    }
+#if NET452
+                    $"Registering Assembly {options.ApiAssemblies}".Debug();
+                    LoadApi(options.ApiAssemblies, server);
+#else
+                    $"Error loading Assembly {options.ApiAssemblies}".Debug();
+#endif
                 }
 
                 // start the server
@@ -56,6 +57,8 @@
             }
         }
 
+        // TODO: Check how to load a assembly from filename at NETCORE
+#if NET452
         /// <summary>
         /// Load an Assembly
         /// </summary>
@@ -77,5 +80,6 @@
                 server.Log.Error(ex.StackTrace);
             }
         }
+#endif
     }
 }

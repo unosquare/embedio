@@ -1,6 +1,4 @@
-﻿using CommandLine;
-using CommandLine.Text;
-using System.Collections.Generic;
+﻿using Unosquare.Swan;
 
 namespace Unosquare.Labs.EmbedIO.Command
 {
@@ -9,23 +7,20 @@ namespace Unosquare.Labs.EmbedIO.Command
     /// </summary>
     internal class Options
     {
-        [Option('p', "path", Required = true, HelpText = "WWW-root path.")]
+        [ArgumentOption('p', "path", Required = true, HelpText = "WWW-root path.")]
         public string RootPath { get; set; }
 
-        [Option('o', "port", HelpText = "HTTP port.", DefaultValue=9696)]
+        [ArgumentOption('o', "port", HelpText = "HTTP port.", DefaultValue = 9696)]
         public int Port { get; set; }
 
-        [OptionList('a', "api", Separator = ',', HelpText = "Specify assemblies to load, separated by a comma.")]
-        public IList<string> ApiAssemblies { get; set; }
+        // TODO: Add support to OptionList at SWAN
+        //[OptionList('a', "api", Separator = ',', HelpText = "Specify assemblies to load, separated by a comma.")]
+        //public IList<string> ApiAssemblies { get; set; }
 
-        [Option('v', "noverb", HelpText = "Output Web server info.", DefaultValue = false)]
+        [ArgumentOption('a', "api", HelpText = "Specify assembly to load.")]
+        public string ApiAssemblies { get; set; }
+
+        [ArgumentOption('v', "noverb", HelpText = "Output Web server info.", DefaultValue = false)]
         public bool NoVerbose { get; set; }
-
-        [HelpOption]
-        public string GetUsage()
-        {
-            return HelpText.AutoBuild(this,
-                current => HelpText.DefaultParsingErrorsHandler(this, current));
-        }
     }
 }
