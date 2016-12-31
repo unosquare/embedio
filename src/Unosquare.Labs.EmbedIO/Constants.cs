@@ -36,9 +36,9 @@ namespace Unosquare.Labs.EmbedIO
         /// </summary>
         public static StringComparer StandardStringComparer =
 #if !NETCOREAPP1_1 && !NETSTANDARD1_6
-            StringComparer.InvariantCultureIgnoreCase;
+            StringComparer.InvariantCulture;
 #else
-            StringComparer.OrdinalIgnoreCase;
+            StringComparer.Ordinal;
 #endif
 
         /// <summary>
