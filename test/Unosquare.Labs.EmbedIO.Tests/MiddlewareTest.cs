@@ -34,7 +34,7 @@
 
                 var jsonString = new StreamReader(response.GetResponseStream()).ReadToEnd();
 
-                Assert.AreEqual(jsonString, "{\"Status\":\"OK\"}", "Same JSON content");
+                Assert.AreEqual("{\"Status\": \"OK\"}", jsonString, "Same JSON content");
             }
         }
 

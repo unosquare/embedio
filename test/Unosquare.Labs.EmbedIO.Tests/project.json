@@ -31,7 +31,6 @@
                 "System.Net.Http": ""
             },
             "dependencies": {
-                "Microsoft.NETCore.Platforms": "1.0.1-*"
             }
         },
         "net46": {
@@ -39,7 +38,6 @@
                 "System.Net.Http": ""
             },
             "dependencies": {
-                "Microsoft.NETCore.Platforms": "1.0.1-*"
             }
         }
     },

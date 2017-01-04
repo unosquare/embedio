@@ -8,8 +8,8 @@
     "dependencies": {
         "LiteLib": "0.9.2",
         "Newtonsoft.Json": "9.0.1",
-        "Tubular.ServerSide": "1.0.8",
-        "Unosquare.Labs.EmbedIO": { "target": "project" }
+      "Tubular.ServerSide": "1.0.9",
+      "Unosquare.Labs.EmbedIO": { "target": "project" }
     },
 
     "frameworks": {
