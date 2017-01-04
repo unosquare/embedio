@@ -7,6 +7,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using System.Reflection;
+    using Swan;
 #if NET46
     using System.Net.WebSockets;
 #else
@@ -87,7 +88,7 @@
                 throw new ArgumentException("Argument 'socketType' needs a WebSocketHandlerAttribute",
                     nameof(socketType));
 
-            _serverMap[attribute.Path] = (WebSocketsServer) Activator.CreateInstance(socketType);
+            _serverMap[attribute.Path] = (WebSocketsServer)Activator.CreateInstance(socketType);
         }
 
         /// <summary>
@@ -224,7 +225,7 @@
                         CollectDisconnected();
 
                     // TODO: make this sleep configurable.
-                    await Task.Delay(30*1000);
+                    await Task.Delay(30 * 1000);
                 }
             })
             {
@@ -252,7 +253,12 @@
         {
             // first, accept the websocket
             WebServer = server;
+#if COMPAT
             server.Log.DebugFormat("{0} - Accepting WebSocket . . .", ServerName);
+#else
+            $"{ServerName} - Accepting WebSocket . . .".Debug();
+#endif
+
 #if NET46
             const int receiveBufferSize = 2048;
 #endif
@@ -264,7 +270,11 @@
                     .GetAwaiter()
                     .GetResult();
 #else
+#if COMPAT
                 context.AcceptWebSocket(null, WebServer.Log);
+#else
+                context.AcceptWebSocket(null);
+#endif
 #endif
 
             // remove the disconnected clients
@@ -275,8 +285,13 @@
                 _mWebSockets.Add(webSocketContext);
             }
 
+#if COMPAT
             server.Log.DebugFormat(
                 $"{ServerName} - WebSocket Accepted - There are {WebSockets.Count} sockets connected.");
+#else
+            $"{ServerName} - WebSocket Accepted - There are {WebSockets.Count} sockets connected.".Debug();
+#endif
+
             // call the abstract member
             OnClientConnected(webSocketContext);
 
@@ -348,7 +363,11 @@
             }
             catch (Exception ex)
             {
+#if COMPAT
                 server.Log.ErrorFormat("{0} - Error: {1}", ServerName, ex);
+#else
+                ex.Log();
+#endif
             }
             finally
             {
@@ -396,8 +415,12 @@
                 }
             }
 
+#if COMPAT
             WebServer?.Log.DebugFormat("{0} - Collected {1} sockets. WebSocket Count: {2}", ServerName,
                 collectedCount, WebSockets.Count);
+#else
+            $"{ServerName} - Collected {collectedCount} sockets. WebSocket Count: {WebSockets.Count}".Debug();
+#endif
         }
 
         /// <summary>
@@ -420,7 +443,11 @@
             }
             catch (Exception ex)
             {
+#if COMPAT
                 WebServer.Log.Error(ex);
+#else
+                ex.Log();
+#endif
             }
         }
 
@@ -444,7 +471,11 @@
             }
             catch (Exception ex)
             {
+#if COMPAT
                 WebServer.Log.Error(ex);
+#else
+                ex.Log();
+#endif
             }
         }
 
@@ -489,7 +520,11 @@
             }
             catch (Exception ex)
             {
+#if COMPAT
                 WebServer.Log.Error(ex);
+#else
+                ex.Log();
+#endif
             }
             finally
             {

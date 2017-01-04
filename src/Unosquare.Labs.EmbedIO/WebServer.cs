@@ -8,11 +8,15 @@
     using System.Threading;
     using System.Reflection;
     using System.Threading.Tasks;
-    using Log;
 #if NET46
     using System.Net;
 #else
     using Net;
+#endif
+#if COMPAT
+    using Log;
+#else
+    using Swan;
 #endif
 
     /// <summary>
@@ -55,6 +59,7 @@
         /// </value>
         public ISessionWebModule SessionModule { get; protected set; }
 
+#if COMPAT
         /// <summary>
         /// Gets the log interface to which this instance will log messages.
         /// </summary>
@@ -62,6 +67,7 @@
         /// The log.
         /// </value>
         public ILog Log { get; protected set; }
+#endif
 
         /// <summary>
         /// Gets the URL RoutingStrategy used in this instance.
@@ -74,7 +80,11 @@
         /// This constructor does not provide any Logging capabilities.
         /// </summary>
         public WebServer()
+#if COMPAT
             : this("http://*/", new NullLog(), RoutingStrategy.Wildcard)
+#else
+            : this(new[] { "http://*/" }, RoutingStrategy.Wildcard)
+#endif
         {
             // placeholder
         }
@@ -85,11 +95,16 @@
         /// </summary>
         /// <param name="port">The port.</param>
         public WebServer(int port)
+#if COMPAT
             : this(port, new NullLog())
+#else
+            : this(new[] { "http://*:" + port.ToString() + "/" }, RoutingStrategy.Wildcard)
+#endif
         {
             // placeholder
         }
 
+#if COMPAT
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
         /// </summary>
@@ -112,18 +127,25 @@
         {
             // placeholder
         }
+#endif
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebServer"/> class.
+        /// Initializes a new instance of the <see cref="WebServer" /> class.
         /// This constructor does not provide any Logging capabilities.
         /// </summary>
         /// <param name="urlPrefix">The URL prefix.</param>
-        public WebServer(string urlPrefix)
-            : this(urlPrefix, new NullLog(), RoutingStrategy.Wildcard)
+        /// <param name="strategy">The strategy.</param>
+        public WebServer(string urlPrefix, RoutingStrategy strategy = RoutingStrategy.Wildcard)
+#if COMPAT
+            : this(urlPrefix, new NullLog(), strategy)
+#else
+            : this(new[] { urlPrefix }, strategy)
+#endif
         {
             // placeholder
         }
 
+#if COMPAT
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
         /// </summary>
@@ -146,6 +168,7 @@
         {
             // placeholder
         }
+#endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
@@ -153,7 +176,11 @@
         /// </summary>
         /// <param name="urlPrefixes">The URL prefixes.</param>
         public WebServer(string[] urlPrefixes)
+#if COMPAT
             : this(urlPrefixes, new NullLog(), RoutingStrategy.Wildcard)
+#else
+            : this(urlPrefixes, RoutingStrategy.Wildcard)
+#endif
         {
             // placeholder
         }
@@ -164,11 +191,14 @@
         /// Please notice the ending slash. -- It is important
         /// </summary>
         /// <param name="urlPrefixes">The URL prefix.</param>
-        /// <param name="log">The Log component</param>
         /// <param name="routingStrategy">The routing strategy</param>
         /// <exception cref="System.InvalidOperationException">The HTTP Listener is not supported in this OS</exception>
         /// <exception cref="System.ArgumentException">Argument urlPrefix must be specified</exception>
+#if COMPAT
         public WebServer(string[] urlPrefixes, ILog log, RoutingStrategy routingStrategy)
+#else
+        public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy)
+#endif
         {
             if (HttpListener.IsSupported == false)
                 throw new InvalidOperationException("The HTTP Listener is not supported in this OS");
@@ -176,12 +206,15 @@
             if (urlPrefixes == null || urlPrefixes.Length <= 0)
                 throw new ArgumentException("At least 1 URL prefix in urlPrefixes must be specified");
 
+#if COMPAT
             if (log == null)
                 throw new ArgumentException("Argument log must be specified");
 
+            Log = log;
+#endif
+
             RoutingStrategy = routingStrategy;
             Listener = new HttpListener();
-            Log = log;
 
             foreach (var prefix in urlPrefixes)
             {
@@ -191,10 +224,18 @@
                 urlPrefix = urlPrefix.ToLowerInvariant();
 
                 Listener.Prefixes.Add(urlPrefix);
+#if COMPAT
                 Log.InfoFormat("Web server prefix '{0}' added.", urlPrefix);
+#else
+                $"Web server prefix '{urlPrefix}' added.".Info();
+#endif
             }
 
+#if COMPAT
             Log.Info("Finished Loading Web Server.");
+#else
+            "Finished Loading Web Server.".Info();
+#endif
         }
 
         /// <summary>
@@ -241,8 +282,12 @@
             }
             else
             {
+#if COMPAT
                 Log.WarnFormat("Failed to register module '{0}' because a module with the same type already exists.",
                     module.GetType());
+#else
+                $"Failed to register module '{module.GetType()}' because a module with the same type already exists.".Warn();
+#endif
             }
         }
 
@@ -253,11 +298,16 @@
         public void UnregisterModule(Type moduleType)
         {
             var existingModule = Module(moduleType);
+
             if (existingModule == null)
             {
+#if COMPAT
                 Log.WarnFormat(
                     "Failed to unregister module '{0}' because no module with that type has been previously registered.",
                     moduleType);
+#else
+                $"Failed to unregister module '{moduleType}' because no module with that type has been previously registered.".Warn();
+#endif
             }
             else
             {
@@ -298,16 +348,25 @@
                 requestId = string.Concat(DateTime.Now.Ticks.ToString(), requestEndpoint).GetHashCode().ToString("x2");
 
                 // Log the request and its ID
+#if COMPAT
                 Log.DebugFormat("Start of Request {0}", requestId);
                 Log.DebugFormat("Source {0} - {1}: {2}",
                     requestEndpoint,
                     context.RequestVerb().ToString().ToUpperInvariant(),
                     context.RequestPath());
+#else
+                $"Start of Request {requestId}".Debug();
+                $"Source {requestEndpoint} - {context.RequestVerb().ToString().ToUpperInvariant()}: {context.RequestPath()}".Debug();
+#endif
 
                 // Return a 404 (Not Found) response if no module/handler handled the response.
                 if (ProcessRequest(context) == false)
                 {
+#if COMPAT
                     Log.Error("No module generated a response. Sending 404 - Not Found");
+#else
+                    "No module generated a response. Sending 404 - Not Found".Error();
+#endif
                     var responseBytes = System.Text.Encoding.UTF8.GetBytes(Constants.Response404Html);
                     context.Response.StatusCode = (int)System.Net.HttpStatusCode.NotFound;
                     context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
@@ -315,14 +374,23 @@
             }
             catch (Exception ex)
             {
+#if COMPAT
                 Log.Error("Error handling request.", ex);
+#else
+                "Error handling request.".Error();
+                ex.Log();
+#endif
             }
             finally
             {
                 // Always close the response stream no matter what.
                 context?.Response.OutputStream.Close();
 
+#if COMPAT
                 Log.DebugFormat("End of Request {0}\r\n", requestId);
+#else
+                $"End of Request {requestId}".Debug();
+#endif
             }
         }
 
@@ -353,12 +421,20 @@
                         module.Server = this;
 
                     // Log the module and handler to be called and invoke as a callback.
+#if COMPAT
                     Log.DebugFormat("{0}::{1}.{2}", module.Name, callback.GetMethodInfo().DeclaringType.Name,
                         callback.GetMethodInfo().Name);
+#else
+                    $"{module.Name}::{callback.GetMethodInfo().DeclaringType.Name}.{callback.GetMethodInfo().Name}".Debug();
+#endif
 
                     // Execute the callback
                     var handleResult = callback.Invoke(this, context);
+#if COMPAT
                     Log.DebugFormat("Result: {0}", handleResult.ToString());
+#else
+                    $"Result: {handleResult}".Debug();
+#endif
 
                     // callbacks can instruct the server to stop bubbling the request through the rest of the modules by returning true;
                     if (handleResult)
@@ -371,9 +447,15 @@
                     // Handle exceptions by returning a 500 (Internal Server Error) 
                     if (context.Response.StatusCode != (int)System.Net.HttpStatusCode.Unauthorized)
                     {
-                        // Log the exception message.
                         var errorMessage = ex.ExceptionMessage("Failing module name: " + module.Name);
+
+                        // Log the exception message.
+#if COMPAT
                         Log.Error(errorMessage, ex);
+#else
+                        $"Failing module name: {module.Name}".Error();
+                        ex.Log();
+#endif
 
                         // Generate an HTML response
                         var response = string.Format(Constants.Response500HtmlFormat,
@@ -410,7 +492,12 @@
             Listener.IgnoreWriteExceptions = true;
             Listener.Start();
 
+#if COMPAT
             Log.Info("Started HTTP Listener");
+#else
+            "Started HTTP Listener".Info();
+#endif
+
             _listenerTask = Task.Factory.StartNew(() =>
             {
                 while (Listener != null && Listener.IsListening)
@@ -430,7 +517,11 @@
                     }
                     catch (Exception ex)
                     {
+#if COMPAT
                         Log.Error(ex);
+#else
+                        ex.Log();
+#endif
                     }
                 }
             }, ct);
@@ -438,6 +529,7 @@
             return _listenerTask;
         }
 
+#if COMPAT
         /// <summary>
         /// Starts the listener and the registered modules
         /// </summary>
@@ -471,6 +563,7 @@
                 }
             }, Listener); // Retrieve and pass the HTTP Listener
         }
+#endif
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -501,10 +594,15 @@
                     Listener = null;
                 }
 
+#if COMPAT
                 Log.Info("Listener Closed.");
+#else
+                "Listener Closed.".Info();
+#endif
             }
         }
 
+#if COMPAT
         /// <summary>
         /// Static method to create webserver instance
         /// </summary>
@@ -551,5 +649,16 @@
         {
             return new WebServer(urlPrefix, new SimpleConsoleLog(), routingStrategy);
         }
+#else
+        /// <summary>
+        /// Static method to create webserver instance
+        /// </summary>
+        /// <param name="urlPrefix">The URL prefix.</param>
+        /// <returns>The webserver instance.</returns>
+        public static WebServer Create(string urlPrefix)
+        {
+            return new WebServer(urlPrefix);
+        }
+#endif
     }
 }

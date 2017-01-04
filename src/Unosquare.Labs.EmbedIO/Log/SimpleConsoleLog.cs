@@ -1,4 +1,5 @@
-﻿namespace Unosquare.Labs.EmbedIO.Log
+﻿#if COMPAT
+namespace Unosquare.Labs.EmbedIO.Log
 {
     using System;
     using System.Collections.Concurrent;
@@ -10,7 +11,6 @@
     /// </summary>
     public class SimpleConsoleLog : ILog
     {
-
         private static readonly ConcurrentQueue<OutputContext> OutputQueue = new ConcurrentQueue<OutputContext>();
         private static readonly Task OutputTask;
 
@@ -165,3 +165,4 @@
         }
     }
 }
+#endif

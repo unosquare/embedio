@@ -113,16 +113,6 @@ namespace Unosquare.Net
             var result = (AsyncResult)ares;
             return (int)result.Data;
         }
-
-        /// <summary>
-        /// Gets the byte array contents of a memory stream
-        /// </summary>
-        /// <param name="ms">The ms.</param>
-        /// <returns></returns>
-        public static byte[] GetBuffer(this MemoryStream ms)
-        {
-            return ms.ToArray();
-        }
         
         /// <summary>
         /// Parses and adds the data from a string into the specified Name-Value collection

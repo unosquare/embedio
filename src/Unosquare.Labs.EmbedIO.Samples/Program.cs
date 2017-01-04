@@ -1,6 +1,5 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
-    using Log;
     using Modules;
     using System;
 
@@ -48,9 +47,8 @@
             });
 #endif
 
-            // Our web server is disposable. Note that if you don't want to use logging,
-            // there are alternate constructors that allow you to skip specifying an ILog object.
-            using (var server = new WebServer(url, new SimpleConsoleLog()))
+            // Our web server is disposable. 
+            using (var server = new WebServer(url))
             {
                 // First, we will configure our web server by adding Modules.
                 // Please note that order DOES matter.

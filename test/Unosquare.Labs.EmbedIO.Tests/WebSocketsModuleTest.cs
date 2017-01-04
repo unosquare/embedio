@@ -1,26 +1,25 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using System;
-#if !NETCOREAPP1_1 && !NETSTANDARD1_6
-    using System.Net.WebSockets;
-#endif
     using System.Threading;
     using System.Threading.Tasks;
     using System.Reflection;
     using NUnit.Framework;
     using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Labs.EmbedIO.Tests.TestObjects;
+#if !NETCOREAPP1_1 && !NETSTANDARD1_6
+    using System.Net.WebSockets;
+#endif
 
     [TestFixture]
     public class WebSocketsModuleTest
     {
         protected WebServer WebServer;
-        protected TestConsoleLog Logger = new TestConsoleLog();
 
         [SetUp]
         public void Init()
         {
-            WebServer = new WebServer(Resources.WsServerAddress.Replace("ws", "http"), Logger).WithWebSocket(typeof (TestWebSocket).GetTypeInfo().Assembly);
+            WebServer = new WebServer(Resources.WsServerAddress.Replace("ws", "http")).WithWebSocket(typeof(TestWebSocket).GetTypeInfo().Assembly);
             WebServer.RunAsync();
         }
 

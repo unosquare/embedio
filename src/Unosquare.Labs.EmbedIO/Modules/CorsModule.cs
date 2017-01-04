@@ -62,7 +62,7 @@
                                 context.Response.Headers.Add(Constants.HeaderAccessControlAllowHeaders + currentHeader);
                             }
 
-                            if (String.IsNullOrWhiteSpace(currentMethod) == false)
+                            if (string.IsNullOrWhiteSpace(currentMethod) == false)
                             {
                                 var currentMethods = currentMethod.ToLower()
                                     .Split(Constants.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());

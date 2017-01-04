@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using Modules;
+    using Swan;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -27,7 +28,7 @@
             if (webserver == null)
                 throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
 
-            webserver.RegisterModule(new StaticFilesModule(rootPath) {DefaultDocument = defaultDocument});
+            webserver.RegisterModule(new StaticFilesModule(rootPath) { DefaultDocument = defaultDocument });
             return webserver;
         }
 
@@ -45,7 +46,7 @@
             if (webserver == null)
                 throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
 
-            webserver.RegisterModule(new StaticFilesModule(virtualPaths) {DefaultDocument = defaultDocument});
+            webserver.RegisterModule(new StaticFilesModule(virtualPaths) { DefaultDocument = defaultDocument });
             return webserver;
         }
 
@@ -117,7 +118,11 @@
                     if (webserver.Module<WebApiModule>() == null) webserver = webserver.WithWebApi();
 
                     webserver.Module<WebApiModule>().RegisterController(apiController);
+#if COMPAT
                     webserver.Log.DebugFormat("Registering WebAPI Controller '{0}'", apiController.Name);
+#else
+                    $"Registering WebAPI Controller '{apiController.Name}'".Debug();
+#endif
                 }
             }
 
@@ -174,7 +179,11 @@
                     if (webserver.Module<WebSocketsModule>() == null) webserver = webserver.WithWebSocket();
 
                     webserver.Module<WebSocketsModule>().RegisterWebSocketsServer(socketServer);
+#if COMPAT
                     webserver.Log.DebugFormat("Registering WebSocket Server '{0}'", socketServer.Name);
+#else
+                    $"Registering WebSocket Server '{socketServer.Name}'".Info();
+#endif
                 }
             }
 

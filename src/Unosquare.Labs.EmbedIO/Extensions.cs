@@ -1,17 +1,22 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using System.Collections.Generic;
-    using Newtonsoft.Json;
     using System;
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
+    using Swan;
 #if NET46
     using System.Net;
 #else
     using Net;
+#endif
+#if COMPAT
+    using Newtonsoft.Json;
+#else
+    using Swan.Formatters;
 #endif
 
     /// <summary>
@@ -19,13 +24,13 @@
     /// </summary>
     public static partial class Extensions
     {
-#region Constants
+        #region Constants
 
         private const string UrlEncodedContentType = "application/x-www-form-urlencoded";
 
-#endregion
+        #endregion
 
-#region Session Management Methods
+        #region Session Management Methods
 
         /// <summary>
         /// Gets the session object associated to the current context.
@@ -115,10 +120,10 @@
             return server.SessionModule?.GetSession(context);
         }
 
-#endregion
+        #endregion
 
-#region HTTP Request Helpers
-        
+        #region HTTP Request Helpers
+
         /// <summary>
         /// Gets the request path for the specified context.
         /// </summary>
@@ -217,9 +222,9 @@
             }
         }
 
-#endregion
+        #endregion
 
-#region HTTP Response Manipulation Methods
+        #region HTTP Response Manipulation Methods
 
         /// <summary>
         /// Sends headers to disable caching on the client side.
@@ -253,19 +258,9 @@
             context.Response.AddHeader("Location", location);
         }
 
-#endregion
+        #endregion
 
-#region JSON and Exception Extensions
-
-        /// <summary>
-        /// Retrieves the exception message, plus all the inner exception messages separated by new lines
-        /// </summary>
-        /// <param name="ex">The ex.</param>
-        /// <returns></returns>
-        public static string ExceptionMessage(this Exception ex)
-        {
-            return ex.ExceptionMessage(string.Empty);
-        }
+        #region JSON and Exception Extensions
 
         /// <summary>
         /// Retrieves the exception message, plus all the inner exception messages separated by new lines
@@ -273,7 +268,7 @@
         /// <param name="ex">The ex.</param>
         /// <param name="priorMessage">The prior message.</param>
         /// <returns></returns>
-        public static string ExceptionMessage(this Exception ex, string priorMessage)
+        public static string ExceptionMessage(this Exception ex, string priorMessage = "")
         {
             var fullMessage = string.IsNullOrWhiteSpace(priorMessage) ? ex.Message : priorMessage + "\r\n" + ex.Message;
             if (ex.InnerException != null && string.IsNullOrWhiteSpace(ex.InnerException.Message) == false)
@@ -281,7 +276,6 @@
 
             return fullMessage;
         }
-
 
         /// <summary>
         /// Outputs a Json Response given a data object
@@ -291,12 +285,20 @@
         /// <returns></returns>
         public static bool JsonResponse(this HttpListenerContext context, object data)
         {
+#if COMPAT
             var jsonFormatting = Formatting.None;
 #if DEBUG
             jsonFormatting = Formatting.Indented;
 #endif
             var json = JsonConvert.SerializeObject(data, jsonFormatting);
             return context.JsonResponse(json);
+#else
+            var jsonFormatting = true;
+#if DEBUG
+            jsonFormatting = false;
+#endif
+            return context.JsonResponse(Json.Serialize(data, jsonFormatting));
+#endif
         }
 
         /// <summary>
@@ -326,7 +328,11 @@
             where T : class
         {
             var requestBody = context.RequestBody();
-            return requestBody == null ? null : JsonConvert.DeserializeObject<T>(requestBody);
+#if COMPAT
+            return ParseJson<T>(requestBody);
+#else
+            return ParseJson<T>(requestBody);
+#endif
         }
 
         /// <summary>
@@ -338,25 +344,17 @@
         public static T ParseJson<T>(this string requestBody)
             where T : class
         {
+#if COMPAT
             return requestBody == null ? null : JsonConvert.DeserializeObject<T>(requestBody);
+#else
+            return requestBody == null ? null : Json.Deserialize<T>(requestBody);
+#endif
         }
+        #endregion
 
+        #region Data Parsing Methods
 
-        /// <summary>
-        /// Prettifies the given JSON string by adding indenting.
-        /// </summary>
-        /// <param name="json">The json.</param>
-        /// <returns></returns>
-        public static string PrettifyJson(this string json)
-        {
-            dynamic parsedJson = JsonConvert.DeserializeObject(json);
-            return JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
-        }
-
-#endregion
-
-#region Data Parsing Methods
-
+#if COMPAT
         /// <summary>
         /// Returns dictionary from Request POST data
         /// Please note the underlying input stream is not rewindable.
@@ -404,6 +402,7 @@
 
             return result;
         }
+#endif
 
         /// <summary>
         /// Returns a dictionary of KVPs from Request data
@@ -455,7 +454,7 @@
             if (string.IsNullOrWhiteSpace(requestBody)) return null;
 
             // define a character for KV pairs
-            var kvpSeparator = new [] { '=' };
+            var kvpSeparator = new[] { '=' };
 
             // Create the result object
             var resultDictionary = new Dictionary<string, object>();
@@ -494,7 +493,7 @@
                         // if we don't have a list value for this key, then create one and add the existing item
                         var existingValue = resultDictionary[key] as string;
                         resultDictionary[key] = new List<string>();
-                        listValue = (List<string>) resultDictionary[key];
+                        listValue = (List<string>)resultDictionary[key];
                         listValue.Add(existingValue);
                     }
 
@@ -506,15 +505,14 @@
                     // Simply set the key to the parsed value
                     resultDictionary[key] = value;
                 }
-
             }
 
             return resultDictionary;
         }
 
-#endregion
+        #endregion
 
-#region Hashing and Compression Methods
+        #region Hashing and Compression Methods
 
         /// <summary>
         /// Compresses the specified buffer stream using the G-Zip compression algorithm.
@@ -533,86 +531,6 @@
 
             return targetStream;
         }
-
-        /// <summary>
-        /// Computes the MD5 hash of the given stream.
-        /// Do not use for large streams as this reads ALL bytes at once
-        /// </summary>
-        /// <param name="stream">The stream.</param>
-        /// <returns></returns>
-        public static string ComputeMd5Hash(Stream stream)
-        {
-            var md5 = MD5.Create();
-#if !NETCOREAPP1_1 && !NETSTANDARD1_6
-            const int bufferSize = 4096;
-
-            var readAheadBuffer = new byte[bufferSize];
-            var readAheadBytesRead = stream.Read(readAheadBuffer, 0, readAheadBuffer.Length);
-
-            do
-            {
-                var bytesRead = readAheadBytesRead;
-                var buffer = readAheadBuffer;
-
-                readAheadBuffer = new byte[bufferSize];
-                readAheadBytesRead = stream.Read(readAheadBuffer, 0, readAheadBuffer.Length);
-
-                if (readAheadBytesRead == 0)
-                    md5.TransformFinalBlock(buffer, 0, bytesRead);
-                else
-                    md5.TransformBlock(buffer, 0, bytesRead, buffer, 0);
-            } while (readAheadBytesRead != 0);
-
-            return GetHashString(md5.Hash);
-#else
-            using (var ms = new MemoryStream())
-            {
-                stream.Position = 0;
-                stream.CopyTo(ms);
-
-                return GetHashString(md5.ComputeHash(ms.ToArray()));
-            }
-#endif
-        }
-
-        /// <summary>
-        /// Gets a hexadecimal representation of the hash bytes
-        /// </summary>
-        /// <param name="hash">The hash.</param>
-        /// <returns></returns>
-        private static string GetHashString(byte[] hash)
-        {
-            var sb = new StringBuilder();
-
-            foreach (var t in hash)
-            {
-                sb.Append(t.ToString("x2"));
-            }
-
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Computes the MD5 hash of the given byte array
-        /// </summary>
-        /// <param name="inputBytes"></param>
-        /// <returns></returns>
-        public static string ComputeMd5Hash(byte[] inputBytes)
-        {
-            var hash = MD5.Create().ComputeHash(inputBytes);
-            return GetHashString(hash);
-        }
-
-        /// <summary>
-        /// Computes the MD5 hash of the given input string
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public static string ComputeMd5Hash(string input)
-        {
-            return ComputeMd5Hash(Constants.DefaultEncoding.GetBytes(input));
-        }
-
-#endregion
+        #endregion
     }
 }

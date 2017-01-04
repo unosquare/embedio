@@ -16,7 +16,6 @@ namespace Unosquare.Labs.EmbedIO.Tests
     public class WebServerCultureTest
     {
         protected WebServer WebServer;
-        protected TestConsoleLog Logger = new TestConsoleLog();
 
         protected string WebServerUrl;
         private const string KoreanDate = "목";
@@ -27,7 +26,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
             WebServerUrl = Resources.GetServerAddress();
             Thread.CurrentThread.CurrentCulture = new CultureInfo("ko");
 
-            WebServer = new WebServer(WebServerUrl, Logger).WithWebApiController<TestController>();
+            WebServer = new WebServer(WebServerUrl).WithWebApiController<TestController>();
             WebServer.RunAsync();
         }
 

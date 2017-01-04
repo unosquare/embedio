@@ -19,14 +19,13 @@
         /// The delegate to call for the given path and verb.
         /// </summary>
         public ResponseHandler ResponseHandler { get; set; }
-
     }
+
     /// <summary>
     /// Represents a list which binds Paths and their corresponding HTTP Verbs to Method calls
     /// </summary>
     public class ModuleMap : List<Map>
     {
-
         /// <summary>
         /// Defines the path used to bind to all paths
         /// </summary>

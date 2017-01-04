@@ -26,7 +26,7 @@
 
             var additionalPaths = InstancesNames.ToDictionary(x => "/" + x, TestHelper.SetupStaticFolderInstance);
 
-            WebServer = new WebServer(WebServerUrl, new TestConsoleLog());
+            WebServer = new WebServer(WebServerUrl);
             WebServer.RegisterModule(new StaticFilesModule(additionalPaths) {UseRamCache = true});
             WebServer.RunAsync();
         }

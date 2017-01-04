@@ -1,4 +1,5 @@
-﻿namespace Unosquare.Labs.EmbedIO.Log
+﻿#if COMPAT
+namespace Unosquare.Labs.EmbedIO.Log
 {
     using System;
 
@@ -61,3 +62,4 @@
         void Debug(string message);
     }
 }
+#endif

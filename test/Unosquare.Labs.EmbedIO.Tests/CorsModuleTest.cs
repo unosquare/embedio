@@ -1,7 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
-    using Newtonsoft.Json;
     using NUnit.Framework;
+    using Swan.Formatters;
     using System;
     using System.Net;
     using System.Net.Http;
@@ -15,14 +15,13 @@
     {
         protected WebServer WebServer;
         protected string WebServerUrl;
-        protected TestConsoleLog Logger = new TestConsoleLog();
         protected object TestObj = new { Message = "OK" };
 
         [SetUp]
         public void Init()
         {
             WebServerUrl = Resources.GetServerAddress();
-            WebServer = new WebServer(WebServerUrl, Logger)
+            WebServer = new WebServer(WebServerUrl)
                 .EnableCors(
                     "http://client.cors-api.appspot.com,http://unosquare.github.io,http://run.plnkr.co",
                     "content-type",
@@ -44,11 +43,12 @@
 
             var jsonBody = await webClient.GetStringAsync(WebServerUrl + "invalidpath");
 
-            var jsonFormatting = Formatting.None;
+            var jsonFormatting = true;
 #if DEBUG
-            jsonFormatting = Formatting.Indented;
+            jsonFormatting = false;
 #endif
-            Assert.AreEqual(JsonConvert.SerializeObject(TestObj, jsonFormatting), jsonBody, "Same content");
+
+            Assert.AreEqual(Json.Serialize(TestObj, jsonFormatting), jsonBody, "Same content");
         }
 
         [Test]

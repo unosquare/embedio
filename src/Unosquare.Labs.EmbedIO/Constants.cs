@@ -1,7 +1,6 @@
-﻿using System.Text;
-
-namespace Unosquare.Labs.EmbedIO
+﻿namespace Unosquare.Labs.EmbedIO
 {
+    using System.Text;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
@@ -36,9 +35,9 @@ namespace Unosquare.Labs.EmbedIO
         /// </summary>
         public static StringComparer StandardStringComparer =
 #if !NETCOREAPP1_1 && !NETSTANDARD1_6
-            StringComparer.InvariantCulture;
+            StringComparer.InvariantCultureIgnoreCase;
 #else
-            StringComparer.Ordinal;
+            StringComparer.OrdinalIgnoreCase;
 #endif
 
         /// <summary>

@@ -17,9 +17,8 @@
 
         protected string RootPath;
         protected WebServer WebServer;
-        
+
         protected string WebServerUrl;
-        protected TestConsoleLog Logger = new TestConsoleLog();
 
         [SetUp]
         public void Init()
@@ -27,7 +26,7 @@
             WebServerUrl = Resources.GetServerAddress();
             RootPath = TestHelper.SetupStaticFolder();
 
-            WebServer = new WebServer(WebServerUrl, Logger);
+            WebServer = new WebServer(WebServerUrl);
             WebServer.RegisterModule(new StaticFilesModule(RootPath) { UseRamCache = true });
             WebServer.RegisterModule(new FallbackModule("/index.html"));
             WebServer.RunAsync();
@@ -38,7 +37,7 @@
         {
             var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
 
-            using (var response = (HttpWebResponse) await request.GetResponseAsync())
+            using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
@@ -48,12 +47,12 @@
 
                 Assert.IsTrue(string.IsNullOrWhiteSpace(response.Headers[Constants.HeaderPragma]), "Pragma empty");
             }
-            
+
             WebServer.Module<StaticFilesModule>().DefaultHeaders.Add(Constants.HeaderPragma, HeaderPragmaValue);
 
             request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
 
-            using (var response = (HttpWebResponse) await request.GetResponseAsync())
+            using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
                 Assert.AreEqual(HeaderPragmaValue, response.Headers[Constants.HeaderPragma]);
@@ -273,7 +272,7 @@
         {
             var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
 
-            using (var response = (HttpWebResponse) await request.GetResponseAsync())
+            using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
@@ -336,7 +335,7 @@
             var file = Path.Combine(root, "index.html");
             File.WriteAllText(file, Resources.Index);
 
-            using (var server = new WebServer(endpoint, Logger))
+            using (var server = new WebServer(endpoint))
             {
                 server.RegisterModule(new StaticFilesModule(root) { UseRamCache = false });
                 var serverTask = server.RunAsync();
@@ -344,7 +343,7 @@
                 var webClient = new HttpClient();
                 var remoteFile = await webClient.GetStringAsync(endpoint);
                 File.WriteAllText(file, Resources.SubIndex);
-                
+
                 var remoteUpdatedFile = await webClient.GetStringAsync(endpoint);
                 File.WriteAllText(file, nameof(WebServer));
 
@@ -372,7 +371,7 @@
                 var htmlUpperCase = await webClient.GetStringAsync(WebServerUrl + TestHelper.UppercaseFile);
 
                 Assert.AreEqual(nameof(TestHelper.UppercaseFile), htmlUpperCase, "Same content upper case");
-                
+
                 var htmlLowerCase = await webClient.GetStringAsync(WebServerUrl + TestHelper.LowercaseFile);
 
                 Assert.AreEqual(nameof(TestHelper.LowercaseFile), htmlLowerCase, "Same content lower case");

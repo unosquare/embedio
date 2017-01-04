@@ -1,5 +1,5 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
+using Unosquare.Swan;
 #if NET46
 using System.Net.WebSockets;
 #else
@@ -19,7 +19,7 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 
         protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
         {
-            WebServer.Log.DebugFormat("Data frame: {0}", Encoding.UTF8.GetString(rxBuffer));
+            $"Data frame: {Encoding.UTF8.GetString(rxBuffer)}".Debug();
         }
 
         protected override void OnClientConnected(WebSocketContext context)

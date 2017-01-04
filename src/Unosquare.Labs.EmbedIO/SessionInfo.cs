@@ -32,7 +32,7 @@
         public DateTime LastActivity { get; set; }
 
         /// <summary>
-        /// Current Session Data Repo
+        /// Current Session Data Repository
         /// </summary>
         public ConcurrentDictionary<string, object> Data { get; protected set; }
 
@@ -47,6 +47,5 @@
             get { return (Data.ContainsKey(key)) ? Data[key] : null; }
             set { Data[key] = value; }
         }
-        
     }
 }

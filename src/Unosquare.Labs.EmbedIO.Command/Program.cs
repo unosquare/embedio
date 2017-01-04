@@ -2,7 +2,11 @@
 {
     using Swan;
     using System;
+#if NET452
     using System.Reflection;
+#else
+    using System.Runtime.Loader;
+#endif
 
     /// <summary>
     /// Entry point
@@ -25,14 +29,11 @@
 
             var serverUrl = "http://localhost:" + options.Port + "/";
 
-            using (
-                var server = options.NoVerbose
-                    ? WebServer.Create(serverUrl)
-                    : WebServer.CreateWithConsole(serverUrl))
+            using (var server = new WebServer(serverUrl))
             {
                 // TODO: Add AppSettings file
                 //if (Properties.Settings.Default.UseLocalSessionModule)
-                //    server.WithLocalSession();
+                server.WithLocalSession();
 
                 server.EnableCors().WithStaticFolderAt(options.RootPath);
                 //server.EnableCors().WithStaticFolderAt(options.RootPath,
@@ -43,12 +44,8 @@
 
                 if (string.IsNullOrEmpty(options.ApiAssemblies))
                 {
-#if NET452
                     $"Registering Assembly {options.ApiAssemblies}".Debug();
                     LoadApi(options.ApiAssemblies, server);
-#else
-                    $"Error loading Assembly {options.ApiAssemblies}".Debug();
-#endif
                 }
 
                 // start the server
@@ -57,8 +54,6 @@
             }
         }
 
-        // TODO: Check how to load a assembly from filename at NETCORE
-#if NET452
         /// <summary>
         /// Load an Assembly
         /// </summary>
@@ -68,18 +63,19 @@
         {
             try
             {
+#if NET452
                 var assembly = Assembly.LoadFile(apiPath);
-
+#else
+                var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(apiPath);
+#endif
                 if (assembly == null) return;
 
                 server.LoadApiControllers(assembly).LoadWebSockets(assembly);
             }
             catch (Exception ex)
             {
-                server.Log.Error(ex.Message);
-                server.Log.Error(ex.StackTrace);
+                ex.Log();
             }
         }
-#endif
     }
 }

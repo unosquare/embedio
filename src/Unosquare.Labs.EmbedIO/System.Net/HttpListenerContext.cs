@@ -29,7 +29,6 @@
 
 using System;
 using System.Security.Principal;
-using Unosquare.Labs.EmbedIO.Log;
 
 namespace Unosquare.Net
 {
@@ -141,7 +140,6 @@ namespace Unosquare.Net
         /// </summary>
         /// <param name="protocol">A <see cref="string" /> that represents the subprotocol supported on
         /// this WebSocket connection.</param>
-        /// <param name="log">The log.</param>
         /// <returns>
         /// A <see cref="WebSocketContext" /> that represents
         /// the WebSocket handshake request.
@@ -149,14 +147,13 @@ namespace Unosquare.Net
         /// <exception cref="ArgumentException"><para>
         ///   <paramref name="protocol" /> is empty.
         /// </para>
-        /// <para>
-        /// -or-
-        /// </para>
-        /// <para>
-        ///   <paramref name="protocol" /> contains an invalid character.
-        /// </para></exception>
+        /// </exception>
         /// <exception cref="InvalidOperationException">This method has already been called.</exception>
+#if COMPAT
         public WebSocketContext AcceptWebSocket(string protocol, ILog log)
+#else
+        public WebSocketContext AcceptWebSocket(string protocol)
+#endif
         {
             if (_websocketContext != null)
                 throw new InvalidOperationException("The accepting is already in progress.");
@@ -167,7 +164,11 @@ namespace Unosquare.Net
             //if (!protocol.IsToken())
             //    throw new ArgumentException("Contains an invalid character.", "protocol");
 
+#if COMPAT
             _websocketContext = new WebSocketContext(this, protocol, log);
+#else
+            _websocketContext = new WebSocketContext(this, protocol);
+#endif
             _websocketContext.WebSocket.InternalAccept();
 
             return _websocketContext;

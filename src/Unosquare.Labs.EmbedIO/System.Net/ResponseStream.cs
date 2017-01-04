@@ -118,7 +118,7 @@ namespace Unosquare.Net
                                 ms.Position = ms.Length;
                                 ms.Write(bytes, 0, bytes.Length);
                             }
-                            InternalWrite(ms.GetBuffer(), (int)start, (int)(ms.Length - start));
+                            InternalWrite(ms.ToArray(), (int)start, (int)(ms.Length - start));
                             _trailerSent = true;
                         }
                         else if (chunked && !_trailerSent)
@@ -213,7 +213,7 @@ namespace Unosquare.Net
                 ms.Write(buffer, offset, newCount);
                 count -= newCount;
                 offset += newCount;
-                InternalWrite(ms.GetBuffer(), (int)start, (int)(ms.Length - start));
+                InternalWrite(ms.ToArray(), (int)start, (int)(ms.Length - start));
                 ms.SetLength(0);
                 ms.Capacity = 0; // 'dispose' the buffer in ms.
             }
@@ -225,6 +225,7 @@ namespace Unosquare.Net
 
             if (count > 0)
                 InternalWrite(buffer, offset, count);
+
             if (chunked)
                 InternalWrite(_crlf, 0, 2);
         }

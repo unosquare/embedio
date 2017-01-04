@@ -20,7 +20,7 @@
     }
 
     /// <summary>
-    /// A Middlware context
+    /// Represents the Middleware's context
     /// </summary>
     public class MiddlewareContext
     {

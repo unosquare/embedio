@@ -172,7 +172,7 @@ namespace Unosquare.Net
         {
             if (_iStream != null) return _iStream;
 
-            var buffer = _ms.GetBuffer();
+            var buffer = _ms.ToArray();
             var length = (int) _ms.Length;
             _ms = null;
             if (chunked)
@@ -307,7 +307,7 @@ namespace Unosquare.Net
         // false -> need more input
         private bool ProcessInput(MemoryStream ms)
         {
-            var buffer = ms.GetBuffer();
+            var buffer = ms.ToArray();
             var len = (int) ms.Length;
             var used = 0;
 

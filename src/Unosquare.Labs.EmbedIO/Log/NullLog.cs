@@ -1,4 +1,5 @@
-﻿namespace Unosquare.Labs.EmbedIO.Log
+﻿#if COMPAT
+namespace Unosquare.Labs.EmbedIO.Log
 {
     using System;
 
@@ -85,3 +86,4 @@
         }
     }
 }
+#endif

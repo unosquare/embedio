@@ -1,9 +1,11 @@
 ﻿#if !MONO
-using System.ComponentModel.DataAnnotations.Schema;
-using Unosquare.Labs.LiteLib;
 
 namespace Unosquare.Labs.EmbedIO.Samples
 {
+    using System.ComponentModel.DataAnnotations.Schema;
+    using Unosquare.Labs.LiteLib;
+    using Swan;
+
     /// <summary>
     /// A simple model representing a person
     /// </summary>
@@ -16,7 +18,7 @@ namespace Unosquare.Labs.EmbedIO.Samples
         [LiteIndex]
         public string EmailAddress { get; set; }
 
-        public string PhotoUrl => $"http://www.gravatar.com/avatar/{Extensions.ComputeMd5Hash(EmailAddress)}.png?s=100";
+        public string PhotoUrl => $"http://www.gravatar.com/avatar/{EmailAddress.ComputeMD5().ToUpperHex()}.png?s=100";
     }
 }
 #endif

@@ -17,14 +17,13 @@
     {
         protected WebServer WebServer;
         protected string WebServerUrl;
-        protected TestConsoleLog Logger = new TestConsoleLog();
 
         [SetUp]
         public void Init()
         {
             WebServerUrl = Resources.GetServerAddress();
             WebServer =
-                new WebServer(WebServerUrl, Logger, RoutingStrategy.Regex)
+                new WebServer(WebServerUrl, RoutingStrategy.Regex)
                     .WithWebApiController<TestRegexController>();
             WebServer.RunAsync();
         }

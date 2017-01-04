@@ -1,11 +1,18 @@
 {
-  "version": "1.2.8-*",
+  "version": "1.4.0-*",
+  "title": "Unosquare.Labs.EmbedIO",
+  "description": "EmbedIO is a tiny, portable web server",
+  "copyright": "Copyright © Unosquare 2013-2017",
+  "authors": [
+    "Mario Di Vece",
+    "Geovanni Perez"
+  ],
   "buildOptions": {
     "xmlDoc": true
   },
 
   "dependencies": {
-    "Newtonsoft.Json": "9.0.1"
+    "Unosquare.Swan": "0.9.13"
   },
 
   "frameworks": {
@@ -25,7 +32,7 @@
         "System.Net.Security": "4.3.0",
         "System.Threading.Thread": "4.3.0",
         "System.Threading.ThreadPool": "4.3.0",
-        "System.Net.NameResolution": "4.3.0"  
+        "System.Net.NameResolution": "4.3.0"
       }
     },
     "net452": {

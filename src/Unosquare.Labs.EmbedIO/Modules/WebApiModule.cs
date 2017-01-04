@@ -7,6 +7,7 @@
     using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
+    using Swan;
 #if NET46
     using System.Net;
 #else
@@ -57,7 +58,11 @@
                 context.NoCache();
 
                 // Log the handler to be used
+#if COMPAT
                 server.Log.DebugFormat("Handler: {0}.{1}", methodPair.Item2.DeclaringType.FullName, methodPair.Item2.Name);
+#else
+                $"Handler: {methodPair.Item2.DeclaringType.FullName}.{methodPair.Item2.Name}".Debug();
+#endif
 
                 // Select the routing strategy
                 if (server.RoutingStrategy == RoutingStrategy.Regex)
@@ -140,7 +145,11 @@
                 else
                 {
                     // Log the handler to be used
+#if COMPAT
                     server.Log.WarnFormat($"Routing strategy '{server.RoutingStrategy}' is not supported by this module.");
+#else
+                    $"Routing strategy '{server.RoutingStrategy}' is not supported by this module.".Warn();
+#endif
                     return false;
                 }
             });

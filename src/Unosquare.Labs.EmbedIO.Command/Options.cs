@@ -21,6 +21,6 @@ namespace Unosquare.Labs.EmbedIO.Command
         public string ApiAssemblies { get; set; }
 
         [ArgumentOption('v', "noverb", HelpText = "Output Web server info.", DefaultValue = false)]
-        public bool NoVerbose { get; set; }
+        public bool NoVerbose { get; set; } // TODO: implement with SWAN
     }
 }

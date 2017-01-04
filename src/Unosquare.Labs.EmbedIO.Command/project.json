@@ -8,8 +8,6 @@
   },
 
   "dependencies": {
-    "Newtonsoft.Json": "9.0.1",
-    "Unosquare.Swan": "0.9.10",
     "Unosquare.Labs.EmbedIO": { "target": "project" }
   },
 
@@ -19,7 +17,8 @@
     },
     "netcoreapp1.1": {
       "dependencies": {
-        "Microsoft.NETCore.App": "1.1.0"
+        "Microsoft.NETCore.App": "1.1.0",
+        "System.Runtime.Loader": "4.3.0"
       }
     }
   },

@@ -5,7 +5,6 @@
     using System.Globalization;
     using System.Linq;
     using System.Threading;
-    using Unosquare.Labs.EmbedIO.Log;
     using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Labs.EmbedIO.Tests.TestObjects;
 
@@ -20,7 +19,6 @@
         public void WebServerDefaultConstructor()
         {
             var instance = new WebServer();
-            Assert.AreEqual(instance.Log.GetType(), typeof(NullLog), "Default log is NullLog");
             Assert.IsNotNull(instance.Listener, "It has a HttpListener");
             Assert.IsNotNull(Constants.DefaultMimeTypes, "It has MimeTypes");
         }
@@ -118,13 +116,12 @@
         [Test]
         public void WebServerConstructorWithPortAndLogParam()
         {
-            var instance = new WebServer(DefaultPort, new TestConsoleLog());
+            var instance = new WebServer(DefaultPort);
 
             Assert.AreEqual(instance.UrlPrefixes.Count, 1, "It has one URL Prefix");
             Assert.IsTrue(
                 instance.UrlPrefixes.First().Contains(DefaultPort.ToString(CultureInfo.InvariantCulture)),
                 "Port number is correct");
-            Assert.AreEqual(instance.Log.GetType(), typeof(TestConsoleLog), "Log type is correct");
         }
 
         [Test]
@@ -138,29 +135,6 @@
             instance.UnregisterModule(typeof(LocalSessionModule));
 
             Assert.AreEqual(instance.Modules.Count, 0, "It has not modules");
-        }
-
-        [Test]
-        public void WebServerStaticMethodWithPortParam()
-        {
-            Assert.AreEqual(WebServer.Create(DefaultPort).Log.GetType(), typeof(NullLog), "Default log is NullLog");
-        }
-
-        [Test]
-        public void WebServerStaticMethodWithConsole()
-        {
-            const string errorMessage = "THIS IS AN ERROR";
-            var instance = WebServer.CreateWithConsole(Resources.GetServerAddress());
-
-            Assert.AreEqual(instance.Log.GetType(), typeof(SimpleConsoleLog), "Log is SimpleConsoleLog");
-
-            // TODO: Grab console output
-            instance.Log.Error(errorMessage);
-            instance.Log.DebugFormat("Test {0}", errorMessage);
-            instance.Log.ErrorFormat("Test {0}", errorMessage);
-            instance.Log.Info(errorMessage);
-            instance.Log.InfoFormat("Test {0}", errorMessage);
-            instance.Log.WarnFormat("Test {0}", errorMessage);
         }
 
         [Test]

@@ -32,7 +32,9 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Security.Principal;
+#if COMPAT
 using Unosquare.Labs.EmbedIO.Log;
+#endif
 
 namespace Unosquare.Net
 {
@@ -50,18 +52,28 @@ namespace Unosquare.Net
 
         #region Internal Constructors
 
+#if COMPAT
         internal WebSocketContext(HttpListenerContext context, string protocol, ILog log)
         {
             _context = context;
             Log = log;
             WebSocket = new WebSocket(this, protocol);
         }
+#else
+        internal WebSocketContext(HttpListenerContext context, string protocol)
+        {
+            _context = context;
+            WebSocket = new WebSocket(this, protocol);
+        }
+#endif
 
         #endregion
 
         #region Internal Properties
 
+#if COMPAT
         internal ILog Log { get; }
+#endif
 
         internal Stream Stream => _context.Connection.Stream;
 
@@ -75,7 +87,7 @@ namespace Unosquare.Net
         /// <value>
         /// A <see cref="CookieCollection"/> that contains the cookies.
         /// </value>
-        public  CookieCollection CookieCollection => _context.Request.Cookies;
+        public CookieCollection CookieCollection => _context.Request.Cookies;
 
         /// <summary>
         /// Gets the HTTP headers included in the request.
@@ -83,7 +95,7 @@ namespace Unosquare.Net
         /// <value>
         /// A <see cref="NameValueCollection"/> that contains the headers.
         /// </value>
-        public  NameValueCollection Headers => _context.Request.Headers;
+        public NameValueCollection Headers => _context.Request.Headers;
 
         /// <summary>
         /// Gets the value of the Host header included in the request.
@@ -91,7 +103,7 @@ namespace Unosquare.Net
         /// <value>
         /// A <see cref="string"/> that represents the value of the Host header.
         /// </value>
-        public  string Host => _context.Request.Headers["Host"];
+        public string Host => _context.Request.Headers["Host"];
 
         /// <summary>
         /// Gets a value indicating whether the client is authenticated.
@@ -99,7 +111,7 @@ namespace Unosquare.Net
         /// <value>
         /// <c>true</c> if the client is authenticated; otherwise, <c>false</c>.
         /// </value>
-        public  bool IsAuthenticated => _context.User != null;
+        public bool IsAuthenticated => _context.User != null;
 
         /// <summary>
         /// Gets a value indicating whether the client connected from the local computer.
@@ -107,7 +119,7 @@ namespace Unosquare.Net
         /// <value>
         /// <c>true</c> if the client connected from the local computer; otherwise, <c>false</c>.
         /// </value>
-        public  bool IsLocal => _context.Request.IsLocal;
+        public bool IsLocal => _context.Request.IsLocal;
 
         /// <summary>
         /// Gets a value indicating whether the WebSocket connection is secured.
@@ -115,7 +127,7 @@ namespace Unosquare.Net
         /// <value>
         /// <c>true</c> if the connection is secured; otherwise, <c>false</c>.
         /// </value>
-        public  bool IsSecureConnection => _context.Connection.IsSecure;
+        public bool IsSecureConnection => _context.Connection.IsSecure;
 
         /// <summary>
         /// Gets a value indicating whether the request is a WebSocket handshake request.
@@ -123,7 +135,7 @@ namespace Unosquare.Net
         /// <value>
         /// <c>true</c> if the request is a WebSocket handshake request; otherwise, <c>false</c>.
         /// </value>
-        public  bool IsWebSocketRequest => _context.Request.IsWebSocketRequest;
+        public bool IsWebSocketRequest => _context.Request.IsWebSocketRequest;
 
         /// <summary>
         /// Gets the value of the Origin header included in the request.
@@ -131,7 +143,7 @@ namespace Unosquare.Net
         /// <value>
         /// A <see cref="string"/> that represents the value of the Origin header.
         /// </value>
-        public  string Origin => _context.Request.Headers["Origin"];
+        public string Origin => _context.Request.Headers["Origin"];
 
         /// <summary>
         /// Gets the query string included in the request.
@@ -139,7 +151,7 @@ namespace Unosquare.Net
         /// <value>
         /// A <see cref="NameValueCollection"/> that contains the query string parameters.
         /// </value>
-        public  NameValueCollection QueryString => _context.Request.QueryString;
+        public NameValueCollection QueryString => _context.Request.QueryString;
 
         /// <summary>
         /// Gets the URI requested by the client.
@@ -147,7 +159,7 @@ namespace Unosquare.Net
         /// <value>
         /// A <see cref="Uri"/> that represents the requested URI.
         /// </value>
-        public  Uri RequestUri => _context.Request.Url;
+        public Uri RequestUri => _context.Request.Url;
 
         /// <summary>
         /// Gets the value of the Sec-WebSocket-Key header included in the request.
@@ -159,7 +171,7 @@ namespace Unosquare.Net
         /// <value>
         /// A <see cref="string"/> that represents the value of the Sec-WebSocket-Key header.
         /// </value>
-        public  string SecWebSocketKey => _context.Request.Headers["Sec-WebSocket-Key"];
+        public string SecWebSocketKey => _context.Request.Headers["Sec-WebSocket-Key"];
 
         /// <summary>
         /// Gets the values of the Sec-WebSocket-Protocol header included in the request.
@@ -172,7 +184,7 @@ namespace Unosquare.Net
         /// an enumerator which supports the iteration over the values of the Sec-WebSocket-Protocol
         /// header.
         /// </value>
-        public  IEnumerable<string> SecWebSocketProtocols
+        public IEnumerable<string> SecWebSocketProtocols
         {
             get
             {
@@ -194,7 +206,7 @@ namespace Unosquare.Net
         /// <value>
         /// A <see cref="string"/> that represents the value of the Sec-WebSocket-Version header.
         /// </value>
-        public  string SecWebSocketVersion => _context.Request.Headers["Sec-WebSocket-Version"];
+        public string SecWebSocketVersion => _context.Request.Headers["Sec-WebSocket-Version"];
 
         /// <summary>
         /// Gets the server endpoint as an IP address and a port number.
@@ -202,7 +214,7 @@ namespace Unosquare.Net
         /// <value>
         /// A <see cref="System.Net.IPEndPoint"/> that represents the server endpoint.
         /// </value>
-        public  System.Net.IPEndPoint ServerEndPoint => _context.Connection.LocalEndPoint;
+        public System.Net.IPEndPoint ServerEndPoint => _context.Connection.LocalEndPoint;
 
         /// <summary>
         /// Gets the client information (identity, authentication, and security roles).
@@ -210,7 +222,7 @@ namespace Unosquare.Net
         /// <value>
         /// A <see cref="IPrincipal"/> instance that represents the client information.
         /// </value>
-        public  IPrincipal User => _context.User;
+        public IPrincipal User => _context.User;
 
         /// <summary>
         /// Gets the client endpoint as an IP address and a port number.
@@ -218,7 +230,7 @@ namespace Unosquare.Net
         /// <value>
         /// A <see cref="System.Net.IPEndPoint"/> that represents the client endpoint.
         /// </value>
-        public  System.Net.IPEndPoint UserEndPoint => _context.Connection.RemoteEndPoint;
+        public System.Net.IPEndPoint UserEndPoint => _context.Connection.RemoteEndPoint;
 
         /// <summary>
         /// Gets the <see cref="WebSocket"/> instance used for
@@ -227,7 +239,7 @@ namespace Unosquare.Net
         /// <value>
         /// A <see cref="WebSocket"/>.
         /// </value>
-        public  WebSocket WebSocket { get; }
+        public WebSocket WebSocket { get; }
 
         #endregion
 

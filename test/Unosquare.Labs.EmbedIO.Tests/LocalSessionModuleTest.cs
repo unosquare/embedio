@@ -16,7 +16,6 @@
         protected WebServer WebServer;
 
         protected string WebServerUrl;
-        protected TestConsoleLog Logger = new TestConsoleLog();
         protected TimeSpan WaitTimeSpan = TimeSpan.FromSeconds(1);
 
         [SetUp]
@@ -25,7 +24,7 @@
             WebServerUrl = Resources.GetServerAddress();
             RootPath = TestHelper.SetupStaticFolder();
 
-            WebServer = new WebServer(WebServerUrl, Logger);
+            WebServer = new WebServer(WebServerUrl);
             WebServer.RegisterModule(new LocalSessionModule() { Expiration = WaitTimeSpan });
             WebServer.RegisterModule(new StaticFilesModule(RootPath));
             WebServer.RunAsync();

@@ -14,13 +14,12 @@
         protected TestMiddleware Middleware = new TestMiddleware();
         protected WebServer WebServer;
         protected string WebServerUrl;
-        protected TestConsoleLog Logger = new TestConsoleLog();
 
         [SetUp]
         public void Init()
         {
             WebServerUrl = Resources.GetServerAddress();
-            WebServer = new WebServer(WebServerUrl, Logger);
+            WebServer = new WebServer(WebServerUrl);
             WebServer.RunAsync(app: Middleware);
         }
 

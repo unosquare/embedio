@@ -7,6 +7,7 @@
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
+    using Swan;
 #if NET46
     using System.Net;
 #else
@@ -21,12 +22,12 @@
         /// <summary>
         /// The chuck size for sending files
         /// </summary>
-        private const int ChuckSize = 256*1024;
+        private const int ChuckSize = 256 * 1024;
 
         /// <summary>
         /// The maximum gzip input length
         /// </summary>
-        private const int MaxGzipInputLength = 4*1024*1024;
+        private const int MaxGzipInputLength = 4 * 1024 * 1024;
 
         private readonly Dictionary<string, string> m_VirtualPaths =
             new Dictionary<string, string>(Constants.StandardStringComparer);
@@ -177,7 +178,7 @@
             this.UseRamCache = true;
 #endif
             RamCache = new ConcurrentDictionary<string, RamCacheEntry>(Constants.StandardStringComparer);
-            MaxRamCacheFileSize = 250*1024;
+            MaxRamCacheFileSize = 250 * 1024;
             DefaultDocument = DefaultDocumentName;
 
             // Populate the default MIME types
@@ -224,9 +225,13 @@
 
             if (RamCache.ContainsKey(localPath) && RamCache[localPath].LastModified == fileDate)
             {
+#if COMPAT
                 server.Log.DebugFormat("RAM Cache: {0}", localPath);
+#else
+                $"RAM Cache: {localPath}".Debug();
+#endif
 
-                var currentHash = EmbedIO.Extensions.ComputeMd5Hash(RamCache[localPath].Buffer) + '-' + fileDate.Ticks;
+                var currentHash = RamCache[localPath].Buffer.ComputeMD5().ToUpperHex() + '-' + fileDate.Ticks;
 
                 if (string.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
                 {
@@ -240,7 +245,11 @@
             }
             else
             {
+#if COMPAT
                 server.Log.DebugFormat("File System: {0}", localPath);
+#else
+                $"File System: {localPath}".Debug();
+#endif
 
                 if (sendBuffer)
                 {
@@ -307,9 +316,13 @@
 
                     context.Response.StatusCode = 206;
 
-                    server.Log.DebugFormat("Opening stream {0} bytes {1}-{2} size {3}", localPath, lowerByteIndex,
+#if COMPAT
+                server.Log.DebugFormat("Opening stream {0} bytes {1}-{2} size {3}", localPath, lowerByteIndex,
                         upperByteIndex,
                         byteLength);
+#else
+                $"Opening stream {localPath} bytes {lowerByteIndex}-{upperByteIndex} size {byteLength}".Debug();
+#endif
                 }
             }
             else
@@ -329,7 +342,7 @@
 
                 byteLength = buffer.Length;
             }
-            
+
             context.Response.ContentLength64 = byteLength;
 
             try
@@ -347,7 +360,7 @@
 #endif
                 buffer.Dispose();
             }
-            
+
             return true;
         }
 
@@ -360,7 +373,7 @@
 
             while (true)
             {
-                if (sendData + ChuckSize > byteLength) readBufferSize = (int) (byteLength - sendData);
+                if (sendData + ChuckSize > byteLength) readBufferSize = (int)(byteLength - sendData);
 
                 buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
                 var read = buffer.Read(streamBuffer, 0, readBufferSize);
@@ -401,7 +414,7 @@
         private bool UpdateFileCache(HttpListenerContext context, Stream buffer, DateTime fileDate, string requestHash,
             string localPath)
         {
-            var currentHash = EmbedIO.Extensions.ComputeMd5Hash(buffer) + '-' + fileDate.Ticks;
+            var currentHash = buffer.ComputeMD5().ToUpperHex() + '-' + fileDate.Ticks;
 
             if (!string.IsNullOrWhiteSpace(requestHash) && requestHash == currentHash)
             {
@@ -446,15 +459,15 @@
                  string.IsNullOrWhiteSpace(range[1])) ||
                 (range.Length == 1 && int.TryParse(range[0], out lowerByteIndex)))
             {
-                upperByteIndex = (int) fileSize;
+                upperByteIndex = (int)fileSize;
                 return true;
             }
 
             if (range.Length == 2 && string.IsNullOrWhiteSpace(range[0]) &&
                 int.TryParse(range[1], out upperByteIndex))
             {
-                lowerByteIndex = (int) fileSize - upperByteIndex;
-                upperByteIndex = (int) fileSize;
+                lowerByteIndex = (int)fileSize - upperByteIndex;
+                upperByteIndex = (int)fileSize;
                 return true;
             }
 
