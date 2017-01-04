@@ -150,7 +150,7 @@ namespace Unosquare.Net
         /// </exception>
         /// <exception cref="InvalidOperationException">This method has already been called.</exception>
 #if COMPAT
-        public WebSocketContext AcceptWebSocket(string protocol, ILog log)
+        public WebSocketContext AcceptWebSocket(string protocol, Unosquare.Labs.EmbedIO.Log.ILog log)
 #else
         public WebSocketContext AcceptWebSocket(string protocol)
 #endif

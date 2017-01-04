@@ -22,7 +22,7 @@ A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework
 * WebSockets support (see notes below)
 * CORS support. Origin, Header and Method validation with OPTIONS preflight
 * Supports HTTP 206 Partial Content
-* [OWIN](http://owin.org/) Middleware support via [Owin Middleware Module](https://github.com/unosquare/embedio-extras/tree/master/Unosquare.Labs.EmbedIO.OwinMiddleware).
+* [OWIN](http://owin.org/) Middleware support via [OWIN Middleware Module](https://github.com/unosquare/embedio-extras/tree/master/Unosquare.Labs.EmbedIO.OwinMiddleware).
 
 *For detailed usage and REST API implementation, download the code and take a look at the Samples project*
 
@@ -43,6 +43,9 @@ Some notes regarding WebSocket support:
 | MONO | Yes | Support Windows and Linux using custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
 | NETCORE10 | Yes | Support using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
 
+EmbedIO before version 1.4.0 uses Newtonsoft JSON and an internal logger subsystem based on ILog interface. If you want to compile EmbedIO with this compatibility you must use The
+definition *COMPAT* and include Newtonsoft JSON nuget. We may drop the compatibility mode in future versions.
+
 NuGet Installation:
 -------------------
 ```
@@ -59,7 +62,6 @@ namespace Company.Project
 {
     using System;
     using Unosquare.Labs.EmbedIO;
-    using Unosquare.Labs.EmbedIO.Log;
     using Unosquare.Labs.EmbedIO.Modules;
 
     class Program
@@ -74,9 +76,8 @@ namespace Company.Project
             if (args.Length > 0)
                 url = args[0];
 
-            // Our web server is disposable. Note that if you don't want to use logging,
-            // there are alternate constructors that allow you to skip specifying an ILog object.
-            using (var server = new WebServer(url, new SimpleConsoleLog()))
+            // Our web server is disposable.
+            using (var server = new WebServer(url))
             {
                 // First, we will configure our web server by adding Modules.
                 // Please note that order DOES matter.
@@ -142,10 +143,10 @@ namespace Company.Project
             if (args.Length > 0)
                 url = args[0];
 
-            // Create Webserver with console logger and attach LocalSession and Static
+            // Create Webserver and attach LocalSession and Static
             // files module and CORS enabled
             var server = WebServer
-                .CreateWithConsole(url)
+                .Create(url)
                 .EnableCors()
                 .WithLocalSession()
                 .WithStaticFolderAt("c:/web");
@@ -195,7 +196,7 @@ On the other hand, the **Regex Routing Strategy** will try to match and resolve 
 
 ```csharp
 // The routing strategy is Wildcard by default, but you can change it to Regex as follows:
-var server =  new WebServer("http://localhost:9696/", new NullLog(), RoutingStrategy.Regex);
+var server =  new WebServer("http://localhost:9696/", RoutingStrategy.Regex);
 
 server.RegisterModule(new WebApiModule());
 server.Module<WebApiModule>().RegisterController<PeopleController>();
