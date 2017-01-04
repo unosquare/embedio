@@ -5,7 +5,7 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using Unosquare.Swan.Formatters;
 using NUnit.Framework;
 using Unosquare.Labs.EmbedIO.Tests.TestObjects;
 using System.Globalization;
@@ -48,7 +48,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
                 Assert.IsNotNull(jsonBody, "Json Body is not null");
                 Assert.IsNotEmpty(jsonBody, "Json Body is not empty");
 
-                var remoteList = JsonConvert.DeserializeObject<List<Person>>(jsonBody);
+                var remoteList = Json.Deserialize<List<Person>>(jsonBody);
 
                 Assert.IsNotNull(remoteList, "Json Object is not null");
                 Assert.AreEqual(remoteList.Count, PeopleRepository.Database.Count, "Remote list count equals local list");

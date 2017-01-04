@@ -2,7 +2,7 @@
 {
     using System.Net.Http;
     using System.Threading.Tasks;
-    using Newtonsoft.Json;
+    using Swan.Formatters;
     using NUnit.Framework;
     using System;
     using System.IO;
@@ -134,7 +134,7 @@
                 Assert.IsNotNull(jsonBody, "Json Body is not null");
                 Assert.IsNotEmpty(jsonBody, "Json Body is not empty");
 
-                var item = JsonConvert.DeserializeObject<Person>(jsonBody);
+                var item = Json.Deserialize<Person>(jsonBody);
 
                 Assert.IsNotNull(item, "Json Object is not null");
                 Assert.AreEqual(item.Name, person.Name, "Remote objects equality");

@@ -1,6 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
-    using Newtonsoft.Json;
+    using Swan.Formatters;
     using NUnit.Framework;
     using System;
     using System.Collections.Generic;
@@ -53,7 +53,7 @@
                 Assert.IsNotNull(jsonBody, "Json Body is not null");
                 Assert.IsNotEmpty(jsonBody, "Json Body is empty");
 
-                remoteList = JsonConvert.DeserializeObject<List<Person>>(jsonBody);
+                remoteList = Json.Deserialize<List<Person>>(jsonBody);
 
                 Assert.IsNotNull(remoteList, "Json Object is not null");
                 Assert.AreEqual(remoteList.Count, PeopleRepository.Database.Count, "Remote list count equals local list");
@@ -85,7 +85,7 @@
 
             using (var dataStream = await request.GetRequestStreamAsync())
             {
-                var byteArray = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(model));
+                var byteArray = Encoding.UTF8.GetBytes(Json.Serialize(model));
                 dataStream.Write(byteArray, 0, byteArray.Length);
             }
 
@@ -97,7 +97,7 @@
                 Assert.IsNotNull(jsonString);
                 Assert.IsNotEmpty(jsonString);
 
-                var json = JsonConvert.DeserializeObject<Person>(jsonString);
+                var json = Json.Deserialize<Person>(jsonString);
                 Assert.IsNotNull(json);
                 Assert.AreEqual(json.Name, model.Name);
             }
@@ -138,7 +138,7 @@
                 var result = await webClient.PostAsync(WebServerUrl + TestController.EchoPath, formContent);
                 Assert.IsNotNull(result);
                 var data = await result.Content.ReadAsStringAsync();
-                var obj = JsonConvert.DeserializeObject<Dictionary<string, string>>(data);
+                var obj = Json.Deserialize<Dictionary<string, string>>(data);
                 Assert.AreEqual(2, obj.Keys.Count);
 
                 Assert.AreEqual(content.First().Key, obj.First().Key);
@@ -169,7 +169,7 @@
                 var result = await webClient.PostAsync(WebServerUrl + TestController.EchoPath, formContent);
                 Assert.IsNotNull(result);
                 var data = await result.Content.ReadAsStringAsync();
-                var obj = JsonConvert.DeserializeObject<FormDataSample>(data);
+                var obj = Json.Deserialize<FormDataSample>(data);
                 Assert.IsNotNull(obj);
                 Assert.AreEqual(content.First().Value, obj.test);
                 Assert.AreEqual(2, obj.id.Count);

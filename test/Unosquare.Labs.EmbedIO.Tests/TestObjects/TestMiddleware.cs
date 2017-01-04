@@ -1,6 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
-    using Newtonsoft.Json;
+    using Swan.Formatters;
     using NUnit.Framework;
     using System.Threading.Tasks;
 
@@ -14,7 +14,7 @@
 
             await Task.Delay(10);
 
-            context.HttpContext.JsonResponse(JsonConvert.SerializeObject(new {Status = "OK"}));
+            context.HttpContext.JsonResponse(Json.Serialize(new {Status = "OK"}));
 
             context.Handled = true;
         }
