@@ -5,12 +5,12 @@
         "copyToOutput": ["html\\"]
     },
 
-    "dependencies": {
-        "LiteLib": "0.9.2",
-        "Newtonsoft.Json": "9.0.1",
-      "Tubular.ServerSide": "1.0.9",
-      "Unosquare.Labs.EmbedIO": { "target": "project" }
-    },
+  "dependencies": {
+    "LiteLib": "0.9.6",
+    "Tubular.ServerSide": "1.0.9",
+    "Microsoft.Data.SQLite": "1.1.0",
+    "Unosquare.Labs.EmbedIO": { "target": "project" }
+  },
 
     "frameworks": {
         "netcoreapp1.1": {
@@ -20,13 +20,11 @@
             }
         },
       "net452": {
-        "dependencies": { "Microsoft.Data.SQLite": "1.1.0" },
         "frameworkAssemblies": {
           "System.ComponentModel.DataAnnotations": ""
         }
       },
       "net46": {
-        "dependencies": { "Microsoft.Data.SQLite": "1.1.0" },
         "frameworkAssemblies": {
           "System.ComponentModel.DataAnnotations": ""
         }

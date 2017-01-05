@@ -118,7 +118,7 @@
         {
             lock (SyncRoot)
             {
-                var arg = System.Text.Encoding.UTF8.GetString(rxBuffer);
+                var arg = Encoding.UTF8.GetString(rxBuffer);
                 Processes[context].StandardInput.WriteLine(arg);
             }
         }
@@ -185,7 +185,7 @@
                     if ((s as Process).HasExited) return;
                     var ws = FindContext(s as Process);
                     if (ws != null && ws.WebSocket.State == WebSocketState.Open)
-                        this.Send(ws, e.Data);
+                        Send(ws, e.Data);
                 }
             };
 
@@ -196,7 +196,7 @@
                     if ((s as Process).HasExited) return;
                     var ws = FindContext(s as Process);
                     if (ws != null && ws.WebSocket.State == WebSocketState.Open)
-                        this.Send(ws, e.Data);
+                        Send(ws, e.Data);
                 }
             };
 

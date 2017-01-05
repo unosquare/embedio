@@ -4,8 +4,7 @@ namespace Unosquare.Labs.EmbedIO.Samples
 {
     internal sealed class AppDbContext : LiteDbContext
     {
-        public AppDbContext()
-            : base("mydbfile.db", null)
+        public AppDbContext() : base("mydbfile.db")
         {
             // map this context to the database file mydbfile.db and don't use any logging capabilities.
         }
