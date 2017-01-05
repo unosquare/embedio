@@ -74,8 +74,7 @@
         {
             lock (SessionsSyncLock)
             {
-                if (session == null) return;
-                if (string.IsNullOrWhiteSpace(session.SessionId)) return;
+                if (session == null || string.IsNullOrWhiteSpace(session.SessionId)) return;
                 if (m_Sessions.ContainsKey(session.SessionId) == false) return;
                 m_Sessions.Remove(session.SessionId);
             }
@@ -115,14 +114,14 @@
         /// </summary>
         public LocalSessionModule()
         {
-            Expiration = TimeSpan.FromMinutes(30);
-
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
             {
                 lock (SessionsSyncLock)
                 {
+                    var currentSessions = new Dictionary<string, SessionInfo>(m_Sessions);
+
                     // expire old sessions
-                    foreach (var session in m_Sessions)
+                    foreach (var session in currentSessions)
                     {
                         if (session.Value == null) continue;
 
@@ -202,7 +201,7 @@
 
         /// <summary>
         /// Gets the <see cref="SessionInfo"/> with the specified cookie value.
-        /// Returns null when the sesison is not found.
+        /// Returns null when the session is not found.
         /// </summary>
         /// <value>
         /// The <see cref="SessionInfo"/>.
@@ -265,7 +264,7 @@
         /// <value>
         /// The expiration.
         /// </value>
-        public TimeSpan Expiration { get; set; }
+        public TimeSpan Expiration { get; set; } = TimeSpan.FromMinutes(30);
 
         /// <summary>
         /// Gets or sets the cookie path.
