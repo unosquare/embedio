@@ -271,9 +271,9 @@ namespace Unosquare.Net
             Init();
         }
 
-#endregion
+        #endregion
 
-#region Public Constructors
+        #region Public Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebSocket" /> class with
@@ -340,9 +340,9 @@ namespace Unosquare.Net
             Init();
         }
 
-#endregion
+        #endregion
 
-#region Internal Properties
+        #region Internal Properties
 
         internal CookieCollection CookieCollection { get; private set; }
 
@@ -363,9 +363,9 @@ namespace Unosquare.Net
 
         internal bool IsConnected => _readyState == WebSocketState.Open || _readyState == WebSocketState.Closing;
 
-#endregion
+        #endregion
 
-#region Public Properties
+        #region Public Properties
 
         /// <summary>
         /// Gets or sets the compression method used to compress a message on the WebSocket connection.
@@ -671,9 +671,9 @@ namespace Unosquare.Net
             }
         }
 
-#endregion
+        #endregion
 
-#region Public Events
+        #region Public Events
 
         /// <summary>
         /// Occurs when the WebSocket connection has been closed.
@@ -695,9 +695,9 @@ namespace Unosquare.Net
         /// </summary>
         public event EventHandler OnOpen;
 
-#endregion
+        #endregion
 
-#region Private Methods
+        #region Private Methods
 
         // As server
         private bool accept()
@@ -1231,7 +1231,7 @@ namespace Unosquare.Net
 
             _protocolsRequested = _protocols != null;
             if (_protocolsRequested)
-                headers["Sec-WebSocket-Protocol"] = _protocols.ToString(", ");
+                headers["Sec-WebSocket-Protocol"] = string.Join(", ", _protocols);
 
             _extensionsRequested = _compression != CompressionMethod.None;
             if (_extensionsRequested)
@@ -1541,10 +1541,10 @@ namespace Unosquare.Net
                 using (_fragmentsBuffer)
                 {
                     var data = _fragmentsCompressed
-                        ? _fragmentsBuffer.DecompressToArray(_compression)
-                        : _fragmentsBuffer.ToArray();
+                        ? _fragmentsBuffer.Decompress(_compression)
+                        : _fragmentsBuffer;
 
-                    EnqueueToMessageEventQueue(new MessageEventArgs(_fragmentsOpcode, data));
+                    EnqueueToMessageEventQueue(new MessageEventArgs(_fragmentsOpcode, data.ToArray()));
                 }
 
                 _fragmentsBuffer = null;
@@ -2257,9 +2257,9 @@ namespace Unosquare.Net
             return value == null || value == Version;
         }
 
-#endregion
+        #endregion
 
-#region Internal Methods
+        #region Internal Methods
 
         internal static string CheckCloseParameters(CloseStatusCode code, string reason, bool client)
         {
@@ -2532,9 +2532,9 @@ namespace Unosquare.Net
             }
         }
 
-#endregion
+        #endregion
 
-#region Public Methods
+        #region Public Methods
 
         /// <summary>
         /// Accepts the WebSocket handshake request.
@@ -3426,9 +3426,9 @@ namespace Unosquare.Net
             }
         }
 
-#endregion
+        #endregion
 
-#region Explicit Interface Implementations
+        #region Explicit Interface Implementations
 
         /// <summary>
         /// Closes the WebSocket connection, and releases all associated resources.
@@ -3441,7 +3441,7 @@ namespace Unosquare.Net
             close(new CloseEventArgs(CloseStatusCode.Away), true, true, false);
         }
 
-#endregion
+        #endregion
     }
 }
 #endif

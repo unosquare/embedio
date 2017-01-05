@@ -240,7 +240,7 @@
         }
 
         /// <summary>
-        /// Sets a response statis code of 302 and adds a Location header to the response
+        /// Sets a response static code of 302 and adds a Location header to the response
         /// in order to direct the client to a different URL
         /// </summary>
         /// <param name="context">The context.</param>
@@ -261,22 +261,7 @@
         #endregion
 
         #region JSON and Exception Extensions
-
-        /// <summary>
-        /// Retrieves the exception message, plus all the inner exception messages separated by new lines
-        /// </summary>
-        /// <param name="ex">The ex.</param>
-        /// <param name="priorMessage">The prior message.</param>
-        /// <returns></returns>
-        public static string ExceptionMessage(this Exception ex, string priorMessage = "")
-        {
-            var fullMessage = string.IsNullOrWhiteSpace(priorMessage) ? ex.Message : priorMessage + "\r\n" + ex.Message;
-            if (ex.InnerException != null && string.IsNullOrWhiteSpace(ex.InnerException.Message) == false)
-                return ExceptionMessage(ex.InnerException, fullMessage);
-
-            return fullMessage;
-        }
-
+        
         /// <summary>
         /// Outputs a Json Response given a data object
         /// </summary>

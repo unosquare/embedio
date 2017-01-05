@@ -128,7 +128,7 @@ namespace Unosquare.Net
                 if (!_codeSet)
                 {
                     _code = _length > 1
-                            ? _data.SubArray(0, 2).ToUInt16(ByteOrder.Big)
+                            ? _data.SubArray(0, 2).ToUInt16(Swan.Endianness.Big)
                             : (ushort)1005;
 
                     _codeSet = true;

@@ -160,12 +160,12 @@ namespace Unosquare.Net
             else if (len < 0x010000)
             {
                 PayloadLength = (byte)126;
-                ExtendedPayloadLength = ((ushort)len).InternalToByteArray(ByteOrder.Big);
+                ExtendedPayloadLength = ((ushort)len).InternalToByteArray(Swan.Endianness.Big);
             }
             else
             {
                 PayloadLength = (byte)127;
-                ExtendedPayloadLength = len.InternalToByteArray(ByteOrder.Big);
+                ExtendedPayloadLength = len.InternalToByteArray(Swan.Endianness.Big);
             }
 
             if (mask)
@@ -192,8 +192,8 @@ namespace Unosquare.Net
         internal ulong FullPayloadLength => PayloadLength < 126
             ? PayloadLength
             : PayloadLength == 126
-                ? ExtendedPayloadLength.ToUInt16(ByteOrder.Big)
-                : ExtendedPayloadLength.ToUInt64(ByteOrder.Big);
+                ? ExtendedPayloadLength.ToUInt16(Swan.Endianness.Big)
+                : ExtendedPayloadLength.ToUInt64(Swan.Endianness.Big);
 
 #endregion
 
@@ -598,7 +598,7 @@ Extended Payload Length: {extPayloadLen}
                 header = (header << 4) + (int)Opcode;
                 header = (header << 1) + (int)Mask;
                 header = (header << 7) + (int)PayloadLength;
-                buff.Write(((ushort)header).InternalToByteArray(ByteOrder.Big), 0, 2);
+                buff.Write(((ushort)header).InternalToByteArray(Swan.Endianness.Big), 0, 2);
 
                 if (PayloadLength > 125)
                     buff.Write(ExtendedPayloadLength, 0, PayloadLength == 126 ? 2 : 8);

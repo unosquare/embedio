@@ -6,24 +6,10 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System;
+using Unosquare.Swan;
 
 namespace Unosquare.Net
 {
-    /// <summary>
-    /// Specifies the byte order.
-    /// </summary>
-    public enum ByteOrder
-    {
-        /// <summary>
-        /// Specifies Little-endian.
-        /// </summary>
-        Little,
-        /// <summary>
-        /// Specifies Big-endian.
-        /// </summary>
-        Big
-    }
-
     /// <summary>
     /// Indicates the status code for the WebSocket connection close.
     /// </summary>
@@ -241,7 +227,7 @@ namespace Unosquare.Net
             return opcode == Opcode.Text || opcode == Opcode.Binary;
         }
 
-        internal static byte[] InternalToByteArray(this ushort value, ByteOrder order)
+        internal static byte[] InternalToByteArray(this ushort value, Endianness order)
         {
             var bytes = BitConverter.GetBytes(value);
             if (!order.IsHostOrder())
@@ -250,7 +236,7 @@ namespace Unosquare.Net
             return bytes;
         }
 
-        internal static byte[] InternalToByteArray(this ulong value, ByteOrder order)
+        internal static byte[] InternalToByteArray(this ulong value, Endianness order)
         {
             var bytes = BitConverter.GetBytes(value);
             if (!order.IsHostOrder())
@@ -261,7 +247,7 @@ namespace Unosquare.Net
 
         internal static byte[] Append(this ushort code, string reason)
         {
-            var ret = code.InternalToByteArray(ByteOrder.Big);
+            var ret = code.InternalToByteArray(Endianness.Big);
             if (string.IsNullOrEmpty(reason)) return ret;
 
             var buff = new List<byte>(ret);
@@ -475,7 +461,7 @@ namespace Unosquare.Net
             return Enum.IsDefined(typeof(Opcode), opcode);
         }
 
-        internal static ulong ToUInt64(this byte[] source, ByteOrder sourceOrder)
+        internal static ulong ToUInt64(this byte[] source, Endianness sourceOrder)
         {
             return BitConverter.ToUInt64(source.ToHostOrder(sourceOrder), 0);
         }
@@ -496,7 +482,7 @@ namespace Unosquare.Net
                    code == CloseStatusCode.TlsHandshakeFailure;
         }
 
-        internal static ushort ToUInt16(this byte[] source, ByteOrder sourceOrder)
+        internal static ushort ToUInt16(this byte[] source, Endianness sourceOrder)
         {
             return BitConverter.ToUInt16(source.ToHostOrder(sourceOrder), 0);
         }
@@ -511,13 +497,13 @@ namespace Unosquare.Net
         /// An array of <see cref="byte"/> to convert.
         /// </param>
         /// <param name="sourceOrder">
-        /// One of the <see cref="ByteOrder"/> enum values, specifies the byte order of
+        /// One of the <see cref="Endianness"/> enum values, specifies the byte order of
         /// <paramref name="source"/>.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="source"/> is <see langword="null"/>.
         /// </exception>
-        public static byte[] ToHostOrder(this byte[] source, ByteOrder sourceOrder)
+        public static byte[] ToHostOrder(this byte[] source, Endianness sourceOrder)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -526,22 +512,22 @@ namespace Unosquare.Net
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="ByteOrder"/> is host (this computer
+        /// Determines whether the specified <see cref="Endianness"/> is host (this computer
         /// architecture) byte order.
         /// </summary>
         /// <returns>
         /// <c>true</c> if <paramref name="order"/> is host byte order; otherwise, <c>false</c>.
         /// </returns>
         /// <param name="order">
-        /// One of the <see cref="ByteOrder"/> enum values, to test.
+        /// One of the <see cref="Endianness"/> enum values, to test.
         /// </param>
-        public static bool IsHostOrder(this ByteOrder order)
+        public static bool IsHostOrder(this Endianness order)
         {
             // true: !(true ^ true) or !(false ^ false)
             // false: !(true ^ false) or !(false ^ true)
-            return !(BitConverter.IsLittleEndian ^ (order == ByteOrder.Little));
+            return !(BitConverter.IsLittleEndian ^ (order == Endianness.Little));
         }
-
+        
         /// <summary>
         /// Determines whether the specified <see cref="string"/> is a predefined scheme.
         /// </summary>
@@ -551,7 +537,7 @@ namespace Unosquare.Net
         /// <param name="value">
         /// A <see cref="string"/> to test.
         /// </param>
-        public static bool IsPredefinedScheme(this string value)
+        internal static bool IsPredefinedScheme(this string value)
         {
             if (value == null || value.Length < 2)
                 return false;
@@ -585,7 +571,7 @@ namespace Unosquare.Net
         /// <param name="value">
         /// A <see cref="string"/> to test.
         /// </param>
-        public static bool MaybeUri(this string value)
+        internal static bool MaybeUri(this string value)
         {
             if (string.IsNullOrEmpty(value))
                 return false;
@@ -607,7 +593,7 @@ namespace Unosquare.Net
         /// <param name="uriString">
         /// A <see cref="string"/> to convert.
         /// </param>
-        public static Uri ToUri(this string uriString)
+        internal static Uri ToUri(this string uriString)
         {
             Uri ret;
             Uri.TryCreate(
@@ -746,65 +732,7 @@ namespace Unosquare.Net
             message = "A wait time is zero or less.";
             return false;
         }
-
-        /// <summary>
-        /// Converts the specified <paramref name="array"/> to a <see cref="string"/> that
-        /// concatenates the each element of <paramref name="array"/> across the specified
-        /// <paramref name="separator"/>.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="string"/> converted from <paramref name="array"/>,
-        /// or <see cref="String.Empty"/> if <paramref name="array"/> is empty.
-        /// </returns>
-        /// <param name="array">
-        /// An array of T to convert.
-        /// </param>
-        /// <param name="separator">
-        /// A <see cref="string"/> that represents the separator string.
-        /// </param>
-        /// <typeparam name="T">
-        /// The type of elements in <paramref name="array"/>.
-        /// </typeparam>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="array"/> is <see langword="null"/>.
-        /// </exception>
-        public static string ToString<T>(this T[] array, string separator)
-        {
-            if (array == null)
-                throw new ArgumentNullException(nameof(array));
-
-            var len = array.Length;
-            if (len == 0)
-                return string.Empty;
-
-            if (separator == null)
-                separator = string.Empty;
-
-            var buff = new StringBuilder(64);
-            (len - 1).Times(i => buff.AppendFormat("{0}{1}", array[i].ToString(), separator));
-
-            buff.Append(array[len - 1]);
-            return buff.ToString();
-        }
-
-        /// <summary>
-        /// Executes the specified <c>Action&lt;int&gt;</c> delegate <paramref name="n"/> times.
-        /// </summary>
-        /// <param name="n">
-        /// An <see cref="int"/> is the number of times to execute.
-        /// </param>
-        /// <param name="action">
-        /// An <c>Action&lt;int&gt;</c> delegate that references the method(s) to execute.
-        /// An <see cref="int"/> parameter to pass to the method(s) is the zero-based count of
-        /// iteration.
-        /// </param>
-        public static void Times(this int n, Action<int> action)
-        {
-            if (n <= 0 || action == null) return;
-            for (var i = 0; i < n; i++)
-                action(i);
-        }
-
+        
         internal static string ToExtensionString(this CompressionMethod method, params string[] parameters)
         {
             if (method == CompressionMethod.None)
@@ -815,7 +743,7 @@ namespace Unosquare.Net
             if (parameters == null || parameters.Length == 0)
                 return m;
 
-            return $"{m}; {parameters.ToString("; ")}";
+            return $"{m}; {string.Join("; ", parameters)}";
         }
 
         internal static bool IsText(this string value)
@@ -884,139 +812,75 @@ namespace Unosquare.Net
         /// </param>
         public static bool Contains(this string value, params char[] chars)
         {
-            return chars == null || chars.Length == 0 || !string.IsNullOrEmpty(value) && value.IndexOfAny(chars) > -1;
+            return chars?.Length == 0 || !string.IsNullOrEmpty(value) && value.IndexOfAny(chars) > -1;
         }
 
-        private static byte[] decompress(this byte[] data)
+        internal static MemoryStream Decompress(this Stream stream, CompressionMethod method)
         {
-            if (data.Length == 0)
-                return data;
-
-            using (var input = new MemoryStream(data))
-                return input.decompressToArray();
-        }
-
-        private static MemoryStream decompress(this Stream stream)
-        {
-            var output = new MemoryStream();
-            if (stream.Length == 0)
-                return output;
-
-            stream.Position = 0;
-            using (var ds = new DeflateStream(stream, CompressionMode.Decompress, true))
+            using (var output = new MemoryStream())
             {
-                ds.CopyTo(output, 1024);
-                output.Position = 0;
+                if (method != CompressionMethod.Deflate || stream.Length == 0)
+                    return output;
 
-                return output;
-            }
-        }
-
-        private static byte[] compress(this byte[] data)
-        {
-            if (data.Length == 0)
-                //return new byte[] { 0x00, 0x00, 0x00, 0xff, 0xff };
-                return data;
-
-            using (var input = new MemoryStream(data))
-                return input.compressToArray();
-        }
-
-        private static readonly byte[] Last = new byte[] { 0x00 };
-
-        private static MemoryStream compress(this Stream stream)
-        {
-            var output = new MemoryStream();
-            if (stream.Length == 0)
-                return output;
-
-            stream.Position = 0;
-            using (var ds = new DeflateStream(output, CompressionMode.Compress, true))
-            {
-                stream.CopyTo(ds, 1024);
+                stream.Position = 0;
+                using (var ds = new DeflateStream(stream, CompressionMode.Decompress, true))
+                {
+                    ds.CopyTo(output, 1024);
 #if NET452
                 ds.Close(); // BFINAL set to 1.
 #endif
-                output.Write(Last, 0, 1);
-                output.Position = 0;
+                    output.Position = 0;
 
-                return output;
+                    return output;
+                }
             }
         }
+        
+        private static readonly byte[] Last = new byte[] { 0x00 };
 
-        internal static Stream Compress(this Stream stream, CompressionMethod method)
+        internal static MemoryStream Compress(this Stream stream, CompressionMethod method)
         {
-            return method == CompressionMethod.Deflate
-                   ? stream.compress()
-                   : stream;
-        }
-
-        private static byte[] compressToArray(this Stream stream)
-        {
-            using (var output = stream.compress())
+            using (var output = new MemoryStream())
             {
+                if (method != CompressionMethod.Deflate || stream.Length == 0)
+                    return output;
+
+                stream.Position = 0;
+                using (var ds = new DeflateStream(output, CompressionMode.Compress, true))
+                {
+                    stream.CopyTo(ds, 1024);
 #if NET452
-                output.Close();
+                ds.Close(); // BFINAL set to 1.
 #endif
-                return output.ToArray();
+                    output.Write(Last, 0, 1);
+                    output.Position = 0;
+
+                    return output;
+                }
             }
         }
+
         internal static byte[] Compress(this byte[] data, CompressionMethod method)
         {
-            return method == CompressionMethod.Deflate
-                   ? data.compress()
-                   : data;
-        }
-
-        private static byte[] decompressToArray(this Stream stream)
-        {
-            using (var output = stream.decompress())
+            using (var stream = new MemoryStream(data))
             {
-#if NET452
-                output.Close();
-#endif
-                return output.ToArray();
+                return Compress(stream, method).ToArray();
             }
         }
-
+        
         internal static byte[] Decompress(this byte[] data, CompressionMethod method)
         {
-            return method == CompressionMethod.Deflate
-                   ? data.decompress()
-                   : data;
+            using (var stream = new MemoryStream(data))
+            {
+                return Decompress(stream, method).ToArray();
+            }
         }
-
-        internal static Stream Decompress(this Stream stream, CompressionMethod method)
-        {
-            return method == CompressionMethod.Deflate
-                   ? stream.decompress()
-                   : stream;
-        }
+        
         internal static bool IsCompressionExtension(this string value, CompressionMethod method)
         {
             return value.StartsWith(method.ToExtensionString());
         }
-
-        internal static byte[] ToByteArray(this Stream stream)
-        {
-            using (var output = new MemoryStream())
-            {
-                stream.Position = 0;
-                stream.CopyTo(output, 1024);
-#if NET452
-                output.Close();
-#endif
-                return output.ToArray();
-            }
-        }
-
-        internal static byte[] DecompressToArray(this Stream stream, CompressionMethod method)
-        {
-            return method == CompressionMethod.Deflate
-                   ? stream.decompressToArray()
-                   : stream.ToByteArray();
-        }
-
+        
         #endregion
     }
 }

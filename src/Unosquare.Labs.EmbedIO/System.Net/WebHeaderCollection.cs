@@ -44,7 +44,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -821,24 +820,7 @@ namespace Unosquare.Net
             var info = GetHeaderInfo(headerName);
             return info != null && info.IsMultiValue(response);
         }
-
-        internal string ToStringMultiValue(bool response)
-        {
-            var buff = new StringBuilder();
-            Count.Times(
-                i =>
-                {
-                    var key = GetKey(i);
-                    if (IsMultiValue(key, response))
-                        foreach (var val in GetValues(i))
-                            buff.AppendFormat("{0}: {1}\r\n", key, val);
-                    else
-                        buff.AppendFormat("{0}: {1}\r\n", key, Get(i));
-                });
-
-            return buff.Append("\r\n").ToString();
-        }
-
+        
         #endregion
 
         #region Protected Methods
@@ -1301,7 +1283,9 @@ namespace Unosquare.Net
         public override string ToString()
         {
             var buff = new StringBuilder();
-            Count.Times(i => buff.AppendFormat("{0}: {1}\r\n", GetKey(i), Get(i)));
+
+            foreach (string key in Keys)
+                buff.AppendFormat("{0}: {1}\r\n", key, Get(key));
 
             return buff.Append("\r\n").ToString();
         }

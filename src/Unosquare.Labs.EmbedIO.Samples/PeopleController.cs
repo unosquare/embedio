@@ -6,6 +6,7 @@
     using Unosquare.Labs.EmbedIO.Modules;
     using System.Threading.Tasks;
     using Tubular;
+    using Swan;
     using Unosquare.Tubular.ObjectModel;
 #if NET46
     using System.Net;

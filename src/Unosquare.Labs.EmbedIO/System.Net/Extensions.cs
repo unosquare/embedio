@@ -218,9 +218,7 @@ namespace Unosquare.Net
 
         private static string GetOpaqueWiseSchemeDelimiter(string scheme, bool isOpaquePart = false)
         {
-            if (isOpaquePart)
-                return ":";
-            return GetSchemeDelimiter(scheme);
+            return isOpaquePart ? ":":  GetSchemeDelimiter(scheme);
         }
 
         /// <summary>

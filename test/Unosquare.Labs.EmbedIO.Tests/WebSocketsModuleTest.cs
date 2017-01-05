@@ -9,6 +9,8 @@
     using Unosquare.Labs.EmbedIO.Tests.TestObjects;
 #if !NETCOREAPP1_1 && !NETSTANDARD1_6
     using System.Net.WebSockets;
+#else
+    using Unosquare.Net;
 #endif
 
     [TestFixture]
@@ -26,6 +28,7 @@
         [Test]
         public async Task TestConnectWebSocket()
         {
+            var wsUrl = Resources.WsServerAddress + "test";
             Assert.IsNotNull(WebServer.Module<WebSocketsModule>(), "WebServer has WebSocketsModule");
 
             Assert.AreEqual(WebServer.Module<WebSocketsModule>().Handlers.Count, 1, "WebSocketModule has one handler");
@@ -33,7 +36,7 @@
 #if !NETCOREAPP1_1 && !NETSTANDARD1_6
             var clientSocket = new ClientWebSocket();
             var ct = new CancellationTokenSource();
-            await clientSocket.ConnectAsync(new Uri(Resources.WsServerAddress + "test"), ct.Token);
+            await clientSocket.ConnectAsync(new Uri(wsUrl), ct.Token);
 
             Assert.AreEqual(clientSocket.State, WebSocketState.Open, "Connection is open");
 
@@ -46,7 +49,13 @@
             Assert.IsTrue(result.EndOfMessage, "End of message is true");
             Assert.IsTrue(System.Text.Encoding.UTF8.GetString(buffer.Array).TrimEnd((char) 0) == "WELCOME", "Final message is WELCOME");
 #else
-            await Task.Factory.StartNew(() => { });
+            var clientSocket = new WebSocket(wsUrl);
+            clientSocket.ConnectAsync();
+            await Task.Delay(100);
+
+            Assert.AreEqual(clientSocket.State, WebSocketState.Open, "Connection is open");
+
+            clientSocket.Send("HOLA");
 #endif
         }
 
