@@ -6,6 +6,7 @@ matrix:
   include:
     - os: linux
       mono: latest
+      sudo: required
     - os: linux
       dotnet: 1.0.0-preview2-003131
       mono: latest
@@ -14,6 +15,7 @@ matrix:
       sudo: false
     - os: linux
       mono: 4.2.1
+      sudo: required
     - os: osx
       dotnet: 1.0.0-preview2-003131
       mono: latest
@@ -24,7 +26,7 @@ install:
   - if [[ $TRAVIS_OS_NAME == "osx" ]]; then mkdir -p /usr/local/lib; fi
   - if [[ $TRAVIS_OS_NAME == "osx" ]]; then ln -s /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib /usr/local/lib/; fi
   - if [[ $TRAVIS_OS_NAME == "osx" ]]; then ln -s /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib/; fi
-  - if [[ $DOTNETCORE == "" ]]; then nuget update -self; fi
+  - if [[ $DOTNETCORE == "" ]]; then sudo nuget update -self; fi
   - if [[ $DOTNETCORE == "1" ]]; then dotnet restore; else nuget restore Unosquare.Labs.EmbedIO.Lib.sln; fi
   - if [[ $DOTNETCORE == "" ]]; then nuget install NUnit.ConsoleRunner -OutputDirectory testrunner; fi
 before_script:
