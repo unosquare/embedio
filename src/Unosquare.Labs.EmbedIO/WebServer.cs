@@ -340,9 +340,7 @@
                 }
 
                 // Create a request endpoint string
-                var requestEndpoint = string.Join(":",
-                    context.Request.RemoteEndPoint.Address.ToString(),
-                    context.Request.RemoteEndPoint.Port.ToString(CultureInfo.InvariantCulture));
+                var requestEndpoint = $"{context.Request?.RemoteEndPoint?.Address}:{context.Request?.RemoteEndPoint?.Port}";
 
                 // Generate a random request ID. It's currently not important but could be useful in the future.
                 requestId = string.Concat(DateTime.Now.Ticks.ToString(), requestEndpoint).GetHashCode().ToString("x2");
