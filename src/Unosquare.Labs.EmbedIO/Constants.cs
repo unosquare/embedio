@@ -35,9 +35,19 @@
         /// </summary>
         public static StringComparer StandardStringComparer =
 #if !NETCOREAPP1_1 && !NETSTANDARD1_6
-            StringComparer.InvariantCultureIgnoreCase;
+           StringComparer.InvariantCultureIgnoreCase;
 #else
-            StringComparer.OrdinalIgnoreCase;
+           StringComparer.OrdinalIgnoreCase;
+#endif
+
+        /// <summary>
+        /// The static file string comparer
+        /// </summary>
+        public static StringComparer StaticFileStringComparer =
+#if !NETCOREAPP1_1 && !NETSTANDARD1_6
+           StringComparer.InvariantCulture;
+#else
+           StringComparer.Ordinal;
 #endif
 
         /// <summary>

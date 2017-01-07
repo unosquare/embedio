@@ -177,7 +177,7 @@
             // Otherwise, enable it by default
             this.UseRamCache = true;
 #endif
-            RamCache = new ConcurrentDictionary<string, RamCacheEntry>(Constants.StandardStringComparer);
+            RamCache = new ConcurrentDictionary<string, RamCacheEntry>(Constants.StaticFileStringComparer);
             MaxRamCacheFileSize = 250 * 1024;
             DefaultDocument = DefaultDocumentName;
 
