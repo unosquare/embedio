@@ -6,10 +6,10 @@
     },
 
   "dependencies": {
-    "LiteLib": "0.9.6",
     "Tubular.ServerSide": "1.0.9",
     "Microsoft.Data.SQLite": "1.1.0",
-    "Unosquare.Labs.EmbedIO": { "target": "project" }
+    "Unosquare.Labs.EmbedIO": { "target": "project" },
+    "LiteLib": "0.9.8"
   },
 
     "frameworks": {

@@ -12,7 +12,7 @@
   },
 
   "dependencies": {
-    "Unosquare.Swan": "0.9.18"
+    "Unosquare.Swan": "0.10.0"
   },
 
   "frameworks": {

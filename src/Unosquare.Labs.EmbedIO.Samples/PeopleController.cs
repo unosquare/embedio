@@ -49,6 +49,10 @@
                 if (lastSegment.EndsWith("/"))
                     return context.JsonResponse(_dbContext.People.SelectAll());
 
+                // if it ends with "first" means we need to show first record of people
+                if (lastSegment.EndsWith("first"))
+                    return context.JsonResponse(_dbContext.People.SelectAll().First());
+
                 // otherwise, we need to parse the key and respond with the entity accordingly
                 int key = 0;
                 if (int.TryParse(lastSegment, out key))

@@ -5,10 +5,10 @@
             return {
                 restrict: 'E',
                 templateUrl: '/partials/app-person.html',
-                controller: function () {
+                controller: function (toastr) {
                     var me = this;
                     me.showInfo = function (item) {
-                        alert(item.Name + ': My email is ' + item.EmailAddress + ' and my age is ' + item.Age); 
+                        toastr.info(item.Name + ': My email is ' + item.EmailAddress + ' and my age is ' + item.Age);
                     };
                 },
                 controllerAs: 'person'
