@@ -79,7 +79,8 @@
                 var m = {
                     type: 'T',
                     time: new Date(),
-                    content: me.nickName + " - " + me.message
+                    content: me.message,
+                    nick: me.nickName
                 };
 
                 me.messages.push(m);
