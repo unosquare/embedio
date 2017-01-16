@@ -13,9 +13,6 @@ matrix:
       env: DOTNETCORE=1
       dist: trusty
       sudo: false
-    - os: linux
-      mono: 4.2.1
-      sudo: required
     - os: osx
       dotnet: 1.0.0-preview2-003131
       mono: latest
