@@ -2077,6 +2077,8 @@ namespace Unosquare.Net
                 _tcpClient = new TcpClient(_uri.DnsSafeHost, _uri.Port);
 #else
                 _tcpClient = new TcpClient();
+
+                _tcpClient.ConnectAsync(_uri.DnsSafeHost, _uri.Port).Wait();
 #endif
                 _stream = _tcpClient.GetStream();
             }
@@ -2162,7 +2164,7 @@ namespace Unosquare.Net
         // As client
         private bool ValidateSecWebSocketAcceptHeader(string value)
         {
-            return value != null && value == CreateResponseKey(_base64Key);
+            return value != null && value.TrimStart() == CreateResponseKey(_base64Key);
         }
 
         // As client
