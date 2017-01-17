@@ -50,12 +50,12 @@
             Assert.IsTrue(System.Text.Encoding.UTF8.GetString(buffer.Array).TrimEnd((char) 0) == "WELCOME", "Final message is WELCOME");
 #else
             var clientSocket = new WebSocket(wsUrl);
-            clientSocket.Connect();
-            await Task.Delay(100);
+            clientSocket.Connect();            
 
             Assert.AreEqual(WebSocketState.Open, clientSocket.State, "Connection is open");
 
             clientSocket.Send("HOLA");
+            await Task.Delay(100);
 #endif
         }
 
