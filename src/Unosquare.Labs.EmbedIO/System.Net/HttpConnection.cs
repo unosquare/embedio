@@ -40,10 +40,9 @@ namespace Unosquare.Net
 {
     internal sealed class HttpConnection
     {
-        private static readonly AsyncCallback _onreadCb = OnRead;
+        private static readonly AsyncCallback OnreadCb = OnRead;
         private const int BufferSize = 8192;
         private Socket _sock;
-        private readonly Stream _stream;
         private readonly EndPointListener _epl;
         private MemoryStream _ms;
         private byte[] _buffer;
@@ -53,12 +52,12 @@ namespace Unosquare.Net
         private ResponseStream _oStream;
         private bool _chunked;
         private bool _contextBound;
-        private X509Certificate _cert;
         private int _sTimeout = 90000; // 90k ms for first request, 15k ms from then on
         private readonly Timer _timer;
         private IPEndPoint _localEp;
         private HttpListener _lastListener;
 #if SSL
+        private X509Certificate _cert;
         IMonoSslStream ssl_stream;
 #endif
 
@@ -67,14 +66,16 @@ namespace Unosquare.Net
             _sock = sock;
             _epl = epl;
             IsSecure = secure;
-            _cert = cert;
             if (secure == false)
             {
-                _stream = new NetworkStream(sock, false);
+                Stream = new NetworkStream(sock, false);
             }
             else
             {
 #if SSL
+                
+            _cert = cert;
+
                 ssl_stream = epl.Listener.CreateSslStream(new NetworkStream(sock, false), false, (t, c, ch, e) =>
                 {
                     if (c == null)
@@ -95,9 +96,11 @@ namespace Unosquare.Net
             Init();
         }
 
+#if SSL
         internal int[] ClientCertificateErrors { get; }
 
         internal X509Certificate2 ClientCertificate { get; }
+#endif
 
         private void Init()
         {
@@ -123,7 +126,7 @@ namespace Unosquare.Net
 
         public int Reuses { get; private set; }
 
-        public Stream Stream => _stream;
+        public Stream Stream { get; }
 
         public IPEndPoint LocalEndPoint
         {
@@ -158,7 +161,7 @@ namespace Unosquare.Net
                 if (Reuses == 1)
                     _sTimeout = 15000;
                 _timer.Change(_sTimeout, Timeout.Infinite);
-                _stream.BeginRead(_buffer, 0, BufferSize, _onreadCb, this);
+                Stream.BeginRead(_buffer, 0, BufferSize, OnreadCb, this);
             }
             catch
             {
@@ -179,11 +182,11 @@ namespace Unosquare.Net
             {
                 _chunked = true;
                 _context.Response.SendChunked = true;
-                _iStream = new ChunkedInputStream(_context, _stream, buffer, _position, length - _position);
+                _iStream = new ChunkedInputStream(_context, Stream, buffer, _position, length - _position);
             }
             else
             {
-                _iStream = new RequestStream(_stream, buffer, _position, length - _position, contentlength);
+                _iStream = new RequestStream(Stream, buffer, _position, length - _position, contentlength);
             }
             return _iStream;
         }
@@ -196,9 +199,9 @@ namespace Unosquare.Net
                 var listener = _context.Listener;
 
                 if (listener == null)
-                    return new ResponseStream(_stream, _context.Response, true);
+                    return new ResponseStream(Stream, _context.Response, true);
 
-                _oStream = new ResponseStream(_stream, _context.Response, listener.IgnoreWriteExceptions);
+                _oStream = new ResponseStream(Stream, _context.Response, listener.IgnoreWriteExceptions);
             }
             return _oStream;
         }
@@ -215,7 +218,7 @@ namespace Unosquare.Net
             var nread = -1;
             try
             {
-                nread = _stream.EndRead(ares);
+                nread = Stream.EndRead(ares);
                 _ms.Write(_buffer, 0, nread);
                 if (_ms.Length > 32768)
                 {
@@ -228,6 +231,7 @@ namespace Unosquare.Net
             {
                 if (_ms != null && _ms.Length > 0)
                     SendError();
+
                 if (_sock != null)
                 {
                     CloseSocket();
@@ -275,7 +279,7 @@ namespace Unosquare.Net
                 listener.RegisterContext(_context);
                 return;
             }
-            _stream.BeginRead(_buffer, 0, BufferSize, _onreadCb, this);
+            Stream.BeginRead(_buffer, 0, BufferSize, OnreadCb, this);
         }
 
         private void RemoveConnection()
@@ -340,7 +344,7 @@ namespace Unosquare.Net
                     if (_inputState == InputState.RequestLine)
                         continue;
                     _currentLine = null;
-                    ms = null;
+
                     return true;
                 }
 
@@ -416,8 +420,8 @@ namespace Unosquare.Net
                 response.ContentType = "text/html";
                 var description = HttpListenerResponseHelper.GetStatusDescription(status);
                 var str = msg != null
-                    ? string.Format("<h1>{0} ({1})</h1>", description, msg)
-                    : string.Format("<h1>{0}</h1>", description);
+                    ? $"<h1>{description} ({msg})</h1>"
+                    : $"<h1>{description}</h1>";
 
                 var error = _context.Response.ContentEncoding.GetBytes(str);
                 response.Close(error, false);

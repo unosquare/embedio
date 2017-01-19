@@ -29,10 +29,7 @@
 
             WebServer.RegisterModule(new WebApiModule());
             WebServer.Module<WebApiModule>().RegisterController<TestController>();
-            WebServer.RegisterModule(new FallbackModule((ws, ctx) =>
-            {
-                return ctx.JsonResponse(TestObj);
-            }));
+            WebServer.RegisterModule(new FallbackModule((ws, ctx) => ctx.JsonResponse(TestObj)));
             WebServer.RunAsync();
         }
 

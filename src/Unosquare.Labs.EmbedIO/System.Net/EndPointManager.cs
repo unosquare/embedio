@@ -136,8 +136,7 @@ namespace Unosquare.Net
             lock (_ipToEndpoints)
             {
                 // Dictionary<int, EndPointListener> p
-                Hashtable p = null;
-                p = (Hashtable)_ipToEndpoints[ep.Address];
+                var p = (Hashtable)_ipToEndpoints[ep.Address];
                 p.Remove(ep.Port);
                 if (p.Count == 0)
                 {

@@ -43,11 +43,11 @@ namespace Unosquare.Net
     /// <seealso cref="System.IO.Stream" />
     public class ResponseStream : Stream
     {
-        readonly HttpListenerResponse _response;
-        readonly bool _ignoreErrors;
-        bool _disposed;
-        bool _trailerSent;
-        readonly Stream _stream;
+        private readonly HttpListenerResponse _response;
+        private readonly bool _ignoreErrors;
+        private bool _disposed;
+        private bool _trailerSent;
+        private readonly Stream _stream;
 
         internal ResponseStream(Stream stream, HttpListenerResponse response, bool ignoreErrors)
         {
@@ -137,7 +137,7 @@ namespace Unosquare.Net
             }
         }
 
-        MemoryStream GetHeaders(bool closing)
+        private MemoryStream GetHeaders(bool closing)
         {
             // SendHeaders works on shared headers
             lock (_response.HeadersLock)
@@ -157,11 +157,11 @@ namespace Unosquare.Net
         {
         }
 
-        static readonly byte[] _crlf = { 13, 10 };
+        private static readonly byte[] _crlf = { 13, 10 };
 
         private static byte[] GetChunkSizeBytes(int size, bool final)
         {
-            var str = string.Format("{0:x}\r\n{1}", size, final ? "\r\n" : "");
+            var str = $"{size:x}\r\n{(final ? "\r\n" : "")}";
             return Encoding.GetEncoding(0).GetBytes(str);
         }
 

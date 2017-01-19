@@ -410,13 +410,13 @@ namespace Unosquare.Net
               error);
         }
 
-        private static WebSocketFrame ReadPayloadData(Stream stream, WebSocketFrame frame)
+        private static void ReadPayloadData(Stream stream, WebSocketFrame frame)
         {
             var len = frame.FullPayloadLength;
             if (len == 0)
             {
                 frame.PayloadData = PayloadData.Empty;
-                return frame;
+                return;
             }
 
             if (len > PayloadData.MaxLength)
@@ -432,7 +432,6 @@ namespace Unosquare.Net
                   "The payload data of a frame cannot be read from the stream.");
 
             frame.PayloadData = new PayloadData(bytes, llen);
-            return frame;
         }
 
         private static void ReadPayloadDataAsync(

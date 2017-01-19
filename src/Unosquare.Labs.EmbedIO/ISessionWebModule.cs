@@ -52,7 +52,7 @@
 #if NET46
         SessionInfo GetSession(System.Net.WebSockets.WebSocketContext context);
 #else
-        SessionInfo GetSession(Unosquare.Net.WebSocketContext context);
+        SessionInfo GetSession(WebSocketContext context);
 #endif
 
         /// <summary>

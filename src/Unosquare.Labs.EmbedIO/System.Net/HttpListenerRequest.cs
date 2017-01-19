@@ -33,9 +33,11 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Security.Authentication.ExtendedProtection;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
+#if SSL
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+#endif
 
 namespace Unosquare.Net
 {
@@ -47,7 +49,6 @@ namespace Unosquare.Net
     /// </devdoc>
     public class HttpVersion
     {
-
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
@@ -81,8 +82,11 @@ namespace Unosquare.Net
         bool _isChunked;
         bool _kaSet;
         bool _keepAlive;
+        
+#if SSL
         delegate X509Certificate2 GccDelegate();
         GccDelegate _gccDelegate;
+#endif
 
         static readonly byte[] _100Continue = Encoding.GetEncoding(0).GetBytes("HTTP/1.1 100 Continue\r\n\r\n");
 
@@ -93,7 +97,7 @@ namespace Unosquare.Net
             ProtocolVersion = HttpVersion.Version10;
         }
 
-        static readonly char[] Separators = { ' ' };
+        private static readonly char[] Separators = { ' ' };
 
         internal void SetRequestLine(string req)
         {
@@ -174,10 +178,7 @@ namespace Unosquare.Net
             if (p == -1)
                 return false;
 
-            if (p >= 10)
-                return false;
-
-            return IsPredefinedScheme(s.Substring(0, p));
+            return p < 10 && IsPredefinedScheme(s.Substring(0, p));
         }
 
         //
@@ -243,9 +244,7 @@ namespace Unosquare.Net
             if (colon >= 0)
                 host = host.Substring(0, colon);
 
-            var baseUri = string.Format("{0}://{1}:{2}",
-                                (IsSecureConnection) ? "https" : "http",
-                                host, LocalEndPoint.Port);
+            var baseUri = $"{((IsSecureConnection) ? "https" : "http")}://{host}:{LocalEndPoint.Port}";
 
             if (!Uri.TryCreate(baseUri + path, UriKind.Absolute, out _url))
             {
@@ -437,7 +436,8 @@ namespace Unosquare.Net
         /// The accept types.
         /// </value>
         public string[] AcceptTypes { get; private set; }
-
+        
+#if SSL
         /// <summary>
         /// Gets the client certificate error code.
         /// </summary>
@@ -458,6 +458,7 @@ namespace Unosquare.Net
                 return 0;
             }
         }
+#endif
 
         /// <summary>
         /// Gets the content encoding.
@@ -694,46 +695,6 @@ namespace Unosquare.Net
         public string[] UserLanguages { get; private set; }
 
         /// <summary>
-        /// Begins to the get client certificate asynchronously.
-        /// </summary>
-        /// <param name="requestCallback">The request callback.</param>
-        /// <param name="state">The state.</param>
-        /// <returns></returns>
-        public IAsyncResult BeginGetClientCertificate(AsyncCallback requestCallback, object state)
-        {
-            if (_gccDelegate == null)
-                _gccDelegate = GetClientCertificate;
-            return _gccDelegate.BeginInvoke(requestCallback, state);
-        }
-
-        /// <summary>
-        /// Finishes the get client certificate asynchronous operation.
-        /// </summary>
-        /// <param name="asyncResult">The asynchronous result.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException">asyncResult</exception>
-        /// <exception cref="System.InvalidOperationException"></exception>
-        public X509Certificate2 EndGetClientCertificate(IAsyncResult asyncResult)
-        {
-            if (asyncResult == null)
-                throw new ArgumentNullException(nameof(asyncResult));
-
-            if (_gccDelegate == null)
-                throw new InvalidOperationException();
-
-            return _gccDelegate.EndInvoke(asyncResult);
-        }
-
-        /// <summary>
-        /// Gets the client certificate.
-        /// </summary>
-        /// <returns></returns>
-        public X509Certificate2 GetClientCertificate()
-        {
-            return _context.Connection.ClientCertificate;
-        }
-
-        /// <summary>
         /// Gets the name of the service.
         /// </summary>
         /// <value>
@@ -757,6 +718,47 @@ namespace Unosquare.Net
         /// </value>
         public bool IsWebSocketRequest => HttpMethod == "GET" && ProtocolVersion > HttpVersion.Version10 && Headers.Contains("Upgrade", "websocket") && Headers.Contains("Connection", "Upgrade");
 
+#if SSL
+        /// <summary>
+        /// Begins to the get client certificate asynchronously.
+        /// </summary>
+        /// <param name="requestCallback">The request callback.</param>
+        /// <param name="state">The state.</param>
+        /// <returns></returns>
+        public IAsyncResult BeginGetClientCertificate(AsyncCallback requestCallback, object state)
+        {
+            if (_gccDelegate == null)
+                _gccDelegate = GetClientCertificate;
+            return _gccDelegate.BeginInvoke(requestCallback, state);
+        }
+        
+        /// <summary>
+        /// Finishes the get client certificate asynchronous operation.
+        /// </summary>
+        /// <param name="asyncResult">The asynchronous result.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">asyncResult</exception>
+        /// <exception cref="System.InvalidOperationException"></exception>
+        public X509Certificate2 EndGetClientCertificate(IAsyncResult asyncResult)
+        {
+            if (asyncResult == null)
+                throw new ArgumentNullException(nameof(asyncResult));
+
+            if (_gccDelegate == null)
+                throw new InvalidOperationException();
+
+            return _gccDelegate.EndInvoke(asyncResult);
+        }
+        
+        /// <summary>
+        /// Gets the client certificate.
+        /// </summary>
+        /// <returns></returns>
+        public X509Certificate2 GetClientCertificate()
+        {
+            return _context.Connection.ClientCertificate;
+        }
+
         /// <summary>
         /// Gets the client certificate asynchronously.
         /// </summary>
@@ -765,6 +767,7 @@ namespace Unosquare.Net
         {
             return Task<X509Certificate2>.Factory.FromAsync(BeginGetClientCertificate, EndGetClientCertificate, null);
         }
+#endif
     }
 }
 #endif

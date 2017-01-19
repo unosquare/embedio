@@ -61,7 +61,7 @@
 #if COMPAT
                 server.Log.DebugFormat("Handler: {0}.{1}", methodPair.Item2.DeclaringType.FullName, methodPair.Item2.Name);
 #else
-                $"Handler: {methodPair.Item2.DeclaringType.FullName}.{methodPair.Item2.Name}".Debug();
+                $"Handler: {methodPair.Item2.DeclaringType?.FullName}.{methodPair.Item2.Name}".Debug(nameof(WebApiModule));
 #endif
 
                 // Select the routing strategy
@@ -148,7 +148,7 @@
 #if COMPAT
                     server.Log.WarnFormat($"Routing strategy '{server.RoutingStrategy}' is not supported by this module.");
 #else
-                    $"Routing strategy '{server.RoutingStrategy}' is not supported by this module.".Warn();
+                    $"Routing strategy '{server.RoutingStrategy}' is not supported by this module.".Warn(nameof(WebApiModule));
 #endif
                     return false;
                 }
@@ -419,12 +419,5 @@
     /// </summary>
     public abstract class WebApiController
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiController"/> class.
-        /// </summary>
-        protected WebApiController()
-        {
-            // placeholder
-        }
     }
 }

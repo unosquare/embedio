@@ -543,7 +543,7 @@ namespace Unosquare.Net
 
             if (!connClose)
             {
-                Headers.SetInternal("Keep-Alive", string.Format("timeout=15,max={0}", 100 - reuses));
+                Headers.SetInternal("Keep-Alive", $"timeout=15,max={100 - reuses}");
                 if (_context.Request.ProtocolVersion <= HttpVersion.Version10)
                     Headers.SetInternal("Connection", "keep-alive");
             }

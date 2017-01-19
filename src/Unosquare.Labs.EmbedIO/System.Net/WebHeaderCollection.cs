@@ -126,7 +126,7 @@ namespace Unosquare.Net
         #region Private Fields
 
         private static readonly Dictionary<string, HttpHeaderInfo> Headers;
-        private bool _internallyUsed;
+        private readonly bool _internallyUsed;
 
         #endregion
 
@@ -1260,19 +1260,7 @@ namespace Unosquare.Net
         {
             DoWithCheckingState(SetWithoutCheckingName, CheckName(name), value, true);
         }
-
-        /// <summary>
-        /// Converts the current <see cref="WebHeaderCollection"/> to an array of <see cref="byte"/>.
-        /// </summary>
-        /// <returns>
-        /// An array of <see cref="byte"/> that receives the converted current
-        /// <see cref="WebHeaderCollection"/>.
-        /// </returns>
-        public byte[] ToByteArray()
-        {
-            return Encoding.UTF8.GetBytes(ToString());
-        }
-
+        
         /// <summary>
         /// Returns a <see cref="string"/> that represents the current
         /// <see cref="WebHeaderCollection"/>.

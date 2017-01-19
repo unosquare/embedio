@@ -1,7 +1,7 @@
 (function () {
     angular.module('app.routes', ['ngRoute'])
 
-        .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+        .config(['$routeProvider', '$locationProvider', function($routeProvider) {
             $routeProvider.
                 when('/', {
                     templateUrl: '/views/home.html',
@@ -26,7 +26,5 @@
                 otherwise({
                     redirectTo: '/'
                 });
-        
-            //$locationProvider.html5Mode(true);
         }]);
 })();

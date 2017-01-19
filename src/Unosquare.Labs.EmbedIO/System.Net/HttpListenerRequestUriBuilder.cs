@@ -336,7 +336,7 @@ namespace Unosquare.Net
                 var decodedString = encoding.GetString(_rawOctets.ToArray());
 
                 AppendOctetsPercentEncoded(_requestUriString,
-                    encoding == Utf8Encoding ? _rawOctets.ToArray() : Utf8Encoding.GetBytes(decodedString));
+                    Equals(encoding, Utf8Encoding) ? _rawOctets.ToArray() : Utf8Encoding.GetBytes(decodedString));
 
                 _rawOctets.Clear();
 
@@ -344,14 +344,11 @@ namespace Unosquare.Net
             }
             catch (DecoderFallbackException)
             {
-                //LogWarning("EmptyDecodeAndAppendRawOctetsList", SR.net_log_listener_cant_convert_bytes,
-                //    GetOctetsAsString(rawOctets), e.Message);
+                // Ignored
             }
             catch (EncoderFallbackException)
             {
-                // If utf8Encoding.GetBytes() fails
-                //LogWarning("EmptyDecodeAndAppendRawOctetsList", SR.net_log_listener_cant_convert_to_utf8,
-                //    decodedString, e.Message);
+                // Ignored
             }
 
             return false;
@@ -364,27 +361,6 @@ namespace Unosquare.Net
                 target.Append('%');
                 target.Append(octet.ToString("X2", CultureInfo.InvariantCulture));
             }
-        }
-
-        private static string GetOctetsAsString(IEnumerable<byte> octets)
-        {
-            var octetString = new StringBuilder();
-
-            var first = true;
-            foreach (var octet in octets)
-            {
-                if (first)
-                {
-                    first = false;
-                }
-                else
-                {
-                    octetString.Append(" ");
-                }
-                octetString.Append(octet.ToString("X2", CultureInfo.InvariantCulture));
-            }
-
-            return octetString.ToString();
         }
 
         private static string GetPath(string uriString)

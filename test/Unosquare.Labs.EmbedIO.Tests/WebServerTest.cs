@@ -46,11 +46,11 @@
                     return;
                 }
 
-                Assert.Fail($"Must have thrown OperationCanceledException and trhew '{baseEx.GetType().ToString()}' instead.");
+                Assert.Fail($"Must have thrown OperationCanceledException and trhew '{baseEx.GetType()}' instead.");
             }
             catch (Exception ex)
             {
-                Assert.Fail($"Must have thrown AggregateException and threw '{ex.GetType().ToString()}' instead.");
+                Assert.Fail($"Must have thrown AggregateException and threw '{ex.GetType()}' instead.");
             }
         }
 

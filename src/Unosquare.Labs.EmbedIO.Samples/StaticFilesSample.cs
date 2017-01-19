@@ -35,6 +35,7 @@
         /// Setups the specified server.
         /// </summary>
         /// <param name="server">The server.</param>
+        /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
         public static void Setup(WebServer server, bool useGzip)
         {
             server.RegisterModule(new StaticFilesModule(HtmlRootPath));

@@ -13,7 +13,7 @@
         /// <summary>
         /// The comma split character for String.Split method calls.
         /// </summary>
-        public static readonly char[] CommaSplitChar = new[] { ',' };
+        public static readonly char[] CommaSplitChar = { ',' };
 
         /// <summary>
         /// The standard argument null exception message

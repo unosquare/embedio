@@ -21,11 +21,11 @@
         {
             var options = new Options();
 
-            CurrentApp.WriteWelcomeBanner();
+            Runtime.WriteWelcomeBanner();
 
-            if (!Swan.Runtime.ArgumentParser.Default.ParseArguments(args, options)) return;
+            if (!Swan.Components.ArgumentParser.Default.ParseArguments(args, options)) return;
 
-            "  Command-Line Utility: Press any key to stop the server.".Info();
+            "Press any key to stop the server.".Info();
 
             var serverUrl = "http://localhost:" + options.Port + "/";
 
@@ -74,7 +74,7 @@
             }
             catch (Exception ex)
             {
-                ex.Log();
+                ex.Log(nameof(Program));
             }
         }
     }

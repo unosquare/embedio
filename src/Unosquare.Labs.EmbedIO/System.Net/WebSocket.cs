@@ -193,12 +193,14 @@ namespace Unosquare.Net
         private AuthenticationChallenge _authChallenge;
         private uint _nonceCount;
         private bool _preAuth;
+        private NetworkCredential _proxyCredentials;
 #endif
         private string _protocol;
         private readonly string[] _protocols;
         private bool _protocolsRequested;
-        private NetworkCredential _proxyCredentials;
+#if PROXY
         private Uri _proxyUri;
+#endif
         private volatile WebSocketState _readyState;
         private AutoResetEvent _receivePong;
 #if SSL
@@ -418,14 +420,16 @@ namespace Unosquare.Net
             }
         }
 
-        /// <summary>
-        /// Gets the credentials for the HTTP authentication (Basic/Digest).
-        /// </summary>
-        /// <value>
-        /// A <see cref="NetworkCredential"/> that represents the credentials for
-        /// the authentication. The default value is <see langword="null"/>.
-        /// </value>
+#if AUTHENTICATION
+/// <summary>
+/// Gets the credentials for the HTTP authentication (Basic/Digest).
+/// </summary>
+/// <value>
+/// A <see cref="NetworkCredential"/> that represents the credentials for
+/// the authentication. The default value is <see langword="null"/>.
+/// </value>
         public NetworkCredential Credentials { get; }
+#endif
 
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="WebSocket"/> emits
@@ -497,12 +501,12 @@ namespace Unosquare.Net
         public bool IsSecure { get; private set; }
 
 #if COMPAT
-        /// <summary>
-        /// Gets the logging functions.
-        /// </summary>
-        /// <value>
-        /// A <see cref="ILog"/> that provides the logging functions.
-        /// </value>
+/// <summary>
+/// Gets the logging functions.
+/// </summary>
+/// <value>
+/// A <see cref="ILog"/> that provides the logging functions.
+/// </value>
         public ILog Log { get; set; }
 #endif
 
@@ -654,7 +658,8 @@ namespace Unosquare.Net
                 lock (_forState)
                 {
                     string msg;
-                    if (!checkIfAvailable(true, true, true, false, false, true, out msg) || !value.CheckWaitTime(out msg))
+                    if (!checkIfAvailable(true, true, true, false, false, true, out msg) ||
+                        !value.CheckWaitTime(out msg))
                     {
 #if COMPAT
                         Log.Error(msg);
@@ -729,7 +734,7 @@ namespace Unosquare.Net
 #if COMPAT
                         Log.Error(ex);
 #else
-                    ex.Log();
+                    ex.Log(nameof(WebSocket));
 #endif
                     Fatal("An exception has occurred while accepting.", ex);
 
@@ -974,7 +979,7 @@ namespace Unosquare.Net
             return true;
         }
 #endif
-
+#if PROXY
         private static bool CheckParametersForSetProxy(
             string url, string username, string password, out string message
         )
@@ -1014,6 +1019,7 @@ namespace Unosquare.Net
 
             return true;
         }
+#endif
 
         private bool CheckReceivedFrame(WebSocketFrame frame, out string message)
         {
@@ -1116,7 +1122,7 @@ namespace Unosquare.Net
 #if COMPAT
                     Log.Error(ex.ToString());
 #else
-                ex.Log();
+                ex.Log(nameof(WebSocket));
 #endif
                 Error("An exception has occurred during the OnClose event.", ex);
             }
@@ -1175,7 +1181,7 @@ namespace Unosquare.Net
 #if COMPAT
                     Log.Error(ex.ToString());
 #else
-                    ex.Log();
+                    ex.Log(nameof(WebSocket));
 #endif
                     Fatal("An exception has occurred while connecting.", ex);
 
@@ -1336,16 +1342,14 @@ namespace Unosquare.Net
 #if COMPAT
                     Log.Error(ex.ToString());
 #else
-                ex.Log();
+                ex.Log(nameof(WebSocket));
 #endif
             }
         }
 
         private void Fatal(string message, Exception exception)
         {
-            var code = exception is WebSocketException
-                ? ((WebSocketException)exception).Code
-                : CloseStatusCode.Abnormal;
+            var code = (exception as WebSocketException)?.Code ?? CloseStatusCode.Abnormal;
 
             Fatal(message, code);
         }
@@ -1362,7 +1366,7 @@ namespace Unosquare.Net
             _forSend = new object();
             _forState = new object();
             _messageEventQueue = new Queue<MessageEventArgs>();
-            _forMessageEventQueue = ((ICollection)_messageEventQueue).SyncRoot;
+            _forMessageEventQueue = ((ICollection) _messageEventQueue).SyncRoot;
             _readyState = WebSocketState.Connecting;
         }
 
@@ -1394,7 +1398,7 @@ namespace Unosquare.Net
 #if COMPAT
                     Log.Error(ex.ToString());
 #else
-                    ex.Log();
+                    ex.Log(nameof(WebSocket));
 #endif
                     Error("An exception has occurred during an OnMessage event.", ex);
                 }
@@ -1423,7 +1427,7 @@ namespace Unosquare.Net
 #if COMPAT
                     Log.Error(ex.ToString());
 #else
-                ex.Log();
+                ex.Log(nameof(WebSocket));
 #endif
                 Error("An exception has occurred during an OnMessage event.", ex);
             }
@@ -1455,7 +1459,7 @@ namespace Unosquare.Net
 #if COMPAT
                     Log.Error(ex.ToString());
 #else
-                ex.Log();
+                ex.Log(nameof(WebSocket));
 #endif
                 Error("An exception has occurred during the OnOpen event.", ex);
             }
@@ -1571,7 +1575,7 @@ namespace Unosquare.Net
             return true;
         }
 
-        private bool ProcessPongFrame(WebSocketFrame frame)
+        private bool ProcessPongFrame()
         {
             _receivePong.Set();
 #if COMPAT
@@ -1597,7 +1601,7 @@ namespace Unosquare.Net
                     : frame.IsPing
                         ? ProcessPingFrame(frame)
                         : frame.IsPong
-                            ? ProcessPongFrame(frame)
+                            ? ProcessPongFrame()
                             : frame.IsClose
                                 ? ProcessCloseFrame(frame)
                                 : ProcessUnsupportedFrame(frame);
@@ -1779,7 +1783,7 @@ namespace Unosquare.Net
 #if COMPAT
                     Log.Error(ex.ToString());
 #else
-                    ex.Log();
+                    ex.Log(nameof(WebSocket));
 #endif
                     Error("An exception has occurred while sending data.", ex);
                 }
@@ -1804,8 +1808,8 @@ namespace Unosquare.Net
             if (len == 0)
                 return send(Fin.Final, opcode, EmptyBytes, compressed);
 
-            var quo = len / FragmentLength;
-            var rem = (int)(len % FragmentLength);
+            var quo = len/FragmentLength;
+            var rem = (int) (len%FragmentLength);
 
             byte[] buff = null;
             if (quo == 0)
@@ -1874,7 +1878,7 @@ namespace Unosquare.Net
 #if COMPAT
                     Log.Error(ex.ToString());
 #else
-                    ex.Log();
+                    ex.Log(nameof(WebSocket));
 #endif
                     Error("An exception has occurred during a send callback.", ex);
                 }
@@ -1893,7 +1897,7 @@ namespace Unosquare.Net
 #if COMPAT
                     Log.Error(ex.ToString());
 #else
-                ex.Log();
+                ex.Log(nameof(WebSocket));
 #endif
                 return false;
             }
@@ -1942,46 +1946,44 @@ namespace Unosquare.Net
 #endif
             }
 
+            if (!res.IsRedirect) return res;
 
-            if (res.IsRedirect)
-            {
-                var url = res.Headers["Location"];
+            var url = res.Headers["Location"];
 #if COMPAT
                 Log.WarnFormat("Received a redirection to '{0}'.", url);
 #else
-                $"Received a redirection to '{url}'.".Warn();
+            $"Received a redirection to '{url}'.".Warn();
 #endif
 
-                if (_enableRedirection)
+            if (_enableRedirection)
+            {
+                if (string.IsNullOrEmpty(url))
                 {
-                    if (string.IsNullOrEmpty(url))
-                    {
 #if COMPAT
                         Log.Error("No url to redirect is located.");
 #else
-                        "No url to redirect is located.".Error();
+                    "No url to redirect is located.".Error();
 #endif
-                        return res;
-                    }
+                    return res;
+                }
 
-                    Uri uri;
-                    string msg;
-                    if (!url.TryCreateWebSocketUri(out uri, out msg))
-                    {
+                Uri uri;
+                string msg;
+                if (!url.TryCreateWebSocketUri(out uri, out msg))
+                {
 #if COMPAT
                         Log.Error("An invalid url to redirect is located: " + msg);
 #endif
-                        return res;
-                    }
-
-                    ReleaseClientResources();
-
-                    _uri = uri;
-                    IsSecure = uri.Scheme == "wss";
-
-                    SetClientStream();
-                    return SendHandshakeRequest();
+                    return res;
                 }
+
+                ReleaseClientResources();
+
+                _uri = uri;
+                IsSecure = uri.Scheme == "wss";
+
+                SetClientStream();
+                return SendHandshakeRequest();
             }
 
             return res;
@@ -2016,13 +2018,13 @@ namespace Unosquare.Net
             return SendBytes(response.ToByteArray());
         }
 
-        // As client
+#if PROXY
+// As client
         private void SendProxyConnectRequest()
         {
             var req = HttpRequest.CreateConnectRequest(_uri);
             var res = SendHttpRequest(req, 90000);
 
-#if PROXY
             if (res.IsProxyAuthenticationRequired)
             {
                 var chal = res.Headers["Proxy-Authenticate"];
@@ -2052,15 +2054,16 @@ namespace Unosquare.Net
                 if (res.IsProxyAuthenticationRequired)
                     throw new WebSocketException("A proxy authentication is required.");
             }
-#endif
             if (res.StatusCode[0] != '2')
                 throw new WebSocketException(
                     "The proxy has failed a connection to the requested host and port.");
-        }
+        }  
+#endif
 
         // As client
         private void SetClientStream()
         {
+#if PROXY
             if (_proxyUri != null)
             {
 #if NET452
@@ -2072,6 +2075,7 @@ namespace Unosquare.Net
                 SendProxyConnectRequest();
             }
             else
+#endif
             {
 #if NET452
                 _tcpClient = new TcpClient(_uri.DnsSafeHost, _uri.Port);
@@ -2152,7 +2156,7 @@ namespace Unosquare.Net
 #if COMPAT
                     Log.Error(ex.ToString());
 #else
-                            ex.Log();
+                            ex.Log(nameof(WebSocket));
 #endif
                             Fatal("An exception has occurred while receiving.", ex);
                         }
@@ -2173,10 +2177,7 @@ namespace Unosquare.Net
             if (value == null)
                 return true;
 
-            if (value.Length == 0)
-                return false;
-
-            if (!_extensionsRequested)
+            if (value.Length == 0 || !_extensionsRequested)
                 return false;
 
             var comp = _compression != CompressionMethod.None;
@@ -2230,6 +2231,7 @@ namespace Unosquare.Net
         {
             return !string.IsNullOrEmpty(value);
         }
+
         private static bool ValidateSecWebSocketProtocolClientHeader(string value)
         {
             return value == null || value.Length > 0;
@@ -2397,7 +2399,7 @@ namespace Unosquare.Net
 #if COMPAT
                     Log.Error(ex.ToString());
 #else
-                ex.Log();
+                ex.Log(nameof(WebSocket));
 #endif
             }
         }
@@ -2436,7 +2438,7 @@ namespace Unosquare.Net
 #if COMPAT
                     Log.Error(ex.ToString());
 #else
-                ex.Log();
+                ex.Log(nameof(WebSocket));
 #endif
                 Fatal("An exception has occurred while accepting.", ex);
 
@@ -2496,7 +2498,7 @@ namespace Unosquare.Net
 #if COMPAT
                     Log.Error(ex.ToString());
 #else
-                        ex.Log();
+                        ex.Log(nameof(WebSocket));
 #endif
                     }
                 }
@@ -2528,7 +2530,7 @@ namespace Unosquare.Net
 #if COMPAT
                     Log.Error(ex.ToString());
 #else
-                    ex.Log();
+                    ex.Log(nameof(WebSocket));
 #endif
                 }
             }
@@ -2951,7 +2953,8 @@ namespace Unosquare.Net
             return Ping(WebSocketFrame.CreatePingFrame(data, _client).ToArray(), _waitTime);
         }
 
-        private static string CheckIfAvailable(WebSocketState state, bool connecting, bool open, bool closing, bool closed)
+        private static string CheckIfAvailable(WebSocketState state, bool connecting, bool open, bool closing,
+            bool closed)
         {
             return (!connecting && state == WebSocketState.Connecting) ||
                    (!open && state == WebSocketState.Open) ||
@@ -3326,37 +3329,37 @@ namespace Unosquare.Net
             }
         }
 #endif
-
-        /// <summary>
-        /// Sets the HTTP proxy server URL to connect through, and if necessary,
-        /// a pair of <paramref name="username"/> and <paramref name="password"/> for
-        /// the proxy server authentication (Basic/Digest).
-        /// </summary>
-        /// <param name="url">
-        ///   <para>
-        ///   A <see cref="string"/> that represents the HTTP proxy server URL to
-        ///   connect through. The syntax must be http://&lt;host&gt;[:&lt;port&gt;].
-        ///   </para>
-        ///   <para>
-        ///   If <paramref name="url"/> is <see langword="null"/> or empty,
-        ///   the url and credentials for the proxy will be initialized,
-        ///   and the <see cref="WebSocket"/> will not use the proxy to
-        ///   connect through.
-        ///   </para>
-        /// </param>
-        /// <param name="username">
-        ///   <para>
-        ///   A <see cref="string"/> that represents the user name used to authenticate.
-        ///   </para>
-        ///   <para>
-        ///   If <paramref name="username"/> is <see langword="null"/> or empty,
-        ///   the credentials for the proxy will be initialized and not be sent.
-        ///   </para>
-        /// </param>
-        /// <param name="password">
-        /// A <see cref="string"/> that represents the password for
-        /// <paramref name="username"/> used to authenticate.
-        /// </param>
+#if PROXY
+/// <summary>
+/// Sets the HTTP proxy server URL to connect through, and if necessary,
+/// a pair of <paramref name="username"/> and <paramref name="password"/> for
+/// the proxy server authentication (Basic/Digest).
+/// </summary>
+/// <param name="url">
+///   <para>
+///   A <see cref="string"/> that represents the HTTP proxy server URL to
+///   connect through. The syntax must be http://&lt;host&gt;[:&lt;port&gt;].
+///   </para>
+///   <para>
+///   If <paramref name="url"/> is <see langword="null"/> or empty,
+///   the url and credentials for the proxy will be initialized,
+///   and the <see cref="WebSocket"/> will not use the proxy to
+///   connect through.
+///   </para>
+/// </param>
+/// <param name="username">
+///   <para>
+///   A <see cref="string"/> that represents the user name used to authenticate.
+///   </para>
+///   <para>
+///   If <paramref name="username"/> is <see langword="null"/> or empty,
+///   the credentials for the proxy will be initialized and not be sent.
+///   </para>
+/// </param>
+/// <param name="password">
+/// A <see cref="string"/> that represents the password for
+/// <paramref name="username"/> used to authenticate.
+/// </param>
         public void SetProxy(string url, string username, string password)
         {
             string msg;
@@ -3427,6 +3430,7 @@ namespace Unosquare.Net
                     new NetworkCredential(username, password, $"{_uri.DnsSafeHost}:{_uri.Port}");
             }
         }
+#endif
 
         #endregion
 
@@ -3446,4 +3450,5 @@ namespace Unosquare.Net
         #endregion
     }
 }
+
 #endif

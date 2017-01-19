@@ -16,10 +16,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
 
             var webServer = new WebServer(webServerUrl);
             webServer.RegisterModule(new LocalSessionModule() { Expiration = TimeSpan.FromSeconds(6) });
-            webServer.RegisterModule(new FallbackModule((ws, ctx) =>
-            {
-                return ctx.JsonResponse(new { Message = "OK" });
-            }));
+            webServer.RegisterModule(new FallbackModule((ws, ctx) => ctx.JsonResponse(new { Message = "OK" })));
 
             webServer.RunAsync();
 

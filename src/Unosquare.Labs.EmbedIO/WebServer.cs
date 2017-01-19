@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Globalization;
     using System.Linq;
     using System.Threading;
     using System.Reflection;
@@ -98,7 +97,7 @@
 #if COMPAT
             : this(port, new NullLog())
 #else
-            : this(new[] { "http://*:" + port.ToString() + "/" }, RoutingStrategy.Wildcard)
+            : this(new[] { "http://*:" + port + "/" }, RoutingStrategy.Wildcard)
 #endif
         {
             // placeholder
@@ -227,14 +226,14 @@
 #if COMPAT
                 Log.InfoFormat("Web server prefix '{0}' added.", urlPrefix);
 #else
-                $"Web server prefix '{urlPrefix}' added.".Info();
+                $"Web server prefix '{urlPrefix}' added.".Info(nameof(WebServer));
 #endif
             }
 
 #if COMPAT
             Log.Info("Finished Loading Web Server.");
 #else
-            "Finished Loading Web Server.".Info();
+            "Finished Loading Web Server.".Info(nameof(WebServer));
 #endif
         }
 
@@ -257,10 +256,7 @@
         /// </summary>
         /// <param name="moduleType">Type of the module.</param>
         /// <returns></returns>
-        private IWebModule Module(Type moduleType)
-        {
-            return Modules.FirstOrDefault(m => m.GetType() == moduleType);
-        }
+        private IWebModule Module(Type moduleType) => Modules.FirstOrDefault(m => m.GetType() == moduleType);
 
         /// <summary>
         /// Registers an instance of a web module. Only 1 instance per type is allowed.
@@ -353,8 +349,8 @@
                     context.RequestVerb().ToString().ToUpperInvariant(),
                     context.RequestPath());
 #else
-                $"Start of Request {requestId}".Debug();
-                $"Source {requestEndpoint} - {context.RequestVerb().ToString().ToUpperInvariant()}: {context.RequestPath()}".Debug();
+                $"Start of Request {requestId}".Debug(nameof(WebServer));
+                $"Source {requestEndpoint} - {context.RequestVerb().ToString().ToUpperInvariant()}: {context.RequestPath()}".Debug(nameof(WebServer));
 #endif
 
                 // Return a 404 (Not Found) response if no module/handler handled the response.
@@ -375,8 +371,7 @@
 #if COMPAT
                 Log.Error("Error handling request.", ex);
 #else
-                "Error handling request.".Error();
-                ex.Log();
+                ex.Log(nameof(WebServer), "Error handling request.");
 #endif
             }
             finally
@@ -387,7 +382,7 @@
 #if COMPAT
                 Log.DebugFormat("End of Request {0}\r\n", requestId);
 #else
-                $"End of Request {requestId}".Debug();
+                $"End of Request {requestId}".Debug(nameof(WebServer));
 #endif
             }
         }
@@ -423,15 +418,17 @@
                     Log.DebugFormat("{0}::{1}.{2}", module.Name, callback.GetMethodInfo().DeclaringType.Name,
                         callback.GetMethodInfo().Name);
 #else
-                    $"{module.Name}::{callback.GetMethodInfo().DeclaringType.Name}.{callback.GetMethodInfo().Name}".Debug();
+                    $"{module.Name}::{callback.GetMethodInfo().DeclaringType?.Name}.{callback.GetMethodInfo().Name}".Debug(nameof(WebServer));
 #endif
 
                     // Execute the callback
                     var handleResult = callback.Invoke(this, context);
+#if DEBUG
 #if COMPAT
                     Log.DebugFormat("Result: {0}", handleResult.ToString());
 #else
-                    $"Result: {handleResult}".Debug();
+                    $"Result: {handleResult}".Debug(nameof(WebServer));
+#endif
 #endif
 
                     // callbacks can instruct the server to stop bubbling the request through the rest of the modules by returning true;
@@ -451,8 +448,7 @@
 #if COMPAT
                         Log.Error(errorMessage, ex);
 #else
-                        $"Failing module name: {module.Name}".Error();
-                        ex.Log();
+                        ex.Log(nameof(WebServer), $"Failing module name: {module.Name}");
 #endif
 
                         // Generate an HTML response
@@ -493,7 +489,7 @@
 #if COMPAT
             Log.Info("Started HTTP Listener");
 #else
-            "Started HTTP Listener".Info();
+            "Started HTTP Listener".Info(nameof(WebServer));
 #endif
 
             _listenerTask = Task.Factory.StartNew(() =>
@@ -518,7 +514,7 @@
 #if COMPAT
                         Log.Error(ex);
 #else
-                        ex.Log();
+                        ex.Log(nameof(WebServer));
 #endif
                     }
                 }
@@ -595,7 +591,7 @@
 #if COMPAT
                 Log.Info("Listener Closed.");
 #else
-                "Listener Closed.".Info();
+                "Listener Closed.".Info(nameof(WebServer));
 #endif
             }
         }
@@ -653,10 +649,7 @@
         /// </summary>
         /// <param name="urlPrefix">The URL prefix.</param>
         /// <returns>The webserver instance.</returns>
-        public static WebServer Create(string urlPrefix)
-        {
-            return new WebServer(urlPrefix);
-        }
+        public static WebServer Create(string urlPrefix) => new WebServer(urlPrefix);
 #endif
     }
 }

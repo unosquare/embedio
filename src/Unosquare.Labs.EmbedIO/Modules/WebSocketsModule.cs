@@ -256,7 +256,7 @@
 #if COMPAT
             server.Log.DebugFormat("{0} - Accepting WebSocket . . .", ServerName);
 #else
-            $"{ServerName} - Accepting WebSocket . . .".Debug();
+            $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
 #endif
 
 #if NET46
@@ -289,7 +289,7 @@
             server.Log.DebugFormat(
                 $"{ServerName} - WebSocket Accepted - There are {WebSockets.Count} sockets connected.");
 #else
-            $"{ServerName} - WebSocket Accepted - There are {WebSockets.Count} sockets connected.".Debug();
+            $"{ServerName} - WebSocket Accepted - There are {WebSockets.Count} sockets connected.".Debug(nameof(WebSocketsServer));
 #endif
 
             // call the abstract member
@@ -366,7 +366,7 @@
 #if COMPAT
                 server.Log.ErrorFormat("{0} - Error: {1}", ServerName, ex);
 #else
-                ex.Log();
+                ex.Log(nameof(WebSocketsServer));
 #endif
             }
             finally
@@ -419,7 +419,7 @@
             WebServer?.Log.DebugFormat("{0} - Collected {1} sockets. WebSocket Count: {2}", ServerName,
                 collectedCount, WebSockets.Count);
 #else
-            $"{ServerName} - Collected {collectedCount} sockets. WebSocket Count: {WebSockets.Count}".Debug();
+            $"{ServerName} - Collected {collectedCount} sockets. WebSocket Count: {WebSockets.Count}".Debug(nameof(WebSocketsServer));
 #endif
         }
 
@@ -446,7 +446,7 @@
 #if COMPAT
                 WebServer.Log.Error(ex);
 #else
-                ex.Log();
+                ex.Log(nameof(WebSocketsServer));
 #endif
             }
         }
@@ -474,7 +474,7 @@
 #if COMPAT
                 WebServer.Log.Error(ex);
 #else
-                ex.Log();
+                ex.Log(nameof(WebSocketsServer));
 #endif
             }
         }
@@ -523,7 +523,7 @@
 #if COMPAT
                 WebServer.Log.Error(ex);
 #else
-                ex.Log();
+                ex.Log(nameof(WebSocketsServer));
 #endif
             }
             finally
@@ -567,12 +567,11 @@
         /// </summary>
         public void Dispose()
         {
-            if (_isDisposing == false)
-            {
-                _isDisposing = true;
-                Dispose(true);
-                GC.SuppressFinalize(this);
-            }
+            if (_isDisposing) return;
+
+            _isDisposing = true;
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>

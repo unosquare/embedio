@@ -18,8 +18,6 @@
                     me.items = data;
                 }, function (error) {
                     alert(error);
-                }, function (update) {
-                    //alert(update);
                 });
         }])
         
@@ -31,7 +29,7 @@
             me.messages = [];
 
             me.websocket = new WebSocket(me.wsUri);
-            me.websocket.onopen = function (evt) {
+            me.websocket.onopen = function () {
                 var m = {
                     type: 'C',
                     time: new Date(),
@@ -42,7 +40,7 @@
                 $scope.$apply();
             };
 
-            me.websocket.onclose = function (evt) {
+            me.websocket.onclose = function () {
                 var m = {
                     type: 'C',
                     time: new Date(),
@@ -101,13 +99,13 @@
             };
 
             me.websocket = new WebSocket(me.wsUri);
-            me.websocket.onopen = function (evt) {
+            me.websocket.onopen = function () {
                 me.commands += 'WebSockets connection opened.\n';
                 $scope.$apply();
                 me.scrollBottom();
             };
 
-            me.websocket.onclose = function (evt) {
+            me.websocket.onclose = function () {
                 me.commands += 'WebSockets connection closed.\n';
                 $scope.$apply();
                 me.scrollBottom();

@@ -47,10 +47,11 @@ namespace Unosquare.Net
         private readonly Socket _sock;
         private Hashtable _prefixes; // Dictionary <ListenerPrefix, HttpListener>
         private ArrayList _unhandled; // List<ListenerPrefix> unhandled; host = '*'
-        private ArrayList _all; // List<ListenerPrefix> all;  host = '+'
-        private X509Certificate _cert = null;
+        private ArrayList _all; // List<ListenerPrefix> all;  host = '+       
         private bool _secure = false;
-
+#if SSL
+         private X509Certificate _cert = null;
+#endif
         private readonly Dictionary<HttpConnection, HttpConnection> _unregistered;
 
         public EndPointListener(HttpListener listener, IPAddress addr, int port, bool secure)
@@ -119,22 +120,26 @@ namespace Unosquare.Net
                 accepted = args.AcceptSocket;
 
             var epl = (EndPointListener) args.UserToken;
-
-
+            
             Accept(epl._sock, args, ref accepted);
             if (accepted == null)
                 return;
 
+#if SSL
             if (epl._secure && epl._cert == null)
             {
                 accepted.Dispose();
                 return;
             }
             var conn = new HttpConnection(accepted, epl, epl._secure, epl._cert);
+#else
+            var conn = new HttpConnection(accepted, epl, epl._secure, null);
+#endif
             lock (epl._unregistered)
             {
                 epl._unregistered[conn] = conn;
             }
+
             conn.BeginReadRequest();
         }
 
@@ -210,21 +215,21 @@ namespace Unosquare.Net
             }
 
             var list = _unhandled;
-            bestMatch = MatchFromList(host, path, list, out prefix);
+            bestMatch = MatchFromList(path, list, out prefix);
             if (path != pathSlash && bestMatch == null)
-                bestMatch = MatchFromList(host, pathSlash, list, out prefix);
+                bestMatch = MatchFromList(pathSlash, list, out prefix);
             if (bestMatch != null)
                 return bestMatch;
 
             list = _all;
-            bestMatch = MatchFromList(host, path, list, out prefix);
+            bestMatch = MatchFromList(path, list, out prefix);
             if (path != pathSlash && bestMatch == null)
-                bestMatch = MatchFromList(host, pathSlash, list, out prefix);
+                bestMatch = MatchFromList(pathSlash, list, out prefix);
 
             return bestMatch;
         }
 
-        private HttpListener MatchFromList(string host, string path, ArrayList list, out ListenerPrefix prefix)
+        private static HttpListener MatchFromList(string path, ArrayList list, out ListenerPrefix prefix)
         {
             prefix = null;
             if (list == null)
@@ -263,7 +268,7 @@ namespace Unosquare.Net
             coll.Add(prefix);
         }
 
-        private bool RemoveSpecial(ArrayList coll, ListenerPrefix prefix)
+        private static bool RemoveSpecial(ArrayList coll, ListenerPrefix prefix)
         {
             if (coll == null)
                 return false;

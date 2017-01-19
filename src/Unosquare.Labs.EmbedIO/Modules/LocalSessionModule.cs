@@ -42,7 +42,7 @@
             {
                 var sessionId = Convert.ToBase64String(
                     System.Text.Encoding.UTF8.GetBytes(
-                        Guid.NewGuid().ToString() + DateTime.Now.Millisecond.ToString() + DateTime.Now.Ticks.ToString()));
+                        Guid.NewGuid() + DateTime.Now.Millisecond.ToString() + DateTime.Now.Ticks.ToString()));
                 var sessionCookie = string.IsNullOrWhiteSpace(CookiePath) ?
                 new System.Net.Cookie(SessionCookieName, sessionId) :
                 new System.Net.Cookie(SessionCookieName, sessionId, CookiePath);
@@ -74,7 +74,7 @@
         {
             lock (SessionsSyncLock)
             {
-                if (session == null || string.IsNullOrWhiteSpace(session.SessionId)) return;
+                if (string.IsNullOrWhiteSpace(session?.SessionId)) return;
                 if (m_Sessions.ContainsKey(session.SessionId) == false) return;
                 m_Sessions.Remove(session.SessionId);
             }
@@ -148,7 +148,7 @@
 #if COMPAT
                         server.Log.DebugFormat("Created session identifier '{0}'", sessionCookie.Value);
 #else
-                        $"Created session identifier '{sessionCookie.Value}'".Debug();
+                        $"Created session identifier '{sessionCookie.Value}'".Debug(nameof(LocalSessionModule));
 #endif
                     }
                     else if (isSessionRegistered == false)
@@ -160,10 +160,10 @@
 #if COMPAT
                         server.Log.DebugFormat("Updated session identifier to '{0}'", sessionCookie.Value);
 #else
-                        $"Updated session identifier to '{sessionCookie.Value}'".Debug();
+                        $"Updated session identifier to '{sessionCookie.Value}'".Debug(nameof(LocalSessionModule));
 #endif
                     }
-                    else if (isSessionRegistered)
+                    else
                     {
                         // If it does exist in the request, check if we're tracking it
                         var requestSessionId = context.Request.Cookies[SessionCookieName].Value;
@@ -171,7 +171,7 @@
 #if COMPAT
                         server.Log.DebugFormat("Session Identified '{0}'", requestSessionId);
 #else
-                        $"Session Identified '{requestSessionId}'".Debug();
+                        $"Session Identified '{requestSessionId}'".Debug(nameof(LocalSessionModule));
 #endif
                     }
 

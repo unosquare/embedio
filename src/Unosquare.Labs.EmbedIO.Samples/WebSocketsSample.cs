@@ -9,7 +9,7 @@
     using Net;
 #endif
     using System.Text;
-    using Unosquare.Labs.EmbedIO.Modules;
+    using Modules;
 
     public static class WebSocketsSample
     {
@@ -45,11 +45,10 @@
         /// <param name="rxResult">The rx result.</param>
         protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
         {
-            var session = WebServer.GetSession(context);
-            foreach (var ws in this.WebSockets)
+            foreach (var ws in WebSockets)
             {
                 if (ws != context)
-                    this.Send(ws, Encoding.UTF8.GetString(rxBuffer));
+                    Send(ws, Encoding.UTF8.GetString(rxBuffer));
             }
         }
 
@@ -67,11 +66,11 @@
         /// <param name="context">The context.</param>
         protected override void OnClientConnected(WebSocketContext context)
         {
-            this.Send(context, "Welcome to the chat room!");    
-            foreach (var ws in this.WebSockets)
+            Send(context, "Welcome to the chat room!");    
+            foreach (var ws in WebSockets)
             {
                 if (ws != context)
-                    this.Send(ws, "Someone joined the chat room."); 
+                    Send(ws, "Someone joined the chat room."); 
             }
         }
 
@@ -92,7 +91,7 @@
         /// <param name="context">The context.</param>
         protected override void OnClientDisconnected(WebSocketContext context)
         {
-            this.Broadcast(string.Format("Someone left the chat room."));
+            Broadcast("Someone left the chat room.");
         }
     }
 

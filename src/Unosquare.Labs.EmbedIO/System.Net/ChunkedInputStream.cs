@@ -84,10 +84,10 @@ namespace Unosquare.Net
 
             var len = buffer.Length;
             if (offset < 0 || offset > len)
-                throw new ArgumentOutOfRangeException("offset exceeds the size of buffer");
+                throw new ArgumentOutOfRangeException(nameof(offset), "offset exceeds the size of buffer");
 
             if (count < 0 || offset > len - count)
-                throw new ArgumentOutOfRangeException("offset+size exceeds the size of buffer");
+                throw new ArgumentOutOfRangeException(nameof(offset), "offset+size exceeds the size of buffer");
 
             var ares = new HttpStreamAsyncResult
             {
@@ -168,7 +168,7 @@ namespace Unosquare.Net
             if (!ares.IsCompleted)
                 ares.AsyncWaitHandle.WaitOne();
 
-            if (myAres.Error != null)
+            if (myAres?.Error != null)
                 throw new HttpListenerException(400, "I/O operation aborted: " + myAres.Error.Message);
 
             return myAres.Count;

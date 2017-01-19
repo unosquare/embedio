@@ -6,11 +6,11 @@
 #else
     using Net;
 #endif
-    
+
     /// <summary>
     /// Represents a module to fallback any request
     /// </summary>
-    /// <seealso cref="Unosquare.Labs.EmbedIO.WebModuleBase" />
+    /// <seealso cref="WebModuleBase" />
     public class FallbackModule : WebModuleBase
     {
         /// <summary>
@@ -36,10 +36,7 @@
         {
             FallbackAction = action;
 
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
-            {
-                return FallbackAction(server, context);
-            });
+            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) => FallbackAction(server, context));
         }
 
         /// <summary>
