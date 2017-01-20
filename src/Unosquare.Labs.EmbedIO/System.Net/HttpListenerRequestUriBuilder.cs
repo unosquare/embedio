@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Net;
 using System.Text;
 
 namespace Unosquare.Net
@@ -15,7 +14,6 @@ namespace Unosquare.Net
     // Utf-8 characters.
     internal sealed class HttpListenerRequestUriBuilder
     {
-        private static readonly bool UseCookedRequestUrl = false;
         private static readonly Encoding Utf8Encoding;
         private static readonly Encoding AnsiEncoding;
 
@@ -46,7 +44,6 @@ namespace Unosquare.Net
 
         static HttpListenerRequestUriBuilder()
         {
-            //useCookedRequestUrl = SettingsSectionInternal.Section.HttpListenerUnescapeRequestUrl;
             Utf8Encoding = new UTF8Encoding(false, true);
             AnsiEncoding = Encoding.GetEncoding(0, new EncoderExceptionFallback(), new DecoderExceptionFallback());
         }
@@ -78,26 +75,11 @@ namespace Unosquare.Net
 
         private Uri Build()
         {
-            // if the user enabled the "use raw Uri" setting in <httpListener> section, we'll use the raw
-            // path rather than the cooked path.
-            if (UseCookedRequestUrl)
+            BuildRequestUriUsingRawPath();
+
+            if (_requestUri == null)
             {
-                // corresponds to pre-4.0 behavior: use the cooked URI.
                 BuildRequestUriUsingCookedPath();
-
-                if (_requestUri == null)
-                {
-                    BuildRequestUriUsingRawPath();
-                }
-            }
-            else
-            {
-                BuildRequestUriUsingRawPath();
-
-                if (_requestUri == null)
-                {
-                    BuildRequestUriUsingCookedPath();
-                }
             }
 
             return _requestUri;
@@ -105,38 +87,25 @@ namespace Unosquare.Net
 
         private void BuildRequestUriUsingCookedPath()
         {
-            var isValid =
-                Uri.TryCreate(_cookedUriScheme + NetExtensions.SchemeDelimiter + _cookedUriHost + _cookedUriPath +
+            Uri.TryCreate(_cookedUriScheme + NetExtensions.SchemeDelimiter + _cookedUriHost + _cookedUriPath +
                               _cookedUriQuery, UriKind.Absolute, out _requestUri);
-
-            // Creating a Uri from the cooked Uri should really always work: If not, we log at least.
-            if (!isValid)
-            {
-                //LogWarning("BuildRequestUriUsingCookedPath", SR.net_log_listener_cant_create_uri, cookedUriScheme,
-                //    cookedUriHost, cookedUriPath, cookedUriQuery);
-            }
         }
 
         private void BuildRequestUriUsingRawPath()
         {
-            var isValid = false;
-
             // Initialize 'rawPath' only if really needed; i.e. if we build the request Uri from the raw Uri.
             _rawPath = GetPath(_rawUri);
 
             // If HTTP.sys only parses Utf-8, we can safely use the raw path: it must be a valid Utf-8 string.
-            if (!HttpSysSettings.EnableNonUtf8 || (_rawPath == string.Empty))
+            if ((_rawPath == string.Empty))
             {
                 var path = _rawPath;
                 if (path == string.Empty)
                 {
                     path = "/";
-                    Debug.Assert(_cookedUriQuery == string.Empty,
-                        "Query is only allowed if there is a non-empty path. At least '/' path required.");
                 }
 
-                isValid =
-                    Uri.TryCreate(
+                Uri.TryCreate(
                         _cookedUriScheme + NetExtensions.SchemeDelimiter + _cookedUriHost + path + _cookedUriQuery,
                         UriKind.Absolute, out _requestUri);
             }
@@ -144,36 +113,16 @@ namespace Unosquare.Net
             {
                 // Try to check the raw path using first the primary encoding (according to http.sys settings);
                 // if it fails try the secondary encoding.
-                var result = BuildRequestUriUsingRawPath(GetEncoding(EncodingType.Primary));
+                var result = BuildRequestUriUsingRawPath(Utf8Encoding);
                 if (result == ParsingResult.EncodingError)
                 {
-                    var secondaryEncoding = GetEncoding(EncodingType.Secondary);
-                    result = BuildRequestUriUsingRawPath(secondaryEncoding);
+                    BuildRequestUriUsingRawPath(AnsiEncoding);
                 }
-                isValid = result == ParsingResult.Success;
-            }
-
-            // Log that we weren't able to create a Uri from the raw string.
-            if (!isValid)
-            {
-                //LogWarning("BuildRequestUriUsingRawPath", SR.net_log_listener_cant_create_uri, cookedUriScheme,
-                //    cookedUriHost, rawPath, cookedUriQuery);
             }
         }
-
-        private static Encoding GetEncoding(EncodingType type)
-        {
-            return ((type == EncodingType.Primary) && (!HttpSysSettings.FavorUtf8)) ||
-                   ((type == EncodingType.Secondary) && (HttpSysSettings.FavorUtf8))
-                ? AnsiEncoding
-                : Utf8Encoding;
-        }
-
+        
         private ParsingResult BuildRequestUriUsingRawPath(Encoding encoding)
         {
-            Debug.Assert(encoding != null, "'encoding' must be assigned.");
-            Debug.Assert(!string.IsNullOrEmpty(_rawPath), "'rawPath' must have at least one character.");
-
             _rawOctets = new List<byte>();
             _requestUriString = new StringBuilder();
             _requestUriString.Append(_cookedUriScheme);
@@ -181,25 +130,16 @@ namespace Unosquare.Net
             _requestUriString.Append(_cookedUriHost);
 
             var result = ParseRawPath(encoding);
-            if (result == ParsingResult.Success)
+
+            if (result != ParsingResult.Success) return result;
+
+            _requestUriString.Append(_cookedUriQuery);
+            
+            if (!Uri.TryCreate(_requestUriString.ToString(), UriKind.Absolute, out _requestUri))
             {
-                _requestUriString.Append(_cookedUriQuery);
-
-                Debug.Assert(_rawOctets.Count == 0,
-                    "Still raw octets left. They must be added to the result path.");
-
-                if (!Uri.TryCreate(_requestUriString.ToString(), UriKind.Absolute, out _requestUri))
-                {
-                    // If we can't create a Uri from the string, this is an invalid string and it doesn't make 
-                    // sense to try another encoding.
-                    result = ParsingResult.InvalidString;
-                }
-            }
-
-            if (result != ParsingResult.Success)
-            {
-                //LogWarning("BuildRequestUriUsingRawPath", SR.net_log_listener_cant_convert_raw_path, rawPath,
-                //    encoding.EncodingName);
+                // If we can't create a Uri from the string, this is an invalid string and it doesn't make 
+                // sense to try another encoding.
+                result = ParsingResult.InvalidString;
             }
 
             return result;
@@ -273,8 +213,6 @@ namespace Unosquare.Net
             int codePointValue;
             if (!int.TryParse(codePoint, NumberStyles.HexNumber, null, out codePointValue))
             {
-                //LogWarning("AppendUnicodeCodePointValuePercentEncoded",
-                //    SR.net_log_listener_cant_convert_percent_value, codePoint);
                 return false;
             }
 
@@ -287,14 +225,11 @@ namespace Unosquare.Net
             }
             catch (ArgumentOutOfRangeException)
             {
-                //LogWarning("AppendUnicodeCodePointValuePercentEncoded", SR.net_log_listener_cant_convert_percent_value,
-                //    codePoint);
+                // ignored
             }
             catch (EncoderFallbackException)
             {
-                // If utf8Encoding.GetBytes() fails
-                //LogWarning("AppendUnicodeCodePointValuePercentEncoded", SR.net_log_listener_cant_convert_to_utf8,
-                //    unicodeString, e.Message);
+                // ignored
             }
 
             return false;
@@ -305,8 +240,6 @@ namespace Unosquare.Net
             byte encodedValue;
             if (!byte.TryParse(escapedCharacter, NumberStyles.HexNumber, null, out encodedValue))
             {
-                //LogWarning("AddPercentEncodedOctetToRawOctetsList", SR.net_log_listener_cant_convert_percent_value,
-                //    escapedCharacter);
                 return false;
             }
 
@@ -358,9 +291,6 @@ namespace Unosquare.Net
 
         private static string GetPath(string uriString)
         {
-            Debug.Assert(uriString != null, "uriString must not be null");
-            Debug.Assert(uriString.Length > 0, "uriString must not be empty");
-
             var pathStartIndex = 0;
 
             // Perf. improvement: nearly all strings are relative Uris. So just look if the
@@ -427,8 +357,6 @@ namespace Unosquare.Net
 
         private static string AddSlashToAsteriskOnlyPath(string path)
         {
-            Debug.Assert(path != null, "'path' must not be null");
-
             // If a request like "OPTIONS * HTTP/1.1" is sent to the listener, then the request Uri
             // should be "http[s]://server[:port]/*" to be compatible with pre-4.0 behavior.
             if ((path.Length == 1) && (path[0] == '*'))
@@ -444,12 +372,6 @@ namespace Unosquare.Net
             Success,
             InvalidString,
             EncodingError
-        }
-
-        private enum EncodingType
-        {
-            Primary,
-            Secondary
         }
     }
 }

@@ -13,7 +13,7 @@
         /// <summary>
         /// The comma split character for String.Split method calls.
         /// </summary>
-        public static readonly char[] CommaSplitChar = { ',' };
+        public static readonly char[] CommaSplitChar = {','};
 
         /// <summary>
         /// The standard argument null exception message
@@ -35,7 +35,7 @@
         /// </summary>
         public static StringComparer StandardStringComparer =
 #if !NETSTANDARD1_6
-           StringComparer.InvariantCultureIgnoreCase;
+            StringComparer.InvariantCultureIgnoreCase;
 #else
            StringComparer.OrdinalIgnoreCase;
 #endif
@@ -45,7 +45,7 @@
         /// </summary>
         public static StringComparer StaticFileStringComparer =
 #if !NETSTANDARD1_6
-           StringComparer.InvariantCulture;
+            StringComparer.InvariantCulture;
 #else
            StringComparer.Ordinal;
 #endif
@@ -59,7 +59,7 @@
 #else
             Encoding.GetEncoding(0);
 #endif
-        
+
         /// <summary>
         /// Content-Length HTTP Header
         /// </summary>
@@ -174,6 +174,7 @@
         /// Access-Control-Request-Headers HTTP Header
         /// </summary>
         public const string HeaderAccessControlRequestHeaders = "Access-Control-Request-Headers";
+
         /// <summary>
         /// Access-Control-Request-Headers HTTP Method
         /// </summary>
@@ -194,7 +195,8 @@
         public static readonly Dictionary<string, string> DefaultMimeTypes =
             new Dictionary<string, string>(StandardStringComparer)
             {
-#region Big list of MIME types
+                #region Big list of MIME types
+
                 // 
                 // from C:\Windows\System32\inetsrv\config\applicationHost.config
                 // some added, including .7z and .dat
@@ -759,7 +761,7 @@
                 {".z", "application/x-compress"},
                 {".zip", "application/x-zip-compressed"},
 
-#endregion
+                #endregion
             };
     }
 
@@ -774,9 +776,38 @@
         /// The wildcard strategy, default one
         /// </summary>
         Wildcard,
+
         /// <summary>
         /// The Regex strategy
         /// </summary>
         Regex
+    }
+
+
+    /// <summary>
+    /// Specifies the compression method used to compress a message on
+    /// the WebSocket connection.
+    /// </summary>
+    /// <remarks>
+    /// The compression methods that can be used are defined in
+    /// <see href="https://tools.ietf.org/html/rfc7692">
+    /// Compression Extensions for WebSocket</see>.
+    /// </remarks>
+    public enum CompressionMethod : byte
+    {
+        /// <summary>
+        /// Specifies non compression.
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// Specifies DEFLATE.
+        /// </summary>
+        Deflate,
+
+        /// <summary>
+        /// Specifies GZIP.
+        /// </summary>
+        Gzip
     }
 }

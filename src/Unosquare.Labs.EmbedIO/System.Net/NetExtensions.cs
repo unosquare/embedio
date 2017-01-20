@@ -8,6 +8,7 @@ using System.Text;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Unosquare.Labs.EmbedIO;
 using Unosquare.Swan;
 
 namespace Unosquare.Net
