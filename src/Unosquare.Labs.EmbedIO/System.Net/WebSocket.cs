@@ -667,7 +667,7 @@ namespace Unosquare.Net
         /// <summary>
         /// Occurs when the <see cref="WebSocket"/> gets an error.
         /// </summary>
-        public event EventHandler<ErrorEventArgs> OnError;
+        public event EventHandler<ConnectionFailureEventArgs> OnError;
 
         /// <summary>
         /// Occurs when the <see cref="WebSocket"/> receives a message.
@@ -1306,31 +1306,14 @@ namespace Unosquare.Net
 
         private void EnqueueToMessageEventQueue(MessageEventArgs e)
         {
-            lock (_forMessageEventQueue)
-                _messageEventQueue.Enqueue(e);
+            lock (_forMessageEventQueue) _messageEventQueue.Enqueue(e);
         }
 
-        private void Error(string message, Exception exception)
-        {
-            try
-            {
-                OnError?.Invoke(this, new ErrorEventArgs(message, exception));
-            }
-            catch (Exception ex)
-            {
-#if COMPAT
-                    Log.Error(ex.ToString());
-#else
-                ex.Log(nameof(WebSocket));
-#endif
-            }
-        }
+        private void Error(string message, Exception exception) => OnError?.Invoke(this, new ConnectionFailureEventArgs(exception ?? new Exception(message)));
 
         private void Fatal(string message, Exception exception)
         {
-            var code = (exception as WebSocketException)?.Code ?? CloseStatusCode.Abnormal;
-
-            Fatal(message, code);
+            Fatal(message, (exception as WebSocketException)?.Code ?? CloseStatusCode.Abnormal);
         }
 
         private void Fatal(string message, CloseStatusCode code)
