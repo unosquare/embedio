@@ -2,14 +2,14 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Text;
+    using Modules;
 #if NET46
     using System.Threading;
     using System.Net.WebSockets;
 #else
     using Net;
 #endif
-    using System.Text;
-    using Modules;
 
     public static class WebSocketsSample
     {
@@ -165,7 +165,7 @@
                 StartInfo = new ProcessStartInfo()
                 {
                     CreateNoWindow = true,
-#if !NETCOREAPP1_1 && !NETSTANDARD1_6
+#if !NETCOREAPP1_1
                     ErrorDialog = false,
 #endif
                     FileName = "cmd.exe",

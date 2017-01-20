@@ -282,7 +282,7 @@
                 Log.WarnFormat("Failed to register module '{0}' because a module with the same type already exists.",
                     module.GetType());
 #else
-                $"Failed to register module '{module.GetType()}' because a module with the same type already exists.".Warn();
+                $"Failed to register module '{module.GetType()}' because a module with the same type already exists.".Warn(nameof(WebServer));
 #endif
             }
         }
@@ -302,7 +302,7 @@
                     "Failed to unregister module '{0}' because no module with that type has been previously registered.",
                     moduleType);
 #else
-                $"Failed to unregister module '{moduleType}' because no module with that type has been previously registered.".Warn();
+                $"Failed to unregister module '{moduleType}' because no module with that type has been previously registered.".Warn(nameof(WebServer));
 #endif
             }
             else

@@ -143,7 +143,7 @@ namespace Unosquare.Net
             return nread;
         }
 
-#if !NETCOREAPP1_1 && !NETSTANDARD1_6
+#if !NETSTANDARD1_6
         new 
 #endif
         public IAsyncResult BeginRead(byte[] buffer, int offset, int count,
@@ -176,7 +176,7 @@ namespace Unosquare.Net
             return _stream.BeginRead(buffer, offset, count, cback, state);
         }
 
-#if !NETCOREAPP1_1 && !NETSTANDARD1_6
+#if !NETSTANDARD1_6
         new 
 #endif
         public int EndRead(IAsyncResult ares)

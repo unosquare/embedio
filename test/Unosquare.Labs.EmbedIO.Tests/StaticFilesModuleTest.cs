@@ -118,7 +118,7 @@
             Assert.Fail("The Exception should raise");
         }
 
-#if !NETCOREAPP1_1 && !NETSTANDARD1_6
+#if !NETCOREAPP1_1
         [Test]
         public void GetInitialPartial()
         {

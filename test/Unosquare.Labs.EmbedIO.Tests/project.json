@@ -5,7 +5,7 @@
         "copyToOutput": ["html"]
     },
     "dependencies": {
-        "dotnet-test-nunit": "3.4.0-beta-3",
+      "dotnet-test-nunit": "3.4.0-beta-3",
       "NUnit": "3.6.0",
       "Unosquare.Labs.EmbedIO": { "target": "project" }
     },
@@ -18,12 +18,6 @@
             "dependencies": {
                 "Microsoft.NETCore.App": "1.1.0",
                 "System.Net.Http": "4.3.0"
-            }
-        },
-        "netstandard1.6": {
-            "imports": ["dnxcore50", "netcoreapp1.1"],
-            "dependencies": {
-                "NETStandard.Library": "1.6.1"
             }
         },
         "net452": {

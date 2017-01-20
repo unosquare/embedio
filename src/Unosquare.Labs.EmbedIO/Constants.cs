@@ -24,7 +24,7 @@
         /// The format culture used for header outputs
         /// </summary>
         public static readonly CultureInfo StandardCultureInfo =
-#if !NETCOREAPP1_1 && !NETSTANDARD1_6
+#if !NETSTANDARD1_6
             CultureInfo.CreateSpecificCulture("en-US");
 #else
             new CultureInfo("en-US");
@@ -34,7 +34,7 @@
         /// The standard string comparer
         /// </summary>
         public static StringComparer StandardStringComparer =
-#if !NETCOREAPP1_1 && !NETSTANDARD1_6
+#if !NETSTANDARD1_6
            StringComparer.InvariantCultureIgnoreCase;
 #else
            StringComparer.OrdinalIgnoreCase;
@@ -44,7 +44,7 @@
         /// The static file string comparer
         /// </summary>
         public static StringComparer StaticFileStringComparer =
-#if !NETCOREAPP1_1 && !NETSTANDARD1_6
+#if !NETSTANDARD1_6
            StringComparer.InvariantCulture;
 #else
            StringComparer.Ordinal;
@@ -54,7 +54,7 @@
         /// The default encoding
         /// </summary>
         public static Encoding DefaultEncoding =
-#if !NETCOREAPP1_1 && !NETSTANDARD1_6
+#if !NETSTANDARD1_6
             Encoding.Default;
 #else
             Encoding.GetEncoding(0);

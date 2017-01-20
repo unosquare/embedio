@@ -1,4 +1,4 @@
-﻿#if NETCOREAPP1_1 || NETSTANDARD1_6
+﻿#if NETSTANDARD1_6
 namespace System
 {
     /// <summary>

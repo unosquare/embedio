@@ -174,7 +174,7 @@ namespace Unosquare.Net
             return myAres.Count;
         }
 
-#if !NETCOREAPP1_1 && !NETSTANDARD1_6
+#if !NETSTANDARD1_6
         new 
 #endif
         public void Close()

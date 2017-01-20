@@ -12,17 +12,10 @@
   },
 
   "dependencies": {
-    "Unosquare.Swan": "0.10.2"
+    "Unosquare.Swan": "0.11.0"
   },
 
   "frameworks": {
-    "netcoreapp1.1": {
-      "dependencies": {
-        "Microsoft.NETCore.App": "1.1.0",
-        "System.Collections.Specialized": "4.3.0",
-        "System.Collections.NonGeneric": "4.3.0"
-      }
-    },
     "netstandard1.6": {
       "dependencies": {
         "NETStandard.Library": "1.6.1",
