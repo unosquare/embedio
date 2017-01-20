@@ -106,7 +106,7 @@ namespace Unosquare.Net
         private void BuildRequestUriUsingCookedPath()
         {
             var isValid =
-                Uri.TryCreate(_cookedUriScheme + Extensions.SchemeDelimiter + _cookedUriHost + _cookedUriPath +
+                Uri.TryCreate(_cookedUriScheme + NetExtensions.SchemeDelimiter + _cookedUriHost + _cookedUriPath +
                               _cookedUriQuery, UriKind.Absolute, out _requestUri);
 
             // Creating a Uri from the cooked Uri should really always work: If not, we log at least.
@@ -137,7 +137,7 @@ namespace Unosquare.Net
 
                 isValid =
                     Uri.TryCreate(
-                        _cookedUriScheme + Extensions.SchemeDelimiter + _cookedUriHost + path + _cookedUriQuery,
+                        _cookedUriScheme + NetExtensions.SchemeDelimiter + _cookedUriHost + path + _cookedUriQuery,
                         UriKind.Absolute, out _requestUri);
             }
             else
@@ -163,17 +163,10 @@ namespace Unosquare.Net
 
         private static Encoding GetEncoding(EncodingType type)
         {
-            //Debug.Assert(HttpSysSettings.EnableNonUtf8,
-            //    "If 'EnableNonUtf8' is false we shouldn't require an encoding. It's always Utf-8.");
-            //Debug.Assert((type == EncodingType.Primary) || (type == EncodingType.Secondary),
-            //    "Unknown 'EncodingType' value: " + type.ToString());
-
-            if (((type == EncodingType.Primary) && (!HttpSysSettings.FavorUtf8)) ||
-                ((type == EncodingType.Secondary) && (HttpSysSettings.FavorUtf8)))
-            {
-                return AnsiEncoding;
-            }
-            return Utf8Encoding;
+            return ((type == EncodingType.Primary) && (!HttpSysSettings.FavorUtf8)) ||
+                   ((type == EncodingType.Secondary) && (HttpSysSettings.FavorUtf8))
+                ? AnsiEncoding
+                : Utf8Encoding;
         }
 
         private ParsingResult BuildRequestUriUsingRawPath(Encoding encoding)
@@ -184,7 +177,7 @@ namespace Unosquare.Net
             _rawOctets = new List<byte>();
             _requestUriString = new StringBuilder();
             _requestUriString.Append(_cookedUriScheme);
-            _requestUriString.Append(Extensions.SchemeDelimiter);
+            _requestUriString.Append(NetExtensions.SchemeDelimiter);
             _requestUriString.Append(_cookedUriHost);
 
             var result = ParseRawPath(encoding);
