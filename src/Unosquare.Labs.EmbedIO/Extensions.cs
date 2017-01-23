@@ -15,6 +15,7 @@
     using Newtonsoft.Json;
 #else
     using Swan.Formatters;
+
 #endif
 
     /// <summary>
@@ -259,7 +260,7 @@
         #endregion
 
         #region JSON and Exception Extensions
-        
+
         /// <summary>
         /// Outputs a Json Response given a data object
         /// </summary>
@@ -333,17 +334,18 @@
             return requestBody == null ? null : Json.Deserialize<T>(requestBody);
 #endif
         }
+
         #endregion
 
         #region Data Parsing Methods
 
 #if COMPAT
-        /// <summary>
-        /// Returns dictionary from Request POST data
-        /// Please note the underlying input stream is not rewindable.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
+/// <summary>
+/// Returns dictionary from Request POST data
+/// Please note the underlying input stream is not rewindable.
+/// </summary>
+/// <param name="context"></param>
+/// <returns></returns>
         [Obsolete("Use RequestFormDataDictionary methods instead")]
         public static Dictionary<string, string> RequestFormData(this HttpListenerContext context)
         {
@@ -425,7 +427,8 @@
         /// <param name="contentTypeHeader">The content type header.</param>
         /// <returns></returns>
         /// <exception cref="System.NotImplementedException">multipart/form-data Content Type parsing is not yet implemented</exception>
-        private static Dictionary<string, object> ParseFormDataAsDictionary(string requestBody, string contentTypeHeader = UrlEncodedContentType)
+        private static Dictionary<string, object> ParseFormDataAsDictionary(string requestBody,
+            string contentTypeHeader = UrlEncodedContentType)
         {
             // TODO: implement multipart/form-data parsing
             // example available here: http://stackoverflow.com/questions/5483851/manually-parse-raw-http-data-with-php
@@ -437,7 +440,7 @@
             if (string.IsNullOrWhiteSpace(requestBody)) return null;
 
             // define a character for KV pairs
-            var kvpSeparator = new[] { '=' };
+            var kvpSeparator = new[] {'='};
 
             // Create the result object
             var resultDictionary = new Dictionary<string, object>();
@@ -462,7 +465,8 @@
 
                 // Decode the key and the value. Discard Special Characters
                 var key = System.Net.WebUtility.UrlDecode(kvpsParts[0]);
-                if (key.IndexOf("[", StringComparison.OrdinalIgnoreCase) > 0) key = key.Substring(0, key.IndexOf("[", StringComparison.OrdinalIgnoreCase));
+                if (key.IndexOf("[", StringComparison.OrdinalIgnoreCase) > 0)
+                    key = key.Substring(0, key.IndexOf("[", StringComparison.OrdinalIgnoreCase));
 
                 var value = kvpsParts.Length >= 2 ? System.Net.WebUtility.UrlDecode(kvpsParts[1]) : null;
 
@@ -476,7 +480,7 @@
                         // if we don't have a list value for this key, then create one and add the existing item
                         var existingValue = resultDictionary[key] as string;
                         resultDictionary[key] = new List<string>();
-                        listValue = (List<string>)resultDictionary[key];
+                        listValue = (List<string>) resultDictionary[key];
                         listValue.Add(existingValue);
                     }
 
@@ -497,23 +501,60 @@
 
         #region Hashing and Compression Methods
 
+        private static readonly byte[] Last = new byte[] { 0x00 };
+
         /// <summary>
         /// Compresses the specified buffer stream using the G-Zip compression algorithm.
         /// </summary>
         /// <param name="buffer">The buffer.</param>
+        /// <param name="method">The method.</param>
         /// <returns></returns>
-        public static MemoryStream Compress(this Stream buffer)
+        public static MemoryStream Compress(this Stream buffer, CompressionMethod method = CompressionMethod.Gzip)
         {
             buffer.Position = 0;
             var targetStream = new MemoryStream();
 
-            using (var compressor = new GZipStream(targetStream, CompressionMode.Compress, true))
+            switch (method)
             {
-                buffer.CopyTo(compressor);
+                case CompressionMethod.Deflate:
+                    using (var compressor = new DeflateStream(targetStream, CompressionMode.Compress, true))
+                    {
+                        buffer.CopyTo(compressor, 1024);
+                        buffer.CopyTo(compressor);
+                        // WebSocket use this
+                        targetStream.Write(Last, 0, 1);
+                        targetStream.Position = 0;
+                    }
+                    break;
+                case CompressionMethod.Gzip:
+                    using (var compressor = new GZipStream(targetStream, CompressionMode.Compress, true))
+                    {
+                        buffer.CopyTo(compressor);
+                    }
+                    break;
+                case CompressionMethod.None:
+                    buffer.CopyTo(targetStream);
+                    break;
             }
 
             return targetStream;
         }
+
+        /// <summary>
+        /// Compresses/Decompresses the specified buffer using the compression algorithm.
+        /// </summary>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="method">The method.</param>
+        /// <param name="mode">The mode.</param>
+        /// <returns></returns>
+        public static byte[] Compress(this byte[] buffer, CompressionMethod method = CompressionMethod.Gzip)
+        {
+            using (var stream = new MemoryStream(buffer))
+            {
+                return stream.Compress(method).ToArray();
+            }
+        }
+
         #endregion
     }
 }

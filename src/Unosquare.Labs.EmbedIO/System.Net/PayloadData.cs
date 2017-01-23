@@ -48,12 +48,7 @@ namespace Unosquare.Net
         #endregion
 
         #region Public Fields
-
-        /// <summary>
-        /// Represents the empty payload data.
-        /// </summary>
-        public static readonly PayloadData Empty;
-
+        
         /// <summary>
         /// Represents the allowable max length.
         /// </summary>
@@ -75,7 +70,6 @@ namespace Unosquare.Net
 
         static PayloadData()
         {
-            Empty = new PayloadData();
             MaxLength = Int64.MaxValue;
         }
 

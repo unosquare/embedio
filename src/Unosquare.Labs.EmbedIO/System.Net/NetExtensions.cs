@@ -1095,38 +1095,6 @@ namespace Unosquare.Net
             }
         }
         
-        private static readonly byte[] Last = new byte[] { 0x00 };
-
-        internal static MemoryStream Compress(this Stream stream, CompressionMethod method)
-        {
-            using (var output = new MemoryStream())
-            {
-                if (method != CompressionMethod.Deflate || stream.Length == 0)
-                    return output;
-
-                stream.Position = 0;
-                using (var ds = new DeflateStream(output, CompressionMode.Compress, true))
-                {
-                    stream.CopyTo(ds, 1024);
-#if NET452
-                ds.Close(); // BFINAL set to 1.
-#endif
-                    output.Write(Last, 0, 1);
-                    output.Position = 0;
-
-                    return output;
-                }
-            }
-        }
-
-        internal static byte[] Compress(this byte[] data, CompressionMethod method)
-        {
-            using (var stream = new MemoryStream(data))
-            {
-                return Compress(stream, method).ToArray();
-            }
-        }
-        
         internal static byte[] Decompress(this byte[] data, CompressionMethod method)
         {
             using (var stream = new MemoryStream(data))

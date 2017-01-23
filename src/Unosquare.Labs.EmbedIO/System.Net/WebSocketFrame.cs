@@ -98,6 +98,7 @@ namespace Unosquare.Net
         /// </summary>
         On = 0x1
     }
+
     internal class WebSocketFrame : IEnumerable<byte>
     {
 #region Internal Fields
@@ -415,7 +416,7 @@ namespace Unosquare.Net
             var len = frame.FullPayloadLength;
             if (len == 0)
             {
-                frame.PayloadData = PayloadData.Empty;
+                frame.PayloadData = new PayloadData();
                 return;
             }
 
@@ -443,7 +444,7 @@ namespace Unosquare.Net
             var len = frame.FullPayloadLength;
             if (len == 0)
             {
-                frame.PayloadData = PayloadData.Empty;
+                frame.PayloadData = new PayloadData();
                 completed(frame);
 
                 return;
@@ -483,7 +484,7 @@ namespace Unosquare.Net
 
         internal static WebSocketFrame CreatePingFrame(bool mask)
         {
-            return new WebSocketFrame(Fin.Final, Opcode.Ping, PayloadData.Empty, false, mask);
+            return new WebSocketFrame(Fin.Final, Opcode.Ping, new PayloadData(), false, mask);
         }
 
         internal static WebSocketFrame CreatePingFrame(byte[] data, bool mask)
@@ -621,10 +622,7 @@ Extended Payload Length: {extPayloadLen}
             }
         }
 
-        public override string ToString()
-        {
-            return BitConverter.ToString(ToArray());
-        }
+        public override string ToString() => BitConverter.ToString(ToArray());
 
 #endregion
 
