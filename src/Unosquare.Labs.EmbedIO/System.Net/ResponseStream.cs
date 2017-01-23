@@ -196,7 +196,7 @@ namespace Unosquare.Net
             if (_disposed)
                 throw new ObjectDisposedException(GetType().ToString());
 
-            byte[] bytes = null;
+            byte[] bytes;
             var ms = GetHeaders(false);
             var chunked = _response.SendChunked;
             if (ms != null)

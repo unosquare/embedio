@@ -1426,7 +1426,7 @@ namespace Unosquare.Net
                 Error("An exception has occurred during the OnOpen event.", ex);
             }
 
-            MessageEventArgs e = null;
+            MessageEventArgs e;
             lock (_forMessageEventQueue)
             {
                 if (_messageEventQueue.Count == 0 || _readyState != WebSocketState.Open)
