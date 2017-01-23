@@ -508,8 +508,9 @@
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="method">The method.</param>
+        /// <param name="mode">The mode.</param>
         /// <returns></returns>
-        public static MemoryStream Compress(this Stream buffer, CompressionMethod method = CompressionMethod.Gzip)
+        public static MemoryStream Compress(this Stream buffer, CompressionMethod method = CompressionMethod.Gzip, CompressionMode mode = CompressionMode.Compress)
         {
             buffer.Position = 0;
             var targetStream = new MemoryStream();
@@ -517,7 +518,7 @@
             switch (method)
             {
                 case CompressionMethod.Deflate:
-                    using (var compressor = new DeflateStream(targetStream, CompressionMode.Compress, true))
+                    using (var compressor = new DeflateStream(targetStream, mode, true))
                     {
                         buffer.CopyTo(compressor, 1024);
                         buffer.CopyTo(compressor);
@@ -527,7 +528,7 @@
                     }
                     break;
                 case CompressionMethod.Gzip:
-                    using (var compressor = new GZipStream(targetStream, CompressionMode.Compress, true))
+                    using (var compressor = new GZipStream(targetStream, mode, true))
                     {
                         buffer.CopyTo(compressor);
                     }
@@ -547,11 +548,11 @@
         /// <param name="method">The method.</param>
         /// <param name="mode">The mode.</param>
         /// <returns></returns>
-        public static byte[] Compress(this byte[] buffer, CompressionMethod method = CompressionMethod.Gzip)
+        public static byte[] Compress(this byte[] buffer, CompressionMethod method = CompressionMethod.Gzip, CompressionMode mode = CompressionMode.Compress)
         {
             using (var stream = new MemoryStream(buffer))
             {
-                return stream.Compress(method).ToArray();
+                return stream.Compress(method, mode).ToArray();
             }
         }
 

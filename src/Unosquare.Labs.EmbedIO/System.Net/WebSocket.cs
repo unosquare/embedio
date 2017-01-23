@@ -1480,7 +1480,7 @@ namespace Unosquare.Net
             EnqueueToMessageEventQueue(
                 frame.IsCompressed
                     ? new MessageEventArgs(
-                        frame.Opcode, frame.PayloadData.ApplicationData.Decompress(_compression))
+                        frame.Opcode, frame.PayloadData.ApplicationData.Compress(_compression, System.IO.Compression.CompressionMode.Decompress))
                     : new MessageEventArgs(frame));
 
             return true;
@@ -1507,7 +1507,7 @@ namespace Unosquare.Net
                 using (_fragmentsBuffer)
                 {
                     var data = _fragmentsCompressed
-                        ? _fragmentsBuffer.Decompress(_compression)
+                        ? _fragmentsBuffer.Compress(_compression, System.IO.Compression.CompressionMode.Decompress)
                         : _fragmentsBuffer;
 
                     EnqueueToMessageEventQueue(new MessageEventArgs(_fragmentsOpcode, data.ToArray()));

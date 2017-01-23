@@ -1073,35 +1073,6 @@ namespace Unosquare.Net
         {
             return chars?.Length == 0 || !string.IsNullOrEmpty(value) && value.IndexOfAny(chars) > -1;
         }
-
-        internal static MemoryStream Decompress(this Stream stream, CompressionMethod method)
-        {
-            using (var output = new MemoryStream())
-            {
-                if (method != CompressionMethod.Deflate || stream.Length == 0)
-                    return output;
-
-                stream.Position = 0;
-                using (var ds = new DeflateStream(stream, CompressionMode.Decompress, true))
-                {
-                    ds.CopyTo(output, 1024);
-#if NET452
-                ds.Close(); // BFINAL set to 1.
-#endif
-                    output.Position = 0;
-
-                    return output;
-                }
-            }
-        }
-        
-        internal static byte[] Decompress(this byte[] data, CompressionMethod method)
-        {
-            using (var stream = new MemoryStream(data))
-            {
-                return Decompress(stream, method).ToArray();
-            }
-        }
         
         internal static bool IsCompressionExtension(this string value, CompressionMethod method)
         {
