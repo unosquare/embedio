@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.3.6.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -46,8 +46,8 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Unosquare.Swan, Version=0.9.13.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Unosquare.Swan.0.9.13\lib\net452\Unosquare.Swan.dll</HintPath>
+    <Reference Include="Unosquare.Swan, Version=0.11.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unosquare.Swan.0.11.1\lib\net452\Unosquare.Swan.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
