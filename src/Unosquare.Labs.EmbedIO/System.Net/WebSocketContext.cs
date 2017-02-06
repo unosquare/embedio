@@ -32,9 +32,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Security.Principal;
-#if COMPAT
-using Unosquare.Labs.EmbedIO.Log;
-#endif
 
 namespace Unosquare.Net
 {
@@ -51,30 +48,17 @@ namespace Unosquare.Net
         #endregion
 
         #region Internal Constructors
-
-#if COMPAT
-        internal WebSocketContext(HttpListenerContext context, string protocol, ILog log)
-        {
-            _context = context;
-            Log = log;
-            WebSocket = new WebSocket(this, protocol);
-        }
-#else
+        
         internal WebSocketContext(HttpListenerContext context, string protocol)
         {
             _context = context;
             WebSocket = new WebSocket(this, protocol);
         }
-#endif
 
         #endregion
 
         #region Internal Properties
-
-#if COMPAT
-        internal ILog Log { get; }
-#endif
-
+        
         internal Stream Stream => _context.Connection.Stream;
 
         #endregion

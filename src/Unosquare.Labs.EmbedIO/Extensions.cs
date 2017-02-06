@@ -6,18 +6,13 @@
     using System.IO.Compression;
     using System.Linq;
     using System.Text;
+    using Swan.Formatters;
 #if NET46
     using System.Net;
 #else
     using Net;
 #endif
-#if COMPAT
-    using Newtonsoft.Json;
-#else
-    using Swan.Formatters;
-
-#endif
-
+    
     /// <summary>
     /// Extension methods to help your coding!
     /// </summary>
@@ -269,20 +264,11 @@
         /// <returns></returns>
         public static bool JsonResponse(this HttpListenerContext context, object data)
         {
-#if COMPAT
-            var jsonFormatting = Formatting.None;
-#if DEBUG
-            jsonFormatting = Formatting.Indented;
-#endif
-            var json = JsonConvert.SerializeObject(data, jsonFormatting);
-            return context.JsonResponse(json);
-#else
             var jsonFormatting = true;
 #if DEBUG
             jsonFormatting = false;
 #endif
             return context.JsonResponse(Json.Serialize(data, jsonFormatting));
-#endif
         }
 
         /// <summary>
@@ -312,11 +298,7 @@
             where T : class
         {
             var requestBody = context.RequestBody();
-#if COMPAT
             return ParseJson<T>(requestBody);
-#else
-            return ParseJson<T>(requestBody);
-#endif
         }
 
         /// <summary>
@@ -328,66 +310,13 @@
         public static T ParseJson<T>(this string requestBody)
             where T : class
         {
-#if COMPAT
-            return requestBody == null ? null : JsonConvert.DeserializeObject<T>(requestBody);
-#else
             return requestBody == null ? null : Json.Deserialize<T>(requestBody);
-#endif
         }
 
         #endregion
 
         #region Data Parsing Methods
 
-#if COMPAT
-/// <summary>
-/// Returns dictionary from Request POST data
-/// Please note the underlying input stream is not rewindable.
-/// </summary>
-/// <param name="context"></param>
-/// <returns></returns>
-        [Obsolete("Use RequestFormDataDictionary methods instead")]
-        public static Dictionary<string, string> RequestFormData(this HttpListenerContext context)
-        {
-            var request = context.Request;
-            if (request.HasEntityBody == false) return null;
-
-            using (var body = request.InputStream)
-            {
-                using (var reader = new StreamReader(body, request.ContentEncoding))
-                {
-                    var stringData = reader.ReadToEnd();
-                    return RequestFormData(stringData);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Returns a dictionary of KVPs from Request data
-        /// </summary>
-        /// <param name="requestBody">The request body.</param>
-        /// <returns></returns>
-        [Obsolete("Use RequestFormDataDictionary methods instead")]
-        public static Dictionary<string, string> RequestFormData(this string requestBody)
-        {
-            var dictionary = ParseFormDataAsDictionary(requestBody);
-            var result = new Dictionary<string, string>();
-            foreach (var kvp in dictionary)
-            {
-                var listValue = kvp.Value as List<string>;
-                if (listValue == null)
-                {
-                    result[kvp.Key] = kvp.Value as string;
-                }
-                else
-                {
-                    result[kvp.Key] = string.Join("\r\n", listValue.ToArray());
-                }
-            }
-
-            return result;
-        }
-#endif
 
         /// <summary>
         /// Returns a dictionary of KVPs from Request data

@@ -54,11 +54,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Unosquare.Labs.EmbedIO;
-#if COMPAT
-using Unosquare.Labs.EmbedIO.Log;
-#else
 using Unosquare.Swan;
-#endif
 
 namespace Unosquare.Net
 {
@@ -241,9 +237,6 @@ namespace Unosquare.Net
             _protocol = protocol;
 
             _closeContext = context.Close;
-#if COMPAT
-            Log = context.Log;
-#endif
             _message = Messages;
             IsSecure = context.IsSecureConnection;
             _stream = context.Stream;
@@ -282,11 +275,7 @@ namespace Unosquare.Net
         /// <para>
         ///   <paramref name="protocols" /> is invalid.
         /// </para></exception>
-#if COMPAT
-        public WebSocket(string url, ILog logger, params string[] protocols)
-#else
         public WebSocket(string url, params string[] protocols)
-#endif
         {
             if (url == null)
                 throw new ArgumentNullException(nameof(url));
@@ -306,11 +295,7 @@ namespace Unosquare.Net
 
                 _protocols = protocols;
             }
-
-#if COMPAT
-            Log = logger ?? new NullLog();
-#endif
-
+            
             _base64Key = CreateBase64Key();
             _client = true;
 
@@ -366,11 +351,7 @@ namespace Unosquare.Net
                     string msg;
                     if (!checkIfAvailable(true, false, true, false, false, true, out msg))
                     {
-#if COMPAT
-                        Log.Error(msg);
-#else
                         msg.Error();
-#endif
                         Error("An error has occurred in setting the compression.", null);
 
                         return;
@@ -439,11 +420,7 @@ namespace Unosquare.Net
                     string msg;
                     if (!checkIfAvailable(true, false, true, false, false, true, out msg))
                     {
-#if COMPAT
-                        Log.Error(msg);
-#else
                         msg.Error();
-#endif
                         Error("An error has occurred in setting the enable redirection.", null);
 
                         return;
@@ -479,16 +456,6 @@ namespace Unosquare.Net
         /// </value>
         public bool IsSecure { get; private set; }
 
-#if COMPAT
-/// <summary>
-/// Gets the logging functions.
-/// </summary>
-/// <value>
-/// A <see cref="ILog"/> that provides the logging functions.
-/// </value>
-        public ILog Log { get; set; }
-#endif
-
         /// <summary>
         /// Gets or sets the value of the HTTP Origin header to send with
         /// the WebSocket handshake request to the server.
@@ -518,11 +485,7 @@ namespace Unosquare.Net
                     string msg;
                     if (!checkIfAvailable(true, false, true, false, false, true, out msg))
                     {
-#if COMPAT
-                        Log.Error(msg);
-#else
                         msg.Error();
-#endif
                         Error("An error has occurred in setting the origin.", null);
 
                         return;
@@ -537,11 +500,7 @@ namespace Unosquare.Net
                     Uri origin;
                     if (!Uri.TryCreate(value, UriKind.Absolute, out origin) || origin.Segments.Length > 1)
                     {
-#if COMPAT
-                        Log.Error("The syntax of an origin must be '<scheme>://<host>[:<port>]'.");
-#else
                         "The syntax of an origin must be '<scheme>://<host>[:<port>]'.".Error();
-#endif
                         Error("An error has occurred in setting the origin.", null);
 
                         return;
@@ -640,11 +599,7 @@ namespace Unosquare.Net
                     if (!checkIfAvailable(true, true, true, false, false, true, out msg) ||
                         !value.CheckWaitTime(out msg))
                     {
-#if COMPAT
-                        Log.Error(msg);
-#else
                         msg.Error();
-#endif
                         Error("An error has occurred in setting the wait time.", null);
 
                         return;
@@ -691,11 +646,7 @@ namespace Unosquare.Net
                 string msg;
                 if (!checkIfAvailable(true, false, false, false, out msg))
                 {
-#if COMPAT
-                        Log.Error(msg);
-#else
                     msg.Error();
-#endif
                     Error("An error has occurred in accepting.", null);
 
                     return false;
@@ -710,11 +661,7 @@ namespace Unosquare.Net
                 }
                 catch (Exception ex)
                 {
-#if COMPAT
-                        Log.Error(ex);
-#else
                     ex.Log(nameof(WebSocket));
-#endif
                     Fatal("An exception has occurred while accepting.", ex);
 
                     return false;
@@ -727,22 +674,14 @@ namespace Unosquare.Net
         // As server
         private bool AcceptHandshake()
         {
-#if COMPAT
-            Log.DebugFormat("A request from {0}:\n{1}", _context.UserEndPoint, _context);
-#else
             $"A request from {_context.UserEndPoint}:\n{_context}".Debug();
-#endif
 
             string msg;
             if (!CheckHandshakeRequest(_context, out msg))
             {
                 SendHttpResponse(CreateHandshakeFailureResponse(HttpStatusCode.BadRequest));
-
-#if COMPAT
-                        Log.Error(msg);
-#else
+                
                 msg.Error();
-#endif
                 Fatal("An error has occurred while accepting.", CloseStatusCode.ProtocolError);
 
                 return false;
@@ -751,12 +690,8 @@ namespace Unosquare.Net
             if (!CustomCheckHandshakeRequest(_context, out msg))
             {
                 SendHttpResponse(CreateHandshakeFailureResponse(HttpStatusCode.BadRequest));
-
-#if COMPAT
-                        Log.Error(msg);
-#else
+                
                 msg.Error();
-#endif
                 Fatal("An error has occurred while accepting.", CloseStatusCode.PolicyViolation);
 
                 return false;
@@ -1050,21 +985,13 @@ namespace Unosquare.Net
             {
                 if (_readyState == WebSocketState.Closing)
                 {
-#if COMPAT
-                    Log.Info("The closing is already in progress.");
-#else
                     "The closing is already in progress.".Info();
-#endif
                     return;
                 }
 
                 if (_readyState == WebSocketState.Closed)
                 {
-#if COMPAT
-                    Log.Info("The connection has been closed.");
-#else
                     "The connection has been closed.".Info();
-#endif
                     return;
                 }
 
@@ -1074,21 +1001,13 @@ namespace Unosquare.Net
                 _readyState = WebSocketState.Closing;
             }
 
-#if COMPAT
-            Log.Info("Begin closing the connection.");
-#else
             "Begin closing the connection.".Info();
-#endif
 
             var bytes = send ? WebSocketFrame.CreateCloseFrame(e.PayloadData, _client).ToArray() : null;
             e.WasClean = CloseHandshake(bytes, receive, received);
             ReleaseResources();
 
-#if COMPAT
-            Log.Info("End closing the connection.");
-#else
             "End closing the connection.".Info();
-#endif
 
             _readyState = WebSocketState.Closed;
 
@@ -1098,11 +1017,7 @@ namespace Unosquare.Net
             }
             catch (Exception ex)
             {
-#if COMPAT
-                    Log.Error(ex.ToString());
-#else
                 ex.Log(nameof(WebSocket));
-#endif
                 Error("An exception has occurred during the OnClose event.", ex);
             }
         }
@@ -1120,11 +1035,7 @@ namespace Unosquare.Net
                        (receive && sent && _exitReceiving != null && _exitReceiving.WaitOne(_waitTime));
 
             var ret = sent && received;
-#if COMPAT
-            Log.DebugFormat("Was clean?: {0}\n  sent: {1}\n  received: {2}", ret, sent, received);
-#else
-            $"Was clean?: {ret}\n  sent: {sent}\n  received: {received}".Debug();
-#endif
+            $"Was clean?: {ret}\n  sent: {sent}\n  received: {received}".Trace();
 
             return ret;
         }
@@ -1137,11 +1048,7 @@ namespace Unosquare.Net
                 string msg;
                 if (!checkIfAvailable(true, false, false, true, out msg))
                 {
-#if COMPAT
-                        Log.Error(msg);
-#else
                     msg.Error();
-#endif
                     Error("An error has occurred in connecting.", null);
 
                     return false;
@@ -1157,11 +1064,7 @@ namespace Unosquare.Net
                 }
                 catch (Exception ex)
                 {
-#if COMPAT
-                    Log.Error(ex.ToString());
-#else
                     ex.Log(nameof(WebSocket));
-#endif
                     Fatal("An exception has occurred while connecting.", ex);
 
                     return false;
@@ -1283,11 +1186,7 @@ namespace Unosquare.Net
             string msg;
             if (!CheckHandshakeResponse(res, out msg))
             {
-#if COMPAT
-                        Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Fatal("An error has occurred while connecting.", CloseStatusCode.ProtocolError);
 
                 return false;
@@ -1357,11 +1256,7 @@ namespace Unosquare.Net
                 }
                 catch (Exception ex)
                 {
-#if COMPAT
-                    Log.Error(ex.ToString());
-#else
                     ex.Log(nameof(WebSocket));
-#endif
                     Error("An exception has occurred during an OnMessage event.", ex);
                 }
 
@@ -1386,11 +1281,7 @@ namespace Unosquare.Net
             }
             catch (Exception ex)
             {
-#if COMPAT
-                    Log.Error(ex.ToString());
-#else
                 ex.Log(nameof(WebSocket));
-#endif
                 Error("An exception has occurred during an OnMessage event.", ex);
             }
 
@@ -1418,11 +1309,7 @@ namespace Unosquare.Net
             }
             catch (Exception ex)
             {
-#if COMPAT
-                    Log.Error(ex.ToString());
-#else
                 ex.Log(nameof(WebSocket));
-#endif
                 Error("An exception has occurred during the OnOpen event.", ex);
             }
 
@@ -1523,13 +1410,7 @@ namespace Unosquare.Net
         private bool ProcessPingFrame(WebSocketFrame frame)
         {
             if (send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, _client).ToArray()))
-            {
-#if COMPAT
-                Log.Info("Returned a pong.");
-#else
                 "Returned a pong.".Info();
-#endif
-            }
 
             if (EmitOnPing)
                 EnqueueToMessageEventQueue(new MessageEventArgs(frame));
@@ -1540,11 +1421,7 @@ namespace Unosquare.Net
         private bool ProcessPongFrame()
         {
             _receivePong.Set();
-#if COMPAT
-                Log.Info("Received a pong.");
-#else
             "Received a pong.".Info();
-#endif
 
             return true;
         }
@@ -1626,12 +1503,7 @@ namespace Unosquare.Net
 
         private bool ProcessUnsupportedFrame(WebSocketFrame frame)
         {
-#if COMPAT
-            Log.Error("An unsupported frame:" + frame.PrintToString());
-#else
             $"An unsupported frame: {frame.PrintToString()}".Error();
-#endif
-
             Fatal("There is no way to handle it.", CloseStatusCode.PolicyViolation);
 
             return false;
@@ -1709,11 +1581,7 @@ namespace Unosquare.Net
             {
                 if (_readyState != WebSocketState.Open)
                 {
-#if COMPAT
-                    Log.Error("The sending has been interrupted.");
-#else
                     "The sending has been interrupted.".Error();
-#endif
                     return false;
                 }
 
@@ -1742,11 +1610,7 @@ namespace Unosquare.Net
                 }
                 catch (Exception ex)
                 {
-#if COMPAT
-                    Log.Error(ex.ToString());
-#else
                     ex.Log(nameof(WebSocket));
-#endif
                     Error("An exception has occurred while sending data.", ex);
                 }
                 finally
@@ -1814,11 +1678,7 @@ namespace Unosquare.Net
             {
                 if (_readyState != WebSocketState.Open)
                 {
-#if COMPAT
-                    Log.Error("The sending has been interrupted.");
-#else
                     "The sending has been interrupted.".Error();
-#endif
                     return false;
                 }
 
@@ -1837,11 +1697,7 @@ namespace Unosquare.Net
                 }
                 catch (Exception ex)
                 {
-#if COMPAT
-                    Log.Error(ex.ToString());
-#else
                     ex.Log(nameof(WebSocket));
-#endif
                     Error("An exception has occurred during a send callback.", ex);
                 }
             });
@@ -1856,11 +1712,7 @@ namespace Unosquare.Net
             }
             catch (Exception ex)
             {
-#if COMPAT
-                    Log.Error(ex.ToString());
-#else
                 ex.Log(nameof(WebSocket));
-#endif
                 return false;
             }
         }
@@ -1911,21 +1763,13 @@ namespace Unosquare.Net
             if (!res.IsRedirect) return res;
 
             var url = res.Headers["Location"];
-#if COMPAT
-                Log.WarnFormat("Received a redirection to '{0}'.", url);
-#else
             $"Received a redirection to '{url}'.".Warn();
-#endif
 
             if (_enableRedirection)
             {
                 if (string.IsNullOrEmpty(url))
                 {
-#if COMPAT
-                        Log.Error("No url to redirect is located.");
-#else
                     "No url to redirect is located.".Error();
-#endif
                     return res;
                 }
 
@@ -1933,9 +1777,7 @@ namespace Unosquare.Net
                 string msg;
                 if (!url.TryCreateWebSocketUri(out uri, out msg))
                 {
-#if COMPAT
-                        Log.Error("An invalid url to redirect is located: " + msg);
-#endif
+                    $"An invalid url to redirect is located: {msg}".Error();
                     return res;
                 }
 
@@ -1954,17 +1796,9 @@ namespace Unosquare.Net
         // As client
         private HttpResponse SendHttpRequest(HttpRequest request, int millisecondsTimeout)
         {
-#if COMPAT
-            Log.DebugFormat("A request to the server:\n" + request);
-#else
             $"A request to the server:\n {request.Stringify()}".Debug();
-#endif
             var res = request.GetResponse(_stream, millisecondsTimeout);
-#if COMPAT
-            Log.DebugFormat("A response to this request:\n" + res);
-#else
             $"A response to the server:\n {res.Stringify()}".Debug();
-#endif
 
             return res;
         }
@@ -1972,11 +1806,7 @@ namespace Unosquare.Net
         // As server
         private bool SendHttpResponse(HttpResponse response)
         {
-#if COMPAT
-            Log.DebugFormat("A response to this request:\n" + response);
-#else
             $"A response to the server:\n {response.Stringify()}".Debug();
-#endif
             return SendBytes(response.ToByteArray());
         }
 
@@ -2115,11 +1945,7 @@ namespace Unosquare.Net
                         },
                         ex =>
                         {
-#if COMPAT
-                    Log.Error(ex.ToString());
-#else
                             ex.Log(nameof(WebSocket));
-#endif
                             Fatal("An exception has occurred while receiving.", ex);
                         }
                     );
@@ -2150,18 +1976,12 @@ namespace Unosquare.Net
                 {
                     if (!ext.Contains("server_no_context_takeover"))
                     {
-#if COMPAT
-                        Log.Error("The server hasn't sent back 'server_no_context_takeover'.");
-#else
                         "The server hasn't sent back 'server_no_context_takeover'.".Error();
-#endif
                         return false;
                     }
-
-#if COMPAT
+                    
                     if (!ext.Contains("client_no_context_takeover"))
-                        Log.Info("The server hasn't sent back 'client_no_context_takeover'.");
-#endif
+                        "The server hasn't sent back 'client_no_context_takeover'.".Info();
 
                     var method = _compression.ToExtensionString();
                     var invalid =
@@ -2329,17 +2149,13 @@ namespace Unosquare.Net
             {
                 if (_readyState == WebSocketState.Closing)
                 {
-#if COMPAT
-                    Log.Info("The closing is already in progress.");
-#endif
+                    "The closing is already in progress.".Debug();
                     return;
                 }
 
                 if (_readyState == WebSocketState.Closed)
                 {
-#if COMPAT
-                    Log.Info("The connection has been closed.");
-#endif
+                    "The connection has been closed.".Debug();
                     return;
                 }
 
@@ -2358,11 +2174,7 @@ namespace Unosquare.Net
             }
             catch (Exception ex)
             {
-#if COMPAT
-                    Log.Error(ex.ToString());
-#else
                 ex.Log(nameof(WebSocket));
-#endif
             }
         }
 
@@ -2397,11 +2209,7 @@ namespace Unosquare.Net
             }
             catch (Exception ex)
             {
-#if COMPAT
-                    Log.Error(ex.ToString());
-#else
                 ex.Log(nameof(WebSocket));
-#endif
                 Fatal("An exception has occurred while accepting.", ex);
 
                 return;
@@ -2427,11 +2235,7 @@ namespace Unosquare.Net
                 {
                     if (_readyState != WebSocketState.Open)
                     {
-#if COMPAT
-                        Log.Error("The sending has been interrupted.");
-#else
                         "The sending has been interrupted.".Error();
-#endif
                         return;
                     }
 
@@ -2457,11 +2261,7 @@ namespace Unosquare.Net
                     }
                     catch (Exception ex)
                     {
-#if COMPAT
-                    Log.Error(ex.ToString());
-#else
                         ex.Log(nameof(WebSocket));
-#endif
                     }
                 }
             }
@@ -2489,11 +2289,7 @@ namespace Unosquare.Net
                 }
                 catch (Exception ex)
                 {
-#if COMPAT
-                    Log.Error(ex.ToString());
-#else
                     ex.Log(nameof(WebSocket));
-#endif
                 }
             }
         }
@@ -2513,11 +2309,7 @@ namespace Unosquare.Net
             string msg;
             if (!checkIfAvailable(false, true, true, false, false, false, out msg))
             {
-#if COMPAT
-                        Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in accepting.", null);
 
                 return;
@@ -2543,11 +2335,7 @@ namespace Unosquare.Net
             string msg;
             if (!checkIfAvailable(false, true, true, false, false, false, out msg))
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in accepting.", null);
 
                 return;
@@ -2572,11 +2360,7 @@ namespace Unosquare.Net
             string msg;
             if (!checkIfAvailable(true, true, false, false, out msg))
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in closing the connection.", null);
 
                 return;
@@ -2598,11 +2382,7 @@ namespace Unosquare.Net
             string msg;
             if (!checkIfAvailable(true, true, false, false, out msg))
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in closing the connection.", null);
 
                 return;
@@ -2610,11 +2390,7 @@ namespace Unosquare.Net
 
             if (!CheckParametersForClose(code, null, _client, out msg))
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in closing the connection.", null);
 
                 return;
@@ -2647,11 +2423,7 @@ namespace Unosquare.Net
             string msg;
             if (!checkIfAvailable(true, true, false, false, out msg))
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in closing the connection.", null);
 
                 return;
@@ -2659,11 +2431,7 @@ namespace Unosquare.Net
 
             if (!CheckParametersForClose(code, reason, _client, out msg))
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in closing the connection.", null);
 
                 return;
@@ -2691,11 +2459,7 @@ namespace Unosquare.Net
             string msg;
             if (!checkIfAvailable(true, true, false, false, out msg))
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in closing the connection.", null);
 
                 return;
@@ -2720,11 +2484,7 @@ namespace Unosquare.Net
             string msg;
             if (!checkIfAvailable(true, true, false, false, out msg))
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in closing the connection.", null);
 
                 return;
@@ -2732,11 +2492,7 @@ namespace Unosquare.Net
 
             if (!CheckParametersForClose(code, null, _client, out msg))
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in closing the connection.", null);
 
                 return;
@@ -2773,11 +2529,7 @@ namespace Unosquare.Net
             string msg;
             if (!checkIfAvailable(true, true, false, false, out msg))
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in closing the connection.", null);
 
                 return;
@@ -2785,11 +2537,7 @@ namespace Unosquare.Net
 
             if (!CheckParametersForClose(code, reason, _client, out msg))
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in closing the connection.", null);
 
                 return;
@@ -2816,11 +2564,7 @@ namespace Unosquare.Net
             string msg;
             if (!checkIfAvailable(true, false, true, false, false, true, out msg))
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in connecting.", null);
 
                 return;
@@ -2846,11 +2590,7 @@ namespace Unosquare.Net
             string msg;
             if (!checkIfAvailable(true, false, true, false, false, true, out msg))
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in connecting.", null);
 
                 return;
@@ -2902,11 +2642,7 @@ namespace Unosquare.Net
             var msg = CheckPingParameter(message, out data);
             if (msg != null)
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in sending a ping.", null);
 
                 return false;
@@ -2939,11 +2675,7 @@ namespace Unosquare.Net
 
             if (msg != null)
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in sending data.", null);
 
                 return;
@@ -2965,11 +2697,7 @@ namespace Unosquare.Net
 
             if (msg != null)
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in sending data.", null);
 
                 return;
@@ -2991,11 +2719,7 @@ namespace Unosquare.Net
 
             if (msg != null)
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in sending data.", null);
 
                 return;
@@ -3025,11 +2749,7 @@ namespace Unosquare.Net
 
             if (msg != null)
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in sending data.", null);
 
                 return;
@@ -3060,11 +2780,7 @@ namespace Unosquare.Net
 
             if (msg != null)
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in sending data.", null);
 
                 return;
@@ -3094,11 +2810,7 @@ namespace Unosquare.Net
 
             if (msg != null)
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in sending data.", null);
 
                 return;
@@ -3132,11 +2844,7 @@ namespace Unosquare.Net
 
             if (msg != null)
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in sending data.", null);
 
                 return;
@@ -3149,21 +2857,13 @@ namespace Unosquare.Net
                     var len = data.Length;
                     if (len == 0)
                     {
-#if COMPAT
-                        Log.Error("The data cannot be read from 'stream'.");
-#endif
                         Error("An error has occurred in sending data.", null);
-
                         return;
                     }
-
-#if COMPAT
+                    
                     if (len < length)
-                        Log.InfoFormat(
-                            "The length of the data is less than 'length':\n  expected: {0}\n  actual: {1}",
-                            length,
-                            len);
-#endif
+                        $"The length of the data is less than 'length':\n  expected: {length}\n  actual: {len}".Info();
+
                     var sent = send(Opcode.Binary, new MemoryStream(data));
                     completed?.Invoke(sent);
                 },
@@ -3184,37 +2884,19 @@ namespace Unosquare.Net
         public void SetCookie(Cookie cookie)
         {
             string msg;
-            if (!checkIfAvailable(true, false, true, false, false, true, out msg))
+            if (!checkIfAvailable(true, false, true, false, false, true, out msg) || cookie == null)
             {
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in setting a cookie.", null);
 
                 return;
             }
-
-            if (cookie == null)
-            {
-#if COMPAT
-                Log.Error("'cookie' is null.");
-#endif
-                Error("An error has occurred in setting a cookie.", null);
-
-                return;
-            }
-
+            
             lock (_forState)
             {
                 if (!checkIfAvailable(true, false, false, true, out msg))
                 {
-#if COMPAT
-                Log.Error(msg);
-#else
                     msg.Error();
-#endif
                     Error("An error has occurred in setting a cookie.", null);
 
                     return;
@@ -3328,11 +3010,7 @@ namespace Unosquare.Net
             if (!checkIfAvailable(true, false, true, false, false, true, out msg))
             {
 
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in setting the proxy.", null);
 
                 return;
@@ -3340,12 +3018,7 @@ namespace Unosquare.Net
 
             if (!CheckParametersForSetProxy(url, username, password, out msg))
             {
-
-#if COMPAT
-                Log.Error(msg);
-#else
                 msg.Error();
-#endif
                 Error("An error has occurred in setting the proxy.", null);
 
                 return;
@@ -3355,11 +3028,7 @@ namespace Unosquare.Net
             {
                 if (!checkIfAvailable(true, false, false, true, out msg))
                 {
-#if COMPAT
-                Log.Error(msg);
-#else
                     msg.Error();
-#endif
                     Error("An error has occurred in setting the proxy.", null);
 
                     return;
@@ -3367,9 +3036,7 @@ namespace Unosquare.Net
 
                 if (string.IsNullOrEmpty(url))
                 {
-#if COMPAT
-                    Log.WarnFormat("The url and credentials for the proxy are initialized.");
-#endif
+                    "The url and credentials for the proxy are initialized.".Warn();
                     _proxyUri = null;
                     _proxyCredentials = null;
 
@@ -3380,9 +3047,7 @@ namespace Unosquare.Net
 
                 if (string.IsNullOrEmpty(username))
                 {
-#if COMPAT
-                    Log.WarnFormat("The credentials for the proxy are initialized.");
-#endif
+                    "The credentials for the proxy are initialized.".Warn();
                     _proxyCredentials = null;
 
                     return;

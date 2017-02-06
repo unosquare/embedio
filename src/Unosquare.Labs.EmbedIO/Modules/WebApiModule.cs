@@ -57,12 +57,8 @@
                 // ensure module does not return cached responses
                 context.NoCache();
 
-                // Log the handler to be used
-#if COMPAT
-                server.Log.DebugFormat("Handler: {0}.{1}", methodPair.Item2.DeclaringType.FullName, methodPair.Item2.Name);
-#else
+                // Log the handler to be usede
                 $"Handler: {methodPair.Item2.DeclaringType?.FullName}.{methodPair.Item2.Name}".Debug(nameof(WebApiModule));
-#endif
 
                 // Select the routing strategy
                 if (server.RoutingStrategy == RoutingStrategy.Regex)
@@ -145,11 +141,8 @@
                 else
                 {
                     // Log the handler to be used
-#if COMPAT
-                    server.Log.WarnFormat($"Routing strategy '{server.RoutingStrategy}' is not supported by this module.");
-#else
                     $"Routing strategy '{server.RoutingStrategy}' is not supported by this module.".Warn(nameof(WebApiModule));
-#endif
+
                     return false;
                 }
             });

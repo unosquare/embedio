@@ -60,10 +60,8 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Extensions.Fluent.cs" />
     <Compile Include="HttpVerbs.cs" />
-    <Compile Include="Log\ILog.cs" />
     <Compile Include="ISessionWebModule.cs" />
     <Compile Include="IWebModule.cs" />
-    <Compile Include="Log\SimpleConsoleLog.cs" />
     <Compile Include="Middleware.cs" />
     <Compile Include="Modules\CorsModule.cs" />
     <Compile Include="Modules\FallbackModule.cs" />
@@ -71,7 +69,6 @@
     <Compile Include="Modules\StaticFilesModule.cs" />
     <Compile Include="Modules\WebApiModule.cs" />
     <Compile Include="Modules\WebSocketsModule.cs" />
-    <Compile Include="Log\NullLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SessionInfo.cs" />
     <Compile Include="System.Net\ChunkedInputStream.cs" />

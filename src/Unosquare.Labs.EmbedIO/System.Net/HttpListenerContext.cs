@@ -149,11 +149,7 @@ namespace Unosquare.Net
         /// </para>
         /// </exception>
         /// <exception cref="InvalidOperationException">This method has already been called.</exception>
-#if COMPAT
-        public WebSocketContext AcceptWebSocket(string protocol, Unosquare.Labs.EmbedIO.Log.ILog log)
-#else
         public WebSocketContext AcceptWebSocket(string protocol)
-#endif
         {
             if (_websocketContext != null)
                 throw new InvalidOperationException("The accepting is already in progress.");
@@ -164,11 +160,7 @@ namespace Unosquare.Net
             //if (!protocol.IsToken())
             //    throw new ArgumentException("Contains an invalid character.", "protocol");
 
-#if COMPAT
-            _websocketContext = new WebSocketContext(this, protocol, log);
-#else
             _websocketContext = new WebSocketContext(this, protocol);
-#endif
             _websocketContext.WebSocket.InternalAccept();
 
             return _websocketContext;

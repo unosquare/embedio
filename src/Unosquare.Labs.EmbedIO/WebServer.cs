@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
+    using Swan;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -11,11 +12,6 @@
     using System.Net;
 #else
     using Net;
-#endif
-#if COMPAT
-    using Log;
-#else
-    using Swan;
 #endif
 
     /// <summary>
@@ -58,16 +54,6 @@
         /// </value>
         public ISessionWebModule SessionModule { get; protected set; }
 
-#if COMPAT
-        /// <summary>
-        /// Gets the log interface to which this instance will log messages.
-        /// </summary>
-        /// <value>
-        /// The log.
-        /// </value>
-        public ILog Log { get; protected set; }
-#endif
-
         /// <summary>
         /// Gets the URL RoutingStrategy used in this instance.
         /// By default it is set to Wildcard, but Regex is the recommended value.
@@ -79,11 +65,7 @@
         /// This constructor does not provide any Logging capabilities.
         /// </summary>
         public WebServer()
-#if COMPAT
-            : this("http://*/", new NullLog(), RoutingStrategy.Wildcard)
-#else
             : this(new[] { "http://*/" }, RoutingStrategy.Wildcard)
-#endif
         {
             // placeholder
         }
@@ -94,39 +76,10 @@
         /// </summary>
         /// <param name="port">The port.</param>
         public WebServer(int port)
-#if COMPAT
-            : this(port, new NullLog())
-#else
             : this(new[] { "http://*:" + port + "/" }, RoutingStrategy.Wildcard)
-#endif
         {
             // placeholder
         }
-
-#if COMPAT
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebServer"/> class.
-        /// </summary>
-        /// <param name="port">The port.</param>
-        /// <param name="log"></param>
-        public WebServer(int port, ILog log)
-            : this("http://*:" + port.ToString() + "/", log, RoutingStrategy.Wildcard)
-        {
-            // placeholder
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebServer"/> class.
-        /// </summary>
-        /// <param name="port">The port.</param>
-        /// <param name="log"></param>
-        /// <param name="routingStrategy">The routing strategy</param>
-        public WebServer(int port, ILog log, RoutingStrategy routingStrategy)
-            : this("http://*:" + port.ToString() + "/", log, routingStrategy)
-        {
-            // placeholder
-        }
-#endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer" /> class.
@@ -135,39 +88,10 @@
         /// <param name="urlPrefix">The URL prefix.</param>
         /// <param name="strategy">The strategy.</param>
         public WebServer(string urlPrefix, RoutingStrategy strategy = RoutingStrategy.Wildcard)
-#if COMPAT
-            : this(urlPrefix, new NullLog(), strategy)
-#else
             : this(new[] { urlPrefix }, strategy)
-#endif
         {
             // placeholder
         }
-
-#if COMPAT
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebServer"/> class.
-        /// </summary>
-        /// <param name="urlPrefix">The URL prefix.</param>
-        /// <param name="log">The log.</param>
-        public WebServer(string urlPrefix, ILog log)
-            : this(new[] { urlPrefix }, log, RoutingStrategy.Wildcard)
-        {
-            // placeholder
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebServer"/> class.
-        /// </summary>
-        /// <param name="urlPrefix">The URL prefix.</param>
-        /// <param name="log">The log.</param>
-        /// <param name="routingStrategy">The routing strategy</param>
-        public WebServer(string urlPrefix, ILog log, RoutingStrategy routingStrategy)
-            : this(new[] { urlPrefix }, log, routingStrategy)
-        {
-            // placeholder
-        }
-#endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
@@ -175,11 +99,7 @@
         /// </summary>
         /// <param name="urlPrefixes">The URL prefixes.</param>
         public WebServer(string[] urlPrefixes)
-#if COMPAT
-            : this(urlPrefixes, new NullLog(), RoutingStrategy.Wildcard)
-#else
             : this(urlPrefixes, RoutingStrategy.Wildcard)
-#endif
         {
             // placeholder
         }
@@ -193,24 +113,13 @@
         /// <param name="routingStrategy">The routing strategy</param>
         /// <exception cref="System.InvalidOperationException">The HTTP Listener is not supported in this OS</exception>
         /// <exception cref="System.ArgumentException">Argument urlPrefix must be specified</exception>
-#if COMPAT
-        public WebServer(string[] urlPrefixes, ILog log, RoutingStrategy routingStrategy)
-#else
         public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy)
-#endif
         {
             if (HttpListener.IsSupported == false)
                 throw new InvalidOperationException("The HTTP Listener is not supported in this OS");
 
             if (urlPrefixes == null || urlPrefixes.Length <= 0)
                 throw new ArgumentException("At least 1 URL prefix in urlPrefixes must be specified");
-
-#if COMPAT
-            if (log == null)
-                throw new ArgumentException("Argument log must be specified");
-
-            Log = log;
-#endif
 
             RoutingStrategy = routingStrategy;
             Listener = new HttpListener();
@@ -223,18 +132,10 @@
                 urlPrefix = urlPrefix.ToLowerInvariant();
 
                 Listener.Prefixes.Add(urlPrefix);
-#if COMPAT
-                Log.InfoFormat("Web server prefix '{0}' added.", urlPrefix);
-#else
                 $"Web server prefix '{urlPrefix}' added.".Info(nameof(WebServer));
-#endif
             }
 
-#if COMPAT
-            Log.Info("Finished Loading Web Server.");
-#else
             "Finished Loading Web Server.".Info(nameof(WebServer));
-#endif
         }
 
         /// <summary>
@@ -278,12 +179,7 @@
             }
             else
             {
-#if COMPAT
-                Log.WarnFormat("Failed to register module '{0}' because a module with the same type already exists.",
-                    module.GetType());
-#else
                 $"Failed to register module '{module.GetType()}' because a module with the same type already exists.".Warn(nameof(WebServer));
-#endif
             }
         }
 
@@ -297,18 +193,13 @@
 
             if (existingModule == null)
             {
-#if COMPAT
-                Log.WarnFormat(
-                    "Failed to unregister module '{0}' because no module with that type has been previously registered.",
-                    moduleType);
-#else
                 $"Failed to unregister module '{moduleType}' because no module with that type has been previously registered.".Warn(nameof(WebServer));
-#endif
             }
             else
             {
                 var module = Module(moduleType);
                 _modules.Remove(module);
+
                 if (module == SessionModule)
                     SessionModule = null;
             }
@@ -342,25 +233,13 @@
                 requestId = string.Concat(DateTime.Now.Ticks.ToString(), requestEndpoint).GetHashCode().ToString("x2");
 
                 // Log the request and its ID
-#if COMPAT
-                Log.DebugFormat("Start of Request {0}", requestId);
-                Log.DebugFormat("Source {0} - {1}: {2}",
-                    requestEndpoint,
-                    context.RequestVerb().ToString().ToUpperInvariant(),
-                    context.RequestPath());
-#else
                 $"Start of Request {requestId}".Debug(nameof(WebServer));
                 $"Source {requestEndpoint} - {context.RequestVerb().ToString().ToUpperInvariant()}: {context.RequestPath()}".Debug(nameof(WebServer));
-#endif
 
                 // Return a 404 (Not Found) response if no module/handler handled the response.
                 if (ProcessRequest(context) == false)
                 {
-#if COMPAT
-                    Log.Error("No module generated a response. Sending 404 - Not Found");
-#else
                     "No module generated a response. Sending 404 - Not Found".Error();
-#endif
                     var responseBytes = System.Text.Encoding.UTF8.GetBytes(Constants.Response404Html);
                     context.Response.StatusCode = (int)System.Net.HttpStatusCode.NotFound;
                     context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
@@ -368,22 +247,13 @@
             }
             catch (Exception ex)
             {
-#if COMPAT
-                Log.Error("Error handling request.", ex);
-#else
                 ex.Log(nameof(WebServer), "Error handling request.");
-#endif
             }
             finally
             {
                 // Always close the response stream no matter what.
                 context?.Response.OutputStream.Close();
-
-#if COMPAT
-                Log.DebugFormat("End of Request {0}\r\n", requestId);
-#else
                 $"End of Request {requestId}".Debug(nameof(WebServer));
-#endif
             }
         }
 
@@ -414,22 +284,11 @@
                         module.Server = this;
 
                     // Log the module and handler to be called and invoke as a callback.
-#if COMPAT
-                    Log.DebugFormat("{0}::{1}.{2}", module.Name, callback.GetMethodInfo().DeclaringType.Name,
-                        callback.GetMethodInfo().Name);
-#else
                     $"{module.Name}::{callback.GetMethodInfo().DeclaringType?.Name}.{callback.GetMethodInfo().Name}".Debug(nameof(WebServer));
-#endif
 
                     // Execute the callback
                     var handleResult = callback.Invoke(this, context);
-#if DEBUG
-#if COMPAT
-                    Log.DebugFormat("Result: {0}", handleResult.ToString());
-#else
-                    $"Result: {handleResult}".Debug(nameof(WebServer));
-#endif
-#endif
+                    $"Result: {handleResult}".Trace(nameof(WebServer));
 
                     // callbacks can instruct the server to stop bubbling the request through the rest of the modules by returning true;
                     if (handleResult)
@@ -445,11 +304,7 @@
                         var errorMessage = ex.ExceptionMessage("Failing module name: " + module.Name);
 
                         // Log the exception message.
-#if COMPAT
-                        Log.Error(errorMessage, ex);
-#else
                         ex.Log(nameof(WebServer), $"Failing module name: {module.Name}");
-#endif
 
                         // Generate an HTML response
                         var response = string.Format(Constants.Response500HtmlFormat,
@@ -486,11 +341,7 @@
             Listener.IgnoreWriteExceptions = true;
             Listener.Start();
 
-#if COMPAT
-            Log.Info("Started HTTP Listener");
-#else
             "Started HTTP Listener".Info(nameof(WebServer));
-#endif
 
             _listenerTask = Task.Factory.StartNew(() =>
             {
@@ -511,53 +362,13 @@
                     }
                     catch (Exception ex)
                     {
-#if COMPAT
-                        Log.Error(ex);
-#else
                         ex.Log(nameof(WebServer));
-#endif
                     }
                 }
             }, ct);
 
             return _listenerTask;
         }
-
-#if COMPAT
-        /// <summary>
-        /// Starts the listener and the registered modules
-        /// </summary>
-        [Obsolete("Use the RunAsync method instead.", true)]
-        public void Run()
-        {
-            Listener.IgnoreWriteExceptions = true;
-            Listener.Start();
-
-            Log.Info("Started HTTP Listener");
-
-            ThreadPool.QueueUserWorkItem(o =>
-            {
-                while (Listener != null && Listener.IsListening)
-                {
-                    try
-                    {
-                        // Asynchronously queue a response by using a thread from the thread pool
-                        ThreadPool.QueueUserWorkItem(contextState =>
-                        {
-                            // get a reference to the HTTP Listener Context
-                            var context = contextState as HttpListenerContext;
-                            HandleClientRequest(context, null);
-                        }, Listener.GetContext());
-                        // Retrieve and pass the listener context to the thread-pool thread.
-                    }
-                    catch
-                    {
-                        // swallow IO exceptions
-                    }
-                }
-            }, Listener); // Retrieve and pass the HTTP Listener
-        }
-#endif
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -588,68 +399,15 @@
                     Listener = null;
                 }
 
-#if COMPAT
-                Log.Info("Listener Closed.");
-#else
                 "Listener Closed.".Info(nameof(WebServer));
-#endif
             }
         }
 
-#if COMPAT
-        /// <summary>
-        /// Static method to create webserver instance
-        /// </summary>
-        /// <param name="urlPrefix">The URL prefix.</param>
-        /// <param name="log">The log.</param>
-        /// <returns>The webserver instance.</returns>
-        public static WebServer Create(string urlPrefix, ILog log = null)
-        {
-            return new WebServer(urlPrefix, log ?? new NullLog());
-        }
-
-        /// <summary>
-        /// Static method to create webserver instance
-        /// </summary>
-        /// <param name="port">The port.</param>
-        /// <param name="log">The log.</param>
-        /// <returns>The webserver instance.</returns>
-        public static WebServer Create(int port, ILog log = null)
-        {
-            return new WebServer(port, log ?? new NullLog());
-        }
-
-        /// <summary>
-        /// Static method to create a webserver instance using a simple console output.
-        /// This method is useful for fluent configuration.
-        /// </summary>
-        /// <param name="urlPrefix"></param>
-        /// <returns>The webserver instance.</returns>
-        public static WebServer CreateWithConsole(string urlPrefix)
-        {
-            return new WebServer(urlPrefix, new SimpleConsoleLog());
-        }
-
-        /// <summary>
-        /// Static method to create a webserver instance using a simple console output.
-        /// This method is useful for fluent configuration.
-        /// </summary>
-        /// <param name="urlPrefix">The URL prefix.</param>
-        /// <param name="routingStrategy">The routing strategy.</param>
-        /// <returns>
-        /// The webserver instance.
-        /// </returns>
-        public static WebServer CreateWithConsole(string urlPrefix, RoutingStrategy routingStrategy)
-        {
-            return new WebServer(urlPrefix, new SimpleConsoleLog(), routingStrategy);
-        }
-#else
         /// <summary>
         /// Static method to create webserver instance
         /// </summary>
         /// <param name="urlPrefix">The URL prefix.</param>
         /// <returns>The webserver instance.</returns>
         public static WebServer Create(string urlPrefix) => new WebServer(urlPrefix);
-#endif
     }
 }

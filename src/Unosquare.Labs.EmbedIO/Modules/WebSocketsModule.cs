@@ -253,11 +253,7 @@
         {
             // first, accept the websocket
             WebServer = server;
-#if COMPAT
-            server.Log.DebugFormat("{0} - Accepting WebSocket . . .", ServerName);
-#else
             $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
-#endif
 
 #if NET46
             const int receiveBufferSize = 2048;
@@ -270,11 +266,7 @@
                     .GetAwaiter()
                     .GetResult();
 #else
-#if COMPAT
-                context.AcceptWebSocket(null, WebServer.Log);
-#else
                 context.AcceptWebSocket(null);
-#endif
 #endif
 
             // remove the disconnected clients
@@ -284,13 +276,8 @@
                 // add the newly-connected client
                 _mWebSockets.Add(webSocketContext);
             }
-
-#if COMPAT
-            server.Log.DebugFormat(
-                $"{ServerName} - WebSocket Accepted - There are {WebSockets.Count} sockets connected.");
-#else
+            
             $"{ServerName} - WebSocket Accepted - There are {WebSockets.Count} sockets connected.".Debug(nameof(WebSocketsServer));
-#endif
 
             // call the abstract member
             OnClientConnected(webSocketContext);
@@ -363,11 +350,7 @@
             }
             catch (Exception ex)
             {
-#if COMPAT
-                server.Log.ErrorFormat("{0} - Error: {1}", ServerName, ex);
-#else
                 ex.Log(nameof(WebSocketsServer));
-#endif
             }
             finally
             {
@@ -414,13 +397,8 @@
                     }
                 }
             }
-
-#if COMPAT
-            WebServer?.Log.DebugFormat("{0} - Collected {1} sockets. WebSocket Count: {2}", ServerName,
-                collectedCount, WebSockets.Count);
-#else
+            
             $"{ServerName} - Collected {collectedCount} sockets. WebSocket Count: {WebSockets.Count}".Debug(nameof(WebSocketsServer));
-#endif
         }
 
         /// <summary>
@@ -443,11 +421,7 @@
             }
             catch (Exception ex)
             {
-#if COMPAT
-                WebServer.Log.Error(ex);
-#else
                 ex.Log(nameof(WebSocketsServer));
-#endif
             }
         }
 
@@ -471,11 +445,7 @@
             }
             catch (Exception ex)
             {
-#if COMPAT
-                WebServer.Log.Error(ex);
-#else
                 ex.Log(nameof(WebSocketsServer));
-#endif
             }
         }
 
@@ -520,11 +490,7 @@
             }
             catch (Exception ex)
             {
-#if COMPAT
-                WebServer.Log.Error(ex);
-#else
                 ex.Log(nameof(WebSocketsServer));
-#endif
             }
             finally
             {

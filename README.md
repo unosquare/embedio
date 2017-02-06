@@ -43,8 +43,7 @@ Some notes regarding WebSocket support:
 | MONO | Yes | Support Windows and Linux using custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
 | NETCORE10 | Yes | Support using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
 
-EmbedIO before version 1.4.0 uses Newtonsoft JSON and an internal logger subsystem based on ILog interface. If you want to compile EmbedIO with this compatibility you must use The
-definition *COMPAT* and include Newtonsoft JSON nuget. We may drop the compatibility mode in future versions.
+EmbedIO before version 1.4.0 uses Newtonsoft JSON and an internal logger subsystem based on ILog interface.
 
 NuGet Installation:
 -------------------

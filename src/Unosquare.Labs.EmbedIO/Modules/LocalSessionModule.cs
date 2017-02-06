@@ -145,11 +145,7 @@
                         var sessionCookie = CreateSession();
                         context.Response.SetCookie(sessionCookie);
                         context.Request.Cookies.Add(sessionCookie);
-#if COMPAT
-                        server.Log.DebugFormat("Created session identifier '{0}'", sessionCookie.Value);
-#else
                         $"Created session identifier '{sessionCookie.Value}'".Debug(nameof(LocalSessionModule));
-#endif
                     }
                     else if (isSessionRegistered == false)
                     {
@@ -157,22 +153,14 @@
                         var sessionCookie = CreateSession();
                         context.Response.SetCookie(sessionCookie); // = sessionCookie.Value;
                         context.Request.Cookies[SessionCookieName].Value = sessionCookie.Value;
-#if COMPAT
-                        server.Log.DebugFormat("Updated session identifier to '{0}'", sessionCookie.Value);
-#else
                         $"Updated session identifier to '{sessionCookie.Value}'".Debug(nameof(LocalSessionModule));
-#endif
                     }
                     else
                     {
                         // If it does exist in the request, check if we're tracking it
                         var requestSessionId = context.Request.Cookies[SessionCookieName].Value;
                         m_Sessions[requestSessionId].LastActivity = DateTime.Now;
-#if COMPAT
-                        server.Log.DebugFormat("Session Identified '{0}'", requestSessionId);
-#else
                         $"Session Identified '{requestSessionId}'".Debug(nameof(LocalSessionModule));
-#endif
                     }
 
                     // Always returns false because we need it to handle the rest for the modules
