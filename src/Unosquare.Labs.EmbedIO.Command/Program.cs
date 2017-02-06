@@ -23,7 +23,7 @@
 
             Runtime.WriteWelcomeBanner();
 
-            if (!Swan.Components.ArgumentParser.Default.ParseArguments(args, options)) return;
+            if (!Runtime.ArgumentParser.ParseArguments(args, options)) return;
 
             "Press any key to stop the server.".Info();
 

@@ -15,6 +15,12 @@
 
         private const string DefaultPath = "/";
 
+        [SetUp]
+        public void Setup()
+        {
+            Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
+        }
+
         [Test]
         public void WebServerDefaultConstructor()
         {

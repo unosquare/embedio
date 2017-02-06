@@ -23,6 +23,8 @@
         [SetUp]
         public void Init()
         {
+            Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
+
             WebServerUrl = Resources.GetServerAddress();
             WebServer = new WebServer(WebServerUrl)
                 .WithWebApiController<TestController>();

@@ -23,6 +23,8 @@
         [SetUp]
         public void Init()
         {
+            Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
+
             WebServerUrl = Resources.GetServerAddress();
             RootPath = TestHelper.SetupStaticFolder();
 

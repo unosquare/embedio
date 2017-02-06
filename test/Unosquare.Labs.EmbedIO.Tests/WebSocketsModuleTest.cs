@@ -21,6 +21,7 @@
         [SetUp]
         public void Init()
         {
+            Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
             WebServer = new WebServer(Resources.WsServerAddress.Replace("ws", "http")).WithWebSocket(typeof(TestWebSocket).GetTypeInfo().Assembly);
             WebServer.RunAsync();
         }
@@ -50,7 +51,7 @@
             Assert.IsTrue(System.Text.Encoding.UTF8.GetString(buffer.Array).TrimEnd((char) 0) == "WELCOME", "Final message is WELCOME");
 #else
             var clientSocket = new WebSocket(wsUrl);
-            clientSocket.Connect();            
+            clientSocket.Connect();
 
             Assert.AreEqual(WebSocketState.Open, clientSocket.State, "Connection is open");
 
