@@ -2,7 +2,6 @@
 {
     using NUnit.Framework;
     using System;
-    using System.Globalization;
     using System.Linq;
     using System.Threading;
     using Unosquare.Labs.EmbedIO.Modules;
@@ -11,8 +10,6 @@
     [TestFixture]
     public class WebServerTest
     {
-        private const int DefaultPort = 8888;
-
         private const string DefaultPath = "/";
 
         [SetUp]
@@ -33,7 +30,7 @@
         public void WebserverCanBeDisposed()
         {
             var cts = new CancellationTokenSource();
-            var instance = new WebServer(DefaultPort);
+            var instance = new WebServer(Resources.GetServerAddress());
             var task = instance.RunAsync(cts.Token);
 
             cts.Cancel();
@@ -64,7 +61,7 @@
         public void WebServerCanBeRestarted()
         {
             var cts = new CancellationTokenSource();
-            var instance = new WebServer(DefaultPort);
+            var instance = new WebServer(Resources.GetServerAddress());
             var task = instance.RunAsync(cts.Token);
 
             //need to make a request here for it to fail before the cancellation changes, null works, yay
@@ -88,7 +85,7 @@
             }
 
             cts = new CancellationTokenSource();
-            instance = new WebServer(DefaultPort);
+            instance = new WebServer(Resources.GetServerAddress());
             task = instance.RunAsync(cts.Token);
 
             cts.Cancel();
@@ -107,28 +104,6 @@
                     instance.Dispose();
                 }
             }
-        }
-
-        [Test]
-        public void WebServerConstructorWithPortParam()
-        {
-            var instance = new WebServer(DefaultPort);
-
-            Assert.AreEqual(instance.UrlPrefixes.Count, 1, "It has one URL Prefix");
-            Assert.IsTrue(
-                instance.UrlPrefixes.First().Contains(DefaultPort.ToString(CultureInfo.InvariantCulture)),
-                "Construct with port number is correct");
-        }
-
-        [Test]
-        public void WebServerConstructorWithPortAndLogParam()
-        {
-            var instance = new WebServer(DefaultPort);
-
-            Assert.AreEqual(instance.UrlPrefixes.Count, 1, "It has one URL Prefix");
-            Assert.IsTrue(
-                instance.UrlPrefixes.First().Contains(DefaultPort.ToString(CultureInfo.InvariantCulture)),
-                "Port number is correct");
         }
 
         [Test]
