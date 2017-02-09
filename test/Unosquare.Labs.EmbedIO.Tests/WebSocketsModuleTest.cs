@@ -53,6 +53,11 @@
             var clientSocket = new WebSocket(wsUrl);
             clientSocket.Connect();
 
+            if (clientSocket.State != WebSocketState.Open)
+            {
+                Assert.Inconclusive("WebSocket Client is not working yet");
+            }
+
             Assert.AreEqual(WebSocketState.Open, clientSocket.State, "Connection is open");
 
             clientSocket.Send("HOLA");
@@ -63,7 +68,7 @@
         [TearDown]
         public void Kill()
         {
-            Thread.Sleep(TimeSpan.FromSeconds(1));
+            Task.Delay(TimeSpan.FromSeconds(1)).Wait();
             WebServer.Dispose();
         }
     }

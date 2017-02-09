@@ -33,7 +33,7 @@
         public void WebserverCanBeDisposed()
         {
             var cts = new CancellationTokenSource();
-            var instance = new WebServer("http://localhost:" + DefaultPort);
+            var instance = new WebServer(DefaultPort);
             var task = instance.RunAsync(cts.Token);
 
             cts.Cancel();
@@ -52,7 +52,7 @@
                     return;
                 }
 
-                Assert.Fail($"Must have thrown OperationCanceledException and trhew '{baseEx.GetType()}' instead.");
+                Assert.Fail($"Must have thrown OperationCanceledException and threw '{baseEx.GetType()}' instead.");
             }
             catch (Exception ex)
             {
@@ -64,7 +64,7 @@
         public void WebServerCanBeRestarted()
         {
             var cts = new CancellationTokenSource();
-            var instance = new WebServer("http://localhost:" + DefaultPort);
+            var instance = new WebServer(DefaultPort);
             var task = instance.RunAsync(cts.Token);
 
             //need to make a request here for it to fail before the cancellation changes, null works, yay
@@ -86,8 +86,9 @@
                     return;
                 }
             }
+
             cts = new CancellationTokenSource();
-            instance = new WebServer("http://localhost:" + DefaultPort);
+            instance = new WebServer(DefaultPort);
             task = instance.RunAsync(cts.Token);
 
             cts.Cancel();
@@ -100,10 +101,10 @@
             catch (AggregateException e)
             {
                 var baseEx = e.GetBaseException();
+
                 if (baseEx is OperationCanceledException)
                 {
                     instance.Dispose();
-                    return;
                 }
             }
         }
@@ -146,7 +147,7 @@
         [Test]
         public void WebMap()
         {
-            var map = new Map() { Path = DefaultPath, ResponseHandler = (ctx, ws) => false, Verb = HttpVerbs.Any };
+            var map = new Map() {Path = DefaultPath, ResponseHandler = (ctx, ws) => false, Verb = HttpVerbs.Any};
 
             Assert.AreEqual(map.Path, DefaultPath, "Default Path is correct");
             Assert.AreEqual(map.Verb, HttpVerbs.Any, "Default Verb is correct");

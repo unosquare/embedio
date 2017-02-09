@@ -5,7 +5,6 @@
     using System.IO;
     using System.Net;
     using System.Net.Http;
-    using System.Threading;
     using System.Threading.Tasks;
     using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Labs.EmbedIO.Tests.TestObjects;
@@ -383,7 +382,7 @@
         [TearDown]
         public void Kill()
         {
-            Thread.Sleep(TimeSpan.FromSeconds(1));
+            Task.Delay(TimeSpan.FromSeconds(1)).Wait();
             WebServer?.Dispose();
         }
     }

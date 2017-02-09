@@ -1,4 +1,6 @@
-﻿namespace Unosquare.Labs.EmbedIO.Tests
+﻿using Unosquare.Swan.Networking;
+
+namespace Unosquare.Labs.EmbedIO.Tests
 {
     using Swan.Formatters;
     using NUnit.Framework;
@@ -81,28 +83,10 @@
         [Test]
         public async Task PostJsonData()
         {
-            var model = new Person() { Key = 10, Name = "Test" };
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestController.GetPath);
-            request.Method = "POST";
-
-            using (var dataStream = await request.GetRequestStreamAsync())
-            {
-                var byteArray = Encoding.UTF8.GetBytes(Json.Serialize(model));
-                dataStream.Write(byteArray, 0, byteArray.Length);
-            }
-
-            using (var response = (HttpWebResponse)await request.GetResponseAsync())
-            {
-                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
-                var jsonString = new StreamReader(response.GetResponseStream()).ReadToEnd();
-                Assert.IsNotNull(jsonString);
-                Assert.IsNotEmpty(jsonString);
-
-                var json = Json.Deserialize<Person>(jsonString);
-                Assert.IsNotNull(json);
-                Assert.AreEqual(json.Name, model.Name);
-            }
+            var model = new Person() {Key = 10, Name = "Test"};
+            var result = await JsonClient.Post<Person>(WebServerUrl + TestController.GetPath, model);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(result.Name, model.Name);
         }
 
         [Test]
@@ -182,7 +166,7 @@
         [TearDown]
         public void Kill()
         {
-            Thread.Sleep(TimeSpan.FromSeconds(1));
+            Task.Delay(TimeSpan.FromSeconds(1)).Wait();
             WebServer.Dispose();
         }
     }
