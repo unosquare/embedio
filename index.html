@@ -1,34 +1,34 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html>
 
 <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="OSS Initiatives - Unosquare Labs">
-    <meta name="keywords" content="application, html5, angularjs, responsive, web api, unosquare, oss">
-    <meta name="author" content="Unosquare Labs">
-
-    <title>OSS Initiatives Showcase - Unosquare Labs</title>
-
-    <!-- Favicons -->
-    <link rel="icon" href="favicon.ico" />
+    <meta name="description" content="EmbedIO Webserver">
 
     <!-- CSS (from CDN) -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />
-    <link href="//maxcdn.bootstrapcdn.com/bootswatch/latest/lumen/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.4/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.3.0/css/font-awesome.min.css" />
+    <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/lumen/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.jsdelivr.net/highlight.js/8.5.0/styles/github.min.css" rel="stylesheet">
 
-    <!-- CSS (internal) -->
-    <link rel="stylesheet" href="assets/common.css" />
+    <link rel="stylesheet" type="text/css" href="images/stylesheet.css" media="screen">
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 
     <!-- JS (from CDN) -->
-    <script src="//cdn.jsdelivr.net/g/jquery@2.1.4"></script>
+    <script src="//cdn.jsdelivr.net/g/jquery@2.1.4,bootstrap"></script>
+    <script src="//cdn.jsdelivr.net/highlight.js/8.5.0/highlight.min.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script>
+    <!-- Favicons -->
+    <link rel="icon" href="favicon.ico" />
+
+    <title>EmbedIO - A tiny, cross-platform, module based web server by unosquare</title>
 </head>
 
 <body>
@@ -36,210 +36,434 @@
         <div class="content-body">
             <div class="jumbotron-fade"></div>
             <div class="jumbotron">
-                <div class="jumbotron-inner"></div>
-                <div class="container jumbotron-outer">
+                <div class="navbar-fade"></div>
+                <header class="navbar navbar-static-top" id="top" role="banner">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                        </div>
+                        <nav class="collapse navbar-collapse bs-navbar-collapse">
+                            <ul class="nav navbar-nav">
+                                <li><a href="#features">Features</a></li>
+                                <li><a href="#nuget">NuGet Installation</a></li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">
+                                        Examples<span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#basic">Basic Example</a></li>
+                                        <li><a href="#rest">REST API Example</a></li>
+                                        <li><a href="#websocket">Web Sockets Example</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#cli">EmbedIO CLI</a></li>
+                                <li><a href="api/toc.html">Documentation</a></li>
+                                <li><a href="/embedio-extras/">Extras</a></li>
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="http://github.com/unosquare/embedio">GitHub</a></li>
+                                <li><a href="http://unosquare.github.io/">Unosquare Labs</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </header>
+                <div class="container">
                     <div class="row">
-                        <div class="col-md-3 col-xs-12">
-                            <img alt="Unosquare Labs" src="/assets/logo.png" />
+                        <div class="col-md-4 col-xs-12">
+                            <div class="text-center">
+                                <img src="images/embedio.png" alt="EmbedIO" />
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-xs-12">
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="container catalog">
-                <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                        <div class="thumbnail">
-                            <img alt="embedio logo" src="assets/embedio.png" class="img-responsive" />
-                            <div class="caption">
-                                <h3>EmbedIO</h3>
-                                <p>A tiny, cross-platform, module based, MIT-licensed web server. </P>
-                                <p>Written entirely in C#, cross-platform, extensible, small memory footprint, with support to REST APIs, CORS and WebSockets.</p>
-                                <p>
-                                    <a href="/embedio/" class="btn btn-primary" role="button">
-                                        <i class="fa fa-globe"></i>&nbsp; Web Site
-                                    </a>
-                                    <a href="https://github.com/unosquare/embedio" class="btn btn-default" role="button">
-                                        <i class="fa fa-github"></i>&nbsp; GitHub Repo
-                                    </a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                        <div class="thumbnail">
-                            <img alt="tubular logo" src="assets/tubular.png" class="img-responsive" />
-                            <div class="caption">
-                                <h3>Tubular</h3>
-                                <p>
-                                    A set of AngularJS directives and C# classes designed to rapidly build modern web applications. Tubular features a fully templateable grid with lots of features such as server-side pagination, multi-column sorting and filtering, built-in export to CSV
-                                    (client-side), and in-line editing of rows via templates.
-                                </p>
-                                <p>
-                                    <a href="/tubular/" class="btn btn-primary" role="button">
-                                        <i class="fa fa-globe"></i>&nbsp; Web Site
-                                    </a>
-                                    <a href="https://github.com/unosquare/tubular" class="btn btn-default" role="button">
-                                        <i class="fa fa-github"></i>&nbsp; GitHub Repo
-                                    </a>
-                                </p>
-                                <hr />
-                                <p>If you are using Angular2, you can preview our future solution release at <a href="https://github.com/unosquare/tubular2">Tubular2</a>.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                        <div class="thumbnail">
-                            <img alt="passcore logo" src="assets/passcore.PNG" class="img-responsive" />
-                            <div class="caption">
-                                <h3>PassCore</h3>
-                                <p>
-                                    PassCore is a very simple 1-page web application written in C#, using ASP.NET 5, Bootstrap, AngularJS and Microsoft Directory Services. It allows users to change their Active Directory password on their own, provided the user is not disabled.
-                                </p>
-                                <p>
-                                    <a href="https://github.com/unosquare/passcore" class="btn btn-default" role="button">
-                                        <i class="fa fa-github"></i>&nbsp; GitHub Repo
-                                    </a>
-                                </p>
-                                <hr/>
-                                <p>
-                                    <a href="https://unopasscore.codeplex.com/">Previous MVC 4 version</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clearfix visible-md visible-lg"></div>
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                        <div class="thumbnail">
-                            <img alt="embedio logo" src="https://github.com/unosquare/swan/blob/master/swan-logo-256.png?raw=true" class="img-responsive" />
-                            <div class="caption">
-                                <h3>SWAN</h3>
-                                <p>SWAN stands for Stuff We All Need</p>
-                                <p>Repeating code and reinventing the wheel is generally considered bad practice. At Unosquare we are committed to beautiful code and great software. SWAN is a collection of classes and extension methods that we and other
-                                    good developers have developed and evolved over the years. We found ourselves copying and pasting the same code for every project every time we started it. We decide to kill that Ctrl-C/Ctrl-V cycle once and for all.
-                                    This is the result of that idea.</p>
+            <div class="container">
+                <p>A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework and .NET Core</p>
 
-                                <p>Our philosophy is that SWAN should have no external dependencies, it should be cross-platform, and it should be useful.</p>
-                                </p>
-                                <p>
-                                    <a href="https://github.com/unosquare/swan" class="btn btn-default" role="button">
-                                        <i class="fa fa-github"></i>&nbsp; GitHub Repo
-                                    </a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                        <div class="thumbnail">
-                            <img alt="LiteLib" src="https://raw.githubusercontent.com/unosquare/litelib/master/litelib-logo.png" class="img-responsive" />
-                            <div class="caption">
-                                <h3>LiteLib</h3>
-                                <p>A cool little wrapper for SQLite based on Dapper.</p>
-                                <p>LiteLib is a library that helps you get the job done quickly and easily by defining POCO classes and turns those classes into SQLite-mapped tables.</p>
-                                <p>
-                                    <a href="https://github.com/unosquare/litelib" class="btn btn-default" role="button">
-                                        <i class="fa fa-github"></i>&nbsp; GitHub Repo
-                                    </a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                        <div class="thumbnail">
-                            <img alt="embedio logo" src="assets/raspberry-io.png" class="img-responsive" />
-                            <div class="caption">
-                                <h3>RaspberryIO</h3>
-                                <p>Pi's hardware access from Mono</p>
-                                <p>The Raspberry Pi's IO Functionality in an easy-to-use API for Mono/.NET/C#. Our mission is to make Mono a first-class citizen in the Python-centric community of Raspberry Pi developers.</p>
-                                <p>
-                                    <a href="https://github.com/unosquare/raspberryio" class="btn btn-default" role="button">
-                                        <i class="fa fa-github"></i>&nbsp; GitHub Repo
-                                    </a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <h2 id="features">Features:</h2>
+                <ul>
+                    <li>Written entirely in C#</li>
+                    <li>.NET Core portable library</li>
+                    <li>Network operations use the async/await pattern: Responses are handled asynchronously</li>
+                    <li>Cross-platform[1]: tested in Mono 3.10.x on Windows and on a custom Yocto image for the Raspberry Pi</li>
+                    <li>Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras">EmbedIO Extras</a> for additional modules.</li>
+                    <li>Small memory footprint</li>
+                    <li>Create REST APIs quickly with the out-of-the-box Web Api module</li>
+                    <li>Serve static files with 1 line of code (also out-of-the-box)</li>
+                    <li>Handle sessions with the built-in LocalSessionWebModule</li>
+                    <li>WebSockets support (see notes below)</li>
+                    <li>CORS support. Origin, Header and Method validation with OPTIONS preflight</li>
+                    <li>Supports HTTP 206 Partial Content</li>
+                    <li><a href="http://owin.org/">OWIN</a> Middleware support via <a href="https://github.com/unosquare/embedio-extras/tree/master/Unosquare.Labs.EmbedIO.OwinMiddleware">Owin Middleware Module</a>.</li>
+                </ul>
+
+                <p>
+                    <em>
+                        For detailed usage and REST API implementation, download the code and take a look at the
+                        <a href="https://github.com/unosquare/embedio/tree/master/Unosquare.Labs.EmbedIO.Samples">Samples project</a>.
+                    </em>
+                </p>
+
+                <b>Some usage scenarios:</b>
+
+                <ul>
+                    <li>Write a cross-platform GUI entirely in CSS/HTML/JS</li>
+                    <li>Write a game using Babylon.js and make EmbedIO your serve your code and assets</li>
+                    <li>Create GUIs for Windows services or Linux daemons</li>
+                    <li>Works well with <a href="https://github.com/unosquare/litelib">LiteLib</a> - add SQLite support in minutes!</li>
+                    <li>Write client applications with real-time communication between them</li>
+                </ul>
+
+                <p>Some notes regarding WebSocket support:</p>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Runtime</th>
+                            <th>WebSocket support</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>NET452</td>
+                            <td>Yes</td>
+                            <td>Support Win7+ OS using a custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a></td>
+                        </tr>
+                        <tr>
+                            <td>NET46</td>
+                            <td>Yes</td>
+                            <td>Support Win8+ OS using native System.Net library</td>
+                        </tr>
+                        <tr>
+                            <td>MONO</td>
+                            <td>Yes</td>
+                            <td>Support Windows and Linux using custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a></td>
+                        </tr>
+                        <tr>
+                            <td>NETCORE10</td>
+                            <td>Yes</td>
+                            <td>Support using a custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr />
+                <h2 id="nuget">NuGet Installation:</h2>
+
                 <div class="row">
-                    <div class="col-sm-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                More projects from our lab . . .
-                            </div>
-                            <div class="list-group">
-                                <a class="list-group-item" href="https://github.com/unosquare/wsfingerprint" target="_blank">
-                                    <strong>wsfingerprint</strong> - WaveShare Fingerprint Reader - Interfacing Library for .NET
-                                </a>
-                                <a class="list-group-item" href="https://github.com/unosquare/tsrelay" target="_blank">
-                                    <strong>tsrelay</strong> - TinySine USB/Wireless Relay Module TOSR1x - Interfacing Library for .NET
-                                </a>
-                                <a class="list-group-item" href="https://github.com/unosquare/ffmediaelement" target="_blank">
-                                    <strong>ffmediaelement</strong> - FFME is a close drop-in replacement for Microsoft's WPF MediaElement Control
-                                </a>
-                                <a class="list-group-item" href="https://github.com/unosquare/tubular-boilerplate-csharp" target="_blank">
-                                    <strong>Tubular C# Boilerplate</strong> - Jump-start your new Tubular-WebAPI project.
-                                </a>
-                                <a class="list-group-item" href="https://github.com/unosquare/tubular-boilerplate" target="_blank">
-                                    <strong>Tubular Boilerplate</strong> - Jump-start your new Tubular project without hassles.
-                                </a>
-                                <a class="list-group-item" href="https://github.com/unosquare/embedio-extras" target="_blank">
-                                    <strong>EmbedIO Extras</strong> - A set of Modules to extend EmbedIO functionality.
-                                </a>
-                                <a class="list-group-item" href="https://github.com/unosquare/sshdeploy" target="_blank">
-                                    <strong>sshdeploy</strong> - A command-line tool that enables quick build and run deployments over SSH.
-                                </a>
-                                <a class="list-group-item" href="https://github.com/unosquare/libfprint-cs" target="_blank">
-                                    <strong>libfprint-cs</strong> - The long-awaited C# (.net/mono) wrapper for the great fprint library
-                                </a>
-                                <a class="list-group-item" href="https://github.com/unosquare/ef-enterpriseextensions" target="_blank">
-                                    <strong>ef-enterpriseextensions</strong> - Unosquare Labs EntityFramework.EnterpriseExtensions Library contains a set of useful helpers and classes to common tasks related to process and data manipulation in enterprise
-                                    applications
-                                </a>
-                                <a class="list-group-item" href="https://github.com/unosquare/tenantcore" target="_blank">
-                                    <strong>TenantCore</strong> - OWIN Middleware that it can help to resolve tenants
-                                </a>
-                            </div>
-                            <div class="panel-footer">
-                                Get latest releases in
-                                <a href="https://www.nuget.org/profiles/Unosquare" target="_blank">
-                                        Unosquare's Nugets
-                                    </a>
-                            </div>
-                        </div>
+                    <div class="col-md-8"><pre><code>PM&gt; Install-Package EmbedIO</code></pre></div>
+                    <div class="col-md-4 text-center">
+                        <a href="http://badge.fury.io/nu/embedio"><img src="https://badge.fury.io/nu/embedio.svg" alt="NuGet version" height="18"></a>
                     </div>
                 </div>
+                <hr />
+                <h2 id="basic">Basic Example:</h2>
+
+                <p>
+                    <em>Please note the comments are the important part here. More info is available in the samples.</em>
+                </p>
+
+                <pre><code class="csharp">namespace Company.Project
+{
+    using System;
+    using Unosquare.Labs.EmbedIO;
+    using Unosquare.Labs.EmbedIO.Log;
+    using Unosquare.Labs.EmbedIO.Modules;
+    class Program
+    {
+        /// &lt;summary&gt;
+        /// Defines the entry point of the application.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;args&quot;&gt;The arguments.&lt;/param&gt;
+        static void Main(string[] args)
+        {
+            var url = &quot;http://localhost:9696/&quot;;
+            if (args.Length &gt; 0)
+                url = args[0];
+            // Our web server is disposable. Note that if you don&#39;t want to use logging,
+            // there are alternate constructors that allow you to skip specifying an ILog object.
+            using (var server = new WebServer(url, new SimpleConsoleLog()))
+            {
+                // First, we will configure our web server by adding Modules.
+                // Please note that order DOES matter.
+                // ================================================================================================
+                // If we want to enable sessions, we simply register the LocalSessionModule
+                // Beware that this is an in-memory session storage mechanism so, avoid storing very large objects.
+                // You can use the server.GetSession() method to get the SessionInfo object and manupulate it.
+                // You could potentially implement a distributed session module using something like Redis
+                server.RegisterModule(new Modules.LocalSessionModule());
+                // Here we setup serving of static files
+                server.RegisterModule(new Modules.StaticFilesModule(&quot;c:/web&quot;));
+                // The static files module will cache small files in ram until it detects they have been modified.
+                server.Module&lt;modules.staticfilesmodule&gt;().UseRamCache = true;
+                server.Module&lt;modules.staticfilesmodule&gt;().DefaultExtension = &quot;.html&quot;;
+                // We don&#39;t need to add the line below. The default document is always index.html.
+                //server.Module&lt;modules.staticfileswebmodule&gt;().DefaultDocument = &quot;index.html&quot;;
+                // Once we&#39;ve registered our modules and configured them, we call the RunAsync() method.
+                // This is a non-blocking method (it return immediately) so in this case we avoid
+                // disposing of the object until a key is pressed.
+                //server.Run();
+                var task = server.RunAsync();
+                // Fire up the browser to show the content if we are debugging!
+#if DEBUG
+                var browser = new System.Diagnostics.Process() { 
+                    StartInfo = new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true } };
+                browser.Start();
+#endif
+                // Wait for any key to be pressed before disposing of our web server.
+                // In a service we&#39;d manage the lifecycle of of our web server using
+                // something like a BackgroundWorker or a ManualResetEvent.
+                Console.ReadKey(true);
+            }
+        }
+    }
+}</code></pre>
+                <hr />
+                <h2>Fluent Example:</h2>
+                <p>Many extension methods are available. This allows you to create a web server instance in a fluent style by dotting in configuration options.</p>
+                <pre><code class="csharp">
+namespace Company.Project
+{
+    using System;
+    using Unosquare.Labs.EmbedIO;
+    internal class Program
+    {
+        /// &lt;summary&gt;
+        /// Defines the entry point of the application.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;args&quot;&gt;The arguments.&lt;/param&gt;
+        private static void Main(string[] args)
+        {
+            var url = &quot;http://localhost:9696/&quot;;
+            if (args.Length &gt; 0)
+                url = args[0];
+            // Create Webserver with console logger and attach LocalSession and Static
+            // files module
+            var server = WebServer
+                .CreateWithConsole(url)                                 
+                .EnableCors()
+                .WithLocalSession()
+                .WithStaticFolderAt(&quot;c:/web&quot;);
+                    
+            var cts = new CancellationTokenSource();
+            server.RunAsync(cts.Token);
+            // Fire up the browser to show the content if we are debugging!
+#if DEBUG
+            var browser = new System.Diagnostics.Process()
+            {
+                StartInfo = new System.Diagnostics.ProcessStartInfo(url) {UseShellExecute = true}
+            };
+            browser.Start();
+#endif
+            // Wait for any key to be pressed before disposing of our web server.
+            // In a service we&#39;d manage the lifecycle of of our web server using
+            // something like a BackgroundWorker or a ManualResetEvent.
+            Console.ReadKey(true);                         
+            cts.Cancel();
+            try
+            {
+                task.Wait();
+            } catch (AggregateException)
+            {
+                // We'd also actually verify the exception cause was that the task
+                // was cancelled.
+                server.Dispose();
+            }
+        }
+    }
+}
+</code></pre>
+                <hr />
+                <h2 id="rest">REST API Example:</h2>
+
+                <p>
+                    The WebApi module supports two routing strategies: Wildcard and Regex. By default, and in order to maintain backwards compatibility, the WebApi module will use the <strong>Wildcard Routing Strategy</strong> and match routes using the
+                    asterisk <code>*</code> character in the route. <strong>For example:</strong>
+                </p>
+                <ul>
+                    <li>The route <code>/api/people/*</code> will match any request with a URL starting with the two first URL segments <code>api</code> and <code>people</code> and ending with anything. The route <code>/api/people/hello</code> will be matched.</li>
+                    <li>You can also use wildcards in the middle of the route. The route <code>/api/people/*/details</code> will match requests starting with the two first URL segments <code>api</code> and <code>people</code>, and ending with a <code>details</code>                        segment. The route <code>/api/people/hello/details</code> will be matched. </li>
+                </ul>
+
+                <p>
+                    <em>Note that most REST services can be designed with this simpler Wildcard routing strategy. However, the Regex matching strategy is the current recommended approach as we might be deprecating the Wildcard strategy altogether</em>
+
+                </p>
+                <p>
+                    On the other hand, the <strong>Regex Routing Strategy</strong> will try to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API 2. A method with the following route <code>/api/people/{id}</code>                    is going to match any request URL with three segments: the first two <code>api</code> and <code>people</code> and the last one is going to be parsed or converted to the type in the <code>id</code> argument of the handling method signature.
+                    Please read on if this was confusing as it is much simpler than it sounds. Additionally, you can put multiple values to match, for example <code>/api/people/{mainSkill}/{age}</code>, and receive the parsed values from the URL straight
+                    into the arguments of your handler method.
+                </p>
+
+                <p>
+                    <em>During server setup:</em>
+                </p>
+                <pre><code class="csharp">// The routing strategy is Wildcard by default, but you can change it to Regex as follows:
+var server =  new WebServer("http://localhost:9696/", new NullLog(), RoutingStrategy.Regex);
+server.RegisterModule(new WebApiModule());
+server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;();</code></pre>
+                <p>
+                    <em>And our controller class (using Regex Strategy) looks like:</em>
+                </p>
+                <pre><code class="csharp">public class PeopleController : WebApiController
+{
+    [WebApiHandler(HttpVerbs.Get, "/api/people/{id}")]
+    public bool GetPeople(WebServer server, HttpListenerContext context, int id)
+    {
+        try
+        {
+            if (People.Any(p => p.Key == id))
+            {
+                return context.JsonResponse(People.FirstOrDefault(p => p.Key == id));
+            }
+        }
+        catch (Exception ex)
+        {
+            return HandleError(context, ex, (int)HttpStatusCode.InternalServerError);
+        }
+    }
+    protected bool HandleError(HttpListenerContext context, Exception ex, int statusCode = 500)
+    {
+        var errorResponse = new
+        {
+            Title = "Unexpected Error",
+            ErrorCode = ex.GetType().Name,
+            Description = ex.ExceptionMessage(),
+        };
+        context.Response.StatusCode = statusCode;
+        return context.JsonResponse(errorResponse);
+    }
+}</code></pre>
+                <p><em>Or if you want to use the Wildcard strategy (which is the default):</em></p>
+                <pre><code class="csharp">public class PeopleController : WebApiController
+{
+    [WebApiHandler(HttpVerbs.Get, "/api/people/*")]
+    public bool GetPeople(WebServer server, HttpListenerContext context)
+    {
+        try
+        {
+            var lastSegment = context.Request.Url.Segments.Last();
+            if (lastSegment.EndsWith("/"))
+                return context.JsonResponse(People);
+            int key = 0;
+            if (int.TryParse(lastSegment, out key) && People.Any(p => p.Key == key))
+            {
+                return context.JsonResponse(People.FirstOrDefault(p => p.Key == key));
+            }
+            throw new KeyNotFoundException("Key Not Found: " + lastSegment);
+        }
+        catch (Exception ex)
+        {
+            return HandleError(context, ex, (int)HttpStatusCode.InternalServerError);
+        }
+    }
+    protected bool HandleError(HttpListenerContext context, Exception ex, int statusCode = 500)
+    {
+        var errorResponse = new
+        {
+            Title = "Unexpected Error",
+            ErrorCode = ex.GetType().Name,
+            Description = ex.ExceptionMessage(),
+        };
+        context.Response.StatusCode = statusCode;
+        return context.JsonResponse(errorResponse);
+    }
+}</code></pre>
+                <hr />
+                <h2 id="websocket">Web Sockets Example:</h2>
+                <p>
+                    <em>During server setup:</em>
+                </p>
+                <pre><code class="csharp">server.RegisterModule(new WebSocketsModule());
+server.Module&lt;WebSocketsModule&gt;().RegisterWebSocketsServer&lt;WebSocketsChatServer&gt;(&quot;/chat&quot;);</code></pre>
+                <p>
+                    <em>And our web sockets server class looks like:</em>
+                </p>
+                <pre><code class="csharp">/// &lt;summary&gt;
+/// Defines a very simple chat server
+/// &lt;/summary&gt;
+public class WebSocketsChatServer : WebSocketsServer
+{
+    public WebSocketsChatServer()
+        : base(true, 0)
+    {
+        // placeholder
+    }
+    /// &lt;summary&gt;
+    /// Called when this WebSockets Server receives a full message (EndOfMessage) form a WebSockets client.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
+    /// &lt;param name=&quot;rxBuffer&quot;&gt;The rx buffer.&lt;/param&gt;
+    /// &lt;param name=&quot;rxResult&quot;&gt;The rx result.&lt;/param&gt;
+    protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
+    {
+        var session = this.WebServer.GetSession(context);
+        foreach (var ws in this.WebSockets)
+        {
+            if (ws != context)
+                this.Send(ws, Encoding.UTF8.GetString(rxBuffer));
+        }
+    }
+    /// &lt;summary&gt;
+    /// Gets the name of the server.
+    /// &lt;/summary&gt;
+    /// &lt;value&gt;
+    /// The name of the server.
+    /// &lt;/value&gt;
+    public override string ServerName
+    {
+        get { return &quot;Chat Server&quot;; }
+    }
+    /// &lt;summary&gt;
+    /// Called when this WebSockets Server accepts a new WebSockets client.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
+    protected override void OnClientConnected(WebSocketContext context)
+    {
+        this.Send(context, &quot;Welcome to the chat room!&quot;);
+        foreach (var ws in this.WebSockets)
+        {
+            if (ws != context)
+                this.Send(ws, &quot;Someone joined the chat room.&quot;);
+        }
+    }
+    /// &lt;summary&gt;
+    /// Called when this WebSockets Server receives a message frame regardless if the frame represents the EndOfMessage.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
+    /// &lt;param name=&quot;rxBuffer&quot;&gt;The rx buffer.&lt;/param&gt;
+    /// &lt;param name=&quot;rxResult&quot;&gt;The rx result.&lt;/param&gt;
+    protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
+    {
+        return;
+    }
+    /// &lt;summary&gt;
+    /// Called when the server has removed a WebSockets connected client for any reason.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
+    protected override void OnClientDisconnected(WebSocketContext context)
+    {
+        this.Broadcast(string.Format(&quot;Someone left the chat room.&quot;));
+    }
+}</code></pre>
+                <hr />
+                <h2 id="cli">EmbedIO CLI</h2>
+                Start any web folder or EmbedIO-enabled DLL from command line. You can find <a href="https://github.com/unosquare/embedio/tree/master/Unosquare.Labs.EmbedIO.Command">EmbedIO CLI</a>.
+                <h3>Run web folder (static content only)</h3>
+                <pre><code>$ embediocli -p c:\wwwroot</code></pre>
+                <h3>Run web folder with WebAPI or WebSocket Assembly</h3>
+                <pre><code>$ embediocli -p c:\wwwroot --api mywebapi.dll</code></pre>
             </div>
+            <footer>
+                Brought to you by Unosquare<br />
+                <a href="http://www.unosquare.com">
+                    <img alt="unosquare" src="images/logo_178.png" />
+                </a>
+            </footer>
         </div>
-        <footer>
-            <div class="row">
-                <div class="col-xs-4">
-                    <div class="text-center">
-                        <a href="http://www.unosquare.com" target="_blank">
-                            <img alt="unosquare" src="assets/logo_178w.png" />
-                        </a>
-                    </div>
-                </div>
-                <div class="col-xs-4">
-                    &copy; 2016 unosquare
-                </div>
-                <div class="col-xs-4">
-                    <h4>connect with us</h4>
-                    <ul class="list-inline sociallist">
-                        <li>
-                            <a href="https://twitter.com/unosquare" target="_blank"><i class="fa fa-twitter"></i></a>
-                        </li>
-                        <li>
-                            <a href="http://www.linkedin.com/company/unosquare" target="_blank"><i class="fa fa-linkedin"></i></a>
-                        </li>
-                        <li>
-                            <a href="http://www.youtube.com/user/unosquare" target="_blank"><i class="fa fa-youtube"></i></a>
-                        </li>
-                        <li>
-                            <a href="https://github.com/unosquare" target="_blank"><i class="fa fa-github"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </footer>
     </div>
     <script>
         (function(i, s, o, g, r, a, m) {
