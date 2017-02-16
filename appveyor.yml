@@ -1,6 +1,5 @@
 version: '1.0.{build}'
 configuration:
-- Debug
 - Release
 platform: Any CPU
 notifications:
@@ -13,9 +12,19 @@ environment:
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
   COVERALLS_REPO_TOKEN:  
        secure: 1Ce1wX4c2duHsRshiJRZFVIe6VI/r0WTAUG/tXuGFue9CmTI13NJRgZbl9irVKBA
+  op_build_user: "Geo Perez"
+  op_build_user_email: "geovanni.perez@gmail.com"
+  access_token:
+       secure: HzWdswNyfQbQ0vLk9IQyO+Ei9mxoPYp9rvv6HPhtC9J/Fm7EHRzyV953pbPRXI9I
 init:
 - ps: $Env:LABEL = "CI" + $Env:APPVEYOR_BUILD_NUMBER.PadLeft(5, "0")
 before_build:
+- ps: |
+        if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
+        {
+            git checkout $env:APPVEYOR_REPO_BRANCH -q
+            cinst docfx -y
+        }
 - appveyor-retry dotnet restore -v Minimal
 - mkdir tools
 - nuget install OpenCover -Version 4.6.519 -OutputDirectory tools
@@ -25,5 +34,20 @@ build_script:
 test_script:
 - tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test test\Unosquare.Labs.EmbedIO.Tests -c %CONFIGURATION%" -output:coverage.xml -filter:"+[Unosquare.Labs.EmbedIO*]* -[Unosquare.Labs.EmbedIO.Testst*]*" -register:userdotnet
 - tools\coveralls.net.0.7.0\tools\csmacnz.Coveralls.exe --opencover -i coverage.xml --serviceName appveyor --jobId %APPVEYOR_BUILD_NUMBER%
-cache:
-- '%USERPROFILE%\.nuget\packages'
+after_build:
+- ps: |
+        if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
+        {
+            docfx docfx.json
+            git config --global credential.helper store
+            Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
+            git config --global user.email $env:op_build_user_email
+            git config --global user.name $env:op_build_user
+
+            git clone https://github.com/unosquare/embedio.git -b gh-pages origin_site -q
+            Copy-Item origin_site/.git _site -recurse
+            CD _site
+            git add -A 2>&1
+            git commit -m "Documentation update" -q
+            git push origin gh-pages -q
+        }

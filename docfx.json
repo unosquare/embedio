@@ -1,0 +1,36 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [ "src/**.csproj" ],
+          "exclude": [ "**/bin/**", "**/obj/**" ]
+        }
+      ],
+      "dest": "obj/api"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [ "**/*.yml" ],
+        "cwd": "obj/api",
+        "dest": "api"
+      },
+      {
+        "files": [ "*.md", "toc.yml" ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [ ]
+      }
+    ],
+    "globalMetadata": {
+      "_appTitle": "Unosquare EmbedIO",
+      "_enableSearch": true,
+      "_appFaviconPath": "src/Unosquare.Labs.EmbedIO.Command/favicon.ico"
+    },
+    "dest": "_site"
+  }
+}
