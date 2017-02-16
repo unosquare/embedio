@@ -47,6 +47,7 @@ after_build:
 
             git clone https://github.com/unosquare/embedio.git -b gh-pages origin_site -q
             Copy-Item origin_site/.git _site -recurse
+            Copy-Item origin_site/images _site -recurse
             Copy-Item origin_site/index.html _site
             CD _site
             git add -A 2>&1
