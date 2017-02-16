@@ -1,1 +1,0 @@
-Documentation is generated with [ImmDocNet](https://github.com/marek-stoj/ImmDoc.NET)

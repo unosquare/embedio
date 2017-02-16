@@ -1,0 +1,1415 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class WebSocket
+   | Unosquare EmbedIO </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class WebSocket
+   | Unosquare EmbedIO ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    <meta property="docfx:rel" content="../">
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="Unosquare_Net_WebSocket" data-uid="Unosquare.Net.WebSocket">Class WebSocket
+              </h1>
+              <div class="markdown level0 summary"><p>Implements the WebSocket interface.</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><span class="xref">System.Object</span></div>
+                  <div class="level1"><span class="xref">WebSocket</span></div>
+              </div>
+              <h6><strong>Namespace</strong>:Unosquare.Net</h6>
+              <h6><strong>Assembly</strong>:Unosquare.Labs.EmbedIO.dll</h6>
+              <h5 id="Unosquare_Net_WebSocket_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public class WebSocket : IDisposable</code></pre>
+              </div>
+              <h5 id="Unosquare_Net_WebSocket_remarks"><strong>Remarks</strong></h5>
+              <div class="markdown level0 remarks"><p>The WebSocket class provides a set of methods and properties for two-way communication using
+the WebSocket protocol (<a href="http://tools.ietf.org/html/rfc6455">RFC 6455</a>).</p>
+</div>
+              <h3 id="constructors">Constructors
+              </h3>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket__ctor_System_String_System_String___.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.%23ctor(System.String%2CSystem.String%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L278">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket__ctor_" data-uid="Unosquare.Net.WebSocket.#ctor*"></a>
+              <h4 id="Unosquare_Net_WebSocket__ctor_System_String_System_String___" data-uid="Unosquare.Net.WebSocket.#ctor(System.String,System.String[])">WebSocket(String, String[])</h4>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Net.WebSocket.html">WebSocket</a> class with
+the specified WebSocket URL and subprotocols.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public WebSocket(string url, params string[] protocols)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">url</span></td>
+                    <td><p>A <see cref="!:System.String"></see> that represents the WebSocket URL to connect.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span>[]</td>
+                    <td><span class="parametername">protocols</span></td>
+                    <td><p>An array of <see cref="!:System.String"></see> that contains the WebSocket subprotocols if any.
+Each value of <span class="paramref">protocols</span> must be a token defined in
+<a href="http://tools.ietf.org/html/rfc2616#section-2.2">RFC 2616</a>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_Compression.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.Compression%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L343">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_Compression_" data-uid="Unosquare.Net.WebSocket.Compression*"></a>
+              <h4 id="Unosquare_Net_WebSocket_Compression" data-uid="Unosquare.Net.WebSocket.Compression">Compression</h4>
+              <div class="markdown level1 summary"><p>Gets or sets the compression method used to compress a message on the WebSocket connection.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public CompressionMethod Compression { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="Unosquare.Labs.EmbedIO.CompressionMethod.html">CompressionMethod</a></td>
+                    <td><p>One of the <a class="xref" href="Unosquare.Labs.EmbedIO.CompressionMethod.html">CompressionMethod</a> enum values, specifies the compression method
+used to compress a message. The default value is <a class="xref" href="Unosquare.Labs.EmbedIO.CompressionMethod.html#Unosquare_Labs_EmbedIO_CompressionMethod_None">None</a>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_Cookies.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.Cookies%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L373">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_Cookies_" data-uid="Unosquare.Net.WebSocket.Cookies*"></a>
+              <h4 id="Unosquare_Net_WebSocket_Cookies" data-uid="Unosquare.Net.WebSocket.Cookies">Cookies</h4>
+              <div class="markdown level1 summary"><p>Gets the HTTP cookies included in the WebSocket handshake request and response.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IEnumerable&lt;Cookie&gt; Cookies { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">IEnumerable</span>&lt;<span class="xref">Cookie</span>&gt;</td>
+                    <td><p>An <span class="xref">System.Collections.Generic.IEnumerable{WebSocketSharp.Net.Cookie}</span>
+instance that provides an enumerator which supports the iteration over the collection of
+the cookies.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_EmitOnPing.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.EmitOnPing%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L402">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_EmitOnPing_" data-uid="Unosquare.Net.WebSocket.EmitOnPing*"></a>
+              <h4 id="Unosquare_Net_WebSocket_EmitOnPing" data-uid="Unosquare.Net.WebSocket.EmitOnPing">EmitOnPing</h4>
+              <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the <a class="xref" href="Unosquare.Net.WebSocket.html">WebSocket</a> emits
+a <a class="xref" href="Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_OnMessage">OnMessage</a> event when receives a ping.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool EmitOnPing { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><p><code>true</code> if the <a class="xref" href="Unosquare.Net.WebSocket.html">WebSocket</a> emits a <a class="xref" href="Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_OnMessage">OnMessage</a> event
+when receives a ping; otherwise, <code>false</code>. The default value is <code>false</code>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_EnableRedirection.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.EnableRedirection%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L412">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_EnableRedirection_" data-uid="Unosquare.Net.WebSocket.EnableRedirection*"></a>
+              <h4 id="Unosquare_Net_WebSocket_EnableRedirection" data-uid="Unosquare.Net.WebSocket.EnableRedirection">EnableRedirection</h4>
+              <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the <a class="xref" href="Unosquare.Net.WebSocket.html">WebSocket</a> redirects
+the handshake request to the new URL located in the handshake response.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool EnableRedirection { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><p><code>true</code> if the <a class="xref" href="Unosquare.Net.WebSocket.html">WebSocket</a> redirects the handshake request to
+the new URL; otherwise, <code>false</code>. The default value is <code>false</code>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_Extensions.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.Extensions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L441">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_Extensions_" data-uid="Unosquare.Net.WebSocket.Extensions*"></a>
+              <h4 id="Unosquare_Net_WebSocket_Extensions" data-uid="Unosquare.Net.WebSocket.Extensions">Extensions</h4>
+              <div class="markdown level1 summary"><p>Gets the WebSocket extensions selected by the server.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public string Extensions { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><p>A <see cref="!:System.String"></see> that represents the extensions if any.
+The default value is <see cref="!:String.Empty"></see>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_IsAlive.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.IsAlive%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L449">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_IsAlive_" data-uid="Unosquare.Net.WebSocket.IsAlive*"></a>
+              <h4 id="Unosquare_Net_WebSocket_IsAlive" data-uid="Unosquare.Net.WebSocket.IsAlive">IsAlive</h4>
+              <div class="markdown level1 summary"><p>Gets a value indicating whether the WebSocket connection is alive.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool IsAlive { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><p><code>true</code> if the connection is alive; otherwise, <code>false</code>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_IsSecure.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.IsSecure%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L457">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_IsSecure_" data-uid="Unosquare.Net.WebSocket.IsSecure*"></a>
+              <h4 id="Unosquare_Net_WebSocket_IsSecure" data-uid="Unosquare.Net.WebSocket.IsSecure">IsSecure</h4>
+              <div class="markdown level1 summary"><p>Gets a value indicating whether the WebSocket connection is secure.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool IsSecure { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><p><code>true</code> if the connection is secure; otherwise, <code>false</code>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_Origin.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.Origin%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L477">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_Origin_" data-uid="Unosquare.Net.WebSocket.Origin*"></a>
+              <h4 id="Unosquare_Net_WebSocket_Origin" data-uid="Unosquare.Net.WebSocket.Origin">Origin</h4>
+              <div class="markdown level1 summary"><p>Gets or sets the value of the HTTP Origin header to send with
+the WebSocket handshake request to the server.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public string Origin { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><p>
+A <see cref="!:System.String"></see> that represents the value of
+the <a href="http://tools.ietf.org/html/rfc6454#section-7">Origin</a> header to send.
+The default value is <span class="xref">null</span>.
+</p>
+<p>
+The Origin header has the following syntax:
+<code>&lt;scheme&gt;://&lt;host&gt;[:&lt;port&gt;]</code>
+</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="Unosquare_Net_WebSocket_Origin_remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>The <a class="xref" href="Unosquare.Net.WebSocket.html">WebSocket</a> sends the Origin header if this property has any.</p>
+</div>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_Protocol.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.Protocol%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L521">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_Protocol_" data-uid="Unosquare.Net.WebSocket.Protocol*"></a>
+              <h4 id="Unosquare_Net_WebSocket_Protocol" data-uid="Unosquare.Net.WebSocket.Protocol">Protocol</h4>
+              <div class="markdown level1 summary"><p>Gets the WebSocket subprotocol selected by the server.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public string Protocol { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><p>A <see cref="!:System.String"></see> that represents the subprotocol if any.
+The default value is <see cref="!:String.Empty"></see>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_State.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.State%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L535">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_State_" data-uid="Unosquare.Net.WebSocket.State*"></a>
+              <h4 id="Unosquare_Net_WebSocket_State" data-uid="Unosquare.Net.WebSocket.State">State</h4>
+              <div class="markdown level1 summary"><p>Gets the state of the WebSocket connection.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public WebSocketState State { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="Unosquare.Net.WebSocketState.html">WebSocketState</a></td>
+                    <td><p>One of the <a class="xref" href="Unosquare.Net.WebSocketState.html">WebSocketState</a> enum values, indicates the state of the connection.
+The default value is <a class="xref" href="Unosquare.Net.WebSocketState.html#Unosquare_Net_WebSocketState_Connecting">Connecting</a>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_Url.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.Url%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L581">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_Url_" data-uid="Unosquare.Net.WebSocket.Url*"></a>
+              <h4 id="Unosquare_Net_WebSocket_Url" data-uid="Unosquare.Net.WebSocket.Url">Url</h4>
+              <div class="markdown level1 summary"><p>Gets the WebSocket URL used to connect, or accepted.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Uri Url { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">Uri</span></td>
+                    <td><p>A <see cref="!:Uri"></see> that represents the URL used to connect, or accepted.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_WaitTime.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.WaitTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L590">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_WaitTime_" data-uid="Unosquare.Net.WebSocket.WaitTime*"></a>
+              <h4 id="Unosquare_Net_WebSocket_WaitTime" data-uid="Unosquare.Net.WebSocket.WaitTime">WaitTime</h4>
+              <div class="markdown level1 summary"><p>Gets or sets the wait time for the response to the Ping or Close.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public TimeSpan WaitTime { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TimeSpan</span></td>
+                    <td><p>A <see cref="!:TimeSpan"></see> that represents the wait time. The default value is the same as
+5 seconds, or 1 second if the <a class="xref" href="Unosquare.Net.WebSocket.html">WebSocket</a> is used in a server.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_Accept.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.Accept%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2307">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_Accept_" data-uid="Unosquare.Net.WebSocket.Accept*"></a>
+              <h4 id="Unosquare_Net_WebSocket_Accept" data-uid="Unosquare.Net.WebSocket.Accept">Accept()</h4>
+              <div class="markdown level1 summary"><p>Accepts the WebSocket handshake request.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Accept()</code></pre>
+              </div>
+              <h5 id="Unosquare_Net_WebSocket_Accept_remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>This method isn&#39;t available in a client.</p>
+</div>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_AcceptAsync.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.AcceptAsync%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2333">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_AcceptAsync_" data-uid="Unosquare.Net.WebSocket.AcceptAsync*"></a>
+              <h4 id="Unosquare_Net_WebSocket_AcceptAsync" data-uid="Unosquare.Net.WebSocket.AcceptAsync">AcceptAsync()</h4>
+              <div class="markdown level1 summary"><p>Accepts the WebSocket handshake request asynchronously.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void AcceptAsync()</code></pre>
+              </div>
+              <h5 id="Unosquare_Net_WebSocket_AcceptAsync_remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>
+This method doesn&#39;t wait for the accept to be complete.
+</p>
+<p>
+This method isn&#39;t available in a client.
+</p>
+</div>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_Close.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.Close%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2358">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_Close_" data-uid="Unosquare.Net.WebSocket.Close*"></a>
+              <h4 id="Unosquare_Net_WebSocket_Close" data-uid="Unosquare.Net.WebSocket.Close">Close()</h4>
+              <div class="markdown level1 summary"><p>Closes the WebSocket connection, and releases all associated resources.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Close()</code></pre>
+              </div>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_Close_Unosquare_Net_CloseStatusCode_.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.Close(Unosquare.Net.CloseStatusCode)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2380">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_Close_" data-uid="Unosquare.Net.WebSocket.Close*"></a>
+              <h4 id="Unosquare_Net_WebSocket_Close_Unosquare_Net_CloseStatusCode_" data-uid="Unosquare.Net.WebSocket.Close(Unosquare.Net.CloseStatusCode)">Close(CloseStatusCode)</h4>
+              <div class="markdown level1 summary"><p>Closes the WebSocket connection with the specified <span class="paramref">code</span>,
+and releases all associated resources.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Close(CloseStatusCode code)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="Unosquare.Net.CloseStatusCode.html">CloseStatusCode</a></td>
+                    <td><span class="parametername">code</span></td>
+                    <td><p>One of the <a class="xref" href="Unosquare.Net.CloseStatusCode.html">CloseStatusCode</a> enum values that represents
+the status code indicating the reason for the close.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_Close_Unosquare_Net_CloseStatusCode_System_String_.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.Close(Unosquare.Net.CloseStatusCode%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2421">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_Close_" data-uid="Unosquare.Net.WebSocket.Close*"></a>
+              <h4 id="Unosquare_Net_WebSocket_Close_Unosquare_Net_CloseStatusCode_System_String_" data-uid="Unosquare.Net.WebSocket.Close(Unosquare.Net.CloseStatusCode,System.String)">Close(CloseStatusCode, String)</h4>
+              <div class="markdown level1 summary"><p>Closes the WebSocket connection with the specified <span class="paramref">code</span> and
+<span class="paramref">reason</span>, and releases all associated resources.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Close(CloseStatusCode code, string reason)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="Unosquare.Net.CloseStatusCode.html">CloseStatusCode</a></td>
+                    <td><span class="parametername">code</span></td>
+                    <td><p>One of the <a class="xref" href="Unosquare.Net.CloseStatusCode.html">CloseStatusCode</a> enum values that represents
+the status code indicating the reason for the close.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">reason</span></td>
+                    <td><p>A <see cref="!:System.String"></see> that represents the reason for the close.
+The size must be 123 bytes or less.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_CloseAsync.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.CloseAsync%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2457">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_CloseAsync_" data-uid="Unosquare.Net.WebSocket.CloseAsync*"></a>
+              <h4 id="Unosquare_Net_WebSocket_CloseAsync" data-uid="Unosquare.Net.WebSocket.CloseAsync">CloseAsync()</h4>
+              <div class="markdown level1 summary"><p>Closes the WebSocket connection asynchronously, and releases
+all associated resources.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void CloseAsync()</code></pre>
+              </div>
+              <h5 id="Unosquare_Net_WebSocket_CloseAsync_remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>This method does not wait for the close to be complete.</p>
+</div>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_CloseAsync_Unosquare_Net_CloseStatusCode_.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.CloseAsync(Unosquare.Net.CloseStatusCode)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2482">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_CloseAsync_" data-uid="Unosquare.Net.WebSocket.CloseAsync*"></a>
+              <h4 id="Unosquare_Net_WebSocket_CloseAsync_Unosquare_Net_CloseStatusCode_" data-uid="Unosquare.Net.WebSocket.CloseAsync(Unosquare.Net.CloseStatusCode)">CloseAsync(CloseStatusCode)</h4>
+              <div class="markdown level1 summary"><p>Closes the WebSocket connection asynchronously with the specified
+<span class="paramref">code</span>, and releases all associated resources.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void CloseAsync(CloseStatusCode code)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="Unosquare.Net.CloseStatusCode.html">CloseStatusCode</a></td>
+                    <td><span class="parametername">code</span></td>
+                    <td><p>One of the <a class="xref" href="Unosquare.Net.CloseStatusCode.html">CloseStatusCode</a> enum values that represents
+the status code indicating the reason for the close.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="Unosquare_Net_WebSocket_CloseAsync_Unosquare_Net_CloseStatusCode__remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>This method does not wait for the close to be complete.</p>
+</div>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_CloseAsync_Unosquare_Net_CloseStatusCode_System_String_.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.CloseAsync(Unosquare.Net.CloseStatusCode%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2527">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_CloseAsync_" data-uid="Unosquare.Net.WebSocket.CloseAsync*"></a>
+              <h4 id="Unosquare_Net_WebSocket_CloseAsync_Unosquare_Net_CloseStatusCode_System_String_" data-uid="Unosquare.Net.WebSocket.CloseAsync(Unosquare.Net.CloseStatusCode,System.String)">CloseAsync(CloseStatusCode, String)</h4>
+              <div class="markdown level1 summary"><p>Closes the WebSocket connection asynchronously with the specified
+<span class="paramref">code</span> and <span class="paramref">reason</span>, and releases
+all associated resources.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void CloseAsync(CloseStatusCode code, string reason)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="Unosquare.Net.CloseStatusCode.html">CloseStatusCode</a></td>
+                    <td><span class="parametername">code</span></td>
+                    <td><p>One of the <a class="xref" href="Unosquare.Net.CloseStatusCode.html">CloseStatusCode</a> enum values that represents
+the status code indicating the reason for the close.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">reason</span></td>
+                    <td><p>A <see cref="!:System.String"></see> that represents the reason for the close.
+The size must be 123 bytes or less.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="Unosquare_Net_WebSocket_CloseAsync_Unosquare_Net_CloseStatusCode_System_String__remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>This method does not wait for the close to be complete.</p>
+</div>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_Connect.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.Connect%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2562">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_Connect_" data-uid="Unosquare.Net.WebSocket.Connect*"></a>
+              <h4 id="Unosquare_Net_WebSocket_Connect" data-uid="Unosquare.Net.WebSocket.Connect">Connect()</h4>
+              <div class="markdown level1 summary"><p>Establishes a WebSocket connection.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Connect()</code></pre>
+              </div>
+              <h5 id="Unosquare_Net_WebSocket_Connect_remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>This method isn&#39;t available in a server.</p>
+</div>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_ConnectAsync.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.ConnectAsync%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2588">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_ConnectAsync_" data-uid="Unosquare.Net.WebSocket.ConnectAsync*"></a>
+              <h4 id="Unosquare_Net_WebSocket_ConnectAsync" data-uid="Unosquare.Net.WebSocket.ConnectAsync">ConnectAsync()</h4>
+              <div class="markdown level1 summary"><p>Establishes a WebSocket connection asynchronously.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void ConnectAsync()</code></pre>
+              </div>
+              <h5 id="Unosquare_Net_WebSocket_ConnectAsync_remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>
+This method doesn&#39;t wait for the connect to be complete.
+</p>
+<p>
+This method isn&#39;t available in a server.
+</p>
+</div>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_Ping.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.Ping%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2617">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_Ping_" data-uid="Unosquare.Net.WebSocket.Ping*"></a>
+              <h4 id="Unosquare_Net_WebSocket_Ping" data-uid="Unosquare.Net.WebSocket.Ping">Ping()</h4>
+              <div class="markdown level1 summary"><p>Sends a ping using the WebSocket connection.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Ping()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><p><code>true</code> if the <a class="xref" href="Unosquare.Net.WebSocket.html">WebSocket</a> receives a pong to this ping in a time;
+otherwise, <code>false</code>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_Ping_System_String_.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.Ping(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2636">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_Ping_" data-uid="Unosquare.Net.WebSocket.Ping*"></a>
+              <h4 id="Unosquare_Net_WebSocket_Ping_System_String_" data-uid="Unosquare.Net.WebSocket.Ping(System.String)">Ping(String)</h4>
+              <div class="markdown level1 summary"><p>Sends a ping with the specified <span class="paramref">message</span> using the WebSocket connection.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Ping(string message)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">message</span></td>
+                    <td><p>A <see cref="!:System.String"></see> that represents the message to send.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><p><code>true</code> if the <a class="xref" href="Unosquare.Net.WebSocket.html">WebSocket</a> receives a pong to this ping in a time;
+otherwise, <code>false</code>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_Send_FileInfo_.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.Send(FileInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2693">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_Send_" data-uid="Unosquare.Net.WebSocket.Send*"></a>
+              <h4 id="Unosquare_Net_WebSocket_Send_FileInfo_" data-uid="Unosquare.Net.WebSocket.Send(FileInfo)">Send(FileInfo)</h4>
+              <div class="markdown level1 summary"><p>Sends the specified <span class="paramref">file</span> as binary data using the WebSocket connection.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Send(FileInfo file)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">FileInfo</span></td>
+                    <td><span class="parametername">file</span></td>
+                    <td><p>A <see cref="!:FileInfo"></see> that represents the file to send.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_Send_System_Byte___.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.Send(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2671">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_Send_" data-uid="Unosquare.Net.WebSocket.Send*"></a>
+              <h4 id="Unosquare_Net_WebSocket_Send_System_Byte___" data-uid="Unosquare.Net.WebSocket.Send(System.Byte[])">Send(Byte[])</h4>
+              <div class="markdown level1 summary"><p>Sends binary <span class="paramref">data</span> using the WebSocket connection.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Send(byte[] data)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">data</span></td>
+                    <td><p>An array of <see cref="!:System.Byte"></see> that represents the binary data to send.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_Send_System_String_.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.Send(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2715">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_Send_" data-uid="Unosquare.Net.WebSocket.Send*"></a>
+              <h4 id="Unosquare_Net_WebSocket_Send_System_String_" data-uid="Unosquare.Net.WebSocket.Send(System.String)">Send(String)</h4>
+              <div class="markdown level1 summary"><p>Sends text <span class="paramref">data</span> using the WebSocket connection.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Send(string data)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">data</span></td>
+                    <td><p>A <see cref="!:System.String"></see> that represents the text data to send.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_SendAsync_FileInfo_Action_System_Boolean__.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.SendAsync(FileInfo%2CAction%7BSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2776">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_SendAsync_" data-uid="Unosquare.Net.WebSocket.SendAsync*"></a>
+              <h4 id="Unosquare_Net_WebSocket_SendAsync_FileInfo_Action_System_Boolean__" data-uid="Unosquare.Net.WebSocket.SendAsync(FileInfo,Action{System.Boolean})">SendAsync(FileInfo, Action&lt;Boolean&gt;)</h4>
+              <div class="markdown level1 summary"><p>Sends the specified <span class="paramref">file</span> as binary data asynchronously using
+the WebSocket connection.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void SendAsync(FileInfo file, Action&lt;bool&gt; completed)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">FileInfo</span></td>
+                    <td><span class="parametername">file</span></td>
+                    <td><p>A <see cref="!:FileInfo"></see> that represents the file to send.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">Action</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+                    <td><span class="parametername">completed</span></td>
+                    <td><p>An <code>Action&lt;bool&gt;</code> delegate that references the method(s) called when
+the send is complete. A <see cref="!:System.Boolean"></see> passed to this delegate is <code>true</code>
+if the send is complete successfully.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="Unosquare_Net_WebSocket_SendAsync_FileInfo_Action_System_Boolean___remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>This method doesn&#39;t wait for the send to be complete.</p>
+</div>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_SendAsync_Stream_System_Int32_Action_System_Boolean__.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.SendAsync(Stream%2CSystem.Int32%2CAction%7BSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2840">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_SendAsync_" data-uid="Unosquare.Net.WebSocket.SendAsync*"></a>
+              <h4 id="Unosquare_Net_WebSocket_SendAsync_Stream_System_Int32_Action_System_Boolean__" data-uid="Unosquare.Net.WebSocket.SendAsync(Stream,System.Int32,Action{System.Boolean})">SendAsync(Stream, Int32, Action&lt;Boolean&gt;)</h4>
+              <div class="markdown level1 summary"><p>Sends binary data from the specified <see cref="!:Stream"></see> asynchronously using
+the WebSocket connection.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void SendAsync(Stream stream, int length, Action&lt;bool&gt; completed)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">Stream</span></td>
+                    <td><span class="parametername">stream</span></td>
+                    <td><p>A <see cref="!:Stream"></see> from which contains the binary data to send.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">length</span></td>
+                    <td><p>An <see cref="!:System.Int32"></see> that represents the number of bytes to send.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">Action</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+                    <td><span class="parametername">completed</span></td>
+                    <td><p>An <code>Action&lt;bool&gt;</code> delegate that references the method(s) called when
+the send is complete. A <see cref="!:System.Boolean"></see> passed to this delegate is <code>true</code>
+if the send is complete successfully.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="Unosquare_Net_WebSocket_SendAsync_Stream_System_Int32_Action_System_Boolean___remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>This method doesn&#39;t wait for the send to be complete.</p>
+</div>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_SendAsync_System_Byte___Action_System_Boolean__.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.SendAsync(System.Byte%5B%5D%2CAction%7BSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2745">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_SendAsync_" data-uid="Unosquare.Net.WebSocket.SendAsync*"></a>
+              <h4 id="Unosquare_Net_WebSocket_SendAsync_System_Byte___Action_System_Boolean__" data-uid="Unosquare.Net.WebSocket.SendAsync(System.Byte[],Action{System.Boolean})">SendAsync(Byte[], Action&lt;Boolean&gt;)</h4>
+              <div class="markdown level1 summary"><p>Sends binary <span class="paramref">data</span> asynchronously using the WebSocket connection.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void SendAsync(byte[] data, Action&lt;bool&gt; completed)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Byte</span>[]</td>
+                    <td><span class="parametername">data</span></td>
+                    <td><p>An array of <see cref="!:System.Byte"></see> that represents the binary data to send.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">Action</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+                    <td><span class="parametername">completed</span></td>
+                    <td><p>An <code>Action&lt;bool&gt;</code> delegate that references the method(s) called when
+the send is complete. A <see cref="!:System.Boolean"></see> passed to this delegate is <code>true</code>
+if the send is complete successfully.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="Unosquare_Net_WebSocket_SendAsync_System_Byte___Action_System_Boolean___remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>This method doesn&#39;t wait for the send to be complete.</p>
+</div>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_SendAsync_System_String_Action_System_Boolean__.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.SendAsync(System.String%2CAction%7BSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2806">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_SendAsync_" data-uid="Unosquare.Net.WebSocket.SendAsync*"></a>
+              <h4 id="Unosquare_Net_WebSocket_SendAsync_System_String_Action_System_Boolean__" data-uid="Unosquare.Net.WebSocket.SendAsync(System.String,Action{System.Boolean})">SendAsync(String, Action&lt;Boolean&gt;)</h4>
+              <div class="markdown level1 summary"><p>Sends text <span class="paramref">data</span> asynchronously using the WebSocket connection.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void SendAsync(string data, Action&lt;bool&gt; completed)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">data</span></td>
+                    <td><p>A <see cref="!:System.String"></see> that represents the text data to send.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">Action</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+                    <td><span class="parametername">completed</span></td>
+                    <td><p>An <code>Action&lt;bool&gt;</code> delegate that references the method(s) called when
+the send is complete. A <see cref="!:System.Boolean"></see> passed to this delegate is <code>true</code>
+if the send is complete successfully.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="Unosquare_Net_WebSocket_SendAsync_System_String_Action_System_Boolean___remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>This method doesn&#39;t wait for the send to be complete.</p>
+</div>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_SetCookie_Cookie_.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.SetCookie(Cookie)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2884">View Source</a>
+              </span>
+              <a id="Unosquare_Net_WebSocket_SetCookie_" data-uid="Unosquare.Net.WebSocket.SetCookie*"></a>
+              <h4 id="Unosquare_Net_WebSocket_SetCookie_Cookie_" data-uid="Unosquare.Net.WebSocket.SetCookie(Cookie)">SetCookie(Cookie)</h4>
+              <div class="markdown level1 summary"><p>Sets an HTTP <span class="paramref">cookie</span> to send with
+the WebSocket handshake request to the server.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void SetCookie(Cookie cookie)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">Cookie</span></td>
+                    <td><span class="parametername">cookie</span></td>
+                    <td><p>A <see cref="!:Cookie"></see> that represents a cookie to send.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="events">Events
+              </h3>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_OnClose.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.OnClose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L620">View Source</a>
+              </span>
+              <h4 id="Unosquare_Net_WebSocket_OnClose" data-uid="Unosquare.Net.WebSocket.OnClose">OnClose</h4>
+              <div class="markdown level1 summary"><p>Occurs when the WebSocket connection has been closed.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public event EventHandler&lt;CloseEventArgs&gt; OnClose</code></pre>
+              </div>
+              <h5 class="eventType">Event Type</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">EventHandler</span>&lt;<a class="xref" href="Unosquare.Net.CloseEventArgs.html">CloseEventArgs</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_OnError.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.OnError%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L625">View Source</a>
+              </span>
+              <h4 id="Unosquare_Net_WebSocket_OnError" data-uid="Unosquare.Net.WebSocket.OnError">OnError</h4>
+              <div class="markdown level1 summary"><p>Occurs when the <a class="xref" href="Unosquare.Net.WebSocket.html">WebSocket</a> gets an error.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public event EventHandler&lt;ConnectionFailureEventArgs&gt; OnError</code></pre>
+              </div>
+              <h5 class="eventType">Event Type</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">EventHandler</span>&lt;<span class="xref">ConnectionFailureEventArgs</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_OnMessage.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.OnMessage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L630">View Source</a>
+              </span>
+              <h4 id="Unosquare_Net_WebSocket_OnMessage" data-uid="Unosquare.Net.WebSocket.OnMessage">OnMessage</h4>
+              <div class="markdown level1 summary"><p>Occurs when the <a class="xref" href="Unosquare.Net.WebSocket.html">WebSocket</a> receives a message.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public event EventHandler&lt;MessageEventArgs&gt; OnMessage</code></pre>
+              </div>
+              <h5 class="eventType">Event Type</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">EventHandler</span>&lt;<a class="xref" href="Unosquare.Net.MessageEventArgs.html">MessageEventArgs</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_OnOpen.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.OnOpen%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L635">View Source</a>
+              </span>
+              <h4 id="Unosquare_Net_WebSocket_OnOpen" data-uid="Unosquare.Net.WebSocket.OnOpen">OnOpen</h4>
+              <div class="markdown level1 summary"><p>Occurs when the WebSocket connection has been established.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public event EventHandler OnOpen</code></pre>
+              </div>
+              <h5 class="eventType">Event Type</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">EventHandler</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L142" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2016 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

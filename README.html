@@ -1,0 +1,459 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>NuGet Installation: | Unosquare EmbedIO </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="NuGet Installation: | Unosquare EmbedIO ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="">
+    <meta property="docfx:rel" content="">
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              
+              <p> <a href="https://github.com/igrigorik/ga-beacon"><img src="https://ga-beacon.appspot.com/UA-8535255-2/unosquare/embedio/" alt="Analytics"></a>
+ <a href="https://ci.appveyor.com/project/geoperez/embedio"><img src="https://ci.appveyor.com/api/projects/status/w59t7sct3a8ir96t?svg=true" alt="Build status"></a>
+ <a href="https://travis-ci.org/unosquare/embedio"><img src="https://travis-ci.org/unosquare/embedio.svg?branch=master" alt="Build Status"></a>
+ <a href="https://www.nuget.org/packages/Embedio"><img src="https://badge.fury.io/nu/embedio.svg" alt="NuGet version"></a>
+<a href="https://coveralls.io/r/unosquare/embedio?branch=master"><img src="https://coveralls.io/repos/unosquare/embedio/badge.svg?branch=master" alt="Coverage Status"></a></p>
+<p><img src="http://unosquare.github.io/embedio/images/embedio.png" alt="EmbedIO"></p>
+<p><em><span class="emoji" shortcode="star">⭐</span> Please star this project if you find it useful!</em></p>
+<p>A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework and .NET Core</p>
+<ul>
+<li>Written entirely in C#</li>
+<li>.NET Core portable library</li>
+<li>Network operations use the async/await pattern: Responses are handled asynchronously</li>
+<li>Cross-platform[1]: tested in Mono 3.10.x on Windows and on a custom Yocto image for the Raspberry Pi</li>
+<li>Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras" target="_blank">EmbedIO Extras</a> for additional modules.</li>
+<li>Small memory footprint</li>
+<li>Create REST APIs quickly with the out-of-the-box Web Api module</li>
+<li>Serve static files with 1 line of code (also out-of-the-box)</li>
+<li>Handle sessions with the built-in LocalSessionWebModule</li>
+<li>WebSockets support (see notes below)</li>
+<li>CORS support. Origin, Header and Method validation with OPTIONS preflight</li>
+<li>Supports HTTP 206 Partial Content</li>
+<li><a href="http://owin.org/">OWIN</a> Middleware support via <a href="https://github.com/unosquare/embedio-extras/tree/master/Unosquare.Labs.EmbedIO.OwinMiddleware">OWIN Middleware Module</a>.</li>
+</ul>
+<p><em>For detailed usage and REST API implementation, download the code and take a look at the Samples project</em></p>
+<p><strong>Some usage scenarios</strong>:</p>
+<ul>
+<li>Write a cross-platform GUI entirely in CSS/HTML/JS</li>
+<li>Write a game using Babylon.js and make EmbedIO your serve your code and assets</li>
+<li>Create GUIs for Windows services or Linux daemons</li>
+<li>Works well with <a href="https://github.com/unosquare/litelib" target="_blank">LiteLib</a> - add SQLite support in minutes!</li>
+<li>Write client applications with real-time communication between them</li>
+</ul>
+<p>Some notes regarding WebSocket support:</p>
+<table>
+<thead>
+<tr>
+<th>Runtime</th>
+<th>WebSocket support</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NET452</td>
+<td>Yes</td>
+<td>Support Win7+ OS using a custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a></td>
+</tr>
+<tr>
+<td>NET46</td>
+<td>Yes</td>
+<td>Support Win8+ OS using native System.Net library</td>
+</tr>
+<tr>
+<td>MONO</td>
+<td>Yes</td>
+<td>Support Windows and Linux using custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a></td>
+</tr>
+<tr>
+<td>NETCORE10</td>
+<td>Yes</td>
+<td>Support using a custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a></td>
+</tr>
+</tbody>
+</table>
+<p>EmbedIO before version 1.4.0 uses Newtonsoft JSON and an internal logger subsystem based on ILog interface.</p>
+<h2 id="nuget-installation">NuGet Installation:</h2>
+<pre><code>PM&gt; Install-Package EmbedIO
+</code></pre><h2 id="basic-example">Basic Example:</h2>
+<p><em>Please note the comments are the important part here. More info is available in the samples.</em></p>
+<pre><code class="lang-csharp">namespace Company.Project
+{
+    using System;
+    using Unosquare.Labs.EmbedIO;
+    using Unosquare.Labs.EmbedIO.Modules;
+
+    class Program
+    {
+        /// &lt;summary&gt;
+        /// Defines the entry point of the application.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;args&quot;&gt;The arguments.&lt;/param&gt;
+        static void Main(string[] args)
+        {
+            var url = &quot;http://localhost:9696/&quot;;
+            if (args.Length &gt; 0)
+                url = args[0];
+
+            // Our web server is disposable.
+            using (var server = new WebServer(url))
+            {
+                // First, we will configure our web server by adding Modules.
+                // Please note that order DOES matter.
+                // ================================================================================================
+                // If we want to enable sessions, we simply register the LocalSessionModule
+                // Beware that this is an in-memory session storage mechanism so, avoid storing very large objects.
+                // You can use the server.GetSession() method to get the SessionInfo object and manupulate it.
+                // You could potentially implement a distributed session module using something like Redis
+                server.RegisterModule(new LocalSessionModule());
+
+                // Here we setup serving of static files
+                server.RegisterModule(new StaticFilesModule(&quot;c:/web&quot;));
+                // The static files module will cache small files in ram until it detects they have been modified.
+                server.Module&lt;StaticFilesModule&gt;().UseRamCache = true;
+                server.Module&lt;StaticFilesModule&gt;().DefaultExtension = &quot;.html&quot;;
+                // We don&#39;t need to add the line below. The default document is always index.html.
+                //server.Module&lt;Modules.StaticFilesWebModule&gt;().DefaultDocument = &quot;index.html&quot;;
+
+                // Once we&#39;ve registered our modules and configured them, we call the RunAsync() method.
+                // This is a non-blocking method (it return immediately) so in this case we avoid
+                // disposing of the object until a key is pressed.
+                //server.Run();
+                server.RunAsync();
+
+                // Fire up the browser to show the content if we are debugging!
+#if DEBUG
+                var browser = new System.Diagnostics.Process()
+                {
+                    StartInfo = new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true }
+                };
+                browser.Start();
+#endif
+                // Wait for any key to be pressed before disposing of our web server.
+                // In a service we&#39;d manage the lifecycle of of our web server using
+                // something like a BackgroundWorker or a ManualResetEvent.
+                Console.ReadKey(true);
+            }
+        }
+    }
+}
+</code></pre><h2 id="fluent-example">Fluent Example:</h2>
+<p>Many extension methods are available. This allows you to create a web server instance in a fluent style by dotting in configuration options.</p>
+<pre><code class="lang-csharp">namespace Company.Project
+{
+    using System;
+    using Unosquare.Labs.EmbedIO;
+
+    internal class Program
+    {
+        /// &lt;summary&gt;
+        /// Defines the entry point of the application.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;args&quot;&gt;The arguments.&lt;/param&gt;
+        private static void Main(string[] args)
+        {
+            var url = &quot;http://localhost:9696/&quot;;
+            if (args.Length &gt; 0)
+                url = args[0];
+
+            // Create Webserver and attach LocalSession and Static
+            // files module and CORS enabled
+            var server = WebServer
+                .Create(url)
+                .EnableCors()
+                .WithLocalSession()
+                .WithStaticFolderAt(&quot;c:/web&quot;);
+
+        var cts = new CancellationTokenSource();
+            var task = server.RunAsync(cts.Token);
+
+            // Fire up the browser to show the content if we are debugging!
+#if DEBUG
+            var browser = new System.Diagnostics.Process()
+            {
+                StartInfo = new System.Diagnostics.ProcessStartInfo(url) {UseShellExecute = true}
+            };
+            browser.Start();
+#endif
+            // Wait for any key to be pressed before disposing of our web server.
+            // In a service we&#39;d manage the lifecycle of of our web server using
+            // something like a BackgroundWorker or a ManualResetEvent.
+            Console.ReadKey(true);
+            cts.Cancel();
+            try
+            {
+                task.Wait();
+            } catch (AggregateException)
+            {
+                // We&#39;d also actually verify the exception cause was that the task
+                // was cancelled.
+                server.Dispose();
+            }
+        }
+    }
+}
+</code></pre><h2 id="rest-api-example">REST API Example:</h2>
+<p>The WebApi module supports two routing strategies: Wildcard and Regex. By default, and in order to maintain backwards compatibility, the WebApi module will use the <strong>Wildcard Routing Strategy</strong> and match routes using the asterisk <code>*</code> character in the route. <strong>For example:</strong> </p>
+<ul>
+<li>The route <code>/api/people/*</code> will match any request with a URL starting with the two first URL segments <code>api</code> and <code>people</code> and ending with anything. The route <code>/api/people/hello</code> will be matched.</li>
+<li>You can also use wildcards in the middle of the route. The route <code>/api/people/*/details</code> will match requests starting with the two first URL segments <code>api</code> and <code>people</code>, and ending with a <code>details</code> segment. The route <code>/api/people/hello/details</code> will be matched. </li>
+</ul>
+<p><em>Note that most REST services can be designed with this simpler Wildcard routing startegy. However, the Regex matching strategy is the current recommended approach as we might be deprecating the Wildcard strategy altogether</em></p>
+<p>On the other hand, the <strong>Regex Routing Strategy</strong> will try to match and resolve the values from a route template, in a similar fashion to Microsoft&#39;s Web API 2. A method with the following route <code>/api/people/{id}</code> is going to match any request URL with three segments: the first two <code>api</code> and <code>people</code> and the last one is going to be parsed or converted to the type in the <code>id</code> argument of the handling method signature. Please read on if this was confusing as it is much simpler than it sounds. Additionally, you can put multiple values to match, for example <code>/api/people/{mainSkill}/{age}</code>, and receive the parsed values from the URL straight into the arguments of your handler method.</p>
+<p><em>During server setup:</em></p>
+<pre><code class="lang-csharp">// The routing strategy is Wildcard by default, but you can change it to Regex as follows:
+var server =  new WebServer(&quot;http://localhost:9696/&quot;, RoutingStrategy.Regex);
+
+server.RegisterModule(new WebApiModule());
+server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;();
+</code></pre><p><em>And our controller class (using Regex Strategy) looks like:</em></p>
+<pre><code class="lang-csharp">public class PeopleController : WebApiController
+{
+    [WebApiHandler(HttpVerbs.Get, &quot;/api/people/{id}&quot;)]
+    public bool GetPeople(WebServer server, HttpListenerContext context, int id)
+    {
+        try
+        {
+            if (People.Any(p =&gt; p.Key == id))
+            {
+                return context.JsonResponse(People.FirstOrDefault(p =&gt; p.Key == id));
+            }
+        }
+        catch (Exception ex)
+        {
+            return HandleError(context, ex, (int)HttpStatusCode.InternalServerError);
+        }
+    }
+
+    protected bool HandleError(HttpListenerContext context, Exception ex, int statusCode = 500)
+    {
+        var errorResponse = new
+        {
+            Title = &quot;Unexpected Error&quot;,
+            ErrorCode = ex.GetType().Name,
+            Description = ex.ExceptionMessage(),
+        };
+
+        context.Response.StatusCode = statusCode;
+        return context.JsonResponse(errorResponse);
+    }
+}
+</code></pre><p><em>Or if you want to use the Wildcard strategy (which is the default):</em></p>
+<pre><code class="lang-csharp">public class PeopleController : WebApiController
+{
+    [WebApiHandler(HttpVerbs.Get, &quot;/api/people/*&quot;)]
+    public bool GetPeople(WebServer server, HttpListenerContext context)
+    {
+        try
+        {
+            var lastSegment = context.Request.Url.Segments.Last();
+            if (lastSegment.EndsWith(&quot;/&quot;))
+                return context.JsonResponse(People);
+
+            int key = 0;
+            if (int.TryParse(lastSegment, out key) &amp;&amp; People.Any(p =&gt; p.Key == key))
+            {
+                return context.JsonResponse(People.FirstOrDefault(p =&gt; p.Key == key));
+            }
+
+            throw new KeyNotFoundException(&quot;Key Not Found: &quot; + lastSegment);
+        }
+        catch (Exception ex)
+        {
+            return HandleError(context, ex, (int)HttpStatusCode.InternalServerError);
+        }
+    }
+
+    protected bool HandleError(HttpListenerContext context, Exception ex, int statusCode = 500)
+    {
+        var errorResponse = new
+        {
+            Title = &quot;Unexpected Error&quot;,
+            ErrorCode = ex.GetType().Name,
+            Description = ex.ExceptionMessage(),
+        };
+
+        context.Response.StatusCode = statusCode;
+        return context.JsonResponse(errorResponse);
+    }
+}
+</code></pre><h2 id="websockets-example">WebSockets Example:</h2>
+<p><em>During server setup:</em></p>
+<pre><code class="lang-csharp">server.RegisterModule(new WebSocketsModule());
+server.Module&lt;WebSocketsModule&gt;().RegisterWebSocketsServer&lt;WebSocketsChatServer&gt;(&quot;/chat&quot;);
+</code></pre><p><em>And our web sockets server class looks like:</em></p>
+<pre><code class="lang-csharp">
+/// &lt;summary&gt;
+/// Defines a very simple chat server
+/// &lt;/summary&gt;
+public class WebSocketsChatServer : WebSocketsServer
+{
+
+    public WebSocketsChatServer()
+        : base(true, 0)
+    {
+        // placeholder
+    }
+
+    /// &lt;summary&gt;
+    /// Called when this WebSockets Server receives a full message (EndOfMessage) form a WebSockets client.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
+    /// &lt;param name=&quot;rxBuffer&quot;&gt;The rx buffer.&lt;/param&gt;
+    /// &lt;param name=&quot;rxResult&quot;&gt;The rx result.&lt;/param&gt;
+    protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
+    {
+        var session = this.WebServer.GetSession(context);
+        foreach (var ws in this.WebSockets)
+        {
+            if (ws != context)
+                this.Send(ws, Encoding.UTF8.GetString(rxBuffer));
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Gets the name of the server.
+    /// &lt;/summary&gt;
+    /// &lt;value&gt;
+    /// The name of the server.
+    /// &lt;/value&gt;
+    public override string ServerName
+    {
+        get { return &quot;Chat Server&quot;; }
+    }
+
+    /// &lt;summary&gt;
+    /// Called when this WebSockets Server accepts a new WebSockets client.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
+    protected override void OnClientConnected(WebSocketContext context)
+    {
+        this.Send(context, &quot;Welcome to the chat room!&quot;);
+        foreach (var ws in this.WebSockets)
+        {
+            if (ws != context)
+                this.Send(ws, &quot;Someone joined the chat room.&quot;);
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Called when this WebSockets Server receives a message frame regardless if the frame represents the EndOfMessage.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
+    /// &lt;param name=&quot;rxBuffer&quot;&gt;The rx buffer.&lt;/param&gt;
+    /// &lt;param name=&quot;rxResult&quot;&gt;The rx result.&lt;/param&gt;
+    protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
+    {
+        return;
+    }
+
+    /// &lt;summary&gt;
+    /// Called when the server has removed a WebSockets connected client for any reason.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
+    protected override void OnClientDisconnected(WebSocketContext context)
+    {
+        this.Broadcast(string.Format(&quot;Someone left the chat room.&quot;));
+    }
+}
+</code></pre><h2 id="notes">Notes</h2>
+<p>[1] - EmbedIO uses lowercase URL parts. In Windows systems this is the expected behaviour but in Unix systems using MONO please refer to <a href="http://www.mono-project.com/docs/advanced/iomap/">Mono IOMap</a> if you want to work with case insensitive URL parts.</p>
+
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/unosquare/embedio/blob/master/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2016 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>
