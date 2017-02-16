@@ -41,6 +41,7 @@ after_build:
             docfx docfx.json
             git config --global credential.helper store
             Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
+            git config --global core.autocrlf false 
             git config --global user.email $env:op_build_user_email
             git config --global user.name $env:op_build_user
 
@@ -50,4 +51,5 @@ after_build:
             git add -A 2>&1
             git commit -m "Documentation update" -q
             git push origin gh-pages -q
+            CD ..
         }
