@@ -1,21 +1,20 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
+    using Swan;
     using Modules;
     using System;
 
     internal class Program
     {
-        public static readonly bool IsMono = Type.GetType("Mono.Runtime") != null;
-
         /// <summary>
         /// Defines the entry point of the application.
         /// </summary>
         /// <param name="args">The arguments.</param>
         private static void Main(string[] args)
         {
-            Console.WriteLine("Running on Mono Runtime: {0}", IsMono);
+            $"Running on Mono Runtime: {Runtime.IsUsingMonoRuntime}".Info();
 
-            var url = "http://localhost:9696/";
+            var url = "http://localhost:8787/";
 
             if (args.Length > 0)
                 url = args[0];
@@ -56,10 +55,10 @@
                 // If we want to enable sessions, we simply register the LocalSessionModule
                 // Beware that this is an in-memory session storage mechanism so, avoid storing very large objects.
                 // You can use the server.GetSession() method to get the SessionInfo object and manupulate it.
-                server.RegisterModule(new Modules.LocalSessionModule());
+                server.RegisterModule(new LocalSessionModule());
 
                 // Set the CORS Rules
-                server.RegisterModule(new Modules.CorsModule(
+                server.RegisterModule(new CorsModule(
                     // Origins, separated by comma without last slash
                     "http://client.cors-api.appspot.com,http://unosquare.github.io,http://run.plnkr.co",
                     // Allowed headers
@@ -69,7 +68,7 @@
 
                 // Register the static files server. See the html folder of this project. Also notice that 
                 // the files under the html folder have Copy To Output Folder = Copy if Newer
-                StaticFilesSample.Setup(server, !IsMono);
+                StaticFilesSample.Setup(server, useGzip: Runtime.IsUsingMonoRuntime == false);
 
                 // Register the Web Api Module. See the Setup method to find out how to do it
                 // It registers the WebApiModule and registers the controller(s) -- that's all.
@@ -81,14 +80,11 @@
 
                 server.RegisterModule(new FallbackModule((ws, ctx) =>
                 {
-                    ctx.JsonResponse(new { Message = "Error " });
+                    ctx.JsonResponse(new {Message = "Error "});
                     return true;
                 }));
 
-                // Once we've registered our modules and configured them, we call the Run() method.
-                // This is a non-blocking method (it return immediately) so in this case we avoid
-                // disposing of the object until a key is pressed.
-                //server.Run();
+                // Once we've registered our modules and configured them, we call the RunAsync() method.
                 server.RunAsync();
 
                 // Fire up the browser to show the content!

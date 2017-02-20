@@ -4,7 +4,7 @@
         .controller('TitleController', ['$scope', '$route', function ($scope, $route) {
             var me = this;
             me.content = "Home";
-            $scope.$on('$routeChangeSuccess', function (currentRoute, previousRoute) {
+            $scope.$on('$routeChangeSuccess', function () {
                 me.content = $route.current.title;
             });
         }])
@@ -25,7 +25,7 @@
             var me = this;
             me.nickName = "Bob";
             me.message = "";
-            me.wsUri = "ws://localhost:9696/chat";
+            me.wsUri = "ws://" + document.location.hostname + ":" + document.location.port + "/chat";
             me.messages = [];
 
             me.websocket = new WebSocket(me.wsUri);
@@ -91,7 +91,7 @@
         .controller('CmdController', ['$scope', function ($scope) {
             var me = this;
             me.command = "";
-            me.wsUri = "ws://localhost:9696/terminal";
+            me.wsUri = "ws://" + document.location.hostname + ":" + document.location.port + "/terminal";
             me.commands = "";
 
             me.scrollBottom = function () {

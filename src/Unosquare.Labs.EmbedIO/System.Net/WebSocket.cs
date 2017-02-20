@@ -161,7 +161,7 @@ namespace Unosquare.Net
         private const string Guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
         private bool _inContinuation;
         private volatile bool _inMessage;
-        private Action<MessageEventArgs> _message;
+        private readonly Action<MessageEventArgs> _message;
         private Queue<MessageEventArgs> _messageEventQueue;
         private string _origin;
 #if AUTHENTICATION

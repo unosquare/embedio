@@ -96,9 +96,6 @@ namespace Company.Project
                 //server.Module<Modules.StaticFilesWebModule>().DefaultDocument = "index.html";
 
                 // Once we've registered our modules and configured them, we call the RunAsync() method.
-                // This is a non-blocking method (it return immediately) so in this case we avoid
-                // disposing of the object until a key is pressed.
-                //server.Run();
                 server.RunAsync();
 
                 // Fire up the browser to show the content if we are debugging!
@@ -150,22 +147,15 @@ namespace Company.Project
                 .WithLocalSession()
                 .WithStaticFolderAt("c:/web");
 
-	    var cts = new CancellationTokenSource();
+			var cts = new CancellationTokenSource();
             var task = server.RunAsync(cts.Token);
 
-            // Fire up the browser to show the content if we are debugging!
-#if DEBUG
-            var browser = new System.Diagnostics.Process()
-            {
-                StartInfo = new System.Diagnostics.ProcessStartInfo(url) {UseShellExecute = true}
-            };
-            browser.Start();
-#endif
             // Wait for any key to be pressed before disposing of our web server.
             // In a service we'd manage the lifecycle of of our web server using
             // something like a BackgroundWorker or a ManualResetEvent.
             Console.ReadKey(true);
 			cts.Cancel();
+
 			try
 			{
 				task.Wait();

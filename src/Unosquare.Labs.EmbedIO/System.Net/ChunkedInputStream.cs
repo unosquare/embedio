@@ -151,7 +151,6 @@ namespace Unosquare.Net
             }
             catch (Exception e)
             {
-                _context.Connection.SendError(e.Message, 400);
                 ares.Complete(e);
             }
         }

@@ -4,6 +4,7 @@
     using System.Diagnostics;
     using System.Text;
     using Modules;
+    using Swan;
 #if NET46
     using System.Threading;
     using System.Net.WebSockets;
@@ -47,6 +48,12 @@
         {
             foreach (var ws in WebSockets)
             {
+#if !NET46
+                if (ws.UserEndPoint == null)
+                    "Error ws.UserEndPoint".Warn();
+
+                $"WebSocket info: {ws.UserEndPoint}".Info();
+#endif
                 if (ws != context)
                     Send(ws, Encoding.UTF8.GetString(rxBuffer));
             }
@@ -92,6 +99,9 @@
         protected override void OnClientDisconnected(WebSocketContext context)
         {
             Broadcast("Someone left the chat room.");
+#if !NET46
+            $"WebSocket closed: {context.UserEndPoint}".Info();
+#endif
         }
     }
 

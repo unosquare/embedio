@@ -33,9 +33,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 #if SSL
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography;
 #endif
 
@@ -112,7 +112,6 @@ namespace Unosquare.Net
             }
         }
 
-
         private static void ProcessAccept(SocketAsyncEventArgs args)
         {
             Socket accepted = null;
@@ -120,7 +119,7 @@ namespace Unosquare.Net
                 accepted = args.AcceptSocket;
 
             var epl = (EndPointListener) args.UserToken;
-            
+
             Accept(epl._sock, args, ref accepted);
             if (accepted == null)
                 return;

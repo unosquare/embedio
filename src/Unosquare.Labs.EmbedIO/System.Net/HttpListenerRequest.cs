@@ -65,7 +65,7 @@ namespace Unosquare.Net
     /// </summary>
     public sealed class HttpListenerRequest
     {
-        class Context : TransportContext
+        private class Context : TransportContext
         {
             public override ChannelBinding GetChannelBinding(ChannelBindingKind kind)
             {
@@ -73,22 +73,22 @@ namespace Unosquare.Net
             }
         }
 
-        Encoding _contentEncoding;
-        bool _clSet;
-        CookieCollection _cookies;
-        Stream _inputStream;
-        Uri _url;
-        readonly HttpListenerContext _context;
-        bool _isChunked;
-        bool _kaSet;
-        bool _keepAlive;
+        private Encoding _contentEncoding;
+        private bool _clSet;
+        private CookieCollection _cookies;
+        private Stream _inputStream;
+        private Uri _url;
+        private readonly HttpListenerContext _context;
+        private bool _isChunked;
+        private bool _kaSet;
+        private bool _keepAlive;
         
 #if SSL
         delegate X509Certificate2 GccDelegate();
         GccDelegate _gccDelegate;
 #endif
 
-        static readonly byte[] _100Continue = Encoding.GetEncoding(0).GetBytes("HTTP/1.1 100 Continue\r\n\r\n");
+        private static readonly byte[] _100Continue = Encoding.GetEncoding(0).GetBytes("HTTP/1.1 100 Continue\r\n\r\n");
 
         internal HttpListenerRequest(HttpListenerContext context)
         {
@@ -143,7 +143,7 @@ namespace Unosquare.Net
             }
         }
 
-        void CreateQueryString(string query)
+        private void CreateQueryString(string query)
         {
             if (string.IsNullOrEmpty(query))
             {
@@ -172,7 +172,7 @@ namespace Unosquare.Net
             }
         }
 
-        static bool MaybeUri(string s)
+        private static bool MaybeUri(string s)
         {
             var p = s.IndexOf(':');
             if (p == -1)
@@ -190,9 +190,7 @@ namespace Unosquare.Net
         // with "https": .16 vs .51 (second check)
         // with "foo": .22 vs .31 (never found)
         // with "mailto": .12 vs .51  (last check)
-        //
-        //
-        static bool IsPredefinedScheme(string scheme)
+        private static bool IsPredefinedScheme(string scheme)
         {
             if (scheme == null || scheme.Length < 3)
                 return false;
@@ -208,14 +206,11 @@ namespace Unosquare.Net
                 c = scheme[1];
                 if (c == 'e')
                     return (scheme == "news" || scheme == "net.pipe" || scheme == "net.tcp");
-                if (scheme == "nntp")
-                    return true;
-                return false;
-            }
-            if ((c == 'g' && scheme == "gopher") || (c == 'm' && scheme == "mailto"))
-                return true;
 
-            return false;
+                return scheme == "nntp";
+            }
+
+            return (c == 'g' && scheme == "gopher") || (c == 'm' && scheme == "mailto");
         }
 
         internal void FinishInitialization()
@@ -266,7 +261,6 @@ namespace Unosquare.Net
                 // 'identity' is not valid!
                 if (tEncoding != null && !_isChunked)
                 {
-                    _context.Connection.SendError(null, 501);
                     return;
                 }
             }
@@ -276,7 +270,6 @@ namespace Unosquare.Net
                 if (string.Compare(HttpMethod, "POST", StringComparison.OrdinalIgnoreCase) == 0 ||
                     string.Compare(HttpMethod, "PUT", StringComparison.OrdinalIgnoreCase) == 0)
                 {
-                    _context.Connection.SendError(null, 411);
                     return;
                 }
             }
@@ -665,17 +658,11 @@ namespace Unosquare.Net
         /// <summary>
         /// Gets the user agent.
         /// </summary>
-        /// <value>
-        /// The user agent.
-        /// </value>
         public string UserAgent => Headers["user-agent"];
 
         /// <summary>
         /// Gets the user host address.
         /// </summary>
-        /// <value>
-        /// The user host address.
-        /// </value>
         public string UserHostAddress => LocalEndPoint.ToString();
 
         /// <summary>
@@ -689,33 +676,21 @@ namespace Unosquare.Net
         /// <summary>
         /// Gets the user languages.
         /// </summary>
-        /// <value>
-        /// The user languages.
-        /// </value>
         public string[] UserLanguages { get; private set; }
 
         /// <summary>
         /// Gets the name of the service.
         /// </summary>
-        /// <value>
-        /// The name of the service.
-        /// </value>
         public string ServiceName => null;
 
         /// <summary>
         /// Gets the transport context.
         /// </summary>
-        /// <value>
-        /// The transport context.
-        /// </value>
         public TransportContext TransportContext => new Context();
 
         /// <summary>
         /// Gets a value indicating whether this request is a web socket request.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance is web socket request; otherwise, <c>false</c>.
-        /// </value>
         public bool IsWebSocketRequest => HttpMethod == "GET" && ProtocolVersion > HttpVersion.Version10 && Headers.Contains("Upgrade", "websocket") && Headers.Contains("Connection", "Upgrade");
 
 #if SSL

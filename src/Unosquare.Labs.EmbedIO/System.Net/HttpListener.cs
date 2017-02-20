@@ -55,21 +55,21 @@ namespace Unosquare.Net
         AuthenticationSchemes _authSchemes;
         AuthenticationSchemeSelector _authSelector;
 #endif
-        readonly HttpListenerPrefixCollection _prefixes;
-        string _realm;
-        bool _ignoreWriteExceptions;
-        bool _unsafeNtlmAuth;
-        bool _disposed;
+        private readonly HttpListenerPrefixCollection _prefixes;
+        private string _realm;
+        private bool _ignoreWriteExceptions;
+        private bool _unsafeNtlmAuth;
+        private bool _disposed;
 #if SSL
         IMonoTlsProvider tlsProvider;
         MSI.MonoTlsSettings tlsSettings;
         X509Certificate certificate;
 #endif
 
-        readonly Hashtable _registry;   // Dictionary<HttpListenerContext,HttpListenerContext> 
-        readonly ArrayList _ctxQueue;  // List<HttpListenerContext> ctx_queue;
-        readonly ArrayList _waitQueue; // List<ListenerAsyncResult> wait_queue;
-        readonly Hashtable _connections;
+        private readonly Hashtable _registry;   // Dictionary<HttpListenerContext,HttpListenerContext> 
+        private readonly ArrayList _ctxQueue;  // List<HttpListenerContext> ctx_queue;
+        private readonly ArrayList _waitQueue; // List<ListenerAsyncResult> wait_queue;
+        private readonly Hashtable _connections;
 
         //ServiceNameStore defaultServiceNames;
         //ExtendedProtectionPolicy _extendedProtectionPolicy;
@@ -320,14 +320,14 @@ namespace Unosquare.Net
             _disposed = true;
         }
 
-        void Close(bool force)
+        private void Close(bool force)
         {
             CheckDisposed();
             EndPointManager.RemoveListener(this);
             Cleanup(force);
         }
 
-        void Cleanup(bool closeExisting)
+        private void Cleanup(bool closeExisting)
         {
             lock (_registry)
             {
@@ -517,7 +517,7 @@ namespace Unosquare.Net
         }
 
         // Must be called with a lock on ctx_queue
-        HttpListenerContext GetContextFromQueue()
+        private HttpListenerContext GetContextFromQueue()
         {
             if (_ctxQueue.Count == 0)
                 return null;

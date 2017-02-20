@@ -3,11 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Unosquare.Labs.EmbedIO.Modules;
+    using Modules;
     using System.Threading.Tasks;
     using Tubular;
     using Swan;
-    using Unosquare.Tubular.ObjectModel;
+    using Tubular.ObjectModel;
 #if NET46
     using System.Net;
 #else
@@ -54,14 +54,14 @@
                     return context.JsonResponse(_dbContext.People.SelectAll().First());
 
                 // otherwise, we need to parse the key and respond with the entity accordingly
-                int key = 0;
-                if (int.TryParse(lastSegment, out key))
-                {
-                    var single = _dbContext.People.Single(key);
+                int key;
+                if (!int.TryParse(lastSegment, out key))
+                    throw new KeyNotFoundException("Key Not Found: " + lastSegment);
 
-                    if (single != null)
-                        return context.JsonResponse(single);
-                }
+                var single = _dbContext.People.Single(key);
+
+                if (single != null)
+                    return context.JsonResponse(single);
 
                 throw new KeyNotFoundException("Key Not Found: " + lastSegment);
             }
@@ -86,7 +86,7 @@
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        /// <exception cref="System.Collections.Generic.KeyNotFoundException">Key Not Found:  + lastSegment</exception>
+        /// <exception cref="KeyNotFoundException">Key Not Found:  + lastSegment</exception>
         [WebApiHandler(HttpVerbs.Post, RelativePath + "people/*")]
         public async Task<bool> PostPeople(WebServer server, HttpListenerContext context)
         {

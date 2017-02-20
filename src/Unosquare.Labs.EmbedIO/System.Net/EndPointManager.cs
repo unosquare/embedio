@@ -35,15 +35,14 @@ namespace Unosquare.Net
 {
     internal static class EndPointManager
     {
-        // Dictionary<IPAddress, Dictionary<int, EndPointListener>>
-        static readonly Hashtable _ipToEndpoints = new Hashtable();
+        private static readonly Hashtable IPToEndpoints = new Hashtable();
 
         public static void AddListener(HttpListener listener)
         {
             var added = new ArrayList();
             try
             {
-                lock (_ipToEndpoints)
+                lock (IPToEndpoints)
                 {
                     foreach (var prefix in listener.Prefixes)
                     {
@@ -64,13 +63,13 @@ namespace Unosquare.Net
 
         public static void AddPrefix(string prefix, HttpListener listener)
         {
-            lock (_ipToEndpoints)
+            lock (IPToEndpoints)
             {
                 AddPrefixInternal(prefix, listener);
             }
         }
 
-        static void AddPrefixInternal(string p, HttpListener listener)
+        private static void AddPrefixInternal(string p, HttpListener listener)
         {
             var lp = new ListenerPrefix(p);
             if (lp.Path.IndexOf('%') != -1)
@@ -107,14 +106,14 @@ namespace Unosquare.Net
                 }
             }
             Hashtable p = null;  // Dictionary<int, EndPointListener>
-            if (_ipToEndpoints.ContainsKey(addr))
+            if (IPToEndpoints.ContainsKey(addr))
             {
-                p = (Hashtable)_ipToEndpoints[addr];
+                p = (Hashtable)IPToEndpoints[addr];
             }
             else
             {
                 p = new Hashtable();
-                _ipToEndpoints[addr] = p;
+                IPToEndpoints[addr] = p;
             }
 
             EndPointListener epl;
@@ -133,14 +132,14 @@ namespace Unosquare.Net
 
         public static void RemoveEndPoint(EndPointListener epl, IPEndPoint ep)
         {
-            lock (_ipToEndpoints)
+            lock (IPToEndpoints)
             {
                 // Dictionary<int, EndPointListener> p
-                var p = (Hashtable)_ipToEndpoints[ep.Address];
+                var p = (Hashtable)IPToEndpoints[ep.Address];
                 p.Remove(ep.Port);
                 if (p.Count == 0)
                 {
-                    _ipToEndpoints.Remove(ep.Address);
+                    IPToEndpoints.Remove(ep.Address);
                 }
                 epl.Close();
             }
@@ -148,7 +147,7 @@ namespace Unosquare.Net
 
         public static void RemoveListener(HttpListener listener)
         {
-            lock (_ipToEndpoints)
+            lock (IPToEndpoints)
             {
                 foreach (var prefix in listener.Prefixes)
                 {
@@ -159,7 +158,7 @@ namespace Unosquare.Net
 
         public static void RemovePrefix(string prefix, HttpListener listener)
         {
-            lock (_ipToEndpoints)
+            lock (IPToEndpoints)
             {
                 RemovePrefixInternal(prefix, listener);
             }

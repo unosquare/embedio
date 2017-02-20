@@ -9,7 +9,7 @@
     "Microsoft.Data.SQLite": "1.1.0",
     "Unosquare.Labs.EmbedIO": { "target": "project" },
     "Tubular.ServerSide": "1.1.3",
-    "LiteLib": "0.9.10"
+    "LiteLib": "0.11.0"
   },
 
     "frameworks": {

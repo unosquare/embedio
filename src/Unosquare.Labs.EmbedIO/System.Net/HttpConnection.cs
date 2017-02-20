@@ -66,6 +66,7 @@ namespace Unosquare.Net
             _sock = sock;
             _epl = epl;
             IsSecure = secure;
+
             if (secure == false)
             {
                 Stream = new NetworkStream(sock, false);
@@ -222,21 +223,14 @@ namespace Unosquare.Net
                 _ms.Write(_buffer, 0, nread);
                 if (_ms.Length > 32768)
                 {
-                    SendError("Bad request", 400);
                     Close(true);
                     return;
                 }
             }
             catch
             {
-                if (_ms != null && _ms.Length > 0)
-                    SendError();
-
-                if (_sock != null)
-                {
-                    CloseSocket();
-                    Unbind();
-                }
+                CloseSocket();
+                Unbind();
                 return;
             }
 
@@ -254,19 +248,12 @@ namespace Unosquare.Net
                 if (!_context.HaveError)
                     _context.Request.FinishInitialization();
 
-                if (_context.HaveError)
+                if (_context.HaveError || !_epl.BindContext(_context))
                 {
-                    SendError();
                     Close(true);
                     return;
                 }
-
-                if (!_epl.BindContext(_context))
-                {
-                    SendError("Invalid host", 400);
-                    Close(true);
-                    return;
-                }
+                
                 var listener = _context.Listener;
                 if (_lastListener != listener)
                 {
@@ -401,6 +388,7 @@ namespace Unosquare.Net
             }
 
             string result = null;
+
             if (_lineState == LineState.Lf)
             {
                 _lineState = LineState.None;
@@ -410,33 +398,7 @@ namespace Unosquare.Net
 
             return result;
         }
-
-        public void SendError(string msg, int status)
-        {
-            try
-            {
-                var response = _context.Response;
-                response.StatusCode = status;
-                response.ContentType = "text/html";
-                var description = HttpListenerResponseHelper.GetStatusDescription(status);
-                var str = msg != null
-                    ? $"<h1>{description} ({msg})</h1>"
-                    : $"<h1>{description}</h1>";
-
-                var error = _context.Response.ContentEncoding.GetBytes(str);
-                response.Close(error, false);
-            }
-            catch
-            {
-                // response was already closed
-            }
-        }
-
-        public void SendError()
-        {
-            SendError(_context.ErrorMessage, _context.ErrorStatus);
-        }
-
+        
         private void Unbind()
         {
             if (_contextBound)

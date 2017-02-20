@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
     <title ng-controller="TitleController as title">EmbedIO - {{title.content}} - Unosquare Labs</title>
 
     <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css">
@@ -11,23 +10,6 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="/scripts/tubular/tubular-bundle.css">
     <link rel="stylesheet" href="/css/theme.css">
-    
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    
-    <script src="//cdn.jsdelivr.net/g/angularjs@1.5.0(angular.min.js+angular-animate.min.js+angular-route.min.js),angular.bootstrap@2.1.2(ui-bootstrap.min.js+ui-bootstrap-tpls.min.js),tubular,blob.js(Blob.js),toastr@2.1.2"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-local-storage/0.1.5/angular-local-storage.min.js"></script>
-    <script src="//npmcdn.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
-    <script src="//cdn.jsdelivr.net/tubular/1.0.1/tubular-bundle.min.js"></script>
-
-    <script src="/scripts/app.services.js"></script>
-    <script src="/scripts/app.routes.js"></script>
-    <script src="/scripts/app.controllers.js"></script>
-    <script src="/scripts/app.directives.js"></script>
-    <script src="/scripts/app.js"></script>
 </head>
 
 <body>
@@ -37,8 +19,20 @@
         <hr />
         <footer>
             <div class="alert alert-info" role="alert">Location: {{menu.whereAmI() | json}}</div>
-            © <script type="text/javascript">document.write(new Date().getFullYear());</script> unosquare
+            ©
+            <script type="text/javascript">document.write(new Date().getFullYear());</script> unosquare
         </footer>
     </div>
+
+    <script src="//cdn.jsdelivr.net/g/angularjs@1.5.0(angular.min.js+angular-animate.min.js+angular-route.min.js),angular.bootstrap@2.1.2(ui-bootstrap.min.js+ui-bootstrap-tpls.min.js),momentjs,tubular,toastr@2.1.2"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-local-storage/0.1.5/angular-local-storage.min.js"></script>
+    <script src="//npmcdn.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
+    <script src="//cdn.jsdelivr.net/tubular/1.0.1/tubular-bundle.min.js"></script>
+
+    <script src="/scripts/app.services.js"></script>
+    <script src="/scripts/app.routes.js"></script>
+    <script src="/scripts/app.controllers.js"></script>
+    <script src="/scripts/app.directives.js"></script>
+    <script src="/scripts/app.js"></script>
 </body>
 </html>
