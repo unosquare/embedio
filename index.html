@@ -205,7 +205,6 @@
                 // Once we&#39;ve registered our modules and configured them, we call the RunAsync() method.
                 // This is a non-blocking method (it return immediately) so in this case we avoid
                 // disposing of the object until a key is pressed.
-                //server.Run();
                 var task = server.RunAsync();
                 // Fire up the browser to show the content if we are debugging!
 #if DEBUG
