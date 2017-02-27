@@ -1,5 +1,5 @@
 {
-  "version": "1.5.0-*",
+  "version": "1.5.1-*",
   "title": "Unosquare.Labs.EmbedIO",
   "description": "EmbedIO is a tiny, portable web server",
   "copyright": "Copyright © Unosquare 2013-2017",

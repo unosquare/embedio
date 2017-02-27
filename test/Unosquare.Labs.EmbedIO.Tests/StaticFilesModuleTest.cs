@@ -1,4 +1,6 @@
-﻿namespace Unosquare.Labs.EmbedIO.Tests
+﻿using System.Net.Http.Headers;
+
+namespace Unosquare.Labs.EmbedIO.Tests
 {
     using NUnit.Framework;
     using System;
@@ -124,7 +126,7 @@
         public void GetInitialPartial()
         {
             const int maxLength = 100;
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestHelper.BigDataFile);
             request.AddRange(0, maxLength - 1);
 
             using (var response = (HttpWebResponse)request.GetResponse())
@@ -150,7 +152,7 @@
         {
             const int offset = 50;
             const int maxLength = 100;
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestHelper.BigDataFile);
             request.AddRange(offset, maxLength + offset - 1);
 
             using (var response = (HttpWebResponse)request.GetResponse())
@@ -176,7 +178,7 @@
         {
             const int startByteIndex = 100;
             const int byteLength = 100;
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl +  TestHelper.BigDataFile);
             request.AddRange(startByteIndex, startByteIndex + byteLength - 1);
 
             using (var response = (HttpWebResponse)request.GetResponse())
@@ -198,10 +200,10 @@
         }
 
         [Test]
-        public void GetEntireFileWithChunks()
+        public void GetEntireFileWithChunksUsingRange()
         {
             var originalSet = TestHelper.GetBigData();
-            var requestHead = (HttpWebRequest)WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
+            var requestHead = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestHelper.BigDataFile);
             requestHead.Method = "HEAD";
 
             var remoteSize = ((HttpWebResponse)requestHead.GetResponse()).ContentLength;
@@ -212,7 +214,7 @@
 
             for (var i = 0; i < remoteSize / chunkSize + 1; i++)
             {
-                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
+                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestHelper.BigDataFile);
                 var top = (i + 1) * chunkSize;
 
                 request.AddRange(i * chunkSize, (top > remoteSize ? remoteSize : top) - 1);
@@ -234,17 +236,31 @@
             Assert.AreEqual(originalSet, buffer);
         }
 
+#if CHUNKED
+        [Test]
+        public async Task GetEntireFileWithChunksUsingChunkedEncoding()
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.TransferEncoding.Add(new TransferCodingHeaderValue("chunked"));
+                var data = await client.GetByteArrayAsync(WebServerUrl + TestHelper.SmallDataFile);
+
+                Assert.AreEqual(TestHelper.GetSmallData(), data, "Same content data file");
+            }
+        }
+#endif
+
         [Test]
         public async Task GetInvalidChunk()
         {
             var originalSet = TestHelper.GetBigData();
-            var requestHead = (HttpWebRequest)WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
+            var requestHead = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestHelper.BigDataFile);
             requestHead.Method = "HEAD";
 
             var remoteSize = ((HttpWebResponse)await requestHead.GetResponseAsync()).ContentLength;
             Assert.AreEqual(remoteSize, originalSet.Length);
 
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestHelper.BigDataFile);
             request.AddRange(0, remoteSize + 10);
 
             try
@@ -271,7 +287,7 @@
         [Test]
         public async Task GetNotPartial()
         {
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + "/" + TestHelper.BigDataFile);
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestHelper.BigDataFile);
 
             using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {

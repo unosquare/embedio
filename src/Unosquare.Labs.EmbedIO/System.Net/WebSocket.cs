@@ -289,7 +289,8 @@ namespace Unosquare.Net
 
             if (protocols != null && protocols.Length > 0)
             {
-                msg = protocols.CheckIfValidProtocols();
+                msg = CheckIfValidProtocols(protocols);
+
                 if (msg != null)
                     throw new ArgumentException(msg, nameof(protocols));
 
@@ -314,6 +315,15 @@ namespace Unosquare.Net
 
         // As server
         internal Func<WebSocketContext, string> CustomHandshakeRequestChecker { get; set; }
+
+        internal static string CheckIfValidProtocols(string[] protocols)
+        {
+            return protocols.Any(protocol => string.IsNullOrEmpty(protocol) || !protocol.IsToken())
+                ? "Contains an invalid value."
+                : protocols.GroupBy(x => x).Select(x => new { x.Key, Count = x.Count() }).Any(x => x.Count > 1)
+                    ? "Contains a value twice."
+                    : null;
+        }
 
         internal bool HasMessage
         {
@@ -597,7 +607,7 @@ namespace Unosquare.Net
                 {
                     string msg;
                     if (!checkIfAvailable(true, true, true, false, false, true, out msg) ||
-                        !value.CheckWaitTime(out msg))
+                        !CheckWaitTime(value, out msg))
                     {
                         msg.Error();
                         Error("An error has occurred in setting the wait time.", null);
@@ -637,6 +647,17 @@ namespace Unosquare.Net
         #endregion
 
         #region Private Methods
+
+        internal static bool CheckWaitTime(TimeSpan time, out string message)
+        {
+            message = null;
+
+            if (time > TimeSpan.Zero) return true;
+
+            message = "A wait time is zero or less.";
+            return false;
+        }
+
 
         // As server
         private bool accept()
@@ -1387,7 +1408,8 @@ namespace Unosquare.Net
                 _inContinuation = true;
             }
 
-            _fragmentsBuffer.WriteBytes(frame.PayloadData.ApplicationData, 1024);
+            using (var input = new MemoryStream(frame.PayloadData.ApplicationData))
+                input.CopyTo(_fragmentsBuffer, 1024);
 
             if (frame.IsFinal)
             {

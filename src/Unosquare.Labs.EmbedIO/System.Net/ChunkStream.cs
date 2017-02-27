@@ -1,4 +1,5 @@
-﻿#if !NET46
+﻿#if CHUNKED
+#if !NET46
 //
 // System.Net.ChunkStream
 //
@@ -376,7 +377,7 @@ namespace Unosquare.Net
             var reader = new StringReader(_saved.ToString());
             string line;
             while ((line = reader.ReadLine()) != null && line != "")
-                Headers.Add(line);
+                AddHeader(line);
 
             return State.None;
         }
@@ -386,6 +387,14 @@ namespace Unosquare.Net
             var we = new System.Net.WebException(message, null, System.Net.WebExceptionStatus.ServerProtocolViolation, null);
             throw we;
         }
+
+        internal void AddHeader(string data)
+        {
+            var set = data.Split(':');
+            if (set.Length == 2)
+                Headers[set[0].Trim()] = set[1].Trim();
+        }
     }
 }
+#endif
 #endif

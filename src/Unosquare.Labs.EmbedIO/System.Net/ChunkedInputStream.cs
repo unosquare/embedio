@@ -1,4 +1,5 @@
-﻿#if !NET46
+﻿#if CHUNKED
+#if !NET46
 //
 // System.Net.ChunkedInputStream
 //
@@ -35,7 +36,6 @@ namespace Unosquare.Net
     internal class ChunkedInputStream : RequestStream
     {
         private bool _disposed;
-        private readonly HttpListenerContext _context;
         private bool _noMoreData;
 
         private class ReadBufferState
@@ -61,7 +61,6 @@ namespace Unosquare.Net
             byte[] buffer, int offset, int length)
             : base(stream, buffer, offset, length)
         {
-            _context = context;
             Decoder = new ChunkStream(context.Request.Headers);
         }
 
@@ -186,5 +185,5 @@ namespace Unosquare.Net
         }
     }
 }
-
+#endif
 #endif

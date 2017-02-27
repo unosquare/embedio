@@ -1,4 +1,5 @@
-﻿#if !NET46
+﻿#if CHUNKED
+#if !NET46
 //
 // System.Net.HttpStreamAsyncResult
 //
@@ -96,4 +97,5 @@ namespace Unosquare.Net
         }
     }
 }
+#endif
 #endif

@@ -82,7 +82,7 @@ namespace Unosquare.Net
         private bool _isChunked;
         private bool _kaSet;
         private bool _keepAlive;
-        
+
 #if SSL
         delegate X509Certificate2 GccDelegate();
         GccDelegate _gccDelegate;
@@ -254,6 +254,7 @@ namespace Unosquare.Net
             _url = HttpListenerRequestUriBuilder.GetRequestUri(RawUrl, _url.Scheme,
                                 _url.Authority, _url.LocalPath, _url.Query);
 
+#if CHUNKED
             if (ProtocolVersion >= HttpVersion.Version11)
             {
                 var tEncoding = Headers["Transfer-Encoding"];
@@ -264,6 +265,7 @@ namespace Unosquare.Net
                     return;
                 }
             }
+#endif
 
             if (!_isChunked && !_clSet)
             {
@@ -280,7 +282,7 @@ namespace Unosquare.Net
                 output.InternalWrite(_100Continue, 0, _100Continue.Length);
             }
         }
-        
+
         internal void AddHeader(string header)
         {
             var colon = header.IndexOf(':');
@@ -295,6 +297,7 @@ namespace Unosquare.Net
             var val = header.Substring(colon + 1).Trim();
             var lower = name.ToLowerInvariant();
             Headers.Set(name, val);
+
             switch (lower)
             {
                 case "accept-language":
@@ -429,7 +432,7 @@ namespace Unosquare.Net
         /// The accept types.
         /// </value>
         public string[] AcceptTypes { get; private set; }
-        
+
 #if SSL
         /// <summary>
         /// Gets the client certificate error code.
@@ -496,25 +499,16 @@ namespace Unosquare.Net
         /// <summary>
         /// Gets the request headers.
         /// </summary>
-        /// <value>
-        /// The headers.
-        /// </value>
         public NameValueCollection Headers { get; }
 
         /// <summary>
         /// Gets the HTTP method.
         /// </summary>
-        /// <value>
-        /// The HTTP method.
-        /// </value>
         public string HttpMethod { get; private set; }
 
         /// <summary>
         /// Gets the input stream.
         /// </summary>
-        /// <value>
-        /// The input stream.
-        /// </value>
         public Stream InputStream
         {
             get
@@ -534,33 +528,21 @@ namespace Unosquare.Net
         /// <summary>
         /// Gets a value indicating whether this request is authenticated.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance is authenticated; otherwise, <c>false</c>.
-        /// </value>
         public bool IsAuthenticated => false;
 
         /// <summary>
         /// Gets a value indicating whether this request is local.
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is local; otherwise, <c>false</c>.
-        /// </value>
         public bool IsLocal => LocalEndPoint.Address.Equals(RemoteEndPoint.Address);
 
         /// <summary>
         /// Gets a value indicating whether this request is under a secure connection.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance is secure connection; otherwise, <c>false</c>.
-        /// </value>
         public bool IsSecureConnection => _context.Connection.IsSecure;
 
         /// <summary>
         /// Gets the Keep-Alive value for this request
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if [keep alive]; otherwise, <c>false</c>.
-        /// </value>
         public bool KeepAlive
         {
             get
@@ -594,57 +576,36 @@ namespace Unosquare.Net
         /// <summary>
         /// Gets the local end point.
         /// </summary>
-        /// <value>
-        /// The local end point.
-        /// </value>
         public IPEndPoint LocalEndPoint => _context.Connection.LocalEndPoint;
 
         /// <summary>
         /// Gets the protocol version.
         /// </summary>
-        /// <value>
-        /// The protocol version.
-        /// </value>
         public Version ProtocolVersion { get; private set; }
 
         /// <summary>
         /// Gets the query string.
         /// </summary>
-        /// <value>
-        /// The query string.
-        /// </value>
         public NameValueCollection QueryString { get; private set; }
 
         /// <summary>
         /// Gets the raw URL.
         /// </summary>
-        /// <value>
-        /// The raw URL.
-        /// </value>
         public string RawUrl { get; private set; }
 
         /// <summary>
         /// Gets the remote end point.
         /// </summary>
-        /// <value>
-        /// The remote end point.
-        /// </value>
         public IPEndPoint RemoteEndPoint => _context.Connection.RemoteEndPoint;
 
         /// <summary>
         /// Gets the request trace identifier.
         /// </summary>
-        /// <value>
-        /// The request trace identifier.
-        /// </value>
         public Guid RequestTraceIdentifier => Guid.Empty;
 
         /// <summary>
         /// Gets the URL.
         /// </summary>
-        /// <value>
-        /// The URL.
-        /// </value>
         public Uri Url => _url;
 
         /// <summary>

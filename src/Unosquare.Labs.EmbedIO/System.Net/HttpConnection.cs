@@ -179,16 +179,22 @@ namespace Unosquare.Net
             var buffer = _ms.ToArray();
             var length = (int) _ms.Length;
             _ms = null;
+
             if (chunked)
             {
+#if CHUNKED
                 _chunked = true;
                 _context.Response.SendChunked = true;
                 _iStream = new ChunkedInputStream(_context, Stream, buffer, _position, length - _position);
+#else
+                throw new InvalidOperationException("Chunked transfer encoding is not supported");
+#endif
             }
             else
             {
                 _iStream = new RequestStream(Stream, buffer, _position, length - _position, contentlength);
             }
+
             return _iStream;
         }
 

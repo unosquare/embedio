@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System;
@@ -17,7 +16,7 @@ namespace Unosquare.Net
     /// Represents an asynchronous operation result.
     /// </summary>
     /// <seealso cref="System.IAsyncResult" />
-    public class AsyncResult : IAsyncResult
+    internal class AsyncResult : IAsyncResult
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AsyncResult"/> class.
@@ -201,31 +200,7 @@ namespace Unosquare.Net
             var result = (AsyncResult)ares;
             return (int)result.Data;
         }
-
-        /// <summary>
-        /// Parses and adds the data from a string into the specified Name-Value collection
-        /// </summary>
-        /// <param name="coll">The coll.</param>
-        /// <param name="data">The data.</param>
-        public static void Add(this NameValueCollection coll, string data)
-        {
-            var set = data.Split(':');
-            if (set.Length == 2)
-                coll[set[0].Trim()] = set[1].Trim();
-        }
-
-        /// <summary>
-        /// Parses and adds the data from a string into the specified Name-Value collection
-        /// </summary>
-        /// <param name="coll">The coll.</param>
-        /// <param name="data">The data.</param>
-        public static void Add(this WebHeaderCollection coll, string data)
-        {
-            var set = data.Split(':');
-            if (set.Length == 2)
-                coll[set[0].Trim()] = set[1].Trim();
-        }
-
+        
         /// <summary>
         /// The scheme delimiter
         /// </summary>
@@ -277,7 +252,7 @@ namespace Unosquare.Net
             }
         };
 
-        static readonly UriScheme[] _schemes = {
+        private static readonly UriScheme[] Schemes = {
             new UriScheme (UriSchemeHttp, SchemeDelimiter, 80),
             new UriScheme (UriSchemeHttps, SchemeDelimiter, 443),
             new UriScheme (UriSchemeFtp, SchemeDelimiter, 21),
@@ -290,17 +265,17 @@ namespace Unosquare.Net
 
         internal static string GetSchemeDelimiter(string scheme)
         {
-            for (var i = 0; i < _schemes.Length; i++)
-                if (_schemes[i].Scheme == scheme)
-                    return _schemes[i].Delimiter;
+            for (var i = 0; i < Schemes.Length; i++)
+                if (Schemes[i].Scheme == scheme)
+                    return Schemes[i].Delimiter;
             return SchemeDelimiter;
         }
 
         internal static int GetDefaultPort(string scheme)
         {
-            for (var i = 0; i < _schemes.Length; i++)
-                if (_schemes[i].Scheme == scheme)
-                    return _schemes[i].DefaultPort;
+            for (var i = 0; i < Schemes.Length; i++)
+                if (Schemes[i].Scheme == scheme)
+                    return Schemes[i].DefaultPort;
             return -1;
         }
 
@@ -552,13 +527,7 @@ namespace Unosquare.Net
                 return dest.ToArray();
             }
         }
-
-        internal static void WriteBytes(this Stream stream, byte[] bytes, int bufferLength)
-        {
-            using (var input = new MemoryStream(bytes))
-                input.CopyTo(stream, bufferLength);
-        }
-
+        
         internal static byte[] ReadBytes(this Stream stream, int length)
         {
             var buff = new byte[length];
@@ -714,25 +683,7 @@ namespace Unosquare.Net
                 error?.Invoke(ex);
             }
         }
-
-        internal static bool IsSupported(this byte opcode)
-        {
-            return Enum.IsDefined(typeof(Opcode), opcode);
-        }
-
-        internal static ulong ToUInt64(this byte[] source, Endianness sourceOrder)
-        {
-            return BitConverter.ToUInt64(source.ToHostOrder(sourceOrder), 0);
-        }
         
-        internal static bool IsReserved(this ushort code)
-        {
-            return code == (ushort)CloseStatusCode.Undefined ||
-                   code == (ushort)CloseStatusCode.NoStatus ||
-                   code == (ushort)CloseStatusCode.Abnormal ||
-                   code == (ushort)CloseStatusCode.TlsHandshakeFailure;
-        }
-
         internal static bool IsReserved(this CloseStatusCode code)
         {
             return code == CloseStatusCode.Undefined ||
@@ -740,12 +691,7 @@ namespace Unosquare.Net
                    code == CloseStatusCode.Abnormal ||
                    code == CloseStatusCode.TlsHandshakeFailure;
         }
-
-        internal static ushort ToUInt16(this byte[] source, Endianness sourceOrder)
-        {
-            return BitConverter.ToUInt16(source.ToHostOrder(sourceOrder), 0);
-        }
-
+        
         /// <summary>
         /// Converts the order of the specified array of <see cref="byte"/> to the host byte order.
         /// </summary>
@@ -780,7 +726,7 @@ namespace Unosquare.Net
         /// <param name="order">
         /// One of the <see cref="Endianness"/> enum values, to test.
         /// </param>
-        public static bool IsHostOrder(this Endianness order)
+        internal static bool IsHostOrder(this Endianness order)
         {
             // true: !(true ^ true) or !(false ^ false)
             // false: !(true ^ false) or !(false ^ true)
@@ -932,35 +878,7 @@ namespace Unosquare.Net
         {
             return value.All(c => c >= 0x20 && c < 0x7f && !Tspecials.Contains(c));
         }
-
-        internal static bool ContainsTwice(string[] values)
-        {
-            var len = values.Length;
-
-            Func<int, bool> contains = null;
-            contains = idx =>
-            {
-                if (idx >= len - 1) return false;
-
-                for (var i = idx + 1; i < len; i++)
-                    if (values[i] == values[idx])
-                        return true;
-
-                return contains(++idx);
-            };
-
-            return contains(0);
-        }
-
-        internal static string CheckIfValidProtocols(this string[] protocols)
-        {
-            return protocols.Any(protocol => string.IsNullOrEmpty(protocol) || !protocol.IsToken())
-                   ? "Contains an invalid value."
-                   : ContainsTwice(protocols)
-                     ? "Contains a value twice."
-                     : null;
-        }
-
+        
         /// <summary>
         /// Gets the collection of the HTTP cookies from the specified HTTP <paramref name="headers"/>.
         /// </summary>
@@ -982,16 +900,6 @@ namespace Unosquare.Net
                    : new CookieCollection();
         }
 
-        internal static bool CheckWaitTime(this TimeSpan time, out string message)
-        {
-            message = null;
-
-            if (time > TimeSpan.Zero) return true;
-
-            message = "A wait time is zero or less.";
-            return false;
-        }
-        
         internal static string ToExtensionString(this CompressionMethod method, params string[] parameters)
         {
             if (method == CompressionMethod.None)
@@ -1004,30 +912,7 @@ namespace Unosquare.Net
 
             return $"{m}; {string.Join("; ", parameters)}";
         }
-
-        internal static bool IsText(this string value)
-        {
-            var len = value.Length;
-            for (var i = 0; i < len; i++)
-            {
-                var c = value[i];
-                if (c < 0x20 && !"\r\n\t".Contains(c))
-                    return false;
-
-                if (c == 0x7f)
-                    return false;
-
-                if (c == '\n' && ++i < len)
-                {
-                    c = value[i];
-                    if (!" \t".Contains(c))
-                        return false;
-                }
-            }
-
-            return true;
-        }
-
+        
         /// <summary>
         /// Determines whether the specified <see cref="NameValueCollection"/> contains the entry with
         /// the specified both <paramref name="name"/> and <paramref name="value"/>.

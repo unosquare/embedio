@@ -143,6 +143,7 @@ namespace Unosquare.Net
             return nread;
         }
 
+        #if CHUNKED
 #if !NETSTANDARD1_6
         new 
 #endif
@@ -203,6 +204,7 @@ namespace Unosquare.Net
                 _remainingBody -= nread;
             return nread;
         }
+#endif
 
         public override long Seek(long offset, SeekOrigin origin)
         {

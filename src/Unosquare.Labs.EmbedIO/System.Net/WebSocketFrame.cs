@@ -193,8 +193,8 @@ namespace Unosquare.Net
         internal ulong FullPayloadLength => PayloadLength < 126
             ? PayloadLength
             : PayloadLength == 126
-                ? ExtendedPayloadLength.ToUInt16(Swan.Endianness.Big)
-                : ExtendedPayloadLength.ToUInt64(Swan.Endianness.Big);
+                ? BitConverter.ToUInt16(ExtendedPayloadLength.ToHostOrder(Swan.Endianness.Big), 0)
+                : BitConverter.ToUInt64(ExtendedPayloadLength.ToHostOrder(Swan.Endianness.Big), 0);
 
 #endregion
 
@@ -284,7 +284,7 @@ namespace Unosquare.Net
             // Payload Length
             var payloadLen = (byte)(header[1] & 0x7f);
 
-            var err = !opcode.IsSupported()
+            var err = !Enum.IsDefined(typeof(Opcode), opcode)
                       ? "An unsupported opcode."
                       : !opcode.IsData() && rsv1 == Rsv.On
                         ? "A non data frame is compressed."
@@ -355,10 +355,7 @@ namespace Unosquare.Net
               error);
         }
 
-        private static WebSocketFrame ReadHeader(Stream stream)
-        {
-            return ProcessHeader(stream.ReadBytes(2));
-        }
+        private static WebSocketFrame ReadHeader(Stream stream) => ProcessHeader(stream.ReadBytes(2));
 
         private static void ReadHeaderAsync(
           Stream stream, Action<WebSocketFrame> completed, Action<Exception> error)
@@ -549,10 +546,7 @@ namespace Unosquare.Net
 
 #region Public Methods
 
-        public IEnumerator<byte> GetEnumerator()
-        {
-            return ((IEnumerable<byte>) ToArray()).GetEnumerator();
-        }
+        public IEnumerator<byte> GetEnumerator() => ((IEnumerable<byte>) ToArray()).GetEnumerator();
         
         public string PrintToString()
         {
@@ -610,9 +604,14 @@ Extended Payload Length: {extPayloadLen}
                 {
                     var bytes = PayloadData.ToArray();
                     if (PayloadLength < 127)
+                    {
                         buff.Write(bytes, 0, bytes.Length);
+                    }
                     else
-                        buff.WriteBytes(bytes, 1024);
+                    {
+                        using (var input = new MemoryStream(bytes))
+                            input.CopyTo(buff, 1024);
+                    }
                 }
 
 #if NET452

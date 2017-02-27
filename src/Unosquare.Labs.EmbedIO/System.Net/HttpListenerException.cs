@@ -1,5 +1,4 @@
 ﻿#if !NET46
-using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 

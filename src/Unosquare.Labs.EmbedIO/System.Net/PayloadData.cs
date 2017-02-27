@@ -122,7 +122,7 @@ namespace Unosquare.Net
                 if (!_codeSet)
                 {
                     _code = _length > 1
-                            ? _data.SubArray(0, 2).ToUInt16(Swan.Endianness.Big)
+                            ? BitConverter.ToUInt16(_data.SubArray(0, 2).ToHostOrder(Swan.Endianness.Big), 0)
                             : (ushort)1005;
 
                     _codeSet = true;
@@ -134,7 +134,10 @@ namespace Unosquare.Net
 
         internal long ExtensionDataLength { get; set; }
 
-        internal bool HasReservedCode => _length > 1 && Code.IsReserved();
+        internal bool HasReservedCode => _length > 1 && (Code == (ushort)CloseStatusCode.Undefined ||
+                   Code == (ushort)CloseStatusCode.NoStatus ||
+                   Code == (ushort)CloseStatusCode.Abnormal ||
+                   Code == (ushort)CloseStatusCode.TlsHandshakeFailure);
 
         internal string Reason
         {

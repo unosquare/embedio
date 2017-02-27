@@ -809,7 +809,25 @@ namespace Unosquare.Net
 
         internal static bool IsHeaderValue(string value)
         {
-            return value.IsText();
+            var len = value.Length;
+            for (var i = 0; i < len; i++)
+            {
+                var c = value[i];
+                if (c < 0x20 && !"\r\n\t".Contains(c))
+                    return false;
+
+                if (c == 0x7f)
+                    return false;
+
+                if (c == '\n' && ++i < len)
+                {
+                    c = value[i];
+                    if (!" \t".Contains(c))
+                        return false;
+                }
+            }
+
+            return true;
         }
 
         internal static bool IsMultiValue(string headerName, bool response)
