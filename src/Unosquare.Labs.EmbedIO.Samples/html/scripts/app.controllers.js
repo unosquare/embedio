@@ -95,7 +95,7 @@
             me.commands = "";
 
             me.scrollBottom = function () {
-                $('#cliOutput')[0].scrollTop = $('#cliOutput')[0].scrollHeight;
+                angular.element(document.querySelector('#cliOutput'))[0].scrollTop = angular.element(document.querySelector('#cliOutput'))[0].scrollHeight;
             };
 
             me.websocket = new WebSocket(me.wsUri);
