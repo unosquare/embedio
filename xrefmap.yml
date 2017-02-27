@@ -2143,96 +2143,6 @@ references:
   commentId: N:Unosquare.Net
   fullName: Unosquare.Net
   nameWithType: Unosquare.Net
-- uid: Unosquare.Net.AsyncResult
-  name: AsyncResult
-  href: api/Unosquare.Net.AsyncResult.html
-  commentId: T:Unosquare.Net.AsyncResult
-  fullName: Unosquare.Net.AsyncResult
-  nameWithType: AsyncResult
-- uid: Unosquare.Net.AsyncResult.#ctor(System.Object)
-  name: AsyncResult(Object)
-  href: api/Unosquare.Net.AsyncResult.html#Unosquare_Net_AsyncResult__ctor_System_Object_
-  commentId: M:Unosquare.Net.AsyncResult.#ctor(System.Object)
-  fullName: Unosquare.Net.AsyncResult.AsyncResult(System.Object)
-  nameWithType: AsyncResult.AsyncResult(Object)
-- uid: Unosquare.Net.AsyncResult.#ctor*
-  name: AsyncResult
-  href: api/Unosquare.Net.AsyncResult.html#Unosquare_Net_AsyncResult__ctor_
-  commentId: Overload:Unosquare.Net.AsyncResult.#ctor
-  fullName: Unosquare.Net.AsyncResult.AsyncResult
-  nameWithType: AsyncResult.AsyncResult
-- uid: Unosquare.Net.AsyncResult.AsyncState
-  name: AsyncState
-  href: api/Unosquare.Net.AsyncResult.html#Unosquare_Net_AsyncResult_AsyncState
-  commentId: P:Unosquare.Net.AsyncResult.AsyncState
-  fullName: Unosquare.Net.AsyncResult.AsyncState
-  nameWithType: AsyncResult.AsyncState
-- uid: Unosquare.Net.AsyncResult.AsyncState*
-  name: AsyncState
-  href: api/Unosquare.Net.AsyncResult.html#Unosquare_Net_AsyncResult_AsyncState_
-  commentId: Overload:Unosquare.Net.AsyncResult.AsyncState
-  fullName: Unosquare.Net.AsyncResult.AsyncState
-  nameWithType: AsyncResult.AsyncState
-- uid: Unosquare.Net.AsyncResult.AsyncWaitHandle
-  name: AsyncWaitHandle
-  href: api/Unosquare.Net.AsyncResult.html#Unosquare_Net_AsyncResult_AsyncWaitHandle
-  commentId: P:Unosquare.Net.AsyncResult.AsyncWaitHandle
-  fullName: Unosquare.Net.AsyncResult.AsyncWaitHandle
-  nameWithType: AsyncResult.AsyncWaitHandle
-- uid: Unosquare.Net.AsyncResult.AsyncWaitHandle*
-  name: AsyncWaitHandle
-  href: api/Unosquare.Net.AsyncResult.html#Unosquare_Net_AsyncResult_AsyncWaitHandle_
-  commentId: Overload:Unosquare.Net.AsyncResult.AsyncWaitHandle
-  fullName: Unosquare.Net.AsyncResult.AsyncWaitHandle
-  nameWithType: AsyncResult.AsyncWaitHandle
-- uid: Unosquare.Net.AsyncResult.Complete(System.Object)
-  name: Complete(Object)
-  href: api/Unosquare.Net.AsyncResult.html#Unosquare_Net_AsyncResult_Complete_System_Object_
-  commentId: M:Unosquare.Net.AsyncResult.Complete(System.Object)
-  fullName: Unosquare.Net.AsyncResult.Complete(System.Object)
-  nameWithType: AsyncResult.Complete(Object)
-- uid: Unosquare.Net.AsyncResult.Complete*
-  name: Complete
-  href: api/Unosquare.Net.AsyncResult.html#Unosquare_Net_AsyncResult_Complete_
-  commentId: Overload:Unosquare.Net.AsyncResult.Complete
-  fullName: Unosquare.Net.AsyncResult.Complete
-  nameWithType: AsyncResult.Complete
-- uid: Unosquare.Net.AsyncResult.CompletedSynchronously
-  name: CompletedSynchronously
-  href: api/Unosquare.Net.AsyncResult.html#Unosquare_Net_AsyncResult_CompletedSynchronously
-  commentId: P:Unosquare.Net.AsyncResult.CompletedSynchronously
-  fullName: Unosquare.Net.AsyncResult.CompletedSynchronously
-  nameWithType: AsyncResult.CompletedSynchronously
-- uid: Unosquare.Net.AsyncResult.CompletedSynchronously*
-  name: CompletedSynchronously
-  href: api/Unosquare.Net.AsyncResult.html#Unosquare_Net_AsyncResult_CompletedSynchronously_
-  commentId: Overload:Unosquare.Net.AsyncResult.CompletedSynchronously
-  fullName: Unosquare.Net.AsyncResult.CompletedSynchronously
-  nameWithType: AsyncResult.CompletedSynchronously
-- uid: Unosquare.Net.AsyncResult.Data
-  name: Data
-  href: api/Unosquare.Net.AsyncResult.html#Unosquare_Net_AsyncResult_Data
-  commentId: P:Unosquare.Net.AsyncResult.Data
-  fullName: Unosquare.Net.AsyncResult.Data
-  nameWithType: AsyncResult.Data
-- uid: Unosquare.Net.AsyncResult.Data*
-  name: Data
-  href: api/Unosquare.Net.AsyncResult.html#Unosquare_Net_AsyncResult_Data_
-  commentId: Overload:Unosquare.Net.AsyncResult.Data
-  fullName: Unosquare.Net.AsyncResult.Data
-  nameWithType: AsyncResult.Data
-- uid: Unosquare.Net.AsyncResult.IsCompleted
-  name: IsCompleted
-  href: api/Unosquare.Net.AsyncResult.html#Unosquare_Net_AsyncResult_IsCompleted
-  commentId: P:Unosquare.Net.AsyncResult.IsCompleted
-  fullName: Unosquare.Net.AsyncResult.IsCompleted
-  nameWithType: AsyncResult.IsCompleted
-- uid: Unosquare.Net.AsyncResult.IsCompleted*
-  name: IsCompleted
-  href: api/Unosquare.Net.AsyncResult.html#Unosquare_Net_AsyncResult_IsCompleted_
-  commentId: Overload:Unosquare.Net.AsyncResult.IsCompleted
-  fullName: Unosquare.Net.AsyncResult.IsCompleted
-  nameWithType: AsyncResult.IsCompleted
 - uid: Unosquare.Net.CloseEventArgs
   name: CloseEventArgs
   href: api/Unosquare.Net.CloseEventArgs.html
@@ -3598,24 +3508,6 @@ references:
   commentId: T:Unosquare.Net.NetExtensions
   fullName: Unosquare.Net.NetExtensions
   nameWithType: NetExtensions
-- uid: Unosquare.Net.NetExtensions.Add(NameValueCollection,System.String)
-  name: Add(NameValueCollection, String)
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_Add_NameValueCollection_System_String_
-  commentId: M:Unosquare.Net.NetExtensions.Add(NameValueCollection,System.String)
-  fullName: Unosquare.Net.NetExtensions.Add(NameValueCollection, System.String)
-  nameWithType: NetExtensions.Add(NameValueCollection, String)
-- uid: Unosquare.Net.NetExtensions.Add(Unosquare.Net.WebHeaderCollection,System.String)
-  name: Add(WebHeaderCollection, String)
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_Add_Unosquare_Net_WebHeaderCollection_System_String_
-  commentId: M:Unosquare.Net.NetExtensions.Add(Unosquare.Net.WebHeaderCollection,System.String)
-  fullName: Unosquare.Net.NetExtensions.Add(Unosquare.Net.WebHeaderCollection, System.String)
-  nameWithType: NetExtensions.Add(WebHeaderCollection, String)
-- uid: Unosquare.Net.NetExtensions.Add*
-  name: Add
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_Add_
-  commentId: Overload:Unosquare.Net.NetExtensions.Add
-  fullName: Unosquare.Net.NetExtensions.Add
-  nameWithType: NetExtensions.Add
 - uid: Unosquare.Net.NetExtensions.BeginRead(Stream,System.Byte[],System.Int32,System.Int32,AsyncCallback,System.Object)
   name: BeginRead(Stream, Byte[], Int32, Int32, AsyncCallback, Object)
   href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_BeginRead_Stream_System_Byte___System_Int32_System_Int32_AsyncCallback_System_Object_
@@ -3688,18 +3580,6 @@ references:
   commentId: Overload:Unosquare.Net.NetExtensions.GetLeftPart
   fullName: Unosquare.Net.NetExtensions.GetLeftPart
   nameWithType: NetExtensions.GetLeftPart
-- uid: Unosquare.Net.NetExtensions.IsHostOrder(Endianness)
-  name: IsHostOrder(Endianness)
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_IsHostOrder_Endianness_
-  commentId: M:Unosquare.Net.NetExtensions.IsHostOrder(Endianness)
-  fullName: Unosquare.Net.NetExtensions.IsHostOrder(Endianness)
-  nameWithType: NetExtensions.IsHostOrder(Endianness)
-- uid: Unosquare.Net.NetExtensions.IsHostOrder*
-  name: IsHostOrder
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_IsHostOrder_
-  commentId: Overload:Unosquare.Net.NetExtensions.IsHostOrder
-  fullName: Unosquare.Net.NetExtensions.IsHostOrder
-  nameWithType: NetExtensions.IsHostOrder
 - uid: Unosquare.Net.NetExtensions.SchemeDelimiter
   name: SchemeDelimiter
   href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_SchemeDelimiter
