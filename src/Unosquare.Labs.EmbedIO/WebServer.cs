@@ -328,12 +328,16 @@
         /// <summary>
         /// Starts the listener and the registered modules
         /// </summary>
+        /// <param name="ct">The cancellation token; when cancelled, the server cancels all pending requests and stops.</param>
         /// <returns>
-        /// Returns the task that the HTTP listener is 
-        /// running inside of, so that it can be waited upon after it's been canceled.
+        /// Returns the task that the HTTP listener is running inside of, so that it can be waited upon after it's been canceled.
         /// </returns>
+        /// <remarks>Both the server and client requests are queued separately on the thread pool,
+        /// so it is safe to call <see cref="Task.Wait()"/> in a synchronous method.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">The method was already called.</exception>
-        public Task RunAsync(CancellationToken ct = default(CancellationToken), Middleware app = null)
+        /// <exception cref="System.OperationCanceledException">Cancellation was requested.</exception>
+        public async Task RunAsync(CancellationToken ct = default(CancellationToken), Middleware app = null)
         {
             if (_listenerTask != null)
                 throw new InvalidOperationException("The method was already called.");
@@ -343,21 +347,23 @@
 
             "Started HTTP Listener".Info(nameof(WebServer));
 
-            _listenerTask = Task.Factory.StartNew(() =>
+            // Force the server to queue on a thread outside the calling thread
+            await Task.Run(async () =>
             {
-                while (Listener != null && Listener.IsListening)
+                // Disposing the web server will close the listener.
+                while (Listener != null && Listener.IsListening && !ct.IsCancellationRequested)
                 {
                     try
                     {
-                        var clientSocketTask = Listener.GetContextAsync();
-                        clientSocketTask.Wait(ct);
-                        var clientSocket = clientSocketTask.Result;
-
-                        Task.Factory.StartNew(context => HandleClientRequest(context as HttpListenerContext, app),
-                            clientSocket, ct);
+                        var clientSocket = await Listener.GetContextAsync().ConfigureAwait(false);
+                        // Spawn off each client task asynchronously
+    #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                        Task.Run(() => HandleClientRequest(clientSocket, app), ct);
+    #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     }
                     catch (OperationCanceledException)
                     {
+                        // Forward cancellations out to the caller.
                         throw;
                     }
                     catch (Exception ex)
@@ -365,9 +371,7 @@
                         ex.Log(nameof(WebServer));
                     }
                 }
-            }, ct);
-
-            return _listenerTask;
+            }, ct).ConfigureAwait(false);
         }
 
         /// <summary>
