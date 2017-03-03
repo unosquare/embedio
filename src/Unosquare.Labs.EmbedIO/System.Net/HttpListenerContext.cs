@@ -43,6 +43,7 @@ namespace Unosquare.Net
 
         internal HttpListenerContext(HttpConnection cnc)
         {
+            Id = Guid.NewGuid();
             Connection = cnc;
             Request = new HttpListenerRequest(this);
             Response = new HttpListenerResponse(this);
@@ -79,6 +80,8 @@ namespace Unosquare.Net
         /// The user.
         /// </value>
         public IPrincipal User { get; private set; }
+
+        public Guid Id { get; }
 
 #if AUTHENTICATION
         internal void ParseAuthentication(AuthenticationSchemes expectedSchemes)

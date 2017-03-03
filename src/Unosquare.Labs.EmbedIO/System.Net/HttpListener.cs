@@ -31,6 +31,8 @@
 
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
+using System.Linq;
 using System.Security.Authentication.ExtendedProtection;
 using System.Threading.Tasks;
 
@@ -51,7 +53,7 @@ namespace Unosquare.Net
     /// <seealso cref="System.IDisposable" />
     public sealed class HttpListener : IDisposable
     {
-        #if AUTHENTICATION
+#if AUTHENTICATION
         AuthenticationSchemes _authSchemes;
         AuthenticationSchemeSelector _authSelector;
 #endif
@@ -67,8 +69,7 @@ namespace Unosquare.Net
 #endif
 
         private readonly Hashtable _registry;   // Dictionary<HttpListenerContext,HttpListenerContext> 
-        private readonly ArrayList _ctxQueue;  // List<HttpListenerContext> ctx_queue;
-        private readonly ArrayList _waitQueue; // List<ListenerAsyncResult> wait_queue;
+        private readonly ConcurrentDictionary<Guid, HttpListenerContext> _ctxQueue;
         private readonly Hashtable _connections;
 
         //ServiceNameStore defaultServiceNames;
@@ -90,9 +91,8 @@ namespace Unosquare.Net
             _prefixes = new HttpListenerPrefixCollection(this);
             _registry = new Hashtable();
             _connections = Hashtable.Synchronized(new Hashtable());
-            _ctxQueue = new ArrayList();
-            _waitQueue = new ArrayList();
-            #if AUTHENTICATION
+            _ctxQueue = new ConcurrentDictionary<Guid, HttpListenerContext>();
+#if AUTHENTICATION
             _authSchemes = AuthenticationSchemes.Anonymous;
 #endif
             //defaultServiceNames = new ServiceNameStore();
@@ -226,17 +226,11 @@ namespace Unosquare.Net
         /// <summary>
         /// Gets a value indicating whether this instance is listening.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance is listening; otherwise, <c>false</c>.
-        /// </value>
         public bool IsListening { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether this instance is supported.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance is supported; otherwise, <c>false</c>.
-        /// </value>
         public static bool IsSupported => true;
 
         /// <summary>
@@ -351,99 +345,18 @@ namespace Unosquare.Net
                     for (var i = conns.Length - 1; i >= 0; i--)
                         conns[i].Close(true);
                 }
-                lock (_ctxQueue)
-                {
-                    var ctxs = (HttpListenerContext[])_ctxQueue.ToArray(typeof(HttpListenerContext));
-                    _ctxQueue.Clear();
-                    for (var i = ctxs.Length - 1; i >= 0; i--)
-                        ctxs[i].Connection.Close(true);
-                }
 
-                lock (_waitQueue)
+                while (_ctxQueue.IsEmpty == false)
                 {
-                    Exception exc = new ObjectDisposedException("listener");
-                    foreach (ListenerAsyncResult ares in _waitQueue)
+                    foreach (var key in _ctxQueue.Keys.Select(x => x).ToList())
                     {
-                        ares.Complete(exc);
-                    }
-                    _waitQueue.Clear();
-                }
-            }
-        }
+                        HttpListenerContext context;
 
-        /// <summary>
-        /// Begins the asynchronous operation of retrieving an HTTP conext
-        /// </summary>
-        /// <param name="callback">The callback.</param>
-        /// <param name="state">The state.</param>
-        /// <returns></returns>
-        /// <exception cref="System.InvalidOperationException">Please, call Start before using this method.</exception>
-        public IAsyncResult BeginGetContext(AsyncCallback callback, object state)
-        {
-            CheckDisposed();
-            if (!IsListening)
-                throw new InvalidOperationException("Please, call Start before using this method.");
-
-            var ares = new ListenerAsyncResult(callback, state);
-
-            // lock wait_queue early to avoid race conditions
-            lock (_waitQueue)
-            {
-                lock (_ctxQueue)
-                {
-                    var ctx = GetContextFromQueue();
-                    if (ctx != null)
-                    {
-                        ares.Complete(ctx, true);
-                        return ares;
+                        if (_ctxQueue.TryGetValue(key, out context))
+                            context.Connection.Close(true);
                     }
                 }
-
-                _waitQueue.Add(ares);
             }
-
-            return ares;
-        }
-
-        /// <summary>
-        /// Ends the asynchronous operation of retrieving an HTTP conext
-        /// </summary>
-        /// <param name="asyncResult">The asynchronous result.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException">asyncResult</exception>
-        /// <exception cref="System.ArgumentException">
-        /// Wrong IAsyncResult. - asyncResult
-        /// or
-        /// Cannot reuse this IAsyncResult
-        /// </exception>
-        public HttpListenerContext EndGetContext(IAsyncResult asyncResult)
-        {
-            if (_disposed) return null;
-            if (asyncResult == null)
-                throw new ArgumentNullException(nameof(asyncResult));
-
-            var ares = asyncResult as ListenerAsyncResult;
-            if (ares == null)
-                throw new ArgumentException("Wrong IAsyncResult.", nameof(asyncResult));
-            if (ares.EndCalled)
-                throw new ArgumentException("Cannot reuse this IAsyncResult");
-            ares.EndCalled = true;
-
-            if (!ares.IsCompleted)
-                ares.AsyncWaitHandle.WaitOne();
-
-            lock (_waitQueue)
-            {
-                var idx = _waitQueue.IndexOf(ares);
-                if (idx >= 0)
-                    _waitQueue.RemoveAt(idx);
-            }
-
-            var context = ares.GetContext();
-#if AUTHENTICATION
-            context.ParseAuthentication(SelectAuthenticationScheme(context));
-#endif
-            return context; // This will throw on error.
         }
 
 #if AUTHENTICATION
@@ -452,22 +365,6 @@ namespace Unosquare.Net
             return AuthenticationSchemeSelectorDelegate?.Invoke(context.Request) ?? _authSchemes;
         }
 #endif
-
-        /// <summary>
-        /// Gets the HTTP Listener's conext
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="System.InvalidOperationException">Please, call AddPrefix before using this method.</exception>
-        public HttpListenerContext GetContext()
-        {
-            // The prefixes are not checked when using the async interface!?
-            if (_prefixes.Count == 0)
-                throw new InvalidOperationException("Please, call AddPrefix before using this method.");
-
-            var ares = (ListenerAsyncResult)BeginGetContext(null, null);
-            ares.InGet = true;
-            return EndGetContext(ares);
-        }
 
         /// <summary>
         /// Starts this listener.
@@ -505,9 +402,20 @@ namespace Unosquare.Net
         /// Gets the HTTP context asynchronously.
         /// </summary>
         /// <returns></returns>
-        public Task<HttpListenerContext> GetContextAsync()
+        public async Task<HttpListenerContext> GetContextAsync()
         {
-            return Task<HttpListenerContext>.Factory.FromAsync(BeginGetContext, EndGetContext, null);
+            while (true)
+            {
+                foreach (var key in _ctxQueue.Keys)
+                {
+                    HttpListenerContext context;
+
+                    if (_ctxQueue.TryRemove(key, out context))
+                        return context;
+                }
+
+                await Task.Delay(10);
+            }
         }
 
         internal void CheckDisposed()
@@ -515,50 +423,23 @@ namespace Unosquare.Net
             //if (disposed)
             //    throw new ObjectDisposedException(GetType().ToString());
         }
-
-        // Must be called with a lock on ctx_queue
-        private HttpListenerContext GetContextFromQueue()
-        {
-            if (_ctxQueue.Count == 0)
-                return null;
-
-            var context = (HttpListenerContext)_ctxQueue[0];
-            _ctxQueue.RemoveAt(0);
-            return context;
-        }
-
+        
         internal void RegisterContext(HttpListenerContext context)
         {
             lock (_registry)
                 _registry[context] = context;
 
-            ListenerAsyncResult ares = null;
-            lock (_waitQueue)
-            {
-                if (_waitQueue.Count == 0)
-                {
-                    lock (_ctxQueue)
-                        _ctxQueue.Add(context);
-                }
-                else
-                {
-                    ares = (ListenerAsyncResult)_waitQueue[0];
-                    _waitQueue.RemoveAt(0);
-                }
-            }
-            ares?.Complete(context);
+            if (_ctxQueue.TryAdd(context.Id, context) == false)
+                throw new Exception("Unable to register context");
         }
 
         internal void UnregisterContext(HttpListenerContext context)
         {
             lock (_registry)
                 _registry.Remove(context);
-            lock (_ctxQueue)
-            {
-                var idx = _ctxQueue.IndexOf(context);
-                if (idx >= 0)
-                    _ctxQueue.RemoveAt(idx);
-            }
+
+            HttpListenerContext removedContext;
+            _ctxQueue.TryRemove(context.Id, out removedContext);
         }
 
         internal void AddConnection(HttpConnection cnc)

@@ -209,23 +209,13 @@
         /// Handles the client request.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="app"></param>
-        private async void HandleClientRequest(HttpListenerContext context, Middleware app)
+        private void HandleClientRequest(HttpListenerContext context)
         {
             // start with an empty request ID
             var requestId = "(not set)";
 
             try
             {
-                // Generate a MiddlewareContext and expected the result
-                if (app != null)
-                {
-                    var middlewareContext = new MiddlewareContext(context, this);
-                    await app.Invoke(middlewareContext);
-
-                    if (middlewareContext.Handled) return;
-                }
-
                 // Create a request endpoint string
                 var requestEndpoint = $"{context.Request?.RemoteEndPoint?.Address}:{context.Request?.RemoteEndPoint?.Port}";
 
@@ -332,12 +322,13 @@
         /// <returns>
         /// Returns the task that the HTTP listener is running inside of, so that it can be waited upon after it's been canceled.
         /// </returns>
-        /// <remarks>Both the server and client requests are queued separately on the thread pool,
-        /// so it is safe to call <see cref="Task.Wait()"/> in a synchronous method.
-        /// </remarks>
         /// <exception cref="System.InvalidOperationException">The method was already called.</exception>
         /// <exception cref="System.OperationCanceledException">Cancellation was requested.</exception>
-        public async Task RunAsync(CancellationToken ct = default(CancellationToken), Middleware app = null)
+        /// <remarks>
+        /// Both the server and client requests are queued separately on the thread pool,
+        /// so it is safe to call <see cref="Task.Wait()" /> in a synchronous method.
+        /// </remarks>
+        public async Task RunAsync(CancellationToken ct = default(CancellationToken))
         {
             if (_listenerTask != null)
                 throw new InvalidOperationException("The method was already called.");
@@ -358,7 +349,7 @@
                         var clientSocket = await Listener.GetContextAsync().ConfigureAwait(false);
                         // Spawn off each client task asynchronously
     #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                        Task.Run(() => HandleClientRequest(clientSocket, app), ct);
+                        Task.Run(() => HandleClientRequest(clientSocket), ct);
     #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     }
                     catch (OperationCanceledException)
