@@ -55,7 +55,6 @@
     <Compile Include="CorsModuleTest.cs" />
     <Compile Include="FluentTest.cs" />
     <Compile Include="LocalSessionModuleTest.cs" />
-    <Compile Include="MiddlewareTest.cs" />
     <Compile Include="RegexRoutingTest.cs" />
     <Compile Include="MultipleStaticRootsFixture.cs" />
     <Compile Include="StaticFilesModuleTest.cs" />
@@ -64,7 +63,6 @@
     <Compile Include="TestObjects\Resources.cs" />
     <Compile Include="TestObjects\TestController.cs" />
     <Compile Include="TestObjects\TestHelper.cs" />
-    <Compile Include="TestObjects\TestMiddleware.cs" />
     <Compile Include="TestObjects\TestRegexController.cs" />
     <Compile Include="TestObjects\TestWebModule.cs" />
     <Compile Include="TestObjects\TestWebSocket.cs" />

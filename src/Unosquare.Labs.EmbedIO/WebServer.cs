@@ -295,9 +295,8 @@
                         ex.Log(nameof(WebServer), $"Failing module name: {module.Name}");
 
                         // Generate an HTML response
-                        var response = string.Format(Constants.Response500HtmlFormat,
-                            System.Net.WebUtility.HtmlEncode(errorMessage),
-                            System.Net.WebUtility.HtmlEncode(ex.StackTrace));
+                        var response = System.Net.WebUtility.HtmlEncode(string.Format(Constants.Response500HtmlFormat,
+                            errorMessage, ex.StackTrace));
 
                         // Send the response over with the corresponding status code.
                         var responseBytes = System.Text.Encoding.UTF8.GetBytes(response);

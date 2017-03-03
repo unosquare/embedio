@@ -39,11 +39,11 @@ using System.Threading.Tasks;
 namespace Unosquare.Net
 {
 #if AUTHENTICATION
-    /// <summary>
-    /// A delegate that selects the authentication scheme based on the supplied request
-    /// </summary>
-    /// <param name="httpRequest">The HTTP request.</param>
-    /// <returns></returns>
+/// <summary>
+/// A delegate that selects the authentication scheme based on the supplied request
+/// </summary>
+/// <param name="httpRequest">The HTTP request.</param>
+/// <returns></returns>
     public delegate AuthenticationSchemes AuthenticationSchemeSelector(HttpListenerRequest httpRequest);
 #endif
 
@@ -68,7 +68,6 @@ namespace Unosquare.Net
         X509Certificate certificate;
 #endif
 
-        private readonly Hashtable _registry;   // Dictionary<HttpListenerContext,HttpListenerContext> 
         private readonly ConcurrentDictionary<Guid, HttpListenerContext> _ctxQueue;
         private readonly Hashtable _connections;
 
@@ -89,7 +88,6 @@ namespace Unosquare.Net
         public HttpListener()
         {
             _prefixes = new HttpListenerPrefixCollection(this);
-            _registry = new Hashtable();
             _connections = Hashtable.Synchronized(new Hashtable());
             _ctxQueue = new ConcurrentDictionary<Guid, HttpListenerContext>();
 #if AUTHENTICATION
@@ -158,13 +156,13 @@ namespace Unosquare.Net
 
 
 #if AUTHENTICATION
-        /// <summary>
-        /// Gets or sets the authentication schemes.
-        /// TODO: Digest, NTLM and Negotiate require ControlPrincipal
-        /// </summary>
-        /// <value>
-        /// The authentication schemes.
-        /// </value>
+/// <summary>
+/// Gets or sets the authentication schemes.
+/// TODO: Digest, NTLM and Negotiate require ControlPrincipal
+/// </summary>
+/// <value>
+/// The authentication schemes.
+/// </value>
         public AuthenticationSchemes AuthenticationSchemes
         {
             get { return _authSchemes; }
@@ -323,38 +321,26 @@ namespace Unosquare.Net
 
         private void Cleanup(bool closeExisting)
         {
-            lock (_registry)
+            lock (_connections.SyncRoot)
             {
-                if (closeExisting)
-                {
-                    // Need to copy this since closing will call UnregisterContext
-                    var keys = _registry.Keys;
-                    var all = new HttpListenerContext[keys.Count];
-                    keys.CopyTo(all, 0);
-                    _registry.Clear();
-                    for (var i = all.Length - 1; i >= 0; i--)
-                        all[i].Connection.Close(true);
-                }
+                var keys = _connections.Keys;
+                var conns = new HttpConnection[keys.Count];
+                keys.CopyTo(conns, 0);
+                _connections.Clear();
+                for (var i = conns.Length - 1; i >= 0; i--)
+                    conns[i].Close(true);
+            }
 
-                lock (_connections.SyncRoot)
-                {
-                    var keys = _connections.Keys;
-                    var conns = new HttpConnection[keys.Count];
-                    keys.CopyTo(conns, 0);
-                    _connections.Clear();
-                    for (var i = conns.Length - 1; i >= 0; i--)
-                        conns[i].Close(true);
-                }
+            if (closeExisting == false) return;
 
-                while (_ctxQueue.IsEmpty == false)
+            while (_ctxQueue.IsEmpty == false)
+            {
+                foreach (var key in _ctxQueue.Keys.Select(x => x).ToList())
                 {
-                    foreach (var key in _ctxQueue.Keys.Select(x => x).ToList())
-                    {
-                        HttpListenerContext context;
+                    HttpListenerContext context;
 
-                        if (_ctxQueue.TryGetValue(key, out context))
-                            context.Connection.Close(true);
-                    }
+                    if (_ctxQueue.TryGetValue(key, out context))
+                        context.Connection.Close(true);
                 }
             }
         }
@@ -423,21 +409,15 @@ namespace Unosquare.Net
             //if (disposed)
             //    throw new ObjectDisposedException(GetType().ToString());
         }
-        
+
         internal void RegisterContext(HttpListenerContext context)
         {
-            lock (_registry)
-                _registry[context] = context;
-
             if (_ctxQueue.TryAdd(context.Id, context) == false)
                 throw new Exception("Unable to register context");
         }
 
         internal void UnregisterContext(HttpListenerContext context)
         {
-            lock (_registry)
-                _registry.Remove(context);
-
             HttpListenerContext removedContext;
             _ctxQueue.TryRemove(context.Id, out removedContext);
         }
