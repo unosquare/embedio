@@ -139,7 +139,7 @@ namespace Unosquare.Net
                 epl._unregistered[conn] = conn;
             }
 
-            conn.BeginReadRequest();
+            conn.BeginReadRequest().Wait();
         }
 
         private static void OnAccept(object sender, SocketAsyncEventArgs e)

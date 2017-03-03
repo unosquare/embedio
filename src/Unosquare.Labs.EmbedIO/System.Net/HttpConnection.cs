@@ -35,6 +35,7 @@ using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Unosquare.Net
 {
@@ -153,16 +154,19 @@ namespace Unosquare.Net
             Unbind();
         }
 
-        public void BeginReadRequest()
+        public async Task BeginReadRequest()
         {
             if (_buffer == null)
                 _buffer = new byte[BufferSize];
+
             try
             {
                 if (Reuses == 1)
                     _sTimeout = 15000;
                 _timer.Change(_sTimeout, Timeout.Infinite);
-                Stream.BeginRead(_buffer, 0, BufferSize, OnreadCb, this);
+
+                var data = await Stream.ReadAsync(_buffer, 0, BufferSize);
+                await OnReadInternal(data);
             }
             catch
             {
@@ -224,7 +228,7 @@ namespace Unosquare.Net
         {
             try
             {
-                OnReadInternal(Stream.EndRead(ares));
+                OnReadInternal(Stream.EndRead(ares)).Wait();
             }
             catch
             {
@@ -233,7 +237,7 @@ namespace Unosquare.Net
             }
         }
 
-        private void OnReadInternal(int nread)
+        private async Task OnReadInternal(int nread)
         {
             _timer.Change(Timeout.Infinite, Timeout.Infinite);
             
@@ -286,7 +290,7 @@ namespace Unosquare.Net
                 return;
             }
 
-            Stream.BeginRead(_buffer, 0, BufferSize, OnreadCb, this);
+            await Stream.ReadAsync(_buffer, 0, BufferSize);
         }
 
         private void RemoveConnection()
@@ -463,12 +467,12 @@ namespace Unosquare.Net
                 _oStream = null;
             }
 
-            if (_sock != null)
-            {
-                forceClose |= !_context.Request.KeepAlive;
-                if (!forceClose)
-                    forceClose = (_context.Response.Headers["connection"] == "close");
-                /*
+            if (_sock == null) return;
+
+            forceClose |= !_context.Request.KeepAlive;
+            if (!forceClose)
+                forceClose = (_context.Response.Headers["connection"] == "close");
+            /*
 				if (!force_close) {
 //					bool conn_close = (status_code == 400 || status_code == 408 || status_code == 411 ||
 //							status_code == 413 || status_code == 414 || status_code == 500 ||
@@ -477,42 +481,41 @@ namespace Unosquare.Net
 				}
 				*/
 
-                if (!forceClose && _context.Request.FlushInput())
+            if (!forceClose && _context.Request.FlushInput())
+            {
+                if (_chunked && _context.Response.ForceCloseChunked == false)
                 {
-                    if (_chunked && _context.Response.ForceCloseChunked == false)
-                    {
-                        // Don't close. Keep working.
-                        Reuses++;
-                        Unbind();
-                        Init();
-                        BeginReadRequest();
-                        return;
-                    }
-
+                    // Don't close. Keep working.
                     Reuses++;
                     Unbind();
                     Init();
-                    BeginReadRequest();
+                    BeginReadRequest().Wait();
                     return;
                 }
 
-                var s = _sock;
-                _sock = null;
-                try
-                {
-                    s?.Shutdown(SocketShutdown.Both);
-                }
-                catch
-                {
-                    // ignored
-                }
-                finally
-                {
-                    s?.Dispose();
-                }
+                Reuses++;
                 Unbind();
-                RemoveConnection();
+                Init();
+                BeginReadRequest().Wait();
+                return;
             }
+
+            var s = _sock;
+            _sock = null;
+            try
+            {
+                s?.Shutdown(SocketShutdown.Both);
+            }
+            catch
+            {
+                // ignored
+            }
+            finally
+            {
+                s?.Dispose();
+            }
+            Unbind();
+            RemoveConnection();
         }
     }
 }
