@@ -57,32 +57,23 @@ namespace Unosquare.Net
 
         internal HttpConnection Connection { get; }
 
+        internal Guid Id { get; }
+
         /// <summary>
         /// Gets the request.
         /// </summary>
-        /// <value>
-        /// The request.
-        /// </value>
         public HttpListenerRequest Request { get; }
 
         /// <summary>
         /// Gets the response.
         /// </summary>
-        /// <value>
-        /// The response.
-        /// </value>
         public HttpListenerResponse Response { get; }
 
         /// <summary>
         /// Gets the user.
         /// </summary>
-        /// <value>
-        /// The user.
-        /// </value>
         public IPrincipal User { get; private set; }
-
-        public Guid Id { get; }
-
+        
 #if AUTHENTICATION
         internal void ParseAuthentication(AuthenticationSchemes expectedSchemes)
         {

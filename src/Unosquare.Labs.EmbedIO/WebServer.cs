@@ -20,8 +20,7 @@
     public class WebServer : IDisposable
     {
         private readonly List<IWebModule> _modules = new List<IWebModule>(4);
-        private Task _listenerTask;
-
+        
         /// <summary>
         /// Gets the underlying HTTP listener.
         /// </summary>
@@ -147,8 +146,7 @@
         public T Module<T>()
             where T : class, IWebModule
         {
-            var module = Modules.FirstOrDefault(m => m.GetType() == typeof(T));
-            return module as T;
+            return Module(typeof(T)) as T;
         }
 
         /// <summary>
@@ -330,9 +328,6 @@
         /// </remarks>
         public async Task RunAsync(CancellationToken ct = default(CancellationToken))
         {
-            if (_listenerTask != null)
-                throw new InvalidOperationException("The method was already called.");
-
             Listener.IgnoreWriteExceptions = true;
             Listener.Start();
 

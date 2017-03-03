@@ -62,7 +62,6 @@
     <Compile Include="HttpVerbs.cs" />
     <Compile Include="ISessionWebModule.cs" />
     <Compile Include="IWebModule.cs" />
-    <Compile Include="Middleware.cs" />
     <Compile Include="Modules\CorsModule.cs" />
     <Compile Include="Modules\FallbackModule.cs" />
     <Compile Include="Modules\LocalSessionModule.cs" />
@@ -92,7 +91,6 @@
     <Compile Include="System.Net\HttpResponse.cs" />
     <Compile Include="System.Net\HttpStreamAsyncResult.cs" />
     <Compile Include="System.Net\HttpSysSettings.cs" />
-    <Compile Include="System.Net\ListenerAsyncResult.cs" />
     <Compile Include="System.Net\ListenerPrefix.cs" />
     <Compile Include="System.Net\MessageEventArgs.cs" />
     <Compile Include="System.Net\NetExtensions.cs" />
