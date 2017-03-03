@@ -832,78 +832,6 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.Map.Verb
   fullName: Unosquare.Labs.EmbedIO.Map.Verb
   nameWithType: Map.Verb
-- uid: Unosquare.Labs.EmbedIO.Middleware
-  name: Middleware
-  href: api/Unosquare.Labs.EmbedIO.Middleware.html
-  commentId: T:Unosquare.Labs.EmbedIO.Middleware
-  fullName: Unosquare.Labs.EmbedIO.Middleware
-  nameWithType: Middleware
-- uid: Unosquare.Labs.EmbedIO.Middleware.Invoke(Unosquare.Labs.EmbedIO.MiddlewareContext)
-  name: Invoke(MiddlewareContext)
-  href: api/Unosquare.Labs.EmbedIO.Middleware.html#Unosquare_Labs_EmbedIO_Middleware_Invoke_Unosquare_Labs_EmbedIO_MiddlewareContext_
-  commentId: M:Unosquare.Labs.EmbedIO.Middleware.Invoke(Unosquare.Labs.EmbedIO.MiddlewareContext)
-  fullName: Unosquare.Labs.EmbedIO.Middleware.Invoke(Unosquare.Labs.EmbedIO.MiddlewareContext)
-  nameWithType: Middleware.Invoke(MiddlewareContext)
-- uid: Unosquare.Labs.EmbedIO.Middleware.Invoke*
-  name: Invoke
-  href: api/Unosquare.Labs.EmbedIO.Middleware.html#Unosquare_Labs_EmbedIO_Middleware_Invoke_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Middleware.Invoke
-  fullName: Unosquare.Labs.EmbedIO.Middleware.Invoke
-  nameWithType: Middleware.Invoke
-- uid: Unosquare.Labs.EmbedIO.MiddlewareContext
-  name: MiddlewareContext
-  href: api/Unosquare.Labs.EmbedIO.MiddlewareContext.html
-  commentId: T:Unosquare.Labs.EmbedIO.MiddlewareContext
-  fullName: Unosquare.Labs.EmbedIO.MiddlewareContext
-  nameWithType: MiddlewareContext
-- uid: Unosquare.Labs.EmbedIO.MiddlewareContext.#ctor(Unosquare.Net.HttpListenerContext,Unosquare.Labs.EmbedIO.WebServer)
-  name: MiddlewareContext(HttpListenerContext, WebServer)
-  href: api/Unosquare.Labs.EmbedIO.MiddlewareContext.html#Unosquare_Labs_EmbedIO_MiddlewareContext__ctor_Unosquare_Net_HttpListenerContext_Unosquare_Labs_EmbedIO_WebServer_
-  commentId: M:Unosquare.Labs.EmbedIO.MiddlewareContext.#ctor(Unosquare.Net.HttpListenerContext,Unosquare.Labs.EmbedIO.WebServer)
-  fullName: Unosquare.Labs.EmbedIO.MiddlewareContext.MiddlewareContext(Unosquare.Net.HttpListenerContext, Unosquare.Labs.EmbedIO.WebServer)
-  nameWithType: MiddlewareContext.MiddlewareContext(HttpListenerContext, WebServer)
-- uid: Unosquare.Labs.EmbedIO.MiddlewareContext.#ctor*
-  name: MiddlewareContext
-  href: api/Unosquare.Labs.EmbedIO.MiddlewareContext.html#Unosquare_Labs_EmbedIO_MiddlewareContext__ctor_
-  commentId: Overload:Unosquare.Labs.EmbedIO.MiddlewareContext.#ctor
-  fullName: Unosquare.Labs.EmbedIO.MiddlewareContext.MiddlewareContext
-  nameWithType: MiddlewareContext.MiddlewareContext
-- uid: Unosquare.Labs.EmbedIO.MiddlewareContext.Handled
-  name: Handled
-  href: api/Unosquare.Labs.EmbedIO.MiddlewareContext.html#Unosquare_Labs_EmbedIO_MiddlewareContext_Handled
-  commentId: P:Unosquare.Labs.EmbedIO.MiddlewareContext.Handled
-  fullName: Unosquare.Labs.EmbedIO.MiddlewareContext.Handled
-  nameWithType: MiddlewareContext.Handled
-- uid: Unosquare.Labs.EmbedIO.MiddlewareContext.Handled*
-  name: Handled
-  href: api/Unosquare.Labs.EmbedIO.MiddlewareContext.html#Unosquare_Labs_EmbedIO_MiddlewareContext_Handled_
-  commentId: Overload:Unosquare.Labs.EmbedIO.MiddlewareContext.Handled
-  fullName: Unosquare.Labs.EmbedIO.MiddlewareContext.Handled
-  nameWithType: MiddlewareContext.Handled
-- uid: Unosquare.Labs.EmbedIO.MiddlewareContext.HttpContext
-  name: HttpContext
-  href: api/Unosquare.Labs.EmbedIO.MiddlewareContext.html#Unosquare_Labs_EmbedIO_MiddlewareContext_HttpContext
-  commentId: P:Unosquare.Labs.EmbedIO.MiddlewareContext.HttpContext
-  fullName: Unosquare.Labs.EmbedIO.MiddlewareContext.HttpContext
-  nameWithType: MiddlewareContext.HttpContext
-- uid: Unosquare.Labs.EmbedIO.MiddlewareContext.HttpContext*
-  name: HttpContext
-  href: api/Unosquare.Labs.EmbedIO.MiddlewareContext.html#Unosquare_Labs_EmbedIO_MiddlewareContext_HttpContext_
-  commentId: Overload:Unosquare.Labs.EmbedIO.MiddlewareContext.HttpContext
-  fullName: Unosquare.Labs.EmbedIO.MiddlewareContext.HttpContext
-  nameWithType: MiddlewareContext.HttpContext
-- uid: Unosquare.Labs.EmbedIO.MiddlewareContext.WebServer
-  name: WebServer
-  href: api/Unosquare.Labs.EmbedIO.MiddlewareContext.html#Unosquare_Labs_EmbedIO_MiddlewareContext_WebServer
-  commentId: P:Unosquare.Labs.EmbedIO.MiddlewareContext.WebServer
-  fullName: Unosquare.Labs.EmbedIO.MiddlewareContext.WebServer
-  nameWithType: MiddlewareContext.WebServer
-- uid: Unosquare.Labs.EmbedIO.MiddlewareContext.WebServer*
-  name: WebServer
-  href: api/Unosquare.Labs.EmbedIO.MiddlewareContext.html#Unosquare_Labs_EmbedIO_MiddlewareContext_WebServer_
-  commentId: Overload:Unosquare.Labs.EmbedIO.MiddlewareContext.WebServer
-  fullName: Unosquare.Labs.EmbedIO.MiddlewareContext.WebServer
-  nameWithType: MiddlewareContext.WebServer
 - uid: Unosquare.Labs.EmbedIO.ModuleMap
   name: ModuleMap
   href: api/Unosquare.Labs.EmbedIO.ModuleMap.html
@@ -2089,12 +2017,12 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.WebServer.RoutingStrategy
   fullName: Unosquare.Labs.EmbedIO.WebServer.RoutingStrategy
   nameWithType: WebServer.RoutingStrategy
-- uid: Unosquare.Labs.EmbedIO.WebServer.RunAsync(CancellationToken,Unosquare.Labs.EmbedIO.Middleware)
-  name: RunAsync(CancellationToken, Middleware)
-  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_RunAsync_CancellationToken_Unosquare_Labs_EmbedIO_Middleware_
-  commentId: M:Unosquare.Labs.EmbedIO.WebServer.RunAsync(CancellationToken,Unosquare.Labs.EmbedIO.Middleware)
-  fullName: Unosquare.Labs.EmbedIO.WebServer.RunAsync(CancellationToken, Unosquare.Labs.EmbedIO.Middleware)
-  nameWithType: WebServer.RunAsync(CancellationToken, Middleware)
+- uid: Unosquare.Labs.EmbedIO.WebServer.RunAsync(CancellationToken)
+  name: RunAsync(CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_RunAsync_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.WebServer.RunAsync(CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.WebServer.RunAsync(CancellationToken)
+  nameWithType: WebServer.RunAsync(CancellationToken)
 - uid: Unosquare.Labs.EmbedIO.WebServer.RunAsync*
   name: RunAsync
   href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_RunAsync_
@@ -2440,18 +2368,6 @@ references:
   commentId: Overload:Unosquare.Net.HttpListener.Abort
   fullName: Unosquare.Net.HttpListener.Abort
   nameWithType: HttpListener.Abort
-- uid: Unosquare.Net.HttpListener.BeginGetContext(AsyncCallback,System.Object)
-  name: BeginGetContext(AsyncCallback, Object)
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_BeginGetContext_AsyncCallback_System_Object_
-  commentId: M:Unosquare.Net.HttpListener.BeginGetContext(AsyncCallback,System.Object)
-  fullName: Unosquare.Net.HttpListener.BeginGetContext(AsyncCallback, System.Object)
-  nameWithType: HttpListener.BeginGetContext(AsyncCallback, Object)
-- uid: Unosquare.Net.HttpListener.BeginGetContext*
-  name: BeginGetContext
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_BeginGetContext_
-  commentId: Overload:Unosquare.Net.HttpListener.BeginGetContext
-  fullName: Unosquare.Net.HttpListener.BeginGetContext
-  nameWithType: HttpListener.BeginGetContext
 - uid: Unosquare.Net.HttpListener.Close
   name: Close()
   href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_Close
@@ -2464,36 +2380,12 @@ references:
   commentId: Overload:Unosquare.Net.HttpListener.Close
   fullName: Unosquare.Net.HttpListener.Close
   nameWithType: HttpListener.Close
-- uid: Unosquare.Net.HttpListener.EndGetContext(IAsyncResult)
-  name: EndGetContext(IAsyncResult)
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_EndGetContext_IAsyncResult_
-  commentId: M:Unosquare.Net.HttpListener.EndGetContext(IAsyncResult)
-  fullName: Unosquare.Net.HttpListener.EndGetContext(IAsyncResult)
-  nameWithType: HttpListener.EndGetContext(IAsyncResult)
-- uid: Unosquare.Net.HttpListener.EndGetContext*
-  name: EndGetContext
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_EndGetContext_
-  commentId: Overload:Unosquare.Net.HttpListener.EndGetContext
-  fullName: Unosquare.Net.HttpListener.EndGetContext
-  nameWithType: HttpListener.EndGetContext
 - uid: Unosquare.Net.HttpListener.ExtendedProtectionSelector
   name: HttpListener.ExtendedProtectionSelector
   href: api/Unosquare.Net.HttpListener.ExtendedProtectionSelector.html
   commentId: T:Unosquare.Net.HttpListener.ExtendedProtectionSelector
   fullName: Unosquare.Net.HttpListener.ExtendedProtectionSelector
   nameWithType: HttpListener.ExtendedProtectionSelector
-- uid: Unosquare.Net.HttpListener.GetContext
-  name: GetContext()
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_GetContext
-  commentId: M:Unosquare.Net.HttpListener.GetContext
-  fullName: Unosquare.Net.HttpListener.GetContext()
-  nameWithType: HttpListener.GetContext()
-- uid: Unosquare.Net.HttpListener.GetContext*
-  name: GetContext
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_GetContext_
-  commentId: Overload:Unosquare.Net.HttpListener.GetContext
-  fullName: Unosquare.Net.HttpListener.GetContext
-  nameWithType: HttpListener.GetContext
 - uid: Unosquare.Net.HttpListener.GetContextAsync
   name: GetContextAsync()
   href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_GetContextAsync
@@ -2620,6 +2512,18 @@ references:
   commentId: Overload:Unosquare.Net.HttpListenerContext.AcceptWebSocket
   fullName: Unosquare.Net.HttpListenerContext.AcceptWebSocket
   nameWithType: HttpListenerContext.AcceptWebSocket
+- uid: Unosquare.Net.HttpListenerContext.Id
+  name: Id
+  href: api/Unosquare.Net.HttpListenerContext.html#Unosquare_Net_HttpListenerContext_Id
+  commentId: P:Unosquare.Net.HttpListenerContext.Id
+  fullName: Unosquare.Net.HttpListenerContext.Id
+  nameWithType: HttpListenerContext.Id
+- uid: Unosquare.Net.HttpListenerContext.Id*
+  name: Id
+  href: api/Unosquare.Net.HttpListenerContext.html#Unosquare_Net_HttpListenerContext_Id_
+  commentId: Overload:Unosquare.Net.HttpListenerContext.Id
+  fullName: Unosquare.Net.HttpListenerContext.Id
+  nameWithType: HttpListenerContext.Id
 - uid: Unosquare.Net.HttpListenerContext.Request
   name: Request
   href: api/Unosquare.Net.HttpListenerContext.html#Unosquare_Net_HttpListenerContext_Request
