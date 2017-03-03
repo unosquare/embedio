@@ -2512,18 +2512,6 @@ references:
   commentId: Overload:Unosquare.Net.HttpListenerContext.AcceptWebSocket
   fullName: Unosquare.Net.HttpListenerContext.AcceptWebSocket
   nameWithType: HttpListenerContext.AcceptWebSocket
-- uid: Unosquare.Net.HttpListenerContext.Id
-  name: Id
-  href: api/Unosquare.Net.HttpListenerContext.html#Unosquare_Net_HttpListenerContext_Id
-  commentId: P:Unosquare.Net.HttpListenerContext.Id
-  fullName: Unosquare.Net.HttpListenerContext.Id
-  nameWithType: HttpListenerContext.Id
-- uid: Unosquare.Net.HttpListenerContext.Id*
-  name: Id
-  href: api/Unosquare.Net.HttpListenerContext.html#Unosquare_Net_HttpListenerContext_Id_
-  commentId: Overload:Unosquare.Net.HttpListenerContext.Id
-  fullName: Unosquare.Net.HttpListenerContext.Id
-  nameWithType: HttpListenerContext.Id
 - uid: Unosquare.Net.HttpListenerContext.Request
   name: Request
   href: api/Unosquare.Net.HttpListenerContext.html#Unosquare_Net_HttpListenerContext_Request
