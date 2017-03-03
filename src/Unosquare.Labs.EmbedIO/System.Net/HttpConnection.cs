@@ -210,22 +210,35 @@ namespace Unosquare.Net
 
                 _oStream = new ResponseStream(Stream, _context.Response, listener.IgnoreWriteExceptions);
             }
+
             return _oStream;
         }
 
         private static void OnRead(IAsyncResult ares)
         {
             var cnc = (HttpConnection) ares.AsyncState;
-            cnc.OnReadInternal(ares);
+            cnc.OnReadInternalAsync(ares);
         }
 
-        private void OnReadInternal(IAsyncResult ares)
+        private void OnReadInternalAsync(IAsyncResult ares)
         {
-            _timer.Change(Timeout.Infinite, Timeout.Infinite);
-            var nread = -1;
             try
             {
-                nread = Stream.EndRead(ares);
+                OnReadInternal(Stream.EndRead(ares));
+            }
+            catch
+            {
+                CloseSocket();
+                Unbind();
+            }
+        }
+
+        private void OnReadInternal(int nread)
+        {
+            _timer.Change(Timeout.Infinite, Timeout.Infinite);
+            
+            try
+            {
                 _ms.Write(_buffer, 0, nread);
                 if (_ms.Length > 32768)
                 {
@@ -272,6 +285,7 @@ namespace Unosquare.Net
                 listener.RegisterContext(_context);
                 return;
             }
+
             Stream.BeginRead(_buffer, 0, BufferSize, OnreadCb, this);
         }
 
