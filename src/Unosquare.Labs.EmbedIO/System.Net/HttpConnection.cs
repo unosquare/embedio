@@ -41,7 +41,6 @@ namespace Unosquare.Net
 {
     internal sealed class HttpConnection
     {
-        private static readonly AsyncCallback OnreadCb = OnRead;
         private const int BufferSize = 8192;
         private Socket _sock;
         private readonly EndPointListener _epl;
@@ -217,26 +216,7 @@ namespace Unosquare.Net
 
             return _oStream;
         }
-
-        private static void OnRead(IAsyncResult ares)
-        {
-            var cnc = (HttpConnection) ares.AsyncState;
-            cnc.OnReadInternalAsync(ares);
-        }
-
-        private void OnReadInternalAsync(IAsyncResult ares)
-        {
-            try
-            {
-                OnReadInternal(Stream.EndRead(ares)).Wait();
-            }
-            catch
-            {
-                CloseSocket();
-                Unbind();
-            }
-        }
-
+        
         private async Task OnReadInternal(int nread)
         {
             _timer.Change(Timeout.Infinite, Timeout.Infinite);
@@ -350,7 +330,7 @@ namespace Unosquare.Net
                 if (line == null)
                     break;
 
-                if (line == "")
+                if (line == string.Empty)
                 {
                     if (_inputState == InputState.RequestLine)
                         continue;
@@ -384,6 +364,7 @@ namespace Unosquare.Net
                 ms.SetLength(0);
                 _position = 0;
             }
+
             return false;
         }
 
@@ -391,34 +372,32 @@ namespace Unosquare.Net
         {
             if (_currentLine == null)
                 _currentLine = new StringBuilder(128);
+
             var last = offset + len;
             used = 0;
             for (var i = offset; i < last && _lineState != LineState.Lf; i++)
             {
                 used++;
                 var b = buffer[i];
-                if (b == 13)
+
+                switch (b)
                 {
-                    _lineState = LineState.Cr;
-                }
-                else if (b == 10)
-                {
-                    _lineState = LineState.Lf;
-                }
-                else
-                {
-                    _currentLine.Append((char) b);
+                    case 13:
+                        _lineState = LineState.Cr;
+                        break;
+                    case 10:
+                        _lineState = LineState.Lf;
+                        break;
+                    default:
+                        _currentLine.Append((char) b);
+                        break;
                 }
             }
-
-            string result = null;
-
-            if (_lineState == LineState.Lf)
-            {
-                _lineState = LineState.None;
-                result = _currentLine.ToString();
-                _currentLine.Length = 0;
-            }
+            
+            if (_lineState != LineState.Lf) return null;
+            _lineState = LineState.None;
+            var result = _currentLine.ToString();
+            _currentLine.Length = 0;
 
             return result;
         }
