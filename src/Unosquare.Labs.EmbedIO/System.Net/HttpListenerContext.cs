@@ -132,29 +132,17 @@ namespace Unosquare.Net
         /// <summary>
         /// Accepts a WebSocket handshake request.
         /// </summary>
-        /// <param name="protocol">A <see cref="string" /> that represents the subprotocol supported on
-        /// this WebSocket connection.</param>
         /// <returns>
         /// A <see cref="WebSocketContext" /> that represents
         /// the WebSocket handshake request.
         /// </returns>
-        /// <exception cref="ArgumentException"><para>
-        ///   <paramref name="protocol" /> is empty.
-        /// </para>
-        /// </exception>
         /// <exception cref="InvalidOperationException">This method has already been called.</exception>
-        public WebSocketContext AcceptWebSocket(string protocol)
+        public WebSocketContext AcceptWebSocket()
         {
             if (_websocketContext != null)
                 throw new InvalidOperationException("The accepting is already in progress.");
-
-            if (protocol?.Length == 0)
-                throw new ArgumentException("An empty string.", nameof(protocol));
-
-            //if (!protocol.IsToken())
-            //    throw new ArgumentException("Contains an invalid character.", "protocol");
-
-            _websocketContext = new WebSocketContext(this, protocol);
+            
+            _websocketContext = new WebSocketContext(this);
             _websocketContext.WebSocket.InternalAccept();
 
             return _websocketContext;

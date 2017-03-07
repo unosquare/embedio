@@ -49,10 +49,10 @@ namespace Unosquare.Net
 
         #region Internal Constructors
         
-        internal WebSocketContext(HttpListenerContext context, string protocol)
+        internal WebSocketContext(HttpListenerContext context)
         {
             _context = context;
-            WebSocket = new WebSocket(this, protocol);
+            WebSocket = new WebSocket(this);
         }
 
         #endregion
@@ -156,31 +156,7 @@ namespace Unosquare.Net
         /// A <see cref="string"/> that represents the value of the Sec-WebSocket-Key header.
         /// </value>
         public string SecWebSocketKey => _context.Request.Headers["Sec-WebSocket-Key"];
-
-        /// <summary>
-        /// Gets the values of the Sec-WebSocket-Protocol header included in the request.
-        /// </summary>
-        /// <remarks>
-        /// This property represents the subprotocols requested by the client.
-        /// </remarks>
-        /// <value>
-        /// An <see cref="T:System.Collections.Generic.IEnumerable{string}"/> instance that provides
-        /// an enumerator which supports the iteration over the values of the Sec-WebSocket-Protocol
-        /// header.
-        /// </value>
-        public IEnumerable<string> SecWebSocketProtocols
-        {
-            get
-            {
-                var protocols = _context.Request.Headers["Sec-WebSocket-Protocol"];
-                if (protocols != null)
-                {
-                    foreach (var protocol in protocols.Split(','))
-                        yield return protocol.Trim();
-                }
-            }
-        }
-
+        
         /// <summary>
         /// Gets the value of the Sec-WebSocket-Version header included in the request.
         /// </summary>

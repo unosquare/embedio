@@ -42,10 +42,11 @@
                 var path = context.RequestPath();
 
                 // match the request path
-                if (!_serverMap.ContainsKey(path)) return false;
+                if (!_serverMap.ContainsKey(path))
+                    return false;
 
                 // Accept the WebSocket -- this is a blocking method until the WebSocketCloses
-                _serverMap[path].AcceptWebSocket(server, context);
+                _serverMap[path].AcceptWebSocket(context);
                 return true;
             });
         }
@@ -166,12 +167,7 @@
         private readonly int _maximumMessageSize;
         private readonly object _syncRoot = new object();
         private readonly List<WebSocketContext> _mWebSockets = new List<WebSocketContext>(10);
-
-        /// <summary>
-        /// WebServer internal instance
-        /// </summary>
-        public WebServer WebServer { get; protected set; }
-
+        
         /// <summary>
         /// Gets the Currently-Connected WebSockets.
         /// </summary>
@@ -243,16 +239,14 @@
         /// Accepts the WebSocket connection.
         /// This is a blocking call so it must be called within an independent thread.
         /// </summary>
-        /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
 #if NET46
-        public void AcceptWebSocket(WebServer server, System.Net.HttpListenerContext context)
+        public void AcceptWebSocket(System.Net.HttpListenerContext context)
 #else
-        public void AcceptWebSocket(WebServer server, Unosquare.Net.HttpListenerContext context)
+        public void AcceptWebSocket(Unosquare.Net.HttpListenerContext context)
 #endif
         {
             // first, accept the websocket
-            WebServer = server;
             $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
 
 #if NET46
@@ -266,7 +260,7 @@
                     .GetAwaiter()
                     .GetResult();
 #else
-                context.AcceptWebSocket(null);
+                context.AcceptWebSocket();
 #endif
 
             // remove the disconnected clients
@@ -344,7 +338,7 @@
 
                 while (webSocketContext.WebSocket.IsConnected)
                 {
-                    Task.Delay(100).Wait();
+                    Task.Delay(500).Wait();
                 }
 #endif
             }

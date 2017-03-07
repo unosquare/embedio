@@ -170,9 +170,6 @@ namespace Unosquare.Net
         private bool _preAuth;
         private NetworkCredential _proxyCredentials;
 #endif
-        private string _protocol;
-        private readonly string[] _protocols;
-        private bool _protocolsRequested;
 #if PROXY
         private Uri _proxyUri;
 #endif
@@ -231,10 +228,9 @@ namespace Unosquare.Net
         #region Internal Constructors
 
         // As server
-        internal WebSocket(WebSocketContext context, string protocol)
+        internal WebSocket(WebSocketContext context)
         {
             _context = context;
-            _protocol = protocol;
 
             _closeContext = context.Close;
             _message = Messages;
@@ -251,12 +247,9 @@ namespace Unosquare.Net
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebSocket" /> class with
-        /// the specified WebSocket URL and subprotocols.
+        /// the specified WebSocket URL.
         /// </summary>
         /// <param name="url">A <see cref="string" /> that represents the WebSocket URL to connect.</param>
-        /// <param name="protocols">An array of <see cref="string" /> that contains the WebSocket subprotocols if any.
-        /// Each value of <paramref name="protocols" /> must be a token defined in
-        /// <see href="http://tools.ietf.org/html/rfc2616#section-2.2">RFC 2616</see>.</param>
         /// <exception cref="System.ArgumentNullException">url</exception>
         /// <exception cref="System.ArgumentException">
         /// An empty string. - url
@@ -271,11 +264,8 @@ namespace Unosquare.Net
         /// </para>
         /// <para>
         /// -or-
-        /// </para>
-        /// <para>
-        ///   <paramref name="protocols" /> is invalid.
         /// </para></exception>
-        public WebSocket(string url, params string[] protocols)
+        public WebSocket(string url)
         {
             if (url == null)
                 throw new ArgumentNullException(nameof(url));
@@ -287,16 +277,6 @@ namespace Unosquare.Net
             if (!url.TryCreateWebSocketUri(out _uri, out msg))
                 throw new ArgumentException(msg, nameof(url));
 
-            if (protocols != null && protocols.Length > 0)
-            {
-                msg = CheckIfValidProtocols(protocols);
-
-                if (msg != null)
-                    throw new ArgumentException(msg, nameof(protocols));
-
-                _protocols = protocols;
-            }
-            
             _base64Key = CreateBase64Key();
             _client = true;
 
@@ -315,15 +295,6 @@ namespace Unosquare.Net
 
         // As server
         internal Func<WebSocketContext, string> CustomHandshakeRequestChecker { get; set; }
-
-        internal static string CheckIfValidProtocols(string[] protocols)
-        {
-            return protocols.Any(protocol => string.IsNullOrEmpty(protocol) || !protocol.IsToken())
-                ? "Contains an invalid value."
-                : protocols.GroupBy(x => x).Select(x => new { x.Key, Count = x.Count() }).Any(x => x.Count > 1)
-                    ? "Contains a value twice."
-                    : null;
-        }
 
         internal bool HasMessage
         {
@@ -522,20 +493,6 @@ namespace Unosquare.Net
         }
 
         /// <summary>
-        /// Gets the WebSocket subprotocol selected by the server.
-        /// </summary>
-        /// <value>
-        /// A <see cref="string"/> that represents the subprotocol if any.
-        /// The default value is <see cref="String.Empty"/>.
-        /// </value>
-        public string Protocol
-        {
-            get { return _protocol ?? string.Empty; }
-
-            internal set { _protocol = value; }
-        }
-
-        /// <summary>
         /// Gets the state of the WebSocket connection.
         /// </summary>
         /// <value>
@@ -701,7 +658,7 @@ namespace Unosquare.Net
             if (!CheckHandshakeRequest(_context, out msg))
             {
                 SendHttpResponse(CreateHandshakeFailureResponse(HttpStatusCode.BadRequest));
-                
+
                 msg.Error();
                 Fatal("An error has occurred while accepting.", CloseStatusCode.ProtocolError);
 
@@ -711,7 +668,7 @@ namespace Unosquare.Net
             if (!CustomCheckHandshakeRequest(_context, out msg))
             {
                 SendHttpResponse(CreateHandshakeFailureResponse(HttpStatusCode.BadRequest));
-                
+
                 msg.Error();
                 Fatal("An error has occurred while accepting.", CloseStatusCode.PolicyViolation);
 
@@ -719,9 +676,6 @@ namespace Unosquare.Net
             }
 
             _base64Key = _context.Headers["Sec-WebSocket-Key"];
-
-            if (_protocol != null)
-                ProcessSecWebSocketProtocolHeader(_context.SecWebSocketProtocols);
 
             if (!IgnoreExtensions)
                 ProcessSecWebSocketExtensionsClientHeader(_context.Headers["Sec-WebSocket-Extensions"]);
@@ -802,12 +756,6 @@ namespace Unosquare.Net
             if (!ValidateSecWebSocketAcceptHeader(headers["Sec-WebSocket-Accept"]))
             {
                 message = "Includes no Sec-WebSocket-Accept header, or it has an invalid value.";
-                return false;
-            }
-
-            if (!ValidateSecWebSocketProtocolServerHeader(headers["Sec-WebSocket-Protocol"]))
-            {
-                message = "Includes no Sec-WebSocket-Protocol header, or it has an invalid value.";
                 return false;
             }
 
@@ -1138,10 +1086,6 @@ namespace Unosquare.Net
 
             headers["Sec-WebSocket-Key"] = _base64Key;
 
-            _protocolsRequested = _protocols != null;
-            if (_protocolsRequested)
-                headers["Sec-WebSocket-Protocol"] = string.Join(", ", _protocols);
-
             _extensionsRequested = _compression != CompressionMethod.None;
             if (_extensionsRequested)
                 headers["Sec-WebSocket-Extensions"] = CreateExtensions();
@@ -1178,9 +1122,6 @@ namespace Unosquare.Net
             var headers = ret.Headers;
             headers["Sec-WebSocket-Accept"] = CreateResponseKey(_base64Key);
 
-            if (_protocol != null)
-                headers["Sec-WebSocket-Protocol"] = _protocol;
-
             if (_extensions != null)
                 headers["Sec-WebSocket-Extensions"] = _extensions;
 
@@ -1213,9 +1154,6 @@ namespace Unosquare.Net
                 return false;
             }
 
-            if (_protocolsRequested)
-                _protocol = res.Headers["Sec-WebSocket-Protocol"];
-
             if (_extensionsRequested)
                 ProcessSecWebSocketExtensionsServerHeader(res.Headers["Sec-WebSocket-Extensions"]);
 
@@ -1229,7 +1167,8 @@ namespace Unosquare.Net
             lock (_forMessageEventQueue) _messageEventQueue.Enqueue(e);
         }
 
-        private void Error(string message, Exception exception) => OnError?.Invoke(this, new ConnectionFailureEventArgs(exception ?? new Exception(message)));
+        private void Error(string message, Exception exception)
+            => OnError?.Invoke(this, new ConnectionFailureEventArgs(exception ?? new Exception(message)));
 
         private void Fatal(string message, Exception exception)
         {
@@ -1388,7 +1327,9 @@ namespace Unosquare.Net
             EnqueueToMessageEventQueue(
                 frame.IsCompressed
                     ? new MessageEventArgs(
-                        frame.Opcode, frame.PayloadData.ApplicationData.Compress(_compression, System.IO.Compression.CompressionMode.Decompress))
+                        frame.Opcode,
+                        frame.PayloadData.ApplicationData.Compress(_compression,
+                            System.IO.Compression.CompressionMode.Decompress))
                     : new MessageEventArgs(frame));
 
             return true;
@@ -1512,15 +1453,6 @@ namespace Unosquare.Net
             }
 
             _extensions = value;
-        }
-
-        // As server
-        private void ProcessSecWebSocketProtocolHeader(IEnumerable<string> values)
-        {
-            if (values.Any(p => p == _protocol))
-                return;
-
-            _protocol = null;
         }
 
         private bool ProcessUnsupportedFrame(WebSocketFrame frame)
@@ -2001,7 +1933,7 @@ namespace Unosquare.Net
                         "The server hasn't sent back 'server_no_context_takeover'.".Error();
                         return false;
                     }
-                    
+
                     if (!ext.Contains("client_no_context_takeover"))
                         "The server hasn't sent back 'client_no_context_takeover'.".Info();
 
@@ -2039,18 +1971,6 @@ namespace Unosquare.Net
         private static bool ValidateSecWebSocketProtocolClientHeader(string value)
         {
             return value == null || value.Length > 0;
-        }
-
-        // As client
-        private bool ValidateSecWebSocketProtocolServerHeader(string value)
-        {
-            if (value == null)
-                return !_protocolsRequested;
-
-            if (value.Length == 0)
-                return false;
-
-            return _protocolsRequested && _protocols.Any(p => p == value);
         }
 
         // As server
@@ -2882,7 +2802,7 @@ namespace Unosquare.Net
                         Error("An error has occurred in sending data.", null);
                         return;
                     }
-                    
+
                     if (len < length)
                         $"The length of the data is less than 'length':\n  expected: {length}\n  actual: {len}".Info();
 
@@ -2913,7 +2833,7 @@ namespace Unosquare.Net
 
                 return;
             }
-            
+
             lock (_forState)
             {
                 if (!checkIfAvailable(true, false, false, true, out msg))

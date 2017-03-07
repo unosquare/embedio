@@ -1,6 +1,4 @@
-﻿using System.Net.Http.Headers;
-
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using NUnit.Framework;
     using System;
@@ -8,13 +6,13 @@ namespace Unosquare.Labs.EmbedIO.Tests
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using Unosquare.Labs.EmbedIO.Modules;
-    using Unosquare.Labs.EmbedIO.Tests.TestObjects;
+    using Modules;
+    using TestObjects;
 
     [TestFixture]
     public class StaticFilesModuleTest
     {
-        const string HeaderPragmaValue = "no-cache";
+        private const string HeaderPragmaValue = "no-cache";
 
         protected string RootPath;
         protected WebServer WebServer;
