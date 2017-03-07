@@ -1519,12 +1519,12 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.#ctor
   fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.WebSocketsServer
   nameWithType: WebSocketsServer.WebSocketsServer
-- uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.AcceptWebSocket(Unosquare.Labs.EmbedIO.WebServer,Unosquare.Net.HttpListenerContext)
-  name: AcceptWebSocket(WebServer, HttpListenerContext)
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html#Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_AcceptWebSocket_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Net_HttpListenerContext_
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.AcceptWebSocket(Unosquare.Labs.EmbedIO.WebServer,Unosquare.Net.HttpListenerContext)
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.AcceptWebSocket(Unosquare.Labs.EmbedIO.WebServer, Unosquare.Net.HttpListenerContext)
-  nameWithType: WebSocketsServer.AcceptWebSocket(WebServer, HttpListenerContext)
+- uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.AcceptWebSocket(Unosquare.Net.HttpListenerContext)
+  name: AcceptWebSocket(HttpListenerContext)
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html#Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_AcceptWebSocket_Unosquare_Net_HttpListenerContext_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.AcceptWebSocket(Unosquare.Net.HttpListenerContext)
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.AcceptWebSocket(Unosquare.Net.HttpListenerContext)
+  nameWithType: WebSocketsServer.AcceptWebSocket(HttpListenerContext)
 - uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.AcceptWebSocket*
   name: AcceptWebSocket
   href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html#Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_AcceptWebSocket_
@@ -1669,18 +1669,6 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.ServerName
   fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.ServerName
   nameWithType: WebSocketsServer.ServerName
-- uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.WebServer
-  name: WebServer
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html#Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_WebServer
-  commentId: P:Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.WebServer
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.WebServer
-  nameWithType: WebSocketsServer.WebServer
-- uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.WebServer*
-  name: WebServer
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html#Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_WebServer_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.WebServer
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.WebServer
-  nameWithType: WebSocketsServer.WebServer
 - uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.WebSockets
   name: WebSockets
   href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html#Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_WebSockets
@@ -2500,12 +2488,12 @@ references:
   commentId: T:Unosquare.Net.HttpListenerContext
   fullName: Unosquare.Net.HttpListenerContext
   nameWithType: HttpListenerContext
-- uid: Unosquare.Net.HttpListenerContext.AcceptWebSocket(System.String)
-  name: AcceptWebSocket(String)
-  href: api/Unosquare.Net.HttpListenerContext.html#Unosquare_Net_HttpListenerContext_AcceptWebSocket_System_String_
-  commentId: M:Unosquare.Net.HttpListenerContext.AcceptWebSocket(System.String)
-  fullName: Unosquare.Net.HttpListenerContext.AcceptWebSocket(System.String)
-  nameWithType: HttpListenerContext.AcceptWebSocket(String)
+- uid: Unosquare.Net.HttpListenerContext.AcceptWebSocket
+  name: AcceptWebSocket()
+  href: api/Unosquare.Net.HttpListenerContext.html#Unosquare_Net_HttpListenerContext_AcceptWebSocket
+  commentId: M:Unosquare.Net.HttpListenerContext.AcceptWebSocket
+  fullName: Unosquare.Net.HttpListenerContext.AcceptWebSocket()
+  nameWithType: HttpListenerContext.AcceptWebSocket()
 - uid: Unosquare.Net.HttpListenerContext.AcceptWebSocket*
   name: AcceptWebSocket
   href: api/Unosquare.Net.HttpListenerContext.html#Unosquare_Net_HttpListenerContext_AcceptWebSocket_
@@ -3907,15 +3895,12 @@ references:
   commentId: T:Unosquare.Net.WebSocket
   fullName: Unosquare.Net.WebSocket
   nameWithType: WebSocket
-- uid: Unosquare.Net.WebSocket.#ctor(System.String,System.String[])
-  name: WebSocket(String, String[])
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket__ctor_System_String_System_String___
-  commentId: M:Unosquare.Net.WebSocket.#ctor(System.String,System.String[])
-  name.vb: WebSocket(String, String())
-  fullName: Unosquare.Net.WebSocket.WebSocket(System.String, System.String[])
-  fullName.vb: Unosquare.Net.WebSocket.WebSocket(System.String, System.String())
-  nameWithType: WebSocket.WebSocket(String, String[])
-  nameWithType.vb: WebSocket.WebSocket(String, String())
+- uid: Unosquare.Net.WebSocket.#ctor(System.String)
+  name: WebSocket(String)
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket__ctor_System_String_
+  commentId: M:Unosquare.Net.WebSocket.#ctor(System.String)
+  fullName: Unosquare.Net.WebSocket.WebSocket(System.String)
+  nameWithType: WebSocket.WebSocket(String)
 - uid: Unosquare.Net.WebSocket.#ctor*
   name: WebSocket
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket__ctor_
@@ -4156,18 +4141,6 @@ references:
   commentId: Overload:Unosquare.Net.WebSocket.Ping
   fullName: Unosquare.Net.WebSocket.Ping
   nameWithType: WebSocket.Ping
-- uid: Unosquare.Net.WebSocket.Protocol
-  name: Protocol
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Protocol
-  commentId: P:Unosquare.Net.WebSocket.Protocol
-  fullName: Unosquare.Net.WebSocket.Protocol
-  nameWithType: WebSocket.Protocol
-- uid: Unosquare.Net.WebSocket.Protocol*
-  name: Protocol
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Protocol_
-  commentId: Overload:Unosquare.Net.WebSocket.Protocol
-  fullName: Unosquare.Net.WebSocket.Protocol
-  nameWithType: WebSocket.Protocol
 - uid: Unosquare.Net.WebSocket.Send(FileInfo)
   name: Send(FileInfo)
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Send_FileInfo_
@@ -4423,18 +4396,6 @@ references:
   commentId: Overload:Unosquare.Net.WebSocketContext.SecWebSocketKey
   fullName: Unosquare.Net.WebSocketContext.SecWebSocketKey
   nameWithType: WebSocketContext.SecWebSocketKey
-- uid: Unosquare.Net.WebSocketContext.SecWebSocketProtocols
-  name: SecWebSocketProtocols
-  href: api/Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_SecWebSocketProtocols
-  commentId: P:Unosquare.Net.WebSocketContext.SecWebSocketProtocols
-  fullName: Unosquare.Net.WebSocketContext.SecWebSocketProtocols
-  nameWithType: WebSocketContext.SecWebSocketProtocols
-- uid: Unosquare.Net.WebSocketContext.SecWebSocketProtocols*
-  name: SecWebSocketProtocols
-  href: api/Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_SecWebSocketProtocols_
-  commentId: Overload:Unosquare.Net.WebSocketContext.SecWebSocketProtocols
-  fullName: Unosquare.Net.WebSocketContext.SecWebSocketProtocols
-  nameWithType: WebSocketContext.SecWebSocketProtocols
 - uid: Unosquare.Net.WebSocketContext.SecWebSocketVersion
   name: SecWebSocketVersion
   href: api/Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_SecWebSocketVersion
