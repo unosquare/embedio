@@ -1,20 +1,17 @@
-﻿using Unosquare.Swan.Networking;
-
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
-    using Swan.Formatters;
     using NUnit.Framework;
+    using Swan.Formatters;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Text;
-    using System.Threading;
     using System.Threading.Tasks;
     using Unosquare.Labs.EmbedIO.Modules;
     using Unosquare.Labs.EmbedIO.Tests.TestObjects;
+    using Swan.Networking;
 
     [TestFixture]
     public class WebApiModuleTest
