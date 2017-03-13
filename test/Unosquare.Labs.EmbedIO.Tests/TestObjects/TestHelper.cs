@@ -8,7 +8,7 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using Unosquare.Labs.EmbedIO.Modules;
+    using Labs.EmbedIO.Modules;
 
     public static class TestHelper
     {
@@ -59,10 +59,10 @@
                 File.WriteAllText(Path.Combine(rootPath, "sub", "index.html"), Resources.SubIndex);
 
             if (File.Exists(Path.Combine(rootPath, BigDataFile)) == false)
-                CreateTempBinaryFile(Path.Combine(rootPath, BigDataFile), 20);
+                CreateTempBinaryFile(Path.Combine(rootPath, BigDataFile), 10);
 
             if (File.Exists(Path.Combine(rootPath, SmallDataFile)) == false)
-                CreateTempBinaryFile(Path.Combine(rootPath, SmallDataFile), 2);
+                CreateTempBinaryFile(Path.Combine(rootPath, SmallDataFile), 1);
 
             if (File.Exists(Path.Combine(rootPath, LowercaseFile)) == false)
                 File.WriteAllText(Path.Combine(rootPath, LowercaseFile), nameof(LowercaseFile));
@@ -79,8 +79,7 @@
             if (string.IsNullOrWhiteSpace(instanceName)) return content;
 
             Assert.AreEqual(true, content.Contains(Placeholder), "Setup error");
-            content = content.Replace(Placeholder, "Instance name is " + instanceName);
-            return content;
+            return content.Replace(Placeholder, "Instance name is " + instanceName);
         }
 
         public static string SetupStaticFolderInstance(string instanceName)

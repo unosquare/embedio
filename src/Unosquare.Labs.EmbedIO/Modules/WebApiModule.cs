@@ -26,10 +26,15 @@
         private readonly List<Type> _controllerTypes = new List<Type>();
 
         private readonly Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>> _delegateMap
-            = new Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>>(Constants.StandardStringComparer);
+            =
+            new Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>>(
+                Constants.StandardStringComparer);
 
-        private static readonly Regex RouteParamRegex = new Regex(@"\{[^\/]*\}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex RouteParamRegex = new Regex(@"\{[^\/]*\}",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private const string RegexRouteReplace = "(.*)";
 
@@ -61,89 +66,82 @@
                 $"Handler: {methodPair.Item2.DeclaringType?.FullName}.{methodPair.Item2.Name}".Debug(nameof(WebApiModule));
 
                 // Select the routing strategy
-                if (server.RoutingStrategy == RoutingStrategy.Regex)
+                switch (server.RoutingStrategy)
                 {
-                    // Initially, only the server and context objects will be available
-                    var args = new List<object>() { server, context };
+                    case RoutingStrategy.Regex:
+                        // Initially, only the server and context objects will be available
+                        var args = new List<object>() {server, context};
 
-                    // Parse the arguments to their intended type skipping the first two.
-                    foreach (var arg in methodPair.Item2.GetParameters().Skip(2))
-                    {
-                        if (regExRouteParams.ContainsKey(arg.Name) == false) continue;
-                        // get a reference to the parse method
-                        var parameterTypeNullable = Nullable.GetUnderlyingType(arg.ParameterType);
-
-                        var parseMethod = parameterTypeNullable != null
-                            ? parameterTypeNullable.GetTypeInfo().GetMethod(nameof(int.Parse), new[] { typeof(string) })
-                            : arg.ParameterType.GetTypeInfo().GetMethod(nameof(int.Parse), new[] { typeof(string) });
-
-                        // add the parsed argument to the argument list if available
-                        if (parseMethod != null)
+                        // Parse the arguments to their intended type skipping the first two.
+                        foreach (var arg in methodPair.Item2.GetParameters().Skip(2))
                         {
-                            // parameter is nullable and value is empty, so force null
-                            if (parameterTypeNullable != null &&
-                                string.IsNullOrWhiteSpace((string)regExRouteParams[arg.Name]))
+                            if (regExRouteParams.ContainsKey(arg.Name) == false) continue;
+                            // get a reference to the parse method
+                            var parameterTypeNullable = Nullable.GetUnderlyingType(arg.ParameterType);
+
+                            var parseMethod = parameterTypeNullable != null
+                                ? parameterTypeNullable.GetTypeInfo()
+                                    .GetMethod(nameof(int.Parse), new[] {typeof(string)})
+                                : arg.ParameterType.GetTypeInfo().GetMethod(nameof(int.Parse), new[] {typeof(string)});
+
+                            // add the parsed argument to the argument list if available
+                            if (parseMethod != null)
                             {
-                                args.Add(null);
+                                // parameter is nullable and value is empty, so force null
+                                if (parameterTypeNullable != null &&
+                                    string.IsNullOrWhiteSpace((string) regExRouteParams[arg.Name]))
+                                {
+                                    args.Add(null);
+                                }
+                                else
+                                {
+                                    args.Add(parseMethod.Invoke(null, new[] {regExRouteParams[arg.Name]}));
+                                }
                             }
                             else
                             {
-                                args.Add(parseMethod.Invoke(null, new[] { regExRouteParams[arg.Name] }));
+                                args.Add(regExRouteParams[arg.Name]);
                             }
+                        }
+
+                        // Now, check if the call is handled asynchronously.
+                        if (methodPair.Item2.ReturnType == typeof(Task<bool>))
+                        {
+                            // Run the method asynchronously
+                            var returnValue =
+                                Task.Run(
+                                    async () => await (Task<bool>) methodPair.Item2.Invoke(controller, args.ToArray()));
+
+                            return returnValue.Result;
                         }
                         else
                         {
-                            args.Add(regExRouteParams[arg.Name]);
+                            // If the handler is not asynchronous, simply call the method.
+                            var returnValue = (bool) methodPair.Item2.Invoke(controller, args.ToArray());
+                            return returnValue;
                         }
-                    }
-
-                    // Now, check if the call is handled asynchronously.
-                    if (methodPair.Item2.ReturnType == typeof(Task<bool>))
-                    {
-                        // Run the method asynchronously
-                        var returnValue = Task.Run(async () =>
+                    case RoutingStrategy.Wildcard:
+                        if (methodPair.Item2.ReturnType == typeof(Task<bool>))
                         {
-                            var task = await (Task<bool>)methodPair.Item2.Invoke(controller, args.ToArray());
-                            return task;
-                        });
+                            // Asynchronous handling of wildcard matching strategy
+                            var method = methodPair.Item2.CreateDelegate(typeof(AsyncResponseHandler), controller);
+                            var returnValue =
+                                Task.Run(async () => await (Task<bool>) method.DynamicInvoke(server, context));
 
-                        return returnValue.Result;
-                    }
-                    else
-                    {
-                        // If the handler is not asynchronous, simply call the method.
-                        var returnValue = (bool)methodPair.Item2.Invoke(controller, args.ToArray());
-                        return returnValue;
-                    }
-                }
-                else if (server.RoutingStrategy == RoutingStrategy.Wildcard)
-                {
-                    if (methodPair.Item2.ReturnType == typeof(Task<bool>))
-                    {
-                        // Asynchronous handling of wildcard matching strategy
-                        var method = methodPair.Item2.CreateDelegate(typeof(AsyncResponseHandler), controller);
-                        var returnValue = Task.Run(async () =>
+                            return returnValue.Result;
+                        }
+                        else
                         {
-                            var task = await (Task<bool>)method.DynamicInvoke(server, context);
-                            return task;
-                        });
-
-                        return returnValue.Result;
-                    }
-                    else
-                    {
-                        // Regular handling of wildcard matching strategy
-                        var method = methodPair.Item2.CreateDelegate(typeof(ResponseHandler), controller);
-                        var returnValue = (bool)method.DynamicInvoke(server, context);
-                        return returnValue;
-                    }
-                }
-                else
-                {
-                    // Log the handler to be used
-                    $"Routing strategy '{server.RoutingStrategy}' is not supported by this module.".Warn(nameof(WebApiModule));
-
-                    return false;
+                            // Regular handling of wildcard matching strategy
+                            var method = methodPair.Item2.CreateDelegate(typeof(ResponseHandler), controller);
+                            var returnValue = (bool) method.DynamicInvoke(server, context);
+                            return returnValue;
+                        }
+                    default:
+                        // Log the handler to be used
+                        $"Routing strategy '{server.RoutingStrategy}' is not supported by this module.".Warn(
+                            nameof(WebApiModule));
+                        return false;
                 }
             });
         }
@@ -230,7 +228,7 @@
                 // wildcard in the middle so check both start/end
                 || (path.StartsWith(p.Substring(0, p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal)))
                     && path.EndsWith(p.Substring(p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal) + 1)))
-                );
+            );
 
             if (string.IsNullOrWhiteSpace(wildcardMatch) == false)
                 path = wildcardMatch;
@@ -238,19 +236,18 @@
             if (_delegateMap.ContainsKey(path) == false)
                 return null;
 
-            if (_delegateMap[path].ContainsKey(verb)) return path;
+            if (_delegateMap[path].ContainsKey(verb))
+                return path;
 
             var originalPath = context.RequestPath();
 
             if (_delegateMap.ContainsKey(originalPath) &&
                 _delegateMap[originalPath].ContainsKey(verb))
             {
-                path = originalPath;
+                return originalPath;
             }
-            else
-                return null;
 
-            return path;
+            return null;
         }
 
         /// <summary>
@@ -386,7 +383,7 @@
                 throw new ArgumentException("The argument 'path' must be specified.");
 
             Verb = verb;
-            Paths = new [] { path };
+            Paths = new[] {path};
         }
 
         /// <summary>

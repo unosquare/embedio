@@ -1,7 +1,8 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using NUnit.Framework;
-    using System;
+    using System.Net;
+    using System.Threading.Tasks;
     using System.Linq;
     using System.Threading;
     using Unosquare.Labs.EmbedIO.Modules;
@@ -134,11 +135,54 @@
         public void WebModuleAddHandler()
         {
             var webModule = new TestWebModule();
+            // add one more handler
             webModule.AddHandler(DefaultPath, HttpVerbs.Any, (ctx, ws) => false);
 
-            Assert.AreEqual(webModule.Handlers.Count, 1, "WebModule has one handler");
-            Assert.AreEqual(webModule.Handlers.First().Path, DefaultPath, "Default Path is correct");
-            Assert.AreEqual(webModule.Handlers.First().Verb, HttpVerbs.Any, "Default Verb is correct");
+            Assert.AreEqual(webModule.Handlers.Count, 4, "WebModule has four handlers");
+            Assert.AreEqual(webModule.Handlers.Last().Path, DefaultPath, "Default Path is correct");
+            Assert.AreEqual(webModule.Handlers.Last().Verb, HttpVerbs.Any, "Default Verb is correct");
         }
+
+#if !NETCOREAPP1_1
+        [Test]
+        public async Task TestWebModuleRedirect()
+        {
+            var url = Resources.GetServerAddress();
+
+            using (var instance = new WebServer(url))
+            {
+                instance.RegisterModule(new TestWebModule());
+                instance.RunAsync();
+
+                var request = (HttpWebRequest) WebRequest.Create(url + TestWebModule.RedirectUrl);
+                request.AllowAutoRedirect = false;
+
+                using (var response = (HttpWebResponse) await request.GetResponseAsync())
+                {
+                    Assert.AreEqual(response.StatusCode, HttpStatusCode.Redirect, "Status Code Redirect");
+                }
+            }
+        }
+
+        [Test]
+        public async Task TestWebModuleAbsoluteRedirect()
+        {
+            var url = Resources.GetServerAddress();
+
+            using (var instance = new WebServer(url))
+            {
+                instance.RegisterModule(new TestWebModule());
+                instance.RunAsync();
+
+                var request = (HttpWebRequest)WebRequest.Create(url + TestWebModule.RedirectAbsoluteUrl);
+                request.AllowAutoRedirect = false;
+
+                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                {
+                    Assert.AreEqual(response.StatusCode, HttpStatusCode.Redirect, "Status Code Redirect");
+                }
+            }
+        }
+#endif
     }
 }

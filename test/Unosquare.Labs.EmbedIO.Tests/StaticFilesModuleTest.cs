@@ -327,7 +327,7 @@
 #endif
 
         [Test]
-        public async Task HeadIndex()
+        public async Task TestHeadIndex()
         {
             var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
             request.Method = HttpVerbs.Head.ToString();
@@ -343,7 +343,7 @@
         }
 
         [Test]
-        public async Task FileWritable()
+        public async Task TestFileWritable()
         {
             var endpoint = Resources.GetServerAddress();
             var root = Path.GetTempPath();
@@ -355,15 +355,17 @@
                 server.RegisterModule(new StaticFilesModule(root) { UseRamCache = false });
                 server.RunAsync();
 
-                var webClient = new HttpClient();
-                var remoteFile = await webClient.GetStringAsync(endpoint);
-                File.WriteAllText(file, Resources.SubIndex);
+                using (var webClient = new HttpClient())
+                {
+                    var remoteFile = await webClient.GetStringAsync(endpoint);
+                    File.WriteAllText(file, Resources.SubIndex);
 
-                var remoteUpdatedFile = await webClient.GetStringAsync(endpoint);
-                File.WriteAllText(file, nameof(WebServer));
+                    var remoteUpdatedFile = await webClient.GetStringAsync(endpoint);
+                    File.WriteAllText(file, nameof(WebServer));
 
-                Assert.AreEqual(Resources.Index, remoteFile);
-                Assert.AreEqual(Resources.SubIndex, remoteUpdatedFile);
+                    Assert.AreEqual(Resources.Index, remoteFile);
+                    Assert.AreEqual(Resources.SubIndex, remoteUpdatedFile);
+                }
             }
         }
 
@@ -377,7 +379,7 @@
 
             if (File.Exists(file.ToUpper()))
             {
-                Assert.Ignore("File-system is not case sensitive, ignoring");
+                Assert.Ignore("File-system is not case sensitive. Ignoring");
             }
             else
             {
@@ -396,7 +398,7 @@
         [TearDown]
         public void Kill()
         {
-            Task.Delay(TimeSpan.FromSeconds(1)).Wait();
+            Task.Delay(500).Wait();
             WebServer?.Dispose();
         }
     }

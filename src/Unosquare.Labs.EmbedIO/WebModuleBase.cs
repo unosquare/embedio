@@ -1,5 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
+    using System;
+
     /// <summary>
     /// Base class to define custom web modules
     /// inherit from this class and use the AddHandler Method to register your method calls
@@ -46,8 +48,19 @@
         /// <param name="path">The path.</param>
         /// <param name="verb">The verb.</param>
         /// <param name="handler">The handler.</param>
+        /// <exception cref="System.ArgumentNullException">
+        /// path
+        /// or
+        /// handler
+        /// </exception>
         public void AddHandler(string path, HttpVerbs verb, ResponseHandler handler)
         {
+            if (path == null)
+                throw new ArgumentNullException(nameof(path));
+
+            if (handler == null)
+                throw new ArgumentNullException(nameof(handler));
+
             Handlers.Add(new Map {Path = path, Verb = verb, ResponseHandler = handler});
         }
     }

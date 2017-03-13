@@ -256,7 +256,7 @@
             {
                 // Establish the handler
                 var handler = module.Handlers.FirstOrDefault(x =>
-                    x.Path == (x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath()) &&
+                    string.Equals(x.Path, x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath(), StringComparison.OrdinalIgnoreCase) &&
                     x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
 
                 if (handler?.ResponseHandler == null)
