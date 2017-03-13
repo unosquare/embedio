@@ -39,7 +39,7 @@ namespace Unosquare.Net
     {
 #region Private Constructors
 
-        private HttpResponse(string code, string reason, Version version, NameValueCollection headers)
+        private HttpResponse(int code, string reason, Version version, NameValueCollection headers)
           : base(version, headers)
         {
             StatusCode = code;
@@ -56,7 +56,7 @@ namespace Unosquare.Net
         }
 
         internal HttpResponse(HttpStatusCode code, string reason)
-          : this(((int)code).ToString(), reason, HttpVersion.Version11, new NameValueCollection())
+          : this((int)code, reason, HttpVersion.Version11, new NameValueCollection())
         {
             Headers["Server"] = "embedio/1.0";
         }
@@ -69,11 +69,11 @@ namespace Unosquare.Net
 
         public bool HasConnectionClose => Headers.Contains("Connection", "close");
 
-        public bool IsProxyAuthenticationRequired => StatusCode == "407";
+        public bool IsProxyAuthenticationRequired => StatusCode == 407;
 
-        public bool IsRedirect => StatusCode == "301" || StatusCode == "302";
+        public bool IsRedirect => StatusCode == 301 || StatusCode == 302;
 
-        public bool IsUnauthorized => StatusCode == "401";
+        public bool IsUnauthorized => StatusCode == 401;
 
         public bool IsWebSocketResponse
         {
@@ -81,7 +81,7 @@ namespace Unosquare.Net
             {
                 var headers = Headers;
                 return ProtocolVersion > HttpVersion.Version10 &&
-                       StatusCode == "101" &&
+                       StatusCode == 101 &&
                        headers.Contains("Upgrade", "websocket") &&
                        headers.Contains("Connection", "Upgrade");
             }
@@ -89,7 +89,7 @@ namespace Unosquare.Net
 
         public string Reason { get; }
 
-        public string StatusCode { get; }
+        public int StatusCode { get; }
 
 #endregion
 
@@ -137,7 +137,7 @@ namespace Unosquare.Net
             }
 
             return new HttpResponse(
-              statusLine[1], statusLine[2], new Version(statusLine[0].Substring(5)), headers);
+              int.Parse(statusLine[1]), statusLine[2], new Version(statusLine[0].Substring(5)), headers);
         }
 
         internal static HttpResponse Read(Stream stream, int millisecondsTimeout)
@@ -174,10 +174,9 @@ namespace Unosquare.Net
         {
             var output = new StringBuilder(64);
             output.AppendFormat("HTTP/{0} {1} {2}{3}", ProtocolVersion, StatusCode, Reason, CrLf);
-
-            var headers = Headers;
-            foreach (var key in headers.AllKeys)
-                output.AppendFormat("{0}: {1}{2}", key, headers[key], CrLf);
+            
+            foreach (var key in Headers.AllKeys)
+                output.AppendFormat("{0}: {1}{2}", key, Headers[key], CrLf);
 
             output.Append(CrLf);
 

@@ -219,9 +219,9 @@ namespace Unosquare.Net
             }
         }
 
-#endregion
+        #endregion
 
-#region Public Methods
+        #region Public Methods
 
         public byte[] ToByteArray()
         {
@@ -233,7 +233,7 @@ namespace Unosquare.Net
             EntityBodyData = data;
         }
 
-#endregion
+        #endregion
     }
 }
 #endif

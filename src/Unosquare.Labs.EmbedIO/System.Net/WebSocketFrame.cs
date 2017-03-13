@@ -55,6 +55,7 @@ namespace Unosquare.Net
         /// Equivalent to numeric value 0. Indicates more frames of a message follow.
         /// </summary>
         More = 0x0,
+
         /// <summary>
         /// Equivalent to numeric value 1. Indicates the final frame of a message.
         /// </summary>
@@ -74,6 +75,7 @@ namespace Unosquare.Net
         /// Equivalent to numeric value 0. Indicates not masked.
         /// </summary>
         Off = 0x0,
+
         /// <summary>
         /// Equivalent to numeric value 1. Indicates masked.
         /// </summary>
@@ -93,6 +95,7 @@ namespace Unosquare.Net
         /// Equivalent to numeric value 0. Indicates zero.
         /// </summary>
         Off = 0x0,
+
         /// <summary>
         /// Equivalent to numeric value 1. Indicates non-zero.
         /// </summary>
@@ -101,7 +104,7 @@ namespace Unosquare.Net
 
     internal class WebSocketFrame : IEnumerable<byte>
     {
-#region Internal Fields
+        #region Internal Fields
 
         /// <summary>
         /// Represents the ping frame without the payload data as an array of <see cref="byte"/>.
@@ -112,39 +115,39 @@ namespace Unosquare.Net
         /// </remarks>
         internal static readonly byte[] EmptyPingBytes;
 
-#endregion
+        #endregion
 
-#region Static Constructor
+        #region Static Constructor
 
         static WebSocketFrame()
         {
             EmptyPingBytes = CreatePingFrame(false).ToArray();
         }
 
-#endregion
+        #endregion
 
-#region Private Constructors
+        #region Private Constructors
 
         private WebSocketFrame()
         {
         }
 
-#endregion
+        #endregion
 
-#region Internal Constructors
+        #region Internal Constructors
 
         internal WebSocketFrame(Opcode opcode, PayloadData payloadData, bool mask)
-          : this(Fin.Final, opcode, payloadData, false, mask)
+            : this(Fin.Final, opcode, payloadData, false, mask)
         {
         }
 
         internal WebSocketFrame(Fin fin, Opcode opcode, byte[] data, bool compressed, bool mask)
-          : this(fin, opcode, new PayloadData(data), compressed, mask)
+            : this(fin, opcode, new PayloadData(data), compressed, mask)
         {
         }
 
         internal WebSocketFrame(
-          Fin fin, Opcode opcode, PayloadData payloadData, bool compressed, bool mask)
+            Fin fin, Opcode opcode, PayloadData payloadData, bool compressed, bool mask)
         {
             Fin = fin;
             Rsv1 = opcode.IsData() && compressed ? Rsv.On : Rsv.Off;
@@ -155,17 +158,17 @@ namespace Unosquare.Net
             var len = payloadData.Length;
             if (len < 126)
             {
-                PayloadLength = (byte)len;
+                PayloadLength = (byte) len;
                 ExtendedPayloadLength = WebSocket.EmptyBytes;
             }
             else if (len < 0x010000)
             {
-                PayloadLength = (byte)126;
-                ExtendedPayloadLength = ((ushort)len).InternalToByteArray(Swan.Endianness.Big);
+                PayloadLength = (byte) 126;
+                ExtendedPayloadLength = ((ushort) len).InternalToByteArray(Swan.Endianness.Big);
             }
             else
             {
-                PayloadLength = (byte)127;
+                PayloadLength = (byte) 127;
                 ExtendedPayloadLength = len.InternalToByteArray(Swan.Endianness.Big);
             }
 
@@ -184,9 +187,9 @@ namespace Unosquare.Net
             PayloadData = payloadData;
         }
 
-#endregion
+        #endregion
 
-#region Internal Properties
+        #region Internal Properties
 
         internal int ExtendedPayloadLengthCount => PayloadLength < 126 ? 0 : (PayloadLength == 126 ? 2 : 8);
 
@@ -196,9 +199,9 @@ namespace Unosquare.Net
                 ? BitConverter.ToUInt16(ExtendedPayloadLength.ToHostOrder(Swan.Endianness.Big), 0)
                 : BitConverter.ToUInt64(ExtendedPayloadLength.ToHostOrder(Swan.Endianness.Big), 0);
 
-#endregion
+        #endregion
 
-#region Public Properties
+        #region Public Properties
 
         public byte[] ExtendedPayloadLength { get; private set; }
 
@@ -228,7 +231,7 @@ namespace Unosquare.Net
 
         public bool IsText => Opcode == Opcode.Text;
 
-        public ulong Length => 2 + (ulong)(ExtendedPayloadLength.Length + MaskingKey.Length) + PayloadData.Length;
+        public ulong Length => 2 + (ulong) (ExtendedPayloadLength.Length + MaskingKey.Length) + PayloadData.Length;
 
         public Mask Mask { get; private set; }
 
@@ -246,9 +249,9 @@ namespace Unosquare.Net
 
         public Rsv Rsv3 { get; private set; }
 
-#endregion
+        #endregion
 
-#region Private Methods
+        #region Private Methods
 
         private static byte[] CreateMaskingKey()
         {
@@ -257,7 +260,7 @@ namespace Unosquare.Net
 
             return key;
         }
-        
+
         private static WebSocketFrame ProcessHeader(byte[] header)
         {
             if (header.Length != 2)
@@ -276,21 +279,21 @@ namespace Unosquare.Net
             var rsv3 = (header[0] & 0x10) == 0x10 ? Rsv.On : Rsv.Off;
 
             // Opcode
-            var opcode = (byte)(header[0] & 0x0f);
+            var opcode = (byte) (header[0] & 0x0f);
 
             // MASK
             var mask = (header[1] & 0x80) == 0x80 ? Mask.On : Mask.Off;
 
             // Payload Length
-            var payloadLen = (byte)(header[1] & 0x7f);
+            var payloadLen = (byte) (header[1] & 0x7f);
 
             var err = !Enum.IsDefined(typeof(Opcode), opcode)
-                      ? "An unsupported opcode."
-                      : !opcode.IsData() && rsv1 == Rsv.On
-                        ? "A non data frame is compressed."
-                        : opcode.IsControl() && fin == Fin.More
-                          ? "A control frame is fragmented."
-                          : opcode.IsControl() && payloadLen > 125
+                ? "An unsupported opcode."
+                : !opcode.IsData() && rsv1 == Rsv.On
+                    ? "A non data frame is compressed."
+                    : opcode.IsControl() && fin == Fin.More
+                        ? "A control frame is fragmented."
+                        : opcode.IsControl() && payloadLen > 125
                             ? "A control frame has a long payload length."
                             : null;
 
@@ -321,16 +324,16 @@ namespace Unosquare.Net
             var bytes = stream.ReadBytes(len);
             if (bytes.Length != len)
                 throw new WebSocketException(
-                  "The extended payload length of a frame cannot be read from the stream.");
+                    "The extended payload length of a frame cannot be read from the stream.");
 
             frame.ExtendedPayloadLength = bytes;
         }
 
         private static void ReadExtendedPayloadLengthAsync(
-          Stream stream,
-          WebSocketFrame frame,
-          Action<WebSocketFrame> completed,
-          Action<Exception> error)
+            Stream stream,
+            WebSocketFrame frame,
+            Action<WebSocketFrame> completed,
+            Action<Exception> error)
         {
             var len = frame.ExtendedPayloadLengthCount;
             if (len == 0)
@@ -342,23 +345,23 @@ namespace Unosquare.Net
             }
 
             stream.ReadBytesAsync(
-              len,
-              bytes =>
-              {
-                  if (bytes.Length != len)
-                      throw new WebSocketException(
-                  "The extended payload length of a frame cannot be read from the stream.");
+                len,
+                bytes =>
+                {
+                    if (bytes.Length != len)
+                        throw new WebSocketException(
+                            "The extended payload length of a frame cannot be read from the stream.");
 
-                  frame.ExtendedPayloadLength = bytes;
-                  completed(frame);
-              },
-              error);
+                    frame.ExtendedPayloadLength = bytes;
+                    completed(frame);
+                },
+                error);
         }
 
         private static WebSocketFrame ReadHeader(Stream stream) => ProcessHeader(stream.ReadBytes(2));
 
         private static void ReadHeaderAsync(
-          Stream stream, Action<WebSocketFrame> completed, Action<Exception> error)
+            Stream stream, Action<WebSocketFrame> completed, Action<Exception> error)
         {
             stream.ReadBytesAsync(2, bytes => completed(ProcessHeader(bytes)), error);
         }
@@ -380,10 +383,10 @@ namespace Unosquare.Net
         }
 
         private static void ReadMaskingKeyAsync(
-          Stream stream,
-          WebSocketFrame frame,
-          Action<WebSocketFrame> completed,
-          Action<Exception> error)
+            Stream stream,
+            WebSocketFrame frame,
+            Action<WebSocketFrame> completed,
+            Action<Exception> error)
         {
             var len = frame.IsMasked ? 4 : 0;
             if (len == 0)
@@ -395,17 +398,17 @@ namespace Unosquare.Net
             }
 
             stream.ReadBytesAsync(
-              len,
-              bytes =>
-              {
-                  if (bytes.Length != len)
-                      throw new WebSocketException(
-                  "The masking key of a frame cannot be read from the stream.");
+                len,
+                bytes =>
+                {
+                    if (bytes.Length != len)
+                        throw new WebSocketException(
+                            "The masking key of a frame cannot be read from the stream.");
 
-                  frame.MaskingKey = bytes;
-                  completed(frame);
-              },
-              error);
+                    frame.MaskingKey = bytes;
+                    completed(frame);
+                },
+                error);
         }
 
         private static void ReadPayloadData(Stream stream, WebSocketFrame frame)
@@ -420,23 +423,23 @@ namespace Unosquare.Net
             if (len > PayloadData.MaxLength)
                 throw new WebSocketException(CloseStatusCode.TooBig, "A frame has a long payload length.");
 
-            var llen = (long)len;
+            var llen = (long) len;
             var bytes = frame.PayloadLength < 127
-                        ? stream.ReadBytes((int)len)
-                        : stream.ReadBytes(llen, 1024);
+                ? stream.ReadBytes((int) len)
+                : stream.ReadBytes(llen, 1024);
 
             if (bytes.Length != llen)
                 throw new WebSocketException(
-                  "The payload data of a frame cannot be read from the stream.");
+                    "The payload data of a frame cannot be read from the stream.");
 
             frame.PayloadData = new PayloadData(bytes, llen);
         }
 
         private static void ReadPayloadDataAsync(
-          Stream stream,
-          WebSocketFrame frame,
-          Action<WebSocketFrame> completed,
-          Action<Exception> error)
+            Stream stream,
+            WebSocketFrame frame,
+            Action<WebSocketFrame> completed,
+            Action<Exception> error)
         {
             var len = frame.FullPayloadLength;
             if (len == 0)
@@ -450,12 +453,12 @@ namespace Unosquare.Net
             if (len > PayloadData.MaxLength)
                 throw new WebSocketException(CloseStatusCode.TooBig, "A frame has a long payload length.");
 
-            var llen = (long)len;
+            var llen = (long) len;
             Action<byte[]> compl = bytes =>
             {
                 if (bytes.Length != llen)
                     throw new WebSocketException(
-                      "The payload data of a frame cannot be read from the stream.");
+                        "The payload data of a frame cannot be read from the stream.");
 
                 frame.PayloadData = new PayloadData(bytes, llen);
                 completed(frame);
@@ -463,16 +466,16 @@ namespace Unosquare.Net
 
             if (frame.PayloadLength < 127)
             {
-                stream.ReadBytesAsync((int)len, compl, error);
+                stream.ReadBytesAsync((int) len, compl, error);
                 return;
             }
 
             stream.ReadBytesAsync(llen, 1024, compl, error);
         }
 
-#endregion
+        #endregion
 
-#region Internal Methods
+        #region Internal Methods
 
         internal static WebSocketFrame CreateCloseFrame(PayloadData payloadData, bool mask)
         {
@@ -503,33 +506,33 @@ namespace Unosquare.Net
         }
 
         internal static void ReadFrameAsync(
-          Stream stream, bool unmask, Action<WebSocketFrame> completed, Action<Exception> error)
+            Stream stream, bool unmask, Action<WebSocketFrame> completed, Action<Exception> error)
         {
             ReadHeaderAsync(
-              stream,
-              frame =>
-                ReadExtendedPayloadLengthAsync(
-                  stream,
-                  frame,
-                  frame1 =>
-                    ReadMaskingKeyAsync(
-                      stream,
-                      frame1,
-                      frame2 =>
-                        ReadPayloadDataAsync(
-                          stream,
-                          frame2,
-                          frame3 =>
-                          {
-                              if (unmask)
-                                  frame3.Unmask();
+                stream,
+                frame =>
+                    ReadExtendedPayloadLengthAsync(
+                        stream,
+                        frame,
+                        frame1 =>
+                            ReadMaskingKeyAsync(
+                                stream,
+                                frame1,
+                                frame2 =>
+                                    ReadPayloadDataAsync(
+                                        stream,
+                                        frame2,
+                                        frame3 =>
+                                        {
+                                            if (unmask)
+                                                frame3.Unmask();
 
-                              completed(frame3);
-                          },
-                          error),
-                      error),
-                  error),
-              error);
+                                            completed(frame3);
+                                        },
+                                        error),
+                                error),
+                        error),
+                error);
         }
 
         internal void Unmask()
@@ -542,12 +545,12 @@ namespace Unosquare.Net
             MaskingKey = WebSocket.EmptyBytes;
         }
 
-#endregion
+        #endregion
 
-#region Public Methods
+        #region Public Methods
 
         public IEnumerator<byte> GetEnumerator() => ((IEnumerable<byte>) ToArray()).GetEnumerator();
-        
+
         public string PrintToString()
         {
             // Payload Length
@@ -561,13 +564,13 @@ namespace Unosquare.Net
 
             // Payload Data
             var payload = payloadLen == 0
-                          ? string.Empty
-                          : payloadLen > 125
-                            ? "---"
-                            : IsText && !(IsFragment || IsMasked || IsCompressed)
-                              ? Encoding.UTF8.GetString(PayloadData.ApplicationData)
-                              : PayloadData.ToString();
-            
+                ? string.Empty
+                : payloadLen > 125
+                    ? "---"
+                    : IsText && !(IsFragment || IsMasked || IsCompressed)
+                        ? Encoding.UTF8.GetString(PayloadData.ApplicationData)
+                        : PayloadData.ToString();
+
             return $@"
                     FIN: {Fin}
                    RSV1: {Rsv1}
@@ -585,14 +588,14 @@ Extended Payload Length: {extPayloadLen}
         {
             using (var buff = new MemoryStream())
             {
-                var header = (int)Fin;
-                header = (header << 1) + (int)Rsv1;
-                header = (header << 1) + (int)Rsv2;
-                header = (header << 1) + (int)Rsv3;
-                header = (header << 4) + (int)Opcode;
-                header = (header << 1) + (int)Mask;
-                header = (header << 7) + (int)PayloadLength;
-                buff.Write(((ushort)header).InternalToByteArray(Swan.Endianness.Big), 0, 2);
+                var header = (int) Fin;
+                header = (header << 1) + (int) Rsv1;
+                header = (header << 1) + (int) Rsv2;
+                header = (header << 1) + (int) Rsv3;
+                header = (header << 4) + (int) Opcode;
+                header = (header << 1) + (int) Mask;
+                header = (header << 7) + (int) PayloadLength;
+                buff.Write(((ushort) header).InternalToByteArray(Swan.Endianness.Big), 0, 2);
 
                 if (PayloadLength > 125)
                     buff.Write(ExtendedPayloadLength, 0, PayloadLength == 126 ? 2 : 8);
@@ -623,16 +626,17 @@ Extended Payload Length: {extPayloadLen}
 
         public override string ToString() => BitConverter.ToString(ToArray());
 
-#endregion
+        #endregion
 
-#region Explicit Interface Implementations
+        #region Explicit Interface Implementations
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
 
-#endregion
+        #endregion
     }
 }
+
 #endif

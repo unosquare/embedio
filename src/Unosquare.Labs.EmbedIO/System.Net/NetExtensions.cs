@@ -167,8 +167,8 @@ namespace Unosquare.Net
         public static IAsyncResult BeginRead(this Stream stream, byte[] buffer,
             int offset,
             int count,
-            AsyncCallback callback,
-            object state)
+            AsyncCallback callback = null,
+            object state = null)
         {
             var result = new AsyncResult(state);
 

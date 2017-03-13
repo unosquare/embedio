@@ -36,44 +36,24 @@ namespace Unosquare.Net
     /// </summary>
     public class WebSocketException : Exception
     {
-#region Internal Constructors
+        #region Internal Constructors
 
-        internal WebSocketException()
-            : this(CloseStatusCode.Abnormal, null, null)
-        {
-        }
-
-        internal WebSocketException(Exception innerException)
+        internal WebSocketException(Exception innerException = null)
             : this(CloseStatusCode.Abnormal, null, innerException)
         {
         }
 
-        internal WebSocketException(string message)
-            : this(CloseStatusCode.Abnormal, message, null)
-        {
-        }
-
-        internal WebSocketException(CloseStatusCode code)
-            : this(code, null, null)
-        {
-        }
-
-        internal WebSocketException(string message, Exception innerException)
+        internal WebSocketException(string message, Exception innerException = null)
             : this(CloseStatusCode.Abnormal, message, innerException)
         {
         }
 
-        internal WebSocketException(CloseStatusCode code, Exception innerException)
+        internal WebSocketException(CloseStatusCode code, Exception innerException = null)
             : this(code, null, innerException)
         {
         }
 
-        internal WebSocketException(CloseStatusCode code, string message)
-            : this(code, message, null)
-        {
-        }
-
-        internal WebSocketException(CloseStatusCode code, string message, Exception innerException)
+        internal WebSocketException(CloseStatusCode code, string message, Exception innerException = null)
             : base(message ?? GetMessage(code), innerException)
         {
             Code = code;
@@ -102,9 +82,9 @@ namespace Unosquare.Net
                                                 : string.Empty;
         }
 
-#endregion
+        #endregion
 
-#region Public Properties
+        #region Public Properties
 
         /// <summary>
         /// Gets the status code indicating the cause of the exception.
@@ -115,7 +95,7 @@ namespace Unosquare.Net
         /// </value>
         public CloseStatusCode Code { get; }
 
-#endregion
+        #endregion
     }
 }
 

@@ -167,10 +167,7 @@ namespace Unosquare.Net
         private static void RemovePrefixInternal(string prefix, HttpListener listener)
         {
             var lp = new ListenerPrefix(prefix);
-            if (lp.Path.IndexOf('%') != -1)
-                return;
-
-            if (lp.Path.IndexOf("//", StringComparison.Ordinal) != -1)
+            if (lp.Path.IndexOf('%') != -1 || lp.Path.IndexOf("//", StringComparison.Ordinal) != -1)
                 return;
 
             var epl = GetEpListener(lp.Host, lp.Port, listener, lp.Secure);

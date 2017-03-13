@@ -205,15 +205,7 @@ namespace Unosquare.Net
 
         #region Internal Methods
 
-        internal void Close()
-        {
-            _context.Connection.Close(true);
-        }
-
-        //internal void Close(HttpStatusCode code)
-        //{
-        //    _context.Response.Close(code);
-        //}
+        internal void Close() => _context.Connection.Close(true);
 
         #endregion
 
@@ -225,10 +217,7 @@ namespace Unosquare.Net
         /// <returns>
         /// A <see cref="System.String" /> that represents this instance.
         /// </returns>
-        public override string ToString()
-        {
-            return _context.Request.ToString();
-        }
+        public override string ToString() => _context.Request.ToString();
 
         #endregion
     }

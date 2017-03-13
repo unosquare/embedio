@@ -33,7 +33,7 @@ using System.Net;
 
 namespace Unosquare.Net
 {
-    sealed class ListenerPrefix
+    internal sealed class ListenerPrefix
     {
         readonly string _original;
         ushort _port;
@@ -75,7 +75,7 @@ namespace Unosquare.Net
             return _original.GetHashCode();
         }
 
-        void Parse(string uri)
+        private void Parse(string uri)
         {
             ushort defaultPort = 80;
             if (uri.StartsWith("https://"))

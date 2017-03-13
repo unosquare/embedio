@@ -254,7 +254,7 @@ namespace Unosquare.Net
             return bestMatch;
         }
 
-        private void AddSpecial(ArrayList coll, ListenerPrefix prefix)
+        private static void AddSpecial(ArrayList coll, ListenerPrefix prefix)
         {
             if (coll == null)
                 return;
@@ -264,6 +264,7 @@ namespace Unosquare.Net
                 if (p.Path == prefix.Path) //TODO: code
                     throw new HttpListenerException(400, "Prefix already in use.");
             }
+
             coll.Add(prefix);
         }
 
@@ -321,6 +322,7 @@ namespace Unosquare.Net
         {
             ArrayList current;
             ArrayList future;
+
             if (prefix.Host == "*")
             {
                 do

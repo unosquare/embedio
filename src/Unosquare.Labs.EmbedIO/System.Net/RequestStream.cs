@@ -34,7 +34,7 @@ using System.Runtime.InteropServices;
 
 namespace Unosquare.Net
 {
-    class RequestStream : Stream
+    internal class RequestStream : Stream
     {
         readonly byte[] _buffer;
         int _offset;
@@ -42,13 +42,8 @@ namespace Unosquare.Net
         long _remainingBody;
         bool _disposed = false;
         readonly Stream _stream;
-
-        internal RequestStream(Stream stream, byte[] buffer, int offset, int length)
-            : this(stream, buffer, offset, length, -1)
-        {
-        }
-
-        internal RequestStream(Stream stream, byte[] buffer, int offset, int length, long contentlength)
+        
+        internal RequestStream(Stream stream, byte[] buffer, int offset, int length, long contentlength = -1)
         {
             _stream = stream;
             _buffer = buffer;
@@ -77,8 +72,7 @@ namespace Unosquare.Net
         public override void Flush()
         {
         }
-
-
+        
         // Returns 0 if we can keep reading from the base stream,
         // > 0 if we read something from the buffer.
         // -1 if we had a content length set and we finished reading that many bytes.

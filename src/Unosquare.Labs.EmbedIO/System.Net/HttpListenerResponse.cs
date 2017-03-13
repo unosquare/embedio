@@ -40,19 +40,21 @@ namespace Unosquare.Net
     /// <seealso cref="System.IDisposable" />
     public sealed class HttpListenerResponse : IDisposable
     {
-        bool _disposed;
-        Encoding _contentEncoding;
-        long _contentLength;
-        bool _clSet;
-        string _contentType;
-        CookieCollection _cookies;
-        bool _keepAlive = true;
-        ResponseStream _outputStream;
-        Version _version = HttpVersion.Version11;
-        string _location;
-        int _statusCode = 200;
-        bool _chunked;
-        readonly HttpListenerContext _context;
+        private const string CannotChangeHeaderWarning = "Cannot be changed after headers are sent.";
+
+        private bool _disposed;
+        private Encoding _contentEncoding;
+        private long _contentLength;
+        private bool _clSet;
+        private string _contentType;
+        private CookieCollection _cookies;
+        private bool _keepAlive = true;
+        private ResponseStream _outputStream;
+        private Version _version = HttpVersion.Version11;
+        private string _location;
+        private int _statusCode = 200;
+        private bool _chunked;
+        private readonly HttpListenerContext _context;
 
         internal bool HeadersSent;
         internal object HeadersLock = new object();
@@ -82,7 +84,7 @@ namespace Unosquare.Net
 
                 //TODO: is null ok?
                 if (HeadersSent)
-                    throw new InvalidOperationException("Cannot be changed after headers are sent.");
+                    throw new InvalidOperationException(CannotChangeHeaderWarning);
 
                 _contentEncoding = value;
             }
@@ -106,7 +108,7 @@ namespace Unosquare.Net
                     throw new ObjectDisposedException(GetType().ToString());
 
                 if (HeadersSent)
-                    throw new InvalidOperationException("Cannot be changed after headers are sent.");
+                    throw new InvalidOperationException(CannotChangeHeaderWarning);
 
                 if (value < 0)
                     throw new ArgumentOutOfRangeException(nameof(value), "Must be >= 0");
@@ -134,7 +136,7 @@ namespace Unosquare.Net
                     throw new ObjectDisposedException(GetType().ToString());
 
                 if (HeadersSent)
-                    throw new InvalidOperationException("Cannot be changed after headers are sent.");
+                    throw new InvalidOperationException(CannotChangeHeaderWarning);
 
                 _contentType = value;
             }
@@ -178,7 +180,7 @@ namespace Unosquare.Net
                     throw new ObjectDisposedException(GetType().ToString());
 
                 if (HeadersSent)
-                    throw new InvalidOperationException("Cannot be changed after headers are sent.");
+                    throw new InvalidOperationException(CannotChangeHeaderWarning);
 
                 _keepAlive = value;
             }
@@ -212,7 +214,7 @@ namespace Unosquare.Net
                     throw new ObjectDisposedException(GetType().ToString());
 
                 if (HeadersSent)
-                    throw new InvalidOperationException("Cannot be changed after headers are sent.");
+                    throw new InvalidOperationException(CannotChangeHeaderWarning);
 
                 if (value == null)
                     throw new ArgumentNullException(nameof(value));
@@ -244,7 +246,7 @@ namespace Unosquare.Net
                     throw new ObjectDisposedException(GetType().ToString());
 
                 if (HeadersSent)
-                    throw new InvalidOperationException("Cannot be changed after headers are sent.");
+                    throw new InvalidOperationException(CannotChangeHeaderWarning);
 
                 _location = value;
             }
@@ -267,7 +269,7 @@ namespace Unosquare.Net
                     throw new ObjectDisposedException(GetType().ToString());
 
                 if (HeadersSent)
-                    throw new InvalidOperationException("Cannot be changed after headers are sent.");
+                    throw new InvalidOperationException(CannotChangeHeaderWarning);
 
                 _chunked = value;
             }
@@ -291,7 +293,7 @@ namespace Unosquare.Net
                     throw new ObjectDisposedException(GetType().ToString());
 
                 if (HeadersSent)
-                    throw new InvalidOperationException("Cannot be changed after headers are sent.");
+                    throw new InvalidOperationException(CannotChangeHeaderWarning);
 
                 if (value < 100 || value > 999)
                     throw new System.Net.ProtocolViolationException("StatusCode must be between 100 and 999.");
@@ -308,10 +310,7 @@ namespace Unosquare.Net
         /// </value>
         public string StatusDescription { get; set; } = "OK";
 
-        void IDisposable.Dispose()
-        {
-            Close(true); //TODO: Abort or Close?
-        }
+        void IDisposable.Dispose() => Close(true); //TODO: Abort or Close?
 
         /// <summary>
         /// Aborts this instance.
@@ -337,7 +336,7 @@ namespace Unosquare.Net
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
 
-            if (name == "")
+            if (String.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("'name' cannot be empty", nameof(name));
 
             //TODO: check for forbidden headers and invalid characters
@@ -382,7 +381,7 @@ namespace Unosquare.Net
             Headers[name] = value;
         }
 
-        void Close(bool force)
+        private void Close(bool force)
         {
             _disposed = true;
             _context.Connection.Close(force);
@@ -453,10 +452,9 @@ namespace Unosquare.Net
 
             foreach (System.Net.Cookie c in _cookies)
             {
-                if (name != c.Name)
+                if (name != c.Name || domain != c.Domain)
                     continue;
-                if (domain != c.Domain)
-                    continue;
+
                 if (path == c.Path)
                     return true;
             }

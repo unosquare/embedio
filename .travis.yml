@@ -9,13 +9,13 @@ matrix:
       sudo: required
     - os: linux
       dotnet: 1.0.0-preview2-003131
-      mono: latest
+      mono: none
       env: DOTNETCORE=1
       dist: trusty
       sudo: false
     - os: osx
       dotnet: 1.0.0-preview2-003131
-      mono: latest
+      mono: none
       env: DOTNETCORE=1
     - os: osx
       mono: latest

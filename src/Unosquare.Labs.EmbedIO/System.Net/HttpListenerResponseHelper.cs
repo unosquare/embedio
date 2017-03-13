@@ -32,9 +32,8 @@ namespace Unosquare.Net
 {
     // do not inline into HttpListenerResponse as this recursively brings everything that's
     // reachable by IDisposable.Dispose (and that's quite a lot in this case).
-    static class HttpListenerResponseHelper
+    internal static class HttpListenerResponseHelper
     {
-
         internal static string GetStatusDescription(int code)
         {
             switch (code)
