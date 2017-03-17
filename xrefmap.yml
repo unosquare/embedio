@@ -2338,18 +2338,18 @@ references:
   commentId: Overload:Unosquare.Net.HttpListener.#ctor
   fullName: Unosquare.Net.HttpListener.HttpListener
   nameWithType: HttpListener.HttpListener
-- uid: Unosquare.Net.HttpListener.AborAsynt
-  name: AborAsynt()
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_AborAsynt
-  commentId: M:Unosquare.Net.HttpListener.AborAsynt
-  fullName: Unosquare.Net.HttpListener.AborAsynt()
-  nameWithType: HttpListener.AborAsynt()
-- uid: Unosquare.Net.HttpListener.AborAsynt*
-  name: AborAsynt
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_AborAsynt_
-  commentId: Overload:Unosquare.Net.HttpListener.AborAsynt
-  fullName: Unosquare.Net.HttpListener.AborAsynt
-  nameWithType: HttpListener.AborAsynt
+- uid: Unosquare.Net.HttpListener.AborAsync
+  name: AborAsync()
+  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_AborAsync
+  commentId: M:Unosquare.Net.HttpListener.AborAsync
+  fullName: Unosquare.Net.HttpListener.AborAsync()
+  nameWithType: HttpListener.AborAsync()
+- uid: Unosquare.Net.HttpListener.AborAsync*
+  name: AborAsync
+  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_AborAsync_
+  commentId: Overload:Unosquare.Net.HttpListener.AborAsync
+  fullName: Unosquare.Net.HttpListener.AborAsync
+  nameWithType: HttpListener.AborAsync
 - uid: Unosquare.Net.HttpListener.CloseAsync
   name: CloseAsync()
   href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_CloseAsync
@@ -4129,15 +4129,15 @@ references:
   commentId: M:Unosquare.Net.WebSocket.SendAsync(Stream,System.Int32)
   fullName: Unosquare.Net.WebSocket.SendAsync(Stream, System.Int32)
   nameWithType: WebSocket.SendAsync(Stream, Int32)
-- uid: Unosquare.Net.WebSocket.SendAsync(Unosquare.Net.Opcode,System.Byte[])
-  name: SendAsync(Opcode, Byte[])
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_Unosquare_Net_Opcode_System_Byte___
-  commentId: M:Unosquare.Net.WebSocket.SendAsync(Unosquare.Net.Opcode,System.Byte[])
-  name.vb: SendAsync(Opcode, Byte())
-  fullName: Unosquare.Net.WebSocket.SendAsync(Unosquare.Net.Opcode, System.Byte[])
-  fullName.vb: Unosquare.Net.WebSocket.SendAsync(Unosquare.Net.Opcode, System.Byte())
-  nameWithType: WebSocket.SendAsync(Opcode, Byte[])
-  nameWithType.vb: WebSocket.SendAsync(Opcode, Byte())
+- uid: Unosquare.Net.WebSocket.SendAsync(System.Byte[],Unosquare.Net.Opcode)
+  name: SendAsync(Byte[], Opcode)
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_System_Byte___Unosquare_Net_Opcode_
+  commentId: M:Unosquare.Net.WebSocket.SendAsync(System.Byte[],Unosquare.Net.Opcode)
+  name.vb: SendAsync(Byte(), Opcode)
+  fullName: Unosquare.Net.WebSocket.SendAsync(System.Byte[], Unosquare.Net.Opcode)
+  fullName.vb: Unosquare.Net.WebSocket.SendAsync(System.Byte(), Unosquare.Net.Opcode)
+  nameWithType: WebSocket.SendAsync(Byte[], Opcode)
+  nameWithType.vb: WebSocket.SendAsync(Byte(), Opcode)
 - uid: Unosquare.Net.WebSocket.SendAsync*
   name: SendAsync
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_

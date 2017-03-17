@@ -854,19 +854,19 @@ the WebSocket connection.</p>
 </div>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_SendAsync_Unosquare_Net_Opcode_System_Byte___.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.SendAsync(Unosquare.Net.Opcode%2CSystem.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Net_WebSocket_SendAsync_System_Byte___Unosquare_Net_Opcode_.md&amp;value=---%0Auid%3A%20Unosquare.Net.WebSocket.SendAsync(System.Byte%5B%5D%2CUnosquare.Net.Opcode)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
                 <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L2347">View Source</a>
               </span>
               <a id="Unosquare_Net_WebSocket_SendAsync_" data-uid="Unosquare.Net.WebSocket.SendAsync*"></a>
-              <h4 id="Unosquare_Net_WebSocket_SendAsync_Unosquare_Net_Opcode_System_Byte___" data-uid="Unosquare.Net.WebSocket.SendAsync(Unosquare.Net.Opcode,System.Byte[])">SendAsync(Opcode, Byte[])</h4>
+              <h4 id="Unosquare_Net_WebSocket_SendAsync_System_Byte___Unosquare_Net_Opcode_" data-uid="Unosquare.Net.WebSocket.SendAsync(System.Byte[],Unosquare.Net.Opcode)">SendAsync(Byte[], Opcode)</h4>
               <div class="markdown level1 summary"><p>Sends binary <span class="paramref">data</span> using the WebSocket connection.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public Task SendAsync(Opcode opcode, byte[] data)</code></pre>
+                <pre><code class="lang-csharp hljs">public Task SendAsync(byte[] data, Opcode opcode)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -879,15 +879,15 @@ the WebSocket connection.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="Unosquare.Net.Opcode.html">Opcode</a></td>
-                    <td><span class="parametername">opcode</span></td>
-                    <td><p>The opcode.</p>
-</td>
-                  </tr>
-                  <tr>
                     <td><span class="xref">System.Byte</span>[]</td>
                     <td><span class="parametername">data</span></td>
                     <td><p>An array of <see cref="!:System.Byte"></see> that represents the binary data to send.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="Unosquare.Net.Opcode.html">Opcode</a></td>
+                    <td><span class="parametername">opcode</span></td>
+                    <td><p>The opcode.</p>
 </td>
                   </tr>
                 </tbody>
