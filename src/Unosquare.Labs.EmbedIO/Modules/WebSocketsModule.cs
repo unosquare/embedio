@@ -484,7 +484,7 @@
                 await webSocket.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty,
                         CancellationToken.None);
 #else
-                await Task.Factory.StartNew(() => { webSocket.WebSocket.CloseAsync(); });
+                await webSocket.WebSocket.CloseAsync();
 #endif
             }
             catch (Exception ex)

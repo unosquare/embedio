@@ -47,11 +47,6 @@ namespace Unosquare.Net
     {
         #region Internal Constructors
         
-        internal CloseEventArgs(CloseStatusCode code)
-            : this((ushort) code, null)
-        {
-        }
-
         internal CloseEventArgs(PayloadData payloadData = null)
         {
             PayloadData = payloadData ?? new PayloadData();
@@ -62,7 +57,7 @@ namespace Unosquare.Net
             PayloadData = new PayloadData(code, reason);
         }
 
-        internal CloseEventArgs(CloseStatusCode code, string reason)
+        internal CloseEventArgs(CloseStatusCode code, string reason = null)
             : this((ushort) code, reason)
         {
         }

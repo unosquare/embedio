@@ -328,7 +328,7 @@ namespace Unosquare.Net
                 lock (_forState)
                 {
                     string msg;
-                    if (!checkIfAvailable(true, false, true, false, false, true, out msg))
+                    if (!checkIfAvailable(out msg, true, false, true, false, false))
                     {
                         msg.Error();
                         Error("An error has occurred in setting the compression.", null);
@@ -397,7 +397,7 @@ namespace Unosquare.Net
                 lock (_forState)
                 {
                     string msg;
-                    if (!checkIfAvailable(true, false, true, false, false, true, out msg))
+                    if (!checkIfAvailable(out msg, true, false, true, false, false))
                     {
                         msg.Error();
                         Error("An error has occurred in setting the enable redirection.", null);
@@ -462,7 +462,7 @@ namespace Unosquare.Net
                 lock (_forState)
                 {
                     string msg;
-                    if (!checkIfAvailable(true, false, true, false, false, true, out msg))
+                    if (!checkIfAvailable(out msg, true, false, true, false, false))
                     {
                         msg.Error();
                         Error("An error has occurred in setting the origin.", null);
@@ -561,7 +561,7 @@ namespace Unosquare.Net
                 lock (_forState)
                 {
                     string msg;
-                    if (!checkIfAvailable(true, true, true, false, false, true, out msg) ||
+                    if (!checkIfAvailable(out msg, true, true, true, false, false) ||
                         !CheckWaitTime(value, out msg))
                     {
                         msg.Error();
@@ -620,7 +620,7 @@ namespace Unosquare.Net
             lock (_forState)
             {
                 string msg;
-                if (!checkIfAvailable(true, false, false, false, out msg))
+                if (!checkIfAvailable(out msg, true, false))
                 {
                     msg.Error();
                     Error("An error has occurred in accepting.", null);
@@ -772,9 +772,7 @@ namespace Unosquare.Net
             return true;
         }
 
-        private bool checkIfAvailable(
-            bool connecting, bool open, bool closing, bool closed, out string message
-        )
+        private bool checkIfAvailable(out string message, bool connecting = true, bool open = true, bool closing = false, bool closed = false)
         {
             message = null;
 
@@ -804,16 +802,15 @@ namespace Unosquare.Net
 
             return true;
         }
-
+        
         private bool checkIfAvailable(
+            out string message,
             bool client,
             bool server,
             bool connecting,
             bool open,
             bool closing,
-            bool closed,
-            out string message
-        )
+            bool closed = true)
         {
             message = null;
 
@@ -829,7 +826,7 @@ namespace Unosquare.Net
                 return false;
             }
 
-            return checkIfAvailable(connecting, open, closing, closed, out message);
+            return checkIfAvailable(out message, connecting, open, closing, closed);
         }
 
 #if AUTHENTICATION
@@ -1008,7 +1005,7 @@ namespace Unosquare.Net
             lock (_forState)
             {
                 string msg;
-                if (!checkIfAvailable(true, false, false, true, out msg))
+                if (!checkIfAvailable(out msg, true, false, false, true))
                 {
                     msg.Error();
                     Error("An error has occurred in connecting.", null);
@@ -1181,7 +1178,7 @@ namespace Unosquare.Net
             _forSend = new object();
             _forState = new object();
             _messageEventQueue = new Queue<MessageEventArgs>();
-            _forMessageEventQueue = ((ICollection) _messageEventQueue).SyncRoot;
+            _forMessageEventQueue = ((ICollection)_messageEventQueue).SyncRoot;
             _readyState = WebSocketState.Connecting;
         }
 
@@ -1257,6 +1254,7 @@ namespace Unosquare.Net
         {
             _inMessage = true;
             StartReceiving();
+
             try
             {
                 OnOpen?.Invoke(this, EventArgs.Empty);
@@ -1582,7 +1580,7 @@ namespace Unosquare.Net
                 return send(Fin.Final, opcode, EmptyBytes, compressed);
 
             var quo = len / FragmentLength;
-            var rem = (int) (len % FragmentLength);
+            var rem = (int)(len % FragmentLength);
 
             byte[] buff = null;
             if (quo == 0)
@@ -2242,7 +2240,7 @@ namespace Unosquare.Net
         public void Accept()
         {
             string msg;
-            if (!checkIfAvailable(false, true, true, false, false, false, out msg))
+            if (!checkIfAvailable(out msg, false, true, true, false, false, false))
             {
                 msg.Error();
                 Error("An error has occurred in accepting.", null);
@@ -2268,7 +2266,7 @@ namespace Unosquare.Net
         public void AcceptAsync()
         {
             string msg;
-            if (!checkIfAvailable(false, true, true, false, false, false, out msg))
+            if (!checkIfAvailable(out msg, false, true, true, false, false, false))
             {
                 msg.Error();
                 Error("An error has occurred in accepting.", null);
@@ -2286,61 +2284,7 @@ namespace Unosquare.Net
                 null
             );
         }
-
-        /// <summary>
-        /// Closes the WebSocket connection, and releases all associated resources.
-        /// </summary>
-        public void Close()
-        {
-            string msg;
-            if (!checkIfAvailable(true, true, false, false, out msg))
-            {
-                msg.Error();
-                Error("An error has occurred in closing the connection.", null);
-
-                return;
-            }
-
-            InternalCloseAsync(new CloseEventArgs());
-        }
-
-        /// <summary>
-        /// Closes the WebSocket connection with the specified <paramref name="code"/>,
-        /// and releases all associated resources.
-        /// </summary>
-        /// <param name="code">
-        /// One of the <see cref="CloseStatusCode"/> enum values that represents
-        /// the status code indicating the reason for the close.
-        /// </param>
-        public void Close(CloseStatusCode code)
-        {
-            string msg;
-            if (!checkIfAvailable(true, true, false, false, out msg))
-            {
-                msg.Error();
-                Error("An error has occurred in closing the connection.", null);
-
-                return;
-            }
-
-            if (!CheckParametersForClose(code, null, _client, out msg))
-            {
-                msg.Error();
-                Error("An error has occurred in closing the connection.", null);
-
-                return;
-            }
-
-            if (code == CloseStatusCode.NoStatus)
-            {
-                InternalCloseAsync(new CloseEventArgs());
-                return;
-            }
-
-            var send = !code.IsReserved();
-            InternalCloseAsync(new CloseEventArgs(code), send, send);
-        }
-
+        
         /// <summary>
         /// Closes the WebSocket connection with the specified <paramref name="code"/> and
         /// <paramref name="reason"/>, and releases all associated resources.
@@ -2353,33 +2297,10 @@ namespace Unosquare.Net
         /// A <see cref="string"/> that represents the reason for the close.
         /// The size must be 123 bytes or less.
         /// </param>
-        public void Close(CloseStatusCode code, string reason)
+        public void Close(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null)
         {
-            string msg;
-            if (!checkIfAvailable(true, true, false, false, out msg))
-            {
-                msg.Error();
-                Error("An error has occurred in closing the connection.", null);
-
-                return;
-            }
-
-            if (!CheckParametersForClose(code, reason, _client, out msg))
-            {
-                msg.Error();
-                Error("An error has occurred in closing the connection.", null);
-
-                return;
-            }
-
-            if (code == CloseStatusCode.NoStatus)
-            {
-                InternalCloseAsync(new CloseEventArgs());
-                return;
-            }
-
-            var send = !code.IsReserved();
-            InternalCloseAsync(new CloseEventArgs(code, reason), send, send);
+            // TODO: How to wait for close?
+            CloseAsync(code, reason).Wait();
         }
 
         /// <summary>
@@ -2389,10 +2310,10 @@ namespace Unosquare.Net
         /// <remarks>
         /// This method does not wait for the close to be complete.
         /// </remarks>
-        public async Task CloseAsync()
+        public async Task CloseAsync(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null)
         {
             string msg;
-            if (!checkIfAvailable(true, true, false, false, out msg))
+            if (!checkIfAvailable(out msg))
             {
                 msg.Error();
                 Error("An error has occurred in closing the connection.", null);
@@ -2400,77 +2321,7 @@ namespace Unosquare.Net
                 return;
             }
 
-            await InternalCloseAsync(new CloseEventArgs());
-        }
-
-        /// <summary>
-        /// Closes the WebSocket connection asynchronously with the specified
-        /// <paramref name="code"/>, and releases all associated resources.
-        /// </summary>
-        /// <remarks>
-        /// This method does not wait for the close to be complete.
-        /// </remarks>
-        /// <param name="code">
-        /// One of the <see cref="CloseStatusCode"/> enum values that represents
-        /// the status code indicating the reason for the close.
-        /// </param>
-        public async Task CloseAsync(CloseStatusCode code)
-        {
-            string msg;
-            if (!checkIfAvailable(true, true, false, false, out msg))
-            {
-                msg.Error();
-                Error("An error has occurred in closing the connection.", null);
-
-                return;
-            }
-
-            if (!CheckParametersForClose(code, null, _client, out msg))
-            {
-                msg.Error();
-                Error("An error has occurred in closing the connection.", null);
-
-                return;
-            }
-
-            if (code == CloseStatusCode.NoStatus)
-            {
-                await InternalCloseAsync(new CloseEventArgs());
-                return;
-            }
-
-            var send = !code.IsReserved();
-            await InternalCloseAsync(new CloseEventArgs(code), send, send);
-        }
-
-        /// <summary>
-        /// Closes the WebSocket connection asynchronously with the specified
-        /// <paramref name="code"/> and <paramref name="reason"/>, and releases
-        /// all associated resources.
-        /// </summary>
-        /// <remarks>
-        /// This method does not wait for the close to be complete.
-        /// </remarks>
-        /// <param name="code">
-        /// One of the <see cref="CloseStatusCode"/> enum values that represents
-        /// the status code indicating the reason for the close.
-        /// </param>
-        /// <param name="reason">
-        /// A <see cref="string"/> that represents the reason for the close.
-        /// The size must be 123 bytes or less.
-        /// </param>
-        public async Task CloseAsync(CloseStatusCode code, string reason)
-        {
-            string msg;
-            if (!checkIfAvailable(true, true, false, false, out msg))
-            {
-                msg.Error();
-                Error("An error has occurred in closing the connection.", null);
-
-                return;
-            }
-
-            if (!CheckParametersForClose(code, reason, _client, out msg))
+            if (code != CloseStatusCode.Undefined && !CheckParametersForClose(code, reason, _client, out msg))
             {
                 msg.Error();
                 Error("An error has occurred in closing the connection.", null);
@@ -2487,7 +2338,7 @@ namespace Unosquare.Net
             var send = !code.IsReserved();
             await InternalCloseAsync(new CloseEventArgs(code, reason), send, send);
         }
-
+        
         /// <summary>
         /// Establishes a WebSocket connection.
         /// </summary>
@@ -2497,7 +2348,7 @@ namespace Unosquare.Net
         public void Connect()
         {
             string msg;
-            if (!checkIfAvailable(true, false, true, false, false, true, out msg))
+            if (!checkIfAvailable(out msg, true, false, true, false, false))
             {
                 msg.Error();
                 Error("An error has occurred in connecting.", null);
@@ -2523,7 +2374,7 @@ namespace Unosquare.Net
         public void ConnectAsync()
         {
             string msg;
-            if (!checkIfAvailable(true, false, true, false, false, true, out msg))
+            if (!checkIfAvailable(out msg, true, false, true, false, false))
             {
                 msg.Error();
                 Error("An error has occurred in connecting.", null);
@@ -2819,7 +2670,7 @@ namespace Unosquare.Net
         public void SetCookie(Cookie cookie)
         {
             string msg;
-            if (!checkIfAvailable(true, false, true, false, false, true, out msg) || cookie == null)
+            if (!checkIfAvailable(out msg, true, false, true, false, false) || cookie == null)
             {
                 msg.Error();
                 Error("An error has occurred in setting a cookie.", null);
@@ -2829,7 +2680,7 @@ namespace Unosquare.Net
 
             lock (_forState)
             {
-                if (!checkIfAvailable(true, false, false, true, out msg))
+                if (!checkIfAvailable(out msg, true, false, false, true))
                 {
                     msg.Error();
                     Error("An error has occurred in setting a cookie.", null);
