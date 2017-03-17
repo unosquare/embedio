@@ -65,7 +65,7 @@ namespace Unosquare.Net
         /// </summary>
         public bool IsCompleted => CompletedSynchronously;
     }
-    
+
     /// <summary>
     /// Indicates the status code for the WebSocket connection close.
     /// </summary>
@@ -200,7 +200,7 @@ namespace Unosquare.Net
             var result = (AsyncResult)ares;
             return (int)result.Data;
         }
-        
+
         /// <summary>
         /// The scheme delimiter
         /// </summary>
@@ -496,7 +496,7 @@ namespace Unosquare.Net
             return opcode > 0x7 && opcode < 0x10;
         }
 
-        internal static byte[] ReadBytes(this Stream stream, long length, int bufferLength)
+        internal static async Task<byte[]> ReadBytesAsync(this Stream stream, long length, int bufferLength, CancellationToken ct = default(CancellationToken))
         {
             using (var dest = new MemoryStream())
             {
@@ -508,7 +508,7 @@ namespace Unosquare.Net
                         if (length < bufferLength)
                             bufferLength = (int)length;
 
-                        var nread = stream.Read(buff, 0, bufferLength);
+                        var nread = await stream.ReadAsync(buff, 0, bufferLength, ct);
                         if (nread == 0)
                             break;
 
@@ -521,14 +521,11 @@ namespace Unosquare.Net
                     // ignored
                 }
 
-#if NET452
-                dest.Close();
-#endif
                 return dest.ToArray();
             }
         }
-        
-        internal static byte[] ReadBytes(this Stream stream, int length)
+
+        internal static async Task<byte[]> ReadBytesAsync(this Stream stream, int length, CancellationToken ct = default(CancellationToken))
         {
             var buff = new byte[length];
             var offset = 0;
@@ -536,7 +533,7 @@ namespace Unosquare.Net
             {
                 while (length > 0)
                 {
-                    var nread = stream.Read(buff, offset, length);
+                    var nread = await stream.ReadAsync(buff, offset, length, ct);
                     if (nread == 0)
                         break;
 
@@ -551,138 +548,6 @@ namespace Unosquare.Net
 
             return buff.SubArray(0, offset);
         }
-
-        private static readonly int _retry = 5;
-
-        internal static void ReadBytesAsync(
-          this Stream stream, int length, Action<byte[]> completed, Action<Exception> error
-        )
-        {
-            var buff = new byte[length];
-            var offset = 0;
-            var retry = 0;
-
-            AsyncCallback callback = null;
-            callback =
-              ar =>
-              {
-                  try
-                  {
-                      var nread = stream.EndRead(ar);
-                      if (nread == 0 && retry < _retry)
-                      {
-                          retry++;
-                          stream.BeginRead(buff, offset, length, callback, null);
-
-                          return;
-                      }
-
-                      if (nread == 0 || nread == length)
-                      {
-                          completed?.Invoke(buff.SubArray(0, offset + nread));
-
-                          return;
-                      }
-
-                      retry = 0;
-
-                      offset += nread;
-                      length -= nread;
-
-                      stream.BeginRead(buff, offset, length, callback, null);
-                  }
-                  catch (Exception ex)
-                  {
-                      error?.Invoke(ex);
-                  }
-              };
-
-            try
-            {
-                stream.BeginRead(buff, offset, length, callback, null);
-            }
-            catch (Exception ex)
-            {
-                error?.Invoke(ex);
-            }
-        }
-
-        internal static void ReadBytesAsync(
-          this Stream stream,
-          long length,
-          int bufferLength,
-          Action<byte[]> completed,
-          Action<Exception> error
-        )
-        {
-            var dest = new MemoryStream();
-            var buff = new byte[bufferLength];
-            var retry = 0;
-
-            Action<long> read = null;
-            read =
-              len =>
-              {
-                  if (len < bufferLength)
-                      bufferLength = (int)len;
-
-                  stream.BeginRead(
-              buff,
-              0,
-              bufferLength,
-              ar =>
-              {
-                  try
-                  {
-                      var nread = stream.EndRead(ar);
-                      if (nread > 0)
-                          dest.Write(buff, 0, nread);
-
-                      if (nread == 0 && retry < _retry)
-                      {
-                          retry++;
-                          read(len);
-
-                          return;
-                      }
-
-                      if (nread == 0 || nread == len)
-                      {
-                          if (completed != null)
-                          {
-#if NET452
-                              dest.Close();
-#endif
-                              completed(dest.ToArray());
-                          }
-
-                          dest.Dispose();
-                          return;
-                      }
-
-                      retry = 0;
-                      read(len - nread);
-                  }
-                  catch (Exception ex)
-                  {
-                      dest.Dispose();
-                      error?.Invoke(ex);
-                  }
-              },
-              null
-            );
-              };
-
-            try
-            {
-                read(length);
-            }
-            catch (Exception ex)
-            {
-                dest.Dispose();
-                error?.Invoke(ex);
-            }
-        }
         
         internal static bool IsReserved(this CloseStatusCode code)
         {
@@ -691,7 +556,7 @@ namespace Unosquare.Net
                    code == CloseStatusCode.Abnormal ||
                    code == CloseStatusCode.TlsHandshakeFailure;
         }
-        
+
         /// <summary>
         /// Converts the order of the specified array of <see cref="byte"/> to the host byte order.
         /// </summary>
@@ -732,7 +597,7 @@ namespace Unosquare.Net
             // false: !(true ^ false) or !(false ^ true)
             return !(BitConverter.IsLittleEndian ^ (order == Endianness.Little));
         }
-        
+
         /// <summary>
         /// Determines whether the specified <see cref="string"/> is a predefined scheme.
         /// </summary>
@@ -878,7 +743,7 @@ namespace Unosquare.Net
         {
             return value.All(c => c >= 0x20 && c < 0x7f && !Tspecials.Contains(c));
         }
-        
+
         /// <summary>
         /// Gets the collection of the HTTP cookies from the specified HTTP <paramref name="headers"/>.
         /// </summary>
@@ -912,7 +777,7 @@ namespace Unosquare.Net
 
             return $"{m}; {string.Join("; ", parameters)}";
         }
-        
+
         /// <summary>
         /// Determines whether the specified <see cref="NameValueCollection"/> contains the entry with
         /// the specified both <paramref name="name"/> and <paramref name="value"/>.
@@ -958,12 +823,12 @@ namespace Unosquare.Net
         {
             return chars?.Length == 0 || !string.IsNullOrEmpty(value) && value.IndexOfAny(chars) > -1;
         }
-        
+
         internal static bool IsCompressionExtension(this string value, CompressionMethod method)
         {
             return value.StartsWith(method.ToExtensionString());
         }
-        
+
         #endregion
     }
 }

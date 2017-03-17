@@ -29,14 +29,14 @@
         [Test]
         public async Task TestConnectWebSocket()
         {
-            var wsUrl = Resources.WsServerAddress + "test";
+            const string wsUrl = Resources.WsServerAddress + "test";
             Assert.IsNotNull(WebServer.Module<WebSocketsModule>(), "WebServer has WebSocketsModule");
 
             Assert.AreEqual(WebServer.Module<WebSocketsModule>().Handlers.Count, 1, "WebSocketModule has one handler");
 
+            var ct = new CancellationTokenSource();
 #if NET46
             var clientSocket = new ClientWebSocket();
-            var ct = new CancellationTokenSource();
             await clientSocket.ConnectAsync(new Uri(wsUrl), ct.Token);
 
             Assert.AreEqual(WebSocketState.Open, clientSocket.State, "Connection is open");
@@ -51,7 +51,7 @@
             Assert.IsTrue(System.Text.Encoding.UTF8.GetString(buffer.Array).TrimEnd((char) 0) == "WELCOME", "Final message is WELCOME");
 #else
             var clientSocket = new WebSocket(wsUrl);
-            clientSocket.Connect();
+            await clientSocket.ConnectAsync(ct.Token);
 
             if (clientSocket.State != WebSocketState.Open)
             {
@@ -62,7 +62,7 @@
 
             var buffer = System.Text.Encoding.UTF8.GetBytes("HOLA");
             await clientSocket.SendAsync(buffer, Opcode.Text);
-            await Task.Delay(100);
+            await Task.Delay(100, ct.Token);
 #endif
         }
 

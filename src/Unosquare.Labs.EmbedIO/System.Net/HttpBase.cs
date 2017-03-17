@@ -33,6 +33,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Unosquare.Net
 {
@@ -117,7 +118,7 @@ namespace Unosquare.Net
             return null;
         }
 
-        private static byte[] ReadEntityBody(Stream stream, string length)
+        private static async Task<byte[]> ReadEntityBodyAsync(Stream stream, string length, CancellationToken ct)
         {
             long len;
             if (!long.TryParse(length, out len))
@@ -127,9 +128,9 @@ namespace Unosquare.Net
                 throw new ArgumentOutOfRangeException(nameof(length), "Less than zero.");
 
             return len > 1024
-                   ? stream.ReadBytes(len, 1024)
+                   ? await stream.ReadBytesAsync(len, 1024, ct)
                    : len > 0
-                     ? stream.ReadBytes((int)len)
+                     ? await stream.ReadBytesAsync((int)len, ct)
                      : null;
         }
 
@@ -178,7 +179,7 @@ namespace Unosquare.Net
 
         #region Protected Methods
 
-        protected static T Read<T>(Stream stream, Func<string[], T> parser, int millisecondsTimeout)
+        protected static async Task<T> ReadAsync<T>(Stream stream, Func<string[], T> parser, int millisecondsTimeout, CancellationToken ct = default(CancellationToken))
           where T : HttpBase
         {
             var timeout = false;
@@ -202,7 +203,7 @@ namespace Unosquare.Net
                 var contentLen = http.Headers["Content-Length"];
 
                 if (!string.IsNullOrEmpty(contentLen))
-                    http.EntityBodyData = ReadEntityBody(stream, contentLen);
+                    http.EntityBodyData = await ReadEntityBodyAsync(stream, contentLen, ct);
 
                 return http;
             }
@@ -223,10 +224,7 @@ namespace Unosquare.Net
 
         #region Public Methods
 
-        public byte[] ToByteArray()
-        {
-            return Encoding.UTF8.GetBytes(ToString());
-        }
+        public byte[] ToByteArray() => Encoding.UTF8.GetBytes(ToString());
 
         public void Write(byte[] data)
         {

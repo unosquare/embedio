@@ -32,6 +32,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Unosquare.Net
 {
@@ -140,9 +141,9 @@ namespace Unosquare.Net
               int.Parse(statusLine[1]), statusLine[2], new Version(statusLine[0].Substring(5)), headers);
         }
 
-        internal static HttpResponse Read(Stream stream, int millisecondsTimeout)
+        internal static async Task<HttpResponse> ReadAsync(Stream stream, int millisecondsTimeout)
         {
-            return Read(stream, Parse, millisecondsTimeout);
+            return await ReadAsync(stream, Parse, millisecondsTimeout);
         }
 
 #endregion

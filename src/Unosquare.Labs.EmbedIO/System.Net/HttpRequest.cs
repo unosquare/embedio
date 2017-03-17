@@ -38,6 +38,8 @@ using System;
 using System.Collections.Specialized;
 using System.IO;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Unosquare.Net
 {
@@ -145,12 +147,12 @@ namespace Unosquare.Net
             return req;
         }
 
-        internal HttpResponse GetResponse(Stream stream, int millisecondsTimeout)
+        internal async Task<HttpResponse> GetResponse(Stream stream, int millisecondsTimeout, CancellationToken ct)
         {
             var buff = ToByteArray();
             stream.Write(buff, 0, buff.Length);
 
-            return Read(stream, HttpResponse.Parse, millisecondsTimeout);
+            return await ReadAsync(stream, HttpResponse.Parse, millisecondsTimeout, ct);
         }
 
         internal static HttpRequest Parse(string[] headerParts)
@@ -170,9 +172,9 @@ namespace Unosquare.Net
             return new HttpRequest(requestLine[0], requestLine[1], new Version(requestLine[2].Substring(5)), headers);
         }
 
-        internal static HttpRequest Read(Stream stream, int millisecondsTimeout)
+        internal static async Task<HttpRequest> Read(Stream stream, int millisecondsTimeout)
         {
-            return Read(stream, Parse, millisecondsTimeout);
+            return await ReadAsync(stream, Parse, millisecondsTimeout);
         }
 
 #endregion
