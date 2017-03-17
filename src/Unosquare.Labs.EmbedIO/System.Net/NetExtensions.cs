@@ -13,60 +13,6 @@ using Unosquare.Swan;
 namespace Unosquare.Net
 {
     /// <summary>
-    /// Represents an asynchronous operation result.
-    /// </summary>
-    /// <seealso cref="System.IAsyncResult" />
-    internal class AsyncResult : IAsyncResult
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AsyncResult"/> class.
-        /// </summary>
-        /// <param name="state">The state.</param>
-        public AsyncResult(object state)
-        {
-            AsyncState = state;
-        }
-
-        /// <summary>
-        /// Completes the specified result synchronously.
-        /// </summary>
-        /// <param name="data">The data.</param>
-        public void Complete(object data)
-        {
-            CompletedSynchronously = true;
-            Data = data;
-        }
-
-        /// <summary>
-        /// Gets a user-defined object that qualifies or contains information about an asynchronous operation.
-        /// </summary>
-        public object AsyncState { get; }
-
-        /// <summary>
-        /// Gets a <see cref="T:System.Threading.WaitHandle" /> that is used to wait for an asynchronous operation to complete.
-        /// </summary>
-        public WaitHandle AsyncWaitHandle => null;
-
-        /// <summary>
-        /// Gets a value that indicates whether the asynchronous operation completed synchronously.
-        /// </summary>
-        public bool CompletedSynchronously { get; private set; }
-
-        /// <summary>
-        /// Gets the associated data of this async result.
-        /// </summary>
-        /// <value>
-        /// The data.
-        /// </value>
-        public object Data { get; internal set; }
-
-        /// <summary>
-        /// Gets a value that indicates whether the asynchronous operation has completed.
-        /// </summary>
-        public bool IsCompleted => CompletedSynchronously;
-    }
-
-    /// <summary>
     /// Indicates the status code for the WebSocket connection close.
     /// </summary>
     /// <remarks>
@@ -154,53 +100,6 @@ namespace Unosquare.Net
     /// </summary>
     public static class NetExtensions
     {
-        /// <summary>
-        /// Begins and asynchronous read of the specified stream
-        /// </summary>
-        /// <param name="stream">The stream.</param>
-        /// <param name="buffer">The buffer.</param>
-        /// <param name="offset">The offset.</param>
-        /// <param name="count">The count.</param>
-        /// <param name="callback">The callback.</param>
-        /// <param name="state">The state.</param>
-        /// <returns></returns>
-        public static IAsyncResult BeginRead(this Stream stream, byte[] buffer,
-            int offset,
-            int count,
-            AsyncCallback callback = null,
-            object state = null)
-        {
-            var result = new AsyncResult(state);
-
-            Task.Run(() =>
-            {
-                try
-                {
-                    var data = stream.Read(buffer, offset, count);
-                    result.Complete(data);
-                    callback?.Invoke(result);
-                }
-                catch (IOException)
-                {
-                    // Ignore, possible connection closed
-                }
-            });
-
-            return result;
-        }
-
-        /// <summary>
-        /// Retrieve the result of an asynchronous read for the specified stream
-        /// </summary>
-        /// <param name="stream">The stream.</param>
-        /// <param name="ares">The ares.</param>
-        /// <returns></returns>
-        public static int EndRead(this Stream stream, IAsyncResult ares)
-        {
-            var result = (AsyncResult)ares;
-            return (int)result.Data;
-        }
-
         /// <summary>
         /// The scheme delimiter
         /// </summary>
@@ -450,6 +349,8 @@ namespace Unosquare.Net
         {
             return array.SubArray((int)startIndex, (int)length);
         }
+
+        // TODO: Remove SubArray with new SWAN
 
         internal static bool IsData(this byte opcode)
         {
@@ -803,25 +704,6 @@ namespace Unosquare.Net
             var vals = collection[name];
 
             return vals != null && vals.Split(',').Any(val => val.Trim().Equals(value, StringComparison.OrdinalIgnoreCase));
-        }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="string"/> contains any of characters in
-        /// the specified array of <see cref="char"/>.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if <paramref name="value"/> contains any of <paramref name="chars"/>;
-        /// otherwise, <c>false</c>.
-        /// </returns>
-        /// <param name="value">
-        /// A <see cref="string"/> to test.
-        /// </param>
-        /// <param name="chars">
-        /// An array of <see cref="char"/> that contains characters to find.
-        /// </param>
-        public static bool Contains(this string value, params char[] chars)
-        {
-            return chars?.Length == 0 || !string.IsNullOrEmpty(value) && value.IndexOfAny(chars) > -1;
         }
 
         internal static bool IsCompressionExtension(this string value, CompressionMethod method)
