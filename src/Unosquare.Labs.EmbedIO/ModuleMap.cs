@@ -1,5 +1,14 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+#if NET46
+    using System.Net;
+#else
+    using Net;
+#endif
+
     using System.Collections.Generic;
 
     /// <summary>
@@ -18,7 +27,7 @@
         /// <summary>
         /// The delegate to call for the given path and verb.
         /// </summary>
-        public ResponseHandler ResponseHandler { get; set; }
+        public Func<HttpListenerContext, CancellationToken, Task<bool>> ResponseHandler { get; set; }
     }
 
     /// <summary>

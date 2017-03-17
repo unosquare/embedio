@@ -1,6 +1,8 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
     using System;
+    using System.Threading;
+    using System.Threading.Tasks;
 #if NET46
     using System.Net;
 #else
@@ -17,12 +19,7 @@
         /// Gets the name of this module.
         /// </summary>
         public override string Name => nameof(FallbackModule);
-
-        /// <summary>
-        /// Gets or sets the fallback action.
-        /// </summary>
-        public Func<WebServer, HttpListenerContext, bool> FallbackAction { get; }
-
+        
         /// <summary>
         /// Gets the redirect URL.
         /// </summary>
@@ -32,11 +29,13 @@
         /// Initializes a new instance of the <see cref="FallbackModule" /> class.
         /// </summary>
         /// <param name="action">The action.</param>
-        public FallbackModule(Func<WebServer, HttpListenerContext, bool> action)
+        public FallbackModule(Action<HttpListenerContext, CancellationToken> action)
         {
-            FallbackAction = action;
-
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) => FallbackAction(server, context));
+            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (context, ct) =>
+            {
+                action(context, ct);
+                return Task.FromResult(true);
+            });
         }
 
         /// <summary>
@@ -47,10 +46,10 @@
         {
             RedirectUrl = redirectUrl;
 
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
+            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (context, ct) =>
             {
                 context.Redirect(redirectUrl, true);
-                return true;
+                return Task.FromResult(true);
             });
         }
     }

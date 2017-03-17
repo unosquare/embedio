@@ -1,27 +1,13 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
 #if NET46
     using System.Net;
 #else
     using Net;
 #endif
-    using System.Threading.Tasks;
-
-    /// <summary>
-    /// A delegate that handles certain action in a module given a path and a verb
-    /// </summary>
-    /// <param name="server">The server.</param>
-    /// <param name="context">The context.</param>
-    /// <returns></returns>
-    public delegate bool ResponseHandler(WebServer server, HttpListenerContext context);
-    
-    /// <summary>
-    /// An async delegate that handles certain action in a module given a path and a verb
-    /// </summary>
-    /// <param name="server">The server.</param>
-    /// <param name="context">The context.</param>
-    /// <returns></returns>
-    public delegate Task<bool> AsyncResponseHandler(WebServer server, HttpListenerContext context);
     
     /// <summary>
     /// Interface to create web modules
@@ -50,7 +36,7 @@
         /// <param name="path">The path.</param>
         /// <param name="verb">The verb.</param>
         /// <param name="handler">The handler.</param>
-        void AddHandler(string path, HttpVerbs verb, ResponseHandler handler);
+        void AddHandler(string path, HttpVerbs verb, Func<HttpListenerContext, CancellationToken, Task<bool>> handler);
 
         /// <summary>
         /// Gets the server owning this module. This property is set automatically after registering the module.

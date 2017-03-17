@@ -125,7 +125,7 @@
         [Test]
         public void WebMap()
         {
-            var map = new Map() {Path = DefaultPath, ResponseHandler = (ctx, ws) => false, Verb = HttpVerbs.Any};
+            var map = new Map() {Path = DefaultPath, ResponseHandler = (ctx, ws) => Task.FromResult(false), Verb = HttpVerbs.Any};
 
             Assert.AreEqual(map.Path, DefaultPath, "Default Path is correct");
             Assert.AreEqual(map.Verb, HttpVerbs.Any, "Default Verb is correct");
@@ -136,7 +136,7 @@
         {
             var webModule = new TestWebModule();
             // add one more handler
-            webModule.AddHandler(DefaultPath, HttpVerbs.Any, (ctx, ws) => false);
+            webModule.AddHandler(DefaultPath, HttpVerbs.Any, (ctx, ws) => Task.FromResult(false));
 
             Assert.AreEqual(webModule.Handlers.Count, 4, "WebModule has four handlers");
             Assert.AreEqual(webModule.Handlers.Last().Path, DefaultPath, "Default Path is correct");

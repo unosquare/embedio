@@ -8,6 +8,8 @@
     using System.IO;
     using System.Linq;
     using Swan;
+    using System.Threading;
+    using System.Threading.Tasks;
 #if NET46
     using System.Net;
 #else
@@ -200,11 +202,11 @@
                 }
             }
 
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Head, (server, context) => HandleGet(context, false));
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (server, context) => HandleGet(context));
+            AddHandler(ModuleMap.AnyPath, HttpVerbs.Head, (context, ct) => HandleGet(context, ct, false));
+            AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (context, ct) => HandleGet(context, ct));
         }
 
-        private bool IsPartOfPath(string targetPath, string basePath)
+        private static bool IsPartOfPath(string targetPath, string basePath)
         {
             targetPath = Path.GetFullPath(targetPath).ToLowerInvariant().TrimEnd('/', '\\');
             basePath = Path.GetFullPath(basePath).ToLowerInvariant().TrimEnd('/', '\\');
@@ -212,7 +214,7 @@
             return targetPath.StartsWith(basePath);
         }
 
-        private bool HandleGet(HttpListenerContext context, bool sendBuffer = true)
+        private async Task<bool> HandleGet(HttpListenerContext context, CancellationToken ct, bool sendBuffer = true)
         {
             var baseLocalPath = FileSystemPath;
             var requestLocalPath = GetUrlPath(context, ref baseLocalPath);
@@ -231,7 +233,10 @@
             var partialHeader = context.RequestHeader(Constants.HeaderRange);
             var usingPartial = string.IsNullOrWhiteSpace(partialHeader) == false && partialHeader.StartsWith("bytes=");
 
-            if (ExistsLocalPath(requestLocalPath, ref requestFullLocalPath) == false) return false;
+            if (ExistsLocalPath(requestLocalPath, ref requestFullLocalPath) == false)
+            {
+                return false;
+            }
 
             var fileDate = File.GetLastWriteTime(requestFullLocalPath);
 
@@ -290,7 +295,10 @@
             }
 
             // If buffer is null something is really wrong
-            if (buffer == null) return false;
+            if (buffer == null)
+            {
+                return false;
+            }
 
             var lowerByteIndex = 0;
             var upperByteIndex = 0;
@@ -347,7 +355,7 @@
 
             try
             {
-                WriteToOutputStream(context, byteLength, buffer, lowerByteIndex);
+                await WriteToOutputStream(context, byteLength, buffer, lowerByteIndex, ct);
             }
             catch (HttpListenerException)
             {
@@ -364,8 +372,8 @@
             return true;
         }
 
-        private static void WriteToOutputStream(HttpListenerContext context, long byteLength, Stream buffer,
-            int lowerByteIndex)
+        private static async Task WriteToOutputStream(HttpListenerContext context, long byteLength, Stream buffer,
+            int lowerByteIndex, CancellationToken ct)
         {
             var streamBuffer = new byte[ChuckSize];
             var sendData = 0;
@@ -376,12 +384,12 @@
                 if (sendData + ChuckSize > byteLength) readBufferSize = (int) (byteLength - sendData);
 
                 buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
-                var read = buffer.Read(streamBuffer, 0, readBufferSize);
+                var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct);
 
                 if (read == 0) break;
 
                 sendData += read;
-                context.Response.OutputStream.Write(streamBuffer, 0, readBufferSize);
+                await context.Response.OutputStream.WriteAsync(streamBuffer, 0, readBufferSize, ct);
             }
         }
 

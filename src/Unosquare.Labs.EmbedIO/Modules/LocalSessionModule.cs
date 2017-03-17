@@ -2,6 +2,7 @@
 {
     using EmbedIO;
     using System;
+    using System.Threading.Tasks;
     using Swan;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -114,7 +115,7 @@
         /// </summary>
         public LocalSessionModule()
         {
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
+            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (context, ct) =>
             {
                 lock (SessionsSyncLock)
                 {
@@ -137,8 +138,7 @@
                         FixupSessionCookie(context);
                         isSessionRegistered = m_Sessions.ContainsKey(requestSessionCookie.Value);
                     }
-
-
+                    
                     if (requestSessionCookie == null)
                     {
                         // create the session if session not available on the request
@@ -164,12 +164,11 @@
                     }
 
                     // Always returns false because we need it to handle the rest for the modules
-                    return false;
+                    return Task.FromResult(false);
                 }
             });
         }
-
-
+        
         /// <summary>
         /// The dictionary holding the sessions
         /// </summary>
@@ -273,6 +272,6 @@
         /// <value>
         /// The name.
         /// </value>
-        public override string Name => "Local Session Module";
+        public override string Name => nameof(LocalSessionModule).Humanize();
     }
 }

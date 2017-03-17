@@ -3,7 +3,7 @@
     using Swan;
     using Modules;
     using System;
-
+    
     internal class Program
     {
         /// <summary>
@@ -78,11 +78,7 @@
                 // It registers the WebSocketsModule and registers the server for the given paths(s)
                 WebSocketsSample.Setup(server);
 
-                server.RegisterModule(new FallbackModule((ws, ctx) =>
-                {
-                    ctx.JsonResponse(new {Message = "Error "});
-                    return true;
-                }));
+                server.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(new { Message = "Error " })));
 
                 // Once we've registered our modules and configured them, we call the RunAsync() method.
                 server.RunAsync();

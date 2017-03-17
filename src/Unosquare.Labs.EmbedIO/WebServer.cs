@@ -207,7 +207,9 @@
         /// Handles the client request.
         /// </summary>
         /// <param name="context">The context.</param>
-        private void HandleClientRequest(HttpListenerContext context)
+        /// <param name="ct">The cancellation token.</param>
+        /// <returns></returns>
+        private async Task HandleClientRequest(HttpListenerContext context, CancellationToken ct)
         {
             // start with an empty request ID
             var requestId = "(not set)";
@@ -224,8 +226,10 @@
                 $"Start of Request {requestId}".Debug(nameof(WebServer));
                 $"Source {requestEndpoint} - {context.RequestVerb().ToString().ToUpperInvariant()}: {context.RequestPath()}".Debug(nameof(WebServer));
 
+                var processResult = await ProcessRequest(context, ct);
+
                 // Return a 404 (Not Found) response if no module/handler handled the response.
-                if (ProcessRequest(context) == false)
+                if (processResult == false)
                 {
                     "No module generated a response. Sending 404 - Not Found".Error();
                     var responseBytes = System.Text.Encoding.UTF8.GetBytes(Constants.Response404Html);
@@ -249,7 +253,9 @@
         /// Process HttpListener Request and returns true if it was handled
         /// </summary>
         /// <param name="context">The HttpListenerContext</param>
-        public bool ProcessRequest(HttpListenerContext context)
+        /// <param name="ct">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<bool> ProcessRequest(HttpListenerContext context, CancellationToken ct)
         {
             // Iterate though the loaded modules to match up a request and possibly generate a response.
             foreach (var module in Modules)
@@ -275,7 +281,8 @@
                     $"{module.Name}::{callback.GetMethodInfo().DeclaringType?.Name}.{callback.GetMethodInfo().Name}".Debug(nameof(WebServer));
 
                     // Execute the callback
-                    var handleResult = callback.Invoke(this, context);
+                    var handleResult = await callback(context, ct);
+
                     $"Result: {handleResult}".Trace(nameof(WebServer));
 
                     // callbacks can instruct the server to stop bubbling the request through the rest of the modules by returning true;
@@ -342,9 +349,9 @@
                     {
                         var clientSocket = await Listener.GetContextAsync().ConfigureAwait(false);
                         // Spawn off each client task asynchronously
-    #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                        Task.Run(() => HandleClientRequest(clientSocket), ct);
-    #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                        HandleClientRequest(clientSocket, ct);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     }
                     catch (OperationCanceledException)
                     {

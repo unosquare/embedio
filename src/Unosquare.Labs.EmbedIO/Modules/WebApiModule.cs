@@ -15,6 +15,22 @@
 #endif
 
     /// <summary>
+    /// A delegate that handles certain action in a module given a path and a verb
+    /// </summary>
+    /// <param name="server">The server.</param>
+    /// <param name="context">The context.</param>
+    /// <returns></returns>
+    public delegate bool ResponseHandler(WebServer server, HttpListenerContext context);
+
+    /// <summary>
+    /// An async delegate that handles certain action in a module given a path and a verb
+    /// </summary>
+    /// <param name="server">The server.</param>
+    /// <param name="context">The context.</param>
+    /// <returns></returns>
+    public delegate Task<bool> AsyncResponseHandler(WebServer server, HttpListenerContext context);
+
+    /// <summary>
     /// A very simple module to register class methods as handlers.
     /// Public instance methods that match the WebServerModule.ResponseHandler signature, and have the WebApi handler attribute
     /// will be used to respond to web server requests
@@ -45,11 +61,11 @@
         /// </summary>
         public WebApiModule()
         {
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
+            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, async (context, ct) =>
             {
                 var verb = context.RequestVerb();
                 var regExRouteParams = new Dictionary<string, object>();
-                var path = server.RoutingStrategy == RoutingStrategy.Wildcard
+                var path = Server.RoutingStrategy == RoutingStrategy.Wildcard
                     ? NormalizeWildcardPath(verb, context)
                     : NormalizeRegexPath(verb, context, regExRouteParams);
 
@@ -62,15 +78,16 @@
                 // ensure module does not return cached responses
                 context.NoCache();
 
-                // Log the handler to be usede
+                // Log the handler to be use
                 $"Handler: {methodPair.Item2.DeclaringType?.FullName}.{methodPair.Item2.Name}".Debug(nameof(WebApiModule));
 
+                // Initially, only the server and context objects will be available
+                var args = new List<object>() { Server, context };
+
                 // Select the routing strategy
-                switch (server.RoutingStrategy)
+                switch (Server.RoutingStrategy)
                 {
                     case RoutingStrategy.Regex:
-                        // Initially, only the server and context objects will be available
-                        var args = new List<object>() {server, context};
 
                         // Parse the arguments to their intended type skipping the first two.
                         foreach (var arg in methodPair.Item2.GetParameters().Skip(2))
@@ -108,38 +125,29 @@
                         if (methodPair.Item2.ReturnType == typeof(Task<bool>))
                         {
                             // Run the method asynchronously
-                            var returnValue =
-                                Task.Run(
-                                    async () => await (Task<bool>) methodPair.Item2.Invoke(controller, args.ToArray()));
-
-                            return returnValue.Result;
+                            return await (Task<bool>) methodPair.Item2.Invoke(controller, args.ToArray());
                         }
-                        else
-                        {
-                            // If the handler is not asynchronous, simply call the method.
-                            var returnValue = (bool) methodPair.Item2.Invoke(controller, args.ToArray());
-                            return returnValue;
-                        }
+                        
+                        // If the handler is not asynchronous, simply call the method.
+                        return (bool) methodPair.Item2.Invoke(controller, args.ToArray());
                     case RoutingStrategy.Wildcard:
                         if (methodPair.Item2.ReturnType == typeof(Task<bool>))
                         {
                             // Asynchronous handling of wildcard matching strategy
                             var method = methodPair.Item2.CreateDelegate(typeof(AsyncResponseHandler), controller);
-                            var returnValue =
-                                Task.Run(async () => await (Task<bool>) method.DynamicInvoke(server, context));
 
-                            return returnValue.Result;
+                            return await (Task<bool>) method.DynamicInvoke(args.ToArray());
                         }
                         else
                         {
                             // Regular handling of wildcard matching strategy
                             var method = methodPair.Item2.CreateDelegate(typeof(ResponseHandler), controller);
-                            var returnValue = (bool) method.DynamicInvoke(server, context);
-                            return returnValue;
+
+                            return (bool) method.DynamicInvoke(args.ToArray());
                         }
                     default:
                         // Log the handler to be used
-                        $"Routing strategy '{server.RoutingStrategy}' is not supported by this module.".Warn(
+                        $"Routing strategy '{Server.RoutingStrategy}' is not supported by this module.".Warn(
                             nameof(WebApiModule));
                         return false;
                 }

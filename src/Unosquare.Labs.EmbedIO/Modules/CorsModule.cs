@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
+    using System.Threading.Tasks;
     using System;
     using System.Linq;
     using System.Net;
@@ -33,20 +34,23 @@
             var validOrigins = origins.ToLower().Split(Constants.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
             var validMethods = methods.ToLower().Split(Constants.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
 
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
+            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (context, ct) =>
             {
                 // If we allow all we don't need to filter
                 if (origins == Constants.CorsWildcard && headers == Constants.CorsWildcard && methods == Constants.CorsWildcard)
                 {
                     context.Response.Headers.Add(Constants.HeaderAccessControlAllowOrigin);
-                    return false;
+                    return Task.FromResult(false);
                 }
 
                 var currentOrigin = context.RequestHeader(Constants.HeaderOrigin);
                 var currentHeader = context.RequestHeader(Constants.HeaderAccessControlRequestHeaders);
                 var currentMethod = context.RequestHeader(Constants.HeaderAccessControlRequestMethod);
 
-                if (string.IsNullOrWhiteSpace(currentOrigin) && context.Request.IsLocal) return false;
+                if (string.IsNullOrWhiteSpace(currentOrigin) && context.Request.IsLocal)
+                {
+                    return Task.FromResult(false);
+                }
 
                 if (origins != Constants.CorsWildcard)
                 {
@@ -74,18 +78,19 @@
                                 else
                                 {
                                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                                    return false;
+
+                                    return Task.FromResult(false);
                                 }
                             }
-
-                            return true;
+                            
+                            return Task.FromResult(true);
                         }
 
-                        return false;
+                        return Task.FromResult(false);
                     }
                 }
 
-                return false;
+                return Task.FromResult(false);
             });
         }
 

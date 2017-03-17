@@ -5,7 +5,6 @@
     using System;
     using System.Net;
     using System.Net.Http;
-    using System.Threading;
     using System.Threading.Tasks;
     using Modules;
     using TestObjects;
@@ -31,7 +30,7 @@
 
             WebServer.RegisterModule(new WebApiModule());
             WebServer.Module<WebApiModule>().RegisterController<TestController>();
-            WebServer.RegisterModule(new FallbackModule((ws, ctx) => ctx.JsonResponse(TestObj)));
+            WebServer.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(TestObj)));
             WebServer.RunAsync();
         }
 

@@ -32,7 +32,7 @@
         /// </summary>
         public WebSocketsModule()
         {
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (server, context) =>
+            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, async (context, ct) =>
             {
                 // check if it is a WebSocket request (this only works with Win8 and Windows 2012)
                 if (context.Request.IsWebSocketRequest == false)
@@ -46,7 +46,7 @@
                     return false;
 
                 // Accept the WebSocket -- this is a blocking method until the WebSocketCloses
-                _serverMap[path].AcceptWebSocket(context);
+                await _serverMap[path].AcceptWebSocket(context);
                 return true;
             });
         }
@@ -57,7 +57,7 @@
         /// <value>
         /// The name.
         /// </value>
-        public override string Name => "WebSockets Module";
+        public override string Name => nameof(WebSocketsModule).Humanize();
 
         /// <summary>
         /// Registers the web sockets server given a WebSocketsServer Type.
@@ -241,9 +241,9 @@
         /// </summary>
         /// <param name="context">The context.</param>
 #if NET46
-        public void AcceptWebSocket(System.Net.HttpListenerContext context)
+        public async Task AcceptWebSocket(System.Net.HttpListenerContext context)
 #else
-        public void AcceptWebSocket(Unosquare.Net.HttpListenerContext context)
+        public async Task AcceptWebSocket(HttpListenerContext context)
 #endif
         {
             // first, accept the websocket
@@ -338,7 +338,7 @@
 
                 while (webSocketContext.WebSocket.IsConnected)
                 {
-                    Task.Delay(500).Wait();
+                    await Task.Delay(500);
                 }
 #endif
             }
@@ -383,6 +383,7 @@
                 for (var i = _mWebSockets.Count - 1; i >= 0; i--)
                 {
                     var currentSocket = _mWebSockets[i];
+
                     if (currentSocket.WebSocket != null &&
                         currentSocket.WebSocket.State != WebSocketState.Open)
                     {

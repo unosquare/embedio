@@ -1,6 +1,13 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+#if NET46
+    using System.Net;
+#else
+    using Net;
+#endif
 
     /// <summary>
     /// Base class to define custom web modules
@@ -53,7 +60,7 @@
         /// or
         /// handler
         /// </exception>
-        public void AddHandler(string path, HttpVerbs verb, ResponseHandler handler)
+        public void AddHandler(string path, HttpVerbs verb, Func<HttpListenerContext, CancellationToken, Task<bool>> handler)
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
