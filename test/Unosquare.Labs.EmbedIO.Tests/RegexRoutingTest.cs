@@ -1,16 +1,13 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
-    using Swan.Formatters;
     using NUnit.Framework;
-    using System;
+    using Swan.Formatters;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Net;
-    using System.Threading;
     using System.Threading.Tasks;
-    using Unosquare.Labs.EmbedIO.Modules;
-    using Unosquare.Labs.EmbedIO.Tests.TestObjects;
+    using TestObjects;
 
     [TestFixture]
     public class RegexRoutingTest
@@ -28,14 +25,6 @@
                 new WebServer(WebServerUrl, RoutingStrategy.Regex)
                     .WithWebApiController<TestRegexController>();
             WebServer.RunAsync();
-        }
-
-        [Test]
-        public void TestWebApi()
-        {
-            Assert.IsNotNull(WebServer.Module<WebApiModule>(), "WebServer has WebApiModule");
-
-            Assert.AreEqual(WebServer.Module<WebApiModule>().ControllersCount, 1, "WebApiModule has one controller");
         }
         
         [Test]
@@ -94,7 +83,6 @@
         [TearDown]
         public void Kill()
         {
-            Task.Delay(TimeSpan.FromSeconds(1)).Wait();
             WebServer.Dispose();
         }
     }

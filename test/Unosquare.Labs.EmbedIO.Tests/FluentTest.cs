@@ -2,8 +2,8 @@
 {
     using NUnit.Framework;
     using System.Reflection;
-    using Unosquare.Labs.EmbedIO.Modules;
-    using Unosquare.Labs.EmbedIO.Tests.TestObjects;
+    using Modules;
+    using TestObjects;
 
     [TestFixture]
     public class FluentTest

@@ -4,11 +4,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Unosquare.Labs.EmbedIO.Modules;
+    using Modules;
 #if NET46
     using System.Net;
 #else
-    using Unosquare.Net;
+    using Net;
 #endif
 
     public class TestController : WebApiController

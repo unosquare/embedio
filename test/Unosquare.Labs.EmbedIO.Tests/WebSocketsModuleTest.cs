@@ -5,12 +5,12 @@
     using System.Threading.Tasks;
     using System.Reflection;
     using NUnit.Framework;
-    using Unosquare.Labs.EmbedIO.Modules;
-    using Unosquare.Labs.EmbedIO.Tests.TestObjects;
+    using Modules;
+    using TestObjects;
 #if NET46
     using System.Net.WebSockets;
 #else
-    using Unosquare.Net;
+    using Net;
 #endif
 
     [TestFixture]

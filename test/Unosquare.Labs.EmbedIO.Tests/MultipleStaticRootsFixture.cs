@@ -6,8 +6,8 @@
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
-    using Unosquare.Labs.EmbedIO.Modules;
-    using Unosquare.Labs.EmbedIO.Tests.TestObjects;
+    using Modules;
+    using TestObjects;
 
     [TestFixture]
     public class MultipleStaticRootsFixture

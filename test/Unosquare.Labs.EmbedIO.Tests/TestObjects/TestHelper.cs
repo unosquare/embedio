@@ -8,7 +8,7 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using Labs.EmbedIO.Modules;
+    using Modules;
 
     public static class TestHelper
     {

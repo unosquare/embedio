@@ -9,8 +9,8 @@
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using Unosquare.Labs.EmbedIO.Modules;
-    using Unosquare.Labs.EmbedIO.Tests.TestObjects;
+    using Modules;
+    using TestObjects;
     using Swan.Networking;
 
     [TestFixture]
@@ -27,17 +27,10 @@
             WebServerUrl = Resources.GetServerAddress();
             WebServer = new WebServer(WebServerUrl)
                 .WithWebApiController<TestController>();
+
             WebServer.RunAsync();
         }
-
-        [Test]
-        public void TestWebApi()
-        {
-            Assert.IsNotNull(WebServer.Module<WebApiModule>(), "WebServer has WebApiModule");
-
-            Assert.AreEqual(WebServer.Module<WebApiModule>().ControllersCount, 1, "WebApiModule has one controller");
-        }
-
+        
         [Test]
         public async Task GetJsonData()
         {

@@ -5,8 +5,8 @@
     using System.Threading.Tasks;
     using System.Linq;
     using System.Threading;
-    using Unosquare.Labs.EmbedIO.Modules;
-    using Unosquare.Labs.EmbedIO.Tests.TestObjects;
+    using Modules;
+    using TestObjects;
 
     [TestFixture]
     public class WebServerTest

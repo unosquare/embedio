@@ -377,19 +377,18 @@
             if (!disposing) return;
 
             // free managed resources
-            if (Listener != null)
-            {
-                try
-                {
-                    (Listener as IDisposable).Dispose();
-                }
-                finally
-                {
-                    Listener = null;
-                }
+            if (Listener == null) return;
 
-                "Listener Closed.".Info(nameof(WebServer));
+            try
+            {
+                (Listener as IDisposable).Dispose();
             }
+            finally
+            {
+                Listener = null;
+            }
+
+            "Listener Closed.".Info(nameof(WebServer));
         }
 
         /// <summary>

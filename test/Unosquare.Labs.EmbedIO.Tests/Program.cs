@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using NUnit.Framework;
 using Unosquare.Labs.EmbedIO.Modules;
 using Unosquare.Labs.EmbedIO.Tests.TestObjects;
 using Unosquare.Swan;
@@ -12,26 +14,22 @@ namespace Unosquare.Labs.EmbedIO.Tests
     {
         public static void Main()
         {
-            var webServerUrl = Resources.GetServerAddress();
+            var url = Resources.GetServerAddress();
 
-            var webServer = new WebServer(webServerUrl);
-            webServer.RegisterModule(new LocalSessionModule() { Expiration = TimeSpan.FromSeconds(6) });
-            webServer.RegisterModule(new FallbackModule((ws, ctx) => ctx.JsonResponse(new { Message = "OK" })));
-
-            webServer.RunAsync();
-
-            var rnd = new Random();
-
-            Parallel.ForEach(Enumerable.Range(0, 50), async (s, t, l) =>
+            using (var instance = new WebServer(url))
             {
-                await Task.Delay(TimeSpan.FromSeconds(rnd.Next(1, 10)));
+                instance.RegisterModule(new TestWebModule());
+                instance.RunAsync();
 
-                using (var webClient = new HttpClient())
+                var request = (HttpWebRequest)WebRequest.Create(url + TestWebModule.RedirectAbsoluteUrl);
+#if NET452
+                request.AllowAutoRedirect = false;
+#endif
+                using (var response = (HttpWebResponse)request.GetResponseAsync().Result)
                 {
-                    var data = await webClient.GetStringAsync(webServerUrl);
-                    data.Info();
+                    Assert.AreEqual(response.StatusCode, HttpStatusCode.Redirect, "Status Code Redirect");
                 }
-            });
+            }
 
             Console.ReadKey();
         }

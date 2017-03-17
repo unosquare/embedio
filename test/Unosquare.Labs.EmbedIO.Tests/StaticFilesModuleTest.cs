@@ -93,8 +93,8 @@
             using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-                Assert.NotNull(response.Headers[EmbedIO.Constants.HeaderETag], "ETag is not null");
-                eTag = response.Headers[EmbedIO.Constants.HeaderETag];
+                Assert.NotNull(response.Headers[Constants.HeaderETag], "ETag is not null");
+                eTag = response.Headers[Constants.HeaderETag];
             }
 
             var secondRequest = (HttpWebRequest)WebRequest.Create(WebServerUrl);
@@ -208,7 +208,7 @@
             Assert.AreEqual(remoteSize, originalSet.Length);
 
             var buffer = new byte[remoteSize];
-            const int chunkSize = 50000;
+            const int chunkSize = 100000;
 
             for (var i = 0; i < remoteSize / chunkSize + 1; i++)
             {
@@ -286,7 +286,7 @@
         public async Task GetNotPartial()
         {
             var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestHelper.BigDataFile);
-
+            
             using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
