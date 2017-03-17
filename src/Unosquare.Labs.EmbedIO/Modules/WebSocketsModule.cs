@@ -46,7 +46,7 @@
                     return false;
 
                 // Accept the WebSocket -- this is a blocking method until the WebSocketCloses
-                await _serverMap[path].AcceptWebSocket(context);
+                await _serverMap[path].AcceptWebSocket(context, ct);
                 return true;
             });
         }
@@ -244,10 +244,12 @@
         /// This is a blocking call so it must be called within an independent thread.
         /// </summary>
         /// <param name="context">The context.</param>
+        /// <param name="ct">The cancellation token.</param>
+        /// <returns></returns>
 #if NET46
-        public async Task AcceptWebSocket(System.Net.HttpListenerContext context)
+        public async Task AcceptWebSocket(System.Net.HttpListenerContext context, CancellationToken ct)
 #else
-        public async Task AcceptWebSocket(HttpListenerContext context)
+        public async Task AcceptWebSocket(HttpListenerContext context, CancellationToken ct)
 #endif
         {
             // first, accept the websocket
@@ -259,12 +261,10 @@
 
             var webSocketContext =
 #if NET46
-                context.AcceptWebSocketAsync(subProtocol: null, receiveBufferSize: receiveBufferSize,
-                    keepAliveInterval: TimeSpan.FromSeconds(30))
-                    .GetAwaiter()
-                    .GetResult();
+                await context.AcceptWebSocketAsync(subProtocol: null, receiveBufferSize: receiveBufferSize,
+                    keepAliveInterval: TimeSpan.FromSeconds(30));
 #else
-                context.AcceptWebSocket();
+                await context.AcceptWebSocketAsync(ct);
 #endif
 
             // remove the disconnected clients

@@ -29,6 +29,8 @@
 
 using System;
 using System.Security.Principal;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Unosquare.Net
 {
@@ -73,7 +75,7 @@ namespace Unosquare.Net
         /// Gets the user.
         /// </summary>
         public IPrincipal User { get; private set; }
-        
+
 #if AUTHENTICATION
         internal void ParseAuthentication(AuthenticationSchemes expectedSchemes)
         {
@@ -132,18 +134,19 @@ namespace Unosquare.Net
         /// <summary>
         /// Accepts a WebSocket handshake request.
         /// </summary>
+        /// <param name="ct">The cancellation token.</param>
         /// <returns>
         /// A <see cref="WebSocketContext" /> that represents
         /// the WebSocket handshake request.
         /// </returns>
         /// <exception cref="InvalidOperationException">This method has already been called.</exception>
-        public WebSocketContext AcceptWebSocket()
+        public async Task<WebSocketContext> AcceptWebSocketAsync(CancellationToken ct)
         {
             if (_websocketContext != null)
                 throw new InvalidOperationException("The accepting is already in progress.");
-            
+
             _websocketContext = new WebSocketContext(this);
-            _websocketContext.WebSocket.InternalAccept();
+            await _websocketContext.WebSocket.InternalAcceptAsync(ct);
 
             return _websocketContext;
         }

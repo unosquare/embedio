@@ -141,7 +141,7 @@ namespace Unosquare.Net
             }
         }
 
-        public IPEndPoint RemoteEndPoint => (IPEndPoint) _sock.RemoteEndPoint;
+        public IPEndPoint RemoteEndPoint => (IPEndPoint) _sock?.RemoteEndPoint;
 
         public bool IsSecure { get; }
 
