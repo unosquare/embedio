@@ -2338,30 +2338,30 @@ references:
   commentId: Overload:Unosquare.Net.HttpListener.#ctor
   fullName: Unosquare.Net.HttpListener.HttpListener
   nameWithType: HttpListener.HttpListener
-- uid: Unosquare.Net.HttpListener.Abort
-  name: Abort()
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_Abort
-  commentId: M:Unosquare.Net.HttpListener.Abort
-  fullName: Unosquare.Net.HttpListener.Abort()
-  nameWithType: HttpListener.Abort()
-- uid: Unosquare.Net.HttpListener.Abort*
-  name: Abort
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_Abort_
-  commentId: Overload:Unosquare.Net.HttpListener.Abort
-  fullName: Unosquare.Net.HttpListener.Abort
-  nameWithType: HttpListener.Abort
-- uid: Unosquare.Net.HttpListener.Close
-  name: Close()
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_Close
-  commentId: M:Unosquare.Net.HttpListener.Close
-  fullName: Unosquare.Net.HttpListener.Close()
-  nameWithType: HttpListener.Close()
-- uid: Unosquare.Net.HttpListener.Close*
-  name: Close
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_Close_
-  commentId: Overload:Unosquare.Net.HttpListener.Close
-  fullName: Unosquare.Net.HttpListener.Close
-  nameWithType: HttpListener.Close
+- uid: Unosquare.Net.HttpListener.AborAsynt
+  name: AborAsynt()
+  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_AborAsynt
+  commentId: M:Unosquare.Net.HttpListener.AborAsynt
+  fullName: Unosquare.Net.HttpListener.AborAsynt()
+  nameWithType: HttpListener.AborAsynt()
+- uid: Unosquare.Net.HttpListener.AborAsynt*
+  name: AborAsynt
+  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_AborAsynt_
+  commentId: Overload:Unosquare.Net.HttpListener.AborAsynt
+  fullName: Unosquare.Net.HttpListener.AborAsynt
+  nameWithType: HttpListener.AborAsynt
+- uid: Unosquare.Net.HttpListener.CloseAsync
+  name: CloseAsync()
+  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_CloseAsync
+  commentId: M:Unosquare.Net.HttpListener.CloseAsync
+  fullName: Unosquare.Net.HttpListener.CloseAsync()
+  nameWithType: HttpListener.CloseAsync()
+- uid: Unosquare.Net.HttpListener.CloseAsync*
+  name: CloseAsync
+  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_CloseAsync_
+  commentId: Overload:Unosquare.Net.HttpListener.CloseAsync
+  fullName: Unosquare.Net.HttpListener.CloseAsync
+  nameWithType: HttpListener.CloseAsync
 - uid: Unosquare.Net.HttpListener.ExtendedProtectionSelector
   name: HttpListener.ExtendedProtectionSelector
   href: api/Unosquare.Net.HttpListener.ExtendedProtectionSelector.html
@@ -2452,18 +2452,18 @@ references:
   commentId: Overload:Unosquare.Net.HttpListener.Start
   fullName: Unosquare.Net.HttpListener.Start
   nameWithType: HttpListener.Start
-- uid: Unosquare.Net.HttpListener.Stop
-  name: Stop()
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_Stop
-  commentId: M:Unosquare.Net.HttpListener.Stop
-  fullName: Unosquare.Net.HttpListener.Stop()
-  nameWithType: HttpListener.Stop()
-- uid: Unosquare.Net.HttpListener.Stop*
-  name: Stop
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_Stop_
-  commentId: Overload:Unosquare.Net.HttpListener.Stop
-  fullName: Unosquare.Net.HttpListener.Stop
-  nameWithType: HttpListener.Stop
+- uid: Unosquare.Net.HttpListener.StopAsync
+  name: StopAsync()
+  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_StopAsync
+  commentId: M:Unosquare.Net.HttpListener.StopAsync
+  fullName: Unosquare.Net.HttpListener.StopAsync()
+  nameWithType: HttpListener.StopAsync()
+- uid: Unosquare.Net.HttpListener.StopAsync*
+  name: StopAsync
+  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_StopAsync_
+  commentId: Overload:Unosquare.Net.HttpListener.StopAsync
+  fullName: Unosquare.Net.HttpListener.StopAsync
+  nameWithType: HttpListener.StopAsync
 - uid: Unosquare.Net.HttpListener.UnsafeConnectionNtlmAuthentication
   name: UnsafeConnectionNtlmAuthentication
   href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_UnsafeConnectionNtlmAuthentication
@@ -2953,18 +2953,6 @@ references:
   commentId: Overload:Unosquare.Net.HttpListenerRequest.ServiceName
   fullName: Unosquare.Net.HttpListenerRequest.ServiceName
   nameWithType: HttpListenerRequest.ServiceName
-- uid: Unosquare.Net.HttpListenerRequest.TransportContext
-  name: TransportContext
-  href: api/Unosquare.Net.HttpListenerRequest.html#Unosquare_Net_HttpListenerRequest_TransportContext
-  commentId: P:Unosquare.Net.HttpListenerRequest.TransportContext
-  fullName: Unosquare.Net.HttpListenerRequest.TransportContext
-  nameWithType: HttpListenerRequest.TransportContext
-- uid: Unosquare.Net.HttpListenerRequest.TransportContext*
-  name: TransportContext
-  href: api/Unosquare.Net.HttpListenerRequest.html#Unosquare_Net_HttpListenerRequest_TransportContext_
-  commentId: Overload:Unosquare.Net.HttpListenerRequest.TransportContext
-  fullName: Unosquare.Net.HttpListenerRequest.TransportContext
-  nameWithType: HttpListenerRequest.TransportContext
 - uid: Unosquare.Net.HttpListenerRequest.Url
   name: Url
   href: api/Unosquare.Net.HttpListenerRequest.html#Unosquare_Net_HttpListenerRequest_Url
@@ -3043,18 +3031,18 @@ references:
   commentId: T:Unosquare.Net.HttpListenerResponse
   fullName: Unosquare.Net.HttpListenerResponse
   nameWithType: HttpListenerResponse
-- uid: Unosquare.Net.HttpListenerResponse.Abort
-  name: Abort()
-  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_Abort
-  commentId: M:Unosquare.Net.HttpListenerResponse.Abort
-  fullName: Unosquare.Net.HttpListenerResponse.Abort()
-  nameWithType: HttpListenerResponse.Abort()
-- uid: Unosquare.Net.HttpListenerResponse.Abort*
-  name: Abort
-  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_Abort_
-  commentId: Overload:Unosquare.Net.HttpListenerResponse.Abort
-  fullName: Unosquare.Net.HttpListenerResponse.Abort
-  nameWithType: HttpListenerResponse.Abort
+- uid: Unosquare.Net.HttpListenerResponse.AbortAsync
+  name: AbortAsync()
+  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_AbortAsync
+  commentId: M:Unosquare.Net.HttpListenerResponse.AbortAsync
+  fullName: Unosquare.Net.HttpListenerResponse.AbortAsync()
+  nameWithType: HttpListenerResponse.AbortAsync()
+- uid: Unosquare.Net.HttpListenerResponse.AbortAsync*
+  name: AbortAsync
+  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_AbortAsync_
+  commentId: Overload:Unosquare.Net.HttpListenerResponse.AbortAsync
+  fullName: Unosquare.Net.HttpListenerResponse.AbortAsync
+  nameWithType: HttpListenerResponse.AbortAsync
 - uid: Unosquare.Net.HttpListenerResponse.AddHeader(System.String,System.String)
   name: AddHeader(String, String)
   href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_AddHeader_System_String_System_String_
@@ -3091,27 +3079,27 @@ references:
   commentId: Overload:Unosquare.Net.HttpListenerResponse.AppendHeader
   fullName: Unosquare.Net.HttpListenerResponse.AppendHeader
   nameWithType: HttpListenerResponse.AppendHeader
-- uid: Unosquare.Net.HttpListenerResponse.Close
-  name: Close()
-  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_Close
-  commentId: M:Unosquare.Net.HttpListenerResponse.Close
-  fullName: Unosquare.Net.HttpListenerResponse.Close()
-  nameWithType: HttpListenerResponse.Close()
-- uid: Unosquare.Net.HttpListenerResponse.Close(System.Byte[],System.Boolean)
-  name: Close(Byte[], Boolean)
-  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_Close_System_Byte___System_Boolean_
-  commentId: M:Unosquare.Net.HttpListenerResponse.Close(System.Byte[],System.Boolean)
-  name.vb: Close(Byte(), Boolean)
-  fullName: Unosquare.Net.HttpListenerResponse.Close(System.Byte[], System.Boolean)
-  fullName.vb: Unosquare.Net.HttpListenerResponse.Close(System.Byte(), System.Boolean)
-  nameWithType: HttpListenerResponse.Close(Byte[], Boolean)
-  nameWithType.vb: HttpListenerResponse.Close(Byte(), Boolean)
-- uid: Unosquare.Net.HttpListenerResponse.Close*
-  name: Close
-  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_Close_
-  commentId: Overload:Unosquare.Net.HttpListenerResponse.Close
-  fullName: Unosquare.Net.HttpListenerResponse.Close
-  nameWithType: HttpListenerResponse.Close
+- uid: Unosquare.Net.HttpListenerResponse.CloseAsync
+  name: CloseAsync()
+  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_CloseAsync
+  commentId: M:Unosquare.Net.HttpListenerResponse.CloseAsync
+  fullName: Unosquare.Net.HttpListenerResponse.CloseAsync()
+  nameWithType: HttpListenerResponse.CloseAsync()
+- uid: Unosquare.Net.HttpListenerResponse.CloseAsync(System.Byte[],System.Boolean)
+  name: CloseAsync(Byte[], Boolean)
+  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_CloseAsync_System_Byte___System_Boolean_
+  commentId: M:Unosquare.Net.HttpListenerResponse.CloseAsync(System.Byte[],System.Boolean)
+  name.vb: CloseAsync(Byte(), Boolean)
+  fullName: Unosquare.Net.HttpListenerResponse.CloseAsync(System.Byte[], System.Boolean)
+  fullName.vb: Unosquare.Net.HttpListenerResponse.CloseAsync(System.Byte(), System.Boolean)
+  nameWithType: HttpListenerResponse.CloseAsync(Byte[], Boolean)
+  nameWithType.vb: HttpListenerResponse.CloseAsync(Byte(), Boolean)
+- uid: Unosquare.Net.HttpListenerResponse.CloseAsync*
+  name: CloseAsync
+  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_CloseAsync_
+  commentId: Overload:Unosquare.Net.HttpListenerResponse.CloseAsync
+  fullName: Unosquare.Net.HttpListenerResponse.CloseAsync
+  nameWithType: HttpListenerResponse.CloseAsync
 - uid: Unosquare.Net.HttpListenerResponse.ContentEncoding
   name: ContentEncoding
   href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_ContentEncoding
@@ -3589,18 +3577,18 @@ references:
   commentId: Overload:Unosquare.Net.ResponseStream.CanWrite
   fullName: Unosquare.Net.ResponseStream.CanWrite
   nameWithType: ResponseStream.CanWrite
-- uid: Unosquare.Net.ResponseStream.Close
-  name: Close()
-  href: api/Unosquare.Net.ResponseStream.html#Unosquare_Net_ResponseStream_Close
-  commentId: M:Unosquare.Net.ResponseStream.Close
-  fullName: Unosquare.Net.ResponseStream.Close()
-  nameWithType: ResponseStream.Close()
-- uid: Unosquare.Net.ResponseStream.Close*
-  name: Close
-  href: api/Unosquare.Net.ResponseStream.html#Unosquare_Net_ResponseStream_Close_
-  commentId: Overload:Unosquare.Net.ResponseStream.Close
-  fullName: Unosquare.Net.ResponseStream.Close
-  nameWithType: ResponseStream.Close
+- uid: Unosquare.Net.ResponseStream.CloseAsync
+  name: CloseAsync()
+  href: api/Unosquare.Net.ResponseStream.html#Unosquare_Net_ResponseStream_CloseAsync
+  commentId: M:Unosquare.Net.ResponseStream.CloseAsync
+  fullName: Unosquare.Net.ResponseStream.CloseAsync()
+  nameWithType: ResponseStream.CloseAsync()
+- uid: Unosquare.Net.ResponseStream.CloseAsync*
+  name: CloseAsync
+  href: api/Unosquare.Net.ResponseStream.html#Unosquare_Net_ResponseStream_CloseAsync_
+  commentId: Overload:Unosquare.Net.ResponseStream.CloseAsync
+  fullName: Unosquare.Net.ResponseStream.CloseAsync
+  nameWithType: ResponseStream.CloseAsync
 - uid: Unosquare.Net.ResponseStream.Flush
   name: Flush()
   href: api/Unosquare.Net.ResponseStream.html#Unosquare_Net_ResponseStream_Flush
