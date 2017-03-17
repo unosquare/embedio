@@ -706,6 +706,25 @@ namespace Unosquare.Net
             return vals != null && vals.Split(',').Any(val => val.Trim().Equals(value, StringComparison.OrdinalIgnoreCase));
         }
 
+        /// <summary>
+        /// Determines whether the specified <see cref="string"/> contains any of characters in
+        /// the specified array of <see cref="char"/>.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if <paramref name="value"/> contains any of <paramref name="chars"/>;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        /// <param name="value">
+        /// A <see cref="string"/> to test.
+        /// </param>
+        /// <param name="chars">
+        /// An array of <see cref="char"/> that contains characters to find.
+        /// </param>
+        public static bool Contains(this string value, params char[] chars)
+        {
+            return chars?.Length == 0 || !string.IsNullOrEmpty(value) && value.IndexOfAny(chars) > -1;
+        }
+
         internal static bool IsCompressionExtension(this string value, CompressionMethod method)
         {
             return value.StartsWith(method.ToExtensionString());
