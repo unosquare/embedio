@@ -3370,21 +3370,6 @@ references:
   commentId: T:Unosquare.Net.NetExtensions
   fullName: Unosquare.Net.NetExtensions
   nameWithType: NetExtensions
-- uid: Unosquare.Net.NetExtensions.BeginRead(Stream,System.Byte[],System.Int32,System.Int32,AsyncCallback,System.Object)
-  name: BeginRead(Stream, Byte[], Int32, Int32, AsyncCallback, Object)
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_BeginRead_Stream_System_Byte___System_Int32_System_Int32_AsyncCallback_System_Object_
-  commentId: M:Unosquare.Net.NetExtensions.BeginRead(Stream,System.Byte[],System.Int32,System.Int32,AsyncCallback,System.Object)
-  name.vb: BeginRead(Stream, Byte(), Int32, Int32, AsyncCallback, Object)
-  fullName: Unosquare.Net.NetExtensions.BeginRead(Stream, System.Byte[], System.Int32, System.Int32, AsyncCallback, System.Object)
-  fullName.vb: Unosquare.Net.NetExtensions.BeginRead(Stream, System.Byte(), System.Int32, System.Int32, AsyncCallback, System.Object)
-  nameWithType: NetExtensions.BeginRead(Stream, Byte[], Int32, Int32, AsyncCallback, Object)
-  nameWithType.vb: NetExtensions.BeginRead(Stream, Byte(), Int32, Int32, AsyncCallback, Object)
-- uid: Unosquare.Net.NetExtensions.BeginRead*
-  name: BeginRead
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_BeginRead_
-  commentId: Overload:Unosquare.Net.NetExtensions.BeginRead
-  fullName: Unosquare.Net.NetExtensions.BeginRead
-  nameWithType: NetExtensions.BeginRead
 - uid: Unosquare.Net.NetExtensions.Contains(NameValueCollection,System.String,System.String)
   name: Contains(NameValueCollection, String, String)
   href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_Contains_NameValueCollection_System_String_System_String_
@@ -3406,18 +3391,6 @@ references:
   commentId: Overload:Unosquare.Net.NetExtensions.Contains
   fullName: Unosquare.Net.NetExtensions.Contains
   nameWithType: NetExtensions.Contains
-- uid: Unosquare.Net.NetExtensions.EndRead(Stream,IAsyncResult)
-  name: EndRead(Stream, IAsyncResult)
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_EndRead_Stream_IAsyncResult_
-  commentId: M:Unosquare.Net.NetExtensions.EndRead(Stream,IAsyncResult)
-  fullName: Unosquare.Net.NetExtensions.EndRead(Stream, IAsyncResult)
-  nameWithType: NetExtensions.EndRead(Stream, IAsyncResult)
-- uid: Unosquare.Net.NetExtensions.EndRead*
-  name: EndRead
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_EndRead_
-  commentId: Overload:Unosquare.Net.NetExtensions.EndRead
-  fullName: Unosquare.Net.NetExtensions.EndRead
-  nameWithType: NetExtensions.EndRead
 - uid: Unosquare.Net.NetExtensions.GetCookies(NameValueCollection,System.Boolean)
   name: GetCookies(NameValueCollection, Boolean)
   href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_GetCookies_NameValueCollection_System_Boolean_
