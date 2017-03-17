@@ -3535,6 +3535,48 @@ references:
   commentId: F:Unosquare.Net.NetExtensions.UriSchemeNntp
   fullName: Unosquare.Net.NetExtensions.UriSchemeNntp
   nameWithType: NetExtensions.UriSchemeNntp
+- uid: Unosquare.Net.Opcode
+  name: Opcode
+  href: api/Unosquare.Net.Opcode.html
+  commentId: T:Unosquare.Net.Opcode
+  fullName: Unosquare.Net.Opcode
+  nameWithType: Opcode
+- uid: Unosquare.Net.Opcode.Binary
+  name: Binary
+  href: api/Unosquare.Net.Opcode.html#Unosquare_Net_Opcode_Binary
+  commentId: F:Unosquare.Net.Opcode.Binary
+  fullName: Unosquare.Net.Opcode.Binary
+  nameWithType: Opcode.Binary
+- uid: Unosquare.Net.Opcode.Close
+  name: Close
+  href: api/Unosquare.Net.Opcode.html#Unosquare_Net_Opcode_Close
+  commentId: F:Unosquare.Net.Opcode.Close
+  fullName: Unosquare.Net.Opcode.Close
+  nameWithType: Opcode.Close
+- uid: Unosquare.Net.Opcode.Cont
+  name: Cont
+  href: api/Unosquare.Net.Opcode.html#Unosquare_Net_Opcode_Cont
+  commentId: F:Unosquare.Net.Opcode.Cont
+  fullName: Unosquare.Net.Opcode.Cont
+  nameWithType: Opcode.Cont
+- uid: Unosquare.Net.Opcode.Ping
+  name: Ping
+  href: api/Unosquare.Net.Opcode.html#Unosquare_Net_Opcode_Ping
+  commentId: F:Unosquare.Net.Opcode.Ping
+  fullName: Unosquare.Net.Opcode.Ping
+  nameWithType: Opcode.Ping
+- uid: Unosquare.Net.Opcode.Pong
+  name: Pong
+  href: api/Unosquare.Net.Opcode.html#Unosquare_Net_Opcode_Pong
+  commentId: F:Unosquare.Net.Opcode.Pong
+  fullName: Unosquare.Net.Opcode.Pong
+  nameWithType: Opcode.Pong
+- uid: Unosquare.Net.Opcode.Text
+  name: Text
+  href: api/Unosquare.Net.Opcode.html#Unosquare_Net_Opcode_Text
+  commentId: F:Unosquare.Net.Opcode.Text
+  fullName: Unosquare.Net.Opcode.Text
+  nameWithType: Opcode.Text
 - uid: Unosquare.Net.ResponseStream
   name: ResponseStream
   href: api/Unosquare.Net.ResponseStream.html
@@ -4075,69 +4117,27 @@ references:
   commentId: Overload:Unosquare.Net.WebSocket.PingAsync
   fullName: Unosquare.Net.WebSocket.PingAsync
   nameWithType: WebSocket.PingAsync
-- uid: Unosquare.Net.WebSocket.Send(FileInfo)
-  name: Send(FileInfo)
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Send_FileInfo_
-  commentId: M:Unosquare.Net.WebSocket.Send(FileInfo)
-  fullName: Unosquare.Net.WebSocket.Send(FileInfo)
-  nameWithType: WebSocket.Send(FileInfo)
-- uid: Unosquare.Net.WebSocket.Send(System.String)
-  name: Send(String)
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Send_System_String_
-  commentId: M:Unosquare.Net.WebSocket.Send(System.String)
-  fullName: Unosquare.Net.WebSocket.Send(System.String)
-  nameWithType: WebSocket.Send(String)
-- uid: Unosquare.Net.WebSocket.Send*
-  name: Send
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Send_
-  commentId: Overload:Unosquare.Net.WebSocket.Send
-  fullName: Unosquare.Net.WebSocket.Send
-  nameWithType: WebSocket.Send
-- uid: Unosquare.Net.WebSocket.SendAsync(FileInfo,Action{System.Boolean})
-  name: SendAsync(FileInfo, Action<Boolean>)
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_FileInfo_Action_System_Boolean__
-  commentId: M:Unosquare.Net.WebSocket.SendAsync(FileInfo,Action{System.Boolean})
-  name.vb: SendAsync(FileInfo, Action(Of Boolean))
-  fullName: Unosquare.Net.WebSocket.SendAsync(FileInfo, Action<System.Boolean>)
-  fullName.vb: Unosquare.Net.WebSocket.SendAsync(FileInfo, Action(Of System.Boolean))
-  nameWithType: WebSocket.SendAsync(FileInfo, Action<Boolean>)
-  nameWithType.vb: WebSocket.SendAsync(FileInfo, Action(Of Boolean))
-- uid: Unosquare.Net.WebSocket.SendAsync(Stream,System.Int32,Action{System.Boolean})
-  name: SendAsync(Stream, Int32, Action<Boolean>)
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_Stream_System_Int32_Action_System_Boolean__
-  commentId: M:Unosquare.Net.WebSocket.SendAsync(Stream,System.Int32,Action{System.Boolean})
-  name.vb: SendAsync(Stream, Int32, Action(Of Boolean))
-  fullName: Unosquare.Net.WebSocket.SendAsync(Stream, System.Int32, Action<System.Boolean>)
-  fullName.vb: Unosquare.Net.WebSocket.SendAsync(Stream, System.Int32, Action(Of System.Boolean))
-  nameWithType: WebSocket.SendAsync(Stream, Int32, Action<Boolean>)
-  nameWithType.vb: WebSocket.SendAsync(Stream, Int32, Action(Of Boolean))
-- uid: Unosquare.Net.WebSocket.SendAsync(System.Byte[])
-  name: SendAsync(Byte[])
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_System_Byte___
-  commentId: M:Unosquare.Net.WebSocket.SendAsync(System.Byte[])
-  name.vb: SendAsync(Byte())
-  fullName: Unosquare.Net.WebSocket.SendAsync(System.Byte[])
-  fullName.vb: Unosquare.Net.WebSocket.SendAsync(System.Byte())
-  nameWithType: WebSocket.SendAsync(Byte[])
-  nameWithType.vb: WebSocket.SendAsync(Byte())
-- uid: Unosquare.Net.WebSocket.SendAsync(System.Byte[],Action{System.Boolean})
-  name: SendAsync(Byte[], Action<Boolean>)
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_System_Byte___Action_System_Boolean__
-  commentId: M:Unosquare.Net.WebSocket.SendAsync(System.Byte[],Action{System.Boolean})
-  name.vb: SendAsync(Byte(), Action(Of Boolean))
-  fullName: Unosquare.Net.WebSocket.SendAsync(System.Byte[], Action<System.Boolean>)
-  fullName.vb: Unosquare.Net.WebSocket.SendAsync(System.Byte(), Action(Of System.Boolean))
-  nameWithType: WebSocket.SendAsync(Byte[], Action<Boolean>)
-  nameWithType.vb: WebSocket.SendAsync(Byte(), Action(Of Boolean))
-- uid: Unosquare.Net.WebSocket.SendAsync(System.String,Action{System.Boolean})
-  name: SendAsync(String, Action<Boolean>)
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_System_String_Action_System_Boolean__
-  commentId: M:Unosquare.Net.WebSocket.SendAsync(System.String,Action{System.Boolean})
-  name.vb: SendAsync(String, Action(Of Boolean))
-  fullName: Unosquare.Net.WebSocket.SendAsync(System.String, Action<System.Boolean>)
-  fullName.vb: Unosquare.Net.WebSocket.SendAsync(System.String, Action(Of System.Boolean))
-  nameWithType: WebSocket.SendAsync(String, Action<Boolean>)
-  nameWithType.vb: WebSocket.SendAsync(String, Action(Of Boolean))
+- uid: Unosquare.Net.WebSocket.SendAsync(FileInfo)
+  name: SendAsync(FileInfo)
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_FileInfo_
+  commentId: M:Unosquare.Net.WebSocket.SendAsync(FileInfo)
+  fullName: Unosquare.Net.WebSocket.SendAsync(FileInfo)
+  nameWithType: WebSocket.SendAsync(FileInfo)
+- uid: Unosquare.Net.WebSocket.SendAsync(Stream,System.Int32)
+  name: SendAsync(Stream, Int32)
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_Stream_System_Int32_
+  commentId: M:Unosquare.Net.WebSocket.SendAsync(Stream,System.Int32)
+  fullName: Unosquare.Net.WebSocket.SendAsync(Stream, System.Int32)
+  nameWithType: WebSocket.SendAsync(Stream, Int32)
+- uid: Unosquare.Net.WebSocket.SendAsync(Unosquare.Net.Opcode,System.Byte[])
+  name: SendAsync(Opcode, Byte[])
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_Unosquare_Net_Opcode_System_Byte___
+  commentId: M:Unosquare.Net.WebSocket.SendAsync(Unosquare.Net.Opcode,System.Byte[])
+  name.vb: SendAsync(Opcode, Byte())
+  fullName: Unosquare.Net.WebSocket.SendAsync(Unosquare.Net.Opcode, System.Byte[])
+  fullName.vb: Unosquare.Net.WebSocket.SendAsync(Unosquare.Net.Opcode, System.Byte())
+  nameWithType: WebSocket.SendAsync(Opcode, Byte[])
+  nameWithType.vb: WebSocket.SendAsync(Opcode, Byte())
 - uid: Unosquare.Net.WebSocket.SendAsync*
   name: SendAsync
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_
