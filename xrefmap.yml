@@ -7,12 +7,6 @@ references:
   commentId: N:Unosquare.Labs.EmbedIO
   fullName: Unosquare.Labs.EmbedIO
   nameWithType: Unosquare.Labs.EmbedIO
-- uid: Unosquare.Labs.EmbedIO.AsyncResponseHandler
-  name: AsyncResponseHandler
-  href: api/Unosquare.Labs.EmbedIO.AsyncResponseHandler.html
-  commentId: T:Unosquare.Labs.EmbedIO.AsyncResponseHandler
-  fullName: Unosquare.Labs.EmbedIO.AsyncResponseHandler
-  nameWithType: AsyncResponseHandler
 - uid: Unosquare.Labs.EmbedIO.CompressionMethod
   name: CompressionMethod
   href: api/Unosquare.Labs.EmbedIO.CompressionMethod.html
@@ -742,12 +736,15 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.IWebModule
   fullName: Unosquare.Labs.EmbedIO.IWebModule
   nameWithType: IWebModule
-- uid: Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String,Unosquare.Labs.EmbedIO.HttpVerbs,Unosquare.Labs.EmbedIO.ResponseHandler)
-  name: AddHandler(String, HttpVerbs, ResponseHandler)
-  href: api/Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_AddHandler_System_String_Unosquare_Labs_EmbedIO_HttpVerbs_Unosquare_Labs_EmbedIO_ResponseHandler_
-  commentId: M:Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String,Unosquare.Labs.EmbedIO.HttpVerbs,Unosquare.Labs.EmbedIO.ResponseHandler)
-  fullName: Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String, Unosquare.Labs.EmbedIO.HttpVerbs, Unosquare.Labs.EmbedIO.ResponseHandler)
-  nameWithType: IWebModule.AddHandler(String, HttpVerbs, ResponseHandler)
+- uid: Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String,Unosquare.Labs.EmbedIO.HttpVerbs,Func{Unosquare.Net.HttpListenerContext,CancellationToken,Task{System.Boolean}})
+  name: AddHandler(String, HttpVerbs, Func<HttpListenerContext, CancellationToken, Task<Boolean>>)
+  href: api/Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_AddHandler_System_String_Unosquare_Labs_EmbedIO_HttpVerbs_Func_Unosquare_Net_HttpListenerContext_CancellationToken_Task_System_Boolean___
+  commentId: M:Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String,Unosquare.Labs.EmbedIO.HttpVerbs,Func{Unosquare.Net.HttpListenerContext,CancellationToken,Task{System.Boolean}})
+  name.vb: AddHandler(String, HttpVerbs, Func(Of HttpListenerContext, CancellationToken, Task(Of Boolean)))
+  fullName: Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String, Unosquare.Labs.EmbedIO.HttpVerbs, Func<Unosquare.Net.HttpListenerContext, CancellationToken, Task<System.Boolean>>)
+  fullName.vb: Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String, Unosquare.Labs.EmbedIO.HttpVerbs, Func(Of Unosquare.Net.HttpListenerContext, CancellationToken, Task(Of System.Boolean)))
+  nameWithType: IWebModule.AddHandler(String, HttpVerbs, Func<HttpListenerContext, CancellationToken, Task<Boolean>>)
+  nameWithType.vb: IWebModule.AddHandler(String, HttpVerbs, Func(Of HttpListenerContext, CancellationToken, Task(Of Boolean)))
 - uid: Unosquare.Labs.EmbedIO.IWebModule.AddHandler*
   name: AddHandler
   href: api/Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_AddHandler_
@@ -850,6 +847,12 @@ references:
   commentId: N:Unosquare.Labs.EmbedIO.Modules
   fullName: Unosquare.Labs.EmbedIO.Modules
   nameWithType: Unosquare.Labs.EmbedIO.Modules
+- uid: Unosquare.Labs.EmbedIO.Modules.AsyncResponseHandler
+  name: AsyncResponseHandler
+  href: api/Unosquare.Labs.EmbedIO.Modules.AsyncResponseHandler.html
+  commentId: T:Unosquare.Labs.EmbedIO.Modules.AsyncResponseHandler
+  fullName: Unosquare.Labs.EmbedIO.Modules.AsyncResponseHandler
+  nameWithType: AsyncResponseHandler
 - uid: Unosquare.Labs.EmbedIO.Modules.CorsModule
   name: CorsModule
   href: api/Unosquare.Labs.EmbedIO.Modules.CorsModule.html
@@ -886,15 +889,15 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.Modules.FallbackModule
   fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule
   nameWithType: FallbackModule
-- uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(Func{Unosquare.Labs.EmbedIO.WebServer,Unosquare.Net.HttpListenerContext,System.Boolean})
-  name: FallbackModule(Func<WebServer, HttpListenerContext, Boolean>)
-  href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_Func_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Net_HttpListenerContext_System_Boolean__
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(Func{Unosquare.Labs.EmbedIO.WebServer,Unosquare.Net.HttpListenerContext,System.Boolean})
-  name.vb: FallbackModule(Func(Of WebServer, HttpListenerContext, Boolean))
-  fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(Func<Unosquare.Labs.EmbedIO.WebServer, Unosquare.Net.HttpListenerContext, System.Boolean>)
-  fullName.vb: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(Func(Of Unosquare.Labs.EmbedIO.WebServer, Unosquare.Net.HttpListenerContext, System.Boolean))
-  nameWithType: FallbackModule.FallbackModule(Func<WebServer, HttpListenerContext, Boolean>)
-  nameWithType.vb: FallbackModule.FallbackModule(Func(Of WebServer, HttpListenerContext, Boolean))
+- uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(Action{Unosquare.Net.HttpListenerContext,CancellationToken})
+  name: FallbackModule(Action<HttpListenerContext, CancellationToken>)
+  href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_Action_Unosquare_Net_HttpListenerContext_CancellationToken__
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(Action{Unosquare.Net.HttpListenerContext,CancellationToken})
+  name.vb: FallbackModule(Action(Of HttpListenerContext, CancellationToken))
+  fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(Action<Unosquare.Net.HttpListenerContext, CancellationToken>)
+  fullName.vb: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(Action(Of Unosquare.Net.HttpListenerContext, CancellationToken))
+  nameWithType: FallbackModule.FallbackModule(Action<HttpListenerContext, CancellationToken>)
+  nameWithType.vb: FallbackModule.FallbackModule(Action(Of HttpListenerContext, CancellationToken))
 - uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.String)
   name: FallbackModule(String)
   href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_String_
@@ -907,18 +910,6 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor
   fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule
   nameWithType: FallbackModule.FallbackModule
-- uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackAction
-  name: FallbackAction
-  href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule_FallbackAction
-  commentId: P:Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackAction
-  fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackAction
-  nameWithType: FallbackModule.FallbackAction
-- uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackAction*
-  name: FallbackAction
-  href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule_FallbackAction_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackAction
-  fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackAction
-  nameWithType: FallbackModule.FallbackAction
 - uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.Name
   name: Name
   href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule_Name
@@ -1072,6 +1063,12 @@ references:
   commentId: F:Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.SessionsSyncLock
   fullName: Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.SessionsSyncLock
   nameWithType: LocalSessionModule.SessionsSyncLock
+- uid: Unosquare.Labs.EmbedIO.Modules.ResponseHandler
+  name: ResponseHandler
+  href: api/Unosquare.Labs.EmbedIO.Modules.ResponseHandler.html
+  commentId: T:Unosquare.Labs.EmbedIO.Modules.ResponseHandler
+  fullName: Unosquare.Labs.EmbedIO.Modules.ResponseHandler
+  nameWithType: ResponseHandler
 - uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule
   name: StaticFilesModule
   href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html
@@ -1681,12 +1678,6 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.WebSockets
   fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.WebSockets
   nameWithType: WebSocketsServer.WebSockets
-- uid: Unosquare.Labs.EmbedIO.ResponseHandler
-  name: ResponseHandler
-  href: api/Unosquare.Labs.EmbedIO.ResponseHandler.html
-  commentId: T:Unosquare.Labs.EmbedIO.ResponseHandler
-  fullName: Unosquare.Labs.EmbedIO.ResponseHandler
-  nameWithType: ResponseHandler
 - uid: Unosquare.Labs.EmbedIO.RoutingStrategy
   name: RoutingStrategy
   href: api/Unosquare.Labs.EmbedIO.RoutingStrategy.html
@@ -1804,12 +1795,15 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.WebModuleBase.#ctor
   fullName: Unosquare.Labs.EmbedIO.WebModuleBase.WebModuleBase
   nameWithType: WebModuleBase.WebModuleBase
-- uid: Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler(System.String,Unosquare.Labs.EmbedIO.HttpVerbs,Unosquare.Labs.EmbedIO.ResponseHandler)
-  name: AddHandler(String, HttpVerbs, ResponseHandler)
-  href: api/Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_HttpVerbs_Unosquare_Labs_EmbedIO_ResponseHandler_
-  commentId: M:Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler(System.String,Unosquare.Labs.EmbedIO.HttpVerbs,Unosquare.Labs.EmbedIO.ResponseHandler)
-  fullName: Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler(System.String, Unosquare.Labs.EmbedIO.HttpVerbs, Unosquare.Labs.EmbedIO.ResponseHandler)
-  nameWithType: WebModuleBase.AddHandler(String, HttpVerbs, ResponseHandler)
+- uid: Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler(System.String,Unosquare.Labs.EmbedIO.HttpVerbs,Func{Unosquare.Net.HttpListenerContext,CancellationToken,Task{System.Boolean}})
+  name: AddHandler(String, HttpVerbs, Func<HttpListenerContext, CancellationToken, Task<Boolean>>)
+  href: api/Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_HttpVerbs_Func_Unosquare_Net_HttpListenerContext_CancellationToken_Task_System_Boolean___
+  commentId: M:Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler(System.String,Unosquare.Labs.EmbedIO.HttpVerbs,Func{Unosquare.Net.HttpListenerContext,CancellationToken,Task{System.Boolean}})
+  name.vb: AddHandler(String, HttpVerbs, Func(Of HttpListenerContext, CancellationToken, Task(Of Boolean)))
+  fullName: Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler(System.String, Unosquare.Labs.EmbedIO.HttpVerbs, Func<Unosquare.Net.HttpListenerContext, CancellationToken, Task<System.Boolean>>)
+  fullName.vb: Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler(System.String, Unosquare.Labs.EmbedIO.HttpVerbs, Func(Of Unosquare.Net.HttpListenerContext, CancellationToken, Task(Of System.Boolean)))
+  nameWithType: WebModuleBase.AddHandler(String, HttpVerbs, Func<HttpListenerContext, CancellationToken, Task<Boolean>>)
+  nameWithType.vb: WebModuleBase.AddHandler(String, HttpVerbs, Func(Of HttpListenerContext, CancellationToken, Task(Of Boolean)))
 - uid: Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler*
   name: AddHandler
   href: api/Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_
@@ -1969,12 +1963,12 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.WebServer.Modules
   fullName: Unosquare.Labs.EmbedIO.WebServer.Modules
   nameWithType: WebServer.Modules
-- uid: Unosquare.Labs.EmbedIO.WebServer.ProcessRequest(Unosquare.Net.HttpListenerContext)
-  name: ProcessRequest(HttpListenerContext)
-  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_ProcessRequest_Unosquare_Net_HttpListenerContext_
-  commentId: M:Unosquare.Labs.EmbedIO.WebServer.ProcessRequest(Unosquare.Net.HttpListenerContext)
-  fullName: Unosquare.Labs.EmbedIO.WebServer.ProcessRequest(Unosquare.Net.HttpListenerContext)
-  nameWithType: WebServer.ProcessRequest(HttpListenerContext)
+- uid: Unosquare.Labs.EmbedIO.WebServer.ProcessRequest(Unosquare.Net.HttpListenerContext,CancellationToken)
+  name: ProcessRequest(HttpListenerContext, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_ProcessRequest_Unosquare_Net_HttpListenerContext_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.WebServer.ProcessRequest(Unosquare.Net.HttpListenerContext,CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.WebServer.ProcessRequest(Unosquare.Net.HttpListenerContext, CancellationToken)
+  nameWithType: WebServer.ProcessRequest(HttpListenerContext, CancellationToken)
 - uid: Unosquare.Labs.EmbedIO.WebServer.ProcessRequest*
   name: ProcessRequest
   href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_ProcessRequest_

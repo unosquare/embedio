@@ -98,7 +98,7 @@
                   <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_Server">WebModuleBase.Server</a>
                 </div>
                 <div>
-                  <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_HttpVerbs_Unosquare_Labs_EmbedIO_ResponseHandler_">WebModuleBase.AddHandler(String, HttpVerbs, ResponseHandler)</a>
+                  <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_HttpVerbs_Func_Unosquare_Net_HttpListenerContext_CancellationToken_Task_System_Boolean___">WebModuleBase.AddHandler(String, HttpVerbs, Func&lt;HttpListenerContext, CancellationToken, Task&lt;Boolean&gt;&gt;)</a>
                 </div>
               </div>
               <h6><strong>Namespace</strong>:Unosquare.Labs.EmbedIO.Modules</h6>
@@ -111,19 +111,19 @@
               </h3>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_Func_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Net_HttpListenerContext_System_Boolean__.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.FallbackModule.%23ctor(Func%7BUnosquare.Labs.EmbedIO.WebServer%2CUnosquare.Net.HttpListenerContext%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_Action_Unosquare_Net_HttpListenerContext_CancellationToken__.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.FallbackModule.%23ctor(Action%7BUnosquare.Net.HttpListenerContext%2CCancellationToken%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/FallbackModule.cs/#L35">View Source</a>
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/FallbackModule.cs/#L32">View Source</a>
               </span>
               <a id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_Func_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Net_HttpListenerContext_System_Boolean__" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(Func{Unosquare.Labs.EmbedIO.WebServer,Unosquare.Net.HttpListenerContext,System.Boolean})">FallbackModule(Func&lt;WebServer, HttpListenerContext, Boolean&gt;)</h4>
+              <h4 id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_Action_Unosquare_Net_HttpListenerContext_CancellationToken__" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(Action{Unosquare.Net.HttpListenerContext,CancellationToken})">FallbackModule(Action&lt;HttpListenerContext, CancellationToken&gt;)</h4>
               <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.FallbackModule.html">FallbackModule</a> class.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public FallbackModule(Func&lt;WebServer, HttpListenerContext, bool&gt; action)</code></pre>
+                <pre><code class="lang-csharp hljs">public FallbackModule(Action&lt;HttpListenerContext, CancellationToken&gt; action)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -136,7 +136,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">Func</span>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a>, <a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a>, <span class="xref">System.Boolean</span>&gt;</td>
+                    <td><span class="xref">Action</span>&lt;<a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a>, <span class="xref">CancellationToken</span>&gt;</td>
                     <td><span class="parametername">action</span></td>
                     <td><p>The action.</p>
 </td>
@@ -148,7 +148,7 @@
                 <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_String_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.FallbackModule.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/FallbackModule.cs/#L46">View Source</a>
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/FallbackModule.cs/#L45">View Source</a>
               </span>
               <a id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor*"></a>
               <h4 id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_String_" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.String)">FallbackModule(String)</h4>
@@ -181,41 +181,10 @@
               </h3>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_FallbackModule_FallbackAction.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackAction%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/FallbackModule.cs/#L24">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_Modules_FallbackModule_FallbackAction_" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackAction*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_Modules_FallbackModule_FallbackAction" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackAction">FallbackAction</h4>
-              <div class="markdown level1 summary"><p>Gets or sets the fallback action.</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public Func&lt;WebServer, HttpListenerContext, bool&gt; FallbackAction { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">Func</span>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a>, <a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a>, <span class="xref">System.Boolean</span>&gt;</td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
                 <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_FallbackModule_Name.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.FallbackModule.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/FallbackModule.cs/#L19">View Source</a>
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/FallbackModule.cs/#L21">View Source</a>
               </span>
               <a id="Unosquare_Labs_EmbedIO_Modules_FallbackModule_Name_" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.Name*"></a>
               <h4 id="Unosquare_Labs_EmbedIO_Modules_FallbackModule_Name" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.Name">Name</h4>
@@ -248,7 +217,7 @@
                 <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_FallbackModule_RedirectUrl.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.FallbackModule.RedirectUrl%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/FallbackModule.cs/#L29">View Source</a>
+                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/FallbackModule.cs/#L26">View Source</a>
               </span>
               <a id="Unosquare_Labs_EmbedIO_Modules_FallbackModule_RedirectUrl_" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.RedirectUrl*"></a>
               <h4 id="Unosquare_Labs_EmbedIO_Modules_FallbackModule_RedirectUrl" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.RedirectUrl">RedirectUrl</h4>
@@ -289,7 +258,7 @@
                     <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_FallbackModule.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.FallbackModule%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/FallbackModule.cs/#L14" class="contribution-link">View Source</a>
+                    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/FallbackModule.cs/#L16" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
