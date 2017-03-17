@@ -86,8 +86,11 @@ namespace Unosquare.Net
         private static EndPointListener GetEpListener(string host, int port, HttpListener listener, bool secure)
         {
             IPAddress addr;
+
             if (host == "*")
+            {
                 addr = IPAddress.Any;
+            }
             else if (IPAddress.TryParse(host, out addr) == false)
             {
                 try
@@ -105,7 +108,8 @@ namespace Unosquare.Net
                     addr = IPAddress.Any;
                 }
             }
-            Hashtable p = null;  // Dictionary<int, EndPointListener>
+
+            Hashtable p;  // Dictionary<int, EndPointListener>
             if (IPToEndpoints.ContainsKey(addr))
             {
                 p = (Hashtable)IPToEndpoints[addr];
@@ -141,7 +145,9 @@ namespace Unosquare.Net
                 {
                     IPToEndpoints.Remove(ep.Address);
                 }
-                epl.Close();
+
+                // TODO: Should we wait?
+                epl.CloseAsync();
             }
         }
 

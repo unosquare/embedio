@@ -31,6 +31,7 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Unosquare.Net
 {
@@ -97,44 +98,44 @@ namespace Unosquare.Net
 #if !NETSTANDARD1_6
         new 
 #endif
-        public void Close()
+        public async Task CloseAsync()
         {
-            if (_disposed == false)
+            if (_disposed) return;
+
+            _disposed = true;
+            var ms = GetHeaders(true);
+            var chunked = _response.SendChunked;
+            if (_stream.CanWrite)
             {
-                _disposed = true;
-                var ms = GetHeaders(true);
-                var chunked = _response.SendChunked;
-                if (_stream.CanWrite)
+                try
                 {
-                    try
+                    byte[] bytes;
+                    if (ms != null)
                     {
-                        byte[] bytes;
-                        if (ms != null)
-                        {
-                            var start = ms.Position;
-                            if (chunked && !_trailerSent)
-                            {
-                                bytes = GetChunkSizeBytes(0, true);
-                                ms.Position = ms.Length;
-                                ms.Write(bytes, 0, bytes.Length);
-                            }
-                            InternalWrite(ms.ToArray(), (int)start, (int)(ms.Length - start));
-                            _trailerSent = true;
-                        }
-                        else if (chunked && !_trailerSent)
+                        var start = ms.Position;
+                        if (chunked && !_trailerSent)
                         {
                             bytes = GetChunkSizeBytes(0, true);
-                            InternalWrite(bytes, 0, bytes.Length);
-                            _trailerSent = true;
+                            ms.Position = ms.Length;
+                            ms.Write(bytes, 0, bytes.Length);
                         }
+                        InternalWrite(ms.ToArray(), (int)start, (int)(ms.Length - start));
+                        _trailerSent = true;
                     }
-                    catch (IOException)
+                    else if (chunked && !_trailerSent)
                     {
-                        // Ignore error due to connection reset by peer
+                        bytes = GetChunkSizeBytes(0, true);
+                        InternalWrite(bytes, 0, bytes.Length);
+                        _trailerSent = true;
                     }
                 }
-                _response.Close();
+                catch (IOException)
+                {
+                    // Ignore error due to connection reset by peer
+                }
             }
+
+            await _response.CloseAsync();
         }
 
         private MemoryStream GetHeaders(bool closing)

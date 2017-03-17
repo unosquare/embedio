@@ -234,7 +234,7 @@
                     "No module generated a response. Sending 404 - Not Found".Error();
                     var responseBytes = System.Text.Encoding.UTF8.GetBytes(Constants.Response404Html);
                     context.Response.StatusCode = (int)System.Net.HttpStatusCode.NotFound;
-                    context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
+                    await context.Response.OutputStream.WriteAsync(responseBytes, 0, responseBytes.Length, ct);
                 }
             }
             catch (Exception ex)
@@ -244,7 +244,11 @@
             finally
             {
                 // Always close the response stream no matter what.
+#if NET46
                 context?.Response.OutputStream.Close();
+#else
+                await context.Response.OutputStream.CloseAsync();
+#endif
                 $"End of Request {requestId}".Debug(nameof(WebServer));
             }
         }

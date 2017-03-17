@@ -31,6 +31,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Unosquare.Net
 {
@@ -310,17 +311,18 @@ namespace Unosquare.Net
         /// </value>
         public string StatusDescription { get; set; } = "OK";
 
-        void IDisposable.Dispose() => Close(true); //TODO: Abort or Close?
+        // TODO: How to wait?
+        void IDisposable.Dispose() => CloseAsync(true).Wait(); //TODO: Abort or Close?
 
         /// <summary>
         /// Aborts this instance.
         /// </summary>
-        public void Abort()
+        public async Task AbortAsync()
         {
             if (_disposed)
                 return;
 
-            Close(true);
+            await CloseAsync(true);
         }
 
         /// <summary>
@@ -381,21 +383,21 @@ namespace Unosquare.Net
             Headers[name] = value;
         }
 
-        private void Close(bool force)
+        private async Task CloseAsync(bool force)
         {
             _disposed = true;
-            _context.Connection.Close(force);
+            await _context.Connection.CloseAsync(force).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Closes this instance.
         /// </summary>
-        public void Close()
+        public async Task CloseAsync()
         {
             if (_disposed)
                 return;
 
-            Close(false);
+            await CloseAsync(false);
         }
 
         /// <summary>
@@ -404,7 +406,7 @@ namespace Unosquare.Net
         /// <param name="responseEntity">The response entity.</param>
         /// <param name="willBlock">if set to <c>true</c> [will block].</param>
         /// <exception cref="System.ArgumentNullException"></exception>
-        public void Close(byte[] responseEntity, bool willBlock)
+        public async Task CloseAsync(byte[] responseEntity, bool willBlock)
         {
             if (_disposed)
                 return;
@@ -415,7 +417,7 @@ namespace Unosquare.Net
             //TODO: if willBlock -> BeginWrite + Close ?
             ContentLength64 = responseEntity.Length;
             OutputStream.Write(responseEntity, 0, (int)_contentLength);
-            Close(false);
+            await CloseAsync(false);
         }
 
         /// <summary>

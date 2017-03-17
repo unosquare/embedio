@@ -65,14 +65,6 @@ namespace Unosquare.Net
     /// </summary>
     public sealed class HttpListenerRequest
     {
-        private class Context : TransportContext
-        {
-            public override ChannelBinding GetChannelBinding(ChannelBindingKind kind)
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         private Encoding _contentEncoding;
         private bool _clSet;
         private CookieCollection _cookies;
@@ -643,12 +635,7 @@ namespace Unosquare.Net
         /// Gets the name of the service.
         /// </summary>
         public string ServiceName => null;
-
-        /// <summary>
-        /// Gets the transport context.
-        /// </summary>
-        public TransportContext TransportContext => new Context();
-
+        
         /// <summary>
         /// Gets a value indicating whether this request is a web socket request.
         /// </summary>

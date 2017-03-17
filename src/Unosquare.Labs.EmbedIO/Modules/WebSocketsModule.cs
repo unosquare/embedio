@@ -164,10 +164,12 @@
     {
         private bool _isDisposing;
         private readonly bool _enableDisconnectedSocketColletion;
-        private readonly int _maximumMessageSize;
         private readonly object _syncRoot = new object();
         private readonly List<WebSocketContext> _mWebSockets = new List<WebSocketContext>(10);
-        
+#if NET46
+        private readonly int _maximumMessageSize;
+#endif
+
         /// <summary>
         /// Gets the Currently-Connected WebSockets.
         /// </summary>
@@ -193,7 +195,9 @@
         protected WebSocketsServer(bool enableConnectionWatchdog, int maxMessageSize)
         {
             _enableDisconnectedSocketColletion = enableConnectionWatchdog;
+#if NET46
             _maximumMessageSize = maxMessageSize;
+#endif
 
             RunConnectionWatchdog();
         }

@@ -226,7 +226,7 @@ namespace Unosquare.Net
                 _ms.Write(_buffer, 0, nread);
                 if (_ms.Length > 32768)
                 {
-                    Close(true);
+                    await CloseAsync(true);
                     return;
                 }
             }
@@ -253,7 +253,7 @@ namespace Unosquare.Net
 
                 if (_context.HaveError || !_epl.BindContext(_context))
                 {
-                    Close(true);
+                    await CloseAsync(true);
                     return;
                 }
                 
@@ -410,12 +410,7 @@ namespace Unosquare.Net
                 _contextBound = false;
             }
         }
-
-        public void Close()
-        {
-            Close(false);
-        }
-
+        
         private void CloseSocket()
         {
             if (_sock == null)
@@ -436,7 +431,7 @@ namespace Unosquare.Net
             RemoveConnection();
         }
 
-        internal void Close(bool forceClose)
+        internal async Task CloseAsync(bool forceClose = false)
         {
             if (_sock != null)
             {
@@ -468,14 +463,14 @@ namespace Unosquare.Net
                     Reuses++;
                     Unbind();
                     Init();
-                    BeginReadRequest().Wait();
+                    await BeginReadRequest().ConfigureAwait(false);
                     return;
                 }
 
                 Reuses++;
                 Unbind();
                 Init();
-                BeginReadRequest().Wait();
+                await BeginReadRequest().ConfigureAwait(false);
                 return;
             }
 
@@ -493,6 +488,7 @@ namespace Unosquare.Net
             {
                 s?.Dispose();
             }
+
             Unbind();
             RemoveConnection();
         }

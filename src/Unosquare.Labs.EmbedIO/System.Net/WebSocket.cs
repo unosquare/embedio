@@ -145,7 +145,6 @@ namespace Unosquare.Net
 
         private string _base64Key;
         private readonly bool _client;
-        private Action _closeContext;
         private CompressionMethod _compression;
         private WebSocketContext _context;
         private bool _enableRedirection;
@@ -232,7 +231,6 @@ namespace Unosquare.Net
         {
             _context = context;
 
-            _closeContext = context.Close;
             _message = Messages;
             IsSecure = context.IsSecureConnection;
             _stream = context.Stream;
@@ -948,7 +946,8 @@ namespace Unosquare.Net
             return true;
         }
 
-        private void close(CloseEventArgs e, bool send, bool receive, bool received)
+        private async Task InternalCloseAsync(CloseEventArgs e, bool send = true, bool receive = true,
+            bool received = false)
         {
             lock (_forState)
             {
@@ -974,7 +973,7 @@ namespace Unosquare.Net
 
             var bytes = send ? WebSocketFrame.CreateCloseFrame(e.PayloadData, _client).ToArray() : null;
             e.WasClean = CloseHandshake(bytes, receive, received);
-            ReleaseResources();
+            await ReleaseResources();
 
             "End closing the connection.".Info();
 
@@ -989,12 +988,6 @@ namespace Unosquare.Net
                 ex.Log(nameof(WebSocket));
                 Error("An exception has occurred during the OnClose event.", ex);
             }
-        }
-
-        private void closeAsync(CloseEventArgs e, bool send, bool receive, bool received)
-        {
-            Action<CloseEventArgs, bool, bool, bool> closer = close;
-            closer.BeginInvoke(e, send, receive, received, ar => closer.EndInvoke(ar), null);
         }
 
         private bool CloseHandshake(byte[] frameAsBytes, bool receive, bool received)
@@ -1177,7 +1170,8 @@ namespace Unosquare.Net
 
         private void Fatal(string message, CloseStatusCode code)
         {
-            close(new CloseEventArgs(code, message), !code.IsReserved(), false, false);
+            // TODO: Wait?
+            InternalCloseAsync(new CloseEventArgs(code, message), !code.IsReserved(), false);
         }
 
         private void Init()
@@ -1291,7 +1285,7 @@ namespace Unosquare.Net
         private bool ProcessCloseFrame(WebSocketFrame frame)
         {
             var payload = frame.PayloadData;
-            close(new CloseEventArgs(payload), !payload.HasReservedCode, false, true);
+            InternalCloseAsync(new CloseEventArgs(payload), !payload.HasReservedCode, false, true);
 
             return false;
         }
@@ -1507,24 +1501,23 @@ namespace Unosquare.Net
             }
         }
 
-        private void ReleaseResources()
+        private async Task ReleaseResources()
         {
             if (_client)
                 ReleaseClientResources();
             else
-                ReleaseServerResources();
+                await ReleaseServerResources();
 
             ReleaseCommonResources();
         }
 
         // As server
-        private void ReleaseServerResources()
+        private async Task ReleaseServerResources()
         {
-            if (_closeContext == null)
+            if (_client)
                 return;
 
-            _closeContext();
-            _closeContext = null;
+            await _context.CloseAsync();
             _stream = null;
             _context = null;
         }
@@ -1588,8 +1581,8 @@ namespace Unosquare.Net
             if (len == 0)
                 return send(Fin.Final, opcode, EmptyBytes, compressed);
 
-            var quo = len/FragmentLength;
-            var rem = (int) (len%FragmentLength);
+            var quo = len / FragmentLength;
+            var rem = (int) (len % FragmentLength);
 
             byte[] buff = null;
             if (quo == 0)
@@ -2308,7 +2301,7 @@ namespace Unosquare.Net
                 return;
             }
 
-            close(new CloseEventArgs(), true, true, false);
+            InternalCloseAsync(new CloseEventArgs());
         }
 
         /// <summary>
@@ -2340,12 +2333,12 @@ namespace Unosquare.Net
 
             if (code == CloseStatusCode.NoStatus)
             {
-                close(new CloseEventArgs(), true, true, false);
+                InternalCloseAsync(new CloseEventArgs());
                 return;
             }
 
             var send = !code.IsReserved();
-            close(new CloseEventArgs(code), send, send, false);
+            InternalCloseAsync(new CloseEventArgs(code), send, send);
         }
 
         /// <summary>
@@ -2381,12 +2374,12 @@ namespace Unosquare.Net
 
             if (code == CloseStatusCode.NoStatus)
             {
-                close(new CloseEventArgs(), true, true, false);
+                InternalCloseAsync(new CloseEventArgs());
                 return;
             }
 
             var send = !code.IsReserved();
-            close(new CloseEventArgs(code, reason), send, send, false);
+            InternalCloseAsync(new CloseEventArgs(code, reason), send, send);
         }
 
         /// <summary>
@@ -2396,7 +2389,7 @@ namespace Unosquare.Net
         /// <remarks>
         /// This method does not wait for the close to be complete.
         /// </remarks>
-        public void CloseAsync()
+        public async Task CloseAsync()
         {
             string msg;
             if (!checkIfAvailable(true, true, false, false, out msg))
@@ -2407,7 +2400,7 @@ namespace Unosquare.Net
                 return;
             }
 
-            closeAsync(new CloseEventArgs(), true, true, false);
+            await InternalCloseAsync(new CloseEventArgs());
         }
 
         /// <summary>
@@ -2421,7 +2414,7 @@ namespace Unosquare.Net
         /// One of the <see cref="CloseStatusCode"/> enum values that represents
         /// the status code indicating the reason for the close.
         /// </param>
-        public void CloseAsync(CloseStatusCode code)
+        public async Task CloseAsync(CloseStatusCode code)
         {
             string msg;
             if (!checkIfAvailable(true, true, false, false, out msg))
@@ -2442,12 +2435,12 @@ namespace Unosquare.Net
 
             if (code == CloseStatusCode.NoStatus)
             {
-                closeAsync(new CloseEventArgs(), true, true, false);
+                await InternalCloseAsync(new CloseEventArgs());
                 return;
             }
 
             var send = !code.IsReserved();
-            closeAsync(new CloseEventArgs(code), send, send, false);
+            await InternalCloseAsync(new CloseEventArgs(code), send, send);
         }
 
         /// <summary>
@@ -2466,7 +2459,7 @@ namespace Unosquare.Net
         /// A <see cref="string"/> that represents the reason for the close.
         /// The size must be 123 bytes or less.
         /// </param>
-        public void CloseAsync(CloseStatusCode code, string reason)
+        public async Task CloseAsync(CloseStatusCode code, string reason)
         {
             string msg;
             if (!checkIfAvailable(true, true, false, false, out msg))
@@ -2487,12 +2480,12 @@ namespace Unosquare.Net
 
             if (code == CloseStatusCode.NoStatus)
             {
-                closeAsync(new CloseEventArgs(), true, true, false);
+                await InternalCloseAsync(new CloseEventArgs());
                 return;
             }
 
             var send = !code.IsReserved();
-            closeAsync(new CloseEventArgs(code, reason), send, send, false);
+            await InternalCloseAsync(new CloseEventArgs(code, reason), send, send);
         }
 
         /// <summary>
@@ -2593,8 +2586,8 @@ namespace Unosquare.Net
             return Ping(WebSocketFrame.CreatePingFrame(data, _client).ToArray(), _waitTime);
         }
 
-        private static string CheckIfAvailable(WebSocketState state, bool connecting, bool open, bool closing,
-            bool closed)
+        private static string CheckIfAvailable(WebSocketState state, bool connecting = false, bool open = true, bool closing = false,
+            bool closed = false)
         {
             return (!connecting && state == WebSocketState.Connecting) ||
                    (!open && state == WebSocketState.Open) ||
@@ -2612,7 +2605,7 @@ namespace Unosquare.Net
         /// </param>
         public void Send(byte[] data)
         {
-            var msg = CheckIfAvailable(_readyState, false, true, false, false) ??
+            var msg = CheckIfAvailable(_readyState) ??
                       CheckSendParameter(data);
 
             if (msg != null)
@@ -2634,7 +2627,7 @@ namespace Unosquare.Net
         /// </param>
         public void Send(FileInfo file)
         {
-            var msg = CheckIfAvailable(_readyState, false, true, false, false) ??
+            var msg = CheckIfAvailable(_readyState) ??
                       CheckSendParameter(file);
 
             if (msg != null)
@@ -2656,7 +2649,7 @@ namespace Unosquare.Net
         /// </param>
         public void Send(string data)
         {
-            var msg = CheckIfAvailable(_readyState, false, true, false, false) ??
+            var msg = CheckIfAvailable(_readyState) ??
                       CheckSendParameter(data);
 
             if (msg != null)
@@ -2686,7 +2679,7 @@ namespace Unosquare.Net
         /// </param>
         public void SendAsync(byte[] data, Action<bool> completed)
         {
-            var msg = CheckIfAvailable(_readyState, false, true, false, false) ??
+            var msg = CheckIfAvailable(_readyState) ??
                       CheckSendParameter(data);
 
             if (msg != null)
@@ -2717,7 +2710,7 @@ namespace Unosquare.Net
         /// </param>
         public void SendAsync(FileInfo file, Action<bool> completed)
         {
-            var msg = CheckIfAvailable(_readyState, false, true, false, false) ??
+            var msg = CheckIfAvailable(_readyState) ??
                       CheckSendParameter(file);
 
             if (msg != null)
@@ -2747,7 +2740,7 @@ namespace Unosquare.Net
         /// </param>
         public void SendAsync(string data, Action<bool> completed)
         {
-            var msg = CheckIfAvailable(_readyState, false, true, false, false) ??
+            var msg = CheckIfAvailable(_readyState) ??
                       CheckSendParameter(data);
 
             if (msg != null)
@@ -2781,7 +2774,7 @@ namespace Unosquare.Net
         /// </param>
         public void SendAsync(Stream stream, int length, Action<bool> completed)
         {
-            var msg = CheckIfAvailable(_readyState, false, true, false, false) ??
+            var msg = CheckIfAvailable(_readyState) ??
                       CheckSendParameters(stream, length);
 
             if (msg != null)
@@ -3013,7 +3006,7 @@ namespace Unosquare.Net
         /// </remarks>
         void IDisposable.Dispose()
         {
-            close(new CloseEventArgs(CloseStatusCode.Away), true, true, false);
+            InternalCloseAsync(new CloseEventArgs(CloseStatusCode.Away));
         }
 
         #endregion

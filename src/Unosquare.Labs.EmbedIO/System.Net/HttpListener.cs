@@ -32,6 +32,7 @@
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication.ExtendedProtection;
 using System.Threading.Tasks;
@@ -281,7 +282,7 @@ namespace Unosquare.Net
         /// <summary>
         /// Aborts this listener.
         /// </summary>
-        public void Abort()
+        public async Task AborAsynt()
         {
             if (_disposed)
                 return;
@@ -291,13 +292,13 @@ namespace Unosquare.Net
                 return;
             }
 
-            Close(true);
+            await CloseAsync(true);
         }
 
         /// <summary>
         /// Closes this listener.
         /// </summary>
-        public void Close()
+        public async Task CloseAsync()
         {
             if (_disposed)
                 return;
@@ -308,28 +309,32 @@ namespace Unosquare.Net
                 return;
             }
 
-            Close(true);
+            await CloseAsync(true);
             _disposed = true;
         }
 
-        private void Close(bool force)
+        private async Task CloseAsync(bool force)
         {
             CheckDisposed();
             EndPointManager.RemoveListener(this);
-            Cleanup(force);
+            await CleanupAsync(force);
         }
 
-        private void Cleanup(bool closeExisting)
+        private async Task CleanupAsync(bool closeExisting)
         {
+            var conns = new List<HttpConnection>();
+
             lock (_connections.SyncRoot)
             {
                 var keys = _connections.Keys;
-                var conns = new HttpConnection[keys.Count];
-                keys.CopyTo(conns, 0);
+                var connsArray = new HttpConnection[keys.Count];
+                keys.CopyTo(connsArray, 0);
                 _connections.Clear();
-                for (var i = conns.Length - 1; i >= 0; i--)
-                    conns[i].Close(true);
+                conns.AddRange(connsArray);
             }
+
+            for (var i = conns.Count - 1; i >= 0; i--)
+                await conns[i].CloseAsync(true).ConfigureAwait(false);
 
             if (closeExisting == false) return;
 
@@ -340,7 +345,7 @@ namespace Unosquare.Net
                     HttpListenerContext context;
 
                     if (_ctxQueue.TryGetValue(key, out context))
-                        context.Connection.Close(true);
+                        await context.Connection.CloseAsync(true).ConfigureAwait(false);
                 }
             }
         }
@@ -368,11 +373,11 @@ namespace Unosquare.Net
         /// <summary>
         /// Stops this listener.
         /// </summary>
-        public void Stop()
+        public async Task StopAsync()
         {
             CheckDisposed();
             IsListening = false;
-            Close(false);
+            await CloseAsync(false);
         }
 
         void IDisposable.Dispose()
@@ -380,7 +385,8 @@ namespace Unosquare.Net
             if (_disposed)
                 return;
 
-            Close(true); //TODO: Should we force here or not?
+            // TODO: How to wait?
+            CloseAsync(true).Wait(); //TODO: Should we force here or not?
             _disposed = true;
         }
 

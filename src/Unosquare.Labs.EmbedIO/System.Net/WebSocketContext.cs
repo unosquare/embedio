@@ -28,10 +28,10 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Security.Principal;
+using System.Threading.Tasks;
 
 namespace Unosquare.Net
 {
@@ -205,7 +205,7 @@ namespace Unosquare.Net
 
         #region Internal Methods
 
-        internal void Close() => _context.Connection.Close(true);
+        internal async Task CloseAsync() => await _context.Connection.CloseAsync(true);
 
         #endregion
 

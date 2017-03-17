@@ -34,6 +34,8 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
+
 #if SSL
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography;
@@ -302,20 +304,20 @@ namespace Unosquare.Net
             EndPointManager.RemoveEndPoint(this, _endpoint);
         }
 
-        public void Close()
+        public async Task CloseAsync()
         {
             _sock.Dispose();
+            List<HttpConnection> connections;
+
             lock (_unregistered)
             {
-                //
                 // Clone the list because RemoveConnection can be called from Close
-                //
-                var connections = new List<HttpConnection>(_unregistered.Keys);
-
-                foreach (var c in connections)
-                    c.Close(true);
+                connections = new List<HttpConnection>(_unregistered.Keys);
                 _unregistered.Clear();
             }
+
+            foreach (var c in connections)
+                await c.CloseAsync(true);
         }
 
         public void AddPrefix(ListenerPrefix prefix, HttpListener listener)
