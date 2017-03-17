@@ -145,10 +145,9 @@ namespace Unosquare.Net
                 {
                     IPToEndpoints.Remove(ep.Address);
                 }
-
-                // TODO: Should we wait?
-                epl.CloseAsync();
             }
+            
+            epl.CloseAsync().Wait(); // TODO: Is this right?
         }
 
         public static void RemoveListener(HttpListener listener)

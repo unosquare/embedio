@@ -336,17 +336,7 @@
         /// <returns></returns>
         public static Dictionary<string, object> RequestFormDataDictionary(this HttpListenerContext context)
         {
-            var request = context.Request;
-            if (request.HasEntityBody == false) return null;
-
-            using (var body = request.InputStream)
-            {
-                using (var reader = new StreamReader(body, request.ContentEncoding))
-                {
-                    var stringData = reader.ReadToEnd();
-                    return RequestFormDataDictionary(stringData);
-                }
-            }
+            return RequestFormDataDictionary(context.RequestBody());
         }
 
         /// <summary>
@@ -430,7 +420,7 @@
 
         #region Hashing and Compression Methods
 
-        private static readonly byte[] Last = new byte[] { 0x00 };
+        private static readonly byte[] Last = { 0x00 };
 
         /// <summary>
         /// Compresses the specified buffer stream using the G-Zip compression algorithm.
@@ -465,6 +455,8 @@
                 case CompressionMethod.None:
                     buffer.CopyTo(targetStream);
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(method), method, null);
             }
 
             return targetStream;

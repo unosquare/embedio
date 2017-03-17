@@ -416,7 +416,7 @@
                 await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true,
                         CancellationToken.None);
 #else
-                await webSocket.WebSocket.SendAsync(Opcode.Text, buffer);
+                await webSocket.WebSocket.SendAsync(buffer, Opcode.Text);
 #endif
             }
             catch (Exception ex)
@@ -440,7 +440,7 @@
                 await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(payload), WebSocketMessageType.Binary, true,
                         CancellationToken.None);
 #else
-                await webSocket.WebSocket.SendAsync(Opcode.Binary, payload);
+                await webSocket.WebSocket.SendAsync(payload, Opcode.Binary);
 #endif
             }
             catch (Exception ex)

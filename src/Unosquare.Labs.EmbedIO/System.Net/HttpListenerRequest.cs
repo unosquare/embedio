@@ -32,9 +32,10 @@ using System;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
-using System.Security.Authentication.ExtendedProtection;
 using System.Text;
+using System.Threading.Tasks;
 #if SSL
+using System.Security.Authentication.ExtendedProtection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 #endif
@@ -384,7 +385,7 @@ namespace Unosquare.Net
         }
 
         // returns true is the stream could be reused.
-        internal bool FlushInput()
+        internal async Task<bool> FlushInput()
         {
             if (!HasEntityBody)
                 return true;
@@ -394,15 +395,14 @@ namespace Unosquare.Net
                 length = (int)Math.Min(ContentLength64, length);
 
             var bytes = new byte[length];
+
             while (true)
             {
-                // TODO: test if MS has a timeout when doing this
                 try
                 {
-                    var ares = InputStream.BeginRead(bytes, 0, length, null, null);
-                    if (!ares.IsCompleted && !ares.AsyncWaitHandle.WaitOne(1000))
-                        return false;
-                    if (InputStream.EndRead(ares) <= 0)
+                    var data = await InputStream.ReadAsync(bytes, 0, length);
+
+                    if (data <= 0)
                         return true;
                 }
                 catch (ObjectDisposedException)

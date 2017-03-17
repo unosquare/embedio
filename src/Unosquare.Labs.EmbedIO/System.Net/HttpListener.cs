@@ -282,7 +282,7 @@ namespace Unosquare.Net
         /// <summary>
         /// Aborts this listener.
         /// </summary>
-        public async Task AborAsynt()
+        public async Task AborAsync()
         {
             if (_disposed)
                 return;
@@ -386,7 +386,7 @@ namespace Unosquare.Net
                 return;
 
             // TODO: How to wait?
-            CloseAsync(true).Wait(); //TODO: Should we force here or not?
+            CloseAsync(true).Wait();
             _disposed = true;
         }
 

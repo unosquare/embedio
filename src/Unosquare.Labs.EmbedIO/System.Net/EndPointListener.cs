@@ -50,9 +50,9 @@ namespace Unosquare.Net
         private Hashtable _prefixes; // Dictionary <ListenerPrefix, HttpListener>
         private ArrayList _unhandled; // List<ListenerPrefix> unhandled; host = '*'
         private ArrayList _all; // List<ListenerPrefix> all;  host = '+       
-        private bool _secure = false;
 #if SSL
-         private X509Certificate _cert = null;
+        private bool _secure = false;
+        private X509Certificate _cert = null;
 #endif
         private readonly Dictionary<HttpConnection, HttpConnection> _unregistered;
 
@@ -63,8 +63,8 @@ namespace Unosquare.Net
             if (secure)
             {
 #if SSL
-                this.secure = secure;
-				cert = listener.LoadCertificateAndKey (addr, port);
+                _secure = secure;
+				_cert = listener.LoadCertificateAndKey (addr, port);
 #else
                 throw new Exception("SSL is not supported");
 #endif
@@ -134,7 +134,7 @@ namespace Unosquare.Net
             }
             var conn = new HttpConnection(accepted, epl, epl._secure, epl._cert);
 #else
-            var conn = new HttpConnection(accepted, epl, epl._secure, null);
+            var conn = new HttpConnection(accepted, epl);
 #endif
             lock (epl._unregistered)
             {

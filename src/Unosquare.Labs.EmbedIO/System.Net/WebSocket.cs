@@ -2341,10 +2341,10 @@ namespace Unosquare.Net
         /// <summary>
         /// Sends binary <paramref name="data" /> using the WebSocket connection.
         /// </summary>
-        /// <param name="opcode">The opcode.</param>
         /// <param name="data">An array of <see cref="byte" /> that represents the binary data to send.</param>
+        /// <param name="opcode">The opcode.</param>
         /// <returns></returns>
-        public async Task SendAsync(Opcode opcode, byte[] data)
+        public async Task SendAsync(byte[] data, Opcode opcode)
         {
             var msg = CheckIfAvailable(_readyState) ??
                       CheckSendParameter(data);

@@ -32,10 +32,12 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+#if SSL
+using System.Security.Cryptography.X509Certificates;
+#endif
 
 namespace Unosquare.Net
 {
@@ -61,10 +63,16 @@ namespace Unosquare.Net
         IMonoSslStream ssl_stream;
 #endif
 
+#if SSL
         public HttpConnection(Socket sock, EndPointListener epl, bool secure, X509Certificate cert)
+#else
+        public HttpConnection(Socket sock, EndPointListener epl)
+#endif
         {
             _sock = sock;
             _epl = epl;
+
+#if SSL
             IsSecure = secure;
 
             if (secure == false)
@@ -72,9 +80,7 @@ namespace Unosquare.Net
                 Stream = new NetworkStream(sock, false);
             }
             else
-            {
-#if SSL
-                
+            {                
             _cert = cert;
 
                 ssl_stream = epl.Listener.CreateSslStream(new NetworkStream(sock, false), false, (t, c, ch, e) =>
@@ -89,10 +95,10 @@ namespace Unosquare.Net
                     return true;
                 });
                 stream = ssl_stream.AuthenticatedStream;
-#else
-                throw new Exception("SSL is not supported");
-#endif
             }
+#else
+            Stream = new NetworkStream(sock, false);
+#endif
             _timer = new Timer(OnTimeout, null, Timeout.Infinite, Timeout.Infinite);
             Init();
         }
@@ -216,14 +222,14 @@ namespace Unosquare.Net
 
             return _oStream;
         }
-        
+
         private async Task OnReadInternal(int nread)
         {
             _timer.Change(Timeout.Infinite, Timeout.Infinite);
-            
+
             try
             {
-                _ms.Write(_buffer, 0, nread);
+                await _ms.WriteAsync(_buffer, 0, nread);
                 if (_ms.Length > 32768)
                 {
                     await CloseAsync(true);
@@ -256,7 +262,7 @@ namespace Unosquare.Net
                     await CloseAsync(true);
                     return;
                 }
-                
+
                 var listener = _context.Listener;
                 if (_lastListener != listener)
                 {
@@ -393,7 +399,7 @@ namespace Unosquare.Net
                         break;
                 }
             }
-            
+
             if (_lineState != LineState.Lf) return null;
             _lineState = LineState.None;
             var result = _currentLine.ToString();
@@ -401,7 +407,7 @@ namespace Unosquare.Net
 
             return result;
         }
-        
+
         private void Unbind()
         {
             if (_contextBound)
@@ -410,7 +416,7 @@ namespace Unosquare.Net
                 _contextBound = false;
             }
         }
-        
+
         private void CloseSocket()
         {
             if (_sock == null)
@@ -420,14 +426,11 @@ namespace Unosquare.Net
             {
                 _sock.Dispose();
             }
-            catch
-            {
-                // ignored
-            }
             finally
             {
                 _sock = null;
             }
+
             RemoveConnection();
         }
 
@@ -444,38 +447,37 @@ namespace Unosquare.Net
             if (_sock == null) return;
 
             forceClose |= !_context.Request.KeepAlive;
+
             if (!forceClose)
                 forceClose = (_context.Response.Headers["connection"] == "close");
-            /*
-				if (!force_close) {
-//					bool conn_close = (status_code == 400 || status_code == 408 || status_code == 411 ||
-//							status_code == 413 || status_code == 414 || status_code == 500 ||
-//							status_code == 503);
-					force_close |= (context.Request.ProtocolVersion <= HttpVersion.Version10);
-				}
-				*/
 
-            if (!forceClose && _context.Request.FlushInput())
+            if (!forceClose)
             {
-                if (_chunked && _context.Response.ForceCloseChunked == false)
+                var isValidInput = await _context.Request.FlushInput();
+
+                if (isValidInput)
                 {
-                    // Don't close. Keep working.
+                    if (_chunked && _context.Response.ForceCloseChunked == false)
+                    {
+                        // Don't close. Keep working.
+                        Reuses++;
+                        Unbind();
+                        Init();
+                        await BeginReadRequest().ConfigureAwait(false);
+                        return;
+                    }
+
                     Reuses++;
                     Unbind();
                     Init();
                     await BeginReadRequest().ConfigureAwait(false);
                     return;
                 }
-
-                Reuses++;
-                Unbind();
-                Init();
-                await BeginReadRequest().ConfigureAwait(false);
-                return;
             }
 
             var s = _sock;
             _sock = null;
+
             try
             {
                 s?.Shutdown(SocketShutdown.Both);
