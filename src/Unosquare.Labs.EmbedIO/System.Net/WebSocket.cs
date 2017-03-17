@@ -99,7 +99,7 @@ namespace Unosquare.Net
     /// <see href="http://tools.ietf.org/html/rfc6455#section-5.2">
     /// Section 5.2</see> of RFC 6455.
     /// </remarks>
-    internal enum Opcode : byte
+    public enum Opcode : byte
     {
         /// <summary>
         /// Equivalent to numeric value 0. Indicates continuation frame.
@@ -328,7 +328,7 @@ namespace Unosquare.Net
                 lock (_forState)
                 {
                     string msg;
-                    if (!checkIfAvailable(out msg, true, false, true, false, false, true))
+                    if (!checkIfAvailable(out msg, true, false, true, false, false))
                     {
                         msg.Error();
                         Error("An error has occurred in setting the compression.", null);
@@ -397,7 +397,7 @@ namespace Unosquare.Net
                 lock (_forState)
                 {
                     string msg;
-                    if (!checkIfAvailable(out msg, true, false, true, false, false, true))
+                    if (!checkIfAvailable(out msg, true, false, true, false, false))
                     {
                         msg.Error();
                         Error("An error has occurred in setting the enable redirection.", null);
@@ -462,7 +462,7 @@ namespace Unosquare.Net
                 lock (_forState)
                 {
                     string msg;
-                    if (!checkIfAvailable(out msg, true, false, true, false, false, true))
+                    if (!checkIfAvailable(out msg, true, false, true, false, false))
                     {
                         msg.Error();
                         Error("An error has occurred in setting the origin.", null);
@@ -561,7 +561,7 @@ namespace Unosquare.Net
                 lock (_forState)
                 {
                     string msg;
-                    if (!checkIfAvailable(out msg, true, true, true, false, false, true) ||
+                    if (!checkIfAvailable(out msg, true, true, true, false, false) ||
                         !CheckWaitTime(value, out msg))
                     {
                         msg.Error();
@@ -614,7 +614,7 @@ namespace Unosquare.Net
         }
 
         // As server
-        private async Task<bool> AcceptHandshakeAsync(CancellationToken ct)
+        private async Task<bool> AcceptHandshakeAsync()
         {
             $"A request from {_context.UserEndPoint}:\n{_context}".Debug();
 
@@ -1141,7 +1141,7 @@ namespace Unosquare.Net
         private void Fatal(string message, CloseStatusCode code)
         {
             // TODO: Wait?
-            InternalCloseAsync(new CloseEventArgs(code, message), !code.IsReserved(), false).Wait();
+            InternalCloseAsync(new CloseEventArgs(code, message), !code.IsReserved(), false).Wait(_ct);
         }
 
         private void Init()
@@ -1255,7 +1255,7 @@ namespace Unosquare.Net
         private bool ProcessCloseFrame(WebSocketFrame frame)
         {
             var payload = frame.PayloadData;
-            InternalCloseAsync(new CloseEventArgs(payload), !payload.HasReservedCode, false, true);
+            InternalCloseAsync(new CloseEventArgs(payload), !payload.HasReservedCode, false, true).Wait(_ct);
 
             return false;
         }
@@ -1557,7 +1557,7 @@ namespace Unosquare.Net
             var quo = len / FragmentLength;
             var rem = (int)(len % FragmentLength);
 
-            byte[] buff = null;
+            byte[] buff;
             if (quo == 0)
             {
                 buff = new byte[rem];
@@ -1574,15 +1574,17 @@ namespace Unosquare.Net
 
             // Begin
             var sendResult = await send(Fin.More, opcode, buff, compressed);
+            var read = await stream.ReadAsync(buff, 0, FragmentLength, _ct);
 
-            if (stream.Read(buff, 0, FragmentLength) != FragmentLength || !sendResult)
+            if (read != FragmentLength || !sendResult)
                 return false;
 
             var n = rem == 0 ? quo - 2 : quo - 1;
             for (long i = 0; i < n; i++)
             {
                 var result = await send(Fin.More, Opcode.Cont, buff, compressed);
-                if (stream.Read(buff, 0, FragmentLength) != FragmentLength || !result)
+                var readResult = await stream.ReadAsync(buff, 0, FragmentLength, _ct);
+                if (readResult != FragmentLength || !result)
                     return false;
             }
 
@@ -1592,29 +1594,15 @@ namespace Unosquare.Net
             else
                 buff = new byte[rem];
 
-            return stream.Read(buff, 0, rem) == rem && await send(Fin.Final, Opcode.Cont, buff, compressed);
+            read = await stream.ReadAsync(buff, 0, rem, _ct);
+            return read == rem && await send(Fin.Final, Opcode.Cont, buff, compressed);
         }
 
         private async Task<bool> send(Fin fin, Opcode opcode, byte[] data, bool compressed)
         {
-            var buffer = new WebSocketFrame(fin, opcode, data, compressed, _client).ToArray();
-            return await send(buffer);
+            return await send(new WebSocketFrame(fin, opcode, data, compressed, _client).ToArray());
         }
-
-        private async Task SendAsync(Opcode opcode, Stream stream, Action<bool> completed)
-        {
-            try
-            {
-                var sent = await send(opcode, stream);
-                completed?.Invoke(sent);
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-                Error("An exception has occurred during a send callback.", ex);
-            }
-        }
-
+        
         // As client
         private HttpResponse SendHandshakeRequest()
         {
@@ -2020,7 +2008,7 @@ namespace Unosquare.Net
             _readyState = WebSocketState.Closing;
 
             await SendHttpResponseAsync(response);
-            ReleaseServerResources();
+            await ReleaseServerResources();
 
             _readyState = WebSocketState.Closed;
         }
@@ -2029,7 +2017,7 @@ namespace Unosquare.Net
         internal void Close(HttpStatusCode code)
         {
             // TODO: Change
-            CloseAsync(CreateHandshakeFailureResponse(code)).Wait();
+            CloseAsync(CreateHandshakeFailureResponse(code)).Wait(_ct);
         }
 
         // As server
@@ -2095,7 +2083,7 @@ namespace Unosquare.Net
             {
                 _ct = ct;
 
-                var handShake = await AcceptHandshakeAsync(ct);
+                var handShake = await AcceptHandshakeAsync();
 
                 if (handShake == false)
                     return;
@@ -2164,6 +2152,7 @@ namespace Unosquare.Net
             try
             {
                 Stream found;
+
                 if (!cache.TryGetValue(_compression, out found))
                 {
                     found = stream.Compress(_compression);
@@ -2201,7 +2190,7 @@ namespace Unosquare.Net
         public void Close(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null)
         {
             // TODO: How to wait for close?
-            CloseAsync(code, reason).Wait();
+            CloseAsync(code, reason).Wait(_ct);
         }
 
         /// <summary>
@@ -2275,7 +2264,7 @@ namespace Unosquare.Net
         public void ConnectAsync()
         {
             string msg;
-            if (!checkIfAvailable(out msg, true, false, true, false, false, true))
+            if (!checkIfAvailable(out msg, true, false, true, false, false))
             {
                 msg.Error();
                 Error("An error has occurred in connecting.", null);
@@ -2350,12 +2339,12 @@ namespace Unosquare.Net
         }
 
         /// <summary>
-        /// Sends binary <paramref name="data"/> using the WebSocket connection.
+        /// Sends binary <paramref name="data" /> using the WebSocket connection.
         /// </summary>
-        /// <param name="data">
-        /// An array of <see cref="byte"/> that represents the binary data to send.
-        /// </param>
-        public async Task SendAsync(byte[] data)
+        /// <param name="opcode">The opcode.</param>
+        /// <param name="data">An array of <see cref="byte" /> that represents the binary data to send.</param>
+        /// <returns></returns>
+        public async Task SendAsync(Opcode opcode, byte[] data)
         {
             var msg = CheckIfAvailable(_readyState) ??
                       CheckSendParameter(data);
@@ -2368,81 +2357,7 @@ namespace Unosquare.Net
                 return;
             }
 
-            await send(Opcode.Binary, new MemoryStream(data));
-        }
-
-        /// <summary>
-        /// Sends the specified <paramref name="file"/> as binary data using the WebSocket connection.
-        /// </summary>
-        /// <param name="file">
-        /// A <see cref="FileInfo"/> that represents the file to send.
-        /// </param>
-        public void Send(FileInfo file)
-        {
-            var msg = CheckIfAvailable(_readyState) ??
-                      CheckSendParameter(file);
-
-            if (msg != null)
-            {
-                msg.Error();
-                Error("An error has occurred in sending data.", null);
-
-                return;
-            }
-
-            send(Opcode.Binary, file.OpenRead());
-        }
-
-        /// <summary>
-        /// Sends text <paramref name="data"/> using the WebSocket connection.
-        /// </summary>
-        /// <param name="data">
-        /// A <see cref="string"/> that represents the text data to send.
-        /// </param>
-        public void Send(string data)
-        {
-            var msg = CheckIfAvailable(_readyState) ??
-                      CheckSendParameter(data);
-
-            if (msg != null)
-            {
-                msg.Error();
-                Error("An error has occurred in sending data.", null);
-
-                return;
-            }
-
-            send(Opcode.Text, new MemoryStream(Encoding.UTF8.GetBytes(data)));
-        }
-
-        /// <summary>
-        /// Sends binary <paramref name="data"/> asynchronously using the WebSocket connection.
-        /// </summary>
-        /// <remarks>
-        /// This method doesn't wait for the send to be complete.
-        /// </remarks>
-        /// <param name="data">
-        /// An array of <see cref="byte"/> that represents the binary data to send.
-        /// </param>
-        /// <param name="completed">
-        /// An <c>Action&lt;bool&gt;</c> delegate that references the method(s) called when
-        /// the send is complete. A <see cref="bool"/> passed to this delegate is <c>true</c>
-        /// if the send is complete successfully.
-        /// </param>
-        public void SendAsync(byte[] data, Action<bool> completed)
-        {
-            var msg = CheckIfAvailable(_readyState) ??
-                      CheckSendParameter(data);
-
-            if (msg != null)
-            {
-                msg.Error();
-                Error("An error has occurred in sending data.", null);
-
-                return;
-            }
-
-            SendAsync(Opcode.Binary, new MemoryStream(data), completed);
+            await send(opcode, new MemoryStream(data));
         }
 
         /// <summary>
@@ -2455,12 +2370,7 @@ namespace Unosquare.Net
         /// <param name="file">
         /// A <see cref="FileInfo"/> that represents the file to send.
         /// </param>
-        /// <param name="completed">
-        /// An <c>Action&lt;bool&gt;</c> delegate that references the method(s) called when
-        /// the send is complete. A <see cref="bool"/> passed to this delegate is <c>true</c>
-        /// if the send is complete successfully.
-        /// </param>
-        public void SendAsync(FileInfo file, Action<bool> completed)
+        public async Task SendAsync(FileInfo file)
         {
             var msg = CheckIfAvailable(_readyState) ??
                       CheckSendParameter(file);
@@ -2473,38 +2383,10 @@ namespace Unosquare.Net
                 return;
             }
 
-            SendAsync(Opcode.Binary, file.OpenRead(), completed);
+            await send(Opcode.Binary, file.OpenRead());
         }
-
-        /// <summary>
-        /// Sends text <paramref name="data"/> asynchronously using the WebSocket connection.
-        /// </summary>
-        /// <remarks>
-        /// This method doesn't wait for the send to be complete.
-        /// </remarks>
-        /// <param name="data">
-        /// A <see cref="string"/> that represents the text data to send.
-        /// </param>
-        /// <param name="completed">
-        /// An <c>Action&lt;bool&gt;</c> delegate that references the method(s) called when
-        /// the send is complete. A <see cref="bool"/> passed to this delegate is <c>true</c>
-        /// if the send is complete successfully.
-        /// </param>
-        public void SendAsync(string data, Action<bool> completed)
-        {
-            var msg = CheckIfAvailable(_readyState) ??
-                      CheckSendParameter(data);
-
-            if (msg != null)
-            {
-                msg.Error();
-                Error("An error has occurred in sending data.", null);
-
-                return;
-            }
-
-            SendAsync(Opcode.Text, new MemoryStream(Encoding.UTF8.GetBytes(data)), completed);
-        }
+        
+        private const int Retry = 5;
 
         /// <summary>
         /// Sends binary data from the specified <see cref="Stream"/> asynchronously using
@@ -2519,12 +2401,7 @@ namespace Unosquare.Net
         /// <param name="length">
         /// An <see cref="int"/> that represents the number of bytes to send.
         /// </param>
-        /// <param name="completed">
-        /// An <c>Action&lt;bool&gt;</c> delegate that references the method(s) called when
-        /// the send is complete. A <see cref="bool"/> passed to this delegate is <c>true</c>
-        /// if the send is complete successfully.
-        /// </param>
-        public void SendAsync(Stream stream, int length, Action<bool> completed)
+        public async Task SendAsync(Stream stream, int length)
         {
             var msg = CheckIfAvailable(_readyState) ??
                       CheckSendParameters(stream, length);
@@ -2537,28 +2414,50 @@ namespace Unosquare.Net
                 return;
             }
 
-            stream.ReadBytesAsync(
-                length,
-                data =>
+            var buff = new byte[length];
+            var offset = 0;
+            var retry = 0;
+
+            try
+            {
+                while (true)
                 {
-                    var len = data.Length;
-                    if (len == 0)
+                    var nread = await stream.ReadAsync(buff, offset, length, _ct);
+
+                    if (nread == 0 && retry < Retry)
                     {
-                        Error("An error has occurred in sending data.", null);
+                        retry++;
+                        continue;
+                    }
+
+                    if (nread == 0 || nread == length)
+                    {
+                        var data = buff.SubArray(0, offset + nread);
+
+                        if (data.Length == 0)
+                        {
+                            Error("An error has occurred in sending data.", null);
+                            return;
+                        }
+
+                        if (data.Length < length)
+                            $"The length of the data is less than 'length':\n  expected: {length}\n  actual: {data.Length}".Info();
+
+                        await send(Opcode.Binary, new MemoryStream(data));
                         return;
                     }
 
-                    if (len < length)
-                        $"The length of the data is less than 'length':\n  expected: {length}\n  actual: {len}".Info();
+                    retry = 0;
 
-                    var sent = send(Opcode.Binary, new MemoryStream(data));
-                    completed?.Invoke(sent.Result);
-                },
-                ex =>
-                {
-                    Error("An exception has occurred while sending data.", ex);
+                    offset += nread;
+                    length -= nread;
                 }
-            );
+            }
+            catch (Exception ex)
+            {
+                ex.Log(nameof(WebSocket), "Error sending data async.");
+                Error("An exception has occurred while sending data.", ex);
+            }
         }
 
         /// <summary>
@@ -2571,7 +2470,7 @@ namespace Unosquare.Net
         public void SetCookie(Cookie cookie)
         {
             string msg;
-            if (!checkIfAvailable(out msg, true, false, true, false, false, true) || cookie == null)
+            if (!checkIfAvailable(out msg, true, false, true, false, false) || cookie == null)
             {
                 msg.Error();
                 Error("An error has occurred in setting a cookie.", null);
@@ -2759,7 +2658,7 @@ namespace Unosquare.Net
         void IDisposable.Dispose()
         {
             // TODO: this is correct?
-            InternalCloseAsync(new CloseEventArgs(CloseStatusCode.Away)).Wait();
+            InternalCloseAsync(new CloseEventArgs(CloseStatusCode.Away)).Wait(_ct);
         }
 
         #endregion

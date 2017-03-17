@@ -342,7 +342,7 @@
 
                 while (webSocketContext.WebSocket.IsConnected)
                 {
-                    await Task.Delay(500);
+                    await Task.Delay(500, ct);
                 }
 #endif
             }
@@ -410,12 +410,13 @@
             try
             {
                 if (payload == null) payload = string.Empty;
-#if NET46
                 var buffer = System.Text.Encoding.UTF8.GetBytes(payload);
+
+#if NET46
                 await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true,
                         CancellationToken.None);
 #else
-                await Task.Factory.StartNew(() => { webSocket.WebSocket.SendAsync(payload, null); });
+                await webSocket.WebSocket.SendAsync(Opcode.Text, buffer);
 #endif
             }
             catch (Exception ex)
@@ -439,7 +440,7 @@
                 await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(payload), WebSocketMessageType.Binary, true,
                         CancellationToken.None);
 #else
-                await Task.Factory.StartNew(() => { webSocket.WebSocket.SendAsync(payload, null); });
+                await webSocket.WebSocket.SendAsync(Opcode.Binary, payload);
 #endif
             }
             catch (Exception ex)
