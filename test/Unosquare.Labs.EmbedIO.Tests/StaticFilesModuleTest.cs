@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
+    using System.Linq;
     using NUnit.Framework;
     using System;
     using System.IO;
@@ -140,7 +141,7 @@
                     var subset = new byte[maxLength];
                     var originalSet = TestHelper.GetBigData();
                     Buffer.BlockCopy(originalSet, 0, subset, 0, maxLength);
-                    Assert.AreEqual(subset, data);
+                    Assert.IsTrue(subset.SequenceEqual(data));
                 }
             }
         }
@@ -166,7 +167,7 @@
                     var subset = new byte[maxLength];
                     var originalSet = TestHelper.GetBigData();
                     Buffer.BlockCopy(originalSet, offset, subset, 0, maxLength);
-                    Assert.AreEqual(subset, data);
+                    Assert.IsTrue(subset.SequenceEqual(data));
                 }
             }
         }
@@ -192,7 +193,7 @@
                     var subset = new byte[byteLength];
                     var originalSet = TestHelper.GetBigData();
                     Buffer.BlockCopy(originalSet, startByteIndex, subset, 0, byteLength);
-                    Assert.AreEqual(subset, data);
+                    Assert.IsTrue(subset.SequenceEqual(data));
                 }
             }
         }
@@ -231,7 +232,7 @@
                 }
             }
 
-            Assert.AreEqual(originalSet, buffer);
+            Assert.IsTrue(originalSet.SequenceEqual(buffer));
         }
 
 #if CHUNKED
@@ -242,8 +243,8 @@
             {
                 client.DefaultRequestHeaders.TransferEncoding.Add(new TransferCodingHeaderValue("chunked"));
                 var data = await client.GetByteArrayAsync(WebServerUrl + TestHelper.SmallDataFile);
-
-                Assert.AreEqual(TestHelper.GetSmallData(), data, "Same content data file");
+        
+                Assert.IsTrue(TestHelper.GetSmallData().SequenceEqual(data));
             }
         }
 #endif
@@ -297,7 +298,7 @@
                     var data = ms.ToArray();
 
                     Assert.IsNotNull(data, "Data is not empty");
-                    Assert.AreEqual(TestHelper.GetBigData(), data);
+                    Assert.IsTrue(TestHelper.GetBigData().SequenceEqual(data));
                 }
             }
         }
