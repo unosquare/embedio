@@ -3967,24 +3967,12 @@ references:
   commentId: Overload:Unosquare.Net.WebSocket.Compression
   fullName: Unosquare.Net.WebSocket.Compression
   nameWithType: WebSocket.Compression
-- uid: Unosquare.Net.WebSocket.Connect
-  name: Connect()
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Connect
-  commentId: M:Unosquare.Net.WebSocket.Connect
-  fullName: Unosquare.Net.WebSocket.Connect()
-  nameWithType: WebSocket.Connect()
-- uid: Unosquare.Net.WebSocket.Connect*
-  name: Connect
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Connect_
-  commentId: Overload:Unosquare.Net.WebSocket.Connect
-  fullName: Unosquare.Net.WebSocket.Connect
-  nameWithType: WebSocket.Connect
-- uid: Unosquare.Net.WebSocket.ConnectAsync
-  name: ConnectAsync()
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_ConnectAsync
-  commentId: M:Unosquare.Net.WebSocket.ConnectAsync
-  fullName: Unosquare.Net.WebSocket.ConnectAsync()
-  nameWithType: WebSocket.ConnectAsync()
+- uid: Unosquare.Net.WebSocket.ConnectAsync(CancellationToken)
+  name: ConnectAsync(CancellationToken)
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_ConnectAsync_CancellationToken_
+  commentId: M:Unosquare.Net.WebSocket.ConnectAsync(CancellationToken)
+  fullName: Unosquare.Net.WebSocket.ConnectAsync(CancellationToken)
+  nameWithType: WebSocket.ConnectAsync(CancellationToken)
 - uid: Unosquare.Net.WebSocket.ConnectAsync*
   name: ConnectAsync
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_ConnectAsync_
