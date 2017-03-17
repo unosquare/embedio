@@ -3913,18 +3913,6 @@ references:
   commentId: Overload:Unosquare.Net.WebSocket.AcceptAsync
   fullName: Unosquare.Net.WebSocket.AcceptAsync
   nameWithType: WebSocket.AcceptAsync
-- uid: Unosquare.Net.WebSocket.Close
-  name: Close()
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Close
-  commentId: M:Unosquare.Net.WebSocket.Close
-  fullName: Unosquare.Net.WebSocket.Close()
-  nameWithType: WebSocket.Close()
-- uid: Unosquare.Net.WebSocket.Close(Unosquare.Net.CloseStatusCode)
-  name: Close(CloseStatusCode)
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Close_Unosquare_Net_CloseStatusCode_
-  commentId: M:Unosquare.Net.WebSocket.Close(Unosquare.Net.CloseStatusCode)
-  fullName: Unosquare.Net.WebSocket.Close(Unosquare.Net.CloseStatusCode)
-  nameWithType: WebSocket.Close(CloseStatusCode)
 - uid: Unosquare.Net.WebSocket.Close(Unosquare.Net.CloseStatusCode,System.String)
   name: Close(CloseStatusCode, String)
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Close_Unosquare_Net_CloseStatusCode_System_String_
@@ -3937,18 +3925,6 @@ references:
   commentId: Overload:Unosquare.Net.WebSocket.Close
   fullName: Unosquare.Net.WebSocket.Close
   nameWithType: WebSocket.Close
-- uid: Unosquare.Net.WebSocket.CloseAsync
-  name: CloseAsync()
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_CloseAsync
-  commentId: M:Unosquare.Net.WebSocket.CloseAsync
-  fullName: Unosquare.Net.WebSocket.CloseAsync()
-  nameWithType: WebSocket.CloseAsync()
-- uid: Unosquare.Net.WebSocket.CloseAsync(Unosquare.Net.CloseStatusCode)
-  name: CloseAsync(CloseStatusCode)
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_CloseAsync_Unosquare_Net_CloseStatusCode_
-  commentId: M:Unosquare.Net.WebSocket.CloseAsync(Unosquare.Net.CloseStatusCode)
-  fullName: Unosquare.Net.WebSocket.CloseAsync(Unosquare.Net.CloseStatusCode)
-  nameWithType: WebSocket.CloseAsync(CloseStatusCode)
 - uid: Unosquare.Net.WebSocket.CloseAsync(Unosquare.Net.CloseStatusCode,System.String)
   name: CloseAsync(CloseStatusCode, String)
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_CloseAsync_Unosquare_Net_CloseStatusCode_System_String_
