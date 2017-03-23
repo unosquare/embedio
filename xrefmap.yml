@@ -364,6 +364,18 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.JsonResponse
   fullName: Unosquare.Labs.EmbedIO.Extensions.JsonResponse
   nameWithType: Extensions.JsonResponse
+- uid: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Net.HttpListenerContext,System.String,CancellationToken)
+  name: JsonResponseAsync(HttpListenerContext, String, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Net_HttpListenerContext_System_String_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Net.HttpListenerContext,System.String,CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Net.HttpListenerContext, System.String, CancellationToken)
+  nameWithType: Extensions.JsonResponseAsync(HttpListenerContext, String, CancellationToken)
+- uid: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync*
+  name: JsonResponseAsync
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync
+  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync
+  nameWithType: Extensions.JsonResponseAsync
 - uid: Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers(Unosquare.Labs.EmbedIO.Modules.WebApiModule,Assembly)
   name: LoadApiControllers(WebApiModule, Assembly)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_LoadApiControllers_Unosquare_Labs_EmbedIO_Modules_WebApiModule_Assembly_
