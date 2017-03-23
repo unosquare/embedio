@@ -3103,15 +3103,6 @@ references:
   commentId: M:Unosquare.Net.HttpListenerResponse.CloseAsync
   fullName: Unosquare.Net.HttpListenerResponse.CloseAsync()
   nameWithType: HttpListenerResponse.CloseAsync()
-- uid: Unosquare.Net.HttpListenerResponse.CloseAsync(System.Byte[],System.Boolean)
-  name: CloseAsync(Byte[], Boolean)
-  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_CloseAsync_System_Byte___System_Boolean_
-  commentId: M:Unosquare.Net.HttpListenerResponse.CloseAsync(System.Byte[],System.Boolean)
-  name.vb: CloseAsync(Byte(), Boolean)
-  fullName: Unosquare.Net.HttpListenerResponse.CloseAsync(System.Byte[], System.Boolean)
-  fullName.vb: Unosquare.Net.HttpListenerResponse.CloseAsync(System.Byte(), System.Boolean)
-  nameWithType: HttpListenerResponse.CloseAsync(Byte[], Boolean)
-  nameWithType.vb: HttpListenerResponse.CloseAsync(Byte(), Boolean)
 - uid: Unosquare.Net.HttpListenerResponse.CloseAsync*
   name: CloseAsync
   href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_CloseAsync_
