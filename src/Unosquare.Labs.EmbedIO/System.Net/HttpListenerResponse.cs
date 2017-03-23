@@ -399,27 +399,7 @@ namespace Unosquare.Net
 
             await CloseAsync(false);
         }
-
-        /// <summary>
-        /// Closes the specified response entity.
-        /// </summary>
-        /// <param name="responseEntity">The response entity.</param>
-        /// <param name="willBlock">if set to <c>true</c> [will block].</param>
-        /// <exception cref="System.ArgumentNullException"></exception>
-        public async Task CloseAsync(byte[] responseEntity, bool willBlock)
-        {
-            if (_disposed)
-                return;
-
-            if (responseEntity == null)
-                throw new ArgumentNullException(nameof(responseEntity));
-
-            //TODO: if willBlock -> BeginWrite + Close ?
-            ContentLength64 = responseEntity.Length;
-            await OutputStream.WriteAsync(responseEntity, 0, (int)_contentLength);
-            await CloseAsync(false);
-        }
-
+        
         /// <summary>
         /// Copies from.
         /// </summary>
