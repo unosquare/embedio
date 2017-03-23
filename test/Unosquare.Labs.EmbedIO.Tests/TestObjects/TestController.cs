@@ -106,26 +106,23 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + GetAsyncPath + "*")]
-        public async Task<bool> GetPeopleAsync(WebServer server, HttpListenerContext context)
+        public Task<bool> GetPeopleAsync(WebServer server, HttpListenerContext context)
         {
             try
             {
-                // sleep because task
-                await Task.Delay(TimeSpan.FromSeconds(1));
-
                 // read the last segment
                 var lastSegment = context.Request.Url.Segments.Last();
 
                 // if it ends with a / means we need to list people
                 if (lastSegment.EndsWith("/"))
-                    return context.JsonResponse(PeopleRepository.Database);
+                    return context.JsonResponseAsync(PeopleRepository.Database);
 
                 // otherwise, we need to parse the key and respond with the entity accordingly
                 int key;
 
                 if (int.TryParse(lastSegment, out key) && PeopleRepository.Database.Any(p => p.Key == key))
                 {
-                    return context.JsonResponse(PeopleRepository.Database.FirstOrDefault(p => p.Key == key));
+                    return context.JsonResponseAsync(PeopleRepository.Database.FirstOrDefault(p => p.Key == key));
                 }
 
                 throw new KeyNotFoundException("Key Not Found: " + lastSegment);
@@ -133,7 +130,7 @@
             catch (Exception ex)
             {
                 context.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
-                return context.JsonResponse(ex);
+                return context.JsonResponseAsync(ex);
             }
         }
     }

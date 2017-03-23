@@ -36,10 +36,7 @@ using System.Threading.Tasks;
 namespace Unosquare.Net
 {
     /// <summary>
-    /// FIXME: Does this buffer the response until Close?
-    /// Update: we send a single packet for the first non-chunked Write
-    /// What happens when we set content-length to X and write X-1 bytes then close?
-    /// what if we don't set content-length at all?
+    /// Represents a Response stream
     /// </summary>
     /// <seealso cref="System.IO.Stream" />
     public class ResponseStream : Stream
@@ -95,9 +92,6 @@ namespace Unosquare.Net
         /// <summary>
         /// Closes this instance.
         /// </summary>
-#if !NETSTANDARD1_6
-        new 
-#endif
         public async Task CloseAsync()
         {
             if (_disposed) return;
@@ -158,7 +152,7 @@ namespace Unosquare.Net
         {
         }
 
-        private static readonly byte[] _crlf = { 13, 10 };
+        private static readonly byte[] Crlf = { 13, 10 };
 
         private static byte[] GetChunkSizeBytes(int size, bool final)
         {
@@ -228,9 +222,9 @@ namespace Unosquare.Net
                 InternalWrite(buffer, offset, count);
 
             if (chunked)
-                InternalWrite(_crlf, 0, 2);
+                InternalWrite(Crlf, 0, 2);
         }
-        
+
         /// <summary>
         /// When overridden in a derived class, reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.
         /// </summary>

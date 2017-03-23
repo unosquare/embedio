@@ -266,11 +266,22 @@
         /// <returns></returns>
         public static bool JsonResponse(this HttpListenerContext context, object data)
         {
+           return context.JsonResponseAsync(data).GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        /// Outputs async a Json Response given a data object
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
+        public static Task<bool> JsonResponseAsync(this HttpListenerContext context, object data)
+        {
             var jsonFormatting = true;
 #if DEBUG
             jsonFormatting = false;
 #endif
-            return context.JsonResponse(Json.Serialize(data, jsonFormatting));
+            return context.JsonResponseAsync(Json.Serialize(data, jsonFormatting));
         }
 
         /// <summary>
@@ -281,12 +292,7 @@
         /// <returns></returns>
         public static bool JsonResponse(this HttpListenerContext context, string json)
         {
-            var buffer = Encoding.UTF8.GetBytes(json);
-
-            context.Response.ContentType = "application/json";
-            context.Response.OutputStream.Write(buffer, 0, buffer.Length);
-
-            return true;
+            return context.JsonResponseAsync(json).GetAwaiter().GetResult();
         }
 
         /// <summary>

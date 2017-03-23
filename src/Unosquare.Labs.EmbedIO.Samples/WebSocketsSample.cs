@@ -218,7 +218,7 @@
 #if NET46
                         ws.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Process exited", CancellationToken.None).GetAwaiter().GetResult();
 #else
-                        ws.WebSocket.Close();
+                        ws.WebSocket.CloseAsync().GetAwaiter().GetResult();
 #endif
                 }
             };

@@ -61,7 +61,7 @@
             Assert.AreEqual(WebSocketState.Open, clientSocket.State, "Connection is open");
 
             var buffer = System.Text.Encoding.UTF8.GetBytes("HOLA");
-            await clientSocket.SendAsync(buffer, Opcode.Text);
+            await clientSocket.SendAsync(buffer, Opcode.Text, ct.Token);
             await Task.Delay(100, ct.Token);
 #endif
         }

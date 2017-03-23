@@ -140,13 +140,13 @@ namespace Unosquare.Net
         /// the WebSocket handshake request.
         /// </returns>
         /// <exception cref="InvalidOperationException">This method has already been called.</exception>
-        public async Task<WebSocketContext> AcceptWebSocketAsync(CancellationToken ct)
+        public async Task<WebSocketContext> AcceptWebSocketAsync()
         {
             if (_websocketContext != null)
                 throw new InvalidOperationException("The accepting is already in progress.");
 
             _websocketContext = new WebSocketContext(this);
-            await _websocketContext.WebSocket.InternalAcceptAsync(ct);
+            await _websocketContext.WebSocket.InternalAcceptAsync();
 
             return _websocketContext;
         }

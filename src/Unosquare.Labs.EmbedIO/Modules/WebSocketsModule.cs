@@ -166,6 +166,7 @@
         private readonly bool _enableDisconnectedSocketColletion;
         private readonly object _syncRoot = new object();
         private readonly List<WebSocketContext> _mWebSockets = new List<WebSocketContext>(10);
+        private CancellationToken _ct = default(CancellationToken);
 #if NET46
         private readonly int _maximumMessageSize;
 #endif
@@ -225,7 +226,7 @@
                         CollectDisconnected();
 
                     // TODO: make this sleep configurable.
-                    await Task.Delay(30 * 1000);
+                    await Task.Delay(30 * 1000, _ct);
                 }
             })
             {
@@ -252,6 +253,8 @@
         public async Task AcceptWebSocket(HttpListenerContext context, CancellationToken ct)
 #endif
         {
+            _ct = ct;
+
             // first, accept the websocket
             $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
 
@@ -264,7 +267,7 @@
                 await context.AcceptWebSocketAsync(subProtocol: null, receiveBufferSize: receiveBufferSize,
                     keepAliveInterval: TimeSpan.FromSeconds(30));
 #else
-                await context.AcceptWebSocketAsync(ct);
+                await context.AcceptWebSocketAsync();
 #endif
 
             // remove the disconnected clients
@@ -292,14 +295,12 @@
                 while (webSocketContext.WebSocket.State == WebSocketState.Open)
                 {
                     // retrieve the result (blocking)
-                    var receiveResult =
-                        webSocketContext.WebSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer),
-                            CancellationToken.None).GetAwaiter().GetResult();
+                    var receiveResult = await webSocketContext.WebSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), ct);
+
                     if (receiveResult.MessageType == WebSocketMessageType.Close)
                     {
                         // close the connection if requested by the client
-                        webSocketContext.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty,
-                            CancellationToken.None).GetAwaiter().GetResult();
+                        await webSocketContext.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, ct);
                         return;
                     }
 
@@ -313,10 +314,9 @@
                     if (receivedMessage.Count > _maximumMessageSize && _maximumMessageSize > 0)
                     {
                         // close the connection if message exceeds max length
-                        webSocketContext.WebSocket.CloseAsync(
-                            WebSocketCloseStatus.MessageTooBig,
+                        await webSocketContext.WebSocket.CloseAsync(WebSocketCloseStatus.MessageTooBig,
                             $"Message too big. Maximum is {_maximumMessageSize} bytes.",
-                            CancellationToken.None).GetAwaiter().GetResult();
+                            ct);
 
                         // exit the loop; we're done
                         return;
@@ -414,9 +414,9 @@
 
 #if NET46
                 await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true,
-                        CancellationToken.None);
+                        _ct);
 #else
-                await webSocket.WebSocket.SendAsync(buffer, Opcode.Text);
+                await webSocket.WebSocket.SendAsync(buffer, Opcode.Text, _ct);
 #endif
             }
             catch (Exception ex)
@@ -438,9 +438,9 @@
 
 #if NET46
                 await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(payload), WebSocketMessageType.Binary, true,
-                        CancellationToken.None);
+                        _ct);
 #else
-                await webSocket.WebSocket.SendAsync(payload, Opcode.Binary);
+                await webSocket.WebSocket.SendAsync(payload, Opcode.Binary, _ct);
 #endif
             }
             catch (Exception ex)
@@ -482,10 +482,9 @@
             try
             {
 #if NET46
-                await webSocket.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty,
-                        CancellationToken.None);
+                await webSocket.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, _ct);
 #else
-                await webSocket.WebSocket.CloseAsync();
+                await webSocket.WebSocket.CloseAsync(ct: _ct);
 #endif
             }
             catch (Exception ex)
