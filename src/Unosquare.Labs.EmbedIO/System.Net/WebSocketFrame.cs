@@ -40,7 +40,6 @@ using System.IO;
 using System.Text;
 using System;
 using System.Threading.Tasks;
-using Unosquare.Swan;
 
 namespace Unosquare.Net
 {

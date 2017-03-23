@@ -7,6 +7,8 @@
     using System.Linq;
     using System.Text;
     using Swan.Formatters;
+    using System.Threading;
+    using System.Threading.Tasks;
 #if NET46
     using System.Net;
 #else
@@ -283,6 +285,23 @@
 
             context.Response.ContentType = "application/json";
             context.Response.OutputStream.Write(buffer, 0, buffer.Length);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Outputs async a Json Response given a Json string
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="json">The json.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        public static async Task<bool> JsonResponseAsync(this HttpListenerContext context, string json, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var buffer = Encoding.UTF8.GetBytes(json);
+
+            context.Response.ContentType = "application/json";
+            await context.Response.OutputStream.WriteAsync(buffer, 0, buffer.Length, cancellationToken);
 
             return true;
         }

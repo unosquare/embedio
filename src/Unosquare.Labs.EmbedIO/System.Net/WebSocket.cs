@@ -1111,7 +1111,7 @@ namespace Unosquare.Net
         // As client
         private async Task<bool> DoHandshakeAsync()
         {
-            SetClientStream();
+            await SetClientStream();
             var res = await SendHandshakeRequestAsync();
 
             string msg;
@@ -1285,7 +1285,6 @@ namespace Unosquare.Net
                 if (!cookie.Expired)
                 {
                     CookieCollection.Add(cookie);
-                    continue;
                 }
 
                 // TODO: Clear cookie
@@ -1639,7 +1638,7 @@ namespace Unosquare.Net
                     if (res.HasConnectionClose)
                     {
                         releaseClientResources();
-                        setClientStream();
+                        await SetClientStream();
                     }
 
                     var authRes = new AuthenticationResponse(_authChallenge, _credentials, _nonceCount);
@@ -1678,7 +1677,7 @@ namespace Unosquare.Net
                 _uri = uri;
                 IsSecure = uri.Scheme == "wss";
 
-                SetClientStream();
+                await SetClientStream();
                 return await SendHandshakeRequestAsync();
             }
 
@@ -1747,7 +1746,7 @@ namespace Unosquare.Net
 #endif
 
         // As client
-        private void SetClientStream()
+        private async Task SetClientStream()
         {
 #if PROXY
             if (_proxyUri != null)
@@ -1768,7 +1767,7 @@ namespace Unosquare.Net
 #else
                 _tcpClient = new TcpClient();
 
-                _tcpClient.ConnectAsync(_uri.DnsSafeHost, _uri.Port).Wait();
+                await _tcpClient.ConnectAsync(_uri.DnsSafeHost, _uri.Port);
 #endif
                 _stream = _tcpClient.GetStream();
             }
@@ -2025,7 +2024,7 @@ namespace Unosquare.Net
         }
 
         // As server
-        internal void Close(CloseEventArgs e, byte[] frameAsBytes, bool receive)
+        internal async Task CloseAsync(CloseEventArgs e, byte[] frameAsBytes, bool receive)
         {
             lock (_forState)
             {
@@ -2045,8 +2044,8 @@ namespace Unosquare.Net
             }
 
             // TODO: Fix
-            e.WasClean = CloseHandshakeAsync(frameAsBytes, receive, false).Result;
-            ReleaseServerResources().Wait();
+            e.WasClean = await CloseHandshakeAsync(frameAsBytes, receive, false).ConfigureAwait(false);
+            await ReleaseServerResources().ConfigureAwait(false);
             ReleaseCommonResources();
 
             _readyState = WebSocketState.Closed;
@@ -2365,9 +2364,7 @@ namespace Unosquare.Net
 
             await send(Opcode.Binary, file.OpenRead());
         }
-
-        private const int Retry = 5;
-
+        
         /// <summary>
         /// Sends binary data from the specified <see cref="Stream"/> asynchronously using
         /// the WebSocket connection.

@@ -416,7 +416,7 @@ namespace Unosquare.Net
 
             //TODO: if willBlock -> BeginWrite + Close ?
             ContentLength64 = responseEntity.Length;
-            OutputStream.Write(responseEntity, 0, (int)_contentLength);
+            await OutputStream.WriteAsync(responseEntity, 0, (int)_contentLength);
             await CloseAsync(false);
         }
 
@@ -427,8 +427,10 @@ namespace Unosquare.Net
         public void CopyFrom(HttpListenerResponse templateResponse)
         {
             Headers = new WebHeaderCollection();
-            foreach(var header in templateResponse.Headers)
-            Headers.Add(header.ToString());
+
+            foreach (var header in templateResponse.Headers)
+                Headers.Add(header.ToString());
+
             _contentLength = templateResponse._contentLength;
             _statusCode = templateResponse._statusCode;
             StatusDescription = templateResponse.StatusDescription;
@@ -624,7 +626,7 @@ namespace Unosquare.Net
         {
             return cookie.Version == 0 || value.IsToken() ? value : "\"" + value.Replace("\"", "\\\"") + "\"";
         }
-        
+
         /// <summary>
         /// Sets the cookie.
         /// </summary>
