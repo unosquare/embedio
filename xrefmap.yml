@@ -364,6 +364,12 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.JsonResponse
   fullName: Unosquare.Labs.EmbedIO.Extensions.JsonResponse
   nameWithType: Extensions.JsonResponse
+- uid: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Net.HttpListenerContext,System.Object)
+  name: JsonResponseAsync(HttpListenerContext, Object)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Net_HttpListenerContext_System_Object_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Net.HttpListenerContext,System.Object)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Net.HttpListenerContext, System.Object)
+  nameWithType: Extensions.JsonResponseAsync(HttpListenerContext, Object)
 - uid: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Net.HttpListenerContext,System.String,CancellationToken)
   name: JsonResponseAsync(HttpListenerContext, String, CancellationToken)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Net_HttpListenerContext_System_String_CancellationToken_
@@ -2494,12 +2500,12 @@ references:
   commentId: T:Unosquare.Net.HttpListenerContext
   fullName: Unosquare.Net.HttpListenerContext
   nameWithType: HttpListenerContext
-- uid: Unosquare.Net.HttpListenerContext.AcceptWebSocketAsync(CancellationToken)
-  name: AcceptWebSocketAsync(CancellationToken)
-  href: api/Unosquare.Net.HttpListenerContext.html#Unosquare_Net_HttpListenerContext_AcceptWebSocketAsync_CancellationToken_
-  commentId: M:Unosquare.Net.HttpListenerContext.AcceptWebSocketAsync(CancellationToken)
-  fullName: Unosquare.Net.HttpListenerContext.AcceptWebSocketAsync(CancellationToken)
-  nameWithType: HttpListenerContext.AcceptWebSocketAsync(CancellationToken)
+- uid: Unosquare.Net.HttpListenerContext.AcceptWebSocketAsync
+  name: AcceptWebSocketAsync()
+  href: api/Unosquare.Net.HttpListenerContext.html#Unosquare_Net_HttpListenerContext_AcceptWebSocketAsync
+  commentId: M:Unosquare.Net.HttpListenerContext.AcceptWebSocketAsync
+  fullName: Unosquare.Net.HttpListenerContext.AcceptWebSocketAsync()
+  nameWithType: HttpListenerContext.AcceptWebSocketAsync()
 - uid: Unosquare.Net.HttpListenerContext.AcceptWebSocketAsync*
   name: AcceptWebSocketAsync
   href: api/Unosquare.Net.HttpListenerContext.html#Unosquare_Net_HttpListenerContext_AcceptWebSocketAsync_
@@ -3916,24 +3922,12 @@ references:
   commentId: Overload:Unosquare.Net.WebSocket.#ctor
   fullName: Unosquare.Net.WebSocket.WebSocket
   nameWithType: WebSocket.WebSocket
-- uid: Unosquare.Net.WebSocket.Close(Unosquare.Net.CloseStatusCode,System.String)
-  name: Close(CloseStatusCode, String)
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Close_Unosquare_Net_CloseStatusCode_System_String_
-  commentId: M:Unosquare.Net.WebSocket.Close(Unosquare.Net.CloseStatusCode,System.String)
-  fullName: Unosquare.Net.WebSocket.Close(Unosquare.Net.CloseStatusCode, System.String)
-  nameWithType: WebSocket.Close(CloseStatusCode, String)
-- uid: Unosquare.Net.WebSocket.Close*
-  name: Close
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Close_
-  commentId: Overload:Unosquare.Net.WebSocket.Close
-  fullName: Unosquare.Net.WebSocket.Close
-  nameWithType: WebSocket.Close
-- uid: Unosquare.Net.WebSocket.CloseAsync(Unosquare.Net.CloseStatusCode,System.String)
-  name: CloseAsync(CloseStatusCode, String)
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_CloseAsync_Unosquare_Net_CloseStatusCode_System_String_
-  commentId: M:Unosquare.Net.WebSocket.CloseAsync(Unosquare.Net.CloseStatusCode,System.String)
-  fullName: Unosquare.Net.WebSocket.CloseAsync(Unosquare.Net.CloseStatusCode, System.String)
-  nameWithType: WebSocket.CloseAsync(CloseStatusCode, String)
+- uid: Unosquare.Net.WebSocket.CloseAsync(Unosquare.Net.CloseStatusCode,System.String,CancellationToken)
+  name: CloseAsync(CloseStatusCode, String, CancellationToken)
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_CloseAsync_Unosquare_Net_CloseStatusCode_System_String_CancellationToken_
+  commentId: M:Unosquare.Net.WebSocket.CloseAsync(Unosquare.Net.CloseStatusCode,System.String,CancellationToken)
+  fullName: Unosquare.Net.WebSocket.CloseAsync(Unosquare.Net.CloseStatusCode, System.String, CancellationToken)
+  nameWithType: WebSocket.CloseAsync(CloseStatusCode, String, CancellationToken)
 - uid: Unosquare.Net.WebSocket.CloseAsync*
   name: CloseAsync
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_CloseAsync_
@@ -4090,27 +4084,27 @@ references:
   commentId: Overload:Unosquare.Net.WebSocket.PingAsync
   fullName: Unosquare.Net.WebSocket.PingAsync
   nameWithType: WebSocket.PingAsync
-- uid: Unosquare.Net.WebSocket.SendAsync(FileInfo)
-  name: SendAsync(FileInfo)
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_FileInfo_
-  commentId: M:Unosquare.Net.WebSocket.SendAsync(FileInfo)
-  fullName: Unosquare.Net.WebSocket.SendAsync(FileInfo)
-  nameWithType: WebSocket.SendAsync(FileInfo)
-- uid: Unosquare.Net.WebSocket.SendAsync(Stream,System.Int32)
-  name: SendAsync(Stream, Int32)
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_Stream_System_Int32_
-  commentId: M:Unosquare.Net.WebSocket.SendAsync(Stream,System.Int32)
-  fullName: Unosquare.Net.WebSocket.SendAsync(Stream, System.Int32)
-  nameWithType: WebSocket.SendAsync(Stream, Int32)
-- uid: Unosquare.Net.WebSocket.SendAsync(System.Byte[],Unosquare.Net.Opcode)
-  name: SendAsync(Byte[], Opcode)
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_System_Byte___Unosquare_Net_Opcode_
-  commentId: M:Unosquare.Net.WebSocket.SendAsync(System.Byte[],Unosquare.Net.Opcode)
-  name.vb: SendAsync(Byte(), Opcode)
-  fullName: Unosquare.Net.WebSocket.SendAsync(System.Byte[], Unosquare.Net.Opcode)
-  fullName.vb: Unosquare.Net.WebSocket.SendAsync(System.Byte(), Unosquare.Net.Opcode)
-  nameWithType: WebSocket.SendAsync(Byte[], Opcode)
-  nameWithType.vb: WebSocket.SendAsync(Byte(), Opcode)
+- uid: Unosquare.Net.WebSocket.SendAsync(FileInfo,CancellationToken)
+  name: SendAsync(FileInfo, CancellationToken)
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_FileInfo_CancellationToken_
+  commentId: M:Unosquare.Net.WebSocket.SendAsync(FileInfo,CancellationToken)
+  fullName: Unosquare.Net.WebSocket.SendAsync(FileInfo, CancellationToken)
+  nameWithType: WebSocket.SendAsync(FileInfo, CancellationToken)
+- uid: Unosquare.Net.WebSocket.SendAsync(Stream,System.Int32,CancellationToken)
+  name: SendAsync(Stream, Int32, CancellationToken)
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_Stream_System_Int32_CancellationToken_
+  commentId: M:Unosquare.Net.WebSocket.SendAsync(Stream,System.Int32,CancellationToken)
+  fullName: Unosquare.Net.WebSocket.SendAsync(Stream, System.Int32, CancellationToken)
+  nameWithType: WebSocket.SendAsync(Stream, Int32, CancellationToken)
+- uid: Unosquare.Net.WebSocket.SendAsync(System.Byte[],Unosquare.Net.Opcode,CancellationToken)
+  name: SendAsync(Byte[], Opcode, CancellationToken)
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_System_Byte___Unosquare_Net_Opcode_CancellationToken_
+  commentId: M:Unosquare.Net.WebSocket.SendAsync(System.Byte[],Unosquare.Net.Opcode,CancellationToken)
+  name.vb: SendAsync(Byte(), Opcode, CancellationToken)
+  fullName: Unosquare.Net.WebSocket.SendAsync(System.Byte[], Unosquare.Net.Opcode, CancellationToken)
+  fullName.vb: Unosquare.Net.WebSocket.SendAsync(System.Byte(), Unosquare.Net.Opcode, CancellationToken)
+  nameWithType: WebSocket.SendAsync(Byte[], Opcode, CancellationToken)
+  nameWithType.vb: WebSocket.SendAsync(Byte(), Opcode, CancellationToken)
 - uid: Unosquare.Net.WebSocket.SendAsync*
   name: SendAsync
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_
