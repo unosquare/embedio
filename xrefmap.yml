@@ -907,15 +907,15 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.Modules.FallbackModule
   fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule
   nameWithType: FallbackModule
-- uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(Action{Unosquare.Net.HttpListenerContext,CancellationToken})
-  name: FallbackModule(Action<HttpListenerContext, CancellationToken>)
-  href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_Action_Unosquare_Net_HttpListenerContext_CancellationToken__
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(Action{Unosquare.Net.HttpListenerContext,CancellationToken})
-  name.vb: FallbackModule(Action(Of HttpListenerContext, CancellationToken))
-  fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(Action<Unosquare.Net.HttpListenerContext, CancellationToken>)
-  fullName.vb: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(Action(Of Unosquare.Net.HttpListenerContext, CancellationToken))
-  nameWithType: FallbackModule.FallbackModule(Action<HttpListenerContext, CancellationToken>)
-  nameWithType.vb: FallbackModule.FallbackModule(Action(Of HttpListenerContext, CancellationToken))
+- uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(Func{Unosquare.Net.HttpListenerContext,CancellationToken,System.Boolean})
+  name: FallbackModule(Func<HttpListenerContext, CancellationToken, Boolean>)
+  href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_Func_Unosquare_Net_HttpListenerContext_CancellationToken_System_Boolean__
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(Func{Unosquare.Net.HttpListenerContext,CancellationToken,System.Boolean})
+  name.vb: FallbackModule(Func(Of HttpListenerContext, CancellationToken, Boolean))
+  fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(Func<Unosquare.Net.HttpListenerContext, CancellationToken, System.Boolean>)
+  fullName.vb: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(Func(Of Unosquare.Net.HttpListenerContext, CancellationToken, System.Boolean))
+  nameWithType: FallbackModule.FallbackModule(Func<HttpListenerContext, CancellationToken, Boolean>)
+  nameWithType.vb: FallbackModule.FallbackModule(Func(Of HttpListenerContext, CancellationToken, Boolean))
 - uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.String)
   name: FallbackModule(String)
   href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_String_
