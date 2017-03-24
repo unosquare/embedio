@@ -19,7 +19,7 @@
         /// Gets the name of this module.
         /// </summary>
         public override string Name => nameof(FallbackModule);
-        
+
         /// <summary>
         /// Gets the redirect URL.
         /// </summary>
@@ -29,13 +29,10 @@
         /// Initializes a new instance of the <see cref="FallbackModule" /> class.
         /// </summary>
         /// <param name="action">The action.</param>
-        public FallbackModule(Action<HttpListenerContext, CancellationToken> action)
+        public FallbackModule(Func<HttpListenerContext, CancellationToken, bool> action)
         {
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (context, ct) =>
-            {
-                action(context, ct);
-                return Task.FromResult(true);
-            });
+            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, 
+                (context, ct) => Task.FromResult(action(context, ct)));
         }
 
         /// <summary>
@@ -46,11 +43,8 @@
         {
             RedirectUrl = redirectUrl;
 
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (context, ct) =>
-            {
-                context.Redirect(redirectUrl, true);
-                return Task.FromResult(true);
-            });
+            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, 
+                (context, ct) => Task.FromResult(context.Redirect(redirectUrl)));
         }
     }
 }

@@ -134,7 +134,6 @@ namespace Unosquare.Net
         /// <summary>
         /// Accepts a WebSocket handshake request.
         /// </summary>
-        /// <param name="ct">The cancellation token.</param>
         /// <returns>
         /// A <see cref="WebSocketContext" /> that represents
         /// the WebSocket handshake request.

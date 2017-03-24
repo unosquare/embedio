@@ -242,7 +242,7 @@
         /// <param name="context">The context.</param>
         /// <param name="location">The location.</param>
         /// <param name="useAbsoluteUrl">if set to <c>true</c> [use absolute URL].</param>
-        public static void Redirect(this HttpListenerContext context, string location, bool useAbsoluteUrl)
+        public static bool Redirect(this HttpListenerContext context, string location, bool useAbsoluteUrl = true)
         {
             if (useAbsoluteUrl)
             {
@@ -252,18 +252,20 @@
 
             context.Response.StatusCode = 302;
             context.Response.AddHeader("Location", location);
+
+            return true;
         }
 
         #endregion
 
-        #region JSON and Exception Extensions
+            #region JSON and Exception Extensions
 
-        /// <summary>
-        /// Outputs a Json Response given a data object
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="data">The data.</param>
-        /// <returns></returns>
+            /// <summary>
+            /// Outputs a Json Response given a data object
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="data">The data.</param>
+            /// <returns></returns>
         public static bool JsonResponse(this HttpListenerContext context, object data)
         {
            return context.JsonResponseAsync(data).GetAwaiter().GetResult();
@@ -322,8 +324,7 @@
         public static T ParseJson<T>(this HttpListenerContext context)
             where T : class
         {
-            var requestBody = context.RequestBody();
-            return ParseJson<T>(requestBody);
+            return ParseJson<T>(context.RequestBody());
         }
 
         /// <summary>
