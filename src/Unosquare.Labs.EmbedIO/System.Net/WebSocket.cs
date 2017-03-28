@@ -289,10 +289,7 @@ namespace Unosquare.Net
         #region Internal Properties
 
         internal CookieCollection CookieCollection { get; private set; }
-
-        // As server
-        internal Func<WebSocketContext, string> CustomHandshakeRequestChecker { get; set; }
-
+        
         internal bool HasMessage
         {
             get
@@ -627,17 +624,7 @@ namespace Unosquare.Net
 
                 return false;
             }
-
-            if (!CustomCheckHandshakeRequest(_context, out msg))
-            {
-                await SendHttpResponseAsync(CreateHandshakeFailureResponse(HttpStatusCode.BadRequest));
-
-                msg.Error();
-                Fatal("An error has occurred while accepting.", CloseStatusCode.PolicyViolation);
-
-                return false;
-            }
-
+            
             _base64Key = _context.Headers["Sec-WebSocket-Key"];
 
             if (!IgnoreExtensions)
@@ -910,7 +897,7 @@ namespace Unosquare.Net
         }
 
         private async Task InternalCloseAsync(CloseEventArgs e, bool send = true, bool receive = true,
-            bool received = false)
+            bool received = false, CancellationToken ct = default(CancellationToken))
         {
             lock (_forState)
             {
@@ -935,7 +922,7 @@ namespace Unosquare.Net
             "Begin closing the connection.".Info();
 
             var bytes = send ? WebSocketFrame.CreateCloseFrame(e.PayloadData, _client).ToArray() : null;
-            e.WasClean = await CloseHandshakeAsync(bytes, receive, received);
+            e.WasClean = await CloseHandshakeAsync(bytes, receive, received, ct);
             await ReleaseResources();
 
             "End closing the connection.".Info();
@@ -953,13 +940,13 @@ namespace Unosquare.Net
             }
         }
 
-        private async Task<bool> CloseHandshakeAsync(byte[] frameAsBytes, bool receive, bool received)
+        private async Task<bool> CloseHandshakeAsync(byte[] frameAsBytes, bool receive, bool received, CancellationToken ct)
         {
             var sent = frameAsBytes != null;
 
             if (sent)
             {
-                await _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length);
+                await _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length, ct);
             }
 
             received = received ||
@@ -1098,15 +1085,7 @@ namespace Unosquare.Net
 
             return ret;
         }
-
-        // As server
-        private bool CustomCheckHandshakeRequest(WebSocketContext context, out string message)
-        {
-            message = null;
-            return CustomHandshakeRequestChecker == null
-                   || (message = CustomHandshakeRequestChecker(context)) == null;
-        }
-
+        
         // As client
         private async Task<bool> DoHandshakeAsync()
         {
@@ -2007,7 +1986,7 @@ namespace Unosquare.Net
         }
         
         // As server
-        internal async Task CloseAsync(CloseEventArgs e, byte[] frameAsBytes, bool receive)
+        internal async Task CloseAsync(CloseEventArgs e, byte[] frameAsBytes, bool receive, CancellationToken ct = default(CancellationToken))
         {
             lock (_forState)
             {
@@ -2027,7 +2006,7 @@ namespace Unosquare.Net
             }
 
             // TODO: Fix
-            e.WasClean = await CloseHandshakeAsync(frameAsBytes, receive, false).ConfigureAwait(false);
+            e.WasClean = await CloseHandshakeAsync(frameAsBytes, receive, false, ct).ConfigureAwait(false);
             await ReleaseServerResources().ConfigureAwait(false);
             ReleaseCommonResources();
 
@@ -2094,11 +2073,11 @@ namespace Unosquare.Net
 
             return _receivePong != null && _receivePong.WaitOne(timeout);
         }
-        
+
         #endregion
 
         #region Public Methods
-        
+
         /// <summary>
         /// Closes the WebSocket connection asynchronously, and releases
         /// all associated resources.
@@ -2128,7 +2107,7 @@ namespace Unosquare.Net
 
             if (code == CloseStatusCode.NoStatus)
             {
-                await InternalCloseAsync(new CloseEventArgs());
+                await InternalCloseAsync(new CloseEventArgs(), ct: ct);
                 return;
             }
 
@@ -2509,7 +2488,7 @@ namespace Unosquare.Net
         /// <remarks>
         /// This method closes the connection with <see cref="CloseStatusCode.Away"/>.
         /// </remarks>
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             // TODO: this is correct?
             InternalCloseAsync(new CloseEventArgs(CloseStatusCode.Away)).Wait();

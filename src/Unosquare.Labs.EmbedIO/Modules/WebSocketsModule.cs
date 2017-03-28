@@ -363,9 +363,7 @@
         /// <param name="webSocketContext">The web socket context.</param>
         private void RemoveWebSocket(WebSocketContext webSocketContext)
         {
-#if NET46
             webSocketContext.WebSocket?.Dispose();
-#endif
 
             lock (_syncRoot)
             {
@@ -477,7 +475,8 @@
         /// <param name="webSocket">The web socket.</param>
         protected virtual async void Close(WebSocketContext webSocket)
         {
-            if (webSocket == null) return;
+            if (webSocket == null)
+                return;
 
             try
             {
