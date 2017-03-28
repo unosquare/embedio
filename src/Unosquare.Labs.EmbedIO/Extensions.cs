@@ -246,7 +246,7 @@
         {
             if (useAbsoluteUrl)
             {
-                var hostPath = context.Request.Url.GetLeftPart(UriPartial.Authority);
+                var hostPath = context.Request.Url.GetComponents(UriComponents.Scheme | UriComponents.StrongAuthority, UriFormat.Unescaped);
                 location = hostPath + location;
             }
 

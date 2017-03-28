@@ -98,141 +98,8 @@ namespace Unosquare.Net
     /// <summary>
     /// Represents some System.NET custom extensions
     /// </summary>
-    public static class NetExtensions
+    public static class WebSocketExtensions
     {
-        /// <summary>
-        /// The scheme delimiter
-        /// </summary>
-        public static readonly string SchemeDelimiter = "://";
-        /// <summary>
-        /// The URI scheme file
-        /// </summary>
-        public static readonly string UriSchemeFile = "file";
-        /// <summary>
-        /// The URI scheme FTP
-        /// </summary>
-        public static readonly string UriSchemeFtp = "ftp";
-        /// <summary>
-        /// The URI scheme gopher
-        /// </summary>
-        public static readonly string UriSchemeGopher = "gopher";
-        /// <summary>
-        /// The URI scheme HTTP
-        /// </summary>
-        public static readonly string UriSchemeHttp = "http";
-        /// <summary>
-        /// The URI scheme HTTPS
-        /// </summary>
-        public static readonly string UriSchemeHttps = "https";
-        /// <summary>
-        /// The URI scheme mailto
-        /// </summary>
-        public static readonly string UriSchemeMailto = "mailto";
-        /// <summary>
-        /// The URI scheme news
-        /// </summary>
-        public static readonly string UriSchemeNews = "news";
-        /// <summary>
-        /// The URI scheme NNTP
-        /// </summary>
-        public static readonly string UriSchemeNntp = "nntp";
-
-        private struct UriScheme
-        {
-            public readonly string Scheme;
-            public readonly string Delimiter;
-            public readonly int DefaultPort;
-
-            public UriScheme(string s, string d, int p)
-            {
-                Scheme = s;
-                Delimiter = d;
-                DefaultPort = p;
-            }
-        };
-
-        private static readonly UriScheme[] Schemes = {
-            new UriScheme (UriSchemeHttp, SchemeDelimiter, 80),
-            new UriScheme (UriSchemeHttps, SchemeDelimiter, 443),
-            new UriScheme (UriSchemeFtp, SchemeDelimiter, 21),
-            new UriScheme (UriSchemeFile, SchemeDelimiter, -1),
-            new UriScheme (UriSchemeMailto, ":", 25),
-            new UriScheme (UriSchemeNews, ":", -1),
-            new UriScheme (UriSchemeNntp, SchemeDelimiter, 119),
-            new UriScheme (UriSchemeGopher, SchemeDelimiter, 70)
-        };
-
-        internal static string GetSchemeDelimiter(string scheme)
-        {
-            for (var i = 0; i < Schemes.Length; i++)
-                if (Schemes[i].Scheme == scheme)
-                    return Schemes[i].Delimiter;
-            return SchemeDelimiter;
-        }
-
-        internal static int GetDefaultPort(string scheme)
-        {
-            for (var i = 0; i < Schemes.Length; i++)
-                if (Schemes[i].Scheme == scheme)
-                    return Schemes[i].DefaultPort;
-            return -1;
-        }
-
-        private static string GetOpaqueWiseSchemeDelimiter(string scheme, bool isOpaquePart = false)
-        {
-            return isOpaquePart ? ":" : GetSchemeDelimiter(scheme);
-        }
-
-        /// <summary>
-        /// Gets the left part of the specified URI, inclusive of the specified Uri Partial.
-        /// </summary>
-        /// <param name="uri">The URI.</param>
-        /// <param name="part">The part.</param>
-        /// <returns></returns>
-        public static string GetLeftPart(this Uri uri, UriPartial part)
-        {
-            int defaultPort;
-            switch (part)
-            {
-                case UriPartial.Scheme:
-                    return uri.Scheme + GetOpaqueWiseSchemeDelimiter(uri.Scheme);
-                case UriPartial.Authority:
-                    if (uri.Host == string.Empty ||
-                        uri.Scheme == UriSchemeMailto ||
-                        uri.Scheme == UriSchemeNews)
-                        return string.Empty;
-
-                    var s = new StringBuilder();
-                    s.Append(uri.Scheme);
-                    s.Append(GetOpaqueWiseSchemeDelimiter(uri.Scheme));
-                    if (uri.AbsolutePath.Length > 1 && uri.AbsolutePath[1] == ':' && (UriSchemeFile == uri.Scheme))
-                        s.Append('/');  // win32 file
-                    if (uri.UserInfo.Length > 0)
-                        s.Append(uri.UserInfo).Append('@');
-                    s.Append(uri.Host);
-                    defaultPort = GetDefaultPort(uri.Scheme);
-                    if ((uri.Port != -1) && (uri.Port != defaultPort))
-                        s.Append(':').Append(uri.Port);
-                    return s.ToString();
-                case UriPartial.Path:
-                    var sb = new StringBuilder();
-                    sb.Append(uri.Scheme);
-                    sb.Append(GetOpaqueWiseSchemeDelimiter(uri.Scheme));
-                    if (uri.AbsolutePath.Length > 1 && uri.AbsolutePath[1] == ':' && (UriSchemeFile == uri.Scheme))
-                        sb.Append('/');  // win32 file
-                    if (uri.UserInfo.Length > 0)
-                        sb.Append(uri.UserInfo).Append('@');
-                    sb.Append(uri.Host);
-                    defaultPort = GetDefaultPort(uri.Scheme);
-                    if ((uri.Port != -1) && (uri.Port != defaultPort))
-                        sb.Append(':').Append(uri.Port);
-                    sb.Append(uri.AbsolutePath);
-                    return sb.ToString();
-            }
-            return null;
-        }
-        #region WebSocket
-
         internal static IEnumerable<string> SplitHeaderValue(this string value, params char[] separators)
         {
             var len = value.Length;
@@ -725,12 +592,7 @@ namespace Unosquare.Net
             return chars?.Length == 0 || !string.IsNullOrEmpty(value) && value.IndexOfAny(chars) > -1;
         }
 
-        internal static bool IsCompressionExtension(this string value, CompressionMethod method)
-        {
-            return value.StartsWith(method.ToExtensionString());
-        }
-
-        #endregion
+        internal static bool IsCompressionExtension(this string value, CompressionMethod method) => value.StartsWith(method.ToExtensionString());
     }
 }
 #endif

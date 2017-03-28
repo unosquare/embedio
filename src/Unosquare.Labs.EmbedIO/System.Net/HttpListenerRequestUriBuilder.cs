@@ -14,6 +14,8 @@ namespace Unosquare.Net
     // Utf-8 characters.
     internal sealed class HttpListenerRequestUriBuilder
     {
+        public static readonly string SchemeDelimiter = "://";
+
         private static readonly Encoding Utf8Encoding;
         private static readonly Encoding AnsiEncoding;
 
@@ -87,7 +89,7 @@ namespace Unosquare.Net
 
         private void BuildRequestUriUsingCookedPath()
         {
-            Uri.TryCreate(_cookedUriScheme + NetExtensions.SchemeDelimiter + _cookedUriHost + _cookedUriPath +
+            Uri.TryCreate(_cookedUriScheme + SchemeDelimiter + _cookedUriHost + _cookedUriPath +
                               _cookedUriQuery, UriKind.Absolute, out _requestUri);
         }
 
@@ -97,7 +99,7 @@ namespace Unosquare.Net
             _rawPath = GetPath(_rawUri);
 
             // If HTTP.sys only parses Utf-8, we can safely use the raw path: it must be a valid Utf-8 string.
-            if ((_rawPath == string.Empty))
+            if (_rawPath == string.Empty)
             {
                 var path = _rawPath;
                 if (path == string.Empty)
@@ -106,7 +108,7 @@ namespace Unosquare.Net
                 }
 
                 Uri.TryCreate(
-                        _cookedUriScheme + NetExtensions.SchemeDelimiter + _cookedUriHost + path + _cookedUriQuery,
+                        _cookedUriScheme + SchemeDelimiter + _cookedUriHost + path + _cookedUriQuery,
                         UriKind.Absolute, out _requestUri);
             }
             else
@@ -126,7 +128,7 @@ namespace Unosquare.Net
             _rawOctets = new List<byte>();
             _requestUriString = new StringBuilder();
             _requestUriString.Append(_cookedUriScheme);
-            _requestUriString.Append(NetExtensions.SchemeDelimiter);
+            _requestUriString.Append(SchemeDelimiter);
             _requestUriString.Append(_cookedUriHost);
 
             var result = ParseRawPath(encoding);
@@ -331,7 +333,7 @@ namespace Unosquare.Net
                     // 'authority' can only be used with CONNECT which is never received by HttpListener.
                     // I.e. if we don't have an absolute path (must start with '/') and we don't have
                     // an absolute Uri (must start with http:// or https://), then 'uriString' must be '*'.
-                    Debug.Assert((uriString.Length == 1) && (uriString[0] == '*'), "Unknown request Uri string format",
+                    Debug.Assert(uriString.Length == 1 && uriString[0] == '*', "Unknown request Uri string format",
                         "Request Uri string is not an absolute Uri, absolute path, or '*': {0}", uriString);
 
                     // Should we ever get here, be consistent with 2.0/3.5 behavior: just add an initial
@@ -359,12 +361,7 @@ namespace Unosquare.Net
         {
             // If a request like "OPTIONS * HTTP/1.1" is sent to the listener, then the request Uri
             // should be "http[s]://server[:port]/*" to be compatible with pre-4.0 behavior.
-            if ((path.Length == 1) && (path[0] == '*'))
-            {
-                return "/*";
-            }
-
-            return path;
+            return path.Length == 1 && path[0] == '*' ? "/*" : path;
         }
 
         private enum ParsingResult
