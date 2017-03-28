@@ -3817,6 +3817,18 @@ references:
   commentId: Overload:Unosquare.Net.WebSocket.Cookies
   fullName: Unosquare.Net.WebSocket.Cookies
   nameWithType: WebSocket.Cookies
+- uid: Unosquare.Net.WebSocket.Dispose
+  name: Dispose()
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Dispose
+  commentId: M:Unosquare.Net.WebSocket.Dispose
+  fullName: Unosquare.Net.WebSocket.Dispose()
+  nameWithType: WebSocket.Dispose()
+- uid: Unosquare.Net.WebSocket.Dispose*
+  name: Dispose
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Dispose_
+  commentId: Overload:Unosquare.Net.WebSocket.Dispose
+  fullName: Unosquare.Net.WebSocket.Dispose
+  nameWithType: WebSocket.Dispose
 - uid: Unosquare.Net.WebSocket.EmitOnPing
   name: EmitOnPing
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_EmitOnPing
