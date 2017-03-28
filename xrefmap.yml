@@ -3373,150 +3373,6 @@ references:
   commentId: Overload:Unosquare.Net.MessageEventArgs.RawData
   fullName: Unosquare.Net.MessageEventArgs.RawData
   nameWithType: MessageEventArgs.RawData
-- uid: Unosquare.Net.NetExtensions
-  name: NetExtensions
-  href: api/Unosquare.Net.NetExtensions.html
-  commentId: T:Unosquare.Net.NetExtensions
-  fullName: Unosquare.Net.NetExtensions
-  nameWithType: NetExtensions
-- uid: Unosquare.Net.NetExtensions.Contains(NameValueCollection,System.String,System.String)
-  name: Contains(NameValueCollection, String, String)
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_Contains_NameValueCollection_System_String_System_String_
-  commentId: M:Unosquare.Net.NetExtensions.Contains(NameValueCollection,System.String,System.String)
-  fullName: Unosquare.Net.NetExtensions.Contains(NameValueCollection, System.String, System.String)
-  nameWithType: NetExtensions.Contains(NameValueCollection, String, String)
-- uid: Unosquare.Net.NetExtensions.Contains(System.String,System.Char[])
-  name: Contains(String, Char[])
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_Contains_System_String_System_Char___
-  commentId: M:Unosquare.Net.NetExtensions.Contains(System.String,System.Char[])
-  name.vb: Contains(String, Char())
-  fullName: Unosquare.Net.NetExtensions.Contains(System.String, System.Char[])
-  fullName.vb: Unosquare.Net.NetExtensions.Contains(System.String, System.Char())
-  nameWithType: NetExtensions.Contains(String, Char[])
-  nameWithType.vb: NetExtensions.Contains(String, Char())
-- uid: Unosquare.Net.NetExtensions.Contains*
-  name: Contains
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_Contains_
-  commentId: Overload:Unosquare.Net.NetExtensions.Contains
-  fullName: Unosquare.Net.NetExtensions.Contains
-  nameWithType: NetExtensions.Contains
-- uid: Unosquare.Net.NetExtensions.GetCookies(NameValueCollection,System.Boolean)
-  name: GetCookies(NameValueCollection, Boolean)
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_GetCookies_NameValueCollection_System_Boolean_
-  commentId: M:Unosquare.Net.NetExtensions.GetCookies(NameValueCollection,System.Boolean)
-  fullName: Unosquare.Net.NetExtensions.GetCookies(NameValueCollection, System.Boolean)
-  nameWithType: NetExtensions.GetCookies(NameValueCollection, Boolean)
-- uid: Unosquare.Net.NetExtensions.GetCookies*
-  name: GetCookies
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_GetCookies_
-  commentId: Overload:Unosquare.Net.NetExtensions.GetCookies
-  fullName: Unosquare.Net.NetExtensions.GetCookies
-  nameWithType: NetExtensions.GetCookies
-- uid: Unosquare.Net.NetExtensions.GetLeftPart(Uri,UriPartial)
-  name: GetLeftPart(Uri, UriPartial)
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_GetLeftPart_Uri_UriPartial_
-  commentId: M:Unosquare.Net.NetExtensions.GetLeftPart(Uri,UriPartial)
-  fullName: Unosquare.Net.NetExtensions.GetLeftPart(Uri, UriPartial)
-  nameWithType: NetExtensions.GetLeftPart(Uri, UriPartial)
-- uid: Unosquare.Net.NetExtensions.GetLeftPart*
-  name: GetLeftPart
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_GetLeftPart_
-  commentId: Overload:Unosquare.Net.NetExtensions.GetLeftPart
-  fullName: Unosquare.Net.NetExtensions.GetLeftPart
-  nameWithType: NetExtensions.GetLeftPart
-- uid: Unosquare.Net.NetExtensions.SchemeDelimiter
-  name: SchemeDelimiter
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_SchemeDelimiter
-  commentId: F:Unosquare.Net.NetExtensions.SchemeDelimiter
-  fullName: Unosquare.Net.NetExtensions.SchemeDelimiter
-  nameWithType: NetExtensions.SchemeDelimiter
-- uid: Unosquare.Net.NetExtensions.SubArray*
-  name: SubArray
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_SubArray_
-  commentId: Overload:Unosquare.Net.NetExtensions.SubArray
-  fullName: Unosquare.Net.NetExtensions.SubArray
-  nameWithType: NetExtensions.SubArray
-- uid: Unosquare.Net.NetExtensions.SubArray``1(``0[],System.Int32,System.Int32)
-  name: SubArray<T>(T[], Int32, Int32)
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_SubArray__1___0___System_Int32_System_Int32_
-  commentId: M:Unosquare.Net.NetExtensions.SubArray``1(``0[],System.Int32,System.Int32)
-  name.vb: SubArray(Of T)(T(), Int32, Int32)
-  fullName: Unosquare.Net.NetExtensions.SubArray<T>(T[], System.Int32, System.Int32)
-  fullName.vb: Unosquare.Net.NetExtensions.SubArray(Of T)(T(), System.Int32, System.Int32)
-  nameWithType: NetExtensions.SubArray<T>(T[], Int32, Int32)
-  nameWithType.vb: NetExtensions.SubArray(Of T)(T(), Int32, Int32)
-- uid: Unosquare.Net.NetExtensions.SubArray``1(``0[],System.Int64,System.Int64)
-  name: SubArray<T>(T[], Int64, Int64)
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_SubArray__1___0___System_Int64_System_Int64_
-  commentId: M:Unosquare.Net.NetExtensions.SubArray``1(``0[],System.Int64,System.Int64)
-  name.vb: SubArray(Of T)(T(), Int64, Int64)
-  fullName: Unosquare.Net.NetExtensions.SubArray<T>(T[], System.Int64, System.Int64)
-  fullName.vb: Unosquare.Net.NetExtensions.SubArray(Of T)(T(), System.Int64, System.Int64)
-  nameWithType: NetExtensions.SubArray<T>(T[], Int64, Int64)
-  nameWithType.vb: NetExtensions.SubArray(Of T)(T(), Int64, Int64)
-- uid: Unosquare.Net.NetExtensions.ToHostOrder(System.Byte[],Endianness)
-  name: ToHostOrder(Byte[], Endianness)
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_ToHostOrder_System_Byte___Endianness_
-  commentId: M:Unosquare.Net.NetExtensions.ToHostOrder(System.Byte[],Endianness)
-  name.vb: ToHostOrder(Byte(), Endianness)
-  fullName: Unosquare.Net.NetExtensions.ToHostOrder(System.Byte[], Endianness)
-  fullName.vb: Unosquare.Net.NetExtensions.ToHostOrder(System.Byte(), Endianness)
-  nameWithType: NetExtensions.ToHostOrder(Byte[], Endianness)
-  nameWithType.vb: NetExtensions.ToHostOrder(Byte(), Endianness)
-- uid: Unosquare.Net.NetExtensions.ToHostOrder*
-  name: ToHostOrder
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_ToHostOrder_
-  commentId: Overload:Unosquare.Net.NetExtensions.ToHostOrder
-  fullName: Unosquare.Net.NetExtensions.ToHostOrder
-  nameWithType: NetExtensions.ToHostOrder
-- uid: Unosquare.Net.NetExtensions.UriSchemeFile
-  name: UriSchemeFile
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_UriSchemeFile
-  commentId: F:Unosquare.Net.NetExtensions.UriSchemeFile
-  fullName: Unosquare.Net.NetExtensions.UriSchemeFile
-  nameWithType: NetExtensions.UriSchemeFile
-- uid: Unosquare.Net.NetExtensions.UriSchemeFtp
-  name: UriSchemeFtp
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_UriSchemeFtp
-  commentId: F:Unosquare.Net.NetExtensions.UriSchemeFtp
-  fullName: Unosquare.Net.NetExtensions.UriSchemeFtp
-  nameWithType: NetExtensions.UriSchemeFtp
-- uid: Unosquare.Net.NetExtensions.UriSchemeGopher
-  name: UriSchemeGopher
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_UriSchemeGopher
-  commentId: F:Unosquare.Net.NetExtensions.UriSchemeGopher
-  fullName: Unosquare.Net.NetExtensions.UriSchemeGopher
-  nameWithType: NetExtensions.UriSchemeGopher
-- uid: Unosquare.Net.NetExtensions.UriSchemeHttp
-  name: UriSchemeHttp
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_UriSchemeHttp
-  commentId: F:Unosquare.Net.NetExtensions.UriSchemeHttp
-  fullName: Unosquare.Net.NetExtensions.UriSchemeHttp
-  nameWithType: NetExtensions.UriSchemeHttp
-- uid: Unosquare.Net.NetExtensions.UriSchemeHttps
-  name: UriSchemeHttps
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_UriSchemeHttps
-  commentId: F:Unosquare.Net.NetExtensions.UriSchemeHttps
-  fullName: Unosquare.Net.NetExtensions.UriSchemeHttps
-  nameWithType: NetExtensions.UriSchemeHttps
-- uid: Unosquare.Net.NetExtensions.UriSchemeMailto
-  name: UriSchemeMailto
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_UriSchemeMailto
-  commentId: F:Unosquare.Net.NetExtensions.UriSchemeMailto
-  fullName: Unosquare.Net.NetExtensions.UriSchemeMailto
-  nameWithType: NetExtensions.UriSchemeMailto
-- uid: Unosquare.Net.NetExtensions.UriSchemeNews
-  name: UriSchemeNews
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_UriSchemeNews
-  commentId: F:Unosquare.Net.NetExtensions.UriSchemeNews
-  fullName: Unosquare.Net.NetExtensions.UriSchemeNews
-  nameWithType: NetExtensions.UriSchemeNews
-- uid: Unosquare.Net.NetExtensions.UriSchemeNntp
-  name: UriSchemeNntp
-  href: api/Unosquare.Net.NetExtensions.html#Unosquare_Net_NetExtensions_UriSchemeNntp
-  commentId: F:Unosquare.Net.NetExtensions.UriSchemeNntp
-  fullName: Unosquare.Net.NetExtensions.UriSchemeNntp
-  nameWithType: NetExtensions.UriSchemeNntp
 - uid: Unosquare.Net.Opcode
   name: Opcode
   href: api/Unosquare.Net.Opcode.html
@@ -4378,6 +4234,84 @@ references:
   commentId: Overload:Unosquare.Net.WebSocketException.Code
   fullName: Unosquare.Net.WebSocketException.Code
   nameWithType: WebSocketException.Code
+- uid: Unosquare.Net.WebSocketExtensions
+  name: WebSocketExtensions
+  href: api/Unosquare.Net.WebSocketExtensions.html
+  commentId: T:Unosquare.Net.WebSocketExtensions
+  fullName: Unosquare.Net.WebSocketExtensions
+  nameWithType: WebSocketExtensions
+- uid: Unosquare.Net.WebSocketExtensions.Contains(NameValueCollection,System.String,System.String)
+  name: Contains(NameValueCollection, String, String)
+  href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_Contains_NameValueCollection_System_String_System_String_
+  commentId: M:Unosquare.Net.WebSocketExtensions.Contains(NameValueCollection,System.String,System.String)
+  fullName: Unosquare.Net.WebSocketExtensions.Contains(NameValueCollection, System.String, System.String)
+  nameWithType: WebSocketExtensions.Contains(NameValueCollection, String, String)
+- uid: Unosquare.Net.WebSocketExtensions.Contains(System.String,System.Char[])
+  name: Contains(String, Char[])
+  href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_Contains_System_String_System_Char___
+  commentId: M:Unosquare.Net.WebSocketExtensions.Contains(System.String,System.Char[])
+  name.vb: Contains(String, Char())
+  fullName: Unosquare.Net.WebSocketExtensions.Contains(System.String, System.Char[])
+  fullName.vb: Unosquare.Net.WebSocketExtensions.Contains(System.String, System.Char())
+  nameWithType: WebSocketExtensions.Contains(String, Char[])
+  nameWithType.vb: WebSocketExtensions.Contains(String, Char())
+- uid: Unosquare.Net.WebSocketExtensions.Contains*
+  name: Contains
+  href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_Contains_
+  commentId: Overload:Unosquare.Net.WebSocketExtensions.Contains
+  fullName: Unosquare.Net.WebSocketExtensions.Contains
+  nameWithType: WebSocketExtensions.Contains
+- uid: Unosquare.Net.WebSocketExtensions.GetCookies(NameValueCollection,System.Boolean)
+  name: GetCookies(NameValueCollection, Boolean)
+  href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_GetCookies_NameValueCollection_System_Boolean_
+  commentId: M:Unosquare.Net.WebSocketExtensions.GetCookies(NameValueCollection,System.Boolean)
+  fullName: Unosquare.Net.WebSocketExtensions.GetCookies(NameValueCollection, System.Boolean)
+  nameWithType: WebSocketExtensions.GetCookies(NameValueCollection, Boolean)
+- uid: Unosquare.Net.WebSocketExtensions.GetCookies*
+  name: GetCookies
+  href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_GetCookies_
+  commentId: Overload:Unosquare.Net.WebSocketExtensions.GetCookies
+  fullName: Unosquare.Net.WebSocketExtensions.GetCookies
+  nameWithType: WebSocketExtensions.GetCookies
+- uid: Unosquare.Net.WebSocketExtensions.SubArray*
+  name: SubArray
+  href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_SubArray_
+  commentId: Overload:Unosquare.Net.WebSocketExtensions.SubArray
+  fullName: Unosquare.Net.WebSocketExtensions.SubArray
+  nameWithType: WebSocketExtensions.SubArray
+- uid: Unosquare.Net.WebSocketExtensions.SubArray``1(``0[],System.Int32,System.Int32)
+  name: SubArray<T>(T[], Int32, Int32)
+  href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_SubArray__1___0___System_Int32_System_Int32_
+  commentId: M:Unosquare.Net.WebSocketExtensions.SubArray``1(``0[],System.Int32,System.Int32)
+  name.vb: SubArray(Of T)(T(), Int32, Int32)
+  fullName: Unosquare.Net.WebSocketExtensions.SubArray<T>(T[], System.Int32, System.Int32)
+  fullName.vb: Unosquare.Net.WebSocketExtensions.SubArray(Of T)(T(), System.Int32, System.Int32)
+  nameWithType: WebSocketExtensions.SubArray<T>(T[], Int32, Int32)
+  nameWithType.vb: WebSocketExtensions.SubArray(Of T)(T(), Int32, Int32)
+- uid: Unosquare.Net.WebSocketExtensions.SubArray``1(``0[],System.Int64,System.Int64)
+  name: SubArray<T>(T[], Int64, Int64)
+  href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_SubArray__1___0___System_Int64_System_Int64_
+  commentId: M:Unosquare.Net.WebSocketExtensions.SubArray``1(``0[],System.Int64,System.Int64)
+  name.vb: SubArray(Of T)(T(), Int64, Int64)
+  fullName: Unosquare.Net.WebSocketExtensions.SubArray<T>(T[], System.Int64, System.Int64)
+  fullName.vb: Unosquare.Net.WebSocketExtensions.SubArray(Of T)(T(), System.Int64, System.Int64)
+  nameWithType: WebSocketExtensions.SubArray<T>(T[], Int64, Int64)
+  nameWithType.vb: WebSocketExtensions.SubArray(Of T)(T(), Int64, Int64)
+- uid: Unosquare.Net.WebSocketExtensions.ToHostOrder(System.Byte[],Endianness)
+  name: ToHostOrder(Byte[], Endianness)
+  href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_ToHostOrder_System_Byte___Endianness_
+  commentId: M:Unosquare.Net.WebSocketExtensions.ToHostOrder(System.Byte[],Endianness)
+  name.vb: ToHostOrder(Byte(), Endianness)
+  fullName: Unosquare.Net.WebSocketExtensions.ToHostOrder(System.Byte[], Endianness)
+  fullName.vb: Unosquare.Net.WebSocketExtensions.ToHostOrder(System.Byte(), Endianness)
+  nameWithType: WebSocketExtensions.ToHostOrder(Byte[], Endianness)
+  nameWithType.vb: WebSocketExtensions.ToHostOrder(Byte(), Endianness)
+- uid: Unosquare.Net.WebSocketExtensions.ToHostOrder*
+  name: ToHostOrder
+  href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_ToHostOrder_
+  commentId: Overload:Unosquare.Net.WebSocketExtensions.ToHostOrder
+  fullName: Unosquare.Net.WebSocketExtensions.ToHostOrder
+  nameWithType: WebSocketExtensions.ToHostOrder
 - uid: Unosquare.Net.WebSocketMessageType
   name: WebSocketMessageType
   href: api/Unosquare.Net.WebSocketMessageType.html
