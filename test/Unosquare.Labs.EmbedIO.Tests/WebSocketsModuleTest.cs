@@ -1,4 +1,6 @@
-﻿namespace Unosquare.Labs.EmbedIO.Tests
+﻿using Unosquare.Swan.Formatters;
+
+namespace Unosquare.Labs.EmbedIO.Tests
 {
     using System;
     using System.Threading;
@@ -45,24 +47,59 @@
             var buffer = new ArraySegment<byte>(new byte[1024]);
 
             await clientSocket.SendAsync(message, WebSocketMessageType.Text, true, ct.Token);
-            var result = await clientSocket.ReceiveAsync(buffer, ct.Token);
-
-            Assert.IsTrue(result.EndOfMessage, "End of message is true");
-            Assert.IsTrue(System.Text.Encoding.UTF8.GetString(buffer.Array).TrimEnd((char) 0) == "WELCOME", "Final message is WELCOME");
+            await clientSocket.ReceiveAsync(buffer, ct.Token);
+            Assert.AreEqual("HELLO", System.Text.Encoding.UTF8.GetString(buffer.Array), "Final message is HELLO");
 #else
             var clientSocket = new WebSocket(wsUrl);
             await clientSocket.ConnectAsync(ct.Token);
-
-            if (clientSocket.State != WebSocketState.Open)
+            clientSocket.OnMessage += (s, e) =>
             {
-                Assert.Inconclusive("WebSocket Client is not working yet");
-            }
+                Assert.AreEqual(e.Data, "HELLO");
+            };
+            
+            Assert.AreEqual(WebSocketState.Open, clientSocket.State, "Connection is open");
+
+            var buffer = System.Text.Encoding.UTF8.GetBytes("HOLA");
+            await clientSocket.SendAsync(buffer, Opcode.Text, ct.Token);
+            await Task.Delay(500, ct.Token);
+#endif
+        }
+
+        [Test]
+        public async Task TestSendBigDataWebSocket()
+        {
+            const string wsUrl = Resources.WsServerAddress + "bigdata";
+            Assert.IsNotNull(WebServer.Module<WebSocketsModule>(), "WebServer has WebSocketsModule");
+
+            Assert.AreEqual(WebServer.Module<WebSocketsModule>().Handlers.Count, 1, "WebSocketModule has one handler");
+
+            var ct = new CancellationTokenSource();
+#if NET46
+            var clientSocket = new ClientWebSocket();
+            await clientSocket.ConnectAsync(new Uri(wsUrl), ct.Token);
+
+            Assert.AreEqual(WebSocketState.Open, clientSocket.State, "Connection is open");
+
+            var message = new ArraySegment<byte>(System.Text.Encoding.Default.GetBytes("HOLA"));
+            var buffer = new ArraySegment<byte>(new byte[1024]);
+
+            await clientSocket.SendAsync(message, WebSocketMessageType.Text, true, ct.Token);
+            await clientSocket.ReceiveAsync(buffer, ct.Token);
+            
+            Assert.AreEqual(System.Text.Encoding.UTF8.GetString(buffer.Array).Substring(0, 100), Json.Serialize(BigDataWebSocket.BigDataObject).Substring(0, 100), "Initial chars are equal");
+#else
+            var clientSocket = new WebSocket(wsUrl);
+            await clientSocket.ConnectAsync(ct.Token);
+            clientSocket.OnMessage += (s, e) =>
+            {
+                Assert.AreEqual(e.Data, Json.Serialize(BigDataWebSocket.BigDataObject));
+            };
 
             Assert.AreEqual(WebSocketState.Open, clientSocket.State, "Connection is open");
 
             var buffer = System.Text.Encoding.UTF8.GetBytes("HOLA");
             await clientSocket.SendAsync(buffer, Opcode.Text, ct.Token);
-            await Task.Delay(100, ct.Token);
+            await Task.Delay(500, ct.Token);
 #endif
         }
 

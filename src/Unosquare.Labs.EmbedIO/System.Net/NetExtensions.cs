@@ -247,18 +247,6 @@ namespace Unosquare.Net
             return bytes;
         }
 
-        internal static byte[] Append(this ushort code, string reason)
-        {
-            var ret = code.InternalToByteArray(Endianness.Big);
-            if (string.IsNullOrEmpty(reason)) return ret;
-
-            var buff = new List<byte>(ret);
-            buff.AddRange(Encoding.UTF8.GetBytes(reason));
-            ret = buff.ToArray();
-
-            return ret;
-        }
-
         internal static bool IsControl(this byte opcode)
         {
             return opcode > 0x7 && opcode < 0x10;
@@ -411,14 +399,12 @@ namespace Unosquare.Net
         /// </param>
         internal static bool MaybeUri(this string value)
         {
-            if (string.IsNullOrEmpty(value))
+            var idx = value?.IndexOf(':');
+
+            if (idx.HasValue == false || idx == -1)
                 return false;
 
-            var idx = value.IndexOf(':');
-            if (idx == -1)
-                return false;
-
-            return idx < 10 && value.Substring(0, idx).IsPredefinedScheme();
+            return idx < 10 && value.Substring(0, idx.Value).IsPredefinedScheme();
         }
 
         /// <summary>

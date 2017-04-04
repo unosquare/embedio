@@ -31,6 +31,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Unosquare.Swan;
 
 namespace Unosquare.Net
 {
@@ -104,11 +105,23 @@ namespace Unosquare.Net
             _code = code;
             _reason = reason ?? string.Empty;
 
-            _data = code.Append(reason);
+            _data = Append(code, reason);
             _length = _data.Length;
 
             _codeSet = true;
             _reasonSet = true;
+        }
+
+        internal static byte[] Append(ushort code, string reason)
+        {
+            var ret = code.InternalToByteArray(Endianness.Big);
+            if (string.IsNullOrEmpty(reason)) return ret;
+
+            var buff = new List<byte>(ret);
+            buff.AddRange(Encoding.UTF8.GetBytes(reason));
+            ret = buff.ToArray();
+
+            return ret;
         }
 
         #endregion
