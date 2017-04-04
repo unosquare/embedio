@@ -48,7 +48,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
 
             await clientSocket.SendAsync(message, WebSocketMessageType.Text, true, ct.Token);
             await clientSocket.ReceiveAsync(buffer, ct.Token);
-            Assert.AreEqual("HELLO", System.Text.Encoding.UTF8.GetString(buffer.Array), "Final message is HELLO");
+            Assert.AreEqual("HELLO", System.Text.Encoding.UTF8.GetString(buffer.Array).Trim(), "Final message is HELLO");
 #else
             var clientSocket = new WebSocket(wsUrl);
             await clientSocket.ConnectAsync(ct.Token);
