@@ -94,7 +94,7 @@
             await clientSocket.ConnectAsync(ct.Token);
             clientSocket.OnMessage += (s, e) =>
             {
-                Assert.AreEqual(e.Data, Json.Serialize(BigDataWebSocket.BigDataObject));
+                Assert.AreEqual(Json.Serialize(BigDataWebSocket.BigDataObject), e.Data);
             };
 
             Assert.AreEqual(WebSocketState.Open, clientSocket.State, "Connection is open");

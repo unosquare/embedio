@@ -1,7 +1,7 @@
 {
   "version": "1.6.5-*",
-  "title": "Unosquare.Labs.EmbedIO",
-  "description": "EmbedIO is a tiny, portable web server",
+  "title": "EmbedIO",
+  "description": "A tiny, cross-platform, module based, MIT-licensed web server. Supporting NET FX, NET Core, NET Standard and MONO.",
   "copyright": "Copyright © Unosquare 2013-2017",
   "authors": [
     "Mario Di Vece",
@@ -21,7 +21,6 @@
         "System.Text.Encoding.Extensions": "4.3.0",
         "System.Threading.Timer": "4.3.0",
         "System.ObjectModel": "4.3.0",
-        "Microsoft.Win32.Primitives": "4.3.0",
         "System.IO.Compression": "4.3.0",
         "System.Collections.Specialized": "4.3.0",
         "System.Net.Requests": "4.3.0",
@@ -37,7 +36,6 @@
         "System.Text.Encoding.Extensions": "4.3.0",
         "System.Threading.Timer": "4.3.0",
         "System.ObjectModel": "4.3.0",
-        "Microsoft.Win32.Primitives": "4.3.0",
         "System.IO.Compression": "4.3.0",
         "System.Collections.NonGeneric": "4.3.0",
         "System.Collections.Specialized": "4.3.0",
