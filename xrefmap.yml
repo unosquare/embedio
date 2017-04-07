@@ -2554,18 +2554,6 @@ references:
   commentId: T:Unosquare.Net.HttpListenerException
   fullName: Unosquare.Net.HttpListenerException
   nameWithType: HttpListenerException
-- uid: Unosquare.Net.HttpListenerException.#ctor
-  name: HttpListenerException()
-  href: api/Unosquare.Net.HttpListenerException.html#Unosquare_Net_HttpListenerException__ctor
-  commentId: M:Unosquare.Net.HttpListenerException.#ctor
-  fullName: Unosquare.Net.HttpListenerException.HttpListenerException()
-  nameWithType: HttpListenerException.HttpListenerException()
-- uid: Unosquare.Net.HttpListenerException.#ctor(System.Int32)
-  name: HttpListenerException(Int32)
-  href: api/Unosquare.Net.HttpListenerException.html#Unosquare_Net_HttpListenerException__ctor_System_Int32_
-  commentId: M:Unosquare.Net.HttpListenerException.#ctor(System.Int32)
-  fullName: Unosquare.Net.HttpListenerException.HttpListenerException(System.Int32)
-  nameWithType: HttpListenerException.HttpListenerException(Int32)
 - uid: Unosquare.Net.HttpListenerException.#ctor(System.Int32,System.String)
   name: HttpListenerException(Int32, String)
   href: api/Unosquare.Net.HttpListenerException.html#Unosquare_Net_HttpListenerException__ctor_System_Int32_System_String_
