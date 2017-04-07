@@ -96,10 +96,16 @@
                             // get a reference to the parse method
                             var parameterTypeNullable = Nullable.GetUnderlyingType(arg.ParameterType);
 
+#if NETSTANDARD1_3
+                            var parseMethod = parameterTypeNullable != null
+                                ? parameterTypeNullable.GetMethod(nameof(int.Parse), new[] { typeof(string) })
+                                : arg.ParameterType.GetMethod(nameof(int.Parse), new[] { typeof(string) });
+#else
                             var parseMethod = parameterTypeNullable != null
                                 ? parameterTypeNullable.GetTypeInfo()
                                     .GetMethod(nameof(int.Parse), new[] {typeof(string)})
                                 : arg.ParameterType.GetTypeInfo().GetMethod(nameof(int.Parse), new[] {typeof(string)});
+#endif
 
                             // add the parsed argument to the argument list if available
                             if (parseMethod != null)
@@ -319,8 +325,7 @@
         {
             var protoDelegate = new ResponseHandler((server, context) => true);
             var protoAsyncDelegate = new AsyncResponseHandler((server, context) => Task.FromResult(true));
-            var methods = controllerType.GetTypeInfo()
-                .GetMethods(BindingFlags.Instance | BindingFlags.Public)
+            var methods = controllerType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .Where(
                     m => (m.ReturnType == protoDelegate.GetMethodInfo().ReturnType
                           || m.ReturnType == protoAsyncDelegate.GetMethodInfo().ReturnType)

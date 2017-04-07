@@ -1,11 +1,9 @@
-﻿using Unosquare.Swan.Formatters;
-
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Reflection;
+    using Swan.Formatters;
     using NUnit.Framework;
     using Modules;
     using TestObjects;
@@ -24,7 +22,11 @@ namespace Unosquare.Labs.EmbedIO.Tests
         public void Init()
         {
             Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
-            WebServer = new WebServer(Resources.WsServerAddress.Replace("ws", "http")).WithWebSocket(typeof(TestWebSocket).GetTypeInfo().Assembly);
+            WebServer = new WebServer(Resources.WsServerAddress.Replace("ws", "http"));
+            WebServer.RegisterModule(new WebSocketsModule());
+            WebServer.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocket>();
+            WebServer.Module<WebSocketsModule>().RegisterWebSocketsServer<BigDataWebSocket>();
+
             WebServer.RunAsync();
         }
 
@@ -44,7 +46,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
             Assert.AreEqual(WebSocketState.Open, clientSocket.State, "Connection is open");
 
             var message = new ArraySegment<byte>(System.Text.Encoding.Default.GetBytes("HOLA"));
-            var buffer = new ArraySegment<byte>(new byte[1024]);
+            var buffer = new ArraySegment<byte>(new byte[5]);
 
             await clientSocket.SendAsync(message, WebSocketMessageType.Text, true, ct.Token);
             await clientSocket.ReceiveAsync(buffer, ct.Token);

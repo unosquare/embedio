@@ -363,7 +363,7 @@
             }
             finally
             {
-#if !NETSTANDARD1_6
+#if NET452 || NET46
                 buffer.Close();
 #endif
                 buffer.Dispose();

@@ -64,6 +64,7 @@
             return webserver;
         }
 
+#if !NETSTANDARD1_3
         /// <summary>
         /// Add WebApiModule to WebServer
         /// </summary>
@@ -181,6 +182,7 @@
 
             return webserver;
         }
+#endif
 
         /// <summary>
         /// Enables CORS in the WebServer

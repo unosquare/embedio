@@ -1,4 +1,4 @@
-﻿#if !NETCOREAPP1_1
+﻿#if NET452 || NET46
 using System;
 using System.Collections.Generic;
 using System.IO;

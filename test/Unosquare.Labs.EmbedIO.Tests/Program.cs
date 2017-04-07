@@ -2,10 +2,14 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Unosquare.Labs.EmbedIO.Modules;
 using Unosquare.Labs.EmbedIO.Tests.TestObjects;
+#if !NET46
+using Unosquare.Net;
+#endif
 using Unosquare.Swan;
 
 namespace Unosquare.Labs.EmbedIO.Tests
@@ -15,22 +19,26 @@ namespace Unosquare.Labs.EmbedIO.Tests
         public static void Main()
         {
             var url = Resources.GetServerAddress();
-
+#if !NET46
             using (var instance = new WebServer(url))
             {
-                instance.RegisterModule(new TestWebModule());
+                instance.RegisterModule(new WebSocketsModule());
+                instance.Module<WebSocketsModule>().RegisterWebSocketsServer(typeof(BigDataWebSocket));
+
                 instance.RunAsync();
 
-                var request = (HttpWebRequest)WebRequest.Create(url + TestWebModule.RedirectAbsoluteUrl);
-#if NET452
-                request.AllowAutoRedirect = false;
-#endif
-                using (var response = (HttpWebResponse)request.GetResponseAsync().Result)
+                var clientSocket = new WebSocket(url.Replace("http", "ws") + "bigdata");
+                clientSocket.OnMessage += (s, e) =>
                 {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.Redirect, "Status Code Redirect");
-                }
-            }
+                    e.Data.Info();
+                };
+                clientSocket.ConnectAsync().Wait();
 
+                var buffer = System.Text.Encoding.UTF8.GetBytes("HOLA");
+                clientSocket.SendAsync(buffer, Opcode.Text).Wait();
+                Task.Delay(5000).Wait();
+            }
+#endif
             Console.ReadKey();
         }
     }

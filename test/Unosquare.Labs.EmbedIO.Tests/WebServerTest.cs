@@ -143,7 +143,7 @@
             Assert.AreEqual(webModule.Handlers.Last().Verb, HttpVerbs.Any, "Default Verb is correct");
         }
 
-#if !NETCOREAPP1_1
+#if NET452 || NET46
         [Test]
         public async Task TestWebModuleRedirect()
         {
