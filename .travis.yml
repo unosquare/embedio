@@ -26,4 +26,4 @@ before_script:
   - if [[ $DOTNETCORE == "" ]]; then export LD_LIBRARY_PATH=/usr/local/lib; fi
 script:
   - if [[ $DOTNETCORE == "" ]]; then xbuild Unosquare.Labs.EmbedIO.Lib.sln /p:"TargetFrameworkVersion=v4.5;Configuration=Release"; else dotnet test ./test/Unosquare.Labs.EmbedIO.Tests -f netcoreapp1.1; fi
-  - if [[ $DOTNETCORE == "" ]]; then mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe --process=Single ./test/Unosquare.Labs.EmbedIO.Tests/bin/Release/Unosquare.Labs.EmbedIO.Tests.dll; fi
+  - if [[ $DOTNETCORE == "" ]]; then mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe --process=Single ./test/Unosquare.Labs.EmbedIO.Tests/bin/Release/Unosquare.Labs.EmbedIO.Tests.dll && cat TestResult.xml; fi
