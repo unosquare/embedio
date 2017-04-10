@@ -4273,30 +4273,6 @@ references:
   commentId: Overload:Unosquare.Net.WebSocketExtensions.GetCookies
   fullName: Unosquare.Net.WebSocketExtensions.GetCookies
   nameWithType: WebSocketExtensions.GetCookies
-- uid: Unosquare.Net.WebSocketExtensions.SubArray*
-  name: SubArray
-  href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_SubArray_
-  commentId: Overload:Unosquare.Net.WebSocketExtensions.SubArray
-  fullName: Unosquare.Net.WebSocketExtensions.SubArray
-  nameWithType: WebSocketExtensions.SubArray
-- uid: Unosquare.Net.WebSocketExtensions.SubArray``1(``0[],System.Int32,System.Int32)
-  name: SubArray<T>(T[], Int32, Int32)
-  href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_SubArray__1___0___System_Int32_System_Int32_
-  commentId: M:Unosquare.Net.WebSocketExtensions.SubArray``1(``0[],System.Int32,System.Int32)
-  name.vb: SubArray(Of T)(T(), Int32, Int32)
-  fullName: Unosquare.Net.WebSocketExtensions.SubArray<T>(T[], System.Int32, System.Int32)
-  fullName.vb: Unosquare.Net.WebSocketExtensions.SubArray(Of T)(T(), System.Int32, System.Int32)
-  nameWithType: WebSocketExtensions.SubArray<T>(T[], Int32, Int32)
-  nameWithType.vb: WebSocketExtensions.SubArray(Of T)(T(), Int32, Int32)
-- uid: Unosquare.Net.WebSocketExtensions.SubArray``1(``0[],System.Int64,System.Int64)
-  name: SubArray<T>(T[], Int64, Int64)
-  href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_SubArray__1___0___System_Int64_System_Int64_
-  commentId: M:Unosquare.Net.WebSocketExtensions.SubArray``1(``0[],System.Int64,System.Int64)
-  name.vb: SubArray(Of T)(T(), Int64, Int64)
-  fullName: Unosquare.Net.WebSocketExtensions.SubArray<T>(T[], System.Int64, System.Int64)
-  fullName.vb: Unosquare.Net.WebSocketExtensions.SubArray(Of T)(T(), System.Int64, System.Int64)
-  nameWithType: WebSocketExtensions.SubArray<T>(T[], Int64, Int64)
-  nameWithType.vb: WebSocketExtensions.SubArray(Of T)(T(), Int64, Int64)
 - uid: Unosquare.Net.WebSocketExtensions.ToHostOrder(System.Byte[],Endianness)
   name: ToHostOrder(Byte[], Endianness)
   href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_ToHostOrder_System_Byte___Endianness_
