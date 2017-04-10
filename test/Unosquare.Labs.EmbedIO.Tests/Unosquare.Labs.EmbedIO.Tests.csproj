@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit.3.6.0\lib\net45\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -46,8 +46,8 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Unosquare.Swan, Version=0.11.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Unosquare.Swan.0.11.1\lib\net452\Unosquare.Swan.dll</HintPath>
+    <Reference Include="Unosquare.Swan, Version=0.13.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unosquare.Swan.0.13.0\lib\net452\Unosquare.Swan.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -72,11 +72,6 @@
     <Compile Include="WebSocketsModuleTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\src\Unosquare.Labs.EmbedIO\Unosquare.Labs.EmbedIO.csproj">
       <Project>{7d7c29b4-9493-4ebd-8f20-6fac1e7161ee}</Project>
       <Name>Unosquare.Labs.EmbedIO</Name>
@@ -84,6 +79,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
