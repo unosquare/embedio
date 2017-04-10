@@ -1,36 +1,35 @@
 {
-    "version": "1.0.0-*",
-    "buildOptions": {
-        "emitEntryPoint": true,
-        "copyToOutput": ["html\\"]
-    },
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "emitEntryPoint": true,
+    "copyToOutput": [ "html\\" ]
+  },
 
   "dependencies": {
     "Microsoft.Data.SQLite": "1.1.0",
     "Unosquare.Labs.EmbedIO": { "target": "project" },
     "LiteLib": "0.12.1",
-    "Tubular.ServerSide": "1.2.8"  },
+    "Tubular.ServerSide": "1.4.0"
+  },
 
-    "frameworks": {
-        "netcoreapp1.1": {
-            "imports": "dnxcore50",
-          "dependencies": {
-            "Microsoft.NETCore.App": "1.1.1"
-          }
-        },
-      "net452": {
-        "frameworkAssemblies": {
-          "System.ComponentModel.DataAnnotations": ""
-        }
-      },
-      "net46": {
-        "frameworkAssemblies": {
-          "System.ComponentModel.DataAnnotations": ""
-        }
+  "frameworks": {
+    "netcoreapp1.1": {
+      "dependencies": {
+        "Microsoft.NETCore.App": "1.1.1"
       }
     },
-    "runtimes": {
-        "win": {},
-        "win81-x64": {}
+    "net452": {
+      "frameworkAssemblies": {
+        "System.ComponentModel.DataAnnotations": ""
+      }
+    },
+    "net46": {
+      "frameworkAssemblies": {
+        "System.ComponentModel.DataAnnotations": ""
+      }
     }
+  },
+  "runtimes": {
+    "win81-x64": {}
+  }
 }

@@ -16,6 +16,7 @@
     [TestFixture]
     public class WebSocketsModuleTest
     {
+        private bool _ignoreWebConnect = false;
         protected WebServer WebServer;
 
         [SetUp]
@@ -28,6 +29,10 @@
             WebServer.Module<WebSocketsModule>().RegisterWebSocketsServer<BigDataWebSocket>();
 
             WebServer.RunAsync();
+
+#if NETCOREAPP1_1 || NETCOREAPP1_0
+            _ignoreWebConnect = true;
+#endif
         }
 
         [Test]
@@ -37,6 +42,9 @@
             Assert.IsNotNull(WebServer.Module<WebSocketsModule>(), "WebServer has WebSocketsModule");
 
             Assert.AreEqual(WebServer.Module<WebSocketsModule>().Handlers.Count, 1, "WebSocketModule has one handler");
+
+            if (_ignoreWebConnect)
+                Assert.Inconclusive("WebSocket Connect not available");
 
             var ct = new CancellationTokenSource();
 #if NET46
@@ -70,10 +78,10 @@
         [Test]
         public async Task TestSendBigDataWebSocket()
         {
-            const string wsUrl = Resources.WsServerAddress + "bigdata";
-            Assert.IsNotNull(WebServer.Module<WebSocketsModule>(), "WebServer has WebSocketsModule");
+            if (_ignoreWebConnect)
+                Assert.Inconclusive("WebSocket Connect not available");
 
-            Assert.AreEqual(WebServer.Module<WebSocketsModule>().Handlers.Count, 1, "WebSocketModule has one handler");
+            const string wsUrl = Resources.WsServerAddress + "bigdata";
 
             var ct = new CancellationTokenSource();
 #if NET46

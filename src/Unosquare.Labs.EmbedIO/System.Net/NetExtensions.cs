@@ -152,82 +152,9 @@ namespace Unosquare.Net
             return str.Trim();
         }
 
-        /// <summary>
-        /// Retrieves a sub-array from the specified <paramref name="array"/>. A sub-array starts at
-        /// the specified element position in <paramref name="array"/>.
-        /// </summary>
-        /// <returns>
-        /// An array of T that receives a sub-array, or an empty array of T if any problems with
-        /// the parameters.
-        /// </returns>
-        /// <param name="array">
-        /// An array of T from which to retrieve a sub-array.
-        /// </param>
-        /// <param name="startIndex">
-        /// An <see cref="int"/> that represents the zero-based starting position of
-        /// a sub-array in <paramref name="array"/>.
-        /// </param>
-        /// <param name="length">
-        /// An <see cref="int"/> that represents the number of elements to retrieve.
-        /// </param>
-        /// <typeparam name="T">
-        /// The type of elements in <paramref name="array"/>.
-        /// </typeparam>
-        public static T[] SubArray<T>(this T[] array, int startIndex, int length)
-        {
-            int len;
-            if (array == null || (len = array.Length) == 0)
-                return new T[0];
+        internal static bool IsData(this byte opcode) => opcode == 0x1 || opcode == 0x2;
 
-            if (startIndex < 0 || length <= 0 || startIndex + length > len)
-                return new T[0];
-
-            if (startIndex == 0 && length == len)
-                return array;
-
-            var subArray = new T[length];
-            Array.Copy(array, startIndex, subArray, 0, length);
-
-            return subArray;
-        }
-
-        /// <summary>
-        /// Retrieves a sub-array from the specified <paramref name="array"/>. A sub-array starts at
-        /// the specified element position in <paramref name="array"/>.
-        /// </summary>
-        /// <returns>
-        /// An array of T that receives a sub-array, or an empty array of T if any problems with
-        /// the parameters.
-        /// </returns>
-        /// <param name="array">
-        /// An array of T from which to retrieve a sub-array.
-        /// </param>
-        /// <param name="startIndex">
-        /// A <see cref="long"/> that represents the zero-based starting position of
-        /// a sub-array in <paramref name="array"/>.
-        /// </param>
-        /// <param name="length">
-        /// A <see cref="long"/> that represents the number of elements to retrieve.
-        /// </param>
-        /// <typeparam name="T">
-        /// The type of elements in <paramref name="array"/>.
-        /// </typeparam>
-        public static T[] SubArray<T>(this T[] array, long startIndex, long length)
-        {
-            return array.SubArray((int)startIndex, (int)length);
-        }
-
-        // TODO: Remove SubArray with new SWAN
-
-        internal static bool IsData(this byte opcode)
-        {
-            return opcode == 0x1 || opcode == 0x2;
-        }
-
-        internal static bool IsData(this Opcode opcode)
-        {
-            return opcode == Opcode.Text || opcode == Opcode.Binary;
-        }
+        internal static bool IsData(this Opcode opcode) => opcode == Opcode.Text || opcode == Opcode.Binary;
 
         internal static byte[] InternalToByteArray(this ushort value, Endianness order)
         {
@@ -247,10 +174,7 @@ namespace Unosquare.Net
             return bytes;
         }
 
-        internal static bool IsControl(this byte opcode)
-        {
-            return opcode > 0x7 && opcode < 0x10;
-        }
+        internal static bool IsControl(this byte opcode) =>  opcode > 0x7 && opcode < 0x10;
 
         internal static async Task<byte[]> ReadBytesAsync(this Stream stream, long length, int bufferLength, CancellationToken ct = default(CancellationToken))
         {
@@ -304,7 +228,7 @@ namespace Unosquare.Net
 
             return buff.SubArray(0, offset);
         }
-        
+
         internal static bool IsReserved(this CloseStatusCode code)
         {
             return code == CloseStatusCode.Undefined ||
@@ -493,10 +417,7 @@ namespace Unosquare.Net
 
         private const string Tspecials = "()<>@,;:\\\"/[]?={} \t";
 
-        internal static bool IsToken(this string value)
-        {
-            return value.All(c => c >= 0x20 && c < 0x7f && !Tspecials.Contains(c));
-        }
+        internal static bool IsToken(this string value) => value.All(c => c >= 0x20 && c < 0x7f && !Tspecials.Contains(c));
 
         /// <summary>
         /// Gets the collection of the HTTP cookies from the specified HTTP <paramref name="headers"/>.
