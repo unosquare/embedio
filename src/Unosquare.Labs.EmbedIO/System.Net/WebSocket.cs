@@ -609,6 +609,7 @@ namespace Unosquare.Net
             return false;
         }
 
+
         // As server
         private async Task<bool> AcceptHandshakeAsync()
         {
@@ -1319,7 +1320,7 @@ namespace Unosquare.Net
 
         private bool ProcessPingFrame(WebSocketFrame frame)
         {
-            // TODO: Make async?
+            // TODO: Make async?           
             var result = send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, _client).ToArray(), CancellationToken.None).GetAwaiter().GetResult();
 
             if (result)
@@ -1329,7 +1330,7 @@ namespace Unosquare.Net
 
             if (EmitOnPing)
                 EnqueueToMessageEventQueue(new MessageEventArgs(frame));
-
+ 
             return true;
         }
 
@@ -1535,41 +1536,36 @@ namespace Unosquare.Net
             /* Not fragmented */
 
             if (len == 0)
-                return await send(Fin.Final, opcode, EmptyBytes, compressed, ct);
+                return send(Fin.Final, opcode, EmptyBytes, compressed, ct);
 
             var quo = len / FragmentLength;
             var rem = (int)(len % FragmentLength);
 
-            byte[] buff;
+            byte[] buff = null;
             if (quo == 0)
             {
                 buff = new byte[rem];
                 return stream.Read(buff, 0, rem) == rem &&
-                       await send(Fin.Final, opcode, buff, compressed, ct);
+                       send(Fin.Final, opcode, buff, compressed, ct);
             }
 
             buff = new byte[FragmentLength];
             if (quo == 1 && rem == 0)
                 return stream.Read(buff, 0, FragmentLength) == FragmentLength &&
-                       await send(Fin.Final, opcode, buff, compressed, ct);
+                       send(Fin.Final, opcode, buff, compressed, ct);
 
             /* Send fragmented */
 
             // Begin
-            var sendResult = await send(Fin.More, opcode, buff, compressed, ct);
-            var read = await stream.ReadAsync(buff, 0, FragmentLength, ct);
-
-            if (read != FragmentLength || !sendResult)
+            if (stream.Read(buff, 0, FragmentLength) != FragmentLength ||
+                !send(Fin.More, opcode, buff, compressed, ct))
                 return false;
 
             var n = rem == 0 ? quo - 2 : quo - 1;
             for (long i = 0; i < n; i++)
-            {
-                var result = await send(Fin.More, Opcode.Cont, buff, compressed, ct);
-                var readResult = await stream.ReadAsync(buff, 0, FragmentLength, ct);
-                if (readResult != FragmentLength || !result)
+                if (stream.Read(buff, 0, FragmentLength) != FragmentLength ||
+                    !send(Fin.More, Opcode.Cont, buff, compressed, ct))
                     return false;
-            }
 
             // End
             if (rem == 0)
@@ -1577,13 +1573,35 @@ namespace Unosquare.Net
             else
                 buff = new byte[rem];
 
-            read = await stream.ReadAsync(buff, 0, rem, ct);
-            return read == rem && await send(Fin.Final, Opcode.Cont, buff, compressed, ct);
+            return stream.Read(buff, 0, rem) == rem && send(Fin.Final, Opcode.Cont, buff, compressed, ct);
         }
 
-        private async Task<bool> send(Fin fin, Opcode opcode, byte[] data, bool compressed, CancellationToken ct)
+        private bool send(Fin fin, Opcode opcode, byte[] data, bool compressed, CancellationToken ct)
         {
-            return await send(new WebSocketFrame(fin, opcode, data, compressed, _client).ToArray(), ct);
+            lock (_forState)
+            {
+                if (_readyState != WebSocketState.Open)
+                {
+                    "The sending has been interrupted.".Error();
+                    return false;
+                }
+
+                return SendBytes(new WebSocketFrame(fin, opcode, data, compressed, _client).ToArray());
+            }
+        }
+
+        private bool SendBytes(byte[] bytes)
+        {
+            try
+            {
+                _stream.Write(bytes, 0, bytes.Length);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ex.Log(nameof(WebSocket));
+                return false;
+            }
         }
 
         // As client
@@ -2220,7 +2238,7 @@ namespace Unosquare.Net
                 return;
             }
 
-            await send(opcode, new MemoryStream(data), ct);
+            send(opcode, new MemoryStream(data), ct);
         }
 
         /// <summary>
@@ -2246,7 +2264,7 @@ namespace Unosquare.Net
                 return;
             }
 
-            await send(Opcode.Binary, file.OpenRead(), ct);
+            send(Opcode.Binary, file.OpenRead(), ct);
         }
 
         /// <summary>
@@ -2286,7 +2304,7 @@ namespace Unosquare.Net
                 if (data.Length < length)
                     $"The length of the data is less than 'length':\n  expected: {length}\n  actual: {data.Length}".Info();
 
-                await send(Opcode.Binary, new MemoryStream(data), ct);
+                send(Opcode.Binary, new MemoryStream(data), ct);
             }
             catch (Exception ex)
             {
