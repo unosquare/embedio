@@ -72,7 +72,7 @@ namespace Unosquare.Net
         private Stream _inputStream;
         private Uri _url;
         private readonly HttpListenerContext _context;
-        private bool _isChunked;
+        private bool _isChunked = false;
         private bool _kaSet;
         private bool _keepAlive;
 

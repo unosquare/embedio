@@ -36,7 +36,8 @@
     },
     "net46": {
       "frameworkAssemblies": {
-        "System.Net.Http": ""
+        "System.Net.Http": "",
+        "System.Threading.Tasks": ""
       },
       "dependencies": {
       }

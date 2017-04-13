@@ -152,7 +152,7 @@
             using (var instance = new WebServer(url))
             {
                 instance.RegisterModule(new TestWebModule());
-                instance.RunAsync();
+                var runTask = instance.RunAsync();
 
                 var request = (HttpWebRequest) WebRequest.Create(url + TestWebModule.RedirectUrl);
                 request.AllowAutoRedirect = false;
@@ -172,7 +172,7 @@
             using (var instance = new WebServer(url))
             {
                 instance.RegisterModule(new TestWebModule());
-                instance.RunAsync();
+                var runTask = instance.RunAsync();
 
                 var request = (HttpWebRequest)WebRequest.Create(url + TestWebModule.RedirectAbsoluteUrl);
                 request.AllowAutoRedirect = false;

@@ -1724,7 +1724,9 @@ namespace Unosquare.Net
 #endif
 
         // As client
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         private async Task SetClientStream()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
 #if PROXY
             if (_proxyUri != null)

@@ -31,7 +31,7 @@
             WebServer = new WebServer(WebServerUrl);
             WebServer.RegisterModule(new StaticFilesModule(RootPath) { UseRamCache = true });
             WebServer.RegisterModule(new FallbackModule("/index.html"));
-            WebServer.RunAsync();
+            var runTask = WebServer.RunAsync();
         }
 
         [Test]
@@ -354,7 +354,7 @@
             using (var server = new WebServer(endpoint))
             {
                 server.RegisterModule(new StaticFilesModule(root) { UseRamCache = false });
-                server.RunAsync();
+                var runTask = server.RunAsync();
 
                 using (var webClient = new HttpClient())
                 {
