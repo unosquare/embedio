@@ -24,7 +24,6 @@
         "System.IO.Compression": "4.3.0",
         "System.Collections.Specialized": "4.3.0",
         "System.Net.Requests": "4.3.0",
-        "System.Net.Security": "4.3.0",
         "System.Threading.Thread": "4.3.0",
         "System.Threading.ThreadPool": "4.3.0",
         "System.Net.NameResolution": "4.3.0"
@@ -40,7 +39,6 @@
         "System.Collections.NonGeneric": "4.3.0",
         "System.Collections.Specialized": "4.3.0",
         "System.Net.Requests": "4.3.0",
-        "System.Net.Security": "4.3.0",
         "System.Threading.Thread": "4.3.0",
         "System.Threading.ThreadPool": "4.3.0",
         "System.Net.NameResolution": "4.3.0"
