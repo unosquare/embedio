@@ -3931,12 +3931,6 @@ references:
   commentId: Overload:Unosquare.Net.WebSocket.PingAsync
   fullName: Unosquare.Net.WebSocket.PingAsync
   nameWithType: WebSocket.PingAsync
-- uid: Unosquare.Net.WebSocket.SendAsync(FileInfo,CancellationToken)
-  name: SendAsync(FileInfo, CancellationToken)
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_FileInfo_CancellationToken_
-  commentId: M:Unosquare.Net.WebSocket.SendAsync(FileInfo,CancellationToken)
-  fullName: Unosquare.Net.WebSocket.SendAsync(FileInfo, CancellationToken)
-  nameWithType: WebSocket.SendAsync(FileInfo, CancellationToken)
 - uid: Unosquare.Net.WebSocket.SendAsync(Stream,System.Int32,CancellationToken)
   name: SendAsync(Stream, Int32, CancellationToken)
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SendAsync_Stream_System_Int32_CancellationToken_
