@@ -175,60 +175,7 @@ namespace Unosquare.Net
         }
 
         internal static bool IsControl(this byte opcode) =>  opcode > 0x7 && opcode < 0x10;
-
-        internal static async Task<byte[]> ReadBytesAsync(this Stream stream, long length, int bufferLength, CancellationToken ct = default(CancellationToken))
-        {
-            using (var dest = new MemoryStream())
-            {
-                try
-                {
-                    var buff = new byte[bufferLength];
-                    while (length > 0)
-                    {
-                        if (length < bufferLength)
-                            bufferLength = (int)length;
-
-                        var nread = await stream.ReadAsync(buff, 0, bufferLength, ct);
-                        if (nread == 0)
-                            break;
-
-                        dest.Write(buff, 0, nread);
-                        length -= nread;
-                    }
-                }
-                catch
-                {
-                    // ignored
-                }
-
-                return dest.ToArray();
-            }
-        }
-
-        internal static async Task<byte[]> ReadBytesAsync(this Stream stream, int length, CancellationToken ct = default(CancellationToken))
-        {
-            var buff = new byte[length];
-            var offset = 0;
-            try
-            {
-                while (length > 0)
-                {
-                    var nread = await stream.ReadAsync(buff, offset, length, ct);
-                    if (nread == 0)
-                        break;
-
-                    offset += nread;
-                    length -= nread;
-                }
-            }
-            catch
-            {
-                // ignored
-            }
-
-            return buff.SubArray(0, offset);
-        }
-
+        
         internal static bool IsReserved(this CloseStatusCode code)
         {
             return code == CloseStatusCode.Undefined ||

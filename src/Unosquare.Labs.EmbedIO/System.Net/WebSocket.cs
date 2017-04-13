@@ -1972,12 +1972,7 @@ namespace Unosquare.Net
         {
             return data == null ? "'data' is null." : null;
         }
-
-        internal static string CheckSendParameter(FileInfo file)
-        {
-            return file == null ? "'file' is null." : null;
-        }
-
+        
         internal static string CheckSendParameter(string data)
         {
             return data == null ? "'data' is null." : null;
@@ -2240,33 +2235,7 @@ namespace Unosquare.Net
 
             send(opcode, new MemoryStream(data), ct);
         }
-
-        /// <summary>
-        /// Sends the specified <paramref name="file" /> as binary data asynchronously using
-        /// the WebSocket connection.
-        /// </summary>
-        /// <param name="file">A <see cref="FileInfo" /> that represents the file to send.</param>
-        /// <param name="ct">The cancellation token.</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// This method doesn't wait for the send to be complete.
-        /// </remarks>
-        public async Task SendAsync(FileInfo file, CancellationToken ct = default(CancellationToken))
-        {
-            var msg = CheckIfAvailable(_readyState) ??
-                      CheckSendParameter(file);
-
-            if (msg != null)
-            {
-                msg.Error();
-                Error("An error has occurred in sending data.", null);
-
-                return;
-            }
-
-            send(Opcode.Binary, file.OpenRead(), ct);
-        }
-
+        
         /// <summary>
         /// Sends binary data from the specified <see cref="Stream" /> asynchronously using
         /// the WebSocket connection.
