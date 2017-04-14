@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using Modules;
     using TestObjects;
+    using System.IO;
 
     [TestFixture]
     public class LocalSessionModuleTest
@@ -28,6 +29,8 @@
             WebServer = new WebServer(WebServerUrl);
             WebServer.RegisterModule(new LocalSessionModule() { Expiration = WaitTimeSpan });
             WebServer.RegisterModule(new StaticFilesModule(RootPath));
+            WebServer.RegisterModule(new WebApiModule());
+            WebServer.Module<WebApiModule>().RegisterController<TestLocalSessionController>();
             WebServer.RunAsync();
         }
 
@@ -98,6 +101,65 @@
                 Assert.Greater(response.Cookies.Count, 0, "Cookies are not empty");
 
                 Assert.AreNotEqual(content, response.Cookies[CookieName]?.Value);
+            }
+        }
+
+        [Test]
+        public async Task DeleteSession()
+        {
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
+            CookieContainer container = new CookieContainer();
+            request.CookieContainer = container;
+
+            request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.PutData);
+
+            request.CookieContainer = container;
+
+            using (var response = (HttpWebResponse)await request.GetResponseAsync())
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                var body = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+                Assert.AreEqual(body, TestLocalSessionController.MyData);
+            }
+
+            request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.GetData);
+
+            request.CookieContainer = container;
+
+            using (var response = (HttpWebResponse)await request.GetResponseAsync())
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                var body = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+                Assert.AreEqual(body, TestLocalSessionController.MyData);
+            }
+
+            request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.DeleteSession);
+            request.CookieContainer = container;
+
+            using (var response = (HttpWebResponse)await request.GetResponseAsync())
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                var body = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+                Assert.AreEqual(body, "Deleted");
+            }
+
+            request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.GetData);
+
+            request.CookieContainer = container;
+
+            using (var response = (HttpWebResponse)await request.GetResponseAsync())
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                var body = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+                Assert.AreEqual("", body);
             }
         }
 

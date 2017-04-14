@@ -63,6 +63,7 @@
     <Compile Include="TestObjects\Resources.cs" />
     <Compile Include="TestObjects\TestController.cs" />
     <Compile Include="TestObjects\TestHelper.cs" />
+    <Compile Include="TestObjects\TestLocalSessionController.cs" />
     <Compile Include="TestObjects\TestRegexController.cs" />
     <Compile Include="TestObjects\TestWebModule.cs" />
     <Compile Include="TestObjects\TestWebSocket.cs" />
