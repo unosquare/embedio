@@ -67,12 +67,6 @@ references:
   commentId: F:Unosquare.Labs.EmbedIO.Constants.CorsWildcard
   fullName: Unosquare.Labs.EmbedIO.Constants.CorsWildcard
   nameWithType: Constants.CorsWildcard
-- uid: Unosquare.Labs.EmbedIO.Constants.DefaultEncoding
-  name: DefaultEncoding
-  href: api/Unosquare.Labs.EmbedIO.Constants.html#Unosquare_Labs_EmbedIO_Constants_DefaultEncoding
-  commentId: F:Unosquare.Labs.EmbedIO.Constants.DefaultEncoding
-  fullName: Unosquare.Labs.EmbedIO.Constants.DefaultEncoding
-  nameWithType: Constants.DefaultEncoding
 - uid: Unosquare.Labs.EmbedIO.Constants.DefaultMimeTypes
   name: DefaultMimeTypes
   href: api/Unosquare.Labs.EmbedIO.Constants.html#Unosquare_Labs_EmbedIO_Constants_DefaultMimeTypes
