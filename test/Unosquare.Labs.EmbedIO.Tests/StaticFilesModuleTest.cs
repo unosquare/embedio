@@ -318,7 +318,7 @@
                 //Assert.IsTrue(response.ContentEncoding.ToLower().Contains("gzip"), "Request is gziped");
                 //var responseStream = new GZipStream(response.GetResponseStream(), CompressionMode.Decompress);
                 var responseStream = response.GetResponseStream();
-                var reader =  new StreamReader(responseStream, Constants.DefaultEncoding);
+                var reader =  new StreamReader(responseStream, System.Text.Encoding.UTF8);
                 var html = reader.ReadToEnd();
 
                 Assert.IsNotNull(html, "Data is not empty");

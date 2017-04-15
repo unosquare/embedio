@@ -70,26 +70,7 @@ namespace Unosquare.Net
         /// <summary>
         /// Gets or sets the content encoding.
         /// </summary>
-        /// <value>
-        /// The content encoding.
-        /// </value>
-        /// <exception cref="System.ObjectDisposedException"></exception>
-        /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
-        public Encoding ContentEncoding
-        {
-            get { return _contentEncoding ?? (_contentEncoding = Encoding.GetEncoding(0)); }
-            set
-            {
-                if (_disposed)
-                    throw new ObjectDisposedException(GetType().ToString());
-
-                //TODO: is null ok?
-                if (HeadersSent)
-                    throw new InvalidOperationException(CannotChangeHeaderWarning);
-
-                _contentEncoding = value;
-            }
-        }
+        public Encoding ContentEncoding => Encoding.UTF8;
 
         /// <summary>
         /// Gets or sets the content length.
@@ -448,7 +429,7 @@ namespace Unosquare.Net
 
         internal void SendHeaders(bool closing, MemoryStream ms)
         {
-            var encoding = _contentEncoding ?? Encoding.GetEncoding(0);
+            var encoding = _contentEncoding ?? Encoding.UTF8;
 
             if (_contentType != null)
             {

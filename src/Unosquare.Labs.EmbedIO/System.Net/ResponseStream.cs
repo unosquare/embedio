@@ -156,8 +156,7 @@ namespace Unosquare.Net
 
         private static byte[] GetChunkSizeBytes(int size, bool final)
         {
-            var str = $"{size:x}\r\n{(final ? "\r\n" : "")}";
-            return Encoding.GetEncoding(0).GetBytes(str);
+            return Encoding.UTF8.GetBytes($"{size:x}\r\n{(final ? "\r\n" : "")}");
         }
 
         internal void InternalWrite(byte[] buffer, int offset, int count)

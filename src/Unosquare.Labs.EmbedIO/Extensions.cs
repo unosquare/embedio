@@ -110,7 +110,7 @@
 #if NET46
         public static SessionInfo GetSession(this WebServer server, System.Net.WebSockets.WebSocketContext context)
 #else
-        public static SessionInfo GetSession(this WebServer server, Unosquare.Net.WebSocketContext context)
+        public static SessionInfo GetSession(this WebServer server, WebSocketContext context)
 #endif
         {
             return server.SessionModule?.GetSession(context);

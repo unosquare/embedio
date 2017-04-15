@@ -81,7 +81,7 @@ namespace Unosquare.Net
         GccDelegate _gccDelegate;
 #endif
 
-        private static readonly byte[] _100Continue = Encoding.GetEncoding(0).GetBytes("HTTP/1.1 100 Continue\r\n\r\n");
+        private static readonly byte[] _100Continue = Encoding.UTF8.GetBytes("HTTP/1.1 100 Continue\r\n\r\n");
 
         internal HttpListenerRequest(HttpListenerContext context)
         {
@@ -454,7 +454,14 @@ namespace Unosquare.Net
         /// <value>
         /// The content encoding.
         /// </value>
-        public Encoding ContentEncoding => _contentEncoding ?? (_contentEncoding = Encoding.GetEncoding(0));
+        public Encoding ContentEncoding
+        {
+            get
+            {
+                // TODO: Check Request Encoding
+                return _contentEncoding ?? (_contentEncoding = Encoding.UTF8);
+            }
+        }
 
         /// <summary>
         /// Gets the content length in a 64-bit integer

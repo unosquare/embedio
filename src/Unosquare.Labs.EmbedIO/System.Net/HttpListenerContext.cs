@@ -101,7 +101,7 @@ namespace Unosquare.Net
             {
                 // Basic AUTH Data is a formatted Base64 String
                 //string domain = null;
-                var authString = Encoding.GetEncoding(0).GetString(Convert.FromBase64String(authData));
+                var authString = Encoding.UTF8.GetString(Convert.FromBase64String(authData));
 
                 // The format is DOMAIN\username:password
                 // Domain is optional

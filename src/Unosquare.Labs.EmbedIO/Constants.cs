@@ -49,17 +49,7 @@
 #else
            StringComparer.Ordinal;
 #endif
-
-        /// <summary>
-        /// The default encoding
-        /// </summary>
-        public static Encoding DefaultEncoding =
-#if NET452 || NET46
-            Encoding.Default;
-#else
-            Encoding.GetEncoding(0);
-#endif
-
+        
         /// <summary>
         /// Content-Length HTTP Header
         /// </summary>
