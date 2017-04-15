@@ -31,6 +31,7 @@
 using System;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -458,8 +459,27 @@ namespace Unosquare.Net
         {
             get
             {
-                // TODO: Check Request Encoding
-                return _contentEncoding ?? (_contentEncoding = Encoding.UTF8);
+                if (_contentEncoding != null)
+                    return _contentEncoding;
+
+                var defaultEncoding = Encoding.UTF8;
+                var acceptCharset = Headers["Accept-Charset"]?.Split(',')
+                    .Select(x => x.Trim().Split(';'))
+                    .Select(x => new
+                    {
+                        Charset = x[0],
+                        Q = x.Length == 1 ? 1m : decimal.Parse(x[1].Trim().Replace("q=", string.Empty))
+                    })
+                    .OrderBy(x => x.Q)
+                    .Select(x => x.Charset)
+                    .FirstOrDefault();
+
+                if (string.IsNullOrWhiteSpace(acceptCharset) == false)
+                {
+                    defaultEncoding = Encoding.GetEncoding(acceptCharset);
+                }
+                
+                return (_contentEncoding = defaultEncoding);
             }
         }
 
