@@ -42,6 +42,25 @@
         }
 
         [Test]
+        public async Task RetrieveCookie()
+        {
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.GetCookie);
+            request.CookieContainer = new CookieContainer();
+
+            using (var response = (HttpWebResponse)await request.GetResponseAsync())
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                Assert.IsNotNull(response.Cookies, "Cookies are not null");
+                Assert.Greater(response.Cookies.Count, 0, "Cookies are not empty");
+
+                var content = response.Cookies[TestLocalSessionController.CookieName]?.Value;
+
+                Assert.AreEqual(content, TestLocalSessionController.CookieName);
+            }
+        }
+
+        [Test]
         public async Task GetCookie()
         {
             var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);

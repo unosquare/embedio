@@ -17,6 +17,17 @@
         public const string PutData = "putdata";
         public const string GetData = "getdata";
         public const string MyData = "MyData";
+        public const string GetCookie = "GetCookie";
+        public const string CookieName = "MyCookie";
+
+        [WebApiHandler(HttpVerbs.Get, "/getcookie")]
+        public bool GetCookieC(WebServer server, HttpListenerContext context)
+        {
+            System.Net.Cookie myCookie = new System.Net.Cookie(CookieName, CookieName);
+            context.Response.Cookies.Add(myCookie);
+
+            return context.JsonResponse(context.Response.Cookies[CookieName]);
+        }
 
         [WebApiHandler(HttpVerbs.Get, "/deletesession")]
         public bool DeleteSessionC(WebServer server, HttpListenerContext context)
