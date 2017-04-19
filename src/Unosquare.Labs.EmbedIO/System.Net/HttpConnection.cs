@@ -227,56 +227,64 @@ namespace Unosquare.Net
         {
             _timer.Change(Timeout.Infinite, Timeout.Infinite);
 
-            try
+            // Continue reading until full header is received.
+            // Especially important for multipart requests when the second part of the header arrives after a tiny delay
+            // because the webbrowser has to meassure the content length first.
+            int parsedBytes = 0;
+            while (true)
             {
-                await _ms.WriteAsync(_buffer, 0, nread);
-                if (_ms.Length > 32768)
+                try
                 {
-                    await CloseAsync(true);
-                    return;
+                    await _ms.WriteAsync(_buffer, parsedBytes, nread - parsedBytes);
+                    if (_ms.Length > 32768)
+                    {
+                        await CloseAsync(true);
+                        return;
+                    }
                 }
-            }
-            catch
-            {
-                CloseSocket();
-                Unbind();
-                return;
-            }
-
-            if (nread == 0)
-            {
-                //if (ms.Length > 0)
-                //	SendError (); // Why bother?
-                CloseSocket();
-                Unbind();
-                return;
-            }
-
-            if (ProcessInput(_ms))
-            {
-                if (!_context.HaveError)
-                    _context.Request.FinishInitialization();
-
-                if (_context.HaveError || !_epl.BindContext(_context))
+                catch
                 {
-                    await CloseAsync(true);
+                    CloseSocket();
+                    Unbind();
                     return;
                 }
 
-                var listener = _context.Listener;
-                if (_lastListener != listener)
+                if (nread == 0)
                 {
-                    RemoveConnection();
-                    listener.AddConnection(this);
-                    _lastListener = listener;
+                    //if (ms.Length > 0)
+                    //	SendError (); // Why bother?
+                    CloseSocket();
+                    Unbind();
+                    return;
                 }
 
-                _contextBound = true;
-                listener.RegisterContext(_context);
-                return;
-            }
+                if (ProcessInput(_ms))
+                {
+                    if (!_context.HaveError)
+                        _context.Request.FinishInitialization();
 
-            await Stream.ReadAsync(_buffer, 0, BufferSize);
+                    if (_context.HaveError || !_epl.BindContext(_context))
+                    {
+                        await CloseAsync(true);
+                        return;
+                    }
+
+                    var listener = _context.Listener;
+                    if (_lastListener != listener)
+                    {
+                        RemoveConnection();
+                        listener.AddConnection(this);
+                        _lastListener = listener;
+                    }
+
+                    _contextBound = true;
+                    listener.RegisterContext(_context);
+                    return;
+                }
+
+                parsedBytes = nread;
+                nread += await Stream.ReadAsync(_buffer, nread, BufferSize - nread);
+            }
         }
 
         private void RemoveConnection()
