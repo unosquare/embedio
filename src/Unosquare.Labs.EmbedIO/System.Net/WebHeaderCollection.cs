@@ -507,7 +507,7 @@ namespace Unosquare.Net
                         "WwwAuthenticate",
                         new HttpHeaderInfo(
                             "WWW-Authenticate",
-                            HttpHeaderType.Response | HttpHeaderType.Restricted | HttpHeaderType.MultiValue)
+                            HttpHeaderType.Response | HttpHeaderType.MultiValue)
                     }
                 };
         }
