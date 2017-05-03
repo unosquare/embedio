@@ -34,8 +34,10 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Authentication.ExtendedProtection;
 using System.Threading.Tasks;
+#if AUTHENTICATION
+using System.Security.Authentication.ExtendedProtection;
+#endif
 
 namespace Unosquare.Net
 {
@@ -76,12 +78,14 @@ namespace Unosquare.Net
         //ExtendedProtectionPolicy _extendedProtectionPolicy;
         //ExtendedProtectionSelector _extendedProtectionSelectorDelegate = null;
 
+#if AUTHENTICATION
         /// <summary>
         /// The EPP selector delegate for the supplied request
         /// </summary>
         /// <param name="request">The request.</param>
         /// <returns></returns>
         public delegate ExtendedProtectionPolicy ExtendedProtectionSelector(HttpListenerRequest request);
+#endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpListener"/> class.

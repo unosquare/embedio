@@ -96,7 +96,7 @@
                             // get a reference to the parse method
                             var parameterTypeNullable = Nullable.GetUnderlyingType(arg.ParameterType);
 
-#if NETSTANDARD1_3
+#if NETSTANDARD1_3 || UWP
                             var parseMethod = parameterTypeNullable != null
                                 ? parameterTypeNullable.GetMethod(nameof(int.Parse), new[] { typeof(string) })
                                 : arg.ParameterType.GetMethod(nameof(int.Parse), new[] { typeof(string) });

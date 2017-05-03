@@ -1,5 +1,5 @@
 {
-  "version": "1.6.6-*",
+  "version": "1.6.10-*",
   "title": "EmbedIO",
   "description": "A tiny, cross-platform, module based, MIT-licensed web server. Supporting NET FX, NET Core, NET Standard and MONO.",
   "copyright": "Copyright © Unosquare 2013-2017",
@@ -12,10 +12,17 @@
   },
 
   "dependencies": {
-    "Unosquare.Swan": "0.14.0"
+    "Unosquare.Swan": "0.14.2"
   },
 
   "frameworks": {
+    "uap10.0": {
+      "dependencies": {
+        "System.Net.NameResolution": "4.3.0",
+        "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.3"
+      },
+      "buildOptions": { "define": [ "UWP" ] }
+    },
     "netstandard1.6": {
       "dependencies": {
         "System.Text.Encoding.Extensions": "4.3.0",
@@ -24,8 +31,6 @@
         "System.IO.Compression": "4.3.0",
         "System.Collections.Specialized": "4.3.0",
         "System.Net.Requests": "4.3.0",
-        "System.Threading.Thread": "4.3.0",
-        "System.Threading.ThreadPool": "4.3.0",
         "System.Net.NameResolution": "4.3.0"
       }
     },
@@ -39,8 +44,6 @@
         "System.Collections.NonGeneric": "4.3.0",
         "System.Collections.Specialized": "4.3.0",
         "System.Net.Requests": "4.3.0",
-        "System.Threading.Thread": "4.3.0",
-        "System.Threading.ThreadPool": "4.3.0",
         "System.Net.NameResolution": "4.3.0"
       }
     },
@@ -49,5 +52,10 @@
     },
     "net46": {
     }
+  },
+  "runtimes": {
+    "win10-arm": {},
+    "win8-x86": {},
+    "win8-x64": {}
   }
 }

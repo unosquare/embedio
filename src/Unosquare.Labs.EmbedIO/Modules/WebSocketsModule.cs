@@ -218,7 +218,9 @@
         /// </summary>
         private void RunConnectionWatchdog()
         {
-            var t = new Thread(async () =>
+            if (_enableDisconnectedSocketColletion == false) return;
+
+            var watchDogTask = Task.Factory.StartNew(async () =>
             {
                 while (_isDisposing == false)
                 {
@@ -228,16 +230,7 @@
                     // TODO: make this sleep configurable.
                     await Task.Delay(30 * 1000, _ct);
                 }
-            })
-            {
-                IsBackground = true,
-#if NET46
-                Priority = ThreadPriority.BelowNormal
-#endif
-            };
-
-            if (_enableDisconnectedSocketColletion)
-                t.Start();
+            }, _ct);
         }
 
         /// <summary>

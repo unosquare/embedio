@@ -44,7 +44,6 @@ namespace Unosquare.Net
         private const string CannotChangeHeaderWarning = "Cannot be changed after headers are sent.";
 
         private bool _disposed;
-        private Encoding _contentEncoding;
         private long _contentLength;
         private bool _clSet;
         private string _contentType;
@@ -316,10 +315,7 @@ namespace Unosquare.Net
         /// <exception cref="System.ArgumentOutOfRangeException"></exception>
         public void AddHeader(string name, string value)
         {
-            if (name == null)
-                throw new ArgumentNullException(nameof(name));
-
-            if (String.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("'name' cannot be empty", nameof(name));
 
             //TODO: check for forbidden headers and invalid characters
@@ -429,14 +425,11 @@ namespace Unosquare.Net
 
         internal void SendHeaders(bool closing, MemoryStream ms)
         {
-            var encoding = _contentEncoding ?? Encoding.UTF8;
-
             if (_contentType != null)
             {
-                if (_contentEncoding != null && _contentType.IndexOf("charset=", StringComparison.Ordinal) == -1)
+                if (_contentType.IndexOf("charset=", StringComparison.Ordinal) == -1)
                 {
-                    var encName = _contentEncoding.WebName;
-                    Headers.SetInternal("Content-Type", _contentType + "; charset=" + encName);
+                    Headers.SetInternal("Content-Type", _contentType + "; charset=" + Encoding.UTF8.WebName);
                 }
                 else
                 {
@@ -520,12 +513,12 @@ namespace Unosquare.Net
                     Headers.SetInternal("Set-Cookie", CookieToClientString(cookie));
             }
 
-            var writer = new StreamWriter(ms, encoding, 256);
+            var writer = new StreamWriter(ms, Encoding.UTF8, 256);
             writer.Write("HTTP/{0} {1} {2}\r\n", _version, _statusCode, StatusDescription);
             var headersStr = FormatHeaders(Headers);
             writer.Write(headersStr);
             writer.Flush();
-            var preamble = encoding.GetPreamble().Length;
+            var preamble = Encoding.UTF8.GetPreamble().Length;
             if (_outputStream == null)
                 _outputStream = _context.Connection.GetResponseStream();
 

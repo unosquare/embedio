@@ -1204,7 +1204,7 @@ namespace Unosquare.Net
                 e = _messageEventQueue.Dequeue();
             }
 
-            ThreadPool.QueueUserWorkItem(state => Messages(e));
+            Task.Factory.StartNew(() => Messages(e));
         }
 
         private void Open()

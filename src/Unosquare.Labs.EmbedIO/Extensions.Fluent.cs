@@ -64,7 +64,7 @@
             return webserver;
         }
 
-#if !NETSTANDARD1_3
+#if !NETSTANDARD1_3 && !UWP
         /// <summary>
         /// Add WebApiModule to WebServer
         /// </summary>
