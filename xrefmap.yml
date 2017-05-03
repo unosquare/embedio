@@ -2374,12 +2374,6 @@ references:
   commentId: Overload:Unosquare.Net.HttpListener.CloseAsync
   fullName: Unosquare.Net.HttpListener.CloseAsync
   nameWithType: HttpListener.CloseAsync
-- uid: Unosquare.Net.HttpListener.ExtendedProtectionSelector
-  name: HttpListener.ExtendedProtectionSelector
-  href: api/Unosquare.Net.HttpListener.ExtendedProtectionSelector.html
-  commentId: T:Unosquare.Net.HttpListener.ExtendedProtectionSelector
-  fullName: Unosquare.Net.HttpListener.ExtendedProtectionSelector
-  nameWithType: HttpListener.ExtendedProtectionSelector
 - uid: Unosquare.Net.HttpListener.GetContextAsync
   name: GetContextAsync()
   href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_GetContextAsync
