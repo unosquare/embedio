@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class WebSocketsServer
    | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 2.16.8.3">
+    <meta name="generator" content="docfx 2.17.4.2">
     
     <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -57,7 +57,7 @@
           </div>
         </div>
       </header>
-      <div role="main" class="container body-content">
+      <div class="container body-content">
         
         <div id="search-results">
           <div class="search-list"></div>
@@ -75,602 +75,602 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content">
-              
-              
-              <h1 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer">Class WebSocketsServer
-              </h1>
-              <div class="markdown level0 summary"><p>A base class that defines how to handle WebSockets connections.
+            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer">
+  
+  
+  <h1 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer">Class WebSocketsServer
+  </h1>
+  <div class="markdown level0 summary"><p>A base class that defines how to handle WebSockets connections.
 It keeps a list of connected WebSockets and has the basic logic to handle connections
 and data transmission</p>
 </div>
-              <div class="markdown level0 conceptual"></div>
-              <div class="inheritance">
-                <h5>Inheritance</h5>
-                  <div class="level0"><span class="xref">System.Object</span></div>
-                  <div class="level1"><span class="xref">WebSocketsServer</span></div>
-              </div>
-              <h6><strong>Namespace</strong>:Unosquare.Labs.EmbedIO.Modules</h6>
-              <h6><strong>Assembly</strong>:Unosquare.Labs.EmbedIO.dll</h6>
-              <h5 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_syntax">Syntax</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public abstract class WebSocketsServer : IDisposable</code></pre>
-              </div>
-              <h3 id="constructors">Constructors
-              </h3>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer__ctor.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L209">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.#ctor*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer__ctor" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.#ctor">WebSocketsServer()</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html">WebSocketsServer</a> class. With dead connection watchdog and no message size checks.</p>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">WebSocketsServer</span></div>
+  </div>
+  <h6><strong>Namespace</strong>:Unosquare.Labs.EmbedIO.Modules</h6>
+  <h6><strong>Assembly</strong>:Unosquare.Labs.EmbedIO.dll</h6>
+  <h5 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class WebSocketsServer : IDisposable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer__ctor.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L209">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.#ctor*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer__ctor" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.#ctor">WebSocketsServer()</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html">WebSocketsServer</a> class. With dead connection watchdog and no message size checks.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected WebSocketsServer()</code></pre>
-              </div>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer__ctor_System_Boolean_System_Int32_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.%23ctor(System.Boolean%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L196">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.#ctor*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer__ctor_System_Boolean_System_Int32_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.#ctor(System.Boolean,System.Int32)">WebSocketsServer(Boolean, Int32)</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html">WebSocketsServer</a> class.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected WebSocketsServer()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer__ctor_System_Boolean_System_Int32_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.%23ctor(System.Boolean%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L196">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.#ctor*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer__ctor_System_Boolean_System_Int32_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.#ctor(System.Boolean,System.Int32)">WebSocketsServer(Boolean, Int32)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html">WebSocketsServer</a> class.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected WebSocketsServer(bool enableConnectionWatchdog, int maxMessageSize)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Boolean</span></td>
-                    <td><span class="parametername">enableConnectionWatchdog</span></td>
-                    <td><p>if set to <code>true</code> [enable connection watchdog].</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected WebSocketsServer(bool enableConnectionWatchdog, int maxMessageSize)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">enableConnectionWatchdog</span></td>
+        <td><p>if set to <code>true</code> [enable connection watchdog].</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td><span class="xref">System.Int32</span></td>
-                    <td><span class="parametername">maxMessageSize</span></td>
-                    <td><p>Maximum size of the message in bytes. Enter 0 or negative number to prevent checks.</p>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">maxMessageSize</span></td>
+        <td><p>Maximum size of the message in bytes. Enter 0 or negative number to prevent checks.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <h3 id="properties">Properties
-              </h3>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_ServerName.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.ServerName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L558">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_ServerName_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.ServerName*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_ServerName" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.ServerName">ServerName</h4>
-              <div class="markdown level1 summary"><p>Gets the name of the server.</p>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_ServerName.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.ServerName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L558">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_ServerName_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.ServerName*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_ServerName" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.ServerName">ServerName</h4>
+  <div class="markdown level1 summary"><p>Gets the name of the server.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public abstract string ServerName { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.String</span></td>
-                    <td><p>The name of the server.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract string ServerName { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The name of the server.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_WebSockets.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.WebSockets%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L180">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_WebSockets_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.WebSockets*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_WebSockets" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.WebSockets">WebSockets</h4>
-              <div class="markdown level1 summary"><p>Gets the Currently-Connected WebSockets.</p>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_WebSockets.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.WebSockets%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L180">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_WebSockets_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.WebSockets*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_WebSockets" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.WebSockets">WebSockets</h4>
+  <div class="markdown level1 summary"><p>Gets the Currently-Connected WebSockets.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public ReadOnlyCollection&lt;WebSocketContext&gt; WebSockets { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">ReadOnlyCollection</span>&lt;<a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a>&gt;</td>
-                    <td><p>The web sockets.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ReadOnlyCollection&lt;WebSocketContext&gt; WebSockets { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReadOnlyCollection</span>&lt;<a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a>&gt;</td>
+        <td><p>The web sockets.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <h3 id="methods">Methods
-              </h3>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_AcceptWebSocket_Unosquare_Net_HttpListenerContext_CancellationToken_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.AcceptWebSocket(Unosquare.Net.HttpListenerContext%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L246">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_AcceptWebSocket_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.AcceptWebSocket*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_AcceptWebSocket_Unosquare_Net_HttpListenerContext_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.AcceptWebSocket(Unosquare.Net.HttpListenerContext,CancellationToken)">AcceptWebSocket(HttpListenerContext, CancellationToken)</h4>
-              <div class="markdown level1 summary"><p>Accepts the WebSocket connection.
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_AcceptWebSocket_Unosquare_Net_HttpListenerContext_CancellationToken_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.AcceptWebSocket(Unosquare.Net.HttpListenerContext%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L246">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_AcceptWebSocket_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.AcceptWebSocket*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_AcceptWebSocket_Unosquare_Net_HttpListenerContext_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.AcceptWebSocket(Unosquare.Net.HttpListenerContext,CancellationToken)">AcceptWebSocket(HttpListenerContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Accepts the WebSocket connection.
 This is a blocking call so it must be called within an independent thread.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public Task AcceptWebSocket(HttpListenerContext context, CancellationToken ct)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
-                    <td><span class="parametername">context</span></td>
-                    <td><p>The context.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task AcceptWebSocket(HttpListenerContext context, CancellationToken ct)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td><span class="xref">CancellationToken</span></td>
-                    <td><span class="parametername">ct</span></td>
-                    <td><p>The cancellation token.</p>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">ct</span></td>
+        <td><p>The cancellation token.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="returns">Returns</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">Task</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Broadcast_System_Byte___.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Broadcast(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L447">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Broadcast_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Broadcast*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Broadcast_System_Byte___" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Broadcast(System.Byte[])">Broadcast(Byte[])</h4>
-              <div class="markdown level1 summary"><p>Broadcasts the specified payload to all connected WebSockets clients.</p>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Broadcast_System_Byte___.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Broadcast(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L447">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Broadcast_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Broadcast*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Broadcast_System_Byte___" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Broadcast(System.Byte[])">Broadcast(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Broadcasts the specified payload to all connected WebSockets clients.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected virtual void Broadcast(byte[] payload)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Byte</span>[]</td>
-                    <td><span class="parametername">payload</span></td>
-                    <td><p>The payload.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Broadcast(byte[] payload)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">payload</span></td>
+        <td><p>The payload.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Broadcast_System_String_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Broadcast(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L458">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Broadcast_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Broadcast*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Broadcast_System_String_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Broadcast(System.String)">Broadcast(String)</h4>
-              <div class="markdown level1 summary"><p>Broadcasts the specified payload to all connected WebSockets clients.</p>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Broadcast_System_String_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Broadcast(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L458">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Broadcast_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Broadcast*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Broadcast_System_String_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Broadcast(System.String)">Broadcast(String)</h4>
+  <div class="markdown level1 summary"><p>Broadcasts the specified payload to all connected WebSockets clients.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected virtual void Broadcast(string payload)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.String</span></td>
-                    <td><span class="parametername">payload</span></td>
-                    <td><p>The payload.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Broadcast(string payload)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">payload</span></td>
+        <td><p>The payload.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Close_Unosquare_Net_WebSocketContext_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Close(Unosquare.Net.WebSocketContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L469">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Close_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Close*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Close_Unosquare_Net_WebSocketContext_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Close(Unosquare.Net.WebSocketContext)">Close(WebSocketContext)</h4>
-              <div class="markdown level1 summary"><p>Closes the specified web socket, removes it and disposes it.</p>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Close_Unosquare_Net_WebSocketContext_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Close(Unosquare.Net.WebSocketContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L469">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Close_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Close*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Close_Unosquare_Net_WebSocketContext_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Close(Unosquare.Net.WebSocketContext)">Close(WebSocketContext)</h4>
+  <div class="markdown level1 summary"><p>Closes the specified web socket, removes it and disposes it.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected virtual void Close(WebSocketContext webSocket)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
-                    <td><span class="parametername">webSocket</span></td>
-                    <td><p>The web socket.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Close(WebSocketContext webSocket)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
+        <td><span class="parametername">webSocket</span></td>
+        <td><p>The web socket.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Dispose.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L525">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Dispose_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Dispose*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Dispose" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Dispose">Dispose()</h4>
-              <div class="markdown level1 summary"><p>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</p>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Dispose.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L525">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Dispose_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Dispose*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Dispose" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"><p>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
-              </div>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Dispose_System_Boolean_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Dispose(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L538">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Dispose_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Dispose*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Dispose_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Dispose(System.Boolean)">Dispose(Boolean)</h4>
-              <div class="markdown level1 summary"><p>Releases unmanaged and - optionally - managed resources.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Dispose_System_Boolean_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Dispose(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L538">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Dispose_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Dispose*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Dispose_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Releases unmanaged and - optionally - managed resources.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected virtual void Dispose(bool disposeAll)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Boolean</span></td>
-                    <td><span class="parametername">disposeAll</span></td>
-                    <td><p><code>true</code> to release both managed and unmanaged resources; <code>false</code> to release only unmanaged resources.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Dispose(bool disposeAll)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">disposeAll</span></td>
+        <td><p><code>true</code> to release both managed and unmanaged resources; <code>false</code> to release only unmanaged resources.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnClientConnected_Unosquare_Net_WebSocketContext_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnClientConnected(Unosquare.Net.WebSocketContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L514">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnClientConnected_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnClientConnected*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnClientConnected_Unosquare_Net_WebSocketContext_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnClientConnected(Unosquare.Net.WebSocketContext)">OnClientConnected(WebSocketContext)</h4>
-              <div class="markdown level1 summary"><p>Called when this WebSockets Server accepts a new WebSockets client.</p>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnClientConnected_Unosquare_Net_WebSocketContext_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnClientConnected(Unosquare.Net.WebSocketContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L514">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnClientConnected_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnClientConnected*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnClientConnected_Unosquare_Net_WebSocketContext_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnClientConnected(Unosquare.Net.WebSocketContext)">OnClientConnected(WebSocketContext)</h4>
+  <div class="markdown level1 summary"><p>Called when this WebSockets Server accepts a new WebSockets client.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected abstract void OnClientConnected(WebSocketContext context)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
-                    <td><span class="parametername">context</span></td>
-                    <td><p>The context.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract void OnClientConnected(WebSocketContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnClientDisconnected_Unosquare_Net_WebSocketContext_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnClientDisconnected(Unosquare.Net.WebSocketContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L520">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnClientDisconnected_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnClientDisconnected*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnClientDisconnected_Unosquare_Net_WebSocketContext_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnClientDisconnected(Unosquare.Net.WebSocketContext)">OnClientDisconnected(WebSocketContext)</h4>
-              <div class="markdown level1 summary"><p>Called when the server has removed a WebSockets connected client for any reason.</p>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnClientDisconnected_Unosquare_Net_WebSocketContext_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnClientDisconnected(Unosquare.Net.WebSocketContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L520">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnClientDisconnected_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnClientDisconnected*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnClientDisconnected_Unosquare_Net_WebSocketContext_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnClientDisconnected(Unosquare.Net.WebSocketContext)">OnClientDisconnected(WebSocketContext)</h4>
+  <div class="markdown level1 summary"><p>Called when the server has removed a WebSockets connected client for any reason.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected abstract void OnClientDisconnected(WebSocketContext context)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
-                    <td><span class="parametername">context</span></td>
-                    <td><p>The context.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract void OnClientDisconnected(WebSocketContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnFrameReceived_Unosquare_Net_WebSocketContext_System_Byte___Unosquare_Net_WebSocketReceiveResult_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnFrameReceived(Unosquare.Net.WebSocketContext%2CSystem.Byte%5B%5D%2CUnosquare.Net.WebSocketReceiveResult)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L507">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnFrameReceived_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnFrameReceived*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnFrameReceived_Unosquare_Net_WebSocketContext_System_Byte___Unosquare_Net_WebSocketReceiveResult_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnFrameReceived(Unosquare.Net.WebSocketContext,System.Byte[],Unosquare.Net.WebSocketReceiveResult)">OnFrameReceived(WebSocketContext, Byte[], WebSocketReceiveResult)</h4>
-              <div class="markdown level1 summary"><p>Called when this WebSockets Server receives a message frame regardless if the frame represents the EndOfMessage.</p>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnFrameReceived_Unosquare_Net_WebSocketContext_System_Byte___Unosquare_Net_WebSocketReceiveResult_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnFrameReceived(Unosquare.Net.WebSocketContext%2CSystem.Byte%5B%5D%2CUnosquare.Net.WebSocketReceiveResult)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L507">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnFrameReceived_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnFrameReceived*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnFrameReceived_Unosquare_Net_WebSocketContext_System_Byte___Unosquare_Net_WebSocketReceiveResult_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnFrameReceived(Unosquare.Net.WebSocketContext,System.Byte[],Unosquare.Net.WebSocketReceiveResult)">OnFrameReceived(WebSocketContext, Byte[], WebSocketReceiveResult)</h4>
+  <div class="markdown level1 summary"><p>Called when this WebSockets Server receives a message frame regardless if the frame represents the EndOfMessage.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected abstract void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
-                    <td><span class="parametername">context</span></td>
-                    <td><p>The context.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td><span class="xref">System.Byte</span>[]</td>
-                    <td><span class="parametername">rxBuffer</span></td>
-                    <td><p>The response buffer.</p>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">rxBuffer</span></td>
+        <td><p>The response buffer.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td><a class="xref" href="Unosquare.Net.WebSocketReceiveResult.html">WebSocketReceiveResult</a></td>
-                    <td><span class="parametername">rxResult</span></td>
-                    <td><p>The response result.</p>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Unosquare.Net.WebSocketReceiveResult.html">WebSocketReceiveResult</a></td>
+        <td><span class="parametername">rxResult</span></td>
+        <td><p>The response result.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnMessageReceived_Unosquare_Net_WebSocketContext_System_Byte___Unosquare_Net_WebSocketReceiveResult_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnMessageReceived(Unosquare.Net.WebSocketContext%2CSystem.Byte%5B%5D%2CUnosquare.Net.WebSocketReceiveResult)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L498">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnMessageReceived_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnMessageReceived*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnMessageReceived_Unosquare_Net_WebSocketContext_System_Byte___Unosquare_Net_WebSocketReceiveResult_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnMessageReceived(Unosquare.Net.WebSocketContext,System.Byte[],Unosquare.Net.WebSocketReceiveResult)">OnMessageReceived(WebSocketContext, Byte[], WebSocketReceiveResult)</h4>
-              <div class="markdown level1 summary"><p>Called when this WebSockets Server receives a full message (EndOfMessage) form a WebSockets client.</p>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnMessageReceived_Unosquare_Net_WebSocketContext_System_Byte___Unosquare_Net_WebSocketReceiveResult_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnMessageReceived(Unosquare.Net.WebSocketContext%2CSystem.Byte%5B%5D%2CUnosquare.Net.WebSocketReceiveResult)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L498">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnMessageReceived_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnMessageReceived*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnMessageReceived_Unosquare_Net_WebSocketContext_System_Byte___Unosquare_Net_WebSocketReceiveResult_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnMessageReceived(Unosquare.Net.WebSocketContext,System.Byte[],Unosquare.Net.WebSocketReceiveResult)">OnMessageReceived(WebSocketContext, Byte[], WebSocketReceiveResult)</h4>
+  <div class="markdown level1 summary"><p>Called when this WebSockets Server receives a full message (EndOfMessage) form a WebSockets client.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected abstract void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
-                    <td><span class="parametername">context</span></td>
-                    <td><p>The context.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td><span class="xref">System.Byte</span>[]</td>
-                    <td><span class="parametername">rxBuffer</span></td>
-                    <td><p>The response buffer.</p>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">rxBuffer</span></td>
+        <td><p>The response buffer.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td><a class="xref" href="Unosquare.Net.WebSocketReceiveResult.html">WebSocketReceiveResult</a></td>
-                    <td><span class="parametername">rxResult</span></td>
-                    <td><p>The response result.</p>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Unosquare.Net.WebSocketReceiveResult.html">WebSocketReceiveResult</a></td>
+        <td><span class="parametername">rxResult</span></td>
+        <td><p>The response result.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Send_Unosquare_Net_WebSocketContext_System_Byte___.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Send(Unosquare.Net.WebSocketContext%2CSystem.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L424">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Send_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Send*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Send_Unosquare_Net_WebSocketContext_System_Byte___" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Send(Unosquare.Net.WebSocketContext,System.Byte[])">Send(WebSocketContext, Byte[])</h4>
-              <div class="markdown level1 summary"><p>Sends a binary payload</p>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Send_Unosquare_Net_WebSocketContext_System_Byte___.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Send(Unosquare.Net.WebSocketContext%2CSystem.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L424">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Send_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Send*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Send_Unosquare_Net_WebSocketContext_System_Byte___" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Send(Unosquare.Net.WebSocketContext,System.Byte[])">Send(WebSocketContext, Byte[])</h4>
+  <div class="markdown level1 summary"><p>Sends a binary payload</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected virtual void Send(WebSocketContext webSocket, byte[] payload)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
-                    <td><span class="parametername">webSocket</span></td>
-                    <td><p>The web socket.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Send(WebSocketContext webSocket, byte[] payload)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
+        <td><span class="parametername">webSocket</span></td>
+        <td><p>The web socket.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td><span class="xref">System.Byte</span>[]</td>
-                    <td><span class="parametername">payload</span></td>
-                    <td><p>The payload.</p>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">payload</span></td>
+        <td><p>The payload.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Send_Unosquare_Net_WebSocketContext_System_String_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Send(Unosquare.Net.WebSocketContext%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L399">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Send_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Send*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Send_Unosquare_Net_WebSocketContext_System_String_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Send(Unosquare.Net.WebSocketContext,System.String)">Send(WebSocketContext, String)</h4>
-              <div class="markdown level1 summary"><p>Sends a UTF-8 payload</p>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Send_Unosquare_Net_WebSocketContext_System_String_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Send(Unosquare.Net.WebSocketContext%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/Modules/WebSocketsModule.cs/#L399">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Send_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Send*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Send_Unosquare_Net_WebSocketContext_System_String_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Send(Unosquare.Net.WebSocketContext,System.String)">Send(WebSocketContext, String)</h4>
+  <div class="markdown level1 summary"><p>Sends a UTF-8 payload</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected virtual void Send(WebSocketContext webSocket, string payload)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
-                    <td><span class="parametername">webSocket</span></td>
-                    <td><p>The web socket.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Send(WebSocketContext webSocket, string payload)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
+        <td><span class="parametername">webSocket</span></td>
+        <td><p>The web socket.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td><span class="xref">System.String</span></td>
-                    <td><span class="parametername">payload</span></td>
-                    <td><p>The payload.</p>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">payload</span></td>
+        <td><p>The payload.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-                        </article>
+      </tr>
+    </tbody>
+  </table>
+</article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">

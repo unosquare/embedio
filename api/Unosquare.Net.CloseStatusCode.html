@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Enum CloseStatusCode
    | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 2.16.8.3">
+    <meta name="generator" content="docfx 2.17.4.2">
     
     <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -57,7 +57,7 @@
           </div>
         </div>
       </header>
-      <div role="main" class="container body-content">
+      <div class="container body-content">
         
         <div id="search-results">
           <div class="search-list"></div>
@@ -75,22 +75,22 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content">
-              
-              
-              <h1 id="Unosquare_Net_CloseStatusCode" data-uid="Unosquare.Net.CloseStatusCode">Enum CloseStatusCode
-              </h1>
-              <div class="markdown level0 summary"><p>Indicates the status code for the WebSocket connection close.</p>
+            <article class="content wrap" id="_content" data-uid="Unosquare.Net.CloseStatusCode">
+  
+  
+  <h1 id="Unosquare_Net_CloseStatusCode" data-uid="Unosquare.Net.CloseStatusCode">Enum CloseStatusCode
+  </h1>
+  <div class="markdown level0 summary"><p>Indicates the status code for the WebSocket connection close.</p>
 </div>
-              <div class="markdown level0 conceptual"></div>
-              <h6><strong>Namespace</strong>:Unosquare.Net</h6>
-              <h6><strong>Assembly</strong>:Unosquare.Labs.EmbedIO.dll</h6>
-              <h5 id="Unosquare_Net_CloseStatusCode_syntax">Syntax</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public enum CloseStatusCode : ushort</code></pre>
-              </div>
-              <h5 id="Unosquare_Net_CloseStatusCode_remarks"><strong>Remarks</strong></h5>
-              <div class="markdown level0 remarks"><p>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>:Unosquare.Net</h6>
+  <h6><strong>Assembly</strong>:Unosquare.Labs.EmbedIO.dll</h6>
+  <h5 id="Unosquare_Net_CloseStatusCode_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public enum CloseStatusCode : ushort</code></pre>
+  </div>
+  <h5 id="Unosquare_Net_CloseStatusCode_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>
 The values of this enumeration are defined in
 <a href="http://tools.ietf.org/html/rfc6455#section-7.4">Section 7.4</a> of RFC 6455.
 </p>
@@ -100,97 +100,97 @@ an endpoint. It&#39;s designated for use in applications expecting a status code
 indicate that the connection was closed due to the system grounds.
 </p>
 </div>
-              <h3 id="fields">Fields
-              </h3>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                <thead>
-                <tbody>
-                  <tr>
-                    <td id="Unosquare_Net_CloseStatusCode_Abnormal">Abnormal</td>
-                    <td><p>Equivalent to close status 1006. Indicates that the connection was closed abnormally.
+  <h3 id="fields">Fields
+  </h3>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    <thead>
+    <tbody>
+      <tr>
+        <td id="Unosquare_Net_CloseStatusCode_Abnormal">Abnormal</td>
+        <td><p>Equivalent to close status 1006. Indicates that the connection was closed abnormally.
 A Reserved value.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td id="Unosquare_Net_CloseStatusCode_Away">Away</td>
-                    <td><p>Equivalent to close status 1001. Indicates that an endpoint is going away.</p>
+      </tr>
+      <tr>
+        <td id="Unosquare_Net_CloseStatusCode_Away">Away</td>
+        <td><p>Equivalent to close status 1001. Indicates that an endpoint is going away.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td id="Unosquare_Net_CloseStatusCode_InvalidData">InvalidData</td>
-                    <td><p>Equivalent to close status 1007. Indicates that an endpoint is terminating
+      </tr>
+      <tr>
+        <td id="Unosquare_Net_CloseStatusCode_InvalidData">InvalidData</td>
+        <td><p>Equivalent to close status 1007. Indicates that an endpoint is terminating
 the connection because it has received a message that contains data that
 isn&#39;t consistent with the type of the message.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td id="Unosquare_Net_CloseStatusCode_MandatoryExtension">MandatoryExtension</td>
-                    <td><p>Equivalent to close status 1010. Indicates that a client is terminating
+      </tr>
+      <tr>
+        <td id="Unosquare_Net_CloseStatusCode_MandatoryExtension">MandatoryExtension</td>
+        <td><p>Equivalent to close status 1010. Indicates that a client is terminating
 the connection because it has expected the server to negotiate one or more extension,
 but the server didn&#39;t return them in the handshake response.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td id="Unosquare_Net_CloseStatusCode_Normal">Normal</td>
-                    <td><p>Equivalent to close status 1000. Indicates normal close.</p>
+      </tr>
+      <tr>
+        <td id="Unosquare_Net_CloseStatusCode_Normal">Normal</td>
+        <td><p>Equivalent to close status 1000. Indicates normal close.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td id="Unosquare_Net_CloseStatusCode_NoStatus">NoStatus</td>
-                    <td><p>Equivalent to close status 1005. Indicates that no status code was actually present.
+      </tr>
+      <tr>
+        <td id="Unosquare_Net_CloseStatusCode_NoStatus">NoStatus</td>
+        <td><p>Equivalent to close status 1005. Indicates that no status code was actually present.
 A Reserved value.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td id="Unosquare_Net_CloseStatusCode_PolicyViolation">PolicyViolation</td>
-                    <td><p>Equivalent to close status 1008. Indicates that an endpoint is terminating
+      </tr>
+      <tr>
+        <td id="Unosquare_Net_CloseStatusCode_PolicyViolation">PolicyViolation</td>
+        <td><p>Equivalent to close status 1008. Indicates that an endpoint is terminating
 the connection because it has received a message that violates its policy.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td id="Unosquare_Net_CloseStatusCode_ProtocolError">ProtocolError</td>
-                    <td><p>Equivalent to close status 1002. Indicates that an endpoint is terminating
+      </tr>
+      <tr>
+        <td id="Unosquare_Net_CloseStatusCode_ProtocolError">ProtocolError</td>
+        <td><p>Equivalent to close status 1002. Indicates that an endpoint is terminating
 the connection due to a protocol error.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td id="Unosquare_Net_CloseStatusCode_ServerError">ServerError</td>
-                    <td><p>Equivalent to close status 1011. Indicates that a server is terminating
+      </tr>
+      <tr>
+        <td id="Unosquare_Net_CloseStatusCode_ServerError">ServerError</td>
+        <td><p>Equivalent to close status 1011. Indicates that a server is terminating
 the connection because it has encountered an unexpected condition that
 prevented it from fulfilling the request.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td id="Unosquare_Net_CloseStatusCode_TlsHandshakeFailure">TlsHandshakeFailure</td>
-                    <td><p>Equivalent to close status 1015. Indicates that the connection was closed
+      </tr>
+      <tr>
+        <td id="Unosquare_Net_CloseStatusCode_TlsHandshakeFailure">TlsHandshakeFailure</td>
+        <td><p>Equivalent to close status 1015. Indicates that the connection was closed
 due to a failure to perform a TLS handshake. A Reserved value.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td id="Unosquare_Net_CloseStatusCode_TooBig">TooBig</td>
-                    <td><p>Equivalent to close status 1009. Indicates that an endpoint is terminating
+      </tr>
+      <tr>
+        <td id="Unosquare_Net_CloseStatusCode_TooBig">TooBig</td>
+        <td><p>Equivalent to close status 1009. Indicates that an endpoint is terminating
 the connection because it has received a message that is too big to process.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td id="Unosquare_Net_CloseStatusCode_Undefined">Undefined</td>
-                    <td><p>Equivalent to close status 1004. Still undefined. A Reserved value.</p>
+      </tr>
+      <tr>
+        <td id="Unosquare_Net_CloseStatusCode_Undefined">Undefined</td>
+        <td><p>Equivalent to close status 1004. Still undefined. A Reserved value.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td id="Unosquare_Net_CloseStatusCode_UnsupportedData">UnsupportedData</td>
-                    <td><p>Equivalent to close status 1003. Indicates that an endpoint is terminating
+      </tr>
+      <tr>
+        <td id="Unosquare_Net_CloseStatusCode_UnsupportedData">UnsupportedData</td>
+        <td><p>Equivalent to close status 1003. Indicates that an endpoint is terminating
 the connection because it has received a type of data that it cannot accept.</p>
 </td>
-                  </tr>
-                </tbody>
-              </thead></thead></table>
-                        </article>
+      </tr>
+    </tbody>
+  </thead></thead></table>
+</article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">

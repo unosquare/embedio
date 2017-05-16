@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class WebServer
    | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 2.16.8.3">
+    <meta name="generator" content="docfx 2.17.4.2">
     
     <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -57,7 +57,7 @@
           </div>
         </div>
       </header>
-      <div role="main" class="container body-content">
+      <div class="container body-content">
         
         <div id="search-results">
           <div class="search-list"></div>
@@ -75,726 +75,726 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content">
-              
-              
-              <h1 id="Unosquare_Labs_EmbedIO_WebServer" data-uid="Unosquare.Labs.EmbedIO.WebServer">Class WebServer
-              </h1>
-              <div class="markdown level0 summary"><p>Represents our tiny web server used to handle requests</p>
+            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.WebServer">
+  
+  
+  <h1 id="Unosquare_Labs_EmbedIO_WebServer" data-uid="Unosquare.Labs.EmbedIO.WebServer">Class WebServer
+  </h1>
+  <div class="markdown level0 summary"><p>Represents our tiny web server used to handle requests</p>
 </div>
-              <div class="markdown level0 conceptual"></div>
-              <div class="inheritance">
-                <h5>Inheritance</h5>
-                  <div class="level0"><span class="xref">System.Object</span></div>
-                  <div class="level1"><span class="xref">WebServer</span></div>
-              </div>
-              <h6><strong>Namespace</strong>:Unosquare.Labs.EmbedIO</h6>
-              <h6><strong>Assembly</strong>:Unosquare.Labs.EmbedIO.dll</h6>
-              <h5 id="Unosquare_Labs_EmbedIO_WebServer_syntax">Syntax</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public class WebServer : IDisposable</code></pre>
-              </div>
-              <h3 id="constructors">Constructors
-              </h3>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer__ctor.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L66">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_WebServer__ctor_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_WebServer__ctor" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor">WebServer()</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a> class.
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">WebServer</span></div>
+  </div>
+  <h6><strong>Namespace</strong>:Unosquare.Labs.EmbedIO</h6>
+  <h6><strong>Assembly</strong>:Unosquare.Labs.EmbedIO.dll</h6>
+  <h5 id="Unosquare_Labs_EmbedIO_WebServer_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class WebServer : IDisposable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer__ctor.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L66">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_WebServer__ctor_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer__ctor" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor">WebServer()</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a> class.
 This constructor does not provide any Logging capabilities.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public WebServer()</code></pre>
-              </div>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer__ctor_System_Int32_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.%23ctor(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L77">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_WebServer__ctor_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_WebServer__ctor_System_Int32_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor(System.Int32)">WebServer(Int32)</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a> class.
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WebServer()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer__ctor_System_Int32_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.%23ctor(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L77">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_WebServer__ctor_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer__ctor_System_Int32_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor(System.Int32)">WebServer(Int32)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a> class.
 This constructor does not provide any Logging capabilities.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public WebServer(int port)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Int32</span></td>
-                    <td><span class="parametername">port</span></td>
-                    <td><p>The port.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WebServer(int port)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">port</span></td>
+        <td><p>The port.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer__ctor_System_String_Unosquare_Labs_EmbedIO_RoutingStrategy_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.%23ctor(System.String%2CUnosquare.Labs.EmbedIO.RoutingStrategy)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L89">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_WebServer__ctor_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_WebServer__ctor_System_String_Unosquare_Labs_EmbedIO_RoutingStrategy_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor(System.String,Unosquare.Labs.EmbedIO.RoutingStrategy)">WebServer(String, RoutingStrategy)</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a> class.
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer__ctor_System_String_Unosquare_Labs_EmbedIO_RoutingStrategy_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.%23ctor(System.String%2CUnosquare.Labs.EmbedIO.RoutingStrategy)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L89">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_WebServer__ctor_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer__ctor_System_String_Unosquare_Labs_EmbedIO_RoutingStrategy_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor(System.String,Unosquare.Labs.EmbedIO.RoutingStrategy)">WebServer(String, RoutingStrategy)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a> class.
 This constructor does not provide any Logging capabilities.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public WebServer(string urlPrefix, RoutingStrategy strategy = RoutingStrategy.Wildcard)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.String</span></td>
-                    <td><span class="parametername">urlPrefix</span></td>
-                    <td><p>The URL prefix.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WebServer(string urlPrefix, RoutingStrategy strategy = RoutingStrategy.Wildcard)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">urlPrefix</span></td>
+        <td><p>The URL prefix.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td><a class="xref" href="Unosquare.Labs.EmbedIO.RoutingStrategy.html">RoutingStrategy</a></td>
-                    <td><span class="parametername">strategy</span></td>
-                    <td><p>The strategy.</p>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.RoutingStrategy.html">RoutingStrategy</a></td>
+        <td><span class="parametername">strategy</span></td>
+        <td><p>The strategy.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer__ctor_System_String___.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.%23ctor(System.String%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L100">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_WebServer__ctor_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_WebServer__ctor_System_String___" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor(System.String[])">WebServer(String[])</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a> class.
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer__ctor_System_String___.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.%23ctor(System.String%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L100">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_WebServer__ctor_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer__ctor_System_String___" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor(System.String[])">WebServer(String[])</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a> class.
 This constructor does not provide any Logging capabilities.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public WebServer(string[] urlPrefixes)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.String</span>[]</td>
-                    <td><span class="parametername">urlPrefixes</span></td>
-                    <td><p>The URL prefixes.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WebServer(string[] urlPrefixes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><span class="parametername">urlPrefixes</span></td>
+        <td><p>The URL prefixes.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer__ctor_System_String___Unosquare_Labs_EmbedIO_RoutingStrategy_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.%23ctor(System.String%5B%5D%2CUnosquare.Labs.EmbedIO.RoutingStrategy)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L115">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_WebServer__ctor_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_WebServer__ctor_System_String___Unosquare_Labs_EmbedIO_RoutingStrategy_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor(System.String[],Unosquare.Labs.EmbedIO.RoutingStrategy)">WebServer(String[], RoutingStrategy)</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a> class.
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer__ctor_System_String___Unosquare_Labs_EmbedIO_RoutingStrategy_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.%23ctor(System.String%5B%5D%2CUnosquare.Labs.EmbedIO.RoutingStrategy)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L115">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_WebServer__ctor_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer__ctor_System_String___Unosquare_Labs_EmbedIO_RoutingStrategy_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor(System.String[],Unosquare.Labs.EmbedIO.RoutingStrategy)">WebServer(String[], RoutingStrategy)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a> class.
 NOTE: urlPrefix must be specified as something similar to: <a href="http://localhost:9696/">http://localhost:9696/</a>
 Please notice the ending slash. -- It is important</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.String</span>[]</td>
-                    <td><span class="parametername">urlPrefixes</span></td>
-                    <td><p>The URL prefix.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><span class="parametername">urlPrefixes</span></td>
+        <td><p>The URL prefix.</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td><a class="xref" href="Unosquare.Labs.EmbedIO.RoutingStrategy.html">RoutingStrategy</a></td>
-                    <td><span class="parametername">routingStrategy</span></td>
-                    <td><p>The routing strategy</p>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.RoutingStrategy.html">RoutingStrategy</a></td>
+        <td><span class="parametername">routingStrategy</span></td>
+        <td><p>The routing strategy</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <h3 id="properties">Properties
-              </h3>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_Listener.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.Listener%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L30">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_WebServer_Listener_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Listener*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_WebServer_Listener" data-uid="Unosquare.Labs.EmbedIO.WebServer.Listener">Listener</h4>
-              <div class="markdown level1 summary"><p>Gets the underlying HTTP listener.</p>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_Listener.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.Listener%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L30">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_WebServer_Listener_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Listener*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer_Listener" data-uid="Unosquare.Labs.EmbedIO.WebServer.Listener">Listener</h4>
+  <div class="markdown level1 summary"><p>Gets the underlying HTTP listener.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public HttpListener Listener { get; protected set; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="Unosquare.Net.HttpListener.html">HttpListener</a></td>
-                    <td><p>The listener.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpListener Listener { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Net.HttpListener.html">HttpListener</a></td>
+        <td><p>The listener.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_Modules.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.Modules%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L46">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_WebServer_Modules_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Modules*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_WebServer_Modules" data-uid="Unosquare.Labs.EmbedIO.WebServer.Modules">Modules</h4>
-              <div class="markdown level1 summary"><p>Gets a list of registered modules</p>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_Modules.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.Modules%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L46">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_WebServer_Modules_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Modules*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer_Modules" data-uid="Unosquare.Labs.EmbedIO.WebServer.Modules">Modules</h4>
+  <div class="markdown level1 summary"><p>Gets a list of registered modules</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public ReadOnlyCollection&lt;IWebModule&gt; Modules { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">ReadOnlyCollection</span>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html">IWebModule</a>&gt;</td>
-                    <td><p>The modules.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ReadOnlyCollection&lt;IWebModule&gt; Modules { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReadOnlyCollection</span>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html">IWebModule</a>&gt;</td>
+        <td><p>The modules.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_RoutingStrategy.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.RoutingStrategy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L60">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_WebServer_RoutingStrategy_" data-uid="Unosquare.Labs.EmbedIO.WebServer.RoutingStrategy*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_WebServer_RoutingStrategy" data-uid="Unosquare.Labs.EmbedIO.WebServer.RoutingStrategy">RoutingStrategy</h4>
-              <div class="markdown level1 summary"><p>Gets the URL RoutingStrategy used in this instance.
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_RoutingStrategy.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.RoutingStrategy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L60">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_WebServer_RoutingStrategy_" data-uid="Unosquare.Labs.EmbedIO.WebServer.RoutingStrategy*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer_RoutingStrategy" data-uid="Unosquare.Labs.EmbedIO.WebServer.RoutingStrategy">RoutingStrategy</h4>
+  <div class="markdown level1 summary"><p>Gets the URL RoutingStrategy used in this instance.
 By default it is set to Wildcard, but Regex is the recommended value.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public RoutingStrategy RoutingStrategy { get; protected set; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="Unosquare.Labs.EmbedIO.RoutingStrategy.html">RoutingStrategy</a></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_SessionModule.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.SessionModule%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L54">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_WebServer_SessionModule_" data-uid="Unosquare.Labs.EmbedIO.WebServer.SessionModule*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_WebServer_SessionModule" data-uid="Unosquare.Labs.EmbedIO.WebServer.SessionModule">SessionModule</h4>
-              <div class="markdown level1 summary"><p>Gets registered the ISessionModule.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RoutingStrategy RoutingStrategy { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.RoutingStrategy.html">RoutingStrategy</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_SessionModule.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.SessionModule%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L54">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_WebServer_SessionModule_" data-uid="Unosquare.Labs.EmbedIO.WebServer.SessionModule*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer_SessionModule" data-uid="Unosquare.Labs.EmbedIO.WebServer.SessionModule">SessionModule</h4>
+  <div class="markdown level1 summary"><p>Gets registered the ISessionModule.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public ISessionWebModule SessionModule { get; protected set; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="Unosquare.Labs.EmbedIO.ISessionWebModule.html">ISessionWebModule</a></td>
-                    <td><p>The session module.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ISessionWebModule SessionModule { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.ISessionWebModule.html">ISessionWebModule</a></td>
+        <td><p>The session module.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_UrlPrefixes.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.UrlPrefixes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L38">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_WebServer_UrlPrefixes_" data-uid="Unosquare.Labs.EmbedIO.WebServer.UrlPrefixes*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_WebServer_UrlPrefixes" data-uid="Unosquare.Labs.EmbedIO.WebServer.UrlPrefixes">UrlPrefixes</h4>
-              <div class="markdown level1 summary"><p>Gets the Url Prefix for which the server is serving requests.</p>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_UrlPrefixes.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.UrlPrefixes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L38">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_WebServer_UrlPrefixes_" data-uid="Unosquare.Labs.EmbedIO.WebServer.UrlPrefixes*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer_UrlPrefixes" data-uid="Unosquare.Labs.EmbedIO.WebServer.UrlPrefixes">UrlPrefixes</h4>
+  <div class="markdown level1 summary"><p>Gets the Url Prefix for which the server is serving requests.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public HttpListenerPrefixCollection UrlPrefixes { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="Unosquare.Net.HttpListenerPrefixCollection.html">HttpListenerPrefixCollection</a></td>
-                    <td><p>The URL prefix.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpListenerPrefixCollection UrlPrefixes { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Net.HttpListenerPrefixCollection.html">HttpListenerPrefixCollection</a></td>
+        <td><p>The URL prefix.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <h3 id="methods">Methods
-              </h3>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_Create_System_String_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.Create(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L409">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_WebServer_Create_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Create*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_WebServer_Create_System_String_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Create(System.String)">Create(String)</h4>
-              <div class="markdown level1 summary"><p>Static method to create webserver instance</p>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_Create_System_String_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.Create(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L409">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_WebServer_Create_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Create*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer_Create_System_String_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Create(System.String)">Create(String)</h4>
+  <div class="markdown level1 summary"><p>Static method to create webserver instance</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static WebServer Create(string urlPrefix)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.String</span></td>
-                    <td><span class="parametername">urlPrefix</span></td>
-                    <td><p>The URL prefix.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static WebServer Create(string urlPrefix)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">urlPrefix</span></td>
+        <td><p>The URL prefix.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="returns">Returns</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
-                    <td><p>The webserver instance.</p>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
+        <td><p>The webserver instance.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_Dispose.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L375">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_WebServer_Dispose_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Dispose*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_WebServer_Dispose" data-uid="Unosquare.Labs.EmbedIO.WebServer.Dispose">Dispose()</h4>
-              <div class="markdown level1 summary"><p>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</p>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_Dispose.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L375">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_WebServer_Dispose_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Dispose*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer_Dispose" data-uid="Unosquare.Labs.EmbedIO.WebServer.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"><p>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
-              </div>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_Dispose_System_Boolean_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.Dispose(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L385">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_WebServer_Dispose_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Dispose*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_WebServer_Dispose_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Dispose(System.Boolean)">Dispose(Boolean)</h4>
-              <div class="markdown level1 summary"><p>Releases unmanaged and - optionally - managed resources.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_Dispose_System_Boolean_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.Dispose(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L385">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_WebServer_Dispose_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Dispose*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer_Dispose_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Releases unmanaged and - optionally - managed resources.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected virtual void Dispose(bool disposing)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Boolean</span></td>
-                    <td><span class="parametername">disposing</span></td>
-                    <td><p><code>true</code> to release both managed and unmanaged resources; <code>false</code> to release only unmanaged resources.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Dispose(bool disposing)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">disposing</span></td>
+        <td><p><code>true</code> to release both managed and unmanaged resources; <code>false</code> to release only unmanaged resources.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_Module__1.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.Module%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L146">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_WebServer_Module_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Module*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_WebServer_Module__1" data-uid="Unosquare.Labs.EmbedIO.WebServer.Module``1">Module&lt;T&gt;()</h4>
-              <div class="markdown level1 summary"><p>Gets the module registered for the given type.
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_Module__1.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.Module%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L146">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_WebServer_Module_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Module*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer_Module__1" data-uid="Unosquare.Labs.EmbedIO.WebServer.Module``1">Module&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Gets the module registered for the given type.
 Returns null if no module matches the given type.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public T Module&lt;T&gt;()where T : class, IWebModule</code></pre>
-              </div>
-              <h5 class="returns">Returns</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">T</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="typeParameters">Type Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="parametername">T</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_ProcessRequest_Unosquare_Net_HttpListenerContext_CancellationToken_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.ProcessRequest(Unosquare.Net.HttpListenerContext%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L262">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_WebServer_ProcessRequest_" data-uid="Unosquare.Labs.EmbedIO.WebServer.ProcessRequest*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_WebServer_ProcessRequest_Unosquare_Net_HttpListenerContext_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.WebServer.ProcessRequest(Unosquare.Net.HttpListenerContext,CancellationToken)">ProcessRequest(HttpListenerContext, CancellationToken)</h4>
-              <div class="markdown level1 summary"><p>Process HttpListener Request and returns true if it was handled</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public T Module&lt;T&gt;()where T : class, IWebModule</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_ProcessRequest_Unosquare_Net_HttpListenerContext_CancellationToken_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.ProcessRequest(Unosquare.Net.HttpListenerContext%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L262">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_WebServer_ProcessRequest_" data-uid="Unosquare.Labs.EmbedIO.WebServer.ProcessRequest*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer_ProcessRequest_Unosquare_Net_HttpListenerContext_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.WebServer.ProcessRequest(Unosquare.Net.HttpListenerContext,CancellationToken)">ProcessRequest(HttpListenerContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Process HttpListener Request and returns true if it was handled</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public Task&lt;bool&gt; ProcessRequest(HttpListenerContext context, CancellationToken ct)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
-                    <td><span class="parametername">context</span></td>
-                    <td><p>The HttpListenerContext</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;bool&gt; ProcessRequest(HttpListenerContext context, CancellationToken ct)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The HttpListenerContext</p>
 </td>
-                  </tr>
-                  <tr>
-                    <td><span class="xref">CancellationToken</span></td>
-                    <td><span class="parametername">ct</span></td>
-                    <td><p>The cancellation token.</p>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">ct</span></td>
+        <td><p>The cancellation token.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="returns">Returns</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_RegisterModule_Unosquare_Labs_EmbedIO_IWebModule_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.RegisterModule(Unosquare.Labs.EmbedIO.IWebModule)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L164">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_WebServer_RegisterModule_" data-uid="Unosquare.Labs.EmbedIO.WebServer.RegisterModule*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_WebServer_RegisterModule_Unosquare_Labs_EmbedIO_IWebModule_" data-uid="Unosquare.Labs.EmbedIO.WebServer.RegisterModule(Unosquare.Labs.EmbedIO.IWebModule)">RegisterModule(IWebModule)</h4>
-              <div class="markdown level1 summary"><p>Registers an instance of a web module. Only 1 instance per type is allowed.</p>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_RegisterModule_Unosquare_Labs_EmbedIO_IWebModule_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.RegisterModule(Unosquare.Labs.EmbedIO.IWebModule)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L164">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_WebServer_RegisterModule_" data-uid="Unosquare.Labs.EmbedIO.WebServer.RegisterModule*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer_RegisterModule_Unosquare_Labs_EmbedIO_IWebModule_" data-uid="Unosquare.Labs.EmbedIO.WebServer.RegisterModule(Unosquare.Labs.EmbedIO.IWebModule)">RegisterModule(IWebModule)</h4>
+  <div class="markdown level1 summary"><p>Registers an instance of a web module. Only 1 instance per type is allowed.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public void RegisterModule(IWebModule module)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html">IWebModule</a></td>
-                    <td><span class="parametername">module</span></td>
-                    <td><p>The module.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RegisterModule(IWebModule module)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html">IWebModule</a></td>
+        <td><span class="parametername">module</span></td>
+        <td><p>The module.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_RunAsync_CancellationToken_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.RunAsync(CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L339">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_WebServer_RunAsync_" data-uid="Unosquare.Labs.EmbedIO.WebServer.RunAsync*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_WebServer_RunAsync_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.WebServer.RunAsync(CancellationToken)">RunAsync(CancellationToken)</h4>
-              <div class="markdown level1 summary"><p>Starts the listener and the registered modules</p>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_RunAsync_CancellationToken_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.RunAsync(CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L339">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_WebServer_RunAsync_" data-uid="Unosquare.Labs.EmbedIO.WebServer.RunAsync*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer_RunAsync_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.WebServer.RunAsync(CancellationToken)">RunAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Starts the listener and the registered modules</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public Task RunAsync(CancellationToken ct = null)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">CancellationToken</span></td>
-                    <td><span class="parametername">ct</span></td>
-                    <td><p>The cancellation token; when cancelled, the server cancels all pending requests and stops.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task RunAsync(CancellationToken ct = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">ct</span></td>
+        <td><p>The cancellation token; when cancelled, the server cancels all pending requests and stops.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="returns">Returns</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">Task</span></td>
-                    <td><p>Returns the task that the HTTP listener is running inside of, so that it can be waited upon after it&#39;s been canceled.</p>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>Returns the task that the HTTP listener is running inside of, so that it can be waited upon after it&#39;s been canceled.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 id="Unosquare_Labs_EmbedIO_WebServer_RunAsync_CancellationToken__remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>Both the server and client requests are queued separately on the thread pool,
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Unosquare_Labs_EmbedIO_WebServer_RunAsync_CancellationToken__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Both the server and client requests are queued separately on the thread pool,
 so it is safe to call <see cref="!:Task.Wait()"></see> in a synchronous method.</p>
 </div>
-              <span class="small pull-right mobile-hide">
-                <span class="divider">|</span>
-                <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_UnregisterModule_Type_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.UnregisterModule(Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-              </span>
-              <span class="small pull-right mobile-hide">
-                <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L188">View Source</a>
-              </span>
-              <a id="Unosquare_Labs_EmbedIO_WebServer_UnregisterModule_" data-uid="Unosquare.Labs.EmbedIO.WebServer.UnregisterModule*"></a>
-              <h4 id="Unosquare_Labs_EmbedIO_WebServer_UnregisterModule_Type_" data-uid="Unosquare.Labs.EmbedIO.WebServer.UnregisterModule(Type)">UnregisterModule(Type)</h4>
-              <div class="markdown level1 summary"><p>Unregisters the module identified by its type.</p>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/master/apiSpec/new?filename=Unosquare_Labs_EmbedIO_WebServer_UnregisterModule_Type_.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.WebServer.UnregisterModule(Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/master/src/Unosquare.Labs.EmbedIO/WebServer.cs/#L188">View Source</a>
+  </span>
+  <a id="Unosquare_Labs_EmbedIO_WebServer_UnregisterModule_" data-uid="Unosquare.Labs.EmbedIO.WebServer.UnregisterModule*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer_UnregisterModule_Type_" data-uid="Unosquare.Labs.EmbedIO.WebServer.UnregisterModule(Type)">UnregisterModule(Type)</h4>
+  <div class="markdown level1 summary"><p>Unregisters the module identified by its type.</p>
 </div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public void UnregisterModule(Type moduleType)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">Type</span></td>
-                    <td><span class="parametername">moduleType</span></td>
-                    <td><p>Type of the module.</p>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UnregisterModule(Type moduleType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">moduleType</span></td>
+        <td><p>Type of the module.</p>
 </td>
-                  </tr>
-                </tbody>
-              </table>
-              <h3 id="extensionmethods">Extension Methods</h3>
-              <div>
-                  <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_DeleteSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Net_HttpListenerContext_">Extensions.DeleteSession(WebServer, HttpListenerContext)</a>
-              </div>
-              <div>
-                  <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_DeleteSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Labs_EmbedIO_SessionInfo_">Extensions.DeleteSession(WebServer, SessionInfo)</a>
-              </div>
-              <div>
-                  <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Net_HttpListenerContext_">Extensions.GetSession(WebServer, HttpListenerContext)</a>
-              </div>
-              <div>
-                  <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Net_WebSocketContext_">Extensions.GetSession(WebServer, WebSocketContext)</a>
-              </div>
-              <div>
-                  <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithStaticFolderAt_Unosquare_Labs_EmbedIO_WebServer_System_String_System_String_">Extensions.WithStaticFolderAt(WebServer, String, String)</a>
-              </div>
-              <div>
-                  <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithVirtualPaths_Unosquare_Labs_EmbedIO_WebServer_Dictionary_System_String_System_String__System_String_">Extensions.WithVirtualPaths(WebServer, Dictionary&lt;String, String&gt;, String)</a>
-              </div>
-              <div>
-                  <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithLocalSession_Unosquare_Labs_EmbedIO_WebServer_">Extensions.WithLocalSession(WebServer)</a>
-              </div>
-              <div>
-                  <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithWebApi_Unosquare_Labs_EmbedIO_WebServer_Assembly_">Extensions.WithWebApi(WebServer, Assembly)</a>
-              </div>
-              <div>
-                  <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithWebSocket_Unosquare_Labs_EmbedIO_WebServer_Assembly_">Extensions.WithWebSocket(WebServer, Assembly)</a>
-              </div>
-              <div>
-                  <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_LoadApiControllers_Unosquare_Labs_EmbedIO_WebServer_Assembly_">Extensions.LoadApiControllers(WebServer, Assembly)</a>
-              </div>
-              <div>
-                  <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_LoadWebSockets_Unosquare_Labs_EmbedIO_WebServer_Assembly_">Extensions.LoadWebSockets(WebServer, Assembly)</a>
-              </div>
-              <div>
-                  <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_EnableCors_Unosquare_Labs_EmbedIO_WebServer_System_String_System_String_System_String_">Extensions.EnableCors(WebServer, String, String, String)</a>
-              </div>
-              <div>
-                  <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithWebApiController__1_Unosquare_Labs_EmbedIO_WebServer_">Extensions.WithWebApiController&lt;T&gt;(WebServer)</a>
-              </div>
-                        </article>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_DeleteSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Net_HttpListenerContext_">Extensions.DeleteSession(WebServer, HttpListenerContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_DeleteSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Labs_EmbedIO_SessionInfo_">Extensions.DeleteSession(WebServer, SessionInfo)</a>
+  </div>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Net_HttpListenerContext_">Extensions.GetSession(WebServer, HttpListenerContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Net_WebSocketContext_">Extensions.GetSession(WebServer, WebSocketContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithStaticFolderAt_Unosquare_Labs_EmbedIO_WebServer_System_String_System_String_">Extensions.WithStaticFolderAt(WebServer, String, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithVirtualPaths_Unosquare_Labs_EmbedIO_WebServer_Dictionary_System_String_System_String__System_String_">Extensions.WithVirtualPaths(WebServer, Dictionary&lt;String, String&gt;, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithLocalSession_Unosquare_Labs_EmbedIO_WebServer_">Extensions.WithLocalSession(WebServer)</a>
+  </div>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithWebApi_Unosquare_Labs_EmbedIO_WebServer_Assembly_">Extensions.WithWebApi(WebServer, Assembly)</a>
+  </div>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithWebSocket_Unosquare_Labs_EmbedIO_WebServer_Assembly_">Extensions.WithWebSocket(WebServer, Assembly)</a>
+  </div>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_LoadApiControllers_Unosquare_Labs_EmbedIO_WebServer_Assembly_">Extensions.LoadApiControllers(WebServer, Assembly)</a>
+  </div>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_LoadWebSockets_Unosquare_Labs_EmbedIO_WebServer_Assembly_">Extensions.LoadWebSockets(WebServer, Assembly)</a>
+  </div>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_EnableCors_Unosquare_Labs_EmbedIO_WebServer_System_String_System_String_System_String_">Extensions.EnableCors(WebServer, String, String, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithWebApiController__1_Unosquare_Labs_EmbedIO_WebServer_">Extensions.WithWebApiController&lt;T&gt;(WebServer)</a>
+  </div>
+</article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
