@@ -455,7 +455,8 @@
         /// <param name="method">The method.</param>
         /// <param name="mode">The mode.</param>
         /// <returns></returns>
-        public static MemoryStream Compress(this Stream buffer, CompressionMethod method = CompressionMethod.Gzip, CompressionMode mode = CompressionMode.Compress)
+        public static MemoryStream Compress(this Stream buffer, CompressionMethod method = CompressionMethod.Gzip,
+            CompressionMode mode = CompressionMode.Compress)
         {
             buffer.Position = 0;
             var targetStream = new MemoryStream();
@@ -463,19 +464,41 @@
             switch (method)
             {
                 case CompressionMethod.Deflate:
-                    using (var compressor = new DeflateStream(targetStream, mode, true))
+                    if (mode == CompressionMode.Compress)
                     {
-                        buffer.CopyTo(compressor, 1024);
-                        buffer.CopyTo(compressor);
-                        // WebSocket use this
-                        targetStream.Write(Last, 0, 1);
-                        targetStream.Position = 0;
+                        using (var compressor = new DeflateStream(targetStream, CompressionMode.Compress, true))
+                        {
+                            buffer.CopyTo(compressor, 1024);
+                            buffer.CopyTo(compressor);
+                            // WebSocket use this
+                            targetStream.Write(Last, 0, 1);
+                            targetStream.Position = 0;
+                        }
+                    }
+                    else
+                    {
+                        using (var compressor = new DeflateStream(buffer, CompressionMode.Decompress))
+                        {
+                            compressor.CopyTo(targetStream);
+                        }
+
                     }
                     break;
                 case CompressionMethod.Gzip:
-                    using (var compressor = new GZipStream(targetStream, mode, true))
+                    if (mode == CompressionMode.Compress)
                     {
-                        buffer.CopyTo(compressor);
+                        using (var compressor = new GZipStream(targetStream, CompressionMode.Compress, true))
+                        {
+                            buffer.CopyTo(compressor);
+                        }
+                    }
+                    else
+                    {
+                        using (var compressor = new GZipStream(buffer, CompressionMode.Decompress))
+                        {
+                            compressor.CopyTo(targetStream);
+                        }
+
                     }
                     break;
                 case CompressionMethod.None:
@@ -487,7 +510,7 @@
 
             return targetStream;
         }
-
+        
         /// <summary>
         /// Compresses/Decompresses the specified buffer using the compression algorithm.
         /// </summary>
