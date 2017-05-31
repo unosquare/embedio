@@ -462,6 +462,16 @@ namespace Unosquare.Net
                 if (_contentEncoding != null)
                     return _contentEncoding;
 
+                var contentType = Headers["Content-Type"];
+
+                if (!string.IsNullOrEmpty(contentType))
+                {
+                    _contentEncoding = HttpBase.GetEncoding(contentType);
+
+                    if (_contentEncoding != null)
+                        return _contentEncoding;
+                }
+
                 var defaultEncoding = Encoding.UTF8;
                 var acceptCharset = Headers["Accept-Charset"]?.Split(',')
                     .Select(x => x.Trim().Split(';'))
@@ -478,7 +488,7 @@ namespace Unosquare.Net
                 {
                     defaultEncoding = Encoding.GetEncoding(acceptCharset);
                 }
-                
+
                 return (_contentEncoding = defaultEncoding);
             }
         }

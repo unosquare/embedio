@@ -105,7 +105,7 @@ namespace Unosquare.Net
             return unquote ? val.Unquote() : val;
         }
 
-        private static Encoding GetEncoding(string contentType)
+        internal static Encoding GetEncoding(string contentType)
         {
             var parts = contentType.Split(';');
 
