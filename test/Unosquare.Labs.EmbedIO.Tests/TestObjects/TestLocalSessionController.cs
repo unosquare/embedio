@@ -1,10 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using Unosquare.Labs.EmbedIO.Modules;
+    using Modules;
 #if NET46
     using System.Net;
 #else
@@ -48,12 +44,18 @@
         [WebApiHandler(HttpVerbs.Get, "/getdata")]
         public bool GetDataSession(WebServer server, HttpListenerContext context)
         {
-            object _data = null;
-            if (server.GetSession(context).Data.TryGetValue("sessionData", out _data))
-                return context.JsonResponse(server.GetSession(context).Data["sessionData"].ToString());
-            else
-                return context.JsonResponse("");
+            object data;
 
+            if (server.GetSession(context).Data.TryGetValue("sessionData", out data))
+                return context.JsonResponse(server.GetSession(context).Data["sessionData"].ToString());
+            return context.JsonResponse("");
+        }
+
+
+        [WebApiHandler(HttpVerbs.Get, "/geterror")]
+        public bool GetError(WebServer server, HttpListenerContext context)
+        {
+            return false;
         }
     }
 }

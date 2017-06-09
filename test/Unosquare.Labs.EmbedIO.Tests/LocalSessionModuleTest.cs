@@ -182,6 +182,16 @@
             }
         }
 
+        [Test]
+        public void GetNotFound()
+        {
+            Assert.ThrowsAsync<WebException>(async () =>
+            {
+                var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + "geterror");
+                await request.GetResponseAsync();
+            });
+        }
+
         [TearDown]
         public void Kill()
         {
