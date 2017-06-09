@@ -154,6 +154,26 @@
             public bool IsValid { get; set; }
         }
 
+        public void ExceptionText()
+        {
+            Assert.ThrowsAsync<WebException>(async () =>
+            {
+                var url = Resources.GetServerAddress();
+
+                using (var instance = new WebServer(url))
+                {
+                    instance.RegisterModule(new FallbackModule((ctx, ct) =>
+                    {
+                        throw new Exception("Error");
+                    }));
+
+                    var runTask = instance.RunAsync();
+                    var request = (HttpWebRequest)WebRequest.Create(url);
+                    await request.GetResponseAsync();
+                }
+            });
+        }
+
         [TestCase("iso-8859-1")]
         [TestCase("utf-8")]
         [TestCase("utf-16")]
@@ -202,7 +222,7 @@
 #endif
                 var requestStream = await request.GetRequestStreamAsync();
                 requestStream.Write(byteArray, 0, byteArray.Length);
-                
+
                 using (var response = (HttpWebResponse)await request.GetResponseAsync())
                 {
                     using (var ms = new MemoryStream())
