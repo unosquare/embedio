@@ -111,5 +111,78 @@
                 Extensions.WithVirtualPaths(null, paths);
             });
         }
+
+        [Test]
+        public void FluentWithLocalSessionArgumentException()
+        {
+            Assert.Throws<ArgumentException>(() => {
+                Extensions.WithLocalSession(null);
+            });
+        }
+
+        [Test]
+        public void FluentWithWebApiArgumentException()
+        {
+            Assert.Throws<ArgumentException>(() => {
+                Extensions.WithWebApi(null);
+            });
+        }
+
+        [Test]
+        public void FluentWithWebSocketArgumentException()
+        {
+            Assert.Throws<ArgumentException>(() => {
+                Extensions.WithWebSocket(null);
+            });
+        }
+
+        [Test]
+        public void FluentLoadApiControllersWebServerArgumentException()
+        {
+            WebServer webServer = null;
+
+            Assert.Throws<ArgumentException>(() => {
+                Extensions.LoadApiControllers(webServer);
+            });
+        }
+
+        [Test]
+        public void FluentLoadApiControllersWebApiModuleArgumentException()
+        {
+            WebApiModule webApi = null;
+
+            Assert.Throws<ArgumentException>(() => {
+                Extensions.LoadApiControllers(webApi);
+            });
+        }
+
+        [Test]
+        public void FluentLoadWebSocketsArgumentException()
+        {
+            WebServer webServer = null;
+
+            Assert.Throws<ArgumentException>(() => {
+                Extensions.LoadWebSockets(webServer);
+            });
+        }
+
+        [Test]
+        public void FluentEnableCorsArgumentException()
+        {
+            WebServer webServer = null;
+
+            Assert.Throws<ArgumentException>(() => {
+                Extensions.EnableCors(webServer);
+            });
+        }
+        [Test]
+        public void FluentWithWebApiControllerTArgumentException()
+        {
+            WebServer webServer = null;
+
+            Assert.Throws<ArgumentException>(() => {
+                Extensions.WithWebApiController<TestController>(webServer);
+            });
+        }
     }
 }
