@@ -31,7 +31,7 @@ before_build:
 - nuget install OpenCover -Version 4.6.519 -OutputDirectory tools
 - nuget install coveralls.net -Version 0.7.0 -OutputDirectory tools
 build_script:
-- dotnet build "src\Unosquare.Labs.EmbedIO" -c %CONFIGURATION% --no-dependencies
+- dotnet build Unosquare.Labs.EmbedIO.sln -c %CONFIGURATION% --no-dependencies
 test_script:
 - tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test test\Unosquare.Labs.EmbedIO.Tests -c %CONFIGURATION%" -output:coverage.xml -filter:"+[Unosquare.Labs.EmbedIO*]* -[Unosquare.Labs.EmbedIO.Test*]*" -register:userdotnet
 - tools\coveralls.net.0.7.0\tools\csmacnz.Coveralls.exe --opencover -i coverage.xml --serviceName appveyor --jobId %APPVEYOR_BUILD_NUMBER%
