@@ -15,7 +15,7 @@
     "net46": {
       "buildOptions": { "define": [ "NETFX" ] }
     },
-    "net47": {
+    "net462": {
       "buildOptions": { "define": [ "NETFX" ] }
     },
     "netcoreapp1.1": {

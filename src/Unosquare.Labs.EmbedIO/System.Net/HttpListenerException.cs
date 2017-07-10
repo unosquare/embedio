@@ -1,6 +1,6 @@
 ﻿using System;
 
-#if !NET47
+#if !NET462
 namespace Unosquare.Net
 {
     /// <summary>

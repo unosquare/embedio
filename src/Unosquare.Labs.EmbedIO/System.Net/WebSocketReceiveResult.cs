@@ -1,4 +1,4 @@
-﻿#if !NET47
+﻿#if !NNET462
 //------------------------------------------------------------------------------
 // <copyright file="WebSocketReceiveResult.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation.  All rights reserved.

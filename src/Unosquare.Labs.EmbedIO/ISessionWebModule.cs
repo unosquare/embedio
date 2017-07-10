@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-#if NET47
+#if NET462
     using System.Net;
 #else
     using Net;
@@ -49,7 +49,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-#if NET47
+#if NET462
         SessionInfo GetSession(System.Net.WebSockets.WebSocketContext context);
 #else
         SessionInfo GetSession(WebSocketContext context);

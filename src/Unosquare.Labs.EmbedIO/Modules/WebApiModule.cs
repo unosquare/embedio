@@ -8,7 +8,7 @@
     using System.Reflection;
     using System.Threading.Tasks;
     using Swan;
-#if NET47
+#if NET462
     using System.Net;
 #else
     using Net;

@@ -1,4 +1,4 @@
-﻿#if !NET47
+﻿#if !NNET462
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

@@ -9,7 +9,7 @@
     using Swan.Formatters;
     using System.Threading;
     using System.Threading.Tasks;
-#if NET47
+#if NET462
     using System.Net;
 #else
     using Net;
@@ -92,7 +92,7 @@
         /// <param name="context">The context.</param>
         /// <param name="server">The server.</param>
         /// <returns></returns>
-#if NET47
+#if NET462
         public static SessionInfo GetSession(this System.Net.WebSockets.WebSocketContext context, WebServer server)
 #else
         public static SessionInfo GetSession(this Unosquare.Net.WebSocketContext context, WebServer server)
@@ -107,7 +107,7 @@
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-#if NET47
+#if NET462
         public static SessionInfo GetSession(this WebServer server, System.Net.WebSockets.WebSocketContext context)
 #else
         public static SessionInfo GetSession(this WebServer server, WebSocketContext context)

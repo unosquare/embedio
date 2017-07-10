@@ -1,4 +1,4 @@
-﻿#if !NET47
+﻿#if !NNET462
 namespace Unosquare.Net
 {
     static class HttpSysSettings

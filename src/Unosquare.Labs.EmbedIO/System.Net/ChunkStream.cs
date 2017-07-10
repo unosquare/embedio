@@ -1,5 +1,5 @@
 ﻿#if CHUNKED
-#if !NET47
+#if !NET462
 //
 // System.Net.ChunkStream
 //

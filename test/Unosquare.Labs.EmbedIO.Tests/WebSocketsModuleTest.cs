@@ -7,7 +7,7 @@
     using NUnit.Framework;
     using Modules;
     using TestObjects;
-#if NET47
+#if NET462
     using System.Net.WebSockets;
 #else
     using Net;
@@ -47,7 +47,7 @@
                 Assert.Inconclusive("WebSocket Connect not available");
 
             var ct = new CancellationTokenSource();
-#if NET47
+#if NET462
             var clientSocket = new ClientWebSocket();
             await clientSocket.ConnectAsync(new Uri(wsUrl), ct.Token);
 
@@ -84,7 +84,7 @@
             const string wsUrl = Resources.WsServerAddress + "bigdata";
 
             var ct = new CancellationTokenSource();
-#if NET47
+#if NET462
             var clientSocket = new ClientWebSocket();
             await clientSocket.ConnectAsync(new Uri(wsUrl), ct.Token);
 

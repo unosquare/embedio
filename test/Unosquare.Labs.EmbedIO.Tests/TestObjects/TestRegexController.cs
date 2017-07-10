@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Unosquare.Labs.EmbedIO.Modules;
-#if NET47
+#if NET462
     using System.Net;
 #else
 using Unosquare.Net;

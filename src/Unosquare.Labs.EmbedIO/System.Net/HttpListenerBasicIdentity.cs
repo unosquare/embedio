@@ -1,4 +1,4 @@
-﻿#if !NET47
+﻿#if !NNET462
 //
 // System.Net.HttpListenerBasicIdentity
 //

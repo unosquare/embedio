@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Modules;
-#if NET47
+#if NET462
     using System.Net;
 #else
     using Net;
