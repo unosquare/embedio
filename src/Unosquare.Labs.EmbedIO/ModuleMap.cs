@@ -3,7 +3,7 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-#if NET46
+#if NET47
     using System.Net;
 #else
     using Net;

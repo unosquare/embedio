@@ -5,7 +5,7 @@
     using System.Text;
     using Modules;
     using Swan;
-#if NET46
+#if NET47
     using System.Threading;
     using System.Net.WebSockets;
 #else
@@ -48,7 +48,7 @@
         {
             foreach (var ws in WebSockets)
             {
-#if !NET46
+#if !NET47
                 if (ws.UserEndPoint == null)
                     "Error ws.UserEndPoint".Warn();
 
@@ -99,7 +99,7 @@
         protected override void OnClientDisconnected(WebSocketContext context)
         {
             Broadcast("Someone left the chat room.");
-#if !NET46
+#if !NET47
             $"WebSocket closed: {context.UserEndPoint}".Info();
 #endif
         }
@@ -215,7 +215,7 @@
                 {
                     var ws = FindContext(s as Process);
                     if (ws != null && ws.WebSocket.State == WebSocketState.Open)
-#if NET46
+#if NET47
                         ws.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Process exited", CancellationToken.None).GetAwaiter().GetResult();
 #else
                         ws.WebSocket.CloseAsync().GetAwaiter().GetResult();

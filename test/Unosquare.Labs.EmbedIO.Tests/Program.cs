@@ -1,16 +1,13 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Unosquare.Labs.EmbedIO.Modules;
 using Unosquare.Labs.EmbedIO.Tests.TestObjects;
-#if !NET46
-using Unosquare.Net;
-#endif
-using Unosquare.Swan;
+using Unosquare.Swan.Formatters;
 
 namespace Unosquare.Labs.EmbedIO.Tests
 {
@@ -18,27 +15,65 @@ namespace Unosquare.Labs.EmbedIO.Tests
     {
         public static void Main()
         {
-            var url = Resources.GetServerAddress();
-#if !NET46
-            using (var instance = new WebServer(url))
-            {
-                instance.RegisterModule(new WebSocketsModule());
-                instance.Module<WebSocketsModule>().RegisterWebSocketsServer(typeof(BigDataWebSocket));
-
-                instance.RunAsync();
-
-                var clientSocket = new WebSocket(url.Replace("http", "ws") + "bigdata");
-                clientSocket.OnMessage += (s, e) =>
+            Task.Factory.StartNew(async () =>
                 {
-                    e.Data.Info();
-                };
-                clientSocket.ConnectAsync().Wait();
+                    var encodeName = "iso-8859-1";
 
-                var buffer = System.Text.Encoding.UTF8.GetBytes("HOLA");
-                clientSocket.SendAsync(buffer, Opcode.Text).Wait();
-                Task.Delay(5000).Wait();
-            }
-#endif
+                    var url = Resources.GetServerAddress();
+
+                    using (var instance = new WebServer(url))
+                    {
+                        instance.RegisterModule(new FallbackModule((ctx, ct) =>
+                        {
+                            var encoding = Encoding.GetEncoding("UTF-8");
+
+                            try
+                            {
+                                var encodeValue =
+                                    ctx.Request.ContentType.Split(';')
+                                        .FirstOrDefault(
+                                            x => x.Trim().StartsWith("charset", StringComparison.OrdinalIgnoreCase))
+                                        ?.Split('=')
+                                        .Skip(1)
+                                        .FirstOrDefault()?
+                                        .Trim();
+                                encoding = Encoding.GetEncoding(encodeValue);
+                            }
+                            catch
+                            {
+                                Assert.Inconclusive("Invalid encoding in system");
+                            }
+
+                            ctx.JsonResponse(new WebServerTest.EncodeCheck
+                            {
+                                Encoding = encoding.EncodingName,
+                                IsValid = ctx.Request.ContentEncoding.EncodingName == encoding.EncodingName
+                            });
+
+                            return true;
+                        }));
+
+                        var runTask = instance.RunAsync();
+
+                        var request = (HttpWebRequest)WebRequest.Create(url + TestWebModule.RedirectUrl);
+                        request.ContentType = $"application/json; charset={encodeName}";
+
+                        using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                        {
+                            using (var ms = new MemoryStream())
+                            {
+                                response.GetResponseStream()?.CopyTo(ms);
+                                var data = Encoding.UTF8.GetString(ms.ToArray());
+
+                                Assert.IsNotNull(data, "Data is not empty");
+                                var model = Json.Deserialize<WebServerTest.EncodeCheck>(data);
+
+                                Assert.IsNotNull(model);
+                                Assert.IsTrue(model.IsValid);
+                            }
+                        }
+                    }
+                });
             Console.ReadKey();
         }
     }

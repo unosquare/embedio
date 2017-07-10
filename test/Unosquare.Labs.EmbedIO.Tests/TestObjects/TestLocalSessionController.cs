@@ -1,7 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
     using Modules;
-#if NET46
+#if NET47
     using System.Net;
 #else
     using Net;

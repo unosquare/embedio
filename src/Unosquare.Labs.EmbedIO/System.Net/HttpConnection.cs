@@ -1,4 +1,4 @@
-﻿#if !NET46
+﻿#if !NET47
 //
 // System.Net.HttpConnection
 //

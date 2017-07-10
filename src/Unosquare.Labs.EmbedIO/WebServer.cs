@@ -8,7 +8,7 @@
     using System.Threading;
     using System.Reflection;
     using System.Threading.Tasks;
-#if NET46
+#if NET47
     using System.Net;
 #else
     using Net;
@@ -244,7 +244,7 @@
             finally
             {
                 // Always close the response stream no matter what.
-#if NET46
+#if NET47
                 context?.Response.OutputStream.Close();
 #else
                 await context.Response.OutputStream.CloseAsync();

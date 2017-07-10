@@ -10,7 +10,7 @@
     using Swan;
     using System.Threading;
     using System.Threading.Tasks;
-#if NET46
+#if NET47
     using System.Net;
 #else
     using Net;
@@ -363,7 +363,7 @@
             }
             finally
             {
-#if NET452 || NET46
+#if NETFX
                 buffer.Close();
 #endif
                 buffer.Dispose();

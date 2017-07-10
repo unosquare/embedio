@@ -1,4 +1,4 @@
-﻿#if !NET46
+﻿#if !NET47
 //
 // System.Net.HttpListenerContext
 //
@@ -29,7 +29,6 @@
 
 using System;
 using System.Security.Principal;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Unosquare.Net
