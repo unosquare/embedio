@@ -51,9 +51,6 @@
       "buildOptions": { "define": [ "NETFX" ] }
     },
     "net462": {
-      "frameworkAssemblies": {
-        "System.Drawing": ""
-      },
       "buildOptions": { "define": [ "NETFX" ] }
     }
   }

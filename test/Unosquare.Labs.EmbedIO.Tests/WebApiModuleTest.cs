@@ -73,10 +73,16 @@
         [Test]
         public async Task PostJsonData()
         {
-            var model = new Person() {Key = 10, Name = "Test"};
-            var result = await JsonClient.Post<Person>(WebServerUrl + TestController.GetPath, model);
-            Assert.IsNotNull(result);
-            Assert.AreEqual(result.Name, model.Name);
+            using (var client = new HttpClient())
+            {
+                var model = new Person() {Key = 10, Name = "Test"};
+                var payloadJson = new StringContent(Json.Serialize(model), System.Text.Encoding.UTF8, "application/json");
+                var response = await client.PostAsync(WebServerUrl + TestController.GetPath, payloadJson);
+
+                var result = Json.Deserialize<Person>(await response.Content.ReadAsStringAsync());
+                Assert.IsNotNull(result);
+                Assert.AreEqual(result.Name, model.Name);
+            }
         }
 
         [Test]

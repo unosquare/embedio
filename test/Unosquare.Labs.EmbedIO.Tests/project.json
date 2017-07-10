@@ -16,15 +16,13 @@
     "netcoreapp1.1": {
       "imports": "dnxcore50",
       "dependencies": {
-        "Microsoft.NETCore.App": "1.1.2",
-        "System.Net.Http": "4.3.1"
+        "Microsoft.NETCore.App": "1.1.2"
       }
     },
     "netcoreapp1.0": {
       "imports": "dnxcore50",
       "dependencies": {
-        "Microsoft.NETCore.App": "1.1.2",
-        "System.Net.Http": "4.3.1"
+        "Microsoft.NETCore.App": "1.1.2"
       }
     },
     "net462": {
