@@ -21,7 +21,8 @@
     "net462": {
       "frameworkAssemblies": {
         "System.ComponentModel.DataAnnotations": ""
-      }
+      },
+      "buildOptions": { "define": [ "NET47" ] }
     },
     "net46": {
       "frameworkAssemblies": {

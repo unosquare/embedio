@@ -1,4 +1,4 @@
-﻿#if !NNET462
+﻿#if !NET47
 //
 // System.Net.HttpListener
 //

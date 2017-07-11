@@ -8,11 +8,10 @@
     using System.Threading.Tasks;
     using System.Reflection;
     using Swan;
-#if NET462
+#if NET47
     using System.Net.WebSockets;
 #else
     using Net;
-
 #endif
 
     /// <summary>
@@ -168,7 +167,7 @@
         private readonly object _syncRoot = new object();
         private readonly List<WebSocketContext> _mWebSockets = new List<WebSocketContext>(10);
         private CancellationToken _ct = default(CancellationToken);
-#if NET462
+#if NET47
         private readonly int _maximumMessageSize;
 #endif
 
@@ -197,7 +196,7 @@
         protected WebSocketsServer(bool enableConnectionWatchdog, int maxMessageSize)
         {
             _enableDisconnectedSocketColletion = enableConnectionWatchdog;
-#if NET462
+#if NET47
             _maximumMessageSize = maxMessageSize;
 #endif
 
@@ -241,7 +240,7 @@
         /// <param name="context">The context.</param>
         /// <param name="ct">The cancellation token.</param>
         /// <returns></returns>
-#if NET462
+#if NET47
         public async Task AcceptWebSocket(System.Net.HttpListenerContext context, CancellationToken ct)
 #else
         public async Task AcceptWebSocket(HttpListenerContext context, CancellationToken ct)
@@ -252,12 +251,12 @@
             // first, accept the websocket
             $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
 
-#if NET462
+#if NET47
             const int receiveBufferSize = 2048;
 #endif
 
             var webSocketContext =
-#if NET462
+#if NET47
                 await context.AcceptWebSocketAsync(subProtocol: null, receiveBufferSize: receiveBufferSize,
                     keepAliveInterval: TimeSpan.FromSeconds(30));
 #else
@@ -280,7 +279,7 @@
 
             try
             {
-#if NET462
+#if NET47
 // define a receive buffer
                 var receiveBuffer = new byte[receiveBufferSize];
                 // define a dynamic buffer that holds multi-part receptions
@@ -406,7 +405,7 @@
                 if (payload == null) payload = string.Empty;
                 var buffer = System.Text.Encoding.UTF8.GetBytes(payload);
 
-#if NET462
+#if NET47
                 await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true,
                         _ct);
 #else
@@ -430,7 +429,7 @@
             {
                 if (payload == null) payload = new byte[0];
 
-#if NET462
+#if NET47
                 await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(payload), WebSocketMessageType.Binary, true,
                         _ct);
 #else
@@ -476,7 +475,7 @@
 
             try
             {
-#if NET462
+#if NET47
                 await webSocket.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, _ct);
 #else
                 await webSocket.WebSocket.CloseAsync(ct: _ct);

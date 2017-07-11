@@ -8,7 +8,7 @@
     using System.Threading;
     using System.Reflection;
     using System.Threading.Tasks;
-#if NET462
+#if NET47
     using System.Net;
 #else
     using Net;
@@ -244,7 +244,7 @@
             finally
             {
                 // Always close the response stream no matter what.
-#if NET462
+#if NET47
                 context?.Response.OutputStream.Close();
 #else
                 await context.Response.OutputStream.CloseAsync();
@@ -361,6 +361,10 @@
                 {
                     // Forward cancellations out to the caller.
                     throw;
+                }
+                catch (ObjectDisposedException)
+                {
+                    // Ignore disposed Listener
                 }
                 catch (Exception ex)
                 {

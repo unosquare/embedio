@@ -6,7 +6,7 @@
     using Swan;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-#if NET462
+#if NET47
     using System.Net;
 #else
     using Net;
@@ -229,7 +229,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-#if NET462
+#if NET47
         public SessionInfo GetSession(System.Net.WebSockets.WebSocketContext context)
 #else
         public SessionInfo GetSession(Unosquare.Net.WebSocketContext context)

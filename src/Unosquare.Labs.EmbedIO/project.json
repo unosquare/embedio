@@ -51,7 +51,7 @@
       "buildOptions": { "define": [ "NETFX" ] }
     },
     "net462": {
-      "buildOptions": { "define": [ "NETFX" ] }
+      "buildOptions": { "define": [ "NETFX", "NET47" ] }
     }
   }
 }

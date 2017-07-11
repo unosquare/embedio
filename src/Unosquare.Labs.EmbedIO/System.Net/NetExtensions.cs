@@ -1,4 +1,4 @@
-﻿#if !NNET462
+﻿#if !NET47
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;

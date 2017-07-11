@@ -1,5 +1,5 @@
 ﻿#if CHUNKED
-#if !NET462
+#if !NET47
 //
 // System.Net.ChunkedInputStream
 //

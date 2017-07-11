@@ -29,7 +29,8 @@
       "frameworkAssemblies": {
         "System.Net.Http": "",
         "System.Threading.Tasks": ""
-      }
+      },
+      "buildOptions": { "define": [ "NET47" ] }
     },
     "net46": {
       "frameworkAssemblies": {

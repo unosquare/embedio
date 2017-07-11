@@ -8,7 +8,7 @@
     using Tubular;
     using Swan;
     using Tubular.ObjectModel;
-#if NET462
+#if NET47
     using System.Net;
 #else
     using Unosquare.Net;

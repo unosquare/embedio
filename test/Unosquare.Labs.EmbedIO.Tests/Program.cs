@@ -2,11 +2,19 @@
 using System.IO;
 using System.Linq;
 using System.Net;
+
+#if NET47
+using System.Net.WebSockets;
+#else
+using Unosquare.Net;
+#endif
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Unosquare.Labs.EmbedIO.Modules;
 using Unosquare.Labs.EmbedIO.Tests.TestObjects;
+using Unosquare.Swan;
 using Unosquare.Swan.Formatters;
 
 namespace Unosquare.Labs.EmbedIO.Tests
@@ -15,63 +23,51 @@ namespace Unosquare.Labs.EmbedIO.Tests
     {
         public static void Main()
         {
+            var ct = new CancellationTokenSource();
+
             Task.Factory.StartNew(async () =>
                 {
-                    var encodeName = "iso-8859-1";
-
-                    var url = Resources.GetServerAddress();
-
-                    using (var instance = new WebServer(url))
+                    try
                     {
-                        instance.RegisterModule(new FallbackModule((ctx, ct) =>
+                        const string wsUrl = Resources.WsServerAddress + "test";
+
+                        using (var instance = new WebServer(Resources.WsServerAddress.Replace("ws", "http")))
                         {
-                            var encoding = Encoding.GetEncoding("UTF-8");
+                            instance.RegisterModule(new WebSocketsModule());
+                            instance.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocket>();
+                            instance.Module<WebSocketsModule>().RegisterWebSocketsServer<BigDataWebSocket>();
 
-                            try
+                            var runTask = instance.RunAsync();
+#if NET47
+                            var clientSocket = new ClientWebSocket();
+                            await clientSocket.ConnectAsync(new Uri(wsUrl), ct.Token);
+                            
+                            var message = new ArraySegment<byte>(System.Text.Encoding.Default.GetBytes("HOLA"));
+                            var buffer = new ArraySegment<byte>(new byte[5]);
+
+                            await clientSocket.SendAsync(message, System.Net.WebSockets.WebSocketMessageType.Text, true,
+                                ct.Token);
+                            await clientSocket.ReceiveAsync(buffer, ct.Token);
+                            System.Text.Encoding.UTF8.GetString(buffer.Array).Trim().Info();
+
+                            await clientSocket.CloseAsync(WebSocketCloseStatus.Empty, string.Empty, ct.Token);
+#else
+                            var clientSocket = new WebSocket(wsUrl);
+                            await clientSocket.ConnectAsync(ct.Token);
+                            clientSocket.OnMessage += (s, e) =>
                             {
-                                var encodeValue =
-                                    ctx.Request.ContentType.Split(';')
-                                        .FirstOrDefault(
-                                            x => x.Trim().StartsWith("charset", StringComparison.OrdinalIgnoreCase))
-                                        ?.Split('=')
-                                        .Skip(1)
-                                        .FirstOrDefault()?
-                                        .Trim();
-                                encoding = Encoding.GetEncoding(encodeValue);
-                            }
-                            catch
-                            {
-                                Assert.Inconclusive("Invalid encoding in system");
-                            }
-
-                            ctx.JsonResponse(new WebServerTest.EncodeCheck
-                            {
-                                Encoding = encoding.EncodingName,
-                                IsValid = ctx.Request.ContentEncoding.EncodingName == encoding.EncodingName
-                            });
-
-                            return true;
-                        }));
-
-                        var runTask = instance.RunAsync();
-
-                        var request = (HttpWebRequest)WebRequest.Create(url + TestWebModule.RedirectUrl);
-                        request.ContentType = $"application/json; charset={encodeName}";
-
-                        using (var response = (HttpWebResponse)await request.GetResponseAsync())
-                        {
-                            using (var ms = new MemoryStream())
-                            {
-                                response.GetResponseStream()?.CopyTo(ms);
-                                var data = Encoding.UTF8.GetString(ms.ToArray());
-
-                                Assert.IsNotNull(data, "Data is not empty");
-                                var model = Json.Deserialize<WebServerTest.EncodeCheck>(data);
-
-                                Assert.IsNotNull(model);
-                                Assert.IsTrue(model.IsValid);
-                            }
+                                e.Data.Info();
+                            };
+                            
+                            var buffer = System.Text.Encoding.UTF8.GetBytes("HOLA");
+                            await clientSocket.SendAsync(buffer, Opcode.Text, ct.Token);
+                            await Task.Delay(500, ct.Token);
+#endif
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.Log(nameof(Main));
                     }
                 });
             Console.ReadKey();

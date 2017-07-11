@@ -1,4 +1,4 @@
-﻿#if !NNET462
+﻿#if !NET47
 #region License
 /*
  * WebSocket.cs
@@ -1422,7 +1422,7 @@ namespace Unosquare.Net
             _stream?.Dispose();
             _stream = null;
 
-#if NET452
+#if NET46
             _tcpClient?.Close();
 #else
             _tcpClient?.Dispose();
@@ -1441,7 +1441,7 @@ namespace Unosquare.Net
 
             if (_receivePong != null)
             {
-#if NET452
+#if NET46
                 _receivePong.Close();
 #else
                 _receivePong.Dispose();
@@ -1451,7 +1451,7 @@ namespace Unosquare.Net
 
             if (_exitReceiving != null)
             {
-#if NET452
+#if NET46
                 _exitReceiving.Close();
 #else
                 _exitReceiving.Dispose();
@@ -1749,7 +1749,7 @@ namespace Unosquare.Net
 #if PROXY
             if (_proxyUri != null)
             {
-#if NET452
+#if NET46
                 _tcpClient = new TcpClient(_proxyUri.DnsSafeHost, _proxyUri.Port);
 #else
                 _tcpClient = new TcpClient();
@@ -1760,7 +1760,7 @@ namespace Unosquare.Net
             else
 #endif
             {
-#if NET452
+#if NET46
                 _tcpClient = new TcpClient(_uri.DnsSafeHost, _uri.Port);
 #else
                 _tcpClient = new TcpClient();
