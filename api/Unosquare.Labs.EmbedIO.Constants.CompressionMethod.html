@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Enum HttpVerbs
+    <title>Enum CompressionMethod
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Enum HttpVerbs
+    <meta name="title" content="Enum CompressionMethod
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.20.0.0">
     
@@ -75,20 +75,26 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.HttpVerbs">
+            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.Constants.CompressionMethod">
   
   
-  <h1 id="Unosquare_Labs_EmbedIO_HttpVerbs" data-uid="Unosquare.Labs.EmbedIO.HttpVerbs" class="text-break">Enum HttpVerbs
+  <h1 id="Unosquare_Labs_EmbedIO_Constants_CompressionMethod" data-uid="Unosquare.Labs.EmbedIO.Constants.CompressionMethod" class="text-break">Enum CompressionMethod
   </h1>
-  <div class="markdown level0 summary"><p>Enumerates the different HTTP Verbs</p>
+  <div class="markdown level0 summary"><p>Specifies the compression method used to compress a message on
+the WebSocket connection.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.html">Unosquare.Labs.EmbedIO</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.Constants.html">Unosquare.Labs.EmbedIO.Constants</a></h6>
   <h6><strong>Assembly</strong>: Unosquare.Labs.EmbedIO.dll</h6>
-  <h5 id="Unosquare_Labs_EmbedIO_HttpVerbs_syntax">Syntax</h5>
+  <h5 id="Unosquare_Labs_EmbedIO_Constants_CompressionMethod_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public enum HttpVerbs : int</code></pre>
+    <pre><code class="lang-csharp hljs">public enum CompressionMethod : byte</code></pre>
   </div>
+  <h5 id="Unosquare_Labs_EmbedIO_Constants_CompressionMethod_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>The compression methods that can be used are defined in
+<a href="https://tools.ietf.org/html/rfc7692">
+Compression Extensions for WebSocket</a>.</p>
+</div>
   <h3 id="fields">Fields
   </h3>
   <table class="table table-bordered table-striped table-condensed">
@@ -100,43 +106,18 @@
     <thead>
     <tbody>
       <tr>
-        <td id="Unosquare_Labs_EmbedIO_HttpVerbs_Any">Any</td>
-        <td><p>Wildcard Method</p>
+        <td id="Unosquare_Labs_EmbedIO_Constants_CompressionMethod_Deflate">Deflate</td>
+        <td><p>Specifies DEFLATE.</p>
 </td>
       </tr>
       <tr>
-        <td id="Unosquare_Labs_EmbedIO_HttpVerbs_Delete">Delete</td>
-        <td><p>DELETE Method</p>
+        <td id="Unosquare_Labs_EmbedIO_Constants_CompressionMethod_Gzip">Gzip</td>
+        <td><p>Specifies GZIP.</p>
 </td>
       </tr>
       <tr>
-        <td id="Unosquare_Labs_EmbedIO_HttpVerbs_Get">Get</td>
-        <td><p>GET Method</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Unosquare_Labs_EmbedIO_HttpVerbs_Head">Head</td>
-        <td><p>HEAD method</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Unosquare_Labs_EmbedIO_HttpVerbs_Options">Options</td>
-        <td><p>OPTIONS method</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Unosquare_Labs_EmbedIO_HttpVerbs_Patch">Patch</td>
-        <td><p>PATCH method</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Unosquare_Labs_EmbedIO_HttpVerbs_Post">Post</td>
-        <td><p>POST method</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Unosquare_Labs_EmbedIO_HttpVerbs_Put">Put</td>
-        <td><p>PUT method</p>
+        <td id="Unosquare_Labs_EmbedIO_Constants_CompressionMethod_None">None</td>
+        <td><p>Specifies non compression.</p>
 </td>
       </tr>
     </tbody>
@@ -149,10 +130,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/unosquare/embedio/new/NET47/apiSpec/new?filename=Unosquare_Labs_EmbedIO_HttpVerbs.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.HttpVerbs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/unosquare/embedio/new/NET47/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Constants_CompressionMethod.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Constants.CompressionMethod%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/unosquare/embedio/blob/NET47/src/Unosquare.Labs.EmbedIO/HttpVerbs.cs/#L6" class="contribution-link">View Source</a>
+                    <a href="https://github.com/unosquare/embedio/blob/NET47/src/Unosquare.Labs.EmbedIO/Constants/CompressionMethod.cs/#L12" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

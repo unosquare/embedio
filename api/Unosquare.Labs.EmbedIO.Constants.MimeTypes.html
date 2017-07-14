@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Enum Opcode
+    <title>Class MimeTypes
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Enum Opcode
+    <meta name="title" content="Class MimeTypes
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.20.0.0">
     
@@ -75,67 +75,58 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Unosquare.Net.Opcode">
+            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.Constants.MimeTypes">
   
   
-  <h1 id="Unosquare_Net_Opcode" data-uid="Unosquare.Net.Opcode" class="text-break">Enum Opcode
+  <h1 id="Unosquare_Labs_EmbedIO_Constants_MimeTypes" data-uid="Unosquare.Labs.EmbedIO.Constants.MimeTypes" class="text-break">Class MimeTypes
   </h1>
-  <div class="markdown level0 summary"><p>Indicates the WebSocket frame type.</p>
+  <div class="markdown level0 summary"><p>Represents a MimeType collection</p>
 </div>
   <div class="markdown level0 conceptual"></div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Net.html">Unosquare.Net</a></h6>
-  <h6><strong>Assembly</strong>: Unosquare.Labs.EmbedIO.dll</h6>
-  <h5 id="Unosquare_Net_Opcode_syntax">Syntax</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public enum Opcode : byte</code></pre>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">MimeTypes</span></div>
   </div>
-  <h5 id="Unosquare_Net_Opcode_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>The values of this enumeration are defined in
-<a href="http://tools.ietf.org/html/rfc6455#section-5.2">
-Section 5.2</a> of RFC 6455.</p>
-</div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.Constants.html">Unosquare.Labs.EmbedIO.Constants</a></h6>
+  <h6><strong>Assembly</strong>: Unosquare.Labs.EmbedIO.dll</h6>
+  <h5 id="Unosquare_Labs_EmbedIO_Constants_MimeTypes_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class MimeTypes : object</code></pre>
+  </div>
   <h3 id="fields">Fields
   </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/unosquare/embedio/new/NET47/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Constants_MimeTypes_DefaultMimeTypes.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Constants.MimeTypes.DefaultMimeTypes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/unosquare/embedio/blob/NET47/src/Unosquare.Labs.EmbedIO/Constants/MimeTypes.cs/#L14">View Source</a>
+  </span>
+  <h4 id="Unosquare_Labs_EmbedIO_Constants_MimeTypes_DefaultMimeTypes" data-uid="Unosquare.Labs.EmbedIO.Constants.MimeTypes.DefaultMimeTypes">DefaultMimeTypes</h4>
+  <div class="markdown level1 summary"><p>A big list of default MIME types
+Originally started from: <a href="http://stackoverflow.com/questions/1029740/get-mime-type-from-filename-extension">http://stackoverflow.com/questions/1029740/get-mime-type-from-filename-extension</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly Dictionary&lt;string, string&gt; DefaultMimeTypes</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
-        <th>Name</th>
+        <th>Type</th>
         <th>Description</th>
       </tr>
-    <thead>
+    </thead>
     <tbody>
       <tr>
-        <td id="Unosquare_Net_Opcode_Binary">Binary</td>
-        <td><p>Equivalent to numeric value 2. Indicates binary frame.</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Unosquare_Net_Opcode_Close">Close</td>
-        <td><p>Equivalent to numeric value 8. Indicates connection close frame.</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Unosquare_Net_Opcode_Cont">Cont</td>
-        <td><p>Equivalent to numeric value 0. Indicates continuation frame.</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Unosquare_Net_Opcode_Ping">Ping</td>
-        <td><p>Equivalent to numeric value 9. Indicates ping frame.</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Unosquare_Net_Opcode_Pong">Pong</td>
-        <td><p>Equivalent to numeric value 10. Indicates pong frame.</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Unosquare_Net_Opcode_Text">Text</td>
-        <td><p>Equivalent to numeric value 1. Indicates text frame.</p>
-</td>
+        <td><span class="xref">Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>&gt;</td>
+        <td></td>
       </tr>
     </tbody>
-  </thead></thead></table>
+  </table>
 </article>
           </div>
           
@@ -144,10 +135,10 @@ Section 5.2</a> of RFC 6455.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/unosquare/embedio/new/NET47/apiSpec/new?filename=Unosquare_Net_Opcode.md&amp;value=---%0Auid%3A%20Unosquare.Net.Opcode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/unosquare/embedio/new/NET47/apiSpec/new?filename=Unosquare_Labs_EmbedIO_Constants_MimeTypes.md&amp;value=---%0Auid%3A%20Unosquare.Labs.EmbedIO.Constants.MimeTypes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/unosquare/embedio/blob/NET47/src/Unosquare.Labs.EmbedIO/System.Net/WebSocket.cs/#L103" class="contribution-link">View Source</a>
+                    <a href="https://github.com/unosquare/embedio/blob/NET47/src/Unosquare.Labs.EmbedIO/Constants/MimeTypes.cs/#L8" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
