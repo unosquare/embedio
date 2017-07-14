@@ -2,7 +2,7 @@
 {
     using Swan;
     using System;
-#if NET452
+#if NETFX
     using System.Reflection;
 #else
     using System.Runtime.Loader;
@@ -26,10 +26,8 @@
             if (!Runtime.ArgumentParser.ParseArguments(args, options)) return;
 
             "Press any key to stop the server.".Info();
-
-            var serverUrl = "http://localhost:" + options.Port + "/";
-
-            using (var server = new WebServer(serverUrl))
+            
+            using (var server = new WebServer($"http://localhost:{options.Port}/"))
             {
                 // TODO: Add AppSettings file
                 //if (Properties.Settings.Default.UseLocalSessionModule)
@@ -63,7 +61,7 @@
         {
             try
             {
-#if NET452
+#if NETFX
                 var assembly = Assembly.LoadFile(apiPath);
 #else
                 var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(apiPath);

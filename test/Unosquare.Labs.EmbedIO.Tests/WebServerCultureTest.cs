@@ -1,4 +1,4 @@
-﻿#if NET452 || NET46
+﻿#if NETFX
 using System;
 using System.Collections.Generic;
 using System.IO;

@@ -12,8 +12,11 @@
   },
 
   "frameworks": {
-    "net452": {
-
+    "net46": {
+      "buildOptions": { "define": [ "NETFX" ] }
+    },
+    "net462": {
+      "buildOptions": { "define": [ "NETFX" ] }
     },
     "netcoreapp1.1": {
       "dependencies": {

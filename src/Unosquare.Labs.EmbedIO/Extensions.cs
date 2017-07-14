@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
+    using Constants;
     using System.Collections.Generic;
     using System;
     using System.IO;
@@ -9,12 +10,12 @@
     using Swan.Formatters;
     using System.Threading;
     using System.Threading.Tasks;
-#if NET46
+#if NET47
     using System.Net;
 #else
     using Net;
 #endif
-    
+
     /// <summary>
     /// Extension methods to help your coding!
     /// </summary>
@@ -92,7 +93,7 @@
         /// <param name="context">The context.</param>
         /// <param name="server">The server.</param>
         /// <returns></returns>
-#if NET46
+#if NET47
         public static SessionInfo GetSession(this System.Net.WebSockets.WebSocketContext context, WebServer server)
 #else
         public static SessionInfo GetSession(this Unosquare.Net.WebSocketContext context, WebServer server)
@@ -107,7 +108,7 @@
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-#if NET46
+#if NET47
         public static SessionInfo GetSession(this WebServer server, System.Net.WebSockets.WebSocketContext context)
 #else
         public static SessionInfo GetSession(this WebServer server, WebSocketContext context)
@@ -228,11 +229,11 @@
         /// <param name="context">The context.</param>
         public static void NoCache(this HttpListenerContext context)
         {
-            context.Response.AddHeader(Constants.HeaderExpires, "Mon, 26 Jul 1997 05:00:00 GMT");
-            context.Response.AddHeader(Constants.HeaderLastModified,
-                DateTime.UtcNow.ToString(Constants.BrowserTimeFormat, Constants.StandardCultureInfo));
-            context.Response.AddHeader(Constants.HeaderCacheControl, "no-store, no-cache, must-revalidate");
-            context.Response.AddHeader(Constants.HeaderPragma, "no-cache");
+            context.Response.AddHeader(Headers.Expires, "Mon, 26 Jul 1997 05:00:00 GMT");
+            context.Response.AddHeader(Headers.LastModified,
+                DateTime.UtcNow.ToString(Strings.BrowserTimeFormat, Strings.StandardCultureInfo));
+            context.Response.AddHeader(Headers.CacheControl, "no-store, no-cache, must-revalidate");
+            context.Response.AddHeader(Headers.Pragma, "no-cache");
         }
 
         /// <summary>
@@ -258,17 +259,17 @@
 
         #endregion
 
-            #region JSON and Exception Extensions
+        #region JSON and Exception Extensions
 
-            /// <summary>
-            /// Outputs a Json Response given a data object
-            /// </summary>
-            /// <param name="context">The context.</param>
-            /// <param name="data">The data.</param>
-            /// <returns></returns>
+        /// <summary>
+        /// Outputs a Json Response given a data object
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
         public static bool JsonResponse(this HttpListenerContext context, object data)
         {
-           return context.JsonResponseAsync(data).GetAwaiter().GetResult();
+            return context.JsonResponseAsync(data).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -385,20 +386,16 @@
             if (string.IsNullOrWhiteSpace(requestBody)) return null;
 
             // define a character for KV pairs
-            var kvpSeparator = new[] {'='};
+            var kvpSeparator = new[] { '=' };
 
             // Create the result object
             var resultDictionary = new Dictionary<string, object>();
 
             // Split the request body into key-value pair strings
-            var keyValuePairStrings = requestBody.Split('&');
+            var keyValuePairStrings = requestBody.Split('&').Where(x => string.IsNullOrWhiteSpace(x) == false);
 
             foreach (var kvps in keyValuePairStrings)
             {
-                // Skip KVP strings if they are empty
-                if (string.IsNullOrWhiteSpace(kvps))
-                    continue;
-
                 // Split by the equals char into key values.
                 // Some KVPS will have only their key, some will have both key and value
                 // Some other might be repeated which really means an array
@@ -425,7 +422,7 @@
                         // if we don't have a list value for this key, then create one and add the existing item
                         var existingValue = resultDictionary[key] as string;
                         resultDictionary[key] = new List<string>();
-                        listValue = (List<string>) resultDictionary[key];
+                        listValue = (List<string>)resultDictionary[key];
                         listValue.Add(existingValue);
                     }
 
@@ -510,7 +507,7 @@
 
             return targetStream;
         }
-        
+
         /// <summary>
         /// Compresses/Decompresses the specified buffer using the compression algorithm.
         /// </summary>

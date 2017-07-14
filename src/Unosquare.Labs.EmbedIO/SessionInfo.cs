@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
+    using Constants;
     using System;
     using System.Collections.Concurrent;
 
@@ -13,7 +14,7 @@
         /// </summary>
         public SessionInfo()
         {
-            Data = new ConcurrentDictionary<string, object>(Constants.StandardStringComparer);
+            Data = new ConcurrentDictionary<string, object>(Strings.StandardStringComparer);
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
+    using Constants;
     using System.Text.RegularExpressions;
     using EmbedIO;
     using System;
@@ -8,7 +9,7 @@
     using System.Reflection;
     using System.Threading.Tasks;
     using Swan;
-#if NET46
+#if NET47
     using System.Net;
 #else
     using Net;
@@ -44,7 +45,7 @@
         private readonly Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>> _delegateMap
             =
             new Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>>(
-                Constants.StandardStringComparer);
+                Strings.StandardStringComparer);
 
         private static readonly Regex RouteParamRegex = new Regex(@"\{[^\/]*\}",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);

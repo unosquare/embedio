@@ -12,7 +12,7 @@ A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework
 
 * Written entirely in C#
 * Network operations use the async/await pattern: Responses are handled asynchronously
-* Cross-platform[1]: tested in Mono 3.10.x on Windows and on a custom Yocto image for the Raspberry Pi
+* Cross-platform[1]: tested in Mono on Windows and on a custom Yocto image for the Raspberry Pi
 * Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras" target="_blank">EmbedIO Extras</a> for additional modules.
 * Small memory footprint
 * Create REST APIs quickly with the out-of-the-box Web Api module
@@ -32,14 +32,14 @@ A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework
 * Works well with <a href="https://github.com/unosquare/litelib" target="_blank">LiteLib</a> - add SQLite support in minutes!
 * Write client applications with real-time communication between them
 
-Some notes regarding WebSocket support:
+Some notes regarding WebSocket and runtimes support:
 
 | Runtime | WebSocket support | Notes |
 | --- | --- | --- |
-| NET452 | Yes | Support Win7+ OS using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
-| NET46 | Yes | Support Win8+ OS using native System.Net library |
-| MONO | Yes | Support Windows and Linux using custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
-| NETCORE10 | Yes | Support using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
+| NET452 | Yes | Support Windows and Linux using custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/). Nuget package doesn't provide this version but you can compile from Unosquare.Labs.EmbedIO.Lib solution file. This solution is to use in older environments and Mono |
+| NET46 | Yes | Support Win7+ OS using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
+| NET462 | Yes | Support Win8+ OS using native System.Net library |
+| NETSTANDARD* | Yes | Support Windows, Linux and macOS using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
 
 EmbedIO before version 1.4.0 uses Newtonsoft JSON and an internal logger subsystem based on ILog interface.
 

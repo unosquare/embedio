@@ -1,13 +1,10 @@
-﻿#if !NET46
+﻿#if !NET47
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Unosquare.Labs.EmbedIO;
+using Unosquare.Labs.EmbedIO.Constants;
 using Unosquare.Swan;
 
 namespace Unosquare.Net
@@ -381,7 +378,7 @@ namespace Unosquare.Net
         /// </param>
         public static CookieCollection GetCookies(this NameValueCollection headers, bool response)
         {
-            var name = response ? "Set-Cookie" : "Cookie";
+            var name = response ? "Set-Cookie" : Headers.Cookie;
             return headers != null && headers.AllKeys.Contains(name)
                    ? CookieCollection.Parse(headers[name], response)
                    : new CookieCollection();

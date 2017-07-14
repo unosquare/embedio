@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
+    using Constants;
     using System.Linq;
     using NUnit.Framework;
     using System;
@@ -29,7 +30,7 @@
             RootPath = TestHelper.SetupStaticFolder();
 
             WebServer = new WebServer(WebServerUrl);
-            WebServer.RegisterModule(new StaticFilesModule(RootPath) { UseRamCache = true });
+            WebServer.RegisterModule(new StaticFilesModule(RootPath) {UseRamCache = true});
             WebServer.RegisterModule(new FallbackModule("/index.html"));
             var runTask = WebServer.RunAsync();
         }
@@ -37,9 +38,9 @@
         [Test]
         public async Task GetIndex()
         {
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
+            var request = (HttpWebRequest) WebRequest.Create(WebServerUrl);
 
-            using (var response = (HttpWebResponse)await request.GetResponseAsync())
+            using (var response = (HttpWebResponse) await request.GetResponseAsync())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
@@ -47,17 +48,17 @@
 
                 Assert.AreEqual(Resources.Index, html, "Same content index.html");
 
-                Assert.IsTrue(string.IsNullOrWhiteSpace(response.Headers[Constants.HeaderPragma]), "Pragma empty");
+                Assert.IsTrue(string.IsNullOrWhiteSpace(response.Headers[Headers.Pragma]), "Pragma empty");
             }
 
-            WebServer.Module<StaticFilesModule>().DefaultHeaders.Add(Constants.HeaderPragma, HeaderPragmaValue);
+            WebServer.Module<StaticFilesModule>().DefaultHeaders.Add(Headers.Pragma, HeaderPragmaValue);
 
-            request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
+            request = (HttpWebRequest) WebRequest.Create(WebServerUrl);
 
-            using (var response = (HttpWebResponse)await request.GetResponseAsync())
+            using (var response = (HttpWebResponse) await request.GetResponseAsync())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-                Assert.AreEqual(HeaderPragmaValue, response.Headers[Constants.HeaderPragma]);
+                Assert.AreEqual(HeaderPragmaValue, response.Headers[Headers.Pragma]);
             }
         }
 
@@ -88,18 +89,18 @@
         [Test]
         public async Task GetEtag()
         {
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
+            var request = (HttpWebRequest) WebRequest.Create(WebServerUrl);
             string eTag;
 
-            using (var response = (HttpWebResponse)await request.GetResponseAsync())
+            using (var response = (HttpWebResponse) await request.GetResponseAsync())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-                Assert.NotNull(response.Headers[Constants.HeaderETag], "ETag is not null");
-                eTag = response.Headers[Constants.HeaderETag];
+                Assert.NotNull(response.Headers[Headers.ETag], "ETag is not null");
+                eTag = response.Headers[Headers.ETag];
             }
 
-            var secondRequest = (HttpWebRequest)WebRequest.Create(WebServerUrl);
-            secondRequest.Headers[Constants.HeaderIfNotMatch] = eTag;
+            var secondRequest = (HttpWebRequest) WebRequest.Create(WebServerUrl);
+            secondRequest.Headers[Headers.IfNotMatch] = eTag;
 
             try
             {
@@ -111,7 +112,7 @@
                 if (ex.Response == null || ex.Status != WebExceptionStatus.ProtocolError)
                     throw;
 
-                var response = (HttpWebResponse)ex.Response;
+                var response = (HttpWebResponse) ex.Response;
 
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.NotModified, "Status Code NotModified");
                 return;
@@ -120,7 +121,7 @@
             Assert.Fail("The Exception should raise");
         }
 
-#if NET452 || NET46
+#if NETFX
         [Test]
         public void GetInitialPartial()
         {
@@ -286,9 +287,9 @@
         [Test]
         public async Task GetNotPartial()
         {
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestHelper.BigDataFile);
-            
-            using (var response = (HttpWebResponse)await request.GetResponseAsync())
+            var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + TestHelper.BigDataFile);
+
+            using (var response = (HttpWebResponse) await request.GetResponseAsync())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
@@ -303,7 +304,7 @@
             }
         }
 
-#if NET452 || NET46
+#if NETFX
         [Test]
         public async Task GetGzipCompressFile()
         {
@@ -330,10 +331,10 @@
         [Test]
         public async Task TestHeadIndex()
         {
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
+            var request = (HttpWebRequest) WebRequest.Create(WebServerUrl);
             request.Method = HttpVerbs.Head.ToString();
 
-            using (var response = (HttpWebResponse)await request.GetResponseAsync())
+            using (var response = (HttpWebResponse) await request.GetResponseAsync())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
@@ -353,7 +354,7 @@
 
             using (var server = new WebServer(endpoint))
             {
-                server.RegisterModule(new StaticFilesModule(root) { UseRamCache = false });
+                server.RegisterModule(new StaticFilesModule(root) {UseRamCache = false});
                 var runTask = server.RunAsync();
 
                 using (var webClient = new HttpClient())

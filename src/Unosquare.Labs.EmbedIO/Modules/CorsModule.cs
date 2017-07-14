@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
+    using Constants;
     using System.Threading.Tasks;
     using System;
     using System.Linq;
@@ -23,70 +24,76 @@
         /// <param name="origins">The valid origins, default all</param>
         /// <param name="headers">The valid headers, default all</param>
         /// <param name="methods">The valid method, default all</param>
-        public CorsModule(string origins = Constants.CorsWildcard, string headers = Constants.CorsWildcard,
-            string methods = Constants.CorsWildcard)
+        public CorsModule(string origins = Strings.CorsWildcard, string headers = Strings.CorsWildcard,
+            string methods = Strings.CorsWildcard)
         {
 
-            if (origins == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(origins));
-            if (headers == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(headers));
-            if (methods == null) throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(methods));
+            if (origins == null) throw new ArgumentNullException(nameof(origins));
+            if (headers == null) throw new ArgumentNullException(nameof(headers));
+            if (methods == null) throw new ArgumentNullException(nameof(methods));
 
-            var validOrigins = origins.ToLower().Split(Constants.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
-            var validMethods = methods.ToLower().Split(Constants.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
+            var validOrigins =
+                origins.ToLower()
+                    .Split(Strings.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(x => x.Trim());
+            var validMethods =
+                methods.ToLower()
+                    .Split(Strings.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(x => x.Trim());
 
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (context, ct) =>
             {
                 // If we allow all we don't need to filter
-                if (origins == Constants.CorsWildcard && headers == Constants.CorsWildcard && methods == Constants.CorsWildcard)
+                if (origins == Strings.CorsWildcard && headers == Strings.CorsWildcard &&
+                    methods == Strings.CorsWildcard)
                 {
-                    context.Response.Headers.Add(Constants.HeaderAccessControlAllowOrigin);
+                    context.Response.Headers.Add(Headers.AccessControlAllowOrigin);
                     return Task.FromResult(false);
                 }
 
-                var currentOrigin = context.RequestHeader(Constants.HeaderOrigin);
-                var currentHeader = context.RequestHeader(Constants.HeaderAccessControlRequestHeaders);
-                var currentMethod = context.RequestHeader(Constants.HeaderAccessControlRequestMethod);
+                var currentOrigin = context.RequestHeader(Headers.Origin);
+                var currentHeader = context.RequestHeader(Headers.AccessControlRequestHeaders);
+                var currentMethod = context.RequestHeader(Headers.AccessControlRequestMethod);
 
                 if (string.IsNullOrWhiteSpace(currentOrigin) && context.Request.IsLocal)
                 {
                     return Task.FromResult(false);
                 }
 
-                if (origins != Constants.CorsWildcard)
+                if (origins != Strings.CorsWildcard)
                 {
                     if (validOrigins.Contains(currentOrigin))
                     {
-                        context.Response.Headers.Add(Constants.HeaderAccessControlAllowOrigin.Replace("*", currentOrigin));
+                        context.Response.Headers.Add(Headers.AccessControlAllowOrigin.Replace("*", currentOrigin));
 
                         if (context.RequestVerb() == HttpVerbs.Options)
                         {
                             if (String.IsNullOrWhiteSpace(currentHeader) == false)
                             {
                                 // TODO: I need to remove headers out from AllowHeaders
-                                context.Response.Headers.Add(Constants.HeaderAccessControlAllowHeaders + currentHeader);
+                                context.Response.Headers.Add(Headers.AccessControlAllowHeaders + currentHeader);
                             }
 
                             if (string.IsNullOrWhiteSpace(currentMethod) == false)
                             {
                                 var currentMethods = currentMethod.ToLower()
-                                    .Split(Constants.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
+                                    .Split(Strings.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries)
+                                    .Select(x => x.Trim());
 
-                                if (methods == Constants.CorsWildcard || currentMethods.All(validMethods.Contains))
+                                if (methods == Strings.CorsWildcard || currentMethods.All(validMethods.Contains))
                                 {
-                                    context.Response.Headers.Add(Constants.HeaderAccessControlAllowMethods + currentMethod);
+                                    context.Response.Headers.Add(Headers.AccessControlAllowMethods + currentMethod);
                                 }
                                 else
                                 {
-                                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                                    context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
 
                                     return Task.FromResult(false);
                                 }
                             }
-                            
+
                             return Task.FromResult(true);
                         }
-
-                        return Task.FromResult(false);
                     }
                 }
 
@@ -97,6 +104,6 @@
         /// <summary>
         /// Module's name
         /// </summary>
-        public override string Name => "CORS Module";
+        public override string Name => nameof(CorsModule);
     }
 }

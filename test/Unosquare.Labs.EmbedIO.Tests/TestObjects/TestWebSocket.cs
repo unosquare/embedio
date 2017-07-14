@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using Unosquare.Swan;
-#if NET46
+#if NET47
 using System.Net.WebSockets;
 #else
 using Unosquare.Net;

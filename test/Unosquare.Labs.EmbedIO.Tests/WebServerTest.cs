@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
+    using Constants;
     using NUnit.Framework;
     using System.Net;
     using System.Threading.Tasks;
@@ -28,7 +29,7 @@
         {
             var instance = new WebServer();
             Assert.IsNotNull(instance.Listener, "It has a HttpListener");
-            Assert.IsNotNull(Constants.DefaultMimeTypes, "It has MimeTypes");
+            Assert.IsNotNull(MimeTypes.DefaultMimeTypes, "It has MimeTypes");
         }
 
         [Test]
@@ -217,7 +218,7 @@
                 request.ContentType = $"application/json; charset={encodeName}";
 
                 var byteArray = Encoding.GetEncoding(encodeName).GetBytes("POST DATA");
-#if NET452 || NET46
+#if NETFX
                 request.ContentLength = byteArray.Length;
 #endif
                 var requestStream = await request.GetRequestStreamAsync();
@@ -240,7 +241,7 @@
             }
         }
 
-#if NET452 || NET46
+#if NETFX
         [Test]
         public async Task TestWebModuleRedirect()
         {

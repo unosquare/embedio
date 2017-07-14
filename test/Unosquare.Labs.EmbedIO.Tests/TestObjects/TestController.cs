@@ -1,11 +1,12 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
+    using Constants;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Modules;
-#if NET46
+#if NET47
     using System.Net;
 #else
     using Net;

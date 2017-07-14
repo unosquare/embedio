@@ -9,7 +9,7 @@
     "Microsoft.Data.SQLite": "1.1.0",
     "Unosquare.Labs.EmbedIO": { "target": "project" },
     "LiteLib": "0.12.1",
-    "Tubular.ServerSide": "1.4.0"
+    "Tubular.ServerSide": "1.4.4"
   },
 
   "frameworks": {
@@ -18,10 +18,11 @@
         "Microsoft.NETCore.App": "1.1.2"
       }
     },
-    "net452": {
+    "net462": {
       "frameworkAssemblies": {
         "System.ComponentModel.DataAnnotations": ""
-      }
+      },
+      "buildOptions": { "define": [ "NET47" ] }
     },
     "net46": {
       "frameworkAssemblies": {

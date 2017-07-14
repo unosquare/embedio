@@ -1,4 +1,6 @@
-﻿namespace Unosquare.Labs.EmbedIO.Modules
+﻿using Unosquare.Labs.EmbedIO.Constants;
+
+namespace Unosquare.Labs.EmbedIO.Modules
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +10,7 @@
     using System.Threading.Tasks;
     using System.Reflection;
     using Swan;
-#if NET46
+#if NET47
     using System.Net.WebSockets;
 #else
     using Net;
@@ -73,12 +75,13 @@
         /// <summary>
         /// Registers the web sockets server given a WebSocketsServer Type.
         /// </summary>
-        /// <param name="socketType"></param>
-        /// <exception cref="ArgumentException">Argument 'socketType' cannot be null;socketType</exception>
+        /// <param name="socketType">Type of the socket.</param>
+        /// <exception cref="System.ArgumentNullException">socketType</exception>
+        /// <exception cref="System.ArgumentException">Argument 'socketType' needs a WebSocketHandlerAttribute - socketType</exception>
         public void RegisterWebSocketsServer(Type socketType)
         {
             if (socketType == null)
-                throw new ArgumentException("Argument 'socketType' cannot be null", nameof(socketType));
+                throw new ArgumentNullException(nameof(socketType));
 
             var attribute =
                 socketType.GetTypeInfo().GetCustomAttributes(typeof(WebSocketHandlerAttribute), true).FirstOrDefault()
@@ -89,7 +92,7 @@
                 throw new ArgumentException("Argument 'socketType' needs a WebSocketHandlerAttribute",
                     nameof(socketType));
 
-            _serverMap[attribute.Path] = (WebSocketsServer)Activator.CreateInstance(socketType);
+            _serverMap[attribute.Path] = (WebSocketsServer) Activator.CreateInstance(socketType);
         }
 
         /// <summary>
@@ -113,14 +116,18 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="path">The path. For example: '/echo'</param>
         /// <param name="server">The server.</param>
-        /// <exception cref="ArgumentException">Argument 'server' cannot be null;server</exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// path
+        /// or
+        /// server
+        /// </exception>
         public void RegisterWebSocketsServer<T>(string path, T server)
             where T : WebSocketsServer
         {
             if (string.IsNullOrWhiteSpace(path))
-                throw new ArgumentException("Argument 'path' cannot be null", nameof(path));
+                throw new ArgumentNullException(nameof(path));
             if (server == null)
-                throw new ArgumentException("Argument 'server' cannot be null", nameof(server));
+                throw new ArgumentNullException(nameof(server));
 
             _serverMap[path] = server;
         }
@@ -167,7 +174,7 @@
         private readonly object _syncRoot = new object();
         private readonly List<WebSocketContext> _mWebSockets = new List<WebSocketContext>(10);
         private CancellationToken _ct = default(CancellationToken);
-#if NET46
+#if NET47
         private readonly int _maximumMessageSize;
 #endif
 
@@ -196,7 +203,7 @@
         protected WebSocketsServer(bool enableConnectionWatchdog, int maxMessageSize)
         {
             _enableDisconnectedSocketColletion = enableConnectionWatchdog;
-#if NET46
+#if NET47
             _maximumMessageSize = maxMessageSize;
 #endif
 
@@ -240,7 +247,7 @@
         /// <param name="context">The context.</param>
         /// <param name="ct">The cancellation token.</param>
         /// <returns></returns>
-#if NET46
+#if NET47
         public async Task AcceptWebSocket(System.Net.HttpListenerContext context, CancellationToken ct)
 #else
         public async Task AcceptWebSocket(HttpListenerContext context, CancellationToken ct)
@@ -251,12 +258,12 @@
             // first, accept the websocket
             $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
 
-#if NET46
+#if NET47
             const int receiveBufferSize = 2048;
 #endif
 
             var webSocketContext =
-#if NET46
+#if NET47
                 await context.AcceptWebSocketAsync(subProtocol: null, receiveBufferSize: receiveBufferSize,
                     keepAliveInterval: TimeSpan.FromSeconds(30));
 #else
@@ -270,15 +277,16 @@
                 // add the newly-connected client
                 _mWebSockets.Add(webSocketContext);
             }
-            
-            $"{ServerName} - WebSocket Accepted - There are {WebSockets.Count} sockets connected.".Debug(nameof(WebSocketsServer));
+
+            $"{ServerName} - WebSocket Accepted - There are {WebSockets.Count} sockets connected.".Debug(
+                nameof(WebSocketsServer));
 
             // call the abstract member
             OnClientConnected(webSocketContext);
 
             try
             {
-#if NET46
+#if NET47
 // define a receive buffer
                 var receiveBuffer = new byte[receiveBufferSize];
                 // define a dynamic buffer that holds multi-part receptions
@@ -387,8 +395,9 @@
                     }
                 }
             }
-            
-            $"{ServerName} - Collected {collectedCount} sockets. WebSocket Count: {WebSockets.Count}".Debug(nameof(WebSocketsServer));
+
+            $"{ServerName} - Collected {collectedCount} sockets. WebSocket Count: {WebSockets.Count}".Debug(
+                nameof(WebSocketsServer));
         }
 
         /// <summary>
@@ -403,7 +412,7 @@
                 if (payload == null) payload = string.Empty;
                 var buffer = System.Text.Encoding.UTF8.GetBytes(payload);
 
-#if NET46
+#if NET47
                 await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true,
                         _ct);
 #else
@@ -427,7 +436,7 @@
             {
                 if (payload == null) payload = new byte[0];
 
-#if NET46
+#if NET47
                 await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(payload), WebSocketMessageType.Binary, true,
                         _ct);
 #else
@@ -473,7 +482,7 @@
 
             try
             {
-#if NET46
+#if NET47
                 await webSocket.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, _ct);
 #else
                 await webSocket.WebSocket.CloseAsync(ct: _ct);

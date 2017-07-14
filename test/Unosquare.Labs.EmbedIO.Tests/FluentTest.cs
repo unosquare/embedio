@@ -6,7 +6,6 @@
     using TestObjects;
     using System;
     using System.Collections.Generic;
-    using System.IO;
 
     [TestFixture]
     public class FluentTest
@@ -77,7 +76,7 @@
         [Test]
         public void FluentWithStaticFolderArgumentException()
         {
-            Assert.Throws<ArgumentException>(() => {
+            Assert.Throws<ArgumentNullException>(() => {
                 Extensions.WithStaticFolderAt(null, TestHelper.SetupStaticFolder());
             });                     
         }
@@ -85,10 +84,12 @@
         [Test]
         public void FluentWithVirtualPaths()
         {
-            Dictionary<string, string> paths = new Dictionary<string, string>();
-            paths.Add("/Server/web", TestHelper.SetupStaticFolder());
-            paths.Add("/Server/api", TestHelper.SetupStaticFolder());
-            paths.Add("/Server/database", TestHelper.SetupStaticFolder());
+            var paths = new Dictionary<string, string>
+            {
+                {"/Server/web", TestHelper.SetupStaticFolder()},
+                {"/Server/api", TestHelper.SetupStaticFolder()},
+                {"/Server/database", TestHelper.SetupStaticFolder()}
+            };
 
             var webServer = WebServer.Create(WebServerUrl)
                 .WithVirtualPaths(paths);
@@ -102,12 +103,14 @@
         [Test]
         public void FluentWithVirtualPathsArgumentException()
         {
-            Dictionary<string, string> paths = new Dictionary<string, string>();
-            paths.Add("/Server/web", TestHelper.SetupStaticFolder());
-            paths.Add("/Server/api", TestHelper.SetupStaticFolder());
-            paths.Add("/Server/database", TestHelper.SetupStaticFolder());
+            var paths = new Dictionary<string, string>
+            {
+                {"/Server/web", TestHelper.SetupStaticFolder()},
+                {"/Server/api", TestHelper.SetupStaticFolder()},
+                {"/Server/database", TestHelper.SetupStaticFolder()}
+            };
 
-            Assert.Throws<ArgumentException>(() => {
+            Assert.Throws<ArgumentNullException>(() => {
                 Extensions.WithVirtualPaths(null, paths);
             });
         }
@@ -115,7 +118,7 @@
         [Test]
         public void FluentWithLocalSessionArgumentException()
         {
-            Assert.Throws<ArgumentException>(() => {
+            Assert.Throws<ArgumentNullException>(() => {
                 Extensions.WithLocalSession(null);
             });
         }
@@ -123,7 +126,7 @@
         [Test]
         public void FluentWithWebApiArgumentException()
         {
-            Assert.Throws<ArgumentException>(() => {
+            Assert.Throws<ArgumentNullException>(() => {
                 Extensions.WithWebApi(null);
             });
         }
@@ -131,7 +134,7 @@
         [Test]
         public void FluentWithWebSocketArgumentException()
         {
-            Assert.Throws<ArgumentException>(() => {
+            Assert.Throws<ArgumentNullException>(() => {
                 Extensions.WithWebSocket(null);
             });
         }
@@ -141,7 +144,7 @@
         {
             WebServer webServer = null;
 
-            Assert.Throws<ArgumentException>(() => {
+            Assert.Throws<ArgumentNullException>(() => {
                 Extensions.LoadApiControllers(webServer);
             });
         }
@@ -151,7 +154,7 @@
         {
             WebApiModule webApi = null;
 
-            Assert.Throws<ArgumentException>(() => {
+            Assert.Throws<ArgumentNullException>(() => {
                 Extensions.LoadApiControllers(webApi);
             });
         }
@@ -161,7 +164,7 @@
         {
             WebServer webServer = null;
 
-            Assert.Throws<ArgumentException>(() => {
+            Assert.Throws<ArgumentNullException>(() => {
                 Extensions.LoadWebSockets(webServer);
             });
         }
@@ -171,7 +174,7 @@
         {
             WebServer webServer = null;
 
-            Assert.Throws<ArgumentException>(() => {
+            Assert.Throws<ArgumentNullException>(() => {
                 Extensions.EnableCors(webServer);
             });
         }
@@ -180,7 +183,7 @@
         {
             WebServer webServer = null;
 
-            Assert.Throws<ArgumentException>(() => {
+            Assert.Throws<ArgumentNullException>(() => {
                 Extensions.WithWebApiController<TestController>(webServer);
             });
         }

@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NET452</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFX;NET46</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -29,7 +29,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;NET452</DefineConstants>
+    <DefineConstants>TRACE;NETFX;NET46</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -56,10 +56,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants.cs" />
+    <Compile Include="Constants\CompressionMethod.cs" />
+    <Compile Include="Constants\Headers.cs" />
+    <Compile Include="Constants\HttpVerbs.cs" />
+    <Compile Include="Constants\MimeTypes.cs" />
+    <Compile Include="Constants\Responses.cs" />
+    <Compile Include="Constants\RoutingStrategy.cs" />
+    <Compile Include="Constants\Strings.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Extensions.Fluent.cs" />
-    <Compile Include="HttpVerbs.cs" />
     <Compile Include="ISessionWebModule.cs" />
     <Compile Include="IWebModule.cs" />
     <Compile Include="Modules\CorsModule.cs" />

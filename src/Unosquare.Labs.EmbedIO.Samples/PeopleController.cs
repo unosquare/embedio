@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
+    using Constants;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -8,7 +9,7 @@
     using Tubular;
     using Swan;
     using Tubular.ObjectModel;
-#if NET46
+#if NET47
     using System.Net;
 #else
     using Unosquare.Net;
