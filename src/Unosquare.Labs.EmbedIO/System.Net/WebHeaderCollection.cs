@@ -46,6 +46,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Runtime.InteropServices;
 using System.Text;
+using HttpHeaders = Unosquare.Labs.EmbedIO.Constants.Headers;
 
 namespace Unosquare.Net
 {
@@ -152,7 +153,7 @@ namespace Unosquare.Net
                     {
                         "AcceptEncoding",
                         new HttpHeaderInfo(
-                            "Accept-Encoding",
+                            HttpHeaders.AcceptEncoding,
                             HttpHeaderType.Request | HttpHeaderType.MultiValue)
                     },
                     {
@@ -164,7 +165,7 @@ namespace Unosquare.Net
                     {
                         "AcceptRanges",
                         new HttpHeaderInfo(
-                            "Accept-Ranges",
+                            HttpHeaders.AcceptRanges,
                             HttpHeaderType.Response | HttpHeaderType.MultiValue)
                     },
                     {
@@ -188,7 +189,7 @@ namespace Unosquare.Net
                     {
                         "CacheControl",
                         new HttpHeaderInfo(
-                            "Cache-Control",
+                            HttpHeaders.CacheControl,
                             HttpHeaderType.Request | HttpHeaderType.Response | HttpHeaderType.MultiValue)
                     },
                     {
@@ -203,7 +204,7 @@ namespace Unosquare.Net
                     {
                         "ContentEncoding",
                         new HttpHeaderInfo(
-                            "Content-Encoding",
+                            HttpHeaders.ContentEncoding,
                             HttpHeaderType.Request | HttpHeaderType.Response | HttpHeaderType.MultiValue)
                     },
                     {
@@ -243,9 +244,9 @@ namespace Unosquare.Net
                             HttpHeaderType.Request | HttpHeaderType.Response | HttpHeaderType.Restricted)
                     },
                     {
-                        "Cookie",
+                        HttpHeaders.Cookie,
                         new HttpHeaderInfo(
-                            "Cookie",
+                            HttpHeaders.Cookie,
                             HttpHeaderType.Request)
                     },
                     {
@@ -267,15 +268,15 @@ namespace Unosquare.Net
                             HttpHeaderType.Request | HttpHeaderType.Restricted | HttpHeaderType.MultiValue)
                     },
                     {
-                        "Expires",
+                        HttpHeaders.Expires,
                         new HttpHeaderInfo(
-                            "Expires",
+                            HttpHeaders.Expires,
                             HttpHeaderType.Request | HttpHeaderType.Response)
                     },
                     {
-                        "ETag",
+                        HttpHeaders.ETag,
                         new HttpHeaderInfo(
-                            "ETag",
+                            HttpHeaders.ETag,
                             HttpHeaderType.Response)
                     },
                     {
@@ -299,7 +300,7 @@ namespace Unosquare.Net
                     {
                         "IfModifiedSince",
                         new HttpHeaderInfo(
-                            "If-Modified-Since",
+                            HttpHeaders.IfModifiedSince,
                             HttpHeaderType.Request | HttpHeaderType.Restricted)
                     },
                     {
@@ -329,7 +330,7 @@ namespace Unosquare.Net
                     {
                         "LastModified",
                         new HttpHeaderInfo(
-                            "Last-Modified",
+                            HttpHeaders.LastModified,
                             HttpHeaderType.Request | HttpHeaderType.Response)
                     },
                     {
@@ -345,9 +346,9 @@ namespace Unosquare.Net
                             HttpHeaderType.Request)
                     },
                     {
-                        "Pragma",
+                        HttpHeaders.Pragma,
                         new HttpHeaderInfo(
-                            "Pragma",
+                            HttpHeaders.Pragma,
                             HttpHeaderType.Request | HttpHeaderType.Response)
                     },
                     {

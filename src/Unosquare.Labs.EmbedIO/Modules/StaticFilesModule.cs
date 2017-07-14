@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
+    using Constants;
     using EmbedIO;
     using System;
     using System.Collections.Concurrent;
@@ -24,18 +25,18 @@
         /// <summary>
         /// The chuck size for sending files
         /// </summary>
-        private const int ChuckSize = 256*1024;
+        private const int ChuckSize = 256 * 1024;
 
         /// <summary>
         /// The maximum gzip input length
         /// </summary>
-        private const int MaxGzipInputLength = 4*1024*1024;
+        private const int MaxGzipInputLength = 4 * 1024 * 1024;
 
         private readonly Dictionary<string, string> m_VirtualPaths =
-            new Dictionary<string, string>(Constants.StandardStringComparer);
+            new Dictionary<string, string>(Strings.StandardStringComparer);
 
         private readonly Dictionary<string, string> m_MimeTypes =
-            new Dictionary<string, string>(Constants.StandardStringComparer);
+            new Dictionary<string, string>(Strings.StandardStringComparer);
 
         /// <summary>
         /// Default document constant to "index.html"
@@ -114,7 +115,8 @@
         /// <value>
         /// The virtual paths.
         /// </value>
-        public ReadOnlyDictionary<string, string> VirtualPaths => new ReadOnlyDictionary<string, string>(m_VirtualPaths);
+        public ReadOnlyDictionary<string, string> VirtualPaths => new ReadOnlyDictionary<string, string>(m_VirtualPaths)
+        ;
 
         /// <summary>
         /// Gets the name of this module.
@@ -176,12 +178,12 @@
 // Otherwise, enable it by default
             this.UseRamCache = true;
 #endif
-            RamCache = new ConcurrentDictionary<string, RamCacheEntry>(Constants.StaticFileStringComparer);
-            MaxRamCacheFileSize = 250*1024;
+            RamCache = new ConcurrentDictionary<string, RamCacheEntry>(Strings.StaticFileStringComparer);
+            MaxRamCacheFileSize = 250 * 1024;
             DefaultDocument = DefaultDocumentName;
 
             // Populate the default MIME types
-            foreach (var kvp in Constants.DefaultMimeTypes)
+            foreach (var kvp in Constants.MimeTypes.DefaultMimeTypes)
             {
                 m_MimeTypes.Add(kvp.Key, kvp.Value);
             }
@@ -224,13 +226,13 @@
             // Check if the requested local path is part of the root File System Path
             if (IsPartOfPath(requestFullLocalPath, baseLocalPath) == false)
             {
-                context.Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                context.Response.StatusCode = (int) System.Net.HttpStatusCode.Forbidden;
                 return true;
             }
 
             var eTagValid = false;
             Stream buffer = null;
-            var partialHeader = context.RequestHeader(Constants.HeaderRange);
+            var partialHeader = context.RequestHeader(Headers.Range);
             var usingPartial = string.IsNullOrWhiteSpace(partialHeader) == false && partialHeader.StartsWith("bytes=");
 
             if (ExistsLocalPath(requestLocalPath, ref requestFullLocalPath) == false)
@@ -240,7 +242,7 @@
 
             var fileDate = File.GetLastWriteTime(requestFullLocalPath);
 
-            var requestHash = context.RequestHeader(Constants.HeaderIfNotMatch);
+            var requestHash = context.RequestHeader(Headers.IfNotMatch);
 
             if (RamCache.ContainsKey(requestFullLocalPath) && RamCache[requestFullLocalPath].LastModified == fileDate)
             {
@@ -251,7 +253,7 @@
                 if (string.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
                 {
                     buffer = new MemoryStream(RamCache[requestFullLocalPath].Buffer);
-                    context.Response.AddHeader(Constants.HeaderETag, currentHash);
+                    context.Response.AddHeader(Headers.ETag, currentHash);
                 }
                 else
                 {
@@ -275,10 +277,10 @@
 
             // check to see if the file was modified or e-tag is the same
             var utcFileDateString = fileDate.ToUniversalTime()
-                .ToString(Constants.BrowserTimeFormat, Constants.StandardCultureInfo);
+                .ToString(Strings.BrowserTimeFormat, Strings.StandardCultureInfo);
 
             if (usingPartial == false &&
-                (eTagValid || context.RequestHeader(Constants.HeaderIfModifiedSince).Equals(utcFileDateString)))
+                (eTagValid || context.RequestHeader(Headers.IfModifiedSince).Equals(utcFileDateString)))
             {
                 SetStatusCode304(context);
                 return true;
@@ -311,7 +313,7 @@
                 if (upperByteIndex > fileSize)
                 {
                     context.Response.StatusCode = 416;
-                    context.Response.AddHeader(Constants.HeaderContentRanges,
+                    context.Response.AddHeader(Headers.ContentRanges,
                         $"bytes */{fileSize}");
 
                     return true;
@@ -325,18 +327,19 @@
                 {
                     byteLength = upperByteIndex - lowerByteIndex + 1;
 
-                    context.Response.AddHeader(Constants.HeaderContentRanges,
+                    context.Response.AddHeader(Headers.ContentRanges,
                         $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
 
                     context.Response.StatusCode = 206;
 
-                    $"Opening stream {requestFullLocalPath} bytes {lowerByteIndex}-{upperByteIndex} size {byteLength}".Debug();
+                    $"Opening stream {requestFullLocalPath} bytes {lowerByteIndex}-{upperByteIndex} size {byteLength}"
+                        .Debug();
                 }
             }
             else
             {
                 if (UseGzip &&
-                    context.RequestHeader(Constants.HeaderAcceptEncoding).Contains(Constants.HeaderCompressionGzip) &&
+                    context.RequestHeader(Headers.AcceptEncoding).Contains(Headers.CompressionGzip) &&
                     buffer.Length < MaxGzipInputLength &&
                     // Ignore audio/video from compression
                     context.Response.ContentType?.StartsWith("audio") == false &&
@@ -344,7 +347,7 @@
                 {
                     // Perform compression if available
                     buffer = buffer.Compress();
-                    context.Response.AddHeader(Constants.HeaderContentEncoding, Constants.HeaderCompressionGzip);
+                    context.Response.AddHeader(Headers.ContentEncoding, Headers.CompressionGzip);
                     lowerByteIndex = 0;
                 }
 
@@ -400,23 +403,23 @@
             if (MimeTypes.ContainsKey(fileExtension))
                 context.Response.ContentType = MimeTypes[fileExtension];
 
-            context.Response.AddHeader(Constants.HeaderCacheControl,
-                DefaultHeaders.ContainsKey(Constants.HeaderCacheControl)
-                    ? DefaultHeaders[Constants.HeaderCacheControl]
+            context.Response.AddHeader(Headers.CacheControl,
+                DefaultHeaders.ContainsKey(Headers.CacheControl)
+                    ? DefaultHeaders[Headers.CacheControl]
                     : "private");
 
-            context.Response.AddHeader(Constants.HeaderPragma,
-                DefaultHeaders.ContainsKey(Constants.HeaderPragma)
-                    ? DefaultHeaders[Constants.HeaderPragma]
+            context.Response.AddHeader(Headers.Pragma,
+                DefaultHeaders.ContainsKey(Headers.Pragma)
+                    ? DefaultHeaders[Headers.Pragma]
                     : string.Empty);
 
-            context.Response.AddHeader(Constants.HeaderExpires,
-                DefaultHeaders.ContainsKey(Constants.HeaderExpires)
-                    ? DefaultHeaders[Constants.HeaderExpires]
+            context.Response.AddHeader(Headers.Expires,
+                DefaultHeaders.ContainsKey(Headers.Expires)
+                    ? DefaultHeaders[Headers.Expires]
                     : string.Empty);
 
-            context.Response.AddHeader(Constants.HeaderLastModified, utcFileDateString);
-            context.Response.AddHeader(Constants.HeaderAcceptRanges, "bytes");
+            context.Response.AddHeader(Headers.LastModified, utcFileDateString);
+            context.Response.AddHeader(Headers.AcceptRanges, "bytes");
         }
 
         private bool UpdateFileCache(HttpListenerContext context, Stream buffer, DateTime fileDate, string requestHash,
@@ -444,7 +447,7 @@
                 }
             }
 
-            context.Response.AddHeader(Constants.HeaderETag, currentHash);
+            context.Response.AddHeader(Headers.ETag, currentHash);
 
             return false;
         }
@@ -545,19 +548,19 @@
 
         private void SetStatusCode304(HttpListenerContext context)
         {
-            context.Response.AddHeader(Constants.HeaderCacheControl,
-                DefaultHeaders.ContainsKey(Constants.HeaderCacheControl)
-                    ? DefaultHeaders[Constants.HeaderCacheControl]
+            context.Response.AddHeader(Headers.CacheControl,
+                DefaultHeaders.ContainsKey(Headers.CacheControl)
+                    ? DefaultHeaders[Headers.CacheControl]
                     : "private");
 
-            context.Response.AddHeader(Constants.HeaderPragma,
-                DefaultHeaders.ContainsKey(Constants.HeaderPragma)
-                    ? DefaultHeaders[Constants.HeaderPragma]
+            context.Response.AddHeader(Headers.Pragma,
+                DefaultHeaders.ContainsKey(Headers.Pragma)
+                    ? DefaultHeaders[Headers.Pragma]
                     : string.Empty);
 
-            context.Response.AddHeader(Constants.HeaderExpires,
-                DefaultHeaders.ContainsKey(Constants.HeaderExpires)
-                    ? DefaultHeaders[Constants.HeaderExpires]
+            context.Response.AddHeader(Headers.Expires,
+                DefaultHeaders.ContainsKey(Headers.Expires)
+                    ? DefaultHeaders[Headers.Expires]
                     : string.Empty);
 
             context.Response.ContentType = string.Empty;

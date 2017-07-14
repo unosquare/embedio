@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
+    using Constants;
     using System;
     using System.Threading;
     using System.Threading.Tasks;

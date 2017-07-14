@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
+    using Constants;
     using System;
     using System.Collections.Generic;
     using System.Linq;

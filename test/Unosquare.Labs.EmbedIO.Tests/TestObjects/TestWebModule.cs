@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Unosquare.Labs.EmbedIO.Constants;
 
 namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {

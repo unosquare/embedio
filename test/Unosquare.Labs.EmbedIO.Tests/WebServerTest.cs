@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
+    using Constants;
     using NUnit.Framework;
     using System.Net;
     using System.Threading.Tasks;
@@ -28,7 +29,7 @@
         {
             var instance = new WebServer();
             Assert.IsNotNull(instance.Listener, "It has a HttpListener");
-            Assert.IsNotNull(Constants.DefaultMimeTypes, "It has MimeTypes");
+            Assert.IsNotNull(MimeTypes.DefaultMimeTypes, "It has MimeTypes");
         }
 
         [Test]

@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
+    using Constants;
     using EmbedIO;
     using System;
     using System.Threading.Tasks;
@@ -26,7 +27,7 @@
         /// The concurrent dictionary holding the sessions
         /// </summary>
         protected readonly Dictionary<string, SessionInfo> m_Sessions =
-            new Dictionary<string, SessionInfo>(Constants.StandardStringComparer);
+            new Dictionary<string, SessionInfo>(Strings.StandardStringComparer);
 
         /// <summary>
         /// The sessions dictionary synchronization lock
@@ -89,9 +90,9 @@
         private void FixupSessionCookie(HttpListenerContext context)
         {
             // get the real "__session" cookie value because sometimes there's more than 1 value and System.Net.Cookie only supports 1 value per cookie
-            if (context.Request.Headers[Constants.CookieHeader] == null) return;
+            if (context.Request.Headers[Headers.Cookie] == null) return;
 
-            var cookieItems = context.Request.Headers[Constants.CookieHeader].Split(new[] { ';', ',' },
+            var cookieItems = context.Request.Headers[Headers.Cookie].Split(new[] { ';', ',' },
                 StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var cookieItem in cookieItems)

@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
+    using Constants;
     using NUnit.Framework;
     using Swan.Formatters;
     using System.Collections.Generic;

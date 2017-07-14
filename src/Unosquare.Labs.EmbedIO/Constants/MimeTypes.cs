@@ -1,193 +1,21 @@
-﻿namespace Unosquare.Labs.EmbedIO
+﻿using System.Collections.Generic;
+
+namespace Unosquare.Labs.EmbedIO.Constants
 {
-    using System.Text;
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-
     /// <summary>
-    /// Defines assembly-wide constants
+    /// Represents a MimeType collection
     /// </summary>
-    public static class Constants
+    public static class MimeTypes
     {
-        /// <summary>
-        /// The comma split character for String.Split method calls.
-        /// </summary>
-        public static readonly char[] CommaSplitChar = {','};
-
-        /// <summary>
-        /// The standard argument null exception message
-        /// </summary>
-        public const string ArgumentNullExceptionMessage = "Argument cannot be null.";
-
-        /// <summary>
-        /// The format culture used for header outputs
-        /// </summary>
-        public static readonly CultureInfo StandardCultureInfo =
-#if NETFX
-            CultureInfo.CreateSpecificCulture("en-US");
-#else
-            new CultureInfo("en-US");
-#endif
-
-        /// <summary>
-        /// The standard string comparer
-        /// </summary>
-        public static StringComparer StandardStringComparer =
-#if NETFX
-            StringComparer.InvariantCultureIgnoreCase;
-#else
-           StringComparer.OrdinalIgnoreCase;
-#endif
-
-        /// <summary>
-        /// The static file string comparer
-        /// </summary>
-        public static StringComparer StaticFileStringComparer =
-#if NETFX
-            StringComparer.InvariantCulture;
-#else
-           StringComparer.Ordinal;
-#endif
-        
-        /// <summary>
-        /// Content-Length HTTP Header
-        /// </summary>
-        public const string HeaderContentLength = "Content-Length";
-
-        /// <summary>
-        /// The cookie header
-        /// </summary>
-        public const string CookieHeader = "Cookie";
-
-        /// <summary>
-        /// Accept-Encoding HTTP Header
-        /// </summary>
-        public const string HeaderAcceptEncoding = "Accept-Encoding";
-
-        /// <summary>
-        /// Content-Encoding HTTP Header
-        /// </summary>
-        public const string HeaderContentEncoding = "Content-Encoding";
-
-        /// <summary>
-        /// If-Modified-Since HTTP Header
-        /// </summary>
-        public const string HeaderIfModifiedSince = "If-Modified-Since";
-
-        /// <summary>
-        /// Cache-Control HTTP Header
-        /// </summary>
-        public const string HeaderCacheControl = "Cache-Control";
-
-        /// <summary>
-        /// Pragma HTTP Header
-        /// </summary>
-        public const string HeaderPragma = "Pragma";
-
-        /// <summary>
-        /// Expires HTTP Header
-        /// </summary>
-        public const string HeaderExpires = "Expires";
-
-        /// <summary>
-        /// Last-Modified HTTP Header
-        /// </summary>
-        public const string HeaderLastModified = "Last-Modified";
-
-        /// <summary>
-        /// If-None-Match HTTP Header
-        /// </summary>
-        public const string HeaderIfNotMatch = "If-None-Match";
-
-        /// <summary>
-        /// ETag HTTP Header
-        /// </summary>
-        public const string HeaderETag = "ETag";
-
-        /// <summary>
-        /// Accept-Ranges HTTP Header
-        /// </summary>
-        public const string HeaderAcceptRanges = "Accept-Ranges";
-
-        /// <summary>
-        /// Range HTTP Header
-        /// </summary>
-        public const string HeaderRange = "Range";
-
-        /// <summary>
-        /// Content-Range HTTP Header
-        /// </summary>
-        public const string HeaderContentRanges = "Content-Range";
-
-        /// <summary>
-        /// The header compression gzip
-        /// </summary>
-        public const string HeaderCompressionGzip = "gzip";
-
-        /// <summary>
-        ///  Default Browser time format
-        /// </summary>
-        public const string BrowserTimeFormat = "ddd, dd MMM yyyy HH:mm:ss 'GMT'";
-
-        /// <summary>
-        /// Default Http Status 404 response output
-        /// </summary>
-        public const string Response404Html = "<html><head></head><body><h1>404 - Not Found</h1></body></html>";
-
-        /// <summary>
-        /// Default CORS rule
-        /// </summary>
-        public const string CorsWildcard = "*";
-
-        /// <summary>
-        /// Access-Control-Allow-Origin HTTP Header
-        /// </summary>
-        public const string HeaderAccessControlAllowOrigin = "Access-Control-Allow-Origin: *";
-
-        /// <summary>
-        /// Access-Control-Allow-Headers HTTP Header
-        /// </summary>
-        public const string HeaderAccessControlAllowHeaders = "Access-Control-Allow-Headers: ";
-
-        /// <summary>
-        /// Access-Control-Allow-Methods HTTP Header
-        /// </summary>
-        public const string HeaderAccessControlAllowMethods = "Access-Control-Allow-Methods: ";
-
-        /// <summary>
-        /// Origin HTTP Header
-        /// </summary>
-        public const string HeaderOrigin = "Origin";
-
-        /// <summary>
-        /// Access-Control-Request-Headers HTTP Header
-        /// </summary>
-        public const string HeaderAccessControlRequestHeaders = "Access-Control-Request-Headers";
-
-        /// <summary>
-        /// Access-Control-Request-Headers HTTP Method
-        /// </summary>
-        public const string HeaderAccessControlRequestMethod = "Access-Control-Request-Method";
-
-        /// <summary>
-        /// Default Http Status 500 response output
-        /// The first format argument takes the error message.
-        /// The second format argument takes the stack trace.
-        /// </summary>
-        public const string Response500HtmlFormat =
-            "<html><head></head><body><h1>500 - Internal Server Error</h1><h2>Message</h2><pre>{0}</pre><h2>Stack Trace</h2><pre>\r\n{1}</pre></body></html>";
-
         /// <summary>
         /// A big list of default MIME types
         /// Originally started from: http://stackoverflow.com/questions/1029740/get-mime-type-from-filename-extension
         /// </summary>
         public static readonly Dictionary<string, string> DefaultMimeTypes =
-            new Dictionary<string, string>(StandardStringComparer)
+            new Dictionary<string, string>(Strings.StandardStringComparer)
             {
                 #region Big list of MIME types
 
-                // 
                 // from C:\Windows\System32\inetsrv\config\applicationHost.config
                 // some added, including .7z and .dat
                 {".323", "text/h323"},
@@ -753,51 +581,5 @@
 
                 #endregion
             };
-    }
-
-    /// <summary>
-    /// Defines the routing strategy for URL matching
-    /// This is especially useful for REST service implementations
-    /// in the WebApi module.
-    /// </summary>
-    public enum RoutingStrategy
-    {
-        /// <summary>
-        /// The wildcard strategy, default one
-        /// </summary>
-        Wildcard,
-
-        /// <summary>
-        /// The Regex strategy
-        /// </summary>
-        Regex
-    }
-
-
-    /// <summary>
-    /// Specifies the compression method used to compress a message on
-    /// the WebSocket connection.
-    /// </summary>
-    /// <remarks>
-    /// The compression methods that can be used are defined in
-    /// <see href="https://tools.ietf.org/html/rfc7692">
-    /// Compression Extensions for WebSocket</see>.
-    /// </remarks>
-    public enum CompressionMethod : byte
-    {
-        /// <summary>
-        /// Specifies non compression.
-        /// </summary>
-        None,
-
-        /// <summary>
-        /// Specifies DEFLATE.
-        /// </summary>
-        Deflate,
-
-        /// <summary>
-        /// Specifies GZIP.
-        /// </summary>
-        Gzip
     }
 }

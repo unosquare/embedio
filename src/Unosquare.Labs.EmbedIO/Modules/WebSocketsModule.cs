@@ -1,4 +1,6 @@
-﻿namespace Unosquare.Labs.EmbedIO.Modules
+﻿using Unosquare.Labs.EmbedIO.Constants;
+
+namespace Unosquare.Labs.EmbedIO.Modules
 {
     using System;
     using System.Collections.Generic;
@@ -73,12 +75,13 @@
         /// <summary>
         /// Registers the web sockets server given a WebSocketsServer Type.
         /// </summary>
-        /// <param name="socketType"></param>
-        /// <exception cref="ArgumentException">Argument 'socketType' cannot be null;socketType</exception>
+        /// <param name="socketType">Type of the socket.</param>
+        /// <exception cref="System.ArgumentNullException">socketType</exception>
+        /// <exception cref="System.ArgumentException">Argument 'socketType' needs a WebSocketHandlerAttribute - socketType</exception>
         public void RegisterWebSocketsServer(Type socketType)
         {
             if (socketType == null)
-                throw new ArgumentException("Argument 'socketType' cannot be null", nameof(socketType));
+                throw new ArgumentNullException(nameof(socketType));
 
             var attribute =
                 socketType.GetTypeInfo().GetCustomAttributes(typeof(WebSocketHandlerAttribute), true).FirstOrDefault()
@@ -113,14 +116,18 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="path">The path. For example: '/echo'</param>
         /// <param name="server">The server.</param>
-        /// <exception cref="ArgumentException">Argument 'server' cannot be null;server</exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// path
+        /// or
+        /// server
+        /// </exception>
         public void RegisterWebSocketsServer<T>(string path, T server)
             where T : WebSocketsServer
         {
             if (string.IsNullOrWhiteSpace(path))
-                throw new ArgumentException("Argument 'path' cannot be null", nameof(path));
+                throw new ArgumentNullException(nameof(path));
             if (server == null)
-                throw new ArgumentException("Argument 'server' cannot be null", nameof(server));
+                throw new ArgumentNullException(nameof(server));
 
             _serverMap[path] = server;
         }

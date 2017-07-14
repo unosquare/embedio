@@ -1,4 +1,6 @@
-﻿namespace Unosquare.Labs.EmbedIO
+﻿using Unosquare.Labs.EmbedIO.Constants;
+
+namespace Unosquare.Labs.EmbedIO
 {
     using System;
     using System.Threading;

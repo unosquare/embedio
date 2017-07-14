@@ -1,11 +1,14 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
+    using Constants;
     using Modules;
-    using Swan;
     using System;
     using System.Collections.Generic;
+#if !NETSTANDARD1_3 && !UWP
+    using Swan;
     using System.Linq;
     using System.Reflection;
+#endif
 
     /// <summary>
     /// Extensions methods to EmbedIO's Fluent Interface
@@ -21,14 +24,14 @@
         /// <returns>
         /// The webserver instance.
         /// </returns>
-        /// <exception cref="System.ArgumentException">Argument cannot be null.;webserver</exception>
+        /// <exception cref="System.ArgumentNullException">webserver</exception>
         public static WebServer WithStaticFolderAt(this WebServer webserver, string rootPath,
             string defaultDocument = StaticFilesModule.DefaultDocumentName)
         {
             if (webserver == null)
-                throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
+                throw new ArgumentNullException(nameof(webserver));
 
-            webserver.RegisterModule(new StaticFilesModule(rootPath) { DefaultDocument = defaultDocument });
+            webserver.RegisterModule(new StaticFilesModule(rootPath) {DefaultDocument = defaultDocument});
             return webserver;
         }
 
@@ -39,14 +42,14 @@
         /// <param name="virtualPaths">The virtual paths.</param>
         /// <param name="defaultDocument">The default document.</param>
         /// <returns></returns>
-        /// <exception cref="System.ArgumentException"></exception>
+        /// <exception cref="System.ArgumentNullException">webserver</exception>
         public static WebServer WithVirtualPaths(this WebServer webserver, Dictionary<string, string> virtualPaths,
             string defaultDocument = StaticFilesModule.DefaultDocumentName)
         {
             if (webserver == null)
-                throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
+                throw new ArgumentNullException(nameof(webserver));
 
-            webserver.RegisterModule(new StaticFilesModule(virtualPaths) { DefaultDocument = defaultDocument });
+            webserver.RegisterModule(new StaticFilesModule(virtualPaths) {DefaultDocument = defaultDocument});
             return webserver;
         }
 
@@ -55,10 +58,11 @@
         /// </summary>
         /// <param name="webserver">The webserver instance.</param>
         /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">webserver</exception>
         public static WebServer WithLocalSession(this WebServer webserver)
         {
             if (webserver == null)
-                throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
+                throw new ArgumentNullException(nameof(webserver));
 
             webserver.RegisterModule(new LocalSessionModule());
             return webserver;
@@ -71,10 +75,11 @@
         /// <param name="webserver">The webserver instance.</param>
         /// <param name="assembly">The assembly to load WebApi Controllers from. Leave null to avoid autoloading.</param>
         /// <returns>The webserver instance.</returns>
+        /// <exception cref="System.ArgumentNullException">webserver</exception>
         public static WebServer WithWebApi(this WebServer webserver, Assembly assembly = null)
         {
             if (webserver == null)
-                throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
+                throw new ArgumentNullException(nameof(webserver));
 
             webserver.RegisterModule(new WebApiModule());
             return (assembly != null) ? webserver.LoadApiControllers(assembly) : webserver;
@@ -86,10 +91,11 @@
         /// <param name="webserver">The webserver instance.</param>
         /// <param name="assembly">The assembly to load Web Sockets from. Leave null to avoid autoloading.</param>
         /// <returns>The webserver instance.</returns>
+        /// <exception cref="System.ArgumentNullException">webserver</exception>
         public static WebServer WithWebSocket(this WebServer webserver, Assembly assembly = null)
         {
             if (webserver == null)
-                throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
+                throw new ArgumentNullException(nameof(webserver));
 
             webserver.RegisterModule(new WebSocketsModule());
             return (assembly != null) ? webserver.LoadWebSockets(assembly) : webserver;
@@ -101,10 +107,11 @@
         /// <param name="webserver">The webserver instance.</param>
         /// <param name="assembly">The assembly to load WebApi Controllers from. Leave null to load from the currently executing assembly.</param>
         /// <returns>The webserver instance.</returns>
+        /// <exception cref="System.ArgumentNullException">webserver</exception>
         public static WebServer LoadApiControllers(this WebServer webserver, Assembly assembly = null)
         {
             if (webserver == null)
-                throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
+                throw new ArgumentNullException(nameof(webserver));
 
             var types = (assembly ?? Assembly.GetEntryAssembly()).GetTypes();
             var apiControllers =
@@ -112,30 +119,30 @@
                                  && !x.GetTypeInfo().IsAbstract
                                  && x.GetTypeInfo().IsSubclassOf(typeof(WebApiController))).ToArray();
 
-            if (apiControllers.Any())
-            {
-                foreach (var apiController in apiControllers)
-                {
-                    if (webserver.Module<WebApiModule>() == null) webserver = webserver.WithWebApi();
+            if (!apiControllers.Any()) return webserver;
 
-                    webserver.Module<WebApiModule>().RegisterController(apiController);
-                    $"Registering WebAPI Controller '{apiController.Name}'".Debug();
-                }
+            foreach (var apiController in apiControllers)
+            {
+                if (webserver.Module<WebApiModule>() == null) webserver = webserver.WithWebApi();
+
+                webserver.Module<WebApiModule>().RegisterController(apiController);
+                $"Registering WebAPI Controller '{apiController.Name}'".Debug();
             }
 
             return webserver;
         }
 
         /// <summary>
-        /// Load all the WebApi Controllers in an assembly
+        /// 
         /// </summary>
         /// <param name="apiModule">The apíModule instance.</param>
         /// <param name="assembly">The assembly to load WebApi Controllers from. Leave null to load from the currently executing assembly.</param>
         /// <returns>The webserver instance.</returns>
+        /// <exception cref="System.ArgumentNullException">webserver</exception>
         public static WebApiModule LoadApiControllers(this WebApiModule apiModule, Assembly assembly = null)
         {
             if (apiModule == null)
-                throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(apiModule));
+                throw new ArgumentNullException(nameof(apiModule));
 
             var types = (assembly ?? Assembly.GetEntryAssembly()).GetTypes();
             var apiControllers =
@@ -143,12 +150,11 @@
                                  && !x.GetTypeInfo().IsAbstract
                                  && x.GetTypeInfo().IsSubclassOf(typeof(WebApiController))).ToArray();
 
-            if (apiControllers.Any())
+            if (!apiControllers.Any()) return apiModule;
+
+            foreach (var apiController in apiControllers)
             {
-                foreach (var apiController in apiControllers)
-                {
-                    apiModule.RegisterController(apiController);
-                }
+                apiModule.RegisterController(apiController);
             }
 
             return apiModule;
@@ -160,10 +166,11 @@
         /// <param name="webserver">The webserver instance.</param>
         /// <param name="assembly">The assembly to load WebSocketsServer types from. Leave null to load from the currently executing assembly.</param>
         /// <returns>The webserver instance.</returns>
+        /// <exception cref="System.ArgumentNullException">webserver</exception>
         public static WebServer LoadWebSockets(this WebServer webserver, Assembly assembly = null)
         {
             if (webserver == null)
-                throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
+                throw new ArgumentNullException(nameof(webserver));
 
             var types = (assembly ?? Assembly.GetEntryAssembly()).GetTypes();
             var sockerServers =
@@ -192,12 +199,13 @@
         /// <param name="headers">The valid headers, default all</param>
         /// <param name="methods">The valid method, default all</param>
         /// <returns></returns>
-        public static WebServer EnableCors(this WebServer webserver, string origins = Constants.CorsWildcard,
-            string headers = Constants.CorsWildcard,
-            string methods = Constants.CorsWildcard)
+        /// <exception cref="System.ArgumentNullException">webserver</exception>
+        public static WebServer EnableCors(this WebServer webserver, string origins = Strings.CorsWildcard,
+            string headers = Strings.CorsWildcard,
+            string methods = Strings.CorsWildcard)
         {
             if (webserver == null)
-                throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
+                throw new ArgumentNullException(nameof(webserver));
 
             webserver.RegisterModule(new CorsModule(origins, headers, methods));
 
@@ -209,10 +217,11 @@
         /// </summary>
         /// <param name="webserver">The webserver instance.</param>
         /// <returns>The webserver instance.</returns>
+        /// <exception cref="System.ArgumentNullException">webserver</exception>
         public static WebServer WithWebApiController<T>(this WebServer webserver) where T : WebApiController, new()
         {
             if (webserver == null)
-                throw new ArgumentException(Constants.ArgumentNullExceptionMessage, nameof(webserver));
+                throw new ArgumentNullException(nameof(webserver));
 
             if (webserver.Module<WebApiModule>() == null)
             {

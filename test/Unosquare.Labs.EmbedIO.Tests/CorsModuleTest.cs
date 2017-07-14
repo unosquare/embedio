@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
+    using Constants;
     using NUnit.Framework;
     using Swan.Formatters;
     using System;
@@ -53,9 +54,9 @@
         public async Task PreFlight()
         {
             var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestController.GetPath);
-            request.Headers[Constants.HeaderOrigin] = "http://unosquare.github.io";
-            request.Headers[Constants.HeaderAccessControlRequestMethod] = "post";
-            request.Headers[Constants.HeaderAccessControlRequestHeaders] = "content-type";
+            request.Headers[Headers.Origin] = "http://unosquare.github.io";
+            request.Headers[Headers.AccessControlRequestMethod] = "post";
+            request.Headers[Headers.AccessControlRequestHeaders] = "content-type";
             request.Method = "OPTIONS";
 
             using (var response = (HttpWebResponse)await request.GetResponseAsync())

@@ -1,4 +1,4 @@
-﻿namespace Unosquare.Labs.EmbedIO
+﻿namespace Unosquare.Labs.EmbedIO.Constants
 {
     /// <summary>
     /// Enumerates the different HTTP Verbs

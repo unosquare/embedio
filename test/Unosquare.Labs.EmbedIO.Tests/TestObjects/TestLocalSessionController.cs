@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
+    using Constants;
     using Modules;
 #if NET47
     using System.Net;
@@ -19,7 +20,7 @@
         [WebApiHandler(HttpVerbs.Get, "/getcookie")]
         public bool GetCookieC(WebServer server, HttpListenerContext context)
         {
-            System.Net.Cookie myCookie = new System.Net.Cookie(CookieName, CookieName);
+            var myCookie = new System.Net.Cookie(CookieName, CookieName);
             context.Response.Cookies.Add(myCookie);
 
             return context.JsonResponse(context.Response.Cookies[CookieName]);
@@ -48,10 +49,10 @@
 
             if (server.GetSession(context).Data.TryGetValue("sessionData", out data))
                 return context.JsonResponse(server.GetSession(context).Data["sessionData"].ToString());
+
             return context.JsonResponse("");
         }
-
-
+        
         [WebApiHandler(HttpVerbs.Get, "/geterror")]
         public bool GetError(WebServer server, HttpListenerContext context)
         {

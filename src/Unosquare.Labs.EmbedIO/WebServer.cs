@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
+    using Constants;
     using Swan;
     using System;
     using System.Collections.Generic;
@@ -20,7 +21,7 @@
     public class WebServer : IDisposable
     {
         private readonly List<IWebModule> _modules = new List<IWebModule>(4);
-        
+
         /// <summary>
         /// Gets the underlying HTTP listener.
         /// </summary>
@@ -64,7 +65,7 @@
         /// This constructor does not provide any Logging capabilities.
         /// </summary>
         public WebServer()
-            : this(new[] { "http://*/" }, RoutingStrategy.Wildcard)
+            : this(new[] {"http://*/"}, RoutingStrategy.Wildcard)
         {
             // placeholder
         }
@@ -75,7 +76,7 @@
         /// </summary>
         /// <param name="port">The port.</param>
         public WebServer(int port)
-            : this(new[] { "http://*:" + port + "/" }, RoutingStrategy.Wildcard)
+            : this(new[] {"http://*:" + port + "/"}, RoutingStrategy.Wildcard)
         {
             // placeholder
         }
@@ -87,7 +88,7 @@
         /// <param name="urlPrefix">The URL prefix.</param>
         /// <param name="strategy">The strategy.</param>
         public WebServer(string urlPrefix, RoutingStrategy strategy = RoutingStrategy.Wildcard)
-            : this(new[] { urlPrefix }, strategy)
+            : this(new[] {urlPrefix}, strategy)
         {
             // placeholder
         }
@@ -177,7 +178,8 @@
             }
             else
             {
-                $"Failed to register module '{module.GetType()}' because a module with the same type already exists.".Warn(nameof(WebServer));
+                $"Failed to register module '{module.GetType()}' because a module with the same type already exists."
+                    .Warn(nameof(WebServer));
             }
         }
 
@@ -191,7 +193,8 @@
 
             if (existingModule == null)
             {
-                $"Failed to unregister module '{moduleType}' because no module with that type has been previously registered.".Warn(nameof(WebServer));
+                $"Failed to unregister module '{moduleType}' because no module with that type has been previously registered."
+                    .Warn(nameof(WebServer));
             }
             else
             {
@@ -217,14 +220,16 @@
             try
             {
                 // Create a request endpoint string
-                var requestEndpoint = $"{context.Request?.RemoteEndPoint?.Address}:{context.Request?.RemoteEndPoint?.Port}";
+                var requestEndpoint =
+                    $"{context.Request?.RemoteEndPoint?.Address}:{context.Request?.RemoteEndPoint?.Port}";
 
                 // Generate a random request ID. It's currently not important but could be useful in the future.
                 requestId = string.Concat(DateTime.Now.Ticks.ToString(), requestEndpoint).GetHashCode().ToString("x2");
 
                 // Log the request and its ID
                 $"Start of Request {requestId}".Debug(nameof(WebServer));
-                $"Source {requestEndpoint} - {context.RequestVerb().ToString().ToUpperInvariant()}: {context.RequestPath()}".Debug(nameof(WebServer));
+                $"Source {requestEndpoint} - {context.RequestVerb().ToString().ToUpperInvariant()}: {context.RequestPath()}"
+                    .Debug(nameof(WebServer));
 
                 var processResult = await ProcessRequest(context, ct);
 
@@ -232,8 +237,8 @@
                 if (processResult == false)
                 {
                     "No module generated a response. Sending 404 - Not Found".Error();
-                    var responseBytes = System.Text.Encoding.UTF8.GetBytes(Constants.Response404Html);
-                    context.Response.StatusCode = (int)System.Net.HttpStatusCode.NotFound;
+                    var responseBytes = System.Text.Encoding.UTF8.GetBytes(Responses.Response404Html);
+                    context.Response.StatusCode = (int) System.Net.HttpStatusCode.NotFound;
                     await context.Response.OutputStream.WriteAsync(responseBytes, 0, responseBytes.Length, ct);
                 }
             }
@@ -266,7 +271,8 @@
             {
                 // Establish the handler
                 var handler = module.Handlers.FirstOrDefault(x =>
-                    string.Equals(x.Path, x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath(), StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(x.Path, x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath(),
+                        StringComparison.OrdinalIgnoreCase) &&
                     x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
 
                 if (handler?.ResponseHandler == null)
@@ -282,7 +288,8 @@
                         module.Server = this;
 
                     // Log the module and handler to be called and invoke as a callback.
-                    $"{module.Name}::{callback.GetMethodInfo().DeclaringType?.Name}.{callback.GetMethodInfo().Name}".Debug(nameof(WebServer));
+                    $"{module.Name}::{callback.GetMethodInfo().DeclaringType?.Name}.{callback.GetMethodInfo().Name}"
+                        .Debug(nameof(WebServer));
 
                     // Execute the callback
                     var handleResult = await callback(context, ct);
@@ -298,7 +305,7 @@
                 catch (Exception ex)
                 {
                     // Handle exceptions by returning a 500 (Internal Server Error) 
-                    if (context.Response.StatusCode != (int)System.Net.HttpStatusCode.Unauthorized)
+                    if (context.Response.StatusCode != (int) System.Net.HttpStatusCode.Unauthorized)
                     {
                         var errorMessage = ex.ExceptionMessage("Failing module name: " + module.Name);
 
@@ -306,12 +313,12 @@
                         ex.Log(nameof(WebServer), $"Failing module name: {module.Name}");
 
                         // Generate an HTML response
-                        var response = System.Net.WebUtility.HtmlEncode(string.Format(Constants.Response500HtmlFormat,
+                        var response = System.Net.WebUtility.HtmlEncode(string.Format(Responses.Response500HtmlFormat,
                             errorMessage, ex.StackTrace));
 
                         // Send the response over with the corresponding status code.
                         var responseBytes = System.Text.Encoding.UTF8.GetBytes(response);
-                        context.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
+                        context.Response.StatusCode = (int) System.Net.HttpStatusCode.InternalServerError;
                         context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
                     }
 

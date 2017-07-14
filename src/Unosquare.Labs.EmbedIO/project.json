@@ -1,5 +1,5 @@
 {
-  "version": "1.6.10-*",
+  "version": "1.7.1-*",
   "title": "EmbedIO Web Server",
   "description": "A tiny, cross-platform, module based, MIT-licensed web server. Supporting NET FX, NET Core, NET Standard and MONO.",
   "copyright": "Copyright © Unosquare 2013-2017",
@@ -12,7 +12,7 @@
   },
 
   "dependencies": {
-    "Unosquare.Swan": "0.14.7"
+    "Unosquare.Swan": "0.14.8"
   },
 
   "frameworks": {

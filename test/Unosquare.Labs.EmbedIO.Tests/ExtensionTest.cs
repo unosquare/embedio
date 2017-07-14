@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using Unosquare.Labs.EmbedIO.Constants;
 
 namespace Unosquare.Labs.EmbedIO.Tests
 {
@@ -16,7 +13,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
         {
             var buffer = System.Text.Encoding.UTF8.GetBytes("THIS IS DATA");
 
-            var compressBuffer = buffer.Compress(method, System.IO.Compression.CompressionMode.Compress);
+            var compressBuffer = buffer.Compress(method);
 
             Assert.IsNotNull(compressBuffer);
 
