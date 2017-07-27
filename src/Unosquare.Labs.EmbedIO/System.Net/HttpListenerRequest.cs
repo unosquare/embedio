@@ -43,25 +43,6 @@ using System.Threading.Tasks;
 
 namespace Unosquare.Net
 {
-    /// <devdoc>
-    ///    <para>
-    ///       Defines the HTTP version number supported by the <see cref='System.Net.HttpWebRequest'/> and
-    ///    <see cref='System.Net.HttpWebResponse'/> classes.
-    ///    </para>
-    /// </devdoc>
-    public class HttpVersion
-    {
-        /// <devdoc>
-        ///    <para>[To be supplied.]</para>
-        /// </devdoc>
-        public static readonly Version Version10 = new Version(1, 0);
-        /// <devdoc>
-        ///    <para>[To be supplied.]</para>
-        /// </devdoc>
-        public static readonly Version Version11 = new Version(1, 1);
-
-    }// class HttpVersion
-
     /// <summary>
     /// Represents an HTTP Listener's request
     /// </summary>
@@ -729,5 +710,24 @@ namespace Unosquare.Net
         }
 #endif
     }
+
+    /// <devdoc>
+    ///    <para>
+    ///       Defines the HTTP version number supported by the <see cref='System.Net.HttpWebRequest'/> and
+    ///    <see cref='System.Net.HttpWebResponse'/> classes.
+    ///    </para>
+    /// </devdoc>
+    public class HttpVersion
+    {
+        /// <devdoc>
+        ///    <para>[To be supplied.]</para>
+        /// </devdoc>
+        public static readonly Version Version10 = new Version(1, 0);
+        /// <devdoc>
+        ///    <para>[To be supplied.]</para>
+        /// </devdoc>
+        public static readonly Version Version11 = new Version(1, 1);
+
+    }// class HttpVersion
 }
 #endif

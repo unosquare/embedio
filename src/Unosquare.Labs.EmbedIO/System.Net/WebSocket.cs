@@ -1554,8 +1554,10 @@ namespace Unosquare.Net
 
             buff = new byte[FragmentLength];
             if (quo == 1 && rem == 0)
+            {
                 return stream.Read(buff, 0, FragmentLength) == FragmentLength &&
                        send(Fin.Final, opcode, buff, compressed, ct);
+            }
 
             /* Send fragmented */
 
@@ -1566,9 +1568,13 @@ namespace Unosquare.Net
 
             var n = rem == 0 ? quo - 2 : quo - 1;
             for (long i = 0; i < n; i++)
+            {
                 if (stream.Read(buff, 0, FragmentLength) != FragmentLength ||
                     !send(Fin.More, Opcode.Cont, buff, compressed, ct))
+                {
                     return false;
+                }
+            }
 
             // End
             if (rem == 0)

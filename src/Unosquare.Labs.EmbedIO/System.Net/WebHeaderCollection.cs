@@ -50,74 +50,6 @@ using HttpHeaders = Unosquare.Labs.EmbedIO.Constants.Headers;
 
 namespace Unosquare.Net
 {
-    [Flags]
-    internal enum HttpHeaderType
-    {
-        Unspecified = 0,
-        Request = 1,
-        Response = 1 << 1,
-        Restricted = 1 << 2,
-        MultiValue = 1 << 3,
-        MultiValueInRequest = 1 << 4,
-        MultiValueInResponse = 1 << 5
-    }
-
-    internal class HttpHeaderInfo
-    {
-        #region Private Fields
-
-        #endregion
-
-        #region Internal Constructors
-
-        internal HttpHeaderInfo(string name, HttpHeaderType type)
-        {
-            Name = name;
-            Type = type;
-        }
-
-        #endregion
-
-        #region Internal Properties
-
-        internal bool IsMultiValueInRequest
-            => (Type & HttpHeaderType.MultiValueInRequest) == HttpHeaderType.MultiValueInRequest;
-
-        internal bool IsMultiValueInResponse
-            => (Type & HttpHeaderType.MultiValueInResponse) == HttpHeaderType.MultiValueInResponse;
-
-        #endregion
-
-        #region Public Properties
-
-        public bool IsRequest => (Type & HttpHeaderType.Request) == HttpHeaderType.Request;
-
-        public bool IsResponse => (Type & HttpHeaderType.Response) == HttpHeaderType.Response;
-
-        public string Name { get; }
-
-        public HttpHeaderType Type { get; }
-
-        #endregion
-
-        #region Public Methods
-
-        public bool IsMultiValue(bool response)
-        {
-            return (Type & HttpHeaderType.MultiValue) == HttpHeaderType.MultiValue
-                ? (response ? IsResponse : IsRequest)
-                : (response ? IsMultiValueInResponse : IsMultiValueInRequest);
-        }
-
-        public bool IsRestricted(bool response)
-        {
-            return (Type & HttpHeaderType.Restricted) == HttpHeaderType.Restricted &&
-                   (response ? IsResponse : IsRequest);
-        }
-
-        #endregion
-    }
-
     /// <summary>
     /// Provides a collection of the HTTP headers associated with a request or response.
     /// </summary>
@@ -1295,6 +1227,74 @@ namespace Unosquare.Net
                 buff.AppendFormat("{0}: {1}\r\n", key, Get(key));
 
             return buff.Append("\r\n").ToString();
+        }
+
+        #endregion
+    }
+
+    [Flags]
+    internal enum HttpHeaderType
+    {
+        Unspecified = 0,
+        Request = 1,
+        Response = 1 << 1,
+        Restricted = 1 << 2,
+        MultiValue = 1 << 3,
+        MultiValueInRequest = 1 << 4,
+        MultiValueInResponse = 1 << 5
+    }
+
+    internal class HttpHeaderInfo
+    {
+        #region Private Fields
+
+        #endregion
+
+        #region Internal Constructors
+
+        internal HttpHeaderInfo(string name, HttpHeaderType type)
+        {
+            Name = name;
+            Type = type;
+        }
+
+        #endregion
+
+        #region Internal Properties
+
+        internal bool IsMultiValueInRequest
+            => (Type & HttpHeaderType.MultiValueInRequest) == HttpHeaderType.MultiValueInRequest;
+
+        internal bool IsMultiValueInResponse
+            => (Type & HttpHeaderType.MultiValueInResponse) == HttpHeaderType.MultiValueInResponse;
+
+        #endregion
+
+        #region Public Properties
+
+        public bool IsRequest => (Type & HttpHeaderType.Request) == HttpHeaderType.Request;
+
+        public bool IsResponse => (Type & HttpHeaderType.Response) == HttpHeaderType.Response;
+
+        public string Name { get; }
+
+        public HttpHeaderType Type { get; }
+
+        #endregion
+
+        #region Public Methods
+
+        public bool IsMultiValue(bool response)
+        {
+            return (Type & HttpHeaderType.MultiValue) == HttpHeaderType.MultiValue
+                ? (response ? IsResponse : IsRequest)
+                : (response ? IsMultiValueInResponse : IsMultiValueInRequest);
+        }
+
+        public bool IsRestricted(bool response)
+        {
+            return (Type & HttpHeaderType.Restricted) == HttpHeaderType.Restricted &&
+                   (response ? IsResponse : IsRequest);
         }
 
         #endregion

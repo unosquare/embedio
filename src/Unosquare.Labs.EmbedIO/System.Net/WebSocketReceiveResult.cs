@@ -1,33 +1,14 @@
 ﻿#if !NET47
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 // <copyright file="WebSocketReceiveResult.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
-//------------------------------------------------------------------------------
-
-using System;
+// ------------------------------------------------------------------------------
 
 namespace Unosquare.Net
 {
-    /// <summary>
-    /// Enums WS Message Type
-    /// </summary>
-    public enum WebSocketMessageType
-    {
-        /// <summary>
-        /// The text
-        /// </summary>
-        Text = 0,
-        /// <summary>
-        /// The binary
-        /// </summary>
-        Binary = 1,
-        /// <summary>
-        /// The close
-        /// </summary>
-        Close = 2
-    }
-    
+    using System;
+
     /// <summary>
     /// Represents a WS Receive result
     /// </summary>
@@ -72,6 +53,27 @@ namespace Unosquare.Net
         /// The type of the message.
         /// </value>
         public WebSocketMessageType MessageType { get; }
+    }
+
+    /// <summary>
+    /// Enums WS Message Type
+    /// </summary>
+    public enum WebSocketMessageType
+    {
+        /// <summary>
+        /// The text
+        /// </summary>
+        Text = 0,
+        
+        /// <summary>
+        /// The binary
+        /// </summary>
+        Binary = 1,
+        
+        /// <summary>
+        /// The close
+        /// </summary>
+        Close = 2
     }
 }
 #endif

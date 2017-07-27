@@ -21,9 +21,7 @@
         /// <param name="webserver">The webserver instance.</param>
         /// <param name="rootPath">The static folder path.</param>
         /// <param name="defaultDocument">The default document name</param>
-        /// <returns>
-        /// The webserver instance.
-        /// </returns>
+        /// <returns> The webserver instance.</returns>
         /// <exception cref="System.ArgumentNullException">webserver</exception>
         public static WebServer WithStaticFolderAt(this WebServer webserver, string rootPath,
             string defaultDocument = StaticFilesModule.DefaultDocumentName)
