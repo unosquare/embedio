@@ -27,13 +27,13 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.IO;
-using System.Net;
-using System.Runtime.InteropServices;
-
 namespace Unosquare.Net
 {
+    using System;
+    using System.IO;
+    using System.Net;
+    using System.Runtime.InteropServices;
+
     internal class RequestStream : Stream
     {
         readonly byte[] _buffer;
@@ -76,7 +76,7 @@ namespace Unosquare.Net
         // Returns 0 if we can keep reading from the base stream,
         // > 0 if we read something from the buffer.
         // -1 if we had a content length set and we finished reading that many bytes.
-        int FillFromBuffer(byte[] buffer, int off, int count)
+        private int FillFromBuffer(byte[] buffer, int off, int count)
         {
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));

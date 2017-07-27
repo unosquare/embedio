@@ -159,7 +159,6 @@ namespace Unosquare.Net
         }
 #endif
 
-
 #if AUTHENTICATION
 /// <summary>
 /// Gets or sets the authentication schemes.

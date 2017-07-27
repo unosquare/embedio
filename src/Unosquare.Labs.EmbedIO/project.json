@@ -8,10 +8,17 @@
     "Geovanni Perez"
   ],
   "buildOptions": {
+    "additionalArguments": [
+      "/ruleset:../../StyleCop.Analyzers.ruleset"
+    ],
     "xmlDoc": true
   },
 
   "dependencies": {
+    "StyleCop.Analyzers": {
+      "type": "build",
+      "version": "1.0.0"
+    },
     "Unosquare.Swan": "0.14.8"
   },
 

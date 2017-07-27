@@ -377,7 +377,8 @@ namespace Unosquare.Net
                     future = (current != null) ? (ArrayList) current.Clone() : new ArrayList();
                     if (!RemoveSpecial(future, prefix))
                         break; // Prefix not found
-                } while (Interlocked.CompareExchange(ref _unhandled, future, current) != current);
+                }
+                while (Interlocked.CompareExchange(ref _unhandled, future, current) != current);
                 CheckIfRemove();
                 return;
             }

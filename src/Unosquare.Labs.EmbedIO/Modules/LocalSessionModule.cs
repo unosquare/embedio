@@ -222,7 +222,6 @@
                 var cookieValue = context.Request.Cookies[SessionCookieName].Value;
                 return this[cookieValue];
             }
-
         }
 
         /// <summary>

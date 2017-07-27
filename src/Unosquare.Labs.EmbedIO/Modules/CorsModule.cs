@@ -27,7 +27,6 @@
         public CorsModule(string origins = Strings.CorsWildcard, string headers = Strings.CorsWildcard,
             string methods = Strings.CorsWildcard)
         {
-
             if (origins == null) throw new ArgumentNullException(nameof(origins));
             if (headers == null) throw new ArgumentNullException(nameof(headers));
             if (methods == null) throw new ArgumentNullException(nameof(methods));

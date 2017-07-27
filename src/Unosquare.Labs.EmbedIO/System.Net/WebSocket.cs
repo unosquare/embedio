@@ -387,7 +387,10 @@ namespace Unosquare.Net
         /// </value>
         public bool EnableRedirection
         {
-            get { return _enableRedirection; }
+            get
+            {
+                return _enableRedirection;
+            }
 
             set
             {
@@ -609,7 +612,6 @@ namespace Unosquare.Net
             message = "A wait time is zero or less.";
             return false;
         }
-
 
         // As server
         private async Task<bool> AcceptHandshakeAsync()
@@ -1898,7 +1900,6 @@ namespace Unosquare.Net
             return true;
         }
 
-
         // As server
         private static bool ValidateSecWebSocketKeyHeader(string value)
         {
@@ -2128,9 +2129,8 @@ namespace Unosquare.Net
             }
 
             var send = !code.IsReserved();
-            await InternalCloseAsync(new CloseEventArgs(code, reason), send, send);
+            await InternalCloseAsync(new CloseEventArgs(code, reason), send, send, ct: ct);
         }
-
 
         /// <summary>
         /// Establishes a WebSocket connection asynchronously.
