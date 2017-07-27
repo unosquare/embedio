@@ -305,6 +305,7 @@ namespace Unosquare.Net
                     {
                         UrlReferrer = new Uri("http://someone.is.screwing.with.the.headers.com/");
                     }
+
                     break;
                 case "cookie":
                     if (_cookies == null)

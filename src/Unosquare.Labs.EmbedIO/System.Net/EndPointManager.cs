@@ -56,6 +56,7 @@ namespace Unosquare.Net
                 {
                     RemovePrefix(prefix, listener);
                 }
+
                 throw;
             }
         }

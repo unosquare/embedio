@@ -496,6 +496,7 @@
                         }
 
                     }
+
                     break;
                 case CompressionMethod.None:
                     buffer.CopyTo(targetStream);

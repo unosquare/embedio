@@ -267,7 +267,11 @@ namespace Unosquare.Net
         /// <exception cref="System.Net.ProtocolViolationException">StatusCode must be between 100 and 999.</exception>
         public int StatusCode
         {
-            get { return _statusCode; }
+            get
+            {
+                return _statusCode;
+            }
+
             set
             {
                 if (_disposed)

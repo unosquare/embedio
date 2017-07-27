@@ -106,6 +106,7 @@ namespace Unosquare.Net
                     }
                     accepted = null;
                 }
+
                 return;
             }
             if (!asyn)
@@ -285,6 +286,7 @@ namespace Unosquare.Net
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -333,7 +335,8 @@ namespace Unosquare.Net
                     future = (current != null) ? (ArrayList) current.Clone() : new ArrayList();
                     prefix.Listener = listener;
                     AddSpecial(future, prefix);
-                } while (Interlocked.CompareExchange(ref _unhandled, future, current) != current);
+                }
+                while (Interlocked.CompareExchange(ref _unhandled, future, current) != current);
                 return;
             }
 
@@ -345,7 +348,8 @@ namespace Unosquare.Net
                     future = (current != null) ? (ArrayList) current.Clone() : new ArrayList();
                     prefix.Listener = listener;
                     AddSpecial(future, prefix);
-                } while (Interlocked.CompareExchange(ref _all, future, current) != current);
+                }
+                while (Interlocked.CompareExchange(ref _all, future, current) != current);
                 return;
             }
 
@@ -356,7 +360,7 @@ namespace Unosquare.Net
                 if (prefs.ContainsKey(prefix))
                 {
                     var other = (HttpListener) prefs[prefix];
-                    if (other != listener) // TODO: code.
+                    if (other != listener)
                         throw new HttpListenerException(400, "There's another listener for " + prefix);
                     return;
                 }

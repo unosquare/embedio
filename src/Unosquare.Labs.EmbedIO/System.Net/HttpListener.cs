@@ -217,7 +217,11 @@ namespace Unosquare.Net
         /// </value>
         public bool IgnoreWriteExceptions
         {
-            get { return _ignoreWriteExceptions; }
+            get
+            {
+                return _ignoreWriteExceptions;
+            }
+
             set
             {
                 CheckDisposed();
