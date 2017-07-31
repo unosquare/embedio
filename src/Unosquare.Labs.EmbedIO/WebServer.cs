@@ -80,6 +80,18 @@
         {
             // placeholder
         }
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebServer"/> class.
+        /// This constructor does not provide any Logging capabilities.
+        /// </summary>
+        /// <param name="port">The port.</param>
+        /// <param name="strategy">The strategy.</param>
+        public WebServer(int port, RoutingStrategy strategy = RoutingStrategy.Wildcard)
+            : this(new[] {"http://*:" + port + "/"}, strategy)
+        {
+            // placeholder
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer" /> class.
