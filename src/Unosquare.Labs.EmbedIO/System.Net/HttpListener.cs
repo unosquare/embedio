@@ -60,6 +60,8 @@ namespace Unosquare.Net
         AuthenticationSchemes _authSchemes;
         AuthenticationSchemeSelector _authSelector;
 #endif
+        private readonly ConcurrentDictionary<Guid, HttpListenerContext> _ctxQueue;
+        private readonly Hashtable _connections;
         private readonly HttpListenerPrefixCollection _prefixes;
         private string _realm;
         private bool _ignoreWriteExceptions;
@@ -69,10 +71,7 @@ namespace Unosquare.Net
         IMonoTlsProvider tlsProvider;
         MSI.MonoTlsSettings tlsSettings;
         X509Certificate certificate;
-#endif
-
-        private readonly ConcurrentDictionary<Guid, HttpListenerContext> _ctxQueue;
-        private readonly Hashtable _connections;
+#endif        
 
         // ServiceNameStore defaultServiceNames;
         // ExtendedProtectionPolicy _extendedProtectionPolicy;
@@ -400,7 +399,7 @@ namespace Unosquare.Net
         /// <summary>
         /// Gets the HTTP context asynchronously.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A task that represents the time delay for the httpListenerContext</returns>
         public async Task<HttpListenerContext> GetContextAsync()
         {
             while (true)

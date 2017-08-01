@@ -45,6 +45,7 @@ namespace Unosquare.Net
 {
     internal sealed class EndPointListener
     {
+        private readonly Dictionary<HttpConnection, HttpConnection> _unregistered;
         private readonly IPEndPoint _endpoint;
         private readonly Socket _sock;
         private Hashtable _prefixes; // Dictionary <ListenerPrefix, HttpListener>
@@ -53,8 +54,7 @@ namespace Unosquare.Net
 #if SSL
         private bool _secure = false;
         private X509Certificate _cert = null;
-#endif
-        private readonly Dictionary<HttpConnection, HttpConnection> _unregistered;
+#endif        
 
         public EndPointListener(HttpListener listener, IPAddress addr, int port, bool secure)
         {
@@ -366,7 +366,8 @@ namespace Unosquare.Net
                 }
                 p2 = (Hashtable) prefs.Clone();
                 p2[prefix] = listener;
-            } while (Interlocked.CompareExchange(ref _prefixes, p2, prefs) != prefs);
+            }
+            while (Interlocked.CompareExchange(ref _prefixes, p2, prefs) != prefs);
         }
 
         public void RemovePrefix(ListenerPrefix prefix, HttpListener listener)
@@ -395,7 +396,8 @@ namespace Unosquare.Net
                     future = (current != null) ? (ArrayList) current.Clone() : new ArrayList();
                     if (!RemoveSpecial(future, prefix))
                         break; // Prefix not found
-                } while (Interlocked.CompareExchange(ref _all, future, current) != current);
+                }
+                while (Interlocked.CompareExchange(ref _all, future, current) != current);
                 CheckIfRemove();
                 return;
             }
@@ -409,7 +411,8 @@ namespace Unosquare.Net
 
                 p2 = (Hashtable) prefs.Clone();
                 p2.Remove(prefix);
-            } while (Interlocked.CompareExchange(ref _prefixes, p2, prefs) != prefs);
+            }
+            while (Interlocked.CompareExchange(ref _prefixes, p2, prefs) != prefs);
             CheckIfRemove();
         }
     }

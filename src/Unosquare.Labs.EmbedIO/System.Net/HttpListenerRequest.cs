@@ -48,12 +48,12 @@ namespace Unosquare.Net
     /// </summary>
     public sealed class HttpListenerRequest
     {
+        private readonly HttpListenerContext _context;
         private Encoding _contentEncoding;
         private bool _clSet;
         private CookieCollection _cookies;
         private Stream _inputStream;
-        private Uri _url;
-        private readonly HttpListenerContext _context;
+        private Uri _url;        
         private bool _isChunked = false;
         private bool _kaSet;
         private bool _keepAlive;
@@ -728,6 +728,7 @@ namespace Unosquare.Net
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public static readonly Version Version10 = new Version(1, 0);
+        
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>

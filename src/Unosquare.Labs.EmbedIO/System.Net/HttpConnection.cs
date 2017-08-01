@@ -43,9 +43,10 @@ namespace Unosquare.Net
 {
     internal sealed class HttpConnection
     {
-        private const int BufferSize = 8192;
-        private Socket _sock;
+        private readonly Timer _timer;
         private readonly EndPointListener _epl;
+        private const int BufferSize = 8192;
+        private Socket _sock;        
         private MemoryStream _ms;
         private byte[] _buffer;
         private HttpListenerContext _context;
@@ -54,8 +55,7 @@ namespace Unosquare.Net
         private ResponseStream _oStream;
         private bool _chunked;
         private bool _contextBound;
-        private int _sTimeout = 90000; // 90k ms for first request, 15k ms from then on
-        private readonly Timer _timer;
+        private int _sTimeout = 90000; // 90k ms for first request, 15k ms from then on        
         private IPEndPoint _localEp;
         private HttpListener _lastListener;
 #if SSL

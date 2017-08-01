@@ -195,7 +195,7 @@
         /// The <see cref="SessionInfo"/>.
         /// </value>
         /// <param name="cookieValue">The cookie value.</param>
-        /// <returns></returns>
+        /// <returns>Session info with the specified cookie value</returns>
         public SessionInfo this[string cookieValue]
         {
             get
@@ -212,7 +212,7 @@
         /// If no session exists for the context, then null is returned
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns></returns>
+        /// <returns>An object that represents the current content of an http session</returns>
         public SessionInfo GetSession(HttpListenerContext context)
         {
             lock (SessionsSyncLock)
@@ -228,7 +228,7 @@
         /// Gets the session.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns></returns>
+        /// <returns>An object that represents the current content of an http session</returns>
 #if NET47
         public SessionInfo GetSession(System.Net.WebSockets.WebSocketContext context)
 #else

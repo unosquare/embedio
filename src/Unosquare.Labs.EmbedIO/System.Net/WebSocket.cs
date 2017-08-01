@@ -143,9 +143,9 @@ namespace Unosquare.Net
     public class WebSocket : IDisposable
     {
         #region Private Fields
-
-        private string _base64Key;
+        private readonly Action<MessageEventArgs> _message;
         private readonly bool _client;
+        private string _base64Key;        
         private CompressionMethod _compression;
         private WebSocketContext _context;
         private bool _enableRedirection;
@@ -159,8 +159,7 @@ namespace Unosquare.Net
         private Opcode _fragmentsOpcode;
         private const string Guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
         private bool _inContinuation;
-        private volatile bool _inMessage;
-        private readonly Action<MessageEventArgs> _message;
+        private volatile bool _inMessage;        
         private Queue<MessageEventArgs> _messageEventQueue;
         private string _origin;
 #if AUTHENTICATION
@@ -1185,7 +1184,8 @@ namespace Unosquare.Net
 
                     e = _messageEventQueue.Dequeue();
                 }
-            } while (true);
+            }
+            while (true);
         }
 
         private void Messages(MessageEventArgs e)
@@ -1892,7 +1892,8 @@ namespace Unosquare.Net
                                 t = t.Trim();
                                 return t != method
                                        && t != "server_no_context_takeover"
-                                       && t != "client_no_context_takeover";});
+                                       && t != "client_no_context_takeover";
+                            });
 
                     if (invalid)
                         return false;
@@ -2107,7 +2108,9 @@ namespace Unosquare.Net
         /// <param name="code">The code.</param>
         /// <param name="reason">The reason.</param>
         /// <param name="ct">The cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// A task that represents the asynchronous closes websocket connection
+        /// </returns>
         public async Task CloseAsync(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null, CancellationToken ct = default(CancellationToken))
         {
             string msg;
@@ -2229,7 +2232,10 @@ namespace Unosquare.Net
         /// <param name="data">An array of <see cref="byte" /> that represents the binary data to send.</param>
         /// <param name="opcode">The opcode.</param>
         /// <param name="ct">The cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// A task that represents the asynchronous of send 
+        /// binary data using websockets
+        /// </returns>
         public async Task SendAsync(byte[] data, Opcode opcode, CancellationToken ct = default(CancellationToken))
         {
             var msg = CheckIfAvailable(_readyState) ??
@@ -2245,7 +2251,7 @@ namespace Unosquare.Net
 
             send(opcode, new MemoryStream(data), ct);
         }
-        
+
         /// <summary>
         /// Sends binary data from the specified <see cref="Stream" /> asynchronously using
         /// the WebSocket connection.
@@ -2253,7 +2259,10 @@ namespace Unosquare.Net
         /// <param name="stream">A <see cref="Stream" /> from which contains the binary data to send.</param>
         /// <param name="length">An <see cref="int" /> that represents the number of bytes to send.</param>
         /// <param name="ct">The cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// A task that represents the asynchronous of send 
+        /// binary data from specified <see cref="Stream" />
+        /// </returns>
         /// <remarks>
         /// This method doesn't wait for the send to be complete.
         /// </remarks>

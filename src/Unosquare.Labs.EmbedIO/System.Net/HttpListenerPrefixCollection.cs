@@ -148,7 +148,7 @@ namespace Unosquare.Net
         /// Removes the specified URI prefix.
         /// </summary>
         /// <param name="uriPrefix">The URI prefix.</param>
-        /// <returns></returns>
+        /// <returns>True if "uriPrefix" was removed; otherwise, false</returns>
         /// <exception cref="System.ArgumentNullException">uriPrefix</exception>
         public bool Remove(string uriPrefix)
         {

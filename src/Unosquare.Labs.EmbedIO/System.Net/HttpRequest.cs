@@ -188,8 +188,10 @@ namespace Unosquare.Net
 
             var buff = new StringBuilder(64);
             foreach (System.Net.Cookie cookie in cookies) // .Sorted)
+            {
                 if (!cookie.Expired)
                     buff.AppendFormat("{0}; ", cookie);
+            }
 
             var len = buff.Length;
             if (len > 2)

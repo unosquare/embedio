@@ -143,7 +143,7 @@
         /// Returns null if no module matches the given type.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <returns>Module registered for the given type</returns>
         public T Module<T>()
             where T : class, IWebModule
         {
@@ -155,7 +155,7 @@
         /// Returns null if no module matches the given type.
         /// </summary>
         /// <param name="moduleType">Type of the module.</param>
-        /// <returns></returns>
+        /// <returns>Web module registered for the given type</returns>
         private IWebModule Module(Type moduleType) => Modules.FirstOrDefault(m => m.GetType() == moduleType);
 
         /// <summary>
@@ -263,7 +263,7 @@
         /// </summary>
         /// <param name="context">The HttpListenerContext</param>
         /// <param name="ct">The cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>True if it was handled; otherwise, false</returns>
         public async Task<bool> ProcessRequest(HttpListenerContext context, CancellationToken ct)
         {
             // Iterate though the loaded modules to match up a request and possibly generate a response.

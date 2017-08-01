@@ -39,6 +39,7 @@ namespace Unosquare.Net
         /// The count.
         /// </value>
         public int Count { get; private set; }
+        
         /// <summary>
         /// Gets a value indicating whether [end of message].
         /// </summary>
@@ -46,6 +47,7 @@ namespace Unosquare.Net
         ///   <c>true</c> if [end of message]; otherwise, <c>false</c>.
         /// </value>
         public bool EndOfMessage { get; }
+        
         /// <summary>
         /// Gets the type of the message.
         /// </summary>

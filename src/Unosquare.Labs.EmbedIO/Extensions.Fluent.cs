@@ -41,7 +41,7 @@
         /// <param name="webserver">The webserver.</param>
         /// <param name="virtualPaths">The virtual paths.</param>
         /// <param name="defaultDocument">The default document.</param>
-        /// <returns></returns>
+        /// <returns>An instance of a web module</returns>
         /// <exception cref="System.ArgumentNullException">webserver</exception>
         public static WebServer WithVirtualPaths(
             this WebServer webserver, 
@@ -59,7 +59,7 @@
         /// Add StaticFilesModule to WebServer
         /// </summary>
         /// <param name="webserver">The webserver instance.</param>
-        /// <returns></returns>
+        /// <returns>An instance of a web module</returns>
         /// <exception cref="System.ArgumentNullException">webserver</exception>
         public static WebServer WithLocalSession(this WebServer webserver)
         {
@@ -200,7 +200,7 @@
         /// <param name="origins">The valid origins, default all</param>
         /// <param name="headers">The valid headers, default all</param>
         /// <param name="methods">The valid method, default all</param>
-        /// <returns></returns>
+        /// <returns>An instance of the tiny web server used to handle request</returns>
         /// <exception cref="System.ArgumentNullException">webserver</exception>
         public static WebServer EnableCors(
             this WebServer webserver, 

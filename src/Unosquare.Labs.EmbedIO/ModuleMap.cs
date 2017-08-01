@@ -31,10 +31,12 @@
         /// The HTTP resource path
         /// </summary>
         public string Path { get; set; }
+        
         /// <summary>
         /// The HTTP Verb of this Map
         /// </summary>
         public HttpVerbs Verb { get; set; }
+        
         /// <summary>
         /// The delegate to call for the given path and verb.
         /// </summary>

@@ -328,8 +328,10 @@ namespace Unosquare.Net
             var bytes = await stream.ReadBytesAsync(len);
 
             if (bytes.Length != len)
+            {
                 throw new WebSocketException(
                     "The extended payload length of a frame cannot be read from the stream.");
+            }
 
             frame.ExtendedPayloadLength = bytes;
         }
@@ -346,8 +348,10 @@ namespace Unosquare.Net
 
             var bytes = await stream.ReadBytesAsync(len);
             if (bytes.Length != len)
+            {
                 throw new WebSocketException(
-                    "The masking key of a frame cannot be read from the stream.");
+                      "The masking key of a frame cannot be read from the stream.");
+            }
 
             frame.MaskingKey = bytes;
         }
@@ -371,9 +375,11 @@ namespace Unosquare.Net
                 ? await stream.ReadBytesAsync((int)len)
                 : await stream.ReadBytesAsync((int) len, 1024);
 
-            if (bytes.Length != (int) len)
+            if (bytes.Length != (int)len)
+            {
                 throw new WebSocketException(
-                    "The payload data of a frame cannot be read from the stream.");
+                      "The payload data of a frame cannot be read from the stream.");
+            }
 
             frame.PayloadData = new PayloadData(bytes, (long) len);
         }

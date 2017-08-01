@@ -48,13 +48,11 @@ namespace Unosquare.Net
     /// </remarks>
     public class MessageEventArgs : EventArgs
     {
-#region Private Fields
-
-        private string _data;
-        private bool _dataSet;
+        #region Private Fields
         private readonly byte[] _rawData;
-
-#endregion
+        private string _data;
+        private bool _dataSet;        
+        #endregion
 
 #region Internal Constructors
 

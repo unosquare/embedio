@@ -619,12 +619,16 @@ namespace Unosquare.Net
                 return;
 
             if (response && State == HttpHeaderType.Request)
+            {
                 throw new InvalidOperationException(
-                    "This collection has already been used to store the request headers.");
+                      "This collection has already been used to store the request headers.");
+            }
 
             if (!response && State == HttpHeaderType.Response)
+            {
                 throw new InvalidOperationException(
-                    "This collection has already been used to store the response headers.");
+                      "This collection has already been used to store the response headers.");
+            }
         }
 
         private static string CheckValue(string value)
@@ -678,9 +682,10 @@ namespace Unosquare.Net
         private static HttpHeaderInfo GetHeaderInfo(string name)
         {
             foreach (var info in Headers.Values)
+            {
                 if (info.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                     return info;
-
+            }
             return null;
         }
 

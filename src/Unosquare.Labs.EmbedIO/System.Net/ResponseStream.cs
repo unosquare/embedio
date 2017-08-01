@@ -41,11 +41,11 @@ namespace Unosquare.Net
     /// <seealso cref="System.IO.Stream" />
     public class ResponseStream : Stream
     {
+        private readonly Stream _stream;
         private readonly HttpListenerResponse _response;
         private readonly bool _ignoreErrors;
         private bool _disposed;
-        private bool _trailerSent;
-        private readonly Stream _stream;
+        private bool _trailerSent;        
 
         internal ResponseStream(Stream stream, HttpListenerResponse response, bool ignoreErrors)
         {

@@ -127,8 +127,10 @@ namespace Unosquare.Net
                     throw new ArgumentNullException(nameof(name));
 
                 foreach (var cookie in Sorted)
+                {
                     if (cookie.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                         return cookie;
+                }
 
                 return null;
             }
@@ -522,8 +524,10 @@ namespace Unosquare.Net
                 throw new ArgumentException("Multidimensional.", nameof(array));
 
             if (array.Length - index < _list.Count)
+            {
                 throw new ArgumentException(
-                    "The number of elements in this collection is greater than the available space of the destination array.");
+                      "The number of elements in this collection is greater than the available space of the destination array.");
+            }
 
             if (!array.GetType().GetElementType().IsAssignableFrom(typeof(Cookie)))
             {
@@ -565,8 +569,10 @@ namespace Unosquare.Net
                 throw new ArgumentOutOfRangeException(nameof(index), "Less than zero.");
 
             if (array.Length - index < _list.Count)
+            {
                 throw new ArgumentException(
-                    "The number of elements in this collection is greater than the available space of the destination array.");
+                      "The number of elements in this collection is greater than the available space of the destination array.");
+            }
 
             _list.CopyTo(array, index);
         }

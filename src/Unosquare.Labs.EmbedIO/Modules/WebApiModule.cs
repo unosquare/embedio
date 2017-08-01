@@ -168,7 +168,7 @@
         /// <param name="verb">The verb.</param>
         /// <param name="context">The context.</param>
         /// <param name="routeParams">The route parameters.</param>
-        /// <returns></returns>
+        /// <returns>A string that represents the registered path in the internal delegate map</returns>
         private string NormalizeRegexPath(
             HttpVerbs verb, 
             HttpListenerContext context,
@@ -230,7 +230,7 @@
         /// </summary>
         /// <param name="verb">The verb.</param>
         /// <param name="context">The context.</param>
-        /// <returns></returns>
+        /// <returns>A string that represents the registered path</returns>
         private string NormalizeWildcardPath(HttpVerbs verb, HttpListenerContext context)
         {
             var path = context.RequestPath();

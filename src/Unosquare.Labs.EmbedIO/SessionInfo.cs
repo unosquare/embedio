@@ -42,7 +42,7 @@
         /// This is an indexer providing a shortcut to the underlying Data dictionary
         /// </summary>
         /// <param name="key"></param>
-        /// <returns></returns>
+        /// <returns>An object that represents current session data repository</returns>
         public object this[string key]
         {
             get { return (Data.ContainsKey(key)) ? Data[key] : null; }

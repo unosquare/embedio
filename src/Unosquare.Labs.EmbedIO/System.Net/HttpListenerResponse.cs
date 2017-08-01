@@ -41,6 +41,8 @@ namespace Unosquare.Net
     /// <seealso cref="System.IDisposable" />
     public sealed class HttpListenerResponse : IDisposable
     {
+        private readonly HttpListenerContext _context;
+
         private const string CannotChangeHeaderWarning = "Cannot be changed after headers are sent.";
 
         private bool _disposed;
@@ -53,8 +55,7 @@ namespace Unosquare.Net
         private Version _version = HttpVersion.Version11;
         private string _location;
         private int _statusCode = 200;
-        private bool _chunked;
-        private readonly HttpListenerContext _context;
+        private bool _chunked;        
 
         internal bool HeadersSent;
         internal object HeadersLock = new object();
@@ -124,6 +125,7 @@ namespace Unosquare.Net
         }
 
         // RFC 2109, 2965 + the netscape specification at http://wp.netscape.com/newsref/std/cookie_spec.html
+        
         /// <summary>
         /// Gets or sets the cookies collection.
         /// </summary>

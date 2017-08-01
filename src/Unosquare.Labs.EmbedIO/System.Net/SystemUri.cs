@@ -10,10 +10,12 @@ namespace System
         /// The scheme segment
         /// </summary>
         Scheme,
+        
         /// <summary>
         /// The authority segment
         /// </summary>
         Authority,
+        
         /// <summary>
         /// The path segment
         /// </summary>

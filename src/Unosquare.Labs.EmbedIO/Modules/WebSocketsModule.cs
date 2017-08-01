@@ -89,8 +89,10 @@ namespace Unosquare.Labs.EmbedIO.Modules
                     WebSocketHandlerAttribute;
 
             if (attribute == null)
+            {
                 throw new ArgumentException("Argument 'socketType' needs a WebSocketHandlerAttribute",
-                    nameof(socketType));
+                      nameof(socketType));
+            }
 
             _serverMap[attribute.Path] = (WebSocketsServer) Activator.CreateInstance(socketType);
         }
@@ -168,15 +170,15 @@ namespace Unosquare.Labs.EmbedIO.Modules
     /// and data transmission
     /// </summary>
     public abstract class WebSocketsServer : IDisposable
-    {
-        private bool _isDisposing;
+    {        
         private readonly bool _enableDisconnectedSocketColletion;
         private readonly object _syncRoot = new object();
-        private readonly List<WebSocketContext> _mWebSockets = new List<WebSocketContext>(10);
-        private CancellationToken _ct = default(CancellationToken);
+        private readonly List<WebSocketContext> _mWebSockets = new List<WebSocketContext>(10);        
 #if NET47
         private readonly int _maximumMessageSize;
 #endif
+        private bool _isDisposing;
+        private CancellationToken _ct = default(CancellationToken);
 
         /// <summary>
         /// Gets the Currently-Connected WebSockets.
@@ -379,7 +381,6 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// <summary>
         /// Removes and disposes all disconnected sockets
         /// </summary>
-        /// <returns></returns>
         private void CollectDisconnected()
         {
             var collectedCount = 0;

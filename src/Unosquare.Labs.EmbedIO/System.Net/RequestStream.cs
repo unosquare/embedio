@@ -36,12 +36,12 @@ namespace Unosquare.Net
 
     internal class RequestStream : Stream
     {
+        readonly Stream _stream;
         readonly byte[] _buffer;
         int _offset;
         int _length;
         long _remainingBody;
-        bool _disposed = false;
-        readonly Stream _stream;
+        bool _disposed = false;        
         
         internal RequestStream(Stream stream, byte[] buffer, int offset, int length, long contentlength = -1)
         {

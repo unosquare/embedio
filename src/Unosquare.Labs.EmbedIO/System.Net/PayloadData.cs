@@ -39,10 +39,10 @@ namespace Unosquare.Net
     {
         #region Private Fields
 
-        private ushort _code;
-        private bool _codeSet;
         private readonly byte[] _data;
         private readonly long _length;
+        private ushort _code;
+        private bool _codeSet;        
         private string _reason;
         private bool _reasonSet;
 
