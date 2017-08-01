@@ -271,9 +271,11 @@
             {
                 // Establish the handler
                 var handler = module.Handlers.FirstOrDefault(x =>
-                    string.Equals(x.Path, x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath(),
+                    string.Equals(
+                        x.Path, 
+                        x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath(),
                         StringComparison.OrdinalIgnoreCase) &&
-                    x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
+                        x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
 
                 if (handler?.ResponseHandler == null)
                     continue;
@@ -313,8 +315,8 @@
                         ex.Log(nameof(WebServer), $"Failing module name: {module.Name}");
 
                         // Generate an HTML response
-                        var response = System.Net.WebUtility.HtmlEncode(string.Format(Responses.Response500HtmlFormat,
-                            errorMessage, ex.StackTrace));
+                        var response = System.Net.WebUtility.HtmlEncode(
+                            string.Format(Responses.Response500HtmlFormat, errorMessage, ex.StackTrace));
 
                         // Send the response over with the corresponding status code.
                         var responseBytes = System.Text.Encoding.UTF8.GetBytes(response);

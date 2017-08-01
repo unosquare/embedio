@@ -900,8 +900,12 @@ namespace Unosquare.Net
             return true;
         }
 
-        private async Task InternalCloseAsync(CloseEventArgs e, bool send = true, bool receive = true,
-            bool received = false, CancellationToken ct = default(CancellationToken))
+        private async Task InternalCloseAsync(
+            CloseEventArgs e, 
+            bool send = true, 
+            bool receive = true,
+            bool received = false, 
+            CancellationToken ct = default(CancellationToken))
         {
             lock (_forState)
             {
@@ -1383,9 +1387,7 @@ namespace Unosquare.Net
                     buff.AppendFormat(
                         "{0}, ",
                         _compression.ToExtensionString(
-                            "client_no_context_takeover", "server_no_context_takeover"
-                        )
-                    );
+                            "client_no_context_takeover", "server_no_context_takeover"));
 
                     comp = true;
                 }
@@ -1890,9 +1892,7 @@ namespace Unosquare.Net
                                 t = t.Trim();
                                 return t != method
                                        && t != "server_no_context_takeover"
-                                       && t != "client_no_context_takeover";
-                            }
-                        );
+                                       && t != "client_no_context_takeover";});
 
                     if (invalid)
                         return false;
@@ -1938,8 +1938,7 @@ namespace Unosquare.Net
         }
 
         internal static bool CheckParametersForClose(
-            CloseStatusCode code, string reason, bool client, out string message
-        )
+            CloseStatusCode code, string reason, bool client, out string message)
         {
             message = null;
 
@@ -2209,7 +2208,11 @@ namespace Unosquare.Net
             return await PingAsync(WebSocketFrame.CreatePingFrame(data, _client).ToArray(), _waitTime);
         }
 
-        private static string CheckIfAvailable(WebSocketState state, bool connecting = false, bool open = true, bool closing = false,
+        private static string CheckIfAvailable(
+            WebSocketState state, 
+            bool connecting = false, 
+            bool open = true, 
+            bool closing = false,
             bool closed = false)
         {
             return (!connecting && state == WebSocketState.Connecting) ||

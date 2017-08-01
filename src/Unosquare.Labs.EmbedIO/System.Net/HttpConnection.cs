@@ -3,7 +3,7 @@
 // System.Net.HttpConnection
 //
 // Author:
-//	Gonzalo Paniagua Javier (gonzalo.mono@gmail.com)
+// Gonzalo Paniagua Javier (gonzalo.mono@gmail.com)
 //
 // Copyright (c) 2005-2009 Novell, Inc. (http://www.novell.com)
 // Copyright (c) 2012 Xamarin, Inc. (http://xamarin.com)
@@ -251,8 +251,8 @@ namespace Unosquare.Net
 
                 if (nread == 0)
                 {
-                    //if (ms.Length > 0)
-                    //	SendError (); // Why bother?
+                    // if (ms.Length > 0)
+                    // SendError (); // Why bother?
                     CloseSocket();
                     Unbind();
                     return;

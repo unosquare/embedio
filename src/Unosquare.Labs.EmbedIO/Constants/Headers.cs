@@ -104,6 +104,5 @@
         /// The header compression gzip
         /// </summary>
         public const string CompressionGzip = "gzip";
-
     }
 }

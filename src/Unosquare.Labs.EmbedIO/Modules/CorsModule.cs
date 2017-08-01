@@ -24,7 +24,9 @@
         /// <param name="origins">The valid origins, default all</param>
         /// <param name="headers">The valid headers, default all</param>
         /// <param name="methods">The valid method, default all</param>
-        public CorsModule(string origins = Strings.CorsWildcard, string headers = Strings.CorsWildcard,
+        public CorsModule(
+            string origins = Strings.CorsWildcard, 
+            string headers = Strings.CorsWildcard,
             string methods = Strings.CorsWildcard)
         {
             if (origins == null) throw new ArgumentNullException(nameof(origins));

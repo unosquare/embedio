@@ -50,8 +50,12 @@ namespace Unosquare.Net
             AnsiEncoding = Encoding.GetEncoding(0, new EncoderExceptionFallback(), new DecoderExceptionFallback());
         }
 
-        private HttpListenerRequestUriBuilder(string rawUri, string cookedUriScheme, string cookedUriHost,
-            string cookedUriPath, string cookedUriQuery)
+        private HttpListenerRequestUriBuilder(
+            string rawUri, 
+            string cookedUriScheme, 
+            string cookedUriHost,
+            string cookedUriPath, 
+            string cookedUriQuery)
         {
             Debug.Assert(!string.IsNullOrEmpty(rawUri), "Empty raw URL.");
             Debug.Assert(!string.IsNullOrEmpty(cookedUriScheme), "Empty cooked URL scheme.");
@@ -66,11 +70,19 @@ namespace Unosquare.Net
             _cookedUriQuery = cookedUriQuery ?? string.Empty;
         }
 
-        public static Uri GetRequestUri(string rawUri, string cookedUriScheme, string cookedUriHost,
-            string cookedUriPath, string cookedUriQuery)
+        public static Uri GetRequestUri(
+            string rawUri, 
+            string cookedUriScheme, 
+            string cookedUriHost,
+            string cookedUriPath, 
+            string cookedUriQuery)
         {
-            var builder = new HttpListenerRequestUriBuilder(rawUri,
-                cookedUriScheme, cookedUriHost, cookedUriPath, cookedUriQuery);
+            var builder = new HttpListenerRequestUriBuilder(
+                rawUri,
+                cookedUriScheme, 
+                cookedUriHost, 
+                cookedUriPath, 
+                cookedUriQuery);
 
             return builder.Build();
         }
@@ -89,8 +101,14 @@ namespace Unosquare.Net
 
         private void BuildRequestUriUsingCookedPath()
         {
-            Uri.TryCreate(_cookedUriScheme + SchemeDelimiter + _cookedUriHost + _cookedUriPath +
-                              _cookedUriQuery, UriKind.Absolute, out _requestUri);
+            Uri.TryCreate(
+                _cookedUriScheme + 
+                SchemeDelimiter + 
+                _cookedUriHost + 
+                _cookedUriPath +
+                _cookedUriQuery, 
+                UriKind.Absolute, 
+                out _requestUri);
         }
 
         private void BuildRequestUriUsingRawPath()
@@ -108,8 +126,13 @@ namespace Unosquare.Net
                 }
 
                 Uri.TryCreate(
-                        _cookedUriScheme + SchemeDelimiter + _cookedUriHost + path + _cookedUriQuery,
-                        UriKind.Absolute, out _requestUri);
+                        _cookedUriScheme + 
+                        SchemeDelimiter + 
+                        _cookedUriHost + 
+                        path + 
+                        _cookedUriQuery,
+                        UriKind.Absolute, 
+                        out _requestUri);
             }
             else
             {
@@ -333,8 +356,11 @@ namespace Unosquare.Net
                     // 'authority' can only be used with CONNECT which is never received by HttpListener.
                     // I.e. if we don't have an absolute path (must start with '/') and we don't have
                     // an absolute Uri (must start with http:// or https://), then 'uriString' must be '*'.
-                    Debug.Assert(uriString.Length == 1 && uriString[0] == '*', "Unknown request Uri string format",
-                        "Request Uri string is not an absolute Uri, absolute path, or '*': {0}", uriString);
+                    Debug.Assert(
+                        uriString.Length == 1 && uriString[0] == '*', 
+                        "Unknown request Uri string format",
+                        "Request Uri string is not an absolute Uri, absolute path, or '*': {0}", 
+                        uriString);
 
                     // Should we ever get here, be consistent with 2.0/3.5 behavior: just add an initial
                     // slash to the string and treat it as a path:

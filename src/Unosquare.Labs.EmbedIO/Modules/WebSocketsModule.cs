@@ -264,7 +264,9 @@ namespace Unosquare.Labs.EmbedIO.Modules
 
             var webSocketContext =
 #if NET47
-                await context.AcceptWebSocketAsync(subProtocol: null, receiveBufferSize: receiveBufferSize,
+                await context.AcceptWebSocketAsync(
+                    subProtocol: null, 
+                    receiveBufferSize: receiveBufferSize,
                     keepAliveInterval: TimeSpan.FromSeconds(30));
 #else
                 await context.AcceptWebSocketAsync();
@@ -413,8 +415,11 @@ namespace Unosquare.Labs.EmbedIO.Modules
                 var buffer = System.Text.Encoding.UTF8.GetBytes(payload);
 
 #if NET47
-                await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true,
-                        _ct);
+                await webSocket.WebSocket.SendAsync(
+                    new ArraySegment<byte>(buffer), 
+                    WebSocketMessageType.Text, 
+                    true,
+                    _ct);
 #else
                 await webSocket.WebSocket.SendAsync(buffer, Opcode.Text, _ct);
 #endif
@@ -437,8 +442,11 @@ namespace Unosquare.Labs.EmbedIO.Modules
                 if (payload == null) payload = new byte[0];
 
 #if NET47
-                await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(payload), WebSocketMessageType.Binary, true,
-                        _ct);
+                await webSocket.WebSocket.SendAsync(
+                    new ArraySegment<byte>(payload), 
+                    WebSocketMessageType.Binary, 
+                    true,
+                    _ct);
 #else
                 await webSocket.WebSocket.SendAsync(payload, Opcode.Binary, _ct);
 #endif
@@ -504,7 +512,9 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// <param name="context">The context.</param>
         /// <param name="rxBuffer">The response buffer.</param>
         /// <param name="rxResult">The response result.</param>
-        protected abstract void OnMessageReceived(WebSocketContext context, byte[] rxBuffer,
+        protected abstract void OnMessageReceived(
+            WebSocketContext context, 
+            byte[] rxBuffer,
             WebSocketReceiveResult rxResult);
 
         /// <summary>
@@ -513,7 +523,9 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// <param name="context">The context.</param>
         /// <param name="rxBuffer">The response buffer.</param>
         /// <param name="rxResult">The response result.</param>
-        protected abstract void OnFrameReceived(WebSocketContext context, byte[] rxBuffer,
+        protected abstract void OnFrameReceived(
+            WebSocketContext context, 
+            byte[] rxBuffer,
             WebSocketReceiveResult rxResult);
 
         /// <summary>

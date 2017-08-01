@@ -451,7 +451,9 @@
         /// <param name="method">The method.</param>
         /// <param name="mode">The mode.</param>
         /// <returns></returns>
-        public static MemoryStream Compress(this Stream buffer, CompressionMethod method = CompressionMethod.Gzip,
+        public static MemoryStream Compress(
+            this Stream buffer, 
+            CompressionMethod method = CompressionMethod.Gzip,
             CompressionMode mode = CompressionMode.Compress)
         {
             buffer.Position = 0;
@@ -477,7 +479,6 @@
                         {
                             compressor.CopyTo(targetStream);
                         }
-
                     }
                     break;
                 case CompressionMethod.Gzip:
@@ -494,7 +495,6 @@
                         {
                             compressor.CopyTo(targetStream);
                         }
-
                     }
 
                     break;

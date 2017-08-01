@@ -152,7 +152,8 @@
         /// Initializes a new instance of the <see cref="StaticFilesModule"/> class.
         /// </summary>
         /// <param name="paths">The paths.</param>
-        public StaticFilesModule(Dictionary<string, string> paths) : this(paths.First().Value, null, paths)
+        public StaticFilesModule(Dictionary<string, string> paths) 
+            : this(paths.First().Value, null, paths)
         {
         }
 
@@ -163,7 +164,9 @@
         /// <param name="headers">The headers to set in every request.</param>
         /// <param name="additionalPaths">The additional paths.</param>
         /// <exception cref="System.ArgumentException">Path ' + fileSystemPath + ' does not exist.</exception>
-        public StaticFilesModule(string fileSystemPath, Dictionary<string, string> headers = null,
+        public StaticFilesModule(
+            string fileSystemPath, 
+            Dictionary<string, string> headers = null,
             Dictionary<string, string> additionalPaths = null)
         {
             if (Directory.Exists(fileSystemPath) == false)
@@ -375,8 +378,12 @@
             return true;
         }
 
-        private static async Task WriteToOutputStream(HttpListenerContext context, long byteLength, Stream buffer,
-            int lowerByteIndex, CancellationToken ct)
+        private static async Task WriteToOutputStream(
+            HttpListenerContext context, 
+            long byteLength, 
+            Stream buffer,
+            int lowerByteIndex, 
+            CancellationToken ct)
         {
             var streamBuffer = new byte[ChuckSize];
             var sendData = 0;
@@ -422,7 +429,11 @@
             context.Response.AddHeader(Headers.AcceptRanges, "bytes");
         }
 
-        private bool UpdateFileCache(HttpListenerContext context, Stream buffer, DateTime fileDate, string requestHash,
+        private bool UpdateFileCache(
+            HttpListenerContext context, 
+            Stream buffer, 
+            DateTime fileDate, 
+            string requestHash,
             string localPath)
         {
             var currentHash = buffer.ComputeMD5().ToUpperHex() + '-' + fileDate.Ticks;
@@ -452,7 +463,10 @@
             return false;
         }
 
-        private static bool CalculateRange(string partialHeader, long fileSize, out int lowerByteIndex,
+        private static bool CalculateRange(
+            string partialHeader, 
+            long fileSize, 
+            out int lowerByteIndex,
             out int upperByteIndex)
         {
             lowerByteIndex = 0;

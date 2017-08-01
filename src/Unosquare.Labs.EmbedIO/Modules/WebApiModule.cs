@@ -169,7 +169,9 @@
         /// <param name="context">The context.</param>
         /// <param name="routeParams">The route parameters.</param>
         /// <returns></returns>
-        private string NormalizeRegexPath(HttpVerbs verb, HttpListenerContext context,
+        private string NormalizeRegexPath(
+            HttpVerbs verb, 
+            HttpListenerContext context,
             Dictionary<string, object> routeParams)
         {
             var path = context.Request.Url.LocalPath;
@@ -242,8 +244,7 @@
                 path.StartsWith(p.Substring(0, p.Length - ModuleMap.AnyPath.Length))
                 // wildcard in the middle so check both start/end
                 || (path.StartsWith(p.Substring(0, p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal)))
-                    && path.EndsWith(p.Substring(p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal) + 1)))
-            );
+                    && path.EndsWith(p.Substring(p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal) + 1))));
 
             if (string.IsNullOrWhiteSpace(wildcardMatch) == false)
                 path = wildcardMatch;

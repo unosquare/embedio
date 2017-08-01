@@ -3,8 +3,8 @@
 // System.Net.HttpListener
 //
 // Authors:
-//	Gonzalo Paniagua Javier (gonzalo@novell.com)
-//	Marek Safar (marek.safar@gmail.com)
+// Gonzalo Paniagua Javier (gonzalo@novell.com)
+// Marek Safar (marek.safar@gmail.com)
 //
 // Copyright (c) 2005 Novell, Inc. (http://www.novell.com)
 // Copyright 2011 Xamarin Inc.
@@ -74,9 +74,9 @@ namespace Unosquare.Net
         private readonly ConcurrentDictionary<Guid, HttpListenerContext> _ctxQueue;
         private readonly Hashtable _connections;
 
-        //ServiceNameStore defaultServiceNames;
-        //ExtendedProtectionPolicy _extendedProtectionPolicy;
-        //ExtendedProtectionSelector _extendedProtectionSelectorDelegate = null;
+        // ServiceNameStore defaultServiceNames;
+        // ExtendedProtectionPolicy _extendedProtectionPolicy;
+        // ExtendedProtectionSelector _extendedProtectionSelectorDelegate = null;
 
 #if AUTHENTICATION
         /// <summary>
@@ -98,8 +98,8 @@ namespace Unosquare.Net
 #if AUTHENTICATION
             _authSchemes = AuthenticationSchemes.Anonymous;
 #endif
-            //defaultServiceNames = new ServiceNameStore();
-            //_extendedProtectionPolicy = new ExtendedProtectionPolicy(PolicyEnforcement.Never);
+            // defaultServiceNames = new ServiceNameStore();
+            // _extendedProtectionPolicy = new ExtendedProtectionPolicy(PolicyEnforcement.Never);
         }
 
 #if SSL
@@ -193,8 +193,8 @@ namespace Unosquare.Net
         }
 #endif
 
-        //public ExtendedProtectionSelector ExtendedProtectionSelectorDelegate
-        //{
+        // public ExtendedProtectionSelector ExtendedProtectionSelectorDelegate
+        // {
         //    get { return extendedProtectionSelectorDelegate; }
         //    set
         //    {
@@ -202,12 +202,12 @@ namespace Unosquare.Net
         //        if (value == null)
         //            throw new ArgumentNullException();
 
-        //        if (!AuthenticationManager.OSSupportsExtendedProtection)
+                  // if (!AuthenticationManager.OSSupportsExtendedProtection)
         //            throw new PlatformNotSupportedException(SR.GetString(SR.security_ExtendedProtection_NoOSSupport));
 
-        //        extendedProtectionSelectorDelegate = value;
+                  // extendedProtectionSelectorDelegate = value;
         //    }
-        //}
+        // }
 
         /// <summary>
         /// Gets or sets a value indicating whether the listener should ignore write exceptions.
@@ -419,7 +419,7 @@ namespace Unosquare.Net
 
         internal void CheckDisposed()
         {
-            //if (disposed)
+            // if (disposed)
             //    throw new ObjectDisposedException(GetType().ToString());
         }
 

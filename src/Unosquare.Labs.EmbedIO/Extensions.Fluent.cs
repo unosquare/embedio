@@ -23,7 +23,9 @@
         /// <param name="defaultDocument">The default document name</param>
         /// <returns> The webserver instance.</returns>
         /// <exception cref="System.ArgumentNullException">webserver</exception>
-        public static WebServer WithStaticFolderAt(this WebServer webserver, string rootPath,
+        public static WebServer WithStaticFolderAt(
+            this WebServer webserver, 
+            string rootPath,
             string defaultDocument = StaticFilesModule.DefaultDocumentName)
         {
             if (webserver == null)
@@ -41,7 +43,9 @@
         /// <param name="defaultDocument">The default document.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">webserver</exception>
-        public static WebServer WithVirtualPaths(this WebServer webserver, Dictionary<string, string> virtualPaths,
+        public static WebServer WithVirtualPaths(
+            this WebServer webserver, 
+            Dictionary<string, string> virtualPaths,
             string defaultDocument = StaticFilesModule.DefaultDocumentName)
         {
             if (webserver == null)
@@ -198,7 +202,9 @@
         /// <param name="methods">The valid method, default all</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">webserver</exception>
-        public static WebServer EnableCors(this WebServer webserver, string origins = Strings.CorsWildcard,
+        public static WebServer EnableCors(
+            this WebServer webserver, 
+            string origins = Strings.CorsWildcard,
             string headers = Strings.CorsWildcard,
             string methods = Strings.CorsWildcard)
         {
@@ -216,7 +222,8 @@
         /// <param name="webserver">The webserver instance.</param>
         /// <returns>The webserver instance.</returns>
         /// <exception cref="System.ArgumentNullException">webserver</exception>
-        public static WebServer WithWebApiController<T>(this WebServer webserver) where T : WebApiController, new()
+        public static WebServer WithWebApiController<T>(this WebServer webserver) 
+            where T : WebApiController, new()
         {
             if (webserver == null)
                 throw new ArgumentNullException(nameof(webserver));

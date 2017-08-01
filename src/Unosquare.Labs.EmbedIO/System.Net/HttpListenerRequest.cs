@@ -3,8 +3,8 @@
 // System.Net.HttpListenerRequest
 //
 // Authors:
-//	Gonzalo Paniagua Javier (gonzalo.mono@gmail.com)
-//	Marek Safar (marek.safar@gmail.com)
+// Gonzalo Paniagua Javier (gonzalo.mono@gmail.com)
+// Marek Safar (marek.safar@gmail.com)
 //
 // Copyright (c) 2005 Novell, Inc. (http://www.novell.com)
 // Copyright (c) 2011-2012 Xamarin, Inc. (http://xamarin.com)
@@ -226,8 +226,12 @@ namespace Unosquare.Net
 
             // Use reference source HttpListenerRequestUriBuilder to process url.
             // Fixes #29927
-            _url = HttpListenerRequestUriBuilder.GetRequestUri(RawUrl, _url.Scheme,
-                                _url.Authority, _url.LocalPath, _url.Query);
+            _url = HttpListenerRequestUriBuilder.GetRequestUri(
+                                RawUrl, 
+                                _url.Scheme,
+                                _url.Authority, 
+                                _url.LocalPath, 
+                                _url.Query);
 
 #if CHUNKED
             if (ProtocolVersion >= HttpVersion.Version11)
@@ -284,7 +288,7 @@ namespace Unosquare.Net
                 case "content-length":
                     try
                     {
-                        //TODO: max. content_length?
+                        // TODO: max. content_length?
                         ContentLength64 = long.Parse(val.Trim());
                         if (ContentLength64 < 0)
                             _context.ErrorMessage = "Invalid Content-Length.";
@@ -728,7 +732,6 @@ namespace Unosquare.Net
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public static readonly Version Version11 = new Version(1, 1);
-
     }// class HttpVersion
 }
 #endif

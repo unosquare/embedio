@@ -150,7 +150,7 @@
                     }
                     else if (isSessionRegistered == false)
                     {
-                        //update session value
+                        // update session value
                         var sessionCookie = CreateSession();
                         context.Response.SetCookie(sessionCookie); // = sessionCookie.Value;
                         context.Request.Cookies[SessionCookieName].Value = sessionCookie.Value;

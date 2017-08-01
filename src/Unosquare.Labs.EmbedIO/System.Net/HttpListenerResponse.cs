@@ -3,7 +3,7 @@
 // System.Net.HttpListenerResponse
 //
 // Author:
-//	Gonzalo Paniagua Javier (gonzalo@novell.com)
+// Gonzalo Paniagua Javier (gonzalo@novell.com)
 //
 // Copyright (c) 2005 Novell, Inc. (http://www.novell.com)
 //
@@ -296,7 +296,7 @@ namespace Unosquare.Net
         public string StatusDescription { get; set; } = "OK";
 
         // TODO: How to wait?
-        void IDisposable.Dispose() => CloseAsync(true).Wait(); //TODO: Abort or Close?
+        void IDisposable.Dispose() => CloseAsync(true).Wait(); // TODO: Abort or Close?
 
         /// <summary>
         /// Aborts this instance.
@@ -322,7 +322,7 @@ namespace Unosquare.Net
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("'name' cannot be empty", nameof(name));
 
-            //TODO: check for forbidden headers and invalid characters
+            // TODO: check for forbidden headers and invalid characters
             if (value.Length > 65535)
                 throw new ArgumentOutOfRangeException(nameof(value));
 
@@ -537,8 +537,8 @@ namespace Unosquare.Net
 
             foreach (var key in headers.AllKeys)
                 sb.Append(key).Append(": ").Append(headers[key]).Append("\r\n");
-            //for (int i = 0; i < headers.Count; i++)
-            //{
+            // for (int i = 0; i < headers.Count; i++)
+            // {
             //    string key = headers.GetKey(i);
             //    if (WebHeaderCollection.AllowMultiValues(key))
             //    {
@@ -551,7 +551,7 @@ namespace Unosquare.Net
             //    {
             //        sb.Append(key).Append(": ").Append(headers.Get(i)).Append("\r\n");
             //    }
-            //}
+            // }
 
             return sb.Append("\r\n").ToString();
         }

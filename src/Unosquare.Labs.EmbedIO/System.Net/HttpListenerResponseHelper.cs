@@ -3,7 +3,7 @@
 // System.Net.HttpListenerResponseHelper
 //
 // Author:
-//	Gonzalo Paniagua Javier (gonzalo@novell.com)
+// Gonzalo Paniagua Javier (gonzalo@novell.com)
 //
 // Copyright (c) 2005 Novell, Inc. (http://www.novell.com)
 // Copyright (C) 2016 Xamarin Inc (http://www.xamarin.com)

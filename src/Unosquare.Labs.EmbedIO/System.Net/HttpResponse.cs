@@ -162,7 +162,7 @@ namespace Unosquare.Net
             var headers = Headers;
 
             foreach (var cookie in cookies) // TODO: .Sorted)
-                headers.Add("Set-Cookie", cookie.ToString()); //.ToResponseString ());
+                headers.Add("Set-Cookie", cookie.ToString()); // .ToResponseString ());
         }
 
         /// <summary>

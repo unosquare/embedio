@@ -3,7 +3,7 @@
 // System.Net.EndPointManager
 //
 // Author:
-//	Gonzalo Paniagua Javier (gonzalo@ximian.com)
+// Gonzalo Paniagua Javier (gonzalo@ximian.com)
 //
 // Copyright (c) 2005 Novell, Inc. (http://www.novell.com)
 //

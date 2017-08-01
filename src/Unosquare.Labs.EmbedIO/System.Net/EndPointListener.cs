@@ -3,7 +3,7 @@
 // System.Net.EndPointListener
 //
 // Author:
-//	Gonzalo Paniagua Javier (gonzalo.mono@gmail.com)
+// Gonzalo Paniagua Javier (gonzalo.mono@gmail.com)
 //
 // Copyright (c) 2005 Novell, Inc. (http://www.novell.com)
 // Copyright (c) 2012 Xamarin, Inc. (http://xamarin.com)
@@ -264,7 +264,7 @@ namespace Unosquare.Net
 
             foreach (ListenerPrefix p in coll)
             {
-                if (p.Path == prefix.Path) //TODO: code
+                if (p.Path == prefix.Path) // TODO: code
                     throw new HttpListenerException(400, "Prefix already in use.");
             }
 
