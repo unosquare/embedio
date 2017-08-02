@@ -20,7 +20,6 @@
     /// </summary>
     /// <param name="server">The server.</param>
     /// <param name="context">The context.</param>
-    /// <returns>No object or value is returned by this method</returns>
     public delegate bool ResponseHandler(WebServer server, HttpListenerContext context);
 
     /// <summary>
@@ -28,7 +27,6 @@
     /// </summary>
     /// <param name="server">The server.</param>
     /// <param name="context">The context.</param>
-    /// <returns>No object or value is returned by this method</returns>
     public delegate Task<bool> AsyncResponseHandler(WebServer server, HttpListenerContext context);
 
     /// <summary>

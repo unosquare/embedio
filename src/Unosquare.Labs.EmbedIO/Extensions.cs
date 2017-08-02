@@ -46,7 +46,6 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="server">The server.</param>
-        /// <returns>No object or value is returned by this method</returns>
         public static void DeleteSession(this HttpListenerContext context, WebServer server)
         {
             server.SessionModule?.DeleteSession(context);
@@ -57,7 +56,6 @@
         /// </summary>
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
-        /// <returns>No object or value is returned by this method</returns>
         public static void DeleteSession(this WebServer server, HttpListenerContext context)
         {
             server.SessionModule?.DeleteSession(context);
@@ -68,7 +66,6 @@
         /// </summary>
         /// <param name="server">The server.</param>
         /// <param name="session">The session info.</param>
-        /// <returns>No object or value is returned by this method</returns>
         public static void DeleteSession(this WebServer server, SessionInfo session)
         {
             server.SessionModule?.DeleteSession(session);
