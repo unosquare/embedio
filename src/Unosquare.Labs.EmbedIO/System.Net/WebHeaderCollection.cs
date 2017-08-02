@@ -686,6 +686,7 @@ namespace Unosquare.Net
                 if (info.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                     return info;
             }
+
             return null;
         }
 

@@ -92,6 +92,7 @@
                         foreach (var arg in methodPair.Item2.GetParameters().Skip(2))
                         {
                             if (regExRouteParams.ContainsKey(arg.Name) == false) continue;
+                            
                             // get a reference to the parse method
                             var parameterTypeNullable = Nullable.GetUnderlyingType(arg.ParameterType);
 

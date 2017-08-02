@@ -1,7 +1,6 @@
-﻿using Unosquare.Labs.EmbedIO.Constants;
-
-namespace Unosquare.Labs.EmbedIO.Modules
+﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
+    using Constants;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -30,7 +29,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
             new Dictionary<string, WebSocketsServer>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        /// Initialize WebSocket module
+        /// Initializes a new instance of the <see cref="WebSocketsModule"/> class.
         /// </summary>
         public WebSocketsModule()
         {
@@ -64,7 +63,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// <summary>
         /// Registers the web sockets server given a WebSocketsServer Type.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type of WebSocket server.</typeparam>
         /// <exception cref="ArgumentException">Argument 'path' cannot be null;path</exception>
         public void RegisterWebSocketsServer<T>()
             where T : WebSocketsServer, new()
@@ -100,7 +99,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// <summary>
         /// Registers the web sockets server given a WebSocketsServer Type.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type of WebSocket server</typeparam>
         /// <param name="path">The path. For example: '/echo'</param>
         /// <exception cref="ArgumentException">Argument 'path' cannot be null;path</exception>
         public void RegisterWebSocketsServer<T>(string path)
@@ -220,6 +219,14 @@ namespace Unosquare.Labs.EmbedIO.Modules
         {
             // placeholder
         }
+
+        /// <summary>
+        /// Gets the name of the server.
+        /// </summary>
+        /// <value>
+        /// The name of the server.
+        /// </value>
+        public abstract string ServerName { get; }
 
         /// <summary>
         /// Runs the connection watchdog.
@@ -570,13 +577,5 @@ namespace Unosquare.Labs.EmbedIO.Modules
 
             CollectDisconnected();
         }
-
-        /// <summary>
-        /// Gets the name of the server.
-        /// </summary>
-        /// <value>
-        /// The name of the server.
-        /// </value>
-        public abstract string ServerName { get; }
     }
 }

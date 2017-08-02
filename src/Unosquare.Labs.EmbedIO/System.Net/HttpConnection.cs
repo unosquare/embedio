@@ -129,7 +129,7 @@ namespace Unosquare.Net
             _context = new HttpListenerContext(this);
         }
 
-        public bool IsClosed => (_sock == null);
+        public bool IsClosed => _sock == null;
 
         public int Reuses { get; private set; }
 
@@ -457,7 +457,7 @@ namespace Unosquare.Net
             forceClose |= !_context.Request.KeepAlive;
 
             if (!forceClose)
-                forceClose = (_context.Response.Headers["connection"] == "close");
+                forceClose = _context.Response.Headers["connection"] == "close";
 
             if (!forceClose)
             {

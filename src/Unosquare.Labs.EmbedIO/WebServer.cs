@@ -142,7 +142,7 @@
         /// Gets the module registered for the given type.
         /// Returns null if no module matches the given type.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type of module</typeparam>
         /// <returns>Module registered for the given type</returns>
         public T Module<T>()
             where T : class, IWebModule

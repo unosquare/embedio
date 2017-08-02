@@ -85,7 +85,7 @@ namespace Unosquare.Net
                 case 505: return "Http Version Not Supported";
                 case 507: return "Insufficient Storage";
             }
-            return "";
+            return string.Empty;
         }
     }
 }

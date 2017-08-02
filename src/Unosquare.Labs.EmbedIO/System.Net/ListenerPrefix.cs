@@ -37,7 +37,7 @@ namespace Unosquare.Net
     {
         readonly string _original;
         ushort _port;
-        public HttpListener Listener;
+        public HttpListener Listener { get; set; }
 
         public ListenerPrefix(string prefix)
         {
@@ -67,13 +67,10 @@ namespace Unosquare.Net
             if (other == null)
                 return false;
 
-            return (_original == other._original);
+            return _original == other._original;
         }
 
-        public override int GetHashCode()
-        {
-            return _original.GetHashCode();
-        }
+        public override int GetHashCode() => _original.GetHashCode();
 
         private void Parse(string uri)
         {
@@ -105,6 +102,7 @@ namespace Unosquare.Net
                 _port = defaultPort;
                 Path = uri.Substring(root);
             }
+
             if (Path.Length != 1)
                 Path = Path.Substring(0, Path.Length - 1);
         }

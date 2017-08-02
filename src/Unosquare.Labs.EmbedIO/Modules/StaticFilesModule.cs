@@ -344,6 +344,7 @@
                 if (UseGzip &&
                     context.RequestHeader(Headers.AcceptEncoding).Contains(Headers.CompressionGzip) &&
                     buffer.Length < MaxGzipInputLength &&
+                    
                     // Ignore audio/video from compression
                     context.Response.ContentType?.StartsWith("audio") == false &&
                     context.Response.ContentType?.StartsWith("video") == false)
@@ -472,7 +473,7 @@
             lowerByteIndex = 0;
             upperByteIndex = 0;
 
-            var range = partialHeader.Replace("bytes=", "").Split('-');
+            var range = partialHeader.Replace("bytes=", string.Empty).Split('-');
 
             if (range.Length == 2 && int.TryParse(range[0], out lowerByteIndex) &&
                 int.TryParse(range[1], out upperByteIndex))
@@ -544,7 +545,7 @@
                 var additionalPath =
                     m_VirtualPaths.FirstOrDefault(x => context.RequestPathCaseSensitive().StartsWith(x.Key));
                 baseLocalPath = additionalPath.Value;
-                urlPath = urlPath.Replace(additionalPath.Key.Replace('/', Path.DirectorySeparatorChar), "");
+                urlPath = urlPath.Replace(additionalPath.Key.Replace('/', Path.DirectorySeparatorChar), string.Empty);
 
                 if (string.IsNullOrWhiteSpace(urlPath))
                 {

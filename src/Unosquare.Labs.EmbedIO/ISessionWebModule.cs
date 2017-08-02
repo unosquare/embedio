@@ -34,6 +34,7 @@
         /// Delete the session object for the given context
         /// If no session exists for the context, then null is returned
         /// </summary>
+        /// <param name="context">The context.</param>
         void DeleteSession(HttpListenerContext context);
 
         /// <summary>

@@ -183,7 +183,7 @@ namespace Unosquare.Net
             return bytes;
         }
 
-        internal static bool IsControl(this byte opcode) =>  opcode > 0x7 && opcode < 0x10;
+        internal static bool IsControl(this byte opcode) => opcode > 0x7 && opcode < 0x10;
         
         internal static bool IsReserved(this CloseStatusCode code)
         {

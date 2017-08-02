@@ -63,6 +63,7 @@
         /// <summary>
         /// Delete the session object for the given context
         /// </summary>
+        /// <param name="context">The context.</param>
         public void DeleteSession(HttpListenerContext context)
         {
             DeleteSession(GetSession(context));

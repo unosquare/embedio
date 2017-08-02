@@ -2143,14 +2143,15 @@ namespace Unosquare.Net
         /// <summary>
         /// Establishes a WebSocket connection asynchronously.
         /// </summary>
+        /// <param name="ct">The cancellation token.</param>
+        /// <returns></returns>
         /// <remarks>
-        ///   <para>
-        ///   This method doesn't wait for the connect to be complete.
-        ///   </para>
-        ///   <para>
-        ///   This method isn't available in a server.
-        ///   </para>
-        /// </remarks>
+        /// <para>
+        /// This method doesn't wait for the connect to be complete.
+        /// </para>
+        /// <para>
+        /// This method isn't available in a server.
+        /// </para></remarks>
         public async Task ConnectAsync(CancellationToken ct = default(CancellationToken))
         {
             string msg;

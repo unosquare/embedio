@@ -104,7 +104,7 @@
         }
 
         /// <summary>
-        /// Load all the WebApi Controllers in an assembly
+        /// Load all the WebApi Controllers in an assembly.
         /// </summary>
         /// <param name="webserver">The webserver instance.</param>
         /// <param name="assembly">The assembly to load WebApi Controllers from. Leave null to load from the currently executing assembly.</param>
@@ -135,9 +135,9 @@
         }
 
         /// <summary>
-        /// 
+        /// Load all the WebApi Controllers in an assembly.
         /// </summary>
-        /// <param name="apiModule">The apíModule instance.</param>
+        /// <param name="apiModule">The Web API Module instance.</param>
         /// <param name="assembly">The assembly to load WebApi Controllers from. Leave null to load from the currently executing assembly.</param>
         /// <returns>The webserver instance.</returns>
         /// <exception cref="System.ArgumentNullException">webserver</exception>
@@ -219,8 +219,11 @@
         /// <summary>
         /// Add WebApi Controller to WebServer
         /// </summary>
+        /// <typeparam name="T">The type of Web API Controller</typeparam>
         /// <param name="webserver">The webserver instance.</param>
-        /// <returns>The webserver instance.</returns>
+        /// <returns>
+        /// The webserver instance.
+        /// </returns>
         /// <exception cref="System.ArgumentNullException">webserver</exception>
         public static WebServer WithWebApiController<T>(this WebServer webserver) 
             where T : WebApiController, new()

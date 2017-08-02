@@ -475,6 +475,7 @@
                         {
                             buffer.CopyTo(compressor, 1024);
                             buffer.CopyTo(compressor);
+                            
                             // WebSocket use this
                             targetStream.Write(Last, 0, 1);
                             targetStream.Position = 0;

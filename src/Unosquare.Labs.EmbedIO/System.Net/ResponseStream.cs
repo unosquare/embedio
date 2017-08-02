@@ -113,6 +113,7 @@ namespace Unosquare.Net
                             ms.Position = ms.Length;
                             ms.Write(bytes, 0, bytes.Length);
                         }
+
                         InternalWrite(ms.ToArray(), (int)start, (int)(ms.Length - start));
                         _trailerSent = true;
                     }
@@ -156,7 +157,7 @@ namespace Unosquare.Net
 
         private static byte[] GetChunkSizeBytes(int size, bool final)
         {
-            return Encoding.UTF8.GetBytes($"{size:x}\r\n{(final ? "\r\n" : "")}");
+            return Encoding.UTF8.GetBytes($"{size:x}\r\n{(final ? "\r\n" : string.Empty)}");
         }
 
         internal void InternalWrite(byte[] buffer, int offset, int count)

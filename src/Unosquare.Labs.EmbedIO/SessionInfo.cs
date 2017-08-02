@@ -10,7 +10,7 @@
     public class SessionInfo
     {
         /// <summary>
-        /// Initialize Session data
+        /// Initializes a new instance of the <see cref="SessionInfo"/> class.
         /// </summary>
         public SessionInfo()
         {
@@ -45,7 +45,7 @@
         /// <returns>An object that represents current session data repository</returns>
         public object this[string key]
         {
-            get { return (Data.ContainsKey(key)) ? Data[key] : null; }
+            get { return Data.ContainsKey(key) ? Data[key] : null; }
             set { Data[key] = value; }
         }
     }

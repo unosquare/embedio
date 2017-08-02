@@ -222,7 +222,11 @@ namespace Unosquare.Net
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public string RedirectLocation
         {
-            get { return _location; }
+            get
+            {
+                return _location;
+            }
+
             set
             {
                 if (_disposed)
@@ -245,7 +249,11 @@ namespace Unosquare.Net
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public bool SendChunked
         {
-            get { return _chunked; }
+            get
+            {
+                return _chunked;
+            }
+
             set
             {
                 if (_disposed)
@@ -357,7 +365,7 @@ namespace Unosquare.Net
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
 
-            if (name == "")
+            if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("'name' cannot be empty", nameof(name));
 
             if (value.Length > 65535)

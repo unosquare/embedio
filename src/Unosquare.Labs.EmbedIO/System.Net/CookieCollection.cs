@@ -1,19 +1,18 @@
 ﻿#if !NET47
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Net;
-using System.Reflection;
-using System.Text;
-
 namespace Unosquare.Net
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Net;
+    using System.Reflection;
+    using System.Text;
+
     /// <summary>
     /// Represents Cookie collection
     /// </summary>
     /// <seealso cref="System.Collections.ICollection" />
-    /// <seealso cref="System.Collections.IEnumerable" />
     public class CookieCollection : ICollection
     {
         #region Private Fields

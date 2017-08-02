@@ -54,7 +54,7 @@ namespace Unosquare.Net
 
         internal string ErrorMessage { get; set; }
 
-        internal bool HaveError => (ErrorMessage != null);
+        internal bool HaveError => ErrorMessage != null;
 
         internal HttpConnection Connection { get; }
 

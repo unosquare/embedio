@@ -126,6 +126,7 @@ namespace Unosquare.Net
             { // No more bytes available (Content-Length)
                 return 0;
             }
+
             if (nread > 0)
             {
                 return nread;

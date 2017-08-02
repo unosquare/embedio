@@ -261,7 +261,11 @@ namespace Unosquare.Net
         /// </value>
         public string Realm
         {
-            get { return _realm; }
+            get
+            {
+                return _realm;
+            }
+
             set
             {
                 CheckDisposed();
@@ -277,7 +281,11 @@ namespace Unosquare.Net
         /// </value>
         public bool UnsafeConnectionNtlmAuthentication
         {
-            get { return _unsafeNtlmAuth; }
+            get
+            {
+                return _unsafeNtlmAuth;
+            }
+
             set
             {
                 CheckDisposed();

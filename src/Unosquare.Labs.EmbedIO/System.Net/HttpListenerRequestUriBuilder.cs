@@ -196,10 +196,12 @@ namespace Unosquare.Net
                         {
                             return ParsingResult.EncodingError;
                         }
+
                         if (!AppendUnicodeCodePointValuePercentEncoded(_rawPath.Substring(index + 1, 4)))
                         {
                             return ParsingResult.InvalidString;
                         }
+
                         index += 5;
                     }
                     else
@@ -209,6 +211,7 @@ namespace Unosquare.Net
                         {
                             return ParsingResult.InvalidString;
                         }
+
                         index += 2;
                     }
                 }

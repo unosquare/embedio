@@ -6,6 +6,10 @@
     using System.Linq;
     using System.Net;
 
+    // TODO: Add Whitelist origins with Regex
+    // TODO: Add Path Regex, just apply CORS in some paths
+    // TODO: Handle valid headers in other modules
+    
     /// <summary>
     /// CORS control Module
     /// Cross-origin resource sharing (CORS) is a mechanism that allows restricted resources (e.g. fonts) 
@@ -14,16 +18,18 @@
     public class CorsModule : WebModuleBase
     {
         /// <summary>
-        /// Generates the rules for CORS
-        /// 
-        /// TODO: Add Whitelist origins with Regex
-        /// TODO: Add Path Regex, just apply CORS in some paths
-        /// TODO: Handle valid headers in other modules
-        /// 
+        /// Initializes a new instance of the <see cref="CorsModule"/> class.
         /// </summary>
-        /// <param name="origins">The valid origins, default all</param>
-        /// <param name="headers">The valid headers, default all</param>
-        /// <param name="methods">The valid method, default all</param>
+        /// <param name="origins">The origins.</param>
+        /// <param name="headers">The headers.</param>
+        /// <param name="methods">The methods.</param>
+        /// <exception cref="System.ArgumentNullException">
+        /// origins
+        /// or
+        /// headers
+        /// or
+        /// methods
+        /// </exception>
         public CorsModule(
             string origins = Strings.CorsWildcard, 
             string headers = Strings.CorsWildcard,
@@ -69,7 +75,7 @@
 
                         if (context.RequestVerb() == HttpVerbs.Options)
                         {
-                            if (String.IsNullOrWhiteSpace(currentHeader) == false)
+                            if (string.IsNullOrWhiteSpace(currentHeader) == false)
                             {
                                 // TODO: I need to remove headers out from AllowHeaders
                                 context.Response.Headers.Add(Headers.AccessControlAllowHeaders + currentHeader);
