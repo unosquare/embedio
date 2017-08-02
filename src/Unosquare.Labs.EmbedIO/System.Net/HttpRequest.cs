@@ -187,7 +187,8 @@ namespace Unosquare.Net
                 return;
 
             var buff = new StringBuilder(64);
-            foreach (System.Net.Cookie cookie in cookies) // .Sorted)
+            foreach (System.Net.Cookie cookie in cookies) 
+            ////.Sorted)
             {
                 if (!cookie.Expired)
                     buff.AppendFormat("{0}; ", cookie);

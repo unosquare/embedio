@@ -25,7 +25,6 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 namespace Unosquare.Net
 {
     using System;
@@ -35,12 +34,12 @@ namespace Unosquare.Net
 
     internal class RequestStream : Stream
     {
-        readonly Stream _stream;
-        readonly byte[] _buffer;
-        int _offset;
-        int _length;
-        long _remainingBody;
-        bool _disposed = false;        
+        public readonly Stream _stream;
+        public readonly byte[] _buffer;
+        public int _offset;
+        public int _length;
+        public long _remainingBody;
+        public bool _disposed = false;        
         
         internal RequestStream(Stream stream, byte[] buffer, int offset, int length, long contentlength = -1)
         {
@@ -103,6 +102,7 @@ namespace Unosquare.Net
             {
                 size = Math.Min(size, _buffer.Length - _offset);
             }
+
             if (size == 0)
                 return 0;
 

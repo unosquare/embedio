@@ -223,6 +223,7 @@ namespace Unosquare.Net
                     {
                         return ParsingResult.EncodingError;
                     }
+
                     // Append the current character to the result.
                     _requestUriString.Append(current);
                     index++;

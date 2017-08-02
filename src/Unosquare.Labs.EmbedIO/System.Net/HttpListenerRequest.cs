@@ -27,7 +27,6 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 using System;
 using System.Collections.Specialized;
 using System.IO;
@@ -350,6 +349,7 @@ namespace Unosquare.Net
                             {
                                 _cookies.Add(current);
                             }
+
                             current = new Cookie();
                             var idx = str.IndexOf('=');
                             if (idx > 0)
@@ -362,13 +362,16 @@ namespace Unosquare.Net
                                 current.Name = str.Trim();
                                 current.Value = string.Empty;
                             }
+
                             current.Version = version;
                         }
                     }
+
                     if (current != null)
                     {
                         _cookies.Add(current);
                     }
+
                     break;
             }
         }
@@ -568,6 +571,7 @@ namespace Unosquare.Net
                     return _keepAlive;
 
                 _kaSet = true;
+                
                 // 1. Connection header
                 // 2. Protocol (1.1 == keep-alive by default)
                 // 3. Keep-Alive header

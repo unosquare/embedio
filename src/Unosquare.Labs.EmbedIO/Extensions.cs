@@ -363,7 +363,7 @@
         /// Returns dictionary from Request POST data
         /// Please note the underlying input stream is not rewindable.
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="context">The context to request body as string</param>
         /// <returns>A collection that represents KVPs from request data</returns>
         public static Dictionary<string, object> RequestFormDataDictionary(this HttpListenerContext context)
         {
@@ -383,7 +383,7 @@
             string contentTypeHeader = UrlEncodedContentType)
         {
             // TODO: implement multipart/form-data parsing
-            // example available here: http://stackoverflow.com/questions/5483851/manually-parse-raw-http-data-with-php
+            //// example available here: http://stackoverflow.com/questions/5483851/manually-parse-raw-http-data-with-php
 
             if (contentTypeHeader.ToLowerInvariant().StartsWith("multipart/form-data"))
                 throw new NotImplementedException("multipart/form-data Content Type parsing is not yet implemented");
@@ -488,6 +488,7 @@
                             compressor.CopyTo(targetStream);
                         }
                     }
+
                     break;
                 case CompressionMethod.Gzip:
                     if (mode == CompressionMode.Compress)

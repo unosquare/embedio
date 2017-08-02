@@ -143,6 +143,8 @@ namespace Unosquare.Net
     public class WebSocket : IDisposable
     {
         #region Private Fields
+        private const string Guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+        private const string Version = "13";
         private readonly Action<MessageEventArgs> _message;
         private readonly bool _client;
         private string _base64Key;        
@@ -156,8 +158,7 @@ namespace Unosquare.Net
         private object _forState;
         private MemoryStream _fragmentsBuffer;
         private bool _fragmentsCompressed;
-        private Opcode _fragmentsOpcode;
-        private const string Guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+        private Opcode _fragmentsOpcode;        
         private bool _inContinuation;
         private volatile bool _inMessage;        
         private Queue<MessageEventArgs> _messageEventQueue;
@@ -175,11 +176,10 @@ namespace Unosquare.Net
         private AutoResetEvent _receivePong;
 #if SSL
         private ClientSslConfiguration _sslConfig;
-#endif
+#endif        
         private Stream _stream;
         private TcpClient _tcpClient;
-        private Uri _uri;
-        private const string Version = "13";
+        private Uri _uri;        
         private TimeSpan _waitTime;
 
         #endregion
@@ -317,7 +317,10 @@ namespace Unosquare.Net
         /// </value>
         public CompressionMethod Compression
         {
-            get { return _compression; }
+            get
+            {
+                return _compression;
+            }
 
             set
             {
@@ -454,7 +457,10 @@ namespace Unosquare.Net
         /// </value>
         public string Origin
         {
-            get { return _origin; }
+            get
+            {
+                return _origin;
+            }
 
             set
             {
@@ -553,7 +559,10 @@ namespace Unosquare.Net
         /// </value>
         public TimeSpan WaitTime
         {
-            get { return _waitTime; }
+            get
+            {
+                return _waitTime;
+            }
 
             set
             {
@@ -2144,7 +2153,10 @@ namespace Unosquare.Net
         /// Establishes a WebSocket connection asynchronously.
         /// </summary>
         /// <param name="ct">The cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// If CheckIfAvailable statement terminates execution of the method; otherwise, 
+        /// establishes a WebSocket connection
+        /// </returns>
         /// <remarks>
         /// <para>
         /// This method doesn't wait for the connect to be complete.

@@ -41,7 +41,7 @@
         /// Retrieve an item or set an item. If the key does not exist, it returns null.
         /// This is an indexer providing a shortcut to the underlying Data dictionary
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">The key as an indexer</param>
         /// <returns>An object that represents current session data repository</returns>
         public object this[string key]
         {

@@ -26,7 +26,6 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 using System;
 using System.IO;
 using System.Net;
@@ -42,9 +41,9 @@ namespace Unosquare.Net
 {
     internal sealed class HttpConnection
     {
-        private readonly Timer _timer;
-        private readonly EndPointListener _epl;
         private const int BufferSize = 8192;
+        private readonly Timer _timer;
+        private readonly EndPointListener _epl;        
         private Socket _sock;        
         private MemoryStream _ms;
         private byte[] _buffer;

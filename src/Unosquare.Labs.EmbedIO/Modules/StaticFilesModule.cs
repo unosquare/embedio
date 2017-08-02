@@ -392,7 +392,7 @@
 
             while (true)
             {
-                if (sendData + ChuckSize > byteLength) readBufferSize = (int) (byteLength - sendData);
+                if (sendData + ChuckSize > byteLength) readBufferSize = (int)(byteLength - sendData);
 
                 buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
                 var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct);

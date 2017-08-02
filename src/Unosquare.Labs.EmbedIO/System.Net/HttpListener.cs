@@ -27,7 +27,6 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -74,8 +73,7 @@ namespace Unosquare.Net
 
         // ServiceNameStore defaultServiceNames;
         // ExtendedProtectionPolicy _extendedProtectionPolicy;
-        // ExtendedProtectionSelector _extendedProtectionSelectorDelegate = null;
-
+        // ExtendedProtectionSelector _extendedProtectionSelectorDelegate = null;    
 #if AUTHENTICATION
         /// <summary>
         /// The EPP selector delegate for the supplied request
@@ -96,6 +94,7 @@ namespace Unosquare.Net
 #if AUTHENTICATION
             _authSchemes = AuthenticationSchemes.Anonymous;
 #endif
+            
             // defaultServiceNames = new ServiceNameStore();
             // _extendedProtectionPolicy = new ExtendedProtectionPolicy(PolicyEnforcement.Never);
         }

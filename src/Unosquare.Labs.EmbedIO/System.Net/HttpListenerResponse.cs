@@ -25,7 +25,6 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 using System;
 using System.Globalization;
 using System.IO;
@@ -40,10 +39,8 @@ namespace Unosquare.Net
     /// <seealso cref="System.IDisposable" />
     public sealed class HttpListenerResponse : IDisposable
     {
-        private readonly HttpListenerContext _context;
-
         private const string CannotChangeHeaderWarning = "Cannot be changed after headers are sent.";
-
+        private readonly HttpListenerContext _context;        
         private bool _disposed;
         private long _contentLength;
         private bool _clSet;
@@ -85,7 +82,11 @@ namespace Unosquare.Net
         /// <exception cref="System.ArgumentOutOfRangeException">Must be >= 0 - value</exception>
         public long ContentLength64
         {
-            get { return _contentLength; }
+            get
+            {
+                return _contentLength;
+            }
+
             set
             {
                 if (_disposed)
@@ -115,7 +116,11 @@ namespace Unosquare.Net
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public string ContentType
         {
-            get { return _contentType; }
+            get
+            {
+                return _contentType;
+            }
+
             set
             {
                 // TODO: is null ok?
@@ -164,7 +169,11 @@ namespace Unosquare.Net
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public bool KeepAlive
         {
-            get { return _keepAlive; }
+            get
+            {
+                return _keepAlive;
+            }
+
             set
             {
                 if (_disposed)
@@ -200,7 +209,11 @@ namespace Unosquare.Net
         /// <exception cref="System.ArgumentException">Must be 1.0 or 1.1 - value</exception>
         public Version ProtocolVersion
         {
-            get { return _version; }
+            get
+            {
+                return _version;
+            }
+
             set
             {
                 if (_disposed)
@@ -581,6 +594,7 @@ namespace Unosquare.Net
 
             foreach (var key in headers.AllKeys)
                 sb.Append(key).Append(": ").Append(headers[key]).Append("\r\n");
+            
             // for (int i = 0; i < headers.Count; i++)
             // {
             //    string key = headers.GetKey(i);
@@ -596,7 +610,6 @@ namespace Unosquare.Net
             //        sb.Append(key).Append(": ").Append(headers.Get(i)).Append("\r\n");
             //    }
             // }
-
             return sb.Append("\r\n").ToString();
         }
 

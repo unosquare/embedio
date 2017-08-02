@@ -38,6 +38,8 @@
     {
         #region Immutable Declarations
 
+        private const string RegexRouteReplace = "(.*)";
+
         private readonly List<Type> _controllerTypes = new List<Type>();
 
         private readonly Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>> _delegateMap
@@ -49,9 +51,7 @@
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        private const string RegexRouteReplace = "(.*)";
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);        
 
         #endregion
 
@@ -241,6 +241,7 @@
 
             var wildcardMatch = wildcardPaths.FirstOrDefault(p => // wildcard at the end
                 path.StartsWith(p.Substring(0, p.Length - ModuleMap.AnyPath.Length))
+                
                 // wildcard in the middle so check both start/end
                 || (path.StartsWith(p.Substring(0, p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal)))
                     && path.EndsWith(p.Substring(p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal) + 1))));
@@ -296,7 +297,7 @@
         /// Registers the controller.
         /// </summary>
         /// <typeparam name="T">The type of register controller</typeparam>
-        /// <param name="controllerFactory"></param>
+        /// <param name="controllerFactory">The controller factory method</param>
         /// <exception cref="System.ArgumentException">Controller types must be unique within the module</exception>
         public void RegisterController<T>(Func<T> controllerFactory)
             where T : WebApiController

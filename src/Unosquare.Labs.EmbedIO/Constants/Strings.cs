@@ -9,6 +9,16 @@
     public static class Strings
     {
         /// <summary>
+        ///  Default Browser time format
+        /// </summary>
+        public const string BrowserTimeFormat = "ddd, dd MMM yyyy HH:mm:ss 'GMT'";
+
+        /// <summary>
+        /// Default CORS rule
+        /// </summary>
+        public const string CorsWildcard = "*";
+
+        /// <summary>
         /// The comma split character for String.Split method calls.
         /// </summary>
         public static readonly char[] CommaSplitChar = { ',' };
@@ -42,15 +52,5 @@
 #else
            StringComparer.Ordinal;
 #endif
-
-        /// <summary>
-        ///  Default Browser time format
-        /// </summary>
-        public const string BrowserTimeFormat = "ddd, dd MMM yyyy HH:mm:ss 'GMT'";
-
-        /// <summary>
-        /// Default CORS rule
-        /// </summary>
-        public const string CorsWildcard = "*";
     }
 }
