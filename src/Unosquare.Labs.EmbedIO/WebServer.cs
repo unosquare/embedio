@@ -211,7 +211,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="ct">The cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>A task that represents the asynchronous of client request</returns>
         private async Task HandleClientRequest(HttpListenerContext context, CancellationToken ct)
         {
             // start with an empty request ID

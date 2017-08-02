@@ -248,7 +248,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="ct">The cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>A task that represents the asynchronous of websocket connection operation</returns>
 #if NET47
         public async Task AcceptWebSocket(System.Net.HttpListenerContext context, CancellationToken ct)
 #else

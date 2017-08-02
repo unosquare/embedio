@@ -46,6 +46,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="server">The server.</param>
+        /// <returns>No object or value is returned by this method</returns>
         public static void DeleteSession(this HttpListenerContext context, WebServer server)
         {
             server.SessionModule?.DeleteSession(context);
@@ -56,6 +57,7 @@
         /// </summary>
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
+        /// <returns>No object or value is returned by this method</returns>
         public static void DeleteSession(this WebServer server, HttpListenerContext context)
         {
             server.SessionModule?.DeleteSession(context);
@@ -66,6 +68,7 @@
         /// </summary>
         /// <param name="server">The server.</param>
         /// <param name="session">The session info.</param>
+        /// <returns>No object or value is returned by this method</returns>
         public static void DeleteSession(this WebServer server, SessionInfo session)
         {
             server.SessionModule?.DeleteSession(session);
@@ -167,7 +170,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="key">The key.</param>
-        /// <returns></returns>
+        /// <returns>True if a key exists within the Request's query string; otherwise, false</returns>
         public static bool InQueryString(this HttpListenerContext context, string key)
         {
             return context.Request.QueryString.AllKeys.Contains(key);
@@ -178,7 +181,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="headerName">Name of the header.</param>
-        /// <returns></returns>
+        /// <returns>Specified request the header when is true; otherwise, empty string </returns>
         public static string RequestHeader(this HttpListenerContext context, string headerName)
         {
             return context.HasRequestHeader(headerName) == false ? string.Empty : context.Request.Headers[headerName];
@@ -189,7 +192,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="headerName">Name of the header.</param>
-        /// <returns></returns>
+        /// <returns>True if request headers is not a null; otherwise, false</returns>
         public static bool HasRequestHeader(this HttpListenerContext context, string headerName)
         {
             return context.Request.Headers[headerName] != null;
@@ -266,7 +269,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="data">The data.</param>
-        /// <returns></returns>
+        /// <returns>A true value of type ref=JsonResponseAsync"</returns>
         public static bool JsonResponse(this HttpListenerContext context, object data)
         {
             return context.JsonResponseAsync(data).GetAwaiter().GetResult();
@@ -277,7 +280,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="data">The data.</param>
-        /// <returns></returns>
+        /// <returns>A true value of type ref=JsonResponseAsync"</returns>
         public static Task<bool> JsonResponseAsync(this HttpListenerContext context, object data)
         {
             var jsonFormatting = true;
@@ -292,7 +295,8 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="json">The json.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// A true value of type ref=JsonResponseAsync"</returns>
         public static bool JsonResponse(this HttpListenerContext context, string json)
         {
             return context.JsonResponseAsync(json).GetAwaiter().GetResult();
@@ -304,8 +308,7 @@
         /// <param name="context">The context.</param>
         /// <param name="json">The json.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// </returns>
+        /// <returns>True that represents the correct async write operation</returns>
         public static async Task<bool> JsonResponseAsync(this HttpListenerContext context, string json, CancellationToken cancellationToken = default(CancellationToken))
         {
             var buffer = Encoding.UTF8.GetBytes(json);
