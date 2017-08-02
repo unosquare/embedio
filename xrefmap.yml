@@ -2584,6 +2584,18 @@ references:
   commentId: T:Unosquare.Net.HttpListenerPrefixCollection
   fullName: Unosquare.Net.HttpListenerPrefixCollection
   nameWithType: HttpListenerPrefixCollection
+- uid: Unosquare.Net.HttpListenerPrefixCollection._listener
+  name: _listener
+  href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection__listener
+  commentId: F:Unosquare.Net.HttpListenerPrefixCollection._listener
+  fullName: Unosquare.Net.HttpListenerPrefixCollection._listener
+  nameWithType: HttpListenerPrefixCollection._listener
+- uid: Unosquare.Net.HttpListenerPrefixCollection._prefixes
+  name: _prefixes
+  href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection__prefixes
+  commentId: F:Unosquare.Net.HttpListenerPrefixCollection._prefixes
+  fullName: Unosquare.Net.HttpListenerPrefixCollection._prefixes
+  nameWithType: HttpListenerPrefixCollection._prefixes
 - uid: Unosquare.Net.HttpListenerPrefixCollection.Add(System.String)
   name: Add(String)
   href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection_Add_System_String_
@@ -3277,6 +3289,24 @@ references:
   commentId: Overload:Unosquare.Net.HttpListenerResponse.StatusDescription
   fullName: Unosquare.Net.HttpListenerResponse.StatusDescription
   nameWithType: HttpListenerResponse.StatusDescription
+- uid: Unosquare.Net.HttpSysSettings
+  name: HttpSysSettings
+  href: api/Unosquare.Net.HttpSysSettings.html
+  commentId: T:Unosquare.Net.HttpSysSettings
+  fullName: Unosquare.Net.HttpSysSettings
+  nameWithType: HttpSysSettings
+- uid: Unosquare.Net.HttpSysSettings.EnableNonUtf8
+  name: EnableNonUtf8
+  href: api/Unosquare.Net.HttpSysSettings.html#Unosquare_Net_HttpSysSettings_EnableNonUtf8
+  commentId: F:Unosquare.Net.HttpSysSettings.EnableNonUtf8
+  fullName: Unosquare.Net.HttpSysSettings.EnableNonUtf8
+  nameWithType: HttpSysSettings.EnableNonUtf8
+- uid: Unosquare.Net.HttpSysSettings.FavorUtf8
+  name: FavorUtf8
+  href: api/Unosquare.Net.HttpSysSettings.html#Unosquare_Net_HttpSysSettings_FavorUtf8
+  commentId: F:Unosquare.Net.HttpSysSettings.FavorUtf8
+  fullName: Unosquare.Net.HttpSysSettings.FavorUtf8
+  nameWithType: HttpSysSettings.FavorUtf8
 - uid: Unosquare.Net.HttpVersion
   name: HttpVersion
   href: api/Unosquare.Net.HttpVersion.html
