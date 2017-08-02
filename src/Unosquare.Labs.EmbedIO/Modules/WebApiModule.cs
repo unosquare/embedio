@@ -281,7 +281,7 @@
         /// <summary>
         /// Registers the controller.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type of register controller</typeparam>
         /// <exception cref="System.ArgumentException">Controller types must be unique within the module</exception>
         public void RegisterController<T>()
             where T : WebApiController, new()
@@ -295,7 +295,7 @@
         /// <summary>
         /// Registers the controller.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type of register controller</typeparam>
         /// <param name="controllerFactory"></param>
         /// <exception cref="System.ArgumentException">Controller types must be unique within the module</exception>
         public void RegisterController<T>(Func<T> controllerFactory)

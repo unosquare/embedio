@@ -588,6 +588,7 @@
         /// <param name="virtualPath">The virtual path.</param>
         /// <param name="physicalPath">The physical path.</param>
         /// <exception cref="System.InvalidOperationException">
+        /// Is thrown when a method call is invalid for the object's current state
         /// </exception>
         public void RegisterVirtualPath(string virtualPath, string physicalPath)
         {
@@ -608,7 +609,9 @@
         /// Unregisters the virtual path.
         /// </summary>
         /// <param name="virtualPath">The virtual path.</param>
-        /// <exception cref="System.InvalidOperationException"></exception>
+        /// <exception cref="System.InvalidOperationException">
+        /// Is thrown when a method call is invalid for the object's current state
+        /// </exception>
         public void UnregisterVirtualPath(string virtualPath)
         {
             if (m_VirtualPaths.ContainsKey(virtualPath) == false)

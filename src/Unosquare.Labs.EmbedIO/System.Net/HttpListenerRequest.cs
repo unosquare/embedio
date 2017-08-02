@@ -216,7 +216,7 @@ namespace Unosquare.Net
             if (colon >= 0)
                 host = host.Substring(0, colon);
 
-            var baseUri = $"{((IsSecureConnection) ? "https" : "http")}://{host}:{LocalEndPoint.Port}";
+            var baseUri = $"{(IsSecureConnection ? "https" : "http")}://{host}:{LocalEndPoint.Port}";
 
             if (!Uri.TryCreate(baseUri + path, UriKind.Absolute, out _url))
             {

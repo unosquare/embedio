@@ -555,7 +555,7 @@ namespace Unosquare.Net
 
         #region Private Methods
 
-        private void add(string name, string value, bool ignoreRestricted)
+        private void Add(string name, string value, bool ignoreRestricted)
         {
             var act = ignoreRestricted
                 ? (Action<string, string>) AddWithoutCheckingNameAndRestricted
@@ -646,7 +646,7 @@ namespace Unosquare.Net
             return value;
         }
 
-        private static string convert(string key)
+        private static string Convert(string key)
         {
             HttpHeaderInfo info;
             return Headers.TryGetValue(key, out info) ? info.Name : string.Empty;
@@ -686,7 +686,6 @@ namespace Unosquare.Net
                 if (info.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                     return info;
             }
-
             return null;
         }
 
@@ -713,12 +712,12 @@ namespace Unosquare.Net
 
         internal static string Convert(System.Net.HttpRequestHeader header)
         {
-            return convert(header.ToString());
+            return Convert(header.ToString());
         }
 
         internal static string Convert(System.Net.HttpResponseHeader header)
         {
-            return convert(header.ToString());
+            return Convert(header.ToString());
         }
 
         internal void InternalRemove(string name)
@@ -807,7 +806,7 @@ namespace Unosquare.Net
         /// </exception>
         public void AddWithoutValidate(string headerName, string headerValue)
         {
-            add(headerName, headerValue, true);
+            Add(headerName, headerValue, true);
         }
 
         #endregion
@@ -855,7 +854,7 @@ namespace Unosquare.Net
                 throw new ArgumentNullException(nameof(header));
 
             var pos = CheckColonSeparated(header);
-            add(header.Substring(0, pos), header.Substring(pos + 1), false);
+            Add(header.Substring(0, pos), header.Substring(pos + 1), false);
         }
 
         /// <summary>
@@ -959,7 +958,7 @@ namespace Unosquare.Net
         /// </exception>
         public override void Add(string name, string value)
         {
-            add(name, value, false);
+            Add(name, value, false);
         }
 
         /// <summary>

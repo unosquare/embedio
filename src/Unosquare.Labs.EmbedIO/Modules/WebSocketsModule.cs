@@ -114,7 +114,7 @@
         /// <summary>
         /// Registers the web sockets server.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type of WebSocket server</typeparam>
         /// <param name="path">The path. For example: '/echo'</param>
         /// <param name="server">The server.</param>
         /// <exception cref="System.ArgumentNullException">

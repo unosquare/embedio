@@ -25,7 +25,6 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
 
 using System;
 using System.Globalization;
@@ -78,7 +77,10 @@ namespace Unosquare.Net
         /// <value>
         /// The content length64.
         /// </value>
-        /// <exception cref="System.ObjectDisposedException"></exception>
+        /// <exception cref="System.ObjectDisposedException">
+        /// Is thrown when you try to access a member of an object that implements the 
+        /// IDisposable interface, and that object has been disposed
+        /// </exception>
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">Must be >= 0 - value</exception>
         public long ContentLength64
@@ -106,7 +108,10 @@ namespace Unosquare.Net
         /// <value>
         /// The type of the content.
         /// </value>
-        /// <exception cref="System.ObjectDisposedException"></exception>
+        /// <exception cref="System.ObjectDisposedException">
+        /// Is thrown when you try to access a member of an object that implements the IDisposable 
+        /// interface, and that object has been disposed
+        /// </exception>
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public string ContentType
         {
@@ -152,7 +157,10 @@ namespace Unosquare.Net
         /// <value>
         ///   <c>true</c> if [keep alive]; otherwise, <c>false</c>.
         /// </value>
-        /// <exception cref="System.ObjectDisposedException"></exception>
+        /// <exception cref="System.ObjectDisposedException">
+        /// Is thrown when you try to access a member of an object that 
+        /// implements the IDisposable interface, and that object has been disposed
+        /// </exception>
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public bool KeepAlive
         {
@@ -184,6 +192,8 @@ namespace Unosquare.Net
         /// The protocol version.
         /// </value>
         /// <exception cref="System.ObjectDisposedException">
+        /// Is thrown when you try to access a member of an object that implements the 
+        /// IDisposable interface, and that object has been disposed
         /// </exception>
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         /// <exception cref="System.ArgumentNullException">value</exception>
@@ -218,7 +228,10 @@ namespace Unosquare.Net
         /// <value>
         /// The redirect location.
         /// </value>
-        /// <exception cref="System.ObjectDisposedException"></exception>
+        /// <exception cref="System.ObjectDisposedException">
+        /// Is thrown when you try to access a member of an object that implements the 
+        /// IDisposable interface, and that object has been disposed
+        /// </exception>
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public string RedirectLocation
         {
@@ -245,7 +258,10 @@ namespace Unosquare.Net
         /// <value>
         ///   <c>true</c> if [send chunked]; otherwise, <c>false</c>.
         /// </value>
-        /// <exception cref="System.ObjectDisposedException"></exception>
+        /// <exception cref="System.ObjectDisposedException">
+        /// Is thrown when you try to access a member of an object that implements the 
+        /// IDisposable interface, and that object has been disposed
+        /// </exception>
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public bool SendChunked
         {
@@ -272,7 +288,10 @@ namespace Unosquare.Net
         /// <value>
         /// The status code.
         /// </value>
-        /// <exception cref="System.ObjectDisposedException"></exception>
+        /// <exception cref="System.ObjectDisposedException">
+        /// Is thrown when you try to access a member of an object that implements the 
+        /// IDisposable interface, and that object has been disposed
+        /// </exception>
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         /// <exception cref="System.Net.ProtocolViolationException">StatusCode must be between 100 and 999.</exception>
         public int StatusCode
@@ -324,9 +343,15 @@ namespace Unosquare.Net
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="value">The value.</param>
-        /// <exception cref="System.ArgumentNullException"></exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// Is thrown when a null reference is passed to a 
+        /// method that does not accept it as a valid argument
+        /// </exception>
         /// <exception cref="System.ArgumentException">'name' cannot be empty</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Is thrown when the value of an argument is outside the 
+        /// allowable range of values as defined by the invoked method
+        /// </exception>
         public void AddHeader(string name, string value)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -343,7 +368,10 @@ namespace Unosquare.Net
         /// Appends the cookie.
         /// </summary>
         /// <param name="cookie">The cookie.</param>
-        /// <exception cref="System.ArgumentNullException"></exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// Is thrown when a null reference is passed to a 
+        /// method that does not accept it as a valid argument
+        /// </exception>
         public void AppendCookie(System.Net.Cookie cookie)
         {
             if (cookie == null)
@@ -357,9 +385,15 @@ namespace Unosquare.Net
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="value">The value.</param>
-        /// <exception cref="System.ArgumentNullException"></exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// Is thrown when a null reference is passed to a 
+        /// method that does not accept it as a valid argument
+        /// </exception>
         /// <exception cref="System.ArgumentException">'name' cannot be empty</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Is thrown when the value of an argument is outside the allowable
+        /// range of values as defined by the invoked method
+        /// </exception>
         public void AppendHeader(string name, string value)
         {
             if (name == null)
@@ -483,9 +517,9 @@ namespace Unosquare.Net
 			 *	HttpStatusCode.InternalServerError 	500
 			 *	HttpStatusCode.ServiceUnavailable 	503
 			 */
-            var connClose = (_statusCode == 400 || _statusCode == 408 || _statusCode == 411 ||
+            var connClose = _statusCode == 400 || _statusCode == 408 || _statusCode == 411 ||
                     _statusCode == 413 || _statusCode == 414 || _statusCode == 500 ||
-                    _statusCode == 503);
+                    _statusCode == 503;
 
             if (connClose == false)
                 connClose = !_context.Request.KeepAlive;
@@ -599,7 +633,10 @@ namespace Unosquare.Net
         /// Sets the cookie.
         /// </summary>
         /// <param name="cookie">The cookie.</param>
-        /// <exception cref="System.ArgumentNullException"></exception>
+        /// <exception cref="System.ArgumentNullException">
+        ///  Is thrown when a null reference is passed to a method
+        ///  that does not accept it as a valid argument
+        /// </exception>
         /// <exception cref="System.ArgumentException">The cookie already exists.</exception>
         public void SetCookie(System.Net.Cookie cookie)
         {

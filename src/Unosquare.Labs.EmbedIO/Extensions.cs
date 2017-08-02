@@ -320,7 +320,7 @@
         /// Parses the json as a given type from the request body.
         /// Please note the underlying input stream is not rewindable.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type of specified object type</typeparam>
         /// <param name="context">The context.</param>
         /// <returns>
         /// Parses the json as a given type from the request body
@@ -334,7 +334,7 @@
         /// <summary>
         /// Parses the json as a given type from the request body string.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type of specified object type</typeparam>
         /// <param name="requestBody">The request body.</param>
         /// <returns>
         /// A string that represents the json as a given type from the request body string
