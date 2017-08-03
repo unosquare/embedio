@@ -1234,7 +1234,6 @@ namespace Unosquare.Net
 
             return buff.Append("\r\n").ToString();
         }
-
         #endregion
     }
 

@@ -521,15 +521,14 @@ namespace Unosquare.Net
             if (!_clSet && !_chunked && v >= HttpVersion.Version11)
                 _chunked = true;
 
-            /* Apache forces closing the connection for these status codes:
-			 *	HttpStatusCode.BadRequest 		400
-			 *	HttpStatusCode.RequestTimeout 		408
-			 *	HttpStatusCode.LengthRequired 		411
-			 *	HttpStatusCode.RequestEntityTooLarge 	413
-			 *	HttpStatusCode.RequestUriTooLong 	414
-			 *	HttpStatusCode.InternalServerError 	500
-			 *	HttpStatusCode.ServiceUnavailable 	503
-			 */
+            //// Apache forces closing the connection for these status codes:
+            //// HttpStatusCode.BadRequest        400
+            //// HttpStatusCode.RequestTimeout        408
+            //// HttpStatusCode.LengthRequired        411
+            //// HttpStatusCode.RequestEntityTooLarge     413
+            //// HttpStatusCode.RequestUriTooLong     414
+            //// HttpStatusCode.InternalServerError   500
+            //// HttpStatusCode.ServiceUnavailable    503        
             var connClose = _statusCode == 400 || _statusCode == 408 || _statusCode == 411 ||
                     _statusCode == 413 || _statusCode == 414 || _statusCode == 500 ||
                     _statusCode == 503;
