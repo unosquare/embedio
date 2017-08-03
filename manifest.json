@@ -486,19 +486,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.HttpListenerResponse.html",
-          "hash": "XfYT4rNybX+C1iFYP7ldjg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Unosquare.Net.HttpSysSettings.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Unosquare.Net.HttpSysSettings.html",
-          "hash": "AzGKwYeR7AU3JrrOSpBQ/Q=="
+          "hash": "iVdS0qy/4+HgQ+eeaehxlA=="
         }
       },
       "is_incremental": false,
@@ -654,7 +642,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.html",
-          "hash": "34jgnqqUcX1U5R+XfCUxCQ=="
+          "hash": "nN16D1p6TLC511IttQc19g=="
         }
       },
       "is_incremental": false,
@@ -666,7 +654,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "1OjPvMRwBS404rvVrezkyQ=="
+          "hash": "1H7tfp9BOQpSJ614ZsxjUQ=="
         }
       },
       "is_incremental": false,
@@ -681,6 +669,11 @@
         "incrementalPhase": "build"
       },
       "processors": {
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build"
+        },
         "RestApiDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor RestApiDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
@@ -697,11 +690,6 @@
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "incrementalPhase": "build"
-        },
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         }
       }

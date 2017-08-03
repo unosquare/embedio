@@ -3289,24 +3289,6 @@ references:
   commentId: Overload:Unosquare.Net.HttpListenerResponse.StatusDescription
   fullName: Unosquare.Net.HttpListenerResponse.StatusDescription
   nameWithType: HttpListenerResponse.StatusDescription
-- uid: Unosquare.Net.HttpSysSettings
-  name: HttpSysSettings
-  href: api/Unosquare.Net.HttpSysSettings.html
-  commentId: T:Unosquare.Net.HttpSysSettings
-  fullName: Unosquare.Net.HttpSysSettings
-  nameWithType: HttpSysSettings
-- uid: Unosquare.Net.HttpSysSettings.EnableNonUtf8
-  name: EnableNonUtf8
-  href: api/Unosquare.Net.HttpSysSettings.html#Unosquare_Net_HttpSysSettings_EnableNonUtf8
-  commentId: F:Unosquare.Net.HttpSysSettings.EnableNonUtf8
-  fullName: Unosquare.Net.HttpSysSettings.EnableNonUtf8
-  nameWithType: HttpSysSettings.EnableNonUtf8
-- uid: Unosquare.Net.HttpSysSettings.FavorUtf8
-  name: FavorUtf8
-  href: api/Unosquare.Net.HttpSysSettings.html#Unosquare_Net_HttpSysSettings_FavorUtf8
-  commentId: F:Unosquare.Net.HttpSysSettings.FavorUtf8
-  fullName: Unosquare.Net.HttpSysSettings.FavorUtf8
-  nameWithType: HttpSysSettings.FavorUtf8
 - uid: Unosquare.Net.HttpVersion
   name: HttpVersion
   href: api/Unosquare.Net.HttpVersion.html
