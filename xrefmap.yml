@@ -1888,6 +1888,12 @@ references:
   commentId: M:Unosquare.Labs.EmbedIO.WebServer.#ctor(System.Int32)
   fullName: Unosquare.Labs.EmbedIO.WebServer.WebServer(System.Int32)
   nameWithType: WebServer.WebServer(Int32)
+- uid: Unosquare.Labs.EmbedIO.WebServer.#ctor(System.Int32,Unosquare.Labs.EmbedIO.Constants.RoutingStrategy)
+  name: WebServer(Int32, RoutingStrategy)
+  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer__ctor_System_Int32_Unosquare_Labs_EmbedIO_Constants_RoutingStrategy_
+  commentId: M:Unosquare.Labs.EmbedIO.WebServer.#ctor(System.Int32,Unosquare.Labs.EmbedIO.Constants.RoutingStrategy)
+  fullName: Unosquare.Labs.EmbedIO.WebServer.WebServer(System.Int32, Unosquare.Labs.EmbedIO.Constants.RoutingStrategy)
+  nameWithType: WebServer.WebServer(Int32, RoutingStrategy)
 - uid: Unosquare.Labs.EmbedIO.WebServer.#ctor(System.String,Unosquare.Labs.EmbedIO.Constants.RoutingStrategy)
   name: WebServer(String, RoutingStrategy)
   href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer__ctor_System_String_Unosquare_Labs_EmbedIO_Constants_RoutingStrategy_
@@ -2584,18 +2590,6 @@ references:
   commentId: T:Unosquare.Net.HttpListenerPrefixCollection
   fullName: Unosquare.Net.HttpListenerPrefixCollection
   nameWithType: HttpListenerPrefixCollection
-- uid: Unosquare.Net.HttpListenerPrefixCollection._listener
-  name: _listener
-  href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection__listener
-  commentId: F:Unosquare.Net.HttpListenerPrefixCollection._listener
-  fullName: Unosquare.Net.HttpListenerPrefixCollection._listener
-  nameWithType: HttpListenerPrefixCollection._listener
-- uid: Unosquare.Net.HttpListenerPrefixCollection._prefixes
-  name: _prefixes
-  href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection__prefixes
-  commentId: F:Unosquare.Net.HttpListenerPrefixCollection._prefixes
-  fullName: Unosquare.Net.HttpListenerPrefixCollection._prefixes
-  nameWithType: HttpListenerPrefixCollection._prefixes
 - uid: Unosquare.Net.HttpListenerPrefixCollection.Add(System.String)
   name: Add(String)
   href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection_Add_System_String_
