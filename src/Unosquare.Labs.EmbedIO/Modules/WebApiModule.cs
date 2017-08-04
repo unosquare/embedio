@@ -76,8 +76,11 @@
                 // return a non-math if no handler hold the route
                 if (path == null) return false;
 
+                Dictionary<HttpVerbs, Tuple<Func<object>, MethodCache>> methods;
+                Tuple<Func<object>, MethodCache> methodPair;
+
                 // search the path and verb
-                if (!_delegateMap.TryGetValue(path, out var methods) || !methods.TryGetValue(verb, out var methodPair))
+                if (!_delegateMap.TryGetValue(path, out methods) || !methods.TryGetValue(verb, out methodPair))
                     throw new InvalidOperationException($"No method found for path {path} and verb {verb}.");
 
                 var controller = methodPair.Item1();
