@@ -95,35 +95,7 @@
                 switch (Server.RoutingStrategy)
                 {
                     case RoutingStrategy.Regex:
-
-                        // Parse the arguments to their intended type skipping the first two.
-                        for (var i = 0; i < methodPair.MethodCache.AdditionalParameters.Count; i++)
-                        {
-                            var param = methodPair.MethodCache.AdditionalParameters[i];
-                            if (regExRouteParams.ContainsKey(param.Info.Name))
-                            {
-                                var value = (string) regExRouteParams[param.Info.Name];
-
-                                if (string.IsNullOrWhiteSpace(value))
-                                    value = null; // ignore whitespace
-
-                                // if the value is null, there's nothing to convert
-                                if (value == null)
-                                {
-                                    // else we use the default value (null for nullable types)
-                                    args[i + 2] = param.Default;
-                                    continue;
-                                }
-
-                                // convert and add to arguments
-                                args[i + 2] = param.Converter.ConvertFromString(value);
-                            }
-                            else
-                            {
-                                args[i + 2] = param.Default;
-                            }
-                        }
-
+                        methodPair.ParseArguments(regExRouteParams, args);
                         return await methodPair.Invoke(args);
                     case RoutingStrategy.Wildcard:
 

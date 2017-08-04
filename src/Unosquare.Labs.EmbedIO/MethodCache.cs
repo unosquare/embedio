@@ -71,6 +71,37 @@
 
         public MethodCache MethodCache { get; }
 
+        public void ParseArguments(Dictionary<string, object> parameters, object[] arguments)
+        {
+            // Parse the arguments to their intended type skipping the first two.
+            for (var i = 0; i < MethodCache.AdditionalParameters.Count; i++)
+            {
+                var param = MethodCache.AdditionalParameters[i];
+                if (parameters.ContainsKey(param.Info.Name))
+                {
+                    var value = (string) parameters[param.Info.Name];
+
+                    if (string.IsNullOrWhiteSpace(value))
+                        value = null; // ignore whitespace
+
+                    // if the value is null, there's nothing to convert
+                    if (value == null)
+                    {
+                        // else we use the default value (null for nullable types)
+                        arguments[i + 2] = param.Default;
+                        continue;
+                    }
+
+                    // convert and add to arguments
+                    arguments[i + 2] = param.Converter.ConvertFromString(value);
+                }
+                else
+                {
+                    arguments[i + 2] = param.Default;
+                }
+            }
+        }
+
         public Task<bool> Invoke(object[] arguments)
         {
             var controller = _controllerFactory();
