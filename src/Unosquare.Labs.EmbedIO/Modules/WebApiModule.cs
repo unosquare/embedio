@@ -20,6 +20,7 @@
     /// </summary>
     /// <param name="server">The server.</param>
     /// <param name="context">The context.</param>
+    /// <returns><b>true</b> if the response was completed, otherwise <b>false</b></returns>
     public delegate bool ResponseHandler(WebServer server, HttpListenerContext context);
 
     /// <summary>
@@ -27,6 +28,7 @@
     /// </summary>
     /// <param name="server">The server.</param>
     /// <param name="context">The context.</param>
+    /// <returns>A task with <b>true</b> if the response was completed, otherwise <b>false</b></returns>
     public delegate Task<bool> AsyncResponseHandler(WebServer server, HttpListenerContext context);
 
     /// <summary>
@@ -37,6 +39,12 @@
     public class WebApiModule : WebModuleBase
     {
         #region Immutable Declarations
+        
+        private static readonly Regex RouteParamRegex = new Regex(@"\{[^\/]*\}",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private const string RegexRouteReplace = "(.*)";
 
@@ -45,13 +53,7 @@
         private readonly Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodCache>>> _delegateMap
             =
             new Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodCache>>>(
-                Strings.StandardStringComparer);
-
-        private static readonly Regex RouteParamRegex = new Regex(@"\{[^\/]*\}",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);        
+                Strings.StandardStringComparer);      
 
         #endregion
 
@@ -103,18 +105,19 @@
                             if (regExRouteParams.ContainsKey(param.Info.Name))
                             {
                                 var value = (string) regExRouteParams[param.Info.Name];
-                                if (string.IsNullOrWhiteSpace(value))
-                                    value = null; //ignore whitespace
 
-                                //if the value is null, there's nothing to convert
+                                if (string.IsNullOrWhiteSpace(value))
+                                    value = null; // ignore whitespace
+
+                                // if the value is null, there's nothing to convert
                                 if (value == null)
                                 {
-                                    //else we use the default value (null for nullable types)
+                                    // else we use the default value (null for nullable types)
                                     args[i + 2] = param.Default;
                                     continue;
                                 }
 
-                                //convert and add to arguments
+                                // convert and add to arguments
                                 args[i + 2] = param.Converter.ConvertFromString(value);
                             }
                             else
@@ -155,112 +158,6 @@
                         return false;
                 }
             });
-        }
-
-        /// <summary>
-        /// Normalizes a path meant for Regex matching, extracts the route parameters, and returns the registered
-        /// path in the internal delegate map.
-        /// </summary>
-        /// <param name="verb">The verb.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="routeParams">The route parameters.</param>
-        /// <returns>A string that represents the registered path in the internal delegate map</returns>
-        private string NormalizeRegexPath(
-            HttpVerbs verb, 
-            HttpListenerContext context,
-            Dictionary<string, object> routeParams)
-        {
-            var path = context.Request.Url.LocalPath;
-
-            foreach (var route in _delegateMap.Keys)
-            {
-                var regex = new Regex(RouteParamRegex.Replace(route, RegexRouteReplace));
-                var match = regex.Match(path);
-
-                var pathParts = route.Split('/');
-
-                if (!match.Success || !_delegateMap[route].Keys.Contains(verb))
-                {
-                    var optionalPath = RouteOptionalParamRegex.Replace(route, string.Empty);
-                    var tempPath = path;
-
-                    if (optionalPath.Last() == '/' && path.Last() != '/')
-                    {
-                        tempPath += "/";
-                    }
-
-                    if (optionalPath == tempPath)
-                    {
-                        foreach (var pathPart in pathParts.Where(x => x.StartsWith("{")))
-                        {
-                            routeParams.Add(
-                                pathPart.Replace("{", string.Empty)
-                                    .Replace("}", string.Empty)
-                                    .Replace("?", string.Empty), null);
-                        }
-
-                        return route;
-                    }
-
-                    continue;
-                }
-
-                var i = 1; // match group index
-
-                foreach (var pathPart in pathParts.Where(x => x.StartsWith("{")))
-                {
-                    routeParams.Add(
-                        pathPart.Replace("{", string.Empty).Replace("}", string.Empty).Replace("?", string.Empty),
-                        match.Groups[i++].Value);
-                }
-
-                return route;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Normalizes a URL request path meant for Wildcard matching and returns the registered
-        /// path in the internal delegate map.
-        /// </summary>
-        /// <param name="verb">The verb.</param>
-        /// <param name="context">The context.</param>
-        /// <returns>A string that represents the registered path</returns>
-        private string NormalizeWildcardPath(HttpVerbs verb, HttpListenerContext context)
-        {
-            var path = context.RequestPath();
-
-            var wildcardPaths = _delegateMap.Keys
-                .Where(k => k.Contains("/" + ModuleMap.AnyPath))
-                .Select(s => s.ToLowerInvariant())
-                .ToArray();
-
-            var wildcardMatch = wildcardPaths.FirstOrDefault(p => // wildcard at the end
-                path.StartsWith(p.Substring(0, p.Length - ModuleMap.AnyPath.Length))
-                
-                // wildcard in the middle so check both start/end
-                || (path.StartsWith(p.Substring(0, p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal)))
-                    && path.EndsWith(p.Substring(p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal) + 1))));
-
-            if (string.IsNullOrWhiteSpace(wildcardMatch) == false)
-                path = wildcardMatch;
-
-            if (_delegateMap.ContainsKey(path) == false)
-                return null;
-
-            if (_delegateMap[path].ContainsKey(verb))
-                return path;
-
-            var originalPath = context.RequestPath();
-
-            if (_delegateMap.ContainsKey(originalPath) &&
-                _delegateMap[originalPath].ContainsKey(verb))
-            {
-                return originalPath;
-            }
-
-            return null;
         }
 
         /// <summary>
@@ -358,6 +255,112 @@
             }
 
             _controllerTypes.Add(controllerType);
+        }
+
+        /// <summary>
+        /// Normalizes a path meant for Regex matching, extracts the route parameters, and returns the registered
+        /// path in the internal delegate map.
+        /// </summary>
+        /// <param name="verb">The verb.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="routeParams">The route parameters.</param>
+        /// <returns>A string that represents the registered path in the internal delegate map</returns>
+        private string NormalizeRegexPath(
+            HttpVerbs verb,
+            HttpListenerContext context,
+            Dictionary<string, object> routeParams)
+        {
+            var path = context.Request.Url.LocalPath;
+
+            foreach (var route in _delegateMap.Keys)
+            {
+                var regex = new Regex(RouteParamRegex.Replace(route, RegexRouteReplace));
+                var match = regex.Match(path);
+
+                var pathParts = route.Split('/');
+
+                if (!match.Success || !_delegateMap[route].Keys.Contains(verb))
+                {
+                    var optionalPath = RouteOptionalParamRegex.Replace(route, string.Empty);
+                    var tempPath = path;
+
+                    if (optionalPath.Last() == '/' && path.Last() != '/')
+                    {
+                        tempPath += "/";
+                    }
+
+                    if (optionalPath == tempPath)
+                    {
+                        foreach (var pathPart in pathParts.Where(x => x.StartsWith("{")))
+                        {
+                            routeParams.Add(
+                                pathPart.Replace("{", string.Empty)
+                                    .Replace("}", string.Empty)
+                                    .Replace("?", string.Empty), null);
+                        }
+
+                        return route;
+                    }
+
+                    continue;
+                }
+
+                var i = 1; // match group index
+
+                foreach (var pathPart in pathParts.Where(x => x.StartsWith("{")))
+                {
+                    routeParams.Add(
+                        pathPart.Replace("{", string.Empty).Replace("}", string.Empty).Replace("?", string.Empty),
+                        match.Groups[i++].Value);
+                }
+
+                return route;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Normalizes a URL request path meant for Wildcard matching and returns the registered
+        /// path in the internal delegate map.
+        /// </summary>
+        /// <param name="verb">The verb.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>A string that represents the registered path</returns>
+        private string NormalizeWildcardPath(HttpVerbs verb, HttpListenerContext context)
+        {
+            var path = context.RequestPath();
+
+            var wildcardPaths = _delegateMap.Keys
+                .Where(k => k.Contains("/" + ModuleMap.AnyPath))
+                .Select(s => s.ToLowerInvariant())
+                .ToArray();
+
+            var wildcardMatch = wildcardPaths.FirstOrDefault(p => // wildcard at the end
+                path.StartsWith(p.Substring(0, p.Length - ModuleMap.AnyPath.Length))
+
+                // wildcard in the middle so check both start/end
+                || (path.StartsWith(p.Substring(0, p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal)))
+                    && path.EndsWith(p.Substring(p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal) + 1))));
+
+            if (string.IsNullOrWhiteSpace(wildcardMatch) == false)
+                path = wildcardMatch;
+
+            if (_delegateMap.ContainsKey(path) == false)
+                return null;
+
+            if (_delegateMap[path].ContainsKey(verb))
+                return path;
+
+            var originalPath = context.RequestPath();
+
+            if (_delegateMap.ContainsKey(originalPath) &&
+                _delegateMap[originalPath].ContainsKey(verb))
+            {
+                return originalPath;
+            }
+
+            return null;
         }
     }
 
