@@ -730,7 +730,7 @@ using System.Threading.Tasks;
     /// Defines the HTTP version number supported by the <see cref="System.Net.HttpWebRequest" /> and
     /// <see cref="System.Net.HttpWebResponse" /> classes.
     /// </devdoc>
-    public class HttpVersion
+    internal class HttpVersion
     {
         /// <summary>
         /// The version 1.0

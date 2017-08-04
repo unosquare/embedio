@@ -24,7 +24,6 @@
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
-        /// This constructor does not provide any Logging capabilities.
         /// </summary>
         public WebServer()
             : this(new[] {"http://*/"}, RoutingStrategy.Wildcard)
@@ -34,7 +33,6 @@
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
-        /// This constructor does not provide any Logging capabilities.
         /// </summary>
         /// <param name="port">The port.</param>
         public WebServer(int port)
@@ -45,7 +43,6 @@
         
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
-        /// This constructor does not provide any Logging capabilities.
         /// </summary>
         /// <param name="port">The port.</param>
         /// <param name="strategy">The strategy.</param>
@@ -57,7 +54,6 @@
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer" /> class.
-        /// This constructor does not provide any Logging capabilities.
         /// </summary>
         /// <param name="urlPrefix">The URL prefix.</param>
         /// <param name="strategy">The strategy.</param>
@@ -69,7 +65,6 @@
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
-        /// This constructor does not provide any Logging capabilities.
         /// </summary>
         /// <param name="urlPrefixes">The URL prefixes.</param>
         public WebServer(string[] urlPrefixes)

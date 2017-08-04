@@ -21,7 +21,7 @@
     /// <param name="server">The server.</param>
     /// <param name="context">The context.</param>
     /// <returns><b>true</b> if the response was completed, otherwise <b>false</b></returns>
-    public delegate bool ResponseHandler(WebServer server, HttpListenerContext context);
+    internal delegate bool ResponseHandler(WebServer server, HttpListenerContext context);
 
     /// <summary>
     /// An async delegate that handles certain action in a module given a path and a verb
@@ -29,7 +29,7 @@
     /// <param name="server">The server.</param>
     /// <param name="context">The context.</param>
     /// <returns>A task with <b>true</b> if the response was completed, otherwise <b>false</b></returns>
-    public delegate Task<bool> AsyncResponseHandler(WebServer server, HttpListenerContext context);
+    internal delegate Task<bool> AsyncResponseHandler(WebServer server, HttpListenerContext context);
 
     /// <summary>
     /// A very simple module to register class methods as handlers.
