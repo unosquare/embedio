@@ -40,6 +40,7 @@ Some notes regarding WebSocket and runtimes support:
 | NET46 | Yes | Support Win7+ OS using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
 | NET462 | Yes | Support Win8+ OS using native System.Net library |
 | NETSTANDARD* | Yes | Support Windows, Linux and macOS using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
+| UAP | No | Support Windows Universal Plataform  |
 
 EmbedIO before version 1.4.0 uses Newtonsoft JSON and an internal logger subsystem based on ILog interface.
 
@@ -360,5 +361,3 @@ public class WebSocketsChatServer : WebSocketsServer
 
 ## Notes
 [1] - EmbedIO uses lowercase URL parts. In Windows systems this is the expected behaviour but in Unix systems using MONO please refer to [Mono IOMap](http://www.mono-project.com/docs/advanced/iomap/) if you want to work with case insensitive URL parts.
-
-[2] - EmbedIO support IoT using Windows 10 IoT Core
