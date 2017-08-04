@@ -18,15 +18,17 @@
         {
             MethodInfo = methodInfo;
             IsTask = methodInfo.ReturnType == typeof(Task<bool>);
-            AdditionalParameters = methodInfo.GetParameters().Skip(2).Select(x => new AddtionalParameterInfo(x))
+            AdditionalParameters = methodInfo.GetParameters()
+                .Skip(2)
+                .Select(x => new AddtionalParameterInfo(x))
                 .ToList();
 
             var invokeDelegate = BuildDelegate(methodInfo, IsTask);
 
             if (IsTask)
-                AsyncInvoke = (AsyncDelegate)invokeDelegate;
+                AsyncInvoke = (AsyncDelegate) invokeDelegate;
             else
-                SyncInvoke = (SyncDelegate)invokeDelegate;
+                SyncInvoke = (SyncDelegate) invokeDelegate;
         }
 
         public MethodInfo MethodInfo { get; }
@@ -42,7 +44,10 @@
             var argumentsExpression = Expression.Parameter(typeof(object[]), "arguments");
 
             var argumentExpressions = methodInfo.GetParameters()
-                .Select((parameterInfo, i) => Expression.Convert(Expression.ArrayIndex(argumentsExpression, Expression.Constant(i)), parameterInfo.ParameterType))
+                .Select(
+                    (parameterInfo, i) =>
+                        Expression.Convert(Expression.ArrayIndex(argumentsExpression, Expression.Constant(i)),
+                            parameterInfo.ParameterType))
                 .Cast<Expression>()
                 .ToList();
 
@@ -77,28 +82,11 @@
             for (var i = 0; i < MethodCache.AdditionalParameters.Count; i++)
             {
                 var param = MethodCache.AdditionalParameters[i];
-                if (parameters.ContainsKey(param.Info.Name))
-                {
-                    var value = (string) parameters[param.Info.Name];
 
-                    if (string.IsNullOrWhiteSpace(value))
-                        value = null; // ignore whitespace
-
-                    // if the value is null, there's nothing to convert
-                    if (value == null)
-                    {
-                        // else we use the default value (null for nullable types)
-                        arguments[i + 2] = param.Default;
-                        continue;
-                    }
-
-                    // convert and add to arguments
-                    arguments[i + 2] = param.Converter.ConvertFromString(value);
-                }
-                else
-                {
-                    arguments[i + 2] = param.Default;
-                }
+                // convert and add to arguments, if null use default value
+                arguments[i + 2] = parameters.ContainsKey(param.Info.Name)
+                    ? param.GetValue((string) parameters[param.Info.Name])
+                    : param.Default;
             }
         }
 
@@ -115,10 +103,12 @@
 
     internal class AddtionalParameterInfo
     {
+        private readonly TypeConverter _converter;
+
         public AddtionalParameterInfo(ParameterInfo parameterInfo)
         {
             Info = parameterInfo;
-            Converter = TypeDescriptor.GetConverter(parameterInfo.ParameterType);
+            _converter = TypeDescriptor.GetConverter(parameterInfo.ParameterType);
 
             if (parameterInfo.ParameterType.GetTypeInfo().IsValueType)
                 Default = Activator.CreateInstance(parameterInfo.ParameterType);
@@ -126,6 +116,14 @@
 
         public object Default { get; }
         public ParameterInfo Info { get; }
-        public TypeConverter Converter { get; }
+
+        public object GetValue(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                value = null; // ignore whitespace
+
+            // convert and add to arguments, if null use default value
+            return value == null ? Default : _converter.ConvertFromString(value);
+        }
     }
 }
