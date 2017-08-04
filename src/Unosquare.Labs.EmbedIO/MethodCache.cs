@@ -61,29 +61,24 @@
 
     internal class MethodCacheInstance
     {
+        private readonly Func<object> _controllerFactory;
+
         public MethodCacheInstance(Func<object> controllerFactory, MethodCache cache)
         {
-            ControllerFactory = controllerFactory;
+            _controllerFactory = controllerFactory;
             MethodCache = cache;
         }
 
         public MethodCache MethodCache { get; }
 
-        public Func<object> ControllerFactory { get; }
-
-        public async Task<bool> Invoke(object[] arguments)
+        public Task<bool> Invoke(object[] arguments)
         {
-            var controller = ControllerFactory();
+            var controller = _controllerFactory();
 
             // Now, check if the call is handled asynchronously.
-            if (MethodCache.IsTask)
-            {
-                // Run the method asynchronously
-                return await MethodCache.AsyncInvoke(controller, arguments);
-            }
-
-            // If the handler is not asynchronous, simply call the method.
-            return MethodCache.SyncInvoke(controller, arguments);
+            return MethodCache.IsTask
+                ? MethodCache.AsyncInvoke(controller, arguments)
+                : Task.FromResult(MethodCache.SyncInvoke(controller, arguments));
         }
     }
 

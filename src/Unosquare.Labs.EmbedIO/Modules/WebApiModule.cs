@@ -39,14 +39,14 @@
     public class WebApiModule : WebModuleBase
     {
         #region Immutable Declarations
-        
+
+        private const string RegexRouteReplace = "(.*)";
+
         private static readonly Regex RouteParamRegex = new Regex(@"\{[^\/]*\}",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        private const string RegexRouteReplace = "(.*)";
 
         private readonly List<Type> _controllerTypes = new List<Type>();
 
