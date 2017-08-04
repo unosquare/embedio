@@ -107,7 +107,7 @@ namespace Unosquare.Net
     /// <summary>
     /// Represents some System.NET custom extensions
     /// </summary>
-    public static class WebSocketExtensions
+    internal static class WebSocketExtensions
     {
         internal static IEnumerable<string> SplitHeaderValue(this string value, params char[] separators)
         {
@@ -209,7 +209,7 @@ namespace Unosquare.Net
         /// <exception cref="ArgumentNullException">
         /// <paramref name="source"/> is <see langword="null"/>.
         /// </exception>
-        public static byte[] ToHostOrder(this byte[] source, Endianness sourceOrder)
+        internal static byte[] ToHostOrder(this byte[] source, Endianness sourceOrder)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -371,7 +371,7 @@ namespace Unosquare.Net
             return true;
         }
 
-        private const string Tspecials = "()<>@,;:\\\"/[]?={} \t";
+        internal const string Tspecials = "()<>@,;:\\\"/[]?={} \t";
 
         internal static bool IsToken(this string value) => value.All(c => c >= 0x20 && c < 0x7f && !Tspecials.Contains(c));
 
@@ -388,7 +388,7 @@ namespace Unosquare.Net
         /// <c>true</c> if <paramref name="headers"/> is a collection of the response headers;
         /// otherwise, <c>false</c>.
         /// </param>
-        public static CookieCollection GetCookies(this NameValueCollection headers, bool response)
+        internal static CookieCollection GetCookies(this NameValueCollection headers, bool response)
         {
             var name = response ? "Set-Cookie" : Headers.Cookie;
             return headers != null && headers.AllKeys.Contains(name)
@@ -403,10 +403,7 @@ namespace Unosquare.Net
 
             var m = $"permessage-{method.ToString().ToLower()}";
 
-            if (parameters == null || parameters.Length == 0)
-                return m;
-
-            return $"{m}; {string.Join("; ", parameters)}";
+            return parameters == null || parameters.Length == 0 ? m : $"{m}; {string.Join("; ", parameters)}";
         }
 
         /// <summary>
@@ -426,7 +423,7 @@ namespace Unosquare.Net
         /// <param name="value">
         /// A <see cref="string"/> that represents the value of the entry to find.
         /// </param>
-        public static bool Contains(this NameValueCollection collection, string name, string value)
+        internal static bool Contains(this NameValueCollection collection, string name, string value)
         {
             if (collection == null || collection.Count == 0)
                 return false;
@@ -450,7 +447,7 @@ namespace Unosquare.Net
         /// <param name="chars">
         /// An array of <see cref="char"/> that contains characters to find.
         /// </param>
-        public static bool Contains(this string value, params char[] chars)
+        internal static bool Contains(this string value, params char[] chars)
         {
             return chars?.Length == 0 || !string.IsNullOrEmpty(value) && value.IndexOfAny(chars) > -1;
         }

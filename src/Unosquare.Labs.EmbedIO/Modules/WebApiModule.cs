@@ -20,14 +20,16 @@
     /// </summary>
     /// <param name="server">The server.</param>
     /// <param name="context">The context.</param>
-    public delegate bool ResponseHandler(WebServer server, HttpListenerContext context);
+    /// <returns><b>true</b> if the response was completed, otherwise <b>false</b></returns>
+    internal delegate bool ResponseHandler(WebServer server, HttpListenerContext context);
 
     /// <summary>
     /// An async delegate that handles certain action in a module given a path and a verb
     /// </summary>
     /// <param name="server">The server.</param>
     /// <param name="context">The context.</param>
-    public delegate Task<bool> AsyncResponseHandler(WebServer server, HttpListenerContext context);
+    /// <returns>A task with <b>true</b> if the response was completed, otherwise <b>false</b></returns>
+    internal delegate Task<bool> AsyncResponseHandler(WebServer server, HttpListenerContext context);
 
     /// <summary>
     /// A very simple module to register class methods as handlers.
@@ -40,18 +42,18 @@
 
         private const string RegexRouteReplace = "(.*)";
 
-        private readonly List<Type> _controllerTypes = new List<Type>();
-
-        private readonly Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>> _delegateMap
-            =
-            new Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>>(
-                Strings.StandardStringComparer);
-
         private static readonly Regex RouteParamRegex = new Regex(@"\{[^\/]*\}",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);        
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private readonly List<Type> _controllerTypes = new List<Type>();
+
+        private readonly Dictionary<string, Dictionary<HttpVerbs, MethodCacheInstance>> _delegateMap
+            =
+            new Dictionary<string, Dictionary<HttpVerbs, MethodCacheInstance>>(
+                Strings.StandardStringComparer);      
 
         #endregion
 
@@ -71,86 +73,33 @@
                 // return a non-math if no handler hold the route
                 if (path == null) return false;
 
-                var methodPair = _delegateMap[path][verb];
-                var controller = methodPair.Item1();
+                Dictionary<HttpVerbs, MethodCacheInstance> methods;
+                MethodCacheInstance methodPair;
 
+                // search the path and verb
+                if (!_delegateMap.TryGetValue(path, out methods) || !methods.TryGetValue(verb, out methodPair))
+                    throw new InvalidOperationException($"No method found for path {path} and verb {verb}.");
+                
                 // ensure module does not return cached responses
                 context.NoCache();
 
                 // Log the handler to be use
-                $"Handler: {methodPair.Item2.DeclaringType?.FullName}.{methodPair.Item2.Name}".Debug(nameof(WebApiModule));
+                $"Handler: {methodPair.MethodCache.MethodInfo.DeclaringType?.FullName}.{methodPair.MethodCache.MethodInfo.Name}".Debug(nameof(WebApiModule));
 
                 // Initially, only the server and context objects will be available
-                var args = new List<object>() { Server, context };
-
+                var args = new object[methodPair.MethodCache.AdditionalParameters.Count + 2];
+                args[0] = Server;
+                args[1] = context;
+                
                 // Select the routing strategy
                 switch (Server.RoutingStrategy)
                 {
                     case RoutingStrategy.Regex:
-
-                        // Parse the arguments to their intended type skipping the first two.
-                        foreach (var arg in methodPair.Item2.GetParameters().Skip(2))
-                        {
-                            if (regExRouteParams.ContainsKey(arg.Name) == false) continue;
-                            
-                            // get a reference to the parse method
-                            var parameterTypeNullable = Nullable.GetUnderlyingType(arg.ParameterType);
-
-#if NETSTANDARD1_3 || UWP
-                            var parseMethod = parameterTypeNullable != null
-                                ? parameterTypeNullable.GetMethod(nameof(int.Parse), new[] { typeof(string) })
-                                : arg.ParameterType.GetMethod(nameof(int.Parse), new[] { typeof(string) });
-#else
-                            var parseMethod = parameterTypeNullable != null
-                                ? parameterTypeNullable.GetTypeInfo()
-                                    .GetMethod(nameof(int.Parse), new[] {typeof(string)})
-                                : arg.ParameterType.GetTypeInfo().GetMethod(nameof(int.Parse), new[] {typeof(string)});
-#endif
-
-                            // add the parsed argument to the argument list if available
-                            if (parseMethod != null)
-                            {
-                                // parameter is nullable and value is empty, so force null
-                                if (parameterTypeNullable != null &&
-                                    string.IsNullOrWhiteSpace((string) regExRouteParams[arg.Name]))
-                                {
-                                    args.Add(null);
-                                }
-                                else
-                                {
-                                    args.Add(parseMethod.Invoke(null, new[] {regExRouteParams[arg.Name]}));
-                                }
-                            }
-                            else
-                            {
-                                args.Add(regExRouteParams[arg.Name]);
-                            }
-                        }
-
-                        // Now, check if the call is handled asynchronously.
-                        if (methodPair.Item2.ReturnType == typeof(Task<bool>))
-                        {
-                            // Run the method asynchronously
-                            return await (Task<bool>) methodPair.Item2.Invoke(controller, args.ToArray());
-                        }
-                        
-                        // If the handler is not asynchronous, simply call the method.
-                        return (bool) methodPair.Item2.Invoke(controller, args.ToArray());
+                        methodPair.ParseArguments(regExRouteParams, args);
+                        return await methodPair.Invoke(args);
                     case RoutingStrategy.Wildcard:
-                        if (methodPair.Item2.ReturnType == typeof(Task<bool>))
-                        {
-                            // Asynchronous handling of wildcard matching strategy
-                            var method = methodPair.Item2.CreateDelegate(typeof(AsyncResponseHandler), controller);
 
-                            return await (Task<bool>) method.DynamicInvoke(args.ToArray());
-                        }
-                        else
-                        {
-                            // Regular handling of wildcard matching strategy
-                            var method = methodPair.Item2.CreateDelegate(typeof(ResponseHandler), controller);
-
-                            return (bool) method.DynamicInvoke(args.ToArray());
-                        }
+                        return await methodPair.Invoke(args);
                     default:
                         // Log the handler to be used
                         $"Routing strategy '{Server.RoutingStrategy}' is not supported by this module.".Warn(
@@ -158,6 +107,100 @@
                         return false;
                 }
             });
+        }
+
+        /// <summary>
+        /// Gets the name of this module.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        public override string Name => "Web API Module";
+
+        /// <summary>
+        /// Gets the number of controller objects registered in this API
+        /// </summary>
+        public int ControllersCount => _controllerTypes.Count;
+
+        /// <summary>
+        /// Registers the controller.
+        /// </summary>
+        /// <typeparam name="T">The type of register controller</typeparam>
+        /// <exception cref="System.ArgumentException">Controller types must be unique within the module</exception>
+        public void RegisterController<T>()
+            where T : WebApiController, new()
+        {
+            RegisterController(typeof(T));
+        }
+
+        /// <summary>
+        /// Registers the controller.
+        /// </summary>
+        /// <typeparam name="T">The type of register controller</typeparam>
+        /// <param name="controllerFactory">The controller factory method</param>
+        /// <exception cref="System.ArgumentException">Controller types must be unique within the module</exception>
+        public void RegisterController<T>(Func<T> controllerFactory)
+            where T : WebApiController
+        {
+            RegisterController(typeof(T), controllerFactory);
+        }
+
+        /// <summary>
+        /// Registers the controller.
+        /// </summary>
+        /// <param name="controllerType">Type of the controller.</param>
+        public void RegisterController(Type controllerType)
+        {
+            Func<object> controllerFactory = () => Activator.CreateInstance(controllerType);
+            RegisterController(controllerType, controllerFactory);
+        }
+
+        /// <summary>
+        /// Registers the controller.
+        /// </summary>
+        /// <param name="controllerType">Type of the controller.</param>
+        /// <param name="controllerFactory">The controller factory method.</param>
+        public void RegisterController(Type controllerType, Func<object> controllerFactory)
+        {
+            if (_controllerTypes.Contains(controllerType))
+                throw new ArgumentException("Controller types must be unique within the module");
+
+            var protoDelegate = new ResponseHandler((server, context) => true);
+            var protoAsyncDelegate = new AsyncResponseHandler((server, context) => Task.FromResult(true));
+            var methods = controllerType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                .Where(
+                    m => (m.ReturnType == protoDelegate.GetMethodInfo().ReturnType
+                          || m.ReturnType == protoAsyncDelegate.GetMethodInfo().ReturnType)
+                         && m.GetParameters()
+                             .Select(pi => pi.ParameterType)
+                             .Take(2)
+                             .SequenceEqual(protoDelegate.GetMethodInfo().GetParameters()
+                                 .Select(pi => pi.ParameterType)));
+
+            foreach (var method in methods)
+            {
+                var attribute =
+                    method.GetCustomAttributes(typeof(WebApiHandlerAttribute), true).FirstOrDefault() as
+                        WebApiHandlerAttribute;
+                if (attribute == null) continue;
+
+                foreach (var path in attribute.Paths)
+                {
+                    if (_delegateMap.ContainsKey(path) == false)
+                    {
+                        _delegateMap.Add(path, new Dictionary<HttpVerbs, MethodCacheInstance>()); // add
+                    }
+
+                    var delegatePair = new MethodCacheInstance(controllerFactory, new MethodCache(method));
+
+                    if (_delegateMap[path].ContainsKey(attribute.Verb))
+                        _delegateMap[path][attribute.Verb] = delegatePair; // update
+                    else
+                        _delegateMap[path].Add(attribute.Verb, delegatePair); // add
+                }
+            }
+
+            _controllerTypes.Add(controllerType);
         }
 
         /// <summary>
@@ -169,7 +212,7 @@
         /// <param name="routeParams">The route parameters.</param>
         /// <returns>A string that represents the registered path in the internal delegate map</returns>
         private string NormalizeRegexPath(
-            HttpVerbs verb, 
+            HttpVerbs verb,
             HttpListenerContext context,
             Dictionary<string, object> routeParams)
         {
@@ -241,7 +284,7 @@
 
             var wildcardMatch = wildcardPaths.FirstOrDefault(p => // wildcard at the end
                 path.StartsWith(p.Substring(0, p.Length - ModuleMap.AnyPath.Length))
-                
+
                 // wildcard in the middle so check both start/end
                 || (path.StartsWith(p.Substring(0, p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal)))
                     && path.EndsWith(p.Substring(p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal) + 1))));
@@ -264,103 +307,6 @@
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Gets the name of this module.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        public override string Name => "Web API Module";
-
-        /// <summary>
-        /// Gets the number of controller objects registered in this API
-        /// </summary>
-        public int ControllersCount => _controllerTypes.Count;
-
-        /// <summary>
-        /// Registers the controller.
-        /// </summary>
-        /// <typeparam name="T">The type of register controller</typeparam>
-        /// <exception cref="System.ArgumentException">Controller types must be unique within the module</exception>
-        public void RegisterController<T>()
-            where T : WebApiController, new()
-        {
-            if (_controllerTypes.Contains(typeof(T)))
-                throw new ArgumentException("Controller types must be unique within the module");
-
-            RegisterController(typeof(T));
-        }
-
-        /// <summary>
-        /// Registers the controller.
-        /// </summary>
-        /// <typeparam name="T">The type of register controller</typeparam>
-        /// <param name="controllerFactory">The controller factory method</param>
-        /// <exception cref="System.ArgumentException">Controller types must be unique within the module</exception>
-        public void RegisterController<T>(Func<T> controllerFactory)
-            where T : WebApiController
-        {
-            if (_controllerTypes.Contains(typeof(T)))
-                throw new ArgumentException("Controller types must be unique within the module");
-
-            RegisterController(typeof(T), controllerFactory);
-        }
-
-        /// <summary>
-        /// Registers the controller.
-        /// </summary>
-        /// <param name="controllerType">Type of the controller.</param>
-        public void RegisterController(Type controllerType)
-        {
-            Func<object> controllerFactory = () => Activator.CreateInstance(controllerType);
-            RegisterController(controllerType, controllerFactory);
-        }
-
-        /// <summary>
-        /// Registers the controller.
-        /// </summary>
-        /// <param name="controllerType">Type of the controller.</param>
-        /// <param name="controllerFactory">The controller factory method.</param>
-        public void RegisterController(Type controllerType, Func<object> controllerFactory)
-        {
-            var protoDelegate = new ResponseHandler((server, context) => true);
-            var protoAsyncDelegate = new AsyncResponseHandler((server, context) => Task.FromResult(true));
-            var methods = controllerType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                .Where(
-                    m => (m.ReturnType == protoDelegate.GetMethodInfo().ReturnType
-                          || m.ReturnType == protoAsyncDelegate.GetMethodInfo().ReturnType)
-                         && m.GetParameters()
-                             .Select(pi => pi.ParameterType)
-                             .Take(2)
-                             .SequenceEqual(protoDelegate.GetMethodInfo().GetParameters()
-                                 .Select(pi => pi.ParameterType)));
-
-            foreach (var method in methods)
-            {
-                var attribute =
-                    method.GetCustomAttributes(typeof(WebApiHandlerAttribute), true).FirstOrDefault() as
-                        WebApiHandlerAttribute;
-                if (attribute == null) continue;
-
-                foreach (var path in attribute.Paths)
-                {
-                    if (_delegateMap.ContainsKey(path) == false)
-                    {
-                        _delegateMap.Add(path, new Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>()); // add
-                    }
-
-                    var delegatePair = new Tuple<Func<object>, MethodInfo>(controllerFactory, method);
-
-                    if (_delegateMap[path].ContainsKey(attribute.Verb))
-                        _delegateMap[path][attribute.Verb] = delegatePair; // update
-                    else
-                        _delegateMap[path].Add(attribute.Verb, delegatePair); // add
-                }
-            }
-
-            _controllerTypes.Add(controllerType);
         }
     }
 
