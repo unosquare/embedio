@@ -26,13 +26,13 @@
         /// <summary>
         /// The concurrent dictionary holding the sessions
         /// </summary>
-        protected readonly Dictionary<string, SessionInfo> m_Sessions =
+        private readonly Dictionary<string, SessionInfo> m_Sessions =
             new Dictionary<string, SessionInfo>(Strings.StandardStringComparer);
 
         /// <summary>
         /// The sessions dictionary synchronization lock
         /// </summary>
-        protected readonly object SessionsSyncLock = new object();
+        private readonly object SessionsSyncLock = new object();
 
         /// <summary>
         /// Creates a session ID, registers the session info in the Sessions collection, and returns the appropriate session cookie.
@@ -63,6 +63,7 @@
         /// <summary>
         /// Delete the session object for the given context
         /// </summary>
+        /// <param name="context">The context.</param>
         public void DeleteSession(HttpListenerContext context)
         {
             DeleteSession(GetSession(context));
@@ -98,6 +99,7 @@
             foreach (var cookieItem in cookieItems)
             {
                 var nameValue = cookieItem.Trim().Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
+
                 if (nameValue.Length == 2 && nameValue[0].Equals(SessionCookieName))
                 {
                     var sessionIdValue = nameValue[1].Trim();
@@ -150,7 +152,7 @@
                     }
                     else if (isSessionRegistered == false)
                     {
-                        //update session value
+                        // update session value
                         var sessionCookie = CreateSession();
                         context.Response.SetCookie(sessionCookie); // = sessionCookie.Value;
                         context.Request.Cookies[SessionCookieName].Value = sessionCookie.Value;
@@ -188,64 +190,6 @@
         }
 
         /// <summary>
-        /// Gets the <see cref="SessionInfo"/> with the specified cookie value.
-        /// Returns null when the session is not found.
-        /// </summary>
-        /// <value>
-        /// The <see cref="SessionInfo"/>.
-        /// </value>
-        /// <param name="cookieValue">The cookie value.</param>
-        /// <returns></returns>
-        public SessionInfo this[string cookieValue]
-        {
-            get
-            {
-                lock (SessionsSyncLock)
-                {
-                    return m_Sessions.ContainsKey(cookieValue) ? m_Sessions[cookieValue] : null;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets a session object for the given server context.
-        /// If no session exists for the context, then null is returned
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns></returns>
-        public SessionInfo GetSession(HttpListenerContext context)
-        {
-            lock (SessionsSyncLock)
-            {
-                if (context.Request.Cookies[SessionCookieName] == null) return null;
-
-                var cookieValue = context.Request.Cookies[SessionCookieName].Value;
-                return this[cookieValue];
-            }
-
-        }
-
-        /// <summary>
-        /// Gets the session.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns></returns>
-#if NET47
-        public SessionInfo GetSession(System.Net.WebSockets.WebSocketContext context)
-#else
-        public SessionInfo GetSession(Unosquare.Net.WebSocketContext context)
-#endif
-        {
-            lock (SessionsSyncLock)
-            {
-                if (context.CookieCollection[SessionCookieName] == null) return null;
-
-                var cookieValue = context.CookieCollection[SessionCookieName].Value;
-                return this[cookieValue];
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the expiration.
         /// By default, expiration is 30 minutes
         /// </summary>
@@ -274,5 +218,62 @@
         /// The name.
         /// </value>
         public override string Name => nameof(LocalSessionModule).Humanize();
+
+        /// <summary>
+        /// Gets the <see cref="SessionInfo"/> with the specified cookie value.
+        /// Returns null when the session is not found.
+        /// </summary>
+        /// <value>
+        /// The <see cref="SessionInfo"/>.
+        /// </value>
+        /// <param name="cookieValue">The cookie value.</param>
+        /// <returns>Session info with the specified cookie value</returns>
+        public SessionInfo this[string cookieValue]
+        {
+            get
+            {
+                lock (SessionsSyncLock)
+                {
+                    return m_Sessions.ContainsKey(cookieValue) ? m_Sessions[cookieValue] : null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets a session object for the given server context.
+        /// If no session exists for the context, then null is returned
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>An object that represents the current content of an http session</returns>
+        public SessionInfo GetSession(HttpListenerContext context)
+        {
+            lock (SessionsSyncLock)
+            {
+                if (context.Request.Cookies[SessionCookieName] == null) return null;
+
+                var cookieValue = context.Request.Cookies[SessionCookieName].Value;
+                return this[cookieValue];
+            }
+        }
+
+        /// <summary>
+        /// Gets the session.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>An object that represents the current content of an http session</returns>
+#if NET47
+        public SessionInfo GetSession(System.Net.WebSockets.WebSocketContext context)
+#else
+        public SessionInfo GetSession(Unosquare.Net.WebSocketContext context)
+#endif
+        {
+            lock (SessionsSyncLock)
+            {
+                if (context.CookieCollection[SessionCookieName] == null) return null;
+
+                var cookieValue = context.CookieCollection[SessionCookieName].Value;
+                return this[cookieValue];
+            }
+        }
     }
 }

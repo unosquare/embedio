@@ -23,44 +23,6 @@
         private readonly List<IWebModule> _modules = new List<IWebModule>(4);
 
         /// <summary>
-        /// Gets the underlying HTTP listener.
-        /// </summary>
-        /// <value>
-        /// The listener.
-        /// </value>
-        public HttpListener Listener { get; protected set; }
-
-        /// <summary>
-        /// Gets the Url Prefix for which the server is serving requests.
-        /// </summary>
-        /// <value>
-        /// The URL prefix.
-        /// </value>
-        public HttpListenerPrefixCollection UrlPrefixes => Listener.Prefixes;
-
-        /// <summary>
-        /// Gets a list of registered modules
-        /// </summary>
-        /// <value>
-        /// The modules.
-        /// </value>
-        public ReadOnlyCollection<IWebModule> Modules => _modules.AsReadOnly();
-
-        /// <summary>
-        /// Gets registered the ISessionModule.
-        /// </summary>
-        /// <value>
-        /// The session module.
-        /// </value>
-        public ISessionWebModule SessionModule { get; protected set; }
-
-        /// <summary>
-        /// Gets the URL RoutingStrategy used in this instance.
-        /// By default it is set to Wildcard, but Regex is the recommended value.
-        /// </summary>
-        public RoutingStrategy RoutingStrategy { get; protected set; }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
         /// This constructor does not provide any Logging capabilities.
         /// </summary>
@@ -151,11 +113,49 @@
         }
 
         /// <summary>
+        /// Gets the underlying HTTP listener.
+        /// </summary>
+        /// <value>
+        /// The listener.
+        /// </value>
+        public HttpListener Listener { get; protected set; }
+
+        /// <summary>
+        /// Gets the Url Prefix for which the server is serving requests.
+        /// </summary>
+        /// <value>
+        /// The URL prefix.
+        /// </value>
+        public HttpListenerPrefixCollection UrlPrefixes => Listener.Prefixes;
+
+        /// <summary>
+        /// Gets a list of registered modules
+        /// </summary>
+        /// <value>
+        /// The modules.
+        /// </value>
+        public ReadOnlyCollection<IWebModule> Modules => _modules.AsReadOnly();
+
+        /// <summary>
+        /// Gets registered the ISessionModule.
+        /// </summary>
+        /// <value>
+        /// The session module.
+        /// </value>
+        public ISessionWebModule SessionModule { get; protected set; }
+
+        /// <summary>
+        /// Gets the URL RoutingStrategy used in this instance.
+        /// By default it is set to Wildcard, but Regex is the recommended value.
+        /// </summary>
+        public RoutingStrategy RoutingStrategy { get; protected set; }
+
+        /// <summary>
         /// Gets the module registered for the given type.
         /// Returns null if no module matches the given type.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="T">The type of module</typeparam>
+        /// <returns>Module registered for the given type</returns>
         public T Module<T>()
             where T : class, IWebModule
         {
@@ -167,7 +167,7 @@
         /// Returns null if no module matches the given type.
         /// </summary>
         /// <param name="moduleType">Type of the module.</param>
-        /// <returns></returns>
+        /// <returns>Web module registered for the given type</returns>
         private IWebModule Module(Type moduleType) => Modules.FirstOrDefault(m => m.GetType() == moduleType);
 
         /// <summary>
@@ -223,7 +223,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="ct">The cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>A task that represents the asynchronous of client request</returns>
         private async Task HandleClientRequest(HttpListenerContext context, CancellationToken ct)
         {
             // start with an empty request ID
@@ -275,7 +275,7 @@
         /// </summary>
         /// <param name="context">The HttpListenerContext</param>
         /// <param name="ct">The cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>True if it was handled; otherwise, false</returns>
         public async Task<bool> ProcessRequest(HttpListenerContext context, CancellationToken ct)
         {
             // Iterate though the loaded modules to match up a request and possibly generate a response.
@@ -283,9 +283,11 @@
             {
                 // Establish the handler
                 var handler = module.Handlers.FirstOrDefault(x =>
-                    string.Equals(x.Path, x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath(),
+                    string.Equals(
+                        x.Path, 
+                        x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath(),
                         StringComparison.OrdinalIgnoreCase) &&
-                    x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
+                        x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
 
                 if (handler?.ResponseHandler == null)
                     continue;
@@ -325,8 +327,8 @@
                         ex.Log(nameof(WebServer), $"Failing module name: {module.Name}");
 
                         // Generate an HTML response
-                        var response = System.Net.WebUtility.HtmlEncode(string.Format(Responses.Response500HtmlFormat,
-                            errorMessage, ex.StackTrace));
+                        var response = System.Net.WebUtility.HtmlEncode(
+                            string.Format(Responses.Response500HtmlFormat, errorMessage, ex.StackTrace));
 
                         // Send the response over with the corresponding status code.
                         var responseBytes = System.Text.Encoding.UTF8.GetBytes(response);

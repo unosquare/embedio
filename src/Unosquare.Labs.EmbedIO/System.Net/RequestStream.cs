@@ -3,7 +3,7 @@
 // System.Net.RequestStream
 //
 // Author:
-//	Gonzalo Paniagua Javier (gonzalo@novell.com)
+// Gonzalo Paniagua Javier (gonzalo@novell.com)
 //
 // Copyright (c) 2005 Novell, Inc. (http://www.novell.com)
 //
@@ -25,23 +25,20 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
-
-using System;
-using System.IO;
-using System.Net;
-using System.Runtime.InteropServices;
-
 namespace Unosquare.Net
 {
+    using System;
+    using System.IO;
+    using System.Runtime.InteropServices;
+
     internal class RequestStream : Stream
     {
-        readonly byte[] _buffer;
-        int _offset;
-        int _length;
-        long _remainingBody;
-        bool _disposed = false;
-        readonly Stream _stream;
+        private readonly Stream _stream;
+        private readonly byte[] _buffer;
+        private int _offset;
+        private int _length;
+        private long _remainingBody;
+        private bool _disposed = false;        
         
         internal RequestStream(Stream stream, byte[] buffer, int offset, int length, long contentlength = -1)
         {
@@ -76,7 +73,7 @@ namespace Unosquare.Net
         // Returns 0 if we can keep reading from the base stream,
         // > 0 if we read something from the buffer.
         // -1 if we had a content length set and we finished reading that many bytes.
-        int FillFromBuffer(byte[] buffer, int off, int count)
+        private int FillFromBuffer(byte[] buffer, int off, int count)
         {
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
@@ -104,6 +101,7 @@ namespace Unosquare.Net
             {
                 size = Math.Min(size, _buffer.Length - _offset);
             }
+
             if (size == 0)
                 return 0;
 
@@ -126,6 +124,7 @@ namespace Unosquare.Net
             { // No more bytes available (Content-Length)
                 return 0;
             }
+
             if (nread > 0)
             {
                 return nread;

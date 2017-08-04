@@ -1,7 +1,6 @@
-﻿using Unosquare.Labs.EmbedIO.Constants;
-
-namespace Unosquare.Labs.EmbedIO.Modules
+﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
+    using Constants;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -30,7 +29,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
             new Dictionary<string, WebSocketsServer>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        /// Initialize WebSocket module
+        /// Initializes a new instance of the <see cref="WebSocketsModule"/> class.
         /// </summary>
         public WebSocketsModule()
         {
@@ -64,7 +63,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// <summary>
         /// Registers the web sockets server given a WebSocketsServer Type.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type of WebSocket server.</typeparam>
         /// <exception cref="ArgumentException">Argument 'path' cannot be null;path</exception>
         public void RegisterWebSocketsServer<T>()
             where T : WebSocketsServer, new()
@@ -89,8 +88,10 @@ namespace Unosquare.Labs.EmbedIO.Modules
                     WebSocketHandlerAttribute;
 
             if (attribute == null)
+            {
                 throw new ArgumentException("Argument 'socketType' needs a WebSocketHandlerAttribute",
-                    nameof(socketType));
+                      nameof(socketType));
+            }
 
             _serverMap[attribute.Path] = (WebSocketsServer) Activator.CreateInstance(socketType);
         }
@@ -98,7 +99,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// <summary>
         /// Registers the web sockets server given a WebSocketsServer Type.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type of WebSocket server</typeparam>
         /// <param name="path">The path. For example: '/echo'</param>
         /// <exception cref="ArgumentException">Argument 'path' cannot be null;path</exception>
         public void RegisterWebSocketsServer<T>(string path)
@@ -113,7 +114,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// <summary>
         /// Registers the web sockets server.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type of WebSocket server</typeparam>
         /// <param name="path">The path. For example: '/echo'</param>
         /// <param name="server">The server.</param>
         /// <exception cref="System.ArgumentNullException">
@@ -168,15 +169,15 @@ namespace Unosquare.Labs.EmbedIO.Modules
     /// and data transmission
     /// </summary>
     public abstract class WebSocketsServer : IDisposable
-    {
-        private bool _isDisposing;
+    {        
         private readonly bool _enableDisconnectedSocketColletion;
         private readonly object _syncRoot = new object();
-        private readonly List<WebSocketContext> _mWebSockets = new List<WebSocketContext>(10);
-        private CancellationToken _ct = default(CancellationToken);
+        private readonly List<WebSocketContext> _mWebSockets = new List<WebSocketContext>(10);        
 #if NET47
         private readonly int _maximumMessageSize;
 #endif
+        private bool _isDisposing;
+        private CancellationToken _ct = default(CancellationToken);
 
         /// <summary>
         /// Gets the Currently-Connected WebSockets.
@@ -220,6 +221,14 @@ namespace Unosquare.Labs.EmbedIO.Modules
         }
 
         /// <summary>
+        /// Gets the name of the server.
+        /// </summary>
+        /// <value>
+        /// The name of the server.
+        /// </value>
+        public abstract string ServerName { get; }
+
+        /// <summary>
         /// Runs the connection watchdog.
         /// Removes and disposes stale WebSockets connections every 10 minutes.
         /// </summary>
@@ -246,7 +255,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="ct">The cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>A task that represents the asynchronous of websocket connection operation</returns>
 #if NET47
         public async Task AcceptWebSocket(System.Net.HttpListenerContext context, CancellationToken ct)
 #else
@@ -264,7 +273,9 @@ namespace Unosquare.Labs.EmbedIO.Modules
 
             var webSocketContext =
 #if NET47
-                await context.AcceptWebSocketAsync(subProtocol: null, receiveBufferSize: receiveBufferSize,
+                await context.AcceptWebSocketAsync(
+                    subProtocol: null, 
+                    receiveBufferSize: receiveBufferSize,
                     keepAliveInterval: TimeSpan.FromSeconds(30));
 #else
                 await context.AcceptWebSocketAsync();
@@ -289,6 +300,7 @@ namespace Unosquare.Labs.EmbedIO.Modules
 #if NET47
 // define a receive buffer
                 var receiveBuffer = new byte[receiveBufferSize];
+                
                 // define a dynamic buffer that holds multi-part receptions
                 var receivedMessage = new List<byte>(receiveBuffer.Length * 2);
 
@@ -377,7 +389,6 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// <summary>
         /// Removes and disposes all disconnected sockets
         /// </summary>
-        /// <returns></returns>
         private void CollectDisconnected()
         {
             var collectedCount = 0;
@@ -413,8 +424,11 @@ namespace Unosquare.Labs.EmbedIO.Modules
                 var buffer = System.Text.Encoding.UTF8.GetBytes(payload);
 
 #if NET47
-                await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true,
-                        _ct);
+                await webSocket.WebSocket.SendAsync(
+                    new ArraySegment<byte>(buffer), 
+                    WebSocketMessageType.Text, 
+                    true,
+                    _ct);
 #else
                 await webSocket.WebSocket.SendAsync(buffer, Opcode.Text, _ct);
 #endif
@@ -437,8 +451,11 @@ namespace Unosquare.Labs.EmbedIO.Modules
                 if (payload == null) payload = new byte[0];
 
 #if NET47
-                await webSocket.WebSocket.SendAsync(new ArraySegment<byte>(payload), WebSocketMessageType.Binary, true,
-                        _ct);
+                await webSocket.WebSocket.SendAsync(
+                    new ArraySegment<byte>(payload), 
+                    WebSocketMessageType.Binary, 
+                    true,
+                    _ct);
 #else
                 await webSocket.WebSocket.SendAsync(payload, Opcode.Binary, _ct);
 #endif
@@ -504,7 +521,9 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// <param name="context">The context.</param>
         /// <param name="rxBuffer">The response buffer.</param>
         /// <param name="rxResult">The response result.</param>
-        protected abstract void OnMessageReceived(WebSocketContext context, byte[] rxBuffer,
+        protected abstract void OnMessageReceived(
+            WebSocketContext context, 
+            byte[] rxBuffer,
             WebSocketReceiveResult rxResult);
 
         /// <summary>
@@ -513,7 +532,9 @@ namespace Unosquare.Labs.EmbedIO.Modules
         /// <param name="context">The context.</param>
         /// <param name="rxBuffer">The response buffer.</param>
         /// <param name="rxResult">The response result.</param>
-        protected abstract void OnFrameReceived(WebSocketContext context, byte[] rxBuffer,
+        protected abstract void OnFrameReceived(
+            WebSocketContext context, 
+            byte[] rxBuffer,
             WebSocketReceiveResult rxResult);
 
         /// <summary>
@@ -557,13 +578,5 @@ namespace Unosquare.Labs.EmbedIO.Modules
 
             CollectDisconnected();
         }
-
-        /// <summary>
-        /// Gets the name of the server.
-        /// </summary>
-        /// <value>
-        /// The name of the server.
-        /// </value>
-        public abstract string ServerName { get; }
     }
 }

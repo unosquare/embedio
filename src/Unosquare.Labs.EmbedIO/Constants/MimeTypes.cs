@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace Unosquare.Labs.EmbedIO.Constants
+﻿namespace Unosquare.Labs.EmbedIO.Constants
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Represents a MimeType collection
     /// </summary>

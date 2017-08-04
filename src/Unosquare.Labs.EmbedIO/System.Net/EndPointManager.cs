@@ -3,7 +3,7 @@
 // System.Net.EndPointManager
 //
 // Author:
-//	Gonzalo Paniagua Javier (gonzalo@ximian.com)
+// Gonzalo Paniagua Javier (gonzalo@ximian.com)
 //
 // Copyright (c) 2005 Novell, Inc. (http://www.novell.com)
 //
@@ -25,14 +25,12 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
-
-using System;
-using System.Collections;
-using System.Net;
-
 namespace Unosquare.Net
 {
+    using System;
+    using System.Collections;
+    using System.Net;
+
     internal static class EndPointManager
     {
         private static readonly Hashtable IPToEndpoints = new Hashtable();
@@ -57,6 +55,7 @@ namespace Unosquare.Net
                 {
                     RemovePrefix(prefix, listener);
                 }
+
                 throw;
             }
         }

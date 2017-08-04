@@ -41,82 +41,14 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Runtime.InteropServices;
-using System.Text;
-using HttpHeaders = Unosquare.Labs.EmbedIO.Constants.Headers;
-
 namespace Unosquare.Net
 {
-    [Flags]
-    internal enum HttpHeaderType
-    {
-        Unspecified = 0,
-        Request = 1,
-        Response = 1 << 1,
-        Restricted = 1 << 2,
-        MultiValue = 1 << 3,
-        MultiValueInRequest = 1 << 4,
-        MultiValueInResponse = 1 << 5
-    }
-
-    internal class HttpHeaderInfo
-    {
-        #region Private Fields
-
-        #endregion
-
-        #region Internal Constructors
-
-        internal HttpHeaderInfo(string name, HttpHeaderType type)
-        {
-            Name = name;
-            Type = type;
-        }
-
-        #endregion
-
-        #region Internal Properties
-
-        internal bool IsMultiValueInRequest
-            => (Type & HttpHeaderType.MultiValueInRequest) == HttpHeaderType.MultiValueInRequest;
-
-        internal bool IsMultiValueInResponse
-            => (Type & HttpHeaderType.MultiValueInResponse) == HttpHeaderType.MultiValueInResponse;
-
-        #endregion
-
-        #region Public Properties
-
-        public bool IsRequest => (Type & HttpHeaderType.Request) == HttpHeaderType.Request;
-
-        public bool IsResponse => (Type & HttpHeaderType.Response) == HttpHeaderType.Response;
-
-        public string Name { get; }
-
-        public HttpHeaderType Type { get; }
-
-        #endregion
-
-        #region Public Methods
-
-        public bool IsMultiValue(bool response)
-        {
-            return (Type & HttpHeaderType.MultiValue) == HttpHeaderType.MultiValue
-                ? (response ? IsResponse : IsRequest)
-                : (response ? IsMultiValueInResponse : IsMultiValueInRequest);
-        }
-
-        public bool IsRestricted(bool response)
-        {
-            return (Type & HttpHeaderType.Restricted) == HttpHeaderType.Restricted &&
-                   (response ? IsResponse : IsRequest);
-        }
-
-        #endregion
-    }
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Runtime.InteropServices;
+    using System.Text;
+    using HttpHeaders = Labs.EmbedIO.Constants.Headers;
 
     /// <summary>
     /// Provides a collection of the HTTP headers associated with a request or response.
@@ -463,10 +395,7 @@ namespace Unosquare.Net
                         "TransferEncoding",
                         new HttpHeaderInfo(
                             "Transfer-Encoding",
-                            HttpHeaderType.Request |
-                            HttpHeaderType.Response |
-                            HttpHeaderType.Restricted |
-                            HttpHeaderType.MultiValue)
+                            HttpHeaderType.Request | HttpHeaderType.Response | HttpHeaderType.Restricted | HttpHeaderType.MultiValue)
                     },
                     {
                         "Translate",
@@ -623,7 +552,7 @@ namespace Unosquare.Net
 
         #region Private Methods
 
-        private void add(string name, string value, bool ignoreRestricted)
+        private void Add(string name, string value, bool ignoreRestricted)
         {
             var act = ignoreRestricted
                 ? (Action<string, string>) AddWithoutCheckingNameAndRestricted
@@ -677,7 +606,7 @@ namespace Unosquare.Net
 
         private void CheckRestricted(string name)
         {
-            if (!_internallyUsed && isRestricted(name, true))
+            if (!_internallyUsed && InternalIsRestricted(name, true))
                 throw new ArgumentException("This header must be modified with the appropriate property.");
         }
 
@@ -687,12 +616,16 @@ namespace Unosquare.Net
                 return;
 
             if (response && State == HttpHeaderType.Request)
+            {
                 throw new InvalidOperationException(
-                    "This collection has already been used to store the request headers.");
+                      "This collection has already been used to store the request headers.");
+            }
 
             if (!response && State == HttpHeaderType.Response)
+            {
                 throw new InvalidOperationException(
-                    "This collection has already been used to store the response headers.");
+                      "This collection has already been used to store the response headers.");
+            }
         }
 
         private static string CheckValue(string value)
@@ -710,7 +643,7 @@ namespace Unosquare.Net
             return value;
         }
 
-        private static string convert(string key)
+        private static string Convert(string key)
         {
             HttpHeaderInfo info;
             return Headers.TryGetValue(key, out info) ? info.Name : string.Empty;
@@ -746,13 +679,15 @@ namespace Unosquare.Net
         private static HttpHeaderInfo GetHeaderInfo(string name)
         {
             foreach (var info in Headers.Values)
+            {
                 if (info.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                     return info;
+            }
 
             return null;
         }
 
-        private static bool isRestricted(string name, bool response)
+        private static bool InternalIsRestricted(string name, bool response)
         {
             var info = GetHeaderInfo(name);
             return info != null && info.IsRestricted(response);
@@ -775,12 +710,12 @@ namespace Unosquare.Net
 
         internal static string Convert(System.Net.HttpRequestHeader header)
         {
-            return convert(header.ToString());
+            return Convert(header.ToString());
         }
 
         internal static string Convert(System.Net.HttpResponseHeader header)
         {
-            return convert(header.ToString());
+            return Convert(header.ToString());
         }
 
         internal void InternalRemove(string name)
@@ -869,7 +804,7 @@ namespace Unosquare.Net
         /// </exception>
         public void AddWithoutValidate(string headerName, string headerValue)
         {
-            add(headerName, headerValue, true);
+            Add(headerName, headerValue, true);
         }
 
         #endregion
@@ -917,7 +852,7 @@ namespace Unosquare.Net
                 throw new ArgumentNullException(nameof(header));
 
             var pos = CheckColonSeparated(header);
-            add(header.Substring(0, pos), header.Substring(pos + 1), false);
+            Add(header.Substring(0, pos), header.Substring(pos + 1), false);
         }
 
         /// <summary>
@@ -1021,7 +956,7 @@ namespace Unosquare.Net
         /// </exception>
         public override void Add(string name, string value)
         {
-            add(name, value, false);
+            Add(name, value, false);
         }
 
         /// <summary>
@@ -1068,27 +1003,7 @@ namespace Unosquare.Net
             var vals = base.GetValues(header);
             return vals != null && vals.Length > 0 ? vals : null;
         }
-
-        /// <summary>
-        /// Determines whether the specified header can be set for the request.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if the header is restricted; otherwise, <c>false</c>.
-        /// </returns>
-        /// <param name="headerName">
-        /// A <see cref="string"/> that represents the name of the header to test.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="headerName"/> is <see langword="null"/> or empty.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="headerName"/> contains invalid characters.
-        /// </exception>
-        public static bool IsRestricted(string headerName)
-        {
-            return isRestricted(CheckName(headerName), false);
-        }
-
+        
         /// <summary>
         /// Determines whether the specified header can be set for the request or the response.
         /// </summary>
@@ -1107,9 +1022,9 @@ namespace Unosquare.Net
         /// <exception cref="ArgumentException">
         /// <paramref name="headerName"/> contains invalid characters.
         /// </exception>
-        public static bool IsRestricted(string headerName, bool response)
+        public static bool IsRestricted(string headerName, bool response = false)
         {
-            return isRestricted(CheckName(headerName), response);
+            return InternalIsRestricted(CheckName(headerName), response);
         }
 
         /// <summary>
@@ -1295,6 +1210,73 @@ namespace Unosquare.Net
                 buff.AppendFormat("{0}: {1}\r\n", key, Get(key));
 
             return buff.Append("\r\n").ToString();
+        }
+        #endregion
+    }
+
+    [Flags]
+    internal enum HttpHeaderType
+    {
+        Unspecified = 0,
+        Request = 1,
+        Response = 1 << 1,
+        Restricted = 1 << 2,
+        MultiValue = 1 << 3,
+        MultiValueInRequest = 1 << 4,
+        MultiValueInResponse = 1 << 5
+    }
+
+    internal class HttpHeaderInfo
+    {
+        #region Private Fields
+
+        #endregion
+
+        #region Internal Constructors
+
+        internal HttpHeaderInfo(string name, HttpHeaderType type)
+        {
+            Name = name;
+            Type = type;
+        }
+
+        #endregion
+
+        #region Internal Properties
+
+        internal bool IsMultiValueInRequest
+            => (Type & HttpHeaderType.MultiValueInRequest) == HttpHeaderType.MultiValueInRequest;
+
+        internal bool IsMultiValueInResponse
+            => (Type & HttpHeaderType.MultiValueInResponse) == HttpHeaderType.MultiValueInResponse;
+
+        #endregion
+
+        #region Public Properties
+
+        public bool IsRequest => (Type & HttpHeaderType.Request) == HttpHeaderType.Request;
+
+        public bool IsResponse => (Type & HttpHeaderType.Response) == HttpHeaderType.Response;
+
+        public string Name { get; }
+
+        public HttpHeaderType Type { get; }
+
+        #endregion
+
+        #region Public Methods
+
+        public bool IsMultiValue(bool response)
+        {
+            return (Type & HttpHeaderType.MultiValue) == HttpHeaderType.MultiValue
+                ? (response ? IsResponse : IsRequest)
+                : (response ? IsMultiValueInResponse : IsMultiValueInRequest);
+        }
+
+        public bool IsRestricted(bool response)
+        {
+            return (Type & HttpHeaderType.Restricted) == HttpHeaderType.Restricted &&
+                   (response ? IsResponse : IsRequest);
         }
 
         #endregion

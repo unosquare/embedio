@@ -3,8 +3,8 @@
 // System.Net.HttpListener
 //
 // Authors:
-//	Gonzalo Paniagua Javier (gonzalo@novell.com)
-//	Marek Safar (marek.safar@gmail.com)
+// Gonzalo Paniagua Javier (gonzalo@novell.com)
+// Marek Safar (marek.safar@gmail.com)
 //
 // Copyright (c) 2005 Novell, Inc. (http://www.novell.com)
 // Copyright 2011 Xamarin Inc.
@@ -27,20 +27,18 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
-
-using System;
-using System.Collections;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+namespace Unosquare.Net
+{
+    using System;
+    using System.Collections;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
 #if AUTHENTICATION
 using System.Security.Authentication.ExtendedProtection;
 #endif
 
-namespace Unosquare.Net
-{
 #if AUTHENTICATION
 /// <summary>
 /// A delegate that selects the authentication scheme based on the supplied request
@@ -60,6 +58,8 @@ namespace Unosquare.Net
         AuthenticationSchemes _authSchemes;
         AuthenticationSchemeSelector _authSelector;
 #endif
+        private readonly ConcurrentDictionary<Guid, HttpListenerContext> _ctxQueue;
+        private readonly Hashtable _connections;
         private readonly HttpListenerPrefixCollection _prefixes;
         private string _realm;
         private bool _ignoreWriteExceptions;
@@ -69,15 +69,11 @@ namespace Unosquare.Net
         IMonoTlsProvider tlsProvider;
         MSI.MonoTlsSettings tlsSettings;
         X509Certificate certificate;
-#endif
+#endif        
 
-        private readonly ConcurrentDictionary<Guid, HttpListenerContext> _ctxQueue;
-        private readonly Hashtable _connections;
-
-        //ServiceNameStore defaultServiceNames;
-        //ExtendedProtectionPolicy _extendedProtectionPolicy;
-        //ExtendedProtectionSelector _extendedProtectionSelectorDelegate = null;
-
+        // ServiceNameStore defaultServiceNames;
+        // ExtendedProtectionPolicy _extendedProtectionPolicy;
+        // ExtendedProtectionSelector _extendedProtectionSelectorDelegate = null;    
 #if AUTHENTICATION
         /// <summary>
         /// The EPP selector delegate for the supplied request
@@ -98,8 +94,9 @@ namespace Unosquare.Net
 #if AUTHENTICATION
             _authSchemes = AuthenticationSchemes.Anonymous;
 #endif
-            //defaultServiceNames = new ServiceNameStore();
-            //_extendedProtectionPolicy = new ExtendedProtectionPolicy(PolicyEnforcement.Never);
+            
+            // defaultServiceNames = new ServiceNameStore();
+            // _extendedProtectionPolicy = new ExtendedProtectionPolicy(PolicyEnforcement.Never);
         }
 
 #if SSL
@@ -159,7 +156,6 @@ namespace Unosquare.Net
         }
 #endif
 
-
 #if AUTHENTICATION
 /// <summary>
 /// Gets or sets the authentication schemes.
@@ -194,8 +190,8 @@ namespace Unosquare.Net
         }
 #endif
 
-        //public ExtendedProtectionSelector ExtendedProtectionSelectorDelegate
-        //{
+        // public ExtendedProtectionSelector ExtendedProtectionSelectorDelegate
+        // {
         //    get { return extendedProtectionSelectorDelegate; }
         //    set
         //    {
@@ -203,12 +199,12 @@ namespace Unosquare.Net
         //        if (value == null)
         //            throw new ArgumentNullException();
 
-        //        if (!AuthenticationManager.OSSupportsExtendedProtection)
+                  // if (!AuthenticationManager.OSSupportsExtendedProtection)
         //            throw new PlatformNotSupportedException(SR.GetString(SR.security_ExtendedProtection_NoOSSupport));
 
-        //        extendedProtectionSelectorDelegate = value;
+                  // extendedProtectionSelectorDelegate = value;
         //    }
-        //}
+        // }
 
         /// <summary>
         /// Gets or sets a value indicating whether the listener should ignore write exceptions.
@@ -218,7 +214,11 @@ namespace Unosquare.Net
         /// </value>
         public bool IgnoreWriteExceptions
         {
-            get { return _ignoreWriteExceptions; }
+            get
+            {
+                return _ignoreWriteExceptions;
+            }
+
             set
             {
                 CheckDisposed();
@@ -259,7 +259,11 @@ namespace Unosquare.Net
         /// </value>
         public string Realm
         {
-            get { return _realm; }
+            get
+            {
+                return _realm;
+            }
+
             set
             {
                 CheckDisposed();
@@ -275,7 +279,11 @@ namespace Unosquare.Net
         /// </value>
         public bool UnsafeConnectionNtlmAuthentication
         {
-            get { return _unsafeNtlmAuth; }
+            get
+            {
+                return _unsafeNtlmAuth;
+            }
+
             set
             {
                 CheckDisposed();
@@ -397,7 +405,7 @@ namespace Unosquare.Net
         /// <summary>
         /// Gets the HTTP context asynchronously.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A task that represents the time delay for the httpListenerContext</returns>
         public async Task<HttpListenerContext> GetContextAsync()
         {
             while (true)
@@ -416,7 +424,7 @@ namespace Unosquare.Net
 
         internal void CheckDisposed()
         {
-            //if (disposed)
+            // if (disposed)
             //    throw new ObjectDisposedException(GetType().ToString());
         }
 

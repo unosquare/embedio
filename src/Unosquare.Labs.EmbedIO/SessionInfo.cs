@@ -10,7 +10,7 @@
     public class SessionInfo
     {
         /// <summary>
-        /// Initialize Session data
+        /// Initializes a new instance of the <see cref="SessionInfo"/> class.
         /// </summary>
         public SessionInfo()
         {
@@ -41,11 +41,11 @@
         /// Retrieve an item or set an item. If the key does not exist, it returns null.
         /// This is an indexer providing a shortcut to the underlying Data dictionary
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        /// <param name="key">The key as an indexer</param>
+        /// <returns>An object that represents current session data repository</returns>
         public object this[string key]
         {
-            get { return (Data.ContainsKey(key)) ? Data[key] : null; }
+            get { return Data.ContainsKey(key) ? Data[key] : null; }
             set { Data[key] = value; }
         }
     }

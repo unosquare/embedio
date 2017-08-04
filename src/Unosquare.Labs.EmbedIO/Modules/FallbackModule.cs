@@ -32,7 +32,9 @@
         /// <param name="action">The action.</param>
         public FallbackModule(Func<HttpListenerContext, CancellationToken, bool> action)
         {
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, 
+            AddHandler(
+                ModuleMap.AnyPath, 
+                HttpVerbs.Any, 
                 (context, ct) => Task.FromResult(action(context, ct)));
         }
 
@@ -44,7 +46,9 @@
         {
             RedirectUrl = redirectUrl;
 
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, 
+            AddHandler(
+                ModuleMap.AnyPath, 
+                HttpVerbs.Any, 
                 (context, ct) => Task.FromResult(context.Redirect(redirectUrl)));
         }
     }

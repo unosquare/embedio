@@ -1,19 +1,18 @@
 ﻿#if !NET47
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Net;
-using System.Reflection;
-using System.Text;
-
 namespace Unosquare.Net
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Net;
+    using System.Reflection;
+    using System.Text;
+
     /// <summary>
     /// Represents Cookie collection
     /// </summary>
     /// <seealso cref="System.Collections.ICollection" />
-    /// <seealso cref="System.Collections.IEnumerable" />
     public class CookieCollection : ICollection
     {
         #region Private Fields
@@ -127,8 +126,10 @@ namespace Unosquare.Net
                     throw new ArgumentNullException(nameof(name));
 
                 foreach (var cookie in Sorted)
+                {
                     if (cookie.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                         return cookie;
+                }
 
                 return null;
             }
@@ -140,7 +141,7 @@ namespace Unosquare.Net
         /// <value>
         /// An <see cref="Object"/> used to synchronize access to the collection.
         /// </value>
-        public Object SyncRoot => _sync ?? (_sync = ((ICollection) _list).SyncRoot);
+        public object SyncRoot => _sync ?? (_sync = ((ICollection) _list).SyncRoot);
 
         #endregion
 
@@ -522,17 +523,17 @@ namespace Unosquare.Net
                 throw new ArgumentException("Multidimensional.", nameof(array));
 
             if (array.Length - index < _list.Count)
+            {
                 throw new ArgumentException(
-                    "The number of elements in this collection is greater than the available space of the destination array.");
-#if NETSTANDARD1_6
-            if (!array.GetType().GetElementType().GetTypeInfo().IsAssignableFrom(typeof(Cookie)))
-                throw new InvalidCastException(
-                    "The elements in this collection cannot be cast automatically to the type of the destination array.");
-#else
+                      "The number of elements in this collection is greater than the available space of the destination array.");
+            }
+
             if (!array.GetType().GetElementType().IsAssignableFrom(typeof(Cookie)))
+            {
                 throw new InvalidCastException(
                     "The elements in this collection cannot be cast automatically to the type of the destination array.");
-#endif
+            }
+
             ((IList) _list).CopyTo(array, index);
         }
 
@@ -567,8 +568,10 @@ namespace Unosquare.Net
                 throw new ArgumentOutOfRangeException(nameof(index), "Less than zero.");
 
             if (array.Length - index < _list.Count)
+            {
                 throw new ArgumentException(
-                    "The number of elements in this collection is greater than the available space of the destination array.");
+                      "The number of elements in this collection is greater than the available space of the destination array.");
+            }
 
             _list.CopyTo(array, index);
         }

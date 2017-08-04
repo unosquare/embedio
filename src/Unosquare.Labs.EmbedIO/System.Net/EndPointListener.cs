@@ -3,7 +3,7 @@
 // System.Net.EndPointListener
 //
 // Author:
-//	Gonzalo Paniagua Javier (gonzalo.mono@gmail.com)
+// Gonzalo Paniagua Javier (gonzalo.mono@gmail.com)
 //
 // Copyright (c) 2005 Novell, Inc. (http://www.novell.com)
 // Copyright (c) 2012 Xamarin, Inc. (http://xamarin.com)
@@ -26,25 +26,24 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading;
-using System.Threading.Tasks;
+namespace Unosquare.Net
+{
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Net.Sockets;
+    using System.Threading;
+    using System.Threading.Tasks;
 
 #if SSL
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography;
 #endif
 
-namespace Unosquare.Net
-{
     internal sealed class EndPointListener
     {
+        private readonly Dictionary<HttpConnection, HttpConnection> _unregistered;
         private readonly IPEndPoint _endpoint;
         private readonly Socket _sock;
         private Hashtable _prefixes; // Dictionary <ListenerPrefix, HttpListener>
@@ -53,8 +52,7 @@ namespace Unosquare.Net
 #if SSL
         private bool _secure = false;
         private X509Certificate _cert = null;
-#endif
-        private readonly Dictionary<HttpConnection, HttpConnection> _unregistered;
+#endif        
 
         public EndPointListener(HttpListener listener, IPAddress addr, int port, bool secure)
         {
@@ -104,10 +102,13 @@ namespace Unosquare.Net
                     {
                         // ignored
                     }
+
                     accepted = null;
                 }
+
                 return;
             }
+
             if (!asyn)
             {
                 ProcessAccept(e);
@@ -194,8 +195,9 @@ namespace Unosquare.Net
 
             if (!string.IsNullOrEmpty(host))
             {
-                var pRo = _prefixes;
-                foreach (ListenerPrefix p in pRo.Keys)
+                var result = _prefixes;
+
+                foreach (ListenerPrefix p in result.Keys)
                 {
                     var ppath = p.Path;
                     if (ppath.Length < bestLength)
@@ -207,10 +209,11 @@ namespace Unosquare.Net
                     if (path.StartsWith(ppath) || pathSlash.StartsWith(ppath))
                     {
                         bestLength = ppath.Length;
-                        bestMatch = (HttpListener) pRo[p];
+                        bestMatch = (HttpListener)result[p];
                         prefix = p;
                     }
                 }
+
                 if (bestLength != -1)
                     return bestMatch;
             }
@@ -263,7 +266,7 @@ namespace Unosquare.Net
 
             foreach (ListenerPrefix p in coll)
             {
-                if (p.Path == prefix.Path) //TODO: code
+                if (p.Path == prefix.Path) // TODO: code
                     throw new HttpListenerException(400, "Prefix already in use.");
             }
 
@@ -285,6 +288,7 @@ namespace Unosquare.Net
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -333,7 +337,8 @@ namespace Unosquare.Net
                     future = (current != null) ? (ArrayList) current.Clone() : new ArrayList();
                     prefix.Listener = listener;
                     AddSpecial(future, prefix);
-                } while (Interlocked.CompareExchange(ref _unhandled, future, current) != current);
+                }
+                while (Interlocked.CompareExchange(ref _unhandled, future, current) != current);
                 return;
             }
 
@@ -345,7 +350,8 @@ namespace Unosquare.Net
                     future = (current != null) ? (ArrayList) current.Clone() : new ArrayList();
                     prefix.Listener = listener;
                     AddSpecial(future, prefix);
-                } while (Interlocked.CompareExchange(ref _all, future, current) != current);
+                }
+                while (Interlocked.CompareExchange(ref _all, future, current) != current);
                 return;
             }
 
@@ -356,13 +362,15 @@ namespace Unosquare.Net
                 if (prefs.ContainsKey(prefix))
                 {
                     var other = (HttpListener) prefs[prefix];
-                    if (other != listener) // TODO: code.
+                    if (other != listener)
                         throw new HttpListenerException(400, "There's another listener for " + prefix);
                     return;
                 }
+
                 p2 = (Hashtable) prefs.Clone();
                 p2[prefix] = listener;
-            } while (Interlocked.CompareExchange(ref _prefixes, p2, prefs) != prefs);
+            }
+            while (Interlocked.CompareExchange(ref _prefixes, p2, prefs) != prefs);
         }
 
         public void RemovePrefix(ListenerPrefix prefix, HttpListener listener)
@@ -377,7 +385,8 @@ namespace Unosquare.Net
                     future = (current != null) ? (ArrayList) current.Clone() : new ArrayList();
                     if (!RemoveSpecial(future, prefix))
                         break; // Prefix not found
-                } while (Interlocked.CompareExchange(ref _unhandled, future, current) != current);
+                }
+                while (Interlocked.CompareExchange(ref _unhandled, future, current) != current);
                 CheckIfRemove();
                 return;
             }
@@ -390,7 +399,8 @@ namespace Unosquare.Net
                     future = (current != null) ? (ArrayList) current.Clone() : new ArrayList();
                     if (!RemoveSpecial(future, prefix))
                         break; // Prefix not found
-                } while (Interlocked.CompareExchange(ref _all, future, current) != current);
+                }
+                while (Interlocked.CompareExchange(ref _all, future, current) != current);
                 CheckIfRemove();
                 return;
             }
@@ -404,7 +414,8 @@ namespace Unosquare.Net
 
                 p2 = (Hashtable) prefs.Clone();
                 p2.Remove(prefix);
-            } while (Interlocked.CompareExchange(ref _prefixes, p2, prefs) != prefs);
+            }
+            while (Interlocked.CompareExchange(ref _prefixes, p2, prefs) != prefs);
             CheckIfRemove();
         }
     }

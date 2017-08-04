@@ -20,7 +20,6 @@
     /// </summary>
     /// <param name="server">The server.</param>
     /// <param name="context">The context.</param>
-    /// <returns></returns>
     public delegate bool ResponseHandler(WebServer server, HttpListenerContext context);
 
     /// <summary>
@@ -28,7 +27,6 @@
     /// </summary>
     /// <param name="server">The server.</param>
     /// <param name="context">The context.</param>
-    /// <returns></returns>
     public delegate Task<bool> AsyncResponseHandler(WebServer server, HttpListenerContext context);
 
     /// <summary>
@@ -39,6 +37,8 @@
     public class WebApiModule : WebModuleBase
     {
         #region Immutable Declarations
+
+        private const string RegexRouteReplace = "(.*)";
 
         private readonly List<Type> _controllerTypes = new List<Type>();
 
@@ -51,9 +51,7 @@
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        private const string RegexRouteReplace = "(.*)";
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);        
 
         #endregion
 
@@ -94,6 +92,7 @@
                         foreach (var arg in methodPair.Item2.GetParameters().Skip(2))
                         {
                             if (regExRouteParams.ContainsKey(arg.Name) == false) continue;
+                            
                             // get a reference to the parse method
                             var parameterTypeNullable = Nullable.GetUnderlyingType(arg.ParameterType);
 
@@ -168,8 +167,10 @@
         /// <param name="verb">The verb.</param>
         /// <param name="context">The context.</param>
         /// <param name="routeParams">The route parameters.</param>
-        /// <returns></returns>
-        private string NormalizeRegexPath(HttpVerbs verb, HttpListenerContext context,
+        /// <returns>A string that represents the registered path in the internal delegate map</returns>
+        private string NormalizeRegexPath(
+            HttpVerbs verb, 
+            HttpListenerContext context,
             Dictionary<string, object> routeParams)
         {
             var path = context.Request.Url.LocalPath;
@@ -228,7 +229,7 @@
         /// </summary>
         /// <param name="verb">The verb.</param>
         /// <param name="context">The context.</param>
-        /// <returns></returns>
+        /// <returns>A string that represents the registered path</returns>
         private string NormalizeWildcardPath(HttpVerbs verb, HttpListenerContext context)
         {
             var path = context.RequestPath();
@@ -240,10 +241,10 @@
 
             var wildcardMatch = wildcardPaths.FirstOrDefault(p => // wildcard at the end
                 path.StartsWith(p.Substring(0, p.Length - ModuleMap.AnyPath.Length))
+                
                 // wildcard in the middle so check both start/end
                 || (path.StartsWith(p.Substring(0, p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal)))
-                    && path.EndsWith(p.Substring(p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal) + 1)))
-            );
+                    && path.EndsWith(p.Substring(p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal) + 1))));
 
             if (string.IsNullOrWhiteSpace(wildcardMatch) == false)
                 path = wildcardMatch;
@@ -281,7 +282,7 @@
         /// <summary>
         /// Registers the controller.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type of register controller</typeparam>
         /// <exception cref="System.ArgumentException">Controller types must be unique within the module</exception>
         public void RegisterController<T>()
             where T : WebApiController, new()
@@ -295,8 +296,8 @@
         /// <summary>
         /// Registers the controller.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="controllerFactory"></param>
+        /// <typeparam name="T">The type of register controller</typeparam>
+        /// <param name="controllerFactory">The controller factory method</param>
         /// <exception cref="System.ArgumentException">Controller types must be unique within the module</exception>
         public void RegisterController<T>(Func<T> controllerFactory)
             where T : WebApiController

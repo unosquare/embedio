@@ -3,8 +3,8 @@
 // System.Net.HttpListenerRequest
 //
 // Authors:
-//	Gonzalo Paniagua Javier (gonzalo.mono@gmail.com)
-//	Marek Safar (marek.safar@gmail.com)
+// Gonzalo Paniagua Javier (gonzalo.mono@gmail.com)
+// Marek Safar (marek.safar@gmail.com)
 //
 // Copyright (c) 2005 Novell, Inc. (http://www.novell.com)
 // Copyright (c) 2011-2012 Xamarin, Inc. (http://xamarin.com)
@@ -27,52 +27,34 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-using System;
-using System.Collections.Specialized;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+namespace Unosquare.Net
+{
+    using System;
+    using System.Collections.Specialized;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Text;
+    using System.Threading.Tasks;
 #if SSL
 using System.Security.Authentication.ExtendedProtection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 #endif
 
-namespace Unosquare.Net
-{
-    /// <devdoc>
-    ///    <para>
-    ///       Defines the HTTP version number supported by the <see cref='System.Net.HttpWebRequest'/> and
-    ///    <see cref='System.Net.HttpWebResponse'/> classes.
-    ///    </para>
-    /// </devdoc>
-    public class HttpVersion
-    {
-        /// <devdoc>
-        ///    <para>[To be supplied.]</para>
-        /// </devdoc>
-        public static readonly Version Version10 = new Version(1, 0);
-        /// <devdoc>
-        ///    <para>[To be supplied.]</para>
-        /// </devdoc>
-        public static readonly Version Version11 = new Version(1, 1);
-
-    }// class HttpVersion
-
     /// <summary>
     /// Represents an HTTP Listener's request
     /// </summary>
     public sealed class HttpListenerRequest
     {
+        private static readonly byte[] _100Continue = Encoding.UTF8.GetBytes("HTTP/1.1 100 Continue\r\n\r\n");
+
+        private readonly HttpListenerContext _context;
         private Encoding _contentEncoding;
         private bool _clSet;
         private CookieCollection _cookies;
         private Stream _inputStream;
-        private Uri _url;
-        private readonly HttpListenerContext _context;
+        private Uri _url;        
         private bool _isChunked = false;
         private bool _kaSet;
         private bool _keepAlive;
@@ -81,8 +63,6 @@ namespace Unosquare.Net
         delegate X509Certificate2 GccDelegate();
         GccDelegate _gccDelegate;
 #endif
-
-        private static readonly byte[] _100Continue = Encoding.UTF8.GetBytes("HTTP/1.1 100 Continue\r\n\r\n");
 
         internal HttpListenerRequest(HttpListenerContext context)
         {
@@ -174,8 +154,7 @@ namespace Unosquare.Net
 
             return p < 10 && IsPredefinedScheme(s.Substring(0, p));
         }
-
-        //
+        
         // Using a simple block of if's is twice as slow as the compiler generated
         // switch statement.   But using this tuned code is faster than the
         // compiler generated code, with a million loops on x86-64:
@@ -190,16 +169,19 @@ namespace Unosquare.Net
                 return false;
 
             var c = scheme[0];
+
             if (c == 'h')
-                return (scheme == "http" || scheme == "https");
+                return scheme == "http" || scheme == "https";
+
             if (c == 'f')
-                return (scheme == "file" || scheme == "ftp");
+                return scheme == "file" || scheme == "ftp";
 
             if (c == 'n')
             {
                 c = scheme[1];
+
                 if (c == 'e')
-                    return (scheme == "news" || scheme == "net.pipe" || scheme == "net.tcp");
+                    return scheme == "news" || scheme == "net.pipe" || scheme == "net.tcp";
 
                 return scheme == "nntp";
             }
@@ -233,7 +215,7 @@ namespace Unosquare.Net
             if (colon >= 0)
                 host = host.Substring(0, colon);
 
-            var baseUri = $"{((IsSecureConnection) ? "https" : "http")}://{host}:{LocalEndPoint.Port}";
+            var baseUri = $"{(IsSecureConnection ? "https" : "http")}://{host}:{LocalEndPoint.Port}";
 
             if (!Uri.TryCreate(baseUri + path, UriKind.Absolute, out _url))
             {
@@ -245,8 +227,12 @@ namespace Unosquare.Net
 
             // Use reference source HttpListenerRequestUriBuilder to process url.
             // Fixes #29927
-            _url = HttpListenerRequestUriBuilder.GetRequestUri(RawUrl, _url.Scheme,
-                                _url.Authority, _url.LocalPath, _url.Query);
+            _url = HttpListenerRequestUriBuilder.GetRequestUri(
+                                RawUrl, 
+                                _url.Scheme,
+                                _url.Authority, 
+                                _url.LocalPath, 
+                                _url.Query);
 
 #if CHUNKED
             if (ProtocolVersion >= HttpVersion.Version11)
@@ -303,7 +289,7 @@ namespace Unosquare.Net
                 case "content-length":
                     try
                     {
-                        //TODO: max. content_length?
+                        // TODO: max. content_length?
                         ContentLength64 = long.Parse(val.Trim());
                         if (ContentLength64 < 0)
                             _context.ErrorMessage = "Invalid Content-Length.";
@@ -324,6 +310,7 @@ namespace Unosquare.Net
                     {
                         UrlReferrer = new Uri("http://someone.is.screwing.with.the.headers.com/");
                     }
+
                     break;
                 case "cookie":
                     if (_cookies == null)
@@ -362,6 +349,7 @@ namespace Unosquare.Net
                             {
                                 _cookies.Add(current);
                             }
+
                             current = new Cookie();
                             var idx = str.IndexOf('=');
                             if (idx > 0)
@@ -374,13 +362,16 @@ namespace Unosquare.Net
                                 current.Name = str.Trim();
                                 current.Value = string.Empty;
                             }
+
                             current.Version = version;
                         }
                     }
+
                     if (current != null)
                     {
                         _cookies.Add(current);
                     }
+
                     break;
             }
         }
@@ -489,7 +480,7 @@ namespace Unosquare.Net
                     defaultEncoding = Encoding.GetEncoding(acceptCharset);
                 }
 
-                return (_contentEncoding = defaultEncoding);
+                return _contentEncoding = defaultEncoding;
             }
         }
 
@@ -523,7 +514,7 @@ namespace Unosquare.Net
         /// <value>
         /// <c>true</c> if this instance has entity body; otherwise, <c>false</c>.
         /// </value>
-        public bool HasEntityBody => (ContentLength64 > 0 || _isChunked);
+        public bool HasEntityBody => ContentLength64 > 0 || _isChunked;
 
         /// <summary>
         /// Gets the request headers.
@@ -580,13 +571,14 @@ namespace Unosquare.Net
                     return _keepAlive;
 
                 _kaSet = true;
+                
                 // 1. Connection header
                 // 2. Protocol (1.1 == keep-alive by default)
                 // 3. Keep-Alive header
                 var cnc = Headers["Connection"];
                 if (!string.IsNullOrEmpty(cnc))
                 {
-                    _keepAlive = (0 == string.Compare(cnc, "keep-alive", StringComparison.OrdinalIgnoreCase));
+                    _keepAlive = string.Compare(cnc, "keep-alive", StringComparison.OrdinalIgnoreCase) == 0;
                 }
                 else if (ProtocolVersion == HttpVersion.Version11)
                 {
@@ -596,8 +588,9 @@ namespace Unosquare.Net
                 {
                     cnc = Headers["keep-alive"];
                     if (!string.IsNullOrEmpty(cnc))
-                        _keepAlive = (0 != string.Compare(cnc, "closed", StringComparison.OrdinalIgnoreCase));
+                        _keepAlive = string.Compare(cnc, "closed", StringComparison.OrdinalIgnoreCase) != 0;
                 }
+
                 return _keepAlive;
             }
         }
@@ -729,5 +722,27 @@ namespace Unosquare.Net
         }
 #endif
     }
+
+    /// <summary>
+    /// Define HTTP Versions
+    /// </summary>
+    /// <devdoc>
+    /// Defines the HTTP version number supported by the <see cref="System.Net.HttpWebRequest" /> and
+    /// <see cref="System.Net.HttpWebResponse" /> classes.
+    /// </devdoc>
+    public class HttpVersion
+    {
+        /// <summary>
+        /// The version 1.0
+        /// </summary>
+        /// <devdoc>[To be supplied.]</devdoc>
+        public static readonly Version Version10 = new Version(1, 0);
+
+        /// <summary>
+        /// The version 1.1
+        /// </summary>
+        /// <devdoc>[To be supplied.]</devdoc>
+        public static readonly Version Version11 = new Version(1, 1);
+    }// class HttpVersion
 }
 #endif

@@ -33,16 +33,16 @@
  * - David Burhans
  */
 #endregion
-
-using System;
-using System.Collections.Specialized;
-using System.IO;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
+ 
 namespace Unosquare.Net
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.IO;
+    using System.Text;
+    using System.Threading;
+    using System.Threading.Tasks;
+
     internal class HttpRequest : HttpBase
     {
 #region Private Fields
@@ -187,9 +187,12 @@ namespace Unosquare.Net
                 return;
 
             var buff = new StringBuilder(64);
-            foreach (System.Net.Cookie cookie in cookies) //.Sorted)
+            foreach (System.Net.Cookie cookie in cookies) 
+            ////.Sorted)
+            {
                 if (!cookie.Expired)
                     buff.AppendFormat("{0}; ", cookie);
+            }
 
             var len = buff.Length;
             if (len > 2)

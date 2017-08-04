@@ -26,16 +26,15 @@
  * THE SOFTWARE.
  */
 #endregion
-
-using System;
-using System.Collections.Specialized;
-using System.IO;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Unosquare.Net
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.IO;
+    using System.Net;
+    using System.Text;
+    using System.Threading.Tasks;
+
     internal class HttpResponse : HttpBase
     {
 #region Private Constructors
@@ -162,7 +161,7 @@ namespace Unosquare.Net
             var headers = Headers;
 
             foreach (var cookie in cookies) // TODO: .Sorted)
-                headers.Add("Set-Cookie", cookie.ToString()); //.ToResponseString ());
+                headers.Add("Set-Cookie", cookie.ToString()); // .ToResponseString ());
         }
 
         /// <summary>

@@ -107,7 +107,7 @@
         /// <summary>
         /// The default headers
         /// </summary>
-        public Dictionary<string, string> DefaultHeaders = new Dictionary<string, string>();
+        public Dictionary<string, string> DefaultHeaders { get; } = new Dictionary<string, string>();
 
         /// <summary>
         /// Gets the virtual paths.
@@ -115,8 +115,7 @@
         /// <value>
         /// The virtual paths.
         /// </value>
-        public ReadOnlyDictionary<string, string> VirtualPaths => new ReadOnlyDictionary<string, string>(m_VirtualPaths)
-        ;
+        public ReadOnlyDictionary<string, string> VirtualPaths => new ReadOnlyDictionary<string, string>(m_VirtualPaths);
 
         /// <summary>
         /// Gets the name of this module.
@@ -125,11 +124,6 @@
         /// The name.
         /// </value>
         public override string Name => "Static Files Module";
-
-        /// <summary>
-        /// Clears the RAM cache.
-        /// </summary>
-        public void ClearRamCache() => RamCache.Clear();
 
         /// <summary>
         /// Private collection holding the contents of the RAM Cache.
@@ -152,7 +146,8 @@
         /// Initializes a new instance of the <see cref="StaticFilesModule"/> class.
         /// </summary>
         /// <param name="paths">The paths.</param>
-        public StaticFilesModule(Dictionary<string, string> paths) : this(paths.First().Value, null, paths)
+        public StaticFilesModule(Dictionary<string, string> paths) 
+            : this(paths.First().Value, null, paths)
         {
         }
 
@@ -163,7 +158,9 @@
         /// <param name="headers">The headers to set in every request.</param>
         /// <param name="additionalPaths">The additional paths.</param>
         /// <exception cref="System.ArgumentException">Path ' + fileSystemPath + ' does not exist.</exception>
-        public StaticFilesModule(string fileSystemPath, Dictionary<string, string> headers = null,
+        public StaticFilesModule(
+            string fileSystemPath, 
+            Dictionary<string, string> headers = null,
             Dictionary<string, string> additionalPaths = null)
         {
             if (Directory.Exists(fileSystemPath) == false)
@@ -341,6 +338,7 @@
                 if (UseGzip &&
                     context.RequestHeader(Headers.AcceptEncoding).Contains(Headers.CompressionGzip) &&
                     buffer.Length < MaxGzipInputLength &&
+                    
                     // Ignore audio/video from compression
                     context.Response.ContentType?.StartsWith("audio") == false &&
                     context.Response.ContentType?.StartsWith("video") == false)
@@ -375,8 +373,12 @@
             return true;
         }
 
-        private static async Task WriteToOutputStream(HttpListenerContext context, long byteLength, Stream buffer,
-            int lowerByteIndex, CancellationToken ct)
+        private static async Task WriteToOutputStream(
+            HttpListenerContext context, 
+            long byteLength, 
+            Stream buffer,
+            int lowerByteIndex, 
+            CancellationToken ct)
         {
             var streamBuffer = new byte[ChuckSize];
             var sendData = 0;
@@ -384,7 +386,7 @@
 
             while (true)
             {
-                if (sendData + ChuckSize > byteLength) readBufferSize = (int) (byteLength - sendData);
+                if (sendData + ChuckSize > byteLength) readBufferSize = (int)(byteLength - sendData);
 
                 buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
                 var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct);
@@ -422,7 +424,11 @@
             context.Response.AddHeader(Headers.AcceptRanges, "bytes");
         }
 
-        private bool UpdateFileCache(HttpListenerContext context, Stream buffer, DateTime fileDate, string requestHash,
+        private bool UpdateFileCache(
+            HttpListenerContext context, 
+            Stream buffer, 
+            DateTime fileDate, 
+            string requestHash,
             string localPath)
         {
             var currentHash = buffer.ComputeMD5().ToUpperHex() + '-' + fileDate.Ticks;
@@ -452,13 +458,16 @@
             return false;
         }
 
-        private static bool CalculateRange(string partialHeader, long fileSize, out int lowerByteIndex,
+        private static bool CalculateRange(
+            string partialHeader, 
+            long fileSize, 
+            out int lowerByteIndex,
             out int upperByteIndex)
         {
             lowerByteIndex = 0;
             upperByteIndex = 0;
 
-            var range = partialHeader.Replace("bytes=", "").Split('-');
+            var range = partialHeader.Replace("bytes=", string.Empty).Split('-');
 
             if (range.Length == 2 && int.TryParse(range[0], out lowerByteIndex) &&
                 int.TryParse(range[1], out upperByteIndex))
@@ -530,7 +539,7 @@
                 var additionalPath =
                     m_VirtualPaths.FirstOrDefault(x => context.RequestPathCaseSensitive().StartsWith(x.Key));
                 baseLocalPath = additionalPath.Value;
-                urlPath = urlPath.Replace(additionalPath.Key.Replace('/', Path.DirectorySeparatorChar), "");
+                urlPath = urlPath.Replace(additionalPath.Key.Replace('/', Path.DirectorySeparatorChar), string.Empty);
 
                 if (string.IsNullOrWhiteSpace(urlPath))
                 {
@@ -573,6 +582,7 @@
         /// <param name="virtualPath">The virtual path.</param>
         /// <param name="physicalPath">The physical path.</param>
         /// <exception cref="System.InvalidOperationException">
+        /// Is thrown when a method call is invalid for the object's current state
         /// </exception>
         public void RegisterVirtualPath(string virtualPath, string physicalPath)
         {
@@ -593,7 +603,9 @@
         /// Unregisters the virtual path.
         /// </summary>
         /// <param name="virtualPath">The virtual path.</param>
-        /// <exception cref="System.InvalidOperationException"></exception>
+        /// <exception cref="System.InvalidOperationException">
+        /// Is thrown when a method call is invalid for the object's current state
+        /// </exception>
         public void UnregisterVirtualPath(string virtualPath)
         {
             if (m_VirtualPaths.ContainsKey(virtualPath) == false)
@@ -601,5 +613,10 @@
 
             m_VirtualPaths.Remove(virtualPath);
         }
+
+        /// <summary>
+        /// Clears the RAM cache.
+        /// </summary>
+        public void ClearRamCache() => RamCache.Clear();
     }
 }

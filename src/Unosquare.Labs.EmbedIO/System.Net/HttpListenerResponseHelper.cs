@@ -3,7 +3,7 @@
 // System.Net.HttpListenerResponseHelper
 //
 // Author:
-//	Gonzalo Paniagua Javier (gonzalo@novell.com)
+// Gonzalo Paniagua Javier (gonzalo@novell.com)
 //
 // Copyright (c) 2005 Novell, Inc. (http://www.novell.com)
 // Copyright (C) 2016 Xamarin Inc (http://www.xamarin.com)
@@ -26,8 +26,6 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
-
 namespace Unosquare.Net
 {
     // do not inline into HttpListenerResponse as this recursively brings everything that's
@@ -85,7 +83,8 @@ namespace Unosquare.Net
                 case 505: return "Http Version Not Supported";
                 case 507: return "Insufficient Storage";
             }
-            return "";
+
+            return string.Empty;
         }
     }
 }

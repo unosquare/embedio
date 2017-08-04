@@ -27,22 +27,22 @@
  */
 #endregion
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-using Unosquare.Swan;
-
-namespace Unosquare.Net
+ namespace Unosquare.Net
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Text;
+    using Swan;
+    
     internal class PayloadData : IEnumerable<byte>
     {
         #region Private Fields
 
-        private ushort _code;
-        private bool _codeSet;
         private readonly byte[] _data;
         private readonly long _length;
+        private ushort _code;
+        private bool _codeSet;        
         private string _reason;
         private bool _reasonSet;
 

@@ -1,8 +1,8 @@
-﻿using System;
-
-#if !NET47
+﻿#if !NET47
 namespace Unosquare.Net
 {
+    using System;
+
     /// <summary>
     /// Represents an HTTP Listener's exception
     /// </summary>
@@ -13,7 +13,8 @@ namespace Unosquare.Net
         /// </summary>
         /// <param name="errorCode">The error code.</param>
         /// <param name="message">The message.</param>
-        public HttpListenerException(int errorCode, string message) : base(message)
+        public HttpListenerException(int errorCode, string message) 
+            : base(message)
         {
             ErrorCode = errorCode;
         }

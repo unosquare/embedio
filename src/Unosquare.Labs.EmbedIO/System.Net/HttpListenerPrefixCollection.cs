@@ -3,7 +3,7 @@
 // System.Net.HttpListenerPrefixCollection.cs
 //
 // Author:
-//	Gonzalo Paniagua Javier (gonzalo@novell.com)
+// Gonzalo Paniagua Javier (gonzalo@novell.com)
 //
 // Copyright (c) 2005 Novell, Inc. (http://www.novell.com)
 //
@@ -25,23 +25,20 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net;
-
 namespace Unosquare.Net
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
     /// <summary>
-    /// Represents a collection of HTTP listener profixes
+    /// Represents a collection of HTTP listener prefixes
     /// </summary>
     public class HttpListenerPrefixCollection : ICollection<string>
     {
-        readonly List<string> _prefixes = new List<string>();
+        private readonly List<string> _prefixes = new List<string>();
 
-        readonly HttpListener _listener;
+        private readonly HttpListener _listener;
 
         internal HttpListenerPrefixCollection(HttpListener listener)
         {
@@ -148,7 +145,7 @@ namespace Unosquare.Net
         /// Removes the specified URI prefix.
         /// </summary>
         /// <param name="uriPrefix">The URI prefix.</param>
-        /// <returns></returns>
+        /// <returns>True if "uriPrefix" was removed; otherwise, false</returns>
         /// <exception cref="System.ArgumentNullException">uriPrefix</exception>
         public bool Remove(string uriPrefix)
         {

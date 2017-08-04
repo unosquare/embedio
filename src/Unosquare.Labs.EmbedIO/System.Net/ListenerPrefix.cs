@@ -3,8 +3,8 @@
 // System.Net.ListenerPrefix
 //
 // Author:
-//	Gonzalo Paniagua Javier (gonzalo@novell.com)
-//	Oleg Mihailik (mihailik gmail co_m)
+// Gonzalo Paniagua Javier (gonzalo@novell.com)
+// Oleg Mihailik (mihailik gmail co_m)
 //
 // Copyright (c) 2005 Novell, Inc. (http://www.novell.com)
 //
@@ -26,29 +26,23 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
-
-using System;
-using System.Net;
-
 namespace Unosquare.Net
 {
+    using System;
+    using System.Net;
+
     internal sealed class ListenerPrefix
     {
-        readonly string _original;
-        ushort _port;
-        public HttpListener Listener;
-
+        private readonly string _original;
+        private ushort _port;
+        
         public ListenerPrefix(string prefix)
         {
             _original = prefix;
             Parse(prefix);
         }
-
-        public override string ToString()
-        {
-            return _original;
-        }
+        
+        public HttpListener Listener { get; set; }
 
         public IPAddress[] Addresses { get; set; }
 
@@ -60,6 +54,8 @@ namespace Unosquare.Net
 
         public string Path { get; private set; }
 
+        public override string ToString() => _original;
+
         // Equals and GetHashCode are required to detect duplicates in HttpListenerPrefixCollection.
         public override bool Equals(object o)
         {
@@ -67,13 +63,10 @@ namespace Unosquare.Net
             if (other == null)
                 return false;
 
-            return (_original == other._original);
+            return _original == other._original;
         }
 
-        public override int GetHashCode()
-        {
-            return _original.GetHashCode();
-        }
+        public override int GetHashCode() => _original.GetHashCode();
 
         private void Parse(string uri)
         {
@@ -105,6 +98,7 @@ namespace Unosquare.Net
                 _port = defaultPort;
                 Path = uri.Substring(root);
             }
+
             if (Path.Length != 1)
                 Path = Path.Substring(0, Path.Length - 1);
         }

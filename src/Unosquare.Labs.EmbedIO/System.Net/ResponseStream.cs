@@ -3,7 +3,7 @@
 // System.Net.ResponseStream
 //
 // Author:
-//	Gonzalo Paniagua Javier (gonzalo@novell.com)
+// Gonzalo Paniagua Javier (gonzalo@novell.com)
 //
 // Copyright (c) 2005 Novell, Inc. (http://www.novell.com)
 //
@@ -25,27 +25,25 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
-
-using System;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Unosquare.Net
 {
+    using System;
+    using System.IO;
+    using System.Runtime.InteropServices;
+    using System.Text;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Represents a Response stream
     /// </summary>
     /// <seealso cref="System.IO.Stream" />
     public class ResponseStream : Stream
     {
+        private readonly Stream _stream;
         private readonly HttpListenerResponse _response;
         private readonly bool _ignoreErrors;
         private bool _disposed;
-        private bool _trailerSent;
-        private readonly Stream _stream;
+        private bool _trailerSent;        
 
         internal ResponseStream(Stream stream, HttpListenerResponse response, bool ignoreErrors)
         {
@@ -72,7 +70,10 @@ namespace Unosquare.Net
         /// <summary>
         /// When overridden in a derived class, gets the length in bytes of the stream.
         /// </summary>
-        /// <exception cref="System.NotSupportedException"></exception>
+        /// <exception cref="System.NotSupportedException">
+        /// Is thrown when an invoked method is not supported, or when there is an attempt to read, 
+        /// seek, or write to a stream that does not support the invoked functionality.
+        /// </exception>
         public override long Length
         {
             get { throw new NotSupportedException(); }
@@ -82,6 +83,8 @@ namespace Unosquare.Net
         /// When overridden in a derived class, gets or sets the position within the current stream.
         /// </summary>
         /// <exception cref="System.NotSupportedException">
+        /// Is thrown when an invoked method is not supported, or when there is an attempt to read, 
+        /// seek, or write to a stream that does not support the invoked functionality.
         /// </exception>
         public override long Position
         {
@@ -92,6 +95,7 @@ namespace Unosquare.Net
         /// <summary>
         /// Closes this instance.
         /// </summary>
+        /// <returns>A task from closing response</returns>
         public async Task CloseAsync()
         {
             if (_disposed) return;
@@ -113,6 +117,7 @@ namespace Unosquare.Net
                             ms.Position = ms.Length;
                             ms.Write(bytes, 0, bytes.Length);
                         }
+
                         InternalWrite(ms.ToArray(), (int)start, (int)(ms.Length - start));
                         _trailerSent = true;
                     }
@@ -156,7 +161,7 @@ namespace Unosquare.Net
 
         private static byte[] GetChunkSizeBytes(int size, bool final)
         {
-            return Encoding.UTF8.GetBytes($"{size:x}\r\n{(final ? "\r\n" : "")}");
+            return Encoding.UTF8.GetBytes($"{size:x}\r\n{(final ? "\r\n" : string.Empty)}");
         }
 
         internal void InternalWrite(byte[] buffer, int offset, int count)
@@ -184,7 +189,10 @@ namespace Unosquare.Net
         /// <param name="buffer">An array of bytes. This method copies <paramref name="count" /> bytes from <paramref name="buffer" /> to the current stream.</param>
         /// <param name="offset">The zero-based byte offset in <paramref name="buffer" /> at which to begin copying bytes to the current stream.</param>
         /// <param name="count">The number of bytes to be written to the current stream.</param>
-        /// <exception cref="System.ObjectDisposedException"></exception>
+        /// <exception cref="System.ObjectDisposedException">
+        /// Is thrown when you try to access a member of an object that implements the 
+        /// IDisposable interface, and that object has been disposed
+        /// </exception>
         public override void Write(byte[] buffer, int offset, int count)
         {
             if (_disposed)
@@ -233,7 +241,10 @@ namespace Unosquare.Net
         /// <returns>
         /// The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not currently available, or zero (0) if the end of the stream has been reached.
         /// </returns>
-        /// <exception cref="System.NotSupportedException"></exception>
+        /// <exception cref="System.NotSupportedException">
+        /// Is thrown when an invoked method is not supported, or when there is an attempt to read, seek, 
+        /// or write to a stream that does not support the invoked functionality
+        /// </exception>
         public override int Read([In, Out] byte[] buffer, int offset, int count)
         {
             throw new NotSupportedException();
@@ -247,7 +258,10 @@ namespace Unosquare.Net
         /// <returns>
         /// The new position within the current stream.
         /// </returns>
-        /// <exception cref="System.NotSupportedException"></exception>
+        /// <exception cref="System.NotSupportedException">
+        /// Is thrown when an invoked method is not supported, or when there is an attempt to read, seek, 
+        /// or write to a stream that does not support the invoked functionality
+        /// </exception>
         public override long Seek(long offset, SeekOrigin origin)
         {
             throw new NotSupportedException();
@@ -257,7 +271,10 @@ namespace Unosquare.Net
         /// When overridden in a derived class, sets the length of the current stream.
         /// </summary>
         /// <param name="value">The desired length of the current stream in bytes.</param>
-        /// <exception cref="System.NotSupportedException"></exception>
+        /// <exception cref="System.NotSupportedException">
+        /// Is thrown when an invoked method is not supported, or when there is an attempt to read, seek, 
+        /// or write to a stream that does not support the invoked functionality.
+        /// </exception>
         public override void SetLength(long value)
         {
             throw new NotSupportedException();

@@ -35,7 +35,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="server">The server.</param>
-        /// <returns></returns>
+        /// <returns>A session object for the given server context</returns>
         public static SessionInfo GetSession(this HttpListenerContext context, WebServer server)
         {
             return server.SessionModule?.GetSession(context);
@@ -46,7 +46,6 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="server">The server.</param>
-        /// <returns></returns>
         public static void DeleteSession(this HttpListenerContext context, WebServer server)
         {
             server.SessionModule?.DeleteSession(context);
@@ -57,7 +56,6 @@
         /// </summary>
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
-        /// <returns></returns>
         public static void DeleteSession(this WebServer server, HttpListenerContext context)
         {
             server.SessionModule?.DeleteSession(context);
@@ -68,7 +66,6 @@
         /// </summary>
         /// <param name="server">The server.</param>
         /// <param name="session">The session info.</param>
-        /// <returns></returns>
         public static void DeleteSession(this WebServer server, SessionInfo session)
         {
             server.SessionModule?.DeleteSession(session);
@@ -80,7 +77,7 @@
         /// </summary>
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
-        /// <returns></returns>
+        /// <returns>A session info for the given server context</returns>
         public static SessionInfo GetSession(this WebServer server, HttpListenerContext context)
         {
             return server.SessionModule?.GetSession(context);
@@ -92,7 +89,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="server">The server.</param>
-        /// <returns></returns>
+        /// <returns>A session info for the given websocket context</returns>
 #if NET47
         public static SessionInfo GetSession(this System.Net.WebSockets.WebSocketContext context, WebServer server)
 #else
@@ -107,7 +104,7 @@
         /// </summary>
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
-        /// <returns></returns>
+        /// <returns>A session info for the given websocket context</returns>
 #if NET47
         public static SessionInfo GetSession(this WebServer server, System.Net.WebSockets.WebSocketContext context)
 #else
@@ -125,7 +122,7 @@
         /// Gets the request path for the specified context.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns></returns>
+        /// <returns>Path for the specified context</returns>
         public static string RequestPath(this HttpListenerContext context)
         {
             return context.Request.Url.LocalPath.ToLowerInvariant();
@@ -135,7 +132,7 @@
         /// Gets the request path for the specified context case sensitive.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns></returns>
+        /// <returns>Path for the specified context</returns>
         public static string RequestPathCaseSensitive(this HttpListenerContext context)
         {
             return context.Request.Url.LocalPath;
@@ -145,7 +142,7 @@
         /// Retrieves the Request HTTP Verb (also called Method) of this context.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns></returns>
+        /// <returns>HTTP verb result of the conversion of this context</returns>
         public static HttpVerbs RequestVerb(this HttpListenerContext context)
         {
             HttpVerbs verb;
@@ -159,7 +156,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="key">The key.</param>
-        /// <returns></returns>
+        /// <returns>A string that represents the value for the specified query string key</returns>
         public static string QueryString(this HttpListenerContext context, string key)
         {
             return context.InQueryString(key) ? context.Request.QueryString[key] : null;
@@ -170,7 +167,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="key">The key.</param>
-        /// <returns></returns>
+        /// <returns>True if a key exists within the Request's query string; otherwise, false</returns>
         public static bool InQueryString(this HttpListenerContext context, string key)
         {
             return context.Request.QueryString.AllKeys.Contains(key);
@@ -181,7 +178,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="headerName">Name of the header.</param>
-        /// <returns></returns>
+        /// <returns>Specified request the header when is true; otherwise, empty string </returns>
         public static string RequestHeader(this HttpListenerContext context, string headerName)
         {
             return context.HasRequestHeader(headerName) == false ? string.Empty : context.Request.Headers[headerName];
@@ -192,7 +189,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="headerName">Name of the header.</param>
-        /// <returns></returns>
+        /// <returns>True if request headers is not a null; otherwise, false</returns>
         public static bool HasRequestHeader(this HttpListenerContext context, string headerName)
         {
             return context.Request.Headers[headerName] != null;
@@ -204,7 +201,10 @@
         /// it is not rewindable for obvious reasons. This functionality is by design.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// The rest of the stream as a string, from the current position to the end.
+        /// If the current position is at the end of the stream, returns an empty string
+        /// </returns>
         public static string RequestBody(this HttpListenerContext context)
         {
             if (context.Request.HasEntityBody == false)
@@ -266,7 +266,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="data">The data.</param>
-        /// <returns></returns>
+        /// <returns>A true value of type ref=JsonResponseAsync"</returns>
         public static bool JsonResponse(this HttpListenerContext context, object data)
         {
             return context.JsonResponseAsync(data).GetAwaiter().GetResult();
@@ -277,7 +277,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="data">The data.</param>
-        /// <returns></returns>
+        /// <returns>A true value of type ref=JsonResponseAsync"</returns>
         public static Task<bool> JsonResponseAsync(this HttpListenerContext context, object data)
         {
             var jsonFormatting = true;
@@ -292,7 +292,8 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="json">The json.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// A true value of type ref=JsonResponseAsync"</returns>
         public static bool JsonResponse(this HttpListenerContext context, string json)
         {
             return context.JsonResponseAsync(json).GetAwaiter().GetResult();
@@ -304,7 +305,7 @@
         /// <param name="context">The context.</param>
         /// <param name="json">The json.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>True that represents the correct async write operation</returns>
         public static async Task<bool> JsonResponseAsync(this HttpListenerContext context, string json, CancellationToken cancellationToken = default(CancellationToken))
         {
             var buffer = Encoding.UTF8.GetBytes(json);
@@ -319,9 +320,11 @@
         /// Parses the json as a given type from the request body.
         /// Please note the underlying input stream is not rewindable.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type of specified object type</typeparam>
         /// <param name="context">The context.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// Parses the json as a given type from the request body
+        /// </returns>
         public static T ParseJson<T>(this HttpListenerContext context)
             where T : class
         {
@@ -331,9 +334,11 @@
         /// <summary>
         /// Parses the json as a given type from the request body string.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type of specified object type</typeparam>
         /// <param name="requestBody">The request body.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// A string that represents the json as a given type from the request body string
+        /// </returns>
         public static T ParseJson<T>(this string requestBody)
             where T : class
         {
@@ -344,12 +349,11 @@
 
         #region Data Parsing Methods
 
-
         /// <summary>
         /// Returns a dictionary of KVPs from Request data
         /// </summary>
         /// <param name="requestBody">The request body.</param>
-        /// <returns></returns>
+        /// <returns>A collection that represents KVPs from request data</returns>
         public static Dictionary<string, object> RequestFormDataDictionary(this string requestBody)
         {
             return ParseFormDataAsDictionary(requestBody);
@@ -359,8 +363,8 @@
         /// Returns dictionary from Request POST data
         /// Please note the underlying input stream is not rewindable.
         /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
+        /// <param name="context">The context to request body as string</param>
+        /// <returns>A collection that represents KVPs from request data</returns>
         public static Dictionary<string, object> RequestFormDataDictionary(this HttpListenerContext context)
         {
             return RequestFormDataDictionary(context.RequestBody());
@@ -371,13 +375,15 @@
         /// </summary>
         /// <param name="requestBody">The request body.</param>
         /// <param name="contentTypeHeader">The content type header.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// A collection that represents the request body string
+        /// </returns>
         /// <exception cref="System.NotImplementedException">multipart/form-data Content Type parsing is not yet implemented</exception>
         private static Dictionary<string, object> ParseFormDataAsDictionary(string requestBody,
             string contentTypeHeader = UrlEncodedContentType)
         {
             // TODO: implement multipart/form-data parsing
-            // example available here: http://stackoverflow.com/questions/5483851/manually-parse-raw-http-data-with-php
+            //// example available here: http://stackoverflow.com/questions/5483851/manually-parse-raw-http-data-with-php
 
             if (contentTypeHeader.ToLowerInvariant().StartsWith("multipart/form-data"))
                 throw new NotImplementedException("multipart/form-data Content Type parsing is not yet implemented");
@@ -451,8 +457,10 @@
         /// <param name="buffer">The buffer.</param>
         /// <param name="method">The method.</param>
         /// <param name="mode">The mode.</param>
-        /// <returns></returns>
-        public static MemoryStream Compress(this Stream buffer, CompressionMethod method = CompressionMethod.Gzip,
+        /// <returns>Block of bytes of compressed stream</returns>
+        public static MemoryStream Compress(
+            this Stream buffer, 
+            CompressionMethod method = CompressionMethod.Gzip,
             CompressionMode mode = CompressionMode.Compress)
         {
             buffer.Position = 0;
@@ -467,6 +475,7 @@
                         {
                             buffer.CopyTo(compressor, 1024);
                             buffer.CopyTo(compressor);
+                            
                             // WebSocket use this
                             targetStream.Write(Last, 0, 1);
                             targetStream.Position = 0;
@@ -478,8 +487,8 @@
                         {
                             compressor.CopyTo(targetStream);
                         }
-
                     }
+
                     break;
                 case CompressionMethod.Gzip:
                     if (mode == CompressionMode.Compress)
@@ -495,8 +504,8 @@
                         {
                             compressor.CopyTo(targetStream);
                         }
-
                     }
+
                     break;
                 case CompressionMethod.None:
                     buffer.CopyTo(targetStream);
@@ -514,7 +523,7 @@
         /// <param name="buffer">The buffer.</param>
         /// <param name="method">The method.</param>
         /// <param name="mode">The mode.</param>
-        /// <returns></returns>
+        /// <returns>Block of bytes of compressed stream </returns>
         public static byte[] Compress(this byte[] buffer, CompressionMethod method = CompressionMethod.Gzip, CompressionMode mode = CompressionMode.Compress)
         {
             using (var stream = new MemoryStream(buffer))

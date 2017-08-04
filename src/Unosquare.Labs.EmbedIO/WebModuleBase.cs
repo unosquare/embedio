@@ -1,7 +1,6 @@
-﻿using Unosquare.Labs.EmbedIO.Constants;
-
-namespace Unosquare.Labs.EmbedIO
+﻿namespace Unosquare.Labs.EmbedIO
 {
+    using Constants;
     using System;
     using System.Threading;
     using System.Threading.Tasks;
@@ -17,6 +16,14 @@ namespace Unosquare.Labs.EmbedIO
     /// </summary>
     public abstract class WebModuleBase : IWebModule
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebModuleBase"/> class.
+        /// </summary>
+        protected WebModuleBase()
+        {
+            Handlers = new ModuleMap();
+        }
+
         /// <summary>
         /// Gets the name of this module.
         /// </summary>
@@ -42,14 +49,6 @@ namespace Unosquare.Labs.EmbedIO
         /// The server.
         /// </value>
         public WebServer Server { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebModuleBase"/> class.
-        /// </summary>
-        protected WebModuleBase()
-        {
-            Handlers = new ModuleMap();
-        }
 
         /// <summary>
         /// Adds a method handler for a given path and verb

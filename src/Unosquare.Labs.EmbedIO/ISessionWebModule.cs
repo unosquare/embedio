@@ -27,13 +27,14 @@
         /// If no session exists for the context, then null is returned
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns></returns>
+        /// <returns>A session info for the given server context</returns>
         SessionInfo GetSession(HttpListenerContext context);
 
         /// <summary>
         /// Delete the session object for the given context
         /// If no session exists for the context, then null is returned
         /// </summary>
+        /// <param name="context">The context.</param>
         void DeleteSession(HttpListenerContext context);
 
         /// <summary>
@@ -48,7 +49,7 @@
         /// If no session exists for the context, then null is returned
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns></returns>
+        /// <returns>A session object for the given WebSocket context</returns>
 #if NET47
         SessionInfo GetSession(System.Net.WebSockets.WebSocketContext context);
 #else

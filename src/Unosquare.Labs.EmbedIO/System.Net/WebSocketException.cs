@@ -27,10 +27,10 @@
  */
 #endregion
 
-using System;
-
 namespace Unosquare.Net
 {
+    using System;
+
     /// <summary>
     /// The exception that is thrown when a <see cref="WebSocket"/> gets a fatal error.
     /// </summary>
