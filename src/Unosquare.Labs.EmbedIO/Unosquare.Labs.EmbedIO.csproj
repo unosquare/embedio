@@ -64,6 +64,7 @@
     <Compile Include="Constants\RoutingStrategy.cs" />
     <Compile Include="Constants\Strings.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="MethodCache.cs" />
     <Compile Include="Extensions.Fluent.cs" />
     <Compile Include="ISessionWebModule.cs" />
     <Compile Include="IWebModule.cs" />

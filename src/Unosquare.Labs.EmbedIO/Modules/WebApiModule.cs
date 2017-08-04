@@ -79,9 +79,7 @@
                 // search the path and verb
                 if (!_delegateMap.TryGetValue(path, out methods) || !methods.TryGetValue(verb, out methodPair))
                     throw new InvalidOperationException($"No method found for path {path} and verb {verb}.");
-
-                var controller = methodPair.ControllerFactory();
-
+                
                 // ensure module does not return cached responses
                 context.NoCache();
 
@@ -126,31 +124,10 @@
                             }
                         }
 
-                        // Now, check if the call is handled asynchronously.
-                        if (methodPair.MethodCache.IsTask)
-                        {
-                            // Run the method asynchronously
-                            return await methodPair.MethodCache.AsyncInvoke(controller, args);
-                        }
-                        
-                        // If the handler is not asynchronous, simply call the method.
-                        return methodPair.MethodCache.SyncInvoke(controller, args);
+                        return await methodPair.Invoke(args);
                     case RoutingStrategy.Wildcard:
-                        if (methodPair.MethodCache.IsTask)
-                        {
-                            // Asynchronous handling of wildcard matching strategy
-                            var method = methodPair.MethodCache.MethodInfo.CreateDelegate(typeof(AsyncResponseHandler), controller);
 
-                            return await (Task<bool>) method.DynamicInvoke(args.ToArray());
-                        }
-                        else
-                        {
-                            // Regular handling of wildcard matching strategy
-                            var method = methodPair.MethodCache.MethodInfo.CreateDelegate(typeof(ResponseHandler), controller);
-
-                            return (bool) method.DynamicInvoke(args.ToArray());
-                        }
-
+                        return await methodPair.Invoke(args);
                     default:
                         // Log the handler to be used
                         $"Routing strategy '{Server.RoutingStrategy}' is not supported by this module.".Warn(

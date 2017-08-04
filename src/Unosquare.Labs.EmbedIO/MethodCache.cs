@@ -67,9 +67,24 @@
             MethodCache = cache;
         }
 
-        public MethodCache MethodCache { get; set; }
+        public MethodCache MethodCache { get; }
 
-        public Func<object> ControllerFactory { get; set; }
+        public Func<object> ControllerFactory { get; }
+
+        public async Task<bool> Invoke(object[] arguments)
+        {
+            var controller = ControllerFactory();
+
+            // Now, check if the call is handled asynchronously.
+            if (MethodCache.IsTask)
+            {
+                // Run the method asynchronously
+                return await MethodCache.AsyncInvoke(controller, arguments);
+            }
+
+            // If the handler is not asynchronous, simply call the method.
+            return MethodCache.SyncInvoke(controller, arguments);
+        }
     }
 
     internal class AddtionalParameterInfo
