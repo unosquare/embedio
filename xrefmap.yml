@@ -1840,6 +1840,12 @@ references:
   commentId: M:Unosquare.Labs.EmbedIO.WebServer.#ctor(System.Int32)
   fullName: Unosquare.Labs.EmbedIO.WebServer.WebServer(System.Int32)
   nameWithType: WebServer.WebServer(Int32)
+- uid: Unosquare.Labs.EmbedIO.WebServer.#ctor(System.Int32,Unosquare.Labs.EmbedIO.Constants.RoutingStrategy)
+  name: WebServer(Int32, RoutingStrategy)
+  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer__ctor_System_Int32_Unosquare_Labs_EmbedIO_Constants_RoutingStrategy_
+  commentId: M:Unosquare.Labs.EmbedIO.WebServer.#ctor(System.Int32,Unosquare.Labs.EmbedIO.Constants.RoutingStrategy)
+  fullName: Unosquare.Labs.EmbedIO.WebServer.WebServer(System.Int32, Unosquare.Labs.EmbedIO.Constants.RoutingStrategy)
+  nameWithType: WebServer.WebServer(Int32, RoutingStrategy)
 - uid: Unosquare.Labs.EmbedIO.WebServer.#ctor(System.String,Unosquare.Labs.EmbedIO.Constants.RoutingStrategy)
   name: WebServer(String, RoutingStrategy)
   href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer__ctor_System_String_Unosquare_Labs_EmbedIO_Constants_RoutingStrategy_
