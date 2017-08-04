@@ -265,48 +265,6 @@ references:
   commentId: F:Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.Wildcard
   fullName: Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.Wildcard
   nameWithType: RoutingStrategy.Wildcard
-- uid: Unosquare.Labs.EmbedIO.Constants.Strings
-  name: Strings
-  href: api/Unosquare.Labs.EmbedIO.Constants.Strings.html
-  commentId: T:Unosquare.Labs.EmbedIO.Constants.Strings
-  fullName: Unosquare.Labs.EmbedIO.Constants.Strings
-  nameWithType: Strings
-- uid: Unosquare.Labs.EmbedIO.Constants.Strings.BrowserTimeFormat
-  name: BrowserTimeFormat
-  href: api/Unosquare.Labs.EmbedIO.Constants.Strings.html#Unosquare_Labs_EmbedIO_Constants_Strings_BrowserTimeFormat
-  commentId: F:Unosquare.Labs.EmbedIO.Constants.Strings.BrowserTimeFormat
-  fullName: Unosquare.Labs.EmbedIO.Constants.Strings.BrowserTimeFormat
-  nameWithType: Strings.BrowserTimeFormat
-- uid: Unosquare.Labs.EmbedIO.Constants.Strings.CommaSplitChar
-  name: CommaSplitChar
-  href: api/Unosquare.Labs.EmbedIO.Constants.Strings.html#Unosquare_Labs_EmbedIO_Constants_Strings_CommaSplitChar
-  commentId: F:Unosquare.Labs.EmbedIO.Constants.Strings.CommaSplitChar
-  fullName: Unosquare.Labs.EmbedIO.Constants.Strings.CommaSplitChar
-  nameWithType: Strings.CommaSplitChar
-- uid: Unosquare.Labs.EmbedIO.Constants.Strings.CorsWildcard
-  name: CorsWildcard
-  href: api/Unosquare.Labs.EmbedIO.Constants.Strings.html#Unosquare_Labs_EmbedIO_Constants_Strings_CorsWildcard
-  commentId: F:Unosquare.Labs.EmbedIO.Constants.Strings.CorsWildcard
-  fullName: Unosquare.Labs.EmbedIO.Constants.Strings.CorsWildcard
-  nameWithType: Strings.CorsWildcard
-- uid: Unosquare.Labs.EmbedIO.Constants.Strings.StandardCultureInfo
-  name: StandardCultureInfo
-  href: api/Unosquare.Labs.EmbedIO.Constants.Strings.html#Unosquare_Labs_EmbedIO_Constants_Strings_StandardCultureInfo
-  commentId: F:Unosquare.Labs.EmbedIO.Constants.Strings.StandardCultureInfo
-  fullName: Unosquare.Labs.EmbedIO.Constants.Strings.StandardCultureInfo
-  nameWithType: Strings.StandardCultureInfo
-- uid: Unosquare.Labs.EmbedIO.Constants.Strings.StandardStringComparer
-  name: StandardStringComparer
-  href: api/Unosquare.Labs.EmbedIO.Constants.Strings.html#Unosquare_Labs_EmbedIO_Constants_Strings_StandardStringComparer
-  commentId: F:Unosquare.Labs.EmbedIO.Constants.Strings.StandardStringComparer
-  fullName: Unosquare.Labs.EmbedIO.Constants.Strings.StandardStringComparer
-  nameWithType: Strings.StandardStringComparer
-- uid: Unosquare.Labs.EmbedIO.Constants.Strings.StaticFileStringComparer
-  name: StaticFileStringComparer
-  href: api/Unosquare.Labs.EmbedIO.Constants.Strings.html#Unosquare_Labs_EmbedIO_Constants_Strings_StaticFileStringComparer
-  commentId: F:Unosquare.Labs.EmbedIO.Constants.Strings.StaticFileStringComparer
-  fullName: Unosquare.Labs.EmbedIO.Constants.Strings.StaticFileStringComparer
-  nameWithType: Strings.StaticFileStringComparer
 - uid: Unosquare.Labs.EmbedIO.Extensions
   name: Extensions
   href: api/Unosquare.Labs.EmbedIO.Extensions.html
@@ -1069,12 +1027,6 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.Item
   fullName: Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.Item
   nameWithType: LocalSessionModule.Item
-- uid: Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.m_Sessions
-  name: m_Sessions
-  href: api/Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.html#Unosquare_Labs_EmbedIO_Modules_LocalSessionModule_m_Sessions
-  commentId: F:Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.m_Sessions
-  fullName: Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.m_Sessions
-  nameWithType: LocalSessionModule.m_Sessions
 - uid: Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.Name
   name: Name
   href: api/Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.html#Unosquare_Labs_EmbedIO_Modules_LocalSessionModule_Name
@@ -1099,12 +1051,6 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.Sessions
   fullName: Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.Sessions
   nameWithType: LocalSessionModule.Sessions
-- uid: Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.SessionsSyncLock
-  name: SessionsSyncLock
-  href: api/Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.html#Unosquare_Labs_EmbedIO_Modules_LocalSessionModule_SessionsSyncLock
-  commentId: F:Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.SessionsSyncLock
-  fullName: Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.SessionsSyncLock
-  nameWithType: LocalSessionModule.SessionsSyncLock
 - uid: Unosquare.Labs.EmbedIO.Modules.ResponseHandler
   name: ResponseHandler
   href: api/Unosquare.Labs.EmbedIO.Modules.ResponseHandler.html
@@ -1186,7 +1132,13 @@ references:
 - uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.DefaultHeaders
   name: DefaultHeaders
   href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_DefaultHeaders
-  commentId: F:Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.DefaultHeaders
+  commentId: P:Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.DefaultHeaders
+  fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.DefaultHeaders
+  nameWithType: StaticFilesModule.DefaultHeaders
+- uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.DefaultHeaders*
+  name: DefaultHeaders
+  href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_DefaultHeaders_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.DefaultHeaders
   fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.DefaultHeaders
   nameWithType: StaticFilesModule.DefaultHeaders
 - uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.FileSystemPath
@@ -1888,12 +1840,6 @@ references:
   commentId: M:Unosquare.Labs.EmbedIO.WebServer.#ctor(System.Int32)
   fullName: Unosquare.Labs.EmbedIO.WebServer.WebServer(System.Int32)
   nameWithType: WebServer.WebServer(Int32)
-- uid: Unosquare.Labs.EmbedIO.WebServer.#ctor(System.Int32,Unosquare.Labs.EmbedIO.Constants.RoutingStrategy)
-  name: WebServer(Int32, RoutingStrategy)
-  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer__ctor_System_Int32_Unosquare_Labs_EmbedIO_Constants_RoutingStrategy_
-  commentId: M:Unosquare.Labs.EmbedIO.WebServer.#ctor(System.Int32,Unosquare.Labs.EmbedIO.Constants.RoutingStrategy)
-  fullName: Unosquare.Labs.EmbedIO.WebServer.WebServer(System.Int32, Unosquare.Labs.EmbedIO.Constants.RoutingStrategy)
-  nameWithType: WebServer.WebServer(Int32, RoutingStrategy)
 - uid: Unosquare.Labs.EmbedIO.WebServer.#ctor(System.String,Unosquare.Labs.EmbedIO.Constants.RoutingStrategy)
   name: WebServer(String, RoutingStrategy)
   href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer__ctor_System_String_Unosquare_Labs_EmbedIO_Constants_RoutingStrategy_
@@ -3643,12 +3589,6 @@ references:
   commentId: Overload:Unosquare.Net.WebHeaderCollection.GetValues
   fullName: Unosquare.Net.WebHeaderCollection.GetValues
   nameWithType: WebHeaderCollection.GetValues
-- uid: Unosquare.Net.WebHeaderCollection.IsRestricted(System.String)
-  name: IsRestricted(String)
-  href: api/Unosquare.Net.WebHeaderCollection.html#Unosquare_Net_WebHeaderCollection_IsRestricted_System_String_
-  commentId: M:Unosquare.Net.WebHeaderCollection.IsRestricted(System.String)
-  fullName: Unosquare.Net.WebHeaderCollection.IsRestricted(System.String)
-  nameWithType: WebHeaderCollection.IsRestricted(String)
 - uid: Unosquare.Net.WebHeaderCollection.IsRestricted(System.String,System.Boolean)
   name: IsRestricted(String, Boolean)
   href: api/Unosquare.Net.WebHeaderCollection.html#Unosquare_Net_WebHeaderCollection_IsRestricted_System_String_System_Boolean_
