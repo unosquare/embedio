@@ -74,18 +74,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Unosquare.Labs.EmbedIO.Constants.Responses.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Unosquare.Labs.EmbedIO.Constants.Responses.html",
-          "hash": "VB8AO8YqB8B8LxIX6ktyRQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.yml",
       "output": {
         ".html": {
@@ -102,7 +90,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Constants.html",
-          "hash": "hhaG+5wFsE5ubqb+8nKyGw=="
+          "hash": "dcjd85W0FcPb3qA2vb6NlQ=="
         }
       },
       "is_incremental": false,
@@ -170,18 +158,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Unosquare.Labs.EmbedIO.Modules.AsyncResponseHandler.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.AsyncResponseHandler.html",
-          "hash": "hH12UrmJvk5M2s8y62fFqg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Unosquare.Labs.EmbedIO.Modules.CorsModule.yml",
       "output": {
         ".html": {
@@ -211,18 +187,6 @@
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.html",
           "hash": "o5cMAsrEc2EWLAUH1jGlNw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Unosquare.Labs.EmbedIO.Modules.ResponseHandler.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.ResponseHandler.html",
-          "hash": "vHSNQp4883GcHbhXuNGvBA=="
         }
       },
       "is_incremental": false,
@@ -318,7 +282,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.html",
-          "hash": "kSjarGrQoY4EjU9OZWX04w=="
+          "hash": "hOi4vxgefcmeyneONT6G5A=="
         }
       },
       "is_incremental": false,
@@ -354,7 +318,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.WebServer.html",
-          "hash": "6GTIvuWI2T9h/usc069t+g=="
+          "hash": "/AmmeV9EVsQkwvUO6dAx9w=="
         }
       },
       "is_incremental": false,
@@ -482,18 +446,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Unosquare.Net.HttpVersion.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Unosquare.Net.HttpVersion.html",
-          "hash": "cdAm4MQfOPQ00a/Pi3AMrg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Unosquare.Net.MessageEventArgs.yml",
       "output": {
         ".html": {
@@ -578,18 +530,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Unosquare.Net.WebSocketExtensions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Unosquare.Net.WebSocketExtensions.html",
-          "hash": "AD78VMSyOW3Mp5/zpU//TA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Unosquare.Net.WebSocketMessageType.yml",
       "output": {
         ".html": {
@@ -630,7 +570,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.html",
-          "hash": "TJH+nNSfUZiVfq2ncvgI7w=="
+          "hash": "EJ2eB1NrNfAd0Je38iUsYQ=="
         }
       },
       "is_incremental": false,
@@ -642,7 +582,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "EPti2ysldEFJl8pxZDQdtw=="
+          "hash": "oQNNPyLuhD6iQoBgwB5mZA=="
         }
       },
       "is_incremental": false,
@@ -657,14 +597,19 @@
         "incrementalPhase": "build"
       },
       "processors": {
-        "RestApiDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor RestApiDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor ResourceDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         },
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build"
+        },
+        "RestApiDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor RestApiDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         },
         "ConceptualDocumentProcessor": {
@@ -673,11 +618,6 @@
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "incrementalPhase": "build"
-        },
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         }
       }

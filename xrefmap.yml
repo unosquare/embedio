@@ -229,24 +229,6 @@ references:
   commentId: F:Unosquare.Labs.EmbedIO.Constants.MimeTypes.DefaultMimeTypes
   fullName: Unosquare.Labs.EmbedIO.Constants.MimeTypes.DefaultMimeTypes
   nameWithType: MimeTypes.DefaultMimeTypes
-- uid: Unosquare.Labs.EmbedIO.Constants.Responses
-  name: Responses
-  href: api/Unosquare.Labs.EmbedIO.Constants.Responses.html
-  commentId: T:Unosquare.Labs.EmbedIO.Constants.Responses
-  fullName: Unosquare.Labs.EmbedIO.Constants.Responses
-  nameWithType: Responses
-- uid: Unosquare.Labs.EmbedIO.Constants.Responses.Response404Html
-  name: Response404Html
-  href: api/Unosquare.Labs.EmbedIO.Constants.Responses.html#Unosquare_Labs_EmbedIO_Constants_Responses_Response404Html
-  commentId: F:Unosquare.Labs.EmbedIO.Constants.Responses.Response404Html
-  fullName: Unosquare.Labs.EmbedIO.Constants.Responses.Response404Html
-  nameWithType: Responses.Response404Html
-- uid: Unosquare.Labs.EmbedIO.Constants.Responses.Response500HtmlFormat
-  name: Response500HtmlFormat
-  href: api/Unosquare.Labs.EmbedIO.Constants.Responses.html#Unosquare_Labs_EmbedIO_Constants_Responses_Response500HtmlFormat
-  commentId: F:Unosquare.Labs.EmbedIO.Constants.Responses.Response500HtmlFormat
-  fullName: Unosquare.Labs.EmbedIO.Constants.Responses.Response500HtmlFormat
-  nameWithType: Responses.Response500HtmlFormat
 - uid: Unosquare.Labs.EmbedIO.Constants.RoutingStrategy
   name: RoutingStrategy
   href: api/Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.html
@@ -847,12 +829,6 @@ references:
   commentId: N:Unosquare.Labs.EmbedIO.Modules
   fullName: Unosquare.Labs.EmbedIO.Modules
   nameWithType: Unosquare.Labs.EmbedIO.Modules
-- uid: Unosquare.Labs.EmbedIO.Modules.AsyncResponseHandler
-  name: AsyncResponseHandler
-  href: api/Unosquare.Labs.EmbedIO.Modules.AsyncResponseHandler.html
-  commentId: T:Unosquare.Labs.EmbedIO.Modules.AsyncResponseHandler
-  fullName: Unosquare.Labs.EmbedIO.Modules.AsyncResponseHandler
-  nameWithType: AsyncResponseHandler
 - uid: Unosquare.Labs.EmbedIO.Modules.CorsModule
   name: CorsModule
   href: api/Unosquare.Labs.EmbedIO.Modules.CorsModule.html
@@ -1051,12 +1027,6 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.Sessions
   fullName: Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.Sessions
   nameWithType: LocalSessionModule.Sessions
-- uid: Unosquare.Labs.EmbedIO.Modules.ResponseHandler
-  name: ResponseHandler
-  href: api/Unosquare.Labs.EmbedIO.Modules.ResponseHandler.html
-  commentId: T:Unosquare.Labs.EmbedIO.Modules.ResponseHandler
-  fullName: Unosquare.Labs.EmbedIO.Modules.ResponseHandler
-  nameWithType: ResponseHandler
 - uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule
   name: StaticFilesModule
   href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html
@@ -3235,24 +3205,6 @@ references:
   commentId: Overload:Unosquare.Net.HttpListenerResponse.StatusDescription
   fullName: Unosquare.Net.HttpListenerResponse.StatusDescription
   nameWithType: HttpListenerResponse.StatusDescription
-- uid: Unosquare.Net.HttpVersion
-  name: HttpVersion
-  href: api/Unosquare.Net.HttpVersion.html
-  commentId: T:Unosquare.Net.HttpVersion
-  fullName: Unosquare.Net.HttpVersion
-  nameWithType: HttpVersion
-- uid: Unosquare.Net.HttpVersion.Version10
-  name: Version10
-  href: api/Unosquare.Net.HttpVersion.html#Unosquare_Net_HttpVersion_Version10
-  commentId: F:Unosquare.Net.HttpVersion.Version10
-  fullName: Unosquare.Net.HttpVersion.Version10
-  nameWithType: HttpVersion.Version10
-- uid: Unosquare.Net.HttpVersion.Version11
-  name: Version11
-  href: api/Unosquare.Net.HttpVersion.html#Unosquare_Net_HttpVersion_Version11
-  commentId: F:Unosquare.Net.HttpVersion.Version11
-  fullName: Unosquare.Net.HttpVersion.Version11
-  nameWithType: HttpVersion.Version11
 - uid: Unosquare.Net.MessageEventArgs
   name: MessageEventArgs
   href: api/Unosquare.Net.MessageEventArgs.html
@@ -4180,60 +4132,6 @@ references:
   commentId: Overload:Unosquare.Net.WebSocketException.Code
   fullName: Unosquare.Net.WebSocketException.Code
   nameWithType: WebSocketException.Code
-- uid: Unosquare.Net.WebSocketExtensions
-  name: WebSocketExtensions
-  href: api/Unosquare.Net.WebSocketExtensions.html
-  commentId: T:Unosquare.Net.WebSocketExtensions
-  fullName: Unosquare.Net.WebSocketExtensions
-  nameWithType: WebSocketExtensions
-- uid: Unosquare.Net.WebSocketExtensions.Contains(NameValueCollection,System.String,System.String)
-  name: Contains(NameValueCollection, String, String)
-  href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_Contains_NameValueCollection_System_String_System_String_
-  commentId: M:Unosquare.Net.WebSocketExtensions.Contains(NameValueCollection,System.String,System.String)
-  fullName: Unosquare.Net.WebSocketExtensions.Contains(NameValueCollection, System.String, System.String)
-  nameWithType: WebSocketExtensions.Contains(NameValueCollection, String, String)
-- uid: Unosquare.Net.WebSocketExtensions.Contains(System.String,System.Char[])
-  name: Contains(String, Char[])
-  href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_Contains_System_String_System_Char___
-  commentId: M:Unosquare.Net.WebSocketExtensions.Contains(System.String,System.Char[])
-  name.vb: Contains(String, Char())
-  fullName: Unosquare.Net.WebSocketExtensions.Contains(System.String, System.Char[])
-  fullName.vb: Unosquare.Net.WebSocketExtensions.Contains(System.String, System.Char())
-  nameWithType: WebSocketExtensions.Contains(String, Char[])
-  nameWithType.vb: WebSocketExtensions.Contains(String, Char())
-- uid: Unosquare.Net.WebSocketExtensions.Contains*
-  name: Contains
-  href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_Contains_
-  commentId: Overload:Unosquare.Net.WebSocketExtensions.Contains
-  fullName: Unosquare.Net.WebSocketExtensions.Contains
-  nameWithType: WebSocketExtensions.Contains
-- uid: Unosquare.Net.WebSocketExtensions.GetCookies(NameValueCollection,System.Boolean)
-  name: GetCookies(NameValueCollection, Boolean)
-  href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_GetCookies_NameValueCollection_System_Boolean_
-  commentId: M:Unosquare.Net.WebSocketExtensions.GetCookies(NameValueCollection,System.Boolean)
-  fullName: Unosquare.Net.WebSocketExtensions.GetCookies(NameValueCollection, System.Boolean)
-  nameWithType: WebSocketExtensions.GetCookies(NameValueCollection, Boolean)
-- uid: Unosquare.Net.WebSocketExtensions.GetCookies*
-  name: GetCookies
-  href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_GetCookies_
-  commentId: Overload:Unosquare.Net.WebSocketExtensions.GetCookies
-  fullName: Unosquare.Net.WebSocketExtensions.GetCookies
-  nameWithType: WebSocketExtensions.GetCookies
-- uid: Unosquare.Net.WebSocketExtensions.ToHostOrder(System.Byte[],Endianness)
-  name: ToHostOrder(Byte[], Endianness)
-  href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_ToHostOrder_System_Byte___Endianness_
-  commentId: M:Unosquare.Net.WebSocketExtensions.ToHostOrder(System.Byte[],Endianness)
-  name.vb: ToHostOrder(Byte(), Endianness)
-  fullName: Unosquare.Net.WebSocketExtensions.ToHostOrder(System.Byte[], Endianness)
-  fullName.vb: Unosquare.Net.WebSocketExtensions.ToHostOrder(System.Byte(), Endianness)
-  nameWithType: WebSocketExtensions.ToHostOrder(Byte[], Endianness)
-  nameWithType.vb: WebSocketExtensions.ToHostOrder(Byte(), Endianness)
-- uid: Unosquare.Net.WebSocketExtensions.ToHostOrder*
-  name: ToHostOrder
-  href: api/Unosquare.Net.WebSocketExtensions.html#Unosquare_Net_WebSocketExtensions_ToHostOrder_
-  commentId: Overload:Unosquare.Net.WebSocketExtensions.ToHostOrder
-  fullName: Unosquare.Net.WebSocketExtensions.ToHostOrder
-  nameWithType: WebSocketExtensions.ToHostOrder
 - uid: Unosquare.Net.WebSocketMessageType
   name: WebSocketMessageType
   href: api/Unosquare.Net.WebSocketMessageType.html
