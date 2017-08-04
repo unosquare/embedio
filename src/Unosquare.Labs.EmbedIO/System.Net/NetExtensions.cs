@@ -1,14 +1,14 @@
 ﻿#if !NET47
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System;
-using Unosquare.Labs.EmbedIO.Constants;
-using Unosquare.Swan;
-
 namespace Unosquare.Net
 {
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Linq;
+    using System.Text;
+    using System;
+    using Labs.EmbedIO.Constants;
+    using Swan;
+
     /// <summary>
     /// Indicates the status code for the WebSocket connection close.
     /// </summary>

@@ -26,21 +26,21 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading;
-using System.Threading.Tasks;
+namespace Unosquare.Net
+{
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Net.Sockets;
+    using System.Threading;
+    using System.Threading.Tasks;
 
 #if SSL
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography;
 #endif
 
-namespace Unosquare.Net
-{
     internal sealed class EndPointListener
     {
         private readonly Dictionary<HttpConnection, HttpConnection> _unregistered;

@@ -25,21 +25,20 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net;
-
 namespace Unosquare.Net
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
     /// <summary>
-    /// Represents a collection of HTTP listener profixes
+    /// Represents a collection of HTTP listener prefixes
     /// </summary>
     public class HttpListenerPrefixCollection : ICollection<string>
     {
-        public readonly List<string> _prefixes = new List<string>();
+        internal readonly List<string> _prefixes = new List<string>();
 
-        public readonly HttpListener _listener;
+        internal readonly HttpListener _listener;
 
         internal HttpListenerPrefixCollection(HttpListener listener)
         {

@@ -27,14 +27,14 @@
  */
 #endregion
 
-using System;
-using System.Collections.Specialized;
-using System.IO;
-using System.Security.Principal;
-using System.Threading.Tasks;
-
 namespace Unosquare.Net
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.IO;
+    using System.Security.Principal;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Provides the properties used to access the information in
     /// a WebSocket handshake request received by the <see cref="HttpListener"/>.

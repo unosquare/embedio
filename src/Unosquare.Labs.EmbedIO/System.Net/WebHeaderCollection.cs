@@ -41,15 +41,15 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Runtime.InteropServices;
-using System.Text;
-using HttpHeaders = Unosquare.Labs.EmbedIO.Constants.Headers;
-
 namespace Unosquare.Net
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Runtime.InteropServices;
+    using System.Text;
+    using HttpHeaders = Labs.EmbedIO.Constants.Headers;
+
     /// <summary>
     /// Provides a collection of the HTTP headers associated with a request or response.
     /// </summary>
@@ -395,10 +395,7 @@ namespace Unosquare.Net
                         "TransferEncoding",
                         new HttpHeaderInfo(
                             "Transfer-Encoding",
-                            HttpHeaderType.Request |
-                            HttpHeaderType.Response |
-                            HttpHeaderType.Restricted |
-                            HttpHeaderType.MultiValue)
+                            HttpHeaderType.Request | HttpHeaderType.Response | HttpHeaderType.Restricted | HttpHeaderType.MultiValue)
                     },
                     {
                         "Translate",

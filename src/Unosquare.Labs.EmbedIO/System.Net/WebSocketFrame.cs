@@ -34,16 +34,16 @@
  */
 #endregion
 
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System;
-using System.Threading.Tasks;
-using Unosquare.Swan;
-
 namespace Unosquare.Net
 {
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Text;
+    using System;
+    using System.Threading.Tasks;
+    using Swan;
+
     /// <summary>
     /// Indicates whether a WebSocket frame is the final frame of a message.
     /// </summary>

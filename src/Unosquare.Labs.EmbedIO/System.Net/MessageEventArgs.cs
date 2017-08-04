@@ -27,11 +27,11 @@
  */
 #endregion
 
-using System;
-using System.Text;
-
 namespace Unosquare.Net
 {
+    using System;
+    using System.Text;
+
     /// <summary>
     /// Represents the event data for the <see cref="WebSocket.OnMessage"/> event.
     /// </summary>

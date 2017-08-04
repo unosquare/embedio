@@ -26,16 +26,15 @@
  * THE SOFTWARE.
  */
 #endregion
-
-using System;
-using System.Collections.Specialized;
-using System.IO;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Unosquare.Net
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.IO;
+    using System.Net;
+    using System.Text;
+    using System.Threading.Tasks;
+
     internal class HttpResponse : HttpBase
     {
 #region Private Constructors

@@ -1,8 +1,8 @@
-﻿using System;
-
-#if !NET47
+﻿#if !NET47
 namespace Unosquare.Net
 {
+    using System;
+
     /// <summary>
     /// Represents an HTTP Listener's exception
     /// </summary>
