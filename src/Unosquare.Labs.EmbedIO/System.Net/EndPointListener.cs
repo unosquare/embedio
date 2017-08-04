@@ -195,8 +195,9 @@ using System.Security.Cryptography;
 
             if (!string.IsNullOrEmpty(host))
             {
-                var pRo = _prefixes;
-                foreach (ListenerPrefix p in pRo.Keys)
+                var result = _prefixes;
+
+                foreach (ListenerPrefix p in result.Keys)
                 {
                     var ppath = p.Path;
                     if (ppath.Length < bestLength)
@@ -208,7 +209,7 @@ using System.Security.Cryptography;
                     if (path.StartsWith(ppath) || pathSlash.StartsWith(ppath))
                     {
                         bestLength = ppath.Length;
-                        bestMatch = (HttpListener) pRo[p];
+                        bestMatch = (HttpListener)result[p];
                         prefix = p;
                     }
                 }

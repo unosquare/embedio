@@ -36,8 +36,6 @@ namespace Unosquare.Net
     /// </summary>
     public sealed class HttpListenerContext
     {
-        internal HttpListener Listener;
-
         private WebSocketContext _websocketContext;
 
         internal HttpListenerContext(HttpConnection cnc)
@@ -47,6 +45,8 @@ namespace Unosquare.Net
             Request = new HttpListenerRequest(this);
             Response = new HttpListenerResponse(this);
         }
+
+        internal HttpListener Listener { get; set; }
 
         internal int ErrorStatus { get; set; } = 400;
 

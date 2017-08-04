@@ -17,6 +17,14 @@
     public abstract class WebModuleBase : IWebModule
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="WebModuleBase"/> class.
+        /// </summary>
+        protected WebModuleBase()
+        {
+            Handlers = new ModuleMap();
+        }
+
+        /// <summary>
         /// Gets the name of this module.
         /// </summary>
         /// <value>
@@ -41,14 +49,6 @@
         /// The server.
         /// </value>
         public WebServer Server { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebModuleBase"/> class.
-        /// </summary>
-        protected WebModuleBase()
-        {
-            Handlers = new ModuleMap();
-        }
 
         /// <summary>
         /// Adds a method handler for a given path and verb

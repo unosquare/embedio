@@ -36,9 +36,9 @@ namespace Unosquare.Net
     /// </summary>
     public class HttpListenerPrefixCollection : ICollection<string>
     {
-        internal readonly List<string> _prefixes = new List<string>();
+        private readonly List<string> _prefixes = new List<string>();
 
-        internal readonly HttpListener _listener;
+        private readonly HttpListener _listener;
 
         internal HttpListenerPrefixCollection(HttpListener listener)
         {

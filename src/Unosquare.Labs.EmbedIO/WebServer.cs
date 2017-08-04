@@ -23,44 +23,6 @@
         private readonly List<IWebModule> _modules = new List<IWebModule>(4);
 
         /// <summary>
-        /// Gets the underlying HTTP listener.
-        /// </summary>
-        /// <value>
-        /// The listener.
-        /// </value>
-        public HttpListener Listener { get; protected set; }
-
-        /// <summary>
-        /// Gets the Url Prefix for which the server is serving requests.
-        /// </summary>
-        /// <value>
-        /// The URL prefix.
-        /// </value>
-        public HttpListenerPrefixCollection UrlPrefixes => Listener.Prefixes;
-
-        /// <summary>
-        /// Gets a list of registered modules
-        /// </summary>
-        /// <value>
-        /// The modules.
-        /// </value>
-        public ReadOnlyCollection<IWebModule> Modules => _modules.AsReadOnly();
-
-        /// <summary>
-        /// Gets registered the ISessionModule.
-        /// </summary>
-        /// <value>
-        /// The session module.
-        /// </value>
-        public ISessionWebModule SessionModule { get; protected set; }
-
-        /// <summary>
-        /// Gets the URL RoutingStrategy used in this instance.
-        /// By default it is set to Wildcard, but Regex is the recommended value.
-        /// </summary>
-        public RoutingStrategy RoutingStrategy { get; protected set; }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
         /// This constructor does not provide any Logging capabilities.
         /// </summary>
@@ -137,6 +99,44 @@
 
             "Finished Loading Web Server.".Info(nameof(WebServer));
         }
+
+        /// <summary>
+        /// Gets the underlying HTTP listener.
+        /// </summary>
+        /// <value>
+        /// The listener.
+        /// </value>
+        public HttpListener Listener { get; protected set; }
+
+        /// <summary>
+        /// Gets the Url Prefix for which the server is serving requests.
+        /// </summary>
+        /// <value>
+        /// The URL prefix.
+        /// </value>
+        public HttpListenerPrefixCollection UrlPrefixes => Listener.Prefixes;
+
+        /// <summary>
+        /// Gets a list of registered modules
+        /// </summary>
+        /// <value>
+        /// The modules.
+        /// </value>
+        public ReadOnlyCollection<IWebModule> Modules => _modules.AsReadOnly();
+
+        /// <summary>
+        /// Gets registered the ISessionModule.
+        /// </summary>
+        /// <value>
+        /// The session module.
+        /// </value>
+        public ISessionWebModule SessionModule { get; protected set; }
+
+        /// <summary>
+        /// Gets the URL RoutingStrategy used in this instance.
+        /// By default it is set to Wildcard, but Regex is the recommended value.
+        /// </summary>
+        public RoutingStrategy RoutingStrategy { get; protected set; }
 
         /// <summary>
         /// Gets the module registered for the given type.

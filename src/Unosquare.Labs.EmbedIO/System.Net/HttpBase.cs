@@ -43,12 +43,8 @@ namespace Unosquare.Net
         #region Private Fields
 
         private const int HeadersMaxLength = 8192;
-
-        #endregion
-
-        #region Internal Fields
-
-        internal byte[] EntityBodyData;
+        
+        private byte[] _entityBodyData;
 
         #endregion
 
@@ -74,7 +70,7 @@ namespace Unosquare.Net
         {
             get
             {
-                if (EntityBodyData == null || EntityBodyData.Length == 0)
+                if (_entityBodyData == null || _entityBodyData.Length == 0)
                     return string.Empty;
 
                 Encoding enc = null;
@@ -83,7 +79,7 @@ namespace Unosquare.Net
                 if (!string.IsNullOrEmpty(contentType))
                     enc = GetEncoding(contentType);
 
-                return (enc ?? Encoding.UTF8).GetString(EntityBodyData);
+                return (enc ?? Encoding.UTF8).GetString(_entityBodyData);
             }
         }
 
@@ -204,7 +200,7 @@ namespace Unosquare.Net
                 var contentLen = http.Headers["Content-Length"];
 
                 if (!string.IsNullOrEmpty(contentLen))
-                    http.EntityBodyData = await ReadEntityBodyAsync(stream, contentLen, ct);
+                    http._entityBodyData = await ReadEntityBodyAsync(stream, contentLen, ct);
 
                 return http;
             }
@@ -229,7 +225,7 @@ namespace Unosquare.Net
 
         public void Write(byte[] data)
         {
-            EntityBodyData = data;
+            _entityBodyData = data;
         }
 
         #endregion

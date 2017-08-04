@@ -6,27 +6,27 @@
     /// <summary>
     /// Defines assembly-wide constants
     /// </summary>
-    public static class Strings
+    internal static class Strings
     {
         /// <summary>
         ///  Default Browser time format
         /// </summary>
-        public const string BrowserTimeFormat = "ddd, dd MMM yyyy HH:mm:ss 'GMT'";
+        internal const string BrowserTimeFormat = "ddd, dd MMM yyyy HH:mm:ss 'GMT'";
 
         /// <summary>
         /// Default CORS rule
         /// </summary>
-        public const string CorsWildcard = "*";
+        internal const string CorsWildcard = "*";
 
         /// <summary>
         /// The comma split character for String.Split method calls.
         /// </summary>
-        public static readonly char[] CommaSplitChar = { ',' };
+        internal static readonly char[] CommaSplitChar = { ',' };
 
         /// <summary>
         /// The format culture used for header outputs
         /// </summary>
-        public static readonly CultureInfo StandardCultureInfo =
+        internal static CultureInfo StandardCultureInfo { get; } =
 #if NETFX
             CultureInfo.CreateSpecificCulture("en-US");
 #else
@@ -36,7 +36,7 @@
         /// <summary>
         /// The standard string comparer
         /// </summary>
-        public static StringComparer StandardStringComparer =
+        internal static StringComparer StandardStringComparer { get; } =
 #if NETFX
             StringComparer.InvariantCultureIgnoreCase;
 #else
@@ -46,7 +46,7 @@
         /// <summary>
         /// The static file string comparer
         /// </summary>
-        public static StringComparer StaticFileStringComparer =
+        internal static StringComparer StaticFileStringComparer { get; } =
 #if NETFX
             StringComparer.InvariantCulture;
 #else

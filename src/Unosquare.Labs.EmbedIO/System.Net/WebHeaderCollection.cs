@@ -606,7 +606,7 @@ namespace Unosquare.Net
 
         private void CheckRestricted(string name)
         {
-            if (!_internallyUsed && isRestricted(name, true))
+            if (!_internallyUsed && InternalIsRestricted(name, true))
                 throw new ArgumentException("This header must be modified with the appropriate property.");
         }
 
@@ -687,7 +687,7 @@ namespace Unosquare.Net
             return null;
         }
 
-        private static bool isRestricted(string name, bool response)
+        private static bool InternalIsRestricted(string name, bool response)
         {
             var info = GetHeaderInfo(name);
             return info != null && info.IsRestricted(response);
@@ -1003,27 +1003,7 @@ namespace Unosquare.Net
             var vals = base.GetValues(header);
             return vals != null && vals.Length > 0 ? vals : null;
         }
-
-        /// <summary>
-        /// Determines whether the specified header can be set for the request.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if the header is restricted; otherwise, <c>false</c>.
-        /// </returns>
-        /// <param name="headerName">
-        /// A <see cref="string"/> that represents the name of the header to test.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="headerName"/> is <see langword="null"/> or empty.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="headerName"/> contains invalid characters.
-        /// </exception>
-        public static bool IsRestricted(string headerName)
-        {
-            return isRestricted(CheckName(headerName), false);
-        }
-
+        
         /// <summary>
         /// Determines whether the specified header can be set for the request or the response.
         /// </summary>
@@ -1042,9 +1022,9 @@ namespace Unosquare.Net
         /// <exception cref="ArgumentException">
         /// <paramref name="headerName"/> contains invalid characters.
         /// </exception>
-        public static bool IsRestricted(string headerName, bool response)
+        public static bool IsRestricted(string headerName, bool response = false)
         {
-            return isRestricted(CheckName(headerName), response);
+            return InternalIsRestricted(CheckName(headerName), response);
         }
 
         /// <summary>

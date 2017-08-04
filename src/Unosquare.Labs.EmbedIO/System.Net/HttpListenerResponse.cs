@@ -52,15 +52,14 @@ namespace Unosquare.Net
         private string _location;
         private int _statusCode = 200;
         private bool _chunked;        
-
-        internal bool HeadersSent;
-        internal object HeadersLock = new object();
-
+        
         internal HttpListenerResponse(HttpListenerContext context)
         {
             _context = context;
         }
 
+        internal bool HeadersSent { get; private set; }
+        internal object HeadersLock { get; } = new object();
         internal bool ForceCloseChunked { get; private set; }
 
         /// <summary>

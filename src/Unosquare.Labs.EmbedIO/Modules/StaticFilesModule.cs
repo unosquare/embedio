@@ -107,7 +107,7 @@
         /// <summary>
         /// The default headers
         /// </summary>
-        public Dictionary<string, string> DefaultHeaders = new Dictionary<string, string>();
+        public Dictionary<string, string> DefaultHeaders { get; } = new Dictionary<string, string>();
 
         /// <summary>
         /// Gets the virtual paths.
@@ -115,8 +115,7 @@
         /// <value>
         /// The virtual paths.
         /// </value>
-        public ReadOnlyDictionary<string, string> VirtualPaths => new ReadOnlyDictionary<string, string>(m_VirtualPaths)
-        ;
+        public ReadOnlyDictionary<string, string> VirtualPaths => new ReadOnlyDictionary<string, string>(m_VirtualPaths);
 
         /// <summary>
         /// Gets the name of this module.
@@ -125,11 +124,6 @@
         /// The name.
         /// </value>
         public override string Name => "Static Files Module";
-
-        /// <summary>
-        /// Clears the RAM cache.
-        /// </summary>
-        public void ClearRamCache() => RamCache.Clear();
 
         /// <summary>
         /// Private collection holding the contents of the RAM Cache.
@@ -619,5 +613,10 @@
 
             m_VirtualPaths.Remove(virtualPath);
         }
+
+        /// <summary>
+        /// Clears the RAM cache.
+        /// </summary>
+        public void ClearRamCache() => RamCache.Clear();
     }
 }

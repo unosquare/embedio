@@ -33,20 +33,16 @@ namespace Unosquare.Net
 
     internal sealed class ListenerPrefix
     {
-        public readonly string _original;
-        public ushort _port;
-        public HttpListener Listener { get; set; }
-
+        private readonly string _original;
+        private ushort _port;
+        
         public ListenerPrefix(string prefix)
         {
             _original = prefix;
             Parse(prefix);
         }
-
-        public override string ToString()
-        {
-            return _original;
-        }
+        
+        public HttpListener Listener { get; set; }
 
         public IPAddress[] Addresses { get; set; }
 
@@ -57,6 +53,8 @@ namespace Unosquare.Net
         public int Port => (int)_port;
 
         public string Path { get; private set; }
+
+        public override string ToString() => _original;
 
         // Equals and GetHashCode are required to detect duplicates in HttpListenerPrefixCollection.
         public override bool Equals(object o)

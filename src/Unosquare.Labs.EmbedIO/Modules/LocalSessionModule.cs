@@ -26,13 +26,13 @@
         /// <summary>
         /// The concurrent dictionary holding the sessions
         /// </summary>
-        protected readonly Dictionary<string, SessionInfo> m_Sessions =
+        private readonly Dictionary<string, SessionInfo> m_Sessions =
             new Dictionary<string, SessionInfo>(Strings.StandardStringComparer);
 
         /// <summary>
         /// The sessions dictionary synchronization lock
         /// </summary>
-        protected readonly object SessionsSyncLock = new object();
+        private readonly object SessionsSyncLock = new object();
 
         /// <summary>
         /// Creates a session ID, registers the session info in the Sessions collection, and returns the appropriate session cookie.
@@ -99,6 +99,7 @@
             foreach (var cookieItem in cookieItems)
             {
                 var nameValue = cookieItem.Trim().Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
+
                 if (nameValue.Length == 2 && nameValue[0].Equals(SessionCookieName))
                 {
                     var sessionIdValue = nameValue[1].Trim();
@@ -189,6 +190,36 @@
         }
 
         /// <summary>
+        /// Gets or sets the expiration.
+        /// By default, expiration is 30 minutes
+        /// </summary>
+        /// <value>
+        /// The expiration.
+        /// </value>
+        public TimeSpan Expiration { get; set; } = TimeSpan.FromMinutes(30);
+
+        /// <summary>
+        /// Gets or sets the cookie path.
+        /// If left empty, a cookie will be created for each path. The default value is "/"
+        /// If a route is specified, then session cookies will be created only for the given path.
+        /// Examples of this are:
+        ///     "/"
+        ///     "/app1/"
+        /// </summary>
+        /// <value>
+        /// The cookie path.
+        /// </value>
+        public string CookiePath { get; set; } = "/";
+
+        /// <summary>
+        /// Gets the name of this module.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        public override string Name => nameof(LocalSessionModule).Humanize();
+
+        /// <summary>
         /// Gets the <see cref="SessionInfo"/> with the specified cookie value.
         /// Returns null when the session is not found.
         /// </summary>
@@ -244,35 +275,5 @@
                 return this[cookieValue];
             }
         }
-
-        /// <summary>
-        /// Gets or sets the expiration.
-        /// By default, expiration is 30 minutes
-        /// </summary>
-        /// <value>
-        /// The expiration.
-        /// </value>
-        public TimeSpan Expiration { get; set; } = TimeSpan.FromMinutes(30);
-
-        /// <summary>
-        /// Gets or sets the cookie path.
-        /// If left empty, a cookie will be created for each path. The default value is "/"
-        /// If a route is specified, then session cookies will be created only for the given path.
-        /// Examples of this are:
-        ///     "/"
-        ///     "/app1/"
-        /// </summary>
-        /// <value>
-        /// The cookie path.
-        /// </value>
-        public string CookiePath { get; set; } = "/";
-
-        /// <summary>
-        /// Gets the name of this module.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        public override string Name => nameof(LocalSessionModule).Humanize();
     }
 }

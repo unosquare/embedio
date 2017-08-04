@@ -286,6 +286,30 @@ namespace Unosquare.Net
 
         #endregion
 
+        #region Public Events
+
+        /// <summary>
+        /// Occurs when the WebSocket connection has been closed.
+        /// </summary>
+        public event EventHandler<CloseEventArgs> OnClose;
+
+        /// <summary>
+        /// Occurs when the <see cref="WebSocket"/> gets an error.
+        /// </summary>
+        public event EventHandler<ConnectionFailureEventArgs> OnError;
+
+        /// <summary>
+        /// Occurs when the <see cref="WebSocket"/> receives a message.
+        /// </summary>
+        public event EventHandler<MessageEventArgs> OnMessage;
+
+        /// <summary>
+        /// Occurs when the WebSocket connection has been established.
+        /// </summary>
+        public event EventHandler OnOpen;
+
+        #endregion
+
         #region Internal Properties
 
         internal CookieCollection CookieCollection { get; private set; }
@@ -582,30 +606,6 @@ namespace Unosquare.Net
                 }
             }
         }
-
-        #endregion
-
-        #region Public Events
-
-        /// <summary>
-        /// Occurs when the WebSocket connection has been closed.
-        /// </summary>
-        public event EventHandler<CloseEventArgs> OnClose;
-
-        /// <summary>
-        /// Occurs when the <see cref="WebSocket"/> gets an error.
-        /// </summary>
-        public event EventHandler<ConnectionFailureEventArgs> OnError;
-
-        /// <summary>
-        /// Occurs when the <see cref="WebSocket"/> receives a message.
-        /// </summary>
-        public event EventHandler<MessageEventArgs> OnMessage;
-
-        /// <summary>
-        /// Occurs when the WebSocket connection has been established.
-        /// </summary>
-        public event EventHandler OnOpen;
 
         #endregion
 

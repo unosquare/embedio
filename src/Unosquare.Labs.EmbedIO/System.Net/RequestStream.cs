@@ -29,17 +29,16 @@ namespace Unosquare.Net
 {
     using System;
     using System.IO;
-    using System.Net;
     using System.Runtime.InteropServices;
 
     internal class RequestStream : Stream
     {
-        public readonly Stream _stream;
-        public readonly byte[] _buffer;
-        public int _offset;
-        public int _length;
-        public long _remainingBody;
-        public bool _disposed = false;        
+        private readonly Stream _stream;
+        private readonly byte[] _buffer;
+        private int _offset;
+        private int _length;
+        private long _remainingBody;
+        private bool _disposed = false;        
         
         internal RequestStream(Stream stream, byte[] buffer, int offset, int length, long contentlength = -1)
         {

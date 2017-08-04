@@ -95,6 +95,7 @@ namespace Unosquare.Net
         /// <summary>
         /// Closes this instance.
         /// </summary>
+        /// <returns>A task from closing response</returns>
         public async Task CloseAsync()
         {
             if (_disposed) return;

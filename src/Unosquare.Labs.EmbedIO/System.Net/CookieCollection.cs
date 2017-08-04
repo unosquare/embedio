@@ -141,7 +141,7 @@ namespace Unosquare.Net
         /// <value>
         /// An <see cref="Object"/> used to synchronize access to the collection.
         /// </value>
-        public Object SyncRoot => _sync ?? (_sync = ((ICollection) _list).SyncRoot);
+        public object SyncRoot => _sync ?? (_sync = ((ICollection) _list).SyncRoot);
 
         #endregion
 
