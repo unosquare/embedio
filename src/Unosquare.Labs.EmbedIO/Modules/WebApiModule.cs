@@ -9,6 +9,9 @@
     using System.Reflection;
     using System.Threading.Tasks;
     using Swan;
+    using System.ComponentModel;
+    using System.Linq.Expressions;
+
 #if NET47
     using System.Net;
 #else
@@ -42,9 +45,9 @@
 
         private readonly List<Type> _controllerTypes = new List<Type>();
 
-        private readonly Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>> _delegateMap
+        private readonly Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodCache>>> _delegateMap
             =
-            new Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>>(
+            new Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodCache>>>(
                 Strings.StandardStringComparer);
 
         private static readonly Regex RouteParamRegex = new Regex(@"\{[^\/]*\}",
@@ -71,83 +74,77 @@
                 // return a non-math if no handler hold the route
                 if (path == null) return false;
 
-                var methodPair = _delegateMap[path][verb];
+                Dictionary<HttpVerbs, Tuple<Func<object>, MethodCache>> methods;
+                Tuple<Func<object>, MethodCache> methodPair;
+
+                // search the path and verb
+                if (!_delegateMap.TryGetValue(path, out methods) || !methods.TryGetValue(verb, out methodPair))
+                    throw new InvalidOperationException($"No method found for path {path} and verb {verb}.");
+
                 var controller = methodPair.Item1();
 
                 // ensure module does not return cached responses
                 context.NoCache();
 
                 // Log the handler to be use
-                $"Handler: {methodPair.Item2.DeclaringType?.FullName}.{methodPair.Item2.Name}".Debug(nameof(WebApiModule));
+                $"Handler: {methodPair.Item2.MethodInfo.DeclaringType?.FullName}.{methodPair.Item2.MethodInfo.Name}".Debug(nameof(WebApiModule));
 
                 // Initially, only the server and context objects will be available
-                var args = new List<object>() { Server, context };
-
+                var args = new object[methodPair.Item2.AdditionalParameters.Count + 2];
+                args[0] = Server;
+                args[1] = context;
+                
                 // Select the routing strategy
                 switch (Server.RoutingStrategy)
                 {
                     case RoutingStrategy.Regex:
 
                         // Parse the arguments to their intended type skipping the first two.
-                        foreach (var arg in methodPair.Item2.GetParameters().Skip(2))
+                        for (var i = 0; i < methodPair.Item2.AdditionalParameters.Count; i++)
                         {
-                            if (regExRouteParams.ContainsKey(arg.Name) == false) continue;
-                            
-                            // get a reference to the parse method
-                            var parameterTypeNullable = Nullable.GetUnderlyingType(arg.ParameterType);
-
-#if NETSTANDARD1_3 || UWP
-                            var parseMethod = parameterTypeNullable != null
-                                ? parameterTypeNullable.GetMethod(nameof(int.Parse), new[] { typeof(string) })
-                                : arg.ParameterType.GetMethod(nameof(int.Parse), new[] { typeof(string) });
-#else
-                            var parseMethod = parameterTypeNullable != null
-                                ? parameterTypeNullable.GetTypeInfo()
-                                    .GetMethod(nameof(int.Parse), new[] {typeof(string)})
-                                : arg.ParameterType.GetTypeInfo().GetMethod(nameof(int.Parse), new[] {typeof(string)});
-#endif
-
-                            // add the parsed argument to the argument list if available
-                            if (parseMethod != null)
+                            var param = methodPair.Item2.AdditionalParameters[i];
+                            if (regExRouteParams.ContainsKey(param.Info.Name))
                             {
-                                // parameter is nullable and value is empty, so force null
-                                if (parameterTypeNullable != null &&
-                                    string.IsNullOrWhiteSpace((string) regExRouteParams[arg.Name]))
+                                var value = (string) regExRouteParams[param.Info.Name];
+                                if (string.IsNullOrWhiteSpace(value))
+                                    value = null; //ignore whitespace
+
+                                //if the value is null, there's nothing to convert
+                                if (value == null)
                                 {
-                                    args.Add(null);
+                                    //else we use the default value (null for nullable types)
+                                    args[i + 2] = param.Default;
+                                    continue;
                                 }
-                                else
-                                {
-                                    args.Add(parseMethod.Invoke(null, new[] {regExRouteParams[arg.Name]}));
-                                }
+
+                                //convert and add to arguments
+                                args[i + 2] = param.Converter.ConvertFromString(value);
                             }
                             else
-                            {
-                                args.Add(regExRouteParams[arg.Name]);
-                            }
+                                args[i + 2] = param.Default;
                         }
 
                         // Now, check if the call is handled asynchronously.
-                        if (methodPair.Item2.ReturnType == typeof(Task<bool>))
+                        if (methodPair.Item2.IsTask)
                         {
                             // Run the method asynchronously
-                            return await (Task<bool>) methodPair.Item2.Invoke(controller, args.ToArray());
+                            return await methodPair.Item2.AsyncInvoke(controller, args);
                         }
                         
                         // If the handler is not asynchronous, simply call the method.
-                        return (bool) methodPair.Item2.Invoke(controller, args.ToArray());
+                        return methodPair.Item2.SyncInvoke(controller, args);
                     case RoutingStrategy.Wildcard:
-                        if (methodPair.Item2.ReturnType == typeof(Task<bool>))
+                        if (methodPair.Item2.IsTask)
                         {
                             // Asynchronous handling of wildcard matching strategy
-                            var method = methodPair.Item2.CreateDelegate(typeof(AsyncResponseHandler), controller);
+                            var method = methodPair.Item2.MethodInfo.CreateDelegate(typeof(AsyncResponseHandler), controller);
 
                             return await (Task<bool>) method.DynamicInvoke(args.ToArray());
                         }
                         else
                         {
                             // Regular handling of wildcard matching strategy
-                            var method = methodPair.Item2.CreateDelegate(typeof(ResponseHandler), controller);
+                            var method = methodPair.Item2.MethodInfo.CreateDelegate(typeof(ResponseHandler), controller);
 
                             return (bool) method.DynamicInvoke(args.ToArray());
                         }
@@ -348,10 +345,10 @@
                 {
                     if (_delegateMap.ContainsKey(path) == false)
                     {
-                        _delegateMap.Add(path, new Dictionary<HttpVerbs, Tuple<Func<object>, MethodInfo>>()); // add
+                        _delegateMap.Add(path, new Dictionary<HttpVerbs, Tuple<Func<object>, MethodCache>>()); // add
                     }
 
-                    var delegatePair = new Tuple<Func<object>, MethodInfo>(controllerFactory, method);
+                    var delegatePair = new Tuple<Func<object>, MethodCache>(controllerFactory, new MethodCache(method));
 
                     if (_delegateMap[path].ContainsKey(attribute.Verb))
                         _delegateMap[path][attribute.Verb] = delegatePair; // update
@@ -424,5 +421,74 @@
     /// </summary>
     public abstract class WebApiController
     {
+    }
+
+    internal class MethodCache
+    {
+        public delegate Task<bool> AsyncDelegate(object instance, object[] arguments);
+        public delegate bool SyncDelegate(object instance, object[] arguments);
+
+        public MethodCache(MethodInfo methodInfo)
+        {
+            MethodInfo = methodInfo;
+            IsTask = methodInfo.ReturnType == typeof(Task<bool>);
+            AdditionalParameters = methodInfo.GetParameters().Skip(2).Select(x => new AddtionalParameterInfo(x))
+                .ToList();
+
+            var invokeDelegate = BuildDelegate(methodInfo, IsTask);
+            if (IsTask)
+                AsyncInvoke = (AsyncDelegate) invokeDelegate;
+            else
+                SyncInvoke = (SyncDelegate) invokeDelegate;
+        }
+
+        public MethodInfo MethodInfo { get; }
+        public bool IsTask { get; }
+        public List<AddtionalParameterInfo> AdditionalParameters { get; }
+
+        public AsyncDelegate AsyncInvoke { get; }
+        public SyncDelegate SyncInvoke { get; }
+
+        private static Delegate BuildDelegate(MethodInfo methodInfo, bool isAsync)
+        {
+            var instanceExpression = Expression.Parameter(typeof(object), "instance");
+            var argumentsExpression = Expression.Parameter(typeof(object[]), "arguments");
+            var argumentExpressions = new List<Expression>();
+            var parameterInfos = methodInfo.GetParameters();
+
+            for (var i = 0; i < parameterInfos.Length; ++i)
+            {
+                var parameterInfo = parameterInfos[i];
+                argumentExpressions.Add(Expression.Convert(
+                    Expression.ArrayIndex(argumentsExpression, Expression.Constant(i)), parameterInfo.ParameterType));
+            }
+
+            var callExpression = Expression.Call(Expression.Convert(instanceExpression, methodInfo.ReflectedType),
+                methodInfo, argumentExpressions);
+
+            if (isAsync)
+                return
+                    Expression.Lambda<AsyncDelegate>(Expression.Convert(callExpression, typeof(Task<bool>)),
+                        instanceExpression, argumentsExpression).Compile();
+
+            return Expression.Lambda<SyncDelegate>(Expression.Convert(callExpression, typeof(bool)),
+                instanceExpression, argumentsExpression).Compile();
+        }
+    }
+
+    internal class AddtionalParameterInfo
+    {
+        public AddtionalParameterInfo(ParameterInfo parameterInfo)
+        {
+            Info = parameterInfo;
+            Converter = TypeDescriptor.GetConverter(parameterInfo.ParameterType);
+
+            if (parameterInfo.ParameterType.IsValueType)
+                Default = Activator.CreateInstance(parameterInfo.ParameterType);
+        }
+
+        public object Default { get; }
+        public ParameterInfo Info { get; }
+        public TypeConverter Converter { get; }
     }
 }
