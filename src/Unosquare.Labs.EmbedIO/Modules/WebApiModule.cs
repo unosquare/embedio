@@ -50,9 +50,9 @@
 
         private readonly List<Type> _controllerTypes = new List<Type>();
 
-        private readonly Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodCache>>> _delegateMap
+        private readonly Dictionary<string, Dictionary<HttpVerbs, MethodCacheInstance>> _delegateMap
             =
-            new Dictionary<string, Dictionary<HttpVerbs, Tuple<Func<object>, MethodCache>>>(
+            new Dictionary<string, Dictionary<HttpVerbs, MethodCacheInstance>>(
                 Strings.StandardStringComparer);      
 
         #endregion
@@ -73,23 +73,23 @@
                 // return a non-math if no handler hold the route
                 if (path == null) return false;
 
-                Dictionary<HttpVerbs, Tuple<Func<object>, MethodCache>> methods;
-                Tuple<Func<object>, MethodCache> methodPair;
+                Dictionary<HttpVerbs, MethodCacheInstance> methods;
+                MethodCacheInstance methodPair;
 
                 // search the path and verb
                 if (!_delegateMap.TryGetValue(path, out methods) || !methods.TryGetValue(verb, out methodPair))
                     throw new InvalidOperationException($"No method found for path {path} and verb {verb}.");
 
-                var controller = methodPair.Item1();
+                var controller = methodPair.ControllerFactory();
 
                 // ensure module does not return cached responses
                 context.NoCache();
 
                 // Log the handler to be use
-                $"Handler: {methodPair.Item2.MethodInfo.DeclaringType?.FullName}.{methodPair.Item2.MethodInfo.Name}".Debug(nameof(WebApiModule));
+                $"Handler: {methodPair.MethodCache.MethodInfo.DeclaringType?.FullName}.{methodPair.MethodCache.MethodInfo.Name}".Debug(nameof(WebApiModule));
 
                 // Initially, only the server and context objects will be available
-                var args = new object[methodPair.Item2.AdditionalParameters.Count + 2];
+                var args = new object[methodPair.MethodCache.AdditionalParameters.Count + 2];
                 args[0] = Server;
                 args[1] = context;
                 
@@ -99,9 +99,9 @@
                     case RoutingStrategy.Regex:
 
                         // Parse the arguments to their intended type skipping the first two.
-                        for (var i = 0; i < methodPair.Item2.AdditionalParameters.Count; i++)
+                        for (var i = 0; i < methodPair.MethodCache.AdditionalParameters.Count; i++)
                         {
-                            var param = methodPair.Item2.AdditionalParameters[i];
+                            var param = methodPair.MethodCache.AdditionalParameters[i];
                             if (regExRouteParams.ContainsKey(param.Info.Name))
                             {
                                 var value = (string) regExRouteParams[param.Info.Name];
@@ -127,26 +127,26 @@
                         }
 
                         // Now, check if the call is handled asynchronously.
-                        if (methodPair.Item2.IsTask)
+                        if (methodPair.MethodCache.IsTask)
                         {
                             // Run the method asynchronously
-                            return await methodPair.Item2.AsyncInvoke(controller, args);
+                            return await methodPair.MethodCache.AsyncInvoke(controller, args);
                         }
                         
                         // If the handler is not asynchronous, simply call the method.
-                        return methodPair.Item2.SyncInvoke(controller, args);
+                        return methodPair.MethodCache.SyncInvoke(controller, args);
                     case RoutingStrategy.Wildcard:
-                        if (methodPair.Item2.IsTask)
+                        if (methodPair.MethodCache.IsTask)
                         {
                             // Asynchronous handling of wildcard matching strategy
-                            var method = methodPair.Item2.MethodInfo.CreateDelegate(typeof(AsyncResponseHandler), controller);
+                            var method = methodPair.MethodCache.MethodInfo.CreateDelegate(typeof(AsyncResponseHandler), controller);
 
                             return await (Task<bool>) method.DynamicInvoke(args.ToArray());
                         }
                         else
                         {
                             // Regular handling of wildcard matching strategy
-                            var method = methodPair.Item2.MethodInfo.CreateDelegate(typeof(ResponseHandler), controller);
+                            var method = methodPair.MethodCache.MethodInfo.CreateDelegate(typeof(ResponseHandler), controller);
 
                             return (bool) method.DynamicInvoke(args.ToArray());
                         }
@@ -181,9 +181,6 @@
         public void RegisterController<T>()
             where T : WebApiController, new()
         {
-            if (_controllerTypes.Contains(typeof(T)))
-                throw new ArgumentException("Controller types must be unique within the module");
-
             RegisterController(typeof(T));
         }
 
@@ -196,9 +193,6 @@
         public void RegisterController<T>(Func<T> controllerFactory)
             where T : WebApiController
         {
-            if (_controllerTypes.Contains(typeof(T)))
-                throw new ArgumentException("Controller types must be unique within the module");
-
             RegisterController(typeof(T), controllerFactory);
         }
 
@@ -219,6 +213,9 @@
         /// <param name="controllerFactory">The controller factory method.</param>
         public void RegisterController(Type controllerType, Func<object> controllerFactory)
         {
+            if (_controllerTypes.Contains(controllerType))
+                throw new ArgumentException("Controller types must be unique within the module");
+
             var protoDelegate = new ResponseHandler((server, context) => true);
             var protoAsyncDelegate = new AsyncResponseHandler((server, context) => Task.FromResult(true));
             var methods = controllerType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
@@ -242,10 +239,10 @@
                 {
                     if (_delegateMap.ContainsKey(path) == false)
                     {
-                        _delegateMap.Add(path, new Dictionary<HttpVerbs, Tuple<Func<object>, MethodCache>>()); // add
+                        _delegateMap.Add(path, new Dictionary<HttpVerbs, MethodCacheInstance>()); // add
                     }
 
-                    var delegatePair = new Tuple<Func<object>, MethodCache>(controllerFactory, new MethodCache(method));
+                    var delegatePair = new MethodCacheInstance(controllerFactory, new MethodCache(method));
 
                     if (_delegateMap[path].ContainsKey(attribute.Verb))
                         _delegateMap[path][attribute.Verb] = delegatePair; // update

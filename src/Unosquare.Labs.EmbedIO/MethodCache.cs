@@ -59,6 +59,19 @@
         }
     }
 
+    internal class MethodCacheInstance
+    {
+        public MethodCacheInstance(Func<object> controllerFactory, MethodCache cache)
+        {
+            ControllerFactory = controllerFactory;
+            MethodCache = cache;
+        }
+
+        public MethodCache MethodCache { get; set; }
+
+        public Func<object> ControllerFactory { get; set; }
+    }
+
     internal class AddtionalParameterInfo
     {
         public AddtionalParameterInfo(ParameterInfo parameterInfo)
