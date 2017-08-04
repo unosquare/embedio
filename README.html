@@ -128,6 +128,11 @@
 <td>Yes</td>
 <td>Support Windows, Linux and macOS using a custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a></td>
 </tr>
+<tr>
+<td>UAP</td>
+<td>No</td>
+<td>Support Windows Universal Plataform</td>
+</tr>
 </tbody>
 </table>
 <p>EmbedIO before version 1.4.0 uses Newtonsoft JSON and an internal logger subsystem based on ILog interface.</p>
@@ -406,7 +411,6 @@ public class WebSocketsChatServer : WebSocketsServer
 }
 </code></pre><h2 id="notes">Notes</h2>
 <p>[1] - EmbedIO uses lowercase URL parts. In Windows systems this is the expected behaviour but in Unix systems using MONO please refer to <a href="http://www.mono-project.com/docs/advanced/iomap/">Mono IOMap</a> if you want to work with case insensitive URL parts.</p>
-<p>[2] - EmbedIO support IoT using Windows 10 IoT Core</p>
 </article>
           </div>
           
