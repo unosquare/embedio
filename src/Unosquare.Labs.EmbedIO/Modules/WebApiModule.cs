@@ -9,9 +9,6 @@
     using System.Reflection;
     using System.Threading.Tasks;
     using Swan;
-    using System.ComponentModel;
-    using System.Linq.Expressions;
-
 #if NET47
     using System.Net;
 #else
@@ -121,7 +118,9 @@
                                 args[i + 2] = param.Converter.ConvertFromString(value);
                             }
                             else
+                            {
                                 args[i + 2] = param.Default;
+                            }
                         }
 
                         // Now, check if the call is handled asynchronously.
@@ -148,6 +147,7 @@
 
                             return (bool) method.DynamicInvoke(args.ToArray());
                         }
+
                     default:
                         // Log the handler to be used
                         $"Routing strategy '{Server.RoutingStrategy}' is not supported by this module.".Warn(
@@ -421,74 +421,5 @@
     /// </summary>
     public abstract class WebApiController
     {
-    }
-
-    internal class MethodCache
-    {
-        public delegate Task<bool> AsyncDelegate(object instance, object[] arguments);
-        public delegate bool SyncDelegate(object instance, object[] arguments);
-
-        public MethodCache(MethodInfo methodInfo)
-        {
-            MethodInfo = methodInfo;
-            IsTask = methodInfo.ReturnType == typeof(Task<bool>);
-            AdditionalParameters = methodInfo.GetParameters().Skip(2).Select(x => new AddtionalParameterInfo(x))
-                .ToList();
-
-            var invokeDelegate = BuildDelegate(methodInfo, IsTask);
-            if (IsTask)
-                AsyncInvoke = (AsyncDelegate) invokeDelegate;
-            else
-                SyncInvoke = (SyncDelegate) invokeDelegate;
-        }
-
-        public MethodInfo MethodInfo { get; }
-        public bool IsTask { get; }
-        public List<AddtionalParameterInfo> AdditionalParameters { get; }
-
-        public AsyncDelegate AsyncInvoke { get; }
-        public SyncDelegate SyncInvoke { get; }
-
-        private static Delegate BuildDelegate(MethodInfo methodInfo, bool isAsync)
-        {
-            var instanceExpression = Expression.Parameter(typeof(object), "instance");
-            var argumentsExpression = Expression.Parameter(typeof(object[]), "arguments");
-            var argumentExpressions = new List<Expression>();
-            var parameterInfos = methodInfo.GetParameters();
-
-            for (var i = 0; i < parameterInfos.Length; ++i)
-            {
-                var parameterInfo = parameterInfos[i];
-                argumentExpressions.Add(Expression.Convert(
-                    Expression.ArrayIndex(argumentsExpression, Expression.Constant(i)), parameterInfo.ParameterType));
-            }
-
-            var callExpression = Expression.Call(Expression.Convert(instanceExpression, methodInfo.ReflectedType),
-                methodInfo, argumentExpressions);
-
-            if (isAsync)
-                return
-                    Expression.Lambda<AsyncDelegate>(Expression.Convert(callExpression, typeof(Task<bool>)),
-                        instanceExpression, argumentsExpression).Compile();
-
-            return Expression.Lambda<SyncDelegate>(Expression.Convert(callExpression, typeof(bool)),
-                instanceExpression, argumentsExpression).Compile();
-        }
-    }
-
-    internal class AddtionalParameterInfo
-    {
-        public AddtionalParameterInfo(ParameterInfo parameterInfo)
-        {
-            Info = parameterInfo;
-            Converter = TypeDescriptor.GetConverter(parameterInfo.ParameterType);
-
-            if (parameterInfo.ParameterType.IsValueType)
-                Default = Activator.CreateInstance(parameterInfo.ParameterType);
-        }
-
-        public object Default { get; }
-        public ParameterInfo Info { get; }
-        public TypeConverter Converter { get; }
     }
 }
