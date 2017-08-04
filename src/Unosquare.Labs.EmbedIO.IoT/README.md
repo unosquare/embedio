@@ -1,7 +1,7 @@
-To use EmbedIO in windows IoT devices as a background process you need to do as fallow.
+To use EmbedIO as a background process with devices using windows IoT Core , you need to do as follow.
 For Visual Studio 2015.
 
-Before all, you can start a good tutorials and documentation to setup <a href="https://developer.microsoft.com/en-us/windows/iot">Windows IoT Core</a>.
+First of all, you can see the tutorials and documentation to start a project in <a href="https://developer.microsoft.com/en-us/windows/iot">Windows IoT Core</a>.
 
 ## Configure the project
 
@@ -14,12 +14,12 @@ You need to have installed <a href="https://marketplace.visualstudio.com/items?i
 
 **Configure the Project**
 
-* You need to update the Microsoft.NETCore.UniversalWindowsPlataform to the version 5.2.3 in VS 2015.
+* You need to update the Microsoft.NETCore.UniversalWindowsPlataform to the version 5.2.3 for VS 2015.
 * Of course install EmbedIO nuget package.
 
 ## Start Coding
 
-If you have all done and fallow the tutorial to setup and deploy a project to your device, all that rest is start coding.
+If you have already follow the tutorial to setup and deploy a project to your device, all that rest is start coding.
 
 ### Start the Web Server
 
