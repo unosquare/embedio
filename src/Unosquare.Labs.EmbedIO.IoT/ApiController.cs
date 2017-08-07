@@ -24,7 +24,7 @@ namespace Unosquare.Labs.EmbedIO.IoT
 
         [WebApiHandler(HttpVerbs.Get, "/api/user")]
         public bool GetUser(WebServer webserver, HttpListenerContext context)
-        {          
+        {
             return context.JsonResponse(_user.GetUser());
         }
 
@@ -32,6 +32,14 @@ namespace Unosquare.Labs.EmbedIO.IoT
         public bool GetUsers(WebServer webserver, HttpListenerContext context)
         {
             return context.JsonResponse(_user.GetUsers());
+        }
+
+        [WebApiHandler(HttpVerbs.Post, "/api/saveuser")]
+        public bool SaveUser(WebServer server, HttpListenerContext context)
+        {
+            var user = context.RequestBody();
+
+            return true;
         }
     }
 }
