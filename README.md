@@ -40,7 +40,7 @@ Some notes regarding WebSocket and runtimes support:
 | NET46 | Yes | Support Win7+ OS using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
 | NET462 | Yes | Support Win8+ OS using native System.Net library |
 | NETSTANDARD* | Yes | Support Windows, Linux and macOS using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
-| UAP | No | Support Windows Universal Plataform. More information [here](https://github.com/unosquare/embedio/tree/EmbedIO_IoT/src/Unosquare.Labs.EmbedIO.IoT) |
+| UAP | No | Support Windows Universal Plataform. More information [here](https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT) |
 
 EmbedIO before version 1.4.0 uses Newtonsoft JSON and an internal logger subsystem based on ILog interface.
 
