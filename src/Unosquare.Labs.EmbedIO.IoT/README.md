@@ -6,6 +6,7 @@ First of all, you can see the tutorials and documentation to start a project in 
 ## Configure the project
 
 You need to have installed [Windows IoT project templates](https://marketplace.visualstudio.com/items?itemName=MicrosoftIoT.WindowsIoTCoreProjectTemplates)
+
 **Start a new project**
 
 * File > New > Project.
@@ -28,7 +29,7 @@ In the StartupTask class.
 // Use deferral to prevent the task from closing prematurely when using async methods
 var deferral = taskInstance.GetDeferral();
 
-// Instance the WebServe
+// Instance the WebServer
 var server = new WebServer(9090);
 
 // Handle the Fallback to show a message
@@ -45,4 +46,5 @@ await server.RunAsync();
 deferral.Complete();
 ```
 
-
+## Notes
+[1] - Embedio does not support websockets yet
