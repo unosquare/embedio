@@ -20,7 +20,7 @@
         <![endif]-->
 
     <!-- JS (from CDN) -->
-    <script src="//cdn.jsdelivr.net/g/jquery@2.1.4,bootstrap"></script>
+    <script src="//cdn.jsdelivr.net/g/jquery@3.2.1,bootstrap@3.3.7"></script>
     <script src="//cdn.jsdelivr.net/highlight.js/8.5.0/highlight.min.js"></script>
     <script>
         hljs.initHighlightingOnLoad();
@@ -60,7 +60,7 @@
                                 </li>
                                 <li><a href="#cli">EmbedIO CLI</a></li>
                                 <li><a href="api/Unosquare.Labs.EmbedIO.html">Documentation</a></li>
-                                <li><a href="/embedio-extras/">Extras</a></li>
+                                <li><a href="https://unosquare.github.io/embedio-extras/">Extras</a></li>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
                                 <li><a href="http://github.com/unosquare/embedio">GitHub</a></li>
@@ -87,9 +87,8 @@
                 <h2 id="features">Features:</h2>
                 <ul>
                     <li>Written entirely in C#</li>
-                    <li>.NET Core portable library</li>
                     <li>Network operations use the async/await pattern: Responses are handled asynchronously</li>
-                    <li>Cross-platform[1]: tested in Mono 3.10.x on Windows and on a custom Yocto image for the Raspberry Pi</li>
+                    <li>Cross-platform[1]: tested in Mono on Windows and on a custom Yocto image for the Raspberry Pi</li>
                     <li>Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras">EmbedIO Extras</a> for additional modules.</li>
                     <li>Small memory footprint</li>
                     <li>Create REST APIs quickly with the out-of-the-box Web Api module</li>
@@ -97,14 +96,13 @@
                     <li>Handle sessions with the built-in LocalSessionWebModule</li>
                     <li>WebSockets support (see notes below)</li>
                     <li>CORS support. Origin, Header and Method validation with OPTIONS preflight</li>
-                    <li>Supports HTTP 206 Partial Content</li>
-                    <li><a href="http://owin.org/">OWIN</a> Middleware support via <a href="https://github.com/unosquare/embedio-extras/tree/master/Unosquare.Labs.EmbedIO.OwinMiddleware">Owin Middleware Module</a>.</li>
+                    <li>Supports HTTP 206 Partial Content</li>                    
                 </ul>
 
                 <p>
                     <em>
                         For detailed usage and REST API implementation, download the code and take a look at the
-                        <a href="https://github.com/unosquare/embedio/tree/master/Unosquare.Labs.EmbedIO.Samples">Samples project</a>.
+                        <a href="https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.Samples">Samples project</a>.
                     </em>
                 </p>
 
@@ -131,25 +129,34 @@
                         <tr>
                             <td>NET452</td>
                             <td>Yes</td>
-                            <td>Support Win7+ OS using a custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a></td>
+                            <td>
+                                Support Windows and Linux using custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a>.
+                                Nuget package doesn't provide this version but you can compile from Unosquare.Labs.EmbedIO.Lib solution file. This solution is to use in older environments and Mono
+                            </td>
                         </tr>
                         <tr>
                             <td>NET46</td>
                             <td>Yes</td>
+                            <td>Support Win7+ OS using a custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a></td>
+                        </tr>
+                        <tr>
+                            <td>NET462</td>
+                            <td>Yes</td>
                             <td>Support Win8+ OS using native System.Net library</td>
                         </tr>
                         <tr>
-                            <td>MONO</td>
+                            <td>NETSTANDARD*</td>
                             <td>Yes</td>
-                            <td>Support Windows and Linux using custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a></td>
+                            <td>Support Windows, Linux and macOS using a custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a></td>
                         </tr>
                         <tr>
-                            <td>NETCORE10</td>
-                            <td>Yes</td>
-                            <td>Support using a custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a></td>
+                            <td>UAP</td>
+                            <td>No</td>
+                            <td>Support Windows Universal Plataform. More information <a href="https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT">here</a></td>
                         </tr>
                     </tbody>
                 </table>
+                <p>EmbedIO before version 1.4.0 uses Newtonsoft JSON and an internal logger subsystem based on ILog interface.</p>
                 <hr />
                 <h2 id="nuget">NuGet Installation:</h2>
 
@@ -170,7 +177,6 @@
 {
     using System;
     using Unosquare.Labs.EmbedIO;
-    using Unosquare.Labs.EmbedIO.Log;
     using Unosquare.Labs.EmbedIO.Modules;
     class Program
     {
@@ -183,8 +189,7 @@
             var url = &quot;http://localhost:9696/&quot;;
             if (args.Length &gt; 0)
                 url = args[0];
-            // Our web server is disposable. Note that if you don&#39;t want to use logging,
-            // there are alternate constructors that allow you to skip specifying an ILog object.
+            // Our web server is disposable.
             using (var server = new WebServer(url, new SimpleConsoleLog()))
             {
                 // First, we will configure our web server by adding Modules.
@@ -195,6 +200,7 @@
                 // You can use the server.GetSession() method to get the SessionInfo object and manupulate it.
                 // You could potentially implement a distributed session module using something like Redis
                 server.RegisterModule(new Modules.LocalSessionModule());
+
                 // Here we setup serving of static files
                 server.RegisterModule(new Modules.StaticFilesModule(&quot;c:/web&quot;));
                 // The static files module will cache small files in ram until it detects they have been modified.
@@ -202,10 +208,10 @@
                 server.Module&lt;modules.staticfilesmodule&gt;().DefaultExtension = &quot;.html&quot;;
                 // We don&#39;t need to add the line below. The default document is always index.html.
                 //server.Module&lt;modules.staticfileswebmodule&gt;().DefaultDocument = &quot;index.html&quot;;
+
                 // Once we&#39;ve registered our modules and configured them, we call the RunAsync() method.
-                // This is a non-blocking method (it return immediately) so in this case we avoid
-                // disposing of the object until a key is pressed.
                 var task = server.RunAsync();
+
                 // Fire up the browser to show the content if we are debugging!
 #if DEBUG
                 var browser = new System.Diagnostics.Process() { 
@@ -228,6 +234,7 @@ namespace Company.Project
 {
     using System;
     using Unosquare.Labs.EmbedIO;
+
     internal class Program
     {
         /// &lt;summary&gt;
@@ -239,8 +246,8 @@ namespace Company.Project
             var url = &quot;http://localhost:9696/&quot;;
             if (args.Length &gt; 0)
                 url = args[0];
-            // Create Webserver with console logger and attach LocalSession and Static
-            // files module
+            // Create Webserver and attach LocalSession and Static
+            // files module and CORS enabled
             var server = WebServer
                 .CreateWithConsole(url)                                 
                 .EnableCors()
@@ -248,15 +255,8 @@ namespace Company.Project
                 .WithStaticFolderAt(&quot;c:/web&quot;);
                     
             var cts = new CancellationTokenSource();
-            server.RunAsync(cts.Token);
-            // Fire up the browser to show the content if we are debugging!
-#if DEBUG
-            var browser = new System.Diagnostics.Process()
-            {
-                StartInfo = new System.Diagnostics.ProcessStartInfo(url) {UseShellExecute = true}
-            };
-            browser.Start();
-#endif
+            var task = server.RunAsync(cts.Token);
+          
             // Wait for any key to be pressed before disposing of our web server.
             // In a service we&#39;d manage the lifecycle of of our web server using
             // something like a BackgroundWorker or a ManualResetEvent.
@@ -302,6 +302,7 @@ namespace Company.Project
                 </p>
                 <pre><code class="csharp">// The routing strategy is Wildcard by default, but you can change it to Regex as follows:
 var server =  new WebServer("http://localhost:9696/", new NullLog(), RoutingStrategy.Regex);
+
 server.RegisterModule(new WebApiModule());
 server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;();</code></pre>
                 <p>
@@ -450,11 +451,18 @@ public class WebSocketsChatServer : WebSocketsServer
 }</code></pre>
                 <hr />
                 <h2 id="cli">EmbedIO CLI</h2>
-                Start any web folder or EmbedIO-enabled DLL from command line. You can find <a href="https://github.com/unosquare/embedio/tree/master/Unosquare.Labs.EmbedIO.Command">EmbedIO CLI</a>.
+                Start any web folder or EmbedIO-enabled DLL from command line. You can find <a href="https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.Command">EmbedIO CLI</a>.
                 <h3>Run web folder (static content only)</h3>
                 <pre><code>$ embediocli -p c:\wwwroot</code></pre>
                 <h3>Run web folder with WebAPI or WebSocket Assembly</h3>
                 <pre><code>$ embediocli -p c:\wwwroot --api mywebapi.dll</code></pre>
+
+                <hr />
+                <h2 id="notes">Notes</h2>
+                <p>[1] - EmbedIO uses lowercase URL parts. In Windows systems this is the expected behaviour but in Unix systems using MONO 
+                    please refer to <a href="http://www.mono-project.com/docs/advanced/iomap">Mono IOMap</a> if you want to work with case insensitive URL parts.</p>
+
+
             </div>
             <footer>
                 Brought to you by Unosquare<br />
