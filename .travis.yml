@@ -25,7 +25,7 @@ install:
 before_script:
   - if [[ $DOTNETCORE == "" ]]; then export LD_LIBRARY_PATH=/usr/local/lib; fi
 script:
-  - msbuild Unosquare.Labs.EmbedIO.sln
+  - msbuild Unosquare.Labs.EmbedIO.sln -f netcoreapp1.1
   - if [[ $DOTNETCORE == 1"" ]]; then dotnet test ./test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -f netcoreapp1.1; fi
   - if [[ $DOTNETCORE == "" ]]; then mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe --process=Single ./test/Unosquare.Labs.EmbedIO.Tests/bin/Release/Unosquare.Labs.EmbedIO.Tests.dll; fi
   - if [[ $DOTNETCORE == "" ]]; then cat TestResult.xml; fi
