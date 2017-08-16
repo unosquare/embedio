@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Copyright>Copyright (c) 2016-2017 - Unosquare</Copyright>
-    <TargetFrameworks>netcoreapp1.1;net462;net46</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.0;net462;net46</TargetFrameworks>
     <TestProjectType>UnitTest</TestProjectType>
     <DebugType>Full</DebugType>
   </PropertyGroup>
@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0-preview-20170106-08" />
-    <packagereference Include="NUnit3TestAdapter" Version="3.8.0-alpha1"></packagereference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
+    <packagereference Include="NUnit3TestAdapter" Version="3.8.0"></packagereference>
     <PackageReference Include="NUnit" Version="3.7.1" />
   </ItemGroup>
 
