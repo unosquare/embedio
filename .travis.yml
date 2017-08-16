@@ -20,11 +20,12 @@ matrix:
     - os: osx
       mono: latest
 install:
-  - if [[ $DOTNETCORE == "1" ]]; then dotnet restore; else nuget restore Unosquare.Labs.EmbedIO.sln; fi
+  - if [[ $DOTNETCORE == "1" ]]; then dotnet restore Unosquare.Labs.EmbedIO.sln; else nuget restore Unosquare.Labs.EmbedIO.sln; fi
   - if [[ $DOTNETCORE == "" ]]; then nuget install NUnit.ConsoleRunner -OutputDirectory testrunner; fi
 before_script:
   - if [[ $DOTNETCORE == "" ]]; then export LD_LIBRARY_PATH=/usr/local/lib; fi
 script:
-  - if [[ $DOTNETCORE == "" ]]; then xbuild Unosquare.Labs.EmbedIO.sln /p:"TargetFrameworkVersion=v4.5;Configuration=Release"; else dotnet test ./test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -f netcoreapp1.1; fi
+  - msbuild Unosquare.Labs.EmbedIO.sln
+  - if [[ $DOTNETCORE == 1"" ]]; then dotnet test ./test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -f netcoreapp1.1; fi
   - if [[ $DOTNETCORE == "" ]]; then mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe --process=Single ./test/Unosquare.Labs.EmbedIO.Tests/bin/Release/Unosquare.Labs.EmbedIO.Tests.dll; fi
   - if [[ $DOTNETCORE == "" ]]; then cat TestResult.xml; fi
