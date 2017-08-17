@@ -4,7 +4,7 @@
     <Description>Portable web server ready to use</Description>
     <Copyright>Copyright (c) 2016 - Unosquare</Copyright>
     <AssemblyTitle>EmbedIO CLI</AssemblyTitle>
-    <TargetFrameworks>net46;net462;netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks>net46;net462;netcoreapp1.1</TargetFrameworks>
     <AssemblyName>Unosquare.Labs.EmbedIO.Command</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>Unosquare.Labs.EmbedIO.Command</PackageId>
@@ -28,7 +28,7 @@
     <DefineConstants>$(DefineConstants);NETFX</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>
 

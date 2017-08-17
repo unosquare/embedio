@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.0;net462;net46</TargetFrameworks>
+    <TargetFrameworks>netcoreapp1.1;net462;net46</TargetFrameworks>
     <AssemblyName>Unosquare.Labs.EmbedIO.Samples</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>Unosquare.Labs.EmbedIO.Samples</PackageId>

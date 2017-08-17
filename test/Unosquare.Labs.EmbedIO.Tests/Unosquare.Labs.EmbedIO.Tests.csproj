@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Copyright>Copyright (c) 2016-2017 - Unosquare</Copyright>
-    <TargetFrameworks>netcoreapp2.0;net462;net46</TargetFrameworks>
+    <TargetFrameworks>netcoreapp1.1;net462;net46</TargetFrameworks>
     <TestProjectType>UnitTest</TestProjectType>
     <DebugType>Full</DebugType>
   </PropertyGroup>
