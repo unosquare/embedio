@@ -30,5 +30,5 @@ before_script:
   - if [[ $DOTNETCORE == "" ]]; then sed -i 's/netcoreapp1.1;net462;net46/net46;net462/g' ./test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj; fi
 script:
   - if [[ $DOTNETCORE == "" ]]; then msbuild Unosquare.Labs.EmbedIO.sln /p:Configuration=Release; else dotnet test ./test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -f netcoreapp1.1; fi
-  - if [[ $DOTNETCORE == "" ]]; then mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe --process=Single ./test/Unosquare.Labs.EmbedIO.Tests/bin/Release/Unosquare.Labs.EmbedIO.Tests.dll; fi
+  - if [[ $DOTNETCORE == "" ]]; then mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe --process=Single ./test/Unosquare.Labs.EmbedIO.Tests/bin/Release/net46/Unosquare.Labs.EmbedIO.Tests.dll; fi
   - if [[ $DOTNETCORE == "" ]]; then cat TestResult.xml; fi
