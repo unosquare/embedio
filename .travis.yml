@@ -8,13 +8,13 @@ matrix:
       mono: latest
       sudo: required
     - os: linux
-      dotnet: 2.0.0
+      dotnet: 1.1.2
       mono: none
       env: DOTNETCORE=1
       dist: trusty
       sudo: false
     - os: osx
-      dotnet: 2.0.0
+      dotnet: 1.1.2
       mono: none
       env: DOTNETCORE=1
     - os: osx
