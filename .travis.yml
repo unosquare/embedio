@@ -20,7 +20,7 @@ matrix:
     - os: osx
       mono: latest
 install:
-  - if [[ $DOTNETCORE == "1" ]]; then dotnet restore Unosquare.Labs.EmbedIO.sln; else nuget restore Unosquare.Labs.EmbedIO.sln; fi
+  - if [[ $DOTNETCORE == "1" ]]; then dotnet restore Unosquare.Labs.EmbedIO.sln; else msbuild /t:restore Unosquare.Labs.EmbedIO.sln; fi
   - if [[ $DOTNETCORE == "" ]]; then nuget install NUnit.ConsoleRunner -OutputDirectory testrunner; fi
 before_script:
   - if [[ $DOTNETCORE == "" ]]; then export LD_LIBRARY_PATH=/usr/local/lib; fi
