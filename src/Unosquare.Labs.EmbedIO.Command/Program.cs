@@ -2,7 +2,7 @@
 {
     using Swan;
     using System;
-#if NETFX
+#if !NETCOREAPP1_1
     using System.Reflection;
 #else
     using System.Runtime.Loader;
@@ -61,7 +61,7 @@
         {
             try
             {
-#if NETFX
+#if !NETCOREAPP1_1
                 var assembly = Assembly.LoadFile(apiPath);
 #else
                 var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(apiPath);

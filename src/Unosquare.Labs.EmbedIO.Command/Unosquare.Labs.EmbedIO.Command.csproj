@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Portable web server ready to use</Description>
+    <Copyright>Copyright (c) 2016 - Unosquare</Copyright>
+    <AssemblyTitle>EmbedIO CLI</AssemblyTitle>
+    <TargetFrameworks>net46;net462;netcoreapp1.1</TargetFrameworks>
+    <AssemblyName>Unosquare.Labs.EmbedIO.Command</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <PackageId>Unosquare.Labs.EmbedIO.Command</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Unosquare.Labs.EmbedIO\Unosquare.Labs.EmbedIO.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net46' ">
+    <DefineConstants>$(DefineConstants);NETFX</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">
+    <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+</Project>

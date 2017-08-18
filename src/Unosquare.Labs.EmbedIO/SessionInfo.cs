@@ -23,13 +23,19 @@
         public string SessionId { get; set; }
 
         /// <summary>
-        /// Current Session creation date
+        /// Gets or sets the date created.
         /// </summary>
+        /// <value>
+        /// The date created.
+        /// </value>
         public DateTime DateCreated { get; set; }
 
         /// <summary>
-        /// Current Session last activity date
+        /// Gets or sets the last activity.
         /// </summary>
+        /// <value>
+        /// The last activity.
+        /// </value>
         public DateTime LastActivity { get; set; }
 
         /// <summary>

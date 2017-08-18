@@ -11,7 +11,6 @@
     using System.Threading.Tasks;
     using Modules;
     using TestObjects;
-    using Swan.Networking;
 
     [TestFixture]
     public class WebApiModuleTest
