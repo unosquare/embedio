@@ -138,18 +138,18 @@ namespace Unosquare.Net
 
         #region Internal Constructors
 
-        internal WebSocketFrame(Opcode opcode, PayloadData payloadData, bool mask)
+        internal WebSocketFrame(Opcode opcode, PayloadData payloadData, bool mask = true)
             : this(Fin.Final, opcode, payloadData, false, mask)
         {
         }
 
-        internal WebSocketFrame(Fin fin, Opcode opcode, byte[] data, bool compressed, bool mask)
+        internal WebSocketFrame(Fin fin, Opcode opcode, byte[] data, bool compressed, bool mask = true)
             : this(fin, opcode, new PayloadData(data), compressed, mask)
         {
         }
 
         internal WebSocketFrame(
-            Fin fin, Opcode opcode, PayloadData payloadData, bool compressed, bool mask)
+            Fin fin, Opcode opcode, PayloadData payloadData, bool compressed, bool mask = true)
         {
             Fin = fin;
             Rsv1 = opcode.IsData() && compressed ? Rsv.On : Rsv.Off;

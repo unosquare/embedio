@@ -55,6 +55,10 @@ using System.Security.Cryptography.X509Certificates;
         private int _sTimeout = 90000; // 90k ms for first request, 15k ms from then on        
         private IPEndPoint _localEp;
         private HttpListener _lastListener;
+        private InputState _inputState = InputState.RequestLine;
+        private LineState _lineState = LineState.None;
+        private int _position;
+
 #if SSL
         private X509Certificate _cert;
         IMonoSslStream ssl_stream;
@@ -130,31 +134,6 @@ using System.Security.Cryptography.X509Certificates;
 
         public ListenerPrefix Prefix { get; set; }
 
-        private void Init()
-        {
-#if SSL
-            if (ssl_stream != null)
-            {
-                ssl_stream.AuthenticateAsServer(cert, true, (SslProtocols)ServicePointManager.SecurityProtocol, false);
-            }
-#endif
-            _contextBound = false;
-            _iStream = null;
-            _oStream = null;
-            Prefix = null;
-            _ms = new MemoryStream();
-            _position = 0;
-            _inputState = InputState.RequestLine;
-            _lineState = LineState.None;
-            _context = new HttpListenerContext(this);
-        }
-
-        private void OnTimeout(object unused)
-        {
-            CloseSocket();
-            Unbind();
-        }
-
         public async Task BeginReadRequest()
         {
             if (_buffer == null)
@@ -192,18 +171,34 @@ using System.Security.Cryptography.X509Certificates;
 
         public ResponseStream GetResponseStream()
         {
-            // TODO: can we get this stream before reading the input?
-            if (_oStream == null)
+            return _oStream ??
+                   (_oStream =
+                       new ResponseStream(Stream, _context.Response, _context.Listener?.IgnoreWriteExceptions ?? true));
+        }
+
+        private void Init()
+        {
+#if SSL
+            if (ssl_stream != null)
             {
-                var listener = _context.Listener;
-
-                if (listener == null)
-                    return new ResponseStream(Stream, _context.Response, true);
-
-                _oStream = new ResponseStream(Stream, _context.Response, listener.IgnoreWriteExceptions);
+                ssl_stream.AuthenticateAsServer(cert, true, (SslProtocols)ServicePointManager.SecurityProtocol, false);
             }
+#endif
+            _contextBound = false;
+            _iStream = null;
+            _oStream = null;
+            Prefix = null;
+            _ms = new MemoryStream();
+            _position = 0;
+            _inputState = InputState.RequestLine;
+            _lineState = LineState.None;
+            _context = new HttpListenerContext(this);
+        }
 
-            return _oStream;
+        private void OnTimeout(object unused)
+        {
+            CloseSocket();
+            Unbind();
         }
 
         private async Task OnReadInternal(int nread)
@@ -277,23 +272,6 @@ using System.Security.Cryptography.X509Certificates;
             else
                 _lastListener.RemoveConnection(this);
         }
-
-        private enum InputState
-        {
-            RequestLine,
-            Headers
-        }
-
-        private enum LineState
-        {
-            None,
-            Cr,
-            Lf
-        }
-
-        private InputState _inputState = InputState.RequestLine;
-        private LineState _lineState = LineState.None;
-        private int _position;
 
         // true -> done processing
         // false -> need more input
@@ -474,6 +452,19 @@ using System.Security.Cryptography.X509Certificates;
 
             Unbind();
             RemoveConnection();
+        }
+        
+        private enum InputState
+        {
+            RequestLine,
+            Headers
+        }
+
+        private enum LineState
+        {
+            None,
+            Cr,
+            Lf
         }
     }
 }

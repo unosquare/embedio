@@ -192,14 +192,10 @@ namespace Unosquare.Net
             _disposed = true;
         }
 
-        private Task CloseAsync(bool force)
+        private async Task CloseAsync(bool closeExisting)
         {
             EndPointManager.RemoveListener(this);
-            return CleanupAsync(force);
-        }
 
-        private async Task CleanupAsync(bool closeExisting)
-        {
             var conns = new List<HttpConnection>();
 
             lock (_connections.SyncRoot)
@@ -220,9 +216,7 @@ namespace Unosquare.Net
             {
                 foreach (var key in _ctxQueue.Keys.Select(x => x).ToList())
                 {
-                    HttpListenerContext context;
-
-                    if (_ctxQueue.TryGetValue(key, out context))
+                    if (_ctxQueue.TryGetValue(key, out HttpListenerContext context))
                         await context.Connection.CloseAsync(true).ConfigureAwait(false);
                 }
             }
@@ -253,8 +247,7 @@ namespace Unosquare.Net
         {
             if (_disposed)
                 return;
-
-            // TODO: How to wait?
+            
             CloseAsync(true).Wait();
             _disposed = true;
         }
@@ -285,8 +278,7 @@ namespace Unosquare.Net
 
         internal void UnregisterContext(HttpListenerContext context)
         {
-            HttpListenerContext removedContext;
-            _ctxQueue.TryRemove(context.Id, out removedContext);
+            _ctxQueue.TryRemove(context.Id, out HttpListenerContext removedContext);
         }
 
         internal void AddConnection(HttpConnection cnc)

@@ -155,6 +155,7 @@ namespace Unosquare.Net
             {
                 if (_response.HeadersSent)
                     return null;
+
                 var ms = new MemoryStream();
                 _response.SendHeaders(closing, ms);
                 return ms;

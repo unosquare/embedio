@@ -232,7 +232,7 @@ using System.Threading.Tasks;
                                 _url.Authority,
                                 _url.LocalPath,
                                 _url.Query);
-            
+
             if (!_clSet)
             {
                 if (string.Compare(HttpMethod, "POST", StringComparison.OrdinalIgnoreCase) == 0 ||
@@ -302,33 +302,28 @@ using System.Threading.Tasks;
                     if (_cookies == null)
                         _cookies = new CookieCollection();
 
-                    var cookieStrings = val.Split(Labs.EmbedIO.Constants.Strings.CookieSplitChars);
+                    var cookieStrings = val.Split(Labs.EmbedIO.Constants.Strings.CookieSplitChars)
+                        .Where(x => string.IsNullOrEmpty(x) == false);
                     Cookie current = null;
                     var version = 0;
 
-                    foreach (var cookieString in cookieStrings)
+                    foreach (var str in cookieStrings)
                     {
-                        var str = cookieString.Trim();
-                        if (str.Length == 0)
-                            continue;
                         if (str.StartsWith("$Version"))
                         {
                             version = int.Parse(str.Substring(str.IndexOf('=') + 1).Unquote());
                         }
-                        else if (str.StartsWith("$Path"))
+                        else if (str.StartsWith("$Path") && current != null)
                         {
-                            if (current != null)
-                                current.Path = str.Substring(str.IndexOf('=') + 1).Trim();
+                            current.Path = str.Substring(str.IndexOf('=') + 1).Trim();
                         }
-                        else if (str.StartsWith("$Domain"))
+                        else if (str.StartsWith("$Domain") && current != null)
                         {
-                            if (current != null)
-                                current.Domain = str.Substring(str.IndexOf('=') + 1).Trim();
+                            current.Domain = str.Substring(str.IndexOf('=') + 1).Trim();
                         }
-                        else if (str.StartsWith("$Port"))
+                        else if (str.StartsWith("$Port") && current != null)
                         {
-                            if (current != null)
-                                current.Port = str.Substring(str.IndexOf('=') + 1).Trim();
+                            current.Port = str.Substring(str.IndexOf('=') + 1).Trim();
                         }
                         else
                         {

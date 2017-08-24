@@ -53,7 +53,7 @@ using System.Security.Cryptography;
         private X509Certificate _cert = null;
 #endif        
 
-        public EndPointListener(HttpListener listener, IPAddress addr, int port, bool secure)
+        public EndPointListener(HttpListener listener, IPAddress addr, int port, bool secure = false)
         {
             Listener = listener;
 

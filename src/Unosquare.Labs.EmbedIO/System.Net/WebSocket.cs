@@ -112,9 +112,6 @@ namespace Unosquare.Net
         private volatile bool _inMessage;
         private Queue<MessageEventArgs> _messageEventQueue;
         private string _origin;
-#if PROXY
-        private Uri _proxyUri;
-#endif
         private volatile WebSocketState _readyState;
         private AutoResetEvent _receivePong;
 #if SSL
@@ -691,48 +688,6 @@ namespace Unosquare.Net
             return CheckIfAvailable(out message, connecting, open, closing, closed);
         }
 
-#if PROXY
-        private static bool CheckParametersForSetProxy(
-            string url, string username, string password, out string message
-        )
-        {
-            message = null;
-
-            if (string.IsNullOrEmpty(url))
-                return true;
-
-            Uri uri;
-            if (!Uri.TryCreate(url, UriKind.Absolute, out uri)
-                || uri.Scheme != "http"
-                || uri.Segments.Length > 1
-            )
-            {
-                message = "'url' is an invalid URL.";
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(username))
-                return true;
-
-            if (username.Contains(':') || !username.IsText())
-            {
-                message = "'username' contains an invalid character.";
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(password))
-                return true;
-
-            if (!password.IsText())
-            {
-                message = "'password' contains an invalid character.";
-                return false;
-            }
-
-            return true;
-        }
-#endif
-
         private void CheckReceivedFrame(WebSocketFrame frame)
         {
             var masked = frame.IsMasked;
@@ -1134,10 +1089,7 @@ namespace Unosquare.Net
 
         private bool ProcessPingFrame(WebSocketFrame frame)
         {
-            // TODO: Make async?           
-            var result = Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, _client).ToArray(), CancellationToken.None).GetAwaiter().GetResult();
-
-            if (result)
+            if (Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, _client).ToArray()))
             {
                 "Returned a pong.".Info();
             }
@@ -1291,7 +1243,7 @@ namespace Unosquare.Net
             _context = null;
         }
 
-        private async Task<bool> Send(byte[] frameAsBytes, CancellationToken ct)
+        private bool Send(byte[] frameAsBytes)
         {
             lock (_forState)
             {
@@ -1302,7 +1254,7 @@ namespace Unosquare.Net
                 }
             }
 
-            await _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length, ct);
+            _stream.Write(frameAsBytes, 0, frameAsBytes.Length);
             return true;
         }
 
@@ -1311,6 +1263,7 @@ namespace Unosquare.Net
             var src = stream;
             var compressed = false;
             var sent = false;
+
             try
             {
                 if (_compression != CompressionMethod.None)
@@ -1477,76 +1430,20 @@ namespace Unosquare.Net
             return _stream.WriteAsync(bytes, 0, bytes.Length);
         }
 
-#if PROXY
-// As client
-        private void SendProxyConnectRequest()
-        {
-            var req = HttpRequest.CreateConnectRequest(_uri);
-            var res = SendHttpRequest(req, 90000);
-
-            if (res.IsProxyAuthenticationRequired)
-            {
-                var chal = res.Headers["Proxy-Authenticate"];
-                Log.WarnFormat("Received a proxy authentication requirement for '{0}'.", chal);
-
-                if (chal.IsNullOrEmpty())
-                    throw new WebSocketException("No proxy authentication challenge is specified.");
-
-                var authChal = AuthenticationChallenge.Parse(chal);
-                if (authChal == null)
-                    throw new WebSocketException("An invalid proxy authentication challenge is specified.");
-
-                if (_proxyCredentials != null)
-                {
-                    if (res.HasConnectionClose)
-                    {
-                        releaseClientResources();
-                        _tcpClient = new TcpClient(_proxyUri.DnsSafeHost, _proxyUri.Port);
-                        _stream = _tcpClient.GetStream();
-                    }
-
-                    var authRes = new AuthenticationResponse(authChal, _proxyCredentials, 0);
-                    req.Headers["Proxy-Authorization"] = authRes.ToString();
-                    res = sendHttpRequest(req, 15000);
-                }
-
-                if (res.IsProxyAuthenticationRequired)
-                    throw new WebSocketException("A proxy authentication is required.");
-            }
-            if (res.StatusCode[0] != '2')
-                throw new WebSocketException(
-                    "The proxy has failed a connection to the requested host and port.");
-        }  
-#endif
-
         // As client
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         private async Task SetClientStream()
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-#if PROXY
-            if (_proxyUri != null)
-            {
-#if NET46
-                _tcpClient = new TcpClient(_proxyUri.DnsSafeHost, _proxyUri.Port);
-#else
-                _tcpClient = new TcpClient();
-#endif
-                _stream = _tcpClient.GetStream();
-                SendProxyConnectRequest();
-            }
-            else
-#endif
-            {
-#if NET46
-                _tcpClient = new TcpClient(_uri.DnsSafeHost, _uri.Port);
-#else
-                _tcpClient = new TcpClient();
 
-                await _tcpClient.ConnectAsync(_uri.DnsSafeHost, _uri.Port);
+#if NET46
+            _tcpClient = new TcpClient(_uri.DnsSafeHost, _uri.Port);
+#else
+            _tcpClient = new TcpClient();
+
+            await _tcpClient.ConnectAsync(_uri.DnsSafeHost, _uri.Port);
 #endif
-                _stream = _tcpClient.GetStream();
-            }
+            _stream = _tcpClient.GetStream();
 
 #if SSL
             if (_secure)
@@ -2015,7 +1912,7 @@ namespace Unosquare.Net
 
             Send(opcode, new MemoryStream(data), ct);
         }
-        
+
         /// <summary>
         /// Sets an HTTP <paramref name="cookie"/> to send with
         /// the WebSocket handshake request to the server.
@@ -2048,93 +1945,7 @@ namespace Unosquare.Net
                 CookieCollection.Add(cookie);
             }
         }
-
-#if PROXY
-/// <summary>
-/// Sets the HTTP proxy server URL to connect through, and if necessary,
-/// a pair of <paramref name="username"/> and <paramref name="password"/> for
-/// the proxy server authentication (Basic/Digest).
-/// </summary>
-/// <param name="url">
-///   <para>
-///   A <see cref="string"/> that represents the HTTP proxy server URL to
-///   connect through. The syntax must be http://&lt;host&gt;[:&lt;port&gt;].
-///   </para>
-///   <para>
-///   If <paramref name="url"/> is <see langword="null"/> or empty,
-///   the url and credentials for the proxy will be initialized,
-///   and the <see cref="WebSocket"/> will not use the proxy to
-///   connect through.
-///   </para>
-/// </param>
-/// <param name="username">
-///   <para>
-///   A <see cref="string"/> that represents the user name used to authenticate.
-///   </para>
-///   <para>
-///   If <paramref name="username"/> is <see langword="null"/> or empty,
-///   the credentials for the proxy will be initialized and not be sent.
-///   </para>
-/// </param>
-/// <param name="password">
-/// A <see cref="string"/> that represents the password for
-/// <paramref name="username"/> used to authenticate.
-/// </param>
-        public void SetProxy(string url, string username, string password)
-        {
-            string msg;
-            if (!checkIfAvailable(true, false, true, false, false, true, out msg))
-            {
-
-                msg.Error();
-                Error("An error has occurred in setting the proxy.", null);
-
-                return;
-            }
-
-            if (!CheckParametersForSetProxy(url, username, password, out msg))
-            {
-                msg.Error();
-                Error("An error has occurred in setting the proxy.", null);
-
-                return;
-            }
-
-            lock (_forState)
-            {
-                if (!checkIfAvailable(true, false, false, true, out msg))
-                {
-                    msg.Error();
-                    Error("An error has occurred in setting the proxy.", null);
-
-                    return;
-                }
-
-                if (string.IsNullOrEmpty(url))
-                {
-                    "The url and credentials for the proxy are initialized.".Warn();
-                    _proxyUri = null;
-                    _proxyCredentials = null;
-
-                    return;
-                }
-
-                _proxyUri = new Uri(url);
-
-                if (string.IsNullOrEmpty(username))
-                {
-                    "The credentials for the proxy are initialized.".Warn();
-                    _proxyCredentials = null;
-
-                    return;
-                }
-
-                _proxyCredentials =
-                    new NetworkCredential(username, password, $"{_uri.DnsSafeHost}:{_uri.Port}");
-            }
-        }
-#endif
-
+        
         #endregion
 
         #region Explicit Interface Implementations

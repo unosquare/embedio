@@ -82,7 +82,7 @@ namespace Unosquare.Net
             epl.AddPrefix(lp, listener);
         }
 
-        private static EndPointListener GetEpListener(string host, int port, HttpListener listener, bool secure)
+        private static EndPointListener GetEpListener(string host, int port, HttpListener listener, bool secure = false)
         {
             IPAddress addr;
 
