@@ -51,7 +51,6 @@ using System.Security.Cryptography.X509Certificates;
         private StringBuilder _currentLine;
         private RequestStream _iStream;
         private ResponseStream _oStream;
-        private bool _chunked;
         private bool _contextBound;
         private int _sTimeout = 90000; // 90k ms for first request, 15k ms from then on        
         private IPEndPoint _localEp;
@@ -143,7 +142,6 @@ using System.Security.Cryptography.X509Certificates;
             _iStream = null;
             _oStream = null;
             Prefix = null;
-            _chunked = false;
             _ms = new MemoryStream();
             _position = 0;
             _inputState = InputState.RequestLine;
@@ -179,28 +177,15 @@ using System.Security.Cryptography.X509Certificates;
             }
         }
 
-        public RequestStream GetRequestStream(bool chunked, long contentlength)
+        public RequestStream GetRequestStream(long contentlength)
         {
             if (_iStream != null) return _iStream;
 
             var buffer = _ms.ToArray();
-            var length = (int)_ms.Length;
+            var length = (int) _ms.Length;
             _ms = null;
 
-            if (chunked)
-            {
-#if CHUNKED
-                _chunked = true;
-                _context.Response.SendChunked = true;
-                _iStream = new ChunkedInputStream(_context, Stream, buffer, _position, length - _position);
-#else
-                throw new InvalidOperationException("Chunked transfer encoding is not supported");
-#endif
-            }
-            else
-            {
-                _iStream = new RequestStream(Stream, buffer, _position, length - _position, contentlength);
-            }
+            _iStream = new RequestStream(Stream, buffer, _position, length - _position, contentlength);
 
             return _iStream;
         }
@@ -463,16 +448,6 @@ using System.Security.Cryptography.X509Certificates;
 
                 if (isValidInput)
                 {
-                    if (_chunked && _context.Response.ForceCloseChunked == false)
-                    {
-                        // Don't close. Keep working.
-                        Reuses++;
-                        Unbind();
-                        Init();
-                        await BeginReadRequest().ConfigureAwait(false);
-                        return;
-                    }
-
                     Reuses++;
                     Unbind();
                     Init();

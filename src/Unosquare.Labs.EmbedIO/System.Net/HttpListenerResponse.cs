@@ -36,7 +36,7 @@ namespace Unosquare.Net
     /// <summary>
     /// Represents an HTTP Listener's response
     /// </summary>
-    /// <seealso cref="System.IDisposable" />
+    /// <seealso cref="IDisposable" />
     public sealed class HttpListenerResponse : IDisposable
     {
         private const string CannotChangeHeaderWarning = "Cannot be changed after headers are sent.";
@@ -592,22 +592,7 @@ namespace Unosquare.Net
 
             foreach (var key in headers.AllKeys)
                 sb.Append(key).Append(": ").Append(headers[key]).Append("\r\n");
-
-            // for (int i = 0; i < headers.Count; i++)
-            // {
-            //    string key = headers.GetKey(i);
-            //    if (WebHeaderCollection.AllowMultiValues(key))
-            //    {
-            //        foreach (string v in headers.GetValues(i))
-            //        {
-            //            sb.Append(key).Append(": ").Append(v).Append("\r\n");
-            //        }
-            //    }
-            //    else
-            //    {
-            //        sb.Append(key).Append(": ").Append(headers.Get(i)).Append("\r\n");
-            //    }
-            // }
+            
             return sb.Append("\r\n").ToString();
         }
 
