@@ -135,70 +135,7 @@ namespace Unosquare.Net
                 _remainingBody -= nread;
             return nread;
         }
-
-        #if CHUNKED
-#if !NETSTANDARD1_6
-        new 
-#endif
-        public IAsyncResult BeginRead(byte[] buffer, int offset, int count,
-                            AsyncCallback cback, object state)
-        {
-            if (_disposed)
-                throw new ObjectDisposedException(typeof(RequestStream).ToString());
-
-            var nread = FillFromBuffer(buffer, offset, count);
-            if (nread > 0 || nread == -1)
-            {
-                var ares = new HttpStreamAsyncResult
-                {
-                    Buffer = buffer,
-                    Offset = offset,
-                    Count = count,
-                    Callback = cback,
-                    State = state,
-                    SynchRead = Math.Max(0, nread)
-                };
-
-                ares.Complete();
-                return ares;
-            }
-
-            // Avoid reading past the end of the request to allow
-            // for HTTP pipelining
-            if (_remainingBody >= 0 && count > _remainingBody)
-                count = (int)Math.Min(int.MaxValue, _remainingBody);
-            return _stream.BeginRead(buffer, offset, count, cback, state);
-        }
-
-#if !NETSTANDARD1_6
-        new 
-#endif
-        public int EndRead(IAsyncResult ares)
-        {
-            if (_disposed)
-                throw new ObjectDisposedException(typeof(RequestStream).ToString());
-
-            if (ares == null)
-                throw new ArgumentNullException(nameof(ares));
-
-            var result = ares as HttpStreamAsyncResult;
-
-            if (result != null)
-            {
-                var r = result;
-                if (!ares.IsCompleted)
-                    ares.AsyncWaitHandle.WaitOne();
-                return r.SynchRead;
-            }
-
-            // Close on exception?
-            var nread = _stream.EndRead(ares);
-            if (_remainingBody > 0 && nread > 0)
-                _remainingBody -= nread;
-            return nread;
-        }
-#endif
-
+        
         public override long Seek(long offset, SeekOrigin origin)
         {
             throw new NotSupportedException();

@@ -235,21 +235,7 @@
 
             Assert.IsTrue(originalSet.SequenceEqual(buffer));
         }
-
-#if CHUNKED
-        [Test]
-        public async Task GetEntireFileWithChunksUsingChunkedEncoding()
-        {
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.TransferEncoding.Add(new TransferCodingHeaderValue("chunked"));
-                var data = await client.GetByteArrayAsync(WebServerUrl + TestHelper.SmallDataFile);
         
-                Assert.IsTrue(TestHelper.GetSmallData().SequenceEqual(data));
-            }
-        }
-#endif
-
         [Test]
         public async Task GetInvalidChunk()
         {

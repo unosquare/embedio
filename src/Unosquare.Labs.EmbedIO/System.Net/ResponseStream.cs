@@ -39,15 +39,13 @@ namespace Unosquare.Net
     /// <seealso cref="System.IO.Stream" />
     public class ResponseStream : Stream
     {
-        private static readonly byte[] Crlf = { 13, 10 };
-
         private readonly Stream _stream;
         private readonly HttpListenerResponse _response;
         private readonly bool _ignoreErrors;
         private bool _disposed;
         private bool _trailerSent;        
 
-        internal ResponseStream(Stream stream, HttpListenerResponse response, bool ignoreErrors)
+        internal ResponseStream(Stream stream, HttpListenerResponse response, bool ignoreErrors = true)
         {
             _response = response;
             _ignoreErrors = ignoreErrors;
@@ -104,7 +102,7 @@ namespace Unosquare.Net
 
             _disposed = true;
             var ms = GetHeaders(true);
-            var chunked = _response.SendChunked;
+            
             if (_stream.CanWrite)
             {
                 try
@@ -113,7 +111,7 @@ namespace Unosquare.Net
                     if (ms != null)
                     {
                         var start = ms.Position;
-                        if (chunked && !_trailerSent)
+                        if (!_trailerSent)
                         {
                             bytes = GetChunkSizeBytes(0, true);
                             ms.Position = ms.Length;
@@ -123,7 +121,7 @@ namespace Unosquare.Net
                         InternalWrite(ms.ToArray(), (int)start, (int)(ms.Length - start));
                         _trailerSent = true;
                     }
-                    else if (chunked && !_trailerSent)
+                    else if (!_trailerSent)
                     {
                         bytes = GetChunkSizeBytes(0, true);
                         InternalWrite(bytes, 0, bytes.Length);
@@ -195,19 +193,13 @@ namespace Unosquare.Net
             if (_disposed)
                 throw new ObjectDisposedException(GetType().ToString());
 
-            byte[] bytes;
             var ms = GetHeaders(false);
-            var chunked = _response.SendChunked;
+
             if (ms != null)
             {
                 var start = ms.Position; // After the possible preamble for the encoding
                 ms.Position = ms.Length;
-                if (chunked)
-                {
-                    bytes = GetChunkSizeBytes(count, false);
-                    ms.Write(bytes, 0, bytes.Length);
-                }
-
+               
                 var newCount = Math.Min(count, 16384 - (int)ms.Position + (int)start);
                 ms.Write(buffer, offset, newCount);
                 count -= newCount;
@@ -216,17 +208,9 @@ namespace Unosquare.Net
                 ms.SetLength(0);
                 ms.Capacity = 0; // 'dispose' the buffer in ms.
             }
-            else if (chunked)
-            {
-                bytes = GetChunkSizeBytes(count, false);
-                InternalWrite(bytes, 0, bytes.Length);
-            }
 
             if (count > 0)
                 InternalWrite(buffer, offset, count);
-
-            if (chunked)
-                InternalWrite(Crlf, 0, 2);
         }
 
         /// <summary>
