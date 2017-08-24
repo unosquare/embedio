@@ -51,6 +51,7 @@ namespace Unosquare.Net
         private Version _version = HttpVersion.Version11;
         private string _location;
         private int _statusCode = 200;
+        private bool _chunked;
 
         internal HttpListenerResponse(HttpListenerContext context)
         {
@@ -59,7 +60,8 @@ namespace Unosquare.Net
 
         internal bool HeadersSent { get; private set; }
         internal object HeadersLock { get; } = new object();
-        
+        internal bool ForceCloseChunked { get; private set; }
+
         /// <summary>
         /// Gets or sets the content encoding.
         /// </summary>
@@ -259,6 +261,36 @@ namespace Unosquare.Net
                     throw new InvalidOperationException(CannotChangeHeaderWarning);
 
                 _location = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [send chunked].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [send chunked]; otherwise, <c>false</c>.
+        /// </value>
+        /// <exception cref="System.ObjectDisposedException">
+        /// Is thrown when you try to access a member of an object that implements the 
+        /// IDisposable interface, and that object has been disposed
+        /// </exception>
+        /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
+        public bool SendChunked
+        {
+            get
+            {
+                return _chunked;
+            }
+
+            set
+            {
+                if (_disposed)
+                    throw new ObjectDisposedException(GetType().ToString());
+
+                if (HeadersSent)
+                    throw new InvalidOperationException(CannotChangeHeaderWarning);
+
+                _chunked = value;
             }
         }
 
@@ -472,14 +504,21 @@ namespace Unosquare.Net
             if (Headers["Date"] == null)
                 Headers.SetInternal("Date", DateTime.UtcNow.ToString("r", inv));
 
-            if (!_clSet && closing)
+            if (!_chunked)
             {
-                _clSet = true;
-                _contentLength = 0;
+                if (!_clSet && closing)
+                {
+                    _clSet = true;
+                    _contentLength = 0;
+                }
+
+                if (_clSet)
+                    Headers.SetInternal("Content-Length", _contentLength.ToString(inv));
             }
 
-            if (_clSet)
-                Headers.SetInternal("Content-Length", _contentLength.ToString(inv));
+            var v = _context.Request.ProtocolVersion;
+            if (!_clSet && !_chunked && v >= HttpVersion.Version11)
+                _chunked = true;
 
             //// Apache forces closing the connection for these status codes:
             //// HttpStatusCode.BadRequest        400
@@ -503,11 +542,18 @@ namespace Unosquare.Net
                 connClose = true;
             }
 
+            if (_chunked)
+                Headers.SetInternal("Transfer-Encoding", "chunked");
+
             var reuses = _context.Connection.Reuses;
-            if (reuses >= 100 && !connClose)
+            if (reuses >= 100)
             {
-                Headers.SetInternal("Connection", "close");
-                connClose = true;
+                ForceCloseChunked = true;
+                if (!connClose)
+                {
+                    Headers.SetInternal("Connection", "close");
+                    connClose = true;
+                }
             }
 
             if (!connClose)
@@ -546,7 +592,22 @@ namespace Unosquare.Net
 
             foreach (var key in headers.AllKeys)
                 sb.Append(key).Append(": ").Append(headers[key]).Append("\r\n");
-            
+
+            // for (int i = 0; i < headers.Count; i++)
+            // {
+            //    string key = headers.GetKey(i);
+            //    if (WebHeaderCollection.AllowMultiValues(key))
+            //    {
+            //        foreach (string v in headers.GetValues(i))
+            //        {
+            //            sb.Append(key).Append(": ").Append(v).Append("\r\n");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        sb.Append(key).Append(": ").Append(headers.Get(i)).Append("\r\n");
+            //    }
+            // }
             return sb.Append("\r\n").ToString();
         }
 

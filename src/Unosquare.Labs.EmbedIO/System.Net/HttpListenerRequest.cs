@@ -55,7 +55,8 @@ using System.Threading.Tasks;
         private bool _clSet;
         private CookieCollection _cookies;
         private Stream _inputStream;
-        private Uri _url;        
+        private Uri _url;
+        private bool _isChunked = false;
         private bool _kaSet;
         private bool _keepAlive;
 
@@ -124,7 +125,7 @@ using System.Threading.Tasks;
 
             return p < 10 && IsPredefinedScheme(s.Substring(0, p));
         }
-        
+
         // Using a simple block of if's is twice as slow as the compiler generated
         // switch statement.   But using this tuned code is faster than the
         // compiler generated code, with a million loops on x86-64:
@@ -227,15 +228,33 @@ using System.Threading.Tasks;
             // Use reference source HttpListenerRequestUriBuilder to process url.
             // Fixes #29927
             _url = HttpListenerRequestUriBuilder.GetRequestUri(
-                RawUrl,
-                _url.Scheme,
-                _url.Authority,
-                _url.LocalPath,
-                _url.Query);
-            
-            if (!_clSet && (string.Compare(HttpMethod, "POST", StringComparison.OrdinalIgnoreCase) == 0 ||
-                            string.Compare(HttpMethod, "PUT", StringComparison.OrdinalIgnoreCase) == 0))
-                return;
+                                RawUrl,
+                                _url.Scheme,
+                                _url.Authority,
+                                _url.LocalPath,
+                                _url.Query);
+
+#if CHUNKED
+            if (ProtocolVersion >= HttpVersion.Version11)
+            {
+                var tEncoding = Headers["Transfer-Encoding"];
+                _isChunked = (tEncoding != null && string.Compare(tEncoding, "chunked", StringComparison.OrdinalIgnoreCase) == 0);
+                // 'identity' is not valid!
+                if (tEncoding != null && !_isChunked)
+                {
+                    return;
+                }
+            }
+#endif
+
+            if (!_isChunked && !_clSet)
+            {
+                if (string.Compare(HttpMethod, "POST", StringComparison.OrdinalIgnoreCase) == 0 ||
+                    string.Compare(HttpMethod, "PUT", StringComparison.OrdinalIgnoreCase) == 0)
+                {
+                    return;
+                }
+            }
 
             if (string.Compare(Headers["Expect"], "100-continue", StringComparison.OrdinalIgnoreCase) == 0)
             {
@@ -496,7 +515,7 @@ using System.Threading.Tasks;
         /// <value>
         /// <c>true</c> if this instance has entity body; otherwise, <c>false</c>.
         /// </value>
-        public bool HasEntityBody => ContentLength64 > 0;
+        public bool HasEntityBody => ContentLength64 > 0 || _isChunked;
 
         /// <summary>
         /// Gets the request headers.
@@ -511,9 +530,21 @@ using System.Threading.Tasks;
         /// <summary>
         /// Gets the input stream.
         /// </summary>
-        public Stream InputStream => _inputStream ??
-                                     (_inputStream =
-                                         ContentLength64 > 0 ? _context.Connection.GetRequestStream(ContentLength64) : Stream.Null);
+        public Stream InputStream
+        {
+            get
+            {
+                if (_inputStream == null)
+                {
+                    if (_isChunked || ContentLength64 > 0)
+                        _inputStream = _context.Connection.GetRequestStream(_isChunked, ContentLength64);
+                    else
+                        _inputStream = Stream.Null;
+                }
+
+                return _inputStream;
+            }
+        }
 
         /// <summary>
         /// Gets a value indicating whether this request is authenticated.
@@ -541,7 +572,7 @@ using System.Threading.Tasks;
                     return _keepAlive;
 
                 _kaSet = true;
-                
+
                 // 1. Connection header
                 // 2. Protocol (1.1 == keep-alive by default)
                 // 3. Keep-Alive header
@@ -635,7 +666,7 @@ using System.Threading.Tasks;
         /// Gets the name of the service.
         /// </summary>
         public string ServiceName => null;
-        
+
         /// <summary>
         /// Gets a value indicating whether this request is a web socket request.
         /// </summary>

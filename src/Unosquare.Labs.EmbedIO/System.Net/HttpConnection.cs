@@ -43,14 +43,15 @@ using System.Security.Cryptography.X509Certificates;
     {
         private const int BufferSize = 8192;
         private readonly Timer _timer;
-        private readonly EndPointListener _epl;        
-        private Socket _sock;        
+        private readonly EndPointListener _epl;
+        private Socket _sock;
         private MemoryStream _ms;
         private byte[] _buffer;
         private HttpListenerContext _context;
         private StringBuilder _currentLine;
         private RequestStream _iStream;
         private ResponseStream _oStream;
+        private bool _chunked;
         private bool _contextBound;
         private int _sTimeout = 90000; // 90k ms for first request, 15k ms from then on        
         private IPEndPoint _localEp;
@@ -119,12 +120,12 @@ using System.Security.Cryptography.X509Certificates;
                 if (_localEp != null)
                     return _localEp;
 
-                _localEp = (IPEndPoint) _sock.LocalEndPoint;
+                _localEp = (IPEndPoint)_sock.LocalEndPoint;
                 return _localEp;
             }
         }
 
-        public IPEndPoint RemoteEndPoint => (IPEndPoint) _sock?.RemoteEndPoint;
+        public IPEndPoint RemoteEndPoint => (IPEndPoint)_sock?.RemoteEndPoint;
 
         public bool IsSecure { get; }
 
@@ -142,6 +143,7 @@ using System.Security.Cryptography.X509Certificates;
             _iStream = null;
             _oStream = null;
             Prefix = null;
+            _chunked = false;
             _ms = new MemoryStream();
             _position = 0;
             _inputState = InputState.RequestLine;
@@ -177,15 +179,28 @@ using System.Security.Cryptography.X509Certificates;
             }
         }
 
-        public RequestStream GetRequestStream(long contentlength)
+        public RequestStream GetRequestStream(bool chunked, long contentlength)
         {
             if (_iStream != null) return _iStream;
 
             var buffer = _ms.ToArray();
-            var length = (int) _ms.Length;
+            var length = (int)_ms.Length;
             _ms = null;
 
-            _iStream = new RequestStream(Stream, buffer, _position, length - _position, contentlength);
+            if (chunked)
+            {
+#if CHUNKED
+                _chunked = true;
+                _context.Response.SendChunked = true;
+                _iStream = new ChunkedInputStream(_context, Stream, buffer, _position, length - _position);
+#else
+                throw new InvalidOperationException("Chunked transfer encoding is not supported");
+#endif
+            }
+            else
+            {
+                _iStream = new RequestStream(Stream, buffer, _position, length - _position, contentlength);
+            }
 
             return _iStream;
         }
@@ -198,7 +213,7 @@ using System.Security.Cryptography.X509Certificates;
                 var listener = _context.Listener;
 
                 if (listener == null)
-                    return new ResponseStream(Stream, _context.Response);
+                    return new ResponseStream(Stream, _context.Response, true);
 
                 _oStream = new ResponseStream(Stream, _context.Response, listener.IgnoreWriteExceptions);
             }
@@ -214,7 +229,6 @@ using System.Security.Cryptography.X509Certificates;
             // Especially important for multipart requests when the second part of the header arrives after a tiny delay
             // because the webbrowser has to meassure the content length first.
             int parsedBytes = 0;
-
             while (true)
             {
                 try
@@ -301,7 +315,7 @@ using System.Security.Cryptography.X509Certificates;
         private bool ProcessInput(MemoryStream ms)
         {
             var buffer = ms.ToArray();
-            var len = (int) ms.Length;
+            var len = (int)ms.Length;
             var used = 0;
 
             while (true)
@@ -387,7 +401,7 @@ using System.Security.Cryptography.X509Certificates;
                         _lineState = LineState.Lf;
                         break;
                     default:
-                        _currentLine.Append((char) b);
+                        _currentLine.Append((char)b);
                         break;
                 }
             }
@@ -449,6 +463,16 @@ using System.Security.Cryptography.X509Certificates;
 
                 if (isValidInput)
                 {
+                    if (_chunked && _context.Response.ForceCloseChunked == false)
+                    {
+                        // Don't close. Keep working.
+                        Reuses++;
+                        Unbind();
+                        Init();
+                        await BeginReadRequest().ConfigureAwait(false);
+                        return;
+                    }
+
                     Reuses++;
                     Unbind();
                     Init();
