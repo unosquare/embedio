@@ -10,10 +10,6 @@
 
     internal class MethodCache
     {
-        public delegate Task<bool> AsyncDelegate(object instance, object[] arguments);
-
-        public delegate bool SyncDelegate(object instance, object[] arguments);
-
         public MethodCache(MethodInfo methodInfo)
         {
             MethodInfo = methodInfo;
@@ -30,6 +26,10 @@
             else
                 SyncInvoke = (SyncDelegate) invokeDelegate;
         }
+
+        public delegate Task<bool> AsyncDelegate(object instance, object[] arguments);
+
+        public delegate bool SyncDelegate(object instance, object[] arguments);
 
         public MethodInfo MethodInfo { get; }
         public bool IsTask { get; }
@@ -51,16 +51,25 @@
                 .Cast<Expression>()
                 .ToList();
 
-            var callExpression = Expression.Call(Expression.Convert(instanceExpression, methodInfo.DeclaringType),
-                methodInfo, argumentExpressions);
+            var callExpression = Expression.Call(
+                Expression.Convert(instanceExpression, methodInfo.DeclaringType),
+                methodInfo,
+                argumentExpressions);
 
             if (isAsync)
-                return
-                    Expression.Lambda<AsyncDelegate>(Expression.Convert(callExpression, typeof(Task<bool>)),
-                        instanceExpression, argumentsExpression).Compile();
+            {
+                return Expression.Lambda<AsyncDelegate>(
+                        Expression.Convert(callExpression, typeof(Task<bool>)),
+                        instanceExpression,
+                        argumentsExpression)
+                    .Compile();
+            }
 
-            return Expression.Lambda<SyncDelegate>(Expression.Convert(callExpression, typeof(bool)),
-                instanceExpression, argumentsExpression).Compile();
+            return Expression.Lambda<SyncDelegate>(
+                    Expression.Convert(callExpression, typeof(bool)),
+                    instanceExpression,
+                    argumentsExpression)
+                .Compile();
         }
     }
 
