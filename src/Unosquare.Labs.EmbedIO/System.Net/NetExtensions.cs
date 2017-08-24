@@ -335,7 +335,7 @@ namespace Unosquare.Net
 
             var vals = collection[name];
 
-            return vals != null && vals.Split(',').Any(val => val.Trim().Equals(value, StringComparison.OrdinalIgnoreCase));
+            return vals != null && vals.Split(Strings.CommaSplitChar).Any(val => val.Trim().Equals(value, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>

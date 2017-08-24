@@ -15,7 +15,6 @@
     using System.Net;
 #else
     using Net;
-
 #endif
 
     /// <summary>
@@ -83,10 +82,10 @@
             MaxRamCacheFileSize = 250 * 1024;
             DefaultDocument = DefaultDocumentName;
 
-            headers?.Map(DefaultHeaders.Add);
+            headers?.ForEach(DefaultHeaders.Add);
             additionalPaths?.Where(path => path.Key != "/")
                 .ToDictionary(x => x.Key, x => x.Value)
-                .Map(RegisterVirtualPath);
+                .ForEach(RegisterVirtualPath);
 
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Head, (context, ct) => HandleGet(context, ct, false));
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (context, ct) => HandleGet(context, ct));
@@ -249,7 +248,7 @@
 
             while (true)
             {
-                if (sendData + ChuckSize > byteLength) readBufferSize = (int) (byteLength - sendData);
+                if (sendData + ChuckSize > byteLength) readBufferSize = (int)(byteLength - sendData);
 
                 buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
                 var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct);
@@ -469,8 +468,8 @@
 
             context.Response.AddHeader(Headers.CacheControl,
                 DefaultHeaders.GetValueOrDefault(Headers.CacheControl, "private"));
-            context.Response.AddHeader(Headers.Pragma, DefaultHeaders.GetValueOrDefault(Headers.Pragma));
-            context.Response.AddHeader(Headers.Expires, DefaultHeaders.GetValueOrDefault(Headers.Expires));
+            context.Response.AddHeader(Headers.Pragma, DefaultHeaders.GetValueOrDefault(Headers.Pragma, string.Empty));
+            context.Response.AddHeader(Headers.Expires, DefaultHeaders.GetValueOrDefault(Headers.Expires, string.Empty));
             context.Response.AddHeader(Headers.LastModified, utcFileDateString);
             context.Response.AddHeader(Headers.AcceptRanges, "bytes");
         }
@@ -574,8 +573,8 @@
         {
             context.Response.AddHeader(Headers.CacheControl,
                 DefaultHeaders.GetValueOrDefault(Headers.CacheControl, "private"));
-            context.Response.AddHeader(Headers.Pragma, DefaultHeaders.GetValueOrDefault(Headers.Pragma));
-            context.Response.AddHeader(Headers.Expires, DefaultHeaders.GetValueOrDefault(Headers.Expires));
+            context.Response.AddHeader(Headers.Pragma, DefaultHeaders.GetValueOrDefault(Headers.Pragma, string.Empty));
+            context.Response.AddHeader(Headers.Expires, DefaultHeaders.GetValueOrDefault(Headers.Expires, string.Empty));
 
             context.Response.ContentType = string.Empty;
             context.Response.StatusCode = 304;

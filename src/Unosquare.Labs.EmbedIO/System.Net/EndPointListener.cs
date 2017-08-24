@@ -35,7 +35,6 @@ namespace Unosquare.Net
     using System.Net.Sockets;
     using System.Threading;
     using System.Threading.Tasks;
-
 #if SSL
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography;
@@ -145,10 +144,7 @@ using System.Security.Cryptography;
             conn.BeginReadRequest().Wait();
         }
 
-        private static void OnAccept(object sender, SocketAsyncEventArgs e)
-        {
-            ProcessAccept(e);
-        }
+        private static void OnAccept(object sender, SocketAsyncEventArgs e) => ProcessAccept(e);
 
         internal void RemoveConnection(HttpConnection conn)
         {
@@ -179,58 +175,115 @@ using System.Security.Cryptography;
             context.Listener.UnregisterContext(context);
         }
 
-        private HttpListener SearchListener(Uri uri, out ListenerPrefix prefix)
+        public async Task CloseAsync()
         {
-            prefix = null;
-            if (uri == null)
-                return null;
+            _sock.Dispose();
+            List<HttpConnection> connections;
 
-            var host = uri.Host;
-            var port = uri.Port;
-            var path = WebUtility.UrlDecode(uri.AbsolutePath);
-            var pathSlash = path[path.Length - 1] == '/' ? path : path + "/";
-
-            HttpListener bestMatch = null;
-            var bestLength = -1;
-
-            if (!string.IsNullOrEmpty(host))
+            lock (_unregistered)
             {
-                var result = _prefixes;
-
-                foreach (ListenerPrefix p in result.Keys)
-                {
-                    var ppath = p.Path;
-                    if (ppath.Length < bestLength)
-                        continue;
-
-                    if (p.Host != host || p.Port != port)
-                        continue;
-
-                    if (path.StartsWith(ppath) || pathSlash.StartsWith(ppath))
-                    {
-                        bestLength = ppath.Length;
-                        bestMatch = (HttpListener)result[p];
-                        prefix = p;
-                    }
-                }
-
-                if (bestLength != -1)
-                    return bestMatch;
+                // Clone the list because RemoveConnection can be called from Close
+                connections = new List<HttpConnection>(_unregistered.Keys);
+                _unregistered.Clear();
             }
 
-            var list = _unhandled;
-            bestMatch = MatchFromList(path, list, out prefix);
-            if (path != pathSlash && bestMatch == null)
-                bestMatch = MatchFromList(pathSlash, list, out prefix);
-            if (bestMatch != null)
-                return bestMatch;
+            foreach (var c in connections)
+                await c.CloseAsync(true);
+        }
 
-            list = _all;
-            bestMatch = MatchFromList(path, list, out prefix);
-            if (path != pathSlash && bestMatch == null)
-                bestMatch = MatchFromList(pathSlash, list, out prefix);
+        public void AddPrefix(ListenerPrefix prefix, HttpListener listener)
+        {
+            ArrayList current;
+            ArrayList future;
 
-            return bestMatch;
+            if (prefix.Host == "*")
+            {
+                do
+                {
+                    current = _unhandled;
+                    future = (current != null) ? (ArrayList)current.Clone() : new ArrayList();
+                    prefix.Listener = listener;
+                    AddSpecial(future, prefix);
+                }
+                while (Interlocked.CompareExchange(ref _unhandled, future, current) != current);
+                return;
+            }
+
+            if (prefix.Host == "+")
+            {
+                do
+                {
+                    current = _all;
+                    future = (current != null) ? (ArrayList)current.Clone() : new ArrayList();
+                    prefix.Listener = listener;
+                    AddSpecial(future, prefix);
+                }
+                while (Interlocked.CompareExchange(ref _all, future, current) != current);
+                return;
+            }
+
+            Hashtable prefs, p2;
+            do
+            {
+                prefs = _prefixes;
+                if (prefs.ContainsKey(prefix))
+                {
+                    var other = (HttpListener)prefs[prefix];
+                    if (other != listener)
+                        throw new HttpListenerException(400, "There's another listener for " + prefix);
+                    return;
+                }
+
+                p2 = (Hashtable)prefs.Clone();
+                p2[prefix] = listener;
+            }
+            while (Interlocked.CompareExchange(ref _prefixes, p2, prefs) != prefs);
+        }
+
+        public void RemovePrefix(ListenerPrefix prefix, HttpListener listener)
+        {
+            ArrayList current;
+            ArrayList future;
+            if (prefix.Host == "*")
+            {
+                do
+                {
+                    current = _unhandled;
+                    future = (current != null) ? (ArrayList)current.Clone() : new ArrayList();
+                    if (!RemoveSpecial(future, prefix))
+                        break; // Prefix not found
+                }
+                while (Interlocked.CompareExchange(ref _unhandled, future, current) != current);
+                CheckIfRemove();
+                return;
+            }
+
+            if (prefix.Host == "+")
+            {
+                do
+                {
+                    current = _all;
+                    future = (current != null) ? (ArrayList)current.Clone() : new ArrayList();
+                    if (!RemoveSpecial(future, prefix))
+                        break; // Prefix not found
+                }
+                while (Interlocked.CompareExchange(ref _all, future, current) != current);
+                CheckIfRemove();
+                return;
+            }
+
+            Hashtable prefs, p2;
+            do
+            {
+                prefs = _prefixes;
+                if (!prefs.ContainsKey(prefix))
+                    break;
+
+                p2 = (Hashtable)prefs.Clone();
+                p2.Remove(prefix);
+            }
+            while (Interlocked.CompareExchange(ref _prefixes, p2, prefs) != prefs);
+            CheckIfRemove();
         }
 
         private static HttpListener MatchFromList(string path, ArrayList list, out ListenerPrefix prefix)
@@ -292,6 +345,60 @@ using System.Security.Cryptography;
             return false;
         }
 
+        private HttpListener SearchListener(Uri uri, out ListenerPrefix prefix)
+        {
+            prefix = null;
+            if (uri == null)
+                return null;
+
+            var host = uri.Host;
+            var port = uri.Port;
+            var path = WebUtility.UrlDecode(uri.AbsolutePath);
+            var pathSlash = path[path.Length - 1] == '/' ? path : path + "/";
+
+            HttpListener bestMatch = null;
+            var bestLength = -1;
+
+            if (!string.IsNullOrEmpty(host))
+            {
+                var result = _prefixes;
+
+                foreach (ListenerPrefix p in result.Keys)
+                {
+                    var ppath = p.Path;
+                    if (ppath.Length < bestLength)
+                        continue;
+
+                    if (p.Host != host || p.Port != port)
+                        continue;
+
+                    if (path.StartsWith(ppath) || pathSlash.StartsWith(ppath))
+                    {
+                        bestLength = ppath.Length;
+                        bestMatch = (HttpListener)result[p];
+                        prefix = p;
+                    }
+                }
+
+                if (bestLength != -1)
+                    return bestMatch;
+            }
+
+            var list = _unhandled;
+            bestMatch = MatchFromList(path, list, out prefix);
+            if (path != pathSlash && bestMatch == null)
+                bestMatch = MatchFromList(pathSlash, list, out prefix);
+            if (bestMatch != null)
+                return bestMatch;
+
+            list = _all;
+            bestMatch = MatchFromList(path, list, out prefix);
+            if (path != pathSlash && bestMatch == null)
+                bestMatch = MatchFromList(pathSlash, list, out prefix);
+
+            return bestMatch;
+        }
+
         private void CheckIfRemove()
         {
             if (_prefixes.Count > 0)
@@ -306,117 +413,6 @@ using System.Security.Cryptography;
                 return;
 
             EndPointManager.RemoveEndPoint(this, _endpoint);
-        }
-
-        public async Task CloseAsync()
-        {
-            _sock.Dispose();
-            List<HttpConnection> connections;
-
-            lock (_unregistered)
-            {
-                // Clone the list because RemoveConnection can be called from Close
-                connections = new List<HttpConnection>(_unregistered.Keys);
-                _unregistered.Clear();
-            }
-
-            foreach (var c in connections)
-                await c.CloseAsync(true);
-        }
-
-        public void AddPrefix(ListenerPrefix prefix, HttpListener listener)
-        {
-            ArrayList current;
-            ArrayList future;
-
-            if (prefix.Host == "*")
-            {
-                do
-                {
-                    current = _unhandled;
-                    future = (current != null) ? (ArrayList) current.Clone() : new ArrayList();
-                    prefix.Listener = listener;
-                    AddSpecial(future, prefix);
-                }
-                while (Interlocked.CompareExchange(ref _unhandled, future, current) != current);
-                return;
-            }
-
-            if (prefix.Host == "+")
-            {
-                do
-                {
-                    current = _all;
-                    future = (current != null) ? (ArrayList) current.Clone() : new ArrayList();
-                    prefix.Listener = listener;
-                    AddSpecial(future, prefix);
-                }
-                while (Interlocked.CompareExchange(ref _all, future, current) != current);
-                return;
-            }
-
-            Hashtable prefs, p2;
-            do
-            {
-                prefs = _prefixes;
-                if (prefs.ContainsKey(prefix))
-                {
-                    var other = (HttpListener) prefs[prefix];
-                    if (other != listener)
-                        throw new HttpListenerException(400, "There's another listener for " + prefix);
-                    return;
-                }
-
-                p2 = (Hashtable) prefs.Clone();
-                p2[prefix] = listener;
-            }
-            while (Interlocked.CompareExchange(ref _prefixes, p2, prefs) != prefs);
-        }
-
-        public void RemovePrefix(ListenerPrefix prefix, HttpListener listener)
-        {
-            ArrayList current;
-            ArrayList future;
-            if (prefix.Host == "*")
-            {
-                do
-                {
-                    current = _unhandled;
-                    future = (current != null) ? (ArrayList) current.Clone() : new ArrayList();
-                    if (!RemoveSpecial(future, prefix))
-                        break; // Prefix not found
-                }
-                while (Interlocked.CompareExchange(ref _unhandled, future, current) != current);
-                CheckIfRemove();
-                return;
-            }
-
-            if (prefix.Host == "+")
-            {
-                do
-                {
-                    current = _all;
-                    future = (current != null) ? (ArrayList) current.Clone() : new ArrayList();
-                    if (!RemoveSpecial(future, prefix))
-                        break; // Prefix not found
-                }
-                while (Interlocked.CompareExchange(ref _all, future, current) != current);
-                CheckIfRemove();
-                return;
-            }
-
-            Hashtable prefs, p2;
-            do
-            {
-                prefs = _prefixes;
-                if (!prefs.ContainsKey(prefix))
-                    break;
-
-                p2 = (Hashtable) prefs.Clone();
-                p2.Remove(prefix);
-            }
-            while (Interlocked.CompareExchange(ref _prefixes, p2, prefs) != prefs);
-            CheckIfRemove();
         }
     }
 }

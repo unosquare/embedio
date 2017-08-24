@@ -1,12 +1,11 @@
-﻿using System.Linq;
-
-#if !NET47
+﻿#if !NET47
 namespace Unosquare.Net
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Linq;
     using System.Net;
     using System.Reflection;
     using System.Text;
@@ -142,6 +141,7 @@ namespace Unosquare.Net
         #endregion
 
         #region Private Methods
+        private static string[] SplitCookieHeaderValue(string value) => new List<string>(value.SplitHeaderValue(Labs.EmbedIO.Constants.Strings.CookieSplitChars)).ToArray();
 
         private static int CompareCookieWithinSort(Cookie x, Cookie y)
         {
@@ -150,8 +150,8 @@ namespace Unosquare.Net
 
         private static int CompareCookieWithinSorted(Cookie x, Cookie y)
         {
-            var ret = 0;
-            return (ret = x.Version - y.Version) != 0
+            var ret = x.Version - y.Version;
+            return ret != 0
                 ? ret
                 : (ret = x.Name.CompareTo(y.Name)) != 0
                     ? ret
@@ -201,7 +201,7 @@ namespace Unosquare.Net
                         cookies.Add(cookie);
 
                     string name;
-                    var val = String.Empty;
+                    var val = string.Empty;
 
                     var pos = pair.IndexOf('=');
                     if (pos == -1)
@@ -377,12 +377,7 @@ namespace Unosquare.Net
 
             return -1;
         }
-
-        private static string[] SplitCookieHeaderValue(string value)
-        {
-            return new List<string>(value.SplitHeaderValue(',', ';')).ToArray();
-        }
-
+        
         #endregion
 
         #region Internal Methods

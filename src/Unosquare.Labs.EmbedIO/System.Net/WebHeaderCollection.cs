@@ -46,6 +46,7 @@ namespace Unosquare.Net
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Linq;
     using System.Runtime.InteropServices;
     using System.Text;
     using HttpHeaders = Labs.EmbedIO.Constants.Headers;
@@ -128,10 +129,7 @@ namespace Unosquare.Net
                         "Connection",
                         new HttpHeaderInfo(
                             "Connection",
-                            HttpHeaderType.Request |
-                            HttpHeaderType.Response |
-                            HttpHeaderType.Restricted |
-                            HttpHeaderType.MultiValue)
+                            HttpHeaderType.Request | HttpHeaderType.Response | HttpHeaderType.Restricted | HttpHeaderType.MultiValue)
                     },
                     {
                         "ContentEncoding",
@@ -335,10 +333,7 @@ namespace Unosquare.Net
                         "SecWebSocketExtensions",
                         new HttpHeaderInfo(
                             "Sec-WebSocket-Extensions",
-                            HttpHeaderType.Request |
-                            HttpHeaderType.Response |
-                            HttpHeaderType.Restricted |
-                            HttpHeaderType.MultiValueInRequest)
+                            HttpHeaderType.Request | HttpHeaderType.Response | HttpHeaderType.Restricted | HttpHeaderType.MultiValueInRequest)
                     },
                     {
                         "SecWebSocketKey",
@@ -356,10 +351,7 @@ namespace Unosquare.Net
                         "SecWebSocketVersion",
                         new HttpHeaderInfo(
                             "Sec-WebSocket-Version",
-                            HttpHeaderType.Request |
-                            HttpHeaderType.Response |
-                            HttpHeaderType.Restricted |
-                            HttpHeaderType.MultiValueInResponse)
+                            HttpHeaderType.Request | HttpHeaderType.Response | HttpHeaderType.Restricted | HttpHeaderType.MultiValueInResponse)
                     },
                     {
                         "Server",
@@ -555,7 +547,7 @@ namespace Unosquare.Net
         private void Add(string name, string value, bool ignoreRestricted)
         {
             var act = ignoreRestricted
-                ? (Action<string, string>) AddWithoutCheckingNameAndRestricted
+                ? (Action<string, string>)AddWithoutCheckingNameAndRestricted
                 : AddWithoutCheckingName;
 
             DoWithCheckingState(act, CheckName(name), value, true);
@@ -643,11 +635,7 @@ namespace Unosquare.Net
             return value;
         }
 
-        private static string Convert(string key)
-        {
-            HttpHeaderInfo info;
-            return Headers.TryGetValue(key, out info) ? info.Name : string.Empty;
-        }
+        private static string Convert(string key) => Headers.TryGetValue(key, out HttpHeaderInfo info) ? info.Name : string.Empty;
 
         private void DoWithCheckingState(
             Action<string, string> action, string name, string value, bool setState)
@@ -678,13 +666,7 @@ namespace Unosquare.Net
 
         private static HttpHeaderInfo GetHeaderInfo(string name)
         {
-            foreach (var info in Headers.Values)
-            {
-                if (info.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
-                    return info;
-            }
-
-            return null;
+            return Headers.Values.FirstOrDefault(info => info.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
 
         private static bool InternalIsRestricted(string name, bool response)
@@ -708,15 +690,9 @@ namespace Unosquare.Net
 
         #region Internal Methods
 
-        internal static string Convert(System.Net.HttpRequestHeader header)
-        {
-            return Convert(header.ToString());
-        }
+        internal static string Convert(System.Net.HttpRequestHeader header) => Convert(header.ToString());
 
-        internal static string Convert(System.Net.HttpResponseHeader header)
-        {
-            return Convert(header.ToString());
-        }
+        internal static string Convert(System.Net.HttpResponseHeader header) => Convert(header.ToString());
 
         internal void InternalRemove(string name)
         {
@@ -774,11 +750,9 @@ namespace Unosquare.Net
             var info = GetHeaderInfo(headerName);
             return info != null && info.IsMultiValue(response);
         }
-        
+
         #endregion
-
-        #region Protected Methods
-
+        
         /// <summary>
         /// Adds a header to the collection without checking if the header is on
         /// the restricted header list.
@@ -802,13 +776,8 @@ namespace Unosquare.Net
         /// The current <see cref="WebHeaderCollection"/> instance doesn't allow
         /// the <paramref name="headerName"/>.
         /// </exception>
-        public void AddWithoutValidate(string headerName, string headerValue)
-        {
-            Add(headerName, headerValue, true);
-        }
-
-        #endregion
-
+        public void AddWithoutValidate(string headerName, string headerValue) => Add(headerName, headerValue, true);
+        
         #region Public Methods
 
         /// <summary>
@@ -1003,7 +972,7 @@ namespace Unosquare.Net
             var vals = base.GetValues(header);
             return vals != null && vals.Length > 0 ? vals : null;
         }
-        
+
         /// <summary>
         /// Determines whether the specified header can be set for the request or the response.
         /// </summary>
@@ -1194,7 +1163,7 @@ namespace Unosquare.Net
         {
             DoWithCheckingState(SetWithoutCheckingName, CheckName(name), value, true);
         }
-        
+
         /// <summary>
         /// Returns a <see cref="string"/> that represents the current
         /// <see cref="WebHeaderCollection"/>.

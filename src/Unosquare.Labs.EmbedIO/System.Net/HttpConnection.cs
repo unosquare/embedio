@@ -107,26 +107,6 @@ using System.Security.Cryptography.X509Certificates;
         internal X509Certificate2 ClientCertificate { get; }
 #endif
 
-        private void Init()
-        {
-#if SSL
-            if (ssl_stream != null)
-            {
-                ssl_stream.AuthenticateAsServer(cert, true, (SslProtocols)ServicePointManager.SecurityProtocol, false);
-            }
-#endif
-            _contextBound = false;
-            _iStream = null;
-            _oStream = null;
-            Prefix = null;
-            _chunked = false;
-            _ms = new MemoryStream();
-            _position = 0;
-            _inputState = InputState.RequestLine;
-            _lineState = LineState.None;
-            _context = new HttpListenerContext(this);
-        }
-
         public bool IsClosed => _sock == null;
 
         public int Reuses { get; private set; }
@@ -150,6 +130,26 @@ using System.Security.Cryptography.X509Certificates;
         public bool IsSecure { get; }
 
         public ListenerPrefix Prefix { get; set; }
+
+        private void Init()
+        {
+#if SSL
+            if (ssl_stream != null)
+            {
+                ssl_stream.AuthenticateAsServer(cert, true, (SslProtocols)ServicePointManager.SecurityProtocol, false);
+            }
+#endif
+            _contextBound = false;
+            _iStream = null;
+            _oStream = null;
+            Prefix = null;
+            _chunked = false;
+            _ms = new MemoryStream();
+            _position = 0;
+            _inputState = InputState.RequestLine;
+            _lineState = LineState.None;
+            _context = new HttpListenerContext(this);
+        }
 
         private void OnTimeout(object unused)
         {

@@ -93,7 +93,7 @@
 #if NET47
         public static SessionInfo GetSession(this System.Net.WebSockets.WebSocketContext context, WebServer server)
 #else
-        public static SessionInfo GetSession(this Unosquare.Net.WebSocketContext context, WebServer server)
+        public static SessionInfo GetSession(this WebSocketContext context, WebServer server)
 #endif
         {
             return server.SessionModule?.GetSession(context);
@@ -457,12 +457,12 @@
 
         #endregion
 
-        internal static string GetValueOrDefault(this Dictionary<string, string> dict, string key, string defaultValue = null)
+        internal static T GetValueOrDefault<T>(this Dictionary<T, T> dict, T key, T defaultValue = default(T))
         {
-            return dict.ContainsKey(key) ? dict[key] : (defaultValue ?? string.Empty);
+            return dict.ContainsKey(key) ? dict[key] : defaultValue;
         }
-
-        internal static void Map(this Dictionary<string, string> dict, Action<string, string> mapAction)
+        
+        internal static void ForEach<T>(this Dictionary<T, T> dict, Action<T, T> mapAction)
         {
             foreach (var kvp in dict)
             {

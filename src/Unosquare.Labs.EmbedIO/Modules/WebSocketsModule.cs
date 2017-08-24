@@ -426,9 +426,8 @@
         /// <param name="payload">The payload.</param>
         protected virtual void Broadcast(byte[] payload)
         {
-            var sockets = WebSockets.ToArray();
-            foreach (var wsc in sockets)
-                Send(wsc, payload);
+            WebSockets.ToList()
+                .ForEach(wsc => Send(wsc, payload));
         }
 
         /// <summary>
@@ -437,9 +436,8 @@
         /// <param name="payload">The payload.</param>
         protected virtual void Broadcast(string payload)
         {
-            var sockets = WebSockets.ToArray();
-            foreach (var wsc in sockets)
-                Send(wsc, payload);
+            WebSockets.ToList()
+                .ForEach(wsc => Send(wsc, payload));
         }
 
         /// <summary>
@@ -526,11 +524,7 @@
             // if called with false, return.
             if (disposeAll == false) return;
 
-            foreach (var webSocket in _mWebSockets)
-            {
-                Close(webSocket);
-            }
-
+            _mWebSockets.ForEach(Close);
             CollectDisconnected();
         }
 

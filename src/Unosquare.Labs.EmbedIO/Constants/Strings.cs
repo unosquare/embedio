@@ -24,6 +24,11 @@
         internal static readonly char[] CommaSplitChar = { ',' };
 
         /// <summary>
+        /// The cookie split chars for String.Split method calls.
+        /// </summary>
+        internal static readonly char[] CookieSplitChars = {';', ','};
+
+        /// <summary>
         /// The format culture used for header outputs
         /// </summary>
         internal static CultureInfo StandardCultureInfo { get; } =

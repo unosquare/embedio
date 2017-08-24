@@ -58,81 +58,7 @@ namespace Unosquare.Net
     using Labs.EmbedIO;
     using Labs.EmbedIO.Constants;
     using Swan;
-
-    /// <summary>
-    /// Indicates the state of a WebSocket connection.
-    /// </summary>
-    /// <remarks>
-    /// The values of this enumeration are defined in
-    /// <see href="http://www.w3.org/TR/websockets/#dom-websocket-readystate">The WebSocket API</see>.
-    /// </remarks>
-    public enum WebSocketState : ushort
-    {
-        /// <summary>
-        /// Equivalent to numeric value 0. Indicates that the connection hasn't yet been established.
-        /// </summary>
-        Connecting = 0,
-
-        /// <summary>
-        /// Equivalent to numeric value 1. Indicates that the connection has been established,
-        /// and the communication is possible.
-        /// </summary>
-        Open = 1,
-
-        /// <summary>
-        /// Equivalent to numeric value 2. Indicates that the connection is going through
-        /// the closing handshake, or the <c>WebSocket.Close</c> method has been invoked.
-        /// </summary>
-        Closing = 2,
-
-        /// <summary>
-        /// Equivalent to numeric value 3. Indicates that the connection has been closed or
-        /// couldn't be established.
-        /// </summary>
-        Closed = 3
-    }
-
-    /// <summary>
-    /// Indicates the WebSocket frame type.
-    /// </summary>
-    /// <remarks>
-    /// The values of this enumeration are defined in
-    /// <see href="http://tools.ietf.org/html/rfc6455#section-5.2">
-    /// Section 5.2</see> of RFC 6455.
-    /// </remarks>
-    public enum Opcode : byte
-    {
-        /// <summary>
-        /// Equivalent to numeric value 0. Indicates continuation frame.
-        /// </summary>
-        Cont = 0x0,
-
-        /// <summary>
-        /// Equivalent to numeric value 1. Indicates text frame.
-        /// </summary>
-        Text = 0x1,
-
-        /// <summary>
-        /// Equivalent to numeric value 2. Indicates binary frame.
-        /// </summary>
-        Binary = 0x2,
-
-        /// <summary>
-        /// Equivalent to numeric value 8. Indicates connection close frame.
-        /// </summary>
-        Close = 0x8,
-
-        /// <summary>
-        /// Equivalent to numeric value 9. Indicates ping frame.
-        /// </summary>
-        Ping = 0x9,
-
-        /// <summary>
-        /// Equivalent to numeric value 10. Indicates pong frame.
-        /// </summary>
-        Pong = 0xa
-    }
-
+    
     /// <summary>
     /// Implements the WebSocket interface.
     /// </summary>
@@ -142,7 +68,30 @@ namespace Unosquare.Net
     /// </remarks>
     public class WebSocket : IDisposable
     {
-        #region Private Fields
+        /// <summary>
+        /// Represents the empty array of <see cref="byte"/> used internally.
+        /// </summary>
+        internal static readonly byte[] EmptyBytes = new byte[0];
+
+        /// <summary>
+        /// Represents the length used to determine whether the data should be fragmented in sending.
+        /// </summary>
+        /// <remarks>
+        ///   <para>
+        ///   The data will be fragmented if that length is greater than the value of this field.
+        ///   </para>
+        ///   <para>
+        ///   If you would like to change the value, you must set it to a value between <c>125</c> and
+        ///   <c>Int32.MaxValue - 14</c> inclusive.
+        ///   </para>
+        /// </remarks>
+        internal static readonly int FragmentLength = 1016;
+
+        /// <summary>
+        /// Represents the random number generator used internally.
+        /// </summary>
+        internal static readonly RandomNumberGenerator RandomNumber = RandomNumberGenerator.Create();
+
         private const string Guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
         private const string Version = "13";
         private readonly Action<MessageEventArgs> _message;
@@ -181,67 +130,7 @@ namespace Unosquare.Net
         private TcpClient _tcpClient;
         private Uri _uri;        
         private TimeSpan _waitTime;
-
-        #endregion
-
-        #region Internal Fields
-
-        /// <summary>
-        /// Represents the empty array of <see cref="byte"/> used internally.
-        /// </summary>
-        internal static readonly byte[] EmptyBytes;
-
-        /// <summary>
-        /// Represents the length used to determine whether the data should be fragmented in sending.
-        /// </summary>
-        /// <remarks>
-        ///   <para>
-        ///   The data will be fragmented if that length is greater than the value of this field.
-        ///   </para>
-        ///   <para>
-        ///   If you would like to change the value, you must set it to a value between <c>125</c> and
-        ///   <c>Int32.MaxValue - 14</c> inclusive.
-        ///   </para>
-        /// </remarks>
-        internal static readonly int FragmentLength;
-
-        /// <summary>
-        /// Represents the random number generator used internally.
-        /// </summary>
-        internal static readonly RandomNumberGenerator RandomNumber;
-
-        #endregion
-
-        #region Static Constructor
-
-        static WebSocket()
-        {
-            EmptyBytes = new byte[0];
-            FragmentLength = 1016;
-            RandomNumber = RandomNumberGenerator.Create();
-        }
-
-        #endregion
-
-        #region Internal Constructors
-
-        // As server
-        internal WebSocket(WebSocketContext context)
-        {
-            _context = context;
-
-            _message = Messages;
-            IsSecure = context.IsSecureConnection;
-            _stream = context.Stream;
-            _waitTime = TimeSpan.FromSeconds(1);
-
-            Init();
-        }
-
-        #endregion
-
-        #region Public Constructors
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="WebSocket" /> class with
         /// the specified WebSocket URL.
@@ -282,9 +171,20 @@ namespace Unosquare.Net
 
             Init();
         }
+        
+        // As server
+        internal WebSocket(WebSocketContext context)
+        {
+            _context = context;
 
-        #endregion
+            _message = Messages;
+            IsSecure = context.IsSecureConnection;
+            _stream = context.Stream;
+            _waitTime = TimeSpan.FromSeconds(1);
 
+            Init();
+        }
+        
         #region Public Events
 
         /// <summary>
@@ -614,6 +514,26 @@ namespace Unosquare.Net
 
             message = "A wait time is zero or less.";
             return false;
+        }
+
+        // As server
+        private static bool ValidateSecWebSocketKeyHeader(string value) => !string.IsNullOrEmpty(value);
+
+        private static bool ValidateSecWebSocketProtocolClientHeader(string value) => value == null || value.Length > 0;
+
+        // As server
+        private static bool ValidateSecWebSocketVersionClientHeader(string value) => value != null && value == Version;
+
+        // As client
+        private static bool ValidateSecWebSocketVersionServerHeader(string value) => value == null || value == Version;
+
+        // As server
+        private static HttpResponse CreateHandshakeFailureResponse(HttpStatusCode code)
+        {
+            var ret = HttpResponse.CreateCloseResponse(code);
+            ret.Headers["Sec-WebSocket-Version"] = Version;
+
+            return ret;
         }
 
         // As server
@@ -962,47 +882,7 @@ namespace Unosquare.Net
 
             return ret;
         }
-
-        // As client
-        private async Task<bool> ConnectAsync()
-        {
-            string msg;
-            if (!CheckIfAvailable(out msg, true, false, false, true))
-            {
-                msg.Error();
-                Error("An error has occurred in connecting.", null);
-
-                return false;
-            }
-
-            try
-            {
-                lock (_forState)
-                {
-                    _readyState = WebSocketState.Connecting;
-                }
-
-                var handShake = await DoHandshakeAsync();
-
-                if (!handShake)
-                    return false;
-
-                lock (_forState)
-                {
-                    _readyState = WebSocketState.Open;
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-                Fatal("An exception has occurred while connecting.", ex);
-
-                return false;
-            }
-
-            return true;
-        }
-
+        
         // As client
         private string CreateExtensions()
         {
@@ -1024,15 +904,6 @@ namespace Unosquare.Net
             }
 
             return null;
-        }
-
-        // As server
-        private static HttpResponse CreateHandshakeFailureResponse(HttpStatusCode code)
-        {
-            var ret = HttpResponse.CreateCloseResponse(code);
-            ret.Headers["Sec-WebSocket-Version"] = Version;
-
-            return ret;
         }
 
         // As client
@@ -1373,7 +1244,7 @@ namespace Unosquare.Net
             var buff = new StringBuilder(80);
 
             var comp = false;
-            foreach (var e in value.SplitHeaderValue(','))
+            foreach (var e in value.SplitHeaderValue(Strings.CommaSplitChar))
             {
                 var ext = e.Trim();
                 if (!comp && ext.IsCompressionExtension(CompressionMethod.Deflate))
@@ -1614,7 +1485,7 @@ namespace Unosquare.Net
         private async Task<HttpResponse> SendHandshakeRequestAsync()
         {
             var req = CreateHandshakeRequest();
-            var res = await SendHttpRequestAsync(req, 90000);
+            var res = await SendHttpRequestAsync(req);
 
             if (res.IsUnauthorized)
             {
@@ -1685,22 +1556,18 @@ namespace Unosquare.Net
         }
 
         // As client
-        private async Task<HttpResponse> SendHttpRequestAsync(HttpRequest request, int millisecondsTimeout)
+        private Task<HttpResponse> SendHttpRequestAsync(HttpRequest request, int millisecondsTimeout = 90000)
         {
-            $"A request to the server:\n {request.Stringify()}".Debug();
-            var res = await request.GetResponse(_stream, millisecondsTimeout, CancellationToken.None);
-            $"A response to the server:\n {res.Stringify()}".Debug();
-
-            return res;
+            return request.GetResponse(_stream, millisecondsTimeout, CancellationToken.None);
         }
 
         // As server
-        private async Task SendHttpResponseAsync(HttpResponse response)
+        private Task SendHttpResponseAsync(HttpResponse response)
         {
             $"A response to the server:\n {response.Stringify()}".Debug();
             var bytes = response.ToByteArray();
 
-            await _stream.WriteAsync(bytes, 0, bytes.Length);
+            return _stream.WriteAsync(bytes, 0, bytes.Length);
         }
 
 #if PROXY
@@ -1848,10 +1715,7 @@ namespace Unosquare.Net
         }
 
         // As client
-        private bool ValidateSecWebSocketAcceptHeader(string value)
-        {
-            return value != null && value.TrimStart() == CreateResponseKey(_base64Key);
-        }
+        private bool ValidateSecWebSocketAcceptHeader(string value) => value?.TrimStart() == CreateResponseKey(_base64Key);
 
         // As client
         private bool ValidateSecWebSocketExtensionsServerHeader(string value)
@@ -1863,7 +1727,7 @@ namespace Unosquare.Net
                 return false;
 
             var comp = _compression != CompressionMethod.None;
-            foreach (var e in value.SplitHeaderValue(','))
+            foreach (var e in value.SplitHeaderValue(Strings.CommaSplitChar))
             {
                 var ext = e.Trim();
                 if (comp && ext.IsCompressionExtension(_compression))
@@ -1899,22 +1763,7 @@ namespace Unosquare.Net
 
             return true;
         }
-
-        // As server
-        private static bool ValidateSecWebSocketKeyHeader(string value) => !string.IsNullOrEmpty(value);
-
-        private static bool ValidateSecWebSocketProtocolClientHeader(string value) => value == null || value.Length > 0;
-
-        // As server
-        private static bool ValidateSecWebSocketVersionClientHeader(string value) => value != null && value == Version;
-
-        // As client
-        private static bool ValidateSecWebSocketVersionServerHeader(string value) => value == null || value == Version;
-
-        #endregion
-
-        #region Internal Methods
-
+        
         internal static string CheckCloseParameters(CloseStatusCode code, string reason, bool client)
         {
             return code == CloseStatusCode.NoStatus
@@ -1966,15 +1815,9 @@ namespace Unosquare.Net
             return bytes.Length > 125 ? "A message has greater than the allowable max size." : null;
         }
 
-        internal static string CheckSendParameter(byte[] data)
-        {
-            return data == null ? "'data' is null." : null;
-        }
+        internal static string CheckSendParameter(byte[] data) => data == null ? "'data' is null." : null;
         
-        internal static string CheckSendParameter(string data)
-        {
-            return data == null ? "'data' is null." : null;
-        }
+        internal static string CheckSendParameter(string data) => data == null ? "'data' is null." : null;
 
         internal static string CheckSendParameters(Stream stream, int length)
         {
@@ -2147,8 +1990,7 @@ namespace Unosquare.Net
         /// </para></remarks>
         public async Task ConnectAsync(CancellationToken ct = default(CancellationToken))
         {
-            string msg;
-            if (!CheckIfAvailable(out msg, true, false, true, false, false))
+            if (!CheckIfAvailable(out string msg, true, false, true, false, false))
             {
                 msg.Error();
                 Error("An error has occurred in connecting.", null);
@@ -2156,9 +1998,30 @@ namespace Unosquare.Net
                 return;
             }
 
-            var connectResult = await ConnectAsync();
-            if (connectResult)
+            try
+            {
+                lock (_forState)
+                {
+                    _readyState = WebSocketState.Connecting;
+                }
+
+                var handShake = await DoHandshakeAsync();
+
+                if (!handShake)
+                    return;
+
+                lock (_forState)
+                {
+                    _readyState = WebSocketState.Open;
+                }
+                
                 Open();
+            }
+            catch (Exception ex)
+            {
+                ex.Log(nameof(WebSocket));
+                Fatal("An exception has occurred while connecting.", ex);
+            }
         }
 
         /// <summary>
@@ -2193,6 +2056,7 @@ namespace Unosquare.Net
                 return await PingAsync();
             
             var msg = CheckPingParameter(message, out byte[] data);
+
             if (msg != null)
             {
                 msg.Error();

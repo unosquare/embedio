@@ -281,10 +281,10 @@ using System.Threading.Tasks;
             switch (lower)
             {
                 case "accept-language":
-                    UserLanguages = val.Split(','); // yes, only split with a ','
+                    UserLanguages = val.Split(Labs.EmbedIO.Constants.Strings.CommaSplitChar); // yes, only split with a ','
                     break;
                 case "accept":
-                    AcceptTypes = val.Split(','); // yes, only split with a ','
+                    AcceptTypes = val.Split(Labs.EmbedIO.Constants.Strings.CommaSplitChar); // yes, only split with a ','
                     break;
                 case "content-length":
                     try
@@ -316,9 +316,10 @@ using System.Threading.Tasks;
                     if (_cookies == null)
                         _cookies = new CookieCollection();
 
-                    var cookieStrings = val.Split(',', ';');
+                    var cookieStrings = val.Split(Labs.EmbedIO.Constants.Strings.CookieSplitChars);
                     Cookie current = null;
                     var version = 0;
+
                     foreach (var cookieString in cookieStrings)
                     {
                         var str = cookieString.Trim();
@@ -464,7 +465,7 @@ using System.Threading.Tasks;
                 }
 
                 var defaultEncoding = Encoding.UTF8;
-                var acceptCharset = Headers["Accept-Charset"]?.Split(',')
+                var acceptCharset = Headers["Accept-Charset"]?.Split(Labs.EmbedIO.Constants.Strings.CommaSplitChar)
                     .Select(x => x.Trim().Split(';'))
                     .Select(x => new
                     {
