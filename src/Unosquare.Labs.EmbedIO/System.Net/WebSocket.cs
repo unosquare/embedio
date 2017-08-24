@@ -2015,56 +2015,7 @@ namespace Unosquare.Net
 
             Send(opcode, new MemoryStream(data), ct);
         }
-
-        /// <summary>
-        /// Sends binary data from the specified <see cref="Stream" /> asynchronously using
-        /// the WebSocket connection.
-        /// </summary>
-        /// <param name="stream">A <see cref="Stream" /> from which contains the binary data to send.</param>
-        /// <param name="length">An <see cref="int" /> that represents the number of bytes to send.</param>
-        /// <param name="ct">The cancellation token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous of send 
-        /// binary data from specified <see cref="Stream" />
-        /// </returns>
-        /// <remarks>
-        /// This method doesn't wait for the send to be complete.
-        /// </remarks>
-        public async Task SendAsync(Stream stream, int length, CancellationToken ct = default(CancellationToken))
-        {
-            var msg = CheckIfAvailable(_readyState) ??
-                      CheckSendParameters(stream, length);
-
-            if (msg != null)
-            {
-                msg.Error();
-                Error("An error has occurred in sending data.", null);
-
-                return;
-            }
-
-            try
-            {
-                var data = await stream.ReadBytesAsync(length, ct);
-
-                if (data.Length == 0)
-                {
-                    Error("An error has occurred in sending data.", null);
-                    return;
-                }
-
-                if (data.Length < length)
-                    $"The length of the data is less than 'length':\n  expected: {length}\n  actual: {data.Length}".Info();
-
-                Send(Opcode.Binary, new MemoryStream(data), ct);
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket), "Error sending data async.");
-                Error("An exception has occurred while sending data.", ex);
-            }
-        }
-
+        
         /// <summary>
         /// Sets an HTTP <paramref name="cookie"/> to send with
         /// the WebSocket handshake request to the server.
