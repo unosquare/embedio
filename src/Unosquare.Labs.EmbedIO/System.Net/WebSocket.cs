@@ -269,9 +269,8 @@ namespace Unosquare.Net
 
             if (url.Length == 0)
                 throw new ArgumentException("An empty string.", nameof(url));
-
-            string msg;
-            if (!url.TryCreateWebSocketUri(out _uri, out msg))
+            
+            if (!url.TryCreateWebSocketUri(out _uri, out string msg))
                 throw new ArgumentException(msg, nameof(url));
 
             _base64Key = CreateBase64Key();
@@ -310,26 +309,6 @@ namespace Unosquare.Net
 
         #endregion
 
-        #region Internal Properties
-
-        internal CookieCollection CookieCollection { get; private set; }
-        
-        internal bool HasMessage
-        {
-            get
-            {
-                lock (_forMessageEventQueue)
-                    return _messageEventQueue.Count > 0;
-            }
-        }
-
-        // As server
-        internal bool IgnoreExtensions { get; set; } = true;
-
-        internal bool IsConnected => _readyState == WebSocketState.Open || _readyState == WebSocketState.Closing;
-
-        #endregion
-
         #region Public Properties
 
         /// <summary>
@@ -350,8 +329,7 @@ namespace Unosquare.Net
             {
                 lock (_forState)
                 {
-                    string msg;
-                    if (!CheckIfAvailable(out msg, true, false, true, false, false))
+                    if (!CheckIfAvailable(out string msg, true, false, true, false, false))
                     {
                         msg.Error();
                         Error("An error has occurred in setting the compression.", null);
@@ -422,8 +400,7 @@ namespace Unosquare.Net
             {
                 lock (_forState)
                 {
-                    string msg;
-                    if (!CheckIfAvailable(out msg, true, false, true, false, false))
+                    if (!CheckIfAvailable(out string msg, true, false, true, false, false))
                     {
                         msg.Error();
                         Error("An error has occurred in setting the enable redirection.", null);
@@ -490,8 +467,7 @@ namespace Unosquare.Net
             {
                 lock (_forState)
                 {
-                    string msg;
-                    if (!CheckIfAvailable(out msg, true, false, true, false, false))
+                    if (!CheckIfAvailable(out string msg, true, false, true, false, false))
                     {
                         msg.Error();
                         Error("An error has occurred in setting the origin.", null);
@@ -504,9 +480,8 @@ namespace Unosquare.Net
                         _origin = value;
                         return;
                     }
-
-                    Uri origin;
-                    if (!Uri.TryCreate(value, UriKind.Absolute, out origin) || origin.Segments.Length > 1)
+                    
+                    if (!Uri.TryCreate(value, UriKind.Absolute, out Uri origin) || origin.Segments.Length > 1)
                     {
                         "The syntax of an origin must be '<scheme>://<host>[:<port>]'.".Error();
                         Error("An error has occurred in setting the origin.", null);
@@ -609,6 +584,26 @@ namespace Unosquare.Net
 
         #endregion
 
+        #region Internal Properties
+
+        internal CookieCollection CookieCollection { get; private set; }
+
+        internal bool HasMessage
+        {
+            get
+            {
+                lock (_forMessageEventQueue)
+                    return _messageEventQueue.Count > 0;
+            }
+        }
+
+        // As server
+        internal bool IgnoreExtensions { get; set; } = true;
+
+        internal bool IsConnected => _readyState == WebSocketState.Open || _readyState == WebSocketState.Closing;
+
+        #endregion
+
         #region Private Methods
 
         internal static bool CheckWaitTime(TimeSpan time, out string message)
@@ -625,9 +620,8 @@ namespace Unosquare.Net
         private async Task<bool> AcceptHandshakeAsync()
         {
             $"A request from {_context.UserEndPoint}:\n{_context}".Debug();
-
-            string msg;
-            if (!CheckHandshakeRequest(_context, out msg))
+            
+            if (!CheckHandshakeRequest(_context, out string msg))
             {
                 await SendHttpResponseAsync(CreateHandshakeFailureResponse(HttpStatusCode.BadRequest));
 
@@ -864,48 +858,43 @@ namespace Unosquare.Net
         }
 #endif
 
-        private bool CheckReceivedFrame(WebSocketFrame frame, out string message)
+        private void CheckReceivedFrame(WebSocketFrame frame)
         {
-            message = null;
-
             var masked = frame.IsMasked;
+
             if (_client && masked)
             {
-                message = "A frame from the server is masked.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "A frame from the server is masked.");
             }
 
             if (!_client && !masked)
             {
-                message = "A frame from a client isn't masked.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "A frame from a client isn't masked.");
             }
 
             if (_inContinuation && frame.IsData)
             {
-                message = "A data frame has been received while receiving continuation frames.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError,
+                    "A data frame has been received while receiving continuation frames.");
             }
 
             if (frame.IsCompressed && _compression == CompressionMethod.None)
             {
-                message = "A compressed frame has been received without any agreement for it.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError,
+                    "A compressed frame has been received without any agreement for it.");
             }
 
             if (frame.Rsv2 == Rsv.On)
             {
-                message = "The RSV2 of a frame is non-zero without any negotiation for it.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError,
+                    "The RSV2 of a frame is non-zero without any negotiation for it.");
             }
 
             if (frame.Rsv3 == Rsv.On)
             {
-                message = "The RSV3 of a frame is non-zero without any negotiation for it.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError,
+                    "The RSV3 of a frame is non-zero without any negotiation for it.");
             }
-
-            return true;
         }
 
         private async Task InternalCloseAsync(
@@ -1107,9 +1096,8 @@ namespace Unosquare.Net
         {
             await SetClientStream();
             var res = await SendHandshakeRequestAsync();
-
-            string msg;
-            if (!CheckHandshakeResponse(res, out msg))
+            
+            if (!CheckHandshakeResponse(res, out string msg))
             {
                 msg.Error();
                 Fatal("An error has occurred while connecting.", CloseStatusCode.ProtocolError);
@@ -1360,10 +1348,8 @@ namespace Unosquare.Net
 
         private bool ProcessReceivedFrame(WebSocketFrame frame)
         {
-            string msg;
-            if (!CheckReceivedFrame(frame, out msg))
-                throw new WebSocketException(CloseStatusCode.ProtocolError, msg);
-
+            CheckReceivedFrame(frame);
+            
             frame.Unmask();
             return frame.IsFragment
                 ? ProcessFragmentFrame(frame)
@@ -1679,10 +1665,8 @@ namespace Unosquare.Net
                     "No url to redirect is located.".Error();
                     return res;
                 }
-
-                Uri uri;
-                string msg;
-                if (!url.TryCreateWebSocketUri(out uri, out msg))
+                
+                if (!url.TryCreateWebSocketUri(out Uri uri, out string msg))
                 {
                     $"An invalid url to redirect is located: {msg}".Error();
                     return res;
@@ -1917,10 +1901,7 @@ namespace Unosquare.Net
         }
 
         // As server
-        private static bool ValidateSecWebSocketKeyHeader(string value)
-        {
-            return !string.IsNullOrEmpty(value);
-        }
+        private static bool ValidateSecWebSocketKeyHeader(string value) => !string.IsNullOrEmpty(value);
 
         private static bool ValidateSecWebSocketProtocolClientHeader(string value) => value == null || value.Length > 0;
 
@@ -2210,9 +2191,8 @@ namespace Unosquare.Net
         {
             if (string.IsNullOrEmpty(message))
                 return await PingAsync();
-
-            byte[] data;
-            var msg = CheckPingParameter(message, out data);
+            
+            var msg = CheckPingParameter(message, out byte[] data);
             if (msg != null)
             {
                 msg.Error();

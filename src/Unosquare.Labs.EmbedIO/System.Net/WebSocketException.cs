@@ -36,8 +36,6 @@ namespace Unosquare.Net
     /// </summary>
     public class WebSocketException : Exception
     {
-        #region Internal Constructors
-
         internal WebSocketException(Exception innerException = null)
             : this(CloseStatusCode.Abnormal, null, innerException)
         {
@@ -58,6 +56,15 @@ namespace Unosquare.Net
         {
             Code = code;
         }
+
+        /// <summary>
+        /// Gets the status code indicating the cause of the exception.
+        /// </summary>
+        /// <value>
+        /// One of the <see cref="CloseStatusCode"/> enum values, represents the status code
+        /// indicating the cause of the exception.
+        /// </value>
+        public CloseStatusCode Code { get; }
 
         internal static string GetMessage(CloseStatusCode code)
         {
@@ -81,21 +88,6 @@ namespace Unosquare.Net
                                                 ? "An error has occurred during a TLS handshake."
                                                 : string.Empty;
         }
-
-        #endregion
-
-        #region Public Properties
-
-        /// <summary>
-        /// Gets the status code indicating the cause of the exception.
-        /// </summary>
-        /// <value>
-        /// One of the <see cref="CloseStatusCode"/> enum values, represents the status code
-        /// indicating the cause of the exception.
-        /// </value>
-        public CloseStatusCode Code { get; }
-
-        #endregion
     }
 }
 

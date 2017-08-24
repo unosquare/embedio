@@ -33,7 +33,7 @@
  * - David Burhans
  */
 #endregion
- 
+
 namespace Unosquare.Net
 {
     using System;
@@ -45,14 +45,20 @@ namespace Unosquare.Net
 
     internal class HttpRequest : HttpBase
     {
-#region Private Fields
+        #region Private Fields
 
         private bool _websocketRequest;
         private bool _websocketRequestSet;
 
-#endregion
+        #endregion
 
-#region Private Constructors
+        #region Constructors
+
+        internal HttpRequest(string method, string uri)
+          : this(method, uri, HttpVersion.Version11, new NameValueCollection())
+        {
+            Headers["User-Agent"] = "embedio/1.0";
+        }
 
         private HttpRequest(string method, string uri, Version version, NameValueCollection headers)
           : base(version, headers)
@@ -61,19 +67,9 @@ namespace Unosquare.Net
             RequestUri = uri;
         }
 
-#endregion
+        #endregion
 
-#region Internal Constructors
-
-        internal HttpRequest(string method, string uri)
-          : this(method, uri, HttpVersion.Version11, new NameValueCollection())
-        {
-            Headers["User-Agent"] = "embedio/1.0";
-        }
-
-#endregion
-
-#region Public Properties
+        #region Public Properties
 
 #if AUTHENTICATION
         public AuthenticationResponse AuthenticationResponse
@@ -113,9 +109,53 @@ namespace Unosquare.Net
 
         public string RequestUri { get; }
 
-#endregion
+        #endregion
 
-#region Internal Methods
+        #region Public Methods
+
+        public void SetCookies(CookieCollection cookies)
+        {
+            if (cookies == null || cookies.Count == 0)
+                return;
+
+            var buff = new StringBuilder(64);
+            foreach (System.Net.Cookie cookie in cookies)
+            ////.Sorted)
+            {
+                if (!cookie.Expired)
+                    buff.AppendFormat("{0}; ", cookie);
+            }
+
+            var len = buff.Length;
+
+            if (len > 2)
+            {
+                buff.Length = len - 2;
+                Headers["Cookie"] = buff.ToString();
+            }
+        }
+
+        public override string ToString()
+        {
+            var output = new StringBuilder(64);
+            output.AppendFormat("{0} {1} HTTP/{2}{3}", HttpMethod, RequestUri, ProtocolVersion, CrLf);
+
+            var headers = Headers;
+            foreach (var key in headers.AllKeys)
+                output.AppendFormat("{0}: {1}{2}", key, headers[key], CrLf);
+
+            output.Append(CrLf);
+
+            var entity = EntityBody;
+            if (entity.Length > 0)
+                output.Append(entity);
+
+            return output.ToString();
+        }
+
+        #endregion
+
+        #region Internal Methods
 
         internal static HttpRequest CreateConnectRequest(Uri uri)
         {
@@ -147,14 +187,6 @@ namespace Unosquare.Net
             return req;
         }
 
-        internal async Task<HttpResponse> GetResponse(Stream stream, int millisecondsTimeout, CancellationToken ct)
-        {
-            var buff = ToByteArray();
-            stream.Write(buff, 0, buff.Length);
-
-            return await ReadAsync(stream, HttpResponse.Parse, millisecondsTimeout, ct);
-        }
-
         internal static HttpRequest Parse(string[] headerParts)
         {
             var requestLine = headerParts[0].Split(new[] { ' ' }, 3);
@@ -172,55 +204,20 @@ namespace Unosquare.Net
             return new HttpRequest(requestLine[0], requestLine[1], new Version(requestLine[2].Substring(5)), headers);
         }
 
-        internal static async Task<HttpRequest> Read(Stream stream, int millisecondsTimeout)
+        internal static Task<HttpRequest> Read(Stream stream, int millisecondsTimeout)
         {
-            return await ReadAsync(stream, Parse, millisecondsTimeout);
+            return ReadAsync(stream, Parse, millisecondsTimeout);
         }
 
-#endregion
-
-#region Public Methods
-
-        public void SetCookies(CookieCollection cookies)
+        internal Task<HttpResponse> GetResponse(Stream stream, int millisecondsTimeout, CancellationToken ct)
         {
-            if (cookies == null || cookies.Count == 0)
-                return;
+            var buff = ToByteArray();
+            stream.Write(buff, 0, buff.Length);
 
-            var buff = new StringBuilder(64);
-            foreach (System.Net.Cookie cookie in cookies) 
-            ////.Sorted)
-            {
-                if (!cookie.Expired)
-                    buff.AppendFormat("{0}; ", cookie);
-            }
-
-            var len = buff.Length;
-            if (len > 2)
-            {
-                buff.Length = len - 2;
-                Headers["Cookie"] = buff.ToString();
-            }
+            return ReadAsync(stream, HttpResponse.Parse, millisecondsTimeout, ct);
         }
 
-        public override string ToString()
-        {
-            var output = new StringBuilder(64);
-            output.AppendFormat("{0} {1} HTTP/{2}{3}", HttpMethod, RequestUri, ProtocolVersion, CrLf);
-
-            var headers = Headers;
-            foreach (var key in headers.AllKeys)
-                output.AppendFormat("{0}: {1}{2}", key, headers[key], CrLf);
-
-            output.Append(CrLf);
-
-            var entity = EntityBody;
-            if (entity.Length > 0)
-                output.Append(entity);
-
-            return output.ToString();
-        }
-
-#endregion
+        #endregion
     }
 }
 #endif

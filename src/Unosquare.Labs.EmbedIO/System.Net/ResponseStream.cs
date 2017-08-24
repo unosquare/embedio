@@ -39,6 +39,8 @@ namespace Unosquare.Net
     /// <seealso cref="System.IO.Stream" />
     public class ResponseStream : Stream
     {
+        private static readonly byte[] Crlf = { 13, 10 };
+
         private readonly Stream _stream;
         private readonly HttpListenerResponse _response;
         private readonly bool _ignoreErrors;
@@ -137,6 +139,15 @@ namespace Unosquare.Net
             await _response.CloseAsync();
         }
 
+        /// <summary>
+        /// When overridden in a derived class, clears all buffers for this stream and causes any buffered data to be written to the underlying device.
+        /// </summary>
+        public override void Flush()
+        {
+        }
+
+        private static byte[] GetChunkSizeBytes(int size, bool final) => Encoding.UTF8.GetBytes($"{size:x}\r\n{(final ? "\r\n" : string.Empty)}");
+
         private MemoryStream GetHeaders(bool closing)
         {
             // SendHeaders works on shared headers
@@ -148,20 +159,6 @@ namespace Unosquare.Net
                 _response.SendHeaders(closing, ms);
                 return ms;
             }
-        }
-
-        /// <summary>
-        /// When overridden in a derived class, clears all buffers for this stream and causes any buffered data to be written to the underlying device.
-        /// </summary>
-        public override void Flush()
-        {
-        }
-
-        private static readonly byte[] Crlf = { 13, 10 };
-
-        private static byte[] GetChunkSizeBytes(int size, bool final)
-        {
-            return Encoding.UTF8.GetBytes($"{size:x}\r\n{(final ? "\r\n" : string.Empty)}");
         }
 
         internal void InternalWrite(byte[] buffer, int offset, int count)

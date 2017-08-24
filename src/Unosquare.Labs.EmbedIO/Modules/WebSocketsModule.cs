@@ -128,10 +128,8 @@
         {
             if (string.IsNullOrWhiteSpace(path))
                 throw new ArgumentNullException(nameof(path));
-            if (server == null)
-                throw new ArgumentNullException(nameof(server));
 
-            _serverMap[path] = server;
+            _serverMap[path] = server ?? throw new ArgumentNullException(nameof(server));
         }
     }
 

@@ -1,4 +1,6 @@
-﻿#if !NET47
+﻿using System.Linq;
+
+#if !NET47
 namespace Unosquare.Net
 {
     using System;
@@ -79,6 +81,14 @@ namespace Unosquare.Net
         /// The default value is <c>false</c>.
         /// </value>
         public bool IsSynchronized => false;
+        
+        /// <summary>
+        /// Gets an object used to synchronize access to the collection.
+        /// </summary>
+        /// <value>
+        /// An <see cref="Object"/> used to synchronize access to the collection.
+        /// </value>
+        public object SyncRoot => _sync ?? (_sync = ((ICollection)_list).SyncRoot);
 
         /// <summary>
         /// Gets the <see cref="Cookie"/> at the specified <paramref name="index"/> from
@@ -125,23 +135,9 @@ namespace Unosquare.Net
                 if (name == null)
                     throw new ArgumentNullException(nameof(name));
 
-                foreach (var cookie in Sorted)
-                {
-                    if (cookie.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
-                        return cookie;
-                }
-
-                return null;
+                return Sorted.FirstOrDefault(cookie => cookie.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
             }
         }
-
-        /// <summary>
-        /// Gets an object used to synchronize access to the collection.
-        /// </summary>
-        /// <value>
-        /// An <see cref="Object"/> used to synchronize access to the collection.
-        /// </value>
-        public object SyncRoot => _sync ?? (_sync = ((ICollection) _list).SyncRoot);
 
         #endregion
 
@@ -267,13 +263,12 @@ namespace Unosquare.Net
                     if (i < pairs.Length - 1)
                         buff.AppendFormat(", {0}", pairs[++i].Trim());
 
-                    DateTime expires;
                     if (!DateTime.TryParseExact(
                         buff.ToString(),
-                        new[] {"ddd, dd'-'MMM'-'yyyy HH':'mm':'ss 'GMT'", "r"},
+                        new[] { "ddd, dd'-'MMM'-'yyyy HH':'mm':'ss 'GMT'", "r" },
                         new CultureInfo("en-US"),
                         DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal,
-                        out expires))
+                        out DateTime expires))
                         expires = DateTime.Now;
 
                     if (cookie != null && cookie.Expires == DateTime.MinValue)

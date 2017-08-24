@@ -48,6 +48,7 @@ using System.Threading.Tasks;
     public sealed class HttpListenerRequest
     {
         private static readonly byte[] _100Continue = Encoding.UTF8.GetBytes("HTTP/1.1 100 Continue\r\n\r\n");
+        private static readonly char[] Separators = { ' ' };
 
         private readonly HttpListenerContext _context;
         private Encoding _contentEncoding;
@@ -71,8 +72,6 @@ using System.Threading.Tasks;
             ProtocolVersion = HttpVersion.Version10;
         }
 
-        private static readonly char[] Separators = { ' ' };
-
         internal void SetRequestLine(string req)
         {
             var parts = req.Split(Separators, 3);
@@ -83,6 +82,7 @@ using System.Threading.Tasks;
             }
 
             HttpMethod = parts[0];
+
             foreach (var c in HttpMethod)
             {
                 var ic = (int)c;
@@ -114,35 +114,6 @@ using System.Threading.Tasks;
             catch
             {
                 _context.ErrorMessage = "Invalid request line (version).";
-            }
-        }
-
-        private void CreateQueryString(string query)
-        {
-            if (string.IsNullOrEmpty(query))
-            {
-                QueryString = new NameValueCollection(1);
-                return;
-            }
-
-            QueryString = new NameValueCollection();
-            if (query[0] == '?')
-                query = query.Substring(1);
-            var components = query.Split('&');
-            foreach (var kv in components)
-            {
-                var pos = kv.IndexOf('=');
-                if (pos == -1)
-                {
-                    QueryString.Add(null, WebUtility.UrlDecode(kv));
-                }
-                else
-                {
-                    var key = WebUtility.UrlDecode(kv.Substring(0, pos));
-                    var val = WebUtility.UrlDecode(kv.Substring(pos + 1));
-
-                    QueryString.Add(key, val);
-                }
             }
         }
 
@@ -187,6 +158,35 @@ using System.Threading.Tasks;
             }
 
             return (c == 'g' && scheme == "gopher") || (c == 'm' && scheme == "mailto");
+        }
+
+        private void CreateQueryString(string query)
+        {
+            if (string.IsNullOrEmpty(query))
+            {
+                QueryString = new NameValueCollection(1);
+                return;
+            }
+
+            QueryString = new NameValueCollection();
+            if (query[0] == '?')
+                query = query.Substring(1);
+            var components = query.Split('&');
+            foreach (var kv in components)
+            {
+                var pos = kv.IndexOf('=');
+                if (pos == -1)
+                {
+                    QueryString.Add(null, WebUtility.UrlDecode(kv));
+                }
+                else
+                {
+                    var key = WebUtility.UrlDecode(kv.Substring(0, pos));
+                    var val = WebUtility.UrlDecode(kv.Substring(pos + 1));
+
+                    QueryString.Add(key, val);
+                }
+            }
         }
 
         internal void FinishInitialization()
@@ -743,6 +743,6 @@ using System.Threading.Tasks;
         /// </summary>
         /// <devdoc>[To be supplied.]</devdoc>
         public static readonly Version Version11 = new Version(1, 1);
-    }// class HttpVersion
+    }
 }
 #endif

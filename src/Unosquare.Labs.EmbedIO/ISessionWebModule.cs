@@ -21,6 +21,14 @@
         /// The sessions.
         /// </value>
         IReadOnlyDictionary<string, SessionInfo> Sessions { get; }
+        
+        /// <summary>
+        /// Gets or sets the expiration time for the sessions.
+        /// </summary>
+        /// <value>
+        /// The expiration.
+        /// </value>
+        TimeSpan Expiration { get; set; }
 
         /// <summary>
         /// Gets a session object for the given server context.
@@ -55,13 +63,5 @@
 #else
         SessionInfo GetSession(WebSocketContext context);
 #endif
-
-        /// <summary>
-        /// Gets or sets the expiration time for the sessions.
-        /// </summary>
-        /// <value>
-        /// The expiration.
-        /// </value>
-        TimeSpan Expiration { get; set; }
     }
 }
