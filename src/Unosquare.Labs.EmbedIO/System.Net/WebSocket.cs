@@ -58,7 +58,7 @@ namespace Unosquare.Net
     using Labs.EmbedIO;
     using Labs.EmbedIO.Constants;
     using Swan;
-    
+
     /// <summary>
     /// Implements the WebSocket interface.
     /// </summary>
@@ -96,7 +96,7 @@ namespace Unosquare.Net
         private const string Version = "13";
         private readonly Action<MessageEventArgs> _message;
         private readonly bool _client;
-        private string _base64Key;        
+        private string _base64Key;
         private CompressionMethod _compression;
         private WebSocketContext _context;
         private bool _enableRedirection;
@@ -107,17 +107,11 @@ namespace Unosquare.Net
         private object _forState;
         private MemoryStream _fragmentsBuffer;
         private bool _fragmentsCompressed;
-        private Opcode _fragmentsOpcode;        
+        private Opcode _fragmentsOpcode;
         private bool _inContinuation;
-        private volatile bool _inMessage;        
+        private volatile bool _inMessage;
         private Queue<MessageEventArgs> _messageEventQueue;
         private string _origin;
-#if AUTHENTICATION
-        private AuthenticationChallenge _authChallenge;
-        private uint _nonceCount;
-        private bool _preAuth;
-        private NetworkCredential _proxyCredentials;
-#endif
 #if PROXY
         private Uri _proxyUri;
 #endif
@@ -128,9 +122,9 @@ namespace Unosquare.Net
 #endif        
         private Stream _stream;
         private TcpClient _tcpClient;
-        private Uri _uri;        
+        private Uri _uri;
         private TimeSpan _waitTime;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WebSocket" /> class with
         /// the specified WebSocket URL.
@@ -158,7 +152,7 @@ namespace Unosquare.Net
 
             if (url.Length == 0)
                 throw new ArgumentException("An empty string.", nameof(url));
-            
+
             if (!url.TryCreateWebSocketUri(out _uri, out string msg))
                 throw new ArgumentException(msg, nameof(url));
 
@@ -171,7 +165,7 @@ namespace Unosquare.Net
 
             Init();
         }
-        
+
         // As server
         internal WebSocket(WebSocketContext context)
         {
@@ -184,7 +178,7 @@ namespace Unosquare.Net
 
             Init();
         }
-        
+
         #region Public Events
 
         /// <summary>
@@ -259,17 +253,6 @@ namespace Unosquare.Net
                         yield return cookie;
             }
         }
-
-#if AUTHENTICATION
-/// <summary>
-/// Gets the credentials for the HTTP authentication (Basic/Digest).
-/// </summary>
-/// <value>
-/// A <see cref="NetworkCredential"/> that represents the credentials for
-/// the authentication. The default value is <see langword="null"/>.
-/// </value>
-        public NetworkCredential Credentials { get; }
-#endif
 
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="WebSocket"/> emits
@@ -380,7 +363,7 @@ namespace Unosquare.Net
                         _origin = value;
                         return;
                     }
-                    
+
                     if (!Uri.TryCreate(value, UriKind.Absolute, out Uri origin) || origin.Segments.Length > 1)
                     {
                         "The syntax of an origin must be '<scheme>://<host>[:<port>]'.".Error();
@@ -540,7 +523,7 @@ namespace Unosquare.Net
         private async Task<bool> AcceptHandshakeAsync()
         {
             $"A request from {_context.UserEndPoint}:\n{_context}".Debug();
-            
+
             if (!CheckHandshakeRequest(_context, out string msg))
             {
                 await SendHttpResponseAsync(CreateHandshakeFailureResponse(HttpStatusCode.BadRequest));
@@ -550,7 +533,7 @@ namespace Unosquare.Net
 
                 return false;
             }
-            
+
             _base64Key = _context.Headers["Sec-WebSocket-Key"];
 
             if (!IgnoreExtensions)
@@ -708,34 +691,6 @@ namespace Unosquare.Net
             return CheckIfAvailable(out message, connecting, open, closing, closed);
         }
 
-#if AUTHENTICATION
-        private static bool CheckParametersForSetCredentials(
-          string username, string password, out string message
-        )
-        {
-            message = null;
-
-            if (string.IsNullOrEmpty(username))
-                return true;
-
-            if (username.Contains(':') || !username.IsText())
-            {
-                message = "'username' contains an invalid character.";
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(password))
-                return true;
-
-            if (!password.IsText())
-            {
-                message = "'password' contains an invalid character.";
-                return false;
-            }
-
-            return true;
-        }
-#endif
 #if PROXY
         private static bool CheckParametersForSetProxy(
             string url, string username, string password, out string message
@@ -818,10 +773,10 @@ namespace Unosquare.Net
         }
 
         private async Task InternalCloseAsync(
-            CloseEventArgs e, 
-            bool send = true, 
+            CloseEventArgs e,
+            bool send = true,
             bool receive = true,
-            bool received = false, 
+            bool received = false,
             CancellationToken ct = default(CancellationToken))
         {
             lock (_forState)
@@ -882,7 +837,7 @@ namespace Unosquare.Net
 
             return ret;
         }
-        
+
         // As client
         private string CreateExtensions()
         {
@@ -923,22 +878,6 @@ namespace Unosquare.Net
 
             headers["Sec-WebSocket-Version"] = Version;
 
-#if AUTHENTICATION
-            AuthenticationResponse authRes = null;
-            if (_authChallenge != null && _credentials != null)
-            {
-                authRes = new AuthenticationResponse(_authChallenge, _credentials, _nonceCount);
-                _nonceCount = authRes.NonceCount;
-            }
-            else if (_preAuth)
-            {
-                authRes = new AuthenticationResponse(_credentials);
-            }
-
-            if (authRes != null)
-                headers["Authorization"] = authRes.ToString();
-#endif
-
             if (CookieCollection.Count > 0)
                 ret.SetCookies(CookieCollection);
 
@@ -961,13 +900,13 @@ namespace Unosquare.Net
 
             return ret;
         }
-        
+
         // As client
         private async Task<bool> DoHandshakeAsync()
         {
             await SetClientStream();
             var res = await SendHandshakeRequestAsync();
-            
+
             if (!CheckHandshakeResponse(res, out string msg))
             {
                 msg.Error();
@@ -1205,7 +1144,7 @@ namespace Unosquare.Net
 
             if (EmitOnPing)
                 EnqueueToMessageEventQueue(new MessageEventArgs(frame));
- 
+
             return true;
         }
 
@@ -1220,7 +1159,7 @@ namespace Unosquare.Net
         private bool ProcessReceivedFrame(WebSocketFrame frame)
         {
             CheckReceivedFrame(frame);
-            
+
             frame.Unmask();
             return frame.IsFragment
                 ? ProcessFragmentFrame(frame)
@@ -1489,39 +1428,7 @@ namespace Unosquare.Net
 
             if (res.IsUnauthorized)
             {
-#if AUTHENTICATION
-                var chal = res.Headers["WWW-Authenticate"];
-                Log.Warn(String.Format("Received an authentication requirement for '{0}'.", chal));
-                if (chal.IsNullOrEmpty())
-                {
-                    Log.Error("No authentication challenge is specified.");
-                    return res;
-                }
-
-                _authChallenge = AuthenticationChallenge.Parse(chal);
-                if (_authChallenge == null)
-                {
-                    Log.Error("An invalid authentication challenge is specified.");
-                    return res;
-                }
-
-                if (_credentials != null &&
-                    (!_preAuth || _authChallenge.Scheme == AuthenticationSchemes.Digest))
-                {
-                    if (res.HasConnectionClose)
-                    {
-                        releaseClientResources();
-                        await SetClientStream();
-                    }
-
-                    var authRes = new AuthenticationResponse(_authChallenge, _credentials, _nonceCount);
-                    _nonceCount = authRes.NonceCount;
-                    req.Headers["Authorization"] = authRes.ToString();
-                    res = sendHttpRequest(req, 15000);
-                }
-#else
                 throw new InvalidOperationException("Authentication is not supported");
-#endif
             }
 
             if (!res.IsRedirect) return res;
@@ -1536,7 +1443,7 @@ namespace Unosquare.Net
                     "No url to redirect is located.".Error();
                     return res;
                 }
-                
+
                 if (!url.TryCreateWebSocketUri(out Uri uri, out string msg))
                 {
                     $"An invalid url to redirect is located: {msg}".Error();
@@ -1763,7 +1670,7 @@ namespace Unosquare.Net
 
             return true;
         }
-        
+
         internal static string CheckCloseParameters(CloseStatusCode code, string reason, bool client)
         {
             return code == CloseStatusCode.NoStatus
@@ -1816,7 +1723,7 @@ namespace Unosquare.Net
         }
 
         internal static string CheckSendParameter(byte[] data) => data == null ? "'data' is null." : null;
-        
+
         internal static string CheckSendParameter(string data) => data == null ? "'data' is null." : null;
 
         internal static string CheckSendParameters(Stream stream, int length)
@@ -1840,7 +1747,7 @@ namespace Unosquare.Net
 
             _readyState = WebSocketState.Closed;
         }
-        
+
         // As server
         internal async Task CloseAsync(CloseEventArgs e, byte[] frameAsBytes, bool receive, CancellationToken ct = default(CancellationToken))
         {
@@ -2014,7 +1921,7 @@ namespace Unosquare.Net
                 {
                     _readyState = WebSocketState.Open;
                 }
-                
+
                 Open();
             }
             catch (Exception ex)
@@ -2054,7 +1961,7 @@ namespace Unosquare.Net
         {
             if (string.IsNullOrEmpty(message))
                 return await PingAsync();
-            
+
             var msg = CheckPingParameter(message, out byte[] data);
 
             if (msg != null)
@@ -2069,9 +1976,9 @@ namespace Unosquare.Net
         }
 
         private static string CheckIfAvailable(
-            WebSocketState state, 
-            bool connecting = false, 
-            bool open = true, 
+            WebSocketState state,
+            bool connecting = false,
+            bool open = true,
             bool closing = false,
             bool closed = false)
         {
@@ -2191,72 +2098,6 @@ namespace Unosquare.Net
             }
         }
 
-#if AUTHENTICATION
-/// <summary>
-/// Sets a pair of <paramref name="username"/> and <paramref name="password"/> for
-/// the HTTP authentication (Basic/Digest).
-/// </summary>
-/// <param name="username">
-///   <para>
-///   A <see cref="string"/> that represents the user name used to authenticate.
-///   </para>
-///   <para>
-///   If <paramref name="username"/> is <see langword="null"/> or empty,
-///   the credentials will be initialized and not be sent.
-///   </para>
-/// </param>
-/// <param name="password">
-/// A <see cref="string"/> that represents the password for
-/// <paramref name="username"/> used to authenticate.
-/// </param>
-/// <param name="preAuth">
-/// <c>true</c> if the <see cref="WebSocket"/> sends the credentials for
-/// the Basic authentication with the first handshake request to the server;
-/// otherwise, <c>false</c>.
-/// </param>
-        public void SetCredentials(string username, string password, bool preAuth)
-        {
-            string msg;
-            if (!checkIfAvailable(true, false, true, false, false, true, out msg))
-            {
-                Log.Error(msg);
-                Error("An error has occurred in setting the credentials.", null);
-
-                return;
-            }
-
-            if (!CheckParametersForSetCredentials(username, password, out msg))
-            {
-                Log.Error(msg);
-                Error("An error has occurred in setting the credentials.", null);
-
-                return;
-            }
-
-            lock (_forState)
-            {
-                if (!checkIfAvailable(true, false, false, true, out msg))
-                {
-                    Log.Error(msg);
-                    Error("An error has occurred in setting the credentials.", null);
-
-                    return;
-                }
-
-                if (string.IsNullOrEmpty(username))
-                {
-                    Log.WarnFormat("The credentials are initialized.");
-                    Credentials = null;
-                    _preAuth = false;
-
-                    return;
-                }
-
-                Credentials = new NetworkCredential(username, password, _uri.PathAndQuery);
-                _preAuth = preAuth;
-            }
-        }
-#endif
 #if PROXY
 /// <summary>
 /// Sets the HTTP proxy server URL to connect through, and if necessary,

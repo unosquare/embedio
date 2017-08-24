@@ -46,18 +46,6 @@ namespace Unosquare.Net
             Response = new HttpListenerResponse(this);
         }
 
-        internal HttpListener Listener { get; set; }
-
-        internal int ErrorStatus { get; set; } = 400;
-
-        internal string ErrorMessage { get; set; }
-
-        internal bool HaveError => ErrorMessage != null;
-
-        internal HttpConnection Connection { get; }
-
-        internal Guid Id { get; }
-
         /// <summary>
         /// Gets the request.
         /// </summary>
@@ -73,60 +61,17 @@ namespace Unosquare.Net
         /// </summary>
         public IPrincipal User { get; private set; }
 
-#if AUTHENTICATION
-        internal void ParseAuthentication(AuthenticationSchemes expectedSchemes)
-        {
-            if (expectedSchemes == AuthenticationSchemes.Anonymous)
-                return;
+        internal HttpListener Listener { get; set; }
 
-            // TODO: Handle NTLM/Digest modes
-            var header = Request.Headers["Authorization"];
-            if (header == null || header.Length < 2)
-                return;
+        internal int ErrorStatus { get; set; } = 400;
 
-            var authenticationData = header.Split(new[] {' '}, 2);
-            if (string.Compare(authenticationData[0], "basic", StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                User = ParseBasicAuthentication(authenticationData[1]);
-            }
-            // TODO: throw if malformed -> 400 bad request
-        }
+        internal string ErrorMessage { get; set; }
 
-        internal IPrincipal ParseBasicAuthentication(string authData)
-        {
-            try
-            {
-                // Basic AUTH Data is a formatted Base64 String
-                //string domain = null;
-                var authString = Encoding.UTF8.GetString(Convert.FromBase64String(authData));
+        internal bool HaveError => ErrorMessage != null;
 
-                // The format is DOMAIN\username:password
-                // Domain is optional
+        internal HttpConnection Connection { get; }
 
-                var pos = authString.IndexOf(':');
-
-                // parse the password off the end
-                var password = authString.Substring(pos + 1);
-
-                // discard the password
-                authString = authString.Substring(0, pos);
-
-                // check if there is a domain
-                pos = authString.IndexOf('\\');
-
-                var user = pos > 0 ? authString.Substring(pos) : authString;
-
-                var identity = new HttpListenerBasicIdentity(user, password);
-                // TODO: What are the roles MS sets
-                return new GenericPrincipal(identity, new string[0]);
-            }
-            catch (Exception)
-            {
-                // Invalid auth data is swallowed silently
-                return null;
-            }
-        }
-#endif
+        internal Guid Id { get; }
 
         /// <summary>
         /// Accepts a WebSocket handshake request.

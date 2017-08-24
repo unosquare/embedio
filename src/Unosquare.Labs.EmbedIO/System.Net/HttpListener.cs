@@ -35,68 +35,30 @@ namespace Unosquare.Net
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-#if AUTHENTICATION
-using System.Security.Authentication.ExtendedProtection;
-#endif
-
-#if AUTHENTICATION
-/// <summary>
-/// A delegate that selects the authentication scheme based on the supplied request
-/// </summary>
-/// <param name="httpRequest">The HTTP request.</param>
-/// <returns></returns>
-    public delegate AuthenticationSchemes AuthenticationSchemeSelector(HttpListenerRequest httpRequest);
-#endif
-
+    
     /// <summary>
     /// The MONO implementation of the standard Http Listener class
     /// </summary>
-    /// <seealso cref="System.IDisposable" />
+    /// <seealso cref="IDisposable" />
     public sealed class HttpListener : IDisposable
     {
-#if AUTHENTICATION
-        AuthenticationSchemes _authSchemes;
-        AuthenticationSchemeSelector _authSelector;
-#endif
         private readonly ConcurrentDictionary<Guid, HttpListenerContext> _ctxQueue;
         private readonly Hashtable _connections;
-        private readonly HttpListenerPrefixCollection _prefixes;
-        private string _realm;
-        private bool _ignoreWriteExceptions;
-        private bool _unsafeNtlmAuth;
         private bool _disposed;
 #if SSL
         IMonoTlsProvider tlsProvider;
         MSI.MonoTlsSettings tlsSettings;
         X509Certificate certificate;
 #endif        
-
-        // ServiceNameStore defaultServiceNames;
-        // ExtendedProtectionPolicy _extendedProtectionPolicy;
-        // ExtendedProtectionSelector _extendedProtectionSelectorDelegate = null;    
-#if AUTHENTICATION
-        /// <summary>
-        /// The EPP selector delegate for the supplied request
-        /// </summary>
-        /// <param name="request">The request.</param>
-        /// <returns></returns>
-        public delegate ExtendedProtectionPolicy ExtendedProtectionSelector(HttpListenerRequest request);
-#endif
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpListener"/> class.
         /// </summary>
         public HttpListener()
         {
-            _prefixes = new HttpListenerPrefixCollection(this);
+            Prefixes = new HttpListenerPrefixCollection(this);
             _connections = Hashtable.Synchronized(new Hashtable());
             _ctxQueue = new ConcurrentDictionary<Guid, HttpListenerContext>();
-#if AUTHENTICATION
-            _authSchemes = AuthenticationSchemes.Anonymous;
-#endif
-            
-            // defaultServiceNames = new ServiceNameStore();
-            // _extendedProtectionPolicy = new ExtendedProtectionPolicy(PolicyEnforcement.Never);
         }
 
 #if SSL
@@ -155,85 +117,29 @@ using System.Security.Authentication.ExtendedProtection;
             }
         }
 #endif
-
-#if AUTHENTICATION
-/// <summary>
-/// Gets or sets the authentication schemes.
-/// TODO: Digest, NTLM and Negotiate require ControlPrincipal
-/// </summary>
-/// <value>
-/// The authentication schemes.
-/// </value>
-        public AuthenticationSchemes AuthenticationSchemes
-        {
-            get { return _authSchemes; }
-            set
-            {
-                CheckDisposed();
-                _authSchemes = value;
-            }
-        }
-        /// <summary>
-        /// Gets or sets the authentication scheme selector delegate.
-        /// </summary>
-        /// <value>
-        /// The authentication scheme selector delegate.
-        /// </value>
-        public AuthenticationSchemeSelector AuthenticationSchemeSelectorDelegate
-        {
-            get { return _authSelector; }
-            set
-            {
-                CheckDisposed();
-                _authSelector = value;
-            }
-        }
-#endif
-
-        // public ExtendedProtectionSelector ExtendedProtectionSelectorDelegate
-        // {
-        //    get { return extendedProtectionSelectorDelegate; }
-        //    set
-        //    {
-        //        CheckDisposed();
-        //        if (value == null)
-        //            throw new ArgumentNullException();
-
-                  // if (!AuthenticationManager.OSSupportsExtendedProtection)
-        //            throw new PlatformNotSupportedException(SR.GetString(SR.security_ExtendedProtection_NoOSSupport));
-
-                  // extendedProtectionSelectorDelegate = value;
-        //    }
-        // }
-
+        
         /// <summary>
         /// Gets or sets a value indicating whether the listener should ignore write exceptions.
         /// </summary>
         /// <value>
         /// <c>true</c> if [ignore write exceptions]; otherwise, <c>false</c>.
         /// </value>
-        public bool IgnoreWriteExceptions
-        {
-            get
-            {
-                return _ignoreWriteExceptions;
-            }
-
-            set
-            {
-                CheckDisposed();
-                _ignoreWriteExceptions = value;
-            }
-        }
+        public bool IgnoreWriteExceptions { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether this instance is listening.
         /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is listening; otherwise, <c>false</c>.
+        /// </value>
         public bool IsListening { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether this instance is supported.
         /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is supported; otherwise, <c>false</c>.
+        /// </value>
         public static bool IsSupported => true;
 
         /// <summary>
@@ -242,14 +148,7 @@ using System.Security.Authentication.ExtendedProtection;
         /// <value>
         /// The prefixes.
         /// </value>
-        public HttpListenerPrefixCollection Prefixes
-        {
-            get
-            {
-                CheckDisposed();
-                return _prefixes;
-            }
-        }
+        public HttpListenerPrefixCollection Prefixes { get; }
 
         /// <summary>
         /// Gets or sets the realm.
@@ -257,40 +156,8 @@ using System.Security.Authentication.ExtendedProtection;
         /// <value>
         /// The realm.
         /// </value>
-        public string Realm
-        {
-            get
-            {
-                return _realm;
-            }
-
-            set
-            {
-                CheckDisposed();
-                _realm = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [unsafe connection NTLM authentication].
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if [unsafe connection NTLM authentication]; otherwise, <c>false</c>.
-        /// </value>
-        public bool UnsafeConnectionNtlmAuthentication
-        {
-            get
-            {
-                return _unsafeNtlmAuth;
-            }
-
-            set
-            {
-                CheckDisposed();
-                _unsafeNtlmAuth = value;
-            }
-        }
-
+        public string Realm { get; set; }
+        
         /// <summary>
         /// Aborts this listener.
         /// </summary>
@@ -325,11 +192,10 @@ using System.Security.Authentication.ExtendedProtection;
             _disposed = true;
         }
 
-        private async Task CloseAsync(bool force)
+        private Task CloseAsync(bool force)
         {
-            CheckDisposed();
             EndPointManager.RemoveListener(this);
-            await CleanupAsync(force);
+            return CleanupAsync(force);
         }
 
         private async Task CleanupAsync(bool closeExisting)
@@ -361,20 +227,12 @@ using System.Security.Authentication.ExtendedProtection;
                 }
             }
         }
-
-#if AUTHENTICATION
-        internal AuthenticationSchemes SelectAuthenticationScheme(HttpListenerContext context)
-        {
-            return AuthenticationSchemeSelectorDelegate?.Invoke(context.Request) ?? _authSchemes;
-        }
-#endif
-
+        
         /// <summary>
         /// Starts this listener.
         /// </summary>
         public void Start()
         {
-            CheckDisposed();
             if (IsListening)
                 return;
 
@@ -385,11 +243,10 @@ using System.Security.Authentication.ExtendedProtection;
         /// <summary>
         /// Stops this listener.
         /// </summary>
-        public async Task StopAsync()
+        public Task StopAsync()
         {
-            CheckDisposed();
             IsListening = false;
-            await CloseAsync(false);
+            return CloseAsync(false);
         }
 
         void IDisposable.Dispose()
@@ -412,22 +269,14 @@ using System.Security.Authentication.ExtendedProtection;
             {
                 foreach (var key in _ctxQueue.Keys)
                 {
-                    HttpListenerContext context;
-
-                    if (_ctxQueue.TryRemove(key, out context))
+                    if (_ctxQueue.TryRemove(key, out HttpListenerContext context))
                         return context;
                 }
 
                 await Task.Delay(10);
             }
         }
-
-        internal void CheckDisposed()
-        {
-            // if (disposed)
-            //    throw new ObjectDisposedException(GetType().ToString());
-        }
-
+        
         internal void RegisterContext(HttpListenerContext context)
         {
             if (_ctxQueue.TryAdd(context.Id, context) == false)

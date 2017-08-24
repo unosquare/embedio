@@ -70,20 +70,7 @@ namespace Unosquare.Net
         #endregion
 
         #region Public Properties
-
-#if AUTHENTICATION
-        public AuthenticationResponse AuthenticationResponse
-        {
-            get
-            {
-                var res = Headers["Authorization"];
-                return res != null && res.Length > 0
-                       ? AuthenticationResponse.Parse(res)
-                       : null;
-            }
-        }
-#endif
-
+        
         public CookieCollection Cookies => Headers.GetCookies(false);
 
         public string HttpMethod { get; }
