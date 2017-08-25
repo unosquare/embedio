@@ -205,10 +205,12 @@ using System.Threading.Tasks;
         /// </summary>
         public bool IsLocal => LocalEndPoint.Address.Equals(RemoteEndPoint.Address);
 
+#if SSL
         /// <summary>
         /// Gets a value indicating whether this request is under a secure connection.
         /// </summary>
         public bool IsSecureConnection => _context.Connection.IsSecure;
+#endif
 
         /// <summary>
         /// Gets the Keep-Alive value for this request
@@ -377,7 +379,7 @@ using System.Threading.Tasks;
 
             string path;
             Uri rawUri = null;
-            if (MaybeUri(RawUrl.ToLowerInvariant()) && Uri.TryCreate(RawUrl, UriKind.Absolute, out rawUri))
+            if (RawUrl.ToLowerInvariant().MaybeUri() && Uri.TryCreate(RawUrl, UriKind.Absolute, out rawUri))
                 path = rawUri.PathAndQuery;
             else
                 path = RawUrl;
@@ -392,7 +394,8 @@ using System.Threading.Tasks;
             if (colon >= 0)
                 host = host.Substring(0, colon);
 
-            var baseUri = $"{(IsSecureConnection ? "https" : "http")}://{host}:{LocalEndPoint.Port}";
+            // var baseUri = $"{(IsSecureConnection ? "https" : "http")}://{host}:{LocalEndPoint.Port}";
+            var baseUri = $"http://{host}:{LocalEndPoint.Port}";
 
             if (!Uri.TryCreate(baseUri + path, UriKind.Absolute, out _url))
             {
@@ -563,24 +566,7 @@ using System.Threading.Tasks;
                 }
             }
         }
-
-        private static bool MaybeUri(string s)
-        {
-            var p = s.IndexOf(':');
-            if (p == -1)
-                return false;
-
-            return p < 10 && IsPredefinedScheme(s.Substring(0, p));
-        }
         
-        private static bool IsPredefinedScheme(string scheme)
-        {
-            if (scheme == null || scheme.Length < 3)
-                return false;
-
-            return scheme == "http" || scheme == "https";
-        }
-
         private void CreateQueryString(string query)
         {
             if (string.IsNullOrEmpty(query))

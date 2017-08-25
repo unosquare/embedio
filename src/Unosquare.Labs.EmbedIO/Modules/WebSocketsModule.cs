@@ -182,7 +182,7 @@
         /// </summary>
         /// <param name="enableConnectionWatchdog">if set to <c>true</c> [enable connection watchdog].</param>
         /// <param name="maxMessageSize">Maximum size of the message in bytes. Enter 0 or negative number to prevent checks.</param>
-        protected WebSocketsServer(bool enableConnectionWatchdog, int maxMessageSize)
+        protected WebSocketsServer(bool enableConnectionWatchdog, int maxMessageSize = 0)
         {
             _enableDisconnectedSocketColletion = enableConnectionWatchdog;
 #if NET47
@@ -196,7 +196,7 @@
         /// Initializes a new instance of the <see cref="WebSocketsServer"/> class. With dead connection watchdog and no message size checks.
         /// </summary>
         protected WebSocketsServer()
-            : this(true, 0)
+            : this(true)
         {
             // placeholder
         }

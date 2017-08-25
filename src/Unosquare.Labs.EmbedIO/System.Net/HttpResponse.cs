@@ -106,15 +106,7 @@ namespace Unosquare.Net
 
             return res;
         }
-
-        internal static HttpResponse CreateUnauthorizedResponse(string challenge)
-        {
-            var res = new HttpResponse(HttpStatusCode.Unauthorized);
-            res.Headers["WWW-Authenticate"] = challenge;
-
-            return res;
-        }
-
+        
         internal static HttpResponse CreateWebSocketResponse()
         {
             var res = new HttpResponse(HttpStatusCode.SwitchingProtocols);

@@ -66,6 +66,7 @@ namespace Unosquare.Net
 
             if (start >= 0 && end >= 0)
                 str = str.Substring(start + 1, end - 1);
+
             return str.Trim();
         }
 

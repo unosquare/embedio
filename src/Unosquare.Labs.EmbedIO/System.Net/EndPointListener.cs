@@ -158,7 +158,7 @@ using System.Security.Cryptography;
                 {
                     var other = (HttpListener)prefs[prefix];
                     if (other != listener)
-                        throw new HttpListenerException(400, "There's another listener for " + prefix);
+                        throw new HttpListenerException(400, $"There is another listener for {prefix}");
                     return;
                 }
 

@@ -124,17 +124,6 @@ namespace Unosquare.Net
             return output.ToString();
         }
         
-        internal static HttpRequest CreateConnectRequest(Uri uri)
-        {
-            var host = uri.DnsSafeHost;
-            var port = uri.Port;
-            var authority = $"{host}:{port}";
-            var req = new HttpRequest("CONNECT", authority);
-            req.Headers["Host"] = port == 80 ? host : authority;
-
-            return req;
-        }
-
         internal static HttpRequest CreateWebSocketRequest(Uri uri)
         {
             var req = new HttpRequest("GET", uri.PathAndQuery);

@@ -916,7 +916,7 @@ namespace Unosquare.Net
         /// </exception>
         public override void Set(string name, string value)
         {
-            DoWithCheckingState(SetWithoutCheckingName, CheckName(name), value, true);
+            DoWithCheckingState(SetWithoutCheckingName, CheckName(name), value);
         }
 
         /// <summary>
@@ -1059,7 +1059,7 @@ namespace Unosquare.Net
                 ? (Action<string, string>)AddWithoutCheckingNameAndRestricted
                 : AddWithoutCheckingName;
 
-            DoWithCheckingState(act, CheckName(name), value, true);
+            DoWithCheckingState(act, CheckName(name), value);
         }
 
         private void AddWithoutCheckingName(string name, string value)
@@ -1095,19 +1095,17 @@ namespace Unosquare.Net
         }
 
         private void DoWithCheckingState(
-            Action<string, string> action, string name, string value, bool setState)
+            Action<string, string> action, string name, string value, bool setState = true)
         {
             var type = CheckHeaderType(name);
-            if (type == HttpHeaderType.Request)
-                DoWithCheckingState(action, name, value, false, setState);
-            else if (type == HttpHeaderType.Response)
-                DoWithCheckingState(action, name, value, true, setState);
-            else
+
+            if (type == HttpHeaderType.Unspecified)
                 action(name, value);
+            else
+                DoWithCheckingState(action, name, value, type == HttpHeaderType.Response, setState);
         }
 
-        private void DoWithCheckingState(
-            Action<string, string> action, string name, string value, bool response, bool setState)
+        private void DoWithCheckingState(Action<string, string> action, string name, string value, bool response, bool setState)
         {
             CheckState(response);
             action(name, value);

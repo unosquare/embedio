@@ -274,9 +274,9 @@ namespace Unosquare.Net
         /// </returns>
         public IEnumerator GetEnumerator() => _list.GetEnumerator();
 
-        internal static string GetValue(string nameAndValue, char separator, bool unquote = false)
+        internal static string GetValue(string nameAndValue, bool unquote = false)
         {
-            var idx = nameAndValue.IndexOf(separator);
+            var idx = nameAndValue.IndexOf('=');
             if (idx < 0 || idx == nameAndValue.Length - 1)
                 return null;
 
@@ -357,21 +357,21 @@ namespace Unosquare.Net
 
                 if (pair.StartsWith("$version", StringComparison.OrdinalIgnoreCase))
                 {
-                    ver = int.Parse(GetValue(pair, '=', true));
+                    ver = int.Parse(GetValue(pair, true));
                 }
                 else if (pair.StartsWith("$path", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
-                    cookie.Path = GetValue(pair, '=');
+                    cookie.Path = GetValue(pair);
                 }
                 else if (pair.StartsWith("$domain", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
-                    cookie.Domain = GetValue(pair, '=');
+                    cookie.Domain = GetValue(pair);
                 }
                 else if (pair.StartsWith("$port", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
                     cookie.Port = pair.Equals("$port", StringComparison.OrdinalIgnoreCase)
                         ? "\"\""
-                        : GetValue(pair, '=');
+                        : GetValue(pair);
                 }
                 else
                 {
@@ -423,11 +423,11 @@ namespace Unosquare.Net
                 if (pair.StartsWith("version", StringComparison.OrdinalIgnoreCase))
                 {
                     if (cookie != null)
-                        cookie.Version = int.Parse(GetValue(pair, '=', true));
+                        cookie.Version = int.Parse(GetValue(pair, true));
                 }
                 else if (pair.StartsWith("expires", StringComparison.OrdinalIgnoreCase))
                 {
-                    var buff = new StringBuilder(GetValue(pair, '='), 32);
+                    var buff = new StringBuilder(GetValue(pair), 32);
                     if (i < pairs.Length - 1)
                         buff.AppendFormat(", {0}", pairs[++i].Trim());
 
@@ -444,31 +444,31 @@ namespace Unosquare.Net
                 }
                 else if (pair.StartsWith("max-age", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
-                    var max = int.Parse(GetValue(pair, '=', true));
+                    var max = int.Parse(GetValue(pair, true));
 
                     cookie.Expires = DateTime.Now.AddSeconds(max);
                 }
                 else if (pair.StartsWith("path", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
-                    cookie.Path = GetValue(pair, '=');
+                    cookie.Path = GetValue(pair);
                 }
                 else if (pair.StartsWith("domain", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
-                    cookie.Domain = GetValue(pair, '=');
+                    cookie.Domain = GetValue(pair);
                 }
                 else if (pair.StartsWith("port", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
                     cookie.Port = pair.Equals("port", StringComparison.OrdinalIgnoreCase)
                     ? "\"\""
-                    : GetValue(pair, '=');
+                    : GetValue(pair);
                 }
                 else if (pair.StartsWith("comment", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
-                    cookie.Comment = WebUtility.UrlDecode(GetValue(pair, '='));
+                    cookie.Comment = WebUtility.UrlDecode(GetValue(pair));
                 }
                 else if (pair.StartsWith("commenturl", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
-                    cookie.CommentUri = GetValue(pair, '=', true).ToUri();
+                    cookie.CommentUri = GetValue(pair, true).ToUri();
                 }
                 else if (pair.StartsWith("discard", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
@@ -488,7 +488,7 @@ namespace Unosquare.Net
                         cookies.Add(cookie);
 
                     string name;
-                    string val = String.Empty;
+                    var val = string.Empty;
 
                     var pos = pair.IndexOf('=');
                     if (pos == -1)

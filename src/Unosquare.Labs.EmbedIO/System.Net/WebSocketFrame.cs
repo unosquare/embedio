@@ -131,7 +131,7 @@ namespace Unosquare.Net
         }
 
         internal WebSocketFrame(
-            Fin fin, Opcode opcode, PayloadData payloadData, bool compressed, bool mask = true)
+            Fin fin, Opcode opcode, PayloadData payloadData, bool compressed = false, bool mask = true)
         {
             Fin = fin;
             Rsv1 = opcode.IsData() && compressed ? Rsv.On : Rsv.Off;

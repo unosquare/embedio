@@ -27,9 +27,9 @@
         public const string DefaultDocumentName = "index.html";
 
         /// <summary>
-        /// The chuck size for sending files
+        /// The chunk size for sending files
         /// </summary>
-        private const int ChuckSize = 256 * 1024;
+        private const int ChunkSize = 256 * 1024;
 
         /// <summary>
         /// The maximum gzip input length
@@ -222,13 +222,13 @@
             int lowerByteIndex,
             CancellationToken ct)
         {
-            var streamBuffer = new byte[ChuckSize];
+            var streamBuffer = new byte[ChunkSize];
             var sendData = 0;
-            var readBufferSize = ChuckSize;
+            var readBufferSize = ChunkSize;
 
             while (true)
             {
-                if (sendData + ChuckSize > byteLength) readBufferSize = (int)(byteLength - sendData);
+                if (sendData + ChunkSize > byteLength) readBufferSize = (int)(byteLength - sendData);
 
                 buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
                 var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct);

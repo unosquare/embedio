@@ -5,8 +5,8 @@ namespace Unosquare.Net
     using System.IO;
     using System.Linq;
     using System.Text;
-    using Unosquare.Labs.EmbedIO.Constants;
-    using Unosquare.Swan;
+    using Labs.EmbedIO.Constants;
+    using Swan;
 
     internal class WebSocketValidator
     {
@@ -191,8 +191,6 @@ namespace Unosquare.Net
             bool closing,
             bool closed = true)
         {
-            message = null;
-
             if (!client && _webSocket.IsClient)
             {
                 message = "This operation isn't available in: client";

@@ -33,7 +33,6 @@ namespace Unosquare.Net
     using System.Net;
     using System.IO;
     using System.Text;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Represents an HTTP Listener's response
@@ -337,8 +336,7 @@ namespace Unosquare.Net
         internal bool HeadersSent { get; private set; }
         internal object HeadersLock { get; } = new object();
         internal bool ForceCloseChunked { get; private set; }
-
-        // TODO: How to wait?
+        
         void IDisposable.Dispose() => Close(true);
 
         /// <summary>

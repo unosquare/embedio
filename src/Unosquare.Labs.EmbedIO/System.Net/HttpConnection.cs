@@ -129,9 +129,9 @@ using System.Security.Cryptography.X509Certificates;
         }
 
         public IPEndPoint RemoteEndPoint => (IPEndPoint)_sock?.RemoteEndPoint;
-
+#if SSL
         public bool IsSecure { get; }
-
+#endif
         public ListenerPrefix Prefix { get; set; }
 
         public async Task BeginReadRequest()

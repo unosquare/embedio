@@ -162,7 +162,9 @@ namespace Unosquare.Net
             _client = true;
 
             _message = Messagec;
+#if SSL
             IsSecure = _uri.Scheme == "wss";
+#endif
             _waitTime = TimeSpan.FromSeconds(5);
             _forMessageEventQueue = ((ICollection) _messageEventQueue).SyncRoot;
             _validator = new WebSocketValidator(this);
@@ -174,7 +176,9 @@ namespace Unosquare.Net
             _context = context;
 
             _message = Messages;
+#if SSL
             IsSecure = context.IsSecureConnection;
+#endif
             _stream = context.Stream;
             _waitTime = TimeSpan.FromSeconds(1);
             _forMessageEventQueue = ((ICollection)_messageEventQueue).SyncRoot;
@@ -222,7 +226,7 @@ namespace Unosquare.Net
                     if (!_validator.CheckIfAvailable(out string msg, true, false, true, false, false))
                     {
                         msg.Error();
-                        Error("An error has occurred in setting the compression.", null);
+                        Error("An error has occurred in setting the compression.");
 
                         return;
                     }
@@ -282,7 +286,7 @@ namespace Unosquare.Net
                     if (!_validator.CheckIfAvailable(out string msg, true, false, true, false, false))
                     {
                         msg.Error();
-                        Error("An error has occurred in setting the enable redirection.", null);
+                        Error("An error has occurred in setting the enable redirection.");
 
                         return;
                     }
@@ -309,6 +313,7 @@ namespace Unosquare.Net
         /// </value>
         public bool IsAlive => PingAsync().Result; // TODO: Change?
 
+#if SSL
         /// <summary>
         /// Gets a value indicating whether the WebSocket connection is secure.
         /// </summary>
@@ -316,6 +321,7 @@ namespace Unosquare.Net
         /// <c>true</c> if the connection is secure; otherwise, <c>false</c>.
         /// </value>
         public bool IsSecure { get; private set; }
+#endif
 
         /// <summary>
         /// Gets or sets the value of the HTTP Origin header to send with
@@ -349,7 +355,7 @@ namespace Unosquare.Net
                     if (!_validator.CheckIfAvailable(out string msg, true, false, true, false, false))
                     {
                         msg.Error();
-                        Error("An error has occurred in setting the origin.", null);
+                        Error("An error has occurred in setting the origin.");
 
                         return;
                     }
@@ -363,7 +369,7 @@ namespace Unosquare.Net
                     if (!Uri.TryCreate(value, UriKind.Absolute, out Uri origin) || origin.Segments.Length > 1)
                     {
                         "The syntax of an origin must be '<scheme>://<host>[:<port>]'.".Error();
-                        Error("An error has occurred in setting the origin.", null);
+                        Error("An error has occurred in setting the origin.");
 
                         return;
                     }
@@ -451,7 +457,7 @@ namespace Unosquare.Net
                         !WebSocketValidator.CheckWaitTime(value, out msg))
                     {
                         msg.Error();
-                        Error("An error has occurred in setting the wait time.", null);
+                        Error("An error has occurred in setting the wait time.");
 
                         return;
                     }
@@ -499,7 +505,7 @@ namespace Unosquare.Net
             if (!_validator.CheckIfAvailable(out msg))
             {
                 msg.Error();
-                Error("An error has occurred in closing the connection.", null);
+                Error("An error has occurred in closing the connection.");
 
                 return;
             }
@@ -507,7 +513,7 @@ namespace Unosquare.Net
             if (code != CloseStatusCode.Undefined && !WebSocketValidator.CheckParametersForClose(code, reason, _client, out msg))
             {
                 msg.Error();
-                Error("An error has occurred in closing the connection.", null);
+                Error("An error has occurred in closing the connection.");
 
                 return;
             }
@@ -542,7 +548,7 @@ namespace Unosquare.Net
             if (!_validator.CheckIfAvailable(out string msg, true, false, true, false, false))
             {
                 msg.Error();
-                Error("An error has occurred in connecting.", null);
+                Error("An error has occurred in connecting.");
 
                 return;
             }
@@ -609,7 +615,7 @@ namespace Unosquare.Net
             if (msg != null)
             {
                 msg.Error();
-                Error("An error has occurred in sending a ping.", null);
+                Error("An error has occurred in sending a ping.");
 
                 return false;
             }
@@ -635,7 +641,7 @@ namespace Unosquare.Net
             if (msg != null)
             {
                 msg.Error();
-                Error("An error has occurred in sending data.", null);
+                Error("An error has occurred in sending data.");
 
                 return;
             }
@@ -656,7 +662,7 @@ namespace Unosquare.Net
             if (!_validator.CheckIfAvailable(out msg, true, false, true, false, false) || cookie == null)
             {
                 msg.Error();
-                Error("An error has occurred in setting a cookie.", null);
+                Error("An error has occurred in setting a cookie.");
 
                 return;
             }
@@ -666,7 +672,7 @@ namespace Unosquare.Net
                 if (!_validator.CheckIfAvailable(out msg, true, false, false, true))
                 {
                     msg.Error();
-                    Error("An error has occurred in setting a cookie.", null);
+                    Error("An error has occurred in setting a cookie.");
 
                     return;
                 }
@@ -983,10 +989,10 @@ namespace Unosquare.Net
             lock (_forMessageEventQueue) _messageEventQueue.Enqueue(e);
         }
 
-        private void Error(string message, Exception exception)
+        private void Error(string message, Exception exception = null)
             => OnError?.Invoke(this, new ConnectionFailureEventArgs(exception ?? new Exception(message)));
 
-        private void Fatal(string message, Exception exception)
+        private void Fatal(string message, Exception exception = null)
         {
             Fatal(message, (exception as WebSocketException)?.Code ?? CloseStatusCode.Abnormal);
         }
@@ -1364,7 +1370,7 @@ namespace Unosquare.Net
 
                 sent = await Send(opcode, stream, compressed, ct);
                 if (!sent)
-                    Error("The sending has been interrupted.", null);
+                    Error("The sending has been interrupted.");
             }
             catch (Exception ex)
             {
@@ -1445,14 +1451,15 @@ namespace Unosquare.Net
                     return false;
                 }
 
-                return SendBytes(new WebSocketFrame(fin, opcode, data, compressed, _client).ToArray());
+                return SendBytes(new WebSocketFrame(fin, opcode, data, compressed, _client).ToArray(), ct);
             }
         }
 
-        private bool SendBytes(byte[] bytes)
+        private bool SendBytes(byte[] bytes, CancellationToken ct)
         {
             try
             {
+                // TODO: Use async here
                 _stream.Write(bytes, 0, bytes.Length);
                 return true;
             }
@@ -1496,7 +1503,9 @@ namespace Unosquare.Net
                 ReleaseClientResources();
 
                 _uri = uri;
+#if SSL
                 IsSecure = uri.Scheme == "wss";
+#endif
 
                 await SetClientStream();
                 return await SendHandshakeRequestAsync();

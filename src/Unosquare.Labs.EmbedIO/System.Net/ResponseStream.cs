@@ -31,7 +31,6 @@ namespace Unosquare.Net
     using System.IO;
     using System.Runtime.InteropServices;
     using System.Text;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Represents a Response stream
