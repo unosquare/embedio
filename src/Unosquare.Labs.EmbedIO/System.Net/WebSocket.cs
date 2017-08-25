@@ -68,6 +68,8 @@ namespace Unosquare.Net
     /// </remarks>
     public class WebSocket : IDisposable
     {
+        internal const string Version = "13";
+
         /// <summary>
         /// Represents the empty array of <see cref="byte"/> used internally.
         /// </summary>
@@ -91,30 +93,31 @@ namespace Unosquare.Net
         /// Represents the random number generator used internally.
         /// </summary>
         internal static readonly RandomNumberGenerator RandomNumber = RandomNumberGenerator.Create();
-
+        
         private const string Guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
-        private const string Version = "13";
-
+        
         private readonly Action<MessageEventArgs> _message;
         private readonly bool _client;
         private readonly object _forState = new object();
         private readonly Queue<MessageEventArgs> _messageEventQueue = new Queue<MessageEventArgs>();
         private readonly object _forMessageEventQueue;
+        private readonly WebSocketValidator _validator;
 
         private string _base64Key;
+
         private CompressionMethod _compression = CompressionMethod.None;
+        private bool _extensionsRequested;
+        private bool _inContinuation;
+        private volatile WebSocketState _readyState = WebSocketState.Connecting;
         private WebSocketContext _context;
         private bool _enableRedirection;
         private AutoResetEvent _exitReceiving;
         private string _extensions;
-        private bool _extensionsRequested;
         private MemoryStream _fragmentsBuffer;
         private bool _fragmentsCompressed;
         private Opcode _fragmentsOpcode;
-        private bool _inContinuation;
         private volatile bool _inMessage;
         private string _origin;
-        private volatile WebSocketState _readyState = WebSocketState.Connecting;
         private AutoResetEvent _receivePong;
 #if SSL
         private ClientSslConfiguration _sslConfig;
@@ -162,6 +165,7 @@ namespace Unosquare.Net
             IsSecure = _uri.Scheme == "wss";
             _waitTime = TimeSpan.FromSeconds(5);
             _forMessageEventQueue = ((ICollection) _messageEventQueue).SyncRoot;
+            _validator = new WebSocketValidator(this);
         }
 
         // As server
@@ -174,6 +178,7 @@ namespace Unosquare.Net
             _stream = context.Stream;
             _waitTime = TimeSpan.FromSeconds(1);
             _forMessageEventQueue = ((ICollection)_messageEventQueue).SyncRoot;
+            _validator = new WebSocketValidator(this);
         }
         
         /// <summary>
@@ -214,7 +219,7 @@ namespace Unosquare.Net
             {
                 lock (_forState)
                 {
-                    if (!CheckIfAvailable(out string msg, true, false, true, false, false))
+                    if (!_validator.CheckIfAvailable(out string msg, true, false, true, false, false))
                     {
                         msg.Error();
                         Error("An error has occurred in setting the compression.", null);
@@ -274,7 +279,7 @@ namespace Unosquare.Net
             {
                 lock (_forState)
                 {
-                    if (!CheckIfAvailable(out string msg, true, false, true, false, false))
+                    if (!_validator.CheckIfAvailable(out string msg, true, false, true, false, false))
                     {
                         msg.Error();
                         Error("An error has occurred in setting the enable redirection.", null);
@@ -341,7 +346,7 @@ namespace Unosquare.Net
             {
                 lock (_forState)
                 {
-                    if (!CheckIfAvailable(out string msg, true, false, true, false, false))
+                    if (!_validator.CheckIfAvailable(out string msg, true, false, true, false, false))
                     {
                         msg.Error();
                         Error("An error has occurred in setting the origin.", null);
@@ -442,8 +447,8 @@ namespace Unosquare.Net
                 lock (_forState)
                 {
                     string msg;
-                    if (!CheckIfAvailable(out msg, true, true, true, false, false) ||
-                        !CheckWaitTime(value, out msg))
+                    if (!_validator.CheckIfAvailable(out msg, true, true, true, false, false) ||
+                        !WebSocketValidator.CheckWaitTime(value, out msg))
                     {
                         msg.Error();
                         Error("An error has occurred in setting the wait time.", null);
@@ -455,7 +460,13 @@ namespace Unosquare.Net
                 }
             }
         }
-        
+
+        internal bool InContinuation => _inContinuation;
+
+        internal bool IsClient => _client;
+
+        internal bool IsExtensionsRequested => _extensionsRequested;
+
         internal CookieCollection CookieCollection { get; } = new CookieCollection();
 
         internal bool HasMessage
@@ -471,7 +482,7 @@ namespace Unosquare.Net
         internal bool IgnoreExtensions { get; set; } = true;
 
         internal bool IsConnected => _readyState == WebSocketState.Open || _readyState == WebSocketState.Closing;
-        
+
         /// <summary>
         /// Closes the WebSocket connection asynchronously, and releases
         /// all associated resources.
@@ -485,7 +496,7 @@ namespace Unosquare.Net
         public async Task CloseAsync(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null, CancellationToken ct = default(CancellationToken))
         {
             string msg;
-            if (!CheckIfAvailable(out msg))
+            if (!_validator.CheckIfAvailable(out msg))
             {
                 msg.Error();
                 Error("An error has occurred in closing the connection.", null);
@@ -493,7 +504,7 @@ namespace Unosquare.Net
                 return;
             }
 
-            if (code != CloseStatusCode.Undefined && !CheckParametersForClose(code, reason, _client, out msg))
+            if (code != CloseStatusCode.Undefined && !WebSocketValidator.CheckParametersForClose(code, reason, _client, out msg))
             {
                 msg.Error();
                 Error("An error has occurred in closing the connection.", null);
@@ -528,7 +539,7 @@ namespace Unosquare.Net
         /// </para></remarks>
         public async Task ConnectAsync(CancellationToken ct = default(CancellationToken))
         {
-            if (!CheckIfAvailable(out string msg, true, false, true, false, false))
+            if (!_validator.CheckIfAvailable(out string msg, true, false, true, false, false))
             {
                 msg.Error();
                 Error("An error has occurred in connecting.", null);
@@ -593,7 +604,7 @@ namespace Unosquare.Net
             if (string.IsNullOrEmpty(message))
                 return await PingAsync();
 
-            var msg = CheckPingParameter(message, out byte[] data);
+            var msg = WebSocketValidator.CheckPingParameter(message, out byte[] data);
 
             if (msg != null)
             {
@@ -606,21 +617,6 @@ namespace Unosquare.Net
             return await PingAsync(WebSocketFrame.CreatePingFrame(data, _client).ToArray(), _waitTime);
         }
 
-        private static string CheckIfAvailable(
-            WebSocketState state,
-            bool connecting = false,
-            bool open = true,
-            bool closing = false,
-            bool closed = false)
-        {
-            return (!connecting && state == WebSocketState.Connecting) ||
-                   (!open && state == WebSocketState.Open) ||
-                   (!closing && state == WebSocketState.Closing) ||
-                   (!closed && state == WebSocketState.Closed)
-                ? "This operation isn't available in: " + state.ToString().ToLower()
-                : null;
-        }
-
         /// <summary>
         /// Sends binary <paramref name="data" /> using the WebSocket connection.
         /// </summary>
@@ -629,12 +625,12 @@ namespace Unosquare.Net
         /// <param name="ct">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous of send 
-        /// binary data using websockets
+        /// binary data using websocket
         /// </returns>
         public async Task SendAsync(byte[] data, Opcode opcode, CancellationToken ct = default(CancellationToken))
         {
-            var msg = CheckIfAvailable(_readyState) ??
-                      CheckSendParameter(data);
+            var msg = WebSocketValidator.CheckIfAvailable(_readyState) ??
+                      WebSocketValidator.CheckSendParameter(data);
 
             if (msg != null)
             {
@@ -657,7 +653,7 @@ namespace Unosquare.Net
         public void SetCookie(Cookie cookie)
         {
             string msg;
-            if (!CheckIfAvailable(out msg, true, false, true, false, false) || cookie == null)
+            if (!_validator.CheckIfAvailable(out msg, true, false, true, false, false) || cookie == null)
             {
                 msg.Error();
                 Error("An error has occurred in setting a cookie.", null);
@@ -667,7 +663,7 @@ namespace Unosquare.Net
 
             lock (_forState)
             {
-                if (!CheckIfAvailable(out msg, true, false, false, true))
+                if (!_validator.CheckIfAvailable(out msg, true, false, false, true))
                 {
                     msg.Error();
                     Error("An error has occurred in setting a cookie.", null);
@@ -692,82 +688,6 @@ namespace Unosquare.Net
             InternalCloseAsync(new CloseEventArgs(CloseStatusCode.Away)).Wait();
         }
 
-        internal static bool CheckWaitTime(TimeSpan time, out string message)
-        {
-            message = null;
-
-            if (time > TimeSpan.Zero) return true;
-
-            message = "A wait time is zero or less.";
-            return false;
-        }
-
-        internal static string CheckCloseParameters(CloseStatusCode code, string reason, bool client)
-        {
-            return code == CloseStatusCode.NoStatus
-                ? (!string.IsNullOrEmpty(reason) ? "NoStatus cannot have a reason." : null)
-                : code == CloseStatusCode.MandatoryExtension && !client
-                    ? "MandatoryExtension cannot be used by a server."
-                    : code == CloseStatusCode.ServerError && client
-                        ? "ServerError cannot be used by a client."
-                        : !string.IsNullOrEmpty(reason) && Encoding.UTF8.GetBytes(reason).Length > 123
-                            ? "A reason has greater than the allowable max size."
-                            : null;
-        }
-
-        internal static bool CheckParametersForClose(
-            CloseStatusCode code, string reason, bool client, out string message)
-        {
-            message = null;
-
-            if (code == CloseStatusCode.NoStatus && !string.IsNullOrEmpty(reason))
-            {
-                message = "'code' cannot have a reason.";
-                return false;
-            }
-
-            if (code == CloseStatusCode.MandatoryExtension && !client)
-            {
-                message = "'code' cannot be used by a server.";
-                return false;
-            }
-
-            if (code == CloseStatusCode.ServerError && client)
-            {
-                message = "'code' cannot be used by a client.";
-                return false;
-            }
-
-            if (!string.IsNullOrEmpty(reason) && Encoding.UTF8.GetBytes(reason).Length > 123)
-            {
-                message = "The size of 'reason' is greater than the allowable max size.";
-                return false;
-            }
-
-            return true;
-        }
-
-        internal static string CheckPingParameter(string message, out byte[] bytes)
-        {
-            bytes = Encoding.UTF8.GetBytes(message);
-            return bytes.Length > 125 ? "A message has greater than the allowable max size." : null;
-        }
-
-        internal static string CheckSendParameter(byte[] data) => data == null ? "'data' is null." : null;
-
-        internal static string CheckSendParameter(string data) => data == null ? "'data' is null." : null;
-
-        internal static string CheckSendParameters(Stream stream, int length)
-        {
-            return stream == null
-                ? "'stream' is null."
-                : !stream.CanRead
-                    ? "'stream' cannot be read."
-                    : length < 1
-                        ? "'length' is less than 1."
-                        : null;
-        }
-
         // As client
         internal static string CreateBase64Key()
         {
@@ -790,12 +710,14 @@ namespace Unosquare.Net
         // As server
         internal async Task CloseAsync(HttpResponse response)
         {
-            _readyState = WebSocketState.Closing;
+            lock (_forState)
+                _readyState = WebSocketState.Closing;
 
             await SendHttpResponseAsync(response);
             await ReleaseServerResources();
 
-            _readyState = WebSocketState.Closed;
+            lock (_forState)
+                _readyState = WebSocketState.Closed;
         }
 
         // As server
@@ -835,6 +757,9 @@ namespace Unosquare.Net
             }
         }
 
+        // As client
+        internal bool ValidateSecWebSocketAcceptHeader(string value) => value?.TrimStart() == CreateResponseKey(_base64Key);
+
         // As server
         internal async Task InternalAcceptAsync()
         {
@@ -869,17 +794,6 @@ namespace Unosquare.Net
         }
 
         // As server
-        private static bool ValidateSecWebSocketKeyHeader(string value) => !string.IsNullOrEmpty(value);
-
-        private static bool ValidateSecWebSocketProtocolClientHeader(string value) => value == null || value.Length > 0;
-
-        // As server
-        private static bool ValidateSecWebSocketVersionClientHeader(string value) => value != null && value == Version;
-
-        // As client
-        private static bool ValidateSecWebSocketVersionServerHeader(string value) => value == null || value == Version;
-
-        // As server
         private static HttpResponse CreateHandshakeFailureResponse(HttpStatusCode code)
         {
             var ret = HttpResponse.CreateCloseResponse(code);
@@ -893,7 +807,7 @@ namespace Unosquare.Net
         {
             $"A request from {_context.UserEndPoint}:\n{_context}".Debug();
 
-            if (!CheckHandshakeRequest(_context, out string msg))
+            if (!_validator.CheckHandshakeRequest(_context, out string msg))
             {
                 await SendHttpResponseAsync(CreateHandshakeFailureResponse(HttpStatusCode.BadRequest));
 
@@ -912,193 +826,7 @@ namespace Unosquare.Net
             return true;
         }
 
-        // As server
-        private bool CheckHandshakeRequest(WebSocketContext context, out string message)
-        {
-            message = null;
-
-            if (context.RequestUri == null)
-            {
-                message = "Specifies an invalid Request-URI.";
-                return false;
-            }
-
-            if (!context.IsWebSocketRequest)
-            {
-                message = "Not a WebSocket handshake request.";
-                return false;
-            }
-
-            var headers = context.Headers;
-            if (!ValidateSecWebSocketKeyHeader(headers["Sec-WebSocket-Key"]))
-            {
-                message = "Includes no Sec-WebSocket-Key header, or it has an invalid value.";
-                return false;
-            }
-
-            if (!ValidateSecWebSocketVersionClientHeader(headers["Sec-WebSocket-Version"]))
-            {
-                message = "Includes no Sec-WebSocket-Version header, or it has an invalid value.";
-                return false;
-            }
-
-            if (!ValidateSecWebSocketProtocolClientHeader(headers["Sec-WebSocket-Protocol"]))
-            {
-                message = "Includes an invalid Sec-WebSocket-Protocol header.";
-                return false;
-            }
-
-            if (!IgnoreExtensions
-                && !string.IsNullOrWhiteSpace(headers["Sec-WebSocket-Extensions"]))
-            {
-                message = "Includes an invalid Sec-WebSocket-Extensions header.";
-                return false;
-            }
-
-            return true;
-        }
-
         // As client
-        private bool CheckHandshakeResponse(HttpResponse response, out string message)
-        {
-            message = null;
-
-            if (response.IsRedirect)
-            {
-                message = "Indicates the redirection.";
-                return false;
-            }
-
-            if (response.IsUnauthorized)
-            {
-                message = "Requires the authentication.";
-                return false;
-            }
-
-            if (!response.IsWebSocketResponse)
-            {
-                message = "Not a WebSocket handshake response.";
-                return false;
-            }
-
-            var headers = response.Headers;
-            if (!ValidateSecWebSocketAcceptHeader(headers["Sec-WebSocket-Accept"]))
-            {
-                message = "Includes no Sec-WebSocket-Accept header, or it has an invalid value.";
-                return false;
-            }
-
-            if (!ValidateSecWebSocketExtensionsServerHeader(headers["Sec-WebSocket-Extensions"]))
-            {
-                message = "Includes an invalid Sec-WebSocket-Extensions header.";
-                return false;
-            }
-
-            if (!ValidateSecWebSocketVersionServerHeader(headers["Sec-WebSocket-Version"]))
-            {
-                message = "Includes an invalid Sec-WebSocket-Version header.";
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool CheckIfAvailable(out string message, bool connecting = true, bool open = true, bool closing = false, bool closed = false)
-        {
-            message = null;
-
-            if (!connecting && _readyState == WebSocketState.Connecting)
-            {
-                message = "This operation isn't available in: connecting";
-                return false;
-            }
-
-            if (!open && _readyState == WebSocketState.Open)
-            {
-                message = "This operation isn't available in: open";
-                return false;
-            }
-
-            if (!closing && _readyState == WebSocketState.Closing)
-            {
-                message = "This operation isn't available in: closing";
-                return false;
-            }
-
-            if (!closed && _readyState == WebSocketState.Closed)
-            {
-                message = "This operation isn't available in: closed";
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool CheckIfAvailable(
-            out string message,
-            bool client,
-            bool server,
-            bool connecting,
-            bool open,
-            bool closing,
-            bool closed = true)
-        {
-            message = null;
-
-            if (!client && _client)
-            {
-                message = "This operation isn't available in: client";
-                return false;
-            }
-
-            if (!server && !_client)
-            {
-                message = "This operation isn't available in: server";
-                return false;
-            }
-
-            return CheckIfAvailable(out message, connecting, open, closing, closed);
-        }
-
-        private void CheckReceivedFrame(WebSocketFrame frame)
-        {
-            var masked = frame.IsMasked;
-
-            if (_client && masked)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, "A frame from the server is masked.");
-            }
-
-            if (!_client && !masked)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, "A frame from a client isn't masked.");
-            }
-
-            if (_inContinuation && frame.IsData)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError,
-                    "A data frame has been received while receiving continuation frames.");
-            }
-
-            if (frame.IsCompressed && _compression == CompressionMethod.None)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError,
-                    "A compressed frame has been received without any agreement for it.");
-            }
-
-            if (frame.Rsv2 == Rsv.On)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError,
-                    "The RSV2 of a frame is non-zero without any negotiation for it.");
-            }
-
-            if (frame.Rsv3 == Rsv.On)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError,
-                    "The RSV3 of a frame is non-zero without any negotiation for it.");
-            }
-        }
-
         private async Task InternalCloseAsync(
             CloseEventArgs e,
             bool send = true,
@@ -1134,7 +862,8 @@ namespace Unosquare.Net
 
             "End closing the connection.".Info();
 
-            _readyState = WebSocketState.Closed;
+            lock (_forState)
+                _readyState = WebSocketState.Closed;
 
             try
             {
@@ -1233,7 +962,7 @@ namespace Unosquare.Net
             await SetClientStream();
             var res = await SendHandshakeRequestAsync();
 
-            if (!CheckHandshakeResponse(res, out string msg))
+            if (!_validator.CheckHandshakeResponse(res, out string msg))
             {
                 msg.Error();
                 Fatal("An error has occurred while connecting.", CloseStatusCode.ProtocolError);
@@ -1471,7 +1200,7 @@ namespace Unosquare.Net
 
         private bool ProcessReceivedFrame(WebSocketFrame frame)
         {
-            CheckReceivedFrame(frame);
+            _validator.CheckReceivedFrame(frame);
 
             frame.Unmask();
             return frame.IsFragment
@@ -1831,7 +1560,7 @@ namespace Unosquare.Net
 #endif
         }
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-
+        
         private void StartReceiving()
         {
             if (_messageEventQueue.Count > 0)
@@ -1870,56 +1599,6 @@ namespace Unosquare.Net
                 };
 
             receive();
-        }
-
-        // As client
-        private bool ValidateSecWebSocketAcceptHeader(string value) => value?.TrimStart() == CreateResponseKey(_base64Key);
-
-        // As client
-        private bool ValidateSecWebSocketExtensionsServerHeader(string value)
-        {
-            if (value == null)
-                return true;
-
-            if (value.Length == 0 || !_extensionsRequested)
-                return false;
-
-            var comp = _compression != CompressionMethod.None;
-            foreach (var e in value.SplitHeaderValue(Strings.CommaSplitChar))
-            {
-                var ext = e.Trim();
-                if (comp && ext.IsCompressionExtension(_compression))
-                {
-                    if (!ext.Contains("server_no_context_takeover"))
-                    {
-                        "The server hasn't sent back 'server_no_context_takeover'.".Error();
-                        return false;
-                    }
-
-                    if (!ext.Contains("client_no_context_takeover"))
-                        "The server hasn't sent back 'client_no_context_takeover'.".Info();
-
-                    var method = _compression.ToExtensionString();
-                    var invalid =
-                        ext.SplitHeaderValue(';').Any(
-                            t =>
-                            {
-                                t = t.Trim();
-                                return t != method
-                                       && t != "server_no_context_takeover"
-                                       && t != "client_no_context_takeover";
-                            });
-
-                    if (invalid)
-                        return false;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }

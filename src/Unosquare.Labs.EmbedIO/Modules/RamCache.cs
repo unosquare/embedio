@@ -21,6 +21,7 @@
                 };
             }
         }
+
         internal bool IsValid(string requestFullLocalPath, DateTime fileDate, out string currentHash)
         {
             if (ContainsKey(requestFullLocalPath) && this[requestFullLocalPath].LastModified == fileDate)

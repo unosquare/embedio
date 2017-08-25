@@ -106,6 +106,5 @@
             urlPath = urlPath.TrimStart(Path.DirectorySeparatorChar);
             return urlPath;
         }
-
     }
 }
