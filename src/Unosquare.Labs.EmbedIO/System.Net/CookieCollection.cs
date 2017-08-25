@@ -272,10 +272,7 @@ namespace Unosquare.Net
         /// <returns>
         /// An <see cref="IEnumerator"/> instance used to iterate through the collection.
         /// </returns>
-        public IEnumerator GetEnumerator()
-        {
-            return _list.GetEnumerator();
-        }
+        public IEnumerator GetEnumerator() => _list.GetEnumerator();
 
         internal static string GetValue(string nameAndValue, char separator, bool unquote = false)
         {
@@ -445,56 +442,45 @@ namespace Unosquare.Net
                     if (cookie != null && cookie.Expires == DateTime.MinValue)
                         cookie.Expires = expires.ToLocalTime();
                 }
-                else if (pair.StartsWith("max-age", StringComparison.OrdinalIgnoreCase))
+                else if (pair.StartsWith("max-age", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
                     var max = int.Parse(GetValue(pair, '=', true));
-                    var expires = DateTime.Now.AddSeconds(max);
-                    if (cookie != null)
-                        cookie.Expires = expires;
-                }
-                else if (pair.StartsWith("path", StringComparison.OrdinalIgnoreCase))
-                {
-                    if (cookie != null)
-                        cookie.Path = GetValue(pair, '=');
-                }
-                else if (pair.StartsWith("domain", StringComparison.OrdinalIgnoreCase))
-                {
-                    if (cookie != null)
-                        cookie.Domain = GetValue(pair, '=');
-                }
-                else if (pair.StartsWith("port", StringComparison.OrdinalIgnoreCase))
-                {
-                    var port = pair.Equals("port", StringComparison.OrdinalIgnoreCase)
-                        ? "\"\""
-                        : GetValue(pair, '=');
 
-                    if (cookie != null)
-                        cookie.Port = port;
+                    cookie.Expires = DateTime.Now.AddSeconds(max);
                 }
-                else if (pair.StartsWith("comment", StringComparison.OrdinalIgnoreCase))
+                else if (pair.StartsWith("path", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
-                    if (cookie != null)
-                        cookie.Comment = WebUtility.UrlDecode(GetValue(pair, '='));
+                    cookie.Path = GetValue(pair, '=');
                 }
-                else if (pair.StartsWith("commenturl", StringComparison.OrdinalIgnoreCase))
+                else if (pair.StartsWith("domain", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
-                    if (cookie != null)
-                        cookie.CommentUri = GetValue(pair, '=', true).ToUri();
+                    cookie.Domain = GetValue(pair, '=');
                 }
-                else if (pair.StartsWith("discard", StringComparison.OrdinalIgnoreCase))
+                else if (pair.StartsWith("port", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
-                    if (cookie != null)
-                        cookie.Discard = true;
+                    cookie.Port = pair.Equals("port", StringComparison.OrdinalIgnoreCase)
+                    ? "\"\""
+                    : GetValue(pair, '=');
                 }
-                else if (pair.StartsWith("secure", StringComparison.OrdinalIgnoreCase))
+                else if (pair.StartsWith("comment", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
-                    if (cookie != null)
-                        cookie.Secure = true;
+                    cookie.Comment = WebUtility.UrlDecode(GetValue(pair, '='));
                 }
-                else if (pair.StartsWith("httponly", StringComparison.OrdinalIgnoreCase))
+                else if (pair.StartsWith("commenturl", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
-                    if (cookie != null)
-                        cookie.HttpOnly = true;
+                    cookie.CommentUri = GetValue(pair, '=', true).ToUri();
+                }
+                else if (pair.StartsWith("discard", StringComparison.OrdinalIgnoreCase) && cookie != null)
+                {
+                    cookie.Discard = true;
+                }
+                else if (pair.StartsWith("secure", StringComparison.OrdinalIgnoreCase) && cookie != null)
+                {
+                    cookie.Secure = true;
+                }
+                else if (pair.StartsWith("httponly", StringComparison.OrdinalIgnoreCase) && cookie != null)
+                {
+                    cookie.HttpOnly = true;
                 }
                 else
                 {

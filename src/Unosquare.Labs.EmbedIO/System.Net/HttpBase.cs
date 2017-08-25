@@ -118,7 +118,7 @@ namespace Unosquare.Net
 
             try
             {
-                var http = parser(ReadHeaders(stream, HeadersMaxLength));
+                var http = parser(ReadHeaders(stream));
                 var contentLen = http.Headers["Content-Length"];
 
                 if (!string.IsNullOrEmpty(contentLen))
@@ -160,7 +160,7 @@ namespace Unosquare.Net
             return value == c - 0;
         }
 
-        private static string[] ReadHeaders(Stream stream, int maxLength)
+        private static string[] ReadHeaders(Stream stream)
         {
             var buff = new List<byte>();
             var cnt = 0;
@@ -174,7 +174,7 @@ namespace Unosquare.Net
             };
 
             var read = false;
-            while (cnt < maxLength)
+            while (cnt < HeadersMaxLength)
             {
                 if (EqualsWith(stream.ReadByte(), '\r', add) &&
                     EqualsWith(stream.ReadByte(), '\n', add) &&

@@ -97,8 +97,11 @@ namespace Unosquare.Net
         /// <summary>
         /// Closes this instance.
         /// </summary>
-        /// <returns>A task from closing response</returns>
-        public async Task CloseAsync()
+#if NET46
+        public override void Close()
+#else
+        public void Close()
+#endif
         {
             if (_disposed) return;
 
@@ -136,7 +139,7 @@ namespace Unosquare.Net
                 }
             }
 
-            await _response.CloseAsync();
+            _response.Close();
         }
 
         /// <summary>

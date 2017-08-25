@@ -68,6 +68,41 @@ namespace Unosquare.Net
             }
         }
 
+        public static void RemoveEndPoint(EndPointListener epl, IPEndPoint ep)
+        {
+            lock (IPToEndpoints)
+            {
+                // Dictionary<int, EndPointListener> p
+                var p = (Hashtable)IPToEndpoints[ep.Address];
+                p.Remove(ep.Port);
+                if (p.Count == 0)
+                {
+                    IPToEndpoints.Remove(ep.Address);
+                }
+            }
+            
+            epl.CloseAsync().Wait(); // TODO: Is this right?
+        }
+
+        public static void RemoveListener(HttpListener listener)
+        {
+            lock (IPToEndpoints)
+            {
+                foreach (var prefix in listener.Prefixes)
+                {
+                    RemovePrefixInternal(prefix, listener);
+                }
+            }
+        }
+
+        public static void RemovePrefix(string prefix, HttpListener listener)
+        {
+            lock (IPToEndpoints)
+            {
+                RemovePrefixInternal(prefix, listener);
+            }
+        }
+
         private static void AddPrefixInternal(string p, HttpListener listener)
         {
             var lp = new ListenerPrefix(p);
@@ -131,41 +166,6 @@ namespace Unosquare.Net
             }
 
             return epl;
-        }
-
-        public static void RemoveEndPoint(EndPointListener epl, IPEndPoint ep)
-        {
-            lock (IPToEndpoints)
-            {
-                // Dictionary<int, EndPointListener> p
-                var p = (Hashtable)IPToEndpoints[ep.Address];
-                p.Remove(ep.Port);
-                if (p.Count == 0)
-                {
-                    IPToEndpoints.Remove(ep.Address);
-                }
-            }
-            
-            epl.CloseAsync().Wait(); // TODO: Is this right?
-        }
-
-        public static void RemoveListener(HttpListener listener)
-        {
-            lock (IPToEndpoints)
-            {
-                foreach (var prefix in listener.Prefixes)
-                {
-                    RemovePrefixInternal(prefix, listener);
-                }
-            }
-        }
-
-        public static void RemovePrefix(string prefix, HttpListener listener)
-        {
-            lock (IPToEndpoints)
-            {
-                RemovePrefixInternal(prefix, listener);
-            }
         }
 
         private static void RemovePrefixInternal(string prefix, HttpListener listener)

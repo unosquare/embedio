@@ -177,9 +177,7 @@
                 module.Server = this;
                 _modules.Add(module);
 
-                var webModule = module as ISessionWebModule;
-
-                if (webModule != null)
+                if (module is ISessionWebModule webModule)
                     SessionModule = webModule;
             }
             else
@@ -419,11 +417,7 @@
             finally
             {
                 // Always close the response stream no matter what.
-#if NET47
                 context?.Response.OutputStream.Close();
-#else
-                await context.Response.OutputStream.CloseAsync();
-#endif
                 $"End of Request {requestId}".Debug(nameof(WebServer));
             }
         }

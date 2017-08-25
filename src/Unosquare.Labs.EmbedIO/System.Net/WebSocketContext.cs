@@ -72,15 +72,7 @@ namespace Unosquare.Net
         /// A <see cref="string"/> that represents the value of the Host header.
         /// </value>
         public string Host => _context.Request.Headers["Host"];
-
-        /// <summary>
-        /// Gets a value indicating whether the client is authenticated.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the client is authenticated; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsAuthenticated => _context.User != null;
-
+        
         /// <summary>
         /// Gets a value indicating whether the client connected from the local computer.
         /// </summary>
@@ -159,15 +151,7 @@ namespace Unosquare.Net
         /// A <see cref="System.Net.IPEndPoint"/> that represents the server endpoint.
         /// </value>
         public System.Net.IPEndPoint ServerEndPoint => _context.Connection.LocalEndPoint;
-
-        /// <summary>
-        /// Gets the client information (identity, authentication, and security roles).
-        /// </summary>
-        /// <value>
-        /// A <see cref="IPrincipal"/> instance that represents the client information.
-        /// </value>
-        public IPrincipal User => _context.User;
-
+        
         /// <summary>
         /// Gets the client endpoint as an IP address and a port number.
         /// </summary>

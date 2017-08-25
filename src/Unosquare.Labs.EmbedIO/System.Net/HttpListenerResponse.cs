@@ -339,18 +339,17 @@ namespace Unosquare.Net
         internal bool ForceCloseChunked { get; private set; }
 
         // TODO: How to wait?
-        void IDisposable.Dispose() => CloseAsync(true).Wait(); // TODO: Abort or Close?
+        void IDisposable.Dispose() => Close(true);
 
         /// <summary>
         /// Aborts this instance.
         /// </summary>
-        /// <returns>A task for aborting</returns>
-        public async Task AbortAsync()
+        public void Abort()
         {
             if (_disposed == false)
                 return;
 
-            await CloseAsync(true);
+            Close(true);
         }
 
         /// <summary>
@@ -423,22 +422,15 @@ namespace Unosquare.Net
             Headers[name] = value;
         }
 
-        private async Task CloseAsync(bool force)
-        {
-            _disposed = true;
-            await _context.Connection.CloseAsync(force).ConfigureAwait(false);
-        }
-
         /// <summary>
         /// Closes this instance.
         /// </summary>
-        /// <returns>A task for closing</returns>
-        public async Task CloseAsync()
+        public void Close()
         {
             if (_disposed)
                 return;
 
-            await CloseAsync(false);
+            Close(false);
         }
 
         /// <summary>
@@ -636,6 +628,14 @@ namespace Unosquare.Net
         private static string QuotedString(System.Net.Cookie cookie, string value)
         {
             return cookie.Version == 0 || value.IsToken() ? value : "\"" + value.Replace("\"", "\\\"") + "\"";
+        }
+
+        private void Close(bool force)
+        {
+            _disposed = true;
+
+            // TODO: Is this fine?
+            _context.Connection.CloseAsync(force).Wait();
         }
     }
 }

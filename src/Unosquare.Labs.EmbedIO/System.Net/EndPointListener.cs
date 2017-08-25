@@ -30,6 +30,7 @@ namespace Unosquare.Net
 {
     using System;
     using System.Collections;
+    using System.Linq;
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Sockets;
@@ -318,10 +319,9 @@ using System.Security.Cryptography;
             if (coll == null)
                 return;
 
-            foreach (ListenerPrefix p in coll)
+            if (coll.Cast<ListenerPrefix>().Any(p => p.Path == prefix.Path))
             {
-                if (p.Path == prefix.Path) // TODO: code
-                    throw new HttpListenerException(400, "Prefix already in use.");
+                throw new HttpListenerException(400, "Prefix already in use.");
             }
 
             coll.Add(prefix);

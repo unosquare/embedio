@@ -28,7 +28,6 @@
 namespace Unosquare.Net
 {
     using System;
-    using System.Security.Principal;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -55,12 +54,7 @@ namespace Unosquare.Net
         /// Gets the response.
         /// </summary>
         public HttpListenerResponse Response { get; }
-
-        /// <summary>
-        /// Gets the user.
-        /// </summary>
-        public IPrincipal User { get; private set; }
-
+        
         internal HttpListener Listener { get; set; }
 
         internal int ErrorStatus { get; set; } = 400;
