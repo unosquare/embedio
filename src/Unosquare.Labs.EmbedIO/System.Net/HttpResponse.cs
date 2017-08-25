@@ -73,11 +73,8 @@ namespace Unosquare.Net
         /// <param name="cookies">The cookies.</param>
         public void SetCookies(CookieCollection cookies)
         {
-            if (cookies == null || cookies.Count == 0)
-                return;
-            
-            foreach (var cookie in cookies) // TODO: .Sorted)
-                Headers.Add("Set-Cookie", cookie.ToString()); // .ToResponseString ());
+            foreach (var cookie in cookies)
+                Headers.Add("Set-Cookie", cookie.ToString());
         }
 
         /// <summary>

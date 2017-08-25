@@ -87,12 +87,11 @@ namespace Unosquare.Net
         
         public void SetCookies(CookieCollection cookies)
         {
-            if (cookies == null || cookies.Count == 0)
+            if (cookies.Count == 0)
                 return;
 
             var buff = new StringBuilder(64);
             foreach (System.Net.Cookie cookie in cookies)
-            ////.Sorted)
             {
                 if (!cookie.Expired)
                     buff.AppendFormat("{0}; ", cookie);

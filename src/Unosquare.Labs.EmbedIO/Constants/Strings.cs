@@ -8,6 +8,8 @@
     /// </summary>
     internal static class Strings
     {
+        internal const string UrlEncodedContentType = "application/x-www-form-urlencoded";
+
         /// <summary>
         ///  Default Browser time format
         /// </summary>

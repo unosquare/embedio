@@ -1200,13 +1200,13 @@ namespace Unosquare.Net
             headers["Sec-WebSocket-Key"] = _base64Key;
 
             _extensionsRequested = _compression != CompressionMethod.None;
+
             if (_extensionsRequested)
                 headers["Sec-WebSocket-Extensions"] = CreateExtensions();
 
             headers["Sec-WebSocket-Version"] = Version;
 
-            if (CookieCollection.Count > 0)
-                ret.SetCookies(CookieCollection);
+            ret.SetCookies(CookieCollection);
 
             return ret;
         }
@@ -1222,8 +1222,7 @@ namespace Unosquare.Net
             if (_extensions != null)
                 headers["Sec-WebSocket-Extensions"] = _extensions;
 
-            if (CookieCollection.Count > 0)
-                ret.SetCookies(CookieCollection);
+            ret.SetCookies(CookieCollection);
 
             return ret;
         }

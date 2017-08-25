@@ -6,8 +6,6 @@
 
     internal static class FormDataParser
     {
-        private const string UrlEncodedContentType = "application/x-www-form-urlencoded";
-
         /// <summary>
         /// Parses the form data given the request body string.
         /// </summary>
@@ -19,7 +17,7 @@
         /// <exception cref="System.NotImplementedException">multipart/form-data Content Type parsing is not yet implemented</exception>
         internal static Dictionary<string, object> ParseAsDictionary(
             string requestBody,
-            string contentTypeHeader = UrlEncodedContentType)
+            string contentTypeHeader = Constants.Strings.UrlEncodedContentType)
         {
             // TODO: implement multipart/form-data parsing
             //// example available here: http://stackoverflow.com/questions/5483851/manually-parse-raw-http-data-with-php

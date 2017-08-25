@@ -462,11 +462,11 @@
             return dict.ContainsKey(key) ? dict[key] : defaultValue;
         }
         
-        internal static void ForEach<T>(this Dictionary<T, T> dict, Action<T, T> mapAction)
+        internal static void ForEach<T>(this Dictionary<T, T> dict, Action<T, T> itemAction)
         {
             foreach (var kvp in dict)
             {
-                mapAction(kvp.Key, kvp.Value);
+                itemAction(kvp.Key, kvp.Value);
             }
         }
     }
