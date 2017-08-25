@@ -11,7 +11,6 @@
     using Swan;
 #if NET47
     using System.Net.WebSockets;
-
 #else
     using Net;
 #endif
@@ -326,7 +325,6 @@
                     }
                 }
 #else
-// TODO: Pending OnFrameReceived
                 webSocketContext.WebSocket.OnMessage += (s, e) =>
                 {
                     var isText = e.IsText ? WebSocketMessageType.Text : WebSocketMessageType.Binary;

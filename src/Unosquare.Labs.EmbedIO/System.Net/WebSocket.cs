@@ -94,25 +94,27 @@ namespace Unosquare.Net
 
         private const string Guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
         private const string Version = "13";
+
         private readonly Action<MessageEventArgs> _message;
         private readonly bool _client;
+        private readonly object _forState = new object();
+        private readonly Queue<MessageEventArgs> _messageEventQueue = new Queue<MessageEventArgs>();
+
         private string _base64Key;
-        private CompressionMethod _compression;
+        private CompressionMethod _compression = CompressionMethod.None;
         private WebSocketContext _context;
         private bool _enableRedirection;
         private AutoResetEvent _exitReceiving;
         private string _extensions;
         private bool _extensionsRequested;
         private object _forMessageEventQueue;
-        private object _forState;
         private MemoryStream _fragmentsBuffer;
         private bool _fragmentsCompressed;
         private Opcode _fragmentsOpcode;
         private bool _inContinuation;
         private volatile bool _inMessage;
-        private Queue<MessageEventArgs> _messageEventQueue;
         private string _origin;
-        private volatile WebSocketState _readyState;
+        private volatile WebSocketState _readyState = WebSocketState.Connecting;
         private AutoResetEvent _receivePong;
 #if SSL
         private ClientSslConfiguration _sslConfig;
@@ -159,8 +161,7 @@ namespace Unosquare.Net
             _message = Messagec;
             IsSecure = _uri.Scheme == "wss";
             _waitTime = TimeSpan.FromSeconds(5);
-
-            Init();
+            _forMessageEventQueue = ((ICollection) _messageEventQueue).SyncRoot;
         }
 
         // As server
@@ -172,8 +173,7 @@ namespace Unosquare.Net
             IsSecure = context.IsSecureConnection;
             _stream = context.Stream;
             _waitTime = TimeSpan.FromSeconds(1);
-
-            Init();
+            _forMessageEventQueue = ((ICollection)_messageEventQueue).SyncRoot;
         }
 
         #region Public Events
@@ -466,7 +466,7 @@ namespace Unosquare.Net
 
         #region Internal Properties
 
-        internal CookieCollection CookieCollection { get; private set; }
+        internal CookieCollection CookieCollection { get; } = new CookieCollection();
 
         internal bool HasMessage
         {
@@ -896,17 +896,7 @@ namespace Unosquare.Net
             // TODO: Wait?
             InternalCloseAsync(new CloseEventArgs(code, message), !code.IsReserved(), false).Wait();
         }
-
-        private void Init()
-        {
-            _compression = CompressionMethod.None;
-            CookieCollection = new CookieCollection();
-            _forState = new object();
-            _messageEventQueue = new Queue<MessageEventArgs>();
-            _forMessageEventQueue = ((ICollection)_messageEventQueue).SyncRoot;
-            _readyState = WebSocketState.Connecting;
-        }
-
+        
         private void Message()
         {
             MessageEventArgs e;

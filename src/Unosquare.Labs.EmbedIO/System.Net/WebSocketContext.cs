@@ -41,30 +41,14 @@ namespace Unosquare.Net
     /// </summary>
     public class WebSocketContext
     {
-        #region Private Fields
-
         private readonly HttpListenerContext _context;
-
-        #endregion
-
-        #region Internal Constructors
         
         internal WebSocketContext(HttpListenerContext context)
         {
             _context = context;
             WebSocket = new WebSocket(this);
         }
-
-        #endregion
-
-        #region Internal Properties
         
-        internal Stream Stream => _context.Connection.Stream;
-
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets the HTTP cookies included in the request.
         /// </summary>
@@ -201,15 +185,7 @@ namespace Unosquare.Net
         /// </value>
         public WebSocket WebSocket { get; }
 
-        #endregion
-
-        #region Internal Methods
-
-        internal async Task CloseAsync() => await _context.Connection.CloseAsync(true);
-
-        #endregion
-
-        #region Public Methods
+        internal Stream Stream => _context.Connection.Stream;
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
@@ -219,7 +195,7 @@ namespace Unosquare.Net
         /// </returns>
         public override string ToString() => _context.Request.ToString();
 
-        #endregion
+        internal Task CloseAsync() => _context.Connection.CloseAsync(true);
     }
 }
 #endif

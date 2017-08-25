@@ -48,13 +48,9 @@ namespace Unosquare.Net
     /// </remarks>
     public class MessageEventArgs : EventArgs
     {
-        #region Private Fields
         private readonly byte[] _rawData;
         private string _data;
-        private bool _dataSet;        
-        #endregion
-
-#region Internal Constructors
+        private bool _dataSet;    
 
         internal MessageEventArgs(WebSocketFrame frame)
         {
@@ -70,20 +66,7 @@ namespace Unosquare.Net
             Opcode = opcode;
             _rawData = rawData;
         }
-
-#endregion
-
-#region Internal Properties
-
-        /// <summary>
-        /// Gets the opcode for the message.
-        /// </summary>
-        internal Opcode Opcode { get; }
-
-#endregion
-
-#region Public Properties
-
+        
         /// <summary>
         /// Gets the message data as a <see cref="string"/>.
         /// </summary>
@@ -140,10 +123,11 @@ namespace Unosquare.Net
             }
         }
 
-#endregion
-
-#region Private Methods
-
+        /// <summary>
+        /// Gets the opcode for the message.
+        /// </summary>
+        internal Opcode Opcode { get; }
+        
         private void SetData()
         {
             if (_dataSet)
@@ -158,8 +142,6 @@ namespace Unosquare.Net
             _data = Encoding.UTF8.GetString(_rawData);
             _dataSet = true;
         }
-
-#endregion
     }
 }
 #endif

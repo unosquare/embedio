@@ -70,6 +70,44 @@ namespace Unosquare.Net
         {
         }
         
+        public override int Read([In, Out] byte[] buffer, int offset, int count)
+        {
+            if (_disposed)
+                throw new ObjectDisposedException(typeof(RequestStream).ToString());
+
+            // Call FillFromBuffer to check for buffer boundaries even when remaining_body is 0
+            var nread = FillFromBuffer(buffer, offset, count);
+            if (nread == -1)
+            { // No more bytes available (Content-Length)
+                return 0;
+            }
+
+            if (nread > 0)
+            {
+                return nread;
+            }
+
+            nread = _stream.Read(buffer, offset, count);
+            if (nread > 0 && _remainingBody > 0)
+                _remainingBody -= nread;
+            return nread;
+        }
+        
+        public override long Seek(long offset, SeekOrigin origin)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override void SetLength(long value)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override void Write(byte[] buffer, int offset, int count)
+        {
+            throw new NotSupportedException();
+        }
+
         // Returns 0 if we can keep reading from the base stream,
         // > 0 if we read something from the buffer.
         // -1 if we had a content length set and we finished reading that many bytes.
@@ -111,44 +149,6 @@ namespace Unosquare.Net
             if (_remainingBody > 0)
                 _remainingBody -= size;
             return size;
-        }
-
-        public override int Read([In, Out] byte[] buffer, int offset, int count)
-        {
-            if (_disposed)
-                throw new ObjectDisposedException(typeof(RequestStream).ToString());
-
-            // Call FillFromBuffer to check for buffer boundaries even when remaining_body is 0
-            var nread = FillFromBuffer(buffer, offset, count);
-            if (nread == -1)
-            { // No more bytes available (Content-Length)
-                return 0;
-            }
-
-            if (nread > 0)
-            {
-                return nread;
-            }
-
-            nread = _stream.Read(buffer, offset, count);
-            if (nread > 0 && _remainingBody > 0)
-                _remainingBody -= nread;
-            return nread;
-        }
-        
-        public override long Seek(long offset, SeekOrigin origin)
-        {
-            throw new NotSupportedException();
-        }
-
-        public override void SetLength(long value)
-        {
-            throw new NotSupportedException();
-        }
-
-        public override void Write(byte[] buffer, int offset, int count)
-        {
-            throw new NotSupportedException();
         }
     }
 }

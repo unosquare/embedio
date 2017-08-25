@@ -67,40 +67,42 @@
                     return Task.FromResult(false);
                 }
 
-                if (origins != Strings.CorsWildcard)
+                if (origins == Strings.CorsWildcard)
                 {
-                    if (validOrigins.Contains(currentOrigin))
+                    return Task.FromResult(false);
+                }
+
+                if (validOrigins.Contains(currentOrigin))
+                {
+                    context.Response.Headers.Add(Headers.AccessControlAllowOrigin.Replace("*", currentOrigin));
+
+                    if (context.RequestVerb() == HttpVerbs.Options)
                     {
-                        context.Response.Headers.Add(Headers.AccessControlAllowOrigin.Replace("*", currentOrigin));
-
-                        if (context.RequestVerb() == HttpVerbs.Options)
+                        if (string.IsNullOrWhiteSpace(currentHeader) == false)
                         {
-                            if (string.IsNullOrWhiteSpace(currentHeader) == false)
-                            {
-                                // TODO: I need to remove headers out from AllowHeaders
-                                context.Response.Headers.Add(Headers.AccessControlAllowHeaders + currentHeader);
-                            }
-
-                            if (string.IsNullOrWhiteSpace(currentMethod) == false)
-                            {
-                                var currentMethods = currentMethod.ToLower()
-                                    .Split(Strings.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries)
-                                    .Select(x => x.Trim());
-
-                                if (methods == Strings.CorsWildcard || currentMethods.All(validMethods.Contains))
-                                {
-                                    context.Response.Headers.Add(Headers.AccessControlAllowMethods + currentMethod);
-                                }
-                                else
-                                {
-                                    context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
-
-                                    return Task.FromResult(false);
-                                }
-                            }
-
-                            return Task.FromResult(true);
+                            // TODO: I need to remove headers out from AllowHeaders
+                            context.Response.Headers.Add(Headers.AccessControlAllowHeaders + currentHeader);
                         }
+
+                        if (string.IsNullOrWhiteSpace(currentMethod) == false)
+                        {
+                            var currentMethods = currentMethod.ToLower()
+                                .Split(Strings.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries)
+                                .Select(x => x.Trim());
+
+                            if (methods == Strings.CorsWildcard || currentMethods.All(validMethods.Contains))
+                            {
+                                context.Response.Headers.Add(Headers.AccessControlAllowMethods + currentMethod);
+                            }
+                            else
+                            {
+                                context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+
+                                return Task.FromResult(false);
+                            }
+                        }
+
+                        return Task.FromResult(true);
                     }
                 }
 

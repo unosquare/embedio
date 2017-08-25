@@ -146,41 +146,6 @@ namespace Unosquare.Net
         {
         }
 
-        private static byte[] GetChunkSizeBytes(int size, bool final) => Encoding.UTF8.GetBytes($"{size:x}\r\n{(final ? "\r\n" : string.Empty)}");
-
-        private MemoryStream GetHeaders(bool closing)
-        {
-            // SendHeaders works on shared headers
-            lock (_response.HeadersLock)
-            {
-                if (_response.HeadersSent)
-                    return null;
-
-                var ms = new MemoryStream();
-                _response.SendHeaders(closing, ms);
-                return ms;
-            }
-        }
-
-        internal void InternalWrite(byte[] buffer, int offset, int count)
-        {
-            if (_ignoreErrors)
-            {
-                try
-                {
-                    _stream.Write(buffer, offset, count);
-                }
-                catch
-                {
-                    // ignored
-                }
-            }
-            else
-            {
-                _stream.Write(buffer, offset, count);
-            }
-        }
-
         /// <summary>
         /// When overridden in a derived class, writes a sequence of bytes to the current stream and advances the current position within this stream by the number of bytes written.
         /// </summary>
@@ -276,6 +241,41 @@ namespace Unosquare.Net
         public override void SetLength(long value)
         {
             throw new NotSupportedException();
+        }
+
+        internal void InternalWrite(byte[] buffer, int offset, int count)
+        {
+            if (_ignoreErrors)
+            {
+                try
+                {
+                    _stream.Write(buffer, offset, count);
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+            else
+            {
+                _stream.Write(buffer, offset, count);
+            }
+        }
+
+        private static byte[] GetChunkSizeBytes(int size, bool final) => Encoding.UTF8.GetBytes($"{size:x}\r\n{(final ? "\r\n" : string.Empty)}");
+
+        private MemoryStream GetHeaders(bool closing)
+        {
+            // SendHeaders works on shared headers
+            lock (_response.HeadersLock)
+            {
+                if (_response.HeadersSent)
+                    return null;
+
+                var ms = new MemoryStream();
+                _response.SendHeaders(closing, ms);
+                return ms;
+            }
         }
     }
 }

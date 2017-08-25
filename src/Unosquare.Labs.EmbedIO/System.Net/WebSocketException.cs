@@ -36,11 +36,6 @@ namespace Unosquare.Net
     /// </summary>
     public class WebSocketException : Exception
     {
-        internal WebSocketException(Exception innerException = null)
-            : this(CloseStatusCode.Abnormal, null, innerException)
-        {
-        }
-
         internal WebSocketException(string message, Exception innerException = null)
             : this(CloseStatusCode.Abnormal, message, innerException)
         {
@@ -68,25 +63,29 @@ namespace Unosquare.Net
 
         internal static string GetMessage(CloseStatusCode code)
         {
-            return code == CloseStatusCode.ProtocolError
-                ? "A WebSocket protocol error has occurred."
-                : code == CloseStatusCode.UnsupportedData
-                    ? "Unsupported data has been received."
-                    : code == CloseStatusCode.Abnormal
-                        ? "An exception has occurred."
-                        : code == CloseStatusCode.InvalidData
-                            ? "Invalid data has been received."
-                            : code == CloseStatusCode.PolicyViolation
-                                ? "A policy violation has occurred."
-                                : code == CloseStatusCode.TooBig
-                                    ? "A too big message has been received."
-                                    : code == CloseStatusCode.MandatoryExtension
-                                        ? "WebSocket client didn't receive expected extension(s)."
-                                        : code == CloseStatusCode.ServerError
-                                            ? "WebSocket server got an internal error."
-                                            : code == CloseStatusCode.TlsHandshakeFailure
-                                                ? "An error has occurred during a TLS handshake."
-                                                : string.Empty;
+            switch (code)
+            {
+                case CloseStatusCode.ProtocolError:
+                    return "A WebSocket protocol error has occurred.";
+                case CloseStatusCode.UnsupportedData:
+                    return "Unsupported data has been received.";
+                case CloseStatusCode.Abnormal:
+                    return "An exception has occurred.";
+                case CloseStatusCode.InvalidData:
+                    return "Invalid data has been received.";
+                case CloseStatusCode.PolicyViolation:
+                    return "A policy violation has occurred.";
+                case CloseStatusCode.TooBig:
+                    return "A too big message has been received.";
+                case CloseStatusCode.MandatoryExtension:
+                    return "WebSocket client didn't receive expected extension(s).";
+                case CloseStatusCode.ServerError:
+                    return "WebSocket server got an internal error.";
+                case CloseStatusCode.TlsHandshakeFailure:
+                    return "An error has occurred during a TLS handshake.";
+                default:
+                    return string.Empty;
+            }
         }
     }
 }
