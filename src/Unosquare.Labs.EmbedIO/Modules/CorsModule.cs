@@ -78,13 +78,13 @@
 
                     if (context.RequestVerb() == HttpVerbs.Options)
                     {
-                        if (string.IsNullOrWhiteSpace(currentHeader) == false)
+                        if (!string.IsNullOrWhiteSpace(currentHeader))
                         {
                             // TODO: I need to remove headers out from AllowHeaders
                             context.Response.Headers.Add(Headers.AccessControlAllowHeaders + currentHeader);
                         }
 
-                        if (string.IsNullOrWhiteSpace(currentMethod) == false)
+                        if (!string.IsNullOrWhiteSpace(currentMethod))
                         {
                             var currentMethods = currentMethod.ToLower()
                                 .Split(Strings.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries)

@@ -99,6 +99,7 @@ namespace Unosquare.Net
         private readonly bool _client;
         private readonly object _forState = new object();
         private readonly Queue<MessageEventArgs> _messageEventQueue = new Queue<MessageEventArgs>();
+        private readonly object _forMessageEventQueue;
 
         private string _base64Key;
         private CompressionMethod _compression = CompressionMethod.None;
@@ -107,7 +108,6 @@ namespace Unosquare.Net
         private AutoResetEvent _exitReceiving;
         private string _extensions;
         private bool _extensionsRequested;
-        private object _forMessageEventQueue;
         private MemoryStream _fragmentsBuffer;
         private bool _fragmentsCompressed;
         private Opcode _fragmentsOpcode;
@@ -175,9 +175,7 @@ namespace Unosquare.Net
             _waitTime = TimeSpan.FromSeconds(1);
             _forMessageEventQueue = ((ICollection)_messageEventQueue).SyncRoot;
         }
-
-        #region Public Events
-
+        
         /// <summary>
         /// Occurs when the WebSocket connection has been closed.
         /// </summary>
@@ -197,11 +195,7 @@ namespace Unosquare.Net
         /// Occurs when the WebSocket connection has been established.
         /// </summary>
         public event EventHandler OnOpen;
-
-        #endregion
-
-        #region Public Properties
-
+        
         /// <summary>
         /// Gets or sets the compression method used to compress a message on the WebSocket connection.
         /// </summary>
@@ -461,11 +455,7 @@ namespace Unosquare.Net
                 }
             }
         }
-
-        #endregion
-
-        #region Internal Properties
-
+        
         internal CookieCollection CookieCollection { get; } = new CookieCollection();
 
         internal bool HasMessage
@@ -481,10 +471,226 @@ namespace Unosquare.Net
         internal bool IgnoreExtensions { get; set; } = true;
 
         internal bool IsConnected => _readyState == WebSocketState.Open || _readyState == WebSocketState.Closing;
+        
+        /// <summary>
+        /// Closes the WebSocket connection asynchronously, and releases
+        /// all associated resources.
+        /// </summary>
+        /// <param name="code">The code.</param>
+        /// <param name="reason">The reason.</param>
+        /// <param name="ct">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous closes websocket connection
+        /// </returns>
+        public async Task CloseAsync(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null, CancellationToken ct = default(CancellationToken))
+        {
+            string msg;
+            if (!CheckIfAvailable(out msg))
+            {
+                msg.Error();
+                Error("An error has occurred in closing the connection.", null);
 
-        #endregion
+                return;
+            }
 
-        #region Private Methods
+            if (code != CloseStatusCode.Undefined && !CheckParametersForClose(code, reason, _client, out msg))
+            {
+                msg.Error();
+                Error("An error has occurred in closing the connection.", null);
+
+                return;
+            }
+
+            if (code == CloseStatusCode.NoStatus)
+            {
+                await InternalCloseAsync(new CloseEventArgs(), ct: ct);
+                return;
+            }
+
+            var send = !code.IsReserved();
+            await InternalCloseAsync(new CloseEventArgs(code, reason), send, send, ct: ct);
+        }
+
+        /// <summary>
+        /// Establishes a WebSocket connection asynchronously.
+        /// </summary>
+        /// <param name="ct">The cancellation token.</param>
+        /// <returns>
+        /// If CheckIfAvailable statement terminates execution of the method; otherwise, 
+        /// establishes a WebSocket connection
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// This method doesn't wait for the connect to be complete.
+        /// </para>
+        /// <para>
+        /// This method isn't available in a server.
+        /// </para></remarks>
+        public async Task ConnectAsync(CancellationToken ct = default(CancellationToken))
+        {
+            if (!CheckIfAvailable(out string msg, true, false, true, false, false))
+            {
+                msg.Error();
+                Error("An error has occurred in connecting.", null);
+
+                return;
+            }
+
+            try
+            {
+                lock (_forState)
+                {
+                    _readyState = WebSocketState.Connecting;
+                }
+
+                var handShake = await DoHandshakeAsync();
+
+                if (!handShake)
+                    return;
+
+                lock (_forState)
+                {
+                    _readyState = WebSocketState.Open;
+                }
+
+                Open();
+            }
+            catch (Exception ex)
+            {
+                ex.Log(nameof(WebSocket));
+                Fatal("An exception has occurred while connecting.", ex);
+            }
+        }
+
+        /// <summary>
+        /// Sends a ping using the WebSocket connection.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if the <see cref="WebSocket"/> receives a pong to this ping in a time;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        public async Task<bool> PingAsync()
+        {
+            var bytes = _client
+                ? WebSocketFrame.CreatePingFrame(true).ToArray()
+                : WebSocketFrame.EmptyPingBytes;
+
+            return await PingAsync(bytes, _waitTime);
+        }
+
+        /// <summary>
+        /// Sends a ping with the specified <paramref name="message"/> using the WebSocket connection.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if the <see cref="WebSocket"/> receives a pong to this ping in a time;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        /// <param name="message">
+        /// A <see cref="string"/> that represents the message to send.
+        /// </param>
+        public async Task<bool> PingAsync(string message)
+        {
+            if (string.IsNullOrEmpty(message))
+                return await PingAsync();
+
+            var msg = CheckPingParameter(message, out byte[] data);
+
+            if (msg != null)
+            {
+                msg.Error();
+                Error("An error has occurred in sending a ping.", null);
+
+                return false;
+            }
+
+            return await PingAsync(WebSocketFrame.CreatePingFrame(data, _client).ToArray(), _waitTime);
+        }
+
+        private static string CheckIfAvailable(
+            WebSocketState state,
+            bool connecting = false,
+            bool open = true,
+            bool closing = false,
+            bool closed = false)
+        {
+            return (!connecting && state == WebSocketState.Connecting) ||
+                   (!open && state == WebSocketState.Open) ||
+                   (!closing && state == WebSocketState.Closing) ||
+                   (!closed && state == WebSocketState.Closed)
+                ? "This operation isn't available in: " + state.ToString().ToLower()
+                : null;
+        }
+
+        /// <summary>
+        /// Sends binary <paramref name="data" /> using the WebSocket connection.
+        /// </summary>
+        /// <param name="data">An array of <see cref="byte" /> that represents the binary data to send.</param>
+        /// <param name="opcode">The opcode.</param>
+        /// <param name="ct">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous of send 
+        /// binary data using websockets
+        /// </returns>
+        public async Task SendAsync(byte[] data, Opcode opcode, CancellationToken ct = default(CancellationToken))
+        {
+            var msg = CheckIfAvailable(_readyState) ??
+                      CheckSendParameter(data);
+
+            if (msg != null)
+            {
+                msg.Error();
+                Error("An error has occurred in sending data.", null);
+
+                return;
+            }
+
+            Send(opcode, new MemoryStream(data), ct);
+        }
+
+        /// <summary>
+        /// Sets an HTTP <paramref name="cookie"/> to send with
+        /// the WebSocket handshake request to the server.
+        /// </summary>
+        /// <param name="cookie">
+        /// A <see cref="Cookie"/> that represents a cookie to send.
+        /// </param>
+        public void SetCookie(Cookie cookie)
+        {
+            string msg;
+            if (!CheckIfAvailable(out msg, true, false, true, false, false) || cookie == null)
+            {
+                msg.Error();
+                Error("An error has occurred in setting a cookie.", null);
+
+                return;
+            }
+
+            lock (_forState)
+            {
+                if (!CheckIfAvailable(out msg, true, false, false, true))
+                {
+                    msg.Error();
+                    Error("An error has occurred in setting a cookie.", null);
+
+                    return;
+                }
+
+                // TODO: lock (CookieCollection.SyncRoot)
+                CookieCollection.Add(cookie);
+            }
+        }
+        
+        /// <summary>
+        /// Closes the WebSocket connection, and releases all associated resources.
+        /// </summary>
+        /// <remarks>
+        /// This method closes the connection with <see cref="CloseStatusCode.Away"/>.
+        /// </remarks>
+        public void Dispose()
+        {
+            // TODO: this is correct?
+            InternalCloseAsync(new CloseEventArgs(CloseStatusCode.Away)).Wait();
+        }
 
         internal static bool CheckWaitTime(TimeSpan time, out string message)
         {
@@ -494,6 +700,172 @@ namespace Unosquare.Net
 
             message = "A wait time is zero or less.";
             return false;
+        }
+
+        internal static string CheckCloseParameters(CloseStatusCode code, string reason, bool client)
+        {
+            return code == CloseStatusCode.NoStatus
+                ? (!string.IsNullOrEmpty(reason) ? "NoStatus cannot have a reason." : null)
+                : code == CloseStatusCode.MandatoryExtension && !client
+                    ? "MandatoryExtension cannot be used by a server."
+                    : code == CloseStatusCode.ServerError && client
+                        ? "ServerError cannot be used by a client."
+                        : !string.IsNullOrEmpty(reason) && Encoding.UTF8.GetBytes(reason).Length > 123
+                            ? "A reason has greater than the allowable max size."
+                            : null;
+        }
+
+        internal static bool CheckParametersForClose(
+            CloseStatusCode code, string reason, bool client, out string message)
+        {
+            message = null;
+
+            if (code == CloseStatusCode.NoStatus && !string.IsNullOrEmpty(reason))
+            {
+                message = "'code' cannot have a reason.";
+                return false;
+            }
+
+            if (code == CloseStatusCode.MandatoryExtension && !client)
+            {
+                message = "'code' cannot be used by a server.";
+                return false;
+            }
+
+            if (code == CloseStatusCode.ServerError && client)
+            {
+                message = "'code' cannot be used by a client.";
+                return false;
+            }
+
+            if (!string.IsNullOrEmpty(reason) && Encoding.UTF8.GetBytes(reason).Length > 123)
+            {
+                message = "The size of 'reason' is greater than the allowable max size.";
+                return false;
+            }
+
+            return true;
+        }
+
+        internal static string CheckPingParameter(string message, out byte[] bytes)
+        {
+            bytes = Encoding.UTF8.GetBytes(message);
+            return bytes.Length > 125 ? "A message has greater than the allowable max size." : null;
+        }
+
+        internal static string CheckSendParameter(byte[] data) => data == null ? "'data' is null." : null;
+
+        internal static string CheckSendParameter(string data) => data == null ? "'data' is null." : null;
+
+        internal static string CheckSendParameters(Stream stream, int length)
+        {
+            return stream == null
+                ? "'stream' is null."
+                : !stream.CanRead
+                    ? "'stream' cannot be read."
+                    : length < 1
+                        ? "'length' is less than 1."
+                        : null;
+        }
+
+        // As client
+        internal static string CreateBase64Key()
+        {
+            var src = new byte[16];
+            RandomNumber.GetBytes(src);
+
+            return Convert.ToBase64String(src);
+        }
+
+        internal static string CreateResponseKey(string base64Key)
+        {
+            var buff = new StringBuilder(base64Key, 64);
+            buff.Append(Guid);
+            var sha1 = SHA1.Create();
+            var src = sha1.ComputeHash(Encoding.UTF8.GetBytes(buff.ToString()));
+
+            return Convert.ToBase64String(src);
+        }
+
+        // As server
+        internal async Task CloseAsync(HttpResponse response)
+        {
+            _readyState = WebSocketState.Closing;
+
+            await SendHttpResponseAsync(response);
+            await ReleaseServerResources();
+
+            _readyState = WebSocketState.Closed;
+        }
+
+        // As server
+        internal async Task CloseAsync(CloseEventArgs e, byte[] frameAsBytes, bool receive, CancellationToken ct = default(CancellationToken))
+        {
+            lock (_forState)
+            {
+                if (_readyState == WebSocketState.Closing)
+                {
+                    "The closing is already in progress.".Debug();
+                    return;
+                }
+
+                if (_readyState == WebSocketState.Closed)
+                {
+                    "The connection has been closed.".Debug();
+                    return;
+                }
+
+                _readyState = WebSocketState.Closing;
+            }
+
+            // TODO: Fix
+            e.WasClean = await CloseHandshakeAsync(frameAsBytes, receive, false, ct).ConfigureAwait(false);
+            await ReleaseServerResources().ConfigureAwait(false);
+            ReleaseCommonResources();
+
+            _readyState = WebSocketState.Closed;
+
+            try
+            {
+                OnClose?.Invoke(this, e);
+            }
+            catch (Exception ex)
+            {
+                ex.Log(nameof(WebSocket));
+            }
+        }
+
+        // As server
+        internal async Task InternalAcceptAsync()
+        {
+            try
+            {
+                var handShake = await AcceptHandshakeAsync();
+
+                if (handShake == false)
+                    return;
+
+                _readyState = WebSocketState.Open;
+            }
+            catch (Exception ex)
+            {
+                ex.Log(nameof(WebSocket));
+                Fatal("An exception has occurred while accepting.", ex);
+
+                return;
+            }
+
+            Open();
+        }
+
+        internal async Task<bool> PingAsync(byte[] frameAsBytes, TimeSpan timeout)
+        {
+            if (_readyState != WebSocketState.Open)
+                return false;
+
+            await _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length);
+
+            return _receivePong != null && _receivePong.WaitOne(timeout);
         }
 
         // As server
@@ -896,7 +1268,7 @@ namespace Unosquare.Net
             // TODO: Wait?
             InternalCloseAsync(new CloseEventArgs(code, message), !code.IsReserved(), false).Wait();
         }
-        
+
         private void Message()
         {
             MessageEventArgs e;
@@ -1367,7 +1739,7 @@ namespace Unosquare.Net
         private async Task<HttpResponse> SendHandshakeRequestAsync()
         {
             var req = CreateHandshakeRequest();
-            var res = await SendHttpRequestAsync(req);
+            var res = await req.GetResponse(_stream);
 
             if (res.IsUnauthorized)
             {
@@ -1405,12 +1777,6 @@ namespace Unosquare.Net
             return res;
         }
 
-        // As client
-        private Task<HttpResponse> SendHttpRequestAsync(HttpRequest request, int millisecondsTimeout = 90000)
-        {
-            return request.GetResponse(_stream, millisecondsTimeout, CancellationToken.None);
-        }
-
         // As server
         private Task SendHttpResponseAsync(HttpResponse response)
         {
@@ -1423,9 +1789,7 @@ namespace Unosquare.Net
         // As client
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         private async Task SetClientStream()
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-
 #if NET46
             _tcpClient = new TcpClient(_uri.DnsSafeHost, _uri.Port);
 #else
@@ -1467,6 +1831,7 @@ namespace Unosquare.Net
             }
 #endif
         }
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
         private void StartReceiving()
         {
@@ -1557,402 +1922,6 @@ namespace Unosquare.Net
 
             return true;
         }
-
-        internal static string CheckCloseParameters(CloseStatusCode code, string reason, bool client)
-        {
-            return code == CloseStatusCode.NoStatus
-                ? (!string.IsNullOrEmpty(reason) ? "NoStatus cannot have a reason." : null)
-                : code == CloseStatusCode.MandatoryExtension && !client
-                    ? "MandatoryExtension cannot be used by a server."
-                    : code == CloseStatusCode.ServerError && client
-                        ? "ServerError cannot be used by a client."
-                        : !string.IsNullOrEmpty(reason) && Encoding.UTF8.GetBytes(reason).Length > 123
-                            ? "A reason has greater than the allowable max size."
-                            : null;
-        }
-
-        internal static bool CheckParametersForClose(
-            CloseStatusCode code, string reason, bool client, out string message)
-        {
-            message = null;
-
-            if (code == CloseStatusCode.NoStatus && !string.IsNullOrEmpty(reason))
-            {
-                message = "'code' cannot have a reason.";
-                return false;
-            }
-
-            if (code == CloseStatusCode.MandatoryExtension && !client)
-            {
-                message = "'code' cannot be used by a server.";
-                return false;
-            }
-
-            if (code == CloseStatusCode.ServerError && client)
-            {
-                message = "'code' cannot be used by a client.";
-                return false;
-            }
-
-            if (!string.IsNullOrEmpty(reason) && Encoding.UTF8.GetBytes(reason).Length > 123)
-            {
-                message = "The size of 'reason' is greater than the allowable max size.";
-                return false;
-            }
-
-            return true;
-        }
-
-        internal static string CheckPingParameter(string message, out byte[] bytes)
-        {
-            bytes = Encoding.UTF8.GetBytes(message);
-            return bytes.Length > 125 ? "A message has greater than the allowable max size." : null;
-        }
-
-        internal static string CheckSendParameter(byte[] data) => data == null ? "'data' is null." : null;
-
-        internal static string CheckSendParameter(string data) => data == null ? "'data' is null." : null;
-
-        internal static string CheckSendParameters(Stream stream, int length)
-        {
-            return stream == null
-                ? "'stream' is null."
-                : !stream.CanRead
-                    ? "'stream' cannot be read."
-                    : length < 1
-                        ? "'length' is less than 1."
-                        : null;
-        }
-
-        // As server
-        internal async Task CloseAsync(HttpResponse response)
-        {
-            _readyState = WebSocketState.Closing;
-
-            await SendHttpResponseAsync(response);
-            await ReleaseServerResources();
-
-            _readyState = WebSocketState.Closed;
-        }
-
-        // As server
-        internal async Task CloseAsync(CloseEventArgs e, byte[] frameAsBytes, bool receive, CancellationToken ct = default(CancellationToken))
-        {
-            lock (_forState)
-            {
-                if (_readyState == WebSocketState.Closing)
-                {
-                    "The closing is already in progress.".Debug();
-                    return;
-                }
-
-                if (_readyState == WebSocketState.Closed)
-                {
-                    "The connection has been closed.".Debug();
-                    return;
-                }
-
-                _readyState = WebSocketState.Closing;
-            }
-
-            // TODO: Fix
-            e.WasClean = await CloseHandshakeAsync(frameAsBytes, receive, false, ct).ConfigureAwait(false);
-            await ReleaseServerResources().ConfigureAwait(false);
-            ReleaseCommonResources();
-
-            _readyState = WebSocketState.Closed;
-
-            try
-            {
-                OnClose?.Invoke(this, e);
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-            }
-        }
-
-        // As client
-        internal static string CreateBase64Key()
-        {
-            var src = new byte[16];
-            RandomNumber.GetBytes(src);
-
-            return Convert.ToBase64String(src);
-        }
-
-        internal static string CreateResponseKey(string base64Key)
-        {
-            var buff = new StringBuilder(base64Key, 64);
-            buff.Append(Guid);
-            var sha1 = SHA1.Create();
-            var src = sha1.ComputeHash(Encoding.UTF8.GetBytes(buff.ToString()));
-
-            return Convert.ToBase64String(src);
-        }
-
-        // As server
-        internal async Task InternalAcceptAsync()
-        {
-            try
-            {
-                var handShake = await AcceptHandshakeAsync();
-
-                if (handShake == false)
-                    return;
-
-                _readyState = WebSocketState.Open;
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-                Fatal("An exception has occurred while accepting.", ex);
-
-                return;
-            }
-
-            Open();
-        }
-
-        internal async Task<bool> PingAsync(byte[] frameAsBytes, TimeSpan timeout)
-        {
-            if (_readyState != WebSocketState.Open)
-                return false;
-
-            await _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length);
-
-            return _receivePong != null && _receivePong.WaitOne(timeout);
-        }
-
-        #endregion
-
-        #region Public Methods
-
-        /// <summary>
-        /// Closes the WebSocket connection asynchronously, and releases
-        /// all associated resources.
-        /// </summary>
-        /// <param name="code">The code.</param>
-        /// <param name="reason">The reason.</param>
-        /// <param name="ct">The cancellation token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous closes websocket connection
-        /// </returns>
-        public async Task CloseAsync(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null, CancellationToken ct = default(CancellationToken))
-        {
-            string msg;
-            if (!CheckIfAvailable(out msg))
-            {
-                msg.Error();
-                Error("An error has occurred in closing the connection.", null);
-
-                return;
-            }
-
-            if (code != CloseStatusCode.Undefined && !CheckParametersForClose(code, reason, _client, out msg))
-            {
-                msg.Error();
-                Error("An error has occurred in closing the connection.", null);
-
-                return;
-            }
-
-            if (code == CloseStatusCode.NoStatus)
-            {
-                await InternalCloseAsync(new CloseEventArgs(), ct: ct);
-                return;
-            }
-
-            var send = !code.IsReserved();
-            await InternalCloseAsync(new CloseEventArgs(code, reason), send, send, ct: ct);
-        }
-
-        /// <summary>
-        /// Establishes a WebSocket connection asynchronously.
-        /// </summary>
-        /// <param name="ct">The cancellation token.</param>
-        /// <returns>
-        /// If CheckIfAvailable statement terminates execution of the method; otherwise, 
-        /// establishes a WebSocket connection
-        /// </returns>
-        /// <remarks>
-        /// <para>
-        /// This method doesn't wait for the connect to be complete.
-        /// </para>
-        /// <para>
-        /// This method isn't available in a server.
-        /// </para></remarks>
-        public async Task ConnectAsync(CancellationToken ct = default(CancellationToken))
-        {
-            if (!CheckIfAvailable(out string msg, true, false, true, false, false))
-            {
-                msg.Error();
-                Error("An error has occurred in connecting.", null);
-
-                return;
-            }
-
-            try
-            {
-                lock (_forState)
-                {
-                    _readyState = WebSocketState.Connecting;
-                }
-
-                var handShake = await DoHandshakeAsync();
-
-                if (!handShake)
-                    return;
-
-                lock (_forState)
-                {
-                    _readyState = WebSocketState.Open;
-                }
-
-                Open();
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-                Fatal("An exception has occurred while connecting.", ex);
-            }
-        }
-
-        /// <summary>
-        /// Sends a ping using the WebSocket connection.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if the <see cref="WebSocket"/> receives a pong to this ping in a time;
-        /// otherwise, <c>false</c>.
-        /// </returns>
-        public async Task<bool> PingAsync()
-        {
-            var bytes = _client
-                ? WebSocketFrame.CreatePingFrame(true).ToArray()
-                : WebSocketFrame.EmptyPingBytes;
-
-            return await PingAsync(bytes, _waitTime);
-        }
-
-        /// <summary>
-        /// Sends a ping with the specified <paramref name="message"/> using the WebSocket connection.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if the <see cref="WebSocket"/> receives a pong to this ping in a time;
-        /// otherwise, <c>false</c>.
-        /// </returns>
-        /// <param name="message">
-        /// A <see cref="string"/> that represents the message to send.
-        /// </param>
-        public async Task<bool> PingAsync(string message)
-        {
-            if (string.IsNullOrEmpty(message))
-                return await PingAsync();
-
-            var msg = CheckPingParameter(message, out byte[] data);
-
-            if (msg != null)
-            {
-                msg.Error();
-                Error("An error has occurred in sending a ping.", null);
-
-                return false;
-            }
-
-            return await PingAsync(WebSocketFrame.CreatePingFrame(data, _client).ToArray(), _waitTime);
-        }
-
-        private static string CheckIfAvailable(
-            WebSocketState state,
-            bool connecting = false,
-            bool open = true,
-            bool closing = false,
-            bool closed = false)
-        {
-            return (!connecting && state == WebSocketState.Connecting) ||
-                   (!open && state == WebSocketState.Open) ||
-                   (!closing && state == WebSocketState.Closing) ||
-                   (!closed && state == WebSocketState.Closed)
-                ? "This operation isn't available in: " + state.ToString().ToLower()
-                : null;
-        }
-
-        /// <summary>
-        /// Sends binary <paramref name="data" /> using the WebSocket connection.
-        /// </summary>
-        /// <param name="data">An array of <see cref="byte" /> that represents the binary data to send.</param>
-        /// <param name="opcode">The opcode.</param>
-        /// <param name="ct">The cancellation token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous of send 
-        /// binary data using websockets
-        /// </returns>
-        public async Task SendAsync(byte[] data, Opcode opcode, CancellationToken ct = default(CancellationToken))
-        {
-            var msg = CheckIfAvailable(_readyState) ??
-                      CheckSendParameter(data);
-
-            if (msg != null)
-            {
-                msg.Error();
-                Error("An error has occurred in sending data.", null);
-
-                return;
-            }
-
-            Send(opcode, new MemoryStream(data), ct);
-        }
-
-        /// <summary>
-        /// Sets an HTTP <paramref name="cookie"/> to send with
-        /// the WebSocket handshake request to the server.
-        /// </summary>
-        /// <param name="cookie">
-        /// A <see cref="Cookie"/> that represents a cookie to send.
-        /// </param>
-        public void SetCookie(Cookie cookie)
-        {
-            string msg;
-            if (!CheckIfAvailable(out msg, true, false, true, false, false) || cookie == null)
-            {
-                msg.Error();
-                Error("An error has occurred in setting a cookie.", null);
-
-                return;
-            }
-
-            lock (_forState)
-            {
-                if (!CheckIfAvailable(out msg, true, false, false, true))
-                {
-                    msg.Error();
-                    Error("An error has occurred in setting a cookie.", null);
-
-                    return;
-                }
-
-                // TODO: lock (CookieCollection.SyncRoot)
-                CookieCollection.Add(cookie);
-            }
-        }
-        
-        #endregion
-
-        #region Explicit Interface Implementations
-
-        /// <summary>
-        /// Closes the WebSocket connection, and releases all associated resources.
-        /// </summary>
-        /// <remarks>
-        /// This method closes the connection with <see cref="CloseStatusCode.Away"/>.
-        /// </remarks>
-        public void Dispose()
-        {
-            // TODO: this is correct?
-            InternalCloseAsync(new CloseEventArgs(CloseStatusCode.Away)).Wait();
-        }
-
-        #endregion
     }
 }
 

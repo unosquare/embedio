@@ -34,38 +34,25 @@ namespace Unosquare.Net
     using System.Collections.Specialized;
     using System.IO;
     using System.Text;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Swan;
 
     internal abstract class HttpBase
     {
-        #region Private Fields
+        protected const string CrLf = "\r\n";
 
         private const int HeadersMaxLength = 8192;
         
         private byte[] _entityBodyData;
-
-        #endregion
-
-        #region Protected Fields
-
-        protected const string CrLf = "\r\n";
-
-        #endregion
-
-        #region Protected Constructors
-
+        
         protected HttpBase(Version version, NameValueCollection headers)
         {
             ProtocolVersion = version;
             Headers = headers;
         }
-
-        #endregion
-
-        #region Public Properties
-
+        
         public string EntityBody
         {
             get
@@ -86,39 +73,75 @@ namespace Unosquare.Net
         public NameValueCollection Headers { get; }
 
         public Version ProtocolVersion { get; }
+        
+        public byte[] ToByteArray() => Encoding.UTF8.GetBytes(ToString());
 
-        #endregion
-
-        #region Private Methods
-
-        internal static string GetValue(string nameAndValue, char separator, bool unquote)
+        public void Write(byte[] data)
         {
-            var idx = nameAndValue.IndexOf(separator);
+            _entityBodyData = data;
+        }
+
+        internal static string GetValue(string nameAndValue)
+        {
+            var idx = nameAndValue.IndexOf('=');
             if (idx < 0 || idx == nameAndValue.Length - 1)
                 return null;
 
-            var val = nameAndValue.Substring(idx + 1).Trim();
-            return unquote ? val.Unquote() : val;
+            return nameAndValue.Substring(idx + 1).Trim().Unquote();
         }
 
         internal static Encoding GetEncoding(string contentType)
         {
-            var parts = contentType.Split(';');
+            return contentType.Split(';')
+                .Select(p => p.Trim())
+                .Where(part => part.StartsWith("charset", StringComparison.OrdinalIgnoreCase))
+                .Select(part => Encoding.GetEncoding(GetValue(part))).FirstOrDefault();
+        }
+        
+        protected static async Task<T> ReadAsync<T>(Stream stream, Func<string[], T> parser, int millisecondsTimeout = 90000, CancellationToken ct = default(CancellationToken))
+          where T : HttpBase
+        {
+            var timeout = false;
+            var timer = new Timer(
+              state =>
+              {
+                  timeout = true;
+#if NET452
+                  stream.Close();
+#else
+                  stream.Dispose();
+#endif
+              },
+              null,
+              millisecondsTimeout,
+              -1);
 
-            foreach (var p in parts)
+            try
             {
-                var part = p.Trim();
-                if (part.StartsWith("charset", StringComparison.OrdinalIgnoreCase))
-                    return Encoding.GetEncoding(GetValue(part, '=', true));
-            }
+                var http = parser(ReadHeaders(stream, HeadersMaxLength));
+                var contentLen = http.Headers["Content-Length"];
 
-            return null;
+                if (!string.IsNullOrEmpty(contentLen))
+                    http._entityBodyData = await ReadEntityBodyAsync(stream, contentLen, ct);
+
+                return http;
+            }
+            catch (Exception ex)
+            {
+                throw new WebSocketException(timeout
+                      ? "A timeout has occurred while reading an HTTP request/response."
+                      : "An exception has occurred while reading an HTTP request/response.", ex);
+            }
+            finally
+            {
+                timer.Change(-1, -1);
+                timer.Dispose();
+            }
         }
 
         private static async Task<byte[]> ReadEntityBodyAsync(Stream stream, string length, CancellationToken ct)
         {
-            long len;
-            if (!long.TryParse(length, out len))
+            if (!long.TryParse(length, out long len))
                 throw new ArgumentException("Cannot be parsed.", nameof(length));
 
             if (len < 0)
@@ -171,64 +194,6 @@ namespace Unosquare.Net
                    .Replace(CrLf + "\t", " ")
                    .Split(new[] { CrLf }, StringSplitOptions.RemoveEmptyEntries);
         }
-
-        #endregion
-
-        #region Protected Methods
-
-        protected static async Task<T> ReadAsync<T>(Stream stream, Func<string[], T> parser, int millisecondsTimeout, CancellationToken ct = default(CancellationToken))
-          where T : HttpBase
-        {
-            var timeout = false;
-            var timer = new Timer(
-              state =>
-              {
-                  timeout = true;
-#if NET452
-                  stream.Close();
-#else
-                  stream.Dispose();
-#endif
-              },
-              null,
-              millisecondsTimeout,
-              -1);
-
-            try
-            {
-                var http = parser(ReadHeaders(stream, HeadersMaxLength));
-                var contentLen = http.Headers["Content-Length"];
-
-                if (!string.IsNullOrEmpty(contentLen))
-                    http._entityBodyData = await ReadEntityBodyAsync(stream, contentLen, ct);
-
-                return http;
-            }
-            catch (Exception ex)
-            {
-                throw new WebSocketException(timeout
-                      ? "A timeout has occurred while reading an HTTP request/response."
-                      : "An exception has occurred while reading an HTTP request/response.", ex);
-            }
-            finally
-            {
-                timer.Change(-1, -1);
-                timer.Dispose();
-            }
-        }
-
-        #endregion
-
-        #region Public Methods
-
-        public byte[] ToByteArray() => Encoding.UTF8.GetBytes(ToString());
-
-        public void Write(byte[] data)
-        {
-            _entityBodyData = data;
-        }
-
-        #endregion
     }
 }
 #endif

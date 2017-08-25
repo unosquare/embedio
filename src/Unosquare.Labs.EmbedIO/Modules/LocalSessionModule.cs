@@ -263,11 +263,10 @@
                 {
                     var sessionIdValue = nameValue[1].Trim();
 
-                    if (_sessions.ContainsKey(sessionIdValue))
-                    {
-                        context.Request.Cookies[SessionCookieName].Value = sessionIdValue;
-                        break;
-                    }
+                    if (!_sessions.ContainsKey(sessionIdValue)) continue;
+
+                    context.Request.Cookies[SessionCookieName].Value = sessionIdValue;
+                    break;
                 }
             }
         }

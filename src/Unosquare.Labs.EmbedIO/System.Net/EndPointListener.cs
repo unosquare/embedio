@@ -81,84 +81,11 @@ using System.Security.Cryptography;
 
         internal HttpListener Listener { get; }
 
-        private static void Accept(Socket socket, SocketAsyncEventArgs e, ref Socket accepted)
-        {
-            e.AcceptSocket = null;
-            bool asyn;
-            try
-            {
-                asyn = socket.AcceptAsync(e);
-            }
-            catch
-            {
-                if (accepted != null)
-                {
-                    try
-                    {
-                        accepted.Dispose();
-                    }
-                    catch
-                    {
-                        // ignored
-                    }
-
-                    accepted = null;
-                }
-
-                return;
-            }
-
-            if (!asyn)
-            {
-                ProcessAccept(e);
-            }
-        }
-
-        private static void ProcessAccept(SocketAsyncEventArgs args)
-        {
-            Socket accepted = null;
-            if (args.SocketError == SocketError.Success)
-                accepted = args.AcceptSocket;
-
-            var epl = (EndPointListener) args.UserToken;
-
-            Accept(epl._sock, args, ref accepted);
-            if (accepted == null)
-                return;
-
-#if SSL
-            if (epl._secure && epl._cert == null)
-            {
-                accepted.Dispose();
-                return;
-            }
-            var conn = new HttpConnection(accepted, epl, epl._secure, epl._cert);
-#else
-            var conn = new HttpConnection(accepted, epl);
-#endif
-            lock (epl._unregistered)
-            {
-                epl._unregistered[conn] = conn;
-            }
-
-            conn.BeginReadRequest().Wait();
-        }
-
-        private static void OnAccept(object sender, SocketAsyncEventArgs e) => ProcessAccept(e);
-
-        internal void RemoveConnection(HttpConnection conn)
-        {
-            lock (_unregistered)
-            {
-                _unregistered.Remove(conn);
-            }
-        }
-
         public bool BindContext(HttpListenerContext context)
         {
             var req = context.Request;
-            ListenerPrefix prefix;
-            var listener = SearchListener(req.Url, out prefix);
+            var listener = SearchListener(req.Url, out ListenerPrefix prefix);
+
             if (listener == null)
                 return false;
 
@@ -244,6 +171,7 @@ using System.Security.Cryptography;
         {
             ArrayList current;
             ArrayList future;
+
             if (prefix.Host == "*")
             {
                 do
@@ -254,6 +182,7 @@ using System.Security.Cryptography;
                         break; // Prefix not found
                 }
                 while (Interlocked.CompareExchange(ref _unhandled, future, current) != current);
+
                 CheckIfRemove();
                 return;
             }
@@ -273,6 +202,7 @@ using System.Security.Cryptography;
             }
 
             Hashtable prefs, p2;
+
             do
             {
                 prefs = _prefixes;
@@ -283,8 +213,79 @@ using System.Security.Cryptography;
                 p2.Remove(prefix);
             }
             while (Interlocked.CompareExchange(ref _prefixes, p2, prefs) != prefs);
+
             CheckIfRemove();
         }
+
+        internal void RemoveConnection(HttpConnection conn)
+        {
+            lock (_unregistered) _unregistered.Remove(conn);
+        }
+
+        private static void Accept(Socket socket, SocketAsyncEventArgs e, ref Socket accepted)
+        {
+            e.AcceptSocket = null;
+            bool asyn;
+            try
+            {
+                asyn = socket.AcceptAsync(e);
+            }
+            catch
+            {
+                if (accepted != null)
+                {
+                    try
+                    {
+                        accepted.Dispose();
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+
+                    accepted = null;
+                }
+
+                return;
+            }
+
+            if (!asyn)
+            {
+                ProcessAccept(e);
+            }
+        }
+
+        private static void ProcessAccept(SocketAsyncEventArgs args)
+        {
+            Socket accepted = null;
+            if (args.SocketError == SocketError.Success)
+                accepted = args.AcceptSocket;
+
+            var epl = (EndPointListener)args.UserToken;
+
+            Accept(epl._sock, args, ref accepted);
+            if (accepted == null)
+                return;
+
+#if SSL
+            if (epl._secure && epl._cert == null)
+            {
+                accepted.Dispose();
+                return;
+            }
+            var conn = new HttpConnection(accepted, epl, epl._secure, epl._cert);
+#else
+            var conn = new HttpConnection(accepted, epl);
+#endif
+            lock (epl._unregistered)
+            {
+                epl._unregistered[conn] = conn;
+            }
+
+            conn.BeginReadRequest().Wait();
+        }
+
+        private static void OnAccept(object sender, SocketAsyncEventArgs e) => ProcessAccept(e);
 
         private static HttpListener MatchFromList(string path, ArrayList list, out ListenerPrefix prefix)
         {

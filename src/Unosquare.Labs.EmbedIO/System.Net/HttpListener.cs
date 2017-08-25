@@ -117,7 +117,15 @@ namespace Unosquare.Net
             }
         }
 #endif
-        
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is supported.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is supported; otherwise, <c>false</c>.
+        /// </value>
+        public static bool IsSupported => true;
+
         /// <summary>
         /// Gets or sets a value indicating whether the listener should ignore write exceptions.
         /// </summary>
@@ -135,14 +143,6 @@ namespace Unosquare.Net
         public bool IsListening { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether this instance is supported.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is supported; otherwise, <c>false</c>.
-        /// </value>
-        public static bool IsSupported => true;
-
-        /// <summary>
         /// Gets the prefixes.
         /// </summary>
         /// <value>
@@ -157,26 +157,17 @@ namespace Unosquare.Net
         /// The realm.
         /// </value>
         public string Realm { get; set; }
-        
+
         /// <summary>
         /// Aborts this listener.
         /// </summary>
-        public async Task AborAsync()
-        {
-            if (_disposed)
-                return;
-
-            if (!IsListening)
-            {
-                return;
-            }
-
-            await CloseAsync(true);
-        }
+        /// <returns>The task aborting</returns>
+        public Task AbortAsync() => CloseAsync();
 
         /// <summary>
         /// Closes this listener.
         /// </summary>
+        /// <returns>The task closing</returns>
         public async Task CloseAsync()
         {
             if (_disposed)
@@ -192,36 +183,6 @@ namespace Unosquare.Net
             _disposed = true;
         }
 
-        private async Task CloseAsync(bool closeExisting)
-        {
-            EndPointManager.RemoveListener(this);
-
-            var conns = new List<HttpConnection>();
-
-            lock (_connections.SyncRoot)
-            {
-                var keys = _connections.Keys;
-                var connsArray = new HttpConnection[keys.Count];
-                keys.CopyTo(connsArray, 0);
-                _connections.Clear();
-                conns.AddRange(connsArray);
-            }
-
-            for (var i = conns.Count - 1; i >= 0; i--)
-                await conns[i].CloseAsync(true).ConfigureAwait(false);
-
-            if (closeExisting == false) return;
-
-            while (_ctxQueue.IsEmpty == false)
-            {
-                foreach (var key in _ctxQueue.Keys.Select(x => x).ToList())
-                {
-                    if (_ctxQueue.TryGetValue(key, out HttpListenerContext context))
-                        await context.Connection.CloseAsync(true).ConfigureAwait(false);
-                }
-            }
-        }
-        
         /// <summary>
         /// Starts this listener.
         /// </summary>
@@ -237,6 +198,7 @@ namespace Unosquare.Net
         /// <summary>
         /// Stops this listener.
         /// </summary>
+        /// <returns>The task stopping the listener</returns>
         public Task StopAsync()
         {
             IsListening = false;
@@ -289,6 +251,36 @@ namespace Unosquare.Net
         internal void RemoveConnection(HttpConnection cnc)
         {
             _connections.Remove(cnc);
+        }
+
+        private async Task CloseAsync(bool closeExisting)
+        {
+            EndPointManager.RemoveListener(this);
+
+            var conns = new List<HttpConnection>();
+
+            lock (_connections.SyncRoot)
+            {
+                var keys = _connections.Keys;
+                var connsArray = new HttpConnection[keys.Count];
+                keys.CopyTo(connsArray, 0);
+                _connections.Clear();
+                conns.AddRange(connsArray);
+            }
+
+            for (var i = conns.Count - 1; i >= 0; i--)
+                await conns[i].CloseAsync(true).ConfigureAwait(false);
+
+            if (closeExisting == false) return;
+
+            while (_ctxQueue.IsEmpty == false)
+            {
+                foreach (var key in _ctxQueue.Keys.Select(x => x).ToList())
+                {
+                    if (_ctxQueue.TryGetValue(key, out HttpListenerContext context))
+                        await context.Connection.CloseAsync(true).ConfigureAwait(false);
+                }
+            }
         }
     }
 }

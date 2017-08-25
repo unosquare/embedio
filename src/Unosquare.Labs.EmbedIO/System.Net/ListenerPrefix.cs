@@ -34,14 +34,13 @@ namespace Unosquare.Net
     internal sealed class ListenerPrefix
     {
         private readonly string _original;
-        private ushort _port;
-        
+
         public ListenerPrefix(string prefix)
         {
             _original = prefix;
             Parse(prefix);
         }
-        
+
         public HttpListener Listener { get; set; }
 
         public IPAddress[] Addresses { get; set; }
@@ -50,58 +49,9 @@ namespace Unosquare.Net
 
         public string Host { get; private set; }
 
-        public int Port => (int)_port;
+        public int Port { get; private set; }
 
         public string Path { get; private set; }
-
-        public override string ToString() => _original;
-
-        // Equals and GetHashCode are required to detect duplicates in HttpListenerPrefixCollection.
-        public override bool Equals(object o)
-        {
-            var other = o as ListenerPrefix;
-            if (other == null)
-                return false;
-
-            return _original == other._original;
-        }
-
-        public override int GetHashCode() => _original.GetHashCode();
-
-        private void Parse(string uri)
-        {
-            ushort defaultPort = 80;
-            if (uri.StartsWith("https://"))
-            {
-                defaultPort = 443;
-                Secure = true;
-            }
-
-            var length = uri.Length;
-            var startHost = uri.IndexOf(':') + 3;
-            if (startHost >= length)
-                throw new ArgumentException("No host specified.");
-
-            var colon = uri.IndexOf(':', startHost, length - startHost);
-            int root;
-            if (colon > 0)
-            {
-                Host = uri.Substring(startHost, colon - startHost);
-                root = uri.IndexOf('/', colon, length - colon);
-                _port = (ushort)int.Parse(uri.Substring(colon + 1, root - colon - 1));
-                Path = uri.Substring(root);
-            }
-            else
-            {
-                root = uri.IndexOf('/', startHost, length - startHost);
-                Host = uri.Substring(startHost, root - startHost);
-                _port = defaultPort;
-                Path = uri.Substring(root);
-            }
-
-            if (Path.Length != 1)
-                Path = Path.Substring(0, Path.Length - 1);
-        }
 
         public static void CheckUri(string uri)
         {
@@ -147,6 +97,55 @@ namespace Unosquare.Net
 
             if (uri[uri.Length - 1] != '/')
                 throw new ArgumentException("The prefix must end with '/'");
+        }
+
+        public override string ToString() => _original;
+
+        // Equals and GetHashCode are required to detect duplicates in HttpListenerPrefixCollection.
+        public override bool Equals(object o)
+        {
+            var other = o as ListenerPrefix;
+            if (other == null)
+                return false;
+
+            return _original == other._original;
+        }
+
+        public override int GetHashCode() => _original.GetHashCode();
+
+        private void Parse(string uri)
+        {
+            ushort defaultPort = 80;
+            if (uri.StartsWith("https://"))
+            {
+                defaultPort = 443;
+                Secure = true;
+            }
+
+            var length = uri.Length;
+            var startHost = uri.IndexOf(':') + 3;
+            if (startHost >= length)
+                throw new ArgumentException("No host specified.");
+
+            var colon = uri.IndexOf(':', startHost, length - startHost);
+            int root;
+            if (colon > 0)
+            {
+                Host = uri.Substring(startHost, colon - startHost);
+                root = uri.IndexOf('/', colon, length - colon);
+                Port = int.Parse(uri.Substring(colon + 1, root - colon - 1));
+                Path = uri.Substring(root);
+            }
+            else
+            {
+                root = uri.IndexOf('/', startHost, length - startHost);
+                Host = uri.Substring(startHost, root - startHost);
+                Port = defaultPort;
+                Path = uri.Substring(root);
+            }
+
+            if (Path.Length != 1)
+                Path = Path.Substring(0, Path.Length - 1);
         }
     }
 }

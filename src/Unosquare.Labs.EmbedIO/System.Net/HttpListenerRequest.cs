@@ -71,326 +71,6 @@ using System.Threading.Tasks;
             ProtocolVersion = HttpVersion.Version10;
         }
 
-        internal void SetRequestLine(string req)
-        {
-            var parts = req.Split(Separators, 3);
-            if (parts.Length != 3)
-            {
-                _context.ErrorMessage = "Invalid request line (parts).";
-                return;
-            }
-
-            HttpMethod = parts[0];
-
-            foreach (var c in HttpMethod)
-            {
-                var ic = (int)c;
-
-                if ((ic >= 'A' && ic <= 'Z') ||
-                    (ic > 32 && c < 127 && c != '(' && c != ')' && c != '<' &&
-                     c != '<' && c != '>' && c != '@' && c != ',' && c != ';' &&
-                     c != ':' && c != '\\' && c != '"' && c != '/' && c != '[' &&
-                     c != ']' && c != '?' && c != '=' && c != '{' && c != '}'))
-                    continue;
-
-                _context.ErrorMessage = "(Invalid verb)";
-                return;
-            }
-
-            RawUrl = parts[1];
-            if (parts[2].Length != 8 || !parts[2].StartsWith("HTTP/"))
-            {
-                _context.ErrorMessage = "Invalid request line (version).";
-                return;
-            }
-
-            try
-            {
-                ProtocolVersion = new Version(parts[2].Substring(5));
-                if (ProtocolVersion.Major < 1)
-                    throw new Exception();
-            }
-            catch
-            {
-                _context.ErrorMessage = "Invalid request line (version).";
-            }
-        }
-
-        private static bool MaybeUri(string s)
-        {
-            var p = s.IndexOf(':');
-            if (p == -1)
-                return false;
-
-            return p < 10 && IsPredefinedScheme(s.Substring(0, p));
-        }
-
-        // Using a simple block of if's is twice as slow as the compiler generated
-        // switch statement.   But using this tuned code is faster than the
-        // compiler generated code, with a million loops on x86-64:
-        //
-        // With "http": .10 vs .51 (first check)
-        // with "https": .16 vs .51 (second check)
-        // with "foo": .22 vs .31 (never found)
-        // with "mailto": .12 vs .51  (last check)
-        private static bool IsPredefinedScheme(string scheme)
-        {
-            if (scheme == null || scheme.Length < 3)
-                return false;
-
-            var c = scheme[0];
-
-            if (c == 'h')
-                return scheme == "http" || scheme == "https";
-
-            if (c == 'f')
-                return scheme == "file" || scheme == "ftp";
-
-            if (c == 'n')
-            {
-                c = scheme[1];
-
-                if (c == 'e')
-                    return scheme == "news" || scheme == "net.pipe" || scheme == "net.tcp";
-
-                return scheme == "nntp";
-            }
-
-            return (c == 'g' && scheme == "gopher") || (c == 'm' && scheme == "mailto");
-        }
-
-        private void CreateQueryString(string query)
-        {
-            if (string.IsNullOrEmpty(query))
-            {
-                QueryString = new NameValueCollection(1);
-                return;
-            }
-
-            QueryString = new NameValueCollection();
-            if (query[0] == '?')
-                query = query.Substring(1);
-            var components = query.Split('&');
-            foreach (var kv in components)
-            {
-                var pos = kv.IndexOf('=');
-                if (pos == -1)
-                {
-                    QueryString.Add(null, WebUtility.UrlDecode(kv));
-                }
-                else
-                {
-                    var key = WebUtility.UrlDecode(kv.Substring(0, pos));
-                    var val = WebUtility.UrlDecode(kv.Substring(pos + 1));
-
-                    QueryString.Add(key, val);
-                }
-            }
-        }
-
-        internal void FinishInitialization()
-        {
-            var host = UserHostName;
-            if (ProtocolVersion > HttpVersion.Version10 && string.IsNullOrEmpty(host))
-            {
-                _context.ErrorMessage = "Invalid host name";
-                return;
-            }
-
-            string path;
-            Uri rawUri = null;
-            if (MaybeUri(RawUrl.ToLowerInvariant()) && Uri.TryCreate(RawUrl, UriKind.Absolute, out rawUri))
-                path = rawUri.PathAndQuery;
-            else
-                path = RawUrl;
-
-            if (string.IsNullOrEmpty(host))
-                host = UserHostAddress;
-
-            if (rawUri != null)
-                host = rawUri.Host;
-
-            var colon = host.IndexOf(':');
-            if (colon >= 0)
-                host = host.Substring(0, colon);
-
-            var baseUri = $"{(IsSecureConnection ? "https" : "http")}://{host}:{LocalEndPoint.Port}";
-
-            if (!Uri.TryCreate(baseUri + path, UriKind.Absolute, out _url))
-            {
-                _context.ErrorMessage = WebUtility.HtmlEncode("Invalid url: " + baseUri + path);
-                return;
-            }
-
-            CreateQueryString(_url.Query);
-
-            // Use reference source HttpListenerRequestUriBuilder to process url.
-            // Fixes #29927
-            _url = HttpListenerRequestUriBuilder.GetRequestUri(
-                                RawUrl,
-                                _url.Scheme,
-                                _url.Authority,
-                                _url.LocalPath,
-                                _url.Query);
-
-            if (!_clSet)
-            {
-                if (string.Compare(HttpMethod, "POST", StringComparison.OrdinalIgnoreCase) == 0 ||
-                    string.Compare(HttpMethod, "PUT", StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    return;
-                }
-            }
-
-            if (string.Compare(Headers["Expect"], "100-continue", StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                var output = _context.Connection.GetResponseStream();
-                output.InternalWrite(_100Continue, 0, _100Continue.Length);
-            }
-        }
-
-        internal void AddHeader(string header)
-        {
-            var colon = header.IndexOf(':');
-            if (colon == -1 || colon == 0)
-            {
-                _context.ErrorMessage = "Bad Request";
-                _context.ErrorStatus = 400;
-                return;
-            }
-
-            var name = header.Substring(0, colon).Trim();
-            var val = header.Substring(colon + 1).Trim();
-            var lower = name.ToLowerInvariant();
-            Headers.Set(name, val);
-
-            switch (lower)
-            {
-                case "accept-language":
-                    UserLanguages = val.Split(Labs.EmbedIO.Constants.Strings.CommaSplitChar); // yes, only split with a ','
-                    break;
-                case "accept":
-                    AcceptTypes = val.Split(Labs.EmbedIO.Constants.Strings.CommaSplitChar); // yes, only split with a ','
-                    break;
-                case "content-length":
-                    try
-                    {
-                        // TODO: max. content_length?
-                        ContentLength64 = long.Parse(val.Trim());
-                        if (ContentLength64 < 0)
-                            _context.ErrorMessage = "Invalid Content-Length.";
-                        _clSet = true;
-                    }
-                    catch
-                    {
-                        _context.ErrorMessage = "Invalid Content-Length.";
-                    }
-
-                    break;
-                case "referer":
-                    try
-                    {
-                        UrlReferrer = new Uri(val);
-                    }
-                    catch
-                    {
-                        UrlReferrer = new Uri("http://someone.is.screwing.with.the.headers.com/");
-                    }
-
-                    break;
-                case "cookie":
-                    if (_cookies == null)
-                        _cookies = new CookieCollection();
-
-                    var cookieStrings = val.Split(Labs.EmbedIO.Constants.Strings.CookieSplitChars)
-                        .Where(x => string.IsNullOrEmpty(x) == false);
-                    Cookie current = null;
-                    var version = 0;
-
-                    foreach (var str in cookieStrings)
-                    {
-                        if (str.StartsWith("$Version"))
-                        {
-                            version = int.Parse(str.Substring(str.IndexOf('=') + 1).Unquote());
-                        }
-                        else if (str.StartsWith("$Path") && current != null)
-                        {
-                            current.Path = str.Substring(str.IndexOf('=') + 1).Trim();
-                        }
-                        else if (str.StartsWith("$Domain") && current != null)
-                        {
-                            current.Domain = str.Substring(str.IndexOf('=') + 1).Trim();
-                        }
-                        else if (str.StartsWith("$Port") && current != null)
-                        {
-                            current.Port = str.Substring(str.IndexOf('=') + 1).Trim();
-                        }
-                        else
-                        {
-                            if (current != null)
-                            {
-                                _cookies.Add(current);
-                            }
-
-                            current = new Cookie();
-                            var idx = str.IndexOf('=');
-                            if (idx > 0)
-                            {
-                                current.Name = str.Substring(0, idx).Trim();
-                                current.Value = str.Substring(idx + 1).Trim();
-                            }
-                            else
-                            {
-                                current.Name = str.Trim();
-                                current.Value = string.Empty;
-                            }
-
-                            current.Version = version;
-                        }
-                    }
-
-                    if (current != null)
-                    {
-                        _cookies.Add(current);
-                    }
-
-                    break;
-            }
-        }
-
-        // returns true is the stream could be reused.
-        internal async Task<bool> FlushInput()
-        {
-            if (!HasEntityBody)
-                return true;
-
-            var length = 2048;
-            if (ContentLength64 > 0)
-                length = (int)Math.Min(ContentLength64, length);
-
-            var bytes = new byte[length];
-
-            while (true)
-            {
-                try
-                {
-                    var data = await InputStream.ReadAsync(bytes, 0, length);
-
-                    if (data <= 0)
-                        return true;
-                }
-                catch (ObjectDisposedException)
-                {
-                    _inputStream = null;
-                    return true;
-                }
-                catch
-                {
-                    return false;
-                }
-            }
-        }
-
         /// <summary>
         /// Gets the MIME accept types.
         /// </summary>
@@ -640,6 +320,296 @@ using System.Threading.Tasks;
         /// Gets a value indicating whether this request is a web socket request.
         /// </summary>
         public bool IsWebSocketRequest => HttpMethod == "GET" && ProtocolVersion > HttpVersion.Version10 && Headers.Contains("Upgrade", "websocket") && Headers.Contains("Connection", "Upgrade");
+
+        internal void SetRequestLine(string req)
+        {
+            var parts = req.Split(Separators, 3);
+            if (parts.Length != 3)
+            {
+                _context.ErrorMessage = "Invalid request line (parts).";
+                return;
+            }
+
+            HttpMethod = parts[0];
+
+            foreach (var c in HttpMethod)
+            {
+                var ic = (int)c;
+
+                if ((ic >= 'A' && ic <= 'Z') ||
+                    (ic > 32 && c < 127 && c != '(' && c != ')' && c != '<' &&
+                     c != '<' && c != '>' && c != '@' && c != ',' && c != ';' &&
+                     c != ':' && c != '\\' && c != '"' && c != '/' && c != '[' &&
+                     c != ']' && c != '?' && c != '=' && c != '{' && c != '}'))
+                    continue;
+
+                _context.ErrorMessage = "(Invalid verb)";
+                return;
+            }
+
+            RawUrl = parts[1];
+            if (parts[2].Length != 8 || !parts[2].StartsWith("HTTP/"))
+            {
+                _context.ErrorMessage = "Invalid request line (version).";
+                return;
+            }
+
+            try
+            {
+                ProtocolVersion = new Version(parts[2].Substring(5));
+                if (ProtocolVersion.Major < 1)
+                    throw new Exception();
+            }
+            catch
+            {
+                _context.ErrorMessage = "Invalid request line (version).";
+            }
+        }
+
+        internal void FinishInitialization()
+        {
+            var host = UserHostName;
+            if (ProtocolVersion > HttpVersion.Version10 && string.IsNullOrEmpty(host))
+            {
+                _context.ErrorMessage = "Invalid host name";
+                return;
+            }
+
+            string path;
+            Uri rawUri = null;
+            if (MaybeUri(RawUrl.ToLowerInvariant()) && Uri.TryCreate(RawUrl, UriKind.Absolute, out rawUri))
+                path = rawUri.PathAndQuery;
+            else
+                path = RawUrl;
+
+            if (string.IsNullOrEmpty(host))
+                host = UserHostAddress;
+
+            if (rawUri != null)
+                host = rawUri.Host;
+
+            var colon = host.IndexOf(':');
+            if (colon >= 0)
+                host = host.Substring(0, colon);
+
+            var baseUri = $"{(IsSecureConnection ? "https" : "http")}://{host}:{LocalEndPoint.Port}";
+
+            if (!Uri.TryCreate(baseUri + path, UriKind.Absolute, out _url))
+            {
+                _context.ErrorMessage = WebUtility.HtmlEncode("Invalid url: " + baseUri + path);
+                return;
+            }
+
+            CreateQueryString(_url.Query);
+
+            // Use reference source HttpListenerRequestUriBuilder to process url.
+            // Fixes #29927
+            _url = HttpListenerRequestUriBuilder.GetRequestUri(RawUrl, _url);
+
+            if (!_clSet)
+            {
+                if (string.Compare(HttpMethod, "POST", StringComparison.OrdinalIgnoreCase) == 0 ||
+                    string.Compare(HttpMethod, "PUT", StringComparison.OrdinalIgnoreCase) == 0)
+                {
+                    return;
+                }
+            }
+
+            if (string.Compare(Headers["Expect"], "100-continue", StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                var output = _context.Connection.GetResponseStream();
+                output.InternalWrite(_100Continue, 0, _100Continue.Length);
+            }
+        }
+
+        internal void AddHeader(string header)
+        {
+            var colon = header.IndexOf(':');
+            if (colon == -1 || colon == 0)
+            {
+                _context.ErrorMessage = "Bad Request";
+                _context.ErrorStatus = 400;
+                return;
+            }
+
+            var name = header.Substring(0, colon).Trim();
+            var val = header.Substring(colon + 1).Trim();
+            var lower = name.ToLowerInvariant();
+            Headers.Set(name, val);
+
+            switch (lower)
+            {
+                case "accept-language":
+                    UserLanguages = val.Split(Labs.EmbedIO.Constants.Strings.CommaSplitChar); // yes, only split with a ','
+                    break;
+                case "accept":
+                    AcceptTypes = val.Split(Labs.EmbedIO.Constants.Strings.CommaSplitChar); // yes, only split with a ','
+                    break;
+                case "content-length":
+                    try
+                    {
+                        // TODO: max. content_length?
+                        ContentLength64 = long.Parse(val.Trim());
+                        if (ContentLength64 < 0)
+                            _context.ErrorMessage = "Invalid Content-Length.";
+                        _clSet = true;
+                    }
+                    catch
+                    {
+                        _context.ErrorMessage = "Invalid Content-Length.";
+                    }
+
+                    break;
+                case "referer":
+                    try
+                    {
+                        UrlReferrer = new Uri(val);
+                    }
+                    catch
+                    {
+                        UrlReferrer = new Uri("http://someone.is.screwing.with.the.headers.com/");
+                    }
+
+                    break;
+                case "cookie":
+                    if (_cookies == null)
+                        _cookies = new CookieCollection();
+
+                    var cookieStrings = val.Split(Labs.EmbedIO.Constants.Strings.CookieSplitChars)
+                        .Where(x => string.IsNullOrEmpty(x) == false);
+                    Cookie current = null;
+                    var version = 0;
+
+                    foreach (var str in cookieStrings)
+                    {
+                        if (str.StartsWith("$Version"))
+                        {
+                            version = int.Parse(str.Substring(str.IndexOf('=') + 1).Unquote());
+                        }
+                        else if (str.StartsWith("$Path") && current != null)
+                        {
+                            current.Path = str.Substring(str.IndexOf('=') + 1).Trim();
+                        }
+                        else if (str.StartsWith("$Domain") && current != null)
+                        {
+                            current.Domain = str.Substring(str.IndexOf('=') + 1).Trim();
+                        }
+                        else if (str.StartsWith("$Port") && current != null)
+                        {
+                            current.Port = str.Substring(str.IndexOf('=') + 1).Trim();
+                        }
+                        else
+                        {
+                            if (current != null)
+                            {
+                                _cookies.Add(current);
+                            }
+
+                            current = new Cookie();
+                            var idx = str.IndexOf('=');
+                            if (idx > 0)
+                            {
+                                current.Name = str.Substring(0, idx).Trim();
+                                current.Value = str.Substring(idx + 1).Trim();
+                            }
+                            else
+                            {
+                                current.Name = str.Trim();
+                                current.Value = string.Empty;
+                            }
+
+                            current.Version = version;
+                        }
+                    }
+
+                    if (current != null)
+                    {
+                        _cookies.Add(current);
+                    }
+
+                    break;
+            }
+        }
+
+        // returns true is the stream could be reused.
+        internal async Task<bool> FlushInput()
+        {
+            if (!HasEntityBody)
+                return true;
+
+            var length = 2048;
+            if (ContentLength64 > 0)
+                length = (int)Math.Min(ContentLength64, length);
+
+            var bytes = new byte[length];
+
+            while (true)
+            {
+                try
+                {
+                    var data = await InputStream.ReadAsync(bytes, 0, length);
+
+                    if (data <= 0)
+                        return true;
+                }
+                catch (ObjectDisposedException)
+                {
+                    _inputStream = null;
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
+
+        private static bool MaybeUri(string s)
+        {
+            var p = s.IndexOf(':');
+            if (p == -1)
+                return false;
+
+            return p < 10 && IsPredefinedScheme(s.Substring(0, p));
+        }
+        
+        private static bool IsPredefinedScheme(string scheme)
+        {
+            if (scheme == null || scheme.Length < 3)
+                return false;
+
+            return scheme == "http" || scheme == "https";
+        }
+
+        private void CreateQueryString(string query)
+        {
+            if (string.IsNullOrEmpty(query))
+            {
+                QueryString = new NameValueCollection(1);
+                return;
+            }
+
+            QueryString = new NameValueCollection();
+            if (query[0] == '?')
+                query = query.Substring(1);
+
+            var components = query.Split('&');
+            foreach (var kv in components)
+            {
+                var pos = kv.IndexOf('=');
+                if (pos == -1)
+                {
+                    QueryString.Add(null, WebUtility.UrlDecode(kv));
+                }
+                else
+                {
+                    var key = WebUtility.UrlDecode(kv.Substring(0, pos));
+                    var val = WebUtility.UrlDecode(kv.Substring(pos + 1));
+
+                    QueryString.Add(key, val);
+                }
+            }
+        }
 
 #if SSL
         /// <summary>

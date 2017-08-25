@@ -3,7 +3,6 @@
     using Constants;
     using EmbedIO;
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
@@ -37,8 +36,7 @@
         /// </summary>
         private const int MaxGzipInputLength = 4 * 1024 * 1024;
 
-        private readonly Dictionary<string, string> _virtualPaths =
-            new Dictionary<string, string>(Strings.StandardStringComparer);
+        private readonly VirtualPaths _virtualPaths = new VirtualPaths();
 
         private readonly Lazy<Dictionary<string, string>> _mimeTypes =
             new Lazy<Dictionary<string, string>>(
@@ -69,7 +67,7 @@
             if (Directory.Exists(fileSystemPath) == false)
                 throw new ArgumentException($"Path '{fileSystemPath}' does not exist.");
 
-            FileSystemPath = Path.GetFullPath(fileSystemPath);
+            _virtualPaths.FileSystemPath = Path.GetFullPath(fileSystemPath);
             UseGzip = true;
 #if DEBUG
             // When debugging, disable RamCache
@@ -78,7 +76,7 @@
 // Otherwise, enable it by default
             this.UseRamCache = true;
 #endif
-            RamCache = new ConcurrentDictionary<string, RamCacheEntry>(Strings.StaticFileStringComparer);
+            RamCache = new RamCache();
             MaxRamCacheFileSize = 250 * 1024;
             DefaultDocument = DefaultDocumentName;
 
@@ -107,7 +105,11 @@
         /// <value>
         /// The default document.
         /// </value>
-        public string DefaultDocument { get; set; }
+        public string DefaultDocument
+        {
+            get { return _virtualPaths.DefaultDocument; }
+            set { _virtualPaths.DefaultDocument = value; }
+        }
 
         /// <summary>
         /// Gets or sets the default extension.
@@ -117,7 +119,11 @@
         /// <value>
         /// The default extension.
         /// </value>
-        public string DefaultExtension { get; set; }
+        public string DefaultExtension
+        {
+            get { return _virtualPaths.DefaultExtension; }
+            set { _virtualPaths.DefaultExtension = value; }
+        }
 
         /// <summary>
         /// Gets the collection holding the MIME types.
@@ -136,7 +142,7 @@
         /// <value>
         /// The file system path.
         /// </value>
-        public string FileSystemPath { get; protected set; }
+        public string FileSystemPath => _virtualPaths.FileSystemPath;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not to use the RAM Cache feature
@@ -166,7 +172,7 @@
         /// <value>
         /// The virtual paths.
         /// </value>
-        public ReadOnlyDictionary<string, string> VirtualPaths => new ReadOnlyDictionary<string, string>(_virtualPaths);
+        public ReadOnlyDictionary<string, string> VirtualPaths => _virtualPaths.Collection;
 
         /// <summary>
         /// Gets the name of this module.
@@ -182,7 +188,7 @@
         /// <value>
         /// The ram cache.
         /// </value>
-        private ConcurrentDictionary<string, RamCacheEntry> RamCache { get; }
+        private RamCache RamCache { get; }
 
         /// <summary>
         /// Registers the virtual path.
@@ -193,19 +199,7 @@
         /// Is thrown when a method call is invalid for the object's current state
         /// </exception>
         public void RegisterVirtualPath(string virtualPath, string physicalPath)
-        {
-            if (string.IsNullOrWhiteSpace(virtualPath) || virtualPath == "/" || virtualPath[0] != '/')
-                throw new InvalidOperationException($"The virtual path {virtualPath} is invalid");
-
-            if (_virtualPaths.ContainsKey(virtualPath))
-                throw new InvalidOperationException($"The virtual path {virtualPath} already exists");
-
-            if (Directory.Exists(physicalPath) == false)
-                throw new InvalidOperationException($"The physical path {physicalPath} doesn't exist");
-
-            physicalPath = Path.GetFullPath(physicalPath);
-            _virtualPaths.Add(virtualPath, physicalPath);
-        }
+            => _virtualPaths.RegisterVirtualPath(virtualPath, physicalPath);
 
         /// <summary>
         /// Unregisters the virtual path.
@@ -214,27 +208,13 @@
         /// <exception cref="System.InvalidOperationException">
         /// Is thrown when a method call is invalid for the object's current state
         /// </exception>
-        public void UnregisterVirtualPath(string virtualPath)
-        {
-            if (_virtualPaths.ContainsKey(virtualPath) == false)
-                throw new InvalidOperationException($"The virtual path {virtualPath} doesn't exists");
-
-            _virtualPaths.Remove(virtualPath);
-        }
+        public void UnregisterVirtualPath(string virtualPath) => _virtualPaths.UnregisterVirtualPath(virtualPath);
 
         /// <summary>
         /// Clears the RAM cache.
         /// </summary>
         public void ClearRamCache() => RamCache.Clear();
-
-        private static bool IsPartOfPath(string targetPath, string basePath)
-        {
-            targetPath = Path.GetFullPath(targetPath).ToLowerInvariant().TrimEnd('/', '\\');
-            basePath = Path.GetFullPath(basePath).ToLowerInvariant().TrimEnd('/', '\\');
-
-            return targetPath.StartsWith(basePath);
-        }
-
+        
         private static async Task WriteToOutputStream(
             HttpListenerContext context,
             long byteLength,
@@ -299,12 +279,12 @@
         private async Task<bool> HandleGet(HttpListenerContext context, CancellationToken ct, bool sendBuffer = true)
         {
             var baseLocalPath = FileSystemPath;
-            var requestLocalPath = GetUrlPath(context, ref baseLocalPath);
+            var requestLocalPath = _virtualPaths.GetUrlPath(context.RequestPathCaseSensitive(), ref baseLocalPath);
 
             var requestFullLocalPath = Path.Combine(baseLocalPath, requestLocalPath);
 
             // Check if the requested local path is part of the root File System Path
-            if (IsPartOfPath(requestFullLocalPath, baseLocalPath) == false)
+            if (_virtualPaths.IsPartOfPath(requestFullLocalPath, baseLocalPath) == false)
             {
                 context.Response.StatusCode = (int) System.Net.HttpStatusCode.Forbidden;
                 return true;
@@ -319,7 +299,7 @@
                 var usingPartial = string.IsNullOrWhiteSpace(partialHeader) == false &&
                                    partialHeader.StartsWith("bytes=");
 
-                if (ExistsLocalPath(requestLocalPath, ref requestFullLocalPath) == false)
+                if (_virtualPaths.ExistsLocalPath(requestLocalPath, ref requestFullLocalPath) == false)
                 {
                     return false;
                 }
@@ -327,14 +307,10 @@
                 var fileDate = File.GetLastWriteTime(requestFullLocalPath);
 
                 var requestHash = context.RequestHeader(Headers.IfNotMatch);
-
-                if (RamCache.ContainsKey(requestFullLocalPath) &&
-                    RamCache[requestFullLocalPath].LastModified == fileDate)
+                
+                if (RamCache.IsValid(requestFullLocalPath, fileDate, out string currentHash))
                 {
                     $"RAM Cache: {requestFullLocalPath}".Debug();
-
-                    var currentHash = RamCache[requestFullLocalPath].Buffer.ComputeMD5().ToUpperHex() + '-' +
-                                      fileDate.Ticks;
 
                     if (string.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
                     {
@@ -490,85 +466,14 @@
 
             if (UseRamCache && buffer.Length <= MaxRamCacheFileSize)
             {
-                using (var memoryStream = new MemoryStream())
-                {
-                    buffer.Position = 0;
-                    buffer.CopyTo(memoryStream);
-
-                    RamCache[localPath] = new RamCacheEntry()
-                    {
-                        LastModified = fileDate,
-                        Buffer = memoryStream.ToArray()
-                    };
-                }
+                RamCache.Add(buffer, localPath, fileDate);
             }
 
             context.Response.AddHeader(Headers.ETag, currentHash);
 
             return false;
         }
-
-        private bool ExistsLocalPath(string urlPath, ref string localPath)
-        {
-            if (string.IsNullOrWhiteSpace(DefaultExtension) == false && DefaultExtension.StartsWith(".") &&
-                File.Exists(localPath) == false)
-            {
-                localPath += DefaultExtension;
-            }
-
-            if (File.Exists(localPath)) return true;
-
-            if (Directory.Exists(localPath) && File.Exists(Path.Combine(localPath, DefaultDocument)))
-            {
-                localPath = Path.Combine(localPath, DefaultDocument);
-            }
-            else
-            {
-                // Try to fallback to root
-                var rootLocalPath = Path.Combine(FileSystemPath, urlPath);
-
-                if (File.Exists(rootLocalPath))
-                {
-                    localPath = rootLocalPath;
-                }
-                else if (Directory.Exists(rootLocalPath) && File.Exists(Path.Combine(rootLocalPath, DefaultDocument)))
-                {
-                    localPath = Path.Combine(rootLocalPath, DefaultDocument);
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private string GetUrlPath(HttpListenerContext context, ref string baseLocalPath)
-        {
-            var urlPath = context.RequestPathCaseSensitive().Replace('/', Path.DirectorySeparatorChar);
-
-            if (_virtualPaths.Any(x => context.RequestPathCaseSensitive().StartsWith(x.Key)))
-            {
-                var additionalPath =
-                    _virtualPaths.FirstOrDefault(x => context.RequestPathCaseSensitive().StartsWith(x.Key));
-                baseLocalPath = additionalPath.Value;
-                urlPath = urlPath.Replace(additionalPath.Key.Replace('/', Path.DirectorySeparatorChar), string.Empty);
-
-                if (string.IsNullOrWhiteSpace(urlPath))
-                {
-                    urlPath = Path.DirectorySeparatorChar.ToString();
-                }
-            }
-
-            // adjust the path to see if we've got a default document
-            if (urlPath.Last() == Path.DirectorySeparatorChar)
-                urlPath = urlPath + DefaultDocument;
-
-            urlPath = urlPath.TrimStart(Path.DirectorySeparatorChar);
-            return urlPath;
-        }
-
+        
         private void SetStatusCode304(HttpListenerContext context)
         {
             context.Response.AddHeader(Headers.CacheControl,
@@ -578,15 +483,6 @@
 
             context.Response.ContentType = string.Empty;
             context.Response.StatusCode = 304;
-        }
-
-        /// <summary>
-        /// Represents a RAM Cache dictionary entry
-        /// </summary>
-        private class RamCacheEntry
-        {
-            public DateTime LastModified { get; set; }
-            public byte[] Buffer { get; set; }
         }
     }
 }

@@ -76,7 +76,7 @@ using System.Security.Cryptography.X509Certificates;
 #if SSL
             IsSecure = secure;
 
-            if (secure == false)
+            if (!secure)
             {
                 Stream = new NetworkStream(sock, false);
             }
@@ -176,6 +176,57 @@ using System.Security.Cryptography.X509Certificates;
                        new ResponseStream(Stream, _context.Response, _context.Listener?.IgnoreWriteExceptions ?? true));
         }
 
+        internal async Task CloseAsync(bool forceClose = false)
+        {
+            if (_sock != null)
+            {
+                Stream st = GetResponseStream();
+                st?.Dispose();
+
+                _oStream = null;
+            }
+
+            if (_sock == null) return;
+
+            forceClose |= !_context.Request.KeepAlive;
+
+            if (!forceClose)
+                forceClose = _context.Response.Headers["connection"] == "close";
+
+            if (!forceClose)
+            {
+                var isValidInput = await _context.Request.FlushInput();
+
+                if (isValidInput)
+                {
+                    Reuses++;
+                    Unbind();
+                    Init();
+                    await BeginReadRequest().ConfigureAwait(false);
+                    return;
+                }
+            }
+
+            var s = _sock;
+            _sock = null;
+
+            try
+            {
+                s?.Shutdown(SocketShutdown.Both);
+            }
+            catch
+            {
+                // ignored
+            }
+            finally
+            {
+                s?.Dispose();
+            }
+
+            Unbind();
+            RemoveConnection();
+        }
+        
         private void Init()
         {
 #if SSL
@@ -208,7 +259,7 @@ using System.Security.Cryptography.X509Certificates;
             // Continue reading until full header is received.
             // Especially important for multipart requests when the second part of the header arrives after a tiny delay
             // because the webbrowser has to meassure the content length first.
-            int parsedBytes = 0;
+            var parsedBytes = 0;
             while (true)
             {
                 try
@@ -403,57 +454,6 @@ using System.Security.Cryptography.X509Certificates;
             RemoveConnection();
         }
 
-        internal async Task CloseAsync(bool forceClose = false)
-        {
-            if (_sock != null)
-            {
-                Stream st = GetResponseStream();
-                st?.Dispose();
-
-                _oStream = null;
-            }
-
-            if (_sock == null) return;
-
-            forceClose |= !_context.Request.KeepAlive;
-
-            if (!forceClose)
-                forceClose = _context.Response.Headers["connection"] == "close";
-
-            if (!forceClose)
-            {
-                var isValidInput = await _context.Request.FlushInput();
-
-                if (isValidInput)
-                {
-                    Reuses++;
-                    Unbind();
-                    Init();
-                    await BeginReadRequest().ConfigureAwait(false);
-                    return;
-                }
-            }
-
-            var s = _sock;
-            _sock = null;
-
-            try
-            {
-                s?.Shutdown(SocketShutdown.Both);
-            }
-            catch
-            {
-                // ignored
-            }
-            finally
-            {
-                s?.Dispose();
-            }
-
-            Unbind();
-            RemoveConnection();
-        }
-        
         private enum InputState
         {
             RequestLine,

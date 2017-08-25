@@ -106,8 +106,6 @@ namespace Unosquare.Net
 
     internal class WebSocketFrame : IEnumerable<byte>
     {
-        #region Internal Fields
-
         /// <summary>
         /// Represents the ping frame without the payload data as an array of <see cref="byte"/>.
         /// </summary>
@@ -116,9 +114,7 @@ namespace Unosquare.Net
         /// send a ping from a server.
         /// </remarks>
         internal static readonly byte[] EmptyPingBytes;
-
-        #endregion
-
+        
         static WebSocketFrame()
         {
             EmptyPingBytes = CreatePingFrame(false).ToArray();
@@ -152,12 +148,12 @@ namespace Unosquare.Net
             else if (len < 0x010000)
             {
                 PayloadLength = (byte)126;
-                ExtendedPayloadLength = ((ushort)len).InternalToByteArray(Swan.Endianness.Big);
+                ExtendedPayloadLength = ((ushort)len).InternalToByteArray(Endianness.Big);
             }
             else
             {
                 PayloadLength = (byte)127;
-                ExtendedPayloadLength = len.InternalToByteArray(Swan.Endianness.Big);
+                ExtendedPayloadLength = len.InternalToByteArray(Endianness.Big);
             }
 
             if (mask)
@@ -230,8 +226,8 @@ namespace Unosquare.Net
         internal ulong FullPayloadLength => PayloadLength < 126
             ? PayloadLength
             : PayloadLength == 126
-                ? BitConverter.ToUInt16(ExtendedPayloadLength.ToHostOrder(Swan.Endianness.Big), 0)
-                : BitConverter.ToUInt64(ExtendedPayloadLength.ToHostOrder(Swan.Endianness.Big), 0);
+                ? BitConverter.ToUInt16(ExtendedPayloadLength.ToHostOrder(Endianness.Big), 0)
+                : BitConverter.ToUInt64(ExtendedPayloadLength.ToHostOrder(Endianness.Big), 0);
 
         public IEnumerator<byte> GetEnumerator() => ((IEnumerable<byte>)ToArray()).GetEnumerator();
 
@@ -279,7 +275,7 @@ Extended Payload Length: {extPayloadLen}
                 header = (header << 4) + (int)Opcode;
                 header = (header << 1) + (int)Mask;
                 header = (header << 7) + (int)PayloadLength;
-                buff.Write(((ushort)header).InternalToByteArray(Swan.Endianness.Big), 0, 2);
+                buff.Write(((ushort)header).InternalToByteArray(Endianness.Big), 0, 2);
 
                 if (PayloadLength > 125)
                     buff.Write(ExtendedPayloadLength, 0, PayloadLength == 126 ? 2 : 8);

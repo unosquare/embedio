@@ -40,20 +40,13 @@ namespace Unosquare.Net
     using System.Collections.Specialized;
     using System.IO;
     using System.Text;
-    using System.Threading;
     using System.Threading.Tasks;
 
     internal class HttpRequest : HttpBase
     {
-        #region Private Fields
-
         private bool _websocketRequest;
         private bool _websocketRequestSet;
-
-        #endregion
-
-        #region Constructors
-
+        
         internal HttpRequest(string method, string uri)
           : this(method, uri, HttpVersion.Version11, new NameValueCollection())
         {
@@ -66,10 +59,6 @@ namespace Unosquare.Net
             HttpMethod = method;
             RequestUri = uri;
         }
-
-        #endregion
-
-        #region Public Properties
         
         public CookieCollection Cookies => Headers.GetCookies(false);
 
@@ -95,11 +84,7 @@ namespace Unosquare.Net
         }
 
         public string RequestUri { get; }
-
-        #endregion
-
-        #region Public Methods
-
+        
         public void SetCookies(CookieCollection cookies)
         {
             if (cookies == null || cookies.Count == 0)
@@ -139,11 +124,7 @@ namespace Unosquare.Net
 
             return output.ToString();
         }
-
-        #endregion
-
-        #region Internal Methods
-
+        
         internal static HttpRequest CreateConnectRequest(Uri uri)
         {
             var host = uri.DnsSafeHost;
@@ -190,21 +171,14 @@ namespace Unosquare.Net
 
             return new HttpRequest(requestLine[0], requestLine[1], new Version(requestLine[2].Substring(5)), headers);
         }
-
-        internal static Task<HttpRequest> Read(Stream stream, int millisecondsTimeout)
-        {
-            return ReadAsync(stream, Parse, millisecondsTimeout);
-        }
-
-        internal Task<HttpResponse> GetResponse(Stream stream, int millisecondsTimeout, CancellationToken ct)
+        
+        internal Task<HttpResponse> GetResponse(Stream stream)
         {
             var buff = ToByteArray();
             stream.Write(buff, 0, buff.Length);
 
-            return ReadAsync(stream, HttpResponse.Parse, millisecondsTimeout, ct);
+            return ReadAsync(stream, HttpResponse.Parse);
         }
-
-        #endregion
     }
 }
 #endif

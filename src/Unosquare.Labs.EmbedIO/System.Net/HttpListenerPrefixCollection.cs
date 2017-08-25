@@ -95,20 +95,14 @@ namespace Unosquare.Net
         /// <returns>
         ///   <c>true</c> if [contains] [the specified URI prefix]; otherwise, <c>false</c>.
         /// </returns>
-        public bool Contains(string uriPrefix)
-        {
-            return _prefixes.Contains(uriPrefix);
-        }
+        public bool Contains(string uriPrefix) => _prefixes.Contains(uriPrefix);
 
         /// <summary>
         /// Copies the prefixes to the specified string array
         /// </summary>
         /// <param name="array">The array.</param>
         /// <param name="offset">The offset.</param>
-        public void CopyTo(string[] array, int offset)
-        {
-            _prefixes.CopyTo(array, offset);
-        }
+        public void CopyTo(string[] array, int offset) => _prefixes.CopyTo(array, offset);
 
         /// <summary>
         /// Copies the prefixes to the specified string
