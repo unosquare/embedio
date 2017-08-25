@@ -32,7 +32,6 @@ namespace Unosquare.Net
     using System;
     using System.Collections.Specialized;
     using System.IO;
-    using System.Security.Principal;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -41,30 +40,14 @@ namespace Unosquare.Net
     /// </summary>
     public class WebSocketContext
     {
-        #region Private Fields
-
         private readonly HttpListenerContext _context;
-
-        #endregion
-
-        #region Internal Constructors
         
         internal WebSocketContext(HttpListenerContext context)
         {
             _context = context;
             WebSocket = new WebSocket(this);
         }
-
-        #endregion
-
-        #region Internal Properties
         
-        internal Stream Stream => _context.Connection.Stream;
-
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets the HTTP cookies included in the request.
         /// </summary>
@@ -88,15 +71,7 @@ namespace Unosquare.Net
         /// A <see cref="string"/> that represents the value of the Host header.
         /// </value>
         public string Host => _context.Request.Headers["Host"];
-
-        /// <summary>
-        /// Gets a value indicating whether the client is authenticated.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the client is authenticated; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsAuthenticated => _context.User != null;
-
+        
         /// <summary>
         /// Gets a value indicating whether the client connected from the local computer.
         /// </summary>
@@ -104,7 +79,7 @@ namespace Unosquare.Net
         /// <c>true</c> if the client connected from the local computer; otherwise, <c>false</c>.
         /// </value>
         public bool IsLocal => _context.Request.IsLocal;
-
+#if SSL
         /// <summary>
         /// Gets a value indicating whether the WebSocket connection is secured.
         /// </summary>
@@ -112,7 +87,7 @@ namespace Unosquare.Net
         /// <c>true</c> if the connection is secured; otherwise, <c>false</c>.
         /// </value>
         public bool IsSecureConnection => _context.Connection.IsSecure;
-
+#endif
         /// <summary>
         /// Gets a value indicating whether the request is a WebSocket handshake request.
         /// </summary>
@@ -175,15 +150,7 @@ namespace Unosquare.Net
         /// A <see cref="System.Net.IPEndPoint"/> that represents the server endpoint.
         /// </value>
         public System.Net.IPEndPoint ServerEndPoint => _context.Connection.LocalEndPoint;
-
-        /// <summary>
-        /// Gets the client information (identity, authentication, and security roles).
-        /// </summary>
-        /// <value>
-        /// A <see cref="IPrincipal"/> instance that represents the client information.
-        /// </value>
-        public IPrincipal User => _context.User;
-
+        
         /// <summary>
         /// Gets the client endpoint as an IP address and a port number.
         /// </summary>
@@ -201,15 +168,7 @@ namespace Unosquare.Net
         /// </value>
         public WebSocket WebSocket { get; }
 
-        #endregion
-
-        #region Internal Methods
-
-        internal async Task CloseAsync() => await _context.Connection.CloseAsync(true);
-
-        #endregion
-
-        #region Public Methods
+        internal Stream Stream => _context.Connection.Stream;
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
@@ -219,7 +178,7 @@ namespace Unosquare.Net
         /// </returns>
         public override string ToString() => _context.Request.ToString();
 
-        #endregion
+        internal Task CloseAsync() => _context.Connection.CloseAsync(true);
     }
 }
 #endif

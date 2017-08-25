@@ -26,92 +26,13 @@
         /// <summary>
         /// The concurrent dictionary holding the sessions
         /// </summary>
-        private readonly Dictionary<string, SessionInfo> m_Sessions =
+        private readonly Dictionary<string, SessionInfo> _sessions =
             new Dictionary<string, SessionInfo>(Strings.StandardStringComparer);
 
         /// <summary>
         /// The sessions dictionary synchronization lock
         /// </summary>
-        private readonly object SessionsSyncLock = new object();
-
-        /// <summary>
-        /// Creates a session ID, registers the session info in the Sessions collection, and returns the appropriate session cookie.
-        /// </summary>
-        /// <returns>The sessions.</returns>
-        private System.Net.Cookie CreateSession()
-        {
-            lock (SessionsSyncLock)
-            {
-                var sessionId = Convert.ToBase64String(
-                    System.Text.Encoding.UTF8.GetBytes(
-                        Guid.NewGuid() + DateTime.Now.Millisecond.ToString() + DateTime.Now.Ticks.ToString()));
-                var sessionCookie = string.IsNullOrWhiteSpace(CookiePath) ?
-                new System.Net.Cookie(SessionCookieName, sessionId) :
-                new System.Net.Cookie(SessionCookieName, sessionId, CookiePath);
-
-                m_Sessions[sessionId] = new SessionInfo()
-                {
-                    SessionId = sessionId,
-                    DateCreated = DateTime.Now,
-                    LastActivity = DateTime.Now
-                };
-
-                return sessionCookie;
-            }
-        }
-
-        /// <summary>
-        /// Delete the session object for the given context
-        /// </summary>
-        /// <param name="context">The context.</param>
-        public void DeleteSession(HttpListenerContext context)
-        {
-            DeleteSession(GetSession(context));
-        }
-
-        /// <summary>
-        /// Delete a session for the given session info
-        /// </summary>
-        /// <param name="session">The session info.</param>
-        public void DeleteSession(SessionInfo session)
-        {
-            lock (SessionsSyncLock)
-            {
-                if (string.IsNullOrWhiteSpace(session?.SessionId)) return;
-                if (m_Sessions.ContainsKey(session.SessionId) == false) return;
-                m_Sessions.Remove(session.SessionId);
-            }
-        }
-
-        /// <summary>
-        /// Fixes the session cookie to match the correct value.
-        /// System.Net.Cookie.Value only supports a single value and we need to pick the one that potentially exists.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        private void FixupSessionCookie(HttpListenerContext context)
-        {
-            // get the real "__session" cookie value because sometimes there's more than 1 value and System.Net.Cookie only supports 1 value per cookie
-            if (context.Request.Headers[Headers.Cookie] == null) return;
-
-            var cookieItems = context.Request.Headers[Headers.Cookie].Split(new[] { ';', ',' },
-                StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (var cookieItem in cookieItems)
-            {
-                var nameValue = cookieItem.Trim().Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
-
-                if (nameValue.Length == 2 && nameValue[0].Equals(SessionCookieName))
-                {
-                    var sessionIdValue = nameValue[1].Trim();
-
-                    if (m_Sessions.ContainsKey(sessionIdValue))
-                    {
-                        context.Request.Cookies[SessionCookieName].Value = sessionIdValue;
-                        break;
-                    }
-                }
-            }
-        }
+        private readonly object _sessionsSyncLock = new object();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalSessionModule"/> class.
@@ -120,9 +41,9 @@
         {
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (context, ct) =>
             {
-                lock (SessionsSyncLock)
+                lock (_sessionsSyncLock)
                 {
-                    var currentSessions = new Dictionary<string, SessionInfo>(m_Sessions);
+                    var currentSessions = new Dictionary<string, SessionInfo>(_sessions);
 
                     // expire old sessions
                     foreach (var session in currentSessions)
@@ -139,7 +60,7 @@
                     if (requestSessionCookie != null)
                     {
                         FixupSessionCookie(context);
-                        isSessionRegistered = m_Sessions.ContainsKey(requestSessionCookie.Value);
+                        isSessionRegistered = _sessions.ContainsKey(requestSessionCookie.Value);
                     }
                     
                     if (requestSessionCookie == null)
@@ -162,7 +83,7 @@
                     {
                         // If it does exist in the request, check if we're tracking it
                         var requestSessionId = context.Request.Cookies[SessionCookieName].Value;
-                        m_Sessions[requestSessionId].LastActivity = DateTime.Now;
+                        _sessions[requestSessionId].LastActivity = DateTime.Now;
                         $"Session Identified '{requestSessionId}'".Debug(nameof(LocalSessionModule));
                     }
 
@@ -182,9 +103,9 @@
         {
             get
             {
-                lock (SessionsSyncLock)
+                lock (_sessionsSyncLock)
                 {
-                    return new ReadOnlyDictionary<string, SessionInfo>(m_Sessions);
+                    return new ReadOnlyDictionary<string, SessionInfo>(_sessions);
                 }
             }
         }
@@ -232,9 +153,9 @@
         {
             get
             {
-                lock (SessionsSyncLock)
+                lock (_sessionsSyncLock)
                 {
-                    return m_Sessions.ContainsKey(cookieValue) ? m_Sessions[cookieValue] : null;
+                    return _sessions.ContainsKey(cookieValue) ? _sessions[cookieValue] : null;
                 }
             }
         }
@@ -247,7 +168,7 @@
         /// <returns>An object that represents the current content of an http session</returns>
         public SessionInfo GetSession(HttpListenerContext context)
         {
-            lock (SessionsSyncLock)
+            lock (_sessionsSyncLock)
             {
                 if (context.Request.Cookies[SessionCookieName] == null) return null;
 
@@ -264,15 +185,89 @@
 #if NET47
         public SessionInfo GetSession(System.Net.WebSockets.WebSocketContext context)
 #else
-        public SessionInfo GetSession(Unosquare.Net.WebSocketContext context)
+        public SessionInfo GetSession(WebSocketContext context)
 #endif
         {
-            lock (SessionsSyncLock)
+            lock (_sessionsSyncLock)
             {
                 if (context.CookieCollection[SessionCookieName] == null) return null;
 
                 var cookieValue = context.CookieCollection[SessionCookieName].Value;
                 return this[cookieValue];
+            }
+        }
+
+        /// <summary>
+        /// Delete the session object for the given context
+        /// </summary>
+        /// <param name="context">The context.</param>
+        public void DeleteSession(HttpListenerContext context) => DeleteSession(GetSession(context));
+
+        /// <summary>
+        /// Delete a session for the given session info
+        /// </summary>
+        /// <param name="session">The session info.</param>
+        public void DeleteSession(SessionInfo session)
+        {
+            lock (_sessionsSyncLock)
+            {
+                if (string.IsNullOrWhiteSpace(session?.SessionId)) return;
+                if (_sessions.ContainsKey(session.SessionId) == false) return;
+                _sessions.Remove(session.SessionId);
+            }
+        }
+
+        /// <summary>
+        /// Creates a session ID, registers the session info in the Sessions collection, and returns the appropriate session cookie.
+        /// </summary>
+        /// <returns>The sessions.</returns>
+        private System.Net.Cookie CreateSession()
+        {
+            lock (_sessionsSyncLock)
+            {
+                var sessionId = Convert.ToBase64String(
+                    System.Text.Encoding.UTF8.GetBytes(
+                        Guid.NewGuid() + DateTime.Now.Millisecond.ToString() + DateTime.Now.Ticks));
+                var sessionCookie = string.IsNullOrWhiteSpace(CookiePath) ?
+                new System.Net.Cookie(SessionCookieName, sessionId) :
+                new System.Net.Cookie(SessionCookieName, sessionId, CookiePath);
+
+                _sessions[sessionId] = new SessionInfo
+                {
+                    SessionId = sessionId,
+                    DateCreated = DateTime.Now,
+                    LastActivity = DateTime.Now
+                };
+
+                return sessionCookie;
+            }
+        }
+
+        /// <summary>
+        /// Fixes the session cookie to match the correct value.
+        /// System.Net.Cookie.Value only supports a single value and we need to pick the one that potentially exists.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        private void FixupSessionCookie(HttpListenerContext context)
+        {
+            // get the real "__session" cookie value because sometimes there's more than 1 value and System.Net.Cookie only supports 1 value per cookie
+            if (context.Request.Headers[Headers.Cookie] == null) return;
+
+            var cookieItems = context.Request.Headers[Headers.Cookie].Split(Strings.CookieSplitChars, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var cookieItem in cookieItems)
+            {
+                var nameValue = cookieItem.Trim().Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (nameValue.Length == 2 && nameValue[0].Equals(SessionCookieName))
+                {
+                    var sessionIdValue = nameValue[1].Trim();
+
+                    if (!_sessions.ContainsKey(sessionIdValue)) continue;
+
+                    context.Request.Cookies[SessionCookieName].Value = sessionIdValue;
+                    break;
+                }
             }
         }
     }

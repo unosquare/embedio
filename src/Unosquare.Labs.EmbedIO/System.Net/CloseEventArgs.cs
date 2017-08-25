@@ -45,33 +45,16 @@ namespace Unosquare.Net
     /// </remarks>
     public class CloseEventArgs : EventArgs
     {
-        #region Internal Constructors
-        
         internal CloseEventArgs(PayloadData payloadData = null)
         {
             PayloadData = payloadData ?? new PayloadData();
         }
-
-        internal CloseEventArgs(ushort code, string reason)
-        {
-            PayloadData = new PayloadData(code, reason);
-        }
-
+        
         internal CloseEventArgs(CloseStatusCode code, string reason = null)
-            : this((ushort) code, reason)
         {
+            PayloadData = new PayloadData((ushort) code, reason);
         }
-
-        #endregion
-
-        #region Internal Properties
-
-        internal PayloadData PayloadData { get; }
-
-        #endregion
-
-        #region Public Properties
-
+        
         /// <summary>
         /// Gets the status code for the close.
         /// </summary>
@@ -96,7 +79,7 @@ namespace Unosquare.Net
         /// </value>
         public bool WasClean { get; internal set; }
 
-        #endregion
+        internal PayloadData PayloadData { get; }
     }
 }
 

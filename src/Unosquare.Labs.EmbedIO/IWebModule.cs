@@ -30,6 +30,14 @@
         /// The handlers.
         /// </value>
         ModuleMap Handlers { get; }
+        
+        /// <summary>
+        /// Gets the server owning this module. This property is set automatically after registering the module.
+        /// </summary>
+        /// <value>
+        /// The server.
+        /// </value>
+        WebServer Server { get; set; }
 
         /// <summary>
         /// Adds a handler that gets called when a path and verb are matched.
@@ -38,13 +46,5 @@
         /// <param name="verb">The verb.</param>
         /// <param name="handler">The handler.</param>
         void AddHandler(string path, HttpVerbs verb, Func<HttpListenerContext, CancellationToken, Task<bool>> handler);
-
-        /// <summary>
-        /// Gets the server owning this module. This property is set automatically after registering the module.
-        /// </summary>
-        /// <value>
-        /// The server.
-        /// </value>
-        WebServer Server { get; set; }
     }
 }

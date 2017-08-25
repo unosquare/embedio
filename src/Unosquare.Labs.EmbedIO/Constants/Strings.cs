@@ -8,6 +8,8 @@
     /// </summary>
     internal static class Strings
     {
+        internal const string UrlEncodedContentType = "application/x-www-form-urlencoded";
+
         /// <summary>
         ///  Default Browser time format
         /// </summary>
@@ -22,6 +24,11 @@
         /// The comma split character for String.Split method calls.
         /// </summary>
         internal static readonly char[] CommaSplitChar = { ',' };
+
+        /// <summary>
+        /// The cookie split chars for String.Split method calls.
+        /// </summary>
+        internal static readonly char[] CookieSplitChars = {';', ','};
 
         /// <summary>
         /// The format culture used for header outputs

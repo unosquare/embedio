@@ -23,7 +23,24 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
             $"Data frame: {Encoding.UTF8.GetString(rxBuffer)}".Debug();
         }
 
+#if NET47
+        /// <summary>
+        /// Called when this WebSockets Server accepts a new WebSockets client.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="localEndPoint">The local endpoint.</param>
+        /// /// <param name="remoteEndPoint">The remote endpoint.</param>
+        protected override void OnClientConnected(
+            WebSocketContext context, 
+            System.Net.IPEndPoint localEndPoint,
+            System.Net.IPEndPoint remoteEndPoint)
+#else
+        /// <summary>
+        /// Called when this WebSockets Server accepts a new WebSockets client.
+        /// </summary>
+        /// <param name="context">The context.</param>
         protected override void OnClientConnected(WebSocketContext context)
+#endif
         {
             // Do nothing
         }
@@ -2894,7 +2911,24 @@ cygSR/MggDhTGBrfglUEKIXXbcbfwgukfyVEJJPOIP0xTtdAhAKBTNyWZuTIcRmIjIcgEEau"
             $"Data frame: {Encoding.UTF8.GetString(rxBuffer)}".Debug();
         }
 
+#if NET47
+        /// <summary>
+        /// Called when this WebSockets Server accepts a new WebSockets client.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="localEndPoint">The local endpoint.</param>
+        /// /// <param name="remoteEndPoint">The remote endpoint.</param>
+        protected override void OnClientConnected(
+            WebSocketContext context, 
+            System.Net.IPEndPoint localEndPoint,
+            System.Net.IPEndPoint remoteEndPoint)
+#else
+        /// <summary>
+        /// Called when this WebSockets Server accepts a new WebSockets client.
+        /// </summary>
+        /// <param name="context">The context.</param>
         protected override void OnClientConnected(WebSocketContext context)
+#endif
         {
             // do nothing
         }

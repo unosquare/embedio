@@ -69,7 +69,6 @@ namespace Unosquare.Net
         /// <param name="uriPrefix">The URI prefix.</param>
         public void Add(string uriPrefix)
         {
-            _listener.CheckDisposed();
             ListenerPrefix.CheckUri(uriPrefix);
             if (_prefixes.Contains(uriPrefix))
                 return;
@@ -84,7 +83,6 @@ namespace Unosquare.Net
         /// </summary>
         public void Clear()
         {
-            _listener.CheckDisposed();
             _prefixes.Clear();
             if (_listener.IsListening)
                 EndPointManager.RemoveListener(_listener);
@@ -97,22 +95,14 @@ namespace Unosquare.Net
         /// <returns>
         ///   <c>true</c> if [contains] [the specified URI prefix]; otherwise, <c>false</c>.
         /// </returns>
-        public bool Contains(string uriPrefix)
-        {
-            _listener.CheckDisposed();
-            return _prefixes.Contains(uriPrefix);
-        }
+        public bool Contains(string uriPrefix) => _prefixes.Contains(uriPrefix);
 
         /// <summary>
         /// Copies the prefixes to the specified string array
         /// </summary>
         /// <param name="array">The array.</param>
         /// <param name="offset">The offset.</param>
-        public void CopyTo(string[] array, int offset)
-        {
-            _listener.CheckDisposed();
-            _prefixes.CopyTo(array, offset);
-        }
+        public void CopyTo(string[] array, int offset) => _prefixes.CopyTo(array, offset);
 
         /// <summary>
         /// Copies the prefixes to the specified string
@@ -121,7 +111,6 @@ namespace Unosquare.Net
         /// <param name="offset">The offset.</param>
         public void CopyTo(Array array, int offset)
         {
-            _listener.CheckDisposed();
             ((ICollection)_prefixes).CopyTo(array, offset);
         }
 
@@ -131,15 +120,9 @@ namespace Unosquare.Net
         /// <returns>
         /// An enumerator that can be used to iterate through the collection.
         /// </returns>
-        public IEnumerator<string> GetEnumerator()
-        {
-            return _prefixes.GetEnumerator();
-        }
+        public IEnumerator<string> GetEnumerator() => _prefixes.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _prefixes.GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => _prefixes.GetEnumerator();
 
         /// <summary>
         /// Removes the specified URI prefix.
@@ -149,7 +132,6 @@ namespace Unosquare.Net
         /// <exception cref="System.ArgumentNullException">uriPrefix</exception>
         public bool Remove(string uriPrefix)
         {
-            _listener.CheckDisposed();
             if (uriPrefix == null)
                 throw new ArgumentNullException(nameof(uriPrefix));
 

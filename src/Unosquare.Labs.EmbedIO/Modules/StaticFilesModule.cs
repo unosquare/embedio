@@ -3,7 +3,6 @@
     using Constants;
     using EmbedIO;
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
@@ -23,25 +22,72 @@
     public class StaticFilesModule : WebModuleBase
     {
         /// <summary>
-        /// The chuck size for sending files
+        /// Default document constant to "index.html"
         /// </summary>
-        private const int ChuckSize = 256 * 1024;
+        public const string DefaultDocumentName = "index.html";
+
+        /// <summary>
+        /// The chunk size for sending files
+        /// </summary>
+        private const int ChunkSize = 256 * 1024;
 
         /// <summary>
         /// The maximum gzip input length
         /// </summary>
         private const int MaxGzipInputLength = 4 * 1024 * 1024;
 
-        private readonly Dictionary<string, string> m_VirtualPaths =
-            new Dictionary<string, string>(Strings.StandardStringComparer);
+        private readonly VirtualPaths _virtualPaths = new VirtualPaths();
 
-        private readonly Dictionary<string, string> m_MimeTypes =
-            new Dictionary<string, string>(Strings.StandardStringComparer);
+        private readonly Lazy<Dictionary<string, string>> _mimeTypes =
+            new Lazy<Dictionary<string, string>>(
+                () =>
+                    new Dictionary<string, string>(Constants.MimeTypes.DefaultMimeTypes, Strings.StandardStringComparer));
 
         /// <summary>
-        /// Default document constant to "index.html"
+        /// Initializes a new instance of the <see cref="StaticFilesModule"/> class.
         /// </summary>
-        public const string DefaultDocumentName = "index.html";
+        /// <param name="paths">The paths.</param>
+        public StaticFilesModule(Dictionary<string, string> paths)
+            : this(paths.First().Value, null, paths)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StaticFilesModule" /> class.
+        /// </summary>
+        /// <param name="fileSystemPath">The file system path.</param>
+        /// <param name="headers">The headers to set in every request.</param>
+        /// <param name="additionalPaths">The additional paths.</param>
+        /// <exception cref="System.ArgumentException">Path ' + fileSystemPath + ' does not exist.</exception>
+        public StaticFilesModule(
+            string fileSystemPath,
+            Dictionary<string, string> headers = null,
+            Dictionary<string, string> additionalPaths = null)
+        {
+            if (Directory.Exists(fileSystemPath) == false)
+                throw new ArgumentException($"Path '{fileSystemPath}' does not exist.");
+
+            _virtualPaths.FileSystemPath = Path.GetFullPath(fileSystemPath);
+            UseGzip = true;
+#if DEBUG
+            // When debugging, disable RamCache
+            UseRamCache = false;
+#else
+// Otherwise, enable it by default
+            this.UseRamCache = true;
+#endif
+            RamCache = new RamCache();
+            MaxRamCacheFileSize = 250 * 1024;
+            DefaultDocument = DefaultDocumentName;
+
+            headers?.ForEach(DefaultHeaders.Add);
+            additionalPaths?.Where(path => path.Key != "/")
+                .ToDictionary(x => x.Key, x => x.Value)
+                .ForEach(RegisterVirtualPath);
+
+            AddHandler(ModuleMap.AnyPath, HttpVerbs.Head, (context, ct) => HandleGet(context, ct, false));
+            AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (context, ct) => HandleGet(context, ct));
+        }
 
         /// <summary>
         /// Gets or sets the maximum size of the ram cache file.
@@ -59,7 +105,11 @@
         /// <value>
         /// The default document.
         /// </value>
-        public string DefaultDocument { get; set; }
+        public string DefaultDocument
+        {
+            get { return _virtualPaths.DefaultDocument; }
+            set { _virtualPaths.DefaultDocument = value; }
+        }
 
         /// <summary>
         /// Gets or sets the default extension.
@@ -69,7 +119,11 @@
         /// <value>
         /// The default extension.
         /// </value>
-        public string DefaultExtension { get; set; }
+        public string DefaultExtension
+        {
+            get { return _virtualPaths.DefaultExtension; }
+            set { _virtualPaths.DefaultExtension = value; }
+        }
 
         /// <summary>
         /// Gets the collection holding the MIME types.
@@ -77,7 +131,10 @@
         /// <value>
         /// The MIME types.
         /// </value>
-        public ReadOnlyDictionary<string, string> MimeTypes => new ReadOnlyDictionary<string, string>(m_MimeTypes);
+        public Lazy<ReadOnlyDictionary<string, string>> MimeTypes
+            =>
+                new Lazy<ReadOnlyDictionary<string, string>>(
+                    () => new ReadOnlyDictionary<string, string>(_mimeTypes.Value));
 
         /// <summary>
         /// Gets the file system path from which files are retrieved.
@@ -85,7 +142,7 @@
         /// <value>
         /// The file system path.
         /// </value>
-        public string FileSystemPath { get; protected set; }
+        public string FileSystemPath => _virtualPaths.FileSystemPath;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not to use the RAM Cache feature
@@ -115,7 +172,7 @@
         /// <value>
         /// The virtual paths.
         /// </value>
-        public ReadOnlyDictionary<string, string> VirtualPaths => new ReadOnlyDictionary<string, string>(m_VirtualPaths);
+        public ReadOnlyDictionary<string, string> VirtualPaths => _virtualPaths.Collection;
 
         /// <summary>
         /// Gets the name of this module.
@@ -131,99 +188,105 @@
         /// <value>
         /// The ram cache.
         /// </value>
-        private ConcurrentDictionary<string, RamCacheEntry> RamCache { get; }
+        private RamCache RamCache { get; }
 
         /// <summary>
-        /// Represents a RAM Cache dictionary entry
+        /// Registers the virtual path.
         /// </summary>
-        private class RamCacheEntry
-        {
-            public DateTime LastModified { get; set; }
-            public byte[] Buffer { get; set; }
-        }
+        /// <param name="virtualPath">The virtual path.</param>
+        /// <param name="physicalPath">The physical path.</param>
+        /// <exception cref="System.InvalidOperationException">
+        /// Is thrown when a method call is invalid for the object's current state
+        /// </exception>
+        public void RegisterVirtualPath(string virtualPath, string physicalPath)
+            => _virtualPaths.RegisterVirtualPath(virtualPath, physicalPath);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StaticFilesModule"/> class.
+        /// Unregisters the virtual path.
         /// </summary>
-        /// <param name="paths">The paths.</param>
-        public StaticFilesModule(Dictionary<string, string> paths)
-            : this(paths.First().Value, null, paths)
-        {
-        }
+        /// <param name="virtualPath">The virtual path.</param>
+        /// <exception cref="System.InvalidOperationException">
+        /// Is thrown when a method call is invalid for the object's current state
+        /// </exception>
+        public void UnregisterVirtualPath(string virtualPath) => _virtualPaths.UnregisterVirtualPath(virtualPath);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StaticFilesModule" /> class.
+        /// Clears the RAM cache.
         /// </summary>
-        /// <param name="fileSystemPath">The file system path.</param>
-        /// <param name="headers">The headers to set in every request.</param>
-        /// <param name="additionalPaths">The additional paths.</param>
-        /// <exception cref="System.ArgumentException">Path ' + fileSystemPath + ' does not exist.</exception>
-        public StaticFilesModule(
-            string fileSystemPath,
-            Dictionary<string, string> headers = null,
-            Dictionary<string, string> additionalPaths = null)
+        public void ClearRamCache() => RamCache.Clear();
+        
+        private static async Task WriteToOutputStream(
+            HttpListenerContext context,
+            long byteLength,
+            Stream buffer,
+            int lowerByteIndex,
+            CancellationToken ct)
         {
-            if (Directory.Exists(fileSystemPath) == false)
-                throw new ArgumentException($"Path '{fileSystemPath}' does not exist.");
+            var streamBuffer = new byte[ChunkSize];
+            var sendData = 0;
+            var readBufferSize = ChunkSize;
 
-            FileSystemPath = Path.GetFullPath(fileSystemPath);
-            UseGzip = true;
-#if DEBUG
-            // When debugging, disable RamCache
-            UseRamCache = false;
-#else
-// Otherwise, enable it by default
-            this.UseRamCache = true;
-#endif
-            RamCache = new ConcurrentDictionary<string, RamCacheEntry>(Strings.StaticFileStringComparer);
-            MaxRamCacheFileSize = 250 * 1024;
-            DefaultDocument = DefaultDocumentName;
-
-            // Populate the default MIME types
-            foreach (var kvp in Constants.MimeTypes.DefaultMimeTypes)
+            while (true)
             {
-                m_MimeTypes.Add(kvp.Key, kvp.Value);
-            }
+                if (sendData + ChunkSize > byteLength) readBufferSize = (int)(byteLength - sendData);
 
-            if (headers != null)
-            {
-                foreach (var header in headers)
-                {
-                    DefaultHeaders.Add(header.Key, header.Value);
-                }
-            }
+                buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
+                var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct);
 
-            if (additionalPaths != null)
-            {
-                foreach (var path in additionalPaths.Where(path => path.Key != "/"))
-                {
-                    RegisterVirtualPath(path.Key, path.Value);
-                }
-            }
+                if (read == 0) break;
 
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Head, (context, ct) => HandleGet(context, ct, false));
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (context, ct) => HandleGet(context, ct));
+                sendData += read;
+                await context.Response.OutputStream.WriteAsync(streamBuffer, 0, readBufferSize, ct);
+            }
         }
 
-        private static bool IsPartOfPath(string targetPath, string basePath)
+        private static bool CalculateRange(
+            string partialHeader,
+            long fileSize,
+            out int lowerByteIndex,
+            out int upperByteIndex)
         {
-            targetPath = Path.GetFullPath(targetPath).ToLowerInvariant().TrimEnd('/', '\\');
-            basePath = Path.GetFullPath(basePath).ToLowerInvariant().TrimEnd('/', '\\');
+            lowerByteIndex = 0;
+            upperByteIndex = 0;
 
-            return targetPath.StartsWith(basePath);
+            var range = partialHeader.Replace("bytes=", string.Empty).Split('-');
+
+            if (range.Length == 2 && int.TryParse(range[0], out lowerByteIndex) &&
+                int.TryParse(range[1], out upperByteIndex))
+            {
+                return true;
+            }
+
+            if ((range.Length == 2 && int.TryParse(range[0], out lowerByteIndex) &&
+                 string.IsNullOrWhiteSpace(range[1])) ||
+                (range.Length == 1 && int.TryParse(range[0], out lowerByteIndex)))
+            {
+                upperByteIndex = (int) fileSize;
+                return true;
+            }
+
+            if (range.Length == 2 && string.IsNullOrWhiteSpace(range[0]) &&
+                int.TryParse(range[1], out upperByteIndex))
+            {
+                lowerByteIndex = (int) fileSize - upperByteIndex;
+                upperByteIndex = (int) fileSize;
+                return true;
+            }
+
+            return false;
         }
 
         private async Task<bool> HandleGet(HttpListenerContext context, CancellationToken ct, bool sendBuffer = true)
         {
             var baseLocalPath = FileSystemPath;
-            var requestLocalPath = GetUrlPath(context, ref baseLocalPath);
+            var requestLocalPath = _virtualPaths.GetUrlPath(context.RequestPathCaseSensitive(), ref baseLocalPath);
 
             var requestFullLocalPath = Path.Combine(baseLocalPath, requestLocalPath);
 
             // Check if the requested local path is part of the root File System Path
-            if (IsPartOfPath(requestFullLocalPath, baseLocalPath) == false)
+            if (_virtualPaths.IsPartOfPath(requestFullLocalPath, baseLocalPath) == false)
             {
-                context.Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                context.Response.StatusCode = (int) System.Net.HttpStatusCode.Forbidden;
                 return true;
             }
 
@@ -231,11 +294,12 @@
 
             try
             {
-                var eTagValid = false;
+                var isTagValid = false;
                 var partialHeader = context.RequestHeader(Headers.Range);
-                var usingPartial = string.IsNullOrWhiteSpace(partialHeader) == false && partialHeader.StartsWith("bytes=");
+                var usingPartial = string.IsNullOrWhiteSpace(partialHeader) == false &&
+                                   partialHeader.StartsWith("bytes=");
 
-                if (ExistsLocalPath(requestLocalPath, ref requestFullLocalPath) == false)
+                if (_virtualPaths.ExistsLocalPath(requestLocalPath, ref requestFullLocalPath) == false)
                 {
                     return false;
                 }
@@ -243,12 +307,10 @@
                 var fileDate = File.GetLastWriteTime(requestFullLocalPath);
 
                 var requestHash = context.RequestHeader(Headers.IfNotMatch);
-
-                if (RamCache.ContainsKey(requestFullLocalPath) && RamCache[requestFullLocalPath].LastModified == fileDate)
+                
+                if (RamCache.IsValid(requestFullLocalPath, fileDate, out string currentHash))
                 {
                     $"RAM Cache: {requestFullLocalPath}".Debug();
-
-                    var currentHash = RamCache[requestFullLocalPath].Buffer.ComputeMD5().ToUpperHex() + '-' + fileDate.Ticks;
 
                     if (string.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
                     {
@@ -257,7 +319,7 @@
                     }
                     else
                     {
-                        eTagValid = true;
+                        isTagValid = true;
                     }
                 }
                 else
@@ -270,7 +332,7 @@
 
                         if (usingPartial == false)
                         {
-                            eTagValid = UpdateFileCache(context, buffer, fileDate, requestHash, requestFullLocalPath);
+                            isTagValid = UpdateFileCache(context, buffer, fileDate, requestHash, requestFullLocalPath);
                         }
                     }
                 }
@@ -280,7 +342,7 @@
                     .ToString(Strings.BrowserTimeFormat, Strings.StandardCultureInfo);
 
                 if (usingPartial == false &&
-                    (eTagValid || context.RequestHeader(Headers.IfModifiedSince).Equals(utcFileDateString)))
+                    (isTagValid || context.RequestHeader(Headers.IfModifiedSince).Equals(utcFileDateString)))
                 {
                     SetStatusCode304(context);
                     return true;
@@ -297,7 +359,10 @@
                 }
 
                 // If buffer is null something is really wrong
-                if (buffer == null) { return false; }
+                if (buffer == null)
+                {
+                    return false;
+                }
 
                 var lowerByteIndex = 0;
                 var upperByteIndex = 0;
@@ -310,8 +375,7 @@
                     if (upperByteIndex > fileSize)
                     {
                         context.Response.StatusCode = 416;
-                        context.Response.AddHeader(Headers.ContentRanges,
-                            $"bytes */{fileSize}");
+                        context.Response.AddHeader(Headers.ContentRanges, $"bytes */{fileSize}");
 
                         return true;
                     }
@@ -371,53 +435,17 @@
             return true;
         }
 
-        private static async Task WriteToOutputStream(
-            HttpListenerContext context,
-            long byteLength,
-            Stream buffer,
-            int lowerByteIndex,
-            CancellationToken ct)
-        {
-            var streamBuffer = new byte[ChuckSize];
-            var sendData = 0;
-            var readBufferSize = ChuckSize;
-
-            while (true)
-            {
-                if (sendData + ChuckSize > byteLength) readBufferSize = (int)(byteLength - sendData);
-
-                buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
-                var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct);
-
-                if (read == 0) break;
-
-                sendData += read;
-                await context.Response.OutputStream.WriteAsync(streamBuffer, 0, readBufferSize, ct);
-            }
-        }
-
         private void SetHeaders(HttpListenerContext context, string localPath, string utcFileDateString)
         {
             var fileExtension = Path.GetExtension(localPath);
 
-            if (MimeTypes.ContainsKey(fileExtension))
-                context.Response.ContentType = MimeTypes[fileExtension];
+            if (MimeTypes.Value.ContainsKey(fileExtension))
+                context.Response.ContentType = MimeTypes.Value[fileExtension];
 
             context.Response.AddHeader(Headers.CacheControl,
-                DefaultHeaders.ContainsKey(Headers.CacheControl)
-                    ? DefaultHeaders[Headers.CacheControl]
-                    : "private");
-
-            context.Response.AddHeader(Headers.Pragma,
-                DefaultHeaders.ContainsKey(Headers.Pragma)
-                    ? DefaultHeaders[Headers.Pragma]
-                    : string.Empty);
-
-            context.Response.AddHeader(Headers.Expires,
-                DefaultHeaders.ContainsKey(Headers.Expires)
-                    ? DefaultHeaders[Headers.Expires]
-                    : string.Empty);
-
+                DefaultHeaders.GetValueOrDefault(Headers.CacheControl, "private"));
+            context.Response.AddHeader(Headers.Pragma, DefaultHeaders.GetValueOrDefault(Headers.Pragma, string.Empty));
+            context.Response.AddHeader(Headers.Expires, DefaultHeaders.GetValueOrDefault(Headers.Expires, string.Empty));
             context.Response.AddHeader(Headers.LastModified, utcFileDateString);
             context.Response.AddHeader(Headers.AcceptRanges, "bytes");
         }
@@ -438,183 +466,23 @@
 
             if (UseRamCache && buffer.Length <= MaxRamCacheFileSize)
             {
-                using (var memoryStream = new MemoryStream())
-                {
-                    buffer.Position = 0;
-                    buffer.CopyTo(memoryStream);
-
-                    RamCache[localPath] = new RamCacheEntry()
-                    {
-                        LastModified = fileDate,
-                        Buffer = memoryStream.ToArray()
-                    };
-                }
+                RamCache.Add(buffer, localPath, fileDate);
             }
 
             context.Response.AddHeader(Headers.ETag, currentHash);
 
             return false;
         }
-
-        private static bool CalculateRange(
-            string partialHeader,
-            long fileSize,
-            out int lowerByteIndex,
-            out int upperByteIndex)
-        {
-            lowerByteIndex = 0;
-            upperByteIndex = 0;
-
-            var range = partialHeader.Replace("bytes=", string.Empty).Split('-');
-
-            if (range.Length == 2 && int.TryParse(range[0], out lowerByteIndex) &&
-                int.TryParse(range[1], out upperByteIndex))
-            {
-                return true;
-            }
-
-            if ((range.Length == 2 && int.TryParse(range[0], out lowerByteIndex) &&
-                 string.IsNullOrWhiteSpace(range[1])) ||
-                (range.Length == 1 && int.TryParse(range[0], out lowerByteIndex)))
-            {
-                upperByteIndex = (int)fileSize;
-                return true;
-            }
-
-            if (range.Length == 2 && string.IsNullOrWhiteSpace(range[0]) &&
-                int.TryParse(range[1], out upperByteIndex))
-            {
-                lowerByteIndex = (int)fileSize - upperByteIndex;
-                upperByteIndex = (int)fileSize;
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool ExistsLocalPath(string urlPath, ref string localPath)
-        {
-            if (string.IsNullOrWhiteSpace(DefaultExtension) == false && DefaultExtension.StartsWith(".") &&
-                File.Exists(localPath) == false)
-            {
-                localPath += DefaultExtension;
-            }
-
-            if (File.Exists(localPath)) return true;
-
-            if (Directory.Exists(localPath) && File.Exists(Path.Combine(localPath, DefaultDocument)))
-            {
-                localPath = Path.Combine(localPath, DefaultDocument);
-            }
-            else
-            {
-                // Try to fallback to root
-                var rootLocalPath = Path.Combine(FileSystemPath, urlPath);
-
-                if (File.Exists(rootLocalPath))
-                {
-                    localPath = rootLocalPath;
-                }
-                else if (Directory.Exists(rootLocalPath) && File.Exists(Path.Combine(rootLocalPath, DefaultDocument)))
-                {
-                    localPath = Path.Combine(rootLocalPath, DefaultDocument);
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private string GetUrlPath(HttpListenerContext context, ref string baseLocalPath)
-        {
-            var urlPath = context.RequestPathCaseSensitive().Replace('/', Path.DirectorySeparatorChar);
-
-            if (m_VirtualPaths.Any(x => context.RequestPathCaseSensitive().StartsWith(x.Key)))
-            {
-                var additionalPath =
-                    m_VirtualPaths.FirstOrDefault(x => context.RequestPathCaseSensitive().StartsWith(x.Key));
-                baseLocalPath = additionalPath.Value;
-                urlPath = urlPath.Replace(additionalPath.Key.Replace('/', Path.DirectorySeparatorChar), string.Empty);
-
-                if (string.IsNullOrWhiteSpace(urlPath))
-                {
-                    urlPath = Path.DirectorySeparatorChar.ToString();
-                }
-            }
-
-            // adjust the path to see if we've got a default document
-            if (urlPath.Last() == Path.DirectorySeparatorChar)
-                urlPath = urlPath + DefaultDocument;
-
-            urlPath = urlPath.TrimStart(Path.DirectorySeparatorChar);
-            return urlPath;
-        }
-
+        
         private void SetStatusCode304(HttpListenerContext context)
         {
             context.Response.AddHeader(Headers.CacheControl,
-                DefaultHeaders.ContainsKey(Headers.CacheControl)
-                    ? DefaultHeaders[Headers.CacheControl]
-                    : "private");
-
-            context.Response.AddHeader(Headers.Pragma,
-                DefaultHeaders.ContainsKey(Headers.Pragma)
-                    ? DefaultHeaders[Headers.Pragma]
-                    : string.Empty);
-
-            context.Response.AddHeader(Headers.Expires,
-                DefaultHeaders.ContainsKey(Headers.Expires)
-                    ? DefaultHeaders[Headers.Expires]
-                    : string.Empty);
+                DefaultHeaders.GetValueOrDefault(Headers.CacheControl, "private"));
+            context.Response.AddHeader(Headers.Pragma, DefaultHeaders.GetValueOrDefault(Headers.Pragma, string.Empty));
+            context.Response.AddHeader(Headers.Expires, DefaultHeaders.GetValueOrDefault(Headers.Expires, string.Empty));
 
             context.Response.ContentType = string.Empty;
             context.Response.StatusCode = 304;
         }
-
-        /// <summary>
-        /// Registers the virtual path.
-        /// </summary>
-        /// <param name="virtualPath">The virtual path.</param>
-        /// <param name="physicalPath">The physical path.</param>
-        /// <exception cref="System.InvalidOperationException">
-        /// Is thrown when a method call is invalid for the object's current state
-        /// </exception>
-        public void RegisterVirtualPath(string virtualPath, string physicalPath)
-        {
-            if (string.IsNullOrWhiteSpace(virtualPath) || virtualPath == "/" || virtualPath[0] != '/')
-                throw new InvalidOperationException($"The virtual path {virtualPath} is invalid");
-
-            if (m_VirtualPaths.ContainsKey(virtualPath))
-                throw new InvalidOperationException($"The virtual path {virtualPath} already exists");
-
-            if (Directory.Exists(physicalPath) == false)
-                throw new InvalidOperationException($"The physical path {physicalPath} doesn't exist");
-
-            physicalPath = Path.GetFullPath(physicalPath);
-            m_VirtualPaths.Add(virtualPath, physicalPath);
-        }
-
-        /// <summary>
-        /// Unregisters the virtual path.
-        /// </summary>
-        /// <param name="virtualPath">The virtual path.</param>
-        /// <exception cref="System.InvalidOperationException">
-        /// Is thrown when a method call is invalid for the object's current state
-        /// </exception>
-        public void UnregisterVirtualPath(string virtualPath)
-        {
-            if (m_VirtualPaths.ContainsKey(virtualPath) == false)
-                throw new InvalidOperationException($"The virtual path {virtualPath} doesn't exists");
-
-            m_VirtualPaths.Remove(virtualPath);
-        }
-
-        /// <summary>
-        /// Clears the RAM cache.
-        /// </summary>
-        public void ClearRamCache() => RamCache.Clear();
     }
 }

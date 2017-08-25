@@ -72,7 +72,7 @@
         {
             // placeholder
         }
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
         /// NOTE: urlPrefix must be specified as something similar to: http://localhost:9696/
@@ -80,8 +80,8 @@
         /// </summary>
         /// <param name="urlPrefixes">The URL prefix.</param>
         /// <param name="routingStrategy">The routing strategy</param>
-        /// <exception cref="System.InvalidOperationException">The HTTP Listener is not supported in this OS</exception>
-        /// <exception cref="System.ArgumentException">Argument urlPrefix must be specified</exception>
+        /// <exception cref="InvalidOperationException">The HTTP Listener is not supported in this OS</exception>
+        /// <exception cref="ArgumentException">Argument urlPrefix must be specified</exception>
         public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy)
         {
             if (HttpListener.IsSupported == false)
@@ -116,7 +116,7 @@
         public HttpListener Listener { get; protected set; }
 
         /// <summary>
-        /// Gets the Url Prefix for which the server is serving requests.
+        /// Gets the URL Prefix for which the server is serving requests.
         /// </summary>
         /// <value>
         /// The URL prefix.
@@ -146,6 +146,13 @@
         public RoutingStrategy RoutingStrategy { get; protected set; }
 
         /// <summary>
+        /// Static method to create webserver instance
+        /// </summary>
+        /// <param name="urlPrefix">The URL prefix.</param>
+        /// <returns>The webserver instance.</returns>
+        public static WebServer Create(string urlPrefix) => new WebServer(urlPrefix);
+
+        /// <summary>
         /// Gets the module registered for the given type.
         /// Returns null if no module matches the given type.
         /// </summary>
@@ -156,14 +163,6 @@
         {
             return Module(typeof(T)) as T;
         }
-
-        /// <summary>
-        /// Gets the module registered for the given type.
-        /// Returns null if no module matches the given type.
-        /// </summary>
-        /// <param name="moduleType">Type of the module.</param>
-        /// <returns>Web module registered for the given type</returns>
-        private IWebModule Module(Type moduleType) => Modules.FirstOrDefault(m => m.GetType() == moduleType);
 
         /// <summary>
         /// Registers an instance of a web module. Only 1 instance per type is allowed.
@@ -178,9 +177,7 @@
                 module.Server = this;
                 _modules.Add(module);
 
-                var webModule = module as ISessionWebModule;
-
-                if (webModule != null)
+                if (module is ISessionWebModule webModule)
                     SessionModule = webModule;
             }
             else
@@ -210,58 +207,6 @@
 
                 if (module == SessionModule)
                     SessionModule = null;
-            }
-        }
-
-        /// <summary>
-        /// Handles the client request.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="ct">The cancellation token.</param>
-        /// <returns>A task that represents the asynchronous of client request</returns>
-        private async Task HandleClientRequest(HttpListenerContext context, CancellationToken ct)
-        {
-            // start with an empty request ID
-            var requestId = "(not set)";
-
-            try
-            {
-                // Create a request endpoint string
-                var requestEndpoint =
-                    $"{context.Request?.RemoteEndPoint?.Address}:{context.Request?.RemoteEndPoint?.Port}";
-
-                // Generate a random request ID. It's currently not important but could be useful in the future.
-                requestId = string.Concat(DateTime.Now.Ticks.ToString(), requestEndpoint).GetHashCode().ToString("x2");
-
-                // Log the request and its ID
-                $"Start of Request {requestId}".Debug(nameof(WebServer));
-                $"Source {requestEndpoint} - {context.RequestVerb().ToString().ToUpperInvariant()}: {context.RequestPath()}"
-                    .Debug(nameof(WebServer));
-
-                var processResult = await ProcessRequest(context, ct);
-
-                // Return a 404 (Not Found) response if no module/handler handled the response.
-                if (processResult == false)
-                {
-                    "No module generated a response. Sending 404 - Not Found".Error();
-                    var responseBytes = System.Text.Encoding.UTF8.GetBytes(Responses.Response404Html);
-                    context.Response.StatusCode = (int) System.Net.HttpStatusCode.NotFound;
-                    await context.Response.OutputStream.WriteAsync(responseBytes, 0, responseBytes.Length, ct);
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebServer), "Error handling request.");
-            }
-            finally
-            {
-                // Always close the response stream no matter what.
-#if NET47
-                context?.Response.OutputStream.Close();
-#else
-                await context.Response.OutputStream.CloseAsync();
-#endif
-                $"End of Request {requestId}".Debug(nameof(WebServer));
             }
         }
 
@@ -397,7 +342,7 @@
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
+        
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
@@ -422,10 +367,59 @@
         }
 
         /// <summary>
-        /// Static method to create webserver instance
+        /// Gets the module registered for the given type.
+        /// Returns null if no module matches the given type.
         /// </summary>
-        /// <param name="urlPrefix">The URL prefix.</param>
-        /// <returns>The webserver instance.</returns>
-        public static WebServer Create(string urlPrefix) => new WebServer(urlPrefix);
+        /// <param name="moduleType">Type of the module.</param>
+        /// <returns>Web module registered for the given type</returns>
+        private IWebModule Module(Type moduleType) => Modules.FirstOrDefault(m => m.GetType() == moduleType);
+
+        /// <summary>
+        /// Handles the client request.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="ct">The cancellation token.</param>
+        /// <returns>A task that represents the asynchronous of client request</returns>
+        private async Task HandleClientRequest(HttpListenerContext context, CancellationToken ct)
+        {
+            // start with an empty request ID
+            var requestId = "(not set)";
+
+            try
+            {
+                // Create a request endpoint string
+                var requestEndpoint =
+                    $"{context.Request?.RemoteEndPoint?.Address}:{context.Request?.RemoteEndPoint?.Port}";
+
+                // Generate a random request ID. It's currently not important but could be useful in the future.
+                requestId = string.Concat(DateTime.Now.Ticks.ToString(), requestEndpoint).GetHashCode().ToString("x2");
+
+                // Log the request and its ID
+                $"Start of Request {requestId}".Debug(nameof(WebServer));
+                $"Source {requestEndpoint} - {context.RequestVerb().ToString().ToUpperInvariant()}: {context.RequestPath()}"
+                    .Debug(nameof(WebServer));
+
+                var processResult = await ProcessRequest(context, ct);
+
+                // Return a 404 (Not Found) response if no module/handler handled the response.
+                if (processResult == false)
+                {
+                    "No module generated a response. Sending 404 - Not Found".Error();
+                    var responseBytes = System.Text.Encoding.UTF8.GetBytes(Responses.Response404Html);
+                    context.Response.StatusCode = (int)System.Net.HttpStatusCode.NotFound;
+                    await context.Response.OutputStream.WriteAsync(responseBytes, 0, responseBytes.Length, ct);
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.Log(nameof(WebServer), "Error handling request.");
+            }
+            finally
+            {
+                // Always close the response stream no matter what.
+                context?.Response.OutputStream.Close();
+                $"End of Request {requestId}".Debug(nameof(WebServer));
+            }
+        }
     }
 }

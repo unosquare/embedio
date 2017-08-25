@@ -31,7 +31,6 @@ namespace Unosquare.Net
     using System.IO;
     using System.Runtime.InteropServices;
     using System.Text;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Represents a Response stream
@@ -39,11 +38,13 @@ namespace Unosquare.Net
     /// <seealso cref="System.IO.Stream" />
     public class ResponseStream : Stream
     {
+        private static readonly byte[] Crlf = { 13, 10 };
+
         private readonly Stream _stream;
         private readonly HttpListenerResponse _response;
         private readonly bool _ignoreErrors;
         private bool _disposed;
-        private bool _trailerSent;        
+        private bool _trailerSent;
 
         internal ResponseStream(Stream stream, HttpListenerResponse response, bool ignoreErrors)
         {
@@ -95,8 +96,11 @@ namespace Unosquare.Net
         /// <summary>
         /// Closes this instance.
         /// </summary>
-        /// <returns>A task from closing response</returns>
-        public async Task CloseAsync()
+#if NET46
+        public override void Close()
+#else
+        public void Close()
+#endif
         {
             if (_disposed) return;
 
@@ -134,20 +138,7 @@ namespace Unosquare.Net
                 }
             }
 
-            await _response.CloseAsync();
-        }
-
-        private MemoryStream GetHeaders(bool closing)
-        {
-            // SendHeaders works on shared headers
-            lock (_response.HeadersLock)
-            {
-                if (_response.HeadersSent)
-                    return null;
-                var ms = new MemoryStream();
-                _response.SendHeaders(closing, ms);
-                return ms;
-            }
+            _response.Close();
         }
 
         /// <summary>
@@ -155,32 +146,6 @@ namespace Unosquare.Net
         /// </summary>
         public override void Flush()
         {
-        }
-
-        private static readonly byte[] Crlf = { 13, 10 };
-
-        private static byte[] GetChunkSizeBytes(int size, bool final)
-        {
-            return Encoding.UTF8.GetBytes($"{size:x}\r\n{(final ? "\r\n" : string.Empty)}");
-        }
-
-        internal void InternalWrite(byte[] buffer, int offset, int count)
-        {
-            if (_ignoreErrors)
-            {
-                try
-                {
-                    _stream.Write(buffer, offset, count);
-                }
-                catch
-                {
-                    // ignored
-                }
-            }
-            else
-            {
-                _stream.Write(buffer, offset, count);
-            }
         }
 
         /// <summary>
@@ -278,6 +243,41 @@ namespace Unosquare.Net
         public override void SetLength(long value)
         {
             throw new NotSupportedException();
+        }
+
+        internal void InternalWrite(byte[] buffer, int offset, int count)
+        {
+            if (_ignoreErrors)
+            {
+                try
+                {
+                    _stream.Write(buffer, offset, count);
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+            else
+            {
+                _stream.Write(buffer, offset, count);
+            }
+        }
+
+        private static byte[] GetChunkSizeBytes(int size, bool final) => Encoding.UTF8.GetBytes($"{size:x}\r\n{(final ? "\r\n" : string.Empty)}");
+
+        private MemoryStream GetHeaders(bool closing)
+        {
+            // SendHeaders works on shared headers
+            lock (_response.HeadersLock)
+            {
+                if (_response.HeadersSent)
+                    return null;
+
+                var ms = new MemoryStream();
+                _response.SendHeaders(closing, ms);
+                return ms;
+            }
         }
     }
 }

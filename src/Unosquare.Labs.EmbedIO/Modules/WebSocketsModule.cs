@@ -90,7 +90,7 @@
             if (attribute == null)
             {
                 throw new ArgumentException("Argument 'socketType' needs a WebSocketHandlerAttribute",
-                      nameof(socketType));
+                    nameof(socketType));
             }
 
             _serverMap[attribute.Path] = (WebSocketsServer) Activator.CreateInstance(socketType);
@@ -127,10 +127,8 @@
         {
             if (string.IsNullOrWhiteSpace(path))
                 throw new ArgumentNullException(nameof(path));
-            if (server == null)
-                throw new ArgumentNullException(nameof(server));
 
-            _serverMap[path] = server;
+            _serverMap[path] = server ?? throw new ArgumentNullException(nameof(server));
         }
     }
 
@@ -169,15 +167,39 @@
     /// and data transmission
     /// </summary>
     public abstract class WebSocketsServer : IDisposable
-    {        
+    {
         private readonly bool _enableDisconnectedSocketColletion;
         private readonly object _syncRoot = new object();
-        private readonly List<WebSocketContext> _mWebSockets = new List<WebSocketContext>(10);        
+        private readonly List<WebSocketContext> _mWebSockets = new List<WebSocketContext>(10);
 #if NET47
         private readonly int _maximumMessageSize;
 #endif
         private bool _isDisposing;
         private CancellationToken _ct = default(CancellationToken);
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebSocketsServer" /> class.
+        /// </summary>
+        /// <param name="enableConnectionWatchdog">if set to <c>true</c> [enable connection watchdog].</param>
+        /// <param name="maxMessageSize">Maximum size of the message in bytes. Enter 0 or negative number to prevent checks.</param>
+        protected WebSocketsServer(bool enableConnectionWatchdog, int maxMessageSize = 0)
+        {
+            _enableDisconnectedSocketColletion = enableConnectionWatchdog;
+#if NET47
+            _maximumMessageSize = maxMessageSize;
+#endif
+
+            RunConnectionWatchdog();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebSocketsServer"/> class. With dead connection watchdog and no message size checks.
+        /// </summary>
+        protected WebSocketsServer()
+            : this(true)
+        {
+            // placeholder
+        }
 
         /// <summary>
         /// Gets the Currently-Connected WebSockets.
@@ -197,57 +219,12 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebSocketsServer" /> class.
-        /// </summary>
-        /// <param name="enableConnectionWatchdog">if set to <c>true</c> [enable connection watchdog].</param>
-        /// <param name="maxMessageSize">Maximum size of the message in bytes. Enter 0 or negative number to prevent checks.</param>
-        protected WebSocketsServer(bool enableConnectionWatchdog, int maxMessageSize)
-        {
-            _enableDisconnectedSocketColletion = enableConnectionWatchdog;
-#if NET47
-            _maximumMessageSize = maxMessageSize;
-#endif
-
-            RunConnectionWatchdog();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebSocketsServer"/> class. With dead connection watchdog and no message size checks.
-        /// </summary>
-        protected WebSocketsServer()
-            : this(true, 0)
-        {
-            // placeholder
-        }
-
-        /// <summary>
         /// Gets the name of the server.
         /// </summary>
         /// <value>
         /// The name of the server.
         /// </value>
         public abstract string ServerName { get; }
-
-        /// <summary>
-        /// Runs the connection watchdog.
-        /// Removes and disposes stale WebSockets connections every 10 minutes.
-        /// </summary>
-        private void RunConnectionWatchdog()
-        {
-            if (_enableDisconnectedSocketColletion == false) return;
-
-            var watchDogTask = Task.Factory.StartNew(async () =>
-            {
-                while (_isDisposing == false)
-                {
-                    if (_isDisposing == false)
-                        CollectDisconnected();
-
-                    // TODO: make this sleep configurable.
-                    await Task.Delay(30 * 1000, _ct);
-                }
-            }, _ct);
-        }
 
         /// <summary>
         /// Accepts the WebSocket connection.
@@ -274,7 +251,7 @@
             var webSocketContext =
 #if NET47
                 await context.AcceptWebSocketAsync(
-                    subProtocol: null, 
+                    subProtocol: null,
                     receiveBufferSize: receiveBufferSize,
                     keepAliveInterval: TimeSpan.FromSeconds(30));
 #else
@@ -293,14 +270,18 @@
                 nameof(WebSocketsServer));
 
             // call the abstract member
+#if NET47
+            OnClientConnected(webSocketContext, context.Request.LocalEndPoint, context.Request.RemoteEndPoint);
+#else
             OnClientConnected(webSocketContext);
+#endif
 
             try
             {
 #if NET47
 // define a receive buffer
                 var receiveBuffer = new byte[receiveBufferSize];
-                
+
                 // define a dynamic buffer that holds multi-part receptions
                 var receivedMessage = new List<byte>(receiveBuffer.Length * 2);
 
@@ -308,7 +289,8 @@
                 while (webSocketContext.WebSocket.State == WebSocketState.Open)
                 {
                     // retrieve the result (blocking)
-                    var receiveResult = await webSocketContext.WebSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), ct);
+                    var receiveResult =
+                        await webSocketContext.WebSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), ct);
 
                     if (receiveResult.MessageType == WebSocketMessageType.Close)
                     {
@@ -343,7 +325,6 @@
                     }
                 }
 #else
-                // TODO: Pending OnFrameReceived
                 webSocketContext.WebSocket.OnMessage += (s, e) =>
                 {
                     var isText = e.IsText ? WebSocketMessageType.Text : WebSocketMessageType.Binary;
@@ -371,44 +352,15 @@
         }
 
         /// <summary>
-        /// Removes and disposes the web socket.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        /// <param name="webSocketContext">The web socket context.</param>
-        private void RemoveWebSocket(WebSocketContext webSocketContext)
+        public void Dispose()
         {
-            webSocketContext.WebSocket?.Dispose();
+            if (_isDisposing) return;
 
-            lock (_syncRoot)
-            {
-                _mWebSockets.Remove(webSocketContext);
-            }
-
-            OnClientDisconnected(webSocketContext);
-        }
-
-        /// <summary>
-        /// Removes and disposes all disconnected sockets
-        /// </summary>
-        private void CollectDisconnected()
-        {
-            var collectedCount = 0;
-            lock (_syncRoot)
-            {
-                for (var i = _mWebSockets.Count - 1; i >= 0; i--)
-                {
-                    var currentSocket = _mWebSockets[i];
-
-                    if (currentSocket.WebSocket != null &&
-                        currentSocket.WebSocket.State != WebSocketState.Open)
-                    {
-                        RemoveWebSocket(currentSocket);
-                        collectedCount++;
-                    }
-                }
-            }
-
-            $"{ServerName} - Collected {collectedCount} sockets. WebSocket Count: {WebSockets.Count}".Debug(
-                nameof(WebSocketsServer));
+            _isDisposing = true;
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -425,8 +377,8 @@
 
 #if NET47
                 await webSocket.WebSocket.SendAsync(
-                    new ArraySegment<byte>(buffer), 
-                    WebSocketMessageType.Text, 
+                    new ArraySegment<byte>(buffer),
+                    WebSocketMessageType.Text,
                     true,
                     _ct);
 #else
@@ -452,8 +404,8 @@
 
 #if NET47
                 await webSocket.WebSocket.SendAsync(
-                    new ArraySegment<byte>(payload), 
-                    WebSocketMessageType.Binary, 
+                    new ArraySegment<byte>(payload),
+                    WebSocketMessageType.Binary,
                     true,
                     _ct);
 #else
@@ -472,9 +424,8 @@
         /// <param name="payload">The payload.</param>
         protected virtual void Broadcast(byte[] payload)
         {
-            var sockets = WebSockets.ToArray();
-            foreach (var wsc in sockets)
-                Send(wsc, payload);
+            WebSockets.ToList()
+                .ForEach(wsc => Send(wsc, payload));
         }
 
         /// <summary>
@@ -483,9 +434,8 @@
         /// <param name="payload">The payload.</param>
         protected virtual void Broadcast(string payload)
         {
-            var sockets = WebSockets.ToArray();
-            foreach (var wsc in sockets)
-                Send(wsc, payload);
+            WebSockets.ToList()
+                .ForEach(wsc => Send(wsc, payload));
         }
 
         /// <summary>
@@ -522,7 +472,7 @@
         /// <param name="rxBuffer">The response buffer.</param>
         /// <param name="rxResult">The response result.</param>
         protected abstract void OnMessageReceived(
-            WebSocketContext context, 
+            WebSocketContext context,
             byte[] rxBuffer,
             WebSocketReceiveResult rxResult);
 
@@ -533,33 +483,34 @@
         /// <param name="rxBuffer">The response buffer.</param>
         /// <param name="rxResult">The response result.</param>
         protected abstract void OnFrameReceived(
-            WebSocketContext context, 
+            WebSocketContext context,
             byte[] rxBuffer,
             WebSocketReceiveResult rxResult);
 
+#if NET47
+        /// <summary>
+        /// Called when this WebSockets Server accepts a new WebSockets client.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="localEndPoint">The local endpoint.</param>
+        /// /// <param name="remoteEndPoint">The remote endpoint.</param>
+        protected abstract void OnClientConnected(
+            WebSocketContext context, 
+            System.Net.IPEndPoint localEndPoint,
+            System.Net.IPEndPoint remoteEndPoint);
+#else
         /// <summary>
         /// Called when this WebSockets Server accepts a new WebSockets client.
         /// </summary>
         /// <param name="context">The context.</param>
         protected abstract void OnClientConnected(WebSocketContext context);
+#endif
 
         /// <summary>
         /// Called when the server has removed a WebSockets connected client for any reason.
         /// </summary>
         /// <param name="context">The context.</param>
         protected abstract void OnClientDisconnected(WebSocketContext context);
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_isDisposing) return;
-
-            _isDisposing = true;
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
 
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
@@ -571,12 +522,69 @@
             // if called with false, return.
             if (disposeAll == false) return;
 
-            foreach (var webSocket in _mWebSockets)
+            _mWebSockets.ForEach(Close);
+            CollectDisconnected();
+        }
+
+        /// <summary>
+        /// Runs the connection watchdog.
+        /// Removes and disposes stale WebSockets connections every 10 minutes.
+        /// </summary>
+        private void RunConnectionWatchdog()
+        {
+            if (_enableDisconnectedSocketColletion == false) return;
+
+            var watchDogTask = Task.Factory.StartNew(async () =>
             {
-                Close(webSocket);
+                while (_isDisposing == false)
+                {
+                    if (_isDisposing == false)
+                        CollectDisconnected();
+
+                    // TODO: make this sleep configurable.
+                    await Task.Delay(TimeSpan.FromSeconds(30), _ct);
+                }
+            }, _ct);
+        }
+
+        /// <summary>
+        /// Removes and disposes the web socket.
+        /// </summary>
+        /// <param name="webSocketContext">The web socket context.</param>
+        private void RemoveWebSocket(WebSocketContext webSocketContext)
+        {
+            webSocketContext.WebSocket?.Dispose();
+
+            lock (_syncRoot)
+            {
+                _mWebSockets.Remove(webSocketContext);
             }
 
-            CollectDisconnected();
+            OnClientDisconnected(webSocketContext);
+        }
+
+        /// <summary>
+        /// Removes and disposes all disconnected sockets
+        /// </summary>
+        private void CollectDisconnected()
+        {
+            var collectedCount = 0;
+            lock (_syncRoot)
+            {
+                for (var i = _mWebSockets.Count - 1; i >= 0; i--)
+                {
+                    var currentSocket = _mWebSockets[i];
+
+                    if (currentSocket.WebSocket == null || currentSocket.WebSocket.State == WebSocketState.Open)
+                        continue;
+
+                    RemoveWebSocket(currentSocket);
+                    collectedCount++;
+                }
+            }
+
+            $"{ServerName} - Collected {collectedCount} sockets. WebSocket Count: {WebSockets.Count}".Debug(
+                nameof(WebSocketsServer));
         }
     }
 }

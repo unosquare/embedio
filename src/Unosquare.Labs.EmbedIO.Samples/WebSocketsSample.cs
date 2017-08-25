@@ -67,11 +67,24 @@
         /// </value>
         public override string ServerName => "Chat Server";
 
+#if NET47
+        /// <summary>
+        /// Called when this WebSockets Server accepts a new WebSockets client.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="localEndPoint">The local endpoint.</param>
+        /// /// <param name="remoteEndPoint">The remote endpoint.</param>
+        protected override void OnClientConnected(
+            WebSocketContext context, 
+            System.Net.IPEndPoint localEndPoint,
+            System.Net.IPEndPoint remoteEndPoint)
+#else
         /// <summary>
         /// Called when this WebSockets Server accepts a new WebSockets client.
         /// </summary>
         /// <param name="context">The context.</param>
         protected override void OnClientConnected(WebSocketContext context)
+#endif
         {
             Send(context, "Welcome to the chat room!");    
             foreach (var ws in WebSockets)
@@ -111,9 +124,9 @@
     [WebSocketHandler("/terminal")]
     public class WebSocketsTerminalServer : WebSocketsServer
     {
-
         // we'll keep track of the processes here
-        private readonly Dictionary<WebSocketContext, Process> Processes = new Dictionary<WebSocketContext, Process>();
+        private readonly Dictionary<WebSocketContext, Process> _processes = new Dictionary<WebSocketContext, Process>();
+
         // The SyncRoot is used to send 1 thing at a time and multithreaded Processes dictionary.
         private readonly object SyncRoot = new object();
 
@@ -128,7 +141,7 @@
             lock (SyncRoot)
             {
                 var arg = Encoding.UTF8.GetString(rxBuffer);
-                Processes[context].StandardInput.WriteLine(arg);
+                _processes[context].StandardInput.WriteLine(arg);
             }
         }
 
@@ -141,7 +154,6 @@
         protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
         {
             // don't process partial frames
-            return;
         }
 
         /// <summary>
@@ -153,7 +165,7 @@
         {
             lock (SyncRoot)
             {
-                foreach (var kvp in Processes)
+                foreach (var kvp in _processes)
                 {
                     if (kvp.Value == p)
                         return kvp.Key;
@@ -163,13 +175,26 @@
             return null;
         }
 
+#if NET47
+        /// <summary>
+        /// Called when this WebSockets Server accepts a new WebSockets client.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="localEndPoint">The local endpoint.</param>
+        /// /// <param name="remoteEndPoint">The remote endpoint.</param>
+        protected override void OnClientConnected(
+            WebSocketContext context, 
+            System.Net.IPEndPoint localEndPoint,
+            System.Net.IPEndPoint remoteEndPoint)
+#else
         /// <summary>
         /// Called when this WebSockets Server accepts a new WebSockets client.
         /// </summary>
         /// <param name="context">The context.</param>
         protected override void OnClientConnected(WebSocketContext context)
+#endif
         {
-            var process = new Process()
+            var process = new Process
             {
                 EnableRaisingEvents = true,
                 StartInfo = new ProcessStartInfo()
@@ -226,7 +251,7 @@
             // add the process to the context
             lock (SyncRoot)
             {
-                Processes[context] = process;
+                _processes[context] = process;
             }
 
             process.Start();
@@ -243,8 +268,8 @@
         {
             lock (SyncRoot)
             {
-                if (Processes[context].HasExited == false)
-                    Processes[context].Kill();
+                if (_processes[context].HasExited == false)
+                    _processes[context].Kill();
             }
         }
 

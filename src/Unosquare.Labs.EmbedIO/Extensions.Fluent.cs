@@ -24,14 +24,14 @@
         /// <returns>An instance of webserver</returns>
         /// <exception cref="System.ArgumentNullException">webserver</exception>
         public static WebServer WithStaticFolderAt(
-            this WebServer webserver, 
+            this WebServer webserver,
             string rootPath,
             string defaultDocument = StaticFilesModule.DefaultDocumentName)
         {
             if (webserver == null)
                 throw new ArgumentNullException(nameof(webserver));
 
-            webserver.RegisterModule(new StaticFilesModule(rootPath) {DefaultDocument = defaultDocument});
+            webserver.RegisterModule(new StaticFilesModule(rootPath) { DefaultDocument = defaultDocument });
             return webserver;
         }
 
@@ -44,14 +44,14 @@
         /// <returns>An instance of a web module</returns>
         /// <exception cref="System.ArgumentNullException">webserver</exception>
         public static WebServer WithVirtualPaths(
-            this WebServer webserver, 
+            this WebServer webserver,
             Dictionary<string, string> virtualPaths,
             string defaultDocument = StaticFilesModule.DefaultDocumentName)
         {
             if (webserver == null)
                 throw new ArgumentNullException(nameof(webserver));
 
-            webserver.RegisterModule(new StaticFilesModule(virtualPaths) {DefaultDocument = defaultDocument});
+            webserver.RegisterModule(new StaticFilesModule(virtualPaths) { DefaultDocument = defaultDocument });
             return webserver;
         }
 
@@ -120,9 +120,7 @@
                 types.Where(x => x.GetTypeInfo().IsClass
                                  && !x.GetTypeInfo().IsAbstract
                                  && x.GetTypeInfo().IsSubclassOf(typeof(WebApiController))).ToArray();
-
-            if (!apiControllers.Any()) return webserver;
-
+            
             foreach (var apiController in apiControllers)
             {
                 if (webserver.Module<WebApiModule>() == null) webserver = webserver.WithWebApi();
@@ -151,9 +149,7 @@
                 types.Where(x => x.GetTypeInfo().IsClass
                                  && !x.GetTypeInfo().IsAbstract
                                  && x.GetTypeInfo().IsSubclassOf(typeof(WebApiController))).ToArray();
-
-            if (!apiControllers.Any()) return apiModule;
-
+            
             foreach (var apiController in apiControllers)
             {
                 apiModule.RegisterController(apiController);
@@ -175,18 +171,13 @@
                 throw new ArgumentNullException(nameof(webserver));
 
             var types = (assembly ?? Assembly.GetEntryAssembly()).GetTypes();
-            var sockerServers =
-                types.Where(x => x.GetTypeInfo().BaseType == typeof(WebSocketsServer)).ToArray();
-
-            if (sockerServers.Any())
+            
+            foreach (var socketServer in types.Where(x => x.GetTypeInfo().BaseType == typeof(WebSocketsServer)))
             {
-                foreach (var socketServer in sockerServers)
-                {
-                    if (webserver.Module<WebSocketsModule>() == null) webserver = webserver.WithWebSocket();
+                if (webserver.Module<WebSocketsModule>() == null) webserver = webserver.WithWebSocket();
 
-                    webserver.Module<WebSocketsModule>().RegisterWebSocketsServer(socketServer);
-                    $"Registering WebSocket Server '{socketServer.Name}'".Info();
-                }
+                webserver.Module<WebSocketsModule>().RegisterWebSocketsServer(socketServer);
+                $"Registering WebSocket Server '{socketServer.Name}'".Info();
             }
 
             return webserver;
@@ -203,7 +194,7 @@
         /// <returns>An instance of the tiny web server used to handle request</returns>
         /// <exception cref="System.ArgumentNullException">webserver</exception>
         public static WebServer EnableCors(
-            this WebServer webserver, 
+            this WebServer webserver,
             string origins = Strings.CorsWildcard,
             string headers = Strings.CorsWildcard,
             string methods = Strings.CorsWildcard)
@@ -223,7 +214,7 @@
         /// <param name="webserver">The webserver instance.</param>
         /// <returns>An instance of webserver</returns>
         /// <exception cref="System.ArgumentNullException">webserver</exception>
-        public static WebServer WithWebApiController<T>(this WebServer webserver) 
+        public static WebServer WithWebApiController<T>(this WebServer webserver)
             where T : WebApiController, new()
         {
             if (webserver == null)

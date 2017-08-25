@@ -34,38 +34,25 @@ namespace Unosquare.Net
     using System.Collections.Specialized;
     using System.IO;
     using System.Text;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Swan;
 
     internal abstract class HttpBase
     {
-        #region Private Fields
+        protected const string CrLf = "\r\n";
 
         private const int HeadersMaxLength = 8192;
         
         private byte[] _entityBodyData;
-
-        #endregion
-
-        #region Protected Fields
-
-        protected const string CrLf = "\r\n";
-
-        #endregion
-
-        #region Protected Constructors
-
+        
         protected HttpBase(Version version, NameValueCollection headers)
         {
             ProtocolVersion = version;
             Headers = headers;
         }
-
-        #endregion
-
-        #region Public Properties
-
+        
         public string EntityBody
         {
             get
@@ -86,97 +73,32 @@ namespace Unosquare.Net
         public NameValueCollection Headers { get; }
 
         public Version ProtocolVersion { get; }
+        
+        public byte[] ToByteArray() => Encoding.UTF8.GetBytes(ToString());
 
-        #endregion
-
-        #region Private Methods
-
-        internal static string GetValue(string nameAndValue, char separator, bool unquote)
+        public void Write(byte[] data)
         {
-            var idx = nameAndValue.IndexOf(separator);
+            _entityBodyData = data;
+        }
+
+        internal static string GetValue(string nameAndValue)
+        {
+            var idx = nameAndValue.IndexOf('=');
             if (idx < 0 || idx == nameAndValue.Length - 1)
                 return null;
 
-            var val = nameAndValue.Substring(idx + 1).Trim();
-            return unquote ? val.Unquote() : val;
+            return nameAndValue.Substring(idx + 1).Trim().Unquote();
         }
 
         internal static Encoding GetEncoding(string contentType)
         {
-            var parts = contentType.Split(';');
-
-            foreach (var p in parts)
-            {
-                var part = p.Trim();
-                if (part.StartsWith("charset", StringComparison.OrdinalIgnoreCase))
-                    return Encoding.GetEncoding(GetValue(part, '=', true));
-            }
-
-            return null;
+            return contentType.Split(';')
+                .Select(p => p.Trim())
+                .Where(part => part.StartsWith("charset", StringComparison.OrdinalIgnoreCase))
+                .Select(part => Encoding.GetEncoding(GetValue(part))).FirstOrDefault();
         }
-
-        private static async Task<byte[]> ReadEntityBodyAsync(Stream stream, string length, CancellationToken ct)
-        {
-            long len;
-            if (!long.TryParse(length, out len))
-                throw new ArgumentException("Cannot be parsed.", nameof(length));
-
-            if (len < 0)
-                throw new ArgumentOutOfRangeException(nameof(length), "Less than zero.");
-
-            return len > 1024
-                   ? await stream.ReadBytesAsync(len, 1024, ct)
-                   : len > 0
-                     ? await stream.ReadBytesAsync((int)len, ct)
-                     : null;
-        }
-
-        private static bool EqualsWith(int value, char c, Action<int> action)
-        {
-            action(value);
-            return value == c - 0;
-        }
-
-        private static string[] ReadHeaders(Stream stream, int maxLength)
-        {
-            var buff = new List<byte>();
-            var cnt = 0;
-            Action<int> add = i =>
-            {
-                if (i == -1)
-                    throw new EndOfStreamException("The header cannot be read from the data source.");
-
-                buff.Add((byte)i);
-                cnt++;
-            };
-
-            var read = false;
-            while (cnt < maxLength)
-            {
-                if (EqualsWith(stream.ReadByte(), '\r', add) &&
-                    EqualsWith(stream.ReadByte(), '\n', add) &&
-                    EqualsWith(stream.ReadByte(), '\r', add) &&
-                    EqualsWith(stream.ReadByte(), '\n', add))
-                {
-                    read = true;
-                    break;
-                }
-            }
-
-            if (!read)
-                throw new WebSocketException("The length of header part is greater than the max length.");
-
-            return Encoding.UTF8.GetString(buff.ToArray())
-                   .Replace(CrLf + " ", " ")
-                   .Replace(CrLf + "\t", " ")
-                   .Split(new[] { CrLf }, StringSplitOptions.RemoveEmptyEntries);
-        }
-
-        #endregion
-
-        #region Protected Methods
-
-        protected static async Task<T> ReadAsync<T>(Stream stream, Func<string[], T> parser, int millisecondsTimeout, CancellationToken ct = default(CancellationToken))
+        
+        protected static async Task<T> ReadAsync<T>(Stream stream, Func<string[], T> parser, int millisecondsTimeout = 90000, CancellationToken ct = default(CancellationToken))
           where T : HttpBase
         {
             var timeout = false;
@@ -196,7 +118,7 @@ namespace Unosquare.Net
 
             try
             {
-                var http = parser(ReadHeaders(stream, HeadersMaxLength));
+                var http = parser(ReadHeaders(stream));
                 var contentLen = http.Headers["Content-Length"];
 
                 if (!string.IsNullOrEmpty(contentLen))
@@ -217,18 +139,61 @@ namespace Unosquare.Net
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
-        public byte[] ToByteArray() => Encoding.UTF8.GetBytes(ToString());
-
-        public void Write(byte[] data)
+        private static async Task<byte[]> ReadEntityBodyAsync(Stream stream, string length, CancellationToken ct)
         {
-            _entityBodyData = data;
+            if (!long.TryParse(length, out long len))
+                throw new ArgumentException("Cannot be parsed.", nameof(length));
+
+            if (len < 0)
+                throw new ArgumentOutOfRangeException(nameof(length), "Less than zero.");
+
+            return len > 1024
+                   ? await stream.ReadBytesAsync(len, 1024, ct)
+                   : len > 0
+                     ? await stream.ReadBytesAsync((int)len, ct)
+                     : null;
         }
 
-        #endregion
+        private static bool EqualsWith(int value, char c, Action<int> action)
+        {
+            action(value);
+            return value == c - 0;
+        }
+
+        private static string[] ReadHeaders(Stream stream)
+        {
+            var buff = new List<byte>();
+            var cnt = 0;
+            Action<int> add = i =>
+            {
+                if (i == -1)
+                    throw new EndOfStreamException("The header cannot be read from the data source.");
+
+                buff.Add((byte)i);
+                cnt++;
+            };
+
+            var read = false;
+            while (cnt < HeadersMaxLength)
+            {
+                if (EqualsWith(stream.ReadByte(), '\r', add) &&
+                    EqualsWith(stream.ReadByte(), '\n', add) &&
+                    EqualsWith(stream.ReadByte(), '\r', add) &&
+                    EqualsWith(stream.ReadByte(), '\n', add))
+                {
+                    read = true;
+                    break;
+                }
+            }
+
+            if (!read)
+                throw new WebSocketException("The length of header part is greater than the max length.");
+
+            return Encoding.UTF8.GetString(buff.ToArray())
+                   .Replace(CrLf + " ", " ")
+                   .Replace(CrLf + "\t", " ")
+                   .Split(new[] { CrLf }, StringSplitOptions.RemoveEmptyEntries);
+        }
     }
 }
 #endif

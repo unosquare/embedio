@@ -37,19 +37,6 @@
     
     internal class PayloadData : IEnumerable<byte>
     {
-        #region Private Fields
-
-        private readonly byte[] _data;
-        private readonly long _length;
-        private ushort _code;
-        private bool _codeSet;        
-        private string _reason;
-        private bool _reasonSet;
-
-        #endregion
-
-        #region Public Fields
-        
         /// <summary>
         /// Represents the allowable max length.
         /// </summary>
@@ -65,19 +52,18 @@
         /// </remarks>
         public static readonly ulong MaxLength;
 
-        #endregion
-
-        #region Static Constructor
-
+        private readonly byte[] _data;
+        private readonly long _length;
+        private ushort _code;
+        private bool _codeSet;        
+        private string _reason;
+        private bool _reasonSet;
+        
         static PayloadData()
         {
             MaxLength = Int64.MaxValue;
         }
-
-        #endregion
-
-        #region Internal Constructors
-
+        
         internal PayloadData()
         {
             _code = 1005;
@@ -112,21 +98,15 @@
             _reasonSet = true;
         }
 
-        internal static byte[] Append(ushort code, string reason)
-        {
-            var ret = code.InternalToByteArray(Endianness.Big);
-            if (string.IsNullOrEmpty(reason)) return ret;
+        internal byte[] ApplicationData => ExtensionDataLength > 0
+            ? _data.SubArray(ExtensionDataLength, _length - ExtensionDataLength)
+            : _data;
 
-            var buff = new List<byte>(ret);
-            buff.AddRange(Encoding.UTF8.GetBytes(reason));
-            ret = buff.ToArray();
+        internal byte[] ExtensionData => ExtensionDataLength > 0
+            ? _data.SubArray(0, ExtensionDataLength)
+            : WebSocket.EmptyBytes;
 
-            return ret;
-        }
-
-        #endregion
-
-        #region Internal Properties
+        internal ulong Length => (ulong)_length;
 
         internal ushort Code
         {
@@ -135,7 +115,7 @@
                 if (!_codeSet)
                 {
                     _code = _length > 1
-                            ? BitConverter.ToUInt16(_data.SubArray(0, 2).ToHostOrder(Swan.Endianness.Big), 0)
+                            ? BitConverter.ToUInt16(_data.SubArray(0, 2).ToHostOrder(Endianness.Big), 0)
                             : (ushort)1005;
 
                     _codeSet = true;
@@ -168,24 +148,30 @@
                 return _reason;
             }
         }
+        
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
 
-        #endregion
+        public IEnumerator<byte> GetEnumerator()
+        {
+            return ((IEnumerable<byte>)_data).GetEnumerator();
+        }
 
-        #region Public Properties
+        public override string ToString() => BitConverter.ToString(_data);
 
-        public byte[] ApplicationData => ExtensionDataLength > 0
-            ? _data.SubArray(ExtensionDataLength, _length - ExtensionDataLength)
-            : _data;
+        internal static byte[] Append(ushort code, string reason)
+        {
+            var ret = code.InternalToByteArray(Endianness.Big);
+            if (string.IsNullOrEmpty(reason)) return ret;
 
-        public byte[] ExtensionData => ExtensionDataLength > 0
-            ? _data.SubArray(0, ExtensionDataLength)
-            : WebSocket.EmptyBytes;
+            var buff = new List<byte>(ret);
+            buff.AddRange(Encoding.UTF8.GetBytes(reason));
+            ret = buff.ToArray();
 
-        public ulong Length => (ulong)_length;
-
-        #endregion
-
-        #region Internal Methods
+            return ret;
+        }
 
         internal void Mask(byte[] key)
         {
@@ -193,35 +179,7 @@
                 _data[i] = (byte)(_data[i] ^ key[i % 4]);
         }
 
-        #endregion
-
-        #region Public Methods
-
-        public IEnumerator<byte> GetEnumerator()
-        {
-            return ((IEnumerable<byte>)_data).GetEnumerator();
-        }
-
-        public byte[] ToArray()
-        {
-            return _data;
-        }
-
-        public override string ToString()
-        {
-            return BitConverter.ToString(_data);
-        }
-
-        #endregion
-
-        #region Explicit Interface Implementations
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        #endregion
+        internal byte[] ToArray() => _data;
     }
 }
 #endif

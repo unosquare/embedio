@@ -60,80 +60,6 @@ namespace Unosquare.Net
     using Swan;
 
     /// <summary>
-    /// Indicates the state of a WebSocket connection.
-    /// </summary>
-    /// <remarks>
-    /// The values of this enumeration are defined in
-    /// <see href="http://www.w3.org/TR/websockets/#dom-websocket-readystate">The WebSocket API</see>.
-    /// </remarks>
-    public enum WebSocketState : ushort
-    {
-        /// <summary>
-        /// Equivalent to numeric value 0. Indicates that the connection hasn't yet been established.
-        /// </summary>
-        Connecting = 0,
-
-        /// <summary>
-        /// Equivalent to numeric value 1. Indicates that the connection has been established,
-        /// and the communication is possible.
-        /// </summary>
-        Open = 1,
-
-        /// <summary>
-        /// Equivalent to numeric value 2. Indicates that the connection is going through
-        /// the closing handshake, or the <c>WebSocket.Close</c> method has been invoked.
-        /// </summary>
-        Closing = 2,
-
-        /// <summary>
-        /// Equivalent to numeric value 3. Indicates that the connection has been closed or
-        /// couldn't be established.
-        /// </summary>
-        Closed = 3
-    }
-
-    /// <summary>
-    /// Indicates the WebSocket frame type.
-    /// </summary>
-    /// <remarks>
-    /// The values of this enumeration are defined in
-    /// <see href="http://tools.ietf.org/html/rfc6455#section-5.2">
-    /// Section 5.2</see> of RFC 6455.
-    /// </remarks>
-    public enum Opcode : byte
-    {
-        /// <summary>
-        /// Equivalent to numeric value 0. Indicates continuation frame.
-        /// </summary>
-        Cont = 0x0,
-
-        /// <summary>
-        /// Equivalent to numeric value 1. Indicates text frame.
-        /// </summary>
-        Text = 0x1,
-
-        /// <summary>
-        /// Equivalent to numeric value 2. Indicates binary frame.
-        /// </summary>
-        Binary = 0x2,
-
-        /// <summary>
-        /// Equivalent to numeric value 8. Indicates connection close frame.
-        /// </summary>
-        Close = 0x8,
-
-        /// <summary>
-        /// Equivalent to numeric value 9. Indicates ping frame.
-        /// </summary>
-        Ping = 0x9,
-
-        /// <summary>
-        /// Equivalent to numeric value 10. Indicates pong frame.
-        /// </summary>
-        Pong = 0xa
-    }
-
-    /// <summary>
     /// Implements the WebSocket interface.
     /// </summary>
     /// <remarks>
@@ -142,54 +68,12 @@ namespace Unosquare.Net
     /// </remarks>
     public class WebSocket : IDisposable
     {
-        #region Private Fields
-        private const string Guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
-        private const string Version = "13";
-        private readonly Action<MessageEventArgs> _message;
-        private readonly bool _client;
-        private string _base64Key;        
-        private CompressionMethod _compression;
-        private WebSocketContext _context;
-        private bool _enableRedirection;
-        private AutoResetEvent _exitReceiving;
-        private string _extensions;
-        private bool _extensionsRequested;
-        private object _forMessageEventQueue;
-        private object _forState;
-        private MemoryStream _fragmentsBuffer;
-        private bool _fragmentsCompressed;
-        private Opcode _fragmentsOpcode;        
-        private bool _inContinuation;
-        private volatile bool _inMessage;        
-        private Queue<MessageEventArgs> _messageEventQueue;
-        private string _origin;
-#if AUTHENTICATION
-        private AuthenticationChallenge _authChallenge;
-        private uint _nonceCount;
-        private bool _preAuth;
-        private NetworkCredential _proxyCredentials;
-#endif
-#if PROXY
-        private Uri _proxyUri;
-#endif
-        private volatile WebSocketState _readyState;
-        private AutoResetEvent _receivePong;
-#if SSL
-        private ClientSslConfiguration _sslConfig;
-#endif        
-        private Stream _stream;
-        private TcpClient _tcpClient;
-        private Uri _uri;        
-        private TimeSpan _waitTime;
-
-        #endregion
-
-        #region Internal Fields
+        internal const string Version = "13";
 
         /// <summary>
         /// Represents the empty array of <see cref="byte"/> used internally.
         /// </summary>
-        internal static readonly byte[] EmptyBytes;
+        internal static readonly byte[] EmptyBytes = new byte[0];
 
         /// <summary>
         /// Represents the length used to determine whether the data should be fragmented in sending.
@@ -203,44 +87,45 @@ namespace Unosquare.Net
         ///   <c>Int32.MaxValue - 14</c> inclusive.
         ///   </para>
         /// </remarks>
-        internal static readonly int FragmentLength;
+        internal static readonly int FragmentLength = 1016;
 
         /// <summary>
         /// Represents the random number generator used internally.
         /// </summary>
-        internal static readonly RandomNumberGenerator RandomNumber;
+        internal static readonly RandomNumberGenerator RandomNumber = RandomNumberGenerator.Create();
+        
+        private const string Guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+        
+        private readonly Action<MessageEventArgs> _message;
+        private readonly bool _client;
+        private readonly object _forState = new object();
+        private readonly Queue<MessageEventArgs> _messageEventQueue = new Queue<MessageEventArgs>();
+        private readonly object _forMessageEventQueue;
+        private readonly WebSocketValidator _validator;
 
-        #endregion
+        private string _base64Key;
 
-        #region Static Constructor
-
-        static WebSocket()
-        {
-            EmptyBytes = new byte[0];
-            FragmentLength = 1016;
-            RandomNumber = RandomNumberGenerator.Create();
-        }
-
-        #endregion
-
-        #region Internal Constructors
-
-        // As server
-        internal WebSocket(WebSocketContext context)
-        {
-            _context = context;
-
-            _message = Messages;
-            IsSecure = context.IsSecureConnection;
-            _stream = context.Stream;
-            _waitTime = TimeSpan.FromSeconds(1);
-
-            Init();
-        }
-
-        #endregion
-
-        #region Public Constructors
+        private CompressionMethod _compression = CompressionMethod.None;
+        private bool _extensionsRequested;
+        private bool _inContinuation;
+        private volatile WebSocketState _readyState = WebSocketState.Connecting;
+        private WebSocketContext _context;
+        private bool _enableRedirection;
+        private AutoResetEvent _exitReceiving;
+        private string _extensions;
+        private MemoryStream _fragmentsBuffer;
+        private bool _fragmentsCompressed;
+        private Opcode _fragmentsOpcode;
+        private volatile bool _inMessage;
+        private string _origin;
+        private AutoResetEvent _receivePong;
+#if SSL
+        private ClientSslConfiguration _sslConfig;
+#endif        
+        private Stream _stream;
+        private TcpClient _tcpClient;
+        private Uri _uri;
+        private TimeSpan _waitTime;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebSocket" /> class with
@@ -270,24 +155,36 @@ namespace Unosquare.Net
             if (url.Length == 0)
                 throw new ArgumentException("An empty string.", nameof(url));
 
-            string msg;
-            if (!url.TryCreateWebSocketUri(out _uri, out msg))
+            if (!url.TryCreateWebSocketUri(out _uri, out string msg))
                 throw new ArgumentException(msg, nameof(url));
 
             _base64Key = CreateBase64Key();
             _client = true;
 
             _message = Messagec;
+#if SSL
             IsSecure = _uri.Scheme == "wss";
+#endif
             _waitTime = TimeSpan.FromSeconds(5);
-
-            Init();
+            _forMessageEventQueue = ((ICollection) _messageEventQueue).SyncRoot;
+            _validator = new WebSocketValidator(this);
         }
 
-        #endregion
+        // As server
+        internal WebSocket(WebSocketContext context)
+        {
+            _context = context;
 
-        #region Public Events
-
+            _message = Messages;
+#if SSL
+            IsSecure = context.IsSecureConnection;
+#endif
+            _stream = context.Stream;
+            _waitTime = TimeSpan.FromSeconds(1);
+            _forMessageEventQueue = ((ICollection)_messageEventQueue).SyncRoot;
+            _validator = new WebSocketValidator(this);
+        }
+        
         /// <summary>
         /// Occurs when the WebSocket connection has been closed.
         /// </summary>
@@ -307,31 +204,7 @@ namespace Unosquare.Net
         /// Occurs when the WebSocket connection has been established.
         /// </summary>
         public event EventHandler OnOpen;
-
-        #endregion
-
-        #region Internal Properties
-
-        internal CookieCollection CookieCollection { get; private set; }
         
-        internal bool HasMessage
-        {
-            get
-            {
-                lock (_forMessageEventQueue)
-                    return _messageEventQueue.Count > 0;
-            }
-        }
-
-        // As server
-        internal bool IgnoreExtensions { get; set; } = true;
-
-        internal bool IsConnected => _readyState == WebSocketState.Open || _readyState == WebSocketState.Closing;
-
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets or sets the compression method used to compress a message on the WebSocket connection.
         /// </summary>
@@ -350,11 +223,10 @@ namespace Unosquare.Net
             {
                 lock (_forState)
                 {
-                    string msg;
-                    if (!CheckIfAvailable(out msg, true, false, true, false, false))
+                    if (!_validator.CheckIfAvailable(out string msg, true, false, true, false, false))
                     {
                         msg.Error();
-                        Error("An error has occurred in setting the compression.", null);
+                        Error("An error has occurred in setting the compression.");
 
                         return;
                     }
@@ -381,17 +253,6 @@ namespace Unosquare.Net
                         yield return cookie;
             }
         }
-
-#if AUTHENTICATION
-/// <summary>
-/// Gets the credentials for the HTTP authentication (Basic/Digest).
-/// </summary>
-/// <value>
-/// A <see cref="NetworkCredential"/> that represents the credentials for
-/// the authentication. The default value is <see langword="null"/>.
-/// </value>
-        public NetworkCredential Credentials { get; }
-#endif
 
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="WebSocket"/> emits
@@ -422,11 +283,10 @@ namespace Unosquare.Net
             {
                 lock (_forState)
                 {
-                    string msg;
-                    if (!CheckIfAvailable(out msg, true, false, true, false, false))
+                    if (!_validator.CheckIfAvailable(out string msg, true, false, true, false, false))
                     {
                         msg.Error();
-                        Error("An error has occurred in setting the enable redirection.", null);
+                        Error("An error has occurred in setting the enable redirection.");
 
                         return;
                     }
@@ -453,6 +313,7 @@ namespace Unosquare.Net
         /// </value>
         public bool IsAlive => PingAsync().Result; // TODO: Change?
 
+#if SSL
         /// <summary>
         /// Gets a value indicating whether the WebSocket connection is secure.
         /// </summary>
@@ -460,6 +321,7 @@ namespace Unosquare.Net
         /// <c>true</c> if the connection is secure; otherwise, <c>false</c>.
         /// </value>
         public bool IsSecure { get; private set; }
+#endif
 
         /// <summary>
         /// Gets or sets the value of the HTTP Origin header to send with
@@ -490,11 +352,10 @@ namespace Unosquare.Net
             {
                 lock (_forState)
                 {
-                    string msg;
-                    if (!CheckIfAvailable(out msg, true, false, true, false, false))
+                    if (!_validator.CheckIfAvailable(out string msg, true, false, true, false, false))
                     {
                         msg.Error();
-                        Error("An error has occurred in setting the origin.", null);
+                        Error("An error has occurred in setting the origin.");
 
                         return;
                     }
@@ -505,11 +366,10 @@ namespace Unosquare.Net
                         return;
                     }
 
-                    Uri origin;
-                    if (!Uri.TryCreate(value, UriKind.Absolute, out origin) || origin.Segments.Length > 1)
+                    if (!Uri.TryCreate(value, UriKind.Absolute, out Uri origin) || origin.Segments.Length > 1)
                     {
                         "The syntax of an origin must be '<scheme>://<host>[:<port>]'.".Error();
-                        Error("An error has occurred in setting the origin.", null);
+                        Error("An error has occurred in setting the origin.");
 
                         return;
                     }
@@ -593,11 +453,11 @@ namespace Unosquare.Net
                 lock (_forState)
                 {
                     string msg;
-                    if (!CheckIfAvailable(out msg, true, true, true, false, false) ||
-                        !CheckWaitTime(value, out msg))
+                    if (!_validator.CheckIfAvailable(out msg, true, true, true, false, false) ||
+                        !WebSocketValidator.CheckWaitTime(value, out msg))
                     {
                         msg.Error();
-                        Error("An error has occurred in setting the wait time.", null);
+                        Error("An error has occurred in setting the wait time.");
 
                         return;
                     }
@@ -607,18 +467,345 @@ namespace Unosquare.Net
             }
         }
 
-        #endregion
+        internal bool InContinuation => _inContinuation;
 
-        #region Private Methods
+        internal bool IsClient => _client;
 
-        internal static bool CheckWaitTime(TimeSpan time, out string message)
+        internal bool IsExtensionsRequested => _extensionsRequested;
+
+        internal CookieCollection CookieCollection { get; } = new CookieCollection();
+
+        internal bool HasMessage
         {
-            message = null;
+            get
+            {
+                lock (_forMessageEventQueue)
+                    return _messageEventQueue.Count > 0;
+            }
+        }
 
-            if (time > TimeSpan.Zero) return true;
+        // As server
+        internal bool IgnoreExtensions { get; set; } = true;
 
-            message = "A wait time is zero or less.";
-            return false;
+        internal bool IsConnected => _readyState == WebSocketState.Open || _readyState == WebSocketState.Closing;
+
+        /// <summary>
+        /// Closes the WebSocket connection asynchronously, and releases
+        /// all associated resources.
+        /// </summary>
+        /// <param name="code">The code.</param>
+        /// <param name="reason">The reason.</param>
+        /// <param name="ct">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous closes websocket connection
+        /// </returns>
+        public async Task CloseAsync(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null, CancellationToken ct = default(CancellationToken))
+        {
+            string msg;
+            if (!_validator.CheckIfAvailable(out msg))
+            {
+                msg.Error();
+                Error("An error has occurred in closing the connection.");
+
+                return;
+            }
+
+            if (code != CloseStatusCode.Undefined && !WebSocketValidator.CheckParametersForClose(code, reason, _client, out msg))
+            {
+                msg.Error();
+                Error("An error has occurred in closing the connection.");
+
+                return;
+            }
+
+            if (code == CloseStatusCode.NoStatus)
+            {
+                await InternalCloseAsync(new CloseEventArgs(), ct: ct);
+                return;
+            }
+
+            var send = !code.IsReserved();
+            await InternalCloseAsync(new CloseEventArgs(code, reason), send, send, ct: ct);
+        }
+
+        /// <summary>
+        /// Establishes a WebSocket connection asynchronously.
+        /// </summary>
+        /// <param name="ct">The cancellation token.</param>
+        /// <returns>
+        /// If CheckIfAvailable statement terminates execution of the method; otherwise, 
+        /// establishes a WebSocket connection
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// This method doesn't wait for the connect to be complete.
+        /// </para>
+        /// <para>
+        /// This method isn't available in a server.
+        /// </para></remarks>
+        public async Task ConnectAsync(CancellationToken ct = default(CancellationToken))
+        {
+            if (!_validator.CheckIfAvailable(out string msg, true, false, true, false, false))
+            {
+                msg.Error();
+                Error("An error has occurred in connecting.");
+
+                return;
+            }
+
+            try
+            {
+                lock (_forState)
+                {
+                    _readyState = WebSocketState.Connecting;
+                }
+
+                var handShake = await DoHandshakeAsync();
+
+                if (!handShake)
+                    return;
+
+                lock (_forState)
+                {
+                    _readyState = WebSocketState.Open;
+                }
+
+                Open();
+            }
+            catch (Exception ex)
+            {
+                ex.Log(nameof(WebSocket));
+                Fatal("An exception has occurred while connecting.", ex);
+            }
+        }
+
+        /// <summary>
+        /// Sends a ping using the WebSocket connection.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if the <see cref="WebSocket"/> receives a pong to this ping in a time;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        public async Task<bool> PingAsync()
+        {
+            var bytes = _client
+                ? WebSocketFrame.CreatePingFrame(true).ToArray()
+                : WebSocketFrame.EmptyPingBytes;
+
+            return await PingAsync(bytes, _waitTime);
+        }
+
+        /// <summary>
+        /// Sends a ping with the specified <paramref name="message"/> using the WebSocket connection.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if the <see cref="WebSocket"/> receives a pong to this ping in a time;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        /// <param name="message">
+        /// A <see cref="string"/> that represents the message to send.
+        /// </param>
+        public async Task<bool> PingAsync(string message)
+        {
+            if (string.IsNullOrEmpty(message))
+                return await PingAsync();
+
+            var msg = WebSocketValidator.CheckPingParameter(message, out byte[] data);
+
+            if (msg != null)
+            {
+                msg.Error();
+                Error("An error has occurred in sending a ping.");
+
+                return false;
+            }
+
+            return await PingAsync(WebSocketFrame.CreatePingFrame(data, _client).ToArray(), _waitTime);
+        }
+
+        /// <summary>
+        /// Sends binary <paramref name="data" /> using the WebSocket connection.
+        /// </summary>
+        /// <param name="data">An array of <see cref="byte" /> that represents the binary data to send.</param>
+        /// <param name="opcode">The opcode.</param>
+        /// <param name="ct">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous of send 
+        /// binary data using websocket
+        /// </returns>
+        public async Task SendAsync(byte[] data, Opcode opcode, CancellationToken ct = default(CancellationToken))
+        {
+            var msg = WebSocketValidator.CheckIfAvailable(_readyState) ??
+                      WebSocketValidator.CheckSendParameter(data);
+
+            if (msg != null)
+            {
+                msg.Error();
+                Error("An error has occurred in sending data.");
+
+                return;
+            }
+
+            Send(opcode, new MemoryStream(data), ct);
+        }
+
+        /// <summary>
+        /// Sets an HTTP <paramref name="cookie"/> to send with
+        /// the WebSocket handshake request to the server.
+        /// </summary>
+        /// <param name="cookie">
+        /// A <see cref="Cookie"/> that represents a cookie to send.
+        /// </param>
+        public void SetCookie(Cookie cookie)
+        {
+            string msg;
+            if (!_validator.CheckIfAvailable(out msg, true, false, true, false, false) || cookie == null)
+            {
+                msg.Error();
+                Error("An error has occurred in setting a cookie.");
+
+                return;
+            }
+
+            lock (_forState)
+            {
+                if (!_validator.CheckIfAvailable(out msg, true, false, false, true))
+                {
+                    msg.Error();
+                    Error("An error has occurred in setting a cookie.");
+
+                    return;
+                }
+
+                // TODO: lock (CookieCollection.SyncRoot)
+                CookieCollection.Add(cookie);
+            }
+        }
+        
+        /// <summary>
+        /// Closes the WebSocket connection, and releases all associated resources.
+        /// </summary>
+        /// <remarks>
+        /// This method closes the connection with <see cref="CloseStatusCode.Away"/>.
+        /// </remarks>
+        public void Dispose()
+        {
+            // TODO: this is correct?
+            InternalCloseAsync(new CloseEventArgs(CloseStatusCode.Away)).Wait();
+        }
+
+        // As client
+        internal static string CreateBase64Key()
+        {
+            var src = new byte[16];
+            RandomNumber.GetBytes(src);
+
+            return Convert.ToBase64String(src);
+        }
+
+        internal static string CreateResponseKey(string base64Key)
+        {
+            var buff = new StringBuilder(base64Key, 64);
+            buff.Append(Guid);
+            var sha1 = SHA1.Create();
+            var src = sha1.ComputeHash(Encoding.UTF8.GetBytes(buff.ToString()));
+
+            return Convert.ToBase64String(src);
+        }
+
+        // As server
+        internal async Task CloseAsync(HttpResponse response)
+        {
+            lock (_forState)
+                _readyState = WebSocketState.Closing;
+
+            await SendHttpResponseAsync(response);
+            await ReleaseServerResources();
+
+            lock (_forState)
+                _readyState = WebSocketState.Closed;
+        }
+
+        // As server
+        internal async Task CloseAsync(CloseEventArgs e, byte[] frameAsBytes, bool receive, CancellationToken ct = default(CancellationToken))
+        {
+            lock (_forState)
+            {
+                if (_readyState == WebSocketState.Closing)
+                {
+                    "The closing is already in progress.".Debug();
+                    return;
+                }
+
+                if (_readyState == WebSocketState.Closed)
+                {
+                    "The connection has been closed.".Debug();
+                    return;
+                }
+
+                _readyState = WebSocketState.Closing;
+            }
+
+            // TODO: Fix
+            e.WasClean = await CloseHandshakeAsync(frameAsBytes, receive, false, ct).ConfigureAwait(false);
+            await ReleaseServerResources().ConfigureAwait(false);
+            ReleaseCommonResources();
+
+            _readyState = WebSocketState.Closed;
+
+            try
+            {
+                OnClose?.Invoke(this, e);
+            }
+            catch (Exception ex)
+            {
+                ex.Log(nameof(WebSocket));
+            }
+        }
+
+        // As client
+        internal bool ValidateSecWebSocketAcceptHeader(string value) => value?.TrimStart() == CreateResponseKey(_base64Key);
+
+        // As server
+        internal async Task InternalAcceptAsync()
+        {
+            try
+            {
+                var handShake = await AcceptHandshakeAsync();
+
+                if (handShake == false)
+                    return;
+
+                _readyState = WebSocketState.Open;
+            }
+            catch (Exception ex)
+            {
+                ex.Log(nameof(WebSocket));
+                Fatal("An exception has occurred while accepting.", ex);
+
+                return;
+            }
+
+            Open();
+        }
+
+        internal async Task<bool> PingAsync(byte[] frameAsBytes, TimeSpan timeout)
+        {
+            if (_readyState != WebSocketState.Open)
+                return false;
+
+            await _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length);
+
+            return _receivePong != null && _receivePong.WaitOne(timeout);
+        }
+
+        // As server
+        private static HttpResponse CreateHandshakeFailureResponse(HttpStatusCode code)
+        {
+            var ret = HttpResponse.CreateCloseResponse(code);
+            ret.Headers["Sec-WebSocket-Version"] = Version;
+
+            return ret;
         }
 
         // As server
@@ -626,8 +813,7 @@ namespace Unosquare.Net
         {
             $"A request from {_context.UserEndPoint}:\n{_context}".Debug();
 
-            string msg;
-            if (!CheckHandshakeRequest(_context, out msg))
+            if (!_validator.CheckHandshakeRequest(_context, out string msg))
             {
                 await SendHttpResponseAsync(CreateHandshakeFailureResponse(HttpStatusCode.BadRequest));
 
@@ -636,7 +822,7 @@ namespace Unosquare.Net
 
                 return false;
             }
-            
+
             _base64Key = _context.Headers["Sec-WebSocket-Key"];
 
             if (!IgnoreExtensions)
@@ -646,273 +832,12 @@ namespace Unosquare.Net
             return true;
         }
 
-        // As server
-        private bool CheckHandshakeRequest(WebSocketContext context, out string message)
-        {
-            message = null;
-
-            if (context.RequestUri == null)
-            {
-                message = "Specifies an invalid Request-URI.";
-                return false;
-            }
-
-            if (!context.IsWebSocketRequest)
-            {
-                message = "Not a WebSocket handshake request.";
-                return false;
-            }
-
-            var headers = context.Headers;
-            if (!ValidateSecWebSocketKeyHeader(headers["Sec-WebSocket-Key"]))
-            {
-                message = "Includes no Sec-WebSocket-Key header, or it has an invalid value.";
-                return false;
-            }
-
-            if (!ValidateSecWebSocketVersionClientHeader(headers["Sec-WebSocket-Version"]))
-            {
-                message = "Includes no Sec-WebSocket-Version header, or it has an invalid value.";
-                return false;
-            }
-
-            if (!ValidateSecWebSocketProtocolClientHeader(headers["Sec-WebSocket-Protocol"]))
-            {
-                message = "Includes an invalid Sec-WebSocket-Protocol header.";
-                return false;
-            }
-
-            if (!IgnoreExtensions
-                && !string.IsNullOrWhiteSpace(headers["Sec-WebSocket-Extensions"]))
-            {
-                message = "Includes an invalid Sec-WebSocket-Extensions header.";
-                return false;
-            }
-
-            return true;
-        }
-
         // As client
-        private bool CheckHandshakeResponse(HttpResponse response, out string message)
-        {
-            message = null;
-
-            if (response.IsRedirect)
-            {
-                message = "Indicates the redirection.";
-                return false;
-            }
-
-            if (response.IsUnauthorized)
-            {
-                message = "Requires the authentication.";
-                return false;
-            }
-
-            if (!response.IsWebSocketResponse)
-            {
-                message = "Not a WebSocket handshake response.";
-                return false;
-            }
-
-            var headers = response.Headers;
-            if (!ValidateSecWebSocketAcceptHeader(headers["Sec-WebSocket-Accept"]))
-            {
-                message = "Includes no Sec-WebSocket-Accept header, or it has an invalid value.";
-                return false;
-            }
-
-            if (!ValidateSecWebSocketExtensionsServerHeader(headers["Sec-WebSocket-Extensions"]))
-            {
-                message = "Includes an invalid Sec-WebSocket-Extensions header.";
-                return false;
-            }
-
-            if (!ValidateSecWebSocketVersionServerHeader(headers["Sec-WebSocket-Version"]))
-            {
-                message = "Includes an invalid Sec-WebSocket-Version header.";
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool CheckIfAvailable(out string message, bool connecting = true, bool open = true, bool closing = false, bool closed = false)
-        {
-            message = null;
-
-            if (!connecting && _readyState == WebSocketState.Connecting)
-            {
-                message = "This operation isn't available in: connecting";
-                return false;
-            }
-
-            if (!open && _readyState == WebSocketState.Open)
-            {
-                message = "This operation isn't available in: open";
-                return false;
-            }
-
-            if (!closing && _readyState == WebSocketState.Closing)
-            {
-                message = "This operation isn't available in: closing";
-                return false;
-            }
-
-            if (!closed && _readyState == WebSocketState.Closed)
-            {
-                message = "This operation isn't available in: closed";
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool CheckIfAvailable(
-            out string message,
-            bool client,
-            bool server,
-            bool connecting,
-            bool open,
-            bool closing,
-            bool closed = true)
-        {
-            message = null;
-
-            if (!client && _client)
-            {
-                message = "This operation isn't available in: client";
-                return false;
-            }
-
-            if (!server && !_client)
-            {
-                message = "This operation isn't available in: server";
-                return false;
-            }
-
-            return CheckIfAvailable(out message, connecting, open, closing, closed);
-        }
-
-#if AUTHENTICATION
-        private static bool CheckParametersForSetCredentials(
-          string username, string password, out string message
-        )
-        {
-            message = null;
-
-            if (string.IsNullOrEmpty(username))
-                return true;
-
-            if (username.Contains(':') || !username.IsText())
-            {
-                message = "'username' contains an invalid character.";
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(password))
-                return true;
-
-            if (!password.IsText())
-            {
-                message = "'password' contains an invalid character.";
-                return false;
-            }
-
-            return true;
-        }
-#endif
-#if PROXY
-        private static bool CheckParametersForSetProxy(
-            string url, string username, string password, out string message
-        )
-        {
-            message = null;
-
-            if (string.IsNullOrEmpty(url))
-                return true;
-
-            Uri uri;
-            if (!Uri.TryCreate(url, UriKind.Absolute, out uri)
-                || uri.Scheme != "http"
-                || uri.Segments.Length > 1
-            )
-            {
-                message = "'url' is an invalid URL.";
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(username))
-                return true;
-
-            if (username.Contains(':') || !username.IsText())
-            {
-                message = "'username' contains an invalid character.";
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(password))
-                return true;
-
-            if (!password.IsText())
-            {
-                message = "'password' contains an invalid character.";
-                return false;
-            }
-
-            return true;
-        }
-#endif
-
-        private bool CheckReceivedFrame(WebSocketFrame frame, out string message)
-        {
-            message = null;
-
-            var masked = frame.IsMasked;
-            if (_client && masked)
-            {
-                message = "A frame from the server is masked.";
-                return false;
-            }
-
-            if (!_client && !masked)
-            {
-                message = "A frame from a client isn't masked.";
-                return false;
-            }
-
-            if (_inContinuation && frame.IsData)
-            {
-                message = "A data frame has been received while receiving continuation frames.";
-                return false;
-            }
-
-            if (frame.IsCompressed && _compression == CompressionMethod.None)
-            {
-                message = "A compressed frame has been received without any agreement for it.";
-                return false;
-            }
-
-            if (frame.Rsv2 == Rsv.On)
-            {
-                message = "The RSV2 of a frame is non-zero without any negotiation for it.";
-                return false;
-            }
-
-            if (frame.Rsv3 == Rsv.On)
-            {
-                message = "The RSV3 of a frame is non-zero without any negotiation for it.";
-                return false;
-            }
-
-            return true;
-        }
-
         private async Task InternalCloseAsync(
-            CloseEventArgs e, 
-            bool send = true, 
+            CloseEventArgs e,
+            bool send = true,
             bool receive = true,
-            bool received = false, 
+            bool received = false,
             CancellationToken ct = default(CancellationToken))
         {
             lock (_forState)
@@ -943,7 +868,8 @@ namespace Unosquare.Net
 
             "End closing the connection.".Info();
 
-            _readyState = WebSocketState.Closed;
+            lock (_forState)
+                _readyState = WebSocketState.Closed;
 
             try
             {
@@ -975,46 +901,6 @@ namespace Unosquare.Net
         }
 
         // As client
-        private async Task<bool> ConnectAsync()
-        {
-            string msg;
-            if (!CheckIfAvailable(out msg, true, false, false, true))
-            {
-                msg.Error();
-                Error("An error has occurred in connecting.", null);
-
-                return false;
-            }
-
-            try
-            {
-                lock (_forState)
-                {
-                    _readyState = WebSocketState.Connecting;
-                }
-
-                var handShake = await DoHandshakeAsync();
-
-                if (!handShake)
-                    return false;
-
-                lock (_forState)
-                {
-                    _readyState = WebSocketState.Open;
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-                Fatal("An exception has occurred while connecting.", ex);
-
-                return false;
-            }
-
-            return true;
-        }
-
-        // As client
         private string CreateExtensions()
         {
             var buff = new StringBuilder(80);
@@ -1037,15 +923,6 @@ namespace Unosquare.Net
             return null;
         }
 
-        // As server
-        private static HttpResponse CreateHandshakeFailureResponse(HttpStatusCode code)
-        {
-            var ret = HttpResponse.CreateCloseResponse(code);
-            ret.Headers["Sec-WebSocket-Version"] = Version;
-
-            return ret;
-        }
-
         // As client
         private HttpRequest CreateHandshakeRequest()
         {
@@ -1058,29 +935,13 @@ namespace Unosquare.Net
             headers["Sec-WebSocket-Key"] = _base64Key;
 
             _extensionsRequested = _compression != CompressionMethod.None;
+
             if (_extensionsRequested)
                 headers["Sec-WebSocket-Extensions"] = CreateExtensions();
 
             headers["Sec-WebSocket-Version"] = Version;
 
-#if AUTHENTICATION
-            AuthenticationResponse authRes = null;
-            if (_authChallenge != null && _credentials != null)
-            {
-                authRes = new AuthenticationResponse(_authChallenge, _credentials, _nonceCount);
-                _nonceCount = authRes.NonceCount;
-            }
-            else if (_preAuth)
-            {
-                authRes = new AuthenticationResponse(_credentials);
-            }
-
-            if (authRes != null)
-                headers["Authorization"] = authRes.ToString();
-#endif
-
-            if (CookieCollection.Count > 0)
-                ret.SetCookies(CookieCollection);
+            ret.SetCookies(CookieCollection);
 
             return ret;
         }
@@ -1096,20 +957,18 @@ namespace Unosquare.Net
             if (_extensions != null)
                 headers["Sec-WebSocket-Extensions"] = _extensions;
 
-            if (CookieCollection.Count > 0)
-                ret.SetCookies(CookieCollection);
+            ret.SetCookies(CookieCollection);
 
             return ret;
         }
-        
+
         // As client
         private async Task<bool> DoHandshakeAsync()
         {
             await SetClientStream();
             var res = await SendHandshakeRequestAsync();
 
-            string msg;
-            if (!CheckHandshakeResponse(res, out msg))
+            if (!_validator.CheckHandshakeResponse(res, out string msg))
             {
                 msg.Error();
                 Fatal("An error has occurred while connecting.", CloseStatusCode.ProtocolError);
@@ -1130,10 +989,10 @@ namespace Unosquare.Net
             lock (_forMessageEventQueue) _messageEventQueue.Enqueue(e);
         }
 
-        private void Error(string message, Exception exception)
+        private void Error(string message, Exception exception = null)
             => OnError?.Invoke(this, new ConnectionFailureEventArgs(exception ?? new Exception(message)));
 
-        private void Fatal(string message, Exception exception)
+        private void Fatal(string message, Exception exception = null)
         {
             Fatal(message, (exception as WebSocketException)?.Code ?? CloseStatusCode.Abnormal);
         }
@@ -1142,16 +1001,6 @@ namespace Unosquare.Net
         {
             // TODO: Wait?
             InternalCloseAsync(new CloseEventArgs(code, message), !code.IsReserved(), false).Wait();
-        }
-
-        private void Init()
-        {
-            _compression = CompressionMethod.None;
-            CookieCollection = new CookieCollection();
-            _forState = new object();
-            _messageEventQueue = new Queue<MessageEventArgs>();
-            _forMessageEventQueue = ((ICollection)_messageEventQueue).SyncRoot;
-            _readyState = WebSocketState.Connecting;
         }
 
         private void Message()
@@ -1336,17 +1185,14 @@ namespace Unosquare.Net
 
         private bool ProcessPingFrame(WebSocketFrame frame)
         {
-            // TODO: Make async?           
-            var result = Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, _client).ToArray(), CancellationToken.None).GetAwaiter().GetResult();
-
-            if (result)
+            if (Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, _client).ToArray()))
             {
                 "Returned a pong.".Info();
             }
 
             if (EmitOnPing)
                 EnqueueToMessageEventQueue(new MessageEventArgs(frame));
- 
+
             return true;
         }
 
@@ -1360,9 +1206,7 @@ namespace Unosquare.Net
 
         private bool ProcessReceivedFrame(WebSocketFrame frame)
         {
-            string msg;
-            if (!CheckReceivedFrame(frame, out msg))
-                throw new WebSocketException(CloseStatusCode.ProtocolError, msg);
+            _validator.CheckReceivedFrame(frame);
 
             frame.Unmask();
             return frame.IsFragment
@@ -1387,7 +1231,7 @@ namespace Unosquare.Net
             var buff = new StringBuilder(80);
 
             var comp = false;
-            foreach (var e in value.SplitHeaderValue(','))
+            foreach (var e in value.SplitHeaderValue(Strings.CommaSplitChar))
             {
                 var ext = e.Trim();
                 if (!comp && ext.IsCompressionExtension(CompressionMethod.Deflate))
@@ -1495,7 +1339,7 @@ namespace Unosquare.Net
             _context = null;
         }
 
-        private async Task<bool> Send(byte[] frameAsBytes, CancellationToken ct)
+        private bool Send(byte[] frameAsBytes)
         {
             lock (_forState)
             {
@@ -1506,7 +1350,7 @@ namespace Unosquare.Net
                 }
             }
 
-            await _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length, ct);
+            _stream.Write(frameAsBytes, 0, frameAsBytes.Length);
             return true;
         }
 
@@ -1515,6 +1359,7 @@ namespace Unosquare.Net
             var src = stream;
             var compressed = false;
             var sent = false;
+
             try
             {
                 if (_compression != CompressionMethod.None)
@@ -1525,7 +1370,7 @@ namespace Unosquare.Net
 
                 sent = await Send(opcode, stream, compressed, ct);
                 if (!sent)
-                    Error("The sending has been interrupted.", null);
+                    Error("The sending has been interrupted.");
             }
             catch (Exception ex)
             {
@@ -1606,14 +1451,15 @@ namespace Unosquare.Net
                     return false;
                 }
 
-                return SendBytes(new WebSocketFrame(fin, opcode, data, compressed, _client).ToArray());
+                return SendBytes(new WebSocketFrame(fin, opcode, data, compressed, _client).ToArray(), ct);
             }
         }
 
-        private bool SendBytes(byte[] bytes)
+        private bool SendBytes(byte[] bytes, CancellationToken ct)
         {
             try
             {
+                // TODO: Use async here
                 _stream.Write(bytes, 0, bytes.Length);
                 return true;
             }
@@ -1628,43 +1474,11 @@ namespace Unosquare.Net
         private async Task<HttpResponse> SendHandshakeRequestAsync()
         {
             var req = CreateHandshakeRequest();
-            var res = await SendHttpRequestAsync(req, 90000);
+            var res = await req.GetResponse(_stream);
 
             if (res.IsUnauthorized)
             {
-#if AUTHENTICATION
-                var chal = res.Headers["WWW-Authenticate"];
-                Log.Warn(String.Format("Received an authentication requirement for '{0}'.", chal));
-                if (chal.IsNullOrEmpty())
-                {
-                    Log.Error("No authentication challenge is specified.");
-                    return res;
-                }
-
-                _authChallenge = AuthenticationChallenge.Parse(chal);
-                if (_authChallenge == null)
-                {
-                    Log.Error("An invalid authentication challenge is specified.");
-                    return res;
-                }
-
-                if (_credentials != null &&
-                    (!_preAuth || _authChallenge.Scheme == AuthenticationSchemes.Digest))
-                {
-                    if (res.HasConnectionClose)
-                    {
-                        releaseClientResources();
-                        await SetClientStream();
-                    }
-
-                    var authRes = new AuthenticationResponse(_authChallenge, _credentials, _nonceCount);
-                    _nonceCount = authRes.NonceCount;
-                    req.Headers["Authorization"] = authRes.ToString();
-                    res = sendHttpRequest(req, 15000);
-                }
-#else
                 throw new InvalidOperationException("Authentication is not supported");
-#endif
             }
 
             if (!res.IsRedirect) return res;
@@ -1680,9 +1494,7 @@ namespace Unosquare.Net
                     return res;
                 }
 
-                Uri uri;
-                string msg;
-                if (!url.TryCreateWebSocketUri(out uri, out msg))
+                if (!url.TryCreateWebSocketUri(out Uri uri, out string msg))
                 {
                     $"An invalid url to redirect is located: {msg}".Error();
                     return res;
@@ -1691,7 +1503,9 @@ namespace Unosquare.Net
                 ReleaseClientResources();
 
                 _uri = uri;
+#if SSL
                 IsSecure = uri.Scheme == "wss";
+#endif
 
                 await SetClientStream();
                 return await SendHandshakeRequestAsync();
@@ -1700,95 +1514,27 @@ namespace Unosquare.Net
             return res;
         }
 
-        // As client
-        private async Task<HttpResponse> SendHttpRequestAsync(HttpRequest request, int millisecondsTimeout)
-        {
-            $"A request to the server:\n {request.Stringify()}".Debug();
-            var res = await request.GetResponse(_stream, millisecondsTimeout, CancellationToken.None);
-            $"A response to the server:\n {res.Stringify()}".Debug();
-
-            return res;
-        }
-
         // As server
-        private async Task SendHttpResponseAsync(HttpResponse response)
+        private Task SendHttpResponseAsync(HttpResponse response)
         {
             $"A response to the server:\n {response.Stringify()}".Debug();
             var bytes = response.ToByteArray();
 
-            await _stream.WriteAsync(bytes, 0, bytes.Length);
+            return _stream.WriteAsync(bytes, 0, bytes.Length);
         }
-
-#if PROXY
-// As client
-        private void SendProxyConnectRequest()
-        {
-            var req = HttpRequest.CreateConnectRequest(_uri);
-            var res = SendHttpRequest(req, 90000);
-
-            if (res.IsProxyAuthenticationRequired)
-            {
-                var chal = res.Headers["Proxy-Authenticate"];
-                Log.WarnFormat("Received a proxy authentication requirement for '{0}'.", chal);
-
-                if (chal.IsNullOrEmpty())
-                    throw new WebSocketException("No proxy authentication challenge is specified.");
-
-                var authChal = AuthenticationChallenge.Parse(chal);
-                if (authChal == null)
-                    throw new WebSocketException("An invalid proxy authentication challenge is specified.");
-
-                if (_proxyCredentials != null)
-                {
-                    if (res.HasConnectionClose)
-                    {
-                        releaseClientResources();
-                        _tcpClient = new TcpClient(_proxyUri.DnsSafeHost, _proxyUri.Port);
-                        _stream = _tcpClient.GetStream();
-                    }
-
-                    var authRes = new AuthenticationResponse(authChal, _proxyCredentials, 0);
-                    req.Headers["Proxy-Authorization"] = authRes.ToString();
-                    res = sendHttpRequest(req, 15000);
-                }
-
-                if (res.IsProxyAuthenticationRequired)
-                    throw new WebSocketException("A proxy authentication is required.");
-            }
-            if (res.StatusCode[0] != '2')
-                throw new WebSocketException(
-                    "The proxy has failed a connection to the requested host and port.");
-        }  
-#endif
 
         // As client
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         private async Task SetClientStream()
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-#if PROXY
-            if (_proxyUri != null)
-            {
 #if NET46
-                _tcpClient = new TcpClient(_proxyUri.DnsSafeHost, _proxyUri.Port);
+            _tcpClient = new TcpClient(_uri.DnsSafeHost, _uri.Port);
 #else
-                _tcpClient = new TcpClient();
-#endif
-                _stream = _tcpClient.GetStream();
-                SendProxyConnectRequest();
-            }
-            else
-#endif
-            {
-#if NET46
-                _tcpClient = new TcpClient(_uri.DnsSafeHost, _uri.Port);
-#else
-                _tcpClient = new TcpClient();
+            _tcpClient = new TcpClient();
 
-                await _tcpClient.ConnectAsync(_uri.DnsSafeHost, _uri.Port);
+            await _tcpClient.ConnectAsync(_uri.DnsSafeHost, _uri.Port);
 #endif
-                _stream = _tcpClient.GetStream();
-            }
+            _stream = _tcpClient.GetStream();
 
 #if SSL
             if (_secure)
@@ -1822,7 +1568,8 @@ namespace Unosquare.Net
             }
 #endif
         }
-
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        
         private void StartReceiving()
         {
             if (_messageEventQueue.Count > 0)
@@ -1862,660 +1609,6 @@ namespace Unosquare.Net
 
             receive();
         }
-
-        // As client
-        private bool ValidateSecWebSocketAcceptHeader(string value)
-        {
-            return value != null && value.TrimStart() == CreateResponseKey(_base64Key);
-        }
-
-        // As client
-        private bool ValidateSecWebSocketExtensionsServerHeader(string value)
-        {
-            if (value == null)
-                return true;
-
-            if (value.Length == 0 || !_extensionsRequested)
-                return false;
-
-            var comp = _compression != CompressionMethod.None;
-            foreach (var e in value.SplitHeaderValue(','))
-            {
-                var ext = e.Trim();
-                if (comp && ext.IsCompressionExtension(_compression))
-                {
-                    if (!ext.Contains("server_no_context_takeover"))
-                    {
-                        "The server hasn't sent back 'server_no_context_takeover'.".Error();
-                        return false;
-                    }
-
-                    if (!ext.Contains("client_no_context_takeover"))
-                        "The server hasn't sent back 'client_no_context_takeover'.".Info();
-
-                    var method = _compression.ToExtensionString();
-                    var invalid =
-                        ext.SplitHeaderValue(';').Any(
-                            t =>
-                            {
-                                t = t.Trim();
-                                return t != method
-                                       && t != "server_no_context_takeover"
-                                       && t != "client_no_context_takeover";
-                            });
-
-                    if (invalid)
-                        return false;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        // As server
-        private static bool ValidateSecWebSocketKeyHeader(string value)
-        {
-            return !string.IsNullOrEmpty(value);
-        }
-
-        private static bool ValidateSecWebSocketProtocolClientHeader(string value) => value == null || value.Length > 0;
-
-        // As server
-        private static bool ValidateSecWebSocketVersionClientHeader(string value) => value != null && value == Version;
-
-        // As client
-        private static bool ValidateSecWebSocketVersionServerHeader(string value) => value == null || value == Version;
-
-        #endregion
-
-        #region Internal Methods
-
-        internal static string CheckCloseParameters(CloseStatusCode code, string reason, bool client)
-        {
-            return code == CloseStatusCode.NoStatus
-                ? (!string.IsNullOrEmpty(reason) ? "NoStatus cannot have a reason." : null)
-                : code == CloseStatusCode.MandatoryExtension && !client
-                    ? "MandatoryExtension cannot be used by a server."
-                    : code == CloseStatusCode.ServerError && client
-                        ? "ServerError cannot be used by a client."
-                        : !string.IsNullOrEmpty(reason) && Encoding.UTF8.GetBytes(reason).Length > 123
-                            ? "A reason has greater than the allowable max size."
-                            : null;
-        }
-
-        internal static bool CheckParametersForClose(
-            CloseStatusCode code, string reason, bool client, out string message)
-        {
-            message = null;
-
-            if (code == CloseStatusCode.NoStatus && !string.IsNullOrEmpty(reason))
-            {
-                message = "'code' cannot have a reason.";
-                return false;
-            }
-
-            if (code == CloseStatusCode.MandatoryExtension && !client)
-            {
-                message = "'code' cannot be used by a server.";
-                return false;
-            }
-
-            if (code == CloseStatusCode.ServerError && client)
-            {
-                message = "'code' cannot be used by a client.";
-                return false;
-            }
-
-            if (!string.IsNullOrEmpty(reason) && Encoding.UTF8.GetBytes(reason).Length > 123)
-            {
-                message = "The size of 'reason' is greater than the allowable max size.";
-                return false;
-            }
-
-            return true;
-        }
-
-        internal static string CheckPingParameter(string message, out byte[] bytes)
-        {
-            bytes = Encoding.UTF8.GetBytes(message);
-            return bytes.Length > 125 ? "A message has greater than the allowable max size." : null;
-        }
-
-        internal static string CheckSendParameter(byte[] data)
-        {
-            return data == null ? "'data' is null." : null;
-        }
-        
-        internal static string CheckSendParameter(string data)
-        {
-            return data == null ? "'data' is null." : null;
-        }
-
-        internal static string CheckSendParameters(Stream stream, int length)
-        {
-            return stream == null
-                ? "'stream' is null."
-                : !stream.CanRead
-                    ? "'stream' cannot be read."
-                    : length < 1
-                        ? "'length' is less than 1."
-                        : null;
-        }
-
-        // As server
-        internal async Task CloseAsync(HttpResponse response)
-        {
-            _readyState = WebSocketState.Closing;
-
-            await SendHttpResponseAsync(response);
-            await ReleaseServerResources();
-
-            _readyState = WebSocketState.Closed;
-        }
-        
-        // As server
-        internal async Task CloseAsync(CloseEventArgs e, byte[] frameAsBytes, bool receive, CancellationToken ct = default(CancellationToken))
-        {
-            lock (_forState)
-            {
-                if (_readyState == WebSocketState.Closing)
-                {
-                    "The closing is already in progress.".Debug();
-                    return;
-                }
-
-                if (_readyState == WebSocketState.Closed)
-                {
-                    "The connection has been closed.".Debug();
-                    return;
-                }
-
-                _readyState = WebSocketState.Closing;
-            }
-
-            // TODO: Fix
-            e.WasClean = await CloseHandshakeAsync(frameAsBytes, receive, false, ct).ConfigureAwait(false);
-            await ReleaseServerResources().ConfigureAwait(false);
-            ReleaseCommonResources();
-
-            _readyState = WebSocketState.Closed;
-
-            try
-            {
-                OnClose?.Invoke(this, e);
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-            }
-        }
-
-        // As client
-        internal static string CreateBase64Key()
-        {
-            var src = new byte[16];
-            RandomNumber.GetBytes(src);
-
-            return Convert.ToBase64String(src);
-        }
-
-        internal static string CreateResponseKey(string base64Key)
-        {
-            var buff = new StringBuilder(base64Key, 64);
-            buff.Append(Guid);
-            var sha1 = SHA1.Create();
-            var src = sha1.ComputeHash(Encoding.UTF8.GetBytes(buff.ToString()));
-
-            return Convert.ToBase64String(src);
-        }
-
-        // As server
-        internal async Task InternalAcceptAsync()
-        {
-            try
-            {
-                var handShake = await AcceptHandshakeAsync();
-
-                if (handShake == false)
-                    return;
-
-                _readyState = WebSocketState.Open;
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-                Fatal("An exception has occurred while accepting.", ex);
-
-                return;
-            }
-
-            Open();
-        }
-
-        internal async Task<bool> PingAsync(byte[] frameAsBytes, TimeSpan timeout)
-        {
-            if (_readyState != WebSocketState.Open)
-                return false;
-
-            await _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length);
-
-            return _receivePong != null && _receivePong.WaitOne(timeout);
-        }
-
-        #endregion
-
-        #region Public Methods
-
-        /// <summary>
-        /// Closes the WebSocket connection asynchronously, and releases
-        /// all associated resources.
-        /// </summary>
-        /// <param name="code">The code.</param>
-        /// <param name="reason">The reason.</param>
-        /// <param name="ct">The cancellation token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous closes websocket connection
-        /// </returns>
-        public async Task CloseAsync(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null, CancellationToken ct = default(CancellationToken))
-        {
-            string msg;
-            if (!CheckIfAvailable(out msg))
-            {
-                msg.Error();
-                Error("An error has occurred in closing the connection.", null);
-
-                return;
-            }
-
-            if (code != CloseStatusCode.Undefined && !CheckParametersForClose(code, reason, _client, out msg))
-            {
-                msg.Error();
-                Error("An error has occurred in closing the connection.", null);
-
-                return;
-            }
-
-            if (code == CloseStatusCode.NoStatus)
-            {
-                await InternalCloseAsync(new CloseEventArgs(), ct: ct);
-                return;
-            }
-
-            var send = !code.IsReserved();
-            await InternalCloseAsync(new CloseEventArgs(code, reason), send, send, ct: ct);
-        }
-
-        /// <summary>
-        /// Establishes a WebSocket connection asynchronously.
-        /// </summary>
-        /// <param name="ct">The cancellation token.</param>
-        /// <returns>
-        /// If CheckIfAvailable statement terminates execution of the method; otherwise, 
-        /// establishes a WebSocket connection
-        /// </returns>
-        /// <remarks>
-        /// <para>
-        /// This method doesn't wait for the connect to be complete.
-        /// </para>
-        /// <para>
-        /// This method isn't available in a server.
-        /// </para></remarks>
-        public async Task ConnectAsync(CancellationToken ct = default(CancellationToken))
-        {
-            string msg;
-            if (!CheckIfAvailable(out msg, true, false, true, false, false))
-            {
-                msg.Error();
-                Error("An error has occurred in connecting.", null);
-
-                return;
-            }
-
-            var connectResult = await ConnectAsync();
-            if (connectResult)
-                Open();
-        }
-
-        /// <summary>
-        /// Sends a ping using the WebSocket connection.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if the <see cref="WebSocket"/> receives a pong to this ping in a time;
-        /// otherwise, <c>false</c>.
-        /// </returns>
-        public async Task<bool> PingAsync()
-        {
-            var bytes = _client
-                ? WebSocketFrame.CreatePingFrame(true).ToArray()
-                : WebSocketFrame.EmptyPingBytes;
-
-            return await PingAsync(bytes, _waitTime);
-        }
-
-        /// <summary>
-        /// Sends a ping with the specified <paramref name="message"/> using the WebSocket connection.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if the <see cref="WebSocket"/> receives a pong to this ping in a time;
-        /// otherwise, <c>false</c>.
-        /// </returns>
-        /// <param name="message">
-        /// A <see cref="string"/> that represents the message to send.
-        /// </param>
-        public async Task<bool> PingAsync(string message)
-        {
-            if (string.IsNullOrEmpty(message))
-                return await PingAsync();
-
-            byte[] data;
-            var msg = CheckPingParameter(message, out data);
-            if (msg != null)
-            {
-                msg.Error();
-                Error("An error has occurred in sending a ping.", null);
-
-                return false;
-            }
-
-            return await PingAsync(WebSocketFrame.CreatePingFrame(data, _client).ToArray(), _waitTime);
-        }
-
-        private static string CheckIfAvailable(
-            WebSocketState state, 
-            bool connecting = false, 
-            bool open = true, 
-            bool closing = false,
-            bool closed = false)
-        {
-            return (!connecting && state == WebSocketState.Connecting) ||
-                   (!open && state == WebSocketState.Open) ||
-                   (!closing && state == WebSocketState.Closing) ||
-                   (!closed && state == WebSocketState.Closed)
-                ? "This operation isn't available in: " + state.ToString().ToLower()
-                : null;
-        }
-
-        /// <summary>
-        /// Sends binary <paramref name="data" /> using the WebSocket connection.
-        /// </summary>
-        /// <param name="data">An array of <see cref="byte" /> that represents the binary data to send.</param>
-        /// <param name="opcode">The opcode.</param>
-        /// <param name="ct">The cancellation token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous of send 
-        /// binary data using websockets
-        /// </returns>
-        public async Task SendAsync(byte[] data, Opcode opcode, CancellationToken ct = default(CancellationToken))
-        {
-            var msg = CheckIfAvailable(_readyState) ??
-                      CheckSendParameter(data);
-
-            if (msg != null)
-            {
-                msg.Error();
-                Error("An error has occurred in sending data.", null);
-
-                return;
-            }
-
-            Send(opcode, new MemoryStream(data), ct);
-        }
-
-        /// <summary>
-        /// Sends binary data from the specified <see cref="Stream" /> asynchronously using
-        /// the WebSocket connection.
-        /// </summary>
-        /// <param name="stream">A <see cref="Stream" /> from which contains the binary data to send.</param>
-        /// <param name="length">An <see cref="int" /> that represents the number of bytes to send.</param>
-        /// <param name="ct">The cancellation token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous of send 
-        /// binary data from specified <see cref="Stream" />
-        /// </returns>
-        /// <remarks>
-        /// This method doesn't wait for the send to be complete.
-        /// </remarks>
-        public async Task SendAsync(Stream stream, int length, CancellationToken ct = default(CancellationToken))
-        {
-            var msg = CheckIfAvailable(_readyState) ??
-                      CheckSendParameters(stream, length);
-
-            if (msg != null)
-            {
-                msg.Error();
-                Error("An error has occurred in sending data.", null);
-
-                return;
-            }
-
-            try
-            {
-                var data = await stream.ReadBytesAsync(length, ct);
-
-                if (data.Length == 0)
-                {
-                    Error("An error has occurred in sending data.", null);
-                    return;
-                }
-
-                if (data.Length < length)
-                    $"The length of the data is less than 'length':\n  expected: {length}\n  actual: {data.Length}".Info();
-
-                Send(Opcode.Binary, new MemoryStream(data), ct);
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket), "Error sending data async.");
-                Error("An exception has occurred while sending data.", ex);
-            }
-        }
-
-        /// <summary>
-        /// Sets an HTTP <paramref name="cookie"/> to send with
-        /// the WebSocket handshake request to the server.
-        /// </summary>
-        /// <param name="cookie">
-        /// A <see cref="Cookie"/> that represents a cookie to send.
-        /// </param>
-        public void SetCookie(Cookie cookie)
-        {
-            string msg;
-            if (!CheckIfAvailable(out msg, true, false, true, false, false) || cookie == null)
-            {
-                msg.Error();
-                Error("An error has occurred in setting a cookie.", null);
-
-                return;
-            }
-
-            lock (_forState)
-            {
-                if (!CheckIfAvailable(out msg, true, false, false, true))
-                {
-                    msg.Error();
-                    Error("An error has occurred in setting a cookie.", null);
-
-                    return;
-                }
-
-                // TODO: lock (CookieCollection.SyncRoot)
-                CookieCollection.Add(cookie);
-            }
-        }
-
-#if AUTHENTICATION
-/// <summary>
-/// Sets a pair of <paramref name="username"/> and <paramref name="password"/> for
-/// the HTTP authentication (Basic/Digest).
-/// </summary>
-/// <param name="username">
-///   <para>
-///   A <see cref="string"/> that represents the user name used to authenticate.
-///   </para>
-///   <para>
-///   If <paramref name="username"/> is <see langword="null"/> or empty,
-///   the credentials will be initialized and not be sent.
-///   </para>
-/// </param>
-/// <param name="password">
-/// A <see cref="string"/> that represents the password for
-/// <paramref name="username"/> used to authenticate.
-/// </param>
-/// <param name="preAuth">
-/// <c>true</c> if the <see cref="WebSocket"/> sends the credentials for
-/// the Basic authentication with the first handshake request to the server;
-/// otherwise, <c>false</c>.
-/// </param>
-        public void SetCredentials(string username, string password, bool preAuth)
-        {
-            string msg;
-            if (!checkIfAvailable(true, false, true, false, false, true, out msg))
-            {
-                Log.Error(msg);
-                Error("An error has occurred in setting the credentials.", null);
-
-                return;
-            }
-
-            if (!CheckParametersForSetCredentials(username, password, out msg))
-            {
-                Log.Error(msg);
-                Error("An error has occurred in setting the credentials.", null);
-
-                return;
-            }
-
-            lock (_forState)
-            {
-                if (!checkIfAvailable(true, false, false, true, out msg))
-                {
-                    Log.Error(msg);
-                    Error("An error has occurred in setting the credentials.", null);
-
-                    return;
-                }
-
-                if (string.IsNullOrEmpty(username))
-                {
-                    Log.WarnFormat("The credentials are initialized.");
-                    Credentials = null;
-                    _preAuth = false;
-
-                    return;
-                }
-
-                Credentials = new NetworkCredential(username, password, _uri.PathAndQuery);
-                _preAuth = preAuth;
-            }
-        }
-#endif
-#if PROXY
-/// <summary>
-/// Sets the HTTP proxy server URL to connect through, and if necessary,
-/// a pair of <paramref name="username"/> and <paramref name="password"/> for
-/// the proxy server authentication (Basic/Digest).
-/// </summary>
-/// <param name="url">
-///   <para>
-///   A <see cref="string"/> that represents the HTTP proxy server URL to
-///   connect through. The syntax must be http://&lt;host&gt;[:&lt;port&gt;].
-///   </para>
-///   <para>
-///   If <paramref name="url"/> is <see langword="null"/> or empty,
-///   the url and credentials for the proxy will be initialized,
-///   and the <see cref="WebSocket"/> will not use the proxy to
-///   connect through.
-///   </para>
-/// </param>
-/// <param name="username">
-///   <para>
-///   A <see cref="string"/> that represents the user name used to authenticate.
-///   </para>
-///   <para>
-///   If <paramref name="username"/> is <see langword="null"/> or empty,
-///   the credentials for the proxy will be initialized and not be sent.
-///   </para>
-/// </param>
-/// <param name="password">
-/// A <see cref="string"/> that represents the password for
-/// <paramref name="username"/> used to authenticate.
-/// </param>
-        public void SetProxy(string url, string username, string password)
-        {
-            string msg;
-            if (!checkIfAvailable(true, false, true, false, false, true, out msg))
-            {
-
-                msg.Error();
-                Error("An error has occurred in setting the proxy.", null);
-
-                return;
-            }
-
-            if (!CheckParametersForSetProxy(url, username, password, out msg))
-            {
-                msg.Error();
-                Error("An error has occurred in setting the proxy.", null);
-
-                return;
-            }
-
-            lock (_forState)
-            {
-                if (!checkIfAvailable(true, false, false, true, out msg))
-                {
-                    msg.Error();
-                    Error("An error has occurred in setting the proxy.", null);
-
-                    return;
-                }
-
-                if (string.IsNullOrEmpty(url))
-                {
-                    "The url and credentials for the proxy are initialized.".Warn();
-                    _proxyUri = null;
-                    _proxyCredentials = null;
-
-                    return;
-                }
-
-                _proxyUri = new Uri(url);
-
-                if (string.IsNullOrEmpty(username))
-                {
-                    "The credentials for the proxy are initialized.".Warn();
-                    _proxyCredentials = null;
-
-                    return;
-                }
-
-                _proxyCredentials =
-                    new NetworkCredential(username, password, $"{_uri.DnsSafeHost}:{_uri.Port}");
-            }
-        }
-#endif
-
-        #endregion
-
-        #region Explicit Interface Implementations
-
-        /// <summary>
-        /// Closes the WebSocket connection, and releases all associated resources.
-        /// </summary>
-        /// <remarks>
-        /// This method closes the connection with <see cref="CloseStatusCode.Away"/>.
-        /// </remarks>
-        public void Dispose()
-        {
-            // TODO: this is correct?
-            InternalCloseAsync(new CloseEventArgs(CloseStatusCode.Away)).Wait();
-        }
-
-        #endregion
     }
 }
 

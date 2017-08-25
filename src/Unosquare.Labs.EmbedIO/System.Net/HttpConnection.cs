@@ -43,19 +43,22 @@ using System.Security.Cryptography.X509Certificates;
     {
         private const int BufferSize = 8192;
         private readonly Timer _timer;
-        private readonly EndPointListener _epl;        
-        private Socket _sock;        
+        private readonly EndPointListener _epl;
+        private Socket _sock;
         private MemoryStream _ms;
         private byte[] _buffer;
         private HttpListenerContext _context;
         private StringBuilder _currentLine;
         private RequestStream _iStream;
         private ResponseStream _oStream;
-        private bool _chunked;
         private bool _contextBound;
         private int _sTimeout = 90000; // 90k ms for first request, 15k ms from then on        
         private IPEndPoint _localEp;
         private HttpListener _lastListener;
+        private InputState _inputState = InputState.RequestLine;
+        private LineState _lineState = LineState.None;
+        private int _position;
+
 #if SSL
         private X509Certificate _cert;
         IMonoSslStream ssl_stream;
@@ -73,7 +76,7 @@ using System.Security.Cryptography.X509Certificates;
 #if SSL
             IsSecure = secure;
 
-            if (secure == false)
+            if (!secure)
             {
                 Stream = new NetworkStream(sock, false);
             }
@@ -107,26 +110,6 @@ using System.Security.Cryptography.X509Certificates;
         internal X509Certificate2 ClientCertificate { get; }
 #endif
 
-        private void Init()
-        {
-#if SSL
-            if (ssl_stream != null)
-            {
-                ssl_stream.AuthenticateAsServer(cert, true, (SslProtocols)ServicePointManager.SecurityProtocol, false);
-            }
-#endif
-            _contextBound = false;
-            _iStream = null;
-            _oStream = null;
-            Prefix = null;
-            _chunked = false;
-            _ms = new MemoryStream();
-            _position = 0;
-            _inputState = InputState.RequestLine;
-            _lineState = LineState.None;
-            _context = new HttpListenerContext(this);
-        }
-
         public bool IsClosed => _sock == null;
 
         public int Reuses { get; private set; }
@@ -140,22 +123,16 @@ using System.Security.Cryptography.X509Certificates;
                 if (_localEp != null)
                     return _localEp;
 
-                _localEp = (IPEndPoint) _sock.LocalEndPoint;
+                _localEp = (IPEndPoint)_sock.LocalEndPoint;
                 return _localEp;
             }
         }
 
-        public IPEndPoint RemoteEndPoint => (IPEndPoint) _sock?.RemoteEndPoint;
-
+        public IPEndPoint RemoteEndPoint => (IPEndPoint)_sock?.RemoteEndPoint;
+#if SSL
         public bool IsSecure { get; }
-
+#endif
         public ListenerPrefix Prefix { get; set; }
-
-        private void OnTimeout(object unused)
-        {
-            CloseSocket();
-            Unbind();
-        }
 
         public async Task BeginReadRequest()
         {
@@ -179,7 +156,7 @@ using System.Security.Cryptography.X509Certificates;
             }
         }
 
-        public RequestStream GetRequestStream(bool chunked, long contentlength)
+        public RequestStream GetRequestStream(long contentlength)
         {
             if (_iStream != null) return _iStream;
 
@@ -187,38 +164,92 @@ using System.Security.Cryptography.X509Certificates;
             var length = (int) _ms.Length;
             _ms = null;
 
-            if (chunked)
-            {
-#if CHUNKED
-                _chunked = true;
-                _context.Response.SendChunked = true;
-                _iStream = new ChunkedInputStream(_context, Stream, buffer, _position, length - _position);
-#else
-                throw new InvalidOperationException("Chunked transfer encoding is not supported");
-#endif
-            }
-            else
-            {
-                _iStream = new RequestStream(Stream, buffer, _position, length - _position, contentlength);
-            }
+            _iStream = new RequestStream(Stream, buffer, _position, length - _position, contentlength);
 
             return _iStream;
         }
 
         public ResponseStream GetResponseStream()
         {
-            // TODO: can we get this stream before reading the input?
-            if (_oStream == null)
+            return _oStream ??
+                   (_oStream =
+                       new ResponseStream(Stream, _context.Response, _context.Listener?.IgnoreWriteExceptions ?? true));
+        }
+
+        internal async Task CloseAsync(bool forceClose = false)
+        {
+            if (_sock != null)
             {
-                var listener = _context.Listener;
+                Stream st = GetResponseStream();
+                st?.Dispose();
 
-                if (listener == null)
-                    return new ResponseStream(Stream, _context.Response, true);
-
-                _oStream = new ResponseStream(Stream, _context.Response, listener.IgnoreWriteExceptions);
+                _oStream = null;
             }
 
-            return _oStream;
+            if (_sock == null) return;
+
+            forceClose |= !_context.Request.KeepAlive;
+
+            if (!forceClose)
+                forceClose = _context.Response.Headers["connection"] == "close";
+
+            if (!forceClose)
+            {
+                var isValidInput = await _context.Request.FlushInput();
+
+                if (isValidInput)
+                {
+                    Reuses++;
+                    Unbind();
+                    Init();
+                    await BeginReadRequest().ConfigureAwait(false);
+                    return;
+                }
+            }
+
+            var s = _sock;
+            _sock = null;
+
+            try
+            {
+                s?.Shutdown(SocketShutdown.Both);
+            }
+            catch
+            {
+                // ignored
+            }
+            finally
+            {
+                s?.Dispose();
+            }
+
+            Unbind();
+            RemoveConnection();
+        }
+        
+        private void Init()
+        {
+#if SSL
+            if (ssl_stream != null)
+            {
+                ssl_stream.AuthenticateAsServer(cert, true, (SslProtocols)ServicePointManager.SecurityProtocol, false);
+            }
+#endif
+            _contextBound = false;
+            _iStream = null;
+            _oStream = null;
+            Prefix = null;
+            _ms = new MemoryStream();
+            _position = 0;
+            _inputState = InputState.RequestLine;
+            _lineState = LineState.None;
+            _context = new HttpListenerContext(this);
+        }
+
+        private void OnTimeout(object unused)
+        {
+            CloseSocket();
+            Unbind();
         }
 
         private async Task OnReadInternal(int nread)
@@ -228,7 +259,7 @@ using System.Security.Cryptography.X509Certificates;
             // Continue reading until full header is received.
             // Especially important for multipart requests when the second part of the header arrives after a tiny delay
             // because the webbrowser has to meassure the content length first.
-            int parsedBytes = 0;
+            var parsedBytes = 0;
             while (true)
             {
                 try
@@ -293,29 +324,12 @@ using System.Security.Cryptography.X509Certificates;
                 _lastListener.RemoveConnection(this);
         }
 
-        private enum InputState
-        {
-            RequestLine,
-            Headers
-        }
-
-        private enum LineState
-        {
-            None,
-            Cr,
-            Lf
-        }
-
-        private InputState _inputState = InputState.RequestLine;
-        private LineState _lineState = LineState.None;
-        private int _position;
-
         // true -> done processing
         // false -> need more input
         private bool ProcessInput(MemoryStream ms)
         {
             var buffer = ms.ToArray();
-            var len = (int) ms.Length;
+            var len = (int)ms.Length;
             var used = 0;
 
             while (true)
@@ -401,7 +415,7 @@ using System.Security.Cryptography.X509Certificates;
                         _lineState = LineState.Lf;
                         break;
                     default:
-                        _currentLine.Append((char) b);
+                        _currentLine.Append((char)b);
                         break;
                 }
             }
@@ -440,65 +454,17 @@ using System.Security.Cryptography.X509Certificates;
             RemoveConnection();
         }
 
-        internal async Task CloseAsync(bool forceClose = false)
+        private enum InputState
         {
-            if (_sock != null)
-            {
-                Stream st = GetResponseStream();
-                st?.Dispose();
+            RequestLine,
+            Headers
+        }
 
-                _oStream = null;
-            }
-
-            if (_sock == null) return;
-
-            forceClose |= !_context.Request.KeepAlive;
-
-            if (!forceClose)
-                forceClose = _context.Response.Headers["connection"] == "close";
-
-            if (!forceClose)
-            {
-                var isValidInput = await _context.Request.FlushInput();
-
-                if (isValidInput)
-                {
-                    if (_chunked && _context.Response.ForceCloseChunked == false)
-                    {
-                        // Don't close. Keep working.
-                        Reuses++;
-                        Unbind();
-                        Init();
-                        await BeginReadRequest().ConfigureAwait(false);
-                        return;
-                    }
-
-                    Reuses++;
-                    Unbind();
-                    Init();
-                    await BeginReadRequest().ConfigureAwait(false);
-                    return;
-                }
-            }
-
-            var s = _sock;
-            _sock = null;
-
-            try
-            {
-                s?.Shutdown(SocketShutdown.Both);
-            }
-            catch
-            {
-                // ignored
-            }
-            finally
-            {
-                s?.Dispose();
-            }
-
-            Unbind();
-            RemoveConnection();
+        private enum LineState
+        {
+            None,
+            Cr,
+            Lf
         }
     }
 }

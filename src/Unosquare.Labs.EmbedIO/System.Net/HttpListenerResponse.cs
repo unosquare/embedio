@@ -29,18 +29,19 @@ namespace Unosquare.Net
 {
     using System;
     using System.Globalization;
+    using System.Linq;
+    using System.Net;
     using System.IO;
     using System.Text;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Represents an HTTP Listener's response
     /// </summary>
-    /// <seealso cref="System.IDisposable" />
+    /// <seealso cref="IDisposable" />
     public sealed class HttpListenerResponse : IDisposable
     {
         private const string CannotChangeHeaderWarning = "Cannot be changed after headers are sent.";
-        private readonly HttpListenerContext _context;        
+        private readonly HttpListenerContext _context;
         private bool _disposed;
         private long _contentLength;
         private bool _clSet;
@@ -51,16 +52,12 @@ namespace Unosquare.Net
         private Version _version = HttpVersion.Version11;
         private string _location;
         private int _statusCode = 200;
-        private bool _chunked;        
-        
+        private bool _chunked;
+
         internal HttpListenerResponse(HttpListenerContext context)
         {
             _context = context;
         }
-
-        internal bool HeadersSent { get; private set; }
-        internal object HeadersLock { get; } = new object();
-        internal bool ForceCloseChunked { get; private set; }
 
         /// <summary>
         /// Gets or sets the content encoding.
@@ -134,7 +131,7 @@ namespace Unosquare.Net
         }
 
         // RFC 2109, 2965 + the netscape specification at http://wp.netscape.com/newsref/std/cookie_spec.html
-        
+
         /// <summary>
         /// Gets or sets the cookies collection.
         /// </summary>
@@ -336,18 +333,21 @@ namespace Unosquare.Net
         /// </value>
         public string StatusDescription { get; set; } = "OK";
 
-        // TODO: How to wait?
-        void IDisposable.Dispose() => CloseAsync(true).Wait(); // TODO: Abort or Close?
+        internal bool HeadersSent { get; private set; }
+        internal object HeadersLock { get; } = new object();
+        internal bool ForceCloseChunked { get; private set; }
+        
+        void IDisposable.Dispose() => Close(true);
 
         /// <summary>
         /// Aborts this instance.
         /// </summary>
-        public async Task AbortAsync()
+        public void Abort()
         {
-            if (_disposed)
+            if (_disposed == false)
                 return;
 
-            await CloseAsync(true);
+            Close(true);
         }
 
         /// <summary>
@@ -420,23 +420,17 @@ namespace Unosquare.Net
             Headers[name] = value;
         }
 
-        private async Task CloseAsync(bool force)
-        {
-            _disposed = true;
-            await _context.Connection.CloseAsync(force).ConfigureAwait(false);
-        }
-
         /// <summary>
         /// Closes this instance.
         /// </summary>
-        public async Task CloseAsync()
+        public void Close()
         {
             if (_disposed)
                 return;
 
-            await CloseAsync(false);
+            Close(false);
         }
-        
+
         /// <summary>
         /// Copies from.
         /// </summary>
@@ -465,44 +459,53 @@ namespace Unosquare.Net
             _location = url;
         }
 
-        private bool FindCookie(System.Net.Cookie cookie)
+        /// <summary>
+        /// Sets the cookie.
+        /// </summary>
+        /// <param name="cookie">The cookie.</param>
+        /// <exception cref="System.ArgumentNullException">
+        ///  Is thrown when a null reference is passed to a method
+        ///  that does not accept it as a valid argument
+        /// </exception>
+        /// <exception cref="System.ArgumentException">The cookie already exists.</exception>
+        public void SetCookie(System.Net.Cookie cookie)
         {
-            var name = cookie.Name;
-            var domain = cookie.Domain;
-            var path = cookie.Path;
+            if (cookie == null)
+                throw new ArgumentNullException(nameof(cookie));
 
-            foreach (System.Net.Cookie c in _cookies)
+            if (_cookies != null)
             {
-                if (name != c.Name || domain != c.Domain)
-                    continue;
-
-                if (path == c.Path)
-                    return true;
+                if (_cookies.Cast<Cookie>().Any(c => cookie.Name == c.Name && cookie.Domain == c.Domain && cookie.Path == c.Path))
+                    throw new ArgumentException("The cookie already exists.");
+            }
+            else
+            {
+                _cookies = new CookieCollection();
             }
 
-            return false;
+            _cookies.Add(cookie);
         }
-
+        
         internal void SendHeaders(bool closing, MemoryStream ms)
         {
             if (_contentType != null)
             {
                 if (_contentType.IndexOf("charset=", StringComparison.Ordinal) == -1)
                 {
-                    Headers.SetInternal("Content-Type", _contentType + "; charset=" + Encoding.UTF8.WebName);
+                    Headers.AddWithoutValidate("Content-Type", _contentType + "; charset=" + Encoding.UTF8.WebName);
                 }
                 else
                 {
-                    Headers.SetInternal("Content-Type", _contentType);
+                    Headers.AddWithoutValidate("Content-Type", _contentType);
                 }
             }
 
             if (Headers["Server"] == null)
-                Headers.SetInternal("Server", "embedio/1.0");
+                Headers.AddWithoutValidate("Server", "embedio/1.0");
 
             var inv = CultureInfo.InvariantCulture;
             if (Headers["Date"] == null)
-                Headers.SetInternal("Date", DateTime.UtcNow.ToString("r", inv));
+                Headers.AddWithoutValidate("Date", DateTime.UtcNow.ToString("r", inv));
 
             if (!_chunked)
             {
@@ -513,7 +516,7 @@ namespace Unosquare.Net
                 }
 
                 if (_clSet)
-                    Headers.SetInternal("Content-Length", _contentLength.ToString(inv));
+                    Headers.AddWithoutValidate("Content-Length", _contentLength.ToString(inv));
             }
 
             var v = _context.Request.ProtocolVersion;
@@ -538,12 +541,12 @@ namespace Unosquare.Net
             // They sent both KeepAlive: true and Connection: close!?
             if (!_keepAlive || connClose)
             {
-                Headers.SetInternal("Connection", "close");
+                Headers.AddWithoutValidate("Connection", "close");
                 connClose = true;
             }
 
             if (_chunked)
-                Headers.SetInternal("Transfer-Encoding", "chunked");
+                Headers.AddWithoutValidate("Transfer-Encoding", "chunked");
 
             var reuses = _context.Connection.Reuses;
             if (reuses >= 100)
@@ -551,25 +554,25 @@ namespace Unosquare.Net
                 ForceCloseChunked = true;
                 if (!connClose)
                 {
-                    Headers.SetInternal("Connection", "close");
+                    Headers.AddWithoutValidate("Connection", "close");
                     connClose = true;
                 }
             }
 
             if (!connClose)
             {
-                Headers.SetInternal("Keep-Alive", $"timeout=15,max={100 - reuses}");
+                Headers.AddWithoutValidate("Keep-Alive", $"timeout=15,max={100 - reuses}");
                 if (_context.Request.ProtocolVersion <= HttpVersion.Version10)
-                    Headers.SetInternal("Connection", "keep-alive");
+                    Headers.AddWithoutValidate("Connection", "keep-alive");
             }
 
             if (_location != null)
-                Headers.SetInternal("Location", _location);
+                Headers.AddWithoutValidate("Location", _location);
 
             if (_cookies != null)
             {
                 foreach (System.Net.Cookie cookie in _cookies)
-                    Headers.SetInternal("Set-Cookie", CookieToClientString(cookie));
+                    Headers.AddWithoutValidate("Set-Cookie", CookieToClientString(cookie));
             }
 
             var writer = new StreamWriter(ms, Encoding.UTF8, 256);
@@ -593,21 +596,6 @@ namespace Unosquare.Net
             foreach (var key in headers.AllKeys)
                 sb.Append(key).Append(": ").Append(headers[key]).Append("\r\n");
             
-            // for (int i = 0; i < headers.Count; i++)
-            // {
-            //    string key = headers.GetKey(i);
-            //    if (WebHeaderCollection.AllowMultiValues(key))
-            //    {
-            //        foreach (string v in headers.GetValues(i))
-            //        {
-            //            sb.Append(key).Append(": ").Append(v).Append("\r\n");
-            //        }
-            //    }
-            //    else
-            //    {
-            //        sb.Append(key).Append(": ").Append(headers.Get(i)).Append("\r\n");
-            //    }
-            // }
             return sb.Append("\r\n").ToString();
         }
 
@@ -640,31 +628,12 @@ namespace Unosquare.Net
             return cookie.Version == 0 || value.IsToken() ? value : "\"" + value.Replace("\"", "\\\"") + "\"";
         }
 
-        /// <summary>
-        /// Sets the cookie.
-        /// </summary>
-        /// <param name="cookie">The cookie.</param>
-        /// <exception cref="System.ArgumentNullException">
-        ///  Is thrown when a null reference is passed to a method
-        ///  that does not accept it as a valid argument
-        /// </exception>
-        /// <exception cref="System.ArgumentException">The cookie already exists.</exception>
-        public void SetCookie(System.Net.Cookie cookie)
+        private void Close(bool force)
         {
-            if (cookie == null)
-                throw new ArgumentNullException(nameof(cookie));
+            _disposed = true;
 
-            if (_cookies != null)
-            {
-                if (FindCookie(cookie))
-                    throw new ArgumentException("The cookie already exists.");
-            }
-            else
-            {
-                _cookies = new CookieCollection();
-            }
-
-            _cookies.Add(cookie);
+            // TODO: Is this fine?
+            _context.Connection.CloseAsync(force).Wait();
         }
     }
 }

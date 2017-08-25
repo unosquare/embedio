@@ -73,24 +73,23 @@
                 // return a non-math if no handler hold the route
                 if (path == null) return false;
 
-                Dictionary<HttpVerbs, MethodCacheInstance> methods;
-                MethodCacheInstance methodPair;
-
                 // search the path and verb
-                if (!_delegateMap.TryGetValue(path, out methods) || !methods.TryGetValue(verb, out methodPair))
+                if (!_delegateMap.TryGetValue(path, out Dictionary<HttpVerbs, MethodCacheInstance> methods) ||
+                    !methods.TryGetValue(verb, out MethodCacheInstance methodPair))
                     throw new InvalidOperationException($"No method found for path {path} and verb {verb}.");
-                
+
                 // ensure module does not return cached responses
                 context.NoCache();
 
                 // Log the handler to be use
-                $"Handler: {methodPair.MethodCache.MethodInfo.DeclaringType?.FullName}.{methodPair.MethodCache.MethodInfo.Name}".Debug(nameof(WebApiModule));
+                $"Handler: {methodPair.MethodCache.MethodInfo.DeclaringType?.FullName}.{methodPair.MethodCache.MethodInfo.Name}"
+                    .Debug(nameof(WebApiModule));
 
                 // Initially, only the server and context objects will be available
                 var args = new object[methodPair.MethodCache.AdditionalParameters.Count + 2];
                 args[0] = Server;
                 args[1] = context;
-                
+
                 // Select the routing strategy
                 switch (Server.RoutingStrategy)
                 {
@@ -308,60 +307,6 @@
 
             return null;
         }
-    }
-
-    /// <summary>
-    /// Decorate methods within controllers with this attribute in order to make them callable from the Web API Module
-    /// Method Must match the WebServerModule.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
-    public class WebApiHandlerAttribute : Attribute
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiHandlerAttribute"/> class.
-        /// </summary>
-        /// <param name="verb">The verb.</param>
-        /// <param name="paths">The paths.</param>
-        /// <exception cref="System.ArgumentException">The argument 'paths' must be specified.</exception>
-        public WebApiHandlerAttribute(HttpVerbs verb, string[] paths)
-        {
-            if (paths == null || paths.Length == 0)
-                throw new ArgumentException("The argument 'paths' must be specified.");
-
-            Verb = verb;
-            Paths = paths;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiHandlerAttribute"/> class.
-        /// </summary>
-        /// <param name="verb">The verb.</param>
-        /// <param name="path">The path.</param>
-        /// <exception cref="System.ArgumentException">The argument 'path' must be specified.</exception>
-        public WebApiHandlerAttribute(HttpVerbs verb, string path)
-        {
-            if (string.IsNullOrWhiteSpace(path))
-                throw new ArgumentException("The argument 'path' must be specified.");
-
-            Verb = verb;
-            Paths = new[] {path};
-        }
-
-        /// <summary>
-        /// Gets or sets the verb.
-        /// </summary>
-        /// <value>
-        /// The verb.
-        /// </value>
-        public HttpVerbs Verb { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the paths.
-        /// </summary>
-        /// <value>
-        /// The paths.
-        /// </value>
-        public string[] Paths { get; protected set; }
     }
 
     /// <summary>

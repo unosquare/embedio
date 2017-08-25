@@ -46,6 +46,7 @@ namespace Unosquare.Net
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Linq;
     using System.Runtime.InteropServices;
     using System.Text;
     using HttpHeaders = Labs.EmbedIO.Constants.Headers;
@@ -56,15 +57,9 @@ namespace Unosquare.Net
     [ComVisible(true)]
     public class WebHeaderCollection : NameValueCollection
     {
-        #region Private Fields
-
         private static readonly Dictionary<string, HttpHeaderInfo> Headers;
         private readonly bool _internallyUsed;
-
-        #endregion
-
-        #region Static Constructor
-
+        
         static WebHeaderCollection()
         {
             Headers =
@@ -128,10 +123,7 @@ namespace Unosquare.Net
                         "Connection",
                         new HttpHeaderInfo(
                             "Connection",
-                            HttpHeaderType.Request |
-                            HttpHeaderType.Response |
-                            HttpHeaderType.Restricted |
-                            HttpHeaderType.MultiValue)
+                            HttpHeaderType.Request | HttpHeaderType.Response | HttpHeaderType.Restricted | HttpHeaderType.MultiValue)
                     },
                     {
                         "ContentEncoding",
@@ -335,10 +327,7 @@ namespace Unosquare.Net
                         "SecWebSocketExtensions",
                         new HttpHeaderInfo(
                             "Sec-WebSocket-Extensions",
-                            HttpHeaderType.Request |
-                            HttpHeaderType.Response |
-                            HttpHeaderType.Restricted |
-                            HttpHeaderType.MultiValueInRequest)
+                            HttpHeaderType.Request | HttpHeaderType.Response | HttpHeaderType.Restricted | HttpHeaderType.MultiValueInRequest)
                     },
                     {
                         "SecWebSocketKey",
@@ -356,10 +345,7 @@ namespace Unosquare.Net
                         "SecWebSocketVersion",
                         new HttpHeaderInfo(
                             "Sec-WebSocket-Version",
-                            HttpHeaderType.Request |
-                            HttpHeaderType.Response |
-                            HttpHeaderType.Restricted |
-                            HttpHeaderType.MultiValueInResponse)
+                            HttpHeaderType.Request | HttpHeaderType.Response | HttpHeaderType.Restricted | HttpHeaderType.MultiValueInResponse)
                     },
                     {
                         "Server",
@@ -441,21 +427,7 @@ namespace Unosquare.Net
                     }
                 };
         }
-
-        #endregion
-
-        #region Internal Constructors
-
-        internal WebHeaderCollection(HttpHeaderType state, bool internallyUsed)
-        {
-            State = state;
-            _internallyUsed = internallyUsed;
-        }
-
-        #endregion
-
-        #region Public Constructors
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="WebHeaderCollection"/> class.
         /// </summary>
@@ -463,21 +435,14 @@ namespace Unosquare.Net
         {
         }
 
-        internal void SetInternal(string key, string value)
+        internal WebHeaderCollection(HttpHeaderType state, bool internallyUsed)
         {
-            AddWithoutValidate(key, value);
+            State = state;
+            _internallyUsed = internallyUsed;
         }
 
-        #endregion
-
-        #region Internal Properties
-
         internal HttpHeaderType State { get; private set; }
-
-        #endregion
-
-        #region Public Properties
-
+        
         /// <summary>
         /// Gets or sets the specified request <paramref name="header"/> in the collection.
         /// </summary>
@@ -548,236 +513,25 @@ namespace Unosquare.Net
             set { Add(header, value); }
         }
 
-        #endregion
-
-        #region Private Methods
-
-        private void Add(string name, string value, bool ignoreRestricted)
-        {
-            var act = ignoreRestricted
-                ? (Action<string, string>) AddWithoutCheckingNameAndRestricted
-                : AddWithoutCheckingName;
-
-            DoWithCheckingState(act, CheckName(name), value, true);
-        }
-
-        private void AddWithoutCheckingName(string name, string value)
-        {
-            DoWithoutCheckingName(base.Add, name, value);
-        }
-
-        private void AddWithoutCheckingNameAndRestricted(string name, string value)
-        {
-            base.Add(name, CheckValue(value));
-        }
-
-        private static int CheckColonSeparated(string header)
-        {
-            var idx = header.IndexOf(':');
-            if (idx == -1)
-                throw new ArgumentException("No colon could be found.", nameof(header));
-
-            return idx;
-        }
-
-        private static HttpHeaderType CheckHeaderType(string name)
-        {
-            var info = GetHeaderInfo(name);
-            return info == null
-                ? HttpHeaderType.Unspecified
-                : info.IsRequest && !info.IsResponse
-                    ? HttpHeaderType.Request
-                    : !info.IsRequest && info.IsResponse
-                        ? HttpHeaderType.Response
-                        : HttpHeaderType.Unspecified;
-        }
-
-        private static string CheckName(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException(nameof(name));
-
-            name = name.Trim();
-            if (!IsHeaderName(name))
-                throw new ArgumentException("Contains invalid characters.", nameof(name));
-
-            return name;
-        }
-
-        private void CheckRestricted(string name)
-        {
-            if (!_internallyUsed && InternalIsRestricted(name, true))
-                throw new ArgumentException("This header must be modified with the appropriate property.");
-        }
-
-        private void CheckState(bool response)
-        {
-            if (State == HttpHeaderType.Unspecified)
-                return;
-
-            if (response && State == HttpHeaderType.Request)
-            {
-                throw new InvalidOperationException(
-                      "This collection has already been used to store the request headers.");
-            }
-
-            if (!response && State == HttpHeaderType.Response)
-            {
-                throw new InvalidOperationException(
-                      "This collection has already been used to store the response headers.");
-            }
-        }
-
-        private static string CheckValue(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-                return string.Empty;
-
-            value = value.Trim();
-            if (value.Length > 65535)
-                throw new ArgumentOutOfRangeException(nameof(value), "Greater than 65,535 characters.");
-
-            if (!IsHeaderValue(value))
-                throw new ArgumentException("Contains invalid characters.", nameof(value));
-
-            return value;
-        }
-
-        private static string Convert(string key)
-        {
-            HttpHeaderInfo info;
-            return Headers.TryGetValue(key, out info) ? info.Name : string.Empty;
-        }
-
-        private void DoWithCheckingState(
-            Action<string, string> action, string name, string value, bool setState)
-        {
-            var type = CheckHeaderType(name);
-            if (type == HttpHeaderType.Request)
-                DoWithCheckingState(action, name, value, false, setState);
-            else if (type == HttpHeaderType.Response)
-                DoWithCheckingState(action, name, value, true, setState);
-            else
-                action(name, value);
-        }
-
-        private void DoWithCheckingState(
-            Action<string, string> action, string name, string value, bool response, bool setState)
-        {
-            CheckState(response);
-            action(name, value);
-            if (setState && State == HttpHeaderType.Unspecified)
-                State = response ? HttpHeaderType.Response : HttpHeaderType.Request;
-        }
-
-        private void DoWithoutCheckingName(Action<string, string> action, string name, string value)
-        {
-            CheckRestricted(name);
-            action(name, CheckValue(value));
-        }
-
-        private static HttpHeaderInfo GetHeaderInfo(string name)
-        {
-            foreach (var info in Headers.Values)
-            {
-                if (info.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
-                    return info;
-            }
-
-            return null;
-        }
-
-        private static bool InternalIsRestricted(string name, bool response)
-        {
-            var info = GetHeaderInfo(name);
-            return info != null && info.IsRestricted(response);
-        }
-
-        private void RemoveWithoutCheckingName(string name, string unuse)
-        {
-            CheckRestricted(name);
-            base.Remove(name);
-        }
-
-        private void SetWithoutCheckingName(string name, string value)
-        {
-            DoWithoutCheckingName(base.Set, name, value);
-        }
-
-        #endregion
-
-        #region Internal Methods
-
-        internal static string Convert(System.Net.HttpRequestHeader header)
-        {
-            return Convert(header.ToString());
-        }
-
-        internal static string Convert(System.Net.HttpResponseHeader header)
-        {
-            return Convert(header.ToString());
-        }
-
-        internal void InternalRemove(string name)
-        {
-            base.Remove(name);
-        }
-
-        internal void InternalSet(string header, bool response)
-        {
-            var pos = CheckColonSeparated(header);
-            InternalSet(header.Substring(0, pos), header.Substring(pos + 1), response);
-        }
-
-        internal void InternalSet(string name, string value, bool response)
-        {
-            value = CheckValue(value);
-            if (IsMultiValue(name, response))
-                base.Add(name, value);
-            else
-                base.Set(name, value);
-        }
-
-        internal static bool IsHeaderName(string name)
-        {
-            return !string.IsNullOrEmpty(name) && name.IsToken();
-        }
-
-        internal static bool IsHeaderValue(string value)
-        {
-            var len = value.Length;
-            for (var i = 0; i < len; i++)
-            {
-                var c = value[i];
-                if (c < 0x20 && !"\r\n\t".Contains(c))
-                    return false;
-
-                if (c == 0x7f)
-                    return false;
-
-                if (c == '\n' && ++i < len)
-                {
-                    c = value[i];
-                    if (!" \t".Contains(c))
-                        return false;
-                }
-            }
-
-            return true;
-        }
-
-        internal static bool IsMultiValue(string headerName, bool response)
-        {
-            if (string.IsNullOrEmpty(headerName))
-                return false;
-
-            var info = GetHeaderInfo(headerName);
-            return info != null && info.IsMultiValue(response);
-        }
-        
-        #endregion
-
-        #region Protected Methods
+        /// <summary>
+        /// Determines whether the specified header can be set for the request or the response.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if the header is restricted; otherwise, <c>false</c>.
+        /// </returns>
+        /// <param name="headerName">
+        /// A <see cref="string"/> that represents the name of the header to test.
+        /// </param>
+        /// <param name="response">
+        /// <c>true</c> if does the test for the response; for the request, <c>false</c>.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="headerName"/> is <see langword="null"/> or empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="headerName"/> contains invalid characters.
+        /// </exception>
+        public static bool IsRestricted(string headerName, bool response = false) => InternalIsRestricted(CheckName(headerName), response);
 
         /// <summary>
         /// Adds a header to the collection without checking if the header is on
@@ -802,15 +556,8 @@ namespace Unosquare.Net
         /// The current <see cref="WebHeaderCollection"/> instance doesn't allow
         /// the <paramref name="headerName"/>.
         /// </exception>
-        public void AddWithoutValidate(string headerName, string headerValue)
-        {
-            Add(headerName, headerValue, true);
-        }
-
-        #endregion
-
-        #region Public Methods
-
+        public void AddWithoutValidate(string headerName, string headerValue) => Add(headerName, headerValue, true);
+        
         /// <summary>
         /// Adds the specified <paramref name="header"/> to the collection.
         /// </summary>
@@ -1005,29 +752,6 @@ namespace Unosquare.Net
         }
         
         /// <summary>
-        /// Determines whether the specified header can be set for the request or the response.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if the header is restricted; otherwise, <c>false</c>.
-        /// </returns>
-        /// <param name="headerName">
-        /// A <see cref="string"/> that represents the name of the header to test.
-        /// </param>
-        /// <param name="response">
-        /// <c>true</c> if does the test for the response; for the request, <c>false</c>.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="headerName"/> is <see langword="null"/> or empty.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="headerName"/> contains invalid characters.
-        /// </exception>
-        public static bool IsRestricted(string headerName, bool response = false)
-        {
-            return InternalIsRestricted(CheckName(headerName), response);
-        }
-
-        /// <summary>
         /// Removes the specified request <paramref name="header"/> from the collection.
         /// </summary>
         /// <param name="header">
@@ -1192,9 +916,9 @@ namespace Unosquare.Net
         /// </exception>
         public override void Set(string name, string value)
         {
-            DoWithCheckingState(SetWithoutCheckingName, CheckName(name), value, true);
+            DoWithCheckingState(SetWithoutCheckingName, CheckName(name), value);
         }
-        
+
         /// <summary>
         /// Returns a <see cref="string"/> that represents the current
         /// <see cref="WebHeaderCollection"/>.
@@ -1211,49 +935,244 @@ namespace Unosquare.Net
 
             return buff.Append("\r\n").ToString();
         }
-        #endregion
+
+        internal static string Convert(System.Net.HttpRequestHeader header) => Convert(header.ToString());
+
+        internal static string Convert(System.Net.HttpResponseHeader header) => Convert(header.ToString());
+
+        internal static bool IsHeaderName(string name) =>!string.IsNullOrEmpty(name) && name.IsToken();
+
+        internal static bool IsHeaderValue(string value)
+        {
+            var len = value.Length;
+            for (var i = 0; i < len; i++)
+            {
+                var c = value[i];
+                if (c < 0x20 && !"\r\n\t".Contains(c))
+                    return false;
+
+                if (c == 0x7f)
+                    return false;
+
+                if (c == '\n' && ++i < len)
+                {
+                    c = value[i];
+                    if (!" \t".Contains(c))
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        internal static bool IsMultiValue(string headerName, bool response)
+        {
+            if (string.IsNullOrEmpty(headerName))
+                return false;
+
+            var info = GetHeaderInfo(headerName);
+            return info != null && info.IsMultiValue(response);
+        }
+
+        internal void InternalRemove(string name) => base.Remove(name);
+
+        internal void InternalSet(string header, bool response)
+        {
+            var pos = CheckColonSeparated(header);
+            InternalSet(header.Substring(0, pos), header.Substring(pos + 1), response);
+        }
+
+        internal void InternalSet(string name, string value, bool response)
+        {
+            value = CheckValue(value);
+
+            if (IsMultiValue(name, response))
+                base.Add(name, value);
+            else
+                base.Set(name, value);
+        }
+
+        private static int CheckColonSeparated(string header)
+        {
+            var idx = header.IndexOf(':');
+            if (idx == -1)
+                throw new ArgumentException("No colon could be found.", nameof(header));
+
+            return idx;
+        }
+
+        private static HttpHeaderType CheckHeaderType(string name)
+        {
+            var info = GetHeaderInfo(name);
+            return info == null
+                ? HttpHeaderType.Unspecified
+                : info.IsRequest && !info.IsResponse
+                    ? HttpHeaderType.Request
+                    : !info.IsRequest && info.IsResponse
+                        ? HttpHeaderType.Response
+                        : HttpHeaderType.Unspecified;
+        }
+
+        private static string CheckName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException(nameof(name));
+
+            name = name.Trim();
+            if (!IsHeaderName(name))
+                throw new ArgumentException("Contains invalid characters.", nameof(name));
+
+            return name;
+        }
+
+        private static string CheckValue(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return string.Empty;
+
+            value = value.Trim();
+            if (value.Length > 65535)
+                throw new ArgumentOutOfRangeException(nameof(value), "Greater than 65,535 characters.");
+
+            if (!IsHeaderValue(value))
+                throw new ArgumentException("Contains invalid characters.", nameof(value));
+
+            return value;
+        }
+
+        private static string Convert(string key) => Headers.TryGetValue(key, out HttpHeaderInfo info) ? info.Name : string.Empty;
+
+        private static HttpHeaderInfo GetHeaderInfo(string name)
+        {
+            return Headers.Values.FirstOrDefault(info => info.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+        }
+
+        private static bool InternalIsRestricted(string name, bool response)
+        {
+            var info = GetHeaderInfo(name);
+            return info != null && info.IsRestricted(response);
+        }
+
+        private void Add(string name, string value, bool ignoreRestricted)
+        {
+            var act = ignoreRestricted
+                ? (Action<string, string>)AddWithoutCheckingNameAndRestricted
+                : AddWithoutCheckingName;
+
+            DoWithCheckingState(act, CheckName(name), value);
+        }
+
+        private void AddWithoutCheckingName(string name, string value)
+        {
+            CheckRestricted(name);
+            base.Add(name, value);
+        }
+
+        private void AddWithoutCheckingNameAndRestricted(string name, string value) => base.Add(name, CheckValue(value));
+
+        private void CheckRestricted(string name)
+        {
+            if (!_internallyUsed && InternalIsRestricted(name, true))
+                throw new ArgumentException("This header must be modified with the appropriate property.");
+        }
+
+        private void CheckState(bool response)
+        {
+            if (State == HttpHeaderType.Unspecified)
+                return;
+
+            if (response && State == HttpHeaderType.Request)
+            {
+                throw new InvalidOperationException(
+                      "This collection has already been used to store the request headers.");
+            }
+
+            if (!response && State == HttpHeaderType.Response)
+            {
+                throw new InvalidOperationException(
+                      "This collection has already been used to store the response headers.");
+            }
+        }
+
+        private void DoWithCheckingState(
+            Action<string, string> action, string name, string value, bool setState = true)
+        {
+            var type = CheckHeaderType(name);
+
+            if (type == HttpHeaderType.Unspecified)
+                action(name, value);
+            else
+                DoWithCheckingState(action, name, value, type == HttpHeaderType.Response, setState);
+        }
+
+        private void DoWithCheckingState(Action<string, string> action, string name, string value, bool response, bool setState)
+        {
+            CheckState(response);
+            action(name, value);
+            if (setState && State == HttpHeaderType.Unspecified)
+                State = response ? HttpHeaderType.Response : HttpHeaderType.Request;
+        }
+        
+        private void RemoveWithoutCheckingName(string name, string unuse)
+        {
+            CheckRestricted(name);
+            base.Remove(name);
+        }
+
+        private void SetWithoutCheckingName(string name, string value)
+        {
+            CheckRestricted(name);
+            base.Set(name, value);
+        }
     }
 
     [Flags]
     internal enum HttpHeaderType
     {
+        /// <summary>
+        /// The unspecified
+        /// </summary>
         Unspecified = 0,
+
+        /// <summary>
+        /// The request
+        /// </summary>
         Request = 1,
+
+        /// <summary>
+        /// The response
+        /// </summary>
         Response = 1 << 1,
+
+        /// <summary>
+        /// The restricted
+        /// </summary>
         Restricted = 1 << 2,
+
+        /// <summary>
+        /// The multi value
+        /// </summary>
         MultiValue = 1 << 3,
+
+        /// <summary>
+        /// The multi value in request
+        /// </summary>
         MultiValueInRequest = 1 << 4,
+
+        /// <summary>
+        /// The multi value in response
+        /// </summary>
         MultiValueInResponse = 1 << 5
     }
 
     internal class HttpHeaderInfo
     {
-        #region Private Fields
-
-        #endregion
-
-        #region Internal Constructors
-
         internal HttpHeaderInfo(string name, HttpHeaderType type)
         {
             Name = name;
             Type = type;
         }
-
-        #endregion
-
-        #region Internal Properties
-
-        internal bool IsMultiValueInRequest
-            => (Type & HttpHeaderType.MultiValueInRequest) == HttpHeaderType.MultiValueInRequest;
-
-        internal bool IsMultiValueInResponse
-            => (Type & HttpHeaderType.MultiValueInResponse) == HttpHeaderType.MultiValueInResponse;
-
-        #endregion
-
-        #region Public Properties
-
+        
         public bool IsRequest => (Type & HttpHeaderType.Request) == HttpHeaderType.Request;
 
         public bool IsResponse => (Type & HttpHeaderType.Response) == HttpHeaderType.Response;
@@ -1262,9 +1181,11 @@ namespace Unosquare.Net
 
         public HttpHeaderType Type { get; }
 
-        #endregion
+        internal bool IsMultiValueInRequest
+            => (Type & HttpHeaderType.MultiValueInRequest) == HttpHeaderType.MultiValueInRequest;
 
-        #region Public Methods
+        internal bool IsMultiValueInResponse
+            => (Type & HttpHeaderType.MultiValueInResponse) == HttpHeaderType.MultiValueInResponse;
 
         public bool IsMultiValue(bool response)
         {
@@ -1278,8 +1199,6 @@ namespace Unosquare.Net
             return (Type & HttpHeaderType.Restricted) == HttpHeaderType.Restricted &&
                    (response ? IsResponse : IsRequest);
         }
-
-        #endregion
     }
 }
 

@@ -30,41 +30,24 @@ namespace Unosquare.Net
 {
     using System;
     using System.Collections.Specialized;
-    using System.IO;
     using System.Net;
     using System.Text;
-    using System.Threading.Tasks;
 
     internal class HttpResponse : HttpBase
     {
-#region Private Constructors
-
+        internal HttpResponse(HttpStatusCode code)
+          : this((int) code, HttpListenerResponseHelper.GetStatusDescription((int)code), HttpVersion.Version11, new NameValueCollection())
+        {
+        }
+        
         private HttpResponse(int code, string reason, Version version, NameValueCollection headers)
           : base(version, headers)
         {
             StatusCode = code;
             Reason = reason;
-        }
-
-#endregion
-
-#region Internal Constructors
-
-        internal HttpResponse(HttpStatusCode code)
-          : this(code, HttpListenerResponseHelper.GetStatusDescription((int)code))
-        {
-        }
-
-        internal HttpResponse(HttpStatusCode code, string reason)
-          : this((int)code, reason, HttpVersion.Version11, new NameValueCollection())
-        {
             Headers["Server"] = "embedio/1.0";
         }
-
-#endregion
-
-#region Public Properties
-
+        
         public CookieCollection Cookies => Headers.GetCookies(true);
 
         public bool HasConnectionClose => Headers.Contains("Connection", "close");
@@ -75,26 +58,47 @@ namespace Unosquare.Net
 
         public bool IsUnauthorized => StatusCode == 401;
 
-        public bool IsWebSocketResponse
-        {
-            get
-            {
-                var headers = Headers;
-                return ProtocolVersion > HttpVersion.Version10 &&
-                       StatusCode == 101 &&
-                       headers.Contains("Upgrade", "websocket") &&
-                       headers.Contains("Connection", "Upgrade");
-            }
-        }
+        public bool IsWebSocketResponse => ProtocolVersion > HttpVersion.Version10 &&
+                                           StatusCode == 101 &&
+                                           Headers.Contains("Upgrade", "websocket") &&
+                                           Headers.Contains("Connection", "Upgrade");
 
         public string Reason { get; }
 
         public int StatusCode { get; }
-
-#endregion
-
-#region Internal Methods
         
+        /// <summary>
+        /// Sets the cookies.
+        /// </summary>
+        /// <param name="cookies">The cookies.</param>
+        public void SetCookies(CookieCollection cookies)
+        {
+            foreach (var cookie in cookies)
+                Headers.Add("Set-Cookie", cookie.ToString());
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            var output = new StringBuilder(64)
+                .AppendFormat("HTTP/{0} {1} {2}{3}", ProtocolVersion, StatusCode, Reason, CrLf);
+
+            foreach (var key in Headers.AllKeys)
+                output.AppendFormat("{0}: {1}{2}", key, Headers[key], CrLf);
+
+            output.Append(CrLf);
+            
+            if (EntityBody.Length > 0)
+                output.Append(EntityBody);
+
+            return output.ToString();
+        }
+
         internal static HttpResponse CreateCloseResponse(HttpStatusCode code)
         {
             var res = new HttpResponse(code);
@@ -102,15 +106,7 @@ namespace Unosquare.Net
 
             return res;
         }
-
-        internal static HttpResponse CreateUnauthorizedResponse(string challenge)
-        {
-            var res = new HttpResponse(HttpStatusCode.Unauthorized);
-            res.Headers["WWW-Authenticate"] = challenge;
-
-            return res;
-        }
-
+        
         internal static HttpResponse CreateWebSocketResponse()
         {
             var res = new HttpResponse(HttpStatusCode.SwitchingProtocols);
@@ -125,10 +121,12 @@ namespace Unosquare.Net
         internal static HttpResponse Parse(string[] headerParts)
         {
             var statusLine = headerParts[0].Split(new[] { ' ' }, 3);
+
             if (statusLine.Length != 3)
                 throw new ArgumentException("Invalid status line: " + headerParts[0]);
 
             var headers = new NameValueCollection();
+
             for (var i = 1; i < headerParts.Length; i++)
             {
                 var parts = headerParts[i].Split(':');
@@ -139,55 +137,6 @@ namespace Unosquare.Net
             return new HttpResponse(
               int.Parse(statusLine[1]), statusLine[2], new Version(statusLine[0].Substring(5)), headers);
         }
-
-        internal static async Task<HttpResponse> ReadAsync(Stream stream, int millisecondsTimeout)
-        {
-            return await ReadAsync(stream, Parse, millisecondsTimeout);
-        }
-
-#endregion
-
-#region Public Methods
-
-        /// <summary>
-        /// Sets the cookies.
-        /// </summary>
-        /// <param name="cookies">The cookies.</param>
-        public void SetCookies(CookieCollection cookies)
-        {
-            if (cookies == null || cookies.Count == 0)
-                return;
-
-            var headers = Headers;
-
-            foreach (var cookie in cookies) // TODO: .Sorted)
-                headers.Add("Set-Cookie", cookie.ToString()); // .ToResponseString ());
-        }
-
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String" /> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            var output = new StringBuilder(64);
-            output.AppendFormat("HTTP/{0} {1} {2}{3}", ProtocolVersion, StatusCode, Reason, CrLf);
-            
-            foreach (var key in Headers.AllKeys)
-                output.AppendFormat("{0}: {1}{2}", key, Headers[key], CrLf);
-
-            output.Append(CrLf);
-
-            var entity = EntityBody;
-            if (entity.Length > 0)
-                output.Append(entity);
-
-            return output.ToString();
-        }
-
-#endregion
     }
 }
 #endif

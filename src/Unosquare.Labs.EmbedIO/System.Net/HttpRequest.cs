@@ -33,26 +33,25 @@
  * - David Burhans
  */
 #endregion
- 
+
 namespace Unosquare.Net
 {
     using System;
     using System.Collections.Specialized;
     using System.IO;
     using System.Text;
-    using System.Threading;
     using System.Threading.Tasks;
 
     internal class HttpRequest : HttpBase
     {
-#region Private Fields
-
         private bool _websocketRequest;
         private bool _websocketRequestSet;
-
-#endregion
-
-#region Private Constructors
+        
+        internal HttpRequest(string method, string uri)
+          : this(method, uri, HttpVersion.Version11, new NameValueCollection())
+        {
+            Headers["User-Agent"] = "embedio/1.0";
+        }
 
         private HttpRequest(string method, string uri, Version version, NameValueCollection headers)
           : base(version, headers)
@@ -60,34 +59,7 @@ namespace Unosquare.Net
             HttpMethod = method;
             RequestUri = uri;
         }
-
-#endregion
-
-#region Internal Constructors
-
-        internal HttpRequest(string method, string uri)
-          : this(method, uri, HttpVersion.Version11, new NameValueCollection())
-        {
-            Headers["User-Agent"] = "embedio/1.0";
-        }
-
-#endregion
-
-#region Public Properties
-
-#if AUTHENTICATION
-        public AuthenticationResponse AuthenticationResponse
-        {
-            get
-            {
-                var res = Headers["Authorization"];
-                return res != null && res.Length > 0
-                       ? AuthenticationResponse.Parse(res)
-                       : null;
-            }
-        }
-#endif
-
+        
         public CookieCollection Cookies => Headers.GetCookies(false);
 
         public string HttpMethod { get; }
@@ -112,89 +84,21 @@ namespace Unosquare.Net
         }
 
         public string RequestUri { get; }
-
-#endregion
-
-#region Internal Methods
-
-        internal static HttpRequest CreateConnectRequest(Uri uri)
-        {
-            var host = uri.DnsSafeHost;
-            var port = uri.Port;
-            var authority = $"{host}:{port}";
-            var req = new HttpRequest("CONNECT", authority);
-            req.Headers["Host"] = port == 80 ? host : authority;
-
-            return req;
-        }
-
-        internal static HttpRequest CreateWebSocketRequest(Uri uri)
-        {
-            var req = new HttpRequest("GET", uri.PathAndQuery);
-            var headers = req.Headers;
-
-            // Only includes a port number in the Host header value if it's non-default.
-            // See: https://tools.ietf.org/html/rfc6455#page-17
-            var port = uri.Port;
-            var schm = uri.Scheme;
-            headers["Host"] = (port == 80 && schm == "ws") || (port == 443 && schm == "wss")
-                              ? uri.DnsSafeHost
-                              : uri.Authority;
-
-            headers["Upgrade"] = "websocket";
-            headers["Connection"] = "Upgrade";
-
-            return req;
-        }
-
-        internal async Task<HttpResponse> GetResponse(Stream stream, int millisecondsTimeout, CancellationToken ct)
-        {
-            var buff = ToByteArray();
-            stream.Write(buff, 0, buff.Length);
-
-            return await ReadAsync(stream, HttpResponse.Parse, millisecondsTimeout, ct);
-        }
-
-        internal static HttpRequest Parse(string[] headerParts)
-        {
-            var requestLine = headerParts[0].Split(new[] { ' ' }, 3);
-            if (requestLine.Length != 3)
-                throw new ArgumentException("Invalid request line: " + headerParts[0]);
-
-            var headers = new NameValueCollection();
-            for (var i = 1; i < headerParts.Length; i++)
-            {
-                var parts = headerParts[i].Split(':');
-
-                headers[parts[0]] = parts[1];
-            }
-
-            return new HttpRequest(requestLine[0], requestLine[1], new Version(requestLine[2].Substring(5)), headers);
-        }
-
-        internal static async Task<HttpRequest> Read(Stream stream, int millisecondsTimeout)
-        {
-            return await ReadAsync(stream, Parse, millisecondsTimeout);
-        }
-
-#endregion
-
-#region Public Methods
-
+        
         public void SetCookies(CookieCollection cookies)
         {
-            if (cookies == null || cookies.Count == 0)
+            if (cookies.Count == 0)
                 return;
 
             var buff = new StringBuilder(64);
-            foreach (System.Net.Cookie cookie in cookies) 
-            ////.Sorted)
+            foreach (System.Net.Cookie cookie in cookies)
             {
                 if (!cookie.Expired)
                     buff.AppendFormat("{0}; ", cookie);
             }
 
             var len = buff.Length;
+
             if (len > 2)
             {
                 buff.Length = len - 2;
@@ -219,8 +123,50 @@ namespace Unosquare.Net
 
             return output.ToString();
         }
+        
+        internal static HttpRequest CreateWebSocketRequest(Uri uri)
+        {
+            var req = new HttpRequest("GET", uri.PathAndQuery);
+            var headers = req.Headers;
 
-#endregion
+            // Only includes a port number in the Host header value if it's non-default.
+            // See: https://tools.ietf.org/html/rfc6455#page-17
+            var port = uri.Port;
+            var schm = uri.Scheme;
+            headers["Host"] = (port == 80 && schm == "ws") || (port == 443 && schm == "wss")
+                              ? uri.DnsSafeHost
+                              : uri.Authority;
+
+            headers["Upgrade"] = "websocket";
+            headers["Connection"] = "Upgrade";
+
+            return req;
+        }
+
+        internal static HttpRequest Parse(string[] headerParts)
+        {
+            var requestLine = headerParts[0].Split(new[] { ' ' }, 3);
+            if (requestLine.Length != 3)
+                throw new ArgumentException("Invalid request line: " + headerParts[0]);
+
+            var headers = new NameValueCollection();
+            for (var i = 1; i < headerParts.Length; i++)
+            {
+                var parts = headerParts[i].Split(':');
+
+                headers[parts[0]] = parts[1];
+            }
+
+            return new HttpRequest(requestLine[0], requestLine[1], new Version(requestLine[2].Substring(5)), headers);
+        }
+        
+        internal Task<HttpResponse> GetResponse(Stream stream)
+        {
+            var buff = ToByteArray();
+            stream.Write(buff, 0, buff.Length);
+
+            return ReadAsync(stream, HttpResponse.Parse);
+        }
     }
 }
 #endif
