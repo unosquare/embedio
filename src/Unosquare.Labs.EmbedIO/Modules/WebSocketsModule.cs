@@ -232,7 +232,7 @@
         /// <value>
         /// The Encoding to be used.
         /// </value>
-        protected Encoding Encoding { get; set; } = System.Text.Encoding.UTF8;
+        protected System.Text.Encoding Encoding { get; set; } = System.Text.Encoding.UTF8;
 
         /// <summary>
         /// Accepts the WebSocket connection.
