@@ -225,6 +225,14 @@
         /// The name of the server.
         /// </value>
         public abstract string ServerName { get; }
+        
+        /// <summary>
+        /// Gets the Encoding used to use the Send method to send a string. The default is UTF8 per the WebSocket specification.
+        /// </summary>
+        /// <value>
+        /// The Encoding to be used.
+        /// </value>
+        protected System.Text.Encoding Encoding { get; set; } = System.Text.Encoding.UTF8;
 
         /// <summary>
         /// Accepts the WebSocket connection.
@@ -373,7 +381,7 @@
             try
             {
                 if (payload == null) payload = string.Empty;
-                var buffer = System.Text.Encoding.UTF8.GetBytes(payload);
+                var buffer = Encoding.GetBytes(payload);
 
 #if NET47
                 await webSocket.WebSocket.SendAsync(
