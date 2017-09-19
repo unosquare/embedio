@@ -40,7 +40,7 @@
                 //server.Module<StaticFilesModule>().DefaultExtension = Properties.Settings.Default.HtmlDefaultExtension;
                 //server.Module<StaticFilesModule>().UseRamCache = Properties.Settings.Default.UseRamCache;
 
-                if (string.IsNullOrEmpty(options.ApiAssemblies))
+                if (string.IsNullOrEmpty(options.ApiAssemblies) == false)
                 {
                     $"Registering Assembly {options.ApiAssemblies}".Debug();
                     LoadApi(options.ApiAssemblies, server);
