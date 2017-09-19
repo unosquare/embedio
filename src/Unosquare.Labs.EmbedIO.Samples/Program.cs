@@ -86,7 +86,7 @@
                 server.RunAsync();
 
                 // Fire up the browser to show the content!
-#if DEBUG && !NETCOREAPP1_1
+#if DEBUG && !NETCOREAPP2_0
                 var browser = new System.Diagnostics.Process()
                 {
                     StartInfo = new System.Diagnostics.ProcessStartInfo(url)

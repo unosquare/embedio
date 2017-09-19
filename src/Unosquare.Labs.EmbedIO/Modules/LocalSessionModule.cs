@@ -41,6 +41,8 @@
         {
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (context, ct) =>
             {
+                var now = DateTime.UtcNow;
+
                 lock (_sessionsSyncLock)
                 {
                     var currentSessions = new Dictionary<string, SessionInfo>(_sessions);
@@ -50,7 +52,7 @@
                     {
                         if (session.Value == null) continue;
 
-                        if (DateTime.Now.Subtract(session.Value.LastActivity) > Expiration)
+                        if (now.Subtract(session.Value.LastActivity) > Expiration)
                             DeleteSession(session.Value);
                     }
 
@@ -83,7 +85,7 @@
                     {
                         // If it does exist in the request, check if we're tracking it
                         var requestSessionId = context.Request.Cookies[SessionCookieName].Value;
-                        _sessions[requestSessionId].LastActivity = DateTime.Now;
+                        _sessions[requestSessionId].LastActivity = DateTime.UtcNow;
                         $"Session Identified '{requestSessionId}'".Debug(nameof(LocalSessionModule));
                     }
 
@@ -227,7 +229,7 @@
             {
                 var sessionId = Convert.ToBase64String(
                     System.Text.Encoding.UTF8.GetBytes(
-                        Guid.NewGuid() + DateTime.Now.Millisecond.ToString() + DateTime.Now.Ticks));
+                        Guid.NewGuid() + DateTime.UtcNow.Millisecond.ToString() + DateTime.UtcNow.Ticks));
                 var sessionCookie = string.IsNullOrWhiteSpace(CookiePath) ?
                 new System.Net.Cookie(SessionCookieName, sessionId) :
                 new System.Net.Cookie(SessionCookieName, sessionId, CookiePath);
@@ -235,8 +237,8 @@
                 _sessions[sessionId] = new SessionInfo
                 {
                     SessionId = sessionId,
-                    DateCreated = DateTime.Now,
-                    LastActivity = DateTime.Now
+                    DateCreated = DateTime.UtcNow,
+                    LastActivity = DateTime.UtcNow
                 };
 
                 return sessionCookie;

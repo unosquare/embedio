@@ -203,7 +203,7 @@ using System.Threading.Tasks;
         /// <summary>
         /// Gets a value indicating whether this request is local.
         /// </summary>
-        public bool IsLocal => LocalEndPoint.Address.Equals(RemoteEndPoint.Address);
+        public bool IsLocal => LocalEndPoint?.Address?.Equals(RemoteEndPoint?.Address) ?? true;
 
 #if SSL
         /// <summary>

@@ -218,7 +218,7 @@
                 request.ContentType = $"application/json; charset={encodeName}";
 
                 var byteArray = Encoding.GetEncoding(encodeName).GetBytes("POST DATA");
-#if NETFX
+#if NET47
                 request.ContentLength = byteArray.Length;
 #endif
                 var requestStream = await request.GetRequestStreamAsync();
@@ -241,7 +241,7 @@
             }
         }
 
-#if NETFX
+#if NET47
         [Test]
         public async Task TestWebModuleRedirect()
         {

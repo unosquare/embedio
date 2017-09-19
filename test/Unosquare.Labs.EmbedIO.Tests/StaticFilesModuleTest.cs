@@ -121,7 +121,7 @@
             Assert.Fail("The Exception should raise");
         }
 
-#if NETFX
+#if NET47
         [Test]
         public void GetInitialPartial()
         {
@@ -290,7 +290,7 @@
             }
         }
 
-#if NETFX
+#if NET47
         [Test]
         public async Task GetGzipCompressFile()
         {

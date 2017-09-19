@@ -34,7 +34,7 @@
         /// The format culture used for header outputs
         /// </summary>
         internal static CultureInfo StandardCultureInfo { get; } =
-#if NETFX
+#if !NETSTANDARD1_3 && !UWP
             CultureInfo.CreateSpecificCulture("en-US");
 #else
             new CultureInfo("en-US");
@@ -44,7 +44,7 @@
         /// The standard string comparer
         /// </summary>
         internal static StringComparer StandardStringComparer { get; } =
-#if NETFX
+#if !NETSTANDARD1_3 && !UWP
             StringComparer.InvariantCultureIgnoreCase;
 #else
            StringComparer.OrdinalIgnoreCase;
@@ -54,7 +54,7 @@
         /// The static file string comparer
         /// </summary>
         internal static StringComparer StaticFileStringComparer { get; } =
-#if NETFX
+#if !NETSTANDARD1_3 && !UWP
             StringComparer.InvariantCulture;
 #else
            StringComparer.Ordinal;

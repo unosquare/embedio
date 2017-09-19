@@ -30,9 +30,9 @@
 
             WebServer.RunAsync();
 
-#if NETCOREAPP1_1
-            _ignoreWebConnect = true;
-#endif
+//#if NETCOREAPP2_0
+//            _ignoreWebConnect = true;
+//#endif
         }
 
         [Test]
