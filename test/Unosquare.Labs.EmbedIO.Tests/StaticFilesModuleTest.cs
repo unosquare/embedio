@@ -79,9 +79,7 @@
         [Test]
         public async Task GetFallbackIndex()
         {
-            var webClient = new HttpClient();
-
-            var html = await webClient.GetStringAsync(WebServerUrl + "invalidpath");
+            var html = await new HttpClient().GetStringAsync(WebServerUrl + "invalidpath");
 
             Assert.AreEqual(Resources.Index, html, "Same content index.html");
         }
@@ -120,8 +118,7 @@
 
             Assert.Fail("The Exception should raise");
         }
-
-#if NET47
+        
         [Test]
         public void GetInitialPartial()
         {
@@ -268,7 +265,6 @@
 
             Assert.Fail("The Exception should raise");
         }
-#endif
 
         [Test]
         public async Task GetNotPartial()
@@ -289,8 +285,7 @@
                 }
             }
         }
-
-#if NET47
+        
         [Test]
         public async Task GetGzipCompressFile()
         {
@@ -312,7 +307,6 @@
                 Assert.AreEqual(Resources.Index, html);
             }
         }
-#endif
 
         [Test]
         public async Task TestHeadIndex()

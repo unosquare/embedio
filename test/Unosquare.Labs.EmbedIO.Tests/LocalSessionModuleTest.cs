@@ -53,10 +53,8 @@
 
                 Assert.IsNotNull(response.Cookies, "Cookies are not null");
                 Assert.Greater(response.Cookies.Count, 0, "Cookies are not empty");
-
-                var content = response.Cookies[TestLocalSessionController.CookieName]?.Value;
-
-                Assert.AreEqual(content, TestLocalSessionController.CookieName);
+                
+                Assert.AreEqual(TestLocalSessionController.CookieName, response.Cookies[TestLocalSessionController.CookieName]?.Value);
             }
         }
 
@@ -126,26 +124,20 @@
         [Test]
         public async Task DeleteSession()
         {
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
-            CookieContainer container = new CookieContainer();
-            request.CookieContainer = container;
-
-            request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.PutData);
-
-            request.CookieContainer = container;
+            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.PutData);
+            request.CookieContainer = new CookieContainer();
 
             using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
+                
                 var body = new StreamReader(response.GetResponseStream()).ReadToEnd();
 
                 Assert.AreEqual(body, TestLocalSessionController.MyData);
             }
 
             request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.GetData);
-
-            request.CookieContainer = container;
+            request.CookieContainer = new CookieContainer();
 
             using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {
@@ -157,7 +149,7 @@
             }
 
             request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.DeleteSession);
-            request.CookieContainer = container;
+            request.CookieContainer = new CookieContainer();
 
             using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {
@@ -169,8 +161,7 @@
             }
 
             request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.GetData);
-
-            request.CookieContainer = container;
+            request.CookieContainer = new CookieContainer();
 
             using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {
@@ -178,20 +169,10 @@
 
                 var body = new StreamReader(response.GetResponseStream()).ReadToEnd();
 
-                Assert.AreEqual("", body);
+                Assert.AreEqual(string.Empty, body);
             }
         }
-
-        [Test]
-        public void GetNotFound()
-        {
-            Assert.ThrowsAsync<WebException>(async () =>
-            {
-                var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + "geterror");
-                await request.GetResponseAsync();
-            });
-        }
-
+        
         [TearDown]
         public void Kill()
         {

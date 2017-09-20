@@ -433,7 +433,7 @@
 
             if (_virtualPaths.ExistsLocalPath(requestLocalPath, ref requestFullLocalPath) == false)
             {
-                return true;
+                return false;
             }
 
             return null;
