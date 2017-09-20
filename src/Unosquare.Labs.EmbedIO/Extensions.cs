@@ -175,9 +175,7 @@
         /// <param name="headerName">Name of the header.</param>
         /// <returns>Specified request the header when is true; otherwise, empty string </returns>
         public static string RequestHeader(this HttpListenerContext context, string headerName)
-        {
-            return context.HasRequestHeader(headerName) == false ? string.Empty : context.Request.Headers[headerName];
-        }
+            => context.Request.Headers[headerName] ?? string.Empty;
 
         /// <summary>
         /// Determines whether [has request header] [the specified context].
