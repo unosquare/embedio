@@ -15,7 +15,8 @@
     /// Cross-origin resource sharing (CORS) is a mechanism that allows restricted resources (e.g. fonts) 
     /// on a web page to be requested from another domain outside the domain from which the resource originated.
     /// </summary>
-    public class CorsModule : WebModuleBase
+    public class CorsModule 
+        : WebModuleBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CorsModule"/> class.
@@ -38,6 +39,8 @@
             if (origins == null) throw new ArgumentNullException(nameof(origins));
             if (headers == null) throw new ArgumentNullException(nameof(headers));
             if (methods == null) throw new ArgumentNullException(nameof(methods));
+
+            IsWatchdogEnabled = false;
 
             var validOrigins =
                 origins.ToLower()
@@ -114,5 +117,13 @@
         /// Module's name
         /// </summary>
         public override string Name => nameof(CorsModule);
+
+        /// <summary>
+        /// Runs the watchdog.
+        /// </summary>
+        public override void RunWatchdog()
+        {
+            // do nothing
+        }
     }
 }

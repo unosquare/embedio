@@ -4,6 +4,7 @@
     using EmbedIO;
     using System;
     using System.Threading.Tasks;
+    using System.Linq;
     using Swan;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -41,21 +42,8 @@
         {
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (context, ct) =>
             {
-                var now = DateTime.UtcNow;
-
                 lock (_sessionsSyncLock)
                 {
-                    var currentSessions = new Dictionary<string, SessionInfo>(_sessions);
-
-                    // expire old sessions
-                    foreach (var session in currentSessions)
-                    {
-                        if (session.Value == null) continue;
-
-                        if (now.Subtract(session.Value.LastActivity) > Expiration)
-                            DeleteSession(session.Value);
-                    }
-
                     var requestSessionCookie = context.Request.Cookies[SessionCookieName];
                     var isSessionRegistered = false;
 
@@ -160,6 +148,18 @@
                     return _sessions.ContainsKey(cookieValue) ? _sessions[cookieValue] : null;
                 }
             }
+        }
+
+        /// <summary>
+        /// Runs the watchdog.
+        /// </summary>
+        public override void RunWatchdog()
+        {
+            _sessions
+                .Select(x => x.Value)
+                .Where(x => x != null && DateTime.UtcNow.Subtract(x.LastActivity) > Expiration)
+                .ToList()
+                .ForEach(DeleteSession);
         }
 
         /// <summary>

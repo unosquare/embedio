@@ -62,6 +62,8 @@
         /// </summary>
         public WebApiModule()
         {
+            IsWatchdogEnabled = false;
+
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, async (context, ct) =>
             {
                 var verb = context.RequestVerb();
@@ -122,6 +124,14 @@
         public int ControllersCount => _controllerTypes.Count;
 
         /// <summary>
+        /// Runs the watchdog.
+        /// </summary>
+        public override void RunWatchdog()
+        {
+            // do nothing
+        }
+
+        /// <summary>
         /// Registers the controller.
         /// </summary>
         /// <typeparam name="T">The type of register controller</typeparam>
@@ -149,10 +159,7 @@
         /// </summary>
         /// <param name="controllerType">Type of the controller.</param>
         public void RegisterController(Type controllerType)
-        {
-            Func<object> controllerFactory = () => Activator.CreateInstance(controllerType);
-            RegisterController(controllerType, controllerFactory);
-        }
+            => RegisterController(controllerType, () => Activator.CreateInstance(controllerType));
 
         /// <summary>
         /// Registers the controller.

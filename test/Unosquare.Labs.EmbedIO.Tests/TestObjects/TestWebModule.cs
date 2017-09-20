@@ -11,6 +11,8 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 
         public TestWebModule()
         {
+            IsWatchdogEnabled = false;
+
             AddHandler("/" + RedirectUrl, HttpVerbs.Get, (context, ct) =>
             {
                 context.Redirect("/" + AnotherUrl, false);
@@ -19,7 +21,7 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 
             AddHandler("/" + RedirectAbsoluteUrl, HttpVerbs.Get, (context, ct) =>
             {
-                context.Redirect("/" + AnotherUrl, true);
+                context.Redirect("/" + AnotherUrl);
                 return Task.FromResult(true);
             });
 
@@ -27,5 +29,10 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
         }
 
         public override string Name => nameof(TestWebModule);
+
+        public override void RunWatchdog()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

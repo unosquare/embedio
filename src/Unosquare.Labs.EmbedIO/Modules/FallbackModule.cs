@@ -14,7 +14,8 @@
     /// Represents a module to fallback any request
     /// </summary>
     /// <seealso cref="WebModuleBase" />
-    public class FallbackModule : WebModuleBase
+    public class FallbackModule 
+        : WebModuleBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FallbackModule" /> class.
@@ -22,6 +23,8 @@
         /// <param name="action">The action.</param>
         public FallbackModule(Func<HttpListenerContext, CancellationToken, bool> action)
         {
+            IsWatchdogEnabled = false;
+
             AddHandler(
                 ModuleMap.AnyPath, 
                 HttpVerbs.Any, 
@@ -34,6 +37,10 @@
         /// <param name="redirectUrl">The redirect URL.</param>
         public FallbackModule(string redirectUrl)
         {
+            if (string.IsNullOrWhiteSpace(redirectUrl))
+                throw new ArgumentNullException(nameof(redirectUrl));
+
+            IsWatchdogEnabled = false;
             RedirectUrl = redirectUrl;
 
             AddHandler(
@@ -51,5 +58,13 @@
         /// Gets the redirect URL.
         /// </summary>
         public string RedirectUrl { get; }
+
+        /// <summary>
+        /// Runs the watchdog.
+        /// </summary>
+        public override void RunWatchdog()
+        {
+            // do nothing
+        }
     }
 }

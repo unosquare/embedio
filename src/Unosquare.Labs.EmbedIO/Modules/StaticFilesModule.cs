@@ -67,6 +67,8 @@
             if (Directory.Exists(fileSystemPath) == false)
                 throw new ArgumentException($"Path '{fileSystemPath}' does not exist.");
 
+            IsWatchdogEnabled = false;
+
             _virtualPaths.FileSystemPath = Path.GetFullPath(fileSystemPath);
             UseGzip = true;
 #if DEBUG
@@ -214,7 +216,15 @@
         /// Clears the RAM cache.
         /// </summary>
         public void ClearRamCache() => RamCache.Clear();
-        
+
+        /// <summary>
+        /// Runs the watchdog.
+        /// </summary>
+        public override void RunWatchdog()
+        {
+            // do nothing
+        }
+
         private static bool CalculateRange(
             string partialHeader,
             long fileSize,
