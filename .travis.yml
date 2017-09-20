@@ -23,9 +23,9 @@ install:
 before_script:
   - if [[ $DOTNETCORE == "" ]]; then export LD_LIBRARY_PATH=/usr/local/lib; fi
   - if [[ $DOTNETCORE == "" && $TRAVIS_OS_NAME = "linux" ]]; then sed -i 's/uap10.0;netstandard1.3;net46;netstandard2.0/net46/g' ./src/Unosquare.Labs.EmbedIO/Unosquare.Labs.EmbedIO.csproj; fi
-  - if [[ $DOTNETCORE == "" && $TRAVIS_OS_NAME = "linux" ]]; then sed -i 's/net46;net462;netcoreapp2.0/net46;net462/g' ./src/Unosquare.Labs.EmbedIO.Command/Unosquare.Labs.EmbedIO.Command.csproj; fi
-  - if [[ $DOTNETCORE == "" && $TRAVIS_OS_NAME = "linux" ]]; then sed -i 's/net46;net462;netcoreapp2.0/net46;net462/g' ./src/Unosquare.Labs.EmbedIO.Samples/Unosquare.Labs.EmbedIO.Samples.csproj; fi
-  - if [[ $DOTNETCORE == "" && $TRAVIS_OS_NAME = "linux" ]]; then sed -i 's/net46;net462;netcoreapp2.0/net46;net462/g' ./test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj; fi
+  - if [[ $DOTNETCORE == "" && $TRAVIS_OS_NAME = "linux" ]]; then sed -i 's/net46;netcoreapp2.0/net46/g' ./src/Unosquare.Labs.EmbedIO.Command/Unosquare.Labs.EmbedIO.Command.csproj; fi
+  - if [[ $DOTNETCORE == "" && $TRAVIS_OS_NAME = "linux" ]]; then sed -i 's/net46;netcoreapp2.0/net46/g' ./src/Unosquare.Labs.EmbedIO.Samples/Unosquare.Labs.EmbedIO.Samples.csproj; fi
+  - if [[ $DOTNETCORE == "" && $TRAVIS_OS_NAME = "linux" ]]; then sed -i 's/net46;netcoreapp2.0/net46/g' ./test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj; fi
 script:
   - if [[ $DOTNETCORE == "" ]]; then msbuild Unosquare.Labs.EmbedIO.sln /p:Configuration=Release; else dotnet test ./test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -f netcoreapp1.1; fi
   - if [[ $DOTNETCORE == "" ]]; then mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe --process=Single ./test/Unosquare.Labs.EmbedIO.Tests/bin/Release/net46/Unosquare.Labs.EmbedIO.Tests.dll; fi
