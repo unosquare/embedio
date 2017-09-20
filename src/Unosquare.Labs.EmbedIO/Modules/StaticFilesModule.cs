@@ -215,31 +215,6 @@
         /// </summary>
         public void ClearRamCache() => RamCache.Clear();
         
-        private static async Task WriteToOutputStream(
-            HttpListenerContext context,
-            long byteLength,
-            Stream buffer,
-            int lowerByteIndex,
-            CancellationToken ct)
-        {
-            var streamBuffer = new byte[ChunkSize];
-            var sendData = 0;
-            var readBufferSize = ChunkSize;
-
-            while (true)
-            {
-                if (sendData + ChunkSize > byteLength) readBufferSize = (int)(byteLength - sendData);
-
-                buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
-                var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct);
-
-                if (read == 0) break;
-
-                sendData += read;
-                await context.Response.OutputStream.WriteAsync(streamBuffer, 0, readBufferSize, ct);
-            }
-        }
-
         private static bool CalculateRange(
             string partialHeader,
             long fileSize,
@@ -276,6 +251,30 @@
             return false;
         }
 
+        private static async Task WriteToOutputStream(
+            HttpListenerContext context,
+            Stream buffer,
+            int lowerByteIndex,
+            CancellationToken ct)
+        {
+            var streamBuffer = new byte[ChunkSize];
+            var sendData = 0;
+            var readBufferSize = ChunkSize;
+
+            while (true)
+            {
+                if (sendData + ChunkSize > context.Response.ContentLength64) readBufferSize = (int)(context.Response.ContentLength64 - sendData);
+
+                buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
+                var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct);
+
+                if (read == 0) break;
+
+                sendData += read;
+                await context.Response.OutputStream.WriteAsync(streamBuffer, 0, readBufferSize, ct);
+            }
+        }
+
         private async Task<bool> HandleGet(HttpListenerContext context, CancellationToken ct, bool sendBuffer = true)
         {
             var baseLocalPath = FileSystemPath;
@@ -308,7 +307,7 @@
 
                 var requestHash = context.RequestHeader(Headers.IfNotMatch);
                 
-                if (RamCache.IsValid(requestFullLocalPath, fileDate, out string currentHash))
+                if (RamCache.IsValid(requestFullLocalPath, fileDate, out var currentHash))
                 {
                     $"RAM Cache: {requestFullLocalPath}".Debug();
 
@@ -420,7 +419,7 @@
 
                 try
                 {
-                    await WriteToOutputStream(context, byteLength, buffer, lowerByteIndex, ct);
+                    await WriteToOutputStream(context, buffer, lowerByteIndex, ct);
                 }
                 catch (HttpListenerException)
                 {
