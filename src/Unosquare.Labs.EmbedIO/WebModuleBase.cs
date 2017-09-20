@@ -16,7 +16,7 @@
     /// </summary>
     public abstract class WebModuleBase : IWebModule
     {
-        public CancellationTokenSource cts { get; } = new CancellationTokenSource();
+        private readonly CancellationTokenSource cts = new CancellationTokenSource();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebModuleBase"/> class.
@@ -30,6 +30,14 @@
                 RunWatchdog();
                 await Task.Delay(WatchdogInterval, cts.Token);
             }, cts.Token);
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="WebModuleBase"/> class.
+        /// </summary>
+        ~WebModuleBase()
+        {
+            cts.Cancel();
         }
 
         /// <summary>
@@ -99,6 +107,9 @@
         /// <summary>
         /// Runs the watchdog.
         /// </summary>
-        public abstract void RunWatchdog();
+        public virtual void RunWatchdog()
+        {
+            // do nothing
+        }
     }
 }

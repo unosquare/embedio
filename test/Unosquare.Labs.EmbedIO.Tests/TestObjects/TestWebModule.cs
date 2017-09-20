@@ -29,10 +29,5 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
         }
 
         public override string Name => nameof(TestWebModule);
-
-        public override void RunWatchdog()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

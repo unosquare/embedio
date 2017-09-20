@@ -18,7 +18,9 @@
         public WebSocketHandlerAttribute(string path)
         {
             if (string.IsNullOrWhiteSpace(path))
+            {
                 throw new ArgumentException("The argument 'path' must be specified.");
+            }
 
             Path = path;
         }
@@ -31,5 +33,4 @@
         /// </value>
         public string Path { get; }
     }
-
 }

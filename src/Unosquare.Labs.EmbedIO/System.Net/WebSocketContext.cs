@@ -79,6 +79,7 @@ namespace Unosquare.Net
         /// <c>true</c> if the client connected from the local computer; otherwise, <c>false</c>.
         /// </value>
         public bool IsLocal => _context.Request.IsLocal;
+
 #if SSL
         /// <summary>
         /// Gets a value indicating whether the WebSocket connection is secured.
@@ -88,6 +89,7 @@ namespace Unosquare.Net
         /// </value>
         public bool IsSecureConnection => _context.Connection.IsSecure;
 #endif
+
         /// <summary>
         /// Gets a value indicating whether the request is a WebSocket handshake request.
         /// </summary>

@@ -117,13 +117,5 @@
         /// Module's name
         /// </summary>
         public override string Name => nameof(CorsModule);
-
-        /// <summary>
-        /// Runs the watchdog.
-        /// </summary>
-        public override void RunWatchdog()
-        {
-            // do nothing
-        }
     }
 }

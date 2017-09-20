@@ -89,7 +89,7 @@
 #if DEBUG && !NETCOREAPP2_0
                 var browser = new System.Diagnostics.Process()
                 {
-                    StartInfo = new System.Diagnostics.ProcessStartInfo(url)
+                    StartInfo = new System.Diagnostics.ProcessStartInfo(url.Replace("*", "localhost"))
                     {
                         UseShellExecute = true
                     }

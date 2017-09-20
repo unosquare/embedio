@@ -5,9 +5,14 @@
     using System;
     using System.Linq;
     using System.Collections.ObjectModel;
+    using System.Collections.Concurrent;
 
     internal class VirtualPaths : Dictionary<string, string>
     {
+        private readonly ConcurrentDictionary<string, string> _validPaths = new ConcurrentDictionary<string, string>();
+
+        private readonly ConcurrentDictionary<string, string> _mappedPaths = new ConcurrentDictionary<string, string>();
+
         public ReadOnlyDictionary<string, string> Collection => new ReadOnlyDictionary<string, string>(this);
 
         public string DefaultDocument { get; set; }
@@ -26,6 +31,12 @@
 
         internal bool ExistsLocalPath(string urlPath, ref string localPath)
         {
+            if (_validPaths.TryGetValue(urlPath, out var tempPath))
+            {
+                localPath = tempPath;
+                return true;
+            }
+
             if (string.IsNullOrWhiteSpace(DefaultExtension) == false && DefaultExtension.StartsWith(".") &&
                 File.Exists(localPath) == false)
             {
@@ -57,6 +68,8 @@
                 }
             }
 
+            _validPaths.TryAdd(urlPath, localPath);
+
             return true;
         }
 
@@ -85,7 +98,12 @@
 
         internal string GetUrlPath(string requestPath, ref string baseLocalPath)
         {
-            var urlPath = requestPath.Replace('/', Path.DirectorySeparatorChar);
+            if (_mappedPaths.TryGetValue(requestPath, out var urlPath))
+            {
+                return urlPath;
+            }
+
+            urlPath = requestPath.Replace('/', Path.DirectorySeparatorChar);
 
             if (this.Any(x => requestPath.StartsWith(x.Key)))
             {
@@ -104,6 +122,9 @@
                 urlPath = urlPath + DefaultDocument;
 
             urlPath = urlPath.TrimStart(Path.DirectorySeparatorChar);
+
+            _mappedPaths.TryAdd(requestPath, urlPath);
+
             return urlPath;
         }
     }

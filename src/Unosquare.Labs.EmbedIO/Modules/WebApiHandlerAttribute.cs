@@ -19,7 +19,9 @@
         public WebApiHandlerAttribute(HttpVerbs verb, string[] paths)
         {
             if (paths == null || paths.Length == 0)
+            {
                 throw new ArgumentException("The argument 'paths' must be specified.");
+            }
 
             Verb = verb;
             Paths = paths;
@@ -34,7 +36,9 @@
         public WebApiHandlerAttribute(HttpVerbs verb, string path)
         {
             if (string.IsNullOrWhiteSpace(path))
+            {
                 throw new ArgumentException("The argument 'path' must be specified.");
+            }
 
             Verb = verb;
             Paths = new[] { path };

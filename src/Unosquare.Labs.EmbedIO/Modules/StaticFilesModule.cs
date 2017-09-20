@@ -216,15 +216,7 @@
         /// Clears the RAM cache.
         /// </summary>
         public void ClearRamCache() => RamCache.Clear();
-
-        /// <summary>
-        /// Runs the watchdog.
-        /// </summary>
-        public override void RunWatchdog()
-        {
-            // do nothing
-        }
-
+        
         private static bool CalculateRange(
             string partialHeader,
             long fileSize,

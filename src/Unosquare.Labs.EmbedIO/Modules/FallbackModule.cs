@@ -58,13 +58,5 @@
         /// Gets the redirect URL.
         /// </summary>
         public string RedirectUrl { get; }
-
-        /// <summary>
-        /// Runs the watchdog.
-        /// </summary>
-        public override void RunWatchdog()
-        {
-            // do nothing
-        }
     }
 }

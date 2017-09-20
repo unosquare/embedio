@@ -122,15 +122,7 @@
         /// Gets the number of controller objects registered in this API
         /// </summary>
         public int ControllersCount => _controllerTypes.Count;
-
-        /// <summary>
-        /// Runs the watchdog.
-        /// </summary>
-        public override void RunWatchdog()
-        {
-            // do nothing
-        }
-
+        
         /// <summary>
         /// Registers the controller.
         /// </summary>

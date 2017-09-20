@@ -59,15 +59,7 @@
         /// The name.
         /// </value>
         public override string Name => nameof(WebSocketsModule).Humanize();
-
-        /// <summary>
-        /// Runs the watchdog.
-        /// </summary>
-        public override void RunWatchdog()
-        {
-            // do nothing
-        }
-
+        
         /// <summary>
         /// Registers the web sockets server given a WebSocketsServer Type.
         /// </summary>
