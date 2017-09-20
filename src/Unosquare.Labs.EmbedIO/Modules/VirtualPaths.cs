@@ -43,7 +43,11 @@
                 localPath += DefaultExtension;
             }
 
-            if (File.Exists(localPath)) return true;
+            if (File.Exists(localPath))
+            {
+                _validPaths.TryAdd(urlPath, localPath);
+                return true;
+            }
 
             if (Directory.Exists(localPath) && File.Exists(Path.Combine(localPath, DefaultDocument)))
             {

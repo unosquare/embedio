@@ -62,7 +62,7 @@
                 // Set the CORS Rules
                 server.RegisterModule(new CorsModule(
                     // Origins, separated by comma without last slash
-                    "http://client.cors-api.appspot.com,http://unosquare.github.io,http://run.plnkr.co",
+                    "http://unosquare.github.io,http://run.plnkr.co",
                     // Allowed headers
                     "content-type, accept",
                     // Allowed methods

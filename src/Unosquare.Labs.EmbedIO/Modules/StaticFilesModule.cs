@@ -279,22 +279,10 @@
 
         private async Task<bool> HandleGet(HttpListenerContext context, CancellationToken ct, bool sendBuffer = true)
         {
-            var baseLocalPath = FileSystemPath;
-            var requestLocalPath = _virtualPaths.GetUrlPath(context.RequestPathCaseSensitive(), ref baseLocalPath);
+            var validationResult = ValidatePath(context, out var requestFullLocalPath);
 
-            var requestFullLocalPath = Path.Combine(baseLocalPath, requestLocalPath);
-
-            // Check if the requested local path is part of the root File System Path
-            if (_virtualPaths.IsPartOfPath(requestFullLocalPath, baseLocalPath) == false)
-            {
-                context.Response.StatusCode = (int) System.Net.HttpStatusCode.Forbidden;
-                return true;
-            }
-
-            if (_virtualPaths.ExistsLocalPath(requestLocalPath, ref requestFullLocalPath) == false)
-            {
-                return false;
-            }
+            if (validationResult.HasValue)
+                return validationResult.Value;
 
             Stream buffer = null;
 
@@ -305,7 +293,7 @@
                 var usingPartial = partialHeader?.StartsWith("bytes=") == true;
                 var fileDate = File.GetLastWriteTime(requestFullLocalPath);
                 
-                if (RamCache.IsValid(requestFullLocalPath, fileDate, out var currentHash))
+                if (UseRamCache && RamCache.IsValid(requestFullLocalPath, fileDate, out var currentHash))
                 {
                     $"RAM Cache: {requestFullLocalPath}".Debug();
 
@@ -373,6 +361,7 @@
                 {
                     if (upperByteIndex > fileSize)
                     {
+                        // invalid partial request
                         context.Response.StatusCode = 416;
                         context.Response.AddHeader(Headers.ContentRanges, $"bytes */{fileSize}");
 
@@ -426,6 +415,28 @@
             }
 
             return true;
+        }
+
+        private bool? ValidatePath(HttpListenerContext context, out string requestFullLocalPath)
+        {
+            var baseLocalPath = FileSystemPath;
+            var requestLocalPath = _virtualPaths.GetUrlPath(context.RequestPathCaseSensitive(), ref baseLocalPath);
+
+            requestFullLocalPath = Path.Combine(baseLocalPath, requestLocalPath);
+
+            // Check if the requested local path is part of the root File System Path
+            if (_virtualPaths.IsPartOfPath(requestFullLocalPath, baseLocalPath) == false)
+            {
+                context.Response.StatusCode = (int) System.Net.HttpStatusCode.Forbidden;
+                return true;
+            }
+
+            if (_virtualPaths.ExistsLocalPath(requestLocalPath, ref requestFullLocalPath) == false)
+            {
+                return true;
+            }
+
+            return null;
         }
 
         private void SetHeaders(HttpListenerResponse response, string localPath, string utcFileDateString)
