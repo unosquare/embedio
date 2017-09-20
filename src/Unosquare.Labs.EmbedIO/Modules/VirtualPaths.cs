@@ -31,11 +31,13 @@
 
         internal bool ExistsLocalPath(string urlPath, ref string localPath)
         {
-            if (_validPaths.TryGetValue(urlPath, out var tempPath))
+            if (_validPaths.TryGetValue(localPath, out var tempPath))
             {
                 localPath = tempPath;
                 return true;
             }
+
+            var originalPath = localPath;
 
             if (string.IsNullOrWhiteSpace(DefaultExtension) == false && DefaultExtension.StartsWith(".") &&
                 File.Exists(localPath) == false)
@@ -45,7 +47,7 @@
 
             if (File.Exists(localPath))
             {
-                _validPaths.TryAdd(urlPath, localPath);
+                _validPaths.TryAdd(originalPath, localPath);
                 return true;
             }
 
@@ -72,7 +74,7 @@
                 }
             }
 
-            _validPaths.TryAdd(urlPath, localPath);
+            _validPaths.TryAdd(originalPath, localPath);
 
             return true;
         }

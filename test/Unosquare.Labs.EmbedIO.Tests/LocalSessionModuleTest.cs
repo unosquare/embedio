@@ -135,19 +135,7 @@
 
                 Assert.AreEqual(body, TestLocalSessionController.MyData);
             }
-
-            request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.GetData);
-            request.CookieContainer = new CookieContainer();
-
-            using (var response = (HttpWebResponse)await request.GetResponseAsync())
-            {
-                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
-                var body = new StreamReader(response.GetResponseStream()).ReadToEnd();
-
-                Assert.AreEqual(body, TestLocalSessionController.MyData);
-            }
-
+            
             request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.DeleteSession);
             request.CookieContainer = new CookieContainer();
 
