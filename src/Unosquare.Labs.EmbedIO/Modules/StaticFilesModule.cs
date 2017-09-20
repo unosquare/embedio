@@ -107,8 +107,8 @@
         /// </value>
         public string DefaultDocument
         {
-            get { return _virtualPaths.DefaultDocument; }
-            set { _virtualPaths.DefaultDocument = value; }
+            get => _virtualPaths.DefaultDocument;
+            set => _virtualPaths.DefaultDocument = value;
         }
 
         /// <summary>
@@ -121,8 +121,8 @@
         /// </value>
         public string DefaultExtension
         {
-            get { return _virtualPaths.DefaultExtension; }
-            set { _virtualPaths.DefaultExtension = value; }
+            get => _virtualPaths.DefaultExtension;
+            set => _virtualPaths.DefaultExtension = value;
         }
 
         /// <summary>
