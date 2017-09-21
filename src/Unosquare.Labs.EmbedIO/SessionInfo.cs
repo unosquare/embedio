@@ -51,8 +51,8 @@
         /// <returns>An object that represents current session data repository</returns>
         public object this[string key]
         {
-            get { return Data.ContainsKey(key) ? Data[key] : null; }
-            set { Data[key] = value; }
+            get => Data.ContainsKey(key) ? Data[key] : null;
+            set => Data[key] = value;
         }
     }
 }

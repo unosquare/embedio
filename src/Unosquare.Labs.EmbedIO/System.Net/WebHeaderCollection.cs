@@ -473,9 +473,9 @@ namespace Unosquare.Net
         /// </exception>
         public string this[System.Net.HttpRequestHeader header]
         {
-            get { return Get(Convert(header)); }
+            get => Get(Convert(header));
 
-            set { Add(header, value); }
+            set => Add(header, value);
         }
 
         /// <summary>
@@ -508,9 +508,9 @@ namespace Unosquare.Net
         /// </exception>
         public string this[System.Net.HttpResponseHeader header]
         {
-            get { return Get(Convert(header)); }
+            get => Get(Convert(header));
 
-            set { Add(header, value); }
+            set => Add(header, value);
         }
 
         /// <summary>

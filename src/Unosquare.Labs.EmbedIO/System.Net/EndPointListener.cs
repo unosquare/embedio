@@ -220,7 +220,10 @@ using System.Security.Cryptography;
 
         internal void RemoveConnection(HttpConnection conn)
         {
-            lock (_unregistered) _unregistered.Remove(conn);
+            lock (_unregistered)
+            {
+                _unregistered.Remove(conn);
+            }
         }
 
         private static void Accept(Socket socket, SocketAsyncEventArgs e, ref Socket accepted)

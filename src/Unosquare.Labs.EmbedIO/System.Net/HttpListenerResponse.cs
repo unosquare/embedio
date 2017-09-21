@@ -78,10 +78,7 @@ namespace Unosquare.Net
         /// <exception cref="System.ArgumentOutOfRangeException">Must be >= 0 - value</exception>
         public long ContentLength64
         {
-            get
-            {
-                return _contentLength;
-            }
+            get => _contentLength;
 
             set
             {
@@ -112,10 +109,7 @@ namespace Unosquare.Net
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public string ContentType
         {
-            get
-            {
-                return _contentType;
-            }
+            get => _contentType;
 
             set
             {
@@ -140,8 +134,8 @@ namespace Unosquare.Net
         /// </value>
         public CookieCollection Cookies
         {
-            get { return _cookies ?? (_cookies = new CookieCollection()); }
-            set { _cookies = value; } // null allowed?
+            get => _cookies ?? (_cookies = new CookieCollection());
+            set => _cookies = value;
         }
 
         /// <summary>
@@ -165,10 +159,7 @@ namespace Unosquare.Net
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public bool KeepAlive
         {
-            get
-            {
-                return _keepAlive;
-            }
+            get => _keepAlive;
 
             set
             {
@@ -205,10 +196,7 @@ namespace Unosquare.Net
         /// <exception cref="System.ArgumentException">Must be 1.0 or 1.1 - value</exception>
         public Version ProtocolVersion
         {
-            get
-            {
-                return _version;
-            }
+            get => _version;
 
             set
             {
@@ -244,10 +232,7 @@ namespace Unosquare.Net
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public string RedirectLocation
         {
-            get
-            {
-                return _location;
-            }
+            get => _location;
 
             set
             {
@@ -274,10 +259,7 @@ namespace Unosquare.Net
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public bool SendChunked
         {
-            get
-            {
-                return _chunked;
-            }
+            get => _chunked;
 
             set
             {
@@ -305,10 +287,7 @@ namespace Unosquare.Net
         /// <exception cref="System.Net.ProtocolViolationException">StatusCode must be between 100 and 999.</exception>
         public int StatusCode
         {
-            get
-            {
-                return _statusCode;
-            }
+            get => _statusCode;
 
             set
             {
