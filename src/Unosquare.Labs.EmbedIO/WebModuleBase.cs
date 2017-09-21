@@ -16,12 +16,28 @@
     /// </summary>
     public abstract class WebModuleBase : IWebModule
     {
+        private readonly CancellationTokenSource cts = new CancellationTokenSource();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WebModuleBase"/> class.
         /// </summary>
         protected WebModuleBase()
         {
             Handlers = new ModuleMap();
+
+            var watchDogTask = Task.Factory.StartNew(async () =>
+            {
+                RunWatchdog();
+                await Task.Delay(WatchdogInterval, cts.Token);
+            }, cts.Token);
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="WebModuleBase"/> class.
+        /// </summary>
+        ~WebModuleBase()
+        {
+            cts.Cancel();
         }
 
         /// <summary>
@@ -51,6 +67,22 @@
         public WebServer Server { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this instance is watchdog enabled.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is watchdog enabled; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsWatchdogEnabled { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets the watchdog interval.
+        /// </summary>
+        /// <value>
+        /// The watchdog interval.
+        /// </value>
+        public TimeSpan WatchdogInterval { get; set; } = TimeSpan.FromSeconds(30);
+
+        /// <summary>
         /// Adds a method handler for a given path and verb
         /// </summary>
         /// <param name="path">The path.</param>
@@ -70,6 +102,14 @@
                 throw new ArgumentNullException(nameof(handler));
 
             Handlers.Add(new Map {Path = path, Verb = verb, ResponseHandler = handler});
+        }
+
+        /// <summary>
+        /// Runs the watchdog.
+        /// </summary>
+        public virtual void RunWatchdog()
+        {
+            // do nothing
         }
     }
 }

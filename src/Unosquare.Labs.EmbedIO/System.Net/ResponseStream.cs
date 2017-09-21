@@ -75,10 +75,7 @@ namespace Unosquare.Net
         /// Is thrown when an invoked method is not supported, or when there is an attempt to read, 
         /// seek, or write to a stream that does not support the invoked functionality.
         /// </exception>
-        public override long Length
-        {
-            get { throw new NotSupportedException(); }
-        }
+        public override long Length => throw new NotSupportedException();
 
         /// <summary>
         /// When overridden in a derived class, gets or sets the position within the current stream.
@@ -89,8 +86,8 @@ namespace Unosquare.Net
         /// </exception>
         public override long Position
         {
-            get { throw new NotSupportedException(); }
-            set { throw new NotSupportedException(); }
+            get => throw new NotSupportedException();
+            set => throw new NotSupportedException();
         }
 
         /// <summary>

@@ -124,9 +124,7 @@
         /// <param name="context">The context.</param>
         /// <returns>Path for the specified context</returns>
         public static string RequestPath(this HttpListenerContext context)
-        {
-            return context.Request.Url.LocalPath.ToLowerInvariant();
-        }
+            => context.Request.Url.LocalPath.ToLowerInvariant();
 
         /// <summary>
         /// Gets the request path for the specified context case sensitive.
@@ -134,9 +132,7 @@
         /// <param name="context">The context.</param>
         /// <returns>Path for the specified context</returns>
         public static string RequestPathCaseSensitive(this HttpListenerContext context)
-        {
-            return context.Request.Url.LocalPath;
-        }
+            => context.Request.Url.LocalPath;
 
         /// <summary>
         /// Retrieves the Request HTTP Verb (also called Method) of this context.
@@ -179,9 +175,7 @@
         /// <param name="headerName">Name of the header.</param>
         /// <returns>Specified request the header when is true; otherwise, empty string </returns>
         public static string RequestHeader(this HttpListenerContext context, string headerName)
-        {
-            return context.HasRequestHeader(headerName) == false ? string.Empty : context.Request.Headers[headerName];
-        }
+            => context.Request.Headers[headerName] ?? string.Empty;
 
         /// <summary>
         /// Determines whether [has request header] [the specified context].
@@ -190,9 +184,7 @@
         /// <param name="headerName">Name of the header.</param>
         /// <returns>True if request headers is not a null; otherwise, false</returns>
         public static bool HasRequestHeader(this HttpListenerContext context, string headerName)
-        {
-            return context.Request.Headers[headerName] != null;
-        }
+            => context.Request.Headers[headerName] != null;
 
         /// <summary>
         /// Retrieves the request body as a string.
@@ -355,9 +347,7 @@
         /// <param name="requestBody">The request body.</param>
         /// <returns>A collection that represents KVPs from request data</returns>
         public static Dictionary<string, object> RequestFormDataDictionary(this string requestBody)
-        {
-            return FormDataParser.ParseAsDictionary(requestBody);
-        }
+            => FormDataParser.ParseAsDictionary(requestBody);
 
         /// <summary>
         /// Returns dictionary from Request POST data
@@ -366,9 +356,7 @@
         /// <param name="context">The context to request body as string</param>
         /// <returns>A collection that represents KVPs from request data</returns>
         public static Dictionary<string, object> RequestFormDataDictionary(this HttpListenerContext context)
-        {
-            return RequestFormDataDictionary(context.RequestBody());
-        }
+            => RequestFormDataDictionary(context.RequestBody());
         
         #endregion
 
@@ -456,18 +444,5 @@
         }
 
         #endregion
-
-        internal static T GetValueOrDefault<T>(this Dictionary<T, T> dict, T key, T defaultValue = default(T))
-        {
-            return dict.ContainsKey(key) ? dict[key] : defaultValue;
-        }
-        
-        internal static void ForEach<T>(this Dictionary<T, T> dict, Action<T, T> itemAction)
-        {
-            foreach (var kvp in dict)
-            {
-                itemAction(kvp.Key, kvp.Value);
-            }
-        }
     }
 }

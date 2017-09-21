@@ -16,7 +16,7 @@
     [TestFixture]
     public class WebSocketsModuleTest
     {
-        private bool _ignoreWebConnect = false;
+        private readonly bool _ignoreWebConnect = Swan.Runtime.OS != Swan.OperatingSystem.Windows;
         protected WebServer WebServer;
 
         [SetUp]
@@ -29,10 +29,6 @@
             WebServer.Module<WebSocketsModule>().RegisterWebSocketsServer<BigDataWebSocket>();
 
             WebServer.RunAsync();
-
-#if NETCOREAPP1_1
-            _ignoreWebConnect = true;
-#endif
         }
 
         [Test]

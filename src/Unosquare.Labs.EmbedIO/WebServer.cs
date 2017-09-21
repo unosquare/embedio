@@ -18,7 +18,8 @@
     /// <summary>
     /// Represents our tiny web server used to handle requests
     /// </summary>
-    public class WebServer : IDisposable
+    public class WebServer 
+        : IDisposable
     {
         private readonly List<IWebModule> _modules = new List<IWebModule>(4);
 
@@ -26,17 +27,7 @@
         /// Initializes a new instance of the <see cref="WebServer"/> class.
         /// </summary>
         public WebServer()
-            : this(new[] {"http://*/"}, RoutingStrategy.Wildcard)
-        {
-            // placeholder
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebServer"/> class.
-        /// </summary>
-        /// <param name="port">The port.</param>
-        public WebServer(int port)
-            : this(new[] {"http://*:" + port + "/"}, RoutingStrategy.Wildcard)
+            : this(new[] {"http://*/"})
         {
             // placeholder
         }
@@ -62,16 +53,6 @@
         {
             // placeholder
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebServer"/> class.
-        /// </summary>
-        /// <param name="urlPrefixes">The URL prefixes.</param>
-        public WebServer(string[] urlPrefixes)
-            : this(urlPrefixes, RoutingStrategy.Wildcard)
-        {
-            // placeholder
-        }
         
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
@@ -82,7 +63,7 @@
         /// <param name="routingStrategy">The routing strategy</param>
         /// <exception cref="InvalidOperationException">The HTTP Listener is not supported in this OS</exception>
         /// <exception cref="ArgumentException">Argument urlPrefix must be specified</exception>
-        public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy)
+        public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy = RoutingStrategy.Wildcard)
         {
             if (HttpListener.IsSupported == false)
                 throw new InvalidOperationException("The HTTP Listener is not supported in this OS");
@@ -238,8 +219,7 @@
                 try
                 {
                     // Inject the Server property of the module via reflection if not already there. (mini IoC ;))
-                    if (module.Server == null)
-                        module.Server = this;
+                    module.Server = module.Server ?? this;
 
                     // Log the module and handler to be called and invoke as a callback.
                     $"{module.Name}::{callback.GetMethodInfo().DeclaringType?.Name}.{callback.GetMethodInfo().Name}"
@@ -273,7 +253,7 @@
                         // Send the response over with the corresponding status code.
                         var responseBytes = System.Text.Encoding.UTF8.GetBytes(response);
                         context.Response.StatusCode = (int) System.Net.HttpStatusCode.InternalServerError;
-                        context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
+                        await context.Response.OutputStream.WriteAsync(responseBytes, 0, responseBytes.Length, ct);
                     }
 
                     // Finally set the handled flag to true and exit.
@@ -395,8 +375,7 @@
                 requestId = string.Concat(DateTime.Now.Ticks.ToString(), requestEndpoint).GetHashCode().ToString("x2");
 
                 // Log the request and its ID
-                $"Start of Request {requestId}".Debug(nameof(WebServer));
-                $"Source {requestEndpoint} - {context.RequestVerb().ToString().ToUpperInvariant()}: {context.RequestPath()}"
+                $"Start of Request {requestId} - Source {requestEndpoint} - {context.RequestVerb().ToString().ToUpperInvariant()}: {context.RequestPath()}"
                     .Debug(nameof(WebServer));
 
                 var processResult = await ProcessRequest(context, ct);

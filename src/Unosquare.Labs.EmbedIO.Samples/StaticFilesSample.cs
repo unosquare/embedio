@@ -23,7 +23,7 @@
 
                 // This lets you edit the files without restarting the server.
 #if DEBUG && !MONO
-                return Path.Combine(Directory.GetParent(assemblyPath).Parent.Parent.Parent.FullName, "html");
+                return Path.Combine(Directory.GetParent(assemblyPath).Parent.Parent.FullName, "html");
 #else
                 // This is when you have deployed the server.
                 return Path.Combine(assemblyPath, "html");

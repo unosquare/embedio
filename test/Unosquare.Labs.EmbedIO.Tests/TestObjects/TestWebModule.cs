@@ -19,7 +19,7 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 
             AddHandler("/" + RedirectAbsoluteUrl, HttpVerbs.Get, (context, ct) =>
             {
-                context.Redirect("/" + AnotherUrl, true);
+                context.Redirect("/" + AnotherUrl);
                 return Task.FromResult(true);
             });
 

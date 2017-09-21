@@ -48,7 +48,6 @@ namespace Unosquare.Net
     using System.Collections;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Net;
     using System.Net.Sockets;
     using System.Security.Cryptography;
@@ -214,16 +213,13 @@ namespace Unosquare.Net
         /// </value>
         public CompressionMethod Compression
         {
-            get
-            {
-                return _compression;
-            }
+            get => _compression;
 
             set
             {
                 lock (_forState)
                 {
-                    if (!_validator.CheckIfAvailable(out string msg, true, false, true, false, false))
+                    if (!_validator.CheckIfAvailable(out var msg, true, false, true, false, false))
                     {
                         msg.Error();
                         Error("An error has occurred in setting the compression.");
@@ -249,8 +245,10 @@ namespace Unosquare.Net
             get
             {
                 lock (CookieCollection.SyncRoot)
+                {
                     foreach (Cookie cookie in CookieCollection)
                         yield return cookie;
+                }
             }
         }
 
@@ -274,16 +272,13 @@ namespace Unosquare.Net
         /// </value>
         public bool EnableRedirection
         {
-            get
-            {
-                return _enableRedirection;
-            }
+            get => _enableRedirection;
 
             set
             {
                 lock (_forState)
                 {
-                    if (!_validator.CheckIfAvailable(out string msg, true, false, true, false, false))
+                    if (!_validator.CheckIfAvailable(out var msg, true, false, true, false, false))
                     {
                         msg.Error();
                         Error("An error has occurred in setting the enable redirection.");
@@ -343,10 +338,7 @@ namespace Unosquare.Net
         /// </value>
         public string Origin
         {
-            get
-            {
-                return _origin;
-            }
+            get => _origin;
 
             set
             {
@@ -443,10 +435,7 @@ namespace Unosquare.Net
         /// </value>
         public TimeSpan WaitTime
         {
-            get
-            {
-                return _waitTime;
-            }
+            get => _waitTime;
 
             set
             {
@@ -480,7 +469,9 @@ namespace Unosquare.Net
             get
             {
                 lock (_forMessageEventQueue)
+                {
                     return _messageEventQueue.Count > 0;
+                }
             }
         }
 
@@ -717,13 +708,17 @@ namespace Unosquare.Net
         internal async Task CloseAsync(HttpResponse response)
         {
             lock (_forState)
+            {
                 _readyState = WebSocketState.Closing;
+            }
 
             await SendHttpResponseAsync(response);
             await ReleaseServerResources();
 
             lock (_forState)
+            {
                 _readyState = WebSocketState.Closed;
+            }
         }
 
         // As server
@@ -869,7 +864,9 @@ namespace Unosquare.Net
             "End closing the connection.".Info();
 
             lock (_forState)
+            {
                 _readyState = WebSocketState.Closed;
+            }
 
             try
             {
@@ -986,7 +983,10 @@ namespace Unosquare.Net
 
         private void EnqueueToMessageEventQueue(MessageEventArgs e)
         {
-            lock (_forMessageEventQueue) _messageEventQueue.Enqueue(e);
+            lock (_forMessageEventQueue)
+            {
+                _messageEventQueue.Enqueue(e);
+            }
         }
 
         private void Error(string message, Exception exception = null)
@@ -1578,36 +1578,34 @@ namespace Unosquare.Net
             _exitReceiving = new AutoResetEvent(false);
             _receivePong = new AutoResetEvent(false);
 
-            Action receive = null;
-            receive =
-                async () =>
+            async void Receive()
+            {
+                try
                 {
-                    try
+                    var frame = await WebSocketFrame.ReadFrameAsync(_stream);
+                    var result = ProcessReceivedFrame(frame);
+                    if (!result || _readyState == WebSocketState.Closed)
                     {
-                        var frame = await WebSocketFrame.ReadFrameAsync(_stream);
-                        var result = ProcessReceivedFrame(frame);
-                        if (!result || _readyState == WebSocketState.Closed)
-                        {
-                            _exitReceiving?.Set();
+                        _exitReceiving?.Set();
 
-                            return;
-                        }
-
-                        // Receive next asap because the Ping or Close needs a response to it.
-                        receive();
-
-                        if (_inMessage || !HasMessage || _readyState != WebSocketState.Open)
-                            return;
-
-                        Message();
+                        return;
                     }
-                    catch (Exception ex)
-                    {
-                        Fatal("An exception has occurred while receiving.", ex);
-                    }
-                };
 
-            receive();
+                    // Receive next asap because the Ping or Close needs a response to it.
+                    Receive();
+
+                    if (_inMessage || !HasMessage || _readyState != WebSocketState.Open)
+                        return;
+
+                    Message();
+                }
+                catch (Exception ex)
+                {
+                    Fatal("An exception has occurred while receiving.", ex);
+                }
+            }
+
+            Receive();
         }
     }
 }

@@ -4,6 +4,7 @@
     using EmbedIO;
     using System;
     using System.Threading.Tasks;
+    using System.Linq;
     using Swan;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -39,21 +40,12 @@
         /// </summary>
         public LocalSessionModule()
         {
+            IsWatchdogEnabled = true;
+
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (context, ct) =>
             {
                 lock (_sessionsSyncLock)
                 {
-                    var currentSessions = new Dictionary<string, SessionInfo>(_sessions);
-
-                    // expire old sessions
-                    foreach (var session in currentSessions)
-                    {
-                        if (session.Value == null) continue;
-
-                        if (DateTime.Now.Subtract(session.Value.LastActivity) > Expiration)
-                            DeleteSession(session.Value);
-                    }
-
                     var requestSessionCookie = context.Request.Cookies[SessionCookieName];
                     var isSessionRegistered = false;
 
@@ -83,7 +75,7 @@
                     {
                         // If it does exist in the request, check if we're tracking it
                         var requestSessionId = context.Request.Cookies[SessionCookieName].Value;
-                        _sessions[requestSessionId].LastActivity = DateTime.Now;
+                        _sessions[requestSessionId].LastActivity = DateTime.UtcNow;
                         $"Session Identified '{requestSessionId}'".Debug(nameof(LocalSessionModule));
                     }
 
@@ -161,6 +153,18 @@
         }
 
         /// <summary>
+        /// Runs the watchdog.
+        /// </summary>
+        public override void RunWatchdog()
+        {
+            _sessions
+                .Select(x => x.Value)
+                .Where(x => x != null && DateTime.UtcNow.Subtract(x.LastActivity) > Expiration)
+                .ToList()
+                .ForEach(DeleteSession);
+        }
+
+        /// <summary>
         /// Gets a session object for the given server context.
         /// If no session exists for the context, then null is returned
         /// </summary>
@@ -227,7 +231,7 @@
             {
                 var sessionId = Convert.ToBase64String(
                     System.Text.Encoding.UTF8.GetBytes(
-                        Guid.NewGuid() + DateTime.Now.Millisecond.ToString() + DateTime.Now.Ticks));
+                        Guid.NewGuid() + DateTime.UtcNow.Millisecond.ToString() + DateTime.UtcNow.Ticks));
                 var sessionCookie = string.IsNullOrWhiteSpace(CookiePath) ?
                 new System.Net.Cookie(SessionCookieName, sessionId) :
                 new System.Net.Cookie(SessionCookieName, sessionId, CookiePath);
@@ -235,8 +239,8 @@
                 _sessions[sessionId] = new SessionInfo
                 {
                     SessionId = sessionId,
-                    DateCreated = DateTime.Now,
-                    LastActivity = DateTime.Now
+                    DateCreated = DateTime.UtcNow,
+                    LastActivity = DateTime.UtcNow
                 };
 
                 return sessionCookie;

@@ -2,11 +2,7 @@
 {
     using Swan;
     using System;
-#if !NETCOREAPP1_1
     using System.Reflection;
-#else
-    using System.Runtime.Loader;
-#endif
 
     /// <summary>
     /// Entry point
@@ -40,7 +36,7 @@
                 //server.Module<StaticFilesModule>().DefaultExtension = Properties.Settings.Default.HtmlDefaultExtension;
                 //server.Module<StaticFilesModule>().UseRamCache = Properties.Settings.Default.UseRamCache;
 
-                if (string.IsNullOrEmpty(options.ApiAssemblies))
+                if (string.IsNullOrEmpty(options.ApiAssemblies) == false)
                 {
                     $"Registering Assembly {options.ApiAssemblies}".Debug();
                     LoadApi(options.ApiAssemblies, server);
@@ -61,12 +57,7 @@
         {
             try
             {
-#if !NETCOREAPP1_1
                 var assembly = Assembly.LoadFile(apiPath);
-#else
-                var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(apiPath);
-#endif
-                if (assembly == null) return;
 
                 server.LoadApiControllers(assembly).LoadWebSockets(assembly);
             }

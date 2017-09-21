@@ -12,9 +12,11 @@
         /// <param name="args">The arguments.</param>
         private static void Main(string[] args)
         {
+            Terminal.Settings.DisplayLoggingMessageType = LogMessageType.Error;
+
             $"Running on Mono Runtime: {Runtime.IsUsingMonoRuntime}".Info();
 
-            var url = "http://localhost:8787/";
+            var url = "http://*:8787/";
 
             if (args.Length > 0)
                 url = args[0];
@@ -60,7 +62,7 @@
                 // Set the CORS Rules
                 server.RegisterModule(new CorsModule(
                     // Origins, separated by comma without last slash
-                    "http://client.cors-api.appspot.com,http://unosquare.github.io,http://run.plnkr.co",
+                    "http://unosquare.github.io,http://run.plnkr.co",
                     // Allowed headers
                     "content-type, accept",
                     // Allowed methods
@@ -84,10 +86,10 @@
                 server.RunAsync();
 
                 // Fire up the browser to show the content!
-#if DEBUG && !NETCOREAPP1_1
+#if DEBUG && !NETCOREAPP2_0
                 var browser = new System.Diagnostics.Process()
                 {
-                    StartInfo = new System.Diagnostics.ProcessStartInfo(url)
+                    StartInfo = new System.Diagnostics.ProcessStartInfo(url.Replace("*", "localhost"))
                     {
                         UseShellExecute = true
                     }

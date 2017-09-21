@@ -13,8 +13,9 @@
         public const string DeleteSession = "deletesession";
         public const string PutData = "putdata";
         public const string GetData = "getdata";
+        public const string GetCookie = "getcookie";
+
         public const string MyData = "MyData";
-        public const string GetCookie = "GetCookie";
         public const string CookieName = "MyCookie";
 
         [WebApiHandler(HttpVerbs.Get, "/getcookie")]
@@ -45,14 +46,11 @@
         [WebApiHandler(HttpVerbs.Get, "/getdata")]
         public bool GetDataSession(WebServer server, HttpListenerContext context)
         {
-            object data;
-
-            if (server.GetSession(context).Data.TryGetValue("sessionData", out data))
-                return context.JsonResponse(server.GetSession(context).Data["sessionData"].ToString());
-
-            return context.JsonResponse("");
+            return context.JsonResponse(server.GetSession(context).Data.TryGetValue("sessionData", out var data)
+                ? data.ToString()
+                : string.Empty);
         }
-        
+
         [WebApiHandler(HttpVerbs.Get, "/geterror")]
         public bool GetError(WebServer server, HttpListenerContext context)
         {

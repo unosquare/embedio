@@ -120,7 +120,7 @@
         /// Gets the number of controller objects registered in this API
         /// </summary>
         public int ControllersCount => _controllerTypes.Count;
-
+        
         /// <summary>
         /// Registers the controller.
         /// </summary>
@@ -149,10 +149,7 @@
         /// </summary>
         /// <param name="controllerType">Type of the controller.</param>
         public void RegisterController(Type controllerType)
-        {
-            Func<object> controllerFactory = () => Activator.CreateInstance(controllerType);
-            RegisterController(controllerType, controllerFactory);
-        }
+            => RegisterController(controllerType, () => Activator.CreateInstance(controllerType));
 
         /// <summary>
         /// Registers the controller.

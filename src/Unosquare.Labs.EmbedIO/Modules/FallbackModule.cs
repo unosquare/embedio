@@ -14,7 +14,8 @@
     /// Represents a module to fallback any request
     /// </summary>
     /// <seealso cref="WebModuleBase" />
-    public class FallbackModule : WebModuleBase
+    public class FallbackModule 
+        : WebModuleBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FallbackModule" /> class.
@@ -34,6 +35,9 @@
         /// <param name="redirectUrl">The redirect URL.</param>
         public FallbackModule(string redirectUrl)
         {
+            if (string.IsNullOrWhiteSpace(redirectUrl))
+                throw new ArgumentNullException(nameof(redirectUrl));
+            
             RedirectUrl = redirectUrl;
 
             AddHandler(

@@ -11,7 +11,7 @@
     using System;
     using System.IO;
     using System.Text;
-    using Unosquare.Swan.Formatters;
+    using Swan.Formatters;
 
     [TestFixture]
     public class WebServerTest
@@ -218,7 +218,7 @@
                 request.ContentType = $"application/json; charset={encodeName}";
 
                 var byteArray = Encoding.GetEncoding(encodeName).GetBytes("POST DATA");
-#if NETFX
+#if NET47
                 request.ContentLength = byteArray.Length;
 #endif
                 var requestStream = await request.GetRequestStreamAsync();
@@ -241,7 +241,7 @@
             }
         }
 
-#if NETFX
+#if NET47
         [Test]
         public async Task TestWebModuleRedirect()
         {
@@ -254,11 +254,13 @@
 
                 var request = (HttpWebRequest)WebRequest.Create(url + TestWebModule.RedirectUrl);
                 request.AllowAutoRedirect = false;
-
-                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+        
+                var webException = Assert.ThrowsAsync<WebException>(async () =>
                 {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.Redirect, "Status Code Redirect");
-                }
+                    await request.GetResponseAsync();
+                });
+
+                Assert.AreEqual(WebExceptionStatus.ProtocolError, webException.Status);
             }
         }
 
@@ -274,11 +276,13 @@
 
                 var request = (HttpWebRequest)WebRequest.Create(url + TestWebModule.RedirectAbsoluteUrl);
                 request.AllowAutoRedirect = false;
-
-                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+        
+                var webException = Assert.ThrowsAsync<WebException>(async () =>
                 {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.Redirect, "Status Code Redirect");
-                }
+                    await request.GetResponseAsync();
+                });
+
+                Assert.AreEqual(WebExceptionStatus.ProtocolError, webException.Status);
             }
         }
 #endif

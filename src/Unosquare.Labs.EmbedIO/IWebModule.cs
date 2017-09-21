@@ -40,11 +40,32 @@
         WebServer Server { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this instance is watchdog enabled.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is watchdog enabled; otherwise, <c>false</c>.
+        /// </value>
+        bool IsWatchdogEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets the watchdog interval.
+        /// </summary>
+        /// <value>
+        /// The watchdog interval.
+        /// </value>
+        TimeSpan WatchdogInterval { get; set; }
+
+        /// <summary>
         /// Adds a handler that gets called when a path and verb are matched.
         /// </summary>
         /// <param name="path">The path.</param>
         /// <param name="verb">The verb.</param>
         /// <param name="handler">The handler.</param>
         void AddHandler(string path, HttpVerbs verb, Func<HttpListenerContext, CancellationToken, Task<bool>> handler);
+
+        /// <summary>
+        /// Runs the watchdog.
+        /// </summary>
+        void RunWatchdog();
     }
 }

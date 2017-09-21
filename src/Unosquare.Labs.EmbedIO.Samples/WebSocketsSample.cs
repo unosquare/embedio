@@ -33,7 +33,7 @@
     public class WebSocketsChatServer : WebSocketsServer
     {
         public WebSocketsChatServer()
-            : base(true, 0)
+            : base(true)
         {
             // placeholder
         }
@@ -200,9 +200,7 @@
                 StartInfo = new ProcessStartInfo()
                 {
                     CreateNoWindow = true,
-#if !NETCOREAPP1_1
                     ErrorDialog = false,
-#endif
                     FileName = "cmd.exe",
                     RedirectStandardError = true,
                     RedirectStandardInput = true,

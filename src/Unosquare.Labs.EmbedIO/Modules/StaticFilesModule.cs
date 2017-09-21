@@ -66,7 +66,7 @@
         {
             if (Directory.Exists(fileSystemPath) == false)
                 throw new ArgumentException($"Path '{fileSystemPath}' does not exist.");
-
+            
             _virtualPaths.FileSystemPath = Path.GetFullPath(fileSystemPath);
             UseGzip = true;
 #if DEBUG
@@ -107,8 +107,8 @@
         /// </value>
         public string DefaultDocument
         {
-            get { return _virtualPaths.DefaultDocument; }
-            set { _virtualPaths.DefaultDocument = value; }
+            get => _virtualPaths.DefaultDocument;
+            set => _virtualPaths.DefaultDocument = value;
         }
 
         /// <summary>
@@ -121,8 +121,8 @@
         /// </value>
         public string DefaultExtension
         {
-            get { return _virtualPaths.DefaultExtension; }
-            set { _virtualPaths.DefaultExtension = value; }
+            get => _virtualPaths.DefaultExtension;
+            set => _virtualPaths.DefaultExtension = value;
         }
 
         /// <summary>
@@ -215,31 +215,6 @@
         /// </summary>
         public void ClearRamCache() => RamCache.Clear();
         
-        private static async Task WriteToOutputStream(
-            HttpListenerContext context,
-            long byteLength,
-            Stream buffer,
-            int lowerByteIndex,
-            CancellationToken ct)
-        {
-            var streamBuffer = new byte[ChunkSize];
-            var sendData = 0;
-            var readBufferSize = ChunkSize;
-
-            while (true)
-            {
-                if (sendData + ChunkSize > byteLength) readBufferSize = (int)(byteLength - sendData);
-
-                buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
-                var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct);
-
-                if (read == 0) break;
-
-                sendData += read;
-                await context.Response.OutputStream.WriteAsync(streamBuffer, 0, readBufferSize, ct);
-            }
-        }
-
         private static bool CalculateRange(
             string partialHeader,
             long fileSize,
@@ -276,19 +251,36 @@
             return false;
         }
 
+        private static async Task WriteToOutputStream(
+            HttpListenerResponse response,
+            Stream buffer,
+            int lowerByteIndex,
+            CancellationToken ct)
+        {
+            var streamBuffer = new byte[ChunkSize];
+            var sendData = 0;
+            var readBufferSize = ChunkSize;
+
+            while (true)
+            {
+                if (sendData + ChunkSize > response.ContentLength64) readBufferSize = (int)(response.ContentLength64 - sendData);
+
+                buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
+                var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct);
+
+                if (read == 0) break;
+
+                sendData += read;
+                await response.OutputStream.WriteAsync(streamBuffer, 0, readBufferSize, ct);
+            }
+        }
+
         private async Task<bool> HandleGet(HttpListenerContext context, CancellationToken ct, bool sendBuffer = true)
         {
-            var baseLocalPath = FileSystemPath;
-            var requestLocalPath = _virtualPaths.GetUrlPath(context.RequestPathCaseSensitive(), ref baseLocalPath);
+            var validationResult = ValidatePath(context, out var requestFullLocalPath);
 
-            var requestFullLocalPath = Path.Combine(baseLocalPath, requestLocalPath);
-
-            // Check if the requested local path is part of the root File System Path
-            if (_virtualPaths.IsPartOfPath(requestFullLocalPath, baseLocalPath) == false)
-            {
-                context.Response.StatusCode = (int) System.Net.HttpStatusCode.Forbidden;
-                return true;
-            }
+            if (validationResult.HasValue)
+                return validationResult.Value;
 
             Stream buffer = null;
 
@@ -296,23 +288,14 @@
             {
                 var isTagValid = false;
                 var partialHeader = context.RequestHeader(Headers.Range);
-                var usingPartial = string.IsNullOrWhiteSpace(partialHeader) == false &&
-                                   partialHeader.StartsWith("bytes=");
-
-                if (_virtualPaths.ExistsLocalPath(requestLocalPath, ref requestFullLocalPath) == false)
-                {
-                    return false;
-                }
-
+                var usingPartial = partialHeader?.StartsWith("bytes=") == true;
                 var fileDate = File.GetLastWriteTime(requestFullLocalPath);
-
-                var requestHash = context.RequestHeader(Headers.IfNotMatch);
                 
-                if (RamCache.IsValid(requestFullLocalPath, fileDate, out string currentHash))
+                if (UseRamCache && RamCache.IsValid(requestFullLocalPath, fileDate, out var currentHash))
                 {
                     $"RAM Cache: {requestFullLocalPath}".Debug();
 
-                    if (string.IsNullOrWhiteSpace(requestHash) || requestHash != currentHash)
+                    if (context.RequestHeader(Headers.IfNotMatch) != currentHash)
                     {
                         buffer = new MemoryStream(RamCache[requestFullLocalPath].Buffer);
                         context.Response.AddHeader(Headers.ETag, currentHash);
@@ -332,7 +315,12 @@
 
                         if (usingPartial == false)
                         {
-                            isTagValid = UpdateFileCache(context, buffer, fileDate, requestHash, requestFullLocalPath);
+                            isTagValid = UpdateFileCache(
+                                context.Response, 
+                                buffer, 
+                                fileDate,
+                                context.RequestHeader(Headers.IfNotMatch), 
+                                requestFullLocalPath);
                         }
                     }
                 }
@@ -344,11 +332,11 @@
                 if (usingPartial == false &&
                     (isTagValid || context.RequestHeader(Headers.IfModifiedSince).Equals(utcFileDateString)))
                 {
-                    SetStatusCode304(context);
+                    SetStatusCode304(context.Response);
                     return true;
                 }
 
-                SetHeaders(context, requestFullLocalPath, utcFileDateString);
+                SetHeaders(context.Response, requestFullLocalPath, utcFileDateString);
 
                 var fileSize = new FileInfo(requestFullLocalPath).Length;
 
@@ -365,15 +353,13 @@
                 }
 
                 var lowerByteIndex = 0;
-                var upperByteIndex = 0;
-                long byteLength;
-                var isPartial = usingPartial &&
-                                CalculateRange(partialHeader, fileSize, out lowerByteIndex, out upperByteIndex);
 
-                if (isPartial)
+                if (usingPartial &&
+                    CalculateRange(partialHeader, fileSize, out lowerByteIndex, out var upperByteIndex))
                 {
                     if (upperByteIndex > fileSize)
                     {
+                        // invalid partial request
                         context.Response.StatusCode = 416;
                         context.Response.AddHeader(Headers.ContentRanges, $"bytes */{fileSize}");
 
@@ -382,18 +368,17 @@
 
                     if (upperByteIndex == fileSize)
                     {
-                        byteLength = buffer.Length;
+                        context.Response.ContentLength64 = buffer.Length;
                     }
                     else
                     {
-                        byteLength = upperByteIndex - lowerByteIndex + 1;
+                        context.Response.StatusCode = 206;
+                        context.Response.ContentLength64 = upperByteIndex - lowerByteIndex + 1;
 
                         context.Response.AddHeader(Headers.ContentRanges,
                             $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
-
-                        context.Response.StatusCode = 206;
-
-                        $"Opening stream {requestFullLocalPath} bytes {lowerByteIndex}-{upperByteIndex} size {byteLength}"
+                        
+                        $"Opening stream {requestFullLocalPath} bytes {lowerByteIndex}-{upperByteIndex} size {context.Response.ContentLength64}"
                             .Debug();
                     }
                 }
@@ -413,19 +398,14 @@
                         lowerByteIndex = 0;
                     }
 
-                    byteLength = buffer.Length;
+                    context.Response.ContentLength64 = buffer.Length;
                 }
-
-                context.Response.ContentLength64 = byteLength;
-
-                try
-                {
-                    await WriteToOutputStream(context, byteLength, buffer, lowerByteIndex, ct);
-                }
-                catch (HttpListenerException)
-                {
-                    // Connection error, nothing else to do
-                }
+                
+                await WriteToOutputStream(context.Response, buffer, lowerByteIndex, ct);
+            }
+            catch (HttpListenerException)
+            {
+                // Connection error, nothing else to do
             }
             finally
             {
@@ -435,23 +415,45 @@
             return true;
         }
 
-        private void SetHeaders(HttpListenerContext context, string localPath, string utcFileDateString)
+        private bool? ValidatePath(HttpListenerContext context, out string requestFullLocalPath)
+        {
+            var baseLocalPath = FileSystemPath;
+            var requestLocalPath = _virtualPaths.GetUrlPath(context.RequestPathCaseSensitive(), ref baseLocalPath);
+
+            requestFullLocalPath = Path.Combine(baseLocalPath, requestLocalPath);
+
+            // Check if the requested local path is part of the root File System Path
+            if (_virtualPaths.IsPartOfPath(requestFullLocalPath, baseLocalPath) == false)
+            {
+                context.Response.StatusCode = (int) System.Net.HttpStatusCode.Forbidden;
+                return true;
+            }
+
+            if (_virtualPaths.ExistsLocalPath(requestLocalPath, ref requestFullLocalPath) == false)
+            {
+                return false;
+            }
+
+            return null;
+        }
+
+        private void SetHeaders(HttpListenerResponse response, string localPath, string utcFileDateString)
         {
             var fileExtension = Path.GetExtension(localPath);
 
             if (MimeTypes.Value.ContainsKey(fileExtension))
-                context.Response.ContentType = MimeTypes.Value[fileExtension];
+                response.ContentType = MimeTypes.Value[fileExtension];
 
-            context.Response.AddHeader(Headers.CacheControl,
+            response.AddHeader(Headers.CacheControl,
                 DefaultHeaders.GetValueOrDefault(Headers.CacheControl, "private"));
-            context.Response.AddHeader(Headers.Pragma, DefaultHeaders.GetValueOrDefault(Headers.Pragma, string.Empty));
-            context.Response.AddHeader(Headers.Expires, DefaultHeaders.GetValueOrDefault(Headers.Expires, string.Empty));
-            context.Response.AddHeader(Headers.LastModified, utcFileDateString);
-            context.Response.AddHeader(Headers.AcceptRanges, "bytes");
+            response.AddHeader(Headers.Pragma, DefaultHeaders.GetValueOrDefault(Headers.Pragma, string.Empty));
+            response.AddHeader(Headers.Expires, DefaultHeaders.GetValueOrDefault(Headers.Expires, string.Empty));
+            response.AddHeader(Headers.LastModified, utcFileDateString);
+            response.AddHeader(Headers.AcceptRanges, "bytes");
         }
 
         private bool UpdateFileCache(
-            HttpListenerContext context,
+            HttpListenerResponse response,
             Stream buffer,
             DateTime fileDate,
             string requestHash,
@@ -469,20 +471,20 @@
                 RamCache.Add(buffer, localPath, fileDate);
             }
 
-            context.Response.AddHeader(Headers.ETag, currentHash);
+            response.AddHeader(Headers.ETag, currentHash);
 
             return false;
         }
         
-        private void SetStatusCode304(HttpListenerContext context)
+        private void SetStatusCode304(HttpListenerResponse response)
         {
-            context.Response.AddHeader(Headers.CacheControl,
+            response.AddHeader(Headers.CacheControl,
                 DefaultHeaders.GetValueOrDefault(Headers.CacheControl, "private"));
-            context.Response.AddHeader(Headers.Pragma, DefaultHeaders.GetValueOrDefault(Headers.Pragma, string.Empty));
-            context.Response.AddHeader(Headers.Expires, DefaultHeaders.GetValueOrDefault(Headers.Expires, string.Empty));
+            response.AddHeader(Headers.Pragma, DefaultHeaders.GetValueOrDefault(Headers.Pragma, string.Empty));
+            response.AddHeader(Headers.Expires, DefaultHeaders.GetValueOrDefault(Headers.Expires, string.Empty));
 
-            context.Response.ContentType = string.Empty;
-            context.Response.StatusCode = 304;
+            response.ContentType = string.Empty;
+            response.StatusCode = 304;
         }
     }
 }
