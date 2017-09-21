@@ -1,6 +1,5 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
-    using Unosquare.Swan;
     using Constants;
     using NUnit.Framework;
     using System.Net;
@@ -12,7 +11,7 @@
     using System;
     using System.IO;
     using System.Text;
-    using Unosquare.Swan.Formatters;
+    using Swan.Formatters;
 
     [TestFixture]
     public class WebServerTest
@@ -255,23 +254,13 @@
 
                 var request = (HttpWebRequest)WebRequest.Create(url + TestWebModule.RedirectUrl);
                 request.AllowAutoRedirect = false;
-
-                if (Runtime.OS == Swan.OperatingSystem.Windows)
+        
+                var webException = Assert.ThrowsAsync<WebException>(async () =>
                 {
-                    using (var response = (HttpWebResponse)await request.GetResponseAsync())
-                    {
-                        Assert.AreEqual(response.StatusCode, HttpStatusCode.Redirect, "Status Code Redirect");
-                    }
-                }
-                else
-                {
-                    var webException = Assert.ThrowsAsync<WebException>(async () =>
-                    {
-                        await request.GetResponseAsync();
-                    });
+                    await request.GetResponseAsync();
+                });
 
-                    Assert.AreEqual(WebExceptionStatus.ProtocolError, webException.Status);
-                }
+                Assert.AreEqual(WebExceptionStatus.ProtocolError, webException.Status);
             }
         }
 
@@ -287,23 +276,13 @@
 
                 var request = (HttpWebRequest)WebRequest.Create(url + TestWebModule.RedirectAbsoluteUrl);
                 request.AllowAutoRedirect = false;
-
-                if (Runtime.OS == Swan.OperatingSystem.Windows)
+        
+                var webException = Assert.ThrowsAsync<WebException>(async () =>
                 {
-                    using (var response = (HttpWebResponse)await request.GetResponseAsync())
-                    {
-                        Assert.AreEqual(response.StatusCode, HttpStatusCode.Redirect, "Status Code Redirect");
-                    }
-                }
-                else
-                {
-                    var webException = Assert.ThrowsAsync<WebException>(async () =>
-                    {
-                        await request.GetResponseAsync();
-                    });
+                    await request.GetResponseAsync();
+                });
 
-                    Assert.AreEqual(WebExceptionStatus.ProtocolError, webException.Status);
-                }
+                Assert.AreEqual(WebExceptionStatus.ProtocolError, webException.Status);
             }
         }
 #endif
