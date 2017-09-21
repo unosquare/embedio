@@ -270,7 +270,7 @@
                         await request.GetResponseAsync();
                     });
 
-                    Assert.AreEqual(WebExceptionStatus.Success, webException.Status);
+                    Assert.AreEqual(WebExceptionStatus.ProtocolError, webException.Status);
                 }
             }
         }
@@ -302,7 +302,7 @@
                         await request.GetResponseAsync();
                     });
 
-                    Assert.AreEqual(WebExceptionStatus.Success, webException.Status);
+                    Assert.AreEqual(WebExceptionStatus.ProtocolError, webException.Status);
                 }
             }
         }
