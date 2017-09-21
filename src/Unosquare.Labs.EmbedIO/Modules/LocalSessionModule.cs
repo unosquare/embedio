@@ -40,6 +40,8 @@
         /// </summary>
         public LocalSessionModule()
         {
+            IsWatchdogEnabled = true;
+
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (context, ct) =>
             {
                 lock (_sessionsSyncLock)

@@ -72,7 +72,7 @@
         /// <value>
         ///   <c>true</c> if this instance is watchdog enabled; otherwise, <c>false</c>.
         /// </value>
-        public bool IsWatchdogEnabled { get; set; } = true;
+        public bool IsWatchdogEnabled { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the watchdog interval.

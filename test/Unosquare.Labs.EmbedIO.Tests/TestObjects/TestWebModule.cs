@@ -11,8 +11,6 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 
         public TestWebModule()
         {
-            IsWatchdogEnabled = false;
-
             AddHandler("/" + RedirectUrl, HttpVerbs.Get, (context, ct) =>
             {
                 context.Redirect("/" + AnotherUrl, false);

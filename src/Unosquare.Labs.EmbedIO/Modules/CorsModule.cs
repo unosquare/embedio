@@ -44,9 +44,7 @@
             if (origins == null) throw new ArgumentNullException(nameof(origins));
             if (headers == null) throw new ArgumentNullException(nameof(headers));
             if (methods == null) throw new ArgumentNullException(nameof(methods));
-
-            IsWatchdogEnabled = false;
-
+            
             var validOrigins =
                 origins.ToLower()
                     .Split(Strings.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries)

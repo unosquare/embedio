@@ -66,9 +66,7 @@
         {
             if (Directory.Exists(fileSystemPath) == false)
                 throw new ArgumentException($"Path '{fileSystemPath}' does not exist.");
-
-            IsWatchdogEnabled = false;
-
+            
             _virtualPaths.FileSystemPath = Path.GetFullPath(fileSystemPath);
             UseGzip = true;
 #if DEBUG

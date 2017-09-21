@@ -62,8 +62,6 @@
         /// </summary>
         public WebApiModule()
         {
-            IsWatchdogEnabled = false;
-
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, async (context, ct) =>
             {
                 var verb = context.RequestVerb();

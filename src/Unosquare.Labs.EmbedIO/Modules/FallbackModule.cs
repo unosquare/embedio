@@ -23,8 +23,6 @@
         /// <param name="action">The action.</param>
         public FallbackModule(Func<HttpListenerContext, CancellationToken, bool> action)
         {
-            IsWatchdogEnabled = false;
-
             AddHandler(
                 ModuleMap.AnyPath, 
                 HttpVerbs.Any, 
@@ -39,8 +37,7 @@
         {
             if (string.IsNullOrWhiteSpace(redirectUrl))
                 throw new ArgumentNullException(nameof(redirectUrl));
-
-            IsWatchdogEnabled = false;
+            
             RedirectUrl = redirectUrl;
 
             AddHandler(
