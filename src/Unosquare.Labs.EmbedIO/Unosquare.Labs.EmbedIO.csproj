@@ -12,7 +12,7 @@
     <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.3' ">$(PackageTargetFallback);portable-net45+win8+wpa81+wp8</PackageTargetFallback>
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
     <DebugType>Full</DebugType>
-    <Version>1.9.0</Version>
+    <Version>1.9.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

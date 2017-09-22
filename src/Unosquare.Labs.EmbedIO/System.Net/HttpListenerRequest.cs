@@ -377,12 +377,10 @@ using System.Threading.Tasks;
                 return;
             }
 
-            string path;
             Uri rawUri = null;
-            if (RawUrl.ToLowerInvariant().MaybeUri() && Uri.TryCreate(RawUrl, UriKind.Absolute, out rawUri))
-                path = rawUri.PathAndQuery;
-            else
-                path = RawUrl;
+            var path = RawUrl.ToLowerInvariant().MaybeUri() && Uri.TryCreate(RawUrl, UriKind.Absolute, out rawUri)
+                ? rawUri.PathAndQuery
+                : RawUrl;
 
             if (string.IsNullOrEmpty(host))
                 host = UserHostAddress;
@@ -420,8 +418,7 @@ using System.Threading.Tasks;
 
             if (string.Compare(Headers["Expect"], "100-continue", StringComparison.OrdinalIgnoreCase) == 0)
             {
-                var output = _context.Connection.GetResponseStream();
-                output.InternalWrite(_100Continue, 0, _100Continue.Length);
+                _context.Connection.GetResponseStream().InternalWrite(_100Continue, 0, _100Continue.Length);
             }
         }
 
@@ -437,10 +434,10 @@ using System.Threading.Tasks;
 
             var name = header.Substring(0, colon).Trim();
             var val = header.Substring(colon + 1).Trim();
-            var lower = name.ToLowerInvariant();
+            
             Headers.Set(name, val);
 
-            switch (lower)
+            switch (name.ToLowerInvariant())
             {
                 case "accept-language":
                     UserLanguages = val.Split(Labs.EmbedIO.Constants.Strings.CommaSplitChar); // yes, only split with a ','
@@ -475,60 +472,7 @@ using System.Threading.Tasks;
 
                     break;
                 case "cookie":
-                    if (_cookies == null)
-                        _cookies = new CookieCollection();
-
-                    var cookieStrings = val.Split(Labs.EmbedIO.Constants.Strings.CookieSplitChars)
-                        .Where(x => string.IsNullOrEmpty(x) == false);
-                    Cookie current = null;
-                    var version = 0;
-
-                    foreach (var str in cookieStrings)
-                    {
-                        if (str.StartsWith("$Version"))
-                        {
-                            version = int.Parse(str.Substring(str.IndexOf('=') + 1).Unquote());
-                        }
-                        else if (str.StartsWith("$Path") && current != null)
-                        {
-                            current.Path = str.Substring(str.IndexOf('=') + 1).Trim();
-                        }
-                        else if (str.StartsWith("$Domain") && current != null)
-                        {
-                            current.Domain = str.Substring(str.IndexOf('=') + 1).Trim();
-                        }
-                        else if (str.StartsWith("$Port") && current != null)
-                        {
-                            current.Port = str.Substring(str.IndexOf('=') + 1).Trim();
-                        }
-                        else
-                        {
-                            if (current != null)
-                            {
-                                _cookies.Add(current);
-                            }
-
-                            current = new Cookie();
-                            var idx = str.IndexOf('=');
-                            if (idx > 0)
-                            {
-                                current.Name = str.Substring(0, idx).Trim();
-                                current.Value = str.Substring(idx + 1).Trim();
-                            }
-                            else
-                            {
-                                current.Name = str.Trim();
-                                current.Value = string.Empty;
-                            }
-
-                            current.Version = version;
-                        }
-                    }
-
-                    if (current != null)
-                    {
-                        _cookies.Add(current);
-                    }
+                    ParseCookies(val);
 
                     break;
             }
@@ -564,6 +508,64 @@ using System.Threading.Tasks;
                 {
                     return false;
                 }
+            }
+        }
+
+        private void ParseCookies(string val)
+        {
+            if (_cookies == null)
+                _cookies = new CookieCollection();
+
+            var cookieStrings = val.Split(Labs.EmbedIO.Constants.Strings.CookieSplitChars)
+                .Where(x => string.IsNullOrEmpty(x) == false);
+            Cookie current = null;
+            var version = 0;
+
+            foreach (var str in cookieStrings)
+            {
+                if (str.StartsWith("$Version"))
+                {
+                    version = int.Parse(str.Substring(str.IndexOf('=') + 1).Unquote());
+                }
+                else if (str.StartsWith("$Path") && current != null)
+                {
+                    current.Path = str.Substring(str.IndexOf('=') + 1).Trim();
+                }
+                else if (str.StartsWith("$Domain") && current != null)
+                {
+                    current.Domain = str.Substring(str.IndexOf('=') + 1).Trim();
+                }
+                else if (str.StartsWith("$Port") && current != null)
+                {
+                    current.Port = str.Substring(str.IndexOf('=') + 1).Trim();
+                }
+                else
+                {
+                    if (current != null)
+                    {
+                        _cookies.Add(current);
+                    }
+
+                    current = new Cookie();
+                    var idx = str.IndexOf('=');
+                    if (idx > 0)
+                    {
+                        current.Name = str.Substring(0, idx).Trim();
+                        current.Value = str.Substring(idx + 1).Trim();
+                    }
+                    else
+                    {
+                        current.Name = str.Trim();
+                        current.Value = string.Empty;
+                    }
+
+                    current.Version = version;
+                }
+            }
+
+            if (current != null)
+            {
+                _cookies.Add(current);
             }
         }
         

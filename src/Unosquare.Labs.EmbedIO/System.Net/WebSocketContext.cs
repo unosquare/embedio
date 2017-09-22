@@ -180,7 +180,7 @@ namespace Unosquare.Net
         /// </returns>
         public override string ToString() => _context.Request.ToString();
 
-        internal Task CloseAsync() => _context.Connection.CloseAsync(true);
+        internal void CloseAsync() => _context.Connection.Close(true);
     }
 }
 #endif

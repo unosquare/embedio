@@ -80,8 +80,8 @@ namespace Unosquare.Net
                     IPToEndpoints.Remove(ep.Address);
                 }
             }
-            
-            epl.CloseAsync().Wait(); // TODO: Is this right?
+
+            epl.Close();
         }
 
         public static void RemoveListener(HttpListener listener)

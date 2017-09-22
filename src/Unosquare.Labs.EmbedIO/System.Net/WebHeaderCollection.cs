@@ -57,13 +57,7 @@ namespace Unosquare.Net
     [ComVisible(true)]
     public class WebHeaderCollection : NameValueCollection
     {
-        private static readonly Dictionary<string, HttpHeaderInfo> Headers;
-        private readonly bool _internallyUsed;
-        
-        static WebHeaderCollection()
-        {
-            Headers =
-                new Dictionary<string, HttpHeaderInfo>(StringComparer.OrdinalIgnoreCase)
+        private static readonly Dictionary<string, HttpHeaderInfo> Headers = new Dictionary<string, HttpHeaderInfo>(StringComparer.OrdinalIgnoreCase)
                 {
                     {
                         "Accept",
@@ -426,21 +420,7 @@ namespace Unosquare.Net
                             HttpHeaderType.Response | HttpHeaderType.MultiValue)
                     }
                 };
-        }
         
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebHeaderCollection"/> class.
-        /// </summary>
-        public WebHeaderCollection()
-        {
-        }
-
-        internal WebHeaderCollection(HttpHeaderType state, bool internallyUsed)
-        {
-            State = state;
-            _internallyUsed = internallyUsed;
-        }
-
         internal HttpHeaderType State { get; private set; }
         
         /// <summary>
@@ -1040,14 +1020,12 @@ namespace Unosquare.Net
             return value;
         }
 
-        private static string Convert(string key) => Headers.TryGetValue(key, out HttpHeaderInfo info) ? info.Name : string.Empty;
+        private static string Convert(string key) => Headers.TryGetValue(key, out var info) ? info.Name : string.Empty;
 
         private static HttpHeaderInfo GetHeaderInfo(string name)
-        {
-            return Headers.Values.FirstOrDefault(info => info.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-        }
+            => Headers.Values.FirstOrDefault(info => info.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
 
-        private static bool InternalIsRestricted(string name, bool response)
+        private static bool InternalIsRestricted(string name, bool response = true)
         {
             var info = GetHeaderInfo(name);
             return info != null && info.IsRestricted(response);
@@ -1072,7 +1050,7 @@ namespace Unosquare.Net
 
         private void CheckRestricted(string name)
         {
-            if (!_internallyUsed && InternalIsRestricted(name, true))
+            if (InternalIsRestricted(name, true))
                 throw new ArgumentException("This header must be modified with the appropriate property.");
         }
 

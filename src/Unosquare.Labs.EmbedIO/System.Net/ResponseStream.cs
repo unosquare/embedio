@@ -104,6 +104,7 @@ namespace Unosquare.Net
             _disposed = true;
             var ms = GetHeaders(true);
             var chunked = _response.SendChunked;
+
             if (_stream.CanWrite)
             {
                 try
@@ -207,10 +208,7 @@ namespace Unosquare.Net
         /// Is thrown when an invoked method is not supported, or when there is an attempt to read, seek, 
         /// or write to a stream that does not support the invoked functionality
         /// </exception>
-        public override int Read([In, Out] byte[] buffer, int offset, int count)
-        {
-            throw new NotSupportedException();
-        }
+        public override int Read([In, Out] byte[] buffer, int offset, int count) => throw new NotSupportedException();
 
         /// <summary>
         /// When overridden in a derived class, sets the position within the current stream.
@@ -224,10 +222,7 @@ namespace Unosquare.Net
         /// Is thrown when an invoked method is not supported, or when there is an attempt to read, seek, 
         /// or write to a stream that does not support the invoked functionality
         /// </exception>
-        public override long Seek(long offset, SeekOrigin origin)
-        {
-            throw new NotSupportedException();
-        }
+        public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
 
         /// <summary>
         /// When overridden in a derived class, sets the length of the current stream.
@@ -237,10 +232,7 @@ namespace Unosquare.Net
         /// Is thrown when an invoked method is not supported, or when there is an attempt to read, seek, 
         /// or write to a stream that does not support the invoked functionality.
         /// </exception>
-        public override void SetLength(long value)
-        {
-            throw new NotSupportedException();
-        }
+        public override void SetLength(long value) => throw new NotSupportedException();
 
         internal void InternalWrite(byte[] buffer, int offset, int count)
         {

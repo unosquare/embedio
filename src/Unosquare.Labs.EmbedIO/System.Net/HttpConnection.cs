@@ -189,12 +189,11 @@ using System.Security.Cryptography.X509Certificates;
                        new ResponseStream(Stream, _context.Response, _context.Listener?.IgnoreWriteExceptions ?? true));
         }
 
-        internal async Task CloseAsync(bool forceClose = false)
+        internal void Close(bool forceClose = false)
         {
             if (_sock != null)
             {
-                Stream st = GetResponseStream();
-                st?.Dispose();
+                GetResponseStream()?.Dispose();
 
                 _oStream = null;
             }
@@ -208,14 +207,14 @@ using System.Security.Cryptography.X509Certificates;
 
             if (!forceClose)
             {
-                var isValidInput = await _context.Request.FlushInput();
-
-                if (isValidInput)
+                if (_context.Request.FlushInput().GetAwaiter().GetResult())
                 {
                     Reuses++;
                     Unbind();
                     Init();
-                    await BeginReadRequest().ConfigureAwait(false);
+#pragma warning disable 4014
+                    BeginReadRequest();
+#pragma warning restore 4014
                     return;
                 }
             }
@@ -280,7 +279,7 @@ using System.Security.Cryptography.X509Certificates;
                     await _ms.WriteAsync(_buffer, parsedBytes, nread - parsedBytes);
                     if (_ms.Length > 32768)
                     {
-                        await CloseAsync(true);
+                        Close(true);
                         return;
                     }
                 }
@@ -307,7 +306,7 @@ using System.Security.Cryptography.X509Certificates;
 
                     if (_context.HaveError || !_epl.BindContext(_context))
                     {
-                        await CloseAsync(true);
+                        Close(true);
                         return;
                     }
 

@@ -161,14 +161,12 @@ namespace Unosquare.Net
         /// <summary>
         /// Aborts this listener.
         /// </summary>
-        /// <returns>The task aborting</returns>
-        public Task AbortAsync() => CloseAsync();
+        public void Abort() => Close();
 
         /// <summary>
         /// Closes this listener.
         /// </summary>
-        /// <returns>The task closing</returns>
-        public async Task CloseAsync()
+        public void Close()
         {
             if (_disposed)
                 return;
@@ -179,7 +177,7 @@ namespace Unosquare.Net
                 return;
             }
 
-            await CloseAsync(true);
+            Close(true);
             _disposed = true;
         }
 
@@ -198,19 +196,18 @@ namespace Unosquare.Net
         /// <summary>
         /// Stops this listener.
         /// </summary>
-        /// <returns>The task stopping the listener</returns>
-        public Task StopAsync()
+        public void Stop()
         {
             IsListening = false;
-            return CloseAsync(false);
+            Close(false);
         }
 
         void IDisposable.Dispose()
         {
             if (_disposed)
                 return;
-            
-            CloseAsync(true).Wait();
+
+            Close(true);
             _disposed = true;
         }
 
@@ -224,7 +221,7 @@ namespace Unosquare.Net
             {
                 foreach (var key in _ctxQueue.Keys)
                 {
-                    if (_ctxQueue.TryRemove(key, out HttpListenerContext context))
+                    if (_ctxQueue.TryRemove(key, out var context))
                         return context;
                 }
 
@@ -240,20 +237,14 @@ namespace Unosquare.Net
 
         internal void UnregisterContext(HttpListenerContext context)
         {
-            _ctxQueue.TryRemove(context.Id, out HttpListenerContext removedContext);
+            _ctxQueue.TryRemove(context.Id, out var removedContext);
         }
 
-        internal void AddConnection(HttpConnection cnc)
-        {
-            _connections[cnc] = cnc;
-        }
+        internal void AddConnection(HttpConnection cnc) => _connections[cnc] = cnc;
 
-        internal void RemoveConnection(HttpConnection cnc)
-        {
-            _connections.Remove(cnc);
-        }
+        internal void RemoveConnection(HttpConnection cnc) => _connections.Remove(cnc);
 
-        private async Task CloseAsync(bool closeExisting)
+        private void Close(bool closeExisting)
         {
             EndPointManager.RemoveListener(this);
 
@@ -269,7 +260,7 @@ namespace Unosquare.Net
             }
 
             for (var i = conns.Count - 1; i >= 0; i--)
-                await conns[i].CloseAsync(true).ConfigureAwait(false);
+                conns[i].Close(true);
 
             if (closeExisting == false) return;
 
@@ -277,8 +268,8 @@ namespace Unosquare.Net
             {
                 foreach (var key in _ctxQueue.Keys.Select(x => x).ToList())
                 {
-                    if (_ctxQueue.TryGetValue(key, out HttpListenerContext context))
-                        await context.Connection.CloseAsync(true).ConfigureAwait(false);
+                    if (_ctxQueue.TryGetValue(key, out var context))
+                        context.Connection.Close(true);
                 }
             }
         }

@@ -103,7 +103,7 @@ using System.Security.Cryptography;
             context.Listener.UnregisterContext(context);
         }
 
-        public async Task CloseAsync()
+        public void Close()
         {
             _sock.Dispose();
             List<HttpConnection> connections;
@@ -116,7 +116,7 @@ using System.Security.Cryptography;
             }
 
             foreach (var c in connections)
-                await c.CloseAsync(true);
+                c.Close(true);
         }
 
         public void AddPrefix(ListenerPrefix prefix, HttpListener listener)
@@ -286,7 +286,7 @@ using System.Security.Cryptography;
                 epl._unregistered[conn] = conn;
             }
 
-            conn.BeginReadRequest().Wait();
+            var waitTask = conn.BeginReadRequest();
         }
 
         private static void OnAccept(object sender, SocketAsyncEventArgs e) => ProcessAccept(e);

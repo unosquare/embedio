@@ -713,7 +713,7 @@ namespace Unosquare.Net
             }
 
             await SendHttpResponseAsync(response);
-            await ReleaseServerResources();
+            ReleaseServerResources();
 
             lock (_forState)
             {
@@ -743,7 +743,7 @@ namespace Unosquare.Net
 
             // TODO: Fix
             e.WasClean = await CloseHandshakeAsync(frameAsBytes, receive, false, ct).ConfigureAwait(false);
-            await ReleaseServerResources().ConfigureAwait(false);
+            ReleaseServerResources();
             ReleaseCommonResources();
 
             _readyState = WebSocketState.Closed;
@@ -859,7 +859,7 @@ namespace Unosquare.Net
 
             var bytes = send ? WebSocketFrame.CreateCloseFrame(e.PayloadData, _client).ToArray() : null;
             e.WasClean = await CloseHandshakeAsync(bytes, receive, received, ct);
-            await ReleaseResources();
+            ReleaseResources();
 
             "End closing the connection.".Info();
 
@@ -1318,23 +1318,23 @@ namespace Unosquare.Net
             }
         }
 
-        private async Task ReleaseResources()
+        private void ReleaseResources()
         {
             if (_client)
                 ReleaseClientResources();
             else
-                await ReleaseServerResources();
+                ReleaseServerResources();
 
             ReleaseCommonResources();
         }
 
         // As server
-        private async Task ReleaseServerResources()
+        private void ReleaseServerResources()
         {
             if (_client)
                 return;
 
-            await _context.CloseAsync();
+            _context.CloseAsync();
             _stream = null;
             _context = null;
         }

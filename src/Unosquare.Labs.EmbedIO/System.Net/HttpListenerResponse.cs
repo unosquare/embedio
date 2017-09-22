@@ -611,8 +611,7 @@ namespace Unosquare.Net
         {
             _disposed = true;
 
-            // TODO: Is this fine?
-            _context.Connection.CloseAsync(force).Wait();
+            _context.Connection.Close(force);
         }
     }
 }
