@@ -93,7 +93,7 @@ namespace Unosquare.Net
         }
 
         internal static bool IsControl(this byte opcode) => opcode > 0x7 && opcode < 0x10;
-        
+
         internal static bool IsReserved(this CloseStatusCode code)
         {
             return code == CloseStatusCode.Undefined ||
@@ -209,7 +209,7 @@ namespace Unosquare.Net
         internal static Uri ToUri(this string uriString)
         {
             Uri.TryCreate(
-              uriString, uriString.MaybeUri() ? UriKind.Absolute : UriKind.Relative, out Uri ret);
+                uriString, uriString.MaybeUri() ? UriKind.Absolute : UriKind.Relative, out Uri ret);
 
             return ret;
         }
@@ -233,7 +233,7 @@ namespace Unosquare.Net
         /// or <see cref="String.Empty"/> if <paramref name="uriString"/> is valid.
         /// </param>
         internal static bool TryCreateWebSocketUri(
-          this string uriString, out Uri result, out string message)
+            this string uriString, out Uri result, out string message)
         {
             result = null;
 
@@ -246,40 +246,41 @@ namespace Unosquare.Net
 
             if (!uri.IsAbsoluteUri)
             {
-                message = "Not an absolute URI: " + uriString;
+                message = $"Not an absolute URI: {uriString}";
                 return false;
             }
 
             var schm = uri.Scheme;
             if (!(schm == "ws" || schm == "wss"))
             {
-                message = "The scheme part isn't 'ws' or 'wss': " + uriString;
+                message = $"The scheme part isn\'t \'ws\' or \'wss\': {uriString}";
                 return false;
             }
 
             if (uri.Fragment.Length > 0)
             {
-                message = "Includes the fragment component: " + uriString;
+                message = $"Includes the fragment component: {uriString}";
                 return false;
             }
 
             var port = uri.Port;
             if (port == 0)
             {
-                message = "The port part is zero: " + uriString;
+                message = $"The port part is zero: {uriString}";
                 return false;
             }
 
             result = port != -1
-                     ? uri
-                     : new Uri(
+                ? uri
+                : new Uri(
                     $"{schm}://{uri.Host}:{(schm == "ws" ? 80 : 443)}{uri.PathAndQuery}");
 
             message = string.Empty;
             return true;
         }
 
-        internal static bool IsToken(this string value) => value.All(c => c >= 0x20 && c < 0x7f && !Tspecials.Contains(c));
+        internal static bool IsToken(this string value) =>
+            value.All(c => c >= 0x20 && c < 0x7f && !Tspecials.Contains(c));
 
         /// <summary>
         /// Gets the collection of the HTTP cookies from the specified HTTP <paramref name="headers"/>.
@@ -298,8 +299,8 @@ namespace Unosquare.Net
         {
             var name = response ? "Set-Cookie" : Headers.Cookie;
             return headers != null && headers.AllKeys.Contains(name)
-                   ? CookieCollection.Parse(headers[name], response)
-                   : new CookieCollection();
+                ? CookieCollection.Parse(headers[name], response)
+                : new CookieCollection();
         }
 
         internal static string ToExtensionString(this CompressionMethod method, params string[] parameters)
@@ -330,14 +331,8 @@ namespace Unosquare.Net
         /// A <see cref="string"/> that represents the value of the entry to find.
         /// </param>
         internal static bool Contains(this NameValueCollection collection, string name, string value)
-        {
-            if (collection == null || collection.Count == 0)
-                return false;
-
-            var vals = collection[name];
-
-            return vals != null && vals.Split(Strings.CommaSplitChar).Any(val => val.Trim().Equals(value, StringComparison.OrdinalIgnoreCase));
-        }
+            => collection[name]?.Split(Strings.CommaSplitChar)
+                   .Any(val => val.Trim().Equals(value, StringComparison.OrdinalIgnoreCase)) == true;
 
         /// <summary>
         /// Determines whether the specified <see cref="string"/> contains any of characters in
@@ -354,11 +349,10 @@ namespace Unosquare.Net
         /// An array of <see cref="char"/> that contains characters to find.
         /// </param>
         internal static bool Contains(this string value, params char[] chars)
-        {
-            return chars?.Length == 0 || (!string.IsNullOrEmpty(value) && value.IndexOfAny(chars) > -1);
-        }
+            => chars?.Length == 0 || (!string.IsNullOrEmpty(value) && value.IndexOfAny(chars) > -1);
 
-        internal static bool IsCompressionExtension(this string value, CompressionMethod method) => value.StartsWith(method.ToExtensionString());
+        internal static bool IsCompressionExtension(this string value, CompressionMethod method) =>
+            value.StartsWith(method.ToExtensionString());
     }
 }
 #endif
