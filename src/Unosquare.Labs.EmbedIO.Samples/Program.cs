@@ -12,11 +12,9 @@
         /// <param name="args">The arguments.</param>
         private static void Main(string[] args)
         {
-            Terminal.Settings.DisplayLoggingMessageType = LogMessageType.Error;
-
             $"Running on Mono Runtime: {Runtime.IsUsingMonoRuntime}".Info();
 
-            var url = "http://*:8787/";
+            var url = "http://localhost:8787/";
 
             if (args.Length > 0)
                 url = args[0];

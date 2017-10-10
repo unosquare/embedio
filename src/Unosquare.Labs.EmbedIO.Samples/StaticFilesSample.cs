@@ -2,7 +2,7 @@
 {
     using System.IO;
     using System.Reflection;
-    using Unosquare.Labs.EmbedIO.Modules;
+    using Modules;
 
     /// <summary>
     /// Sample helper

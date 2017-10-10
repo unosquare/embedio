@@ -55,8 +55,7 @@
                     return context.JsonResponse(_dbContext.People.SelectAll().First());
 
                 // otherwise, we need to parse the key and respond with the entity accordingly
-                int key;
-                if (!int.TryParse(lastSegment, out key))
+                if (!int.TryParse(lastSegment, out var key))
                     throw new KeyNotFoundException("Key Not Found: " + lastSegment);
 
                 var single = _dbContext.People.Single(key);
@@ -100,9 +99,6 @@
             }
             catch (Exception ex)
             {
-                // here the error handler will respond with a generic 500 HTTP code a JSON-encoded object
-                // with error info. You will need to handle HTTP status codes correctly depending on the situation.
-                // For example, for keys that are not found, ou will need to respond with a 404 status code.
                 return HandleError(context, ex);
             }
         }

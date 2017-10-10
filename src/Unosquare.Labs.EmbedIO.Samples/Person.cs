@@ -1,10 +1,9 @@
 ﻿#if !MONO
-
 namespace Unosquare.Labs.EmbedIO.Samples
 {
-    using System.ComponentModel.DataAnnotations.Schema;
-    using Unosquare.Labs.LiteLib;
+    using LiteLib;
     using Swan;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     /// <summary>
     /// A simple model representing a person

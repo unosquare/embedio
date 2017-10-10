@@ -1,14 +1,15 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
+    using System.Linq;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Text;
     using Modules;
-    using Swan;
 #if NET47
     using System.Threading;
     using System.Net.WebSockets;
 #else
+    using Swan;
     using Net;
 #endif
 
@@ -46,16 +47,9 @@
         /// <param name="rxResult">The rx result.</param>
         protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
         {
-            foreach (var ws in WebSockets)
+            foreach (var ws in WebSockets.Where(ws => ws != context))
             {
-#if !NET47
-                if (ws.UserEndPoint == null)
-                    "Error ws.UserEndPoint".Warn();
-
-                $"WebSocket info: {ws.UserEndPoint}".Info();
-#endif
-                if (ws != context)
-                    Send(ws, Encoding.UTF8.GetString(rxBuffer));
+                Send(ws, Encoding.UTF8.GetString(rxBuffer));
             }
         }
 
@@ -65,7 +59,7 @@
         /// <value>
         /// The name of the server.
         /// </value>
-        public override string ServerName => "Chat Server";
+        public override string ServerName => nameof(WebSocketsChatServer);
 
 #if NET47
         /// <summary>
@@ -86,11 +80,11 @@
         protected override void OnClientConnected(WebSocketContext context)
 #endif
         {
-            Send(context, "Welcome to the chat room!");    
-            foreach (var ws in WebSockets)
+            Send(context, "Welcome to the chat room!");
+
+            foreach (var ws in WebSockets.Where(ws => ws != context))
             {
-                if (ws != context)
-                    Send(ws, "Someone joined the chat room."); 
+                Send(ws, "Someone joined the chat room.");
             }
         }
 
@@ -128,7 +122,7 @@
         private readonly Dictionary<WebSocketContext, Process> _processes = new Dictionary<WebSocketContext, Process>();
 
         // The SyncRoot is used to send 1 thing at a time and multithreaded Processes dictionary.
-        private readonly object SyncRoot = new object();
+        private readonly object _syncRoot = new object();
 
         /// <summary>
         /// Called when this WebSockets Server receives a full message (EndOfMessage) form a WebSockets client.
@@ -138,7 +132,7 @@
         /// <param name="rxResult">The rx result.</param>
         protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
         {
-            lock (SyncRoot)
+            lock (_syncRoot)
             {
                 var arg = Encoding.UTF8.GetString(rxBuffer);
                 _processes[context].StandardInput.WriteLine(arg);
@@ -163,12 +157,11 @@
         /// <returns></returns>
         private WebSocketContext FindContext(Process p)
         {
-            lock (SyncRoot)
+            lock (_syncRoot)
             {
-                foreach (var kvp in _processes)
+                foreach (var kvp in _processes.Where(kvp => kvp.Value == p))
                 {
-                    if (kvp.Value == p)
-                        return kvp.Key;
+                    return kvp.Key;
                 }
             }
 
@@ -212,7 +205,7 @@
 
             process.OutputDataReceived += (s, e) =>
             {
-                lock (SyncRoot)
+                lock (_syncRoot)
                 {
                     if ((s as Process).HasExited) return;
                     var ws = FindContext(s as Process);
@@ -223,7 +216,7 @@
 
             process.ErrorDataReceived += (s, e) =>
             {
-                lock (SyncRoot)
+                lock (_syncRoot)
                 {
                     if ((s as Process).HasExited) return;
                     var ws = FindContext(s as Process);
@@ -234,7 +227,7 @@
 
             process.Exited += (s, e) =>
             {
-                lock (SyncRoot)
+                lock (_syncRoot)
                 {
                     var ws = FindContext(s as Process);
                     if (ws != null && ws.WebSocket.State == WebSocketState.Open)
@@ -247,7 +240,7 @@
             };
 
             // add the process to the context
-            lock (SyncRoot)
+            lock (_syncRoot)
             {
                 _processes[context] = process;
             }
@@ -264,7 +257,7 @@
         /// <param name="context">The context.</param>
         protected override void OnClientDisconnected(WebSocketContext context)
         {
-            lock (SyncRoot)
+            lock (_syncRoot)
             {
                 if (_processes[context].HasExited == false)
                     _processes[context].Kill();
@@ -277,6 +270,6 @@
         /// <value>
         /// The name of the server.
         /// </value>
-        public override string ServerName => "Command-Line Terminal Server";
+        public override string ServerName => nameof(WebSocketsTerminalServer);
     }
 }
