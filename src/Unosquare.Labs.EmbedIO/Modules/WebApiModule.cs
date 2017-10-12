@@ -96,7 +96,6 @@
                         methodPair.ParseArguments(regExRouteParams, args);
                         return await methodPair.Invoke(args);
                     case RoutingStrategy.Wildcard:
-
                         return await methodPair.Invoke(args);
                     default:
                         // Log the handler to be used

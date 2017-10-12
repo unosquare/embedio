@@ -209,15 +209,10 @@
                 switch (RoutingStrategy)
                 {
                     case RoutingStrategy.Wildcard:
-                        handler = NormalizeWildcardPath(context, module);
+                        handler = GetHandlerFromWildcardPath(context, module);
                         break;
                     default:
-                        handler = module.Handlers.FirstOrDefault(x =>
-                            string.Equals(
-                                x.Path,
-                                x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath(),
-                                StringComparison.OrdinalIgnoreCase) &&
-                            x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
+                        handler = GetHandlerFromPath(context, module);
                         break;
                 }
 
@@ -358,15 +353,29 @@
         }
 
         /// <summary>
-        /// Normalizes a URL request path meant for Wildcard matching and returns the registered
+        /// Gets the possible handler from the module.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="module">The module.</param>
+        /// <returns>The map matching</returns>
+        private static Map GetHandlerFromPath(HttpListenerContext context, IWebModule module)
+        {
+            return module.Handlers.FirstOrDefault(x =>
+                string.Equals(
+                    x.Path,
+                    x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath(),
+                    StringComparison.OrdinalIgnoreCase) &&
+                x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
+        }
+
+        /// <summary>
+        /// Gets the possible handler for Wildcard matching and returns the registered
         /// handler in the module.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="module">The module.</param>
-        /// <returns>
-        /// A string that represents the registered path
-        /// </returns>
-        private static Map NormalizeWildcardPath(HttpListenerContext context, IWebModule module)
+        /// <returns>The map matching</returns>
+        private static Map GetHandlerFromWildcardPath(HttpListenerContext context, IWebModule module)
         {
             var path = context.RequestWilcardPath(module.Handlers
                 .Where(k => k.Path.Contains("/" + ModuleMap.AnyPath))

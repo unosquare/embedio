@@ -136,7 +136,7 @@
         public static string RequestWilcardPath(this HttpListenerContext context, string[] wildcardPaths)
         {
             var path = context.Request.Url.LocalPath.ToLowerInvariant();
-            
+
             var wildcardMatch = wildcardPaths.FirstOrDefault(p => // wildcard at the end
                 path.StartsWith(p.Substring(0, p.Length - ModuleMap.AnyPath.Length))
 
@@ -177,9 +177,7 @@
         /// <param name="key">The key.</param>
         /// <returns>A string that represents the value for the specified query string key</returns>
         public static string QueryString(this HttpListenerContext context, string key)
-        {
-            return context.InQueryString(key) ? context.Request.QueryString[key] : null;
-        }
+            => context.InQueryString(key) ? context.Request.QueryString[key] : null;
 
         /// <summary>
         /// Determines if a key exists within the Request's query string
@@ -188,9 +186,7 @@
         /// <param name="key">The key.</param>
         /// <returns>True if a key exists within the Request's query string; otherwise, false</returns>
         public static bool InQueryString(this HttpListenerContext context, string key)
-        {
-            return context.Request.QueryString.AllKeys.Contains(key);
-        }
+            => context.Request.QueryString.AllKeys.Contains(key);
 
         /// <summary>
         /// Retrieves the specified request the header.
@@ -232,6 +228,30 @@
                     return reader.ReadToEnd();
                 }
             }
+        }
+
+        /// <summary>
+        /// Requests the wildcard URL parameters.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="basePath">The base path.</param>
+        /// <returns></returns>
+        public static IEnumerable<string> RequestWildcardUrlParams(this HttpListenerContext context, string basePath)
+        {
+            return RequestWildcardUrlParams(context.RequestPath(), basePath);
+        }
+
+        /// <summary>
+        /// Requests the wildcard URL parameters.
+        /// </summary>
+        /// <param name="requestPath">The request path.</param>
+        /// <param name="basePath">The base path.</param>
+        /// <returns>The params from the request</returns>
+        public static string[] RequestWildcardUrlParams(string requestPath, string basePath)
+        {
+            var match = new System.Text.RegularExpressions.Regex(basePath.Replace("*", "(.*)")).Match(requestPath);
+
+            return match.Success ? match.Groups[1].Value.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries) : null;
         }
 
         #endregion
@@ -381,7 +401,7 @@
         /// <returns>A collection that represents KVPs from request data</returns>
         public static Dictionary<string, object> RequestFormDataDictionary(this HttpListenerContext context)
             => RequestFormDataDictionary(context.RequestBody());
-        
+
         #endregion
 
         #region Hashing and Compression Methods
@@ -394,7 +414,7 @@
         /// <param name="mode">The mode.</param>
         /// <returns>Block of bytes of compressed stream</returns>
         public static MemoryStream Compress(
-            this Stream buffer, 
+            this Stream buffer,
             CompressionMethod method = CompressionMethod.Gzip,
             CompressionMode mode = CompressionMode.Compress)
         {
@@ -410,7 +430,7 @@
                         {
                             buffer.CopyTo(compressor, 1024);
                             buffer.CopyTo(compressor);
-                            
+
                             // WebSocket use this
                             targetStream.Write(LastByte, 0, 1);
                             targetStream.Position = 0;
@@ -468,5 +488,48 @@
         }
 
         #endregion
+
+        internal static Uri ToUri(this string uriString)
+        {
+            Uri.TryCreate(
+                uriString, uriString.MaybeUri() ? UriKind.Absolute : UriKind.Relative, out var ret);
+
+            return ret;
+        }
+
+        internal static bool MaybeUri(this string value)
+        {
+            var idx = value?.IndexOf(':');
+
+            if (idx.HasValue == false || idx == -1)
+                return false;
+
+            return idx < 10 && value.Substring(0, idx.Value).IsPredefinedScheme();
+        }
+
+        internal static bool IsPredefinedScheme(this string value)
+        {
+            if (value == null || value.Length < 2)
+                return false;
+
+            var c = value[0];
+
+            switch (c)
+            {
+                case 'h':
+                    return value == "http" || value == "https";
+                case 'w':
+                    return value == "ws" || value == "wss";
+                case 'f':
+                    return value == "file" || value == "ftp";
+                case 'n':
+                    c = value[1];
+                    return c == 'e'
+                        ? value == "news" || value == "net.pipe" || value == "net.tcp"
+                        : value == "nntp";
+                default:
+                    return (c == 'g' && value == "gopher") || (c == 'm' && value == "mailto");
+            }
+        }
     }
 }

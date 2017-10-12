@@ -58,9 +58,7 @@
                     return context.JsonResponse(PeopleRepository.Database);
 
                 // otherwise, we need to parse the key and respond with the entity accordingly
-                int key;
-
-                if (int.TryParse(lastSegment, out key) && PeopleRepository.Database.Any(p => p.Key == key))
+                if (int.TryParse(lastSegment, out var key) && PeopleRepository.Database.Any(p => p.Key == key))
                 {
                     return context.JsonResponse(PeopleRepository.Database.FirstOrDefault(p => p.Key == key));
                 }
@@ -119,9 +117,7 @@
                     return context.JsonResponseAsync(PeopleRepository.Database);
 
                 // otherwise, we need to parse the key and respond with the entity accordingly
-                int key;
-
-                if (int.TryParse(lastSegment, out key) && PeopleRepository.Database.Any(p => p.Key == key))
+                if (int.TryParse(lastSegment, out var key) && PeopleRepository.Database.Any(p => p.Key == key))
                 {
                     return context.JsonResponseAsync(PeopleRepository.Database.FirstOrDefault(p => p.Key == key));
                 }

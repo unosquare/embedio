@@ -6,6 +6,7 @@ namespace Unosquare.Net
     using System.Linq;
     using System.Text;
     using System;
+    using Labs.EmbedIO;
     using Labs.EmbedIO.Constants;
     using Swan;
 
@@ -141,77 +142,6 @@ namespace Unosquare.Net
             // true: !(true ^ true) or !(false ^ false)
             // false: !(true ^ false) or !(false ^ true)
             return !(BitConverter.IsLittleEndian ^ (order == Endianness.Little));
-        }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="string"/> is a predefined scheme.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if <paramref name="value"/> is a predefined scheme; otherwise, <c>false</c>.
-        /// </returns>
-        /// <param name="value">
-        /// A <see cref="string"/> to test.
-        /// </param>
-        internal static bool IsPredefinedScheme(this string value)
-        {
-            if (value == null || value.Length < 2)
-                return false;
-
-            var c = value[0];
-
-            switch (c)
-            {
-                case 'h':
-                    return value == "http" || value == "https";
-                case 'w':
-                    return value == "ws" || value == "wss";
-                case 'f':
-                    return value == "file" || value == "ftp";
-                case 'n':
-                    c = value[1];
-                    return c == 'e'
-                        ? value == "news" || value == "net.pipe" || value == "net.tcp"
-                        : value == "nntp";
-                default:
-                    return (c == 'g' && value == "gopher") || (c == 'm' && value == "mailto");
-            }
-        }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="string"/> is a URI string.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if <paramref name="value"/> may be a URI string; otherwise, <c>false</c>.
-        /// </returns>
-        /// <param name="value">
-        /// A <see cref="string"/> to test.
-        /// </param>
-        internal static bool MaybeUri(this string value)
-        {
-            var idx = value?.IndexOf(':');
-
-            if (idx.HasValue == false || idx == -1)
-                return false;
-
-            return idx < 10 && value.Substring(0, idx.Value).IsPredefinedScheme();
-        }
-
-        /// <summary>
-        /// Converts the specified <see cref="string"/> to a <see cref="Uri"/>.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="Uri"/> converted from <paramref name="uriString"/>,
-        /// or <see langword="null"/> if <paramref name="uriString"/> isn't successfully converted.
-        /// </returns>
-        /// <param name="uriString">
-        /// A <see cref="string"/> to convert.
-        /// </param>
-        internal static Uri ToUri(this string uriString)
-        {
-            Uri.TryCreate(
-                uriString, uriString.MaybeUri() ? UriKind.Absolute : UriKind.Relative, out Uri ret);
-
-            return ret;
         }
 
         /// <summary>
