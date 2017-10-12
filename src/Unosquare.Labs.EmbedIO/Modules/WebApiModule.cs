@@ -53,7 +53,7 @@
         private readonly Dictionary<string, Dictionary<HttpVerbs, MethodCacheInstance>> _delegateMap
             =
             new Dictionary<string, Dictionary<HttpVerbs, MethodCacheInstance>>(
-                Strings.StandardStringComparer);      
+                Strings.StandardStringComparer);
 
         #endregion
 
@@ -74,8 +74,7 @@
                 if (path == null) return false;
 
                 // search the path and verb
-                if (!_delegateMap.TryGetValue(path, out Dictionary<HttpVerbs, MethodCacheInstance> methods) ||
-                    !methods.TryGetValue(verb, out MethodCacheInstance methodPair))
+                if (!_delegateMap.TryGetValue(path, out var methods) || !methods.TryGetValue(verb, out var methodPair))
                     throw new InvalidOperationException($"No method found for path {path} and verb {verb}.");
 
                 // ensure module does not return cached responses
@@ -120,7 +119,7 @@
         /// Gets the number of controller objects registered in this API
         /// </summary>
         public int ControllersCount => _controllerTypes.Count;
-        
+
         /// <summary>
         /// Registers the controller.
         /// </summary>
@@ -271,22 +270,10 @@
         /// <returns>A string that represents the registered path</returns>
         private string NormalizeWildcardPath(HttpVerbs verb, HttpListenerContext context)
         {
-            var path = context.RequestPath();
-
-            var wildcardPaths = _delegateMap.Keys
+            var path = context.RequestWilcardPath(_delegateMap.Keys
                 .Where(k => k.Contains("/" + ModuleMap.AnyPath))
                 .Select(s => s.ToLowerInvariant())
-                .ToArray();
-
-            var wildcardMatch = wildcardPaths.FirstOrDefault(p => // wildcard at the end
-                path.StartsWith(p.Substring(0, p.Length - ModuleMap.AnyPath.Length))
-
-                // wildcard in the middle so check both start/end
-                || (path.StartsWith(p.Substring(0, p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal)))
-                    && path.EndsWith(p.Substring(p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal) + 1))));
-
-            if (string.IsNullOrWhiteSpace(wildcardMatch) == false)
-                path = wildcardMatch;
+                .ToArray());
 
             if (_delegateMap.ContainsKey(path) == false)
                 return null;

@@ -127,6 +127,30 @@
             => context.Request.Url.LocalPath.ToLowerInvariant();
 
         /// <summary>
+        /// Gets the request path for the specified context using a wildcard paths to 
+        /// match.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="wildcardPaths">The wildcard paths.</param>
+        /// <returns>Path for the specified context</returns>
+        public static string RequestWilcardPath(this HttpListenerContext context, string[] wildcardPaths)
+        {
+            var path = context.Request.Url.LocalPath.ToLowerInvariant();
+            
+            var wildcardMatch = wildcardPaths.FirstOrDefault(p => // wildcard at the end
+                path.StartsWith(p.Substring(0, p.Length - ModuleMap.AnyPath.Length))
+
+                // wildcard in the middle so check both start/end
+                || (path.StartsWith(p.Substring(0, p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal)))
+                    && path.EndsWith(p.Substring(p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal) + 1))));
+
+            if (string.IsNullOrWhiteSpace(wildcardMatch) == false)
+                path = wildcardMatch;
+
+            return path;
+        }
+
+        /// <summary>
         /// Gets the request path for the specified context case sensitive.
         /// </summary>
         /// <param name="context">The context.</param>

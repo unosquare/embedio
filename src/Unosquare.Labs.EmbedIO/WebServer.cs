@@ -18,7 +18,7 @@
     /// <summary>
     /// Represents our tiny web server used to handle requests
     /// </summary>
-    public class WebServer 
+    public class WebServer
         : IDisposable
     {
         private readonly List<IWebModule> _modules = new List<IWebModule>(4);
@@ -31,7 +31,7 @@
         {
             // placeholder
         }
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
         /// </summary>
@@ -53,7 +53,7 @@
         {
             // placeholder
         }
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
         /// NOTE: urlPrefix must be specified as something similar to: http://localhost:9696/
@@ -203,12 +203,23 @@
             foreach (var module in Modules)
             {
                 // Establish the handler
-                var handler = module.Handlers.FirstOrDefault(x =>
-                    string.Equals(
-                        x.Path, 
-                        x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath(),
-                        StringComparison.OrdinalIgnoreCase) &&
-                        x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
+                Map handler;
+
+                // Only wildcard is process in web server, Regex is used inside WebAPI
+                switch (RoutingStrategy)
+                {
+                    case RoutingStrategy.Wildcard:
+                        handler = NormalizeWildcardPath(context, module);
+                        break;
+                    default:
+                        handler = module.Handlers.FirstOrDefault(x =>
+                            string.Equals(
+                                x.Path,
+                                x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath(),
+                                StringComparison.OrdinalIgnoreCase) &&
+                            x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
+                        break;
+                }
 
                 if (handler?.ResponseHandler == null)
                     continue;
@@ -322,7 +333,7 @@
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        
+
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
@@ -344,6 +355,28 @@
             }
 
             "Listener Closed.".Info(nameof(WebServer));
+        }
+
+        /// <summary>
+        /// Normalizes a URL request path meant for Wildcard matching and returns the registered
+        /// handler in the module.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="module">The module.</param>
+        /// <returns>
+        /// A string that represents the registered path
+        /// </returns>
+        private static Map NormalizeWildcardPath(HttpListenerContext context, IWebModule module)
+        {
+            var path = context.RequestWilcardPath(module.Handlers
+                .Where(k => k.Path.Contains("/" + ModuleMap.AnyPath))
+                .Select(s => s.Path.ToLowerInvariant())
+                .ToArray());
+            var verb = context.RequestVerb();
+
+            return module.Handlers.FirstOrDefault(x =>
+                (x.Path == ModuleMap.AnyPath || x.Path == path) &&
+                (x.Verb == HttpVerbs.Any || x.Verb == verb));
         }
 
         /// <summary>
@@ -385,7 +418,7 @@
                 {
                     "No module generated a response. Sending 404 - Not Found".Error();
                     var responseBytes = System.Text.Encoding.UTF8.GetBytes(Responses.Response404Html);
-                    context.Response.StatusCode = (int)System.Net.HttpStatusCode.NotFound;
+                    context.Response.StatusCode = (int) System.Net.HttpStatusCode.NotFound;
                     await context.Response.OutputStream.WriteAsync(responseBytes, 0, responseBytes.Length, ct);
                 }
             }
