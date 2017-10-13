@@ -7,7 +7,7 @@ notifications:
 - provider: Slack
   auth_token:
     secure: Q+xg4/yU5OR9BVF14cw4yZ+3qlhMeYDsAhUQyOIszmF1mHvq44tIvQpWByBJCd/cgUIZk3SwBpk4hh1MrkQIk6rnaOZ2LNBTev4zrq36oXk=
-  channel: '#general'
+  channel: '#builds'
 environment:
   # Don't report back to the mothership
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
