@@ -12,7 +12,7 @@
     using TestObjects;
 
     [TestFixture]
-    public class RegexControllerRoutingTest
+    public class RegexWebApiModuleTest
     {
         protected WebServer WebServer;
         protected string WebServerUrl;
