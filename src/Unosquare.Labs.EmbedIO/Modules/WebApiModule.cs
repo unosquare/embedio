@@ -40,14 +40,6 @@
     {
         #region Immutable Declarations
 
-        private const string RegexRouteReplace = "(.*)";
-
-        private static readonly Regex RouteParamRegex = new Regex(@"\{[^\/]*\}",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
         private readonly List<Type> _controllerTypes = new List<Type>();
 
         private readonly Dictionary<string, Dictionary<HttpVerbs, MethodCacheInstance>> _delegateMap
@@ -214,47 +206,19 @@
 
             foreach (var route in _delegateMap.Keys)
             {
-                var regex = new Regex(RouteParamRegex.Replace(route, RegexRouteReplace));
-                var match = regex.Match(path);
+                var urlParam =
+                    EmbedIO.Extensions.RequestRegexUrlParams(path, route,
+                        () => !_delegateMap[route].Keys.Contains(verb));
 
-                var pathParts = route.Split('/');
-
-                if (!match.Success || !_delegateMap[route].Keys.Contains(verb))
+                if (urlParam?.Any() == true)
                 {
-                    var optionalPath = RouteOptionalParamRegex.Replace(route, string.Empty);
-                    var tempPath = path;
-
-                    if (optionalPath.Last() == '/' && path.Last() != '/')
+                    foreach (var kvp in urlParam)
                     {
-                        tempPath += "/";
+                        routeParams.Add(kvp.Key, kvp.Value);
                     }
 
-                    if (optionalPath == tempPath)
-                    {
-                        foreach (var pathPart in pathParts.Where(x => x.StartsWith("{")))
-                        {
-                            routeParams.Add(
-                                pathPart.Replace("{", string.Empty)
-                                    .Replace("}", string.Empty)
-                                    .Replace("?", string.Empty), null);
-                        }
-
-                        return route;
-                    }
-
-                    continue;
+                    return route;
                 }
-
-                var i = 1; // match group index
-
-                foreach (var pathPart in pathParts.Where(x => x.StartsWith("{")))
-                {
-                    routeParams.Add(
-                        pathPart.Replace("{", string.Empty).Replace("}", string.Empty).Replace("?", string.Empty),
-                        match.Groups[i++].Value);
-                }
-
-                return route;
             }
 
             return null;

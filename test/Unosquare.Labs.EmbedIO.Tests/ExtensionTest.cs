@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using NUnit.Framework;
 using Unosquare.Labs.EmbedIO.Constants;
 
 namespace Unosquare.Labs.EmbedIO.Tests
@@ -6,6 +7,8 @@ namespace Unosquare.Labs.EmbedIO.Tests
     [TestFixture]
     public class ExtensionTest
     {
+        private const string DefaultId = "id";
+
         [TestCase(CompressionMethod.Gzip)]
         [TestCase(CompressionMethod.Deflate)]
         [TestCase(CompressionMethod.None)]
@@ -50,5 +53,50 @@ namespace Unosquare.Labs.EmbedIO.Tests
             Assert.AreEqual(expected.Length, result.Length);
             Assert.AreEqual(expected[0], result[0]);
         }
+
+        [Test]
+        public void RequestRegexUrlParamsWithLastParams()
+        {
+            var result = Extensions.RequestRegexUrlParams("/data/1","/data/{id}");
+            var expected = new Dictionary<string, object> { { DefaultId, "1" } };
+
+            Assert.IsTrue(result.ContainsKey(DefaultId));
+            Assert.AreEqual(expected[DefaultId], result[DefaultId]);
+        }
+        
+        [Test]
+        public void RequestRegexUrlParamsWithOptionalLastParams()
+        {
+            var result = Extensions.RequestRegexUrlParams("/data/1", "/data/{id?}");
+            var expected = new Dictionary<string, object> { { DefaultId, "1" } };
+
+            Assert.IsTrue(result.ContainsKey(DefaultId));
+            Assert.AreEqual(expected[DefaultId], result[DefaultId]);
+        }
+
+        [Test]
+        public void RequestRegexUrlParamsWithOptionalLastParamsNullable()
+        {
+            var result = Extensions.RequestRegexUrlParams("/data/", "/data/{id?}");
+            var expected = new Dictionary<string, object> { { DefaultId, string.Empty } };
+
+            Assert.IsTrue(result.ContainsKey(DefaultId));
+            Assert.AreEqual(expected[DefaultId], result[DefaultId]);
+        }
+
+
+        [Test]
+        public void RequestRegexUrlParamsWithMultipleParams()
+        {
+            var result = Extensions.RequestRegexUrlParams("/data/1/2", "/data/{id}/{anotherId}");
+            var expected = new Dictionary<string, object> { { DefaultId, "1" }, { "anotherId", 2 } };
+
+            Assert.IsTrue(result.ContainsKey(DefaultId));
+            Assert.AreEqual(expected[DefaultId], result[DefaultId]);
+
+            Assert.IsTrue(result.ContainsKey("anotherId"));
+            Assert.AreEqual(expected["anotherId"], result["anotherId"]);
+        }
+
     }
 }

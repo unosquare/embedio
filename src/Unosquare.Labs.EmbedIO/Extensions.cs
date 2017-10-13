@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
+    using System.Text.RegularExpressions;
     using Constants;
     using System.Collections.Generic;
     using System;
@@ -23,8 +24,16 @@
     {
         #region Constants
 
-        private static readonly byte[] LastByte = { 0x00 };
+        private const string RegexRouteReplace = "(.*)";
 
+        private static readonly byte[] LastByte = {0x00};
+
+        private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private static readonly Regex RouteParamRegex = new Regex(@"\{[^\/]*\}",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        
         #endregion
 
         #region Session Management Methods
@@ -235,23 +244,83 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="basePath">The base path.</param>
-        /// <returns></returns>
-        public static IEnumerable<string> RequestWildcardUrlParams(this HttpListenerContext context, string basePath)
-        {
-            return RequestWildcardUrlParams(context.RequestPath(), basePath);
-        }
+        /// <returns>The params from the request.</returns>
+        public static string[] RequestWildcardUrlParams(this HttpListenerContext context, string basePath)
+            => RequestWildcardUrlParams(context.RequestPath(), basePath);
 
         /// <summary>
         /// Requests the wildcard URL parameters.
         /// </summary>
         /// <param name="requestPath">The request path.</param>
         /// <param name="basePath">The base path.</param>
-        /// <returns>The params from the request</returns>
+        /// <returns>The params from the request.</returns>
         public static string[] RequestWildcardUrlParams(string requestPath, string basePath)
         {
-            var match = new System.Text.RegularExpressions.Regex(basePath.Replace("*", "(.*)")).Match(requestPath);
+            var match = new Regex(basePath.Replace("*", RegexRouteReplace)).Match(requestPath);
 
-            return match.Success ? match.Groups[1].Value.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries) : null;
+            return match.Success
+                ? match.Groups[1].Value.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries)
+                : null;
+        }
+
+        /// <summary>
+        /// Requests the regex URL parameters.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="basePath">The base path.</param>
+        /// <returns>The params from the request.</returns>
+        public static Dictionary<string, object> RequestRegexUrlParams(this HttpListenerContext context,
+            string basePath)
+            => RequestRegexUrlParams(context.RequestPath(), basePath);
+
+        /// <summary>
+        /// Requests the regex URL parameters.
+        /// </summary>
+        /// <param name="requestPath">The request path.</param>
+        /// <param name="basePath">The base path.</param>
+        /// <param name="validateFunc">The validate function.</param>
+        /// <returns>
+        /// The params from the request.
+        /// </returns>
+        public static Dictionary<string, object> RequestRegexUrlParams(
+            string requestPath, 
+            string basePath,
+            Func<bool> validateFunc = null)
+        {
+            if (validateFunc == null) validateFunc = () => false;
+            
+            var regex = new Regex(RouteParamRegex.Replace(basePath, RegexRouteReplace));
+            var match = regex.Match(requestPath);
+
+            var pathParts = basePath.Split('/');
+
+            if (!match.Success || validateFunc())
+            {
+                var optionalPath = RouteOptionalParamRegex.Replace(basePath, string.Empty);
+                var tempPath = requestPath;
+
+                if (optionalPath.Last() == '/' && requestPath.Last() != '/')
+                {
+                    tempPath += "/";
+                }
+
+                if (optionalPath == tempPath)
+                {
+                    return pathParts
+                        .Where(x => x.StartsWith("{"))
+                        .ToDictionary(x => x.CleanParamId(), x => (object) null);
+                }
+            }
+            else
+            {
+                var i = 1; // match group index
+
+                return pathParts
+                    .Where(x => x.StartsWith("{"))
+                    .ToDictionary(x => x.CleanParamId(), x => (object) match.Groups[i++].Value);
+            }
+
+            return null;
         }
 
         #endregion
@@ -283,7 +352,8 @@
         {
             if (useAbsoluteUrl)
             {
-                var hostPath = context.Request.Url.GetComponents(UriComponents.Scheme | UriComponents.StrongAuthority, UriFormat.Unescaped);
+                var hostPath = context.Request.Url.GetComponents(UriComponents.Scheme | UriComponents.StrongAuthority,
+                    UriFormat.Unescaped);
                 location = hostPath + location;
             }
 
@@ -342,7 +412,10 @@
         /// <param name="json">The json.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>True that represents the correct async write operation</returns>
-        public static async Task<bool> JsonResponseAsync(this HttpListenerContext context, string json, CancellationToken cancellationToken = default(CancellationToken))
+        public static async Task<bool> JsonResponseAsync(
+            this HttpListenerContext context, 
+            string json,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             var buffer = Encoding.UTF8.GetBytes(json);
 
@@ -479,7 +552,8 @@
         /// <param name="method">The method.</param>
         /// <param name="mode">The mode.</param>
         /// <returns>Block of bytes of compressed stream </returns>
-        public static byte[] Compress(this byte[] buffer, CompressionMethod method = CompressionMethod.Gzip, CompressionMode mode = CompressionMode.Compress)
+        public static byte[] Compress(this byte[] buffer, CompressionMethod method = CompressionMethod.Gzip,
+            CompressionMode mode = CompressionMode.Compress)
         {
             using (var stream = new MemoryStream(buffer))
             {
@@ -488,6 +562,11 @@
         }
 
         #endregion
+
+        internal static string CleanParamId(this string val)
+            => val.Replace("{", string.Empty)
+                .Replace("}", string.Empty)
+                .Replace("?", string.Empty);
 
         internal static Uri ToUri(this string uriString)
         {
