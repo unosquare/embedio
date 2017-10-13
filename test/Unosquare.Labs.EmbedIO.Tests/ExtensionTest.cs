@@ -89,7 +89,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
         public void RequestRegexUrlParamsWithMultipleParams()
         {
             var result = Extensions.RequestRegexUrlParams("/data/1/2", "/data/{id}/{anotherId}");
-            var expected = new Dictionary<string, object> { { DefaultId, "1" }, { "anotherId", 2 } };
+            var expected = new Dictionary<string, object> { { DefaultId, "1" }, { "anotherId", "2" } };
 
             Assert.IsTrue(result.ContainsKey(DefaultId));
             Assert.AreEqual(expected[DefaultId], result[DefaultId]);
@@ -98,5 +98,12 @@ namespace Unosquare.Labs.EmbedIO.Tests
             Assert.AreEqual(expected["anotherId"], result["anotherId"]);
         }
 
+        [Test]
+        public void RequestRegexUrlParamsWithoutParams()
+        {
+            var result = Extensions.RequestRegexUrlParams("/data/", "/data/");
+            
+            Assert.IsTrue(result.Keys.Count == 0);
+        }
     }
 }

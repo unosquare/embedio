@@ -17,6 +17,12 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
         public const string RelativePath = "api/";
         public int ErrorCode = (int) System.Net.HttpStatusCode.InternalServerError;
 
+        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "empty")]
+        public bool GetEmpty(WebServer server, HttpListenerContext context)
+        {
+            return context.JsonResponse(new { Ok = true });
+        }
+
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regex/{id}")]
         public bool GetPerson(WebServer server, HttpListenerContext context, int id)
         {

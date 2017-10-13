@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
+    using System.Net.Http;
     using Constants;
     using NUnit.Framework;
     using Swan.Formatters;
@@ -26,6 +27,15 @@
                 new WebServer(WebServerUrl, RoutingStrategy.Regex)
                     .WithWebApiController<TestRegexController>();
             WebServer.RunAsync();
+        }
+
+        [Test]
+        public async Task GetJsonDataWithoutRegex()
+        {
+            var http = new HttpClient();
+            var jsonString = await http.GetStringAsync(WebServerUrl + TestRegexController.RelativePath + "empty");
+
+            Assert.IsNotEmpty(jsonString);
         }
         
         [Test]

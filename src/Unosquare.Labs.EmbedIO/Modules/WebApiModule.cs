@@ -206,19 +206,16 @@
 
             foreach (var route in _delegateMap.Keys)
             {
-                var urlParam =
-                    EmbedIO.Extensions.RequestRegexUrlParams(path, route,
-                        () => !_delegateMap[route].Keys.Contains(verb));
+                var urlParam = EmbedIO.Extensions.RequestRegexUrlParams(path, route, () => !_delegateMap[route].Keys.Contains(verb));
 
-                if (urlParam?.Any() == true)
+                if (urlParam == null) continue;
+
+                foreach (var kvp in urlParam)
                 {
-                    foreach (var kvp in urlParam)
-                    {
-                        routeParams.Add(kvp.Key, kvp.Value);
-                    }
-
-                    return route;
+                    routeParams.Add(kvp.Key, kvp.Value);
                 }
+
+                return route;
             }
 
             return null;

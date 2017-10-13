@@ -26,14 +26,14 @@
 
         private const string RegexRouteReplace = "(.*)";
 
-        private static readonly byte[] LastByte = {0x00};
+        private static readonly byte[] LastByte = { 0x00 };
 
         private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex RouteParamRegex = new Regex(@"\{[^\/]*\}",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        
+
         #endregion
 
         #region Session Management Methods
@@ -259,7 +259,7 @@
             var match = new Regex(basePath.Replace("*", RegexRouteReplace)).Match(requestPath);
 
             return match.Success
-                ? match.Groups[1].Value.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries)
+                ? match.Groups[1].Value.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries)
                 : null;
         }
 
@@ -283,12 +283,13 @@
         /// The params from the request.
         /// </returns>
         public static Dictionary<string, object> RequestRegexUrlParams(
-            string requestPath, 
+            string requestPath,
             string basePath,
             Func<bool> validateFunc = null)
         {
             if (validateFunc == null) validateFunc = () => false;
-            
+            if (requestPath == basePath && !validateFunc()) return new Dictionary<string, object>();
+
             var regex = new Regex(RouteParamRegex.Replace(basePath, RegexRouteReplace));
             var match = regex.Match(requestPath);
 
@@ -308,7 +309,7 @@
                 {
                     return pathParts
                         .Where(x => x.StartsWith("{"))
-                        .ToDictionary(x => x.CleanParamId(), x => (object) null);
+                        .ToDictionary(x => x.CleanParamId(), x => (object)null);
                 }
             }
             else
@@ -317,7 +318,7 @@
 
                 return pathParts
                     .Where(x => x.StartsWith("{"))
-                    .ToDictionary(x => x.CleanParamId(), x => (object) match.Groups[i++].Value);
+                    .ToDictionary(x => x.CleanParamId(), x => (object)match.Groups[i++].Value);
             }
 
             return null;
@@ -413,7 +414,7 @@
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>True that represents the correct async write operation</returns>
         public static async Task<bool> JsonResponseAsync(
-            this HttpListenerContext context, 
+            this HttpListenerContext context,
             string json,
             CancellationToken cancellationToken = default(CancellationToken))
         {
