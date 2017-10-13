@@ -211,6 +211,9 @@
                     case RoutingStrategy.Wildcard:
                         handler = GetHandlerFromWildcardPath(context, module);
                         break;
+                    case RoutingStrategy.Regex:
+                        handler = GetHandlerFromRegexPath(context, module);
+                        break;
                     default:
                         handler = GetHandlerFromPath(context, module);
                         break;
@@ -351,13 +354,7 @@
 
             "Listener Closed.".Info(nameof(WebServer));
         }
-
-        /// <summary>
-        /// Gets the possible handler from the module.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="module">The module.</param>
-        /// <returns>The map matching</returns>
+        
         private static Map GetHandlerFromPath(HttpListenerContext context, IWebModule module)
         {
             return module.Handlers.FirstOrDefault(x =>
@@ -368,24 +365,23 @@
                 x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
         }
 
-        /// <summary>
-        /// Gets the possible handler for Wildcard matching and returns the registered
-        /// handler in the module.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="module">The module.</param>
-        /// <returns>The map matching</returns>
+        private static Map GetHandlerFromRegexPath(HttpListenerContext context, IWebModule module)
+        {
+            return module.Handlers.FirstOrDefault(x =>
+                (x.Path == ModuleMap.AnyPath || context.RequestRegexUrlParams(x.Path) != null) &&
+                (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
+        }
+
         private static Map GetHandlerFromWildcardPath(HttpListenerContext context, IWebModule module)
         {
             var path = context.RequestWilcardPath(module.Handlers
                 .Where(k => k.Path.Contains("/" + ModuleMap.AnyPath))
                 .Select(s => s.Path.ToLowerInvariant())
                 .ToArray());
-            var verb = context.RequestVerb();
 
             return module.Handlers.FirstOrDefault(x =>
                 (x.Path == ModuleMap.AnyPath || x.Path == path) &&
-                (x.Verb == HttpVerbs.Any || x.Verb == verb));
+                (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
         }
 
         /// <summary>

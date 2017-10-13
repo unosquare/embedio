@@ -1,16 +1,14 @@
-﻿namespace Unosquare.Labs.EmbedIO.Tests
-{
-    using System.Net.Http;
-    using Constants;
-    using NUnit.Framework;
-    using Swan.Formatters;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Threading.Tasks;
-    using TestObjects;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using NUnit.Framework;
+using Unosquare.Labs.EmbedIO.Tests.TestObjects;
 
+namespace Unosquare.Labs.EmbedIO.Tests
+{
     [TestFixture]
     public class RegexRoutingTest
     {
@@ -23,72 +21,41 @@
             Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
 
             WebServerUrl = Resources.GetServerAddress();
-            WebServer =
-                new WebServer(WebServerUrl, RoutingStrategy.Regex)
-                    .WithWebApiController<TestRegexController>();
+            // using default wildcard
+            WebServer = new WebServer(WebServerUrl, Constants.RoutingStrategy.Regex);
+            WebServer.RegisterModule(new TestRoutingModule());
             WebServer.RunAsync();
         }
 
         [Test]
-        public async Task GetJsonDataWithoutRegex()
+        public async Task GetDataWithoutRegex()
         {
-            var http = new HttpClient();
-            var jsonString = await http.GetStringAsync(WebServerUrl + TestRegexController.RelativePath + "empty");
+            var client = new HttpClient();
 
-            Assert.IsNotEmpty(jsonString);
-        }
-        
-        [Test]
-        public async Task GetJsonDataWithRegexId()
-        {
-            await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regex/1");
+            var call = await client.GetStringAsync($"{WebServerUrl}empty");
+
+            Assert.AreEqual("data", call);
         }
 
         [Test]
-        public async Task GetJsonDataWithOptRegexId()
+        public async Task GetDataWithRegex()
         {
-            // using null value
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestRegexController.RelativePath + "regexopt");
+            var client = new HttpClient();
 
-            using (var response = (HttpWebResponse)await request.GetResponseAsync())
-            {
-                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+            var call = await client.GetStringAsync($"{WebServerUrl}data/1");
 
-                var jsonBody = new StreamReader(response.GetResponseStream()).ReadToEnd();
-
-                Assert.IsNotNull(jsonBody, "Json Body is not null");
-                Assert.IsNotEmpty(jsonBody, "Json Body is not empty");
-
-                var remoteList = Json.Deserialize<List<Person>>(jsonBody);
-
-                Assert.IsNotNull(remoteList, "Json Object is not null");
-                Assert.AreEqual(remoteList.Count, PeopleRepository.Database.Count, "Remote list count equals local list");
-            }
-
-            // using a value
-            await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regexopt/1");
+            Assert.AreEqual("1", call);
         }
 
-        [Test]
-        public async Task GetJsonDatAsyncWithRegexId()
-        {
-            await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regexAsync/1");
-        }
 
         [Test]
-        public async Task GetJsonDataWithRegexDate()
+        public async Task GetDataWithMultipleRegex()
         {
-            var person = PeopleRepository.Database.First();
-            await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regexdate/" +
-                           person.DoB.ToString("yyyy-MM-dd"));
-        }
+            var client = new HttpClient();
 
-        [Test]
-        public async Task GetJsonDataWithRegexWithTwoParams()
-        {
-            var person = PeopleRepository.Database.First();
-            await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regextwo/" +
-                           person.MainSkill + "/" + person.Age);
+            var call = await client.GetStringAsync($"{WebServerUrl}data/1/asdasda/dasdasasda");
+
+            Assert.AreEqual("dasdasasda", call);
         }
 
         [TearDown]
