@@ -3,7 +3,7 @@
     {
       "src": [
         {
-          "files": [ "src/Unosquare.Labs.EmbedIO/Unosquare.Labs.EmbedIO.csproj" ],
+          "files": [ "src/Unosquare.Labs.EmbedIO/**/*.cs" ],
           "exclude": [ "**/bin/**", "**/obj/**" ]
         }
       ],
