@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
+    using System.Text.RegularExpressions;
     using Constants;
     using System.Collections.Generic;
     using System;
@@ -23,7 +24,15 @@
     {
         #region Constants
 
+        private const string RegexRouteReplace = "(.*)";
+
         private static readonly byte[] LastByte = { 0x00 };
+
+        private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private static readonly Regex RouteParamRegex = new Regex(@"\{[^\/]*\}",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         #endregion
 
@@ -127,6 +136,30 @@
             => context.Request.Url.LocalPath.ToLowerInvariant();
 
         /// <summary>
+        /// Gets the request path for the specified context using a wildcard paths to 
+        /// match.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="wildcardPaths">The wildcard paths.</param>
+        /// <returns>Path for the specified context</returns>
+        public static string RequestWilcardPath(this HttpListenerContext context, string[] wildcardPaths)
+        {
+            var path = context.Request.Url.LocalPath.ToLowerInvariant();
+
+            var wildcardMatch = wildcardPaths.FirstOrDefault(p => // wildcard at the end
+                path.StartsWith(p.Substring(0, p.Length - ModuleMap.AnyPath.Length))
+
+                // wildcard in the middle so check both start/end
+                || (path.StartsWith(p.Substring(0, p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal)))
+                    && path.EndsWith(p.Substring(p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal) + 1))));
+
+            if (string.IsNullOrWhiteSpace(wildcardMatch) == false)
+                path = wildcardMatch;
+
+            return path;
+        }
+
+        /// <summary>
         /// Gets the request path for the specified context case sensitive.
         /// </summary>
         /// <param name="context">The context.</param>
@@ -153,9 +186,7 @@
         /// <param name="key">The key.</param>
         /// <returns>A string that represents the value for the specified query string key</returns>
         public static string QueryString(this HttpListenerContext context, string key)
-        {
-            return context.InQueryString(key) ? context.Request.QueryString[key] : null;
-        }
+            => context.InQueryString(key) ? context.Request.QueryString[key] : null;
 
         /// <summary>
         /// Determines if a key exists within the Request's query string
@@ -164,9 +195,7 @@
         /// <param name="key">The key.</param>
         /// <returns>True if a key exists within the Request's query string; otherwise, false</returns>
         public static bool InQueryString(this HttpListenerContext context, string key)
-        {
-            return context.Request.QueryString.AllKeys.Contains(key);
-        }
+            => context.Request.QueryString.AllKeys.Contains(key);
 
         /// <summary>
         /// Retrieves the specified request the header.
@@ -210,6 +239,91 @@
             }
         }
 
+        /// <summary>
+        /// Requests the wildcard URL parameters.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="basePath">The base path.</param>
+        /// <returns>The params from the request.</returns>
+        public static string[] RequestWildcardUrlParams(this HttpListenerContext context, string basePath)
+            => RequestWildcardUrlParams(context.RequestPath(), basePath);
+
+        /// <summary>
+        /// Requests the wildcard URL parameters.
+        /// </summary>
+        /// <param name="requestPath">The request path.</param>
+        /// <param name="basePath">The base path.</param>
+        /// <returns>The params from the request.</returns>
+        public static string[] RequestWildcardUrlParams(string requestPath, string basePath)
+        {
+            var match = new Regex(basePath.Replace("*", RegexRouteReplace)).Match(requestPath);
+
+            return match.Success
+                ? match.Groups[1].Value.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries)
+                : null;
+        }
+
+        /// <summary>
+        /// Requests the regex URL parameters.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="basePath">The base path.</param>
+        /// <returns>The params from the request.</returns>
+        public static Dictionary<string, object> RequestRegexUrlParams(this HttpListenerContext context,
+            string basePath)
+            => RequestRegexUrlParams(context.RequestPath(), basePath);
+
+        /// <summary>
+        /// Requests the regex URL parameters.
+        /// </summary>
+        /// <param name="requestPath">The request path.</param>
+        /// <param name="basePath">The base path.</param>
+        /// <param name="validateFunc">The validate function.</param>
+        /// <returns>
+        /// The params from the request.
+        /// </returns>
+        public static Dictionary<string, object> RequestRegexUrlParams(
+            string requestPath,
+            string basePath,
+            Func<bool> validateFunc = null)
+        {
+            if (validateFunc == null) validateFunc = () => false;
+            if (requestPath == basePath && !validateFunc()) return new Dictionary<string, object>();
+
+            var regex = new Regex(RouteParamRegex.Replace(basePath, RegexRouteReplace));
+            var match = regex.Match(requestPath);
+
+            var pathParts = basePath.Split('/');
+
+            if (!match.Success || validateFunc())
+            {
+                var optionalPath = RouteOptionalParamRegex.Replace(basePath, string.Empty);
+                var tempPath = requestPath;
+
+                if (optionalPath.Last() == '/' && requestPath.Last() != '/')
+                {
+                    tempPath += "/";
+                }
+
+                if (optionalPath == tempPath)
+                {
+                    return pathParts
+                        .Where(x => x.StartsWith("{"))
+                        .ToDictionary(x => x.CleanParamId(), x => (object)null);
+                }
+            }
+            else
+            {
+                var i = 1; // match group index
+
+                return pathParts
+                    .Where(x => x.StartsWith("{"))
+                    .ToDictionary(x => x.CleanParamId(), x => (object)match.Groups[i++].Value);
+            }
+
+            return null;
+        }
+
         #endregion
 
         #region HTTP Response Manipulation Methods
@@ -239,7 +353,8 @@
         {
             if (useAbsoluteUrl)
             {
-                var hostPath = context.Request.Url.GetComponents(UriComponents.Scheme | UriComponents.StrongAuthority, UriFormat.Unescaped);
+                var hostPath = context.Request.Url.GetComponents(UriComponents.Scheme | UriComponents.StrongAuthority,
+                    UriFormat.Unescaped);
                 location = hostPath + location;
             }
 
@@ -298,7 +413,10 @@
         /// <param name="json">The json.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>True that represents the correct async write operation</returns>
-        public static async Task<bool> JsonResponseAsync(this HttpListenerContext context, string json, CancellationToken cancellationToken = default(CancellationToken))
+        public static async Task<bool> JsonResponseAsync(
+            this HttpListenerContext context,
+            string json,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             var buffer = Encoding.UTF8.GetBytes(json);
 
@@ -357,7 +475,7 @@
         /// <returns>A collection that represents KVPs from request data</returns>
         public static Dictionary<string, object> RequestFormDataDictionary(this HttpListenerContext context)
             => RequestFormDataDictionary(context.RequestBody());
-        
+
         #endregion
 
         #region Hashing and Compression Methods
@@ -370,7 +488,7 @@
         /// <param name="mode">The mode.</param>
         /// <returns>Block of bytes of compressed stream</returns>
         public static MemoryStream Compress(
-            this Stream buffer, 
+            this Stream buffer,
             CompressionMethod method = CompressionMethod.Gzip,
             CompressionMode mode = CompressionMode.Compress)
         {
@@ -386,7 +504,7 @@
                         {
                             buffer.CopyTo(compressor, 1024);
                             buffer.CopyTo(compressor);
-                            
+
                             // WebSocket use this
                             targetStream.Write(LastByte, 0, 1);
                             targetStream.Position = 0;
@@ -435,7 +553,8 @@
         /// <param name="method">The method.</param>
         /// <param name="mode">The mode.</param>
         /// <returns>Block of bytes of compressed stream </returns>
-        public static byte[] Compress(this byte[] buffer, CompressionMethod method = CompressionMethod.Gzip, CompressionMode mode = CompressionMode.Compress)
+        public static byte[] Compress(this byte[] buffer, CompressionMethod method = CompressionMethod.Gzip,
+            CompressionMode mode = CompressionMode.Compress)
         {
             using (var stream = new MemoryStream(buffer))
             {
@@ -444,5 +563,53 @@
         }
 
         #endregion
+
+        internal static string CleanParamId(this string val)
+            => val.Replace("{", string.Empty)
+                .Replace("}", string.Empty)
+                .Replace("?", string.Empty);
+
+        internal static Uri ToUri(this string uriString)
+        {
+            Uri.TryCreate(
+                uriString, uriString.MaybeUri() ? UriKind.Absolute : UriKind.Relative, out var ret);
+
+            return ret;
+        }
+
+        internal static bool MaybeUri(this string value)
+        {
+            var idx = value?.IndexOf(':');
+
+            if (idx.HasValue == false || idx == -1)
+                return false;
+
+            return idx < 10 && value.Substring(0, idx.Value).IsPredefinedScheme();
+        }
+
+        internal static bool IsPredefinedScheme(this string value)
+        {
+            if (value == null || value.Length < 2)
+                return false;
+
+            var c = value[0];
+
+            switch (c)
+            {
+                case 'h':
+                    return value == "http" || value == "https";
+                case 'w':
+                    return value == "ws" || value == "wss";
+                case 'f':
+                    return value == "file" || value == "ftp";
+                case 'n':
+                    c = value[1];
+                    return c == 'e'
+                        ? value == "news" || value == "net.pipe" || value == "net.tcp"
+                        : value == "nntp";
+                default:
+                    return (c == 'g' && value == "gopher") || (c == 'm' && value == "mailto");
+            }
+        }
     }
 }

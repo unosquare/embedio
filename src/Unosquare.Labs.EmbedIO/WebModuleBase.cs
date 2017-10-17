@@ -16,7 +16,7 @@
     /// </summary>
     public abstract class WebModuleBase : IWebModule
     {
-        private readonly CancellationTokenSource cts = new CancellationTokenSource();
+        private readonly CancellationTokenSource _cts = new CancellationTokenSource();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebModuleBase"/> class.
@@ -28,8 +28,8 @@
             var watchDogTask = Task.Factory.StartNew(async () =>
             {
                 RunWatchdog();
-                await Task.Delay(WatchdogInterval, cts.Token);
-            }, cts.Token);
+                await Task.Delay(WatchdogInterval, _cts.Token);
+            }, _cts.Token);
         }
 
         /// <summary>
@@ -37,7 +37,7 @@
         /// </summary>
         ~WebModuleBase()
         {
-            cts.Cancel();
+            _cts.Cancel();
         }
 
         /// <summary>

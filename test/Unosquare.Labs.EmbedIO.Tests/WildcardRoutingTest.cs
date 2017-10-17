@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using NUnit.Framework;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using NUnit.Framework;
 using Unosquare.Labs.EmbedIO.Tests.TestObjects;
 
 namespace Unosquare.Labs.EmbedIO.Tests
 {
     [TestFixture]
-    public class RegexRoutingTest
+    public class WildcardRoutingTest
     {
         protected WebServer WebServer;
         protected string WebServerUrl;
@@ -22,13 +18,13 @@ namespace Unosquare.Labs.EmbedIO.Tests
 
             WebServerUrl = Resources.GetServerAddress();
             // using default wildcard
-            WebServer = new WebServer(WebServerUrl, Constants.RoutingStrategy.Regex);
+            WebServer = new WebServer(WebServerUrl);
             WebServer.RegisterModule(new TestRoutingModule());
             WebServer.RunAsync();
         }
 
         [Test]
-        public async Task GetDataWithoutRegex()
+        public async Task GetDataWithoutWildcard()
         {
             var client = new HttpClient();
 
@@ -38,7 +34,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
         }
 
         [Test]
-        public async Task GetDataWithRegex()
+        public async Task GetDataWithWildcard()
         {
             var client = new HttpClient();
 
@@ -49,13 +45,13 @@ namespace Unosquare.Labs.EmbedIO.Tests
 
 
         [Test]
-        public async Task GetDataWithMultipleRegex()
+        public async Task GetDataWithMultipleWildcard()
         {
             var client = new HttpClient();
+            
+            var call = await client.GetStringAsync($"{WebServerUrl}data/1/time");
 
-            var call = await client.GetStringAsync($"{WebServerUrl}data/1/asdasda/dasdasasda");
-
-            Assert.AreEqual("dasdasasda", call);
+            Assert.AreEqual("time", call);
         }
 
         [TearDown]

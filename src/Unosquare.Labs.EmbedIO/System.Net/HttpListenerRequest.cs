@@ -36,6 +36,7 @@ namespace Unosquare.Net
     using System.Net;
     using System.Text;
     using System.Threading.Tasks;
+    using Labs.EmbedIO;
 #if SSL
 using System.Security.Authentication.ExtendedProtection;
 using System.Security.Cryptography.X509Certificates;

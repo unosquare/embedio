@@ -15,23 +15,31 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
     public class TestRegexController : WebApiController
     {
         public const string RelativePath = "api/";
-        public int errorCode = (int)System.Net.HttpStatusCode.InternalServerError;
+        public int ErrorCode = (int) System.Net.HttpStatusCode.InternalServerError;
+
+        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "empty")]
+        public bool GetEmpty(WebServer server, HttpListenerContext context)
+        {
+            return context.JsonResponse(new { Ok = true });
+        }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regex/{id}")]
         public bool GetPerson(WebServer server, HttpListenerContext context, int id)
         {
             try
             {
-                if (PeopleRepository.Database.Any(p => p.Key == id))
+                var item = PeopleRepository.Database.FirstOrDefault(p => p.Key == id);
+
+                if (item != null)
                 {
-                    return context.JsonResponse(PeopleRepository.Database.FirstOrDefault(p => p.Key == id));
+                    return context.JsonResponse(item);
                 }
 
                 throw new KeyNotFoundException("Key Not Found: " + id);
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = errorCode;
+                context.Response.StatusCode = ErrorCode;
                 return context.JsonResponse(ex);
             }
         }
@@ -46,16 +54,18 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
                     return context.JsonResponse(PeopleRepository.Database);
                 }
 
-                if (PeopleRepository.Database.Any(p => p.Key == id))
+                var item = PeopleRepository.Database.FirstOrDefault(p => p.Key == id);
+
+                if (item != null)
                 {
-                    return context.JsonResponse(PeopleRepository.Database.FirstOrDefault(p => p.Key == id));
+                    return context.JsonResponse(item);
                 }
 
                 throw new KeyNotFoundException("Key Not Found: " + id);
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = errorCode;
+                context.Response.StatusCode = ErrorCode;
                 return context.JsonResponse(ex);
             }
         }
@@ -67,17 +77,19 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
             {
                 await Task.Delay(TimeSpan.FromSeconds(1));
 
-                if (PeopleRepository.Database.Any(p => p.Key == id))
+                var item = PeopleRepository.Database.FirstOrDefault(p => p.Key == id);
+
+                if (item != null)
                 {
-                    return context.JsonResponse(PeopleRepository.Database.FirstOrDefault(p => p.Key == id));
+                    return await context.JsonResponseAsync(item);
                 }
 
                 throw new KeyNotFoundException("Key Not Found: " + id);
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = errorCode;
-                return context.JsonResponse(ex);
+                context.Response.StatusCode = ErrorCode;
+                return await context.JsonResponseAsync(ex);
             }
         }
 
@@ -86,16 +98,18 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
         {
             try
             {
-                if (PeopleRepository.Database.Any(p => p.DoB == date))
+                var item = PeopleRepository.Database.FirstOrDefault(p => p.DoB == date);
+
+                if (item != null)
                 {
-                    return context.JsonResponse(PeopleRepository.Database.FirstOrDefault(p => p.DoB == date));
+                    return context.JsonResponse(item);
                 }
 
                 throw new KeyNotFoundException("Key Not Found: " + date);
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = errorCode;
+                context.Response.StatusCode = ErrorCode;
                 return context.JsonResponse(ex);
             }
         }
@@ -105,16 +119,19 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
         {
             try
             {
-                if (PeopleRepository.Database.Any(p => p.MainSkill.ToLower() == skill.ToLower() && p.Age == age))
+                var item = PeopleRepository.Database.FirstOrDefault(p =>
+                    p.MainSkill.ToLower() == skill.ToLower() && p.Age == age);
+
+                if (item != null)
                 {
-                    return context.JsonResponse(PeopleRepository.Database.FirstOrDefault(p => p.MainSkill.ToLower() == skill.ToLower() && p.Age == age));
+                    return context.JsonResponse(item);
                 }
 
                 throw new KeyNotFoundException("Key Not Found: " + skill + "-" + age);
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = errorCode;
+                context.Response.StatusCode = ErrorCode;
                 return context.JsonResponse(ex);
             }
         }

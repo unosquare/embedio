@@ -40,20 +40,12 @@
     {
         #region Immutable Declarations
 
-        private const string RegexRouteReplace = "(.*)";
-
-        private static readonly Regex RouteParamRegex = new Regex(@"\{[^\/]*\}",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
         private readonly List<Type> _controllerTypes = new List<Type>();
 
         private readonly Dictionary<string, Dictionary<HttpVerbs, MethodCacheInstance>> _delegateMap
             =
             new Dictionary<string, Dictionary<HttpVerbs, MethodCacheInstance>>(
-                Strings.StandardStringComparer);      
+                Strings.StandardStringComparer);
 
         #endregion
 
@@ -74,8 +66,7 @@
                 if (path == null) return false;
 
                 // search the path and verb
-                if (!_delegateMap.TryGetValue(path, out Dictionary<HttpVerbs, MethodCacheInstance> methods) ||
-                    !methods.TryGetValue(verb, out MethodCacheInstance methodPair))
+                if (!_delegateMap.TryGetValue(path, out var methods) || !methods.TryGetValue(verb, out var methodPair))
                     throw new InvalidOperationException($"No method found for path {path} and verb {verb}.");
 
                 // ensure module does not return cached responses
@@ -97,7 +88,6 @@
                         methodPair.ParseArguments(regExRouteParams, args);
                         return await methodPair.Invoke(args);
                     case RoutingStrategy.Wildcard:
-
                         return await methodPair.Invoke(args);
                     default:
                         // Log the handler to be used
@@ -120,7 +110,7 @@
         /// Gets the number of controller objects registered in this API
         /// </summary>
         public int ControllersCount => _controllerTypes.Count;
-        
+
         /// <summary>
         /// Registers the controller.
         /// </summary>
@@ -216,44 +206,13 @@
 
             foreach (var route in _delegateMap.Keys)
             {
-                var regex = new Regex(RouteParamRegex.Replace(route, RegexRouteReplace));
-                var match = regex.Match(path);
+                var urlParam = EmbedIO.Extensions.RequestRegexUrlParams(path, route, () => !_delegateMap[route].Keys.Contains(verb));
 
-                var pathParts = route.Split('/');
+                if (urlParam == null) continue;
 
-                if (!match.Success || !_delegateMap[route].Keys.Contains(verb))
+                foreach (var kvp in urlParam)
                 {
-                    var optionalPath = RouteOptionalParamRegex.Replace(route, string.Empty);
-                    var tempPath = path;
-
-                    if (optionalPath.Last() == '/' && path.Last() != '/')
-                    {
-                        tempPath += "/";
-                    }
-
-                    if (optionalPath == tempPath)
-                    {
-                        foreach (var pathPart in pathParts.Where(x => x.StartsWith("{")))
-                        {
-                            routeParams.Add(
-                                pathPart.Replace("{", string.Empty)
-                                    .Replace("}", string.Empty)
-                                    .Replace("?", string.Empty), null);
-                        }
-
-                        return route;
-                    }
-
-                    continue;
-                }
-
-                var i = 1; // match group index
-
-                foreach (var pathPart in pathParts.Where(x => x.StartsWith("{")))
-                {
-                    routeParams.Add(
-                        pathPart.Replace("{", string.Empty).Replace("}", string.Empty).Replace("?", string.Empty),
-                        match.Groups[i++].Value);
+                    routeParams.Add(kvp.Key, kvp.Value);
                 }
 
                 return route;
@@ -271,22 +230,10 @@
         /// <returns>A string that represents the registered path</returns>
         private string NormalizeWildcardPath(HttpVerbs verb, HttpListenerContext context)
         {
-            var path = context.RequestPath();
-
-            var wildcardPaths = _delegateMap.Keys
+            var path = context.RequestWilcardPath(_delegateMap.Keys
                 .Where(k => k.Contains("/" + ModuleMap.AnyPath))
                 .Select(s => s.ToLowerInvariant())
-                .ToArray();
-
-            var wildcardMatch = wildcardPaths.FirstOrDefault(p => // wildcard at the end
-                path.StartsWith(p.Substring(0, p.Length - ModuleMap.AnyPath.Length))
-
-                // wildcard in the middle so check both start/end
-                || (path.StartsWith(p.Substring(0, p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal)))
-                    && path.EndsWith(p.Substring(p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal) + 1))));
-
-            if (string.IsNullOrWhiteSpace(wildcardMatch) == false)
-                path = wildcardMatch;
+                .ToArray());
 
             if (_delegateMap.ContainsKey(path) == false)
                 return null;

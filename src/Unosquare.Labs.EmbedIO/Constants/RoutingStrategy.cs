@@ -15,6 +15,11 @@
         /// <summary>
         /// The Regex strategy
         /// </summary>
-        Regex
+        Regex,
+
+        /// <summary>
+        /// The simple strategy
+        /// </summary>
+        Simple
     }
 }
