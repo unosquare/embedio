@@ -36,10 +36,9 @@ Some notes regarding WebSocket and runtimes support:
 
 | Runtime | WebSocket support | Notes |
 | --- | --- | --- |
-| NET452 | Yes | Support Windows and Linux using custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/). Nuget package doesn't provide this version but you can compile from Unosquare.Labs.EmbedIO.Lib solution file. This solution is to use in older environments and Mono |
 | NET46 | Yes | Support Win7+ OS using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
-| NET462 | Yes | Support Win8+ OS using native System.Net library |
-| NETSTANDARD* | Yes | Support Windows, Linux and macOS using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
+| NET47 | Yes | Support Win8+ OS using native System.Net library |
+| NETSTANDARD* | Yes | Support Windows, Linux and macOS using  native System.Net library |
 | UAP | No | Support Windows Universal Plataform. More information [here](https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT) |
 
 EmbedIO before version 1.4.0 uses Newtonsoft JSON and an internal logger subsystem based on ILog interface.
@@ -49,7 +48,6 @@ NuGet Installation:
 ```
 PM> Install-Package EmbedIO
 ```
-
 
 Basic Example:
 --------------
