@@ -27,6 +27,12 @@
     <DefineConstants>$(DefineConstants);NET47</DefineConstants>
   </PropertyGroup>
 
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  
   <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
