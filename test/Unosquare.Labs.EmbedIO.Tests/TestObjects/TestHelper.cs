@@ -51,6 +51,9 @@
             if (Directory.Exists(rootPath) == false)
                 Directory.CreateDirectory(rootPath);
 
+            if (Directory.Exists(Path.Combine(rootPath, "sub")) == false)
+                Directory.CreateDirectory(Path.Combine(rootPath, "sub"));
+
             var files = onlyIndex ? new[] { StaticFilesModule.DefaultDocumentName } : RandomHtmls;
 
             foreach (var file in files.Where(file => !File.Exists(Path.Combine(rootPath, file))))
@@ -58,14 +61,13 @@
                 File.WriteAllText(Path.Combine(rootPath, file), Resources.Index);
             }
 
+            foreach (var file in files.Where(file => !File.Exists(Path.Combine(rootPath, "sub", file))))
+            {
+                File.WriteAllText(Path.Combine(rootPath, "sub",  file), Resources.SubIndex);
+            }
+
             // write only random htmls when onlyIndex is false
             if (!onlyIndex) return rootPath;
-
-            if (Directory.Exists(Path.Combine(rootPath, "sub")) == false)
-                Directory.CreateDirectory(Path.Combine(rootPath, "sub"));
-
-            if (File.Exists(Path.Combine(rootPath, "sub", StaticFilesModule.DefaultDocumentName)) == false)
-                File.WriteAllText(Path.Combine(rootPath, "sub", "index.html"), Resources.SubIndex);
 
             if (File.Exists(Path.Combine(rootPath, BigDataFile)) == false)
                 CreateTempBinaryFile(Path.Combine(rootPath, BigDataFile), 10);

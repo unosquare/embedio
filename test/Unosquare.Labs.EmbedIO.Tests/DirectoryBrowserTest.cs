@@ -28,10 +28,22 @@ namespace Unosquare.Labs.EmbedIO.Tests
         }
 
         [Test]
-        public async Task Browse_ReturnsFilesList()
+        public async Task BrowseRoot_ReturnsFilesList()
         {
             var httpClient = new HttpClient();
             var htmlContent = await httpClient.GetStringAsync(WebServerUrl);
+
+            Assert.IsNotEmpty(htmlContent);
+
+            foreach (var file in TestHelper.RandomHtmls)
+                Assert.IsTrue(htmlContent.Contains(file));
+        }
+
+        [Test]
+        public async Task BrowseSubfolder_ReturnsFilesList()
+        {
+            var httpClient = new HttpClient();
+            var htmlContent = await httpClient.GetStringAsync(WebServerUrl + "sub");
 
             Assert.IsNotEmpty(htmlContent);
 

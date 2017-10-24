@@ -287,9 +287,13 @@
 
         private static Task<bool> HandleDirectory(HttpListenerContext context, string localPath, CancellationToken ct)
         {
-            var directoyFiles = Directory.GetFiles(localPath);
+            var directoyFiles = Directory.GetDirectories(localPath).Select(x => x.Replace(localPath + Path.DirectorySeparatorChar, string.Empty))
+                .Union(Directory.GetFiles(localPath, "*", SearchOption.TopDirectoryOnly).Select(Path.GetFileName))
+                .Where(x => !string.IsNullOrEmpty(x))
+                .Select(y => $"<li><a href='{y}'>{y}</a></li>");
+
             var content = Responses.ResponseBaseHtml.Replace("{0}",
-                $"<h1>{localPath}<ul>{directoyFiles.Aggregate(string.Empty, (x, y) => x += $"<li><a href='{y}'>{y}</a>/<li>")}</ul>");
+                $"<h1>Directory: {context.RequestPathCaseSensitive()}</h1><ul>{string.Join(string.Empty, directoyFiles)}</ul>");
 
             return context.HtmlResponseAsync(content, cancellationToken: ct);
         }
