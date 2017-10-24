@@ -664,12 +664,12 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.WithLocalSession
   fullName: Unosquare.Labs.EmbedIO.Extensions.WithLocalSession
   nameWithType: Extensions.WithLocalSession
-- uid: Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt(Unosquare.Labs.EmbedIO.WebServer,System.String,System.String)
-  name: WithStaticFolderAt(WebServer, String, String)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithStaticFolderAt_Unosquare_Labs_EmbedIO_WebServer_System_String_System_String_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt(Unosquare.Labs.EmbedIO.WebServer,System.String,System.String)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt(Unosquare.Labs.EmbedIO.WebServer, System.String, System.String)
-  nameWithType: Extensions.WithStaticFolderAt(WebServer, String, String)
+- uid: Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt(Unosquare.Labs.EmbedIO.WebServer,System.String,System.String,System.Boolean)
+  name: WithStaticFolderAt(WebServer, String, String, Boolean)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithStaticFolderAt_Unosquare_Labs_EmbedIO_WebServer_System_String_System_String_System_Boolean_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt(Unosquare.Labs.EmbedIO.WebServer,System.String,System.String,System.Boolean)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt(Unosquare.Labs.EmbedIO.WebServer, System.String, System.String, System.Boolean)
+  nameWithType: Extensions.WithStaticFolderAt(WebServer, String, String, Boolean)
 - uid: Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt*
   name: WithStaticFolderAt
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithStaticFolderAt_

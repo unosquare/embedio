@@ -2184,13 +2184,13 @@ match.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_WithStaticFolderAt_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_WithStaticFolderAt_Unosquare_Labs_EmbedIO_WebServer_System_String_System_String_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt(Unosquare.Labs.EmbedIO.WebServer,System.String,System.String)">WithStaticFolderAt(WebServer, String, String)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_WithStaticFolderAt_Unosquare_Labs_EmbedIO_WebServer_System_String_System_String_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt(Unosquare.Labs.EmbedIO.WebServer,System.String,System.String,System.Boolean)">WithStaticFolderAt(WebServer, String, String, Boolean)</h4>
   <div class="markdown level1 summary"><p>Add the StaticFilesModule to the specified WebServer</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static WebServer WithStaticFolderAt(this WebServer webserver, string rootPath, string defaultDocument = &quot;index.html&quot;)</code></pre>
+    <pre><code class="lang-csharp hljs">public static WebServer WithStaticFolderAt(this WebServer webserver, string rootPath, string defaultDocument = &quot;index.html&quot;, bool directoryBrowser = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2218,6 +2218,12 @@ match.</p>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">defaultDocument</span></td>
         <td><p>The default document name</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">directoryBrowser</span></td>
+        <td><p>The directory browser.</p>
 </td>
       </tr>
     </tbody>
