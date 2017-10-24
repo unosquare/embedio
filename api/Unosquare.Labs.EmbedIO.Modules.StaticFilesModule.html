@@ -176,13 +176,48 @@
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule__ctor_System_String_System_Collections_Generic_Dictionary_System_String_System_String__System_Collections_Generic_Dictionary_System_String_System_String__" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,System.String})">StaticFilesModule(String, Dictionary&lt;String, String&gt;, Dictionary&lt;String, String&gt;)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule__ctor_System_String_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor(System.String,System.Boolean)">StaticFilesModule(String, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html">StaticFilesModule</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public StaticFilesModule(string fileSystemPath, Dictionary&lt;string, string&gt; headers = null, Dictionary&lt;string, string&gt; additionalPaths = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public StaticFilesModule(string fileSystemPath, bool directoryBrowser)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">fileSystemPath</span></td>
+        <td><p>The file system path.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">directoryBrowser</span></td>
+        <td><p>if set to <code>true</code> [directory browser].</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule__ctor_System_String_System_Collections_Generic_Dictionary_System_String_System_String__System_Collections_Generic_Dictionary_System_String_System_String__System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,System.String},System.Boolean)">StaticFilesModule(String, Dictionary&lt;String, String&gt;, Dictionary&lt;String, String&gt;, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html">StaticFilesModule</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public StaticFilesModule(string fileSystemPath, Dictionary&lt;string, string&gt; headers = null, Dictionary&lt;string, string&gt; additionalPaths = null, bool directoryBrowser = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -210,6 +245,12 @@
         <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>&gt;</td>
         <td><span class="parametername">additionalPaths</span></td>
         <td><p>The additional paths.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">directoryBrowser</span></td>
+        <td><p>if set to <code>true</code> [directory browser].</p>
 </td>
       </tr>
     </tbody>
@@ -374,7 +415,7 @@ Example: &quot;.html&quot;</p>
   
   <a id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_MaxRamCacheFileSize_" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.MaxRamCacheFileSize*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_MaxRamCacheFileSize" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.MaxRamCacheFileSize">MaxRamCacheFileSize</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the maximum size of the ram cache file.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the maximum size of the ram cache file. The default value is 250kb.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

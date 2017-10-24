@@ -358,6 +358,18 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.HasRequestHeader
   fullName: Unosquare.Labs.EmbedIO.Extensions.HasRequestHeader
   nameWithType: Extensions.HasRequestHeader
+- uid: Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Net.HttpListenerContext,System.String,System.Net.HttpStatusCode,System.Threading.CancellationToken)
+  name: HtmlResponseAsync(HttpListenerContext, String, Net.HttpStatusCode, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_HtmlResponseAsync_Unosquare_Net_HttpListenerContext_System_String_System_Net_HttpStatusCode_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Net.HttpListenerContext,System.String,System.Net.HttpStatusCode,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Net.HttpListenerContext, System.String, System.Net.HttpStatusCode, System.Threading.CancellationToken)
+  nameWithType: Extensions.HtmlResponseAsync(HttpListenerContext, String, Net.HttpStatusCode, CancellationToken)
+- uid: Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync*
+  name: HtmlResponseAsync
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_HtmlResponseAsync_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync
+  fullName: Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync
+  nameWithType: Extensions.HtmlResponseAsync
 - uid: Unosquare.Labs.EmbedIO.Extensions.InQueryString(Unosquare.Net.HttpListenerContext,System.String)
   name: InQueryString(HttpListenerContext, String)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_InQueryString_Unosquare_Net_HttpListenerContext_System_String_
@@ -628,6 +640,18 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.RequestWildcardUrlParams
   fullName: Unosquare.Labs.EmbedIO.Extensions.RequestWildcardUrlParams
   nameWithType: Extensions.RequestWildcardUrlParams
+- uid: Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Net.HttpListenerContext,System.String,System.String,System.Threading.CancellationToken,System.Text.Encoding)
+  name: StringResponseAsync(HttpListenerContext, String, String, CancellationToken, Encoding)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_StringResponseAsync_Unosquare_Net_HttpListenerContext_System_String_System_String_System_Threading_CancellationToken_System_Text_Encoding_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Net.HttpListenerContext,System.String,System.String,System.Threading.CancellationToken,System.Text.Encoding)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Net.HttpListenerContext, System.String, System.String, System.Threading.CancellationToken, System.Text.Encoding)
+  nameWithType: Extensions.StringResponseAsync(HttpListenerContext, String, String, CancellationToken, Encoding)
+- uid: Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync*
+  name: StringResponseAsync
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_StringResponseAsync_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync
+  fullName: Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync
+  nameWithType: Extensions.StringResponseAsync
 - uid: Unosquare.Labs.EmbedIO.Extensions.WithLocalSession(Unosquare.Labs.EmbedIO.WebServer)
   name: WithLocalSession(WebServer)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithLocalSession_Unosquare_Labs_EmbedIO_WebServer_
@@ -1150,15 +1174,21 @@ references:
   fullName.vb: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.StaticFilesModule(System.Collections.Generic.Dictionary(Of System.String, System.String))
   nameWithType: StaticFilesModule.StaticFilesModule(Dictionary<String, String>)
   nameWithType.vb: StaticFilesModule.StaticFilesModule(Dictionary(Of String, String))
-- uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,System.String})
-  name: StaticFilesModule(String, Dictionary<String, String>, Dictionary<String, String>)
-  href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule__ctor_System_String_System_Collections_Generic_Dictionary_System_String_System_String__System_Collections_Generic_Dictionary_System_String_System_String__
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,System.String})
-  name.vb: StaticFilesModule(String, Dictionary(Of String, String), Dictionary(Of String, String))
-  fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.StaticFilesModule(System.String, System.Collections.Generic.Dictionary<System.String, System.String>, System.Collections.Generic.Dictionary<System.String, System.String>)
-  fullName.vb: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.StaticFilesModule(System.String, System.Collections.Generic.Dictionary(Of System.String, System.String), System.Collections.Generic.Dictionary(Of System.String, System.String))
-  nameWithType: StaticFilesModule.StaticFilesModule(String, Dictionary<String, String>, Dictionary<String, String>)
-  nameWithType.vb: StaticFilesModule.StaticFilesModule(String, Dictionary(Of String, String), Dictionary(Of String, String))
+- uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor(System.String,System.Boolean)
+  name: StaticFilesModule(String, Boolean)
+  href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule__ctor_System_String_System_Boolean_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor(System.String,System.Boolean)
+  fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.StaticFilesModule(System.String, System.Boolean)
+  nameWithType: StaticFilesModule.StaticFilesModule(String, Boolean)
+- uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,System.String},System.Boolean)
+  name: StaticFilesModule(String, Dictionary<String, String>, Dictionary<String, String>, Boolean)
+  href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule__ctor_System_String_System_Collections_Generic_Dictionary_System_String_System_String__System_Collections_Generic_Dictionary_System_String_System_String__System_Boolean_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,System.String},System.Boolean)
+  name.vb: StaticFilesModule(String, Dictionary(Of String, String), Dictionary(Of String, String), Boolean)
+  fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.StaticFilesModule(System.String, System.Collections.Generic.Dictionary<System.String, System.String>, System.Collections.Generic.Dictionary<System.String, System.String>, System.Boolean)
+  fullName.vb: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.StaticFilesModule(System.String, System.Collections.Generic.Dictionary(Of System.String, System.String), System.Collections.Generic.Dictionary(Of System.String, System.String), System.Boolean)
+  nameWithType: StaticFilesModule.StaticFilesModule(String, Dictionary<String, String>, Dictionary<String, String>, Boolean)
+  nameWithType.vb: StaticFilesModule.StaticFilesModule(String, Dictionary(Of String, String), Dictionary(Of String, String), Boolean)
 - uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor*
   name: StaticFilesModule
   href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule__ctor_
