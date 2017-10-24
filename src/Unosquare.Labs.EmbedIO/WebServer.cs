@@ -250,19 +250,17 @@
                     // Handle exceptions by returning a 500 (Internal Server Error) 
                     if (context.Response.StatusCode != (int) System.Net.HttpStatusCode.Unauthorized)
                     {
-                        var errorMessage = ex.ExceptionMessage("Failing module name: " + module.Name);
+                        var errorMessage = ex.ExceptionMessage($"Failing module name: {module.Name}");
 
                         // Log the exception message.
                         ex.Log(nameof(WebServer), $"Failing module name: {module.Name}");
 
-                        // Generate an HTML response
-                        var response = System.Net.WebUtility.HtmlEncode(
-                            string.Format(Responses.Response500HtmlFormat, errorMessage, ex.StackTrace));
-
                         // Send the response over with the corresponding status code.
-                        var responseBytes = System.Text.Encoding.UTF8.GetBytes(response);
-                        context.Response.StatusCode = (int) System.Net.HttpStatusCode.InternalServerError;
-                        await context.Response.OutputStream.WriteAsync(responseBytes, 0, responseBytes.Length, ct);
+                        await context.HtmlResponseAsync(
+                            System.Net.WebUtility.HtmlEncode(string.Format(Responses.Response500HtmlFormat,
+                                errorMessage, ex.StackTrace)),
+                            System.Net.HttpStatusCode.InternalServerError,
+                            ct);
                     }
 
                     // Finally set the handled flag to true and exit.
@@ -354,7 +352,7 @@
 
             "Listener Closed.".Info(nameof(WebServer));
         }
-        
+
         private static Map GetHandlerFromPath(HttpListenerContext context, IWebModule module)
         {
             return module.Handlers.FirstOrDefault(x =>
@@ -422,9 +420,7 @@
                 if (processResult == false)
                 {
                     "No module generated a response. Sending 404 - Not Found".Error();
-                    var responseBytes = System.Text.Encoding.UTF8.GetBytes(Responses.Response404Html);
-                    context.Response.StatusCode = (int) System.Net.HttpStatusCode.NotFound;
-                    await context.Response.OutputStream.WriteAsync(responseBytes, 0, responseBytes.Length, ct);
+                    await context.HtmlResponseAsync(Responses.Response404Html, System.Net.HttpStatusCode.NotFound, ct);
                 }
             }
             catch (Exception ex)

@@ -15,6 +15,7 @@
 #else
     using Net;
 #endif
+    using static VirtualPaths;
 
     /// <summary>
     /// Represents a simple module to server static files from the file system.
@@ -36,7 +37,7 @@
         /// </summary>
         private const int MaxGzipInputLength = 4 * 1024 * 1024;
 
-        private readonly VirtualPaths _virtualPaths = new VirtualPaths();
+        private readonly VirtualPaths _virtualPaths;
 
         private readonly Lazy<Dictionary<string, string>> _mimeTypes =
             new Lazy<Dictionary<string, string>>(
@@ -53,31 +54,40 @@
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="StaticFilesModule"/> class.
+        /// </summary>
+        /// <param name="fileSystemPath">The file system path.</param>
+        /// <param name="directoryBrowser">if set to <c>true</c> [directory browser].</param>
+        public StaticFilesModule(string fileSystemPath, bool directoryBrowser)
+            : this(fileSystemPath, null, null, directoryBrowser)
+        {
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="StaticFilesModule" /> class.
         /// </summary>
         /// <param name="fileSystemPath">The file system path.</param>
         /// <param name="headers">The headers to set in every request.</param>
         /// <param name="additionalPaths">The additional paths.</param>
-        /// <exception cref="System.ArgumentException">Path ' + fileSystemPath + ' does not exist.</exception>
+        /// <param name="directoryBrowser">if set to <c>true</c> [directory browser].</param>
+        /// <exception cref="ArgumentException">Path ' + fileSystemPath + ' does not exist.</exception>
         public StaticFilesModule(
             string fileSystemPath,
             Dictionary<string, string> headers = null,
-            Dictionary<string, string> additionalPaths = null)
+            Dictionary<string, string> additionalPaths = null,
+            bool directoryBrowser = false)
         {
-            if (Directory.Exists(fileSystemPath) == false)
+            if (!Directory.Exists(fileSystemPath))
                 throw new ArgumentException($"Path '{fileSystemPath}' does not exist.");
-            
-            _virtualPaths.FileSystemPath = Path.GetFullPath(fileSystemPath);
+
+            _virtualPaths = new VirtualPaths(Path.GetFullPath(fileSystemPath), directoryBrowser);
+
             UseGzip = true;
-#if DEBUG
-            // When debugging, disable RamCache
+#if DEBUG // When debugging, disable RamCache
             UseRamCache = false;
-#else
-// Otherwise, enable it by default
-            this.UseRamCache = true;
+#else // Otherwise, enable it by default
+            UseRamCache = true;
 #endif
-            RamCache = new RamCache();
-            MaxRamCacheFileSize = 250 * 1024;
             DefaultDocument = DefaultDocumentName;
 
             headers?.ForEach(DefaultHeaders.Add);
@@ -90,12 +100,12 @@
         }
 
         /// <summary>
-        /// Gets or sets the maximum size of the ram cache file.
+        /// Gets or sets the maximum size of the ram cache file. The default value is 250kb.
         /// </summary>
         /// <value>
         /// The maximum size of the ram cache file.
         /// </value>
-        public int MaxRamCacheFileSize { get; set; }
+        public int MaxRamCacheFileSize { get; set; } = 250 * 1024;
 
         /// <summary>
         /// Gets or sets the default document.
@@ -188,14 +198,14 @@
         /// <value>
         /// The ram cache.
         /// </value>
-        private RamCache RamCache { get; }
+        private RamCache RamCache { get; } = new RamCache();
 
         /// <summary>
         /// Registers the virtual path.
         /// </summary>
         /// <param name="virtualPath">The virtual path.</param>
         /// <param name="physicalPath">The physical path.</param>
-        /// <exception cref="System.InvalidOperationException">
+        /// <exception cref="InvalidOperationException">
         /// Is thrown when a method call is invalid for the object's current state
         /// </exception>
         public void RegisterVirtualPath(string virtualPath, string physicalPath)
@@ -205,7 +215,7 @@
         /// Unregisters the virtual path.
         /// </summary>
         /// <param name="virtualPath">The virtual path.</param>
-        /// <exception cref="System.InvalidOperationException">
+        /// <exception cref="InvalidOperationException">
         /// Is thrown when a method call is invalid for the object's current state
         /// </exception>
         public void UnregisterVirtualPath(string virtualPath) => _virtualPaths.UnregisterVirtualPath(virtualPath);
@@ -275,13 +285,35 @@
             }
         }
 
-        private async Task<bool> HandleGet(HttpListenerContext context, CancellationToken ct, bool sendBuffer = true)
+        private static Task<bool> HandleDirectory(HttpListenerContext context, string localPath, CancellationToken ct)
+        {
+            var directoyFiles = Directory.GetFiles(localPath);
+            var content = Responses.ResponseBaseHtml.Replace("{0}",
+                $"<h1>{localPath}<ul>{directoyFiles.Aggregate(string.Empty, (x, y) => x += $"<li><a href='{y}'>{y}</a>/<li>")}</ul>");
+
+            return context.HtmlResponseAsync(content, cancellationToken: ct);
+        }
+
+        private Task<bool> HandleGet(HttpListenerContext context, CancellationToken ct, bool sendBuffer = true)
         {
             var validationResult = ValidatePath(context, out var requestFullLocalPath);
 
-            if (validationResult.HasValue)
-                return validationResult.Value;
+            switch (validationResult)
+            {
+                case VirtualPathStatus.Forbidden:
+                    context.Response.StatusCode = (int) System.Net.HttpStatusCode.Forbidden;
+                    return Task.FromResult(true);
+                case VirtualPathStatus.File:
+                    return HandleFile(context, requestFullLocalPath, sendBuffer, ct);
+                case VirtualPathStatus.Directoy:
+                    return HandleDirectory(context, requestFullLocalPath, ct);
+            }
 
+            return Task.FromResult(false);
+        }
+
+        private async Task<bool> HandleFile(HttpListenerContext context, string localPath, bool sendBuffer, CancellationToken ct)
+        {
             Stream buffer = null;
 
             try
@@ -289,15 +321,15 @@
                 var isTagValid = false;
                 var partialHeader = context.RequestHeader(Headers.Range);
                 var usingPartial = partialHeader?.StartsWith("bytes=") == true;
-                var fileDate = File.GetLastWriteTime(requestFullLocalPath);
-                
-                if (UseRamCache && RamCache.IsValid(requestFullLocalPath, fileDate, out var currentHash))
+                var fileDate = File.GetLastWriteTime(localPath);
+
+                if (UseRamCache && RamCache.IsValid(localPath, fileDate, out var currentHash))
                 {
-                    $"RAM Cache: {requestFullLocalPath}".Debug();
+                    $"RAM Cache: {localPath}".Debug();
 
                     if (context.RequestHeader(Headers.IfNotMatch) != currentHash)
                     {
-                        buffer = new MemoryStream(RamCache[requestFullLocalPath].Buffer);
+                        buffer = new MemoryStream(RamCache[localPath].Buffer);
                         context.Response.AddHeader(Headers.ETag, currentHash);
                     }
                     else
@@ -307,20 +339,20 @@
                 }
                 else
                 {
-                    $"File System: {requestFullLocalPath}".Debug();
+                    $"File System: {localPath}".Debug();
 
                     if (sendBuffer)
                     {
-                        buffer = new FileStream(requestFullLocalPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                        buffer = new FileStream(localPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
                         if (usingPartial == false)
                         {
                             isTagValid = UpdateFileCache(
-                                context.Response, 
-                                buffer, 
+                                context.Response,
+                                buffer,
                                 fileDate,
-                                context.RequestHeader(Headers.IfNotMatch), 
-                                requestFullLocalPath);
+                                context.RequestHeader(Headers.IfNotMatch),
+                                localPath);
                         }
                     }
                 }
@@ -336,9 +368,9 @@
                     return true;
                 }
 
-                SetHeaders(context.Response, requestFullLocalPath, utcFileDateString);
+                SetHeaders(context.Response, localPath, utcFileDateString);
 
-                var fileSize = new FileInfo(requestFullLocalPath).Length;
+                var fileSize = new FileInfo(localPath).Length;
 
                 if (sendBuffer == false)
                 {
@@ -377,8 +409,8 @@
 
                         context.Response.AddHeader(Headers.ContentRanges,
                             $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
-                        
-                        $"Opening stream {requestFullLocalPath} bytes {lowerByteIndex}-{upperByteIndex} size {context.Response.ContentLength64}"
+
+                        $"Opening stream {localPath} bytes {lowerByteIndex}-{upperByteIndex} size {context.Response.ContentLength64}"
                             .Debug();
                     }
                 }
@@ -400,7 +432,7 @@
 
                     context.Response.ContentLength64 = buffer.Length;
                 }
-                
+
                 await WriteToOutputStream(context.Response, buffer, lowerByteIndex, ct);
             }
             catch (HttpListenerException)
@@ -415,26 +447,14 @@
             return true;
         }
 
-        private bool? ValidatePath(HttpListenerContext context, out string requestFullLocalPath)
+        private VirtualPathStatus ValidatePath(HttpListenerContext context, out string requestFullLocalPath)
         {
             var baseLocalPath = FileSystemPath;
             var requestLocalPath = _virtualPaths.GetUrlPath(context.RequestPathCaseSensitive(), ref baseLocalPath);
 
             requestFullLocalPath = Path.Combine(baseLocalPath, requestLocalPath);
-
-            // Check if the requested local path is part of the root File System Path
-            if (_virtualPaths.IsPartOfPath(requestFullLocalPath, baseLocalPath) == false)
-            {
-                context.Response.StatusCode = (int) System.Net.HttpStatusCode.Forbidden;
-                return true;
-            }
-
-            if (_virtualPaths.ExistsLocalPath(requestLocalPath, ref requestFullLocalPath) == false)
-            {
-                return false;
-            }
-
-            return null;
+            
+            return _virtualPaths.ExistsLocalPath(requestLocalPath, ref requestFullLocalPath);
         }
 
         private void SetHeaders(HttpListenerResponse response, string localPath, string utcFileDateString)

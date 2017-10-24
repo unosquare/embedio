@@ -13,6 +13,7 @@
     using System.Threading.Tasks;
 #if NET47
     using System.Net;
+
 #else
     using Net;
 #endif
@@ -26,7 +27,7 @@
 
         private const string RegexRouteReplace = "(.*)";
 
-        private static readonly byte[] LastByte = { 0x00 };
+        private static readonly byte[] LastByte = {0x00};
 
         private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -259,7 +260,7 @@
             var match = new Regex(basePath.Replace("*", RegexRouteReplace)).Match(requestPath);
 
             return match.Success
-                ? match.Groups[1].Value.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries)
+                ? match.Groups[1].Value.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries)
                 : null;
         }
 
@@ -309,7 +310,7 @@
                 {
                     return pathParts
                         .Where(x => x.StartsWith("{"))
-                        .ToDictionary(x => x.CleanParamId(), x => (object)null);
+                        .ToDictionary(x => x.CleanParamId(), x => (object) null);
                 }
             }
             else
@@ -318,7 +319,7 @@
 
                 return pathParts
                     .Where(x => x.StartsWith("{"))
-                    .ToDictionary(x => x.CleanParamId(), x => (object)match.Groups[i++].Value);
+                    .ToDictionary(x => x.CleanParamId(), x => (object) match.Groups[i++].Value);
             }
 
             return null;
@@ -402,9 +403,7 @@
         /// <returns>
         /// A true value of type ref=JsonResponseAsync"</returns>
         public static bool JsonResponse(this HttpListenerContext context, string json)
-        {
-            return context.JsonResponseAsync(json).GetAwaiter().GetResult();
-        }
+            => context.JsonResponseAsync(json).GetAwaiter().GetResult();
 
         /// <summary>
         /// Outputs async a Json Response given a Json string
@@ -412,15 +411,52 @@
         /// <param name="context">The context.</param>
         /// <param name="json">The json.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>True that represents the correct async write operation</returns>
-        public static async Task<bool> JsonResponseAsync(
+        /// <returns>A task for write the output stream</returns>
+        public static Task<bool> JsonResponseAsync(
             this HttpListenerContext context,
             string json,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            var buffer = Encoding.UTF8.GetBytes(json);
+            return context.StringResponseAsync(json, cancellationToken: cancellationToken);
+        }
 
-            context.Response.ContentType = "application/json";
+        /// <summary>
+        /// Outputs a HTML Response given a HTML content
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="htmlContent">Content of the HTML.</param>
+        /// <param name="statusCode">The status code.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A task for write the output stream</returns>
+        public static Task<bool> HtmlResponseAsync(
+            this HttpListenerContext context,
+            string htmlContent,
+            System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.OK,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            context.Response.StatusCode = (int)statusCode;
+            return context.StringResponseAsync(htmlContent, Responses.HtmlContentType, cancellationToken);
+        }
+
+        /// <summary>
+        /// Outputs async a string response given a string
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="content">The content.</param>
+        /// <param name="contentType">Type of the content.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="encoding">The encoding.</param>
+        /// <returns>A task for write the output stream</returns>
+        public static async Task<bool> StringResponseAsync(
+            this HttpListenerContext context,
+            string content,
+            string contentType = "application/json",
+            CancellationToken cancellationToken = default(CancellationToken),
+            Encoding encoding = null)
+        {
+            var buffer = (encoding ?? Encoding.UTF8).GetBytes(content);
+
+            context.Response.ContentType = contentType;
             await context.Response.OutputStream.WriteAsync(buffer, 0, buffer.Length, cancellationToken);
 
             return true;
