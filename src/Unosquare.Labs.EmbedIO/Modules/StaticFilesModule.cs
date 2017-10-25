@@ -54,12 +54,12 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StaticFilesModule"/> class.
+        /// Initializes a new instance of the <see cref="StaticFilesModule" /> class.
         /// </summary>
         /// <param name="fileSystemPath">The file system path.</param>
-        /// <param name="directoryBrowser">if set to <c>true</c> [directory browser].</param>
-        public StaticFilesModule(string fileSystemPath, bool directoryBrowser)
-            : this(fileSystemPath, null, null, directoryBrowser)
+        /// <param name="useDirectoryBrowser">if set to <c>true</c> [use directory browser].</param>
+        public StaticFilesModule(string fileSystemPath, bool useDirectoryBrowser)
+            : this(fileSystemPath, null, null, useDirectoryBrowser)
         {
         }
 
@@ -69,18 +69,18 @@
         /// <param name="fileSystemPath">The file system path.</param>
         /// <param name="headers">The headers to set in every request.</param>
         /// <param name="additionalPaths">The additional paths.</param>
-        /// <param name="directoryBrowser">if set to <c>true</c> [directory browser].</param>
+        /// <param name="useDirectoryBrowser">if set to <c>true</c> [use directory browser].</param>
         /// <exception cref="ArgumentException">Path ' + fileSystemPath + ' does not exist.</exception>
         public StaticFilesModule(
             string fileSystemPath,
             Dictionary<string, string> headers = null,
             Dictionary<string, string> additionalPaths = null,
-            bool directoryBrowser = false)
+            bool useDirectoryBrowser = false)
         {
             if (!Directory.Exists(fileSystemPath))
                 throw new ArgumentException($"Path '{fileSystemPath}' does not exist.");
 
-            _virtualPaths = new VirtualPaths(Path.GetFullPath(fileSystemPath), directoryBrowser);
+            _virtualPaths = new VirtualPaths(Path.GetFullPath(fileSystemPath), useDirectoryBrowser);
 
             UseGzip = true;
 #if DEBUG // When debugging, disable RamCache
@@ -190,7 +190,7 @@
         /// <value>
         /// The name.
         /// </value>
-        public override string Name => "Static Files Module";
+        public override string Name => nameof(StaticFilesModule).Humanize();
 
         /// <summary>
         /// Private collection holding the contents of the RAM Cache.
@@ -287,13 +287,13 @@
 
         private static Task<bool> HandleDirectory(HttpListenerContext context, string localPath, CancellationToken ct)
         {
-            var directoyFiles = Directory.GetDirectories(localPath).Select(x => x.Replace(localPath + Path.DirectorySeparatorChar, string.Empty))
+            var entries = Directory.GetDirectories(localPath).Select(x => x.Replace(localPath + Path.DirectorySeparatorChar, string.Empty))
                 .Union(Directory.GetFiles(localPath, "*", SearchOption.TopDirectoryOnly).Select(Path.GetFileName))
                 .Where(x => !string.IsNullOrEmpty(x))
                 .Select(y => $"<li><a href='{y}'>{y}</a></li>");
 
             var content = Responses.ResponseBaseHtml.Replace("{0}",
-                $"<h1>Directory: {context.RequestPathCaseSensitive()}</h1><ul>{string.Join(string.Empty, directoyFiles)}</ul>");
+                $"<h1>Directory: {context.RequestPathCaseSensitive()}</h1><ul>{string.Join(string.Empty, entries)}</ul>");
 
             return context.HtmlResponseAsync(content, cancellationToken: ct);
         }

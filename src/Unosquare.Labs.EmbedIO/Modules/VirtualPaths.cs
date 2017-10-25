@@ -21,10 +21,10 @@
 
         private readonly ConcurrentDictionary<string, string> _mappedPaths = new ConcurrentDictionary<string, string>();
 
-        public VirtualPaths(string fileSystemPath, bool directoryBrowser)
+        public VirtualPaths(string fileSystemPath, bool useDirectoryBrowser)
         {
             FileSystemPath = fileSystemPath;
-            DirectoryBrowser = directoryBrowser;
+            UseDirectoryBrowser = useDirectoryBrowser;
         }
 
         public ReadOnlyDictionary<string, string> Collection => new ReadOnlyDictionary<string, string>(this);
@@ -35,14 +35,14 @@
 
         public string FileSystemPath { get; }
 
-        public bool DirectoryBrowser { get; }
+        public bool UseDirectoryBrowser { get; }
 
         internal VirtualPathStatus ExistsLocalPath(string urlPath, ref string localPath)
         {
             if (_validPaths.TryGetValue(localPath, out var tempPath))
             {
                 localPath = tempPath;
-                return DirectoryBrowser && Directory.Exists(localPath)
+                return UseDirectoryBrowser && Directory.Exists(localPath)
                     ? VirtualPathStatus.Directoy
                     : VirtualPathStatus.File;
             }
@@ -107,7 +107,7 @@
             }
 
             // adjust the path to see if we've got a default document
-            if (!DirectoryBrowser && urlPath.Last() == Path.DirectorySeparatorChar)
+            if (!UseDirectoryBrowser && urlPath.Last() == Path.DirectorySeparatorChar)
             {
                 urlPath = urlPath + DefaultDocument;
             }
@@ -130,7 +130,7 @@
         private VirtualPathStatus ExistsPath(string urlPath, ref string localPath)
         {
             // check if the path is just a directoy and return
-            if (DirectoryBrowser && Directory.Exists(localPath))
+            if (UseDirectoryBrowser && Directory.Exists(localPath))
             {
                 return VirtualPathStatus.Directoy;
             }
@@ -155,7 +155,7 @@
                 // Try to fallback to root
                 var rootLocalPath = Path.Combine(FileSystemPath, urlPath);
 
-                if (DirectoryBrowser && Directory.Exists(rootLocalPath))
+                if (UseDirectoryBrowser && Directory.Exists(rootLocalPath))
                 {
                     localPath = rootLocalPath;
                     return VirtualPathStatus.Directoy;
