@@ -44,7 +44,7 @@
 
                 // start the server
                 server.RunAsync();
-                Terminal.ReadKey(true);
+                Console.ReadKey();
             }
         }
 
