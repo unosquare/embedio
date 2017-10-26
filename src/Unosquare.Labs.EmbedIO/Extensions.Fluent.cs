@@ -21,17 +21,22 @@
         /// <param name="webserver">The webserver instance.</param>
         /// <param name="rootPath">The static folder path.</param>
         /// <param name="defaultDocument">The default document name</param>
-        /// <returns>An instance of webserver</returns>
-        /// <exception cref="System.ArgumentNullException">webserver</exception>
+        /// <param name="useDirectoryBrowser">if set to <c>true</c> [use directory browser].</param>
+        /// <returns>
+        /// An instance of webserver
+        /// </returns>
+        /// <exception cref="ArgumentNullException">webserver</exception>
         public static WebServer WithStaticFolderAt(
             this WebServer webserver,
             string rootPath,
-            string defaultDocument = StaticFilesModule.DefaultDocumentName)
+            string defaultDocument = StaticFilesModule.DefaultDocumentName,
+            bool useDirectoryBrowser = false)
         {
             if (webserver == null)
                 throw new ArgumentNullException(nameof(webserver));
 
-            webserver.RegisterModule(new StaticFilesModule(rootPath) { DefaultDocument = defaultDocument });
+            webserver.RegisterModule(
+                new StaticFilesModule(rootPath, useDirectoryBrowser) {DefaultDocument = defaultDocument});
             return webserver;
         }
 
@@ -51,7 +56,7 @@
             if (webserver == null)
                 throw new ArgumentNullException(nameof(webserver));
 
-            webserver.RegisterModule(new StaticFilesModule(virtualPaths) { DefaultDocument = defaultDocument });
+            webserver.RegisterModule(new StaticFilesModule(virtualPaths) {DefaultDocument = defaultDocument});
             return webserver;
         }
 
@@ -70,14 +75,13 @@
             return webserver;
         }
 
-#if !NETSTANDARD1_3 && !UWP
-        /// <summary>
-        /// Add WebApiModule to WebServer
-        /// </summary>
-        /// <param name="webserver">The webserver instance.</param>
-        /// <param name="assembly">The assembly to load WebApi Controllers from. Leave null to avoid autoloading.</param>
-        /// <returns>An instance of webserver</returns>
-        /// <exception cref="System.ArgumentNullException">webserver</exception>
+#if !NETSTANDARD1_3 && !UWP /// <summary>
+/// Add WebApiModule to WebServer
+/// </summary>
+/// <param name="webserver">The webserver instance.</param>
+/// <param name="assembly">The assembly to load WebApi Controllers from. Leave null to avoid autoloading.</param>
+/// <returns>An instance of webserver</returns>
+/// <exception cref="System.ArgumentNullException">webserver</exception>
         public static WebServer WithWebApi(this WebServer webserver, Assembly assembly = null)
         {
             if (webserver == null)
@@ -192,7 +196,7 @@
         /// <param name="headers">The valid headers, default all</param>
         /// <param name="methods">The valid method, default all</param>
         /// <returns>An instance of the tiny web server used to handle request</returns>
-        /// <exception cref="System.ArgumentNullException">webserver</exception>
+        /// <exception cref="ArgumentNullException">webserver</exception>
         public static WebServer EnableCors(
             this WebServer webserver,
             string origins = Strings.CorsWildcard,
@@ -213,7 +217,7 @@
         /// <typeparam name="T">The type of Web API Controller</typeparam>
         /// <param name="webserver">The webserver instance.</param>
         /// <returns>An instance of webserver</returns>
-        /// <exception cref="System.ArgumentNullException">webserver</exception>
+        /// <exception cref="ArgumentNullException">webserver</exception>
         public static WebServer WithWebApiController<T>(this WebServer webserver)
             where T : WebApiController, new()
         {

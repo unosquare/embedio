@@ -22,6 +22,8 @@
 
         public const string UppercaseFile = "ABCDEF.txt";
 
+        public static string[] RandomHtmls = {"abc.html", "wkp.html", "zxy.html"};
+
         public static string RootPath()
         {
             var assemblyPath = Path.GetDirectoryName(typeof(StaticFilesModuleTest).GetTypeInfo().Assembly.Location);
@@ -42,21 +44,30 @@
                 : null;
         }
 
-        public static string SetupStaticFolder()
+        public static string SetupStaticFolder(bool onlyIndex = true)
         {
             var rootPath = RootPath();
 
             if (Directory.Exists(rootPath) == false)
                 Directory.CreateDirectory(rootPath);
 
-            if (File.Exists(Path.Combine(rootPath, StaticFilesModule.DefaultDocumentName)) == false)
-                File.WriteAllText(Path.Combine(rootPath, "index.html"), Resources.Index);
-
             if (Directory.Exists(Path.Combine(rootPath, "sub")) == false)
                 Directory.CreateDirectory(Path.Combine(rootPath, "sub"));
 
-            if (File.Exists(Path.Combine(rootPath, "sub", StaticFilesModule.DefaultDocumentName)) == false)
-                File.WriteAllText(Path.Combine(rootPath, "sub", "index.html"), Resources.SubIndex);
+            var files = onlyIndex ? new[] { StaticFilesModule.DefaultDocumentName } : RandomHtmls;
+
+            foreach (var file in files.Where(file => !File.Exists(Path.Combine(rootPath, file))))
+            {
+                File.WriteAllText(Path.Combine(rootPath, file), Resources.Index);
+            }
+
+            foreach (var file in files.Where(file => !File.Exists(Path.Combine(rootPath, "sub", file))))
+            {
+                File.WriteAllText(Path.Combine(rootPath, "sub",  file), Resources.SubIndex);
+            }
+
+            // write only random htmls when onlyIndex is false
+            if (!onlyIndex) return rootPath;
 
             if (File.Exists(Path.Combine(rootPath, BigDataFile)) == false)
                 CreateTempBinaryFile(Path.Combine(rootPath, BigDataFile), 10);
