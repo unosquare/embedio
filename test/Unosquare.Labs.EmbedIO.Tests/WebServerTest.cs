@@ -69,7 +69,7 @@
             {
                 var instance = new WebServer(GetMultiplePrefixes());
                 Assert.IsNotNull(instance.Listener, "It has a HttpListener");
-                Assert.AreEqual(instance.Listener.Prefixes.Count(), 3);
+                Assert.AreEqual(instance.Listener.Prefixes.Count, 3);
             }
         }
         

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Unosquare.Labs.EmbedIO.Tests.TestObjects;
@@ -33,6 +34,14 @@ namespace Unosquare.Labs.EmbedIO.Tests
         {
             Task.Delay(500).Wait();
             _webServer?.Dispose();
+        }
+
+        public async Task<string> GetString(string partialUrl)
+        {
+            using (var client = new HttpClient())
+            {
+                return await client.GetStringAsync($"{WebServerUrl}{partialUrl}");
+            }
         }
     }
 }
