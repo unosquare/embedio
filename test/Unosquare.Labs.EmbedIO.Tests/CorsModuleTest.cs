@@ -35,41 +35,47 @@
             WebServer.RunAsync();
         }
 
-        [Test]
-        public async Task GetFallback()
-        {
-            var webClient = new HttpClient();
-
-            var jsonBody = await webClient.GetStringAsync(WebServerUrl + "invalidpath");
-
-            var jsonFormatting = true;
-#if DEBUG
-            jsonFormatting = false;
-#endif
-
-            Assert.AreEqual(Json.Serialize(TestObj, jsonFormatting), jsonBody, "Same content");
-        }
-
-        [Test]
-        public async Task PreFlight()
-        {
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestController.GetPath);
-            request.Headers[Headers.Origin] = "http://unosquare.github.io";
-            request.Headers[Headers.AccessControlRequestMethod] = "post";
-            request.Headers[Headers.AccessControlRequestHeaders] = "content-type";
-            request.Method = "OPTIONS";
-
-            using (var response = (HttpWebResponse)await request.GetResponseAsync())
-            {
-                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-            }
-        }
-
         [TearDown]
         public void Kill()
         {
             Task.Delay(TimeSpan.FromSeconds(1)).Wait();
             WebServer.Dispose();
         }
+
+        public class Fallback : CorsModuleTest
+        {
+            [Test]
+            public async Task GetFallback()
+            {
+                var webClient = new HttpClient();
+
+                var jsonBody = await webClient.GetStringAsync(WebServerUrl + "invalidpath");
+
+                var jsonFormatting = true;
+#if DEBUG
+                jsonFormatting = false;
+#endif
+
+                Assert.AreEqual(Json.Serialize(TestObj, jsonFormatting), jsonBody, "Same content");
+            }
+        }
+        
+        public class OnInit : CorsModuleTest
+        {
+            [Test]
+            public async Task PreFlight()
+            {
+                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestController.GetPath);
+                request.Headers[Headers.Origin] = "http://unosquare.github.io";
+                request.Headers[Headers.AccessControlRequestMethod] = "post";
+                request.Headers[Headers.AccessControlRequestHeaders] = "content-type";
+                request.Method = "OPTIONS";
+
+                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                {
+                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                }
+            }
+        }        
     }
 }

@@ -17,6 +17,20 @@
     public class WebServerTest
     {
         private const string DefaultPath = "/";
+        private const int Port = 88;
+        private const string Prefix = "http://localhost:9696";
+
+        private static string[] GetMultiplePrefixes()
+        {
+            return new[] { "http://localhost:9696", "http://localhost:9697", "http://localhost:9698" };
+        }
+
+        internal class EncodeCheck
+        {
+            public string Encoding { get; set; }
+
+            public bool IsValid { get; set; }
+        }
 
         [SetUp]
         public void Setup()
@@ -24,25 +38,113 @@
             Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
         }
 
-        [Test]
-        public void WebServerDefaultConstructor()
+        public class Constructors : WebServerTest
         {
-            var instance = new WebServer();
-            Assert.IsNotNull(instance.Listener, "It has a HttpListener");
-            Assert.IsNotNull(MimeTypes.DefaultMimeTypes, "It has MimeTypes");
+            [Test]
+            public void DefaultConstructor()
+            {
+                var instance = new WebServer();
+                Assert.IsNotNull(instance.Listener, "It has a HttpListener");
+                Assert.IsNotNull(MimeTypes.DefaultMimeTypes, "It has MimeTypes");
+            }
+
+            [Test]
+            public void ConstructorWithPort()
+            {
+                var instance = new WebServer(Port);
+                Assert.IsNotNull(instance.Listener, "It has a HttpListener");
+                Assert.IsNotNull(MimeTypes.DefaultMimeTypes, "It has MimeTypes");
+            }
+
+            [Test]
+            public void ConstructorWithSinglePrefix()
+            {
+                var instance = new WebServer(Prefix);
+                Assert.IsNotNull(instance.Listener, "It has a HttpListener");
+                Assert.IsNotNull(MimeTypes.DefaultMimeTypes, "It has MimeTypes");
+            }
+
+            [Test]
+            public void ConstructorWithMultiplePrefixes()
+            {
+                var instance = new WebServer(GetMultiplePrefixes());
+                Assert.IsNotNull(instance.Listener, "It has a HttpListener");
+                Assert.AreEqual(instance.Listener.Prefixes.Count(), 3);
+            }
         }
         
-        [Test]
-        public void RegisterAndUnregisterModule()
+        public class Modules : WebServerTest
         {
-            var instance = new WebServer();
-            instance.RegisterModule(new LocalSessionModule());
+            [Test]
+            public void RegisterAndUnregister()
+            {
+                var instance = new WebServer();
+                instance.RegisterModule(new LocalSessionModule());
 
-            Assert.AreEqual(instance.Modules.Count, 1, "It has one module");
+                Assert.AreEqual(instance.Modules.Count, 1, "It has one module");
 
-            instance.UnregisterModule(typeof(LocalSessionModule));
+                instance.UnregisterModule(typeof(LocalSessionModule));
 
-            Assert.AreEqual(instance.Modules.Count, 0, "It has not modules");
+                Assert.AreEqual(instance.Modules.Count, 0, "It has not modules");
+            }
+
+            [Test]
+            public void AddHandler()
+            {
+                var webModule = new TestWebModule();
+                // add one more handler
+                webModule.AddHandler(DefaultPath, HttpVerbs.Any, (ctx, ws) => Task.FromResult(false));
+
+                Assert.AreEqual(webModule.Handlers.Count, 4, "WebModule has four handlers");
+                Assert.AreEqual(webModule.Handlers.Last().Path, DefaultPath, "Default Path is correct");
+                Assert.AreEqual(webModule.Handlers.Last().Verb, HttpVerbs.Any, "Default Verb is correct");
+            }
+
+#if NETCOREAPP2_0
+        [Test]
+        public async Task Redirect()
+        {
+            var url = Resources.GetServerAddress();
+
+            using (var instance = new WebServer(url))
+            {
+                instance.RegisterModule(new TestWebModule());
+                var runTask = instance.RunAsync();
+
+                var request = (HttpWebRequest)WebRequest.Create(url + TestWebModule.RedirectUrl);
+                request.AllowAutoRedirect = false;
+        
+                var webException = Assert.ThrowsAsync<WebException>(async () =>
+                {
+                    await request.GetResponseAsync();
+                });
+
+                Assert.AreEqual(WebExceptionStatus.ProtocolError, webException.Status);
+            }
+        }
+
+        [Test]
+        public async Task AbsoluteRedirect()
+        {
+            var url = Resources.GetServerAddress();
+
+            using (var instance = new WebServer(url))
+            {
+                instance.RegisterModule(new TestWebModule());
+                var runTask = instance.RunAsync();
+
+                var request = (HttpWebRequest)WebRequest.Create(url + TestWebModule.RedirectAbsoluteUrl);
+                request.AllowAutoRedirect = false;
+        
+                var webException = Assert.ThrowsAsync<WebException>(async () =>
+                {
+                    await request.GetResponseAsync();
+                });
+
+                Assert.AreEqual(WebExceptionStatus.ProtocolError, webException.Status);
+            }
+        }
+#endif
         }
 
         [Test]
@@ -53,26 +155,8 @@
             Assert.AreEqual(map.Path, DefaultPath, "Default Path is correct");
             Assert.AreEqual(map.Verb, HttpVerbs.Any, "Default Verb is correct");
         }
-
+        
         [Test]
-        public void WebModuleAddHandler()
-        {
-            var webModule = new TestWebModule();
-            // add one more handler
-            webModule.AddHandler(DefaultPath, HttpVerbs.Any, (ctx, ws) => Task.FromResult(false));
-
-            Assert.AreEqual(webModule.Handlers.Count, 4, "WebModule has four handlers");
-            Assert.AreEqual(webModule.Handlers.Last().Path, DefaultPath, "Default Path is correct");
-            Assert.AreEqual(webModule.Handlers.Last().Verb, HttpVerbs.Any, "Default Verb is correct");
-        }
-
-        internal class EncodeCheck
-        {
-            public string Encoding { get; set; }
-
-            public bool IsValid { get; set; }
-        }
-
         public void ExceptionText()
         {
             Assert.ThrowsAsync<WebException>(async () =>
@@ -158,51 +242,5 @@
                 }
             }
         }
-
-#if NETCOREAPP2_0
-        [Test]
-        public async Task TestWebModuleRedirect()
-        {
-            var url = Resources.GetServerAddress();
-
-            using (var instance = new WebServer(url))
-            {
-                instance.RegisterModule(new TestWebModule());
-                var runTask = instance.RunAsync();
-
-                var request = (HttpWebRequest)WebRequest.Create(url + TestWebModule.RedirectUrl);
-                request.AllowAutoRedirect = false;
-        
-                var webException = Assert.ThrowsAsync<WebException>(async () =>
-                {
-                    await request.GetResponseAsync();
-                });
-
-                Assert.AreEqual(WebExceptionStatus.ProtocolError, webException.Status);
-            }
-        }
-
-        [Test]
-        public async Task TestWebModuleAbsoluteRedirect()
-        {
-            var url = Resources.GetServerAddress();
-
-            using (var instance = new WebServer(url))
-            {
-                instance.RegisterModule(new TestWebModule());
-                var runTask = instance.RunAsync();
-
-                var request = (HttpWebRequest)WebRequest.Create(url + TestWebModule.RedirectAbsoluteUrl);
-                request.AllowAutoRedirect = false;
-        
-                var webException = Assert.ThrowsAsync<WebException>(async () =>
-                {
-                    await request.GetResponseAsync();
-                });
-
-                Assert.AreEqual(WebExceptionStatus.ProtocolError, webException.Status);
-            }
-        }
-#endif
     }
 }

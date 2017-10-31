@@ -26,36 +26,39 @@ namespace Unosquare.Labs.EmbedIO.Tests
             WebServer.RegisterModule(new StaticFilesModule(RootPath, true));
             var runTask = WebServer.RunAsync();
         }
-
-        [Test]
-        public async Task BrowseRoot_ReturnsFilesList()
-        {
-            var httpClient = new HttpClient();
-            var htmlContent = await httpClient.GetStringAsync(WebServerUrl);
-
-            Assert.IsNotEmpty(htmlContent);
-
-            foreach (var file in TestHelper.RandomHtmls)
-                Assert.IsTrue(htmlContent.Contains(file));
-        }
-
-        [Test]
-        public async Task BrowseSubfolder_ReturnsFilesList()
-        {
-            var httpClient = new HttpClient();
-            var htmlContent = await httpClient.GetStringAsync(WebServerUrl + "sub");
-
-            Assert.IsNotEmpty(htmlContent);
-
-            foreach (var file in TestHelper.RandomHtmls)
-                Assert.IsTrue(htmlContent.Contains(file));
-        }
-
+        
         [TearDown]
         public void Kill()
         {
             Task.Delay(500).Wait();
             WebServer?.Dispose();
+        }
+
+        public class Browse : DirectoryBrowserTest
+        {
+            [Test]
+            public async Task Root_ReturnsFilesList()
+            {
+                var httpClient = new HttpClient();
+                var htmlContent = await httpClient.GetStringAsync(WebServerUrl);
+
+                Assert.IsNotEmpty(htmlContent);
+
+                foreach (var file in TestHelper.RandomHtmls)
+                    Assert.IsTrue(htmlContent.Contains(file));
+            }
+
+            [Test]
+            public async Task Subfolder_ReturnsFilesList()
+            {
+                var httpClient = new HttpClient();
+                var htmlContent = await httpClient.GetStringAsync(WebServerUrl + "sub");
+
+                Assert.IsNotEmpty(htmlContent);
+
+                foreach (var file in TestHelper.RandomHtmls)
+                    Assert.IsTrue(htmlContent.Contains(file));
+            }
         }
     }
 }

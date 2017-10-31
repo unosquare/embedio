@@ -101,7 +101,7 @@
         }
 
         [Test]
-        public void FluentWithVirtualPathsArgumentException()
+        public void FluentWithVirtualPathsWebServerNull_ThrowsArgumentException()
         {
             var paths = new Dictionary<string, string>
             {
@@ -116,7 +116,7 @@
         }
 
         [Test]
-        public void FluentWithLocalSessionArgumentException()
+        public void FluentWithLocalSessionWebServerNull_ThrowsArgumentException()
         {
             Assert.Throws<ArgumentNullException>(() => {
                 Extensions.WithLocalSession(null);

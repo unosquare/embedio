@@ -33,76 +33,12 @@
             WebServer.Module<WebApiModule>().RegisterController<TestLocalSessionController>();
             WebServer.RunAsync();
         }
-
-        [Test]
-        public void HasSessionModule()
+        
+        [TearDown]
+        public void Kill()
         {
-            Assert.IsNotNull(WebServer.SessionModule, "Session module is not null");
-            Assert.AreEqual(WebServer.SessionModule.Handlers.Count, 1, "Session module has one handler");
-        }
-
-        [Test]
-        public async Task RetrieveCookie()
-        {
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.GetCookie);
-            request.CookieContainer = new CookieContainer();
-
-            using (var response = (HttpWebResponse)await request.GetResponseAsync())
-            {
-                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
-                Assert.IsNotNull(response.Cookies, "Cookies are not null");
-                Assert.Greater(response.Cookies.Count, 0, "Cookies are not empty");
-                
-                Assert.AreEqual(TestLocalSessionController.CookieName, response.Cookies[TestLocalSessionController.CookieName]?.Value);
-            }
-        }
-
-        [Test]
-        public async Task GetCookie()
-        {
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
-            request.CookieContainer = new CookieContainer();
-
-            using (var response = (HttpWebResponse)await request.GetResponseAsync())
-            {
-                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
-                Assert.IsNotNull(response.Cookies, "Cookies are not null");
-                Assert.Greater(response.Cookies.Count, 0, "Cookies are not empty");
-
-                var content = response.Cookies[CookieName]?.Value;
-
-                Assert.IsNotEmpty(content, "Cookie content is not null");
-            }
-        }
-
-        [Test]
-        public async Task GetDifferentSession()
-        {
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
-            request.CookieContainer = new CookieContainer();
-            string content;
-
-            using (var response = (HttpWebResponse)await request.GetResponseAsync())
-            {
-                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
-                Assert.IsNotNull(response.Cookies, "Cookies are not null");
-                Assert.Greater(response.Cookies.Count, 0, "Cookies are not empty");
-
-                content = response.Cookies[CookieName]?.Value;
-            }
-
-            await Task.Delay(WaitTimeSpan);
-
-            Task.WaitAll(new[] {
-                Task.Factory.StartNew(() => GetFile(content)),
-                Task.Factory.StartNew(() => GetFile(content)),
-                Task.Factory.StartNew(() => GetFile(content)),
-                Task.Factory.StartNew(() => GetFile(content)),
-                Task.Factory.StartNew(() => GetFile(content)),
-            });
+            Task.Delay(TimeSpan.FromSeconds(1)).Wait();
+            WebServer.Dispose();
         }
 
         protected async Task GetFile(string content)
@@ -120,52 +56,123 @@
                 Assert.AreNotEqual(content, response.Cookies[CookieName]?.Value);
             }
         }
-
-        [Test]
-        public async Task DeleteSession()
+        public class Sessions : LocalSessionModuleTest
         {
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.PutData);
-            request.CookieContainer = new CookieContainer();
-
-            using (var response = (HttpWebResponse)await request.GetResponseAsync())
+            [Test]
+            public void HasSessionModule()
             {
-                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-                
-                var body = new StreamReader(response.GetResponseStream()).ReadToEnd();
-
-                Assert.AreEqual(body, TestLocalSessionController.MyData);
-            }
-            
-            request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.DeleteSession);
-            request.CookieContainer = new CookieContainer();
-
-            using (var response = (HttpWebResponse)await request.GetResponseAsync())
-            {
-                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
-                var body = new StreamReader(response.GetResponseStream()).ReadToEnd();
-
-                Assert.AreEqual(body, "Deleted");
+                Assert.IsNotNull(WebServer.SessionModule, "Session module is not null");
+                Assert.AreEqual(WebServer.SessionModule.Handlers.Count, 1, "Session module has one handler");
             }
 
-            request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.GetData);
-            request.CookieContainer = new CookieContainer();
-
-            using (var response = (HttpWebResponse)await request.GetResponseAsync())
+            [Test]
+            public async Task DeleteSession()
             {
-                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.PutData);
+                request.CookieContainer = new CookieContainer();
 
-                var body = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                {
+                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
-                Assert.AreEqual(string.Empty, body);
+                    var body = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+                    Assert.AreEqual(body, TestLocalSessionController.MyData);
+                }
+
+                request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.DeleteSession);
+                request.CookieContainer = new CookieContainer();
+
+                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                {
+                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                    var body = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+                    Assert.AreEqual(body, "Deleted");
+                }
+
+                request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.GetData);
+                request.CookieContainer = new CookieContainer();
+
+                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                {
+                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                    var body = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+                    Assert.AreEqual(string.Empty, body);
+                }
+            }
+
+            [Test]
+            public async Task GetDifferentSession()
+            {
+                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
+                request.CookieContainer = new CookieContainer();
+                string content;
+
+                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                {
+                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                    Assert.IsNotNull(response.Cookies, "Cookies are not null");
+                    Assert.Greater(response.Cookies.Count, 0, "Cookies are not empty");
+
+                    content = response.Cookies[CookieName]?.Value;
+                }
+
+                await Task.Delay(WaitTimeSpan);
+
+                Task.WaitAll(new[]
+                {
+                    Task.Factory.StartNew(() => GetFile(content)),
+                    Task.Factory.StartNew(() => GetFile(content)),
+                    Task.Factory.StartNew(() => GetFile(content)),
+                    Task.Factory.StartNew(() => GetFile(content)),
+                    Task.Factory.StartNew(() => GetFile(content)),
+                });
             }
         }
-        
-        [TearDown]
-        public void Kill()
+
+        public class Cookies : LocalSessionModuleTest
         {
-            Task.Delay(TimeSpan.FromSeconds(1)).Wait();
-            WebServer.Dispose();
+            [Test]
+            public async Task RetrieveCookie()
+            {
+                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.GetCookie);
+                request.CookieContainer = new CookieContainer();
+
+                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                {
+                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                    Assert.IsNotNull(response.Cookies, "Cookies are not null");
+                    Assert.Greater(response.Cookies.Count, 0, "Cookies are not empty");
+
+                    Assert.AreEqual(TestLocalSessionController.CookieName, response.Cookies[TestLocalSessionController.CookieName]?.Value);
+                }
+            }
+
+            [Test]
+            public async Task GetCookie()
+            {
+                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
+                request.CookieContainer = new CookieContainer();
+
+                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                {
+                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                    Assert.IsNotNull(response.Cookies, "Cookies are not null");
+                    Assert.Greater(response.Cookies.Count, 0, "Cookies are not empty");
+
+                    var content = response.Cookies[CookieName]?.Value;
+
+                    Assert.IsNotEmpty(content, "Cookie content is not null");
+                }
+            }
         }
+
     }
 }

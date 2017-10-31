@@ -23,41 +23,44 @@ namespace Unosquare.Labs.EmbedIO.Tests
             WebServer.RunAsync();
         }
 
-        [Test]
-        public async Task GetDataWithoutWildcard()
-        {
-            var client = new HttpClient();
-
-            var call = await client.GetStringAsync($"{WebServerUrl}empty");
-
-            Assert.AreEqual("data", call);
-        }
-
-        [Test]
-        public async Task GetDataWithWildcard()
-        {
-            var client = new HttpClient();
-
-            var call = await client.GetStringAsync($"{WebServerUrl}data/1");
-
-            Assert.AreEqual("1", call);
-        }
-
-
-        [Test]
-        public async Task GetDataWithMultipleWildcard()
-        {
-            var client = new HttpClient();
-            
-            var call = await client.GetStringAsync($"{WebServerUrl}data/1/time");
-
-            Assert.AreEqual("time", call);
-        }
-
         [TearDown]
         public void Kill()
         {
             WebServer.Dispose();
+        }
+
+        public class GetData : WildcardRoutingTest
+        {
+            [Test]
+            public async Task WithoutWildcard()
+            {
+                var client = new HttpClient();
+
+                var call = await client.GetStringAsync($"{WebServerUrl}empty");
+
+                Assert.AreEqual("data", call);
+            }
+
+            [Test]
+            public async Task WithWildcard()
+            {
+                var client = new HttpClient();
+
+                var call = await client.GetStringAsync($"{WebServerUrl}data/1");
+
+                Assert.AreEqual("1", call);
+            }
+
+
+            [Test]
+            public async Task MultipleWildcard()
+            {
+                var client = new HttpClient();
+
+                var call = await client.GetStringAsync($"{WebServerUrl}data/1/time");
+
+                Assert.AreEqual("time", call);
+            }
         }
     }
 }
