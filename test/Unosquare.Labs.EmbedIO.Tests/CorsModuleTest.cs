@@ -33,7 +33,7 @@
         {
             var jsonBody = await GetString("invalidpath");
 
-            Assert.AreEqual(Json.Serialize(TestObj, false), jsonBody, "Same content");
+            Assert.AreEqual(Json.Serialize(TestObj), jsonBody, "Same content");
         }
 
         [Test]
