@@ -145,7 +145,7 @@
             WebServer webServer = null;
 
             Assert.Throws<ArgumentNullException>(() => {
-                Extensions.LoadApiControllers(webServer);
+                webServer.LoadApiControllers();
             });
         }
 
@@ -155,7 +155,7 @@
             WebApiModule webApi = null;
 
             Assert.Throws<ArgumentNullException>(() => {
-                Extensions.LoadApiControllers(webApi);
+                webApi.LoadApiControllers();
             });
         }
 
@@ -165,7 +165,7 @@
             WebServer webServer = null;
 
             Assert.Throws<ArgumentNullException>(() => {
-                Extensions.LoadWebSockets(webServer);
+                webServer.LoadWebSockets();
             });
         }
 
@@ -175,7 +175,7 @@
             WebServer webServer = null;
 
             Assert.Throws<ArgumentNullException>(() => {
-                Extensions.EnableCors(webServer);
+                webServer.EnableCors();
             });
         }
         [Test]
@@ -184,7 +184,7 @@
             WebServer webServer = null;
 
             Assert.Throws<ArgumentNullException>(() => {
-                Extensions.WithWebApiController<TestController>(webServer);
+                webServer.WithWebApiController<TestController>();
             });
         }
     }

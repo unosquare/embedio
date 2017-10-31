@@ -15,7 +15,7 @@
     {
         protected WebServer WebServer;
         protected string WebServerUrl;
-        protected object TestObj = new { Message = "OK" };
+        protected object TestObj = new {Message = "OK"};
 
         [SetUp]
         public void Init()
@@ -32,7 +32,7 @@
             WebServer.RegisterModule(new WebApiModule());
             WebServer.Module<WebApiModule>().RegisterController<TestController>();
             WebServer.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(TestObj)));
-            WebServer.RunAsync();
+            var runTask = WebServer.RunAsync();
         }
 
         [TearDown]
@@ -42,40 +42,34 @@
             WebServer.Dispose();
         }
 
-        public class Fallback : CorsModuleTest
+        [Test]
+        public async Task RequestFallback_ReturnsJsonObject()
         {
-            [Test]
-            public async Task GetFallback()
-            {
-                var webClient = new HttpClient();
+            var webClient = new HttpClient();
 
-                var jsonBody = await webClient.GetStringAsync(WebServerUrl + "invalidpath");
+            var jsonBody = await webClient.GetStringAsync(WebServerUrl + "invalidpath");
 
-                var jsonFormatting = true;
+            var jsonFormatting = true;
 #if DEBUG
                 jsonFormatting = false;
 #endif
 
-                Assert.AreEqual(Json.Serialize(TestObj, jsonFormatting), jsonBody, "Same content");
+            Assert.AreEqual(Json.Serialize(TestObj, jsonFormatting), jsonBody, "Same content");
+        }
+
+        [Test]
+        public async Task RequestOptionsVerb_ReturnsOK()
+        {
+            var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + TestController.GetPath);
+            request.Headers[Headers.Origin] = "http://unosquare.github.io";
+            request.Headers[Headers.AccessControlRequestMethod] = "post";
+            request.Headers[Headers.AccessControlRequestHeaders] = "content-type";
+            request.Method = "OPTIONS";
+
+            using (var response = (HttpWebResponse) await request.GetResponseAsync())
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
             }
         }
-        
-        public class OnInit : CorsModuleTest
-        {
-            [Test]
-            public async Task PreFlight()
-            {
-                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestController.GetPath);
-                request.Headers[Headers.Origin] = "http://unosquare.github.io";
-                request.Headers[Headers.AccessControlRequestMethod] = "post";
-                request.Headers[Headers.AccessControlRequestHeaders] = "content-type";
-                request.Method = "OPTIONS";
-
-                using (var response = (HttpWebResponse)await request.GetResponseAsync())
-                {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-                }
-            }
-        }        
     }
 }

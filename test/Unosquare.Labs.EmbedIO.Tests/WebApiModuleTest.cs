@@ -35,9 +35,7 @@
             public string test { get; set; }
             public List<string> id { get; set; }
         }
-
-
-
+        
         [TearDown]
         public void Kill()
         {
@@ -52,9 +50,9 @@
             {
                 List<Person> remoteList;
 
-                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestController.GetPath);
+                var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + TestController.GetPath);
 
-                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                using (var response = (HttpWebResponse) await request.GetResponseAsync())
                 {
                     Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
@@ -66,7 +64,8 @@
                     remoteList = Json.Deserialize<List<Person>>(jsonBody);
 
                     Assert.IsNotNull(remoteList, "Json Object is not null");
-                    Assert.AreEqual(remoteList.Count, PeopleRepository.Database.Count, "Remote list count equals local list");
+                    Assert.AreEqual(remoteList.Count, PeopleRepository.Database.Count,
+                        "Remote list count equals local list");
                 }
 
                 await TestHelper.ValidatePerson(WebServerUrl + TestController.GetPath + remoteList.First().Key);
@@ -76,7 +75,8 @@
             public async Task JsonDataWithMiddleUrl()
             {
                 var person = PeopleRepository.Database.First();
-                await TestHelper.ValidatePerson(WebServerUrl + TestController.GetMiddlePath.Replace("*", person.Key.ToString()));
+                await TestHelper.ValidatePerson(WebServerUrl +
+                                                TestController.GetMiddlePath.Replace("*", person.Key.ToString()));
             }
 
             [Test]
@@ -86,7 +86,7 @@
                 await TestHelper.ValidatePerson(WebServerUrl + TestController.GetAsyncPath + person.Key);
             }
         }
-        
+
         public class HttpPost : WebApiModuleTest
         {
             [Test]
@@ -94,8 +94,9 @@
             {
                 using (var client = new HttpClient())
                 {
-                    var model = new Person() { Key = 10, Name = "Test" };
-                    var payloadJson = new StringContent(Json.Serialize(model), System.Text.Encoding.UTF8, "application/json");
+                    var model = new Person() {Key = 10, Name = "Test"};
+                    var payloadJson = new StringContent(Json.Serialize(model), System.Text.Encoding.UTF8,
+                        "application/json");
                     var response = await client.PostAsync(WebServerUrl + TestController.GetPath, payloadJson);
 
                     var result = Json.Deserialize<Person>(await response.Content.ReadAsStringAsync());
@@ -113,11 +114,12 @@
             {
                 using (var webClient = new HttpClient())
                 {
-                    var content = new[] {
-                    new KeyValuePair<string, string>("test", "data"),
-                    new KeyValuePair<string, string>(label1, "1"),
-                    new KeyValuePair<string, string>(label2, "2")
-                };
+                    var content = new[]
+                    {
+                        new KeyValuePair<string, string>("test", "data"),
+                        new KeyValuePair<string, string>(label1, "1"),
+                        new KeyValuePair<string, string>(label2, "2")
+                    };
 
                     var formContent = new FormUrlEncodedContent(content);
 
@@ -139,9 +141,9 @@
                 {
                     var content = new[]
                     {
-                    new KeyValuePair<string, string>("test", "data"),
-                    new KeyValuePair<string, string>("id", "1")
-                };
+                        new KeyValuePair<string, string>("test", "data"),
+                        new KeyValuePair<string, string>("id", "1")
+                    };
 
                     var formContent = new FormUrlEncodedContent(content);
 
@@ -156,7 +158,7 @@
                 }
             }
         }
-        
+
         [Test]
         public async Task WebApiWithConstructor()
         {
@@ -164,9 +166,9 @@
 
             WebServer.Module<WebApiModule>().RegisterController(() => new TestControllerWithConstructor(name));
 
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + "name");
+            var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + "name");
 
-            using (var response = (HttpWebResponse)await request.GetResponseAsync())
+            using (var response = (HttpWebResponse) await request.GetResponseAsync())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
