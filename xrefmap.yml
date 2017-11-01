@@ -2711,6 +2711,87 @@ references:
   commentId: Overload:Unosquare.Net.HttpListenerPrefixCollection.Clear
   fullName: Unosquare.Net.HttpListenerPrefixCollection.Clear
   nameWithType: HttpListenerPrefixCollection.Clear
+- uid: Unosquare.Net.HttpListenerPrefixCollection.Contains(System.String)
+  name: Contains(String)
+  href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection_Contains_System_String_
+  commentId: M:Unosquare.Net.HttpListenerPrefixCollection.Contains(System.String)
+  fullName: Unosquare.Net.HttpListenerPrefixCollection.Contains(System.String)
+  nameWithType: HttpListenerPrefixCollection.Contains(String)
+- uid: Unosquare.Net.HttpListenerPrefixCollection.Contains*
+  name: Contains
+  href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection_Contains_
+  commentId: Overload:Unosquare.Net.HttpListenerPrefixCollection.Contains
+  fullName: Unosquare.Net.HttpListenerPrefixCollection.Contains
+  nameWithType: HttpListenerPrefixCollection.Contains
+- uid: Unosquare.Net.HttpListenerPrefixCollection.CopyTo(System.Array,System.Int32)
+  name: CopyTo(Array, Int32)
+  href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection_CopyTo_System_Array_System_Int32_
+  commentId: M:Unosquare.Net.HttpListenerPrefixCollection.CopyTo(System.Array,System.Int32)
+  fullName: Unosquare.Net.HttpListenerPrefixCollection.CopyTo(System.Array, System.Int32)
+  nameWithType: HttpListenerPrefixCollection.CopyTo(Array, Int32)
+- uid: Unosquare.Net.HttpListenerPrefixCollection.CopyTo(System.String[],System.Int32)
+  name: CopyTo(String[], Int32)
+  href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection_CopyTo_System_String___System_Int32_
+  commentId: M:Unosquare.Net.HttpListenerPrefixCollection.CopyTo(System.String[],System.Int32)
+  name.vb: CopyTo(String(), Int32)
+  fullName: Unosquare.Net.HttpListenerPrefixCollection.CopyTo(System.String[], System.Int32)
+  fullName.vb: Unosquare.Net.HttpListenerPrefixCollection.CopyTo(System.String(), System.Int32)
+  nameWithType: HttpListenerPrefixCollection.CopyTo(String[], Int32)
+  nameWithType.vb: HttpListenerPrefixCollection.CopyTo(String(), Int32)
+- uid: Unosquare.Net.HttpListenerPrefixCollection.CopyTo*
+  name: CopyTo
+  href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection_CopyTo_
+  commentId: Overload:Unosquare.Net.HttpListenerPrefixCollection.CopyTo
+  fullName: Unosquare.Net.HttpListenerPrefixCollection.CopyTo
+  nameWithType: HttpListenerPrefixCollection.CopyTo
+- uid: Unosquare.Net.HttpListenerPrefixCollection.Count
+  name: Count
+  href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection_Count
+  commentId: P:Unosquare.Net.HttpListenerPrefixCollection.Count
+  fullName: Unosquare.Net.HttpListenerPrefixCollection.Count
+  nameWithType: HttpListenerPrefixCollection.Count
+- uid: Unosquare.Net.HttpListenerPrefixCollection.Count*
+  name: Count
+  href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection_Count_
+  commentId: Overload:Unosquare.Net.HttpListenerPrefixCollection.Count
+  fullName: Unosquare.Net.HttpListenerPrefixCollection.Count
+  nameWithType: HttpListenerPrefixCollection.Count
+- uid: Unosquare.Net.HttpListenerPrefixCollection.GetEnumerator
+  name: GetEnumerator()
+  href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection_GetEnumerator
+  commentId: M:Unosquare.Net.HttpListenerPrefixCollection.GetEnumerator
+  fullName: Unosquare.Net.HttpListenerPrefixCollection.GetEnumerator()
+  nameWithType: HttpListenerPrefixCollection.GetEnumerator()
+- uid: Unosquare.Net.HttpListenerPrefixCollection.GetEnumerator*
+  name: GetEnumerator
+  href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection_GetEnumerator_
+  commentId: Overload:Unosquare.Net.HttpListenerPrefixCollection.GetEnumerator
+  fullName: Unosquare.Net.HttpListenerPrefixCollection.GetEnumerator
+  nameWithType: HttpListenerPrefixCollection.GetEnumerator
+- uid: Unosquare.Net.HttpListenerPrefixCollection.IsReadOnly
+  name: IsReadOnly
+  href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection_IsReadOnly
+  commentId: P:Unosquare.Net.HttpListenerPrefixCollection.IsReadOnly
+  fullName: Unosquare.Net.HttpListenerPrefixCollection.IsReadOnly
+  nameWithType: HttpListenerPrefixCollection.IsReadOnly
+- uid: Unosquare.Net.HttpListenerPrefixCollection.IsReadOnly*
+  name: IsReadOnly
+  href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection_IsReadOnly_
+  commentId: Overload:Unosquare.Net.HttpListenerPrefixCollection.IsReadOnly
+  fullName: Unosquare.Net.HttpListenerPrefixCollection.IsReadOnly
+  nameWithType: HttpListenerPrefixCollection.IsReadOnly
+- uid: Unosquare.Net.HttpListenerPrefixCollection.IsSynchronized
+  name: IsSynchronized
+  href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection_IsSynchronized
+  commentId: P:Unosquare.Net.HttpListenerPrefixCollection.IsSynchronized
+  fullName: Unosquare.Net.HttpListenerPrefixCollection.IsSynchronized
+  nameWithType: HttpListenerPrefixCollection.IsSynchronized
+- uid: Unosquare.Net.HttpListenerPrefixCollection.IsSynchronized*
+  name: IsSynchronized
+  href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection_IsSynchronized_
+  commentId: Overload:Unosquare.Net.HttpListenerPrefixCollection.IsSynchronized
+  fullName: Unosquare.Net.HttpListenerPrefixCollection.IsSynchronized
+  nameWithType: HttpListenerPrefixCollection.IsSynchronized
 - uid: Unosquare.Net.HttpListenerPrefixCollection.Remove(System.String)
   name: Remove(String)
   href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection_Remove_System_String_
@@ -2723,6 +2804,22 @@ references:
   commentId: Overload:Unosquare.Net.HttpListenerPrefixCollection.Remove
   fullName: Unosquare.Net.HttpListenerPrefixCollection.Remove
   nameWithType: HttpListenerPrefixCollection.Remove
+- uid: Unosquare.Net.HttpListenerPrefixCollection.System#Collections#IEnumerable#GetEnumerator
+  name: IEnumerable.GetEnumerator()
+  href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection_System_Collections_IEnumerable_GetEnumerator
+  commentId: M:Unosquare.Net.HttpListenerPrefixCollection.System#Collections#IEnumerable#GetEnumerator
+  name.vb: System.Collections.IEnumerable.GetEnumerator()
+  fullName: Unosquare.Net.HttpListenerPrefixCollection.System.Collections.IEnumerable.GetEnumerator()
+  nameWithType: HttpListenerPrefixCollection.IEnumerable.GetEnumerator()
+  nameWithType.vb: HttpListenerPrefixCollection.System.Collections.IEnumerable.GetEnumerator()
+- uid: Unosquare.Net.HttpListenerPrefixCollection.System#Collections#IEnumerable#GetEnumerator*
+  name: IEnumerable.GetEnumerator
+  href: api/Unosquare.Net.HttpListenerPrefixCollection.html#Unosquare_Net_HttpListenerPrefixCollection_System_Collections_IEnumerable_GetEnumerator_
+  commentId: Overload:Unosquare.Net.HttpListenerPrefixCollection.System#Collections#IEnumerable#GetEnumerator
+  name.vb: System.Collections.IEnumerable.GetEnumerator
+  fullName: Unosquare.Net.HttpListenerPrefixCollection.System.Collections.IEnumerable.GetEnumerator
+  nameWithType: HttpListenerPrefixCollection.IEnumerable.GetEnumerator
+  nameWithType.vb: HttpListenerPrefixCollection.System.Collections.IEnumerable.GetEnumerator
 - uid: Unosquare.Net.HttpListenerRequest
   name: HttpListenerRequest
   href: api/Unosquare.Net.HttpListenerRequest.html
