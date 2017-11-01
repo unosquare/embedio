@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
+    using System.Net.Http;
     using Constants;
     using NUnit.Framework;
     using System.Net;
@@ -21,9 +22,7 @@
         private const string Prefix = "http://localhost:9696";
 
         private static string[] GetMultiplePrefixes()
-        {
-            return new[] { "http://localhost:9696", "http://localhost:9697", "http://localhost:9698" };
-        }
+            => new[] {"http://localhost:9696", "http://localhost:9697", "http://localhost:9698"};
 
         internal class EncodeCheck
         {
@@ -72,7 +71,7 @@
                 Assert.AreEqual(instance.Listener.Prefixes.Count, 3);
             }
         }
-        
+
         public class Modules : WebServerTest
         {
             [Test]
@@ -150,16 +149,21 @@
         [Test]
         public void WebMap()
         {
-            var map = new Map() { Path = DefaultPath, ResponseHandler = (ctx, ws) => Task.FromResult(false), Verb = HttpVerbs.Any };
+            var map = new Map()
+            {
+                Path = DefaultPath,
+                ResponseHandler = (ctx, ws) => Task.FromResult(false),
+                Verb = HttpVerbs.Any
+            };
 
             Assert.AreEqual(map.Path, DefaultPath, "Default Path is correct");
             Assert.AreEqual(map.Verb, HttpVerbs.Any, "Default Verb is correct");
         }
-        
+
         [Test]
         public void ExceptionText()
         {
-            Assert.ThrowsAsync<WebException>(async () =>
+            Assert.ThrowsAsync<HttpRequestException>(async () =>
             {
                 var url = Resources.GetServerAddress();
 
@@ -168,8 +172,8 @@
                     instance.RegisterModule(new FallbackModule((ctx, ct) => throw new Exception("Error")));
 
                     var runTask = instance.RunAsync();
-                    var request = (HttpWebRequest)WebRequest.Create(url);
-                    await request.GetResponseAsync();
+                    var request = new HttpClient();
+                    await request.GetStringAsync(url);
                 }
             });
         }
@@ -193,7 +197,8 @@
                     {
                         var encodeValue =
                             ctx.Request.ContentType.Split(';')
-                                .FirstOrDefault(x => x.Trim().StartsWith("charset", StringComparison.OrdinalIgnoreCase))?
+                                .FirstOrDefault(x => x.Trim().StartsWith("charset", StringComparison.OrdinalIgnoreCase))
+                                ?
                                 .Split('=')
                                 .Skip(1)
                                 .FirstOrDefault()?
@@ -205,14 +210,18 @@
                         Assert.Inconclusive("Invalid encoding in system");
                     }
 
-                    ctx.JsonResponse(new EncodeCheck { Encoding = encoding.EncodingName, IsValid = ctx.Request.ContentEncoding.EncodingName == encoding.EncodingName });
+                    ctx.JsonResponse(new EncodeCheck
+                    {
+                        Encoding = encoding.EncodingName,
+                        IsValid = ctx.Request.ContentEncoding.EncodingName == encoding.EncodingName
+                    });
 
                     return true;
                 }));
 
                 var runTask = instance.RunAsync();
 
-                var request = (HttpWebRequest)WebRequest.Create(url + TestWebModule.RedirectUrl);
+                var request = (HttpWebRequest) WebRequest.Create(url + TestWebModule.RedirectUrl);
                 request.Method = "POST";
                 request.ContentType = $"application/json; charset={encodeName}";
 
@@ -223,7 +232,7 @@
                 var requestStream = await request.GetRequestStreamAsync();
                 requestStream.Write(byteArray, 0, byteArray.Length);
 
-                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                using (var response = (HttpWebResponse) await request.GetResponseAsync())
                 {
                     using (var ms = new MemoryStream())
                     {
