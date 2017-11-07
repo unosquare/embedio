@@ -290,10 +290,10 @@
             var entries = Directory.GetDirectories(localPath).Select(x => x.Replace(localPath + Path.DirectorySeparatorChar, string.Empty))
                 .Union(Directory.GetFiles(localPath, "*", SearchOption.TopDirectoryOnly).Select(Path.GetFileName))
                 .Where(x => !string.IsNullOrEmpty(x))
-                .Select(y => $"<li><a href='{y}'>{y}</a></li>");
+                .Select(y => $"<li><a href='{Uri.EscapeDataString(y)}'>{WebUtility.HtmlEncode(y)}</a></li>");
 
             var content = Responses.ResponseBaseHtml.Replace("{0}",
-                $"<h1>Directory: {context.RequestPathCaseSensitive()}</h1><ul>{string.Join(string.Empty, entries)}</ul>");
+                $"<h1>Directory: {WebUtility.HtmlEncode(context.RequestPathCaseSensitive())}</h1><ul>{string.Join(string.Empty, entries)}</ul>");
 
             return context.HtmlResponseAsync(content, cancellationToken: ct);
         }
