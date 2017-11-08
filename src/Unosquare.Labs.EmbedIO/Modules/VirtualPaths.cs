@@ -14,7 +14,7 @@
             Invalid,
             Forbidden,
             File,
-            Directoy
+            Directory
         }
 
         private readonly ConcurrentDictionary<string, string> _validPaths = new ConcurrentDictionary<string, string>();
@@ -43,7 +43,7 @@
             {
                 localPath = tempPath;
                 return UseDirectoryBrowser && Directory.Exists(localPath)
-                    ? VirtualPathStatus.Directoy
+                    ? VirtualPathStatus.Directory
                     : VirtualPathStatus.File;
             }
 
@@ -132,7 +132,7 @@
             // check if the path is just a directoy and return
             if (UseDirectoryBrowser && Directory.Exists(localPath))
             {
-                return VirtualPathStatus.Directoy;
+                return VirtualPathStatus.Directory;
             }
 
             if (string.IsNullOrWhiteSpace(DefaultExtension) == false && DefaultExtension.StartsWith(".") &&
@@ -158,7 +158,7 @@
                 if (UseDirectoryBrowser && Directory.Exists(rootLocalPath))
                 {
                     localPath = rootLocalPath;
-                    return VirtualPathStatus.Directoy;
+                    return VirtualPathStatus.Directory;
                 }
 
                 if (File.Exists(rootLocalPath))
