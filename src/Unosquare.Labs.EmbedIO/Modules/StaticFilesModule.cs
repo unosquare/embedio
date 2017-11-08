@@ -5,6 +5,7 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using Swan;
@@ -36,6 +37,16 @@
         /// The maximum gzip input length
         /// </summary>
         private const int MaxGzipInputLength = 4 * 1024 * 1024;
+
+        /// <summary>
+        /// Maximal length of entry in DirectoryBrowser
+        /// </summary>
+        private const int MaxEntryLength = 50;
+
+        /// <summary>
+        /// How much characters used after time in DirectoryBrowser
+        /// </summary>
+        private const int SizeIndent = 20;
 
         private readonly VirtualPaths _virtualPaths;
 
@@ -287,15 +298,62 @@
 
         private static Task<bool> HandleDirectory(HttpListenerContext context, string localPath, CancellationToken ct)
         {
-            var entries = Directory.GetDirectories(localPath).Select(x => x.Replace(localPath + Path.DirectorySeparatorChar, string.Empty))
-                .Union(Directory.GetFiles(localPath, "*", SearchOption.TopDirectoryOnly).Select(Path.GetFileName))
-                .Where(x => !string.IsNullOrEmpty(x))
-                .Select(y => $"<li><a href='{Uri.EscapeDataString(y)}'>{System.Net.WebUtility.HtmlEncode(y)}</a></li>");
+            var timeFormat = "dd-MMM-yyyy hh:mm tt";
+            var entries = new[] {"<a href='../'>../</a>"}.Concat(
+                Directory.GetDirectories(localPath)
+                    .Select(path =>
+                    {
+                        var name = path.Replace(localPath.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar, string.Empty);
+                        var truncatedName = Truncate(name + Path.DirectorySeparatorChar, MaxEntryLength);
+                        return new
+                        {
+                            Name = truncatedName,
+                            Url = Uri.EscapeDataString(name) + Path.DirectorySeparatorChar,
+                            OutputName = System.Net.WebUtility.HtmlEncode(truncatedName),
+                            ModificationTime =
+                            new DirectoryInfo(path).LastWriteTimeUtc.ToString(timeFormat, CultureInfo.InvariantCulture),
+                            Size = "-"
+                        };
+                    })
+                    .OrderBy(x => x.Name)
+                    .Union(Directory.GetFiles(localPath, "*", SearchOption.TopDirectoryOnly)
+                        .Select(path =>
+                        {
+                            var fileInfo = new FileInfo(path);
+                            var name = Path.GetFileName(path);
+                            var truncatedName = Truncate(name, MaxEntryLength);
+                            return new
+                            {
+                                Name = truncatedName,
+                                Url = Uri.EscapeDataString(name),
+                                OutputName = System.Net.WebUtility.HtmlEncode(truncatedName),
+                                ModificationTime =
+                                fileInfo.LastWriteTimeUtc.ToString(timeFormat, CultureInfo.InvariantCulture),
+                                Size = fileInfo.Length.ToString()
+                            };
+                        })
+                        .OrderBy(x => x.Name))
+                    .Select(y => $"<a href='{y.Url}'>{y.OutputName}</a>" +
+                                 new string(' ', MaxEntryLength - y.Name.Length + 1) +
+                                 y.ModificationTime +
+                                 new string(' ', SizeIndent - y.Size.Length) +
+                                 y.Size)
+                );
 
             var content = Responses.ResponseBaseHtml.Replace("{0}",
-                $"<h1>Directory: {System.Net.WebUtility.HtmlEncode(context.RequestPathCaseSensitive())}</h1><ul>{string.Join(string.Empty, entries)}</ul>");
+                $"<h1>Directory: {System.Net.WebUtility.HtmlEncode(context.RequestPathCaseSensitive())}</h1><hr/>" +
+                $"<pre>{string.Join("\n", entries)}</pre><hr/>");
 
             return context.HtmlResponseAsync(content, cancellationToken: ct);
+        }
+
+        private static string Truncate(string value, int maxLength)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return value;
+            }
+            return value.Length >= maxLength ? value.Substring(0, maxLength - 3) + "..>" : value;
         }
 
         private Task<bool> HandleGet(HttpListenerContext context, CancellationToken ct, bool sendBuffer = true)
@@ -309,7 +367,7 @@
                     return Task.FromResult(true);
                 case VirtualPathStatus.File:
                     return HandleFile(context, requestFullLocalPath, sendBuffer, ct);
-                case VirtualPathStatus.Directoy:
+                case VirtualPathStatus.Directory:
                     return HandleDirectory(context, requestFullLocalPath, ct);
             }
 
