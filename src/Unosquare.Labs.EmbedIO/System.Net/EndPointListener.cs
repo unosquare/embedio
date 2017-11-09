@@ -29,13 +29,11 @@
 namespace Unosquare.Net
 {
     using System;
-    using System.Collections;
-    using System.Linq;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Net.Sockets;
     using System.Threading;
-    using System.Threading.Tasks;
 #if SSL
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography;
@@ -46,13 +44,13 @@ using System.Security.Cryptography;
         private readonly Dictionary<HttpConnection, HttpConnection> _unregistered;
         private readonly IPEndPoint _endpoint;
         private readonly Socket _sock;
-        private Hashtable _prefixes; // Dictionary <ListenerPrefix, HttpListener>
-        private ArrayList _unhandled; // List<ListenerPrefix> unhandled; host = '*'
-        private ArrayList _all; // List<ListenerPrefix> all;  host = '+       
+        private Dictionary<ListenerPrefix, HttpListener> _prefixes;
+        private List<ListenerPrefix> _unhandled; // unhandled; host = '*'
+        private List<ListenerPrefix> _all; //  all;  host = '+       
 #if SSL
         private bool _secure = false;
         private X509Certificate _cert = null;
-#endif        
+#endif
 
         public EndPointListener(HttpListener listener, IPAddress addr, int port, bool secure = false)
         {
@@ -76,7 +74,7 @@ using System.Security.Cryptography;
             args.Completed += OnAccept;
             Socket dummy = null;
             Accept(_sock, args, ref dummy);
-            _prefixes = new Hashtable();
+            _prefixes = new Dictionary<ListenerPrefix, HttpListener>();
             _unregistered = new Dictionary<HttpConnection, HttpConnection>();
         }
 
@@ -85,7 +83,7 @@ using System.Security.Cryptography;
         public bool BindContext(HttpListenerContext context)
         {
             var req = context.Request;
-            var listener = SearchListener(req.Url, out ListenerPrefix prefix);
+            var listener = SearchListener(req.Url, out var prefix);
 
             if (listener == null)
                 return false;
@@ -121,19 +119,22 @@ using System.Security.Cryptography;
 
         public void AddPrefix(ListenerPrefix prefix, HttpListener listener)
         {
-            ArrayList current;
-            ArrayList future;
+            List<ListenerPrefix> current;
+            List<ListenerPrefix> future;
 
             if (prefix.Host == "*")
             {
                 do
                 {
                     current = _unhandled;
-                    future = (current != null) ? (ArrayList)current.Clone() : new ArrayList();
+
+                    // TODO: Should we clone the items?
+                    future = current?.Select(item => item).ToList() ?? new List<ListenerPrefix>();
                     prefix.Listener = listener;
                     AddSpecial(future, prefix);
                 }
                 while (Interlocked.CompareExchange(ref _unhandled, future, current) != current);
+
                 return;
             }
 
@@ -142,7 +143,7 @@ using System.Security.Cryptography;
                 do
                 {
                     current = _all;
-                    future = (current != null) ? (ArrayList)current.Clone() : new ArrayList();
+                    future = current?.Select(item => item).ToList() ?? new List<ListenerPrefix>();
                     prefix.Listener = listener;
                     AddSpecial(future, prefix);
                 }
@@ -150,19 +151,20 @@ using System.Security.Cryptography;
                 return;
             }
 
-            Hashtable prefs, p2;
+            Dictionary<ListenerPrefix, HttpListener> prefs, p2;
+
             do
             {
                 prefs = _prefixes;
                 if (prefs.ContainsKey(prefix))
                 {
-                    var other = (HttpListener)prefs[prefix];
+                    var other = prefs[prefix];
                     if (other != listener)
                         throw new HttpListenerException(400, $"There is another listener for {prefix}");
                     return;
                 }
 
-                p2 = (Hashtable)prefs.Clone();
+                p2 = prefs.ToDictionary(x => x.Key, x => x.Value);
                 p2[prefix] = listener;
             }
             while (Interlocked.CompareExchange(ref _prefixes, p2, prefs) != prefs);
@@ -170,15 +172,15 @@ using System.Security.Cryptography;
 
         public void RemovePrefix(ListenerPrefix prefix, HttpListener listener)
         {
-            ArrayList current;
-            ArrayList future;
+            List<ListenerPrefix> current;
+            List<ListenerPrefix> future;
 
             if (prefix.Host == "*")
             {
                 do
                 {
                     current = _unhandled;
-                    future = (current != null) ? (ArrayList)current.Clone() : new ArrayList();
+                    future = current?.Select(item => item).ToList() ?? new List<ListenerPrefix>();
                     if (!RemoveSpecial(future, prefix))
                         break; // Prefix not found
                 }
@@ -193,16 +195,17 @@ using System.Security.Cryptography;
                 do
                 {
                     current = _all;
-                    future = (current != null) ? (ArrayList)current.Clone() : new ArrayList();
+                    future = current?.Select(item => item).ToList() ?? new List<ListenerPrefix>();
                     if (!RemoveSpecial(future, prefix))
                         break; // Prefix not found
                 }
                 while (Interlocked.CompareExchange(ref _all, future, current) != current);
+
                 CheckIfRemove();
                 return;
             }
 
-            Hashtable prefs, p2;
+            Dictionary<ListenerPrefix, HttpListener> prefs, p2;
 
             do
             {
@@ -210,7 +213,7 @@ using System.Security.Cryptography;
                 if (!prefs.ContainsKey(prefix))
                     break;
 
-                p2 = (Hashtable)prefs.Clone();
+                p2 = prefs.ToDictionary(x => x.Key, x => x.Value);
                 p2.Remove(prefix);
             }
             while (Interlocked.CompareExchange(ref _prefixes, p2, prefs) != prefs);
@@ -236,19 +239,16 @@ using System.Security.Cryptography;
             }
             catch
             {
-                if (accepted != null)
+                try
                 {
-                    try
-                    {
-                        accepted.Dispose();
-                    }
-                    catch
-                    {
-                        // ignored
-                    }
-
-                    accepted = null;
+                    accepted?.Dispose();
                 }
+                catch
+                {
+                    // ignored
+                }
+
+                accepted = null;
 
                 return;
             }
@@ -265,7 +265,7 @@ using System.Security.Cryptography;
             if (args.SocketError == SocketError.Success)
                 accepted = args.AcceptSocket;
 
-            var epl = (EndPointListener)args.UserToken;
+            var epl = (EndPointListener) args.UserToken;
 
             Accept(epl._sock, args, ref accepted);
             if (accepted == null)
@@ -291,7 +291,7 @@ using System.Security.Cryptography;
 
         private static void OnAccept(object sender, SocketAsyncEventArgs e) => ProcessAccept(e);
 
-        private static HttpListener MatchFromList(string path, ArrayList list, out ListenerPrefix prefix)
+        private static HttpListener MatchFromList(string path, List<ListenerPrefix> list, out ListenerPrefix prefix)
         {
             prefix = null;
             if (list == null)
@@ -300,7 +300,7 @@ using System.Security.Cryptography;
             HttpListener bestMatch = null;
             var bestLength = -1;
 
-            foreach (ListenerPrefix p in list)
+            foreach (var p in list)
             {
                 var ppath = p.Path;
                 if (ppath.Length < bestLength)
@@ -317,12 +317,12 @@ using System.Security.Cryptography;
             return bestMatch;
         }
 
-        private static void AddSpecial(ArrayList coll, ListenerPrefix prefix)
+        private static void AddSpecial(List<ListenerPrefix> coll, ListenerPrefix prefix)
         {
             if (coll == null)
                 return;
 
-            if (coll.Cast<ListenerPrefix>().Any(p => p.Path == prefix.Path))
+            if (coll.Any(p => p.Path == prefix.Path))
             {
                 throw new HttpListenerException(400, "Prefix already in use.");
             }
@@ -330,7 +330,7 @@ using System.Security.Cryptography;
             coll.Add(prefix);
         }
 
-        private static bool RemoveSpecial(ArrayList coll, ListenerPrefix prefix)
+        private static bool RemoveSpecial(List<ListenerPrefix> coll, ListenerPrefix prefix)
         {
             if (coll == null)
                 return false;
@@ -338,8 +338,7 @@ using System.Security.Cryptography;
             var c = coll.Count;
             for (var i = 0; i < c; i++)
             {
-                var p = (ListenerPrefix) coll[i];
-                if (p.Path == prefix.Path)
+                if (coll[i].Path == prefix.Path)
                 {
                     coll.RemoveAt(i);
                     return true;
@@ -367,7 +366,7 @@ using System.Security.Cryptography;
             {
                 var result = _prefixes;
 
-                foreach (ListenerPrefix p in result.Keys)
+                foreach (var p in result.Keys)
                 {
                     var ppath = p.Path;
                     if (ppath.Length < bestLength)
@@ -376,12 +375,12 @@ using System.Security.Cryptography;
                     if (p.Host != host || p.Port != port)
                         continue;
 
-                    if (path.StartsWith(ppath) || pathSlash.StartsWith(ppath))
-                    {
-                        bestLength = ppath.Length;
-                        bestMatch = (HttpListener)result[p];
-                        prefix = p;
-                    }
+                    if (!path.StartsWith(ppath) && !pathSlash.StartsWith(ppath))
+                        continue;
+
+                    bestLength = ppath.Length;
+                    bestMatch = result[p];
+                    prefix = p;
                 }
 
                 if (bestLength != -1)
@@ -420,5 +419,4 @@ using System.Security.Cryptography;
         }
     }
 }
-
 #endif

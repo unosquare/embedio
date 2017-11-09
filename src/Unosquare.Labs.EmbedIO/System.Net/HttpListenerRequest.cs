@@ -655,10 +655,6 @@ using System.Threading.Tasks;
     /// <summary>
     /// Define HTTP Versions
     /// </summary>
-    /// <devdoc>
-    /// Defines the HTTP version number supported by the <see cref="System.Net.HttpWebRequest" /> and
-    /// <see cref="System.Net.HttpWebResponse" /> classes.
-    /// </devdoc>
     internal class HttpVersion
     {
         /// <summary>

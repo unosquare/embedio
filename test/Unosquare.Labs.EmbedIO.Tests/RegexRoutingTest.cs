@@ -27,41 +27,43 @@ namespace Unosquare.Labs.EmbedIO.Tests
             WebServer.RunAsync();
         }
 
-        [Test]
-        public async Task GetDataWithoutRegex()
-        {
-            var client = new HttpClient();
-
-            var call = await client.GetStringAsync($"{WebServerUrl}empty");
-
-            Assert.AreEqual("data", call);
-        }
-
-        [Test]
-        public async Task GetDataWithRegex()
-        {
-            var client = new HttpClient();
-
-            var call = await client.GetStringAsync($"{WebServerUrl}data/1");
-
-            Assert.AreEqual("1", call);
-        }
-
-
-        [Test]
-        public async Task GetDataWithMultipleRegex()
-        {
-            var client = new HttpClient();
-
-            var call = await client.GetStringAsync($"{WebServerUrl}data/1/asdasda/dasdasasda");
-
-            Assert.AreEqual("dasdasasda", call);
-        }
-
         [TearDown]
         public void Kill()
         {
             WebServer.Dispose();
+        }
+
+        public class GetData : RegexRoutingTest
+        {
+            [Test]
+            public async Task GetDataWithoutRegex()
+            {
+                var client = new HttpClient();
+
+                var call = await client.GetStringAsync($"{WebServerUrl}empty");
+
+                Assert.AreEqual("data", call);
+            }
+
+            [Test]
+            public async Task GetDataWithRegex()
+            {
+                var client = new HttpClient();
+
+                var call = await client.GetStringAsync($"{WebServerUrl}data/1");
+
+                Assert.AreEqual("1", call);
+            }
+            
+            [Test]
+            public async Task GetDataWithMultipleRegex()
+            {
+                var client = new HttpClient();
+
+                var call = await client.GetStringAsync($"{WebServerUrl}data/1/asdasda/dasdasasda");
+
+                Assert.AreEqual("dasdasasda", call);
+            }
         }
     }
 }

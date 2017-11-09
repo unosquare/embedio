@@ -3,73 +3,52 @@
     using Constants;
     using NUnit.Framework;
     using Swan.Formatters;
-    using System;
     using System.Net;
-    using System.Net.Http;
     using System.Threading.Tasks;
     using Modules;
     using TestObjects;
 
     [TestFixture]
-    public class CorsModuleTest
+    public class CorsModuleTest : FixtureBase
     {
-        protected WebServer WebServer;
-        protected string WebServerUrl;
-        protected object TestObj = new { Message = "OK" };
+        protected static object TestObj = new {Message = "OK"};
 
-        [SetUp]
-        public void Init()
+        public CorsModuleTest() : base((ws) =>
         {
-            Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
+            ws.EnableCors(
+                "http://client.cors-api.appspot.com,http://unosquare.github.io,http://run.plnkr.co",
+                "content-type",
+                "post,get");
 
-            WebServerUrl = Resources.GetServerAddress();
-            WebServer = new WebServer(WebServerUrl)
-                .EnableCors(
-                    "http://client.cors-api.appspot.com,http://unosquare.github.io,http://run.plnkr.co",
-                    "content-type",
-                    "post,get");
+            ws.RegisterModule(new WebApiModule());
+            ws.Module<WebApiModule>().RegisterController<TestController>();
+            ws.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(TestObj)));
+        })
+        {
 
-            WebServer.RegisterModule(new WebApiModule());
-            WebServer.Module<WebApiModule>().RegisterController<TestController>();
-            WebServer.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(TestObj)));
-            WebServer.RunAsync();
         }
 
         [Test]
-        public async Task GetFallback()
+        public async Task RequestFallback_ReturnsJsonObject()
         {
-            var webClient = new HttpClient();
+            var jsonBody = await GetString("invalidpath");
 
-            var jsonBody = await webClient.GetStringAsync(WebServerUrl + "invalidpath");
-
-            var jsonFormatting = true;
-#if DEBUG
-            jsonFormatting = false;
-#endif
-
-            Assert.AreEqual(Json.Serialize(TestObj, jsonFormatting), jsonBody, "Same content");
+            Assert.AreEqual(Json.Serialize(TestObj, true), jsonBody, "Same content");
         }
 
         [Test]
-        public async Task PreFlight()
+        public async Task RequestOptionsVerb_ReturnsOK()
         {
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestController.GetPath);
+            var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + TestController.GetPath);
             request.Headers[Headers.Origin] = "http://unosquare.github.io";
             request.Headers[Headers.AccessControlRequestMethod] = "post";
             request.Headers[Headers.AccessControlRequestHeaders] = "content-type";
             request.Method = "OPTIONS";
 
-            using (var response = (HttpWebResponse)await request.GetResponseAsync())
+            using (var response = (HttpWebResponse) await request.GetResponseAsync())
             {
                 Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
             }
-        }
-
-        [TearDown]
-        public void Kill()
-        {
-            Task.Delay(TimeSpan.FromSeconds(1)).Wait();
-            WebServer.Dispose();
         }
     }
 }

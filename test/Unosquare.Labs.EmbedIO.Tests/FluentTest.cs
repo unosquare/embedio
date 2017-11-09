@@ -101,7 +101,7 @@
         }
 
         [Test]
-        public void FluentWithVirtualPathsArgumentException()
+        public void FluentWithVirtualPathsWebServerNull_ThrowsArgumentException()
         {
             var paths = new Dictionary<string, string>
             {
@@ -116,7 +116,7 @@
         }
 
         [Test]
-        public void FluentWithLocalSessionArgumentException()
+        public void FluentWithLocalSessionWebServerNull_ThrowsArgumentException()
         {
             Assert.Throws<ArgumentNullException>(() => {
                 Extensions.WithLocalSession(null);
@@ -145,7 +145,7 @@
             WebServer webServer = null;
 
             Assert.Throws<ArgumentNullException>(() => {
-                Extensions.LoadApiControllers(webServer);
+                webServer.LoadApiControllers();
             });
         }
 
@@ -155,7 +155,7 @@
             WebApiModule webApi = null;
 
             Assert.Throws<ArgumentNullException>(() => {
-                Extensions.LoadApiControllers(webApi);
+                webApi.LoadApiControllers();
             });
         }
 
@@ -165,7 +165,7 @@
             WebServer webServer = null;
 
             Assert.Throws<ArgumentNullException>(() => {
-                Extensions.LoadWebSockets(webServer);
+                webServer.LoadWebSockets();
             });
         }
 
@@ -175,7 +175,7 @@
             WebServer webServer = null;
 
             Assert.Throws<ArgumentNullException>(() => {
-                Extensions.EnableCors(webServer);
+                webServer.EnableCors();
             });
         }
         [Test]
@@ -184,7 +184,7 @@
             WebServer webServer = null;
 
             Assert.Throws<ArgumentNullException>(() => {
-                Extensions.WithWebApiController<TestController>(webServer);
+                webServer.WithWebApiController<TestController>();
             });
         }
     }

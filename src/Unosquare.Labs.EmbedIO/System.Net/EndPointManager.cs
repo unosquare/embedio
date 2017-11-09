@@ -28,16 +28,18 @@
 namespace Unosquare.Net
 {
     using System;
-    using System.Collections;
+    using System.Collections.Generic;
     using System.Net;
 
     internal static class EndPointManager
     {
-        private static readonly Hashtable IPToEndpoints = new Hashtable();
+        private static readonly Dictionary<IPAddress, Dictionary<int, EndPointListener>> IPToEndpoints =
+            new Dictionary<IPAddress, Dictionary<int, EndPointListener>>();
 
         public static void AddListener(HttpListener listener)
         {
-            var added = new ArrayList();
+            var added = new List<string>();
+
             try
             {
                 lock (IPToEndpoints)
@@ -51,7 +53,7 @@ namespace Unosquare.Net
             }
             catch
             {
-                foreach (string prefix in added)
+                foreach (var prefix in added)
                 {
                     RemovePrefix(prefix, listener);
                 }
@@ -72,8 +74,7 @@ namespace Unosquare.Net
         {
             lock (IPToEndpoints)
             {
-                // Dictionary<int, EndPointListener> p
-                var p = (Hashtable)IPToEndpoints[ep.Address];
+                var p = IPToEndpoints[ep.Address];
                 p.Remove(ep.Port);
                 if (p.Count == 0)
                 {
@@ -143,21 +144,21 @@ namespace Unosquare.Net
                 }
             }
 
-            Hashtable p;  // Dictionary<int, EndPointListener>
+            Dictionary<int, EndPointListener> p;
             if (IPToEndpoints.ContainsKey(addr))
             {
-                p = (Hashtable)IPToEndpoints[addr];
+                p = IPToEndpoints[addr];
             }
             else
             {
-                p = new Hashtable();
+                p = new Dictionary<int, EndPointListener>();
                 IPToEndpoints[addr] = p;
             }
 
             EndPointListener epl;
             if (p.ContainsKey(port))
             {
-                epl = (EndPointListener)p[port];
+                epl = p[port];
             }
             else
             {
