@@ -89,7 +89,7 @@
                 throw new ArgumentNullException(nameof(webserver));
 
             webserver.RegisterModule(new WebApiModule());
-            return (assembly != null) ? webserver.LoadApiControllers(assembly) : webserver;
+            return assembly != null ? webserver.LoadApiControllers(assembly) : webserver;
         }
 
         /// <summary>
@@ -105,7 +105,7 @@
                 throw new ArgumentNullException(nameof(webserver));
 
             webserver.RegisterModule(new WebSocketsModule());
-            return (assembly != null) ? webserver.LoadWebSockets(assembly) : webserver;
+            return assembly != null ? webserver.LoadWebSockets(assembly) : webserver;
         }
 
         /// <summary>

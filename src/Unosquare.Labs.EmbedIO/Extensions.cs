@@ -582,7 +582,9 @@
         /// <param name="method">The method.</param>
         /// <param name="mode">The mode.</param>
         /// <returns>Block of bytes of compressed stream </returns>
-        public static byte[] Compress(this byte[] buffer, CompressionMethod method = CompressionMethod.Gzip,
+        public static byte[] Compress(
+            this byte[] buffer, 
+            CompressionMethod method = CompressionMethod.Gzip,
             CompressionMode mode = CompressionMode.Compress)
         {
             using (var stream = new MemoryStream(buffer))
