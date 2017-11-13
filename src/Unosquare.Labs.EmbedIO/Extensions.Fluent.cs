@@ -75,13 +75,14 @@
             return webserver;
         }
 
-#if !NETSTANDARD1_3 && !UWP /// <summary>
-/// Add WebApiModule to WebServer
-/// </summary>
-/// <param name="webserver">The webserver instance.</param>
-/// <param name="assembly">The assembly to load WebApi Controllers from. Leave null to avoid autoloading.</param>
-/// <returns>An instance of webserver</returns>
-/// <exception cref="System.ArgumentNullException">webserver</exception>
+#if !NETSTANDARD1_3 && !UWP 
+        /// <summary>
+        /// Add WebApiModule to WebServer
+        /// </summary>
+        /// <param name="webserver">The webserver instance.</param>
+        /// <param name="assembly">The assembly to load WebApi Controllers from. Leave null to avoid autoloading.</param>
+        /// <returns>An instance of webserver</returns>
+        /// <exception cref="System.ArgumentNullException">webserver</exception>
         public static WebServer WithWebApi(this WebServer webserver, Assembly assembly = null)
         {
             if (webserver == null)

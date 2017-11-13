@@ -29,9 +29,7 @@
                 var segment = context.Request.Url.Segments.Reverse().Skip(1).First().Replace("/", "");
 
                 // otherwise, we need to parse the key and respond with the entity accordingly
-                int key;
-
-                if (int.TryParse(segment, out key) && PeopleRepository.Database.Any(p => p.Key == key))
+                if (int.TryParse(segment, out var key) && PeopleRepository.Database.Any(p => p.Key == key))
                 {
                     return context.JsonResponse(PeopleRepository.Database.FirstOrDefault(p => p.Key == key));
                 }
