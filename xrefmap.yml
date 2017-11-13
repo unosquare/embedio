@@ -2320,18 +2320,6 @@ references:
   commentId: T:Unosquare.Net.CookieCollection
   fullName: Unosquare.Net.CookieCollection
   nameWithType: CookieCollection
-- uid: Unosquare.Net.CookieCollection.#ctor
-  name: CookieCollection()
-  href: api/Unosquare.Net.CookieCollection.html#Unosquare_Net_CookieCollection__ctor
-  commentId: M:Unosquare.Net.CookieCollection.#ctor
-  fullName: Unosquare.Net.CookieCollection.CookieCollection()
-  nameWithType: CookieCollection.CookieCollection()
-- uid: Unosquare.Net.CookieCollection.#ctor*
-  name: CookieCollection
-  href: api/Unosquare.Net.CookieCollection.html#Unosquare_Net_CookieCollection__ctor_
-  commentId: Overload:Unosquare.Net.CookieCollection.#ctor
-  fullName: Unosquare.Net.CookieCollection.CookieCollection
-  nameWithType: CookieCollection.CookieCollection
 - uid: Unosquare.Net.CookieCollection.Add(Cookie)
   name: Add(Cookie)
   href: api/Unosquare.Net.CookieCollection.html#Unosquare_Net_CookieCollection_Add_Cookie_
@@ -3168,30 +3156,6 @@ references:
   commentId: Overload:Unosquare.Net.HttpListenerResponse.AddHeader
   fullName: Unosquare.Net.HttpListenerResponse.AddHeader
   nameWithType: HttpListenerResponse.AddHeader
-- uid: Unosquare.Net.HttpListenerResponse.AppendCookie(System.Net.Cookie)
-  name: AppendCookie(Net.Cookie)
-  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_AppendCookie_System_Net_Cookie_
-  commentId: M:Unosquare.Net.HttpListenerResponse.AppendCookie(System.Net.Cookie)
-  fullName: Unosquare.Net.HttpListenerResponse.AppendCookie(System.Net.Cookie)
-  nameWithType: HttpListenerResponse.AppendCookie(Net.Cookie)
-- uid: Unosquare.Net.HttpListenerResponse.AppendCookie*
-  name: AppendCookie
-  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_AppendCookie_
-  commentId: Overload:Unosquare.Net.HttpListenerResponse.AppendCookie
-  fullName: Unosquare.Net.HttpListenerResponse.AppendCookie
-  nameWithType: HttpListenerResponse.AppendCookie
-- uid: Unosquare.Net.HttpListenerResponse.AppendHeader(System.String,System.String)
-  name: AppendHeader(String, String)
-  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_AppendHeader_System_String_System_String_
-  commentId: M:Unosquare.Net.HttpListenerResponse.AppendHeader(System.String,System.String)
-  fullName: Unosquare.Net.HttpListenerResponse.AppendHeader(System.String, System.String)
-  nameWithType: HttpListenerResponse.AppendHeader(String, String)
-- uid: Unosquare.Net.HttpListenerResponse.AppendHeader*
-  name: AppendHeader
-  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_AppendHeader_
-  commentId: Overload:Unosquare.Net.HttpListenerResponse.AppendHeader
-  fullName: Unosquare.Net.HttpListenerResponse.AppendHeader
-  nameWithType: HttpListenerResponse.AppendHeader
 - uid: Unosquare.Net.HttpListenerResponse.Close
   name: Close()
   href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_Close
@@ -3252,18 +3216,6 @@ references:
   commentId: Overload:Unosquare.Net.HttpListenerResponse.Cookies
   fullName: Unosquare.Net.HttpListenerResponse.Cookies
   nameWithType: HttpListenerResponse.Cookies
-- uid: Unosquare.Net.HttpListenerResponse.CopyFrom(Unosquare.Net.HttpListenerResponse)
-  name: CopyFrom(HttpListenerResponse)
-  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_CopyFrom_Unosquare_Net_HttpListenerResponse_
-  commentId: M:Unosquare.Net.HttpListenerResponse.CopyFrom(Unosquare.Net.HttpListenerResponse)
-  fullName: Unosquare.Net.HttpListenerResponse.CopyFrom(Unosquare.Net.HttpListenerResponse)
-  nameWithType: HttpListenerResponse.CopyFrom(HttpListenerResponse)
-- uid: Unosquare.Net.HttpListenerResponse.CopyFrom*
-  name: CopyFrom
-  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_CopyFrom_
-  commentId: Overload:Unosquare.Net.HttpListenerResponse.CopyFrom
-  fullName: Unosquare.Net.HttpListenerResponse.CopyFrom
-  nameWithType: HttpListenerResponse.CopyFrom
 - uid: Unosquare.Net.HttpListenerResponse.Headers
   name: Headers
   href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_Headers
@@ -3312,30 +3264,6 @@ references:
   commentId: Overload:Unosquare.Net.HttpListenerResponse.ProtocolVersion
   fullName: Unosquare.Net.HttpListenerResponse.ProtocolVersion
   nameWithType: HttpListenerResponse.ProtocolVersion
-- uid: Unosquare.Net.HttpListenerResponse.Redirect(System.String)
-  name: Redirect(String)
-  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_Redirect_System_String_
-  commentId: M:Unosquare.Net.HttpListenerResponse.Redirect(System.String)
-  fullName: Unosquare.Net.HttpListenerResponse.Redirect(System.String)
-  nameWithType: HttpListenerResponse.Redirect(String)
-- uid: Unosquare.Net.HttpListenerResponse.Redirect*
-  name: Redirect
-  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_Redirect_
-  commentId: Overload:Unosquare.Net.HttpListenerResponse.Redirect
-  fullName: Unosquare.Net.HttpListenerResponse.Redirect
-  nameWithType: HttpListenerResponse.Redirect
-- uid: Unosquare.Net.HttpListenerResponse.RedirectLocation
-  name: RedirectLocation
-  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_RedirectLocation
-  commentId: P:Unosquare.Net.HttpListenerResponse.RedirectLocation
-  fullName: Unosquare.Net.HttpListenerResponse.RedirectLocation
-  nameWithType: HttpListenerResponse.RedirectLocation
-- uid: Unosquare.Net.HttpListenerResponse.RedirectLocation*
-  name: RedirectLocation
-  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_RedirectLocation_
-  commentId: Overload:Unosquare.Net.HttpListenerResponse.RedirectLocation
-  fullName: Unosquare.Net.HttpListenerResponse.RedirectLocation
-  nameWithType: HttpListenerResponse.RedirectLocation
 - uid: Unosquare.Net.HttpListenerResponse.SendChunked
   name: SendChunked
   href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_SendChunked
