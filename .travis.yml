@@ -15,6 +15,7 @@ matrix:
       dist: trusty
       sudo: false
     - os: osx
+      osx_image: xcode9.1
       dotnet: 2.0.0
       mono: none
       env: DOTNETCORE=1
