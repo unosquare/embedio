@@ -32,7 +32,6 @@ namespace Unosquare.Net
     using System;
     using System.Collections.Specialized;
     using System.IO;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Provides the properties used to access the information in
@@ -41,13 +40,13 @@ namespace Unosquare.Net
     public class WebSocketContext
     {
         private readonly HttpListenerContext _context;
-        
+
         internal WebSocketContext(HttpListenerContext context)
         {
             _context = context;
             WebSocket = new WebSocket(this);
         }
-        
+
         /// <summary>
         /// Gets the HTTP cookies included in the request.
         /// </summary>
@@ -71,7 +70,7 @@ namespace Unosquare.Net
         /// A <see cref="string"/> that represents the value of the Host header.
         /// </value>
         public string Host => _context.Request.Headers["Host"];
-        
+
         /// <summary>
         /// Gets a value indicating whether the client connected from the local computer.
         /// </summary>
@@ -80,13 +79,12 @@ namespace Unosquare.Net
         /// </value>
         public bool IsLocal => _context.Request.IsLocal;
 
-#if SSL
-        /// <summary>
-        /// Gets a value indicating whether the WebSocket connection is secured.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the connection is secured; otherwise, <c>false</c>.
-        /// </value>
+#if SSL /// <summary>
+/// Gets a value indicating whether the WebSocket connection is secured.
+/// </summary>
+/// <value>
+/// <c>true</c> if the connection is secured; otherwise, <c>false</c>.
+/// </value>
         public bool IsSecureConnection => _context.Connection.IsSecure;
 #endif
 
@@ -133,7 +131,7 @@ namespace Unosquare.Net
         /// A <see cref="string"/> that represents the value of the Sec-WebSocket-Key header.
         /// </value>
         public string SecWebSocketKey => _context.Request.Headers["Sec-WebSocket-Key"];
-        
+
         /// <summary>
         /// Gets the value of the Sec-WebSocket-Version header included in the request.
         /// </summary>
@@ -152,7 +150,7 @@ namespace Unosquare.Net
         /// A <see cref="System.Net.IPEndPoint"/> that represents the server endpoint.
         /// </value>
         public System.Net.IPEndPoint ServerEndPoint => _context.Connection.LocalEndPoint;
-        
+
         /// <summary>
         /// Gets the client endpoint as an IP address and a port number.
         /// </summary>

@@ -17,17 +17,9 @@ namespace Unosquare.Net
     /// <seealso cref="System.Collections.ICollection" />
     public class CookieCollection : ICollection
     {
-        private readonly List<Cookie> _list;
+        private readonly List<Cookie> _list = new List<Cookie>();
         private object _sync;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CookieCollection"/> class.
-        /// </summary>
-        public CookieCollection()
-        {
-            _list = new List<Cookie>();
-        }
-
+        
         /// <summary>
         /// Gets the number of cookies in the collection.
         /// </summary>
