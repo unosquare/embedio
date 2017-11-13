@@ -337,7 +337,7 @@ namespace Unosquare.Net
             var ret = x.Version - y.Version;
             return ret != 0
                 ? ret
-                : (ret = x.Name.CompareTo(y.Name)) != 0
+                : (ret = string.Compare(x.Name, y.Name, StringComparison.Ordinal)) != 0
                     ? ret
                     : y.Path.Length - x.Path.Length;
         }

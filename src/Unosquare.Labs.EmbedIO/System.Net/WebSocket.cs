@@ -441,8 +441,7 @@ namespace Unosquare.Net
             {
                 lock (_forState)
                 {
-                    string msg;
-                    if (!_validator.CheckIfAvailable(out msg, true, true, true, false, false) ||
+                    if (!_validator.CheckIfAvailable(out var msg, true, true, true, false, false) ||
                         !WebSocketValidator.CheckWaitTime(value, out msg))
                     {
                         msg.Error();
@@ -492,8 +491,7 @@ namespace Unosquare.Net
         /// </returns>
         public async Task CloseAsync(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null, CancellationToken ct = default(CancellationToken))
         {
-            string msg;
-            if (!_validator.CheckIfAvailable(out msg))
+            if (!_validator.CheckIfAvailable(out var msg))
             {
                 msg.Error();
                 Error("An error has occurred in closing the connection.");
@@ -649,8 +647,7 @@ namespace Unosquare.Net
         /// </param>
         public void SetCookie(Cookie cookie)
         {
-            string msg;
-            if (!_validator.CheckIfAvailable(out msg, true, false, true, false, false) || cookie == null)
+            if (!_validator.CheckIfAvailable(out var msg, true, false, true, false, false) || cookie == null)
             {
                 msg.Error();
                 Error("An error has occurred in setting a cookie.");
@@ -1494,7 +1491,7 @@ namespace Unosquare.Net
                     return res;
                 }
 
-                if (!url.TryCreateWebSocketUri(out Uri uri, out string msg))
+                if (!url.TryCreateWebSocketUri(out var uri, out var msg))
                 {
                     $"An invalid url to redirect is located: {msg}".Error();
                     return res;

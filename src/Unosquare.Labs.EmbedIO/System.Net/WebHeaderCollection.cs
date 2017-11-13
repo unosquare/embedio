@@ -949,9 +949,8 @@ namespace Unosquare.Net
         {
             if (string.IsNullOrEmpty(headerName))
                 return false;
-
-            var info = GetHeaderInfo(headerName);
-            return info != null && info.IsMultiValue(response);
+            
+            return GetHeaderInfo(headerName)?.IsMultiValue(response) == true;
         }
 
         internal void InternalRemove(string name) => base.Remove(name);
@@ -1048,9 +1047,9 @@ namespace Unosquare.Net
 
         private void AddWithoutCheckingNameAndRestricted(string name, string value) => base.Add(name, CheckValue(value));
 
-        private void CheckRestricted(string name)
+        private static void CheckRestricted(string name)
         {
-            if (InternalIsRestricted(name, true))
+            if (InternalIsRestricted(name))
                 throw new ArgumentException("This header must be modified with the appropriate property.");
         }
 

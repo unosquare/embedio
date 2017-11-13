@@ -37,7 +37,7 @@ namespace Unosquare.Net
         /// <value>
         /// The count.
         /// </value>
-        public int Count { get; private set; }
+        public int Count { get; }
         
         /// <summary>
         /// Gets a value indicating whether [end of message].

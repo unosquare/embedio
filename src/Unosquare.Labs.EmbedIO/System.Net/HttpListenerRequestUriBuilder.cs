@@ -318,8 +318,7 @@ namespace Unosquare.Net
 
         private bool AddPercentEncodedOctetToRawOctetsList(string escapedCharacter)
         {
-            byte encodedValue;
-            if (!byte.TryParse(escapedCharacter, NumberStyles.HexNumber, null, out encodedValue))
+            if (!byte.TryParse(escapedCharacter, NumberStyles.HexNumber, null, out var encodedValue))
             {
                 return false;
             }
