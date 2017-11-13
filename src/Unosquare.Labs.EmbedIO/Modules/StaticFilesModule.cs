@@ -308,7 +308,7 @@
                                 string.Empty);
                             return new
                             {
-                                Name = Truncate(name + Path.DirectorySeparatorChar, MaxEntryLength),
+                                Name = (name + Path.DirectorySeparatorChar).Truncate(MaxEntryLength, "..>"),
                                 Url = Uri.EscapeDataString(name) + Path.DirectorySeparatorChar,
                                 ModificationTime = new DirectoryInfo(path).LastWriteTimeUtc,
                                 Size = "-"
@@ -323,7 +323,7 @@
 
                                 return new
                                 {
-                                    Name = Truncate(name, MaxEntryLength),
+                                    Name = name.Truncate(MaxEntryLength, "..>"),
                                     Url = Uri.EscapeDataString(name),
                                     ModificationTime = fileInfo.LastWriteTimeUtc,
                                     Size = fileInfo.Length.FormatBytes()
@@ -344,16 +344,7 @@
 
             return context.HtmlResponseAsync(content, cancellationToken: ct);
         }
-
-        private static string Truncate(string value, int maxLength)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                return value;
-            }
-            return value.Length >= maxLength ? value.Substring(0, maxLength - 3) + "..>" : value;
-        }
-
+        
         private Task<bool> HandleGet(HttpListenerContext context, CancellationToken ct, bool sendBuffer = true)
         {
             var validationResult = ValidatePath(context, out var requestFullLocalPath);
