@@ -1,0 +1,46 @@
+nav {
+    margin-bottom: 0 !important;
+}
+
+.navbar {
+    min-height: 40px !important;
+}
+
+.nav-logo:hover {
+    background-color: black;
+}
+
+.sidefilter {
+    top: 125px !important;
+}
+
+.sidetoc {
+    top: 190px !important;
+}
+
+.doc-logo {
+    width: 64px;
+    height: 64px;
+}
+
+.navbar-brand img{
+    height: 40px !important;
+}
+
+.doc {
+    position: fixed !important;
+    width: 120px;
+    height: 70px;
+}
+
+.sideaffix {
+    margin-top: 80px;
+}
+
+div#toc li {
+    padding-bottom: 6px;
+ }
+
+ .top-sep {
+     margin-top: 10px;
+ }
