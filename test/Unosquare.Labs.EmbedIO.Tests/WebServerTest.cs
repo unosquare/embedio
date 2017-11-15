@@ -81,10 +81,7 @@
 
                 using (var instance = new WebServer(url))
                 {
-                    instance.RegisterModule(new FallbackModule((ctx, ct) =>
-                    {
-                        throw new Exception("Error");
-                    }));
+                    instance.RegisterModule(new FallbackModule((ctx, ct) => throw new Exception("Error")));
 
                     var runTask = instance.RunAsync();
                     var request = (HttpWebRequest)WebRequest.Create(url);

@@ -35,7 +35,6 @@ namespace Unosquare.Net
     using System.Net;
     using System.Net.Sockets;
     using System.Threading;
-    using System.Threading.Tasks;
 #if SSL
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography;

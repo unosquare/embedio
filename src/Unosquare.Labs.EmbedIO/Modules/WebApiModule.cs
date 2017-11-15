@@ -1,7 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
     using Constants;
-    using System.Text.RegularExpressions;
     using EmbedIO;
     using System;
     using System.Collections.Generic;

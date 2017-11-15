@@ -141,7 +141,7 @@ namespace Unosquare.Net
 
         private static async Task<byte[]> ReadEntityBodyAsync(Stream stream, string length, CancellationToken ct)
         {
-            if (!long.TryParse(length, out long len))
+            if (!long.TryParse(length, out var len))
                 throw new ArgumentException("Cannot be parsed.", nameof(length));
 
             if (len < 0)
@@ -164,22 +164,23 @@ namespace Unosquare.Net
         {
             var buff = new List<byte>();
             var cnt = 0;
-            Action<int> add = i =>
+
+            void Add(int i)
             {
                 if (i == -1)
                     throw new EndOfStreamException("The header cannot be read from the data source.");
 
-                buff.Add((byte)i);
+                buff.Add((byte) i);
                 cnt++;
-            };
+            }
 
             var read = false;
             while (cnt < HeadersMaxLength)
             {
-                if (EqualsWith(stream.ReadByte(), '\r', add) &&
-                    EqualsWith(stream.ReadByte(), '\n', add) &&
-                    EqualsWith(stream.ReadByte(), '\r', add) &&
-                    EqualsWith(stream.ReadByte(), '\n', add))
+                if (EqualsWith(stream.ReadByte(), '\r', Add) &&
+                    EqualsWith(stream.ReadByte(), '\n', Add) &&
+                    EqualsWith(stream.ReadByte(), '\r', Add) &&
+                    EqualsWith(stream.ReadByte(), '\n', Add))
                 {
                     read = true;
                     break;

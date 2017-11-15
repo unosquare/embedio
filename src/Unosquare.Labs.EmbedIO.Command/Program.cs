@@ -1,4 +1,4 @@
-﻿namespace Unosquare.Labs.EmbedIO.Command
+namespace Unosquare.Labs.EmbedIO.Command
 {
     using Swan;
     using System;

@@ -11,9 +11,24 @@
     {
         internal enum VirtualPathStatus
         {
+            /// <summary>
+            /// The invalid
+            /// </summary>
             Invalid,
+
+            /// <summary>
+            /// The forbidden
+            /// </summary>
             Forbidden,
+
+            /// <summary>
+            /// The file
+            /// </summary>
             File,
+
+            /// <summary>
+            /// The directory
+            /// </summary>
             Directory
         }
 

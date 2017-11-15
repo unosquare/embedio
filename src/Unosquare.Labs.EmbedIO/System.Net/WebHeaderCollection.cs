@@ -949,9 +949,8 @@ namespace Unosquare.Net
         {
             if (string.IsNullOrEmpty(headerName))
                 return false;
-
-            var info = GetHeaderInfo(headerName);
-            return info != null && info.IsMultiValue(response);
+            
+            return GetHeaderInfo(headerName)?.IsMultiValue(response) == true;
         }
 
         internal void InternalRemove(string name) => base.Remove(name);
@@ -1020,6 +1019,12 @@ namespace Unosquare.Net
             return value;
         }
 
+        private static void CheckRestricted(string name)
+        {
+            if (InternalIsRestricted(name))
+                throw new ArgumentException("This header must be modified with the appropriate property.");
+        }
+
         private static string Convert(string key) => Headers.TryGetValue(key, out var info) ? info.Name : string.Empty;
 
         private static HttpHeaderInfo GetHeaderInfo(string name)
@@ -1047,12 +1052,6 @@ namespace Unosquare.Net
         }
 
         private void AddWithoutCheckingNameAndRestricted(string name, string value) => base.Add(name, CheckValue(value));
-
-        private void CheckRestricted(string name)
-        {
-            if (InternalIsRestricted(name, true))
-                throw new ArgumentException("This header must be modified with the appropriate property.");
-        }
 
         private void CheckState(bool response)
         {

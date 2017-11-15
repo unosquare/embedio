@@ -41,13 +41,8 @@
             var webClient = new HttpClient();
 
             var jsonBody = await webClient.GetStringAsync(WebServerUrl + "invalidpath");
-
-            var jsonFormatting = true;
-#if DEBUG
-            jsonFormatting = false;
-#endif
-
-            Assert.AreEqual(Json.Serialize(TestObj, jsonFormatting), jsonBody, "Same content");
+            
+            Assert.AreEqual(Json.Serialize(TestObj), jsonBody, "Same content");
         }
 
         [Test]

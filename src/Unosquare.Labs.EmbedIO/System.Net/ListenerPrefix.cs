@@ -104,11 +104,7 @@ namespace Unosquare.Net
         // Equals and GetHashCode are required to detect duplicates in HttpListenerPrefixCollection.
         public override bool Equals(object o)
         {
-            var other = o as ListenerPrefix;
-            if (other == null)
-                return false;
-
-            return _original == other._original;
+            return o is ListenerPrefix other && _original == other._original;
         }
 
         public override int GetHashCode() => _original.GetHashCode();
