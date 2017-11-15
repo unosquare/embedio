@@ -13,6 +13,13 @@
         protected string RootPath;
         protected string WebServerUrl;
 
+        protected Dictionary<string, string> CommonPaths = new Dictionary<string, string>
+        {
+            {"/Server/web", TestHelper.SetupStaticFolder()},
+            {"/Server/api", TestHelper.SetupStaticFolder()},
+            {"/Server/database", TestHelper.SetupStaticFolder()}
+        };
+
         [SetUp]
         public void Init()
         {
@@ -21,7 +28,7 @@
             WebServerUrl = Resources.GetServerAddress();
             RootPath = TestHelper.SetupStaticFolder();
         }
-        
+
         [Test]
         public void FluentWithStaticFolder()
         {
@@ -31,7 +38,8 @@
 
             Assert.AreEqual(webServer.Modules.Count, 2, "It has 2 modules loaded");
             Assert.IsNotNull(webServer.Module<StaticFilesModule>(), "It has StaticFilesModule");
-            Assert.AreEqual(webServer.Module<StaticFilesModule>().FileSystemPath, RootPath, "StaticFilesModule root path is equal to RootPath");
+            Assert.AreEqual(webServer.Module<StaticFilesModule>().FileSystemPath, RootPath,
+                "StaticFilesModule root path is equal to RootPath");
         }
 
         [Test]
@@ -76,23 +84,17 @@
         [Test]
         public void FluentWithStaticFolderArgumentException()
         {
-            Assert.Throws<ArgumentNullException>(() => {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
                 Extensions.WithStaticFolderAt(null, TestHelper.SetupStaticFolder());
-            });                     
+            });
         }
 
         [Test]
         public void FluentWithVirtualPaths()
         {
-            var paths = new Dictionary<string, string>
-            {
-                {"/Server/web", TestHelper.SetupStaticFolder()},
-                {"/Server/api", TestHelper.SetupStaticFolder()},
-                {"/Server/database", TestHelper.SetupStaticFolder()}
-            };
-
             var webServer = WebServer.Create(WebServerUrl)
-                .WithVirtualPaths(paths);
+                .WithVirtualPaths(CommonPaths);
 
             Assert.IsNotNull(webServer);
             Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
@@ -103,40 +105,28 @@
         [Test]
         public void FluentWithVirtualPathsWebServerNull_ThrowsArgumentException()
         {
-            var paths = new Dictionary<string, string>
+            Assert.Throws<ArgumentNullException>(() =>
             {
-                {"/Server/web", TestHelper.SetupStaticFolder()},
-                {"/Server/api", TestHelper.SetupStaticFolder()},
-                {"/Server/database", TestHelper.SetupStaticFolder()}
-            };
-
-            Assert.Throws<ArgumentNullException>(() => {
-                Extensions.WithVirtualPaths(null, paths);
+                Extensions.WithVirtualPaths(null, CommonPaths);
             });
         }
 
         [Test]
         public void FluentWithLocalSessionWebServerNull_ThrowsArgumentException()
         {
-            Assert.Throws<ArgumentNullException>(() => {
-                Extensions.WithLocalSession(null);
-            });
+            Assert.Throws<ArgumentNullException>(() => Extensions.WithLocalSession(null));
         }
 
         [Test]
         public void FluentWithWebApiArgumentException()
         {
-            Assert.Throws<ArgumentNullException>(() => {
-                Extensions.WithWebApi(null);
-            });
+            Assert.Throws<ArgumentNullException>(() => Extensions.WithWebApi(null));
         }
 
         [Test]
         public void FluentWithWebSocketArgumentException()
         {
-            Assert.Throws<ArgumentNullException>(() => {
-                Extensions.WithWebSocket(null);
-            });
+            Assert.Throws<ArgumentNullException>(() => Extensions.WithWebSocket(null));
         }
 
         [Test]
@@ -144,9 +134,7 @@
         {
             WebServer webServer = null;
 
-            Assert.Throws<ArgumentNullException>(() => {
-                webServer.LoadApiControllers();
-            });
+            Assert.Throws<ArgumentNullException>(() => webServer.LoadApiControllers());
         }
 
         [Test]
@@ -154,9 +142,7 @@
         {
             WebApiModule webApi = null;
 
-            Assert.Throws<ArgumentNullException>(() => {
-                webApi.LoadApiControllers();
-            });
+            Assert.Throws<ArgumentNullException>(() => webApi.LoadApiControllers());
         }
 
         [Test]
@@ -164,9 +150,7 @@
         {
             WebServer webServer = null;
 
-            Assert.Throws<ArgumentNullException>(() => {
-                webServer.LoadWebSockets();
-            });
+            Assert.Throws<ArgumentNullException>(() => webServer.LoadWebSockets());
         }
 
         [Test]
@@ -174,18 +158,15 @@
         {
             WebServer webServer = null;
 
-            Assert.Throws<ArgumentNullException>(() => {
-                webServer.EnableCors();
-            });
+            Assert.Throws<ArgumentNullException>(() => webServer.EnableCors());
         }
+
         [Test]
         public void FluentWithWebApiControllerTArgumentException()
         {
             WebServer webServer = null;
 
-            Assert.Throws<ArgumentNullException>(() => {
-                webServer.WithWebApiController<TestController>();
-            });
+            Assert.Throws<ArgumentNullException>(() => webServer.WithWebApiController<TestController>());
         }
     }
 }

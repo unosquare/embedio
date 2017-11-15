@@ -168,3 +168,6 @@ TestResult.xml
 /_api
 /tools
 /.vs/Unosquare.Labs.EmbedIO/v15/sqlite3/*
+
+# JetBrains Rider IDE folder
+.idea/

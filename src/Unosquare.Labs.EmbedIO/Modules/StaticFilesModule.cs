@@ -5,6 +5,7 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using Swan;
@@ -36,6 +37,16 @@
         /// The maximum gzip input length
         /// </summary>
         private const int MaxGzipInputLength = 4 * 1024 * 1024;
+
+        /// <summary>
+        /// Maximal length of entry in DirectoryBrowser
+        /// </summary>
+        private const int MaxEntryLength = 50;
+
+        /// <summary>
+        /// How much characters used after time in DirectoryBrowser
+        /// </summary>
+        private const int SizeIndent = 20;
 
         private readonly VirtualPaths _virtualPaths;
 
@@ -287,17 +298,53 @@
 
         private static Task<bool> HandleDirectory(HttpListenerContext context, string localPath, CancellationToken ct)
         {
-            var entries = Directory.GetDirectories(localPath).Select(x => x.Replace(localPath + Path.DirectorySeparatorChar, string.Empty))
-                .Union(Directory.GetFiles(localPath, "*", SearchOption.TopDirectoryOnly).Select(Path.GetFileName))
-                .Where(x => !string.IsNullOrEmpty(x))
-                .Select(y => $"<li><a href='{y}'>{y}</a></li>");
+            var entries = new[] {context.Request.RawUrl == "/" ? string.Empty : "<a href='../'>../</a>"}
+                .Concat(
+                    Directory.GetDirectories(localPath)
+                        .Select(path =>
+                        {
+                            var name = path.Replace(
+                                localPath.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar,
+                                string.Empty);
+                            return new
+                            {
+                                Name = (name + Path.DirectorySeparatorChar).Truncate(MaxEntryLength, "..>"),
+                                Url = Uri.EscapeDataString(name) + Path.DirectorySeparatorChar,
+                                ModificationTime = new DirectoryInfo(path).LastWriteTimeUtc,
+                                Size = "-"
+                            };
+                        })
+                        .OrderBy(x => x.Name)
+                        .Union(Directory.GetFiles(localPath, "*", SearchOption.TopDirectoryOnly)
+                            .Select(path =>
+                            {
+                                var fileInfo = new FileInfo(path);
+                                var name = Path.GetFileName(path);
 
-            var content = Responses.ResponseBaseHtml.Replace("{0}",
-                $"<h1>Directory: {context.RequestPathCaseSensitive()}</h1><ul>{string.Join(string.Empty, entries)}</ul>");
+                                return new
+                                {
+                                    Name = name.Truncate(MaxEntryLength, "..>"),
+                                    Url = Uri.EscapeDataString(name),
+                                    ModificationTime = fileInfo.LastWriteTimeUtc,
+                                    Size = fileInfo.Length.FormatBytes()
+                                };
+                            })
+                            .OrderBy(x => x.Name))
+                        .Select(y => $"<a href='{y.Url}'>{System.Net.WebUtility.HtmlEncode(y.Name)}</a>" +
+                                     new string(' ', MaxEntryLength - y.Name.Length + 1) +
+                                     y.ModificationTime.ToString(Strings.BrowserTimeFormat,
+                                         CultureInfo.InvariantCulture) +
+                                     new string(' ', SizeIndent - y.Size.Length) +
+                                     y.Size))
+                .Where(x => !string.IsNullOrWhiteSpace(x));
+
+            var content = Responses.ResponseBaseHtml.Replace(
+                "{0}",
+                $"<h1>Index of {System.Net.WebUtility.HtmlEncode(context.RequestPathCaseSensitive())}</h1><hr/><pre>{string.Join("\n", entries)}</pre><hr/>");
 
             return context.HtmlResponseAsync(content, cancellationToken: ct);
         }
-
+        
         private Task<bool> HandleGet(HttpListenerContext context, CancellationToken ct, bool sendBuffer = true)
         {
             var validationResult = ValidatePath(context, out var requestFullLocalPath);
@@ -309,7 +356,7 @@
                     return Task.FromResult(true);
                 case VirtualPathStatus.File:
                     return HandleFile(context, requestFullLocalPath, sendBuffer, ct);
-                case VirtualPathStatus.Directoy:
+                case VirtualPathStatus.Directory:
                     return HandleDirectory(context, requestFullLocalPath, ct);
             }
 

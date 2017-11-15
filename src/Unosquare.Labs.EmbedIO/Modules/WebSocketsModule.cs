@@ -501,7 +501,11 @@
             // if called with false, return.
             if (disposeAll == false) return;
 
-            _mWebSockets.ForEach(Close);
+            lock (_syncRoot)
+            {
+                _mWebSockets.ForEach(Close);
+            }
+
             CollectDisconnected();
         }
 

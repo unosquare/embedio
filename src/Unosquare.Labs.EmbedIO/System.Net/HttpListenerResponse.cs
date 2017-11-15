@@ -50,7 +50,6 @@ namespace Unosquare.Net
         private bool _keepAlive = true;
         private ResponseStream _outputStream;
         private Version _version = HttpVersion.Version11;
-        private string _location;
         private int _statusCode = 200;
         private bool _chunked;
 
@@ -179,7 +178,8 @@ namespace Unosquare.Net
         /// <value>
         /// The output stream.
         /// </value>
-        public ResponseStream OutputStream => _outputStream ?? (_outputStream = _context.Connection.GetResponseStream());
+        public ResponseStream OutputStream =>
+            _outputStream ?? (_outputStream = _context.Connection.GetResponseStream());
 
         /// <summary>
         /// Gets or sets the protocol version.
@@ -216,33 +216,6 @@ namespace Unosquare.Net
                     throw new ObjectDisposedException(GetType().ToString());
 
                 _version = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the redirect location.
-        /// </summary>
-        /// <value>
-        /// The redirect location.
-        /// </value>
-        /// <exception cref="System.ObjectDisposedException">
-        /// Is thrown when you try to access a member of an object that implements the 
-        /// IDisposable interface, and that object has been disposed
-        /// </exception>
-        /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
-        public string RedirectLocation
-        {
-            get => _location;
-
-            set
-            {
-                if (_disposed)
-                    throw new ObjectDisposedException(GetType().ToString());
-
-                if (HeadersSent)
-                    throw new InvalidOperationException(CannotChangeHeaderWarning);
-
-                _location = value;
             }
         }
 
@@ -315,7 +288,7 @@ namespace Unosquare.Net
         internal bool HeadersSent { get; private set; }
         internal object HeadersLock { get; } = new object();
         internal bool ForceCloseChunked { get; private set; }
-        
+
         void IDisposable.Dispose() => Close(true);
 
         /// <summary>
@@ -356,50 +329,6 @@ namespace Unosquare.Net
         }
 
         /// <summary>
-        /// Appends the cookie.
-        /// </summary>
-        /// <param name="cookie">The cookie.</param>
-        /// <exception cref="System.ArgumentNullException">
-        /// Is thrown when a null reference is passed to a 
-        /// method that does not accept it as a valid argument
-        /// </exception>
-        public void AppendCookie(System.Net.Cookie cookie)
-        {
-            if (cookie == null)
-                throw new ArgumentNullException(nameof(cookie));
-
-            Cookies.Add(cookie);
-        }
-
-        /// <summary>
-        /// Appends the header.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="value">The value.</param>
-        /// <exception cref="System.ArgumentNullException">
-        /// Is thrown when a null reference is passed to a 
-        /// method that does not accept it as a valid argument
-        /// </exception>
-        /// <exception cref="System.ArgumentException">'name' cannot be empty</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">
-        /// Is thrown when the value of an argument is outside the allowable
-        /// range of values as defined by the invoked method
-        /// </exception>
-        public void AppendHeader(string name, string value)
-        {
-            if (name == null)
-                throw new ArgumentNullException(nameof(name));
-
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentException("'name' cannot be empty", nameof(name));
-
-            if (value.Length > 65535)
-                throw new ArgumentOutOfRangeException(nameof(value));
-
-            Headers[name] = value;
-        }
-
-        /// <summary>
         /// Closes this instance.
         /// </summary>
         public void Close()
@@ -408,34 +337,6 @@ namespace Unosquare.Net
                 return;
 
             Close(false);
-        }
-
-        /// <summary>
-        /// Copies from.
-        /// </summary>
-        /// <param name="templateResponse">The template response.</param>
-        public void CopyFrom(HttpListenerResponse templateResponse)
-        {
-            Headers = new WebHeaderCollection();
-
-            foreach (var header in templateResponse.Headers)
-                Headers.Add(header.ToString());
-
-            _contentLength = templateResponse._contentLength;
-            _statusCode = templateResponse._statusCode;
-            StatusDescription = templateResponse.StatusDescription;
-            _keepAlive = templateResponse._keepAlive;
-            _version = templateResponse._version;
-        }
-
-        /// <summary>
-        /// Redirects the specified URL.
-        /// </summary>
-        /// <param name="url">The URL.</param>
-        public void Redirect(string url)
-        {
-            StatusCode = 302; // Found
-            _location = url;
         }
 
         /// <summary>
@@ -454,7 +355,8 @@ namespace Unosquare.Net
 
             if (_cookies != null)
             {
-                if (_cookies.Cast<Cookie>().Any(c => cookie.Name == c.Name && cookie.Domain == c.Domain && cookie.Path == c.Path))
+                if (_cookies.Cast<Cookie>().Any(c =>
+                    cookie.Name == c.Name && cookie.Domain == c.Domain && cookie.Path == c.Path))
                     throw new ArgumentException("The cookie already exists.");
             }
             else
@@ -464,7 +366,7 @@ namespace Unosquare.Net
 
             _cookies.Add(cookie);
         }
-        
+
         internal void SendHeaders(bool closing, MemoryStream ms)
         {
             if (_contentType != null)
@@ -511,8 +413,8 @@ namespace Unosquare.Net
             //// HttpStatusCode.InternalServerError   500
             //// HttpStatusCode.ServiceUnavailable    503        
             var connClose = _statusCode == 400 || _statusCode == 408 || _statusCode == 411 ||
-                    _statusCode == 413 || _statusCode == 414 || _statusCode == 500 ||
-                    _statusCode == 503;
+                            _statusCode == 413 || _statusCode == 414 || _statusCode == 500 ||
+                            _statusCode == 503;
 
             if (connClose == false)
                 connClose = !_context.Request.KeepAlive;
@@ -545,9 +447,6 @@ namespace Unosquare.Net
                     Headers.AddWithoutValidate("Connection", "keep-alive");
             }
 
-            if (_location != null)
-                Headers.AddWithoutValidate("Location", _location);
-
             if (_cookies != null)
             {
                 foreach (System.Net.Cookie cookie in _cookies)
@@ -574,7 +473,7 @@ namespace Unosquare.Net
 
             foreach (var key in headers.AllKeys)
                 sb.Append(key).Append(": ").Append(headers[key]).Append("\r\n");
-            
+
             return sb.Append("\r\n").ToString();
         }
 
@@ -603,9 +502,7 @@ namespace Unosquare.Net
         }
 
         private static string QuotedString(System.Net.Cookie cookie, string value)
-        {
-            return cookie.Version == 0 || value.IsToken() ? value : "\"" + value.Replace("\"", "\\\"") + "\"";
-        }
+            => cookie.Version == 0 || value.IsToken() ? value : "\"" + value.Replace("\"", "\\\"") + "\"";
 
         private void Close(bool force)
         {

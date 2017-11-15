@@ -16,6 +16,7 @@
 
 #else
     using Net;
+
 #endif
 
     /// <summary>
@@ -376,9 +377,7 @@
         /// <param name="data">The data.</param>
         /// <returns>A true value of type ref=JsonResponseAsync"</returns>
         public static bool JsonResponse(this HttpListenerContext context, object data)
-        {
-            return context.JsonResponseAsync(data).GetAwaiter().GetResult();
-        }
+            => context.JsonResponseAsync(data).GetAwaiter().GetResult();
 
         /// <summary>
         /// Outputs async a Json Response given a data object
@@ -387,13 +386,7 @@
         /// <param name="data">The data.</param>
         /// <returns>A true value of type ref=JsonResponseAsync"</returns>
         public static Task<bool> JsonResponseAsync(this HttpListenerContext context, object data)
-        {
-            var jsonFormatting = true;
-#if DEBUG
-            jsonFormatting = false;
-#endif
-            return context.JsonResponseAsync(Json.Serialize(data, jsonFormatting));
-        }
+            => context.JsonResponseAsync(Json.Serialize(data));
 
         /// <summary>
         /// Outputs a Json Response given a Json string
@@ -434,7 +427,7 @@
             System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.OK,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            context.Response.StatusCode = (int)statusCode;
+            context.Response.StatusCode = (int) statusCode;
             return context.StringResponseAsync(htmlContent, Responses.HtmlContentType, cancellationToken);
         }
 
@@ -589,7 +582,9 @@
         /// <param name="method">The method.</param>
         /// <param name="mode">The mode.</param>
         /// <returns>Block of bytes of compressed stream </returns>
-        public static byte[] Compress(this byte[] buffer, CompressionMethod method = CompressionMethod.Gzip,
+        public static byte[] Compress(
+            this byte[] buffer, 
+            CompressionMethod method = CompressionMethod.Gzip,
             CompressionMode mode = CompressionMode.Compress)
         {
             using (var stream = new MemoryStream(buffer))
