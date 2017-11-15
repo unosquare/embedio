@@ -10,29 +10,13 @@ using Unosquare.Labs.EmbedIO.Tests.TestObjects;
 namespace Unosquare.Labs.EmbedIO.Tests
 {
     [TestFixture]
-    public class RegexRoutingTest
+    public class RegexRoutingTest : FixtureBase
     {
-        protected WebServer WebServer;
-        protected string WebServerUrl;
-
-        [SetUp]
-        public void Init()
+        public RegexRoutingTest()
+            : base(ws => ws.RegisterModule(new TestRoutingModule()), Constants.RoutingStrategy.Regex)
         {
-            Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
-
-            WebServerUrl = Resources.GetServerAddress();
-            // using default wildcard
-            WebServer = new WebServer(WebServerUrl, Constants.RoutingStrategy.Regex);
-            WebServer.RegisterModule(new TestRoutingModule());
-            WebServer.RunAsync();
         }
-
-        [TearDown]
-        public void Kill()
-        {
-            WebServer.Dispose();
-        }
-
+        
         public class GetData : RegexRoutingTest
         {
             [Test]

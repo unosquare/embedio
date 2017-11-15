@@ -13,34 +13,17 @@
     using TestObjects;
 
     [TestFixture]
-    public class WebApiModuleTest
+    public class WebApiModuleTest : FixtureBase
     {
-        protected WebServer WebServer;
-        protected string WebServerUrl;
-
-        [SetUp]
-        public void Init()
+        public WebApiModuleTest() : 
+            base(ws => ws.WithWebApiController<TestController>(), Constants.RoutingStrategy.Wildcard)
         {
-            Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
-
-            WebServerUrl = Resources.GetServerAddress();
-            WebServer = new WebServer(WebServerUrl)
-                .WithWebApiController<TestController>();
-
-            WebServer.RunAsync();
         }
 
         internal class FormDataSample
         {
             public string test { get; set; }
             public List<string> id { get; set; }
-        }
-        
-        [TearDown]
-        public void Kill()
-        {
-            Task.Delay(TimeSpan.FromSeconds(1)).Wait();
-            WebServer.Dispose();
         }
 
         public class HttpGet : WebApiModuleTest
@@ -164,7 +147,7 @@
         {
             const string name = "Test";
 
-            WebServer.Module<WebApiModule>().RegisterController(() => new TestControllerWithConstructor(name));
+            _webServer.Module<WebApiModule>().RegisterController(() => new TestControllerWithConstructor(name));
 
             var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + "name");
 

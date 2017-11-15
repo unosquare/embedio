@@ -13,23 +13,16 @@ using System.Globalization;
 namespace Unosquare.Labs.EmbedIO.Tests
 {
     [TestFixture]
-    public class WebServerCultureTest
-    {
-        protected WebServer WebServer;
-
-        protected string WebServerUrl;
+    public class WebServerCultureTest : FixtureBase
+    { 
         private const string KoreanDate = "목";
 
-        [SetUp]
-        public void Init()
+        public WebServerCultureTest() 
+            : base(ws => ws.WithWebApiController<TestController>(), Constants.RoutingStrategy.Wildcard)
         {
-            WebServerUrl = Resources.GetServerAddress();
             Thread.CurrentThread.CurrentCulture = new CultureInfo("ko");
-
-            WebServer = new WebServer(WebServerUrl).WithWebApiController<TestController>();
-            WebServer.RunAsync();
         }
-
+        
         [Test]
         public async Task GetIndex()
         {
@@ -53,13 +46,6 @@ namespace Unosquare.Labs.EmbedIO.Tests
                 Assert.IsNotNull(remoteList, "Json Object is not null");
                 Assert.AreEqual(remoteList.Count, PeopleRepository.Database.Count, "Remote list count equals local list");
             }
-        }
-
-        [TearDown]
-        public void Kill()
-        {
-            Task.Delay(TimeSpan.FromSeconds(1)).Wait();
-            WebServer.Dispose();
         }
     }
 }

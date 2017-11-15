@@ -12,34 +12,17 @@
     using TestObjects;
 
     [TestFixture]
-    public class StaticFilesModuleTest
+    public class StaticFilesModuleTest : FixtureBase
     {
         private const string HeaderPragmaValue = "no-cache";
-
-        protected string RootPath;
-        protected WebServer WebServer;
-
-        protected string WebServerUrl;
-
-        [SetUp]
-        public void Init()
+        
+        public StaticFilesModuleTest() 
+            : base((ws) => 
+            {
+                ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()) { UseRamCache = true });
+                ws.RegisterModule(new FallbackModule("/index.html"));
+            }, RoutingStrategy.Wildcard)
         {
-            Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
-
-            WebServerUrl = Resources.GetServerAddress();
-            RootPath = TestHelper.SetupStaticFolder();
-
-            WebServer = new WebServer(WebServerUrl);
-            WebServer.RegisterModule(new StaticFilesModule(RootPath) {UseRamCache = true});
-            WebServer.RegisterModule(new FallbackModule("/index.html"));
-            var runTask = WebServer.RunAsync();
-        }
-
-        [TearDown]
-        public void Kill()
-        {
-            Task.Delay(500).Wait();
-            WebServer?.Dispose();
         }
 
         public class GetFiles : StaticFilesModuleTest
@@ -60,7 +43,7 @@
                     Assert.IsTrue(string.IsNullOrWhiteSpace(response.Headers[Headers.Pragma]), "Pragma empty");
                 }
 
-                WebServer.Module<StaticFilesModule>().DefaultHeaders.Add(Headers.Pragma, HeaderPragmaValue);
+                _webServer.Module<StaticFilesModule>().DefaultHeaders.Add(Headers.Pragma, HeaderPragmaValue);
 
                 request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
 

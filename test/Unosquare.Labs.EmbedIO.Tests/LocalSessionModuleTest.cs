@@ -9,36 +9,20 @@
     using System.IO;
 
     [TestFixture]
-    public class LocalSessionModuleTest
+    public class LocalSessionModuleTest : FixtureBase
     {
         private const string CookieName = "__session";
-        protected string RootPath;
         protected WebServer WebServer;
-
-        protected string WebServerUrl;
         protected TimeSpan WaitTimeSpan = TimeSpan.FromSeconds(1);
 
-        [SetUp]
-        public void Init()
+        public LocalSessionModuleTest()
+            :base((ws) => {
+                ws.RegisterModule((new LocalSessionModule() { Expiration = TimeSpan.FromSeconds(1) }));
+                ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()));
+                ws.RegisterModule(new WebApiModule());
+                ws.Module<WebApiModule>().RegisterController<TestLocalSessionController>();
+            }, Constants.RoutingStrategy.Wildcard)
         {
-            Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
-
-            WebServerUrl = Resources.GetServerAddress();
-            RootPath = TestHelper.SetupStaticFolder();
-
-            WebServer = new WebServer(WebServerUrl);
-            WebServer.RegisterModule(new LocalSessionModule() { Expiration = WaitTimeSpan });
-            WebServer.RegisterModule(new StaticFilesModule(RootPath));
-            WebServer.RegisterModule(new WebApiModule());
-            WebServer.Module<WebApiModule>().RegisterController<TestLocalSessionController>();
-            WebServer.RunAsync();
-        }
-        
-        [TearDown]
-        public void Kill()
-        {
-            Task.Delay(TimeSpan.FromSeconds(1)).Wait();
-            WebServer.Dispose();
         }
 
         protected async Task GetFile(string content)
@@ -61,8 +45,8 @@
             [Test]
             public void HasSessionModule()
             {
-                Assert.IsNotNull(WebServer.SessionModule, "Session module is not null");
-                Assert.AreEqual(WebServer.SessionModule.Handlers.Count, 1, "Session module has one handler");
+                Assert.IsNotNull(_webServer.SessionModule, "Session module is not null");
+                Assert.AreEqual(_webServer.SessionModule.Handlers.Count, 1, "Session module has one handler");
             }
 
             [Test]

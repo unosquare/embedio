@@ -14,30 +14,27 @@
 #endif
 
     [TestFixture]
-    public class WebSocketsModuleTest
+    public class WebSocketsModuleTest : FixtureBase
     {
         private readonly bool _ignoreWebConnect = Swan.Runtime.OS != Swan.OperatingSystem.Windows;
-        protected WebServer WebServer;
 
-        [SetUp]
-        public void Init()
+        public WebSocketsModuleTest() :
+            base((ws) => 
+            {
+                ws.RegisterModule(new WebSocketsModule());
+                ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocket>();
+                ws.Module<WebSocketsModule>().RegisterWebSocketsServer<BigDataWebSocket>();
+            }, Constants.RoutingStrategy.Wildcard)
         {
-            Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
-            WebServer = new WebServer(Resources.WsServerAddress.Replace("ws", "http"));
-            WebServer.RegisterModule(new WebSocketsModule());
-            WebServer.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocket>();
-            WebServer.Module<WebSocketsModule>().RegisterWebSocketsServer<BigDataWebSocket>();
-
-            WebServer.RunAsync();
         }
 
         [Test]
         public async Task TestConnectWebSocket()
         {
             const string wsUrl = Resources.WsServerAddress + "test";
-            Assert.IsNotNull(WebServer.Module<WebSocketsModule>(), "WebServer has WebSocketsModule");
+            Assert.IsNotNull(_webServer.Module<WebSocketsModule>(), "WebServer has WebSocketsModule");
 
-            Assert.AreEqual(WebServer.Module<WebSocketsModule>().Handlers.Count, 1, "WebSocketModule has one handler");
+            Assert.AreEqual(_webServer.Module<WebSocketsModule>().Handlers.Count, 1, "WebSocketModule has one handler");
 
             if (_ignoreWebConnect)
                 Assert.Inconclusive("WebSocket Connect not available");
@@ -107,13 +104,6 @@
             await clientSocket.SendAsync(buffer, Opcode.Text, ct.Token);
             await Task.Delay(500, ct.Token);
 #endif
-        }
-
-        [TearDown]
-        public void Kill()
-        {
-            Task.Delay(TimeSpan.FromSeconds(1)).Wait();
-            WebServer.Dispose();
         }
     }
 }

@@ -9,29 +9,20 @@
     using TestObjects;
 
     [TestFixture]
-    public class MultipleStaticRootsFixture
+    public class MultipleStaticRootsFixture : FixtureBase
     {
-        protected string RootPath;
-        protected WebServer WebServer;
-        
-        protected string WebServerUrl;
         protected string[] InstancesNames = {string.Empty, "A/", "B/", "C/", "A/C", "AAA/A/B/C/", "A/B/C"};
 
-        [SetUp]
-        public void Init()
+        public MultipleStaticRootsFixture() 
+            : base(ws=> 
+            ws.RegisterModule(
+                new StaticFilesModule(new[] 
+                { string.Empty, "A/", "B/", "C/", "A/C", "AAA/A/B/C/", "A/B/C" }
+                .ToDictionary(x => "/" + x, TestHelper.SetupStaticFolderInstance)) { UseRamCache = true })
+            , Constants.RoutingStrategy.Wildcard)
         {
-            Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
-
-            WebServerUrl = Resources.GetServerAddress();
-            TestHelper.SetupStaticFolder();
-
-            var additionalPaths = InstancesNames.ToDictionary(x => "/" + x, TestHelper.SetupStaticFolderInstance);
-
-            WebServer = new WebServer(WebServerUrl);
-            WebServer.RegisterModule(new StaticFilesModule(additionalPaths) {UseRamCache = true});
-            WebServer.RunAsync();
         }
-
+        
         [Test]
         public async Task FileContentsMatchInstanceName()
         {
@@ -45,13 +36,6 @@
                         "index.html contents match instance name");
                 }
             }
-        }
-
-        [TearDown]
-        public void Kill()
-        {
-            Task.Delay(TimeSpan.FromSeconds(1)).Wait();
-            WebServer.Dispose();
         }
     }
 }

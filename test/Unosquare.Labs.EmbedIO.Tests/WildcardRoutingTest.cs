@@ -8,7 +8,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
     public class WildcardRoutingTest : FixtureBase
     {
         public WildcardRoutingTest()
-            : base(ws => ws.RegisterModule(new TestRoutingModule()))
+            : base(ws => ws.RegisterModule(new TestRoutingModule()), Constants.RoutingStrategy.Wildcard)
         {
             // placeholder    
         }

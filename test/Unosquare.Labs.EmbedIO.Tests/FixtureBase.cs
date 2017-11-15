@@ -3,18 +3,21 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Unosquare.Labs.EmbedIO.Tests.TestObjects;
+using Unosquare.Labs.EmbedIO.Constants;
 
 namespace Unosquare.Labs.EmbedIO.Tests
 {
     public abstract class FixtureBase
     {
         private readonly Action<WebServer> _builder;
-        private WebServer _webServer;
+        public WebServer _webServer;
+        private readonly RoutingStrategy _routeStrategy;
 
-        protected FixtureBase(Action<WebServer> builder)
+        protected FixtureBase(Action<WebServer> builder, RoutingStrategy routeSrtategy)
         {
             Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
             _builder = builder;
+            _routeStrategy = routeSrtategy;
         }
 
         public string WebServerUrl { get; private set; }
@@ -23,7 +26,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
         public void Init()
         {
             WebServerUrl = Resources.GetServerAddress();
-            _webServer = new WebServer(WebServerUrl);
+            _webServer = new WebServer(WebServerUrl, _routeStrategy);
 
             _builder(_webServer);
             var runTask = _webServer.RunAsync();

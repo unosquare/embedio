@@ -12,29 +12,13 @@
     using TestObjects;
 
     [TestFixture]
-    public class RegexWebApiModuleTest
+    public class RegexWebApiModuleTest : FixtureBase
     {
-        protected WebServer WebServer;
-        protected string WebServerUrl;
-
-        [SetUp]
-        public void Init()
+        public RegexWebApiModuleTest()
+            : base(ws => ws.WithWebApiController<TestRegexController>(), RoutingStrategy.Regex)
         {
-            Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
-
-            WebServerUrl = Resources.GetServerAddress();
-            WebServer =
-                new WebServer(WebServerUrl, RoutingStrategy.Regex)
-                    .WithWebApiController<TestRegexController>();
-            WebServer.RunAsync();
         }
-
-        [TearDown]
-        public void Kill()
-        {
-            WebServer.Dispose();
-        }
-
+        
         public class GetJsonData : RegexWebApiModuleTest
         {
             [Test]

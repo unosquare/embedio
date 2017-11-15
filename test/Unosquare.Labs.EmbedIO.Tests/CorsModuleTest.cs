@@ -23,7 +23,7 @@
             ws.RegisterModule(new WebApiModule());
             ws.Module<WebApiModule>().RegisterController<TestController>();
             ws.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(TestObj)));
-        })
+        }, RoutingStrategy.Wildcard)
         {
 
         }
@@ -33,7 +33,7 @@
         {
             var jsonBody = await GetString("invalidpath");
 
-            Assert.AreEqual(Json.Serialize(TestObj, true), jsonBody, "Same content");
+            Assert.AreEqual(Json.Serialize(TestObj), jsonBody, "Same content");
         }
 
         [Test]
