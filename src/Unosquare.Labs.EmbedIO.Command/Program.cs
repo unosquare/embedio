@@ -1,4 +1,4 @@
-﻿namespace Unosquare.Labs.EmbedIO.Command
+namespace Unosquare.Labs.EmbedIO.Command
 {
     using Swan;
     using System;
@@ -15,8 +15,6 @@
         /// <param name="args"></param>
         private static void Main(string[] args)
         {
-            args = new[] {"-p", @"c:\\Unosquare", "-o", "5588"};
-
             var options = new Options();
 
             Runtime.WriteWelcomeBanner();
@@ -31,7 +29,7 @@
                 //if (Properties.Settings.Default.UseLocalSessionModule)
                 server.WithLocalSession();
 
-                server.EnableCors().WithStaticFolderAt(options.RootPath, useDirectoryBrowser: true);
+                server.EnableCors().WithStaticFolderAt(options.RootPath);
                 //server.EnableCors().WithStaticFolderAt(options.RootPath,
                 //    defaultDocument: Properties.Settings.Default.HtmlDefaultDocument);
 
