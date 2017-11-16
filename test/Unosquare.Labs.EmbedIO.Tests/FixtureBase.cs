@@ -39,11 +39,11 @@ namespace Unosquare.Labs.EmbedIO.Tests
             _webServer?.Dispose();
         }
 
-        public async Task<string> GetString(string partialUrl)
+        public Task<string> GetString(string partialUrl)
         {
             using (var client = new HttpClient())
             {
-                return await client.GetStringAsync($"{WebServerUrl}{partialUrl}");
+                return client.GetStringAsync($"{WebServerUrl}{partialUrl}");
             }
         }
     }
