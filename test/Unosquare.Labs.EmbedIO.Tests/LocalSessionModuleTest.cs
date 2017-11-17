@@ -9,6 +9,8 @@
     using System.IO;
     using System.Net.Http;
     using Unosquare.Swan.Formatters;
+    using System.Collections.Generic;
+    using System.Linq;
 
     [TestFixture]
     public class LocalSessionModuleTest : FixtureBase
@@ -124,14 +126,14 @@
 
                         await Task.Delay(WaitTimeSpan);
 
-                        Task.WaitAll(new[]
-                        {
-                        Task.Factory.StartNew(() => GetFile(content)),
-                        Task.Factory.StartNew(() => GetFile(content)),
-                        Task.Factory.StartNew(() => GetFile(content)),
-                        Task.Factory.StartNew(() => GetFile(content)),
-                        Task.Factory.StartNew(() => GetFile(content)),
-                    });
+                        Task.WaitAll(
+                            new[]
+                            {
+                                Task.Factory.StartNew(() => GetFile(content)),
+                                Task.Factory.StartNew(() => GetFile(content)),Task.Factory.StartNew(() => GetFile(content)),
+                                Task.Factory.StartNew(() => GetFile(content)),
+                                Task.Factory.StartNew(() => GetFile(content)),
+                            });
                     }
                 }
             }
@@ -142,17 +144,23 @@
             [Test]
             public async Task RetrieveCookie()
             {
-                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestLocalSessionController.GetCookie);
-                request.CookieContainer = new CookieContainer();
-
-                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                using (var handler = new HttpClientHandler())
                 {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
-                    Assert.IsNotNull(response.Cookies, "Cookies are not null");
-                    Assert.Greater(response.Cookies.Count, 0, "Cookies are not empty");
-
-                    Assert.AreEqual(TestLocalSessionController.CookieName, response.Cookies[TestLocalSessionController.CookieName]?.Value);
+                    handler.CookieContainer = new CookieContainer();
+                    using (var client = new HttpClient(handler))
+                    {
+                        var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestLocalSessionController.GetCookie);
+                        var uri = new Uri(WebServerUrl + TestLocalSessionController.GetCookie);
+                        using (var resonse = await client.SendAsync(request))
+                        {
+                            Assert.AreEqual(resonse.StatusCode, HttpStatusCode.OK, "Status OK");
+                            IEnumerable<Cookie> responseCookies = handler.CookieContainer.GetCookies(uri).Cast<Cookie>();
+                            Assert.IsNotNull(responseCookies, "Cookies are not null");
+                            Assert.Greater(responseCookies.Count(), 0, "Cookies are not empty");
+                            var cookieName = responseCookies.FirstOrDefault(c => c.Name == TestLocalSessionController.CookieName);
+                            Assert.AreEqual(TestLocalSessionController.CookieName, cookieName.Name);
+                        }
+                    }
                 }
             }
 

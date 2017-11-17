@@ -10,6 +10,8 @@
     using System.Threading.Tasks;
     using Modules;
     using TestObjects;
+    using System.Collections.Generic;
+    using System.Net.Http.Headers;
 
     [TestFixture]
     public class StaticFilesModuleTest : FixtureBase
@@ -174,13 +176,13 @@
                             Assert.IsTrue(subset.SequenceEqual(data));
                         }
                     }
-                }                    
+                }
             }
 
             [Test]
             public async Task Middle()
             {
-                using(var client = new HttpClient())
+                using (var client = new HttpClient())
                 {
                     const int offset = 50;
                     const int maxLength = 100;
@@ -210,7 +212,7 @@
             [Test]
             public async Task NotPartial()
             {
-                using(var client = new HttpClient())
+                using (var client = new HttpClient())
                 {
                     var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
 
@@ -237,71 +239,66 @@
             [Test]
             public async Task GetEntireFileWithChunksUsingRange()
             {
-                var originalSet = TestHelper.GetBigData();
-                var requestHead = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestHelper.BigDataFile);
-                requestHead.Method = "HEAD";
-
-                var remoteSize = ((HttpWebResponse)requestHead.GetResponse()).ContentLength;
-                Assert.AreEqual(remoteSize, originalSet.Length);
-
-                var buffer = new byte[remoteSize];
-                const int chunkSize = 100000;
-
-                for (var i = 0; i < remoteSize / chunkSize + 1; i++)
+                using (var client = new HttpClient())
                 {
-                    var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestHelper.BigDataFile);
-                    var top = (i + 1) * chunkSize;
-
-                    request.AddRange(i * chunkSize, (top > remoteSize ? remoteSize : top) - 1);
-
-                    using (var response = (HttpWebResponse)request.GetResponse())
+                    var originalSet = TestHelper.GetBigData();
+                    var requestHead = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
+                    using (var res = await client.SendAsync(requestHead))
                     {
-                        if (remoteSize < top)
-                            Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
-
-                        using (var ms = new MemoryStream())
+                        var remoteSize = await res.Content.ReadAsByteArrayAsync();
+                        Assert.AreEqual(remoteSize.Length, originalSet.Length);
+                        var buffer = new byte[remoteSize.Length];
+                        const int chunkSize = 100000;
+                        for (var i = 0; i < remoteSize.Length / chunkSize + 1; i++)
                         {
-                            response.GetResponseStream()?.CopyTo(ms);
-                            var data = ms.ToArray();
-                            Buffer.BlockCopy(data, 0, buffer, i * chunkSize, data.Length);
+                            var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
+                            var top = (i + 1) * chunkSize;
+
+                            request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue
+                                (i * chunkSize, (top > remoteSize.Length ? remoteSize.Length : top) - 1);
+
+                            using (var response = await client.SendAsync(request))
+                            {
+                                if (remoteSize.Length < top)
+                                    Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
+
+                                using (var ms = new MemoryStream())
+                                {
+                                    var stream = await response.Content.ReadAsStreamAsync();
+                                    stream.CopyTo(ms);
+                                    var data = ms.ToArray();
+                                    Buffer.BlockCopy(data, 0, buffer, i * chunkSize, data.Length);
+                                }
+                            }
                         }
+
+                        Assert.IsTrue(originalSet.SequenceEqual(buffer));
                     }
                 }
-
-                Assert.IsTrue(originalSet.SequenceEqual(buffer));
             }
 
             [Test]
             public async Task GetInvalidChunk()
             {
-                var originalSet = TestHelper.GetBigData();
-                var requestHead = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestHelper.BigDataFile);
-                requestHead.Method = "HEAD";
-
-                var remoteSize = ((HttpWebResponse)await requestHead.GetResponseAsync()).ContentLength;
-                Assert.AreEqual(remoteSize, originalSet.Length);
-
-                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestHelper.BigDataFile);
-                request.AddRange(0, remoteSize + 10);
-
-                try
+                using (var client = new HttpClient())
                 {
-                    await request.GetResponseAsync();
+                    var originalSet = TestHelper.GetBigData();
+                    var requestHead = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
+                    using (var res = await client.SendAsync(requestHead))
+                    {
+                        var remoteSize = await res.Content.ReadAsByteArrayAsync();
+                        Assert.AreEqual(remoteSize.Length, originalSet.Length);
+
+                        var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
+                        request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(0, remoteSize.Length + 10);
+
+                        using (var response = await client.SendAsync(request))
+                        {
+                            Assert.AreEqual(response.StatusCode, HttpStatusCode.RequestedRangeNotSatisfiable, "Status Code RequestedRangeNotSatisfiable");
+                            Assert.AreEqual(response.Content.Headers.ContentRange.Length, remoteSize.Length);
+                        }
+                    }
                 }
-                catch (WebException ex)
-                {
-                    if (ex.Response == null || ex.Status != WebExceptionStatus.ProtocolError)
-                        throw;
-
-                    var response = (HttpWebResponse)ex.Response;
-
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.RequestedRangeNotSatisfiable, "Status Code RequestedRangeNotSatisfiable");
-                    Assert.AreEqual(response.Headers["Content-Range"],
-                        $"bytes */{remoteSize}");
-                    return;
-                }
-
-                Assert.Fail("The Exception should raise");
             }
         }
 
@@ -310,22 +307,24 @@
             [Test]
             public async Task GetGzip()
             {
-                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
-                request.AutomaticDecompression = DecompressionMethods.GZip;
-
-                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                using (var handler = new HttpClientHandler())
                 {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                    handler.AutomaticDecompression = DecompressionMethods.GZip;
+                    using (var client = new HttpClient())
+                    {
+                        var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
+                        using (var response = await client.SendAsync(request))
+                        {
+                            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                            var html = response.Content.ReadAsStringAsync();
+                            Assert.IsNotNull(html, "Data is not empty");
+                            Assert.AreEqual(Resources.Index, html);
 
-                    // TODO: I need to fix this
-                    //Assert.IsTrue(response.ContentEncoding.ToLower().Contains("gzip"), "Request is gziped");
-                    //var responseStream = new GZipStream(response.GetResponseStream(), CompressionMode.Decompress);
-                    var responseStream = response.GetResponseStream();
-                    var reader = new StreamReader(responseStream, System.Text.Encoding.UTF8);
-                    var html = reader.ReadToEnd();
-
-                    Assert.IsNotNull(html, "Data is not empty");
-                    Assert.AreEqual(Resources.Index, html);
+                            // TODO: I need to fix this
+                            //Assert.IsTrue(response.ContentEncoding.ToLower().Contains("gzip"), "Request is gziped");
+                            //var responseStream = new GZipStream(response.GetResponseStream(), CompressionMode.Decompress);
+                        }
+                    }
                 }
             }
         }
@@ -333,27 +332,32 @@
         public class FileParts : StaticFilesModuleTest
         {
             [Test]
-            public void GetLastPart()
+            public async Task GetLastPart()
             {
-                const int startByteIndex = 100;
-                const int byteLength = 100;
-                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestHelper.BigDataFile);
-                request.AddRange(startByteIndex, startByteIndex + byteLength - 1);
-
-                using (var response = (HttpWebResponse)request.GetResponse())
+                using(var client = new HttpClient())
                 {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
+                    const int startByteIndex = 100;
+                    const int byteLength = 100;
+                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
+                    request.Headers.Range =
+                        new System.Net.Http.Headers.RangeHeaderValue(startByteIndex, startByteIndex + byteLength - 1);
 
-                    using (var ms = new MemoryStream())
+                    using (var response = await client.SendAsync(request))
                     {
-                        response.GetResponseStream()?.CopyTo(ms);
-                        var data = ms.ToArray();
+                        Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
 
-                        Assert.IsNotNull(data, "Data is not empty");
-                        var subset = new byte[byteLength];
-                        var originalSet = TestHelper.GetBigData();
-                        Buffer.BlockCopy(originalSet, startByteIndex, subset, 0, byteLength);
-                        Assert.IsTrue(subset.SequenceEqual(data));
+                        using (var ms = new MemoryStream())
+                        {
+                            var stream = await response.Content.ReadAsStreamAsync();
+                            stream.CopyTo(ms);
+                            var data = ms.ToArray();
+
+                            Assert.IsNotNull(data, "Data is not empty");
+                            var subset = new byte[byteLength];
+                            var originalSet = TestHelper.GetBigData();
+                            Buffer.BlockCopy(originalSet, startByteIndex, subset, 0, byteLength);
+                            Assert.IsTrue(subset.SequenceEqual(data));
+                        }
                     }
                 }
             }
@@ -364,36 +368,43 @@
             [Test]
             public async Task GetEtag()
             {
-                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
-                string eTag;
-
-                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                using (var client = new HttpClient())
                 {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-                    Assert.NotNull(response.Headers[Headers.ETag], "ETag is not null");
-                    eTag = response.Headers[Headers.ETag];
+                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
+                    string eTag;
+                    using (var response = await client.SendAsync(request))
+                    {
+                        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                        Assert.NotNull(response.Headers.ETag, "ETag is not null");
+                        eTag = response.Headers.ETag.ToString();
+                    }
                 }
+                //using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                //{
+                    
+                //    
+                //}
 
-                var secondRequest = (HttpWebRequest)WebRequest.Create(WebServerUrl);
-                secondRequest.Headers[Headers.IfNotMatch] = eTag;
+                //var secondRequest = (HttpWebRequest)WebRequest.Create(WebServerUrl);
+                //secondRequest.Headers[Headers.IfNotMatch] = eTag;
 
-                try
-                {
-                    // By design GetResponse throws exception with NotModified status, weird
-                    await secondRequest.GetResponseAsync();
-                }
-                catch (WebException ex)
-                {
-                    if (ex.Response == null || ex.Status != WebExceptionStatus.ProtocolError)
-                        throw;
+                //try
+                //{
+                //    // By design GetResponse throws exception with NotModified status, weird
+                //    await secondRequest.GetResponseAsync();
+                //}
+                //catch (WebException ex)
+                //{
+                //    if (ex.Response == null || ex.Status != WebExceptionStatus.ProtocolError)
+                //        throw;
 
-                    var response = (HttpWebResponse)ex.Response;
+                //    var response = (HttpWebResponse)ex.Response;
 
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.NotModified, "Status Code NotModified");
-                    return;
-                }
+                //    Assert.AreEqual(response.StatusCode, HttpStatusCode.NotModified, "Status Code NotModified");
+                //    return;
+                //}
 
-                Assert.Fail("The Exception should raise");
+                //Assert.Fail("The Exception should raise");
             }
         }
     }
