@@ -221,29 +221,28 @@
 
                 var runTask = instance.RunAsync();
 
-                var request = (HttpWebRequest) WebRequest.Create(url + TestWebModule.RedirectUrl);
-                request.Method = "POST";
-                request.ContentType = $"application/json; charset={encodeName}";
-
-                var byteArray = Encoding.GetEncoding(encodeName).GetBytes("POST DATA");
-#if NET47
-                request.ContentLength = byteArray.Length;
-#endif
-                var requestStream = await request.GetRequestStreamAsync();
-                requestStream.Write(byteArray, 0, byteArray.Length);
-
-                using (var response = (HttpWebResponse) await request.GetResponseAsync())
+                using(var client = new HttpClient())
                 {
-                    using (var ms = new MemoryStream())
+                    client.DefaultRequestHeaders.Accept
+                        .Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue($"application/json"));
+                    var request = new HttpRequestMessage(HttpMethod.Post, url + TestWebModule.RedirectUrl);
+                    request.Content = 
+                        new StringContent("POST DATA", Encoding.GetEncoding(encodeName), $"application/json");
+
+                    using (var response = await client.SendAsync(request))
                     {
-                        response.GetResponseStream()?.CopyTo(ms);
-                        var data = Encoding.UTF8.GetString(ms.ToArray());
+                        var stream = await response.Content.ReadAsStreamAsync();
+                        using (var ms = new MemoryStream())
+                        {
+                            stream.CopyTo(ms);
+                            var data = Encoding.UTF8.GetString(ms.ToArray());
 
-                        Assert.IsNotNull(data, "Data is not empty");
-                        var model = Json.Deserialize<EncodeCheck>(data);
+                            Assert.IsNotNull(data, "Data is not empty");
+                            var model = Json.Deserialize<EncodeCheck>(data);
 
-                        Assert.IsNotNull(model);
-                        Assert.IsTrue(model.IsValid);
+                            Assert.IsNotNull(model);
+                            Assert.IsTrue(model.IsValid);
+                        }
                     }
                 }
             }

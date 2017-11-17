@@ -316,7 +316,7 @@
                         using (var response = await client.SendAsync(request))
                         {
                             Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-                            var html = response.Content.ReadAsStringAsync();
+                            var html = await response.Content.ReadAsStringAsync();
                             Assert.IsNotNull(html, "Data is not empty");
                             Assert.AreEqual(Resources.Index, html);
 
