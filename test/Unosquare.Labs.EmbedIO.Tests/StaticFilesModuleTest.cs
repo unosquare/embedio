@@ -10,8 +10,6 @@
     using System.Threading.Tasks;
     using Modules;
     using TestObjects;
-    using System.Collections.Generic;
-    using System.Net.Http.Headers;
 
     [TestFixture]
     public class StaticFilesModuleTest : FixtureBase
@@ -21,7 +19,7 @@
         public StaticFilesModuleTest()
             : base((ws) =>
             {
-                ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()) { UseRamCache = true });
+                ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()) {UseRamCache = true});
                 ws.RegisterModule(new FallbackModule("/index.html"));
             }, RoutingStrategy.Wildcard)
         {
@@ -107,7 +105,7 @@
 
                 using (var server = new WebServer(endpoint))
                 {
-                    server.RegisterModule(new StaticFilesModule(root) { UseRamCache = false });
+                    server.RegisterModule(new StaticFilesModule(root) {UseRamCache = false});
                     var runTask = server.RunAsync();
                     using (var webClient = new HttpClient())
                     {
@@ -187,7 +185,8 @@
                     const int offset = 50;
                     const int maxLength = 100;
                     var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
-                    request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(offset, maxLength + offset - 1);
+                    request.Headers.Range =
+                        new System.Net.Http.Headers.RangeHeaderValue(offset, maxLength + offset - 1);
 
                     using (var response = await client.SendAsync(request))
                     {
@@ -260,7 +259,8 @@
                             using (var response = await client.SendAsync(request))
                             {
                                 if (remoteSize.Length < top)
-                                    Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
+                                    Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent,
+                                        "Status Code PartialCode");
 
                                 using (var ms = new MemoryStream())
                                 {
@@ -294,7 +294,8 @@
 
                         using (var response = await client.SendAsync(request))
                         {
-                            Assert.AreEqual(response.StatusCode, HttpStatusCode.RequestedRangeNotSatisfiable, "Status Code RequestedRangeNotSatisfiable");
+                            Assert.AreEqual(response.StatusCode, HttpStatusCode.RequestedRangeNotSatisfiable,
+                                "Status Code RequestedRangeNotSatisfiable");
                             Assert.AreEqual(response.Content.Headers.ContentRange.Length, remoteSize.Length);
                         }
                     }
@@ -334,7 +335,7 @@
             [Test]
             public async Task GetLastPart()
             {
-                using(var client = new HttpClient())
+                using (var client = new HttpClient())
                 {
                     const int startByteIndex = 100;
                     const int byteLength = 100;
@@ -375,36 +376,20 @@
                     using (var response = await client.SendAsync(request))
                     {
                         Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-                        Assert.NotNull(response.Headers.ETag, "ETag is not null");
-                        eTag = response.Headers.ETag.ToString();
+
+                        // Can't use response.Headers.Etag, it's always null
+                        Assert.NotNull(response.Headers.FirstOrDefault(x => x.Key == "ETag"), "ETag is not null");
+                        eTag = response.Headers.First(x => x.Key == "ETag").Value.First();
+                    }
+
+                    var secondRequest = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
+                    secondRequest.Headers.TryAddWithoutValidation(Headers.IfNotMatch, eTag);
+
+                    using (var response = await client.SendAsync(secondRequest))
+                    {
+                        Assert.AreEqual(response.StatusCode, HttpStatusCode.NotModified, "Status Code NotModified");
                     }
                 }
-                //using (var response = (HttpWebResponse)await request.GetResponseAsync())
-                //{
-                    
-                //    
-                //}
-
-                //var secondRequest = (HttpWebRequest)WebRequest.Create(WebServerUrl);
-                //secondRequest.Headers[Headers.IfNotMatch] = eTag;
-
-                //try
-                //{
-                //    // By design GetResponse throws exception with NotModified status, weird
-                //    await secondRequest.GetResponseAsync();
-                //}
-                //catch (WebException ex)
-                //{
-                //    if (ex.Response == null || ex.Status != WebExceptionStatus.ProtocolError)
-                //        throw;
-
-                //    var response = (HttpWebResponse)ex.Response;
-
-                //    Assert.AreEqual(response.StatusCode, HttpStatusCode.NotModified, "Status Code NotModified");
-                //    return;
-                //}
-
-                //Assert.Fail("The Exception should raise");
             }
         }
     }
