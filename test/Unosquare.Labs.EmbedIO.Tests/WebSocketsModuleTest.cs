@@ -31,7 +31,7 @@
         [Test]
         public async Task TestConnectWebSocket()
         {
-            string wsUrl = WebServerUrl.Replace("http", "ws") + "test";
+            var wsUrl = WebServerUrl.Replace("http", "ws") + "test";
             Assert.IsNotNull(_webServer.Module<WebSocketsModule>(), "WebServer has WebSocketsModule");
 
             Assert.AreEqual(_webServer.Module<WebSocketsModule>().Handlers.Count, 1, "WebSocketModule has one handler");
@@ -74,7 +74,7 @@
             if (_ignoreWebConnect)
                 Assert.Inconclusive("WebSocket Connect not available");
 
-            string wsUrl = WebServerUrl.Replace("http", "ws") + "bigdata";
+            var wsUrl = WebServerUrl.Replace("http", "ws") + "bigdata";
 
             var ct = new CancellationTokenSource();
 #if NET47
