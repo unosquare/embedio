@@ -15,9 +15,9 @@
     public class StaticFilesModuleTest : FixtureBase
     {
         private const string HeaderPragmaValue = "no-cache";
-        
-        public StaticFilesModuleTest() 
-            : base((ws) => 
+
+        public StaticFilesModuleTest()
+            : base((ws) =>
             {
                 ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()) { UseRamCache = true });
                 ws.RegisterModule(new FallbackModule("/index.html"));
@@ -30,40 +30,41 @@
             [Test]
             public async Task Index()
             {
-                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
-
-                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                using (var client = new HttpClient())
                 {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
 
-                    var html = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                    using (var response = await client.SendAsync(request))
+                    {
+                        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
-                    Assert.AreEqual(Resources.Index, html, "Same content index.html");
+                        var html = await response.Content.ReadAsStringAsync();
 
-                    Assert.IsTrue(string.IsNullOrWhiteSpace(response.Headers[Headers.Pragma]), "Pragma empty");
-                }
+                        Assert.AreEqual(Resources.Index, html, "Same content index.html");
 
-                _webServer.Module<StaticFilesModule>().DefaultHeaders.Add(Headers.Pragma, HeaderPragmaValue);
+                        Assert.IsTrue(string.IsNullOrWhiteSpace(response.Headers.Pragma.ToString()), "Pragma empty");
+                    }
 
-                request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
+                    _webServer.Module<StaticFilesModule>().DefaultHeaders.Add(Headers.Pragma, HeaderPragmaValue);
 
-                using (var response = (HttpWebResponse)await request.GetResponseAsync())
-                {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-                    Assert.AreEqual(HeaderPragmaValue, response.Headers[Headers.Pragma]);
+                    request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
+
+                    using (var response = await client.SendAsync(request))
+                    {
+                        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                        Assert.AreEqual(HeaderPragmaValue, response.Headers.Pragma.ToString());
+                    }
                 }
             }
 
             [Test]
             public async Task SubFolderIndex()
             {
-                var webClient = new HttpClient();
-
-                var html = await webClient.GetStringAsync(WebServerUrl + "sub/");
+                var html = await GetString("sub/");
 
                 Assert.AreEqual(Resources.SubIndex, html, "Same content index.html");
 
-                html = await webClient.GetStringAsync(WebServerUrl + "sub");
+                html = await GetString("sub");
 
                 Assert.AreEqual(Resources.SubIndex, html, "Same content index.html without trailing");
             }
@@ -71,7 +72,7 @@
             [Test]
             public async Task FallbackIndex()
             {
-                var html = await new HttpClient().GetStringAsync(WebServerUrl + "invalidpath");
+                var html = await GetString("invalidpath");
 
                 Assert.AreEqual(Resources.Index, html, "Same content index.html");
             }
@@ -79,16 +80,18 @@
             [Test]
             public async Task TestHeadIndex()
             {
-                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl);
-                request.Method = HttpVerbs.Head.ToString();
-
-                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                using (var client = new HttpClient())
                 {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                    var request = new HttpRequestMessage(HttpMethod.Head, WebServerUrl);
 
-                    var html = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                    using (var response = await client.SendAsync(request))
+                    {
+                        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
-                    Assert.IsEmpty(html, "Content Empty");
+                        var html = await response.Content.ReadAsStringAsync();
+
+                        Assert.IsEmpty(html, "Content Empty");
+                    }
                 }
             }
 
@@ -104,7 +107,6 @@
                 {
                     server.RegisterModule(new StaticFilesModule(root) { UseRamCache = false });
                     var runTask = server.RunAsync();
-
                     using (var webClient = new HttpClient())
                     {
                         var remoteFile = await webClient.GetStringAsync(endpoint);
@@ -133,13 +135,11 @@
                 }
                 else
                 {
-                    var webClient = new HttpClient();
-
-                    var htmlUpperCase = await webClient.GetStringAsync(WebServerUrl + TestHelper.UppercaseFile);
+                    var htmlUpperCase = await GetString(WebServerUrl + TestHelper.UppercaseFile);
 
                     Assert.AreEqual(nameof(TestHelper.UppercaseFile), htmlUpperCase, "Same content upper case");
 
-                    var htmlLowerCase = await webClient.GetStringAsync(WebServerUrl + TestHelper.LowercaseFile);
+                    var htmlLowerCase = await GetString(WebServerUrl + TestHelper.LowercaseFile);
 
                     Assert.AreEqual(nameof(TestHelper.LowercaseFile), htmlLowerCase, "Same content lower case");
                 }
@@ -149,52 +149,60 @@
         public class GetPartials : StaticFilesModuleTest
         {
             [Test]
-            public void Initial()
+            public async Task Initial()
             {
-                const int maxLength = 100;
-                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestHelper.BigDataFile);
-                request.AddRange(0, maxLength - 1);
-
-                using (var response = (HttpWebResponse)request.GetResponse())
+                using (var client = new HttpClient())
                 {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
+                    const int maxLength = 100;
+                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
+                    request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(0, maxLength - 1);
 
-                    using (var ms = new MemoryStream())
+                    using (var response = await client.SendAsync(request))
                     {
-                        response.GetResponseStream()?.CopyTo(ms);
-                        var data = ms.ToArray();
+                        Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
 
-                        Assert.IsNotNull(data, "Data is not empty");
-                        var subset = new byte[maxLength];
-                        var originalSet = TestHelper.GetBigData();
-                        Buffer.BlockCopy(originalSet, 0, subset, 0, maxLength);
-                        Assert.IsTrue(subset.SequenceEqual(data));
+                        using (var ms = new MemoryStream())
+                        {
+                            var responseStream = await response.Content.ReadAsStreamAsync();
+                            responseStream.CopyTo(ms);
+                            var data = ms.ToArray();
+
+                            Assert.IsNotNull(data, "Data is not empty");
+                            var subset = new byte[maxLength];
+                            var originalSet = TestHelper.GetBigData();
+                            Buffer.BlockCopy(originalSet, 0, subset, 0, maxLength);
+                            Assert.IsTrue(subset.SequenceEqual(data));
+                        }
                     }
-                }
+                }                    
             }
 
             [Test]
-            public void Middle()
+            public async Task Middle()
             {
-                const int offset = 50;
-                const int maxLength = 100;
-                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestHelper.BigDataFile);
-                request.AddRange(offset, maxLength + offset - 1);
-
-                using (var response = (HttpWebResponse)request.GetResponse())
+                using(var client = new HttpClient())
                 {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
+                    const int offset = 50;
+                    const int maxLength = 100;
+                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
+                    request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(offset, maxLength + offset - 1);
 
-                    using (var ms = new MemoryStream())
+                    using (var response = await client.SendAsync(request))
                     {
-                        response.GetResponseStream()?.CopyTo(ms);
-                        var data = ms.ToArray();
+                        Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
 
-                        Assert.IsNotNull(data, "Data is not empty");
-                        var subset = new byte[maxLength];
-                        var originalSet = TestHelper.GetBigData();
-                        Buffer.BlockCopy(originalSet, offset, subset, 0, maxLength);
-                        Assert.IsTrue(subset.SequenceEqual(data));
+                        using (var ms = new MemoryStream())
+                        {
+                            var responseStream = await response.Content.ReadAsStreamAsync();
+                            responseStream.CopyTo(ms);
+                            var data = ms.ToArray();
+
+                            Assert.IsNotNull(data, "Data is not empty");
+                            var subset = new byte[maxLength];
+                            var originalSet = TestHelper.GetBigData();
+                            Buffer.BlockCopy(originalSet, offset, subset, 0, maxLength);
+                            Assert.IsTrue(subset.SequenceEqual(data));
+                        }
                     }
                 }
             }
@@ -202,28 +210,32 @@
             [Test]
             public async Task NotPartial()
             {
-                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestHelper.BigDataFile);
-
-                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                using(var client = new HttpClient())
                 {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
 
-                    using (var ms = new MemoryStream())
+                    using (var response = await client.SendAsync(request))
                     {
-                        response.GetResponseStream()?.CopyTo(ms);
-                        var data = ms.ToArray();
+                        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
-                        Assert.IsNotNull(data, "Data is not empty");
-                        Assert.IsTrue(TestHelper.GetBigData().SequenceEqual(data));
+                        using (var ms = new MemoryStream())
+                        {
+                            var responseStream = await response.Content.ReadAsStreamAsync();
+                            responseStream.CopyTo(ms);
+                            var data = ms.ToArray();
+
+                            Assert.IsNotNull(data, "Data is not empty");
+                            Assert.IsTrue(TestHelper.GetBigData().SequenceEqual(data));
+                        }
                     }
                 }
             }
         }
-        
+
         public class GetChunks : StaticFilesModuleTest
         {
             [Test]
-            public void GetEntireFileWithChunksUsingRange()
+            public async Task GetEntireFileWithChunksUsingRange()
             {
                 var originalSet = TestHelper.GetBigData();
                 var requestHead = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestHelper.BigDataFile);
@@ -292,7 +304,7 @@
                 Assert.Fail("The Exception should raise");
             }
         }
-                
+
         public class CompressFile : StaticFilesModuleTest
         {
             [Test]

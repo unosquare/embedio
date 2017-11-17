@@ -20,8 +20,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
             [Test]
             public async Task Root_ReturnsFilesList()
             {
-                var httpClient = new HttpClient();
-                var htmlContent = await httpClient.GetStringAsync(WebServerUrl);
+                var htmlContent = await GetString(string.Empty);
 
                 Assert.IsNotEmpty(htmlContent);
 
@@ -32,8 +31,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
             [Test]
             public async Task Subfolder_ReturnsFilesList()
             {
-                var httpClient = new HttpClient();
-                var htmlContent = await httpClient.GetStringAsync(WebServerUrl + "sub");
+                var htmlContent = await GetString("sub");
 
                 Assert.IsNotEmpty(htmlContent);
 

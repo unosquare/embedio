@@ -28,13 +28,10 @@
         {
             foreach (var item in InstancesNames)
             {
-                using (var htmlClient = new HttpClient())
-                {
-                    var html = await htmlClient.GetStringAsync(WebServerUrl + item);
+                    var html = await GetString(item);
 
                     Assert.AreEqual(html, TestHelper.GetStaticFolderInstanceIndexFileContents(item),
                         "index.html contents match instance name");
-                }
             }
         }
     }

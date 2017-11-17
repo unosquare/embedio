@@ -24,8 +24,7 @@
             [Test]
             public async Task WithoutRegex()
             {
-                var http = new HttpClient();
-                var jsonString = await http.GetStringAsync(WebServerUrl + TestRegexController.RelativePath + "empty");
+                var jsonString = await GetString(WebServerUrl + TestRegexController.RelativePath + "empty");
 
                 Assert.IsNotEmpty(jsonString);
             }
@@ -39,26 +38,29 @@
             [Test]
             public async Task WithOptRegexId()
             {
-                // using null value
-                var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestRegexController.RelativePath + "regexopt");
-
-                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                using (var client = new HttpClient())
                 {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                    // using null value
+                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestRegexController.RelativePath + "regexopt");
 
-                    var jsonBody = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                    using (var response = await client.SendAsync(request))
+                    {
+                        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
-                    Assert.IsNotNull(jsonBody, "Json Body is not null");
-                    Assert.IsNotEmpty(jsonBody, "Json Body is not empty");
+                        var jsonBody = await response.Content.ReadAsStringAsync();
 
-                    var remoteList = Json.Deserialize<List<Person>>(jsonBody);
+                        Assert.IsNotNull(jsonBody, "Json Body is not null");
+                        Assert.IsNotEmpty(jsonBody, "Json Body is not empty");
 
-                    Assert.IsNotNull(remoteList, "Json Object is not null");
-                    Assert.AreEqual(remoteList.Count, PeopleRepository.Database.Count, "Remote list count equals local list");
+                        var remoteList = Json.Deserialize<List<Person>>(jsonBody);
+
+                        Assert.IsNotNull(remoteList, "Json Object is not null");
+                        Assert.AreEqual(remoteList.Count, PeopleRepository.Database.Count, "Remote list count equals local list");
+                    }
+
+                    // using a value
+                    await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regexopt/1");
                 }
-
-                // using a value
-                await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regexopt/1");
             }
 
             [Test]

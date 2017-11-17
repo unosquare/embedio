@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using Modules;
     using TestObjects;
+    using System.Net.Http;
 
     [TestFixture]
     public class CorsModuleTest : FixtureBase
@@ -39,15 +40,16 @@
         [Test]
         public async Task RequestOptionsVerb_ReturnsOK()
         {
-            var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + TestController.GetPath);
-            request.Headers[Headers.Origin] = "http://unosquare.github.io";
-            request.Headers[Headers.AccessControlRequestMethod] = "post";
-            request.Headers[Headers.AccessControlRequestHeaders] = "content-type";
-            request.Method = "OPTIONS";
-
-            using (var response = (HttpWebResponse) await request.GetResponseAsync())
+            using(var client = new HttpClient())
             {
-                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                var request = new HttpRequestMessage( HttpMethod.Options, WebServerUrl + TestController.GetPath);
+                request.Headers.Add(Headers.Origin, "http://unosquare.github.io");
+                request.Headers.Add(Headers.AccessControlRequestMethod, "post");
+                request.Headers.Add(Headers.AccessControlRequestHeaders, "content-type");
+                using (var response = await client.SendAsync(request))
+                {
+                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                }
             }
         }
     }

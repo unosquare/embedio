@@ -22,9 +22,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
             [Test]
             public async Task GetDataWithoutRegex()
             {
-                var client = new HttpClient();
-
-                var call = await client.GetStringAsync($"{WebServerUrl}empty");
+                var call = await GetString($"{WebServerUrl}empty");
 
                 Assert.AreEqual("data", call);
             }
@@ -32,9 +30,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
             [Test]
             public async Task GetDataWithRegex()
             {
-                var client = new HttpClient();
-
-                var call = await client.GetStringAsync($"{WebServerUrl}data/1");
+                var call = await GetString($"{WebServerUrl}data/1");
 
                 Assert.AreEqual("1", call);
             }
@@ -42,9 +38,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
             [Test]
             public async Task GetDataWithMultipleRegex()
             {
-                var client = new HttpClient();
-
-                var call = await client.GetStringAsync($"{WebServerUrl}data/1/asdasda/dasdasasda");
+                var call = await GetString($"{WebServerUrl}data/1/asdasda/dasdasasda");
 
                 Assert.AreEqual("dasdasasda", call);
             }

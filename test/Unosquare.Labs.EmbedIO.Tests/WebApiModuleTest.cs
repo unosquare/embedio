@@ -31,27 +31,29 @@
             [Test]
             public async Task JsonData()
             {
-                List<Person> remoteList;
-
-                var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + TestController.GetPath);
-
-                using (var response = (HttpWebResponse) await request.GetResponseAsync())
+                using (var client = new HttpClient())
                 {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                    List<Person> remoteList;
+                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestController.GetPath);
 
-                    var jsonBody = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                    using (var response = await client.SendAsync(request))
+                    {
+                        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
-                    Assert.IsNotNull(jsonBody, "Json Body is not null");
-                    Assert.IsNotEmpty(jsonBody, "Json Body is empty");
+                        var jsonBody = await response.Content.ReadAsStringAsync();
 
-                    remoteList = Json.Deserialize<List<Person>>(jsonBody);
+                        Assert.IsNotNull(jsonBody, "Json Body is not null");
+                        Assert.IsNotEmpty(jsonBody, "Json Body is empty");
 
-                    Assert.IsNotNull(remoteList, "Json Object is not null");
-                    Assert.AreEqual(remoteList.Count, PeopleRepository.Database.Count,
-                        "Remote list count equals local list");
+                        remoteList = Json.Deserialize<List<Person>>(jsonBody);
+
+                        Assert.IsNotNull(remoteList, "Json Object is not null");
+                        Assert.AreEqual(remoteList.Count, PeopleRepository.Database.Count,
+                            "Remote list count equals local list");
+                    }
+
+                    await TestHelper.ValidatePerson(WebServerUrl + TestController.GetPath + remoteList.First().Key);
                 }
-
-                await TestHelper.ValidatePerson(WebServerUrl + TestController.GetPath + remoteList.First().Key);
             }
 
             [Test]
@@ -148,16 +150,18 @@
             const string name = "Test";
 
             _webServer.Module<WebApiModule>().RegisterController(() => new TestControllerWithConstructor(name));
-
-            var request = (HttpWebRequest) WebRequest.Create(WebServerUrl + "name");
-
-            using (var response = (HttpWebResponse) await request.GetResponseAsync())
+            using (var client = new HttpClient())
             {
-                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "name");
 
-                var body = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                using (var response = await client.SendAsync(request))
+                {
+                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
-                Assert.AreEqual(body, name);
+                    var body = await response.Content.ReadAsStringAsync();
+
+                    Assert.AreEqual(body, name);
+                }
             }
         }
     }
