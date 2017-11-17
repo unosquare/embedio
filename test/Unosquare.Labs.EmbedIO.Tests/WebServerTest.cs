@@ -3,10 +3,8 @@
     using System.Net.Http;
     using Constants;
     using NUnit.Framework;
-    using System.Net;
     using System.Threading.Tasks;
     using System.Linq;
-    using System.Threading;
     using Modules;
     using TestObjects;
     using System;
@@ -91,7 +89,6 @@
             public void AddHandler()
             {
                 var webModule = new TestWebModule();
-                // add one more handler
                 webModule.AddHandler(DefaultPath, HttpVerbs.Any, (ctx, ws) => Task.FromResult(false));
 
                 Assert.AreEqual(webModule.Handlers.Count, 4, "WebModule has four handlers");
@@ -100,34 +97,10 @@
             }
 
 #if NETCOREAPP2_0
-        [Test]
-        public async Task Redirect()
-        {
-            var url = Resources.GetServerAddress();
-
-            using (var instance = new WebServer(url))
+            [Test]
+            public async Task Redirect()
             {
-                instance.RegisterModule(new TestWebModule());
-                var runTask = instance.RunAsync();
-                using(var handler = new HttpClientHandler())
-                    {
-                        handler.AllowAutoRedirect = false;
-                        using (var client = new HttpClient(handler))
-                        {
-                            var request = new HttpRequestMessage(HttpMethod.Get, url + TestWebModule.RedirectUrl);
-                            using (var response = await client.SendAsync(request))
-                            {
-                                Assert.AreEqual(WebExceptionStatus.ProtocolError, response.StatusCode);
-                            }
-                        }
-                    }
-            }
-        }
-
-        [Test]
-        public async Task AbsoluteRedirect()
-        {
-            var url = Resources.GetServerAddress();
+                var url = Resources.GetServerAddress();
 
                 using (var instance = new WebServer(url))
                 {
@@ -138,23 +111,48 @@
                         handler.AllowAutoRedirect = false;
                         using (var client = new HttpClient(handler))
                         {
-                            var request = new HttpRequestMessage(HttpMethod.Get, url + TestWebModule.RedirectAbsoluteUrl);
+                            var request = new HttpRequestMessage(HttpMethod.Get, url + TestWebModule.RedirectUrl);
                             using (var response = await client.SendAsync(request))
                             {
-                                Assert.AreEqual(WebExceptionStatus.ProtocolError, response.StatusCode);
+                                Assert.AreEqual("Redirect", response.StatusCode);
                             }
-
                         }
                     }
                 }
-        }
+            }
+
+            [Test]
+            public async Task AbsoluteRedirect()
+            {
+                var url = Resources.GetServerAddress();
+
+                using (var instance = new WebServer(url))
+                {
+                    instance.RegisterModule(new TestWebModule());
+                    var runTask = instance.RunAsync();
+                    using (var handler = new HttpClientHandler())
+                    {
+                        handler.AllowAutoRedirect = false;
+                        using (var client = new HttpClient(handler))
+                        {
+                            var request =
+                                new HttpRequestMessage(HttpMethod.Get, url + TestWebModule.RedirectAbsoluteUrl);
+
+                            using (var response = await client.SendAsync(request))
+                            {
+                                Assert.AreEqual("NotFound", response.StatusCode);
+                            }
+                        }
+                    }
+                }
+            }
 #endif
         }
 
         [Test]
         public void WebMap()
         {
-            var map = new Map()
+            var map = new Map
             {
                 Path = DefaultPath,
                 ResponseHandler = (ctx, ws) => Task.FromResult(false),
@@ -226,13 +224,14 @@
 
                 var runTask = instance.RunAsync();
 
-                using(var client = new HttpClient())
+                using (var client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.Accept
-                        .Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue($"application/json"));
-                    var request = new HttpRequestMessage(HttpMethod.Post, url + TestWebModule.RedirectUrl);
-                    request.Content = 
-                        new StringContent("POST DATA", Encoding.GetEncoding(encodeName), $"application/json");
+                        .Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                    var request = new HttpRequestMessage(HttpMethod.Post, url + TestWebModule.RedirectUrl)
+                    {
+                        Content = new StringContent("POST DATA", Encoding.GetEncoding(encodeName), "application/json")
+                    };
 
                     using (var response = await client.SendAsync(request))
                     {
