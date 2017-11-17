@@ -135,11 +135,11 @@
                 }
                 else
                 {
-                    var htmlUpperCase = await GetString(WebServerUrl + TestHelper.UppercaseFile);
+                    var htmlUpperCase = await GetString(TestHelper.UppercaseFile);
 
                     Assert.AreEqual(nameof(TestHelper.UppercaseFile), htmlUpperCase, "Same content upper case");
 
-                    var htmlLowerCase = await GetString(WebServerUrl + TestHelper.LowercaseFile);
+                    var htmlLowerCase = await GetString(TestHelper.LowercaseFile);
 
                     Assert.AreEqual(nameof(TestHelper.LowercaseFile), htmlLowerCase, "Same content lower case");
                 }
