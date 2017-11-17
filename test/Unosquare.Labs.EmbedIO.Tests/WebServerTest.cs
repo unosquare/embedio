@@ -109,16 +109,18 @@
             {
                 instance.RegisterModule(new TestWebModule());
                 var runTask = instance.RunAsync();
-
-                var request = (HttpWebRequest)WebRequest.Create(url + TestWebModule.RedirectUrl);
-                request.AllowAutoRedirect = false;
-        
-                var webException = Assert.ThrowsAsync<WebException>(async () =>
-                {
-                    await request.GetResponseAsync();
-                });
-
-                Assert.AreEqual(WebExceptionStatus.ProtocolError, webException.Status);
+                using(var handler = new HttpClientHandler())
+                    {
+                        handler.AllowAutoRedirect = false;
+                        using (var client = new HttpClient(handler))
+                        {
+                            var request = new HttpRequestMessage(HttpMethod.Get, url + TestWebModule.RedirectUrl);
+                            using (var response = await client.SendAsync(request))
+                            {
+                                Assert.AreEqual(WebExceptionStatus.ProtocolError, response.StatusCode);
+                            }
+                        }
+                    }
             }
         }
 
@@ -127,21 +129,24 @@
         {
             var url = Resources.GetServerAddress();
 
-            using (var instance = new WebServer(url))
-            {
-                instance.RegisterModule(new TestWebModule());
-                var runTask = instance.RunAsync();
-
-                var request = (HttpWebRequest)WebRequest.Create(url + TestWebModule.RedirectAbsoluteUrl);
-                request.AllowAutoRedirect = false;
-        
-                var webException = Assert.ThrowsAsync<WebException>(async () =>
+                using (var instance = new WebServer(url))
                 {
-                    await request.GetResponseAsync();
-                });
+                    instance.RegisterModule(new TestWebModule());
+                    var runTask = instance.RunAsync();
+                    using (var handler = new HttpClientHandler())
+                    {
+                        handler.AllowAutoRedirect = false;
+                        using (var client = new HttpClient(handler))
+                        {
+                            var request = new HttpRequestMessage(HttpMethod.Get, url + TestWebModule.RedirectAbsoluteUrl);
+                            using (var response = await client.SendAsync(request))
+                            {
+                                Assert.AreEqual(WebExceptionStatus.ProtocolError, response.StatusCode);
+                            }
 
-                Assert.AreEqual(WebExceptionStatus.ProtocolError, webException.Status);
-            }
+                        }
+                    }
+                }
         }
 #endif
         }
