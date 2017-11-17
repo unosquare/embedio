@@ -114,7 +114,7 @@
                             var request = new HttpRequestMessage(HttpMethod.Get, url + TestWebModule.RedirectUrl);
                             using (var response = await client.SendAsync(request))
                             {
-                                Assert.AreEqual("Redirect", response.StatusCode);
+                                Assert.AreEqual(System.Net.HttpStatusCode.Redirect, response.StatusCode);
                             }
                         }
                     }
@@ -140,7 +140,7 @@
 
                             using (var response = await client.SendAsync(request))
                             {
-                                Assert.AreEqual("NotFound", response.StatusCode);
+                                Assert.AreEqual(System.Net.HttpStatusCode.NotFound, response.StatusCode);
                             }
                         }
                     }
