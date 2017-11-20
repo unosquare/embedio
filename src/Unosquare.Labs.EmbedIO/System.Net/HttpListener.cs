@@ -30,12 +30,11 @@
 namespace Unosquare.Net
 {
     using System;
-    using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    
+
     /// <summary>
     /// The MONO implementation of the standard Http Listener class
     /// </summary>
@@ -43,21 +42,21 @@ namespace Unosquare.Net
     public sealed class HttpListener : IDisposable
     {
         private readonly ConcurrentDictionary<Guid, HttpListenerContext> _ctxQueue;
-        private readonly Hashtable _connections;
+        private readonly ConcurrentDictionary<HttpConnection, object> _connections;
         private bool _disposed;
 #if SSL
         IMonoTlsProvider tlsProvider;
         MSI.MonoTlsSettings tlsSettings;
         X509Certificate certificate;
-#endif        
-        
+#endif
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpListener"/> class.
         /// </summary>
         public HttpListener()
         {
             Prefixes = new HttpListenerPrefixCollection(this);
-            _connections = Hashtable.Synchronized(new Hashtable());
+            _connections = new ConcurrentDictionary<HttpConnection, object>();
             _ctxQueue = new ConcurrentDictionary<Guid, HttpListenerContext>();
         }
 
@@ -228,7 +227,7 @@ namespace Unosquare.Net
                 await Task.Delay(10);
             }
         }
-        
+
         internal void RegisterContext(HttpListenerContext context)
         {
             if (_ctxQueue.TryAdd(context.Id, context) == false)
@@ -242,7 +241,7 @@ namespace Unosquare.Net
 
         internal void AddConnection(HttpConnection cnc) => _connections[cnc] = cnc;
 
-        internal void RemoveConnection(HttpConnection cnc) => _connections.Remove(cnc);
+        internal void RemoveConnection(HttpConnection cnc) => _connections.TryRemove(cnc, out var instance);
 
         private void Close(bool closeExisting)
         {
@@ -250,14 +249,11 @@ namespace Unosquare.Net
 
             var conns = new List<HttpConnection>();
 
-            lock (_connections.SyncRoot)
-            {
-                var keys = _connections.Keys;
-                var connsArray = new HttpConnection[keys.Count];
-                keys.CopyTo(connsArray, 0);
-                _connections.Clear();
-                conns.AddRange(connsArray);
-            }
+            var keys = _connections.Keys;
+            var connsArray = new HttpConnection[keys.Count];
+            keys.CopyTo(connsArray, 0);
+            _connections.Clear();
+            conns.AddRange(connsArray);
 
             for (var i = conns.Count - 1; i >= 0; i--)
                 conns[i].Close(true);

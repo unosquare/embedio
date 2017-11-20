@@ -12,89 +12,78 @@
     using TestObjects;
 
     [TestFixture]
-    public class RegexWebApiModuleTest
+    public class RegexWebApiModuleTest : FixtureBase
     {
-        protected WebServer WebServer;
-        protected string WebServerUrl;
-
-        [SetUp]
-        public void Init()
+        public RegexWebApiModuleTest()
+            : base(ws => ws.WithWebApiController<TestRegexController>(), RoutingStrategy.Regex)
         {
-            Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
-
-            WebServerUrl = Resources.GetServerAddress();
-            WebServer =
-                new WebServer(WebServerUrl, RoutingStrategy.Regex)
-                    .WithWebApiController<TestRegexController>();
-            WebServer.RunAsync();
-        }
-
-        [Test]
-        public async Task GetJsonDataWithoutRegex()
-        {
-            var http = new HttpClient();
-            var jsonString = await http.GetStringAsync(WebServerUrl + TestRegexController.RelativePath + "empty");
-
-            Assert.IsNotEmpty(jsonString);
         }
         
-        [Test]
-        public async Task GetJsonDataWithRegexId()
+        public class GetJsonData : RegexWebApiModuleTest
         {
-            await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regex/1");
-        }
-
-        [Test]
-        public async Task GetJsonDataWithOptRegexId()
-        {
-            // using null value
-            var request = (HttpWebRequest)WebRequest.Create(WebServerUrl + TestRegexController.RelativePath + "regexopt");
-
-            using (var response = (HttpWebResponse)await request.GetResponseAsync())
+            [Test]
+            public async Task WithoutRegex()
             {
-                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                var jsonString = await GetString(WebServerUrl + TestRegexController.RelativePath + "empty");
 
-                var jsonBody = new StreamReader(response.GetResponseStream()).ReadToEnd();
-
-                Assert.IsNotNull(jsonBody, "Json Body is not null");
-                Assert.IsNotEmpty(jsonBody, "Json Body is not empty");
-
-                var remoteList = Json.Deserialize<List<Person>>(jsonBody);
-
-                Assert.IsNotNull(remoteList, "Json Object is not null");
-                Assert.AreEqual(remoteList.Count, PeopleRepository.Database.Count, "Remote list count equals local list");
+                Assert.IsNotEmpty(jsonString);
             }
 
-            // using a value
-            await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regexopt/1");
-        }
+            [Test]
+            public async Task WithRegexId()
+            {
+                await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regex/1");
+            }
 
-        [Test]
-        public async Task GetJsonDatAsyncWithRegexId()
-        {
-            await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regexAsync/1");
-        }
+            [Test]
+            public async Task WithOptRegexId()
+            {
+                using (var client = new HttpClient())
+                {
+                    // using null value
+                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestRegexController.RelativePath + "regexopt");
 
-        [Test]
-        public async Task GetJsonDataWithRegexDate()
-        {
-            var person = PeopleRepository.Database.First();
-            await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regexdate/" +
-                           person.DoB.ToString("yyyy-MM-dd"));
-        }
+                    using (var response = await client.SendAsync(request))
+                    {
+                        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
-        [Test]
-        public async Task GetJsonDataWithRegexWithTwoParams()
-        {
-            var person = PeopleRepository.Database.First();
-            await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regextwo/" +
-                           person.MainSkill + "/" + person.Age);
-        }
+                        var jsonBody = await response.Content.ReadAsStringAsync();
 
-        [TearDown]
-        public void Kill()
-        {
-            WebServer.Dispose();
+                        Assert.IsNotNull(jsonBody, "Json Body is not null");
+                        Assert.IsNotEmpty(jsonBody, "Json Body is not empty");
+
+                        var remoteList = Json.Deserialize<List<Person>>(jsonBody);
+
+                        Assert.IsNotNull(remoteList, "Json Object is not null");
+                        Assert.AreEqual(remoteList.Count, PeopleRepository.Database.Count, "Remote list count equals local list");
+                    }
+
+                    // using a value
+                    await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regexopt/1");
+                }
+            }
+
+            [Test]
+            public async Task AsyncWithRegexId()
+            {
+                await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regexAsync/1");
+            }
+
+            [Test]
+            public async Task WithRegexDate()
+            {
+                var person = PeopleRepository.Database.First();
+                await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regexdate/" +
+                               person.DoB.ToString("yyyy-MM-dd"));
+            }
+
+            [Test]
+            public async Task WithRegexWithTwoParams()
+            {
+                var person = PeopleRepository.Database.First();
+                await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regextwo/" +
+                               person.MainSkill + "/" + person.Age);
+            }
         }
     }
 }

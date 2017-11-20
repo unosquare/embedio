@@ -12,9 +12,7 @@
             Interlocked.Increment(ref Counter);
             return string.Format(ServerAddress, Counter);
         }
-
-        public const string WsServerAddress = "ws://localhost:7777/";
-
+        
         public static readonly string SubIndex = @"<!DOCTYPE html>
 
 <html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">

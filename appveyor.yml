@@ -44,13 +44,14 @@ after_build:
 - ps: |
         if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
         {
-            docfx docfx.json
             git config --global credential.helper store
             Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
             git config --global core.autocrlf false 
             git config --global user.email $env:op_build_user_email
             git config --global user.name $env:op_build_user
 
+            git clone -b documentation https://github.com/unosquare/best-practices.git -q
+            docfx docfx.json --logLevel Error
             git clone https://github.com/unosquare/embedio.git -b gh-pages origin_site -q
             Copy-Item origin_site/.git _site -recurse
             Copy-Item origin_site/images _site -recurse

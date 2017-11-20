@@ -15,6 +15,7 @@ matrix:
       dist: trusty
       sudo: false
     - os: osx
+      osx_image: xcode9.1
       dotnet: 2.0.0
       mono: none
       env: DOTNETCORE=1
@@ -28,5 +29,5 @@ before_script:
   - if [[ $DOTNETCORE == "" && $TRAVIS_OS_NAME = "linux" ]]; then sed -i 's/net46;net47;netcoreapp2.0/net46/g' ./src/Unosquare.Labs.EmbedIO.Samples/Unosquare.Labs.EmbedIO.Samples.csproj; fi
   - if [[ $DOTNETCORE == "" && $TRAVIS_OS_NAME = "linux" ]]; then sed -i 's/net46;net47;netcoreapp2.0/net46/g' ./test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj; fi
 script:
-  - if [[ $DOTNETCORE == "" ]]; then msbuild Unosquare.Labs.EmbedIO.sln /p:Configuration=Release; else dotnet test ./test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -f netcoreapp2.0; fi
+  - if [[ $DOTNETCORE == "" ]]; then msbuild Unosquare.Labs.EmbedIO.sln /p:Configuration=Release; else dotnet test ./test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f netcoreapp2.0; fi
   - if [[ $DOTNETCORE == "" ]]; then mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe --process=Single ./test/Unosquare.Labs.EmbedIO.Tests/bin/Release/net46/Unosquare.Labs.EmbedIO.Tests.dll; fi

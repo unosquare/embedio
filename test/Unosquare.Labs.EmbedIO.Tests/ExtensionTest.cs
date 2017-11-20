@@ -5,14 +5,12 @@ using Unosquare.Labs.EmbedIO.Constants;
 namespace Unosquare.Labs.EmbedIO.Tests
 {
     [TestFixture]
-    public class ExtensionTest
+    public class GzipTest
     {
-        private const string DefaultId = "id";
-
         [TestCase(CompressionMethod.Gzip)]
         [TestCase(CompressionMethod.Deflate)]
         [TestCase(CompressionMethod.None)]
-        public void CompressGzipTest(CompressionMethod method)
+        public void Compress(CompressionMethod method)
         {
             var buffer = System.Text.Encoding.UTF8.GetBytes("THIS IS DATA");
 
@@ -25,71 +23,79 @@ namespace Unosquare.Labs.EmbedIO.Tests
             Assert.IsNotNull(uncompressBuffer);
             Assert.AreEqual(uncompressBuffer, buffer);
         }
+    }
 
-        [TestCase("/data/1", new[] { "1" })]
-        [TestCase("/data/1/2", new[] { "1", "2" })]
-        public void RequestWildcardUrlParamsWithLastParams(string urlMatch, string[] expected)
+    [TestFixture]
+    public class RequestWildcard
+    {
+        [TestCase("/data/1", new[] {"1"})]
+        [TestCase("/data/1/2", new[] {"1", "2"})]
+        public void UrlParamsWithLastParams(string urlMatch, string[] expected)
         {
             var result = Extensions.RequestWildcardUrlParams(urlMatch, "/data/*");
             Assert.AreEqual(expected.Length, result.Length);
             Assert.AreEqual(expected[0], result[0]);
         }
 
-        [TestCase("/1/data", new[] { "1" })]
-        [TestCase("/1/2/data", new[] { "1", "2" })]
-        public void RequestWildcardUrlParamsWithInitialParams(string urlMatch, string[] expected)
+        [TestCase("/1/data", new[] {"1"})]
+        [TestCase("/1/2/data", new[] {"1", "2"})]
+        public void UrlParamsWithInitialParams(string urlMatch, string[] expected)
         {
             var result = Extensions.RequestWildcardUrlParams(urlMatch, "/*/data");
             Assert.AreEqual(expected.Length, result.Length);
             Assert.AreEqual(expected[0], result[0]);
         }
 
-
-        [TestCase("/api/1/data", new[] { "1" })]
-        [TestCase("/api/1/2/data", new[] { "1", "2" })]
-        public void RequestWildcardUrlParamsWithMiddleParams(string urlMatch, string[] expected)
+        [TestCase("/api/1/data", new[] {"1"})]
+        [TestCase("/api/1/2/data", new[] {"1", "2"})]
+        public void UrlParamsWithMiddleParams(string urlMatch, string[] expected)
         {
             var result = Extensions.RequestWildcardUrlParams(urlMatch, "/api/*/data");
             Assert.AreEqual(expected.Length, result.Length);
             Assert.AreEqual(expected[0], result[0]);
         }
+    }
+
+    [TestFixture]
+    public class RquestRegex
+    {
+        private const string DefaultId = "id";
 
         [Test]
-        public void RequestRegexUrlParamsWithLastParams()
+        public void UrlParamsWithLastParams()
         {
-            var result = Extensions.RequestRegexUrlParams("/data/1","/data/{id}");
-            var expected = new Dictionary<string, object> { { DefaultId, "1" } };
+            var result = Extensions.RequestRegexUrlParams("/data/1", "/data/{id}");
+            var expected = new Dictionary<string, object> {{DefaultId, "1"}};
 
             Assert.IsTrue(result.ContainsKey(DefaultId));
             Assert.AreEqual(expected[DefaultId], result[DefaultId]);
         }
-        
+
         [Test]
-        public void RequestRegexUrlParamsWithOptionalLastParams()
+        public void UrlParamsWithOptionalLastParams()
         {
             var result = Extensions.RequestRegexUrlParams("/data/1", "/data/{id?}");
-            var expected = new Dictionary<string, object> { { DefaultId, "1" } };
+            var expected = new Dictionary<string, object> {{DefaultId, "1"}};
 
             Assert.IsTrue(result.ContainsKey(DefaultId));
             Assert.AreEqual(expected[DefaultId], result[DefaultId]);
         }
 
         [Test]
-        public void RequestRegexUrlParamsWithOptionalLastParamsNullable()
+        public void UrlParamsWithOptionalLastParamsNullable()
         {
             var result = Extensions.RequestRegexUrlParams("/data/", "/data/{id?}");
-            var expected = new Dictionary<string, object> { { DefaultId, string.Empty } };
+            var expected = new Dictionary<string, object> {{DefaultId, string.Empty}};
 
             Assert.IsTrue(result.ContainsKey(DefaultId));
             Assert.AreEqual(expected[DefaultId], result[DefaultId]);
         }
 
-
         [Test]
-        public void RequestRegexUrlParamsWithMultipleParams()
+        public void UrlParamsWithMultipleParams()
         {
             var result = Extensions.RequestRegexUrlParams("/data/1/2", "/data/{id}/{anotherId}");
-            var expected = new Dictionary<string, object> { { DefaultId, "1" }, { "anotherId", "2" } };
+            var expected = new Dictionary<string, object> {{DefaultId, "1"}, {"anotherId", "2"}};
 
             Assert.IsTrue(result.ContainsKey(DefaultId));
             Assert.AreEqual(expected[DefaultId], result[DefaultId]);
@@ -99,10 +105,10 @@ namespace Unosquare.Labs.EmbedIO.Tests
         }
 
         [Test]
-        public void RequestRegexUrlParamsWithoutParams()
+        public void UrlParamsWithoutParams()
         {
             var result = Extensions.RequestRegexUrlParams("/data/", "/data/");
-            
+
             Assert.IsTrue(result.Keys.Count == 0);
         }
     }

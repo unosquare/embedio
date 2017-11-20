@@ -103,7 +103,7 @@
         }
 
         [Test]
-        public void FluentWithVirtualPathsArgumentException()
+        public void FluentWithVirtualPathsWebServerNull_ThrowsArgumentException()
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
@@ -112,7 +112,7 @@
         }
 
         [Test]
-        public void FluentWithLocalSessionArgumentException()
+        public void FluentWithLocalSessionWebServerNull_ThrowsArgumentException()
         {
             Assert.Throws<ArgumentNullException>(() => Extensions.WithLocalSession(null));
         }

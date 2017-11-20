@@ -3,59 +3,41 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Unosquare.Labs.EmbedIO.Modules;
 using Unosquare.Labs.EmbedIO.Tests.TestObjects;
+using Unosquare.Labs.EmbedIO.Constants;
 
 namespace Unosquare.Labs.EmbedIO.Tests
 {
     [TestFixture]
-    public class DirectoryBrowserTest
+    public class DirectoryBrowserTest : FixtureBase
     {
-        protected string RootPath;
-        protected WebServer WebServer;
-
-        protected string WebServerUrl;
-
-        [SetUp]
-        public void Init()
+        public DirectoryBrowserTest() 
+            : base(ws => ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder(false), true)), RoutingStrategy.Wildcard)
         {
-            Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
-
-            WebServerUrl = Resources.GetServerAddress();
-            RootPath = TestHelper.SetupStaticFolder(false);
-
-            WebServer = new WebServer(WebServerUrl);
-            WebServer.RegisterModule(new StaticFilesModule(RootPath, true));
-            var runTask = WebServer.RunAsync();
         }
-
-        [Test]
-        public async Task BrowseRoot_ReturnsFilesList()
+        
+        public class Browse : DirectoryBrowserTest
         {
-            var httpClient = new HttpClient();
-            var htmlContent = await httpClient.GetStringAsync(WebServerUrl);
+            [Test]
+            public async Task Root_ReturnsFilesList()
+            {
+                var htmlContent = await GetString(string.Empty);
 
-            Assert.IsNotEmpty(htmlContent);
+                Assert.IsNotEmpty(htmlContent);
 
-            foreach (var file in TestHelper.RandomHtmls)
-                Assert.IsTrue(htmlContent.Contains(file));
-        }
+                foreach (var file in TestHelper.RandomHtmls)
+                    Assert.IsTrue(htmlContent.Contains(file));
+            }
 
-        [Test]
-        public async Task BrowseSubfolder_ReturnsFilesList()
-        {
-            var httpClient = new HttpClient();
-            var htmlContent = await httpClient.GetStringAsync(WebServerUrl + "sub");
+            [Test]
+            public async Task Subfolder_ReturnsFilesList()
+            {
+                var htmlContent = await GetString("sub");
 
-            Assert.IsNotEmpty(htmlContent);
+                Assert.IsNotEmpty(htmlContent);
 
-            foreach (var file in TestHelper.RandomHtmls)
-                Assert.IsTrue(htmlContent.Contains(file));
-        }
-
-        [TearDown]
-        public void Kill()
-        {
-            Task.Delay(500).Wait();
-            WebServer?.Dispose();
+                foreach (var file in TestHelper.RandomHtmls)
+                    Assert.IsTrue(htmlContent.Contains(file));
+            }
         }
     }
 }

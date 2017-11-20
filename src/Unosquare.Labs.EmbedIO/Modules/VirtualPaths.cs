@@ -9,29 +9,6 @@
 
     internal class VirtualPaths : Dictionary<string, string>
     {
-        internal enum VirtualPathStatus
-        {
-            /// <summary>
-            /// The invalid
-            /// </summary>
-            Invalid,
-
-            /// <summary>
-            /// The forbidden
-            /// </summary>
-            Forbidden,
-
-            /// <summary>
-            /// The file
-            /// </summary>
-            File,
-
-            /// <summary>
-            /// The directory
-            /// </summary>
-            Directory
-        }
-
         private readonly ConcurrentDictionary<string, string> _validPaths = new ConcurrentDictionary<string, string>();
 
         private readonly ConcurrentDictionary<string, string> _mappedPaths = new ConcurrentDictionary<string, string>();
@@ -191,6 +168,29 @@
             }
             
             return VirtualPathStatus.File;
+        }
+
+        internal enum VirtualPathStatus
+        {
+            /// <summary>
+            /// The invalid
+            /// </summary>
+            Invalid,
+
+            /// <summary>
+            /// The forbidden
+            /// </summary>
+            Forbidden,
+
+            /// <summary>
+            /// The file
+            /// </summary>
+            File,
+
+            /// <summary>
+            /// The directory
+            /// </summary>
+            Directory
         }
     }
 }
