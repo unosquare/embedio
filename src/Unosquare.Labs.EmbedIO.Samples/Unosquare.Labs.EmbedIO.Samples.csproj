@@ -18,8 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.SQLite" Version="2.0.0" />
-    <PackageReference Include="LiteLib" Version="0.14.3" />
+    <PackageReference Include="LiteLib" Version="0.15.0" />
     <PackageReference Include="Tubular.ServerSide" Version="1.4.5" />
   </ItemGroup>
 
