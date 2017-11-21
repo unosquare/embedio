@@ -5,6 +5,7 @@
     <AssemblyName>Unosquare.Labs.EmbedIO.Samples</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>Unosquare.Labs.EmbedIO.Samples</PackageId>
+    <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,12 +28,14 @@
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.106" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-  
+
   <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.106" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />

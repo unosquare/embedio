@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Unosquare.Labs.EmbedIO.Modules;
 using Unosquare.Labs.EmbedIO.Tests.TestObjects;
@@ -10,11 +9,12 @@ namespace Unosquare.Labs.EmbedIO.Tests
     [TestFixture]
     public class DirectoryBrowserTest : FixtureBase
     {
-        public DirectoryBrowserTest() 
-            : base(ws => ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder(false), true)), RoutingStrategy.Wildcard)
+        public DirectoryBrowserTest()
+            : base(ws => ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder(false), true)),
+                RoutingStrategy.Wildcard)
         {
         }
-        
+
         public class Browse : DirectoryBrowserTest
         {
             [Test]

@@ -258,7 +258,8 @@
                         // Send the response over with the corresponding status code.
                         await context.HtmlResponseAsync(
                             System.Net.WebUtility.HtmlEncode(string.Format(Responses.Response500HtmlFormat,
-                                errorMessage, ex.StackTrace)),
+                                errorMessage, 
+                                ex.StackTrace)),
                             System.Net.HttpStatusCode.InternalServerError,
                             ct);
                     }
@@ -320,7 +321,7 @@
                 }
             }
         }
-
+        
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>

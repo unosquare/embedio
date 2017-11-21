@@ -1,6 +1,5 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Swan.Formatters;
@@ -8,6 +7,7 @@
     using Modules;
     using TestObjects;
 #if NET47
+    using System;
     using System.Net.WebSockets;
 #else
     using Net;
