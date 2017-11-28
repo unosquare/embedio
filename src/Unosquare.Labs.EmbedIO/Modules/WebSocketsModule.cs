@@ -11,6 +11,7 @@
     using Swan;
 #if NET47
     using System.Net.WebSockets;
+    using System.Text.RegularExpressions;
 #else
     using Net;
 #endif
@@ -28,6 +29,10 @@
         private readonly Dictionary<string, WebSocketsServer> _serverMap =
             new Dictionary<string, WebSocketsServer>(StringComparer.OrdinalIgnoreCase);
 
+#if NETSTANDARD2_0
+        private readonly Regex splitter = new Regex(@"(\s|[,;])+");
+#endif
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WebSocketsModule"/> class.
         /// </summary>
@@ -35,6 +40,13 @@
         {
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, async (context, ct) =>
             {
+
+#if NETSTANDARD2_0
+            var connectionValues = context.Request.Headers.GetValues("Connection");
+            context.Request.Headers.Remove("Connection");            
+            var headers = connectionValues.Select(tk => splitter.Split(tk)).First();
+            headers.ToList().ForEach(value => context.Request.Headers.Add("Connection", value));
+#endif
                 // check if it is a WebSocket request (this only works with Win8 and Windows 2012)
                 if (context.Request.IsWebSocketRequest == false)
                     return false;
