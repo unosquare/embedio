@@ -9,6 +9,7 @@
     using System.Threading;
     using System.Reflection;
     using System.Threading.Tasks;
+    using System.Text.RegularExpressions;
 #if NET47
     using System.Net;
 #else
@@ -22,7 +23,9 @@
         : IDisposable
     {
         private readonly List<IWebModule> _modules = new List<IWebModule>(4);
-
+#if NETSTANDARD2_0
+        private readonly Regex splitter = new Regex(@"(\s|[,;])+");
+#endif
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
         /// </summary>
@@ -401,7 +404,12 @@
         {
             // start with an empty request ID
             var requestId = "(not set)";
-
+#if NETSTANDARD2_0
+            var connectionValues = context.Request.Headers.GetValues("Connection");
+            context.Request.Headers.Remove("Connection");            
+            var headers = connectionValues.Select(tk => splitter.Split(tk)).First();
+            headers.ToList().ForEach(value => context.Request.Headers.Add("Connection", value));
+#endif
             try
             {
                 // Create a request endpoint string
