@@ -40,13 +40,14 @@
         {
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, async (context, ct) =>
             {
-
 #if NETSTANDARD2_0
-            var connectionValues = context.Request.Headers.GetValues("Connection");
-            context.Request.Headers.Remove("Connection");            
-            var headers = connectionValues.Select(tk => splitter.Split(tk)).First();
-            headers.ToList().ForEach(value => context.Request.Headers.Add("Connection", value));
+                // Support for Firefox https://github.com/dotnet/corefx/issues/24550#issuecomment-338048691
+                var connectionValues = context.Request.Headers.GetValues("Connection");
+                context.Request.Headers.Remove("Connection");
+                var headers = connectionValues.Select(tk => splitter.Split(tk)).First();
+                headers.ToList().ForEach(value => context.Request.Headers.Add("Connection", value));
 #endif
+
                 // check if it is a WebSocket request (this only works with Win8 and Windows 2012)
                 if (context.Request.IsWebSocketRequest == false)
                     return false;
@@ -71,7 +72,7 @@
         /// The name.
         /// </value>
         public override string Name => nameof(WebSocketsModule).Humanize();
-        
+
         /// <summary>
         /// Registers the web sockets server given a WebSocketsServer Type.
         /// </summary>
@@ -105,7 +106,7 @@
                     nameof(socketType));
             }
 
-            _serverMap[attribute.Path] = (WebSocketsServer) Activator.CreateInstance(socketType);
+            _serverMap[attribute.Path] = (WebSocketsServer)Activator.CreateInstance(socketType);
         }
 
         /// <summary>
@@ -208,7 +209,7 @@
         /// The name of the server.
         /// </value>
         public abstract string ServerName { get; }
-        
+
         /// <summary>
         /// Gets the Encoding used to use the Send method to send a string. The default is UTF8 per the WebSocket specification.
         /// </summary>
@@ -270,7 +271,7 @@
             try
             {
 #if NET47
-// define a receive buffer
+                // define a receive buffer
                 var receiveBuffer = new byte[receiveBufferSize];
 
                 // define a dynamic buffer that holds multi-part receptions
@@ -486,7 +487,7 @@
         /// <param name="localEndPoint">The local endpoint.</param>
         /// /// <param name="remoteEndPoint">The remote endpoint.</param>
         protected abstract void OnClientConnected(
-            WebSocketContext context, 
+            WebSocketContext context,
             System.Net.IPEndPoint localEndPoint,
             System.Net.IPEndPoint remoteEndPoint);
 #else
