@@ -22,7 +22,7 @@
         : IDisposable
     {
         private readonly List<IWebModule> _modules = new List<IWebModule>(4);
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
         /// </summary>
@@ -401,7 +401,7 @@
         {
             // start with an empty request ID
             var requestId = "(not set)";
-            
+
             try
             {
                 // Create a request endpoint string
