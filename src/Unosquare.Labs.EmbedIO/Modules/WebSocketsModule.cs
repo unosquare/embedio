@@ -485,7 +485,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="localEndPoint">The local endpoint.</param>
-        /// /// <param name="remoteEndPoint">The remote endpoint.</param>
+        /// <param name="remoteEndPoint">The remote endpoint.</param>
         protected abstract void OnClientConnected(
             WebSocketContext context,
             System.Net.IPEndPoint localEndPoint,
