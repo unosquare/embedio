@@ -11,6 +11,7 @@
     using System.IO;
     using System.Text;
     using Swan.Formatters;
+    using Swan;
 
     [TestFixture]
     public class WebServerTest
@@ -186,8 +187,6 @@
         [TestCase("utf-16")]
         public async Task EncodingTest(string encodeName)
         {
-            // NOTE: This is failing with NET46
-
             var url = Resources.GetServerAddress();
 
             using (var instance = new WebServer(url))
@@ -239,7 +238,7 @@
                         using (var ms = new MemoryStream())
                         {
                             stream.CopyTo(ms);
-                            var data = Encoding.UTF8.GetString(ms.ToArray());
+                            var data = ms.ToArray().ToText();
 
                             Assert.IsNotNull(data, "Data is not empty");
                             var model = Json.Deserialize<EncodeCheck>(data);

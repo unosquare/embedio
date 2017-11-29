@@ -248,7 +248,7 @@ namespace Unosquare.Net
                 : payloadLen > 125
                     ? "---"
                     : IsText && !(IsFragment || IsMasked || IsCompressed)
-                        ? Encoding.UTF8.GetString(PayloadData.ApplicationData)
+                        ? PayloadData.ApplicationData.ToText()
                         : PayloadData.ToString();
 
             return $@"

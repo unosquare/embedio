@@ -1,21 +1,19 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
+    using Modules;
     using NUnit.Framework;
     using Swan.Formatters;
-    using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using Modules;
     using TestObjects;
 
     [TestFixture]
     public class WebApiModuleTest : FixtureBase
     {
-        public WebApiModuleTest() : 
+        public WebApiModuleTest() :
             base(ws => ws.WithWebApiController<TestController>(), Constants.RoutingStrategy.Wildcard)
         {
         }

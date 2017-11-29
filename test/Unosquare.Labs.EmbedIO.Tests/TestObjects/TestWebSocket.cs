@@ -20,7 +20,7 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 
         protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
         {
-            $"Data frame: {Encoding.UTF8.GetString(rxBuffer)}".Debug();
+            $"Data frame: {rxBuffer.ToText()}".Debug();
         }
 
 #if NET47
@@ -2908,7 +2908,7 @@ cygSR/MggDhTGBrfglUEKIXXbcbfwgukfyVEJJPOIP0xTtdAhAKBTNyWZuTIcRmIjIcgEEau"
 
         protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
         {
-            $"Data frame: {Encoding.UTF8.GetString(rxBuffer)}".Debug();
+            $"Data frame: {rxBuffer.ToText()}".Debug();
         }
 
 #if NET47

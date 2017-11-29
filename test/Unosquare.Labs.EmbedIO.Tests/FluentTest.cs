@@ -1,17 +1,18 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
-    using NUnit.Framework;
-    using System.Reflection;
     using Modules;
-    using TestObjects;
+    using NUnit.Framework;
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
+    using TestObjects;
 
     [TestFixture]
     public class FluentTest
     {
         protected string RootPath;
         protected string WebServerUrl;
+        protected WebServer NullWebServer = null;
 
         protected Dictionary<string, string> CommonPaths = new Dictionary<string, string>
         {
@@ -85,9 +86,7 @@
         public void FluentWithStaticFolderArgumentException()
         {
             Assert.Throws<ArgumentNullException>(() =>
-            {
-                Extensions.WithStaticFolderAt(null, TestHelper.SetupStaticFolder());
-            });
+                NullWebServer.WithStaticFolderAt(TestHelper.SetupStaticFolder()));
         }
 
         [Test]
@@ -106,35 +105,31 @@
         public void FluentWithVirtualPathsWebServerNull_ThrowsArgumentException()
         {
             Assert.Throws<ArgumentNullException>(() =>
-            {
-                Extensions.WithVirtualPaths(null, CommonPaths);
-            });
+                NullWebServer.WithVirtualPaths(CommonPaths));
         }
 
         [Test]
         public void FluentWithLocalSessionWebServerNull_ThrowsArgumentException()
         {
-            Assert.Throws<ArgumentNullException>(() => Extensions.WithLocalSession(null));
+            Assert.Throws<ArgumentNullException>(() => NullWebServer.WithLocalSession());
         }
 
         [Test]
         public void FluentWithWebApiArgumentException()
         {
-            Assert.Throws<ArgumentNullException>(() => Extensions.WithWebApi(null));
+            Assert.Throws<ArgumentNullException>(() => NullWebServer.WithWebApi());
         }
 
         [Test]
         public void FluentWithWebSocketArgumentException()
         {
-            Assert.Throws<ArgumentNullException>(() => Extensions.WithWebSocket(null));
+            Assert.Throws<ArgumentNullException>(() => NullWebServer.WithWebSocket());
         }
 
         [Test]
         public void FluentLoadApiControllersWebServerArgumentException()
         {
-            WebServer webServer = null;
-
-            Assert.Throws<ArgumentNullException>(() => webServer.LoadApiControllers());
+            Assert.Throws<ArgumentNullException>(() => NullWebServer.LoadApiControllers());
         }
 
         [Test]
@@ -148,25 +143,19 @@
         [Test]
         public void FluentLoadWebSocketsArgumentException()
         {
-            WebServer webServer = null;
-
-            Assert.Throws<ArgumentNullException>(() => webServer.LoadWebSockets());
+            Assert.Throws<ArgumentNullException>(() => NullWebServer.LoadWebSockets());
         }
 
         [Test]
         public void FluentEnableCorsArgumentException()
         {
-            WebServer webServer = null;
-
-            Assert.Throws<ArgumentNullException>(() => webServer.EnableCors());
+            Assert.Throws<ArgumentNullException>(() => NullWebServer.EnableCors());
         }
 
         [Test]
         public void FluentWithWebApiControllerTArgumentException()
         {
-            WebServer webServer = null;
-
-            Assert.Throws<ArgumentNullException>(() => webServer.WithWebApiController<TestController>());
+            Assert.Throws<ArgumentNullException>(() => NullWebServer.WithWebApiController<TestController>());
         }
     }
 }

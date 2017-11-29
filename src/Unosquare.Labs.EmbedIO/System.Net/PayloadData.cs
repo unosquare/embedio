@@ -139,7 +139,7 @@
                 if (!_reasonSet)
                 {
                     _reason = _length > 2
-                              ? Encoding.UTF8.GetString(_data.SubArray(2, _length - 2))
+                              ? _data.SubArray(2, _length - 2).ToText()
                               : string.Empty;
 
                     _reasonSet = true;

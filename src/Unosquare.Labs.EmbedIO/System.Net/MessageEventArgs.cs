@@ -30,7 +30,7 @@
 namespace Unosquare.Net
 {
     using System;
-    using System.Text;
+    using Swan;
 
     /// <summary>
     /// Represents the event data for the <see cref="WebSocket.OnMessage"/> event.
@@ -139,7 +139,7 @@ namespace Unosquare.Net
                 return;
             }
 
-            _data = Encoding.UTF8.GetString(_rawData);
+            _data = _rawData.ToText();
             _dataSet = true;
         }
     }

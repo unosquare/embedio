@@ -306,7 +306,7 @@ public class WebSocketsChatServer : WebSocketsServer
         foreach (var ws in this.WebSockets)
         {
             if (ws != context)
-                this.Send(ws, Encoding.UTF8.GetString(rxBuffer));
+                this.Send(ws, rxBuffer.ToText());
         }
     }
 

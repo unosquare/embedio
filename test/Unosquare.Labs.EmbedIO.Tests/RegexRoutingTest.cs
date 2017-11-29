@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
+﻿using NUnit.Framework;
 using System.Threading.Tasks;
-using NUnit.Framework;
 using Unosquare.Labs.EmbedIO.Tests.TestObjects;
 
 namespace Unosquare.Labs.EmbedIO.Tests
@@ -16,7 +11,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
             : base(ws => ws.RegisterModule(new TestRoutingModule()), Constants.RoutingStrategy.Regex)
         {
         }
-        
+
         public class GetData : RegexRoutingTest
         {
             [Test]
@@ -34,7 +29,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
 
                 Assert.AreEqual("1", call);
             }
-            
+
             [Test]
             public async Task GetDataWithMultipleRegex()
             {
