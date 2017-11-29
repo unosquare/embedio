@@ -357,7 +357,7 @@ public class WebSocketsChatServer : WebSocketsServer
         foreach (var ws in this.WebSockets)
         {
             if (ws != context)
-                this.Send(ws, Encoding.UTF8.GetString(rxBuffer));
+                this.Send(ws, rxBuffer.ToText());
         }
     }
 
@@ -421,7 +421,7 @@ public class WebSocketsChatServer : WebSocketsServer
               <div class="contribution">
                 <ul class="nav">
                   <li class="top-sep">
-                    <a href="https://github.com/unosquare/embedio/blob/master/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/unosquare/embedio/blob/NewTests/README.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
