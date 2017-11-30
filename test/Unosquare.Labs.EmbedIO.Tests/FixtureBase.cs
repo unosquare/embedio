@@ -14,7 +14,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
         public WebServer _webServer;
         private readonly RoutingStrategy _routeStrategy;
         private bool _globalInstance;
-        public StaticFilesModule _moduleInstance;
+        public StaticFilesModule _staticFileModuleInstance;
 
         protected FixtureBase(Action<WebServer> builder, RoutingStrategy routeSrtategy, bool globalInstance = false)
         {
@@ -36,7 +36,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
             var runTask = _webServer.RunAsync();
 
             if(_globalInstance)
-                _moduleInstance = _webServer.Module<StaticFilesModule>();
+                _staticFileModuleInstance = _webServer.Module<StaticFilesModule>();
         }
 
         [TearDown]

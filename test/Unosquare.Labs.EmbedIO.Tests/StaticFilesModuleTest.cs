@@ -45,7 +45,7 @@
                         Assert.IsTrue(string.IsNullOrWhiteSpace(response.Headers.Pragma.ToString()), "Pragma empty");
                     }
 
-                    _moduleInstance.DefaultHeaders.Add(Headers.Pragma, HeaderPragmaValue);
+                    _staticFileModuleInstance.DefaultHeaders.Add(Headers.Pragma, HeaderPragmaValue);
 
                     request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
 
@@ -161,27 +161,27 @@
             [Test]
             public void RegisterVirtualPaths()
             {
-                _moduleInstance.RegisterVirtualPath("/tmp", Path.GetTempPath());
-                Assert.AreNotEqual(_moduleInstance.VirtualPaths.Count(), 0);
+                _staticFileModuleInstance.RegisterVirtualPath("/tmp", Path.GetTempPath());
+                Assert.AreNotEqual(_staticFileModuleInstance.VirtualPaths.Count(), 0);
             }
 
             [Test]
             public void UnregisterVirtualPaths()
             {
-                _moduleInstance.RegisterVirtualPath("/tmp", Path.GetTempPath());
-                Assert.AreNotEqual(_moduleInstance.VirtualPaths.Count(),0);
-                _moduleInstance.UnregisterVirtualPath("/tmp");
-                Assert.AreEqual(_moduleInstance.VirtualPaths.Count(), 0);
+                _staticFileModuleInstance.RegisterVirtualPath("/tmp", Path.GetTempPath());
+                Assert.AreNotEqual(_staticFileModuleInstance.VirtualPaths.Count(), 0);
+                _staticFileModuleInstance.UnregisterVirtualPath("/tmp");
+                Assert.AreEqual(_staticFileModuleInstance.VirtualPaths.Count(), 0);
             }
 
             [Test]
             public void RegisterExistingVirtualPath_ThrowsInvalidOperationException()
             {
-                _moduleInstance.RegisterVirtualPath("/tmp", Path.GetTempPath());
-                Assert.AreNotEqual(_moduleInstance.VirtualPaths.Count(), 0);
+                _staticFileModuleInstance.RegisterVirtualPath("/tmp", Path.GetTempPath());
+                Assert.AreNotEqual(_staticFileModuleInstance.VirtualPaths.Count(), 0);
                 Assert.Throws<InvalidOperationException>(() =>
                 {
-                    _moduleInstance.RegisterVirtualPath("/tmp", Path.GetTempPath());
+                    _staticFileModuleInstance.RegisterVirtualPath("/tmp", Path.GetTempPath());
                 });
             }
 
@@ -190,7 +190,7 @@
             {
                 Assert.Throws<InvalidOperationException>(() =>
                 {
-                    _moduleInstance.RegisterVirtualPath("tmp", Path.GetTempPath());
+                    _staticFileModuleInstance.RegisterVirtualPath("tmp", Path.GetTempPath());
                 });
             }
 
@@ -199,7 +199,7 @@
             {
                 Assert.Throws<InvalidOperationException>(() =>
                 {
-                    _moduleInstance.RegisterVirtualPath("/tmp", "e:");
+                    _staticFileModuleInstance.RegisterVirtualPath("/tmp", "e:");
                 });
             }
         }
@@ -455,9 +455,9 @@
                 [Test]
                 public void SetAndGetExtension()
                 {
-                    Assert.IsNull(_moduleInstance.DefaultExtension);
-                    _moduleInstance.DefaultExtension = ".xml";
-                    Assert.AreEqual(_moduleInstance.DefaultExtension, ".xml");
+                    Assert.IsNull(_staticFileModuleInstance.DefaultExtension);
+                    _staticFileModuleInstance.DefaultExtension = ".xml";
+                    Assert.AreEqual(_staticFileModuleInstance.DefaultExtension, ".xml");
                 }
             }
 
@@ -465,16 +465,12 @@
             {
                 [Test]
                 public void UseRamCache()
-                { 
-                    using (var server = new WebServer(Resources.GetServerAddress()))
-                    {
-                        server.RegisterModule(new StaticFilesModule(Path.GetTempPath()) { UseRamCache = false });
-                        Assert.IsFalse(server.Module<StaticFilesModule>().UseRamCache);
-                        server.Module<StaticFilesModule>().UseRamCache = true;
-                        Assert.IsTrue(server.Module<StaticFilesModule>().UseRamCache);
-                    }
-
+                {
+                    Assert.IsTrue(_staticFileModuleInstance.UseRamCache);
+                    _staticFileModuleInstance.UseRamCache = false;
+                    Assert.IsFalse(_staticFileModuleInstance.UseRamCache);
                 }
+
             }
         }
     }
