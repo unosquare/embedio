@@ -19,7 +19,7 @@
         public StaticFilesModuleTest()
             : base((ws) =>
             {
-                ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()) {UseRamCache = true});
+                ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()) { UseRamCache = true });
                 ws.RegisterModule(new FallbackModule("/index.html"));
             }, RoutingStrategy.Wildcard)
         {
@@ -105,7 +105,7 @@
 
                 using (var server = new WebServer(endpoint))
                 {
-                    server.RegisterModule(new StaticFilesModule(root) {UseRamCache = false});
+                    server.RegisterModule(new StaticFilesModule(root) { UseRamCache = false });
                     var runTask = server.RunAsync();
                     using (var webClient = new HttpClient())
                     {
@@ -143,6 +143,64 @@
 
                     Assert.AreEqual(nameof(TestHelper.LowercaseFile), htmlLowerCase, "Same content lower case");
                 }
+            }
+
+            [Test]
+            public void InvalidFilePath_ThrowsArgumentException()
+            {
+                var endpoint = Resources.GetServerAddress();
+                using (var server = new WebServer(endpoint))
+                {
+                    Assert.Throws<ArgumentException>(() =>
+                    {
+                        server.RegisterModule(new StaticFilesModule("e:") { UseRamCache = false });
+                    });
+                }
+            }
+
+            [Test]
+            public void RegisterVirtualPaths()
+            {
+                _webServer.Module<StaticFilesModule>().RegisterVirtualPath("/tmp", Path.GetTempPath());
+                Assert.AreNotEqual(_webServer.Module<StaticFilesModule>().VirtualPaths.Count(), 0);
+            }
+
+            [Test]
+            public void UnregisterVirtualPaths()
+            {
+                _webServer.Module<StaticFilesModule>().RegisterVirtualPath("/tmp", Path.GetTempPath());
+                Assert.AreNotEqual(_webServer.Module<StaticFilesModule>().VirtualPaths.Count(),0);
+                _webServer.Module<StaticFilesModule>().UnregisterVirtualPath("/tmp");
+                Assert.AreEqual(_webServer.Module<StaticFilesModule>().VirtualPaths.Count(), 0);
+            }
+
+            [Test]
+            public void RegisterExistingVirtualPath_ThrowsInvalidOperationException()
+            {
+                _webServer.Module<StaticFilesModule>().RegisterVirtualPath("/tmp", Path.GetTempPath());
+                Assert.AreNotEqual(_webServer.Module<StaticFilesModule>().VirtualPaths.Count(), 0);
+                Assert.Throws<InvalidOperationException>(() =>
+                {
+                    _webServer.Module<StaticFilesModule>().RegisterVirtualPath("/tmp", Path.GetTempPath());
+                });
+            }
+
+            [Test]
+            public void RegisterInvalidVirtualPath_ThrowsInvalidOperationException()
+            {
+                Assert.Throws<InvalidOperationException>(() =>
+                {
+                    _webServer.Module<StaticFilesModule>().RegisterVirtualPath("tmp", Path.GetTempPath());
+                });
+            }
+
+            [Test]
+            public void RegisterInvalidPhysicalPath_ThrowsInvalidOperationException()
+            {
+                Assert.Throws<InvalidOperationException>(() =>
+                {
+                    _webServer.Module<StaticFilesModule>().RegisterVirtualPath("/tmp", "e:");
+                });
             }
         }
 
@@ -389,6 +447,37 @@
                     {
                         Assert.AreEqual(response.StatusCode, HttpStatusCode.NotModified, "Status Code NotModified");
                     }
+                }
+            }
+
+            public class DefaultExtension : StaticFilesModuleTest
+            {
+                [Test]
+                public void SetAndGetExtension()
+                {
+                    Assert.IsNull(_webServer.Module<StaticFilesModule>().DefaultExtension);
+                    _webServer.Module<StaticFilesModule>().DefaultExtension = ".xml";
+                    Assert.AreEqual(_webServer.Module<StaticFilesModule>().DefaultExtension, ".xml");
+                }
+            }
+
+            public class RamCache : StaticFilesModuleTest
+            {
+                [Test]
+                public void UseRamCache()
+                {
+                    var endpoint = Resources.GetServerAddress();
+                    var root = Path.GetTempPath();
+                    var file = Path.Combine(root, "index.html");
+                    File.WriteAllText(file, Resources.Index);
+                    using (var server = new WebServer(endpoint))
+                    {
+                        server.RegisterModule(new StaticFilesModule(root) { UseRamCache = false });
+                        Assert.IsFalse(server.Module<StaticFilesModule>().UseRamCache);
+                        server.Module<StaticFilesModule>().UseRamCache = true;
+                        Assert.IsTrue(server.Module<StaticFilesModule>().UseRamCache);
+                    }
+
                 }
             }
         }
