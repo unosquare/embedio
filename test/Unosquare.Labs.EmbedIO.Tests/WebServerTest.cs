@@ -1,17 +1,17 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
-    using System.Net.Http;
     using Constants;
-    using NUnit.Framework;
-    using System.Threading.Tasks;
-    using System.Linq;
     using Modules;
-    using TestObjects;
+    using NUnit.Framework;
+    using Swan;
+    using Swan.Formatters;
     using System;
     using System.IO;
+    using System.Linq;
+    using System.Net.Http;
     using System.Text;
-    using Swan.Formatters;
-    using Swan;
+    using System.Threading.Tasks;
+    using TestObjects;
 
     [TestFixture]
     public class WebServerTest
@@ -33,7 +33,7 @@
         [SetUp]
         public void Setup()
         {
-            Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
+            Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
         }
 
         public class Constructors : WebServerTest

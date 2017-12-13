@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Unosquare.Swan;
+﻿using Unosquare.Swan;
 #if NET47
 using System.Net.WebSockets;
 #else
