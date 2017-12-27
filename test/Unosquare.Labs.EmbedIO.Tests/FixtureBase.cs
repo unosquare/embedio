@@ -1,12 +1,12 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using NUnit.Framework;
-using Unosquare.Labs.EmbedIO.Tests.TestObjects;
-using Unosquare.Labs.EmbedIO.Constants;
-
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
+    using System;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using NUnit.Framework;
+    using TestObjects;
+    using Constants;
+
     public abstract class FixtureBase
     {
         private readonly Action<WebServer> _builder;

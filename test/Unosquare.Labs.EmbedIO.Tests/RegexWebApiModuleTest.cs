@@ -1,13 +1,12 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
-    using System.Net.Http;
     using Constants;
     using NUnit.Framework;
     using Swan.Formatters;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Net;
+    using System.Net.Http;
     using System.Threading.Tasks;
     using TestObjects;
 

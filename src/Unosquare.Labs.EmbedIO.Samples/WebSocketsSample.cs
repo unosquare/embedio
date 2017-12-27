@@ -3,13 +3,12 @@
     using System.Linq;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Text;
     using Modules;
+    using Swan;
 #if NET47
     using System.Threading;
     using System.Net.WebSockets;
 #else
-    using Swan;
     using Net;
 #endif
 
@@ -45,11 +44,12 @@
         /// <param name="context">The context.</param>
         /// <param name="rxBuffer">The rx buffer.</param>
         /// <param name="rxResult">The rx result.</param>
-        protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
+        protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer,
+            WebSocketReceiveResult rxResult)
         {
             foreach (var ws in WebSockets.Where(ws => ws != context))
             {
-                Send(ws, Encoding.UTF8.GetString(rxBuffer));
+                Send(ws, rxBuffer.ToText());
             }
         }
 
@@ -61,13 +61,12 @@
         /// </value>
         public override string ServerName => nameof(WebSocketsChatServer);
 
-#if NET47
-        /// <summary>
-        /// Called when this WebSockets Server accepts a new WebSockets client.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="localEndPoint">The local endpoint.</param>
-        /// /// <param name="remoteEndPoint">The remote endpoint.</param>
+#if NET47 /// <summary>
+/// Called when this WebSockets Server accepts a new WebSockets client.
+/// </summary>
+/// <param name="context">The context.</param>
+/// <param name="localEndPoint">The local endpoint.</param>
+/// /// <param name="remoteEndPoint">The remote endpoint.</param>
         protected override void OnClientConnected(
             WebSocketContext context, 
             System.Net.IPEndPoint localEndPoint,
@@ -94,7 +93,8 @@
         /// <param name="context">The context.</param>
         /// <param name="rxBuffer">The rx buffer.</param>
         /// <param name="rxResult">The rx result.</param>
-        protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
+        protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer,
+            WebSocketReceiveResult rxResult)
         {
             return;
         }
@@ -130,11 +130,12 @@
         /// <param name="context">The context.</param>
         /// <param name="rxBuffer">The rx buffer.</param>
         /// <param name="rxResult">The rx result.</param>
-        protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
+        protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer,
+            WebSocketReceiveResult rxResult)
         {
             lock (_syncRoot)
             {
-                var arg = Encoding.UTF8.GetString(rxBuffer);
+                var arg = rxBuffer.ToText();
                 _processes[context].StandardInput.WriteLine(arg);
             }
         }
@@ -145,7 +146,8 @@
         /// <param name="context">The context.</param>
         /// <param name="rxBuffer">The rx buffer.</param>
         /// <param name="rxResult">The rx result.</param>
-        protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
+        protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer,
+            WebSocketReceiveResult rxResult)
         {
             // don't process partial frames
         }
@@ -168,13 +170,12 @@
             return null;
         }
 
-#if NET47
-        /// <summary>
+#if NET47 /// <summary>
         /// Called when this WebSockets Server accepts a new WebSockets client.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="localEndPoint">The local endpoint.</param>
-        /// /// <param name="remoteEndPoint">The remote endpoint.</param>
+        /// <param name="remoteEndPoint">The remote endpoint.</param>
         protected override void OnClientConnected(
             WebSocketContext context, 
             System.Net.IPEndPoint localEndPoint,

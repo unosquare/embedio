@@ -10,7 +10,7 @@
 
 A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework and .NET Core.
 
-* Written entirely in C#
+* Written entirely in C#, using our helpful library [SWAN](https://github.com/unosquare/swan)
 * Network operations use the async/await pattern: Responses are handled asynchronously
 * Cross-platform[1]: tested in Mono on Windows and on a custom Yocto image for the Raspberry Pi
 * Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras" target="_blank">EmbedIO Extras</a> for additional modules.
@@ -306,7 +306,7 @@ public class WebSocketsChatServer : WebSocketsServer
         foreach (var ws in this.WebSockets)
         {
             if (ws != context)
-                this.Send(ws, Encoding.UTF8.GetString(rxBuffer));
+                this.Send(ws, rxBuffer.ToText());
         }
     }
 

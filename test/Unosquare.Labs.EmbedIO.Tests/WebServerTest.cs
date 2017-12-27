@@ -1,16 +1,17 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
-    using System.Net.Http;
     using Constants;
-    using NUnit.Framework;
-    using System.Threading.Tasks;
-    using System.Linq;
     using Modules;
-    using TestObjects;
+    using NUnit.Framework;
+    using Swan;
+    using Swan.Formatters;
     using System;
     using System.IO;
+    using System.Linq;
+    using System.Net.Http;
     using System.Text;
-    using Swan.Formatters;
+    using System.Threading.Tasks;
+    using TestObjects;
 
     [TestFixture]
     public class WebServerTest
@@ -32,7 +33,7 @@
         [SetUp]
         public void Setup()
         {
-            Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
+            Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
         }
 
         public class Constructors : WebServerTest
@@ -186,8 +187,6 @@
         [TestCase("utf-16")]
         public async Task EncodingTest(string encodeName)
         {
-            // NOTE: This is failing with NET46
-
             var url = Resources.GetServerAddress();
 
             using (var instance = new WebServer(url))
@@ -239,7 +238,7 @@
                         using (var ms = new MemoryStream())
                         {
                             stream.CopyTo(ms);
-                            var data = Encoding.UTF8.GetString(ms.ToArray());
+                            var data = ms.ToArray().ToText();
 
                             Assert.IsNotNull(data, "Data is not empty");
                             var model = Json.Deserialize<EncodeCheck>(data);

@@ -44,15 +44,15 @@ namespace Unosquare.Net
         protected const string CrLf = "\r\n";
 
         private const int HeadersMaxLength = 8192;
-        
+
         private byte[] _entityBodyData;
-        
+
         protected HttpBase(Version version, NameValueCollection headers)
         {
             ProtocolVersion = version;
             Headers = headers;
         }
-        
+
         public string EntityBody
         {
             get
@@ -73,7 +73,7 @@ namespace Unosquare.Net
         public NameValueCollection Headers { get; }
 
         public Version ProtocolVersion { get; }
-        
+
         public byte[] ToByteArray() => Encoding.UTF8.GetBytes(ToString());
 
         public void Write(byte[] data)
@@ -97,24 +97,25 @@ namespace Unosquare.Net
                 .Where(part => part.StartsWith("charset", StringComparison.OrdinalIgnoreCase))
                 .Select(part => Encoding.GetEncoding(GetValue(part))).FirstOrDefault();
         }
-        
-        protected static async Task<T> ReadAsync<T>(Stream stream, Func<string[], T> parser, int millisecondsTimeout = 90000, CancellationToken ct = default(CancellationToken))
-          where T : HttpBase
+
+        protected static async Task<T> ReadAsync<T>(Stream stream, Func<string[], T> parser,
+            int millisecondsTimeout = 90000, CancellationToken ct = default(CancellationToken))
+            where T : HttpBase
         {
             var timeout = false;
             var timer = new Timer(
-              state =>
-              {
-                  timeout = true;
+                state =>
+                {
+                    timeout = true;
 #if NET452
                   stream.Close();
 #else
-                  stream.Dispose();
+                    stream.Dispose();
 #endif
-              },
-              null,
-              millisecondsTimeout,
-              -1);
+                },
+                null,
+                millisecondsTimeout,
+                -1);
 
             try
             {
@@ -129,8 +130,8 @@ namespace Unosquare.Net
             catch (Exception ex)
             {
                 throw new WebSocketException(timeout
-                      ? "A timeout has occurred while reading an HTTP request/response."
-                      : "An exception has occurred while reading an HTTP request/response.", ex);
+                    ? "A timeout has occurred while reading an HTTP request/response."
+                    : "An exception has occurred while reading an HTTP request/response.", ex);
             }
             finally
             {
@@ -148,10 +149,10 @@ namespace Unosquare.Net
                 throw new ArgumentOutOfRangeException(nameof(length), "Less than zero.");
 
             return len > 1024
-                   ? await stream.ReadBytesAsync(len, 1024, ct)
-                   : len > 0
-                     ? await stream.ReadBytesAsync((int)len, ct)
-                     : null;
+                ? await stream.ReadBytesAsync(len, 1024, ct)
+                : len > 0
+                    ? await stream.ReadBytesAsync((int) len, ct)
+                    : null;
         }
 
         private static bool EqualsWith(int value, char c, Action<int> action)
@@ -190,10 +191,11 @@ namespace Unosquare.Net
             if (!read)
                 throw new WebSocketException("The length of header part is greater than the max length.");
 
-            return Encoding.UTF8.GetString(buff.ToArray())
-                   .Replace(CrLf + " ", " ")
-                   .Replace(CrLf + "\t", " ")
-                   .Split(new[] { CrLf }, StringSplitOptions.RemoveEmptyEntries);
+            return buff.ToArray()
+                .ToText()
+                .Replace(CrLf + " ", " ")
+                .Replace(CrLf + "\t", " ")
+                .Split(new[] {CrLf}, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }

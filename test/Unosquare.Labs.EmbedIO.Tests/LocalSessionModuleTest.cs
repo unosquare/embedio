@@ -1,28 +1,24 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
+    using Modules;
     using NUnit.Framework;
     using System;
-    using System.Net;
-    using System.Threading.Tasks;
-    using Modules;
-    using TestObjects;
-    using System.IO;
-    using System.Net.Http;
-    using Unosquare.Swan.Formatters;
-    using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using TestObjects;
 
     [TestFixture]
     public class LocalSessionModuleTest : FixtureBase
     {
-        private const string CookieName = "__session";
         protected WebServer WebServer;
         protected TimeSpan WaitTimeSpan = TimeSpan.FromSeconds(1);
 
         public LocalSessionModuleTest()
             : base((ws) =>
             {
-                ws.RegisterModule((new LocalSessionModule() { Expiration = TimeSpan.FromSeconds(1) }));
+                ws.RegisterModule((new LocalSessionModule() {Expiration = TimeSpan.FromSeconds(1)}));
                 ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()));
                 ws.RegisterModule(new WebApiModule());
                 ws.Module<WebApiModule>().RegisterController<TestLocalSessionController>();
@@ -35,6 +31,7 @@
             using (var handler = new HttpClientHandler())
             {
                 handler.CookieContainer = new CookieContainer();
+
                 using (var client = new HttpClient(handler))
                 {
                     var secondRequest = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
@@ -43,13 +40,15 @@
                         Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
                         Assert.IsNotNull(handler.CookieContainer, "Cookies are not null");
-                        Assert.Greater(handler.CookieContainer.GetCookies(new Uri(WebServerUrl)).Count, 0, "Cookies are not empty");
+                        Assert.Greater(handler.CookieContainer.GetCookies(new Uri(WebServerUrl)).Count, 0,
+                            "Cookies are not empty");
 
-                        Assert.AreNotEqual(content, handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl)).ToString());
+                        Assert.AreNotEqual(content, handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl)));
                     }
                 }
             }
         }
+
         public class Sessions : LocalSessionModuleTest
         {
             [Test]
@@ -67,7 +66,8 @@
                     handler.CookieContainer = new CookieContainer();
                     using (var client = new HttpClient(handler))
                     {
-                        var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestLocalSessionController.PutData);
+                        var request = new HttpRequestMessage(HttpMethod.Get,
+                            WebServerUrl + TestLocalSessionController.PutData);
 
                         using (var response = await client.SendAsync(request))
                         {
@@ -78,7 +78,8 @@
                             Assert.AreEqual(body, TestLocalSessionController.MyData);
                         }
 
-                        request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestLocalSessionController.DeleteSession);
+                        request = new HttpRequestMessage(HttpMethod.Get,
+                            WebServerUrl + TestLocalSessionController.DeleteSession);
 
                         using (var response = await client.SendAsync(request))
                         {
@@ -89,7 +90,8 @@
                             Assert.AreEqual(body, "Deleted");
                         }
 
-                        request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestLocalSessionController.GetData);
+                        request = new HttpRequestMessage(HttpMethod.Get,
+                            WebServerUrl + TestLocalSessionController.GetData);
 
                         using (var response = await client.SendAsync(request))
                         {
@@ -119,9 +121,10 @@
                             Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
                             Assert.IsNotNull(handler.CookieContainer, "Cookies are not null");
-                            Assert.Greater(handler.CookieContainer.GetCookies(new Uri(WebServerUrl)).Count, 0, "Cookies are not empty");
+                            Assert.Greater(handler.CookieContainer.GetCookies(new Uri(WebServerUrl)).Count, 0,
+                                "Cookies are not empty");
 
-                            content = handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl)).ToString();
+                            content = handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl));
                         }
 
                         await Task.Delay(WaitTimeSpan);
@@ -130,7 +133,8 @@
                             new[]
                             {
                                 Task.Factory.StartNew(() => GetFile(content)),
-                                Task.Factory.StartNew(() => GetFile(content)),Task.Factory.StartNew(() => GetFile(content)),
+                                Task.Factory.StartNew(() => GetFile(content)),
+                                Task.Factory.StartNew(() => GetFile(content)),
                                 Task.Factory.StartNew(() => GetFile(content)),
                                 Task.Factory.StartNew(() => GetFile(content)),
                             });
@@ -149,15 +153,17 @@
                     handler.CookieContainer = new CookieContainer();
                     using (var client = new HttpClient(handler))
                     {
-                        var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestLocalSessionController.GetCookie);
+                        var request = new HttpRequestMessage(HttpMethod.Get,
+                            WebServerUrl + TestLocalSessionController.GetCookie);
                         var uri = new Uri(WebServerUrl + TestLocalSessionController.GetCookie);
                         using (var resonse = await client.SendAsync(request))
                         {
                             Assert.AreEqual(resonse.StatusCode, HttpStatusCode.OK, "Status OK");
-                            IEnumerable<Cookie> responseCookies = handler.CookieContainer.GetCookies(uri).Cast<Cookie>();
+                            var responseCookies = handler.CookieContainer.GetCookies(uri).Cast<Cookie>();
                             Assert.IsNotNull(responseCookies, "Cookies are not null");
                             Assert.Greater(responseCookies.Count(), 0, "Cookies are not empty");
-                            var cookieName = responseCookies.FirstOrDefault(c => c.Name == TestLocalSessionController.CookieName);
+                            var cookieName =
+                                responseCookies.FirstOrDefault(c => c.Name == TestLocalSessionController.CookieName);
                             Assert.AreEqual(TestLocalSessionController.CookieName, cookieName.Name);
                         }
                     }
@@ -179,14 +185,15 @@
                             Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
                             Assert.IsNotNull(handler.CookieContainer, "Cookies are not null");
-                            Assert.Greater(handler.CookieContainer.GetCookies(new Uri(WebServerUrl)).Count, 0, "Cookies are not empty");
+                            Assert.Greater(handler.CookieContainer.GetCookies(new Uri(WebServerUrl)).Count, 0,
+                                "Cookies are not empty");
 
-                            Assert.IsNotEmpty(handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl)).ToString(), "Cookie content is not null");
+                            Assert.IsNotEmpty(handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl)),
+                                "Cookie content is not null");
                         }
                     }
                 }
             }
         }
-
     }
 }
