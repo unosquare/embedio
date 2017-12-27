@@ -8,7 +8,7 @@
     <title>NuGet Installation: | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="NuGet Installation: | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 2.28.3.0">
+    <meta name="generator" content="docfx 2.29.1.0">
     
     <link rel="shortcut icon" href="src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
     <link rel="stylesheet" href="styles/docfx.vendor.css">
@@ -79,7 +79,7 @@
 <p><em><span class="emoji" shortcode="star">⭐</span> Please star this project if you find it useful!</em></p>
 <p>A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework and .NET Core.</p>
 <ul>
-<li>Written entirely in C#</li>
+<li>Written entirely in C#, using our helpful library <a href="https://github.com/unosquare/swan">SWAN</a></li>
 <li>Network operations use the async/await pattern: Responses are handled asynchronously</li>
 <li>Cross-platform[1]: tested in Mono on Windows and on a custom Yocto image for the Raspberry Pi</li>
 <li>Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras" target="_blank">EmbedIO Extras</a> for additional modules.</li>
@@ -357,7 +357,7 @@ public class WebSocketsChatServer : WebSocketsServer
         foreach (var ws in this.WebSockets)
         {
             if (ws != context)
-                this.Send(ws, Encoding.UTF8.GetString(rxBuffer));
+                this.Send(ws, rxBuffer.ToText());
         }
     }
 
@@ -421,7 +421,7 @@ public class WebSocketsChatServer : WebSocketsServer
               <div class="contribution">
                 <ul class="nav">
                   <li class="top-sep">
-                    <a href="https://github.com/unosquare/embedio/blob/Issue118CannotAccessDisposedObject/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/unosquare/embedio/blob/master/README.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
