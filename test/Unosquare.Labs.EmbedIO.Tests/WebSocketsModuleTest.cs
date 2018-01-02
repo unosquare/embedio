@@ -31,7 +31,7 @@
         [Test]
         public async Task TestConnectWebSocket()
         {
-            var wsUrl = WebServerUrl.Replace("http", "ws") + "test";
+            var wsUrl = WebServerUrl.Replace("http", "ws") + "test/100";
             Assert.IsNotNull(_webServer.Module<WebSocketsModule>(), "WebServer has WebSocketsModule");
 
             Assert.AreEqual(_webServer.Module<WebSocketsModule>().Handlers.Count, 1, "WebSocketModule has one handler");
