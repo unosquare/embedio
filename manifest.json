@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "CODE_OF_CONDUCT.html",
-          "hash": "cc4obghaDldlXmPdkxDVjA=="
+          "hash": "dENLijvMnqnPfdek61akww=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "8izu4Hfm24D3O0oYPAJZxg=="
+          "hash": "jS0YXujNxVCovfTpfSPRqA=="
         }
       },
       "is_incremental": false,
@@ -653,11 +653,11 @@
         "incrementalPhase": "build"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
+        "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build"
         },
-        "ConceptualDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build"
         },
