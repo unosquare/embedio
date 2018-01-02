@@ -2485,12 +2485,12 @@ references:
   commentId: Overload:Unosquare.Net.HttpListener.Close
   fullName: Unosquare.Net.HttpListener.Close
   nameWithType: HttpListener.Close
-- uid: Unosquare.Net.HttpListener.GetContextAsync(System.Threading.CancellationToken)
-  name: GetContextAsync(CancellationToken)
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_GetContextAsync_System_Threading_CancellationToken_
-  commentId: M:Unosquare.Net.HttpListener.GetContextAsync(System.Threading.CancellationToken)
-  fullName: Unosquare.Net.HttpListener.GetContextAsync(System.Threading.CancellationToken)
-  nameWithType: HttpListener.GetContextAsync(CancellationToken)
+- uid: Unosquare.Net.HttpListener.GetContextAsync
+  name: GetContextAsync()
+  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_GetContextAsync
+  commentId: M:Unosquare.Net.HttpListener.GetContextAsync
+  fullName: Unosquare.Net.HttpListener.GetContextAsync()
+  nameWithType: HttpListener.GetContextAsync()
 - uid: Unosquare.Net.HttpListener.GetContextAsync*
   name: GetContextAsync
   href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_GetContextAsync_
