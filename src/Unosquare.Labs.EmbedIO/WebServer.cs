@@ -220,8 +220,12 @@
                 }
 
                 if (handler?.ResponseHandler == null)
-                    continue;
+                {
+                    // TODO: Complete here, find a 405 if any
 
+                    continue;
+                }
+                
                 // Establish the callback
                 var callback = handler.ResponseHandler;
 
@@ -362,6 +366,16 @@
                     x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath(),
                     StringComparison.OrdinalIgnoreCase) &&
                 x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
+        }
+
+        private static Map Get405HandlerFromPath(HttpListenerContext context, IWebModule module)
+        {
+            return module.Handlers.FirstOrDefault(x =>
+                string.Equals(
+                    x.Path,
+                    x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath(),
+                    StringComparison.OrdinalIgnoreCase) &&
+                x.CanResolve405);
         }
 
         private static Map GetHandlerFromRegexPath(HttpListenerContext context, IWebModule module)

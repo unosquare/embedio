@@ -95,13 +95,31 @@
         /// </exception>
         public void AddHandler(string path, HttpVerbs verb, Func<HttpListenerContext, CancellationToken, Task<bool>> handler)
         {
+            AddHandler(path, verb, handler, false);
+        }
+
+        /// <summary>
+        /// Adds a handler that gets called when a path and verb are matched.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="verb">The verb.</param>
+        /// <param name="handler">The handler.</param>
+        /// <param name="resolve405">if set to <c>true</c> [resolve 405].</param>
+        /// <exception cref="ArgumentNullException">
+        /// path
+        /// or
+        /// handler
+        /// </exception>
+        public void AddHandler(string path, HttpVerbs verb, Func<HttpListenerContext, CancellationToken, Task<bool>> handler, bool resolve405)
+        {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
 
             if (handler == null)
                 throw new ArgumentNullException(nameof(handler));
 
-            Handlers.Add(new Map {Path = path, Verb = verb, ResponseHandler = handler});
+            // TODO: Add CanResolve405 property to Map
+            Handlers.Add(new Map { Path = path, Verb = verb, ResponseHandler = handler });
         }
 
         /// <summary>
