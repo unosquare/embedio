@@ -652,6 +652,18 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync
   fullName: Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync
   nameWithType: Extensions.StringResponseAsync
+- uid: Unosquare.Labs.EmbedIO.Extensions.WillResolve405(Unosquare.Labs.EmbedIO.Map,Unosquare.Net.HttpListenerContext,Unosquare.Labs.EmbedIO.IWebModule,Unosquare.Labs.EmbedIO.Constants.RoutingStrategy)
+  name: WillResolve405(Map, HttpListenerContext, IWebModule, RoutingStrategy)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WillResolve405_Unosquare_Labs_EmbedIO_Map_Unosquare_Net_HttpListenerContext_Unosquare_Labs_EmbedIO_IWebModule_Unosquare_Labs_EmbedIO_Constants_RoutingStrategy_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.WillResolve405(Unosquare.Labs.EmbedIO.Map,Unosquare.Net.HttpListenerContext,Unosquare.Labs.EmbedIO.IWebModule,Unosquare.Labs.EmbedIO.Constants.RoutingStrategy)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.WillResolve405(Unosquare.Labs.EmbedIO.Map, Unosquare.Net.HttpListenerContext, Unosquare.Labs.EmbedIO.IWebModule, Unosquare.Labs.EmbedIO.Constants.RoutingStrategy)
+  nameWithType: Extensions.WillResolve405(Map, HttpListenerContext, IWebModule, RoutingStrategy)
+- uid: Unosquare.Labs.EmbedIO.Extensions.WillResolve405*
+  name: WillResolve405
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WillResolve405_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.WillResolve405
+  fullName: Unosquare.Labs.EmbedIO.Extensions.WillResolve405
+  nameWithType: Extensions.WillResolve405
 - uid: Unosquare.Labs.EmbedIO.Extensions.WithLocalSession(Unosquare.Labs.EmbedIO.WebServer)
   name: WithLocalSession(WebServer)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithLocalSession_Unosquare_Labs_EmbedIO_WebServer_
