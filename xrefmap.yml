@@ -811,6 +811,15 @@ references:
   fullName.vb: Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String, Unosquare.Labs.EmbedIO.Constants.HttpVerbs, System.Func(Of Unosquare.Net.HttpListenerContext, System.Threading.CancellationToken, System.Threading.Tasks.Task(Of System.Boolean)))
   nameWithType: IWebModule.AddHandler(String, HttpVerbs, Func<HttpListenerContext, CancellationToken, Task<Boolean>>)
   nameWithType.vb: IWebModule.AddHandler(String, HttpVerbs, Func(Of HttpListenerContext, CancellationToken, Task(Of Boolean)))
+- uid: Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs,System.Func{Unosquare.Net.HttpListenerContext,System.Threading.CancellationToken,System.Threading.Tasks.Task{System.Boolean}},System.Boolean)
+  name: AddHandler(String, HttpVerbs, Func<HttpListenerContext, CancellationToken, Task<Boolean>>, Boolean)
+  href: api/Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_System_Func_Unosquare_Net_HttpListenerContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___System_Boolean_
+  commentId: M:Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs,System.Func{Unosquare.Net.HttpListenerContext,System.Threading.CancellationToken,System.Threading.Tasks.Task{System.Boolean}},System.Boolean)
+  name.vb: AddHandler(String, HttpVerbs, Func(Of HttpListenerContext, CancellationToken, Task(Of Boolean)), Boolean)
+  fullName: Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String, Unosquare.Labs.EmbedIO.Constants.HttpVerbs, System.Func<Unosquare.Net.HttpListenerContext, System.Threading.CancellationToken, System.Threading.Tasks.Task<System.Boolean>>, System.Boolean)
+  fullName.vb: Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String, Unosquare.Labs.EmbedIO.Constants.HttpVerbs, System.Func(Of Unosquare.Net.HttpListenerContext, System.Threading.CancellationToken, System.Threading.Tasks.Task(Of System.Boolean)), System.Boolean)
+  nameWithType: IWebModule.AddHandler(String, HttpVerbs, Func<HttpListenerContext, CancellationToken, Task<Boolean>>, Boolean)
+  nameWithType.vb: IWebModule.AddHandler(String, HttpVerbs, Func(Of HttpListenerContext, CancellationToken, Task(Of Boolean)), Boolean)
 - uid: Unosquare.Labs.EmbedIO.IWebModule.AddHandler*
   name: AddHandler
   href: api/Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_AddHandler_
@@ -895,6 +904,18 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.Map
   fullName: Unosquare.Labs.EmbedIO.Map
   nameWithType: Map
+- uid: Unosquare.Labs.EmbedIO.Map.CanResolve405
+  name: CanResolve405
+  href: api/Unosquare.Labs.EmbedIO.Map.html#Unosquare_Labs_EmbedIO_Map_CanResolve405
+  commentId: P:Unosquare.Labs.EmbedIO.Map.CanResolve405
+  fullName: Unosquare.Labs.EmbedIO.Map.CanResolve405
+  nameWithType: Map.CanResolve405
+- uid: Unosquare.Labs.EmbedIO.Map.CanResolve405*
+  name: CanResolve405
+  href: api/Unosquare.Labs.EmbedIO.Map.html#Unosquare_Labs_EmbedIO_Map_CanResolve405_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Map.CanResolve405
+  fullName: Unosquare.Labs.EmbedIO.Map.CanResolve405
+  nameWithType: Map.CanResolve405
 - uid: Unosquare.Labs.EmbedIO.Map.Path
   name: Path
   href: api/Unosquare.Labs.EmbedIO.Map.html#Unosquare_Labs_EmbedIO_Map_Path
@@ -1900,6 +1921,15 @@ references:
   fullName.vb: Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler(System.String, Unosquare.Labs.EmbedIO.Constants.HttpVerbs, System.Func(Of Unosquare.Net.HttpListenerContext, System.Threading.CancellationToken, System.Threading.Tasks.Task(Of System.Boolean)))
   nameWithType: WebModuleBase.AddHandler(String, HttpVerbs, Func<HttpListenerContext, CancellationToken, Task<Boolean>>)
   nameWithType.vb: WebModuleBase.AddHandler(String, HttpVerbs, Func(Of HttpListenerContext, CancellationToken, Task(Of Boolean)))
+- uid: Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs,System.Func{Unosquare.Net.HttpListenerContext,System.Threading.CancellationToken,System.Threading.Tasks.Task{System.Boolean}},System.Boolean)
+  name: AddHandler(String, HttpVerbs, Func<HttpListenerContext, CancellationToken, Task<Boolean>>, Boolean)
+  href: api/Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_System_Func_Unosquare_Net_HttpListenerContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___System_Boolean_
+  commentId: M:Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs,System.Func{Unosquare.Net.HttpListenerContext,System.Threading.CancellationToken,System.Threading.Tasks.Task{System.Boolean}},System.Boolean)
+  name.vb: AddHandler(String, HttpVerbs, Func(Of HttpListenerContext, CancellationToken, Task(Of Boolean)), Boolean)
+  fullName: Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler(System.String, Unosquare.Labs.EmbedIO.Constants.HttpVerbs, System.Func<Unosquare.Net.HttpListenerContext, System.Threading.CancellationToken, System.Threading.Tasks.Task<System.Boolean>>, System.Boolean)
+  fullName.vb: Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler(System.String, Unosquare.Labs.EmbedIO.Constants.HttpVerbs, System.Func(Of Unosquare.Net.HttpListenerContext, System.Threading.CancellationToken, System.Threading.Tasks.Task(Of System.Boolean)), System.Boolean)
+  nameWithType: WebModuleBase.AddHandler(String, HttpVerbs, Func<HttpListenerContext, CancellationToken, Task<Boolean>>, Boolean)
+  nameWithType.vb: WebModuleBase.AddHandler(String, HttpVerbs, Func(Of HttpListenerContext, CancellationToken, Task(Of Boolean)), Boolean)
 - uid: Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler*
   name: AddHandler
   href: api/Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_
