@@ -414,6 +414,28 @@
         }
 
         /// <summary>
+        /// Looks for a path that matches the one provided by the context and can resolve a 405 error
+        /// returns true if such path is found otherwise returns false
+        /// </summary>
+        /// <param name="map">The map</param>
+        /// <param name="context"> The HttpListener context</param>
+        /// <param name="module">The module</param>
+        /// <param name="strat">The RoutingStrategy</param>
+        /// <returns>A boolean</returns>
+        public static bool WillResolve405(this Map map, HttpListenerContext context, IWebModule module, RoutingStrategy strat)
+        {
+            switch (strat)
+            {
+                case RoutingStrategy.Wildcard:
+                    return Resolve405FromWildcard(context, module);
+                case RoutingStrategy.Regex:
+                    return Resolve405FromRegexPath(context, module);
+                default:
+                    return Resolve405FromPath(context, module);
+            }
+        }
+
+        /// <summary>
         /// Outputs a HTML Response given a HTML content
         /// </summary>
         /// <param name="context">The context.</param>
@@ -641,6 +663,31 @@
                 default:
                     return (c == 'g' && value == "gopher") || (c == 'm' && value == "mailto");
             }
+        }
+
+        internal static bool Resolve405FromWildcard(HttpListenerContext context, IWebModule module)
+        {
+            var path = context.RequestWilcardPath(module.Handlers
+               .Where(k => k.Path.Contains("/" + ModuleMap.AnyPath))
+               .Select(s => s.Path.ToLowerInvariant())
+               .ToArray());
+
+            return module.Handlers.Exists(x =>
+                (x.Path == ModuleMap.AnyPath || x.Path == path) && x.CanResolve405);
+        }
+
+        internal static bool Resolve405FromPath(HttpListenerContext context, IWebModule module)
+        {
+            return module.Handlers.Exists(x =>
+                string.Equals(
+                    x.Path, context.RequestPath(),
+                    StringComparison.OrdinalIgnoreCase) && x.CanResolve405);
+        }
+
+        internal static bool Resolve405FromRegexPath(HttpListenerContext context, IWebModule module)
+        {
+            return module.Handlers.Exists(x =>
+                (context.RequestRegexUrlParams(x.Path) != null) && x.CanResolve405);
         }
     }
 }

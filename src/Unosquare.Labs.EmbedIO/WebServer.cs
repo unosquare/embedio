@@ -219,11 +219,18 @@
                         break;
                 }
 
-                if (handler?.ResponseHandler == null)
-                {     
+                // if is null and if no path that can resolve a 405 is found
+                if (handler?.ResponseHandler == null && !handler.WillResolve405(context, module, RoutingStrategy))
+                {
                     continue;
                 }
-                
+
+                if (handler == null || (handler.Verb != HttpVerbs.Any && handler.Verb != context.RequestVerb()))
+                {
+                    await context.HtmlResponseAsync(Responses.ResponseBaseHtml, System.Net.HttpStatusCode.MethodNotAllowed, ct);
+                    return true;
+                }
+
                 // Establish the callback
                 var callback = handler.ResponseHandler;
 
@@ -246,28 +253,11 @@
                     {
                         return true;
                     }
-                    else if (handler.CanResolve405)
+
+                    if (handler.CanResolve405 && handler.WillResolve405(context, module, RoutingStrategy))
                     {
-                        var result = false;
-                        switch (RoutingStrategy)
-                        {
-                            case RoutingStrategy.Wildcard:
-                                result = Resolve405FromWildcard(context, module);
-
-                                break;
-                            case RoutingStrategy.Regex:
-                                result = Resolve405FromRegexPath(context, module);
-                                break;
-                            default:
-                                result = Resolve405FromPath(context, module);
-                                break;
-                        }
-
-                        if (result)
-                        {
-                            await context.HtmlResponseAsync(Responses.ResponseBaseHtml, System.Net.HttpStatusCode.MethodNotAllowed, ct);
-                            return true;
-                        }
+                        await context.HtmlResponseAsync(Responses.ResponseBaseHtml, System.Net.HttpStatusCode.MethodNotAllowed, ct);
+                        return true;
                     }
                 }
                 catch (Exception ex)
@@ -406,32 +396,7 @@
             return module.Handlers.FirstOrDefault(x =>
                 (x.Path == ModuleMap.AnyPath || x.Path == path) &&
                 (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
-        }
-        
-        private static bool Resolve405FromPath(HttpListenerContext context, IWebModule module)
-        {
-            return module.Handlers.Exists(x =>
-                string.Equals(
-                    x.Path,
-                    x.Path == ModuleMap.AnyPath? ModuleMap.AnyPath : context.RequestPath(),
-                    StringComparison.OrdinalIgnoreCase));
-        }
-
-    private static bool Resolve405FromRegexPath(HttpListenerContext context, IWebModule module)
-        {
-            return module.Handlers.Exists(x =>
-                (x.Path == ModuleMap.AnyPath || context.RequestRegexUrlParams(x.Path) != null) );
-        }
-
-        private static bool Resolve405FromWildcard(HttpListenerContext context, IWebModule module)
-        {
-            var path = context.RequestWilcardPath(module.Handlers
-                .Where(k => k.Path.Contains("/" + ModuleMap.AnyPath))
-                .Select(s => s.Path.ToLowerInvariant())
-                .ToArray());
-            return module.Handlers.Exists(x =>
-                (x.Path == ModuleMap.AnyPath || x.Path == path));
-        }
+        }        
 
         /// <summary>
         /// Gets the module registered for the given type.
