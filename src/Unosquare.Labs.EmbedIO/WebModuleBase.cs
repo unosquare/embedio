@@ -118,8 +118,7 @@
             if (handler == null)
                 throw new ArgumentNullException(nameof(handler));
 
-            // TODO: Add CanResolve405 property to Map
-            Handlers.Add(new Map { Path = path, Verb = verb, ResponseHandler = handler });
+            Handlers.Add(new Map { Path = path, Verb = verb, ResponseHandler = handler, CanResolve405 = resolve405 });
         }
 
         /// <summary>

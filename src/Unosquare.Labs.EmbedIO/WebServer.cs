@@ -220,9 +220,7 @@
                 }
 
                 if (handler?.ResponseHandler == null)
-                {
-                    // TODO: Complete here, find a 405 if any
-
+                {     
                     continue;
                 }
                 
@@ -247,6 +245,29 @@
                     if (handleResult)
                     {
                         return true;
+                    }
+                    else if (handler.CanResolve405)
+                    {
+                        var result = false;
+                        switch (RoutingStrategy)
+                        {
+                            case RoutingStrategy.Wildcard:
+                                result = Resolve405FromWildcard(context, module);
+
+                                break;
+                            case RoutingStrategy.Regex:
+                                result = Resolve405FromRegexPath(context, module);
+                                break;
+                            default:
+                                result = Resolve405FromPath(context, module);
+                                break;
+                        }
+
+                        if (result)
+                        {
+                            await context.HtmlResponseAsync(Responses.ResponseBaseHtml, System.Net.HttpStatusCode.MethodNotAllowed, ct);
+                            return true;
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -368,16 +389,6 @@
                 x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
         }
 
-        private static Map Get405HandlerFromPath(HttpListenerContext context, IWebModule module)
-        {
-            return module.Handlers.FirstOrDefault(x =>
-                string.Equals(
-                    x.Path,
-                    x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath(),
-                    StringComparison.OrdinalIgnoreCase) &&
-                x.CanResolve405);
-        }
-
         private static Map GetHandlerFromRegexPath(HttpListenerContext context, IWebModule module)
         {
             return module.Handlers.FirstOrDefault(x =>
@@ -395,6 +406,31 @@
             return module.Handlers.FirstOrDefault(x =>
                 (x.Path == ModuleMap.AnyPath || x.Path == path) &&
                 (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
+        }
+        
+        private static bool Resolve405FromPath(HttpListenerContext context, IWebModule module)
+        {
+            return module.Handlers.Exists(x =>
+                string.Equals(
+                    x.Path,
+                    x.Path == ModuleMap.AnyPath? ModuleMap.AnyPath : context.RequestPath(),
+                    StringComparison.OrdinalIgnoreCase));
+        }
+
+    private static bool Resolve405FromRegexPath(HttpListenerContext context, IWebModule module)
+        {
+            return module.Handlers.Exists(x =>
+                (x.Path == ModuleMap.AnyPath || context.RequestRegexUrlParams(x.Path) != null) );
+        }
+
+        private static bool Resolve405FromWildcard(HttpListenerContext context, IWebModule module)
+        {
+            var path = context.RequestWilcardPath(module.Handlers
+                .Where(k => k.Path.Contains("/" + ModuleMap.AnyPath))
+                .Select(s => s.Path.ToLowerInvariant())
+                .ToArray());
+            return module.Handlers.Exists(x =>
+                (x.Path == ModuleMap.AnyPath || x.Path == path));
         }
 
         /// <summary>
