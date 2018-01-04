@@ -89,6 +89,28 @@
         }
 
         /// <summary>
+        /// HTTP Response delegate.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        public delegate void Response(HttpListenerContext context);
+
+        /// <summary>
+        /// The on method not allowed
+        /// </summary>
+        /// <value>
+        /// The on method not allowed.
+        /// </value>
+        public Response OnMethodNotAllowed { get; set; }
+
+        /// <summary>
+        /// The on not found
+        /// </summary>
+        /// <value>
+        /// The on not found.
+        /// </value>
+        public Response OnNotFound { get; set; }
+
+        /// <summary>
         /// Gets the underlying HTTP listener.
         /// </summary>
         /// <value>
@@ -367,17 +389,7 @@
                     StringComparison.OrdinalIgnoreCase) &&
                 x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
         }
-
-        private static Map Get405HandlerFromPath(HttpListenerContext context, IWebModule module)
-        {
-            return module.Handlers.FirstOrDefault(x =>
-                string.Equals(
-                    x.Path,
-                    x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath(),
-                    StringComparison.OrdinalIgnoreCase) &&
-                x.CanResolve405);
-        }
-
+        
         private static Map GetHandlerFromRegexPath(HttpListenerContext context, IWebModule module)
         {
             return module.Handlers.FirstOrDefault(x =>
@@ -435,7 +447,11 @@
                 if (processResult == false)
                 {
                     "No module generated a response. Sending 404 - Not Found".Error();
-                    await context.HtmlResponseAsync(Responses.Response404Html, System.Net.HttpStatusCode.NotFound, ct);
+
+                    if (OnNotFound != null)
+                        OnNotFound(context);
+                    else
+                        await context.HtmlResponseAsync(Responses.Response404Html, System.Net.HttpStatusCode.NotFound, ct);
                 }
             }
             catch (Exception ex)
