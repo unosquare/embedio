@@ -104,9 +104,6 @@
             Handlers.Add(new Map { Path = path, Verb = verb, ResponseHandler = handler});
         }
 
-        public async virtual Task OnMethodNotAllowed(HttpListenerContext context) =>
-             await context.HtmlResponseAsync(Responses.Response405Html, System.Net.HttpStatusCode.MethodNotAllowed);
-
         /// <summary>
         /// Runs the watchdog.
         /// </summary>

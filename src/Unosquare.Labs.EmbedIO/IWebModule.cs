@@ -63,8 +63,6 @@
         /// <param name="handler">The handler.</param>
         void AddHandler(string path, HttpVerbs verb, Func<HttpListenerContext, CancellationToken, Task<bool>> handler);
 
-        Task OnMethodNotAllowed( HttpListenerContext context);
-
         /// <summary>
         /// Runs the watchdog.
         /// </summary>

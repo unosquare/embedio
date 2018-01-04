@@ -217,12 +217,10 @@
         /// Looks for a path that matches the one provided by the context and can resolve a 405 error
         /// returns true if such path is found otherwise returns false
         /// </summary>
-        /// <param name="map">The map</param>
         /// <param name="context"> The HttpListener context</param>
         /// <param name="module">The module</param>
-        /// <param name="strat">The RoutingStrategy</param>
         /// <returns>A boolean</returns>
-        public bool IsMethodNotAllowed(Map map, HttpListenerContext context, IWebModule module)
+        public bool IsMethodNotAllowed(HttpListenerContext context, IWebModule module)
         {            
             switch (RoutingStrategy)
             {
@@ -275,13 +273,7 @@
                         handler = GetHandlerFromPath(context, module);
                         break;
                 }
-
-                if (handler?.ResponseHandler == null && IsMethodNotAllowed(handler, context, module))
-                {
-                    await module.OnMethodNotAllowed(context);
-                    return true;
-                }
-
+                
                 if (handler?.ResponseHandler == null )
                 {
                     continue;
@@ -308,15 +300,6 @@
                     if (handleResult)
                     {
                         return true;
-                    }
-
-                    if (module.Name != nameof(EmbedIO.Modules.FallbackModule) )
-                    {
-                        if ((handler.Path.Equals("*") && module.Equals(last)) || IsMethodNotAllowed(handler, context, module))
-                        {
-                            await module.OnMethodNotAllowed(context);
-                            return true;
-                        }
                     }
                 }
                 catch (Exception ex)
@@ -491,8 +474,21 @@
 
                 var processResult = await ProcessRequest(context, ct);
 
+                var methodExists = Modules.All(p =>
+                   {
+                       return !IsMethodNotAllowed(context, p);
+                   });
+
+                if (methodExists)
+                {
+                    if (OnMethodNotAllowed != null)
+                        OnMethodNotAllowed(context);
+                    else
+                    await context.HtmlResponseAsync(Responses.Response405Html, System.Net.HttpStatusCode.MethodNotAllowed, ct);
+                }
+
                 // Return a 404 (Not Found) response if no module/handler handled the response.
-                if (processResult == false)
+                else if (processResult == false)
                 {
                     "No module generated a response. Sending 404 - Not Found".Error();
 
