@@ -214,7 +214,7 @@
         }
 
         /// <summary>
-        /// Looks for a path that matches the one provided by the context and can resolve a 405 error
+        /// Looks for a path that matches the one provided by the context
         /// returns true if such path is found otherwise returns false
         /// </summary>
         /// <param name="context"> The HttpListener context</param>
