@@ -272,14 +272,13 @@
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_IWebModule_AddHandler_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.AddHandler*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_System_Func_Unosquare_Net_HttpListenerContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs,System.Func{Unosquare.Net.HttpListenerContext,System.Threading.CancellationToken,System.Threading.Tasks.Task{System.Boolean}},System.Boolean)">AddHandler(String, HttpVerbs, Func&lt;HttpListenerContext, CancellationToken, Task&lt;Boolean&gt;&gt;, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Adds a handler that gets called when a path and verb are matched.</p>
-</div>
+  <a id="Unosquare_Labs_EmbedIO_IWebModule_OnMethodNotAllowed_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.OnMethodNotAllowed*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_OnMethodNotAllowed_Unosquare_Net_HttpListenerContext_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.OnMethodNotAllowed(Unosquare.Net.HttpListenerContext)">OnMethodNotAllowed(HttpListenerContext)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void AddHandler(string path, HttpVerbs verb, Func&lt;HttpListenerContext, CancellationToken, Task&lt;bool&gt;&gt; handler, bool resolve405)</code></pre>
+    <pre><code class="lang-csharp hljs">Task OnMethodNotAllowed(HttpListenerContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -292,28 +291,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">path</span></td>
-        <td><p>The path.</p>
-</td>
+        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
       </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.HttpVerbs.html">HttpVerbs</a></td>
-        <td><span class="parametername">verb</span></td>
-        <td><p>The verb.</p>
-</td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
+    </thead>
+    <tbody>
       <tr>
-        <td><span class="xref">System.Func</span>&lt;<a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a>, <span class="xref">System.Threading.CancellationToken</span>, <span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Boolean</span>&gt;&gt;</td>
-        <td><span class="parametername">handler</span></td>
-        <td><p>The handler.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">resolve405</span></td>
-        <td><p>if set to <code>true</code> [resolve 405].</p>
-</td>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
