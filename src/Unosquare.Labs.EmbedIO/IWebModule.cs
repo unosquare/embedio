@@ -56,7 +56,7 @@
         TimeSpan WatchdogInterval { get; set; }
 
         /// <summary>
-        /// Adds a handler that gets called when a path and verb are matched. The handler won't response HTTP 405.
+        /// Adds a handler that gets called when a path and verb are matched.
         /// </summary>
         /// <param name="path">The path.</param>
         /// <param name="verb">The verb.</param>
