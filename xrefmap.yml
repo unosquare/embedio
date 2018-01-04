@@ -2134,6 +2134,30 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.WebServer.Modules
   fullName: Unosquare.Labs.EmbedIO.WebServer.Modules
   nameWithType: WebServer.Modules
+- uid: Unosquare.Labs.EmbedIO.WebServer.OnMethodNotAllowed
+  name: OnMethodNotAllowed
+  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_OnMethodNotAllowed
+  commentId: P:Unosquare.Labs.EmbedIO.WebServer.OnMethodNotAllowed
+  fullName: Unosquare.Labs.EmbedIO.WebServer.OnMethodNotAllowed
+  nameWithType: WebServer.OnMethodNotAllowed
+- uid: Unosquare.Labs.EmbedIO.WebServer.OnMethodNotAllowed*
+  name: OnMethodNotAllowed
+  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_OnMethodNotAllowed_
+  commentId: Overload:Unosquare.Labs.EmbedIO.WebServer.OnMethodNotAllowed
+  fullName: Unosquare.Labs.EmbedIO.WebServer.OnMethodNotAllowed
+  nameWithType: WebServer.OnMethodNotAllowed
+- uid: Unosquare.Labs.EmbedIO.WebServer.OnNotFound
+  name: OnNotFound
+  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_OnNotFound
+  commentId: P:Unosquare.Labs.EmbedIO.WebServer.OnNotFound
+  fullName: Unosquare.Labs.EmbedIO.WebServer.OnNotFound
+  nameWithType: WebServer.OnNotFound
+- uid: Unosquare.Labs.EmbedIO.WebServer.OnNotFound*
+  name: OnNotFound
+  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_OnNotFound_
+  commentId: Overload:Unosquare.Labs.EmbedIO.WebServer.OnNotFound
+  fullName: Unosquare.Labs.EmbedIO.WebServer.OnNotFound
+  nameWithType: WebServer.OnNotFound
 - uid: Unosquare.Labs.EmbedIO.WebServer.ProcessRequest(Unosquare.Net.HttpListenerContext,System.Threading.CancellationToken)
   name: ProcessRequest(HttpListenerContext, CancellationToken)
   href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_ProcessRequest_Unosquare_Net_HttpListenerContext_System_Threading_CancellationToken_
@@ -2158,6 +2182,12 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.WebServer.RegisterModule
   fullName: Unosquare.Labs.EmbedIO.WebServer.RegisterModule
   nameWithType: WebServer.RegisterModule
+- uid: Unosquare.Labs.EmbedIO.WebServer.Response
+  name: WebServer.Response
+  href: api/Unosquare.Labs.EmbedIO.WebServer.Response.html
+  commentId: T:Unosquare.Labs.EmbedIO.WebServer.Response
+  fullName: Unosquare.Labs.EmbedIO.WebServer.Response
+  nameWithType: WebServer.Response
 - uid: Unosquare.Labs.EmbedIO.WebServer.RoutingStrategy
   name: RoutingStrategy
   href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_RoutingStrategy
