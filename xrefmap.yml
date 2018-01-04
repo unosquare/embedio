@@ -853,18 +853,6 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.IWebModule.Name
   fullName: Unosquare.Labs.EmbedIO.IWebModule.Name
   nameWithType: IWebModule.Name
-- uid: Unosquare.Labs.EmbedIO.IWebModule.OnMethodNotAllowed(Unosquare.Net.HttpListenerContext)
-  name: OnMethodNotAllowed(HttpListenerContext)
-  href: api/Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_OnMethodNotAllowed_Unosquare_Net_HttpListenerContext_
-  commentId: M:Unosquare.Labs.EmbedIO.IWebModule.OnMethodNotAllowed(Unosquare.Net.HttpListenerContext)
-  fullName: Unosquare.Labs.EmbedIO.IWebModule.OnMethodNotAllowed(Unosquare.Net.HttpListenerContext)
-  nameWithType: IWebModule.OnMethodNotAllowed(HttpListenerContext)
-- uid: Unosquare.Labs.EmbedIO.IWebModule.OnMethodNotAllowed*
-  name: OnMethodNotAllowed
-  href: api/Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_OnMethodNotAllowed_
-  commentId: Overload:Unosquare.Labs.EmbedIO.IWebModule.OnMethodNotAllowed
-  fullName: Unosquare.Labs.EmbedIO.IWebModule.OnMethodNotAllowed
-  nameWithType: IWebModule.OnMethodNotAllowed
 - uid: Unosquare.Labs.EmbedIO.IWebModule.RunWatchdog
   name: RunWatchdog()
   href: api/Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_RunWatchdog
@@ -1966,18 +1954,6 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.WebModuleBase.Name
   fullName: Unosquare.Labs.EmbedIO.WebModuleBase.Name
   nameWithType: WebModuleBase.Name
-- uid: Unosquare.Labs.EmbedIO.WebModuleBase.OnMethodNotAllowed(Unosquare.Net.HttpListenerContext)
-  name: OnMethodNotAllowed(HttpListenerContext)
-  href: api/Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_OnMethodNotAllowed_Unosquare_Net_HttpListenerContext_
-  commentId: M:Unosquare.Labs.EmbedIO.WebModuleBase.OnMethodNotAllowed(Unosquare.Net.HttpListenerContext)
-  fullName: Unosquare.Labs.EmbedIO.WebModuleBase.OnMethodNotAllowed(Unosquare.Net.HttpListenerContext)
-  nameWithType: WebModuleBase.OnMethodNotAllowed(HttpListenerContext)
-- uid: Unosquare.Labs.EmbedIO.WebModuleBase.OnMethodNotAllowed*
-  name: OnMethodNotAllowed
-  href: api/Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_OnMethodNotAllowed_
-  commentId: Overload:Unosquare.Labs.EmbedIO.WebModuleBase.OnMethodNotAllowed
-  fullName: Unosquare.Labs.EmbedIO.WebModuleBase.OnMethodNotAllowed
-  nameWithType: WebModuleBase.OnMethodNotAllowed
 - uid: Unosquare.Labs.EmbedIO.WebModuleBase.RunWatchdog
   name: RunWatchdog()
   href: api/Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_RunWatchdog
@@ -2083,12 +2059,12 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.WebServer.Dispose
   fullName: Unosquare.Labs.EmbedIO.WebServer.Dispose
   nameWithType: WebServer.Dispose
-- uid: Unosquare.Labs.EmbedIO.WebServer.IsMethodNotAllowed(Unosquare.Labs.EmbedIO.Map,Unosquare.Net.HttpListenerContext,Unosquare.Labs.EmbedIO.IWebModule)
-  name: IsMethodNotAllowed(Map, HttpListenerContext, IWebModule)
-  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_IsMethodNotAllowed_Unosquare_Labs_EmbedIO_Map_Unosquare_Net_HttpListenerContext_Unosquare_Labs_EmbedIO_IWebModule_
-  commentId: M:Unosquare.Labs.EmbedIO.WebServer.IsMethodNotAllowed(Unosquare.Labs.EmbedIO.Map,Unosquare.Net.HttpListenerContext,Unosquare.Labs.EmbedIO.IWebModule)
-  fullName: Unosquare.Labs.EmbedIO.WebServer.IsMethodNotAllowed(Unosquare.Labs.EmbedIO.Map, Unosquare.Net.HttpListenerContext, Unosquare.Labs.EmbedIO.IWebModule)
-  nameWithType: WebServer.IsMethodNotAllowed(Map, HttpListenerContext, IWebModule)
+- uid: Unosquare.Labs.EmbedIO.WebServer.IsMethodNotAllowed(Unosquare.Net.HttpListenerContext,Unosquare.Labs.EmbedIO.IWebModule)
+  name: IsMethodNotAllowed(HttpListenerContext, IWebModule)
+  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_IsMethodNotAllowed_Unosquare_Net_HttpListenerContext_Unosquare_Labs_EmbedIO_IWebModule_
+  commentId: M:Unosquare.Labs.EmbedIO.WebServer.IsMethodNotAllowed(Unosquare.Net.HttpListenerContext,Unosquare.Labs.EmbedIO.IWebModule)
+  fullName: Unosquare.Labs.EmbedIO.WebServer.IsMethodNotAllowed(Unosquare.Net.HttpListenerContext, Unosquare.Labs.EmbedIO.IWebModule)
+  nameWithType: WebServer.IsMethodNotAllowed(HttpListenerContext, IWebModule)
 - uid: Unosquare.Labs.EmbedIO.WebServer.IsMethodNotAllowed*
   name: IsMethodNotAllowed
   href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_IsMethodNotAllowed_
