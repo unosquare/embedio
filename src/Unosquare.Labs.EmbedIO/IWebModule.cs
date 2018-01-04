@@ -63,14 +63,7 @@
         /// <param name="handler">The handler.</param>
         void AddHandler(string path, HttpVerbs verb, Func<HttpListenerContext, CancellationToken, Task<bool>> handler);
 
-        /// <summary>
-        /// Adds a handler that gets called when a path and verb are matched.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="verb">The verb.</param>
-        /// <param name="handler">The handler.</param>
-        /// <param name="resolve405">if set to <c>true</c> [resolve 405].</param>
-        void AddHandler(string path, HttpVerbs verb, Func<HttpListenerContext, CancellationToken, Task<bool>> handler, bool resolve405);
+        Task OnMethodNotAllowed( HttpListenerContext context);
 
         /// <summary>
         /// Runs the watchdog.

@@ -214,6 +214,40 @@
         }
 
         /// <summary>
+        /// Looks for a path that matches the one provided by the context and can resolve a 405 error
+        /// returns true if such path is found otherwise returns false
+        /// </summary>
+        /// <param name="map">The map</param>
+        /// <param name="context"> The HttpListener context</param>
+        /// <param name="module">The module</param>
+        /// <param name="strat">The RoutingStrategy</param>
+        /// <returns>A boolean</returns>
+        public bool IsMethodNotAllowed(Map map, HttpListenerContext context, IWebModule module)
+        {            
+            switch (RoutingStrategy)
+            {
+                case RoutingStrategy.Wildcard:
+                    var path = context.RequestWilcardPath(module.Handlers
+                           .Where(k => k.Path.Contains("/" + ModuleMap.AnyPath))
+                           .Select(s => s.Path.ToLowerInvariant())
+                           .ToArray());
+
+                    return module.Handlers.Exists(x =>
+                        x.Path == path);
+                case RoutingStrategy.Regex:
+                    return module.Handlers.Exists(x =>
+                           string.Equals(
+                               x.Path, context.RequestPath(),
+                               StringComparison.OrdinalIgnoreCase));
+                default:
+                    return module.Handlers.Exists(x =>
+                     string.Equals(
+                         x.Path, context.RequestPath(),
+                         StringComparison.OrdinalIgnoreCase));
+            }
+        }
+
+        /// <summary>
         /// Process HttpListener Request and returns true if it was handled
         /// </summary>
         /// <param name="context">The HttpListenerContext</param>
@@ -221,6 +255,7 @@
         /// <returns>True if it was handled; otherwise, false</returns>
         public async Task<bool> ProcessRequest(HttpListenerContext context, CancellationToken ct)
         {
+            var last = Modules.Last();
             // Iterate though the loaded modules to match up a request and possibly generate a response.
             foreach (var module in Modules)
             {
@@ -241,13 +276,17 @@
                         break;
                 }
 
-                if (handler?.ResponseHandler == null)
+                if (handler?.ResponseHandler == null && IsMethodNotAllowed(handler, context, module))
                 {
-                    // TODO: Complete here, find a 405 if any
+                    await module.OnMethodNotAllowed(context);
+                    return true;
+                }
 
+                if (handler?.ResponseHandler == null )
+                {
                     continue;
                 }
-                
+
                 // Establish the callback
                 var callback = handler.ResponseHandler;
 
@@ -269,6 +308,15 @@
                     if (handleResult)
                     {
                         return true;
+                    }
+
+                    if (module.Name != nameof(EmbedIO.Modules.FallbackModule) )
+                    {
+                        if ((handler.Path.Equals("*") && module.Equals(last)) || IsMethodNotAllowed(handler, context, module))
+                        {
+                            await module.OnMethodNotAllowed(context);
+                            return true;
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -389,7 +437,7 @@
                     StringComparison.OrdinalIgnoreCase) &&
                 x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
         }
-        
+
         private static Map GetHandlerFromRegexPath(HttpListenerContext context, IWebModule module)
         {
             return module.Handlers.FirstOrDefault(x =>
@@ -407,7 +455,7 @@
             return module.Handlers.FirstOrDefault(x =>
                 (x.Path == ModuleMap.AnyPath || x.Path == path) &&
                 (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
-        }
+        }        
 
         /// <summary>
         /// Gets the module registered for the given type.
