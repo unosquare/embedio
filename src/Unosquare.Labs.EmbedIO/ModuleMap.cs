@@ -41,7 +41,5 @@
         /// The delegate to call for the given path and verb.
         /// </summary>
         public Func<HttpListenerContext, CancellationToken, Task<bool>> ResponseHandler { get; set; }
-
-        public bool CanResolve405 { get; set; } = false;
     }
 }

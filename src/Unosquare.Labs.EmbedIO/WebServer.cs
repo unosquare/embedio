@@ -192,6 +192,40 @@
         }
 
         /// <summary>
+        /// Looks for a path that matches the one provided by the context and can resolve a 405 error
+        /// returns true if such path is found otherwise returns false
+        /// </summary>
+        /// <param name="map">The map</param>
+        /// <param name="context"> The HttpListener context</param>
+        /// <param name="module">The module</param>
+        /// <param name="strat">The RoutingStrategy</param>
+        /// <returns>A boolean</returns>
+        public bool IsMethodNotAllowed(Map map, HttpListenerContext context, IWebModule module)
+        {            
+            switch (RoutingStrategy)
+            {
+                case RoutingStrategy.Wildcard:
+                    var path = context.RequestWilcardPath(module.Handlers
+                           .Where(k => k.Path.Contains("/" + ModuleMap.AnyPath))
+                           .Select(s => s.Path.ToLowerInvariant())
+                           .ToArray());
+
+                    return module.Handlers.Exists(x =>
+                        x.Path == path);
+                case RoutingStrategy.Regex:
+                    return module.Handlers.Exists(x =>
+                           string.Equals(
+                               x.Path, context.RequestPath(),
+                               StringComparison.OrdinalIgnoreCase));
+                default:
+                    return module.Handlers.Exists(x =>
+                     string.Equals(
+                         x.Path, context.RequestPath(),
+                         StringComparison.OrdinalIgnoreCase));
+            }
+        }
+
+        /// <summary>
         /// Process HttpListener Request and returns true if it was handled
         /// </summary>
         /// <param name="context">The HttpListenerContext</param>
@@ -199,6 +233,7 @@
         /// <returns>True if it was handled; otherwise, false</returns>
         public async Task<bool> ProcessRequest(HttpListenerContext context, CancellationToken ct)
         {
+            var last = Modules.Last();
             // Iterate though the loaded modules to match up a request and possibly generate a response.
             foreach (var module in Modules)
             {
@@ -219,16 +254,15 @@
                         break;
                 }
 
-                // if is null and if no path that can resolve a 405 is found
-                if (handler?.ResponseHandler == null && !handler.WillResolve405(context, module, RoutingStrategy))
+                if (handler?.ResponseHandler == null && IsMethodNotAllowed(handler, context, module))
                 {
-                    continue;
+                    await module.OnMethodNotAllowed(context);
+                    return true;
                 }
 
-                if (handler == null || (handler.Verb != HttpVerbs.Any && handler.Verb != context.RequestVerb()))
+                if (handler?.ResponseHandler == null )
                 {
-                    await context.HtmlResponseAsync(Responses.ResponseBaseHtml, System.Net.HttpStatusCode.MethodNotAllowed, ct);
-                    return true;
+                    continue;
                 }
 
                 // Establish the callback
@@ -254,10 +288,13 @@
                         return true;
                     }
 
-                    if (handler.CanResolve405 && handler.WillResolve405(context, module, RoutingStrategy))
+                    if (module.Name != nameof(EmbedIO.Modules.FallbackModule) )
                     {
-                        await context.HtmlResponseAsync(Responses.ResponseBaseHtml, System.Net.HttpStatusCode.MethodNotAllowed, ct);
-                        return true;
+                        if ((handler.Path.Equals("*") && module.Equals(last)) || IsMethodNotAllowed(handler, context, module))
+                        {
+                            await module.OnMethodNotAllowed(context);
+                            return true;
+                        }
                     }
                 }
                 catch (Exception ex)

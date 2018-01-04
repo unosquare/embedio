@@ -95,8 +95,7 @@
                                 nameof(WebApiModule));
                             return false;
                     }
-                },
-                true);
+                });
         }
 
         /// <summary>
@@ -106,7 +105,7 @@
         /// The name.
         /// </value>
         public override string Name => "Web API Module";
-
+        
         /// <summary>
         /// Gets the number of controller objects registered in this API
         /// </summary>
@@ -251,7 +250,7 @@
             }
 
             return null;
-        }
+        }        
     }
 
     /// <summary>
