@@ -253,7 +253,6 @@
         /// <returns>True if it was handled; otherwise, false</returns>
         public async Task<bool> ProcessRequest(HttpListenerContext context, CancellationToken ct)
         {
-            var last = Modules.Last();
             // Iterate though the loaded modules to match up a request and possibly generate a response.
             foreach (var module in Modules)
             {
@@ -474,28 +473,29 @@
 
                 var processResult = await ProcessRequest(context, ct);
 
-                var methodExists = Modules.All(p =>
-                   {
-                       return !IsMethodNotAllowed(context, p);
-                   });
-
-                if (methodExists)
-                {
-                    if (OnMethodNotAllowed != null)
-                        OnMethodNotAllowed(context);
-                    else
-                    await context.HtmlResponseAsync(Responses.Response405Html, System.Net.HttpStatusCode.MethodNotAllowed, ct);
-                }
-
                 // Return a 404 (Not Found) response if no module/handler handled the response.
-                else if (processResult == false)
+               if (processResult == false)
                 {
-                    "No module generated a response. Sending 404 - Not Found".Error();
+                    var methodExists = Modules.ToList().Exists(p =>               
+                        IsMethodNotAllowed(context, p)
+                    );
 
-                    if (OnNotFound != null)
-                        OnNotFound(context);
+                    if (methodExists)
+                    {
+                        if (OnMethodNotAllowed != null)
+                            OnMethodNotAllowed(context);
+                        else
+                            await context.HtmlResponseAsync(Responses.Response405Html, System.Net.HttpStatusCode.MethodNotAllowed, ct);
+                    }
                     else
-                        await context.HtmlResponseAsync(Responses.Response404Html, System.Net.HttpStatusCode.NotFound, ct);
+                    {
+                        "No module generated a response. Sending 404 - Not Found".Error();
+
+                        if (OnNotFound != null)
+                            OnNotFound(context);
+                        else
+                            await context.HtmlResponseAsync(Responses.Response404Html, System.Net.HttpStatusCode.NotFound, ct);
+                    }
                 }
             }
             catch (Exception ex)
