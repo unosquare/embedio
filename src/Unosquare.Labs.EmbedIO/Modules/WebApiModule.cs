@@ -54,47 +54,48 @@
         public WebApiModule()
         {
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, async (context, ct) =>
-            {
-                var verb = context.RequestVerb();
-                var regExRouteParams = new Dictionary<string, object>();
-                var path = Server.RoutingStrategy == RoutingStrategy.Wildcard
-                    ? NormalizeWildcardPath(verb, context)
-                    : NormalizeRegexPath(verb, context, regExRouteParams);
-
-                // return a non-math if no handler hold the route
-                if (path == null) return false;
-
-                // search the path and verb
-                if (!_delegateMap.TryGetValue(path, out var methods) || !methods.TryGetValue(verb, out var methodPair))
-                    throw new InvalidOperationException($"No method found for path {path} and verb {verb}.");
-
-                // ensure module does not return cached responses
-                context.NoCache();
-
-                // Log the handler to be use
-                $"Handler: {methodPair.MethodCache.MethodInfo.DeclaringType?.FullName}.{methodPair.MethodCache.MethodInfo.Name}"
-                    .Debug(nameof(WebApiModule));
-
-                // Initially, only the server and context objects will be available
-                var args = new object[methodPair.MethodCache.AdditionalParameters.Count + 2];
-                args[0] = Server;
-                args[1] = context;
-
-                // Select the routing strategy
-                switch (Server.RoutingStrategy)
                 {
-                    case RoutingStrategy.Regex:
-                        methodPair.ParseArguments(regExRouteParams, args);
-                        return await methodPair.Invoke(args);
-                    case RoutingStrategy.Wildcard:
-                        return await methodPair.Invoke(args);
-                    default:
-                        // Log the handler to be used
-                        $"Routing strategy '{Server.RoutingStrategy}' is not supported by this module.".Warn(
-                            nameof(WebApiModule));
-                        return false;
-                }
-            });
+                    var verb = context.RequestVerb();
+                    var regExRouteParams = new Dictionary<string, object>();
+                    var path = Server.RoutingStrategy == RoutingStrategy.Wildcard
+                        ? NormalizeWildcardPath(verb, context)
+                        : NormalizeRegexPath(verb, context, regExRouteParams);
+
+                    // return a non-math if no handler hold the route
+                    if (path == null) return false;
+
+                    // search the path and verb
+                    if (!_delegateMap.TryGetValue(path, out var methods) ||
+                        !methods.TryGetValue(verb, out var methodPair))
+                        throw new InvalidOperationException($"No method found for path {path} and verb {verb}.");
+
+                    // ensure module does not return cached responses
+                    context.NoCache();
+
+                    // Log the handler to be use
+                    $"Handler: {methodPair.MethodCache.MethodInfo.DeclaringType?.FullName}.{methodPair.MethodCache.MethodInfo.Name}"
+                        .Debug(nameof(WebApiModule));
+
+                    // Initially, only the server and context objects will be available
+                    var args = new object[methodPair.MethodCache.AdditionalParameters.Count + 2];
+                    args[0] = Server;
+                    args[1] = context;
+
+                    // Select the routing strategy
+                    switch (Server.RoutingStrategy)
+                    {
+                        case RoutingStrategy.Regex:
+                            methodPair.ParseArguments(regExRouteParams, args);
+                            return await methodPair.Invoke(args);
+                        case RoutingStrategy.Wildcard:
+                            return await methodPair.Invoke(args);
+                        default:
+                            // Log the handler to be used
+                            $"Routing strategy '{Server.RoutingStrategy}' is not supported by this module.".Warn(
+                                nameof(WebApiModule));
+                            return false;
+                    }
+                });
         }
 
         /// <summary>
@@ -104,7 +105,7 @@
         /// The name.
         /// </value>
         public override string Name => "Web API Module";
-
+        
         /// <summary>
         /// Gets the number of controller objects registered in this API
         /// </summary>
@@ -249,7 +250,7 @@
             }
 
             return null;
-        }
+        }        
     }
 
     /// <summary>

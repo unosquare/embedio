@@ -100,8 +100,8 @@
 
             if (handler == null)
                 throw new ArgumentNullException(nameof(handler));
-
-            Handlers.Add(new Map {Path = path, Verb = verb, ResponseHandler = handler});
+            
+            Handlers.Add(new Map { Path = path, Verb = verb, ResponseHandler = handler});
         }
 
         /// <summary>
