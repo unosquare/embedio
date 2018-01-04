@@ -56,12 +56,14 @@
         TimeSpan WatchdogInterval { get; set; }
 
         /// <summary>
-        /// Adds a handler that gets called when a path and verb are matched.
+        /// Adds a handler that gets called when a path and verb are matched. The handler won't response HTTP 405.
         /// </summary>
         /// <param name="path">The path.</param>
         /// <param name="verb">The verb.</param>
         /// <param name="handler">The handler.</param>
         void AddHandler(string path, HttpVerbs verb, Func<HttpListenerContext, CancellationToken, Task<bool>> handler);
+
+        Task OnMethodNotAllowed( HttpListenerContext context);
 
         /// <summary>
         /// Runs the watchdog.
