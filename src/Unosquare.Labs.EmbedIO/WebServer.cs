@@ -214,38 +214,6 @@
         }
 
         /// <summary>
-        /// Looks for a path that matches the one provided by the context
-        /// returns true if such path is found otherwise returns false
-        /// </summary>
-        /// <param name="context"> The HttpListener context</param>
-        /// <param name="module">The module</param>
-        /// <returns>A boolean</returns>
-        public bool IsMethodNotAllowed(HttpListenerContext context, IWebModule module)
-        {            
-            switch (RoutingStrategy)
-            {
-                case RoutingStrategy.Wildcard:
-                    var path = context.RequestWilcardPath(module.Handlers
-                           .Where(k => k.Path.Contains("/" + ModuleMap.AnyPath))
-                           .Select(s => s.Path.ToLowerInvariant())
-                           .ToArray());
-
-                    return module.Handlers.Exists(x =>
-                        x.Path == path);
-                case RoutingStrategy.Regex:
-                    return module.Handlers.Exists(x =>
-                           string.Equals(
-                               x.Path, context.RequestPath(),
-                               StringComparison.OrdinalIgnoreCase));
-                default:
-                    return module.Handlers.Exists(x =>
-                     string.Equals(
-                         x.Path, context.RequestPath(),
-                         StringComparison.OrdinalIgnoreCase));
-            }
-        }
-
-        /// <summary>
         /// Process HttpListener Request and returns true if it was handled
         /// </summary>
         /// <param name="context">The HttpListenerContext</param>
@@ -476,26 +444,12 @@
                 // Return a 404 (Not Found) response if no module/handler handled the response.
                if (processResult == false)
                 {
-                    var methodExists = Modules.ToList().Exists(p =>               
-                        IsMethodNotAllowed(context, p)
-                    );
+                    "No module generated a response. Sending 404 - Not Found".Error();
 
-                    if (methodExists)
-                    {
-                        if (OnMethodNotAllowed != null)
-                            OnMethodNotAllowed(context);
-                        else
-                            await context.HtmlResponseAsync(Responses.Response405Html, System.Net.HttpStatusCode.MethodNotAllowed, ct);
-                    }
+                    if (OnNotFound != null)
+                        OnNotFound(context);
                     else
-                    {
-                        "No module generated a response. Sending 404 - Not Found".Error();
-
-                        if (OnNotFound != null)
-                            OnNotFound(context);
-                        else
-                            await context.HtmlResponseAsync(Responses.Response404Html, System.Net.HttpStatusCode.NotFound, ct);
-                    }
+                        await context.HtmlResponseAsync(Responses.Response404Html, System.Net.HttpStatusCode.NotFound, ct);                    
                 }
             }
             catch (Exception ex)
