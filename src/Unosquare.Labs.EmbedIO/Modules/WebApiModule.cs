@@ -12,6 +12,7 @@
     using System.Net;
 #else
     using Net;
+
 #endif
 
     /// <summary>
@@ -54,57 +55,57 @@
         public WebApiModule()
         {
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, async (context, ct) =>
+            {
+                var verb = context.RequestVerb();
+                var regExRouteParams = new Dictionary<string, object>();
+                var path = Server.RoutingStrategy == RoutingStrategy.Wildcard
+                    ? NormalizeWildcardPath(verb, context)
+                    : NormalizeRegexPath(verb, context, regExRouteParams);
+
+                // return a non-math if no handler hold the route
+                if (path == null)
                 {
-                    var verb = context.RequestVerb();
-                    var regExRouteParams = new Dictionary<string, object>();
-                    var path = Server.RoutingStrategy == RoutingStrategy.Wildcard
-                        ? NormalizeWildcardPath(verb, context)
-                        : NormalizeRegexPath(verb, context, regExRouteParams);
-
-                    // return a non-math if no handler hold the route
-                    if (path == null)
+                    if (IsMethodNotAllowed(context))
                     {
-                        if (IsMethodNotAllowed(context))
-                        {                            
-                            await Server.OnMethodNotAllowed(context);
-                            return true;
-                        }
-                        else
-                            return false;
+                        await Server.OnMethodNotAllowed(context);
+                        return true;
                     }
+                    else
+                        return false;
+                }
 
-                    // search the path and verb
-                    if (!_delegateMap.TryGetValue(path, out var methods) ||
-                        !methods.TryGetValue(verb, out var methodPair))
-                        throw new InvalidOperationException($"No method found for path {path} and verb {verb}.");
+                // search the path and verb
+                if (!_delegateMap.TryGetValue(path, out var methods) ||
+                    !methods.TryGetValue(verb, out var methodPair))
+                    throw new InvalidOperationException($"No method found for path {path} and verb {verb}.");
 
-                    // ensure module does not return cached responses
-                    context.NoCache();
+                // ensure module does not return cached responses
+                context.NoCache();
 
-                    // Log the handler to be use
-                    $"Handler: {methodPair.MethodCache.MethodInfo.DeclaringType?.FullName}.{methodPair.MethodCache.MethodInfo.Name}"
-                        .Debug(nameof(WebApiModule));
+                // Log the handler to be use
+                $"Handler: {methodPair.MethodCache.MethodInfo.DeclaringType?.FullName}.{methodPair.MethodCache.MethodInfo.Name}"
+                    .Debug(nameof(WebApiModule));
 
-                    // Initially, only the server and context objects will be available
-                    var args = new object[methodPair.MethodCache.AdditionalParameters.Count + 2];
-                    args[0] = Server;
-                    args[1] = context;
+                // Initially, only the server and context objects will be available
+                var args = new object[methodPair.MethodCache.AdditionalParameters.Count + 2];
+                args[0] = Server;
+                args[1] = context;
 
-                    // Select the routing strategy
-                    switch (Server.RoutingStrategy)
-                    {
-                        case RoutingStrategy.Regex:
-                            methodPair.ParseArguments(regExRouteParams, args);
-                            return await methodPair.Invoke(args);
-                        case RoutingStrategy.Wildcard:
-                            return await methodPair.Invoke(args);
-                        default:
-                            // Log the handler to be used
-                            $"Routing strategy '{Server.RoutingStrategy}' is not supported by this module.".Warn(
-                                nameof(WebApiModule));
-                            return false;
-                    }
-                });
+                // Select the routing strategy
+                switch (Server.RoutingStrategy)
+                {
+                    case RoutingStrategy.Regex:
+                        methodPair.ParseArguments(regExRouteParams, args);
+                        return await methodPair.Invoke(args);
+                    case RoutingStrategy.Wildcard:
+                        return await methodPair.Invoke(args);
+                    default:
+                        // Log the handler to be used
+                        $"Routing strategy '{Server.RoutingStrategy}' is not supported by this module.".Warn(
+                            nameof(WebApiModule));
+                        return false;
+                }
+            });
         }
 
         /// <summary>
@@ -114,7 +115,7 @@
         /// The name.
         /// </value>
         public override string Name => "Web API Module";
-        
+
         /// <summary>
         /// Gets the number of controller objects registered in this API
         /// </summary>
@@ -215,7 +216,9 @@
 
             foreach (var route in _delegateMap.Keys)
             {
-                var urlParam = EmbedIO.Extensions.RequestRegexUrlParams(path, route, () => !_delegateMap[route].Keys.Contains(verb));
+                var urlParam =
+                    EmbedIO.Extensions.RequestRegexUrlParams(path, route,
+                        () => !_delegateMap[route].Keys.Contains(verb));
 
                 if (urlParam == null) continue;
 
@@ -259,41 +262,41 @@
             }
 
             return null;
-        }    
-        
-    /// <summary>
-    /// Looks for a path that matches the one provided by the context
-    /// returns true if such path is found otherwise returns false
-    /// </summary>
-    /// <param name="context"> The HttpListener context</param>
-    /// <returns>A boolean</returns>
-    private bool IsMethodNotAllowed(HttpListenerContext context)
-    {
-        var path = string.Empty;
-
-        switch (Server.RoutingStrategy)
-        {
-            case RoutingStrategy.Wildcard:
-                path = context.RequestWilcardPath(_delegateMap.Keys
-                .Where(k => k.Contains("/" + ModuleMap.AnyPath))
-                .Select(s => s.ToLowerInvariant())
-                .ToArray());
-                break;
-            case RoutingStrategy.Regex:
-                path = context.Request.Url.LocalPath;
-                foreach (var route in _delegateMap.Keys)
-                {
-                    if (EmbedIO.Extensions.RequestRegexUrlParams(path, route) != null) return true;
-                }
-                
-                return false;
-            default:
-                path = context.RequestPath();
-                break;
         }
 
-        return _delegateMap.ContainsKey(path);
-    }
+        /// <summary>
+        /// Looks for a path that matches the one provided by the context
+        /// returns true if such path is found otherwise returns false
+        /// </summary>
+        /// <param name="context"> The HttpListener context</param>
+        /// <returns>A boolean</returns>
+        private bool IsMethodNotAllowed(HttpListenerContext context)
+        {
+            var path = string.Empty;
+
+            switch (Server.RoutingStrategy)
+            {
+                case RoutingStrategy.Wildcard:
+                    path = context.RequestWilcardPath(_delegateMap.Keys
+                        .Where(k => k.Contains("/" + ModuleMap.AnyPath))
+                        .Select(s => s.ToLowerInvariant())
+                        .ToArray());
+                    break;
+                case RoutingStrategy.Regex:
+                    path = context.Request.Url.LocalPath;
+                    foreach (var route in _delegateMap.Keys)
+                    {
+                        if (EmbedIO.Extensions.RequestRegexUrlParams(path, route) != null) return true;
+                    }
+
+                    return false;
+                default:
+                    path = context.RequestPath();
+                    break;
+            }
+
+            return _delegateMap.ContainsKey(path);
+        }
     }
 
     /// <summary>

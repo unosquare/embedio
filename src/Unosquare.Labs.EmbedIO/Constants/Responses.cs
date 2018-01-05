@@ -15,7 +15,7 @@
         /// <summary>
         /// Default Status Http 405 response output
         /// </summary>
-        internal const string Response405Html = "<html><head></head><body><h1>405 - Not Allowed</h1></body></html>";
+        internal const string Response405Html = "<html><head></head><body><h1>405 - Method Not Allowed</h1></body></html>";
 
         /// <summary>
         /// Default Http Status 500 response output

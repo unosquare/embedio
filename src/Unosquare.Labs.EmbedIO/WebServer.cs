@@ -94,7 +94,7 @@
         /// <value>
         /// The on method not allowed.
         /// </value>
-        public Func<HttpListenerContext,Task<bool>> OnMethodNotAllowed { get; set; } = (ctx) =>
+        public Func<HttpListenerContext,Task<bool>> OnMethodNotAllowed { get; set; } = ctx =>
             ctx.HtmlResponseAsync(Responses.Response405Html, System.Net.HttpStatusCode.MethodNotAllowed);
 
         /// <summary>
@@ -103,7 +103,7 @@
         /// <value>
         /// The on not found.
         /// </value>
-        public Func<HttpListenerContext, Task<bool>> OnNotFound { get; set; } = (ctx) =>
+        public Func<HttpListenerContext, Task<bool>> OnNotFound { get; set; } = ctx =>
             ctx.HtmlResponseAsync(Responses.Response404Html, System.Net.HttpStatusCode.NotFound);
 
         /// <summary>
