@@ -89,18 +89,13 @@
         }
 
         /// <summary>
-        /// HTTP Response delegate.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        public delegate void Response(HttpListenerContext context);
-
-        /// <summary>
         /// The on method not allowed
         /// </summary>
         /// <value>
         /// The on method not allowed.
         /// </value>
-        public Response OnMethodNotAllowed { get; set; }
+        public Func<HttpListenerContext,Task<bool>> OnMethodNotAllowed { get; set; } = (ctx) =>
+            ctx.HtmlResponseAsync(Responses.Response405Html, System.Net.HttpStatusCode.MethodNotAllowed);
 
         /// <summary>
         /// The on not found
@@ -108,7 +103,8 @@
         /// <value>
         /// The on not found.
         /// </value>
-        public Response OnNotFound { get; set; }
+        public Func<HttpListenerContext, Task<bool>> OnNotFound { get; set; } = (ctx) =>
+            ctx.HtmlResponseAsync(Responses.Response404Html, System.Net.HttpStatusCode.NotFound);
 
         /// <summary>
         /// Gets the underlying HTTP listener.
@@ -446,10 +442,7 @@
                 {
                     "No module generated a response. Sending 404 - Not Found".Error();
 
-                    if (OnNotFound != null)
-                        OnNotFound(context);
-                    else
-                        await context.HtmlResponseAsync(Responses.Response404Html, System.Net.HttpStatusCode.NotFound, ct);                    
+                    await OnNotFound(context);                 
                 }
             }
             catch (Exception ex)
