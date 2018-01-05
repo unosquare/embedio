@@ -1444,18 +1444,6 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebApiModule.ControllersCount
   fullName: Unosquare.Labs.EmbedIO.Modules.WebApiModule.ControllersCount
   nameWithType: WebApiModule.ControllersCount
-- uid: Unosquare.Labs.EmbedIO.Modules.WebApiModule.IsMethodNotAllowed(Unosquare.Net.HttpListenerContext)
-  name: IsMethodNotAllowed(HttpListenerContext)
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiModule.html#Unosquare_Labs_EmbedIO_Modules_WebApiModule_IsMethodNotAllowed_Unosquare_Net_HttpListenerContext_
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiModule.IsMethodNotAllowed(Unosquare.Net.HttpListenerContext)
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiModule.IsMethodNotAllowed(Unosquare.Net.HttpListenerContext)
-  nameWithType: WebApiModule.IsMethodNotAllowed(HttpListenerContext)
-- uid: Unosquare.Labs.EmbedIO.Modules.WebApiModule.IsMethodNotAllowed*
-  name: IsMethodNotAllowed
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiModule.html#Unosquare_Labs_EmbedIO_Modules_WebApiModule_IsMethodNotAllowed_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebApiModule.IsMethodNotAllowed
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiModule.IsMethodNotAllowed
-  nameWithType: WebApiModule.IsMethodNotAllowed
 - uid: Unosquare.Labs.EmbedIO.Modules.WebApiModule.Name
   name: Name
   href: api/Unosquare.Labs.EmbedIO.Modules.WebApiModule.html#Unosquare_Labs_EmbedIO_Modules_WebApiModule_Name
@@ -2158,12 +2146,6 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.WebServer.RegisterModule
   fullName: Unosquare.Labs.EmbedIO.WebServer.RegisterModule
   nameWithType: WebServer.RegisterModule
-- uid: Unosquare.Labs.EmbedIO.WebServer.Response
-  name: WebServer.Response
-  href: api/Unosquare.Labs.EmbedIO.WebServer.Response.html
-  commentId: T:Unosquare.Labs.EmbedIO.WebServer.Response
-  fullName: Unosquare.Labs.EmbedIO.WebServer.Response
-  nameWithType: WebServer.Response
 - uid: Unosquare.Labs.EmbedIO.WebServer.RoutingStrategy
   name: RoutingStrategy
   href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_RoutingStrategy
