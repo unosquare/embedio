@@ -40,21 +40,10 @@
             _cts.Cancel();
         }
 
-        /// <summary>
-        /// Gets the name of this module.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
+        /// <inheritdoc/>
         public abstract string Name { get; }
 
-        /// <summary>
-        /// Gets the registered handlers.
-        /// Use the AddHandler method to register Handlers
-        /// </summary>
-        /// <value>
-        /// The handlers.
-        /// </value>
+        /// <inheritdoc/>
         public ModuleMap Handlers { get; protected set; }
 
         /// <summary>
