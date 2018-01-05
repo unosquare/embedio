@@ -65,11 +65,9 @@
                     if (path == null)
                     {
                         if (IsMethodNotAllowed(context))
-                        {
-                            if (Server.OnMethodNotAllowed != null)
-                                Server.OnMethodNotAllowed(context);
-                            else
-                                await context.HtmlResponseAsync(Responses.Response405Html, System.Net.HttpStatusCode.MethodNotAllowed, ct);
+                        {                            
+                            await Server.OnMethodNotAllowed(context);
+                            return true;
                         }
                         else
                             return false;
@@ -107,44 +105,6 @@
                             return false;
                     }
                 });
-        }
-
-        /// <summary>
-        /// Looks for a path that matches the one provided by the context
-        /// returns true if such path is found otherwise returns false
-        /// </summary>
-        /// <param name="context"> The HttpListener context</param>
-        /// <returns>A boolean</returns>
-        public bool IsMethodNotAllowed(HttpListenerContext context)
-        {
-            var path = string.Empty;
-
-            switch (Server.RoutingStrategy)
-            {
-                case RoutingStrategy.Wildcard:
-                    path = context.RequestWilcardPath(_delegateMap.Keys
-                    .Where(k => k.Contains("/" + ModuleMap.AnyPath))
-                    .Select(s => s.ToLowerInvariant())
-                    .ToArray());
-                    break;
-                case RoutingStrategy.Regex:
-                    path = context.Request.Url.LocalPath;
-                    foreach (var route in _delegateMap.Keys)
-                    {
-                        var urlParam = EmbedIO.Extensions.RequestRegexUrlParams(path, route);
-
-                        if (urlParam == null) continue;
-
-                        else return true;
-                    }
-
-                return false;
-                default:
-                    path = context.RequestPath();
-                break;
-            }
-
-            return _delegateMap.ContainsKey(path);
         }
 
         /// <summary>
@@ -299,7 +259,41 @@
             }
 
             return null;
-        }        
+        }    
+        
+    /// <summary>
+    /// Looks for a path that matches the one provided by the context
+    /// returns true if such path is found otherwise returns false
+    /// </summary>
+    /// <param name="context"> The HttpListener context</param>
+    /// <returns>A boolean</returns>
+    private bool IsMethodNotAllowed(HttpListenerContext context)
+    {
+        var path = string.Empty;
+
+        switch (Server.RoutingStrategy)
+        {
+            case RoutingStrategy.Wildcard:
+                path = context.RequestWilcardPath(_delegateMap.Keys
+                .Where(k => k.Contains("/" + ModuleMap.AnyPath))
+                .Select(s => s.ToLowerInvariant())
+                .ToArray());
+                break;
+            case RoutingStrategy.Regex:
+                path = context.Request.Url.LocalPath;
+                foreach (var route in _delegateMap.Keys)
+                {
+                    if (EmbedIO.Extensions.RequestRegexUrlParams(path, route) != null) return true;
+                }
+                
+                return false;
+            default:
+                path = context.RequestPath();
+                break;
+        }
+
+        return _delegateMap.ContainsKey(path);
+    }
     }
 
     /// <summary>
