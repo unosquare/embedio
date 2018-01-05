@@ -40,22 +40,5 @@ namespace Unosquare.Labs.EmbedIO.Tests
                 Assert.AreEqual("dasdasasda", call);
             }
         }
-
-        public class RegexTestHttp405 : RegexRoutingTest
-        {
-            [Test]
-            public async Task ValidPathInvalidMethod_Returns405()
-            {
-                using (var client = new HttpClient())
-                {
-                    var request = new HttpRequestMessage(HttpMethod.Delete,$"{WebServerUrl}echo");
-
-                    var response = await client.SendAsync(request);
-
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.MethodNotAllowed);
-                }
-
-            }
-        }
     }
 }

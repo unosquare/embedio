@@ -24,15 +24,6 @@
 
                 return Task.FromResult(true);
             });
-
-
-            AddHandler("/echo", Constants.HttpVerbs.Get, (ctx, ct) =>
-            {
-                var buffer = Encoding.UTF8.GetBytes("data");
-                ctx.Response.OutputStream.Write(buffer, 0, buffer.Length);
-
-                return Task.FromResult(true);
-            });
         }
 
         public override string Name => nameof(TestRoutingModule);

@@ -84,5 +84,22 @@
                                person.MainSkill + "/" + person.Age);
             }
         }
+
+        public class Http405 : RegexWebApiModuleTest
+        {
+            [Test]
+            public async Task ValidPathInvalidMethod_Returns405()
+            {
+                using (var client = new HttpClient())
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Delete, WebServerUrl + TestRegexController.RelativePath + "regex/1");
+
+                    var response = await client.SendAsync(request);
+
+                    Assert.AreEqual(response.StatusCode, HttpStatusCode.MethodNotAllowed);
+                }
+
+            }
+        }
     }
 }
