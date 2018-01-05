@@ -196,8 +196,6 @@
                     await request.GetStringAsync(url);
                 }
             });
-
-            // TODO: Check HTTP Status Code
         }
 
         [TestCase("iso-8859-1")]
