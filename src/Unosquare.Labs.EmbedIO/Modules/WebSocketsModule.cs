@@ -12,6 +12,7 @@
 #if NET47
     using System.Net.WebSockets;
     using System.Text.RegularExpressions;
+    using System.Net;
 #else
     using Net;
 #endif
@@ -57,7 +58,19 @@
 
                 // match the request path
                 if (!_serverMap.ContainsKey(path))
-                    return false;
+                {
+                    path = context.RequestWilcardPath(_serverMap.Keys
+                        .Where(k => k.Contains("/" + ModuleMap.AnyPath))
+                        .Select(s => s.ToLowerInvariant())
+                        .ToArray());
+
+                    if (_serverMap.ContainsKey(path))
+                    {
+                        await _serverMap[path].AcceptWebSocket(context, ct);
+                        return true;
+                    }
+                    else return false;
+                }
 
                 // Accept the WebSocket -- this is a blocking method until the WebSocketCloses
                 await _serverMap[path].AcceptWebSocket(context, ct);
