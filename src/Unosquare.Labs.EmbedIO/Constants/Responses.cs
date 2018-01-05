@@ -12,6 +12,9 @@
         /// </summary>
         internal const string Response404Html = "<html><head></head><body><h1>404 - Not Found</h1></body></html>";
 
+        /// <summary>
+        /// Default Status Http 405 response output
+        /// </summary>
         internal const string Response405Html = "<html><head></head><body><h1>405 - Not Allowed</h1></body></html>";
 
         /// <summary>
