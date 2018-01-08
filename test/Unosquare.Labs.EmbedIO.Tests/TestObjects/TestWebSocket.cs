@@ -9,6 +9,7 @@ using Unosquare.Swan.Formatters;
 
 namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
+    [WebSocketHandler("/test/")]
     public class TestWebSocketBase : WebSocketsServer
     {
         public System.Action<WebSocketContext> OnMessageParams;
