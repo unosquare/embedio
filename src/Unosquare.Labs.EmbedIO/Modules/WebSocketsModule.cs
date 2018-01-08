@@ -64,13 +64,10 @@
                         .Select(s => s.ToLowerInvariant())
                         .ToArray());
 
-                    if (_serverMap.ContainsKey(path))
+                    if (!_serverMap.ContainsKey(path))
                     {
-                        await _serverMap[path].AcceptWebSocket(context, ct);
-                        return true;
+                        return false;
                     }
-
-                    return false;
                 }
 
                 // Accept the WebSocket -- this is a blocking method until the WebSocketCloses
