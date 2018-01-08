@@ -589,6 +589,12 @@ references:
   commentId: M:Unosquare.Labs.EmbedIO.Extensions.RequestRegexUrlParams(Unosquare.Net.HttpListenerContext,System.String)
   fullName: Unosquare.Labs.EmbedIO.Extensions.RequestRegexUrlParams(Unosquare.Net.HttpListenerContext, System.String)
   nameWithType: Extensions.RequestRegexUrlParams(HttpListenerContext, String)
+- uid: Unosquare.Labs.EmbedIO.Extensions.RequestRegexUrlParams(Unosquare.Net.WebSocketContext,System.String)
+  name: RequestRegexUrlParams(WebSocketContext, String)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestRegexUrlParams_Unosquare_Net_WebSocketContext_System_String_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.RequestRegexUrlParams(Unosquare.Net.WebSocketContext,System.String)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.RequestRegexUrlParams(Unosquare.Net.WebSocketContext, System.String)
+  nameWithType: Extensions.RequestRegexUrlParams(WebSocketContext, String)
 - uid: Unosquare.Labs.EmbedIO.Extensions.RequestRegexUrlParams*
   name: RequestRegexUrlParams
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestRegexUrlParams_
