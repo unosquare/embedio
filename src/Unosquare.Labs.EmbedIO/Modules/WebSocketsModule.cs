@@ -69,7 +69,8 @@
                         await _serverMap[path].AcceptWebSocket(context, ct);
                         return true;
                     }
-                    else return false;
+
+                    return false;
                 }
 
                 // Accept the WebSocket -- this is a blocking method until the WebSocketCloses
