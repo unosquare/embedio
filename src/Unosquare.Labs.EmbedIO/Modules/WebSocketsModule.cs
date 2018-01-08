@@ -65,12 +65,7 @@
             });
         }
 
-        /// <summary>
-        /// Gets the name of this module.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
+        /// <inheritdoc />
         public override string Name => nameof(WebSocketsModule).Humanize();
 
         /// <summary>

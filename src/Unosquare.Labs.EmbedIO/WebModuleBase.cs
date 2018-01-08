@@ -11,10 +11,11 @@
 #endif
 
     /// <summary>
-    /// Base class to define custom web modules
-    /// inherit from this class and use the AddHandler Method to register your method calls
+    /// Base class to define custom web modules.
+    /// Inherit from this class and use the AddHandler Method to register your method calls.
     /// </summary>
-    public abstract class WebModuleBase : IWebModule
+    public abstract class WebModuleBase 
+        : IWebModule
     {
         private readonly CancellationTokenSource _cts = new CancellationTokenSource();
 
@@ -45,43 +46,17 @@
 
         /// <inheritdoc/>
         public ModuleMap Handlers { get; protected set; }
-
-        /// <summary>
-        /// Gets the associated Web Server object.
-        /// This property is automatically set when the module is registered
-        /// </summary>
-        /// <value>
-        /// The server.
-        /// </value>
+        
+        /// <inheritdoc/>
         public WebServer Server { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is watchdog enabled.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is watchdog enabled; otherwise, <c>false</c>.
-        /// </value>
+        
+        /// <inheritdoc/>
         public bool IsWatchdogEnabled { get; set; } = false;
-
-        /// <summary>
-        /// Gets or sets the watchdog interval.
-        /// </summary>
-        /// <value>
-        /// The watchdog interval.
-        /// </value>
+        
+        /// <inheritdoc/>
         public TimeSpan WatchdogInterval { get; set; } = TimeSpan.FromSeconds(30);
-
-        /// <summary>
-        /// Adds a method handler for a given path and verb
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="verb">The verb.</param>
-        /// <param name="handler">The handler.</param>
-        /// <exception cref="System.ArgumentNullException">
-        /// path
-        /// or
-        /// handler
-        /// </exception>
+        
+        /// <inheritdoc/>
         public void AddHandler(string path, HttpVerbs verb, Func<HttpListenerContext, CancellationToken, Task<bool>> handler)
         {
             if (path == null)
@@ -92,10 +67,8 @@
 
             Handlers.Add(new Map {Path = path, Verb = verb, ResponseHandler = handler});
         }
-
-        /// <summary>
-        /// Runs the watchdog.
-        /// </summary>
+        
+        /// <inheritdoc/>
         public virtual void RunWatchdog()
         {
             // do nothing
