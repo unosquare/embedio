@@ -72,7 +72,7 @@
                         break;
                 }
 
-                if (!path.Equals(string.Empty) && !_serverMap.ContainsKey(path))
+                if (String.IsNullOrEmpty(path) && !_serverMap.ContainsKey(path))
                 {
                     return false;
                 }
