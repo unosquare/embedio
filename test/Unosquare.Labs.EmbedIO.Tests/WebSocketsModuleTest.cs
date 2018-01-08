@@ -24,7 +24,7 @@
                 ws.RegisterModule(new WebSocketsModule());
                 ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocket>();
                 ws.Module<WebSocketsModule>().RegisterWebSocketsServer<BigDataWebSocket>();
-            }, Constants.RoutingStrategy.Wildcard)
+            }, Constants.RoutingStrategy.Regex)
         {
         }
 
