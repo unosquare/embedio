@@ -13,6 +13,7 @@
     using System.Threading.Tasks;
 #if NET47
     using System.Net;
+    using System.Net.WebSockets;
 
 #else
     using Net;
@@ -264,6 +265,15 @@
                 ? match.Groups[1].Value.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries)
                 : null;
         }
+
+        /// <summary>
+        /// Requests the regex URL parameters.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="basePath">The base path.</param>
+        /// <returns>The params from the request.</returns>
+        public static Dictionary<string,object> RequestRegexUrlParams ( this WebSocketContext context, string basePath)
+          => RequestRegexUrlParams(context.RequestUri.LocalPath, basePath);
 
         /// <summary>
         /// Requests the regex URL parameters.
