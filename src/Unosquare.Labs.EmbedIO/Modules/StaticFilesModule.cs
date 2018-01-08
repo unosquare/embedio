@@ -45,7 +45,7 @@
         private const int MaxEntryLength = 50;
 
         /// <summary>
-        /// How much characters used after time in DirectoryBrowser
+        /// How many characters used after time in DirectoryBrowser
         /// </summary>
         private const int SizeIndent = 20;
 

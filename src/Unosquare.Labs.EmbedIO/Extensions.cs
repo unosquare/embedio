@@ -384,7 +384,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="data">The data.</param>
-        /// <returns>A true value of type ref=JsonResponseAsync"</returns>
+        /// <returns>A <c>true</c> value of type ref=JsonResponseAsync"</returns>
         public static Task<bool> JsonResponseAsync(this HttpListenerContext context, object data)
             => context.JsonResponseAsync(Json.Serialize(data));
 
@@ -392,19 +392,18 @@
         /// Outputs a Json Response given a Json string
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="json">The json.</param>
-        /// <returns>
-        /// A true value of type ref=JsonResponseAsync"</returns>
+        /// <param name="json">The JSON.</param>
+        /// <returns> A <c>true</c> value of type ref=JsonResponseAsync"</returns>
         public static bool JsonResponse(this HttpListenerContext context, string json)
             => context.JsonResponseAsync(json).GetAwaiter().GetResult();
 
         /// <summary>
-        /// Outputs async a Json Response given a Json string
+        /// Outputs async a JSON Response given a JSON string
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="json">The json.</param>
+        /// <param name="json">The JSON.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>A task for write the output stream</returns>
+        /// <returns>A task for writing the output stream</returns>
         public static Task<bool> JsonResponseAsync(
             this HttpListenerContext context,
             string json,
@@ -420,7 +419,7 @@
         /// <param name="htmlContent">Content of the HTML.</param>
         /// <param name="statusCode">The status code.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>A task for write the output stream</returns>
+        /// <returns>A task for writing the output stream</returns>
         public static Task<bool> HtmlResponseAsync(
             this HttpListenerContext context,
             string htmlContent,
@@ -439,7 +438,7 @@
         /// <param name="contentType">Type of the content.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <param name="encoding">The encoding.</param>
-        /// <returns>A task for write the output stream</returns>
+        /// <returns>A task for writing the output stream</returns>
         public static async Task<bool> StringResponseAsync(
             this HttpListenerContext context,
             string content,
@@ -456,7 +455,7 @@
         }
 
         /// <summary>
-        /// Parses the json as a given type from the request body.
+        /// Parses the JSON as a given type from the request body.
         /// Please note the underlying input stream is not rewindable.
         /// </summary>
         /// <typeparam name="T">The type of specified object type</typeparam>
@@ -471,7 +470,7 @@
         }
 
         /// <summary>
-        /// Parses the json as a given type from the request body string.
+        /// Parses the JSON as a given type from the request body string.
         /// </summary>
         /// <typeparam name="T">The type of specified object type</typeparam>
         /// <param name="requestBody">The request body.</param>

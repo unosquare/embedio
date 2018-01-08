@@ -15,17 +15,13 @@ namespace Unosquare.Net
     /// Represents Cookie collection
     /// </summary>
     /// <seealso cref="System.Collections.ICollection" />
-    public class CookieCollection : ICollection
+    public class CookieCollection 
+        : ICollection
     {
         private readonly List<Cookie> _list = new List<Cookie>();
         private object _sync;
         
-        /// <summary>
-        /// Gets the number of cookies in the collection.
-        /// </summary>
-        /// <value>
-        /// An <see cref="int"/> that represents the number of cookies in the collection.
-        /// </value>
+        /// <inheritdoc />
         public int Count => _list.Count;
 
         /// <summary>
@@ -37,21 +33,10 @@ namespace Unosquare.Net
         /// </value>
         public bool IsReadOnly => true;
 
-        /// <summary>
-        /// Gets a value indicating whether the access to the collection is thread safe.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the access to the collection is thread safe; otherwise, <c>false</c>.
-        /// The default value is <c>false</c>.
-        /// </value>
+        /// <inheritdoc />
         public bool IsSynchronized => false;
-
-        /// <summary>
-        /// Gets an object used to synchronize access to the collection.
-        /// </summary>
-        /// <value>
-        /// An <see cref="Object"/> used to synchronize access to the collection.
-        /// </value>
+        
+        /// <inheritdoc />
         public object SyncRoot => _sync ?? (_sync = ((ICollection)_list).SyncRoot);
 
         internal IEnumerable<Cookie> Sorted
@@ -159,41 +144,8 @@ namespace Unosquare.Net
             foreach (Cookie cookie in cookies)
                 Add(cookie);
         }
-
-        /// <summary>
-        /// Copies the elements of the collection to the specified <see cref="Array"/>, starting at
-        /// the specified <paramref name="index"/> in the <paramref name="array"/>.
-        /// </summary>
-        /// <param name="array">
-        /// An <see cref="Array"/> that represents the destination of the elements copied from
-        /// the collection.
-        /// </param>
-        /// <param name="index">
-        /// An <see cref="int"/> that represents the zero-based index in <paramref name="array"/>
-        /// at which copying begins.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="array"/> is <see langword="null"/>.
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="index"/> is less than zero.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        ///   <para>
-        ///   <paramref name="array"/> is multidimensional.
-        ///   </para>
-        ///   <para>
-        ///   -or-
-        ///   </para>
-        ///   <para>
-        ///   The number of elements in the collection is greater than the available space from
-        ///   <paramref name="index"/> to the end of the destination <paramref name="array"/>.
-        ///   </para>
-        /// </exception>
-        /// <exception cref="InvalidCastException">
-        /// The elements in the collection cannot be cast automatically to the type of the destination
-        /// <paramref name="array"/>.
-        /// </exception>
+        
+        /// <inheritdoc />
         public void CopyTo(Array array, int index)
         {
             if (array == null)
@@ -258,13 +210,8 @@ namespace Unosquare.Net
 
             _list.CopyTo(array, index);
         }
-
-        /// <summary>
-        /// Gets the enumerator used to iterate through the collection.
-        /// </summary>
-        /// <returns>
-        /// An <see cref="IEnumerator"/> instance used to iterate through the collection.
-        /// </returns>
+        
+        /// <inheritdoc />
         public IEnumerator GetEnumerator() => _list.GetEnumerator();
 
         internal static string GetValue(string nameAndValue, bool unquote = false)
