@@ -13,13 +13,7 @@ namespace Unosquare.Net
     /// </summary>
     public class WebSocketReceiveResult
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebSocketReceiveResult" /> class.
-        /// </summary>
-        /// <param name="count">The count.</param>
-        /// <param name="messageType">Type of the message.</param>
-        /// <param name="endOfMessage">if set to <c>true</c> [end of message].</param>
-        public WebSocketReceiveResult(int count, WebSocketMessageType messageType, bool endOfMessage)
+        internal WebSocketReceiveResult(int count, WebSocketMessageType messageType, bool endOfMessage)
         {
             if (count < 0)
             {

@@ -15,9 +15,10 @@
 #endif
 
     /// <summary>
-    /// A simple module to handle in-memory sessions. Do not use for distributed applications
+    /// A simple module to handle in-memory sessions. Do not use for distributed applications.
     /// </summary>
-    public class LocalSessionModule : WebModuleBase, ISessionWebModule
+    public class LocalSessionModule 
+        : WebModuleBase, ISessionWebModule
     {
         /// <summary>
         /// Defines the session cookie name
@@ -85,12 +86,7 @@
             });
         }
         
-        /// <summary>
-        /// The dictionary holding the sessions
-        /// </summary>
-        /// <value>
-        /// The sessions.
-        /// </value>
+        /// <inheritdoc />
         public IReadOnlyDictionary<string, SessionInfo> Sessions
         {
             get
@@ -106,9 +102,7 @@
         /// Gets or sets the expiration.
         /// By default, expiration is 30 minutes
         /// </summary>
-        /// <value>
-        /// The expiration.
-        /// </value>
+        /// <inheritdoc />
         public TimeSpan Expiration { get; set; } = TimeSpan.FromMinutes(30);
 
         /// <summary>
@@ -124,12 +118,7 @@
         /// </value>
         public string CookiePath { get; set; } = "/";
 
-        /// <summary>
-        /// Gets the name of this module.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
+        /// <inheritdoc />
         public override string Name => nameof(LocalSessionModule).Humanize();
 
         /// <summary>
@@ -152,9 +141,7 @@
             }
         }
 
-        /// <summary>
-        /// Runs the watchdog.
-        /// </summary>
+        /// <inheritdoc />
         public override void RunWatchdog()
         {
             _sessions
@@ -164,12 +151,7 @@
                 .ForEach(DeleteSession);
         }
 
-        /// <summary>
-        /// Gets a session object for the given server context.
-        /// If no session exists for the context, then null is returned
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>An object that represents the current content of an http session</returns>
+        /// <inheritdoc />
         public SessionInfo GetSession(HttpListenerContext context)
         {
             lock (_sessionsSyncLock)
@@ -181,11 +163,7 @@
             }
         }
 
-        /// <summary>
-        /// Gets the session.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>An object that represents the current content of an http session</returns>
+        /// <inheritdoc />
 #if NET47
         public SessionInfo GetSession(System.Net.WebSockets.WebSocketContext context)
 #else
@@ -201,16 +179,10 @@
             }
         }
 
-        /// <summary>
-        /// Delete the session object for the given context
-        /// </summary>
-        /// <param name="context">The context.</param>
+        /// <inheritdoc />
         public void DeleteSession(HttpListenerContext context) => DeleteSession(GetSession(context));
 
-        /// <summary>
-        /// Delete a session for the given session info
-        /// </summary>
-        /// <param name="session">The session info.</param>
+        /// <inheritdoc />
         public void DeleteSession(SessionInfo session)
         {
             lock (_sessionsSyncLock)

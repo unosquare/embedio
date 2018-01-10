@@ -8,12 +8,7 @@ namespace Unosquare.Net
     /// </summary>
     public class HttpListenerException : Exception
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HttpListenerException"/> class.
-        /// </summary>
-        /// <param name="errorCode">The error code.</param>
-        /// <param name="message">The message.</param>
-        public HttpListenerException(int errorCode, string message) 
+        internal HttpListenerException(int errorCode, string message) 
             : base(message)
         {
             ErrorCode = errorCode;

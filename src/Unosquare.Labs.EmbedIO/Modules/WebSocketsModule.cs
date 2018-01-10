@@ -18,7 +18,7 @@
 
     /// <summary>
     /// A WebSockets module conforming to RFC 6455
-    /// Works only on Chrome 16+, FireFox 11+ and IE 10+
+    /// Works only on Chrome 16+, Firefox 11+ and IE 10+
     /// This module is experimental and still needs extensive testing.
     /// </summary>
     public class WebSocketsModule : WebModuleBase
@@ -65,12 +65,7 @@
             });
         }
 
-        /// <summary>
-        /// Gets the name of this module.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
+        /// <inheritdoc />
         public override string Name => nameof(WebSocketsModule).Humanize();
 
         /// <summary>

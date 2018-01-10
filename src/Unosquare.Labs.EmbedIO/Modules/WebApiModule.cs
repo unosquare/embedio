@@ -35,7 +35,8 @@
     /// Public instance methods that match the WebServerModule.ResponseHandler signature, and have the WebApi handler attribute
     /// will be used to respond to web server requests
     /// </summary>
-    public class WebApiModule : WebModuleBase
+    public class WebApiModule 
+        : WebModuleBase
     {
         #region Immutable Declarations
 
@@ -97,12 +98,7 @@
             });
         }
 
-        /// <summary>
-        /// Gets the name of this module.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
+        /// <inheritdoc />
         public override string Name => "Web API Module";
 
         /// <summary>

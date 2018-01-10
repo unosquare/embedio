@@ -37,19 +37,6 @@
     
     internal class PayloadData : IEnumerable<byte>
     {
-        /// <summary>
-        /// Represents the allowable max length.
-        /// </summary>
-        /// <remarks>
-        ///   <para>
-        ///   A <see cref="WebSocketException"/> will occur if the payload data length is
-        ///   greater than the value of this field.
-        ///   </para>
-        ///   <para>
-        ///   If you would like to change the value, you must set it to a value between
-        ///   <c>WebSocket.FragmentLength</c> and <c>Int64.MaxValue</c> inclusive.
-        ///   </para>
-        /// </remarks>
         public static readonly ulong MaxLength;
 
         private readonly byte[] _data;

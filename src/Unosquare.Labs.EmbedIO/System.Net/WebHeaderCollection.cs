@@ -47,15 +47,14 @@ namespace Unosquare.Net
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
-    using System.Runtime.InteropServices;
     using System.Text;
     using HttpHeaders = Labs.EmbedIO.Constants.Headers;
 
     /// <summary>
     /// Provides a collection of the HTTP headers associated with a request or response.
     /// </summary>
-    [ComVisible(true)]
-    public class WebHeaderCollection : NameValueCollection
+    public class WebHeaderCollection 
+        : NameValueCollection
     {
         private static readonly Dictionary<string, HttpHeaderInfo> Headers = new Dictionary<string, HttpHeaderInfo>(StringComparer.OrdinalIgnoreCase)
                 {
@@ -650,81 +649,27 @@ namespace Unosquare.Net
             DoWithCheckingState(AddWithoutCheckingName, Convert(header), value, true, true);
         }
 
-        /// <summary>
-        /// Adds a header with the specified <paramref name="name"/> and
-        /// <paramref name="value"/> to the collection.
-        /// </summary>
-        /// <param name="name">
-        /// A <see cref="string"/> that represents the name of the header to add.
-        /// </param>
-        /// <param name="value">
-        /// A <see cref="string"/> that represents the value of the header to add.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="name"/> is <see langword="null"/> or empty.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        ///   <para>
-        ///   <paramref name="name"/> or <paramref name="value"/> contains invalid characters.
-        ///   </para>
-        ///   <para>
-        ///   -or-
-        ///   </para>
-        ///   <para>
-        ///   <paramref name="name"/> is a restricted header name.
-        ///   </para>
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The length of <paramref name="value"/> is greater than 65,535 characters.
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// The current <see cref="WebHeaderCollection"/> instance doesn't allow
-        /// the header <paramref name="name"/>.
-        /// </exception>
+        /// <inheritdoc />
         public override void Add(string name, string value)
         {
             Add(name, value, false);
         }
 
-        /// <summary>
-        /// Removes all headers from the collection.
-        /// </summary>
+        /// <inheritdoc />
         public override void Clear()
         {
             base.Clear();
             State = HttpHeaderType.Unspecified;
         }
 
-        /// <summary>
-        /// Gets an array of header values stored in the specified <paramref name="index"/> position of
-        /// the collection.
-        /// </summary>
-        /// <returns>
-        /// An array of <see cref="string"/> that receives the header values if found;
-        /// otherwise, <see langword="null"/>.
-        /// </returns>
-        /// <param name="index">
-        /// An <see cref="int"/> that represents the zero-based index of the header to find.
-        /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="index"/> is out of allowable range of indexes for the collection.
-        /// </exception>
+        /// <inheritdoc />
         public override string[] GetValues(int index)
         {
             var vals = base.GetValues(index);
             return vals != null && vals.Length > 0 ? vals : null;
         }
 
-        /// <summary>
-        /// Gets an array of header values stored in the specified <paramref name="header"/>.
-        /// </summary>
-        /// <returns>
-        /// An array of <see cref="string"/> that receives the header values if found;
-        /// otherwise, <see langword="null"/>.
-        /// </returns>
-        /// <param name="header">
-        /// A <see cref="string"/> that represents the name of the header to find.
-        /// </param>
+        /// <inheritdoc />
         public override string[] GetValues(string header)
         {
             var vals = base.GetValues(header);
@@ -768,31 +713,8 @@ namespace Unosquare.Net
         {
             DoWithCheckingState(RemoveWithoutCheckingName, Convert(header), null, true, false);
         }
-
-        /// <summary>
-        /// Removes the specified header from the collection.
-        /// </summary>
-        /// <param name="name">
-        /// A <see cref="string"/> that represents the name of the header to remove.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="name"/> is <see langword="null"/> or empty.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        ///   <para>
-        ///   <paramref name="name"/> contains invalid characters.
-        ///   </para>
-        ///   <para>
-        ///   -or-
-        ///   </para>
-        ///   <para>
-        ///   <paramref name="name"/> is a restricted header name.
-        ///   </para>
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// The current <see cref="WebHeaderCollection"/> instance doesn't allow
-        /// the header <paramref name="name"/>.
-        /// </exception>
+        
+        /// <inheritdoc />
         public override void Remove(string name)
         {
             DoWithCheckingState(RemoveWithoutCheckingName, CheckName(name), null, false);
@@ -863,37 +785,8 @@ namespace Unosquare.Net
         {
             DoWithCheckingState(SetWithoutCheckingName, Convert(header), value, true, true);
         }
-
-        /// <summary>
-        /// Sets the specified header to the specified value.
-        /// </summary>
-        /// <param name="name">
-        /// A <see cref="string"/> that represents the name of the header to set.
-        /// </param>
-        /// <param name="value">
-        /// A <see cref="string"/> that represents the value of the header to set.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="name"/> is <see langword="null"/> or empty.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        ///   <para>
-        ///   <paramref name="name"/> or <paramref name="value"/> contains invalid characters.
-        ///   </para>
-        ///   <para>
-        ///   -or-
-        ///   </para>
-        ///   <para>
-        ///   <paramref name="name"/> is a restricted header name.
-        ///   </para>
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The length of <paramref name="value"/> is greater than 65,535 characters.
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// The current <see cref="WebHeaderCollection"/> instance doesn't allow
-        /// the header <paramref name="name"/>.
-        /// </exception>
+        
+        /// <inheritdoc />
         public override void Set(string name, string value)
         {
             DoWithCheckingState(SetWithoutCheckingName, CheckName(name), value);
@@ -1127,17 +1020,17 @@ namespace Unosquare.Net
         Restricted = 1 << 2,
 
         /// <summary>
-        /// The multi value
+        /// The multi-value
         /// </summary>
         MultiValue = 1 << 3,
 
         /// <summary>
-        /// The multi value in request
+        /// The multi-value in request
         /// </summary>
         MultiValueInRequest = 1 << 4,
 
         /// <summary>
-        /// The multi value in response
+        /// The multi-value in response
         /// </summary>
         MultiValueInResponse = 1 << 5
     }

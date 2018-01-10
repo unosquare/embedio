@@ -11,7 +11,7 @@
 #endif
 
     /// <summary>
-    /// Represents a module to fallback any request
+    /// Represents a module to fallback any request.
     /// </summary>
     /// <seealso cref="WebModuleBase" />
     public class FallbackModule 
@@ -46,9 +46,7 @@
                 (context, ct) => Task.FromResult(context.Redirect(redirectUrl)));
         }
 
-        /// <summary>
-        /// Gets the name of this module.
-        /// </summary>
+        /// <inheritdoc />
         public override string Name => nameof(FallbackModule);
 
         /// <summary>

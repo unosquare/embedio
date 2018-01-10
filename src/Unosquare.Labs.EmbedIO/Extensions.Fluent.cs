@@ -41,7 +41,7 @@
         }
 
         /// <summary>
-        /// Add the StaticFilesModule with Multiple paths
+        /// Add the StaticFilesModule with multiple paths
         /// </summary>
         /// <param name="webserver">The webserver.</param>
         /// <param name="virtualPaths">The virtual paths.</param>

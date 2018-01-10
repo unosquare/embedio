@@ -670,12 +670,7 @@ namespace Unosquare.Net
             }
         }
         
-        /// <summary>
-        /// Closes the WebSocket connection, and releases all associated resources.
-        /// </summary>
-        /// <remarks>
-        /// This method closes the connection with <see cref="CloseStatusCode.Away"/>.
-        /// </remarks>
+        /// <inheritdoc />
         public void Dispose()
         {
             // TODO: this is correct?

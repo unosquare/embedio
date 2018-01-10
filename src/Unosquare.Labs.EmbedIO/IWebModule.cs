@@ -24,7 +24,7 @@
         string Name { get; }
 
         /// <summary>
-        /// Gets the handlers.
+        /// Gets the registered handlers.
         /// </summary>
         /// <value>
         /// The handlers.
@@ -32,7 +32,8 @@
         ModuleMap Handlers { get; }
         
         /// <summary>
-        /// Gets the server owning this module. This property is set automatically after registering the module.
+        /// Gets the associated Web Server object.
+        /// This property is automatically set when the module is registered
         /// </summary>
         /// <value>
         /// The server.
@@ -61,6 +62,11 @@
         /// <param name="path">The path.</param>
         /// <param name="verb">The verb.</param>
         /// <param name="handler">The handler.</param>
+        /// <exception cref="ArgumentNullException">
+        /// path
+        /// or
+        /// handler
+        /// </exception>
         void AddHandler(string path, HttpVerbs verb, Func<HttpListenerContext, CancellationToken, Task<bool>> handler);
 
         /// <summary>

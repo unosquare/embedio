@@ -249,7 +249,7 @@ using System.Threading.Tasks;
         }
 
         /// <summary>
-        /// Gets the local end point.
+        /// Gets the local endpoint.
         /// </summary>
         public IPEndPoint LocalEndPoint => _context.Connection.LocalEndPoint;
 
@@ -269,7 +269,7 @@ using System.Threading.Tasks;
         public string RawUrl { get; private set; }
 
         /// <summary>
-        /// Gets the remote end point.
+        /// Gets the remote endpoint.
         /// </summary>
         public IPEndPoint RemoteEndPoint => _context.Connection.RemoteEndPoint;
 

@@ -15,7 +15,7 @@ A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework
 * Cross-platform[1]: tested in Mono on Windows and on a custom Yocto image for the Raspberry Pi
 * Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras" target="_blank">EmbedIO Extras</a> for additional modules.
 * Small memory footprint
-* Create REST APIs quickly with the out-of-the-box Web Api module
+* Create REST APIs quickly with the out-of-the-box Web API module
 * Serve static files with 1 line of code (also out-of-the-box)
 * Handle sessions with the built-in LocalSessionWebModule
 * WebSockets support (see notes below)
@@ -38,8 +38,8 @@ Some notes regarding WebSocket and runtimes support:
 | --- | --- | --- |
 | NET46 | Yes | Support Win7+ OS using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
 | NET47 | Yes | Support Win8+ OS using native System.Net library |
-| NETSTANDARD* | Yes | Support Windows, Linux and macOS using  native System.Net library |
-| UAP | No | Support Windows Universal Plataform. More information [here](https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT) |
+| NETSTANDARD* | Yes | Support Windows, Linux and macOS using native System.Net library |
+| UAP | No | Support Windows Universal Platform. More information [here](https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT) |
 
 EmbedIO before version 1.4.0 uses Newtonsoft JSON and an internal logger subsystem based on ILog interface.
 
@@ -105,7 +105,7 @@ namespace Company.Project
                 browser.Start();
 #endif
                 // Wait for any key to be pressed before disposing of our web server.
-                // In a service we'd manage the lifecycle of of our web server using
+                // In a service, we'd manage the lifecycle of our web server using
                 // something like a BackgroundWorker or a ManualResetEvent.
                 Console.ReadKey(true);
             }
@@ -145,24 +145,24 @@ namespace Company.Project
                 .WithLocalSession()
                 .WithStaticFolderAt("c:/web");
 
-			var cts = new CancellationTokenSource();
+            var cts = new CancellationTokenSource();
             var task = server.RunAsync(cts.Token);
 
             // Wait for any key to be pressed before disposing of our web server.
-            // In a service we'd manage the lifecycle of of our web server using
+            // In a service, we'd manage the lifecycle of our web server using
             // something like a BackgroundWorker or a ManualResetEvent.
             Console.ReadKey(true);
-			cts.Cancel();
+            cts.Cancel();
 
-			try
-			{
-				task.Wait();
-			} catch (AggregateException)
-			{
-				// We'd also actually verify the exception cause was that the task
-				// was cancelled.
-				server.Dispose();
-			}
+            try
+            {
+                task.Wait();
+            } catch (AggregateException)
+            {
+                // We'd also actually verify the exception cause was that the task
+                // was cancelled.
+                server.Dispose();
+            }
         }
     }
 }
@@ -171,11 +171,11 @@ namespace Company.Project
 REST API Example:
 -----------------
 
-The WebApi module supports two routing strategies: Wildcard and Regex. By default, and in order to maintain backwards compatibility, the WebApi module will use the **Wildcard Routing Strategy** and match routes using the asterisk `*` character in the route. **For example:** 
+The WebApi module supports two routing strategies: Wildcard and Regex. By default, and in order to maintain backward compatibility, the WebApi module will use the **Wildcard Routing Strategy** and match routes using the asterisk `*` character in the route. **For example:** 
 - The route `/api/people/*` will match any request with a URL starting with the two first URL segments `api` and `people` and ending with anything. The route `/api/people/hello` will be matched.
-- You can also use wildcards in the middle of the route. The route `/api/people/*/details` will match requests starting with the two first URL segments `api` and `people`, and ending with a `details` segment. The route `/api/people/hello/details` will be matched. 
+- You can also use wildcards in the middle of the route. The route `/api/people/*/details` will match requests starting with the two first URL segments `api` and `people`, and end with a `details` segment. The route `/api/people/hello/details` will be matched. 
 
-*Note that most REST services can be designed with this simpler Wildcard routing startegy. However, the Regex matching strategy is the current recommended approach as we might be deprecating the Wildcard strategy altogether*
+*Note that most REST services can be designed with this simpler Wildcard routing strategy. However, the Regex matching strategy is the current recommended approach as we might be deprecating the Wildcard strategy altogether*
 
 On the other hand, the **Regex Routing Strategy** will try to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API 2. A method with the following route `/api/people/{id}` is going to match any request URL with three segments: the first two `api` and `people` and the last one is going to be parsed or converted to the type in the `id` argument of the handling method signature. Please read on if this was confusing as it is much simpler than it sounds. Additionally, you can put multiple values to match, for example `/api/people/{mainSkill}/{age}`, and receive the parsed values from the URL straight into the arguments of your handler method.
 
@@ -358,4 +358,4 @@ public class WebSocketsChatServer : WebSocketsServer
 ```
 
 ## Notes
-[1] - EmbedIO uses lowercase URL parts. In Windows systems this is the expected behaviour but in Unix systems using MONO please refer to [Mono IOMap](http://www.mono-project.com/docs/advanced/iomap/) if you want to work with case insensitive URL parts.
+[1] - EmbedIO uses lowercase URL parts. In Windows systems, this is the expected behavior but in Unix systems using MONO please refer to [Mono IOMap](http://www.mono-project.com/docs/advanced/iomap/) if you want to work with case-insensitive URL parts.

@@ -8,9 +8,11 @@
     public static class MimeTypes
     {
         /// <summary>
-        /// A big list of default MIME types
-        /// Originally started from: http://stackoverflow.com/questions/1029740/get-mime-type-from-filename-extension
+        /// A big list of default MIME types.
         /// </summary>
+        /// <remarks>
+        /// Originally started from: http://stackoverflow.com/questions/1029740/get-mime-type-from-filename-extension
+        /// </remarks>
         public static readonly Dictionary<string, string> DefaultMimeTypes =
             new Dictionary<string, string>(Strings.StandardStringComparer)
             {

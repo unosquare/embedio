@@ -89,10 +89,8 @@
                 return Task.FromResult(false);
             });
         }
-
-        /// <summary>
-        /// Module's name
-        /// </summary>
+        
+        /// <inheritdoc />
         public override string Name => nameof(CorsModule);
 
         private static Task<bool> ValidateHttpOptions(

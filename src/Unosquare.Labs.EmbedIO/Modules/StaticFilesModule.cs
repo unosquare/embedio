@@ -21,7 +21,8 @@
     /// <summary>
     /// Represents a simple module to server static files from the file system.
     /// </summary>
-    public class StaticFilesModule : WebModuleBase
+    public class StaticFilesModule 
+        : WebModuleBase
     {
         /// <summary>
         /// Default document constant to "index.html"
@@ -44,7 +45,7 @@
         private const int MaxEntryLength = 50;
 
         /// <summary>
-        /// How much characters used after time in DirectoryBrowser
+        /// How many characters used after time in DirectoryBrowser
         /// </summary>
         private const int SizeIndent = 20;
 
@@ -195,12 +196,7 @@
         /// </value>
         public ReadOnlyDictionary<string, string> VirtualPaths => _virtualPaths.Collection;
 
-        /// <summary>
-        /// Gets the name of this module.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
+        /// <inheritdoc />
         public override string Name => nameof(StaticFilesModule).Humanize();
 
         /// <summary>
