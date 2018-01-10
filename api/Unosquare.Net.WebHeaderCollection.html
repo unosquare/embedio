@@ -93,8 +93,7 @@
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Net.html">Unosquare.Net</a></h6>
   <h5 id="Unosquare_Net_WebHeaderCollection_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[ComVisible(true)]
-public class WebHeaderCollection : NameValueCollection</code></pre>
+    <pre><code class="lang-csharp hljs">public class WebHeaderCollection : NameValueCollection</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -487,9 +486,7 @@ the <code data-dev-comment-type="paramref" class="paramref">header</code>.</p>
   
   <a id="Unosquare_Net_WebHeaderCollection_Add_" data-uid="Unosquare.Net.WebHeaderCollection.Add*"></a>
   <h4 id="Unosquare_Net_WebHeaderCollection_Add_System_String_System_String_" data-uid="Unosquare.Net.WebHeaderCollection.Add(System.String,System.String)">Add(String, String)</h4>
-  <div class="markdown level1 summary"><p>Adds a header with the specified <code data-dev-comment-type="paramref" class="paramref">name</code> and
-<code data-dev-comment-type="paramref" class="paramref">value</code> to the collection.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -508,54 +505,12 @@ the <code data-dev-comment-type="paramref" class="paramref">header</code>.</p>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td><p>A <span class="xref">System.String</span> that represents the name of the header to add.</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">value</span></td>
-        <td><p>A <span class="xref">System.String</span> that represents the value of the header to add.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentNullException</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">name</code> is <span class="xref">null</span> or empty.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>
-<code data-dev-comment-type="paramref" class="paramref">name</code> or <code data-dev-comment-type="paramref" class="paramref">value</code> contains invalid characters.
-</p>
-<p>
--or-
-</p>
-<p>
-<code data-dev-comment-type="paramref" class="paramref">name</code> is a restricted header name.
-</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
-        <td><p>The length of <code data-dev-comment-type="paramref" class="paramref">value</code> is greater than 65,535 characters.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.InvalidOperationException</span></td>
-        <td><p>The current <a class="xref" href="Unosquare.Net.WebHeaderCollection.html">WebHeaderCollection</a> instance doesn&apos;t allow
-the header <code data-dev-comment-type="paramref" class="paramref">name</code>.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -631,8 +586,7 @@ the <code data-dev-comment-type="paramref" class="paramref">headerName</code>.</
   
   <a id="Unosquare_Net_WebHeaderCollection_Clear_" data-uid="Unosquare.Net.WebHeaderCollection.Clear*"></a>
   <h4 id="Unosquare_Net_WebHeaderCollection_Clear" data-uid="Unosquare.Net.WebHeaderCollection.Clear">Clear()</h4>
-  <div class="markdown level1 summary"><p>Removes all headers from the collection.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -642,9 +596,7 @@ the <code data-dev-comment-type="paramref" class="paramref">headerName</code>.</
   
   <a id="Unosquare_Net_WebHeaderCollection_GetValues_" data-uid="Unosquare.Net.WebHeaderCollection.GetValues*"></a>
   <h4 id="Unosquare_Net_WebHeaderCollection_GetValues_System_Int32_" data-uid="Unosquare.Net.WebHeaderCollection.GetValues(System.Int32)">GetValues(Int32)</h4>
-  <div class="markdown level1 summary"><p>Gets an array of header values stored in the specified <code data-dev-comment-type="paramref" class="paramref">index</code> position of
-the collection.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -663,8 +615,7 @@ the collection.</p>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">index</span></td>
-        <td><p>An <span class="xref">System.Int32</span> that represents the zero-based index of the header to find.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -679,25 +630,7 @@ the collection.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.String</span>[]</td>
-        <td><p>An array of <span class="xref">System.String</span> that receives the header values if found;
-otherwise, <span class="xref">null</span>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">index</code> is out of allowable range of indexes for the collection.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -705,8 +638,7 @@ otherwise, <span class="xref">null</span>.</p>
   
   <a id="Unosquare_Net_WebHeaderCollection_GetValues_" data-uid="Unosquare.Net.WebHeaderCollection.GetValues*"></a>
   <h4 id="Unosquare_Net_WebHeaderCollection_GetValues_System_String_" data-uid="Unosquare.Net.WebHeaderCollection.GetValues(System.String)">GetValues(String)</h4>
-  <div class="markdown level1 summary"><p>Gets an array of header values stored in the specified <code data-dev-comment-type="paramref" class="paramref">header</code>.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -725,8 +657,7 @@ otherwise, <span class="xref">null</span>.</p>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">header</span></td>
-        <td><p>A <span class="xref">System.String</span> that represents the name of the header to find.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -741,9 +672,7 @@ otherwise, <span class="xref">null</span>.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.String</span>[]</td>
-        <td><p>An array of <span class="xref">System.String</span> that receives the header values if found;
-otherwise, <span class="xref">null</span>.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -927,8 +856,7 @@ the response <code data-dev-comment-type="paramref" class="paramref">header</cod
   
   <a id="Unosquare_Net_WebHeaderCollection_Remove_" data-uid="Unosquare.Net.WebHeaderCollection.Remove*"></a>
   <h4 id="Unosquare_Net_WebHeaderCollection_Remove_System_String_" data-uid="Unosquare.Net.WebHeaderCollection.Remove(System.String)">Remove(String)</h4>
-  <div class="markdown level1 summary"><p>Removes the specified header from the collection.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -947,43 +875,7 @@ the response <code data-dev-comment-type="paramref" class="paramref">header</cod
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td><p>A <span class="xref">System.String</span> that represents the name of the header to remove.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentNullException</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">name</code> is <span class="xref">null</span> or empty.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>
-<code data-dev-comment-type="paramref" class="paramref">name</code> contains invalid characters.
-</p>
-<p>
--or-
-</p>
-<p>
-<code data-dev-comment-type="paramref" class="paramref">name</code> is a restricted header name.
-</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.InvalidOperationException</span></td>
-        <td><p>The current <a class="xref" href="Unosquare.Net.WebHeaderCollection.html">WebHeaderCollection</a> instance doesn&apos;t allow
-the header <code data-dev-comment-type="paramref" class="paramref">name</code>.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -1133,8 +1025,7 @@ the response <code data-dev-comment-type="paramref" class="paramref">header</cod
   
   <a id="Unosquare_Net_WebHeaderCollection_Set_" data-uid="Unosquare.Net.WebHeaderCollection.Set*"></a>
   <h4 id="Unosquare_Net_WebHeaderCollection_Set_System_String_System_String_" data-uid="Unosquare.Net.WebHeaderCollection.Set(System.String,System.String)">Set(String, String)</h4>
-  <div class="markdown level1 summary"><p>Sets the specified header to the specified value.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1153,54 +1044,12 @@ the response <code data-dev-comment-type="paramref" class="paramref">header</cod
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td><p>A <span class="xref">System.String</span> that represents the name of the header to set.</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">value</span></td>
-        <td><p>A <span class="xref">System.String</span> that represents the value of the header to set.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentNullException</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">name</code> is <span class="xref">null</span> or empty.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>
-<code data-dev-comment-type="paramref" class="paramref">name</code> or <code data-dev-comment-type="paramref" class="paramref">value</code> contains invalid characters.
-</p>
-<p>
--or-
-</p>
-<p>
-<code data-dev-comment-type="paramref" class="paramref">name</code> is a restricted header name.
-</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
-        <td><p>The length of <code data-dev-comment-type="paramref" class="paramref">value</code> is greater than 65,535 characters.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.InvalidOperationException</span></td>
-        <td><p>The current <a class="xref" href="Unosquare.Net.WebHeaderCollection.html">WebHeaderCollection</a> instance doesn&apos;t allow
-the header <code data-dev-comment-type="paramref" class="paramref">name</code>.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>

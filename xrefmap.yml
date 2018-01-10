@@ -589,12 +589,6 @@ references:
   commentId: M:Unosquare.Labs.EmbedIO.Extensions.RequestRegexUrlParams(Unosquare.Net.HttpListenerContext,System.String)
   fullName: Unosquare.Labs.EmbedIO.Extensions.RequestRegexUrlParams(Unosquare.Net.HttpListenerContext, System.String)
   nameWithType: Extensions.RequestRegexUrlParams(HttpListenerContext, String)
-- uid: Unosquare.Labs.EmbedIO.Extensions.RequestRegexUrlParams(Unosquare.Net.WebSocketContext,System.String)
-  name: RequestRegexUrlParams(WebSocketContext, String)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestRegexUrlParams_Unosquare_Net_WebSocketContext_System_String_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.RequestRegexUrlParams(Unosquare.Net.WebSocketContext,System.String)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.RequestRegexUrlParams(Unosquare.Net.WebSocketContext, System.String)
-  nameWithType: Extensions.RequestRegexUrlParams(WebSocketContext, String)
 - uid: Unosquare.Labs.EmbedIO.Extensions.RequestRegexUrlParams*
   name: RequestRegexUrlParams
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestRegexUrlParams_
@@ -2651,18 +2645,6 @@ references:
   commentId: T:Unosquare.Net.HttpListenerException
   fullName: Unosquare.Net.HttpListenerException
   nameWithType: HttpListenerException
-- uid: Unosquare.Net.HttpListenerException.#ctor(System.Int32,System.String)
-  name: HttpListenerException(Int32, String)
-  href: api/Unosquare.Net.HttpListenerException.html#Unosquare_Net_HttpListenerException__ctor_System_Int32_System_String_
-  commentId: M:Unosquare.Net.HttpListenerException.#ctor(System.Int32,System.String)
-  fullName: Unosquare.Net.HttpListenerException.HttpListenerException(System.Int32, System.String)
-  nameWithType: HttpListenerException.HttpListenerException(Int32, String)
-- uid: Unosquare.Net.HttpListenerException.#ctor*
-  name: HttpListenerException
-  href: api/Unosquare.Net.HttpListenerException.html#Unosquare_Net_HttpListenerException__ctor_
-  commentId: Overload:Unosquare.Net.HttpListenerException.#ctor
-  fullName: Unosquare.Net.HttpListenerException.HttpListenerException
-  nameWithType: HttpListenerException.HttpListenerException
 - uid: Unosquare.Net.HttpListenerException.ErrorCode
   name: ErrorCode
   href: api/Unosquare.Net.HttpListenerException.html#Unosquare_Net_HttpListenerException_ErrorCode
@@ -4128,18 +4110,6 @@ references:
   commentId: T:Unosquare.Net.WebSocketReceiveResult
   fullName: Unosquare.Net.WebSocketReceiveResult
   nameWithType: WebSocketReceiveResult
-- uid: Unosquare.Net.WebSocketReceiveResult.#ctor(System.Int32,Unosquare.Net.WebSocketMessageType,System.Boolean)
-  name: WebSocketReceiveResult(Int32, WebSocketMessageType, Boolean)
-  href: api/Unosquare.Net.WebSocketReceiveResult.html#Unosquare_Net_WebSocketReceiveResult__ctor_System_Int32_Unosquare_Net_WebSocketMessageType_System_Boolean_
-  commentId: M:Unosquare.Net.WebSocketReceiveResult.#ctor(System.Int32,Unosquare.Net.WebSocketMessageType,System.Boolean)
-  fullName: Unosquare.Net.WebSocketReceiveResult.WebSocketReceiveResult(System.Int32, Unosquare.Net.WebSocketMessageType, System.Boolean)
-  nameWithType: WebSocketReceiveResult.WebSocketReceiveResult(Int32, WebSocketMessageType, Boolean)
-- uid: Unosquare.Net.WebSocketReceiveResult.#ctor*
-  name: WebSocketReceiveResult
-  href: api/Unosquare.Net.WebSocketReceiveResult.html#Unosquare_Net_WebSocketReceiveResult__ctor_
-  commentId: Overload:Unosquare.Net.WebSocketReceiveResult.#ctor
-  fullName: Unosquare.Net.WebSocketReceiveResult.WebSocketReceiveResult
-  nameWithType: WebSocketReceiveResult.WebSocketReceiveResult
 - uid: Unosquare.Net.WebSocketReceiveResult.Count
   name: Count
   href: api/Unosquare.Net.WebSocketReceiveResult.html#Unosquare_Net_WebSocketReceiveResult_Count
