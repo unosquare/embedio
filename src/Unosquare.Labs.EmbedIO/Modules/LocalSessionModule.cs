@@ -55,7 +55,7 @@
                         FixupSessionCookie(context);
                         isSessionRegistered = _sessions.ContainsKey(requestSessionCookie.Value);
                     }
-                    
+
                     if (requestSessionCookie == null)
                     {
                         // create the session if session not available on the request

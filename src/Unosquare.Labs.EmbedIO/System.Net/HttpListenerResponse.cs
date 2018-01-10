@@ -188,7 +188,7 @@ namespace Unosquare.Net
         /// The protocol version.
         /// </value>
         /// <exception cref="System.ObjectDisposedException">
-        /// Is thrown when you try to access a member of an object that implements the 
+        /// Is thrown when you try to access a member of an object that implements the
         /// IDisposable interface, and that object has been disposed
         /// </exception>
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>

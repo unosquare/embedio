@@ -50,7 +50,7 @@ namespace Unosquare.Net
     {
         private readonly byte[] _rawData;
         private string _data;
-        private bool _dataSet;    
+        private bool _dataSet;
 
         internal MessageEventArgs(WebSocketFrame frame)
         {
@@ -66,7 +66,7 @@ namespace Unosquare.Net
             Opcode = opcode;
             _rawData = rawData;
         }
-        
+
         /// <summary>
         /// Gets the message data as a <see cref="string"/>.
         /// </summary>
@@ -123,11 +123,8 @@ namespace Unosquare.Net
             }
         }
 
-        /// <summary>
-        /// Gets the opcode for the message.
-        /// </summary>
         internal Opcode Opcode { get; }
-        
+
         private void SetData()
         {
             if (_dataSet)

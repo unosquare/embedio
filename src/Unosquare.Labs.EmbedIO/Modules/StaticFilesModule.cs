@@ -21,7 +21,7 @@
     /// <summary>
     /// Represents a simple module to server static files from the file system.
     /// </summary>
-    public class StaticFilesModule 
+    public class StaticFilesModule
         : WebModuleBase
     {
         /// <summary>
@@ -231,7 +231,7 @@
         /// Clears the RAM cache.
         /// </summary>
         public void ClearRamCache() => RamCache.Clear();
-        
+
         private static bool CalculateRange(
             string partialHeader,
             long fileSize,
@@ -340,7 +340,7 @@
 
             return context.HtmlResponseAsync(content, cancellationToken: ct);
         }
-        
+
         private Task<bool> HandleGet(HttpListenerContext context, CancellationToken ct, bool sendBuffer = true)
         {
             var validationResult = ValidatePath(context, out var requestFullLocalPath);
@@ -500,7 +500,7 @@
             var requestLocalPath = _virtualPaths.GetUrlPath(context.RequestPathCaseSensitive(), ref baseLocalPath);
 
             requestFullLocalPath = Path.Combine(baseLocalPath, requestLocalPath);
-            
+
             return _virtualPaths.ExistsLocalPath(requestLocalPath, ref requestFullLocalPath);
         }
 
@@ -542,7 +542,7 @@
 
             return false;
         }
-        
+
         private void SetStatusCode304(HttpListenerResponse response)
         {
             response.AddHeader(Headers.CacheControl,

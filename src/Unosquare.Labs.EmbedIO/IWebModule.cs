@@ -9,7 +9,7 @@
 #else
     using Net;
 #endif
-    
+
     /// <summary>
     /// Interface to create web modules
     /// </summary>
@@ -30,7 +30,7 @@
         /// The handlers.
         /// </value>
         ModuleMap Handlers { get; }
-        
+
         /// <summary>
         /// Gets the associated Web Server object.
         /// This property is automatically set when the module is registered
