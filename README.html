@@ -15,8 +15,8 @@
     <link rel="stylesheet" href="styles/docfx.css">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/bootstrap.min.css">
-    <meta property="docfx:navrel" content="toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="">
     
     <meta property="docfx:rel" content="">
     
@@ -339,7 +339,6 @@ server.Module&lt;WebSocketsModule&gt;().RegisterWebSocketsServer&lt;WebSocketsCh
 /// &lt;/summary&gt;
 public class WebSocketsChatServer : WebSocketsServer
 {
-
     public WebSocketsChatServer()
         : base(true, 0)
     {
@@ -362,16 +361,8 @@ public class WebSocketsChatServer : WebSocketsServer
         }
     }
 
-    /// &lt;summary&gt;
-    /// Gets the name of the server.
-    /// &lt;/summary&gt;
-    /// &lt;value&gt;
-    /// The name of the server.
-    /// &lt;/value&gt;
-    public override string ServerName
-    {
-        get { return &quot;Chat Server&quot;; }
-    }
+    /// &lt;inheritdoc/&gt;
+    public override string ServerName =&gt; &quot;Chat Server&quot;
 
     /// &lt;summary&gt;
     /// Called when this WebSockets Server accepts a new WebSockets client.
@@ -380,6 +371,7 @@ public class WebSocketsChatServer : WebSocketsServer
     protected override void OnClientConnected(WebSocketContext context)
     {
         this.Send(context, &quot;Welcome to the chat room!&quot;);
+
         foreach (var ws in this.WebSockets)
         {
             if (ws != context)
@@ -404,7 +396,7 @@ public class WebSocketsChatServer : WebSocketsServer
     /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
     protected override void OnClientDisconnected(WebSocketContext context)
     {
-        this.Broadcast(string.Format(&quot;Someone left the chat room.&quot;));
+        this.Broadcast(&quot;Someone left the chat room.&quot;);
     }
 }
 </code></pre><h2 id="notes">Notes</h2>
@@ -422,7 +414,7 @@ public class WebSocketsChatServer : WebSocketsServer
               <div class="contribution">
                 <ul class="nav">
                   <li class="top-sep">
-                    <a href="https://github.com/unosquare/embedio/blob/Issue136-AddWikiToDoc/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/unosquare/embedio/blob/master/README.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
