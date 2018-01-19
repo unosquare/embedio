@@ -288,7 +288,6 @@ server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsChatServer>
 /// </summary>
 public class WebSocketsChatServer : WebSocketsServer
 {
-
     public WebSocketsChatServer()
         : base(true, 0)
     {
@@ -311,16 +310,8 @@ public class WebSocketsChatServer : WebSocketsServer
         }
     }
 
-    /// <summary>
-    /// Gets the name of the server.
-    /// </summary>
-    /// <value>
-    /// The name of the server.
-    /// </value>
-    public override string ServerName
-    {
-        get { return "Chat Server"; }
-    }
+    /// <inheritdoc/>
+    public override string ServerName => "Chat Server"
 
     /// <summary>
     /// Called when this WebSockets Server accepts a new WebSockets client.
@@ -329,6 +320,7 @@ public class WebSocketsChatServer : WebSocketsServer
     protected override void OnClientConnected(WebSocketContext context)
     {
         this.Send(context, "Welcome to the chat room!");
+        
         foreach (var ws in this.WebSockets)
         {
             if (ws != context)
@@ -353,7 +345,7 @@ public class WebSocketsChatServer : WebSocketsServer
     /// <param name="context">The context.</param>
     protected override void OnClientDisconnected(WebSocketContext context)
     {
-        this.Broadcast(string.Format("Someone left the chat room."));
+        this.Broadcast("Someone left the chat room.");
     }
 }
 ```
