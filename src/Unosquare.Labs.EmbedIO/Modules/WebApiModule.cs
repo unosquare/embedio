@@ -12,7 +12,6 @@
     using System.Net;
 #else
     using Net;
-
 #endif
 
     /// <summary>
@@ -65,13 +64,7 @@
                 // return a non-math if no handler hold the route
                 if (path == null)
                 {
-                    if (IsMethodNotAllowed(context))
-                    {
-                        await Server.OnMethodNotAllowed(context);
-                        return true;
-                    }
-                    else
-                        return false;
+                    return IsMethodNotAllowed(context) && await Server.OnMethodNotAllowed(context);
                 }
 
                 // search the path and verb
@@ -97,23 +90,13 @@
                     case RoutingStrategy.Regex:
                         methodPair.ParseArguments(regExRouteParams, args);
                         return await methodPair.Invoke(args);
-                    case RoutingStrategy.Wildcard:
-                        return await methodPair.Invoke(args);
                     default:
-                        // Log the handler to be used
-                        $"Routing strategy '{Server.RoutingStrategy}' is not supported by this module.".Warn(
-                            nameof(WebApiModule));
-                        return false;
+                        return await methodPair.Invoke(args);
                 }
             });
         }
 
-        /// <summary>
-        /// Gets the name of this module.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
+        /// <inheritdoc />
         public override string Name => "Web API Module";
 
         /// <summary>
@@ -175,9 +158,7 @@
 
             foreach (var method in methods)
             {
-                var attribute =
-                    method.GetCustomAttributes(typeof(WebApiHandlerAttribute), true).FirstOrDefault() as
-                        WebApiHandlerAttribute;
+                var attribute = method.GetCustomAttributes(typeof(WebApiHandlerAttribute), true).FirstOrDefault() as WebApiHandlerAttribute;
                 if (attribute == null) continue;
 
                 foreach (var path in attribute.Paths)
@@ -216,9 +197,7 @@
 
             foreach (var route in _delegateMap.Keys)
             {
-                var urlParam =
-                    EmbedIO.Extensions.RequestRegexUrlParams(path, route,
-                        () => !_delegateMap[route].Keys.Contains(verb));
+                var urlParam = path.RequestRegexUrlParams(route, () => !_delegateMap[route].Keys.Contains(verb));
 
                 if (urlParam == null) continue;
 
@@ -265,14 +244,13 @@
         }
 
         /// <summary>
-        /// Looks for a path that matches the one provided by the context
-        /// returns true if such path is found otherwise returns false
+        /// Looks for a path that matches the one provided by the context.
         /// </summary>
         /// <param name="context"> The HttpListener context</param>
-        /// <returns>A boolean</returns>
+        /// <returns><c>true</c> if the path is found, otherwise <c>false</c></returns>
         private bool IsMethodNotAllowed(HttpListenerContext context)
         {
-            var path = string.Empty;
+            string path;
 
             switch (Server.RoutingStrategy)
             {
@@ -286,7 +264,7 @@
                     path = context.Request.Url.LocalPath;
                     foreach (var route in _delegateMap.Keys)
                     {
-                        if (EmbedIO.Extensions.RequestRegexUrlParams(path, route) != null) return true;
+                        if (path.RequestRegexUrlParams(route) != null) return true;
                     }
 
                     return false;

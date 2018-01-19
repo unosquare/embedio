@@ -285,7 +285,7 @@
         /// The params from the request.
         /// </returns>
         public static Dictionary<string, object> RequestRegexUrlParams(
-            string requestPath,
+            this string requestPath,
             string basePath,
             Func<bool> validateFunc = null)
         {
