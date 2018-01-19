@@ -49,12 +49,12 @@ namespace Unosquare.Net
         {
             PayloadData = payloadData ?? new PayloadData();
         }
-        
+
         internal CloseEventArgs(CloseStatusCode code, string reason = null)
         {
             PayloadData = new PayloadData((ushort) code, reason);
         }
-        
+
         /// <summary>
         /// Gets the status code for the close.
         /// </summary>

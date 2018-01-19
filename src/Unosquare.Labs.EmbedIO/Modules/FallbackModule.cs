@@ -37,7 +37,7 @@
         {
             if (string.IsNullOrWhiteSpace(redirectUrl))
                 throw new ArgumentNullException(nameof(redirectUrl));
-            
+
             RedirectUrl = redirectUrl;
 
             AddHandler(

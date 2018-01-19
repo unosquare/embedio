@@ -8,6 +8,7 @@
     using Net;
 #endif
 
+    /// <inheritdoc />
     /// <summary>
     /// Interface to create session modules
     /// </summary>
@@ -21,7 +22,7 @@
         /// The sessions.
         /// </value>
         IReadOnlyDictionary<string, SessionInfo> Sessions { get; }
-        
+
         /// <summary>
         /// Gets or sets the expiration time for the sessions.
         /// </summary>

@@ -11,6 +11,7 @@
     using Net;
 #endif
 
+    /// <inheritdoc />
     /// <summary>
     /// Represents a list which binds Paths and their corresponding HTTP Verbs to Method calls
     /// </summary>
@@ -31,12 +32,12 @@
         /// The HTTP resource path
         /// </summary>
         public string Path { get; set; }
-        
+
         /// <summary>
         /// The HTTP Verb of this Map
         /// </summary>
         public HttpVerbs Verb { get; set; }
-        
+
         /// <summary>
         /// The delegate to call for the given path and verb.
         /// </summary>
