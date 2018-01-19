@@ -2098,6 +2098,30 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.WebServer.Modules
   fullName: Unosquare.Labs.EmbedIO.WebServer.Modules
   nameWithType: WebServer.Modules
+- uid: Unosquare.Labs.EmbedIO.WebServer.OnMethodNotAllowed
+  name: OnMethodNotAllowed
+  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_OnMethodNotAllowed
+  commentId: P:Unosquare.Labs.EmbedIO.WebServer.OnMethodNotAllowed
+  fullName: Unosquare.Labs.EmbedIO.WebServer.OnMethodNotAllowed
+  nameWithType: WebServer.OnMethodNotAllowed
+- uid: Unosquare.Labs.EmbedIO.WebServer.OnMethodNotAllowed*
+  name: OnMethodNotAllowed
+  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_OnMethodNotAllowed_
+  commentId: Overload:Unosquare.Labs.EmbedIO.WebServer.OnMethodNotAllowed
+  fullName: Unosquare.Labs.EmbedIO.WebServer.OnMethodNotAllowed
+  nameWithType: WebServer.OnMethodNotAllowed
+- uid: Unosquare.Labs.EmbedIO.WebServer.OnNotFound
+  name: OnNotFound
+  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_OnNotFound
+  commentId: P:Unosquare.Labs.EmbedIO.WebServer.OnNotFound
+  fullName: Unosquare.Labs.EmbedIO.WebServer.OnNotFound
+  nameWithType: WebServer.OnNotFound
+- uid: Unosquare.Labs.EmbedIO.WebServer.OnNotFound*
+  name: OnNotFound
+  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_OnNotFound_
+  commentId: Overload:Unosquare.Labs.EmbedIO.WebServer.OnNotFound
+  fullName: Unosquare.Labs.EmbedIO.WebServer.OnNotFound
+  nameWithType: WebServer.OnNotFound
 - uid: Unosquare.Labs.EmbedIO.WebServer.ProcessRequest(Unosquare.Net.HttpListenerContext,System.Threading.CancellationToken)
   name: ProcessRequest(HttpListenerContext, CancellationToken)
   href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_ProcessRequest_Unosquare_Net_HttpListenerContext_System_Threading_CancellationToken_
@@ -2645,6 +2669,18 @@ references:
   commentId: T:Unosquare.Net.HttpListenerException
   fullName: Unosquare.Net.HttpListenerException
   nameWithType: HttpListenerException
+- uid: Unosquare.Net.HttpListenerException.#ctor(System.Int32,System.String)
+  name: HttpListenerException(Int32, String)
+  href: api/Unosquare.Net.HttpListenerException.html#Unosquare_Net_HttpListenerException__ctor_System_Int32_System_String_
+  commentId: M:Unosquare.Net.HttpListenerException.#ctor(System.Int32,System.String)
+  fullName: Unosquare.Net.HttpListenerException.HttpListenerException(System.Int32, System.String)
+  nameWithType: HttpListenerException.HttpListenerException(Int32, String)
+- uid: Unosquare.Net.HttpListenerException.#ctor*
+  name: HttpListenerException
+  href: api/Unosquare.Net.HttpListenerException.html#Unosquare_Net_HttpListenerException__ctor_
+  commentId: Overload:Unosquare.Net.HttpListenerException.#ctor
+  fullName: Unosquare.Net.HttpListenerException.HttpListenerException
+  nameWithType: HttpListenerException.HttpListenerException
 - uid: Unosquare.Net.HttpListenerException.ErrorCode
   name: ErrorCode
   href: api/Unosquare.Net.HttpListenerException.html#Unosquare_Net_HttpListenerException_ErrorCode
@@ -4110,6 +4146,18 @@ references:
   commentId: T:Unosquare.Net.WebSocketReceiveResult
   fullName: Unosquare.Net.WebSocketReceiveResult
   nameWithType: WebSocketReceiveResult
+- uid: Unosquare.Net.WebSocketReceiveResult.#ctor(System.Int32,Unosquare.Net.WebSocketMessageType,System.Boolean)
+  name: WebSocketReceiveResult(Int32, WebSocketMessageType, Boolean)
+  href: api/Unosquare.Net.WebSocketReceiveResult.html#Unosquare_Net_WebSocketReceiveResult__ctor_System_Int32_Unosquare_Net_WebSocketMessageType_System_Boolean_
+  commentId: M:Unosquare.Net.WebSocketReceiveResult.#ctor(System.Int32,Unosquare.Net.WebSocketMessageType,System.Boolean)
+  fullName: Unosquare.Net.WebSocketReceiveResult.WebSocketReceiveResult(System.Int32, Unosquare.Net.WebSocketMessageType, System.Boolean)
+  nameWithType: WebSocketReceiveResult.WebSocketReceiveResult(Int32, WebSocketMessageType, Boolean)
+- uid: Unosquare.Net.WebSocketReceiveResult.#ctor*
+  name: WebSocketReceiveResult
+  href: api/Unosquare.Net.WebSocketReceiveResult.html#Unosquare_Net_WebSocketReceiveResult__ctor_
+  commentId: Overload:Unosquare.Net.WebSocketReceiveResult.#ctor
+  fullName: Unosquare.Net.WebSocketReceiveResult.WebSocketReceiveResult
+  nameWithType: WebSocketReceiveResult.WebSocketReceiveResult
 - uid: Unosquare.Net.WebSocketReceiveResult.Count
   name: Count
   href: api/Unosquare.Net.WebSocketReceiveResult.html#Unosquare_Net_WebSocketReceiveResult_Count
