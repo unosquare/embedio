@@ -1,0 +1,357 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>How to receive a Multi-part request | Unosquare EmbedIO </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="How to receive a Multi-part request | Unosquare EmbedIO ">
+    <meta name="generator" content="docfx 2.29.1.0">
+    
+    <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/bootstrap.min.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="logo" src="../best-practices/resources/images/logo.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="how-to-receive-a-multi-part-request">How to receive a Multi-part request</h1>
+
+<p>You can receive multi-part request if you include this static method (from <a href="http://stackoverflow.com/questions/7460088/reading-file-input-from-a-multipart-form-data-post">http://stackoverflow.com/questions/7460088/reading-file-input-from-a-multipart-form-data-post</a>):</p>
+<pre><code class="lang-csharp">private static async Task ParseFiles(Stream data, string contentType, Action&lt;string, Stream&gt; fileProcessor)
+        {
+            var streamContent = new StreamContent(data);
+            streamContent.Headers.ContentType = MediaTypeHeaderValue.Parse(contentType);
+
+            var provider = await streamContent.ReadAsMultipartAsync();
+
+            foreach (var httpContent in provider.Contents)
+            {
+                var fileName = httpContent.Headers.ContentDisposition.FileName;
+
+                if (string.IsNullOrWhiteSpace(fileName))
+                {
+                    continue;
+                }
+
+                using (var fileContents = await httpContent.ReadAsStreamAsync())
+                {
+                    fileProcessor(fileName.Replace(&quot;\&quot;&quot;, &quot;&quot;), fileContents);
+                }
+            }
+        }
+</code></pre><p>You need to include <a href="https://www.nuget.org/packages/Microsoft.AspNet.WebApi.Client">WebApi Client Nuget</a>.</p>
+<p>Also you can check the <a href="https://www.nuget.org/packages/HttpMultipartParser/">HttpMultipartParser Nuget</a> and connect the Request input directly to the HttpMultipartParser, very helpful and small.</p>
+<h1 id="random-port-selection-demo-waynebloss">Random Port selection demo (@waynebloss)</h1>
+<p>I just wanted to share with you a <a href="http://stackoverflow.com/a/223188/16387">random port choosing</a> demo that I created for myself. Perhaps you will want to build this feature into your project one day, but the example below is working fine for me and it may serve as a helpful example for other readers.</p>
+<p>The wrapper class (<code>StaticWebServer</code>) is shown last. Here is how I now use it from my WinForms demo:</p>
+<pre><code class="lang-csharp">[STAThread]
+static void Main()
+{
+    Application.EnableVisualStyles();
+    Application.SetCompatibleTextRenderingDefault(false);
+
+    using (var webServer = new StaticWebServer())
+    {
+        webServer.RunAsync();
+        Application.Run(new Views.MainView(webServer.UsingBaseAddress));
+    }
+}
+</code></pre><p>...and in the main view:</p>
+<pre><code class="lang-csharp">public MainView(string webViewUrl = &quot;about:blank&quot;)
+{
+    InitializeComponent();
+    browser.Url = new Uri(webViewUrl);
+    mainStatusLabel.Text = &quot;&quot;;
+}
+</code></pre><p>And finally, here is the <code>StaticWebServer</code> class, which chooses the port to use dynamically:</p>
+<pre><code class="lang-csharp">using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Unosquare.Labs.EmbedIO;
+using Unosquare.Labs.EmbedIO.Log;
+using Unosquare.Labs.EmbedIO.Modules;
+
+namespace YourOwnNamespace
+{
+    class StaticWebServer : IDisposable
+    {
+        public StaticWebServer() { }
+
+        static Random _portGenerator = new Random();
+        static List&lt;int&gt; _portsUsed = new List&lt;int&gt;();
+
+        /// &lt;summary&gt;
+        /// An instance of the (awesome!) EmbedIO WebServer.
+        /// &lt;/summary&gt;
+        WebServer _server;
+
+        /// &lt;summary&gt;
+        /// String format template to merge the randomly generated port into.
+        /// Default: &quot;http://127.0.0.1:{0}/&quot;
+        /// &lt;/summary&gt;
+        public string BaseAddressTemplate { get; set; } = &quot;http://127.0.0.1:{0}/&quot;;
+        public int PortRangeMin { get; set; } = 51001;
+        public int PortRangeMax { get; set; } = 65001;
+        /// &lt;summary&gt;
+        /// Relative or absolute path to serve static files from.
+        /// &lt;/summary&gt;
+        public string RootFilesystemPath { get; set; } = &quot;browse&quot;;
+
+        /// &lt;summary&gt;
+        /// The base address currently being used by the server.
+        /// &lt;/summary&gt;
+        public string UsingBaseAddress { get; private set; }
+        /// &lt;summary&gt;
+        /// The port currently being used by the server.
+        /// &lt;/summary&gt;
+        public int UsingPort { get; private set; }
+        /// &lt;summary&gt;
+        /// The root filesystem path currently being used by the server.
+        /// &lt;/summary&gt;
+        public string UsingRootFilesystemPath { get; private set; }
+
+        WebServer CreateServer(string baseAddress, string rootPath)
+        {
+            var logger = new DebugLogger();
+            var server = new WebServer(baseAddress, logger);
+
+            var headers = new Dictionary&lt;string, string&gt;()
+            {
+#if DEBUG
+                // The following is mostly useful for debugging.
+                { Constants.HeaderCacheControl, &quot;no-cache, no-store, must-revalidate&quot; },
+                { Constants.HeaderPragma, &quot;no-cache&quot; },
+                { Constants.HeaderExpires, &quot;0&quot; }
+#endif
+            };
+
+            var staticFileMod = new StaticFilesModule(rootPath, headers);
+            staticFileMod.DefaultExtension = &quot;.html&quot;;
+            server.RegisterModule(staticFileMod);
+
+            return server;
+        }
+
+        string GetAbsoluteRootDirectoryPath()
+        {
+            if (Path.IsPathRooted(RootFilesystemPath))
+                return RootFilesystemPath;
+            var baseDir = Path.GetDirectoryName(
+                System.Reflection.Assembly.GetEntryAssembly()
+                .Location);
+            return Path.Combine(baseDir, RootFilesystemPath);
+        }
+
+        public void RunAsync()
+        {
+            UsingRootFilesystemPath = GetAbsoluteRootDirectoryPath();
+            Debug.Print(&quot;Serving static files from: {0}&quot;, UsingRootFilesystemPath);
+
+            // Random port selection adapted from http://stackoverflow.com/a/223188/16387
+            UsingPort = -1;
+            UsingBaseAddress = null;
+            while (true)
+            {
+                UsingPort = _portGenerator.Next(PortRangeMin, PortRangeMax);
+                if (_portsUsed.Contains(UsingPort))
+                    continue;
+
+                UsingBaseAddress = String.Format(BaseAddressTemplate, UsingPort.ToString());
+                _server = CreateServer(UsingBaseAddress, UsingRootFilesystemPath);
+                try
+                {
+                    _server.RunAsync();
+                } catch (System.Net.HttpListenerException)
+                {
+                    _server.Dispose();
+                    _server = null;
+                    continue;
+                }
+                _portsUsed.Add(UsingPort);
+                break;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        void Dispose(bool disposing)
+        {
+            if (!disposing)
+                return;
+
+            var server = _server;
+            _server = null;
+
+            if (server == null)
+                return;
+            server.Dispose();
+        }
+
+        #region DebugLogger
+
+        /// &lt;summary&gt;
+        /// Provides a simple logger for Debug output.
+        /// &lt;/summary&gt;
+        class DebugLogger : ILog
+        {
+            private static void WriteLine(string format, params object[] args)
+            {
+                var d = DateTime.Now;
+                var dateTimeString = string.Format(&quot;{0}-{1}-{2} {3}:{4}:{5}.{6}&quot;,
+                    d.Year.ToString(&quot;0000&quot;), d.Month.ToString(&quot;00&quot;), d.Day.ToString(&quot;00&quot;), d.Hour.ToString(&quot;00&quot;),
+                    d.Minute.ToString(&quot;00&quot;), d.Second.ToString(&quot;00&quot;), d.Millisecond.ToString(&quot;000&quot;));
+
+                format = dateTimeString + &quot;\t&quot; + format;
+
+                if (args != null)
+                    Debug.Print(format, args);
+                else
+                    Debug.Print(format);
+            }
+
+            public virtual void Info(object message)
+            {
+                InfoFormat(message.ToString(), null);
+            }
+
+            public virtual void Error(object message)
+            {
+                ErrorFormat(message.ToString(), null);
+            }
+
+            public virtual void Error(object message, Exception exception)
+            {
+                ErrorFormat(message.ToString(), null);
+                ErrorFormat(exception.ToString(), null);
+            }
+
+            public virtual void InfoFormat(string format, params object[] args)
+            {
+                WriteLine(format, args);
+            }
+
+            public virtual void WarnFormat(string format, params object[] args)
+            {
+                WriteLine(format, args);
+            }
+
+            public virtual void ErrorFormat(string format, params object[] args)
+            {
+                WriteLine(format, args);
+            }
+
+            public virtual void DebugFormat(string format, params object[] args)
+            {
+                WriteLine(format, args);
+            }
+        }
+
+        #endregion
+    }
+}
+</code></pre></article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="doc" align="center">
+              <span class="small mobile-hide">
+                <img id="logo" class="doc-logo" src="../embedio.png" alt="">
+              </span>
+            </div>
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li class="top-sep">
+                    <a href="https://github.com/unosquare/embedio.wiki/blob/master/Cookbook.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2017-2018 <a href="https://www.unosquare.com">Unosquare</a></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
