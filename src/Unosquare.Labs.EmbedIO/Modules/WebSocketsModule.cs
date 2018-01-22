@@ -12,6 +12,7 @@
 #if NET47
     using System.Net.WebSockets;
     using System.Text.RegularExpressions;
+    using System.Net;
 #else
     using Net;
 #endif
@@ -52,12 +53,29 @@
                 if (context.Request.IsWebSocketRequest == false)
                     return false;
 
-                // retrieve the request path
-                var path = context.RequestPath();
+                var path = String.Empty;
 
-                // match the request path
-                if (!_serverMap.ContainsKey(path))
+                // retrieve the request path
+                switch (Server.RoutingStrategy)
+                {
+                    case RoutingStrategy.Wildcard:
+                        path = context.RequestWilcardPath(_serverMap.Keys
+                        .Where(k => k.Contains("/" + ModuleMap.AnyPath))
+                        .Select(s => s.ToLowerInvariant())
+                        .ToArray());
+                        break;
+                    case RoutingStrategy.Regex:
+                        path = NormalizeRegexPath(context);
+                        break;
+                    default:
+                        path = context.RequestPath();
+                        break;
+                }
+
+                if (String.IsNullOrEmpty(path) && !_serverMap.ContainsKey(path))
+                {
                     return false;
+                }
 
                 // Accept the WebSocket -- this is a blocking method until the WebSocketCloses
                 await _serverMap[path].AcceptWebSocket(context, ct);
@@ -137,6 +155,28 @@
                 throw new ArgumentNullException(nameof(path));
 
             _serverMap[path] = server ?? throw new ArgumentNullException(nameof(server));
+        }
+
+        /// <summary>
+        /// Normalizes a path meant for Regex matching returns the registered
+        /// path in the internal map.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>A string that represents the registered path in the internal map</returns>
+        private string NormalizeRegexPath(HttpListenerContext context)
+        {
+            var path = String.Empty;
+
+            foreach (var route in _serverMap.Keys)
+            {
+                var urlParam = context.RequestRegexUrlParams(route);
+
+                if (urlParam == null) continue;
+
+                return route;
+            }
+
+            return path;
         }
     }
 
