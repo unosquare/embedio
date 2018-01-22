@@ -98,8 +98,11 @@ namespace Unosquare.Net
                 .Select(part => Encoding.GetEncoding(GetValue(part))).FirstOrDefault();
         }
 
-        protected static async Task<T> ReadAsync<T>(Stream stream, Func<string[], T> parser,
-            int millisecondsTimeout = 90000, CancellationToken ct = default(CancellationToken))
+        protected static async Task<T> ReadAsync<T>(
+            Stream stream, 
+            Func<string[], T> parser,
+            int millisecondsTimeout = 90000, 
+            CancellationToken ct = default(CancellationToken))
             where T : HttpBase
         {
             var timeout = false;
@@ -107,8 +110,8 @@ namespace Unosquare.Net
                 state =>
                 {
                     timeout = true;
-#if NET452
-                  stream.Close();
+#if NET46
+                    stream.Close();
 #else
                     stream.Dispose();
 #endif

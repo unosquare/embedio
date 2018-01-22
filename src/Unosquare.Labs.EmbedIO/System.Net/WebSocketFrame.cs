@@ -39,7 +39,6 @@ namespace Unosquare.Net
     using System.Collections;
     using System.Collections.Generic;
     using System.IO;
-    using System.Text;
     using System;
     using System.Threading.Tasks;
     using Swan;
@@ -297,7 +296,7 @@ Extended Payload Length: {extPayloadLen}
                     }
                 }
 
-#if NET452
+#if NET46
                 buff.Close();
 #endif
                 return buff.ToArray();
