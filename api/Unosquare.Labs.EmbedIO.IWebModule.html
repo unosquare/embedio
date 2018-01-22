@@ -96,7 +96,7 @@
   
   <a id="Unosquare_Labs_EmbedIO_IWebModule_Handlers_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.Handlers*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_IWebModule_Handlers" data-uid="Unosquare.Labs.EmbedIO.IWebModule.Handlers">Handlers</h4>
-  <div class="markdown level1 summary"><p>Gets the registered handlers.</p>
+  <div class="markdown level1 summary"><p>Gets the handlers.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -177,8 +177,7 @@
   
   <a id="Unosquare_Labs_EmbedIO_IWebModule_Server_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.Server*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_IWebModule_Server" data-uid="Unosquare.Labs.EmbedIO.IWebModule.Server">Server</h4>
-  <div class="markdown level1 summary"><p>Gets the associated Web Server object.
-This property is automatically set when the module is registered</p>
+  <div class="markdown level1 summary"><p>Gets the server owning this module. This property is set automatically after registering the module.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -267,24 +266,6 @@ This property is automatically set when the module is registered</p>
         <td><span class="xref">System.Func</span>&lt;<a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a>, <span class="xref">System.Threading.CancellationToken</span>, <span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Boolean</span>&gt;&gt;</td>
         <td><span class="parametername">handler</span></td>
         <td><p>The handler.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentNullException</span></td>
-        <td><p>path
-or
-handler</p>
 </td>
       </tr>
     </tbody>
