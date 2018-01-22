@@ -9,9 +9,10 @@ using Unosquare.Swan.Formatters;
 
 namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
-    [WebSocketHandler("/test/*")]
-    public class TestWebSocket : WebSocketsServer
+    [WebSocketHandler("/test/")]
+    public class TestWebSocketBase : WebSocketsServer
     {
+        public System.Action<WebSocketContext> OnMessageParams;
         protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
         {
             Send(context, "HELLO");
@@ -49,8 +50,28 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
             // Do nothing
         }
 
+        public override string ServerName => nameof(TestWebSocketBase);
+    }
+
+    [WebSocketHandler("/test/")]
+    public class TestWebSocket : TestWebSocketBase
+    {
         public override string ServerName => nameof(TestWebSocket);
     }
+
+    [WebSocketHandler("/test/*")]
+    public class TestWebSocketWildcard : TestWebSocketBase
+    {
+        public override string ServerName => nameof(TestWebSocketWildcard);
+    }
+
+    [WebSocketHandler("/test/{id}")]
+    public class TestWebSocketRegex : TestWebSocketBase
+    {
+        public override string ServerName => nameof(TestWebSocketRegex);
+    }
+
+
 
     [WebSocketHandler("/bigdata")]
     public class BigDataWebSocket : WebSocketsServer
