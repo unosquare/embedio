@@ -63,10 +63,14 @@
                     : NormalizeRegexPath(verb, context, regExRouteParams);
 
                 // return a non-math if no handler hold the route
-                if (path == null) return false;
+                if (path == null)
+                {
+                    return IsMethodNotAllowed(context) && await Server.OnMethodNotAllowed(context);
+                }
 
                 // search the path and verb
-                if (!_delegateMap.TryGetValue(path, out var methods) || !methods.TryGetValue(verb, out var methodPair))
+                if (!_delegateMap.TryGetValue(path, out var methods) ||
+                    !methods.TryGetValue(verb, out var methodPair))
                     throw new InvalidOperationException($"No method found for path {path} and verb {verb}.");
 
                 // ensure module does not return cached responses
@@ -87,13 +91,8 @@
                     case RoutingStrategy.Regex:
                         methodPair.ParseArguments(regExRouteParams, args);
                         return await methodPair.Invoke(args);
-                    case RoutingStrategy.Wildcard:
-                        return await methodPair.Invoke(args);
                     default:
-                        // Log the handler to be used
-                        $"Routing strategy '{Server.RoutingStrategy}' is not supported by this module.".Warn(
-                            nameof(WebApiModule));
-                        return false;
+                        return await methodPair.Invoke(args);
                 }
             });
         }
@@ -160,9 +159,7 @@
 
             foreach (var method in methods)
             {
-                var attribute =
-                    method.GetCustomAttributes(typeof(WebApiHandlerAttribute), true).FirstOrDefault() as
-                        WebApiHandlerAttribute;
+                var attribute = method.GetCustomAttributes(typeof(WebApiHandlerAttribute), true).FirstOrDefault() as WebApiHandlerAttribute;
                 if (attribute == null) continue;
 
                 foreach (var path in attribute.Paths)
@@ -201,7 +198,7 @@
 
             foreach (var route in _delegateMap.Keys)
             {
-                var urlParam = EmbedIO.Extensions.RequestRegexUrlParams(path, route, () => !_delegateMap[route].Keys.Contains(verb));
+                var urlParam = path.RequestRegexUrlParams(route, () => !_delegateMap[route].Keys.Contains(verb));
 
                 if (urlParam == null) continue;
 
@@ -245,6 +242,39 @@
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Looks for a path that matches the one provided by the context.
+        /// </summary>
+        /// <param name="context"> The HttpListener context</param>
+        /// <returns><c>true</c> if the path is found, otherwise <c>false</c></returns>
+        private bool IsMethodNotAllowed(HttpListenerContext context)
+        {
+            string path;
+
+            switch (Server.RoutingStrategy)
+            {
+                case RoutingStrategy.Wildcard:
+                    path = context.RequestWilcardPath(_delegateMap.Keys
+                        .Where(k => k.Contains("/" + ModuleMap.AnyPath))
+                        .Select(s => s.ToLowerInvariant())
+                        .ToArray());
+                    break;
+                case RoutingStrategy.Regex:
+                    path = context.Request.Url.LocalPath;
+                    foreach (var route in _delegateMap.Keys)
+                    {
+                        if (path.RequestRegexUrlParams(route) != null) return true;
+                    }
+
+                    return false;
+                default:
+                    path = context.RequestPath();
+                    break;
+            }
+
+            return _delegateMap.ContainsKey(path);
         }
     }
 

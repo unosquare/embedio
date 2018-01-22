@@ -182,6 +182,22 @@
             });
         }
 
+        [Test]
+        public void EmptyModules_NotFoundStatusCode()
+        {
+            Assert.ThrowsAsync<HttpRequestException>(async () =>
+            {
+                var url = Resources.GetServerAddress();
+
+                using (var instance = new WebServer(url))
+                {
+                    var runTask = instance.RunAsync();
+                    var request = new HttpClient();
+                    await request.GetStringAsync(url);
+                }
+            });
+        }
+
         [TestCase("iso-8859-1")]
         [TestCase("utf-8")]
         [TestCase("utf-16")]

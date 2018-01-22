@@ -1,4 +1,6 @@
 ﻿using NUnit.Framework;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Unosquare.Labs.EmbedIO.Tests.TestObjects;
 

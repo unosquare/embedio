@@ -89,6 +89,23 @@
             }
         }
 
+        public class Http405 : WebApiModuleTest
+        {
+            [Test]
+            public async Task ValidPathInvalidMethod_Returns405()
+            {
+                using (var client = new HttpClient())
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Delete, WebServerUrl + TestController.GetPath);
+
+                    var response = await client.SendAsync(request);
+
+                    Assert.AreEqual(response.StatusCode, HttpStatusCode.MethodNotAllowed);
+                }
+
+            }
+        }
+
         public class FormData : WebApiModuleTest
         {
             [TestCase("id", "id")]
