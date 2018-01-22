@@ -322,6 +322,60 @@ Please notice the ending slash. -- It is important</p>
   </table>
   
   
+  <a id="Unosquare_Labs_EmbedIO_WebServer_OnMethodNotAllowed_" data-uid="Unosquare.Labs.EmbedIO.WebServer.OnMethodNotAllowed*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer_OnMethodNotAllowed" data-uid="Unosquare.Labs.EmbedIO.WebServer.OnMethodNotAllowed">OnMethodNotAllowed</h4>
+  <div class="markdown level1 summary"><p>The on method not allowed</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Func&lt;HttpListenerContext, Task&lt;bool&gt;&gt; OnMethodNotAllowed { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a>, <span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Boolean</span>&gt;&gt;</td>
+        <td><p>The on method not allowed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_WebServer_OnNotFound_" data-uid="Unosquare.Labs.EmbedIO.WebServer.OnNotFound*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer_OnNotFound" data-uid="Unosquare.Labs.EmbedIO.WebServer.OnNotFound">OnNotFound</h4>
+  <div class="markdown level1 summary"><p>The on not found</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Func&lt;HttpListenerContext, Task&lt;bool&gt;&gt; OnNotFound { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a>, <span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Boolean</span>&gt;&gt;</td>
+        <td><p>The on not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Unosquare_Labs_EmbedIO_WebServer_RoutingStrategy_" data-uid="Unosquare.Labs.EmbedIO.WebServer.RoutingStrategy*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_WebServer_RoutingStrategy" data-uid="Unosquare.Labs.EmbedIO.WebServer.RoutingStrategy">RoutingStrategy</h4>
   <div class="markdown level1 summary"><p>Gets the URL RoutingStrategy used in this instance.
@@ -452,8 +506,7 @@ By default it is set to Wildcard, but Regex is the recommended value.</p>
   
   <a id="Unosquare_Labs_EmbedIO_WebServer_Dispose_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Dispose*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_WebServer_Dispose" data-uid="Unosquare.Labs.EmbedIO.WebServer.Dispose">Dispose()</h4>
-  <div class="markdown level1 summary"><p>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">

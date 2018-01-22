@@ -74,6 +74,7 @@
  <a href="https://ci.appveyor.com/project/geoperez/embedio"><img src="https://ci.appveyor.com/api/projects/status/w59t7sct3a8ir96t?svg=true" alt="Build status"></a>
  <a href="https://travis-ci.org/unosquare/embedio"><img src="https://travis-ci.org/unosquare/embedio.svg?branch=master" alt="Build Status"></a>
  <a href="https://www.nuget.org/packages/Embedio"><img src="https://badge.fury.io/nu/embedio.svg" alt="NuGet version"></a>
+ <a href="https://www.nuget.org/packages/Embedio"><img src="https://img.shields.io/nuget/dt/embedio.svg" alt="NuGet"></a>
 <a href="https://coveralls.io/r/unosquare/embedio?branch=master"><img src="https://coveralls.io/repos/unosquare/embedio/badge.svg?branch=master" alt="Coverage Status"></a></p>
 <p><img src="http://unosquare.github.io/embedio/images/embedio.png" alt="EmbedIO"></p>
 <p><em><span class="emoji" shortcode="star">⭐</span> Please star this project if you find it useful!</em></p>
@@ -84,7 +85,7 @@
 <li>Cross-platform[1]: tested in Mono on Windows and on a custom Yocto image for the Raspberry Pi</li>
 <li>Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras" target="_blank">EmbedIO Extras</a> for additional modules.</li>
 <li>Small memory footprint</li>
-<li>Create REST APIs quickly with the out-of-the-box Web Api module</li>
+<li>Create REST APIs quickly with the out-of-the-box Web API module</li>
 <li>Serve static files with 1 line of code (also out-of-the-box)</li>
 <li>Handle sessions with the built-in LocalSessionWebModule</li>
 <li>WebSockets support (see notes below)</li>
@@ -123,12 +124,12 @@
 <tr>
 <td>NETSTANDARD*</td>
 <td>Yes</td>
-<td>Support Windows, Linux and macOS using  native System.Net library</td>
+<td>Support Windows, Linux and macOS using native System.Net library</td>
 </tr>
 <tr>
 <td>UAP</td>
 <td>No</td>
-<td>Support Windows Universal Plataform. More information <a href="https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT">here</a></td>
+<td>Support Windows Universal Platform. More information <a href="https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT">here</a></td>
 </tr>
 </tbody>
 </table>
@@ -187,7 +188,7 @@
                 browser.Start();
 #endif
                 // Wait for any key to be pressed before disposing of our web server.
-                // In a service we&#39;d manage the lifecycle of of our web server using
+                // In a service, we&#39;d manage the lifecycle of our web server using
                 // something like a BackgroundWorker or a ManualResetEvent.
                 Console.ReadKey(true);
             }
@@ -225,7 +226,7 @@
             var task = server.RunAsync(cts.Token);
 
             // Wait for any key to be pressed before disposing of our web server.
-            // In a service we&#39;d manage the lifecycle of of our web server using
+            // In a service, we&#39;d manage the lifecycle of our web server using
             // something like a BackgroundWorker or a ManualResetEvent.
             Console.ReadKey(true);
             cts.Cancel();
@@ -243,12 +244,12 @@
     }
 }
 </code></pre><h2 id="rest-api-example">REST API Example:</h2>
-<p>The WebApi module supports two routing strategies: Wildcard and Regex. By default, and in order to maintain backwards compatibility, the WebApi module will use the <strong>Wildcard Routing Strategy</strong> and match routes using the asterisk <code>*</code> character in the route. <strong>For example:</strong> </p>
+<p>The WebApi module supports two routing strategies: Wildcard and Regex. By default, and in order to maintain backward compatibility, the WebApi module will use the <strong>Wildcard Routing Strategy</strong> and match routes using the asterisk <code>*</code> character in the route. <strong>For example:</strong> </p>
 <ul>
 <li>The route <code>/api/people/*</code> will match any request with a URL starting with the two first URL segments <code>api</code> and <code>people</code> and ending with anything. The route <code>/api/people/hello</code> will be matched.</li>
-<li>You can also use wildcards in the middle of the route. The route <code>/api/people/*/details</code> will match requests starting with the two first URL segments <code>api</code> and <code>people</code>, and ending with a <code>details</code> segment. The route <code>/api/people/hello/details</code> will be matched. </li>
+<li>You can also use wildcards in the middle of the route. The route <code>/api/people/*/details</code> will match requests starting with the two first URL segments <code>api</code> and <code>people</code>, and end with a <code>details</code> segment. The route <code>/api/people/hello/details</code> will be matched. </li>
 </ul>
-<p><em>Note that most REST services can be designed with this simpler Wildcard routing startegy. However, the Regex matching strategy is the current recommended approach as we might be deprecating the Wildcard strategy altogether</em></p>
+<p><em>Note that most REST services can be designed with this simpler Wildcard routing strategy. However, the Regex matching strategy is the current recommended approach as we might be deprecating the Wildcard strategy altogether</em></p>
 <p>On the other hand, the <strong>Regex Routing Strategy</strong> will try to match and resolve the values from a route template, in a similar fashion to Microsoft&#39;s Web API 2. A method with the following route <code>/api/people/{id}</code> is going to match any request URL with three segments: the first two <code>api</code> and <code>people</code> and the last one is going to be parsed or converted to the type in the <code>id</code> argument of the handling method signature. Please read on if this was confusing as it is much simpler than it sounds. Additionally, you can put multiple values to match, for example <code>/api/people/{mainSkill}/{age}</code>, and receive the parsed values from the URL straight into the arguments of your handler method.</p>
 <p><em>During server setup:</em></p>
 <pre><code class="lang-csharp">// The routing strategy is Wildcard by default, but you can change it to Regex as follows:
@@ -338,7 +339,6 @@ server.Module&lt;WebSocketsModule&gt;().RegisterWebSocketsServer&lt;WebSocketsCh
 /// &lt;/summary&gt;
 public class WebSocketsChatServer : WebSocketsServer
 {
-
     public WebSocketsChatServer()
         : base(true, 0)
     {
@@ -361,16 +361,8 @@ public class WebSocketsChatServer : WebSocketsServer
         }
     }
 
-    /// &lt;summary&gt;
-    /// Gets the name of the server.
-    /// &lt;/summary&gt;
-    /// &lt;value&gt;
-    /// The name of the server.
-    /// &lt;/value&gt;
-    public override string ServerName
-    {
-        get { return &quot;Chat Server&quot;; }
-    }
+    /// &lt;inheritdoc/&gt;
+    public override string ServerName =&gt; &quot;Chat Server&quot;
 
     /// &lt;summary&gt;
     /// Called when this WebSockets Server accepts a new WebSockets client.
@@ -379,6 +371,7 @@ public class WebSocketsChatServer : WebSocketsServer
     protected override void OnClientConnected(WebSocketContext context)
     {
         this.Send(context, &quot;Welcome to the chat room!&quot;);
+
         foreach (var ws in this.WebSockets)
         {
             if (ws != context)
@@ -403,11 +396,11 @@ public class WebSocketsChatServer : WebSocketsServer
     /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
     protected override void OnClientDisconnected(WebSocketContext context)
     {
-        this.Broadcast(string.Format(&quot;Someone left the chat room.&quot;));
+        this.Broadcast(&quot;Someone left the chat room.&quot;);
     }
 }
 </code></pre><h2 id="notes">Notes</h2>
-<p>[1] - EmbedIO uses lowercase URL parts. In Windows systems this is the expected behaviour but in Unix systems using MONO please refer to <a href="http://www.mono-project.com/docs/advanced/iomap/">Mono IOMap</a> if you want to work with case insensitive URL parts.</p>
+<p>[1] - EmbedIO uses lowercase URL parts. In Windows systems, this is the expected behavior but in Unix systems using MONO please refer to <a href="http://www.mono-project.com/docs/advanced/iomap/">Mono IOMap</a> if you want to work with case-insensitive URL parts.</p>
 </article>
           </div>
           
@@ -421,7 +414,7 @@ public class WebSocketsChatServer : WebSocketsServer
               <div class="contribution">
                 <ul class="nav">
                   <li class="top-sep">
-                    <a href="https://github.com/unosquare/embedio/blob/Issue123-WebSocketRouting/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/unosquare/embedio/blob/master/README.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
