@@ -49,8 +49,8 @@ after_build:
             git config --global core.autocrlf false 
             git config --global user.email $env:op_build_user_email
             git config --global user.name $env:op_build_user
-
-            git clone -b documentation https://github.com/unosquare/best-practices.git -q
+            git clone -b documentation https://github.com/unosquare/best-practices.git -q            
+            git clone https://github.com/unosquare/embedio.wiki.git wiki -q
             docfx docfx.json --logLevel Error
             git clone https://github.com/unosquare/embedio.git -b gh-pages origin_site -q
             Copy-Item origin_site/.git _site -recurse
