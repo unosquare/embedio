@@ -270,10 +270,10 @@
         /// Requests the regex URL parameters.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="basePath">The base path.</param>
+        /// <param name="urlPattern">The url pattern </param>
         /// <returns>The params from the request.</returns>
-        public static Dictionary<string,object> RequestRegexUrlParams ( this WebSocketContext context, string basePath)
-          => RequestRegexUrlParams(context.RequestUri.LocalPath, basePath);
+        public static Dictionary<string,object> RequestRegexUrlParams(this WebSocketContext context, string urlPattern)
+          => RequestRegexUrlParams(context.RequestUri.LocalPath, urlPattern);
 
         /// <summary>
         /// Requests the regex URL parameters.
