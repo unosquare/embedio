@@ -2,6 +2,7 @@ language: csharp
 solution: Unosquare.Labs.EmbedIO.Lib.sln
 rvm: 2.3
 notifications:
+  email: false
   slack: unolabs:cbusXPH6pBwZ35rVDzi4k4ve
 matrix:
   include:
