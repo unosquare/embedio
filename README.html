@@ -272,21 +272,8 @@ server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;()
         }
         catch (Exception ex)
         {
-            return HandleError(context, ex, (int)HttpStatusCode.InternalServerError);
+            return context.JsonExceptionResponse(ex);
         }
-    }
-
-    protected bool HandleError(HttpListenerContext context, Exception ex, int statusCode = 500)
-    {
-        var errorResponse = new
-        {
-            Title = &quot;Unexpected Error&quot;,
-            ErrorCode = ex.GetType().Name,
-            Description = ex.ExceptionMessage(),
-        };
-
-        context.Response.StatusCode = statusCode;
-        return context.JsonResponse(errorResponse);
     }
 }
 </code></pre><p><em>Or if you want to use the Wildcard strategy (which is the default):</em></p>
@@ -311,21 +298,8 @@ server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;()
         }
         catch (Exception ex)
         {
-            return HandleError(context, ex, (int)HttpStatusCode.InternalServerError);
+            return context.JsonExceptionResponse(ex);
         }
-    }
-
-    protected bool HandleError(HttpListenerContext context, Exception ex, int statusCode = 500)
-    {
-        var errorResponse = new
-        {
-            Title = &quot;Unexpected Error&quot;,
-            ErrorCode = ex.GetType().Name,
-            Description = ex.ExceptionMessage(),
-        };
-
-        context.Response.StatusCode = statusCode;
-        return context.JsonResponse(errorResponse);
     }
 }
 </code></pre><h2 id="websockets-example">WebSockets Example:</h2>

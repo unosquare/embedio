@@ -382,6 +382,30 @@ references:
   commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.InQueryString
   fullName: Unosquare.Labs.EmbedIO.Extensions.InQueryString
   nameWithType: Extensions.InQueryString
+- uid: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponse(Unosquare.Net.HttpListenerContext,System.Exception,System.Net.HttpStatusCode)
+  name: JsonExceptionResponse(HttpListenerContext, Exception, Net.HttpStatusCode)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponse_Unosquare_Net_HttpListenerContext_System_Exception_System_Net_HttpStatusCode_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponse(Unosquare.Net.HttpListenerContext,System.Exception,System.Net.HttpStatusCode)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponse(Unosquare.Net.HttpListenerContext, System.Exception, System.Net.HttpStatusCode)
+  nameWithType: Extensions.JsonExceptionResponse(HttpListenerContext, Exception, Net.HttpStatusCode)
+- uid: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponse*
+  name: JsonExceptionResponse
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponse_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponse
+  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponse
+  nameWithType: Extensions.JsonExceptionResponse
+- uid: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Net.HttpListenerContext,System.Exception,System.Net.HttpStatusCode)
+  name: JsonExceptionResponseAsync(HttpListenerContext, Exception, Net.HttpStatusCode)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponseAsync_Unosquare_Net_HttpListenerContext_System_Exception_System_Net_HttpStatusCode_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Net.HttpListenerContext,System.Exception,System.Net.HttpStatusCode)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Net.HttpListenerContext, System.Exception, System.Net.HttpStatusCode)
+  nameWithType: Extensions.JsonExceptionResponseAsync(HttpListenerContext, Exception, Net.HttpStatusCode)
+- uid: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync*
+  name: JsonExceptionResponseAsync
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponseAsync_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync
+  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync
+  nameWithType: Extensions.JsonExceptionResponseAsync
 - uid: Unosquare.Labs.EmbedIO.Extensions.JsonResponse(Unosquare.Net.HttpListenerContext,System.Object)
   name: JsonResponse(HttpListenerContext, Object)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonResponse_Unosquare_Net_HttpListenerContext_System_Object_

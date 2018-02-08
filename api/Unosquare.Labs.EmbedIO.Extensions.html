@@ -793,6 +793,120 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   </table>
   
   
+  <a id="Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponse_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponse*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponse_Unosquare_Net_HttpListenerContext_System_Exception_System_Net_HttpStatusCode_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponse(Unosquare.Net.HttpListenerContext,System.Exception,System.Net.HttpStatusCode)">JsonExceptionResponse(HttpListenerContext, Exception, Net.HttpStatusCode)</h4>
+  <div class="markdown level1 summary"><p>Outputs async a JSON Response given an exception.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool JsonExceptionResponse(this HttpListenerContext context, Exception ex, Net.HttpStatusCode statusCode = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Exception</span></td>
+        <td><span class="parametername">ex</span></td>
+        <td><p>The ex.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Net.HttpStatusCode</span></td>
+        <td><span class="parametername">statusCode</span></td>
+        <td><p>The status code.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>A <code>true</code> value when the exception is written to the HTTP Response</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponseAsync_Unosquare_Net_HttpListenerContext_System_Exception_System_Net_HttpStatusCode_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Net.HttpListenerContext,System.Exception,System.Net.HttpStatusCode)">JsonExceptionResponseAsync(HttpListenerContext, Exception, Net.HttpStatusCode)</h4>
+  <div class="markdown level1 summary"><p>Outputs a JSON Response given an exception.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonExceptionResponseAsync(this HttpListenerContext context, Exception ex, Net.HttpStatusCode statusCode = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Exception</span></td>
+        <td><span class="parametername">ex</span></td>
+        <td><p>The ex.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Net.HttpStatusCode</span></td>
+        <td><span class="parametername">statusCode</span></td>
+        <td><p>The status code.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+        <td><p>A task for writing the output stream</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Unosquare_Labs_EmbedIO_Extensions_JsonResponse_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponse*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonResponse_Unosquare_Net_HttpListenerContext_System_Object_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponse(Unosquare.Net.HttpListenerContext,System.Object)">JsonResponse(HttpListenerContext, Object)</h4>
   <div class="markdown level1 summary"><p>Outputs a Json Response given a data object</p>
@@ -837,7 +951,7 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><p>A true value of type ref=JsonResponseAsync&quot;</p>
+        <td><p>A <code>true</code> value of type ref=JsonResponseAsync&quot;</p>
 </td>
       </tr>
     </tbody>
