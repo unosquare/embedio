@@ -34,6 +34,7 @@ build_script:
 - msbuild /p:Configuration=%CONFIGURATION% Unosquare.Labs.EmbedIO.sln
 test_script:
 - dotnet test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c %CONFIGURATION% -f netcoreapp2.0
+- dotnet test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c %CONFIGURATION% -f net47
 - tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c %CONFIGURATION% -f net46" -output:coverage.xml -filter:"+[Unosquare.Labs.EmbedIO*]* -[Unosquare.Labs.EmbedIO.Test*]*" -register:userdotnet
 - ps: |
         if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
