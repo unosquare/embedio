@@ -1,26 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Unosquare.Labs.EmbedIO.Constants;
-using Unosquare.Labs.EmbedIO.Modules;
+﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Constants;
+    using Modules;
 #if NET47
     using System.Net;
 #else
-using Unosquare.Net;
+    using Net;
 #endif
 
-namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
-{
     public class TestRegexController : WebApiController
     {
         public const string RelativePath = "api/";
-        public int ErrorCode = (int) System.Net.HttpStatusCode.InternalServerError;
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "empty")]
         public bool GetEmpty(WebServer server, HttpListenerContext context)
         {
-            return context.JsonResponse(new { Ok = true });
+            return context.JsonResponse(new {Ok = true});
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regex/{id}")]
@@ -35,12 +34,11 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
                     return context.JsonResponse(item);
                 }
 
-                throw new KeyNotFoundException("Key Not Found: " + id);
+                throw new KeyNotFoundException($"Key Not Found: {id}");
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = ErrorCode;
-                return context.JsonResponse(ex);
+                return context.JsonExceptionResponse(ex);
             }
         }
 
@@ -61,12 +59,11 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
                     return context.JsonResponse(item);
                 }
 
-                throw new KeyNotFoundException("Key Not Found: " + id);
+                throw new KeyNotFoundException($"Key Not Found: {id}");
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = ErrorCode;
-                return context.JsonResponse(ex);
+                return context.JsonExceptionResponse(ex);
             }
         }
 
@@ -84,12 +81,11 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
                     return await context.JsonResponseAsync(item);
                 }
 
-                throw new KeyNotFoundException("Key Not Found: " + id);
+                throw new KeyNotFoundException($"Key Not Found: {id}");
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = ErrorCode;
-                return await context.JsonResponseAsync(ex);
+                return await context.JsonExceptionResponseAsync(ex);
             }
         }
 
@@ -105,12 +101,11 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
                     return context.JsonResponse(item);
                 }
 
-                throw new KeyNotFoundException("Key Not Found: " + date);
+                throw new KeyNotFoundException($"Key Not Found: {date}");
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = ErrorCode;
-                return context.JsonResponse(ex);
+                return context.JsonExceptionResponse(ex);
             }
         }
 
@@ -120,19 +115,18 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
             try
             {
                 var item = PeopleRepository.Database.FirstOrDefault(p =>
-                    p.MainSkill.ToLower() == skill.ToLower() && p.Age == age);
+                    string.Equals(p.MainSkill, skill, StringComparison.CurrentCultureIgnoreCase) && p.Age == age);
 
                 if (item != null)
                 {
                     return context.JsonResponse(item);
                 }
 
-                throw new KeyNotFoundException("Key Not Found: " + skill + "-" + age);
+                throw new KeyNotFoundException($"Key Not Found: {skill}-{age}");
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = ErrorCode;
-                return context.JsonResponse(ex);
+                return context.JsonExceptionResponse(ex);
             }
         }
     }

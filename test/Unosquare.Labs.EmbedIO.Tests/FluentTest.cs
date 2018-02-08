@@ -10,43 +10,46 @@
     [TestFixture]
     public class FluentTest
     {
-        protected string RootPath;
-        protected string WebServerUrl;
-        protected WebServer NullWebServer = null;
-
-        protected Dictionary<string, string> CommonPaths = new Dictionary<string, string>
+        private readonly WebServer _nullWebServer = null;
+        private readonly Dictionary<string, string> _commonPaths = new Dictionary<string, string>
         {
             {"/Server/web", TestHelper.SetupStaticFolder()},
             {"/Server/api", TestHelper.SetupStaticFolder()},
             {"/Server/database", TestHelper.SetupStaticFolder()}
         };
+        
+        private string _rootPath;
+        private string _webServerUrl;
 
         [SetUp]
         public void Init()
         {
             Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
 
-            WebServerUrl = Resources.GetServerAddress();
-            RootPath = TestHelper.SetupStaticFolder();
+            _webServerUrl = Resources.GetServerAddress();
+            _rootPath = TestHelper.SetupStaticFolder();
         }
 
         [Test]
         public void FluentWithStaticFolder()
         {
-            var webServer = WebServer.Create(WebServerUrl)
+            var webServer = WebServer.Create(_webServerUrl)
                 .WithLocalSession()
-                .WithStaticFolderAt(RootPath);
+                .WithStaticFolderAt(_rootPath);
 
             Assert.AreEqual(webServer.Modules.Count, 2, "It has 2 modules loaded");
             Assert.IsNotNull(webServer.Module<StaticFilesModule>(), "It has StaticFilesModule");
-            Assert.AreEqual(webServer.Module<StaticFilesModule>().FileSystemPath, RootPath,
+
+            Assert.AreEqual(
+                webServer.Module<StaticFilesModule>().FileSystemPath,
+                _rootPath,
                 "StaticFilesModule root path is equal to RootPath");
         }
 
         [Test]
         public void FluentWithWebApi()
         {
-            var webServer = WebServer.Create(WebServerUrl)
+            var webServer = WebServer.Create(_webServerUrl)
                 .WithWebApi(typeof(FluentTest).GetTypeInfo().Assembly);
 
             Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
@@ -59,7 +62,7 @@
         [Test]
         public void FluentWithWebSockets()
         {
-            var webServer = WebServer.Create(WebServerUrl)
+            var webServer = WebServer.Create(_webServerUrl)
                 .WithWebSocket(typeof(FluentTest).GetTypeInfo().Assembly);
 
             Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
@@ -71,7 +74,7 @@
         [Test]
         public void FluentLoadWebApiControllers()
         {
-            var webServer = WebServer.Create(WebServerUrl)
+            var webServer = WebServer.Create(_webServerUrl)
                 .WithWebApi();
             webServer.Module<WebApiModule>().LoadApiControllers(typeof(FluentTest).GetTypeInfo().Assembly);
 
@@ -86,14 +89,14 @@
         public void FluentWithStaticFolderArgumentException()
         {
             Assert.Throws<ArgumentNullException>(() =>
-                NullWebServer.WithStaticFolderAt(TestHelper.SetupStaticFolder()));
+                _nullWebServer.WithStaticFolderAt(TestHelper.SetupStaticFolder()));
         }
 
         [Test]
         public void FluentWithVirtualPaths()
         {
-            var webServer = WebServer.Create(WebServerUrl)
-                .WithVirtualPaths(CommonPaths);
+            var webServer = WebServer.Create(_webServerUrl)
+                .WithVirtualPaths(_commonPaths);
 
             Assert.IsNotNull(webServer);
             Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
@@ -105,31 +108,31 @@
         public void FluentWithVirtualPathsWebServerNull_ThrowsArgumentException()
         {
             Assert.Throws<ArgumentNullException>(() =>
-                NullWebServer.WithVirtualPaths(CommonPaths));
+                _nullWebServer.WithVirtualPaths(_commonPaths));
         }
 
         [Test]
         public void FluentWithLocalSessionWebServerNull_ThrowsArgumentException()
         {
-            Assert.Throws<ArgumentNullException>(() => NullWebServer.WithLocalSession());
+            Assert.Throws<ArgumentNullException>(() => _nullWebServer.WithLocalSession());
         }
 
         [Test]
         public void FluentWithWebApiArgumentException()
         {
-            Assert.Throws<ArgumentNullException>(() => NullWebServer.WithWebApi());
+            Assert.Throws<ArgumentNullException>(() => _nullWebServer.WithWebApi());
         }
 
         [Test]
         public void FluentWithWebSocketArgumentException()
         {
-            Assert.Throws<ArgumentNullException>(() => NullWebServer.WithWebSocket());
+            Assert.Throws<ArgumentNullException>(() => _nullWebServer.WithWebSocket());
         }
 
         [Test]
         public void FluentLoadApiControllersWebServerArgumentException()
         {
-            Assert.Throws<ArgumentNullException>(() => NullWebServer.LoadApiControllers());
+            Assert.Throws<ArgumentNullException>(() => _nullWebServer.LoadApiControllers());
         }
 
         [Test]
@@ -143,19 +146,19 @@
         [Test]
         public void FluentLoadWebSocketsArgumentException()
         {
-            Assert.Throws<ArgumentNullException>(() => NullWebServer.LoadWebSockets());
+            Assert.Throws<ArgumentNullException>(() => _nullWebServer.LoadWebSockets());
         }
 
         [Test]
         public void FluentEnableCorsArgumentException()
         {
-            Assert.Throws<ArgumentNullException>(() => NullWebServer.EnableCors());
+            Assert.Throws<ArgumentNullException>(() => _nullWebServer.EnableCors());
         }
 
         [Test]
         public void FluentWithWebApiControllerTArgumentException()
         {
-            Assert.Throws<ArgumentNullException>(() => NullWebServer.WithWebApiController<TestController>());
+            Assert.Throws<ArgumentNullException>(() => _nullWebServer.WithWebApiController<TestController>());
         }
     }
 }

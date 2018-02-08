@@ -1,11 +1,9 @@
-﻿using NUnit.Framework;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Unosquare.Labs.EmbedIO.Tests.TestObjects;
-
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
+    using NUnit.Framework;
+    using System.Threading.Tasks;
+    using TestObjects;
+
     [TestFixture]
     public class RegexRoutingTest : FixtureBase
     {

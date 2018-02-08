@@ -16,7 +16,6 @@
                 return Task.FromResult(true);
             });
 
-
             AddHandler("/empty", Constants.HttpVerbs.Any, (ctx, ct) =>
             {
                 var buffer = Encoding.UTF8.GetBytes("data");

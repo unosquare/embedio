@@ -17,7 +17,7 @@
             : base(ws => ws.WithWebApiController<TestRegexController>(), RoutingStrategy.Regex)
         {
         }
-        
+
         public class GetJsonData : RegexWebApiModuleTest
         {
             [Test]
@@ -40,7 +40,8 @@
                 using (var client = new HttpClient())
                 {
                     // using null value
-                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestRegexController.RelativePath + "regexopt");
+                    var request = new HttpRequestMessage(HttpMethod.Get,
+                        WebServerUrl + TestRegexController.RelativePath + "regexopt");
 
                     using (var response = await client.SendAsync(request))
                     {
@@ -52,9 +53,11 @@
                         Assert.IsNotEmpty(jsonBody, "Json Body is not empty");
 
                         var remoteList = Json.Deserialize<List<Person>>(jsonBody);
-
-                        Assert.IsNotNull(remoteList, "Json Object is not null");
-                        Assert.AreEqual(remoteList.Count, PeopleRepository.Database.Count, "Remote list count equals local list");
+                        
+                        Assert.AreEqual(
+                            remoteList.Count, 
+                            PeopleRepository.Database.Count,
+                            "Remote list count equals local list");
                     }
 
                     // using a value
@@ -73,7 +76,7 @@
             {
                 var person = PeopleRepository.Database.First();
                 await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regexdate/" +
-                               person.DoB.ToString("yyyy-MM-dd"));
+                                                person.DoB.ToString("yyyy-MM-dd"));
             }
 
             [Test]
@@ -81,7 +84,7 @@
             {
                 var person = PeopleRepository.Database.First();
                 await TestHelper.ValidatePerson(WebServerUrl + TestRegexController.RelativePath + "regextwo/" +
-                               person.MainSkill + "/" + person.Age);
+                                                person.MainSkill + "/" + person.Age);
             }
         }
 
@@ -92,13 +95,13 @@
             {
                 using (var client = new HttpClient())
                 {
-                    var request = new HttpRequestMessage(HttpMethod.Delete, WebServerUrl + TestRegexController.RelativePath + "regex/1");
+                    var request = new HttpRequestMessage(HttpMethod.Delete,
+                        WebServerUrl + TestRegexController.RelativePath + "regex/1");
 
                     var response = await client.SendAsync(request);
 
                     Assert.AreEqual(response.StatusCode, HttpStatusCode.MethodNotAllowed);
                 }
-
             }
         }
     }

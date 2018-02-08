@@ -1,11 +1,11 @@
-﻿using NUnit.Framework;
-using System.Threading.Tasks;
-using Unosquare.Labs.EmbedIO.Modules;
-using Unosquare.Labs.EmbedIO.Tests.TestObjects;
-using Unosquare.Labs.EmbedIO.Constants;
-
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
+    using NUnit.Framework;
+    using System.Threading.Tasks;
+    using Modules;
+    using TestObjects;
+    using Constants;
+
     [TestFixture]
     public class DirectoryBrowserTest : FixtureBase
     {

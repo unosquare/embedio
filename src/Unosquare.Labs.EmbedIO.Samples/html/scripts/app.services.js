@@ -1,8 +1,9 @@
 (function() {
     angular.module('app.services', ['ngRoute'])
         .service('PeopleApiService', [
-            '$http', '$q', '$timeout', function PeopleApiService($http, $q, $timeout) {
+            '$http', '$q', '$timeout', function peopleApiService($http, $q, $timeout) {
                 var me = this;
+
                 me.getAllPeopleAsync = function() {
 
                     var apiCall = $q.defer();

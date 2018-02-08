@@ -21,8 +21,8 @@
         [WebApiHandler(HttpVerbs.Get, "/getcookie")]
         public bool GetCookieC(WebServer server, HttpListenerContext context)
         {
-            var myCookie = new System.Net.Cookie(CookieName, CookieName);
-            context.Response.Cookies.Add(myCookie);
+            var cookie = new System.Net.Cookie(CookieName, CookieName);
+            context.Response.Cookies.Add(cookie);
 
             return context.JsonResponse(context.Response.Cookies[CookieName]);
         }

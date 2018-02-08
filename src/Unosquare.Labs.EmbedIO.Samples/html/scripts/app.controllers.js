@@ -1,18 +1,17 @@
 (function () {
     angular.module('app.controllers', ['app.services', 'ngRoute'])
-        
         .controller('TitleController', ['$scope', '$route', function ($scope, $route) {
             var me = this;
-            me.content = "Home";
+            me.content = 'Home';
             $scope.$on('$routeChangeSuccess', function () {
                 me.content = $route.current.title;
             });
         }])
 
-        .controller('PeopleController', ['$scope', 'PeopleApiService', function ($scope, PeopleApiService) {
+        .controller('PeopleController', ['$scope', 'PeopleApiService', function ($scope, peopleApiService) {
             var me = this;
             me.items = [];
-            var promise = PeopleApiService.getAllPeopleAsync();
+            var promise = peopleApiService.getAllPeopleAsync();
             promise.then(
                 function (data) {
                     me.items = data;
@@ -23,9 +22,9 @@
         
         .controller('ChatController', ['$scope', function ($scope) {
             var me = this;
-            me.nickName = "Bob";
-            me.message = "";
-            me.wsUri = "ws://" + document.location.hostname + ":" + document.location.port + "/chat";
+            me.nickName = 'Bob';
+            me.message = '';
+            me.wsUri = 'ws://' + document.location.hostname + ':' + document.location.port + '/chat';
             me.messages = [];
 
             me.websocket = new WebSocket(me.wsUri);
@@ -66,7 +65,7 @@
                 var m = {
                     type: 'C',
                     time: new Date(),
-                    content: "Error:" + evt.data
+                    content: 'Error:' + evt.data
                 };
 
                 me.messages.push(m);
@@ -84,15 +83,15 @@
                 me.messages.push(m);
                 me.websocket.send(m.content);
 
-                me.message = "";
+                me.message = '';
             };
         }])
         
         .controller('CmdController', ['$scope', function ($scope) {
             var me = this;
-            me.command = "";
-            me.wsUri = "ws://" + document.location.hostname + ":" + document.location.port + "/terminal";
-            me.commands = "";
+            me.command = '';
+            me.wsUri = 'ws://' + document.location.hostname + ':' + document.location.port + '/terminal';
+            me.commands = '';
 
             me.scrollBottom = function () {
                 angular.element(document.querySelector('#cliOutput'))[0].scrollTop = angular.element(document.querySelector('#cliOutput'))[0].scrollHeight;
@@ -112,20 +111,20 @@
             };
 
             me.websocket.onmessage = function (evt) {
-                me.commands += evt.data + "\n";
+                me.commands += evt.data + '\n';
                 $scope.$apply();
                 me.scrollBottom();
             };
 
             me.websocket.onerror = function (evt) {
-                me.commands += "Error:" + evt.data + '\n';
+                me.commands += 'Error:' + evt.data + '\n';
                 $scope.$apply();
                 me.scrollBottom();
             };
 
             me.submit = function () {
                 me.websocket.send(me.command);
-                me.command = "";
+                me.command = '';
                 me.scrollBottom();
             };
         }]);

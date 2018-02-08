@@ -26,6 +26,7 @@
         }
     }
 
+    /// <inheritdoc />
     /// <summary>
     /// Defines a very simple chat server
     /// </summary>
@@ -37,13 +38,8 @@
         {
             // placeholder
         }
-
-        /// <summary>
-        /// Called when this WebSockets Server receives a full message (EndOfMessage) form a WebSockets client.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="rxBuffer">The rx buffer.</param>
-        /// <param name="rxResult">The rx result.</param>
+        
+        /// <inheritdoc />
         protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer,
             WebSocketReceiveResult rxResult)
         {
@@ -53,29 +49,18 @@
             }
         }
 
-        /// <summary>
-        /// Gets the name of the server.
-        /// </summary>
-        /// <value>
-        /// The name of the server.
-        /// </value>
+        
+        /// <inheritdoc />
         public override string ServerName => nameof(WebSocketsChatServer);
 
-#if NET47 /// <summary>
-/// Called when this WebSockets Server accepts a new WebSockets client.
-/// </summary>
-/// <param name="context">The context.</param>
-/// <param name="localEndPoint">The local endpoint.</param>
-/// /// <param name="remoteEndPoint">The remote endpoint.</param>
+#if NET47 
+        /// <inheritdoc />
         protected override void OnClientConnected(
             WebSocketContext context, 
             System.Net.IPEndPoint localEndPoint,
             System.Net.IPEndPoint remoteEndPoint)
 #else
-        /// <summary>
-        /// Called when this WebSockets Server accepts a new WebSockets client.
-        /// </summary>
-        /// <param name="context">The context.</param>
+        /// <inheritdoc />
         protected override void OnClientConnected(WebSocketContext context)
 #endif
         {
@@ -86,23 +71,15 @@
                 Send(ws, "Someone joined the chat room.");
             }
         }
-
-        /// <summary>
-        /// Called when this WebSockets Server receives a message frame regardless if the frame represents the EndOfMessage.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="rxBuffer">The rx buffer.</param>
-        /// <param name="rxResult">The rx result.</param>
+        
+        /// <inheritdoc />
         protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer,
             WebSocketReceiveResult rxResult)
         {
             return;
         }
-
-        /// <summary>
-        /// Called when the server has removed a WebSockets connected client for any reason.
-        /// </summary>
-        /// <param name="context">The context.</param>
+        
+        /// <inheritdoc />
         protected override void OnClientDisconnected(WebSocketContext context)
         {
             Broadcast("Someone left the chat room.");
@@ -111,7 +88,8 @@
 #endif
         }
     }
-
+    
+    /// <inheritdoc />
     /// <summary>
     /// Define a command-line interface terminal
     /// </summary>
@@ -123,13 +101,8 @@
 
         // The SyncRoot is used to send 1 thing at a time and multithreaded Processes dictionary.
         private readonly object _syncRoot = new object();
-
-        /// <summary>
-        /// Called when this WebSockets Server receives a full message (EndOfMessage) form a WebSockets client.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="rxBuffer">The rx buffer.</param>
-        /// <param name="rxResult">The rx result.</param>
+        
+        /// <inheritdoc />
         protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer,
             WebSocketReceiveResult rxResult)
         {
@@ -139,13 +112,8 @@
                 _processes[context].StandardInput.WriteLine(arg);
             }
         }
-
-        /// <summary>
-        /// Called when this WebSockets Server receives a message frame regardless if the frame represents the EndOfMessage.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="rxBuffer">The rx buffer.</param>
-        /// <param name="rxResult">The rx result.</param>
+        
+        /// <inheritdoc />
         protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer,
             WebSocketReceiveResult rxResult)
         {
@@ -170,21 +138,14 @@
             return null;
         }
 
-#if NET47 /// <summary>
-        /// Called when this WebSockets Server accepts a new WebSockets client.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="localEndPoint">The local endpoint.</param>
-        /// <param name="remoteEndPoint">The remote endpoint.</param>
+#if NET47
+        /// <inheritdoc />
         protected override void OnClientConnected(
             WebSocketContext context, 
             System.Net.IPEndPoint localEndPoint,
             System.Net.IPEndPoint remoteEndPoint)
 #else
-        /// <summary>
-        /// Called when this WebSockets Server accepts a new WebSockets client.
-        /// </summary>
-        /// <param name="context">The context.</param>
+        /// <inheritdoc />
         protected override void OnClientConnected(WebSocketContext context)
 #endif
         {
@@ -251,11 +212,8 @@
             process.BeginOutputReadLine();
 
         }
-
-        /// <summary>
-        /// Called when the server has removed a WebSockets connected client for any reason.
-        /// </summary>
-        /// <param name="context">The context.</param>
+        
+        /// <inheritdoc />
         protected override void OnClientDisconnected(WebSocketContext context)
         {
             lock (_syncRoot)
@@ -264,13 +222,8 @@
                     _processes[context].Kill();
             }
         }
-
-        /// <summary>
-        /// Gets the name of the server.
-        /// </summary>
-        /// <value>
-        /// The name of the server.
-        /// </value>
+        
+        /// <inheritdoc />
         public override string ServerName => nameof(WebSocketsTerminalServer);
     }
 }

@@ -13,15 +13,30 @@
     [TestFixture]
     public class WebApiModuleTest : FixtureBase
     {
-        public WebApiModuleTest() :
-            base(ws => ws.WithWebApiController<TestController>(), Constants.RoutingStrategy.Wildcard)
+        public WebApiModuleTest()
+            : base(ws => ws.WithWebApiController<TestController>(), Constants.RoutingStrategy.Wildcard)
         {
         }
-
-        internal class FormDataSample
+        
+        [Test]
+        public async Task WebApiWithConstructor()
         {
-            public string test { get; set; }
-            public List<string> id { get; set; }
+            const string name = "Test";
+
+            _webServer.Module<WebApiModule>().RegisterController(() => new TestControllerWithConstructor(name));
+            using (var client = new HttpClient())
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "name");
+
+                using (var response = await client.SendAsync(request))
+                {
+                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                    var body = await response.Content.ReadAsStringAsync();
+
+                    Assert.AreEqual(body, name);
+                }
+            }
         }
 
         public class HttpGet : WebApiModuleTest
@@ -46,7 +61,9 @@
                         remoteList = Json.Deserialize<List<Person>>(jsonBody);
 
                         Assert.IsNotNull(remoteList, "Json Object is not null");
-                        Assert.AreEqual(remoteList.Count, PeopleRepository.Database.Count,
+                        Assert.AreEqual(
+                            remoteList.Count, 
+                            PeopleRepository.Database.Count,
                             "Remote list count equals local list");
                     }
 
@@ -78,8 +95,11 @@
                 using (var client = new HttpClient())
                 {
                     var model = new Person() {Key = 10, Name = "Test"};
-                    var payloadJson = new StringContent(Json.Serialize(model), System.Text.Encoding.UTF8,
+                    var payloadJson = new StringContent(
+                        Json.Serialize(model),
+                        System.Text.Encoding.UTF8,
                         "application/json");
+
                     var response = await client.PostAsync(WebServerUrl + TestController.GetPath, payloadJson);
 
                     var result = Json.Deserialize<Person>(await response.Content.ReadAsStringAsync());
@@ -102,7 +122,6 @@
 
                     Assert.AreEqual(response.StatusCode, HttpStatusCode.MethodNotAllowed);
                 }
-
             }
         }
 
@@ -158,26 +177,11 @@
                 }
             }
         }
-
-        [Test]
-        public async Task WebApiWithConstructor()
+        
+        internal class FormDataSample
         {
-            const string name = "Test";
-
-            _webServer.Module<WebApiModule>().RegisterController(() => new TestControllerWithConstructor(name));
-            using (var client = new HttpClient())
-            {
-                var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "name");
-
-                using (var response = await client.SendAsync(request))
-                {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
-                    var body = await response.Content.ReadAsStringAsync();
-
-                    Assert.AreEqual(body, name);
-                }
-            }
+            public string test { get; set; }
+            public List<string> id { get; set; }
         }
     }
 }

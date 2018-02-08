@@ -107,22 +107,22 @@
                 context.Response.Headers.Add(Headers.AccessControlAllowHeaders + currentHeader);
             }
 
-            if (!string.IsNullOrWhiteSpace(currentMethod))
+            if (string.IsNullOrWhiteSpace(currentMethod)) 
+                return Task.FromResult(true);
+
+            var currentMethods = currentMethod.ToLower()
+                .Split(Strings.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries)
+                .Select(x => x.Trim());
+
+            if (methods == Strings.CorsWildcard || currentMethods.All(validMethods.Contains))
             {
-                var currentMethods = currentMethod.ToLower()
-                    .Split(Strings.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(x => x.Trim());
+                context.Response.Headers.Add(Headers.AccessControlAllowMethods + currentMethod);
+            }
+            else
+            {
+                context.Response.StatusCode = (int) System.Net.HttpStatusCode.BadRequest;
 
-                if (methods == Strings.CorsWildcard || currentMethods.All(validMethods.Contains))
-                {
-                    context.Response.Headers.Add(Headers.AccessControlAllowMethods + currentMethod);
-                }
-                else
-                {
-                    context.Response.StatusCode = (int) System.Net.HttpStatusCode.BadRequest;
-
-                    return Task.FromResult(false);
-                }
+                return Task.FromResult(false);
             }
 
             return Task.FromResult(true);

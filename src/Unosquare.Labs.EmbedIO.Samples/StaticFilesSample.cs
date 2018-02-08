@@ -43,8 +43,6 @@
             server.Module<StaticFilesModule>().UseRamCache = false;
             server.Module<StaticFilesModule>().DefaultExtension = ".html";
             server.Module<StaticFilesModule>().UseGzip = useGzip;
-            // We don't need to add the line below. The default document is always index.html.
-            //server.Module<StaticFilesWebModule>().DefaultDocument = "index.html";
         }
     }
 }

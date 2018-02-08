@@ -23,13 +23,6 @@
         private static string[] GetMultiplePrefixes()
             => new[] {"http://localhost:9696", "http://localhost:9697", "http://localhost:9698"};
 
-        internal class EncodeCheck
-        {
-            public string Encoding { get; set; }
-
-            public bool IsValid { get; set; }
-        }
-
         [SetUp]
         public void Setup()
         {
@@ -221,7 +214,7 @@
                                 .Skip(1)
                                 .FirstOrDefault()?
                                 .Trim();
-                        encoding = Encoding.GetEncoding(encodeValue);
+                        encoding = Encoding.GetEncoding(encodeValue ?? throw new InvalidOperationException());
                     }
                     catch
                     {
@@ -265,6 +258,13 @@
                     }
                 }
             }
+        }
+
+        internal class EncodeCheck
+        {
+            public string Encoding { get; set; }
+
+            public bool IsValid { get; set; }
         }
     }
 }

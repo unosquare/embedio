@@ -207,21 +207,8 @@ public class PeopleController : WebApiController
         }
         catch (Exception ex)
         {
-            return HandleError(context, ex, (int)HttpStatusCode.InternalServerError);
+            return context.JsonExceptionResponse(ex);
         }
-    }
-    
-    protected bool HandleError(HttpListenerContext context, Exception ex, int statusCode = 500)
-    {
-        var errorResponse = new
-        {
-            Title = "Unexpected Error",
-            ErrorCode = ex.GetType().Name,
-            Description = ex.ExceptionMessage(),
-        };
-
-        context.Response.StatusCode = statusCode;
-        return context.JsonResponse(errorResponse);
     }
 }
 ```
@@ -250,21 +237,8 @@ public class PeopleController : WebApiController
         }
         catch (Exception ex)
         {
-            return HandleError(context, ex, (int)HttpStatusCode.InternalServerError);
+            return context.JsonExceptionResponse(ex);
         }
-    }
-    
-    protected bool HandleError(HttpListenerContext context, Exception ex, int statusCode = 500)
-    {
-        var errorResponse = new
-        {
-            Title = "Unexpected Error",
-            ErrorCode = ex.GetType().Name,
-            Description = ex.ExceptionMessage(),
-        };
-
-        context.Response.StatusCode = statusCode;
-        return context.JsonResponse(errorResponse);
     }
 }
 ```
