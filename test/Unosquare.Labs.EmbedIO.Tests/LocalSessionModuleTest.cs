@@ -18,7 +18,7 @@
         public LocalSessionModuleTest()
             : base((ws) =>
             {
-                ws.RegisterModule((new LocalSessionModule() {Expiration = TimeSpan.FromSeconds(1)}));
+                ws.RegisterModule(new LocalSessionModule {Expiration = TimeSpan.FromSeconds(1)});
                 ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()));
                 ws.RegisterModule(new WebApiModule());
                 ws.Module<WebApiModule>().RegisterController<TestLocalSessionController>();
@@ -40,7 +40,8 @@
                         Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
                         Assert.IsNotNull(handler.CookieContainer, "Cookies are not null");
-                        Assert.Greater(handler.CookieContainer.GetCookies(new Uri(WebServerUrl)).Count, 0,
+                        Assert.Greater(handler.CookieContainer.GetCookies(new Uri(WebServerUrl)).Count, 
+                            0,
                             "Cookies are not empty");
 
                         Assert.AreNotEqual(content, handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl)));

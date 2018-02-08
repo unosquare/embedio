@@ -13,7 +13,6 @@ using System.Net.WebSockets;
     [WebSocketHandler("/test/")]
     public class TestWebSocketBase : WebSocketsServer
     {
-        private Action<WebSocketContext> OnMessageParams;
         /// <inheritdoc />
         public override string ServerName => nameof(TestWebSocketBase);
 

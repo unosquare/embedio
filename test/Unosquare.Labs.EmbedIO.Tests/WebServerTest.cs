@@ -259,6 +259,7 @@
                 }
             }
         }
+
         internal class EncodeCheck
         {
             public string Encoding { get; set; }

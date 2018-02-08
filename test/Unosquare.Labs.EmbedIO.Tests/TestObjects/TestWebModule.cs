@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using Unosquare.Labs.EmbedIO.Constants;
-
-namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
+﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
+    using System.Threading.Tasks;
+    using Constants;
+
     public class TestWebModule : WebModuleBase
     {
         public static string RedirectUrl = "redirect";
@@ -11,17 +11,13 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 
         public TestWebModule()
         {
-            AddHandler("/" + RedirectUrl, HttpVerbs.Get, (context, ct) =>
-            {
-                context.Redirect("/" + AnotherUrl, false);
-                return Task.FromResult(true);
-            });
+            AddHandler("/" + RedirectUrl, 
+                HttpVerbs.Get,
+                (context, ct) => Task.FromResult(context.Redirect("/" + AnotherUrl, false)));
 
-            AddHandler("/" + RedirectAbsoluteUrl, HttpVerbs.Get, (context, ct) =>
-            {
-                context.Redirect("/" + AnotherUrl);
-                return Task.FromResult(true);
-            });
+            AddHandler("/" + RedirectAbsoluteUrl, 
+                HttpVerbs.Get,
+                (context, ct) => Task.FromResult(context.Redirect("/" + AnotherUrl)));
 
             AddHandler("/" + AnotherUrl, HttpVerbs.Get, (server, context) => Task.FromResult(true));
         }

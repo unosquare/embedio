@@ -26,7 +26,7 @@
             try
             {
                 // read the middle segment
-                var segment = context.Request.Url.Segments.Reverse().Skip(1).First().Replace("/", "");
+                var segment = context.Request.Url.Segments.Reverse().Skip(1).First().Replace("/", string.Empty);
 
                 // otherwise, we need to parse the key and respond with the entity accordingly
                 if (int.TryParse(segment, out var key) && PeopleRepository.Database.Any(p => p.Key == key))
@@ -34,7 +34,7 @@
                     return context.JsonResponse(PeopleRepository.Database.FirstOrDefault(p => p.Key == key));
                 }
 
-                throw new KeyNotFoundException("Key Not Found: " + segment);
+                throw new KeyNotFoundException($"Key Not Found: {segment}");
             }
             catch (Exception ex)
             {
@@ -60,7 +60,7 @@
                     return context.JsonResponse(PeopleRepository.Database.FirstOrDefault(p => p.Key == key));
                 }
 
-                throw new KeyNotFoundException("Key Not Found: " + lastSegment);
+                throw new KeyNotFoundException($"Key Not Found: {lastSegment}");
             }
             catch (Exception ex)
             {
@@ -116,7 +116,7 @@
                     return context.JsonResponseAsync(PeopleRepository.Database.FirstOrDefault(p => p.Key == key));
                 }
 
-                throw new KeyNotFoundException("Key Not Found: " + lastSegment);
+                throw new KeyNotFoundException($"Key Not Found: {lastSegment}");
             }
             catch (Exception ex)
             {

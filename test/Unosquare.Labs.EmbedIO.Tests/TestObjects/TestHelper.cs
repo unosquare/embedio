@@ -89,7 +89,7 @@
             var content = Resources.Index;
             if (string.IsNullOrWhiteSpace(instanceName)) return content;
 
-            Assert.AreEqual(true, content.Contains(Placeholder), "Setup error");
+            Assert.IsTrue(content.Contains(Placeholder), "Setup error");
             return content.Replace(Placeholder, "Instance name is " + instanceName);
         }
 

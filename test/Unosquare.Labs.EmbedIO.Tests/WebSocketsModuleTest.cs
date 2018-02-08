@@ -19,12 +19,12 @@
     {
         public WebSocketsModuleTest()
             : base(RoutingStrategy.Simple, ws =>
-            {
-                ws.RegisterModule(new WebSocketsModule());
-                ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocket>();
-                ws.Module<WebSocketsModule>().RegisterWebSocketsServer<BigDataWebSocket>();
-
-            }, "test/")
+                {
+                    ws.RegisterModule(new WebSocketsModule());
+                    ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocket>();
+                    ws.Module<WebSocketsModule>().RegisterWebSocketsServer<BigDataWebSocket>();
+                },
+                "test/")
         {
             // placeholder
         }
@@ -82,7 +82,6 @@
             {
                 ws.RegisterModule(new WebSocketsModule());
                 ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocketWildcard>();
-
             }, "test/*")
         {
             // placeholder
@@ -102,7 +101,6 @@
             {
                 ws.RegisterModule(new WebSocketsModule());
                 ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocketRegex>();
-
             }, "test/{100}")
         {
             // placeholder

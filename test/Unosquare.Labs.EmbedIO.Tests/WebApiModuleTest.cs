@@ -17,6 +17,27 @@
             : base(ws => ws.WithWebApiController<TestController>(), Constants.RoutingStrategy.Wildcard)
         {
         }
+        
+        [Test]
+        public async Task WebApiWithConstructor()
+        {
+            const string name = "Test";
+
+            _webServer.Module<WebApiModule>().RegisterController(() => new TestControllerWithConstructor(name));
+            using (var client = new HttpClient())
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "name");
+
+                using (var response = await client.SendAsync(request))
+                {
+                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+
+                    var body = await response.Content.ReadAsStringAsync();
+
+                    Assert.AreEqual(body, name);
+                }
+            }
+        }
 
         public class HttpGet : WebApiModuleTest
         {
@@ -156,28 +177,7 @@
                 }
             }
         }
-
-        [Test]
-        public async Task WebApiWithConstructor()
-        {
-            const string name = "Test";
-
-            _webServer.Module<WebApiModule>().RegisterController(() => new TestControllerWithConstructor(name));
-            using (var client = new HttpClient())
-            {
-                var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "name");
-
-                using (var response = await client.SendAsync(request))
-                {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
-                    var body = await response.Content.ReadAsStringAsync();
-
-                    Assert.AreEqual(body, name);
-                }
-            }
-        }
-
+        
         internal class FormDataSample
         {
             public string test { get; set; }
