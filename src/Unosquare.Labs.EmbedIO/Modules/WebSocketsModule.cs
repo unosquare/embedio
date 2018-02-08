@@ -33,9 +33,9 @@
 #if NETSTANDARD2_0
         private readonly Regex splitter = new Regex(@"(\s|[,;])+");
 #endif
-
+        
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebSocketsModule"/> class.
+        /// Initializes a new instance of the <see cref="T:Unosquare.Labs.EmbedIO.Modules.WebSocketsModule" /> class.
         /// </summary>
         public WebSocketsModule()
         {
@@ -53,7 +53,7 @@
                 if (context.Request.IsWebSocketRequest == false)
                     return false;
 
-                var path = String.Empty;
+                var path = string.Empty;
 
                 // retrieve the request path
                 switch (Server.RoutingStrategy)
@@ -72,7 +72,7 @@
                         break;
                 }
 
-                if (String.IsNullOrEmpty(path) && !_serverMap.ContainsKey(path))
+                if (string.IsNullOrEmpty(path) && !_serverMap.ContainsKey(path))
                 {
                     return false;
                 }
@@ -165,7 +165,7 @@
         /// <returns>A string that represents the registered path in the internal map</returns>
         private string NormalizeRegexPath(HttpListenerContext context)
         {
-            var path = String.Empty;
+            var path = string.Empty;
 
             foreach (var route in _serverMap.Keys)
             {

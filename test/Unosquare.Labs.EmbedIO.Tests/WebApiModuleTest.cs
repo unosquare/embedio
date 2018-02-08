@@ -13,15 +13,9 @@
     [TestFixture]
     public class WebApiModuleTest : FixtureBase
     {
-        public WebApiModuleTest() :
-            base(ws => ws.WithWebApiController<TestController>(), Constants.RoutingStrategy.Wildcard)
+        public WebApiModuleTest()
+            : base(ws => ws.WithWebApiController<TestController>(), Constants.RoutingStrategy.Wildcard)
         {
-        }
-
-        internal class FormDataSample
-        {
-            public string test { get; set; }
-            public List<string> id { get; set; }
         }
 
         public class HttpGet : WebApiModuleTest
@@ -78,8 +72,11 @@
                 using (var client = new HttpClient())
                 {
                     var model = new Person() {Key = 10, Name = "Test"};
-                    var payloadJson = new StringContent(Json.Serialize(model), System.Text.Encoding.UTF8,
+                    var payloadJson = new StringContent(
+                        Json.Serialize(model),
+                        System.Text.Encoding.UTF8,
                         "application/json");
+
                     var response = await client.PostAsync(WebServerUrl + TestController.GetPath, payloadJson);
 
                     var result = Json.Deserialize<Person>(await response.Content.ReadAsStringAsync());
@@ -178,6 +175,12 @@
                     Assert.AreEqual(body, name);
                 }
             }
+        }
+
+        internal class FormDataSample
+        {
+            public string test { get; set; }
+            public List<string> id { get; set; }
         }
     }
 }

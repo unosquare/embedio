@@ -7,14 +7,14 @@
     using Modules;
     using System.Threading.Tasks;
     using Tubular;
-    using Swan;
     using Tubular.ObjectModel;
 #if NET47
     using System.Net;
 #else
-    using Unosquare.Net;
+    using Net;
 #endif
 
+    /// <inheritdoc />
     /// <summary>
     /// A very simple controller to handle People CRUD.
     /// Notice how it Inherits from WebApiController and the methods have WebApiHandler attributes 
@@ -67,10 +67,7 @@
             }
             catch (Exception ex)
             {
-                // here the error handler will respond with a generic 500 HTTP code a JSON-encoded object
-                // with error info. You will need to handle HTTP status codes correctly depending on the situation.
-                // For example, for keys that are not found, ou will need to respond with a 404 status code.
-                return HandleError(context, ex);
+                return context.JsonExceptionResponse(ex);
             }
         }
 
@@ -99,7 +96,7 @@
             }
             catch (Exception ex)
             {
-                return HandleError(context, ex);
+                return context.JsonExceptionResponse(ex);
             }
         }
 
@@ -120,28 +117,8 @@
             }
             catch (Exception ex)
             {
-                return HandleError(context, ex);
+                return context.JsonExceptionResponse(ex);
             }
-        }
-
-        /// <summary>
-        /// Handles the error returning an error status code and json-encoded body.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="ex">The ex.</param>
-        /// <param name="statusCode">The HTTP status code.</param>
-        /// <returns></returns>
-        protected bool HandleError(HttpListenerContext context, Exception ex, int statusCode = 500)
-        {
-            var errorResponse = new
-            {
-                Title = "Unexpected Error",
-                ErrorCode = ex.GetType().Name,
-                Description = ex.ExceptionMessage(),
-            };
-
-            context.Response.StatusCode = statusCode;
-            return context.JsonResponse(errorResponse);
         }
     }
 }

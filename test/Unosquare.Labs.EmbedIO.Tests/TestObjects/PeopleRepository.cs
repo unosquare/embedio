@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
+﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
+    using System;
+    using System.Collections.Generic;
+
     public class Person
     {
         public int Key { get; set; }
@@ -16,7 +16,7 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 
     public static class PeopleRepository
     {
-        public static List<Person> Database = new List<Person>
+        public static List<Person> Database => new List<Person>
         {
             new Person()
             {

@@ -1,9 +1,9 @@
-﻿using NUnit.Framework;
-using System.Threading.Tasks;
-using Unosquare.Labs.EmbedIO.Tests.TestObjects;
-
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
+    using NUnit.Framework;
+    using System.Threading.Tasks;
+    using Unosquare.Labs.EmbedIO.Tests.TestObjects;
+
     [TestFixture]
     public class WildcardRoutingTest : FixtureBase
     {
@@ -28,7 +28,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
 
             Assert.AreEqual("1", call);
         }
-        
+
         [Test]
         public async Task MultipleWildcard()
         {

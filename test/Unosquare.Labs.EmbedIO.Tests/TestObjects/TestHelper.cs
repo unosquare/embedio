@@ -27,7 +27,7 @@
         public static string RootPath()
         {
             var assemblyPath = Path.GetDirectoryName(typeof(StaticFilesModuleTest).GetTypeInfo().Assembly.Location);
-            return Path.Combine(assemblyPath, "html");
+            return Path.Combine(assemblyPath ?? throw new InvalidOperationException(), "html");
         }
 
         public static byte[] GetBigData()
@@ -54,7 +54,7 @@
             if (Directory.Exists(Path.Combine(rootPath, "sub")) == false)
                 Directory.CreateDirectory(Path.Combine(rootPath, "sub"));
 
-            var files = onlyIndex ? new[] { StaticFilesModule.DefaultDocumentName } : RandomHtmls;
+            var files = onlyIndex ? new[] {StaticFilesModule.DefaultDocumentName} : RandomHtmls;
 
             foreach (var file in files.Where(file => !File.Exists(Path.Combine(rootPath, file))))
             {
@@ -63,7 +63,7 @@
 
             foreach (var file in files.Where(file => !File.Exists(Path.Combine(rootPath, "sub", file))))
             {
-                File.WriteAllText(Path.Combine(rootPath, "sub",  file), Resources.SubIndex);
+                File.WriteAllText(Path.Combine(rootPath, "sub", file), Resources.SubIndex);
             }
 
             // write only random htmls when onlyIndex is false
@@ -97,7 +97,9 @@
         {
             var folderName = instanceName.Replace('/', Path.DirectorySeparatorChar);
             var folder =
-                Path.Combine(Path.GetDirectoryName(typeof(StaticFilesModuleTest).GetTypeInfo().Assembly.Location),
+                Path.Combine(
+                    Path.GetDirectoryName(typeof(StaticFilesModuleTest).GetTypeInfo().Assembly.Location) ??
+                    throw new InvalidOperationException(),
                     folderName);
 
             if (Directory.Exists(folder) == false)
@@ -117,15 +119,15 @@
         public static void CreateTempBinaryFile(string fileName, int sizeInMb)
         {
             // Note: block size must be a factor of 1MB to avoid rounding errors :)
-            const int blockSize = 1024*8;
-            const int blocksPerMb = (1024*1024)/blockSize;
+            const int blockSize = 1024 * 8;
+            const int blocksPerMb = (1024 * 1024) / blockSize;
             var data = new byte[blockSize];
 
             var rng = new Random();
             using (var stream = File.OpenWrite(fileName))
             {
                 // There 
-                for (var i = 0; i < sizeInMb*blocksPerMb; i++)
+                for (var i = 0; i < sizeInMb * blocksPerMb; i++)
                 {
                     rng.NextBytes(data);
                     stream.Write(data, 0, data.Length);

@@ -17,7 +17,6 @@
 
 #else
     using Net;
-
 #endif
 
     /// <summary>
@@ -385,7 +384,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="data">The data.</param>
-        /// <returns>A true value of type ref=JsonResponseAsync"</returns>
+        /// <returns>A <c>true</c> value of type ref=JsonResponseAsync"</returns>
         public static bool JsonResponse(this HttpListenerContext context, object data)
             => context.JsonResponseAsync(data).GetAwaiter().GetResult();
 
@@ -438,6 +437,38 @@
         {
             context.Response.StatusCode = (int) statusCode;
             return context.StringResponseAsync(htmlContent, Responses.HtmlContentType, cancellationToken);
+        }
+
+        /// <summary>
+        /// Outputs async a JSON Response given an exception.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="ex">The ex.</param>
+        /// <param name="statusCode">The status code.</param>
+        /// <returns>A <c>true</c> value when the exception is written to the HTTP Response</returns>
+        public static bool JsonExceptionResponse(
+            this HttpListenerContext context,
+            Exception ex,
+            System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.InternalServerError)
+        {
+            context.Response.StatusCode = (int)statusCode;
+            return context.JsonResponse(ex);
+        }
+
+        /// <summary>
+        /// Outputs a JSON Response given an exception.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="ex">The ex.</param>
+        /// <param name="statusCode">The status code.</param>
+        /// <returns>A task for writing the output stream</returns>
+        public static Task<bool> JsonExceptionResponseAsync(
+            this HttpListenerContext context,
+            Exception ex,
+            System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.InternalServerError)
+        {
+            context.Response.StatusCode = (int)statusCode;
+            return context.JsonResponseAsync(ex);
         }
 
         /// <summary>

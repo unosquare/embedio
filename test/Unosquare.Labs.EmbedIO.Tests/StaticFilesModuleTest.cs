@@ -107,6 +107,7 @@
                 {
                     server.RegisterModule(new StaticFilesModule(root) {UseRamCache = false});
                     var runTask = server.RunAsync();
+
                     using (var webClient = new HttpClient())
                     {
                         var remoteFile = await webClient.GetStringAsync(endpoint);
@@ -125,7 +126,7 @@
             public async Task SensitiveFile()
             {
                 var file = Path.GetTempPath() + Guid.NewGuid().ToString().ToLower();
-                File.WriteAllText(file, "");
+                File.WriteAllText(file, string.Empty);
 
                 Assert.IsTrue(File.Exists(file), "File was created");
 
@@ -152,9 +153,7 @@
                 using (var server = new WebServer(endpoint))
                 {
                     Assert.Throws<ArgumentException>(() =>
-                    {
-                        server.RegisterModule(new StaticFilesModule("e:") {UseRamCache = false});
-                    });
+                        server.RegisterModule(new StaticFilesModule("e:") {UseRamCache = false}));
                 }
             }
         }
@@ -185,10 +184,9 @@
                 var instance = new StaticFilesModule(Directory.GetCurrentDirectory());
                 instance.RegisterVirtualPath("/tmp", Path.GetTempPath());
                 Assert.AreNotEqual(instance.VirtualPaths.Count, 0);
+
                 Assert.Throws<InvalidOperationException>(() =>
-                {
-                    instance.RegisterVirtualPath("/tmp", Path.GetTempPath());
-                });
+                    instance.RegisterVirtualPath("/tmp", Path.GetTempPath()));
             }
 
             [Test]
@@ -325,8 +323,12 @@
                             using (var response = await client.SendAsync(request))
                             {
                                 if (remoteSize.Length < top)
-                                    Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent,
+                                {
+                                    Assert.AreEqual(
+                                        response.StatusCode,
+                                        HttpStatusCode.PartialContent,
                                         "Status Code PartialCode");
+                                }
 
                                 using (var ms = new MemoryStream())
                                 {
@@ -360,8 +362,11 @@
 
                         using (var response = await client.SendAsync(request))
                         {
-                            Assert.AreEqual(response.StatusCode, HttpStatusCode.RequestedRangeNotSatisfiable,
+                            Assert.AreEqual(
+                                response.StatusCode,
+                                HttpStatusCode.RequestedRangeNotSatisfiable,
                                 "Status Code RequestedRangeNotSatisfiable");
+
                             Assert.AreEqual(response.Content.Headers.ContentRange.Length, remoteSize.Length);
                         }
                     }

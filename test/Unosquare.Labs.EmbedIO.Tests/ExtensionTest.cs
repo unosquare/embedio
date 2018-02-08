@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using NUnit.Framework;
-using Unosquare.Labs.EmbedIO.Constants;
-
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
+    using System.Collections.Generic;
+    using NUnit.Framework;
+    using Constants;
+
     [TestFixture]
     public class GzipTest
     {
@@ -64,7 +64,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
         [Test]
         public void UrlParamsWithLastParams()
         {
-            var result = Extensions.RequestRegexUrlParams("/data/1", "/data/{id}");
+            var result = "/data/1".RequestRegexUrlParams("/data/{id}");
             var expected = new Dictionary<string, object> {{DefaultId, "1"}};
 
             Assert.IsTrue(result.ContainsKey(DefaultId));
@@ -74,7 +74,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
         [Test]
         public void UrlParamsWithOptionalLastParams()
         {
-            var result = Extensions.RequestRegexUrlParams("/data/1", "/data/{id?}");
+            var result = "/data/1".RequestRegexUrlParams("/data/{id?}");
             var expected = new Dictionary<string, object> {{DefaultId, "1"}};
 
             Assert.IsTrue(result.ContainsKey(DefaultId));
@@ -84,7 +84,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
         [Test]
         public void UrlParamsWithOptionalLastParamsNullable()
         {
-            var result = Extensions.RequestRegexUrlParams("/data/", "/data/{id?}");
+            var result = "/data/".RequestRegexUrlParams("/data/{id?}");
             var expected = new Dictionary<string, object> {{DefaultId, string.Empty}};
 
             Assert.IsTrue(result.ContainsKey(DefaultId));
@@ -94,7 +94,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
         [Test]
         public void UrlParamsWithMultipleParams()
         {
-            var result = Extensions.RequestRegexUrlParams("/data/1/2", "/data/{id}/{anotherId}");
+            var result = "/data/1/2".RequestRegexUrlParams("/data/{id}/{anotherId}");
             var expected = new Dictionary<string, object> {{DefaultId, "1"}, {"anotherId", "2"}};
 
             Assert.IsTrue(result.ContainsKey(DefaultId));
@@ -107,7 +107,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
         [Test]
         public void UrlParamsWithoutParams()
         {
-            var result = Extensions.RequestRegexUrlParams("/data/", "/data/");
+            var result = "/data/".RequestRegexUrlParams("/data/");
 
             Assert.IsTrue(result.Keys.Count == 0);
         }

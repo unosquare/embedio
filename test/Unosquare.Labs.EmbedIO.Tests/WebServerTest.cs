@@ -221,7 +221,7 @@
                                 .Skip(1)
                                 .FirstOrDefault()?
                                 .Trim();
-                        encoding = Encoding.GetEncoding(encodeValue);
+                        encoding = Encoding.GetEncoding(encodeValue ?? throw new InvalidOperationException());
                     }
                     catch
                     {

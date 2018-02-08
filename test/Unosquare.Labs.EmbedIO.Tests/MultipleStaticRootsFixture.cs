@@ -9,7 +9,7 @@
     [TestFixture]
     public class MultipleStaticRootsFixture : FixtureBase
     {
-        protected string[] InstancesNames = {string.Empty, "A/", "B/", "C/", "A/C", "AAA/A/B/C/", "A/B/C"};
+        private readonly string[] _instancesNames = {string.Empty, "A/", "B/", "C/", "A/C", "AAA/A/B/C/", "A/B/C"};
 
         public MultipleStaticRootsFixture()
             : base(ws =>
@@ -24,11 +24,13 @@
         [Test]
         public async Task FileContentsMatchInstanceName()
         {
-            foreach (var item in InstancesNames)
+            foreach (var item in _instancesNames)
             {
                 var html = await GetString(item);
 
-                Assert.AreEqual(html, TestHelper.GetStaticFolderInstanceIndexFileContents(item),
+                Assert.AreEqual(
+                    TestHelper.GetStaticFolderInstanceIndexFileContents(item),
+                    html, 
                     "index.html contents match instance name");
             }
         }

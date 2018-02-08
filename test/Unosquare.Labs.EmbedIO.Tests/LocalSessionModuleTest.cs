@@ -121,7 +121,9 @@
                             Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
                             Assert.IsNotNull(handler.CookieContainer, "Cookies are not null");
-                            Assert.Greater(handler.CookieContainer.GetCookies(new Uri(WebServerUrl)).Count, 0,
+                            Assert.Greater(
+                                handler.CookieContainer.GetCookies(new Uri(WebServerUrl)).Count, 
+                                0,
                                 "Cookies are not empty");
 
                             content = handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl));
@@ -156,6 +158,7 @@
                         var request = new HttpRequestMessage(HttpMethod.Get,
                             WebServerUrl + TestLocalSessionController.GetCookie);
                         var uri = new Uri(WebServerUrl + TestLocalSessionController.GetCookie);
+
                         using (var resonse = await client.SendAsync(request))
                         {
                             Assert.AreEqual(resonse.StatusCode, HttpStatusCode.OK, "Status OK");
@@ -176,6 +179,7 @@
                 using (var handler = new HttpClientHandler())
                 {
                     handler.CookieContainer = new CookieContainer();
+
                     using (var client = new HttpClient(handler))
                     {
                         var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
@@ -185,7 +189,9 @@
                             Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
 
                             Assert.IsNotNull(handler.CookieContainer, "Cookies are not null");
-                            Assert.Greater(handler.CookieContainer.GetCookies(new Uri(WebServerUrl)).Count, 0,
+                            Assert.Greater(
+                                handler.CookieContainer.GetCookies(new Uri(WebServerUrl)).Count, 
+                                0,
                                 "Cookies are not empty");
 
                             Assert.IsNotEmpty(handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl)),

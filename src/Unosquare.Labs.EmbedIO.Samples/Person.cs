@@ -5,6 +5,7 @@ namespace Unosquare.Labs.EmbedIO.Samples
     using Swan;
     using System.ComponentModel.DataAnnotations.Schema;
 
+    /// <inheritdoc />
     /// <summary>
     /// A simple model representing a person
     /// </summary>

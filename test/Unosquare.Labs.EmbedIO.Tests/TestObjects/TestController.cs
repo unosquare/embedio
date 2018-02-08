@@ -38,8 +38,7 @@
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
-                return context.JsonResponse(ex);
+                return context.JsonExceptionResponse(ex);
             }
         }
 
@@ -65,8 +64,7 @@
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
-                return context.JsonResponse(ex);
+                return context.JsonExceptionResponse(ex);
             }
         }
 
@@ -81,8 +79,7 @@
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
-                return context.JsonResponse(ex);
+                return context.JsonExceptionResponse(ex);
             }
         }
 
@@ -97,8 +94,7 @@
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
-                return context.JsonResponse(ex);
+                return context.JsonExceptionResponse(ex);
             }
         }
 
@@ -124,20 +120,19 @@
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
-                return context.JsonResponseAsync(ex);
+                return context.JsonExceptionResponseAsync(ex);
             }
         }
     }
 
     public class TestControllerWithConstructor : WebApiController
     {
-        public string WebName { get; set; }
-
         public TestControllerWithConstructor(string name)
         {
             WebName = name;
         }
+
+        public string WebName { get; set; }
 
         [WebApiHandler(HttpVerbs.Get, "/name")]
         public bool GetPeople(WebServer server, HttpListenerContext context)

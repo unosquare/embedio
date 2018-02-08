@@ -1,18 +1,22 @@
-﻿using Unosquare.Swan;
+﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
+{
+    using System;
+    using Swan;
+    using Modules;
+    using Swan.Formatters;
 #if NET47
 using System.Net.WebSockets;
 #else
-using Unosquare.Net;
+    using Net;
 #endif
-using Unosquare.Labs.EmbedIO.Modules;
-using Unosquare.Swan.Formatters;
 
-namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
-{
     [WebSocketHandler("/test/")]
     public class TestWebSocketBase : WebSocketsServer
     {
-        public System.Action<WebSocketContext> OnMessageParams;
+        private Action<WebSocketContext> OnMessageParams;
+        /// <inheritdoc />
+        public override string ServerName => nameof(TestWebSocketBase);
+
         protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
         {
             Send(context, "HELLO");
@@ -24,21 +28,13 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
         }
 
 #if NET47
-        /// <summary>
-        /// Called when this WebSockets Server accepts a new WebSockets client.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="localEndPoint">The local endpoint.</param>
-        /// /// <param name="remoteEndPoint">The remote endpoint.</param>
+        /// <inheritdoc />
         protected override void OnClientConnected(
             WebSocketContext context, 
             System.Net.IPEndPoint localEndPoint,
             System.Net.IPEndPoint remoteEndPoint)
 #else
-        /// <summary>
-        /// Called when this WebSockets Server accepts a new WebSockets client.
-        /// </summary>
-        /// <param name="context">The context.</param>
+        /// <inheritdoc />
         protected override void OnClientConnected(WebSocketContext context)
 #endif
         {
@@ -49,8 +45,6 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
         {
             // Do nothing
         }
-
-        public override string ServerName => nameof(TestWebSocketBase);
     }
 
     [WebSocketHandler("/test/")]
@@ -71,12 +65,10 @@ namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
         public override string ServerName => nameof(TestWebSocketRegex);
     }
 
-
-
     [WebSocketHandler("/bigdata")]
     public class BigDataWebSocket : WebSocketsServer
     {
-        public static object BigDataObject = new
+        public static object BigDataObject => new
         {
             Id = 1,
             Name = "Name",
@@ -2921,6 +2913,9 @@ i01jQpAUwrKkbVu2EzqXmNMgrAdDISXyvKBRr9frjUbDN8eG0uB5gWdshYxag9Ymu4MthcVMpvwB
 cygSR/MggDhTGBrfglUEKIXXbcbfwgukfyVEJJPOIP0xTtdAhAKBTNyWZuTIcRmIjIcgEEau"
         };
 
+        /// <inheritdoc />
+        public override string ServerName => nameof(BigDataWebSocket);
+
         protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
         {
             Send(context, Json.Serialize(BigDataObject));
@@ -2932,21 +2927,13 @@ cygSR/MggDhTGBrfglUEKIXXbcbfwgukfyVEJJPOIP0xTtdAhAKBTNyWZuTIcRmIjIcgEEau"
         }
 
 #if NET47
-        /// <summary>
-        /// Called when this WebSockets Server accepts a new WebSockets client.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="localEndPoint">The local endpoint.</param>
-        /// /// <param name="remoteEndPoint">The remote endpoint.</param>
+        /// <inheritdoc />
         protected override void OnClientConnected(
             WebSocketContext context, 
             System.Net.IPEndPoint localEndPoint,
             System.Net.IPEndPoint remoteEndPoint)
 #else
-        /// <summary>
-        /// Called when this WebSockets Server accepts a new WebSockets client.
-        /// </summary>
-        /// <param name="context">The context.</param>
+        /// <inheritdoc />
         protected override void OnClientConnected(WebSocketContext context)
 #endif
         {
@@ -2957,7 +2944,5 @@ cygSR/MggDhTGBrfglUEKIXXbcbfwgukfyVEJJPOIP0xTtdAhAKBTNyWZuTIcRmIjIcgEEau"
         {
             // do nothing
         }
-
-        public override string ServerName => nameof(BigDataWebSocket);
     }
 }
