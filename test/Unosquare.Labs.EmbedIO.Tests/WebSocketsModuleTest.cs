@@ -13,26 +13,26 @@
 #else
     using Net;
 #endif
-    
+
     [TestFixture]
     public class WebSocketsModuleTest : WebSocketsModuleTestBase
     {
-        public WebSocketsModuleTest() 
+        public WebSocketsModuleTest()
             : base(RoutingStrategy.Simple, ws =>
-        {
-            ws.RegisterModule(new WebSocketsModule());
-            ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocket>();
-            ws.Module<WebSocketsModule>().RegisterWebSocketsServer<BigDataWebSocket>();
+            {
+                ws.RegisterModule(new WebSocketsModule());
+                ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocket>();
+                ws.Module<WebSocketsModule>().RegisterWebSocketsServer<BigDataWebSocket>();
 
-        },"test/")
+            }, "test/")
         {
             // placeholder
         }
 
         [Test]
-        public override async Task TestConnectWebSocket()
+        public async Task TestConnectWebSocket()
         {
-            await base.TestConnectWebSocket();
+            await ConnectWebSocket();
         }
 
         [Test]
@@ -55,8 +55,9 @@
 
             await clientSocket.SendAsync(message, WebSocketMessageType.Text, true, ct.Token);
             await clientSocket.ReceiveAsync(buffer, ct.Token);
-            
-            Assert.AreEqual(System.Text.Encoding.UTF8.GetString(buffer.Array).Substring(0, 100), Json.Serialize(BigDataWebSocket.BigDataObject).Substring(0, 100), "Initial chars are equal");
+
+            Assert.AreEqual(System.Text.Encoding.UTF8.GetString(buffer.Array).Substring(0, 100),
+                Json.Serialize(BigDataWebSocket.BigDataObject).Substring(0, 100), "Initial chars are equal");
 #else
             var clientSocket = new WebSocket(wsUrl);
             await clientSocket.ConnectAsync(ct.Token);
@@ -76,41 +77,41 @@
 
     public class WebSocketsWildcard : WebSocketsModuleTestBase
     {
-        public WebSocketsWildcard() 
+        public WebSocketsWildcard()
             : base(RoutingStrategy.Wildcard, ws =>
-        {
-            ws.RegisterModule(new WebSocketsModule());
-            ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocketWildcard>();
+            {
+                ws.RegisterModule(new WebSocketsModule());
+                ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocketWildcard>();
 
-        }, "test/*")
+            }, "test/*")
         {
             // placeholder
         }
 
         [Test]
-        public override async Task TestConnectWebSocket()
+        public async Task TestConnectWebSocket()
         {
-            await base.TestConnectWebSocket();
+            await ConnectWebSocket();
         }
     }
 
     public class WebSocketsModuleTestRegex : WebSocketsModuleTestBase
     {
-        public WebSocketsModuleTestRegex() 
+        public WebSocketsModuleTestRegex()
             : base(RoutingStrategy.Regex, ws =>
-        {
-            ws.RegisterModule(new WebSocketsModule());
-            ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocketRegex>();
+            {
+                ws.RegisterModule(new WebSocketsModule());
+                ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocketRegex>();
 
-        }, "test/{100}")
+            }, "test/{100}")
         {
             // placeholder
         }
 
         [Test]
-        public override async Task TestConnectWebSocket()
+        public async Task TestConnectWebSocket()
         {
-            await base.TestConnectWebSocket();
+            await ConnectWebSocket();
         }
     }
 }

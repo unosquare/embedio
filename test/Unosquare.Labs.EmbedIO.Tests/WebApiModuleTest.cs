@@ -40,7 +40,9 @@
                         remoteList = Json.Deserialize<List<Person>>(jsonBody);
 
                         Assert.IsNotNull(remoteList, "Json Object is not null");
-                        Assert.AreEqual(remoteList.Count, PeopleRepository.Database.Count,
+                        Assert.AreEqual(
+                            remoteList.Count, 
+                            PeopleRepository.Database.Count,
                             "Remote list count equals local list");
                     }
 
@@ -99,7 +101,6 @@
 
                     Assert.AreEqual(response.StatusCode, HttpStatusCode.MethodNotAllowed);
                 }
-
             }
         }
 

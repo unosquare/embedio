@@ -4,15 +4,8 @@
 
     public static class Resources
     {
-        private const string ServerAddress = "http://localhost:{0}/";
         public static int Counter = 9699;
 
-        public static string GetServerAddress()
-        {
-            Interlocked.Increment(ref Counter);
-            return string.Format(ServerAddress, Counter);
-        }
-        
         public static readonly string SubIndex = @"<!DOCTYPE html>
 
 <html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
@@ -36,5 +29,13 @@
     This is a placeholder
 </body>
 </html>";
+        
+        private const string ServerAddress = "http://localhost:{0}/";
+
+        public static string GetServerAddress()
+        {
+            Interlocked.Increment(ref Counter);
+            return string.Format(ServerAddress, Counter);
+        }
     }
 }

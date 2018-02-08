@@ -16,8 +16,8 @@
                     ws.RegisterModule(
                         new StaticFilesModule(new[]
                                 {string.Empty, "A/", "B/", "C/", "A/C", "AAA/A/B/C/", "A/B/C"}
-                            .ToDictionary(x => "/" + x, TestHelper.SetupStaticFolderInstance)) {UseRamCache = true})
-                , Constants.RoutingStrategy.Wildcard)
+                            .ToDictionary(x => "/" + x, TestHelper.SetupStaticFolderInstance)) {UseRamCache = true}),
+                Constants.RoutingStrategy.Wildcard)
         {
         }
 

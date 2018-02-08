@@ -11,11 +11,11 @@
     public class WebApiHandlerAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Unosquare.Labs.EmbedIO.Modules.WebApiHandlerAttribute" /> class.
+        /// Initializes a new instance of the <see cref="WebApiHandlerAttribute"/> class.
         /// </summary>
         /// <param name="verb">The verb.</param>
         /// <param name="paths">The paths.</param>
-        /// <exception cref="T:System.ArgumentException">The argument 'paths' must be specified.</exception>
+        /// <exception cref="ArgumentException">The argument 'paths' must be specified.</exception>
         public WebApiHandlerAttribute(HttpVerbs verb, string[] paths)
         {
             if (paths == null || paths.Length == 0)
@@ -26,13 +26,13 @@
             Verb = verb;
             Paths = paths;
         }
-        
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Unosquare.Labs.EmbedIO.Modules.WebApiHandlerAttribute" /> class.
+        /// Initializes a new instance of the <see cref="WebApiHandlerAttribute"/> class.
         /// </summary>
         /// <param name="verb">The verb.</param>
         /// <param name="path">The path.</param>
-        /// <exception cref="T:System.ArgumentException">The argument 'path' must be specified.</exception>
+        /// <exception cref="ArgumentException">The argument 'path' must be specified.</exception>
         public WebApiHandlerAttribute(HttpVerbs verb, string path)
         {
             if (string.IsNullOrWhiteSpace(path))
