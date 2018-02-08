@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>A tiny, cross-platform, module based, MIT-licensed web server. Supporting NET FX, NET Core, NET Standard and MONO.</Description>
-    <Copyright>Copyright © Unosquare 2013-2017</Copyright>
+    <Copyright>Copyright © Unosquare 2013-2018</Copyright>
     <AssemblyTitle>EmbedIO Web Server</AssemblyTitle>
     <Authors>Unosquare</Authors>
     <TargetFrameworks>uap10.0;netstandard1.3;net46;net47;netstandard2.0</TargetFrameworks>
@@ -11,7 +11,7 @@
     <PackageId>EmbedIO</PackageId>
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
     <DebugType>Full</DebugType>
-    <Version>1.11.3</Version>
+    <Version>1.2.0</Version>
     <Product>EmbedIO</Product>
     <Company>Unosquare</Company>
     <PackageLicenseUrl>https://raw.githubusercontent.com/unosquare/embedio/master/LICENSE</PackageLicenseUrl>
@@ -27,7 +27,7 @@
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Unosquare.Swan" Version="0.21.0" />
+    <PackageReference Include="Unosquare.Swan" Version="0.24.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'uap10.0' ">
