@@ -489,7 +489,7 @@ namespace Unosquare.Net
         /// <returns>
         /// A task that represents the asynchronous closes websocket connection
         /// </returns>
-        public async Task CloseAsync(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null, CancellationToken ct = default(CancellationToken))
+        public async Task CloseAsync(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null, CancellationToken ct = default)
         {
             if (!_validator.CheckIfAvailable(out var msg))
             {
@@ -532,7 +532,7 @@ namespace Unosquare.Net
         /// <para>
         /// This method isn't available in a server.
         /// </para></remarks>
-        public async Task ConnectAsync(CancellationToken ct = default(CancellationToken))
+        public async Task ConnectAsync(CancellationToken ct = default)
         {
             if (!_validator.CheckIfAvailable(out string msg, true, false, true, false, false))
             {
@@ -622,7 +622,7 @@ namespace Unosquare.Net
         /// A task that represents the asynchronous of send 
         /// binary data using websocket
         /// </returns>
-        public async Task SendAsync(byte[] data, Opcode opcode, CancellationToken ct = default(CancellationToken))
+        public async Task SendAsync(byte[] data, Opcode opcode, CancellationToken ct = default)
         {
             var msg = WebSocketValidator.CheckIfAvailable(_readyState) ??
                       WebSocketValidator.CheckSendParameter(data);
@@ -714,7 +714,7 @@ namespace Unosquare.Net
         }
 
         // As server
-        internal async Task CloseAsync(CloseEventArgs e, byte[] frameAsBytes, bool receive, CancellationToken ct = default(CancellationToken))
+        internal async Task CloseAsync(CloseEventArgs e, byte[] frameAsBytes, bool receive, CancellationToken ct = default)
         {
             lock (_forState)
             {
@@ -825,7 +825,7 @@ namespace Unosquare.Net
             bool send = true,
             bool receive = true,
             bool received = false,
-            CancellationToken ct = default(CancellationToken))
+            CancellationToken ct = default)
         {
             lock (_forState)
             {

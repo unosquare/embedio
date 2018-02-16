@@ -194,7 +194,7 @@
         private readonly int _maximumMessageSize;
 #endif
         private bool _isDisposing;
-        private CancellationToken _ct = default(CancellationToken);
+        private CancellationToken _ct = default;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebSocketsServer" /> class.

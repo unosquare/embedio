@@ -305,7 +305,7 @@
         /// Both the server and client requests are queued separately on the thread pool,
         /// so it is safe to call <see cref="Task.Wait()" /> in a synchronous method.
         /// </remarks>
-        public async Task RunAsync(CancellationToken ct = default(CancellationToken))
+        public async Task RunAsync(CancellationToken ct = default)
         {
             Listener.IgnoreWriteExceptions = true;
             Listener.Start();
