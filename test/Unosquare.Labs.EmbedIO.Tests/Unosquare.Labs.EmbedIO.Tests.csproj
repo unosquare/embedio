@@ -5,6 +5,7 @@
     <TargetFrameworks>net46;net47;netcoreapp2.0</TargetFrameworks>
     <TestProjectType>UnitTest</TestProjectType>
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
