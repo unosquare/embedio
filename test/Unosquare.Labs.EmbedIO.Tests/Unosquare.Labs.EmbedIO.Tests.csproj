@@ -31,6 +31,10 @@
     <DefineConstants>$(DefineConstants);NET47</DefineConstants>
   </PropertyGroup>
 
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+
   <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Threading.Tasks" />

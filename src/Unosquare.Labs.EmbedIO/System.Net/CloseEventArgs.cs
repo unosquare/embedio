@@ -81,6 +81,30 @@ namespace Unosquare.Net
 
         internal PayloadData PayloadData { get; }
     }
+
+    /// <summary>
+    /// The event arguments for connection failure events
+    /// </summary>
+    /// <seealso cref="System.EventArgs" />
+    public class ConnectionFailureEventArgs : EventArgs
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConnectionFailureEventArgs"/> class.
+        /// </summary>
+        /// <param name="ex">The ex.</param>
+        public ConnectionFailureEventArgs(Exception ex)
+        {
+            Error = ex;
+        }
+
+        /// <summary>
+        /// Gets the error.
+        /// </summary>
+        /// <value>
+        /// The error.
+        /// </value>
+        public Exception Error { get; }
+    }
 }
 
 #endif
