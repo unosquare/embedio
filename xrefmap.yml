@@ -2368,6 +2368,36 @@ references:
   commentId: F:Unosquare.Net.CloseStatusCode.UnsupportedData
   fullName: Unosquare.Net.CloseStatusCode.UnsupportedData
   nameWithType: CloseStatusCode.UnsupportedData
+- uid: Unosquare.Net.ConnectionFailureEventArgs
+  name: ConnectionFailureEventArgs
+  href: api/Unosquare.Net.ConnectionFailureEventArgs.html
+  commentId: T:Unosquare.Net.ConnectionFailureEventArgs
+  fullName: Unosquare.Net.ConnectionFailureEventArgs
+  nameWithType: ConnectionFailureEventArgs
+- uid: Unosquare.Net.ConnectionFailureEventArgs.#ctor(System.Exception)
+  name: ConnectionFailureEventArgs(Exception)
+  href: api/Unosquare.Net.ConnectionFailureEventArgs.html#Unosquare_Net_ConnectionFailureEventArgs__ctor_System_Exception_
+  commentId: M:Unosquare.Net.ConnectionFailureEventArgs.#ctor(System.Exception)
+  fullName: Unosquare.Net.ConnectionFailureEventArgs.ConnectionFailureEventArgs(System.Exception)
+  nameWithType: ConnectionFailureEventArgs.ConnectionFailureEventArgs(Exception)
+- uid: Unosquare.Net.ConnectionFailureEventArgs.#ctor*
+  name: ConnectionFailureEventArgs
+  href: api/Unosquare.Net.ConnectionFailureEventArgs.html#Unosquare_Net_ConnectionFailureEventArgs__ctor_
+  commentId: Overload:Unosquare.Net.ConnectionFailureEventArgs.#ctor
+  fullName: Unosquare.Net.ConnectionFailureEventArgs.ConnectionFailureEventArgs
+  nameWithType: ConnectionFailureEventArgs.ConnectionFailureEventArgs
+- uid: Unosquare.Net.ConnectionFailureEventArgs.Error
+  name: Error
+  href: api/Unosquare.Net.ConnectionFailureEventArgs.html#Unosquare_Net_ConnectionFailureEventArgs_Error
+  commentId: P:Unosquare.Net.ConnectionFailureEventArgs.Error
+  fullName: Unosquare.Net.ConnectionFailureEventArgs.Error
+  nameWithType: ConnectionFailureEventArgs.Error
+- uid: Unosquare.Net.ConnectionFailureEventArgs.Error*
+  name: Error
+  href: api/Unosquare.Net.ConnectionFailureEventArgs.html#Unosquare_Net_ConnectionFailureEventArgs_Error_
+  commentId: Overload:Unosquare.Net.ConnectionFailureEventArgs.Error
+  fullName: Unosquare.Net.ConnectionFailureEventArgs.Error
+  nameWithType: ConnectionFailureEventArgs.Error
 - uid: Unosquare.Net.CookieCollection
   name: CookieCollection
   href: api/Unosquare.Net.CookieCollection.html
