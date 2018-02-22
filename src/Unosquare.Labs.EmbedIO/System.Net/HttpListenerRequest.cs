@@ -48,7 +48,7 @@ using System.Threading.Tasks;
     /// </summary>
     public sealed class HttpListenerRequest
     {
-        private static readonly byte[] _100Continue = Encoding.UTF8.GetBytes("HTTP/1.1 100 Continue\r\n\r\n");
+        private static readonly byte[] HttpStatus100 = Encoding.UTF8.GetBytes("HTTP/1.1 100 Continue\r\n\r\n");
         private static readonly char[] Separators = { ' ' };
 
         private readonly HttpListenerContext _context;
@@ -419,7 +419,7 @@ using System.Threading.Tasks;
 
             if (string.Compare(Headers["Expect"], "100-continue", StringComparison.OrdinalIgnoreCase) == 0)
             {
-                _context.Connection.GetResponseStream().InternalWrite(_100Continue, 0, _100Continue.Length);
+                _context.Connection.GetResponseStream().InternalWrite(HttpStatus100, 0, HttpStatus100.Length);
             }
         }
 

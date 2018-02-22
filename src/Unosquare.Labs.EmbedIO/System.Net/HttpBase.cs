@@ -157,34 +157,30 @@ namespace Unosquare.Net
                     ? await stream.ReadBytesAsync((int) len, ct)
                     : null;
         }
-
-        private static bool EqualsWith(int value, char c, Action<int> action)
-        {
-            action(value);
-            return value == c - 0;
-        }
-
+        
         private static string[] ReadHeaders(Stream stream)
         {
             var buff = new List<byte>();
             var cnt = 0;
-
-            void Add(int i)
+            
+            bool EqualsWith(int i, char c)
             {
                 if (i == -1)
                     throw new EndOfStreamException("The header cannot be read from the data source.");
 
                 buff.Add((byte) i);
                 cnt++;
+
+                return i == c - 0;
             }
 
             var read = false;
             while (cnt < HeadersMaxLength)
             {
-                if (EqualsWith(stream.ReadByte(), '\r', Add) &&
-                    EqualsWith(stream.ReadByte(), '\n', Add) &&
-                    EqualsWith(stream.ReadByte(), '\r', Add) &&
-                    EqualsWith(stream.ReadByte(), '\n', Add))
+                if (EqualsWith(stream.ReadByte(), '\r') &&
+                    EqualsWith(stream.ReadByte(), '\n') &&
+                    EqualsWith(stream.ReadByte(), '\r') &&
+                    EqualsWith(stream.ReadByte(), '\n'))
                 {
                     read = true;
                     break;
