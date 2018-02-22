@@ -76,7 +76,7 @@
         protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer,
             WebSocketReceiveResult rxResult)
         {
-            return;
+            // placeholder
         }
         
         /// <inheritdoc />

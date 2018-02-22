@@ -6,6 +6,7 @@
     <OutputType>Exe</OutputType>
     <PackageId>Unosquare.Labs.EmbedIO.Samples</PackageId>
     <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

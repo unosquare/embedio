@@ -25,8 +25,6 @@ namespace Unosquare.Labs.EmbedIO.Command
             
             using (var server = new WebServer($"http://localhost:{options.Port}/"))
             {
-                // TODO: Add AppSettings file
-                //if (Properties.Settings.Default.UseLocalSessionModule)
                 server.WithLocalSession();
 
                 server.EnableCors().WithStaticFolderAt(options.RootPath);

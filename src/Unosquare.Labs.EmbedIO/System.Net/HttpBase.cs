@@ -102,7 +102,7 @@ namespace Unosquare.Net
             Stream stream, 
             Func<string[], T> parser,
             int millisecondsTimeout = 90000, 
-            CancellationToken ct = default(CancellationToken))
+            CancellationToken ct = default)
             where T : HttpBase
         {
             var timeout = false;

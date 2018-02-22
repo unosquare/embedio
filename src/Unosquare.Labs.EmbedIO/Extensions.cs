@@ -416,7 +416,7 @@
         public static Task<bool> JsonResponseAsync(
             this HttpListenerContext context,
             string json,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return context.StringResponseAsync(json, cancellationToken: cancellationToken);
         }
@@ -433,7 +433,7 @@
             this HttpListenerContext context,
             string htmlContent,
             System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.OK,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             context.Response.StatusCode = (int) statusCode;
             return context.StringResponseAsync(htmlContent, Responses.HtmlContentType, cancellationToken);
@@ -484,7 +484,7 @@
             this HttpListenerContext context,
             string content,
             string contentType = "application/json",
-            CancellationToken cancellationToken = default(CancellationToken),
+            CancellationToken cancellationToken = default,
             Encoding encoding = null)
         {
             var buffer = (encoding ?? Encoding.UTF8).GetBytes(content);

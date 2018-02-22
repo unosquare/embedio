@@ -8,6 +8,7 @@
     <AssemblyName>Unosquare.Labs.EmbedIO.Command</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>Unosquare.Labs.EmbedIO.Command</PackageId>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
