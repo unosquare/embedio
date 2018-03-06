@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "CODE_OF_CONDUCT.html",
-          "hash": "3CcZXSc2rcQDC2sgvW1FiQ=="
+          "hash": "7uY4YSYvBDtBsJAekhFnjQ=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "XqNZYC4+P74fmxbvrU2KYg=="
+          "hash": "yTJnsJCHPfsid1zDv+lYoA=="
         }
       },
       "is_incremental": false,
@@ -86,7 +86,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Constants.CompressionMethod.html",
-          "hash": "4G6p0bvEw0VzyQsKIHX1tQ=="
+          "hash": "UmAqtmdjwNa+9Cyyba1gmA=="
         }
       },
       "is_incremental": false,
@@ -98,7 +98,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Constants.Headers.html",
-          "hash": "n56XMWRrJji6omWGPJfcig=="
+          "hash": "Ll0t+mO/Xxx16qM2XBvU5Q=="
         }
       },
       "is_incremental": false,
@@ -110,7 +110,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Constants.HttpVerbs.html",
-          "hash": "56j2KRpwPfjcXJs9dlL9bw=="
+          "hash": "TDxC6Ex5MwVp18utQ9/ylA=="
         }
       },
       "is_incremental": false,
@@ -122,7 +122,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Constants.MimeTypes.html",
-          "hash": "EW4lGcNZFQFsjAVcDtRIDQ=="
+          "hash": "TYtOKz8390/vsNJo0ufbkw=="
         }
       },
       "is_incremental": false,
@@ -134,7 +134,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.html",
-          "hash": "hT+c/I4MXBCm7wwzz0ffLA=="
+          "hash": "ax5GZ2IOPECxLNehtNQ+XA=="
         }
       },
       "is_incremental": false,
@@ -146,7 +146,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Constants.html",
-          "hash": "GS54M3PcZLHzOYeFhH2DwA=="
+          "hash": "mrZ2Dzd8hrz4qlnudGpN0g=="
         }
       },
       "is_incremental": false,
@@ -158,7 +158,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Extensions.html",
-          "hash": "ooPcp/5onhA3P0vh75hMSg=="
+          "hash": "VUfz+yhBjr6Cx1G0E0uLDQ=="
         }
       },
       "is_incremental": false,
@@ -170,7 +170,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.ISessionWebModule.html",
-          "hash": "HnSNsNVufk4954x0APUEkg=="
+          "hash": "iBuasCmsb5Y207cgwQnzdg=="
         }
       },
       "is_incremental": false,
@@ -182,7 +182,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.IWebModule.html",
-          "hash": "qWeTsQZRE5wUFkFNMZT7+w=="
+          "hash": "RlY6tnxc7Pgd1HDzaKSYwg=="
         }
       },
       "is_incremental": false,
@@ -194,7 +194,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Map.html",
-          "hash": "rfq7FS4fXqt7AncWFmtz7Q=="
+          "hash": "6e3iG2pR+3SPeb2UhEGKzQ=="
         }
       },
       "is_incremental": false,
@@ -206,7 +206,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.ModuleMap.html",
-          "hash": "UT+CKUd48gB+J8DaH7sK9A=="
+          "hash": "qPquSFMF/ma7BzzYC9KTdQ=="
         }
       },
       "is_incremental": false,
@@ -218,7 +218,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.CorsModule.html",
-          "hash": "AoDEliZk/5JNk0I2loxcRQ=="
+          "hash": "G2zMLJwfCthh+61f47mDXQ=="
         }
       },
       "is_incremental": false,
@@ -230,7 +230,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html",
-          "hash": "dp9p27GBNrFxg9nywhw/bQ=="
+          "hash": "633oJhF241IeH2c79UTyxg=="
         }
       },
       "is_incremental": false,
@@ -242,7 +242,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.html",
-          "hash": "6u7TRQlBZoCpNPOg+PKToQ=="
+          "hash": "0Sl3zSsdyXMZBFVdVOjLRw=="
         }
       },
       "is_incremental": false,
@@ -254,7 +254,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html",
-          "hash": "nZahWP2vWPVGYm5kfnk9YA=="
+          "hash": "q2dOW9T2tORpELLjmDGocA=="
         }
       },
       "is_incremental": false,
@@ -266,7 +266,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html",
-          "hash": "Uw7tp0BppHfZ8D55BGhudw=="
+          "hash": "fBA0PEu9JpSHDrvcV8wAOg=="
         }
       },
       "is_incremental": false,
@@ -278,7 +278,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.WebApiHandlerAttribute.html",
-          "hash": "a7+JZBK3KgiiuR/Dfav5FA=="
+          "hash": "DxhNmIh+T/KrnyPFqTU/IA=="
         }
       },
       "is_incremental": false,
@@ -290,7 +290,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.WebApiModule.html",
-          "hash": "4I8nujEkIVy7kFJWJFVKPw=="
+          "hash": "lLJ1AZZINN8ampk3ipObkQ=="
         }
       },
       "is_incremental": false,
@@ -302,7 +302,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.WebSocketHandlerAttribute.html",
-          "hash": "KvyFgwKBYEgU6Zu13t+eag=="
+          "hash": "RlUzlCGcvmbA7ECLk35UVA=="
         }
       },
       "is_incremental": false,
@@ -314,7 +314,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.html",
-          "hash": "kgalH/aC30xdS3/IPdM7Jw=="
+          "hash": "mhhVN8Stsywdoiup+D9N9Q=="
         }
       },
       "is_incremental": false,
@@ -326,7 +326,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html",
-          "hash": "QiBOQOBGLGB91mWqaGTEHA=="
+          "hash": "TGWko6kBk8ReXb5ZmIfV1A=="
         }
       },
       "is_incremental": false,
@@ -338,7 +338,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.html",
-          "hash": "mQ6zyzA1JqWcKUM4GE6frg=="
+          "hash": "98cf8dlsCuKVKk0isptQAA=="
         }
       },
       "is_incremental": false,
@@ -350,7 +350,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.SessionInfo.html",
-          "hash": "3JO3Ve3anLP/bq/eP3qo5w=="
+          "hash": "Wwil78PwGqgt2p6hgvBa7Q=="
         }
       },
       "is_incremental": false,
@@ -362,7 +362,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.WebModuleBase.html",
-          "hash": "rdZr0iBjPXuuY1sAu9+1pQ=="
+          "hash": "4nqs0YLUtH4vH7ejATPLdw=="
         }
       },
       "is_incremental": false,
@@ -374,7 +374,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.WebServer.html",
-          "hash": "Jf4YYISF9UHEfHQNQCsaXA=="
+          "hash": "3LrsIRJVOF13dNCs0d89+w=="
         }
       },
       "is_incremental": false,
@@ -386,7 +386,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.html",
-          "hash": "ZbdgsZ7QEljhGH5Je0ZM4g=="
+          "hash": "tP0MRVsr8A4H8Gqt4Y6rEQ=="
         }
       },
       "is_incremental": false,
@@ -398,7 +398,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.CloseEventArgs.html",
-          "hash": "uA4JDfiSombegbkZHvcATQ=="
+          "hash": "TA0aPcbnBTjcpkZ5HHY9Eg=="
         }
       },
       "is_incremental": false,
@@ -410,7 +410,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.CloseStatusCode.html",
-          "hash": "OQnLs1yrzQcWvTW+MGXTqQ=="
+          "hash": "X6renO5gggYQNrf9k4/vYA=="
         }
       },
       "is_incremental": false,
@@ -422,7 +422,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.ConnectionFailureEventArgs.html",
-          "hash": "N9RxCR/kIXuauURQ5ytDaQ=="
+          "hash": "wKm4I1JqLsHZURreN1o9pg=="
         }
       },
       "is_incremental": false,
@@ -434,7 +434,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.CookieCollection.html",
-          "hash": "MvLhONCPCT0/8qa+FKi6Tw=="
+          "hash": "zUt1PDajOEVsj2I/rsUXAQ=="
         }
       },
       "is_incremental": false,
@@ -446,7 +446,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.HttpListener.html",
-          "hash": "v3kc2xNQ6ymL+uxja4fJYw=="
+          "hash": "Z92chPbGpxIsu1GtK8o+3w=="
         }
       },
       "is_incremental": false,
@@ -458,7 +458,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.HttpListenerContext.html",
-          "hash": "w0Qledgt442wIZpDFNYlyw=="
+          "hash": "pBdz3FdxjEGKn18pRp03Zg=="
         }
       },
       "is_incremental": false,
@@ -470,7 +470,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.HttpListenerException.html",
-          "hash": "iCiX+TOOmUG77X/yKjvnhg=="
+          "hash": "kht3GM5iI+xe7kQghteiIQ=="
         }
       },
       "is_incremental": false,
@@ -482,7 +482,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.HttpListenerPrefixCollection.html",
-          "hash": "xSDcL3o5nKCDCb+dSxACjg=="
+          "hash": "bDXsvonKL6tZc2zNqIrSAA=="
         }
       },
       "is_incremental": false,
@@ -494,7 +494,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.HttpListenerRequest.html",
-          "hash": "6yrfM6ECZPpUhPlGQYw8VQ=="
+          "hash": "8hhISbHQch5Eo3PtHoxCOw=="
         }
       },
       "is_incremental": false,
@@ -506,7 +506,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.HttpListenerResponse.html",
-          "hash": "hLtj1DArr6+GlZ26XxbzXw=="
+          "hash": "zUHfIh2PeqXwAoxdAfpzZQ=="
         }
       },
       "is_incremental": false,
@@ -518,7 +518,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.MessageEventArgs.html",
-          "hash": "0oJKLCKPtbQhqre0bjlMhA=="
+          "hash": "b4ZZ7hFq26W7e6LkLpyrgQ=="
         }
       },
       "is_incremental": false,
@@ -530,7 +530,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.Opcode.html",
-          "hash": "U0hS+Heag3E3uPMNYHVGTA=="
+          "hash": "Vl1dStR86fXD1veIpeRjuQ=="
         }
       },
       "is_incremental": false,
@@ -542,7 +542,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.ResponseStream.html",
-          "hash": "zSPmfEIdmLVs1bgtOKhYWA=="
+          "hash": "/GHSn+zxCHy9n6GTmzQKng=="
         }
       },
       "is_incremental": false,
@@ -554,7 +554,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.WebHeaderCollection.html",
-          "hash": "DPIrgX0Fc6VTyI8FFLgz8Q=="
+          "hash": "+bvW0daBbgVKXyU541nm2g=="
         }
       },
       "is_incremental": false,
@@ -566,7 +566,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.WebSocket.html",
-          "hash": "qObofJe2P+hewWgVfrDBtA=="
+          "hash": "8L8ydZ7U+mBDlpBuXHUo2g=="
         }
       },
       "is_incremental": false,
@@ -578,7 +578,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.WebSocketContext.html",
-          "hash": "qaUnHeALNOgbng/sa4C9eg=="
+          "hash": "tsj9MXVbvRtmXgV/wgUugg=="
         }
       },
       "is_incremental": false,
@@ -590,7 +590,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.WebSocketException.html",
-          "hash": "BVweq+00BSD9OstTfyhDww=="
+          "hash": "N83S//964u+f4nGPwxwS+Q=="
         }
       },
       "is_incremental": false,
@@ -602,7 +602,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.WebSocketMessageType.html",
-          "hash": "+ZXL+Cx6dkBBxLFPW0o5jA=="
+          "hash": "FKXOp0TCvgrqZt4CW0jSdQ=="
         }
       },
       "is_incremental": false,
@@ -614,7 +614,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.WebSocketReceiveResult.html",
-          "hash": "7H7DRhIb+DjqqU0I78NIJA=="
+          "hash": "fQnAH2DoorakKprqfBhZXg=="
         }
       },
       "is_incremental": false,
@@ -626,7 +626,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.WebSocketState.html",
-          "hash": "OBW0F/YYgzgbNAbRJpGdLA=="
+          "hash": "cmUgxlcAvEWVg5qF6U7Rgw=="
         }
       },
       "is_incremental": false,
@@ -638,7 +638,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.html",
-          "hash": "ZmMLyZ2SB9NnKpNqZIvGtA=="
+          "hash": "r4lkLDkjb3yHVblvF4WKMA=="
         }
       },
       "is_incremental": false,
@@ -674,7 +674,7 @@
       "output": {
         ".html": {
           "relative_path": "wiki/Cookbook.html",
-          "hash": "Wg6GOjCSKE0zyQS4Z3Fc3A=="
+          "hash": "TgfOM9ZcRuV7L4I7J4xVMg=="
         }
       },
       "is_incremental": false,
@@ -686,7 +686,7 @@
       "output": {
         ".html": {
           "relative_path": "wiki/Home.html",
-          "hash": "VxPjSg1Dwy6f7Wc4xDyIgA=="
+          "hash": "/Lav2dvGKfMs0UKG5ElcoA=="
         }
       },
       "is_incremental": false,
@@ -698,7 +698,7 @@
       "output": {
         ".html": {
           "relative_path": "wiki/_Sidebar.html",
-          "hash": "7tpb6DoF+F4+otFVm16P9Q=="
+          "hash": "eKHx87GhaSeXoL0baq7+6w=="
         }
       },
       "is_incremental": false,
@@ -713,11 +713,11 @@
         "incrementalPhase": "build"
       },
       "processors": {
-        "ConceptualDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build"
         },
-        "ManagedReferenceDocumentProcessor": {
+        "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build"
         },
