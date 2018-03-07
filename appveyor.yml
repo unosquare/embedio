@@ -16,6 +16,8 @@ environment:
   access_token:
        secure: HzWdswNyfQbQ0vLk9IQyO+Ei9mxoPYp9rvv6HPhtC9J/Fm7EHRzyV953pbPRXI9I
 before_build:
+- ps: echo $env:APPVEYOR_PULL_REQUEST_TITLE
+- ps: echo $isWindows
 - ps: |
         if($isWindows -And -Not $env:APPVEYOR_PULL_REQUEST_TITLE)
         {
