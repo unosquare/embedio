@@ -234,14 +234,11 @@ namespace Unosquare.Net
                 throw new Exception("Unable to register context");
         }
 
-        internal void UnregisterContext(HttpListenerContext context)
-        {
-            _ctxQueue.TryRemove(context.Id, out var removedContext);
-        }
+        internal void UnregisterContext(HttpListenerContext context) => _ctxQueue.TryRemove(context.Id, out var _);
 
         internal void AddConnection(HttpConnection cnc) => _connections[cnc] = cnc;
 
-        internal void RemoveConnection(HttpConnection cnc) => _connections.TryRemove(cnc, out var instance);
+        internal void RemoveConnection(HttpConnection cnc) => _connections.TryRemove(cnc, out var _);
 
         private void Close(bool closeExisting)
         {

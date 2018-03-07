@@ -70,11 +70,7 @@ namespace Unosquare.Net
 
             return str.Trim();
         }
-
-        internal static bool IsData(this byte opcode) => opcode == 0x1 || opcode == 0x2;
-
-        internal static bool IsData(this Opcode opcode) => opcode == Opcode.Text || opcode == Opcode.Binary;
-
+        
         internal static byte[] InternalToByteArray(this ushort value, Endianness order)
         {
             var bytes = BitConverter.GetBytes(value);
@@ -92,33 +88,7 @@ namespace Unosquare.Net
 
             return bytes;
         }
-
-        internal static bool IsControl(this byte opcode) => opcode > 0x7 && opcode < 0x10;
-
-        internal static bool IsReserved(this CloseStatusCode code)
-        {
-            return code == CloseStatusCode.Undefined ||
-                   code == CloseStatusCode.NoStatus ||
-                   code == CloseStatusCode.Abnormal ||
-                   code == CloseStatusCode.TlsHandshakeFailure;
-        }
-
-        /// <summary>
-        /// Converts the order of the specified array of <see cref="byte"/> to the host byte order.
-        /// </summary>
-        /// <returns>
-        /// An array of <see cref="byte"/> converted from <paramref name="source"/>.
-        /// </returns>
-        /// <param name="source">
-        /// An array of <see cref="byte"/> to convert.
-        /// </param>
-        /// <param name="sourceOrder">
-        /// One of the <see cref="Endianness"/> enum values, specifies the byte order of
-        /// <paramref name="source"/>.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="source"/> is <see langword="null"/>.
-        /// </exception>
+        
         internal static byte[] ToHostOrder(this byte[] source, Endianness sourceOrder)
         {
             if (source == null)
@@ -126,42 +96,14 @@ namespace Unosquare.Net
 
             return source.Length > 1 && !sourceOrder.IsHostOrder() ? source.Reverse().ToArray() : source;
         }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="Endianness"/> is host (this computer
-        /// architecture) byte order.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if <paramref name="order"/> is host byte order; otherwise, <c>false</c>.
-        /// </returns>
-        /// <param name="order">
-        /// One of the <see cref="Endianness"/> enum values, to test.
-        /// </param>
+        
         internal static bool IsHostOrder(this Endianness order)
         {
             // true: !(true ^ true) or !(false ^ false)
             // false: !(true ^ false) or !(false ^ true)
             return !(BitConverter.IsLittleEndian ^ (order == Endianness.Little));
         }
-
-        /// <summary>
-        /// Tries to create a <see cref="Uri"/> for WebSocket with
-        /// the specified <paramref name="uriString"/>.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if a <see cref="Uri"/> is successfully created; otherwise, <c>false</c>.
-        /// </returns>
-        /// <param name="uriString">
-        /// A <see cref="string"/> that represents a WebSocket URL to try.
-        /// </param>
-        /// <param name="result">
-        /// When this method returns, a <see cref="Uri"/> that represents a WebSocket URL,
-        /// or <see langword="null"/> if <paramref name="uriString"/> is invalid.
-        /// </param>
-        /// <param name="message">
-        /// When this method returns, a <see cref="string"/> that represents an error message,
-        /// or <see cref="String.Empty"/> if <paramref name="uriString"/> is valid.
-        /// </param>
+        
         internal static bool TryCreateWebSocketUri(
             this string uriString, out Uri result, out string message)
         {
@@ -211,20 +153,7 @@ namespace Unosquare.Net
 
         internal static bool IsToken(this string value) =>
             value.All(c => c >= 0x20 && c < 0x7f && !Tspecials.Contains(c));
-
-        /// <summary>
-        /// Gets the collection of the HTTP cookies from the specified HTTP <paramref name="headers"/>.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="CookieCollection"/> that receives a collection of the HTTP cookies.
-        /// </returns>
-        /// <param name="headers">
-        /// A <see cref="NameValueCollection"/> that contains a collection of the HTTP headers.
-        /// </param>
-        /// <param name="response">
-        /// <c>true</c> if <paramref name="headers"/> is a collection of the response headers;
-        /// otherwise, <c>false</c>.
-        /// </param>
+        
         internal static CookieCollection GetCookies(this NameValueCollection headers, bool response)
         {
             var name = response ? "Set-Cookie" : Headers.Cookie;
@@ -242,42 +171,11 @@ namespace Unosquare.Net
 
             return parameters == null || parameters.Length == 0 ? m : $"{m}; {string.Join("; ", parameters)}";
         }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="NameValueCollection"/> contains the entry with
-        /// the specified both <paramref name="name"/> and <paramref name="value"/>.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if <paramref name="collection"/> contains the entry with both
-        /// <paramref name="name"/> and <paramref name="value"/>; otherwise, <c>false</c>.
-        /// </returns>
-        /// <param name="collection">
-        /// A <see cref="NameValueCollection"/> to test.
-        /// </param>
-        /// <param name="name">
-        /// A <see cref="string"/> that represents the key of the entry to find.
-        /// </param>
-        /// <param name="value">
-        /// A <see cref="string"/> that represents the value of the entry to find.
-        /// </param>
+        
         internal static bool Contains(this NameValueCollection collection, string name, string value)
             => collection[name]?.Split(Strings.CommaSplitChar)
                    .Any(val => val.Trim().Equals(value, StringComparison.OrdinalIgnoreCase)) == true;
-
-        /// <summary>
-        /// Determines whether the specified <see cref="string"/> contains any of characters in
-        /// the specified array of <see cref="char"/>.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if <paramref name="value"/> contains any of <paramref name="chars"/>;
-        /// otherwise, <c>false</c>.
-        /// </returns>
-        /// <param name="value">
-        /// A <see cref="string"/> to test.
-        /// </param>
-        /// <param name="chars">
-        /// An array of <see cref="char"/> that contains characters to find.
-        /// </param>
+        
         internal static bool Contains(this string value, params char[] chars)
             => chars?.Length == 0 || (!string.IsNullOrEmpty(value) && value.IndexOfAny(chars) > -1);
 

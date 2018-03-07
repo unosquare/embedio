@@ -95,9 +95,11 @@
             _virtualPaths = new VirtualPaths(Path.GetFullPath(fileSystemPath), useDirectoryBrowser);
 
             UseGzip = true;
-#if DEBUG // When debugging, disable RamCache
+#if DEBUG 
+            // When debugging, disable RamCache
             UseRamCache = false;
-#else // Otherwise, enable it by default
+#else 
+            // Otherwise, enable it by default
             UseRamCache = true;
 #endif
             DefaultDocument = DefaultDocumentName;
