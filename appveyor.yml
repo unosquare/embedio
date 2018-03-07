@@ -8,6 +8,7 @@ notifications:
     secure: Q+xg4/yU5OR9BVF14cw4yZ+3qlhMeYDsAhUQyOIszmF1mHvq44tIvQpWByBJCd/cgUIZk3SwBpk4hh1MrkQIk6rnaOZ2LNBTev4zrq36oXk=
   channel: '#builds'
 environment:
+  APPVEYOR_YML_DISABLE_PS_LINUX: true
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
   COVERALLS_REPO_TOKEN:  
        secure: 1Ce1wX4c2duHsRshiJRZFVIe6VI/r0WTAUG/tXuGFue9CmTI13NJRgZbl9irVKBA
@@ -16,10 +17,8 @@ environment:
   access_token:
        secure: HzWdswNyfQbQ0vLk9IQyO+Ei9mxoPYp9rvv6HPhtC9J/Fm7EHRzyV953pbPRXI9I
 before_build:
-- ps: echo $env:APPVEYOR_PULL_REQUEST_TITLE
-- ps: echo $isWindows
 - ps: |
-        if($isWindows -And -Not $env:APPVEYOR_PULL_REQUEST_TITLE)
+        if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
         {
             git checkout $env:APPVEYOR_REPO_BRANCH -q
             cinst docfx -y
@@ -29,19 +28,25 @@ before_build:
 - cmd: nuget install OpenCover -Version 4.6.519 -OutputDirectory tools
 - cmd: nuget install coveralls.net -Version 0.7.0 -OutputDirectory tools
 build_script:
-- msbuild /p:Configuration=Release Unosquare.Labs.EmbedIO.sln
+- cmd: msbuild /p:Configuration=Release Unosquare.Labs.EmbedIO.sln
+- sh: | {
+  cd src/Unosquare.Labs.EmbedIO
+  msbuild /p:Configuration=Release;TargetFrameworks="netstandard2.0;netstandard1.3" /verbosity:quiet
+  cd ..
+  cd ..
+}
 test_script:
 - dotnet test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f netcoreapp2.0
 - cmd: dotnet test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f net47
-- cmd: tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c %CONFIGURATION% -f net46" -output:coverage.xml -filter:"+[Unosquare.Labs.EmbedIO*]* -[Unosquare.Labs.EmbedIO.Test*]*" -register:userdotnet
+- cmd: tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f net46" -output:coverage.xml -filter:"+[Unosquare.Labs.EmbedIO*]* -[Unosquare.Labs.EmbedIO.Test*]*" -register:userdotnet
 - ps: |
-        if($isWindows -And -Not $env:APPVEYOR_PULL_REQUEST_TITLE)
+        if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
         {
             tools\coveralls.net.0.7.0\tools\csmacnz.Coveralls.exe --opencover -i coverage.xml --serviceName appveyor --jobId %APPVEYOR_BUILD_NUMBER%
         }
 after_build:
 - ps: |
-        if($isWindows -And -Not $env:APPVEYOR_PULL_REQUEST_TITLE)
+        if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
         {
             git config --global credential.helper store
             Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
