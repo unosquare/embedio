@@ -92,9 +92,9 @@ namespace Unosquare.Net
         /// Represents the random number generator used internally.
         /// </summary>
         internal static readonly RandomNumberGenerator RandomNumber = RandomNumberGenerator.Create();
-        
+
         private const string Guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
-        
+
         private readonly Action<MessageEventArgs> _message;
         private readonly bool _client;
         private readonly object _forState = new object();
@@ -165,7 +165,7 @@ namespace Unosquare.Net
             IsSecure = _uri.Scheme == "wss";
 #endif
             _waitTime = TimeSpan.FromSeconds(5);
-            _forMessageEventQueue = ((ICollection) _messageEventQueue).SyncRoot;
+            _forMessageEventQueue = ((ICollection)_messageEventQueue).SyncRoot;
             _validator = new WebSocketValidator(this);
         }
 
@@ -183,7 +183,7 @@ namespace Unosquare.Net
             _forMessageEventQueue = ((ICollection)_messageEventQueue).SyncRoot;
             _validator = new WebSocketValidator(this);
         }
-        
+
         /// <summary>
         /// Occurs when the WebSocket connection has been closed.
         /// </summary>
@@ -203,7 +203,7 @@ namespace Unosquare.Net
         /// Occurs when the WebSocket connection has been established.
         /// </summary>
         public event EventHandler OnOpen;
-        
+
         /// <summary>
         /// Gets or sets the compression method used to compress a message on the WebSocket connection.
         /// </summary>
@@ -513,7 +513,7 @@ namespace Unosquare.Net
                 return;
             }
 
-            var send = !code.IsReserved();
+            var send = !IsOpcodeReserved(code);
             await InternalCloseAsync(new CloseEventArgs(code, reason), send, send, ct: ct);
         }
 
@@ -669,7 +669,7 @@ namespace Unosquare.Net
                 CookieCollection.Add(cookie);
             }
         }
-        
+
         /// <inheritdoc />
         public void Dispose()
         {
@@ -793,6 +793,14 @@ namespace Unosquare.Net
             ret.Headers["Sec-WebSocket-Version"] = Version;
 
             return ret;
+        }
+
+        private static bool IsOpcodeReserved(CloseStatusCode code)
+        {
+            return code == CloseStatusCode.Undefined ||
+                   code == CloseStatusCode.NoStatus ||
+                   code == CloseStatusCode.Abnormal ||
+                   code == CloseStatusCode.TlsHandshakeFailure;
         }
 
         // As server
@@ -992,7 +1000,7 @@ namespace Unosquare.Net
         private void Fatal(string message, CloseStatusCode code)
         {
             // TODO: Wait?
-            InternalCloseAsync(new CloseEventArgs(code, message), !code.IsReserved(), false).Wait();
+            InternalCloseAsync(new CloseEventArgs(code, message), !IsOpcodeReserved(code), false).Wait();
         }
 
         private void Message()
@@ -1561,7 +1569,7 @@ namespace Unosquare.Net
 #endif
         }
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-        
+
         private void StartReceiving()
         {
             if (_messageEventQueue.Count > 0)

@@ -133,7 +133,7 @@ namespace Unosquare.Net
             Fin fin, Opcode opcode, PayloadData payloadData, bool compressed = false, bool mask = true)
         {
             Fin = fin;
-            Rsv1 = opcode.IsData() && compressed ? Rsv.On : Rsv.Off;
+            Rsv1 = IsOpcodeData(opcode) && compressed ? Rsv.On : Rsv.Off;
             Rsv2 = Rsv.Off;
             Rsv3 = Rsv.Off;
             Opcode = opcode;
@@ -385,11 +385,11 @@ Extended Payload Length: {extPayloadLen}
 
             var err = !Enum.IsDefined(typeof(Opcode), opcode)
                 ? "An unsupported opcode."
-                : !opcode.IsData() && rsv1 == Rsv.On
+                : !IsOpcodeData(opcode) && rsv1 == Rsv.On
                     ? "A non data frame is compressed."
-                    : opcode.IsControl() && fin == Fin.More
+                    : IsOpcodeControl(opcode) && fin == Fin.More
                         ? "A control frame is fragmented."
-                        : opcode.IsControl() && payloadLen > 125
+                        : IsOpcodeControl(opcode) && payloadLen > 125
                             ? "A control frame has a long payload length."
                             : null;
 
@@ -407,6 +407,12 @@ Extended Payload Length: {extPayloadLen}
                 PayloadLength = payloadLen
             };
         }
+
+        private static bool IsOpcodeData(Opcode opcode) => opcode == Opcode.Text || opcode == Opcode.Binary;
+
+        private static bool IsOpcodeData(byte opcode) => opcode == 0x1 || opcode == 0x2;
+        
+        private static bool IsOpcodeControl(byte opcode) => opcode > 0x7 && opcode < 0x10;
 
         private static async Task ReadExtendedPayloadLengthAsync(Stream stream, WebSocketFrame frame)
         {

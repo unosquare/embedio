@@ -37,7 +37,7 @@
     
     internal class PayloadData : IEnumerable<byte>
     {
-        public static readonly ulong MaxLength;
+        public static readonly ulong MaxLength = long.MaxValue;
 
         private readonly byte[] _data;
         private readonly long _length;
@@ -45,11 +45,6 @@
         private bool _codeSet;        
         private string _reason;
         private bool _reasonSet;
-        
-        static PayloadData()
-        {
-            MaxLength = Int64.MaxValue;
-        }
         
         internal PayloadData()
         {
@@ -136,15 +131,9 @@
             }
         }
         
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public IEnumerator<byte> GetEnumerator()
-        {
-            return ((IEnumerable<byte>)_data).GetEnumerator();
-        }
+        public IEnumerator<byte> GetEnumerator() => ((IEnumerable<byte>)_data).GetEnumerator();
 
         public override string ToString() => BitConverter.ToString(_data);
 
