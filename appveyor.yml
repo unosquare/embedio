@@ -29,12 +29,11 @@ before_build:
 - cmd: nuget install coveralls.net -Version 0.7.0 -OutputDirectory tools
 build_script:
 - cmd: msbuild /p:Configuration=Release Unosquare.Labs.EmbedIO.sln
-- sh: | {
-  cd src/Unosquare.Labs.EmbedIO
-  msbuild /p:Configuration=Release;TargetFrameworks="netstandard2.0;netstandard1.3" /verbosity:quiet
-  cd ..
-  cd ..
-}
+- sh: |
+        cd src/Unosquare.Labs.EmbedIO
+        msbuild /p:Configuration=Release;TargetFrameworks="netstandard2.0;netstandard1.3" /verbosity:quiet
+        cd ..
+        cd ..
 test_script:
 - dotnet test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f netcoreapp2.0
 - cmd: dotnet test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f net47
