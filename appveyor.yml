@@ -1,15 +1,14 @@
-version: '1.7.{build}'
-image: Visual Studio 2017
-configuration:
-- Release
-platform: Any CPU
+version: '1.13.{build}'
+image: 
+- Visual Studio 2017
+- Ubuntu
 notifications:
 - provider: Slack
   auth_token:
     secure: Q+xg4/yU5OR9BVF14cw4yZ+3qlhMeYDsAhUQyOIszmF1mHvq44tIvQpWByBJCd/cgUIZk3SwBpk4hh1MrkQIk6rnaOZ2LNBTev4zrq36oXk=
   channel: '#builds'
 environment:
-  # Don't report back to the mothership
+  APPVEYOR_YML_DISABLE_PS_LINUX: true
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
   COVERALLS_REPO_TOKEN:  
        secure: 1Ce1wX4c2duHsRshiJRZFVIe6VI/r0WTAUG/tXuGFue9CmTI13NJRgZbl9irVKBA
@@ -17,8 +16,6 @@ environment:
   op_build_user_email: "geovanni.perez@gmail.com"
   access_token:
        secure: HzWdswNyfQbQ0vLk9IQyO+Ei9mxoPYp9rvv6HPhtC9J/Fm7EHRzyV953pbPRXI9I
-init:
-- ps: $Env:LABEL = "CI" + $Env:APPVEYOR_BUILD_NUMBER.PadLeft(5, "0")
 before_build:
 - ps: |
         if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
@@ -26,16 +23,22 @@ before_build:
             git checkout $env:APPVEYOR_REPO_BRANCH -q
             cinst docfx -y
         }
-- appveyor-retry dotnet restore Unosquare.Labs.EmbedIO.sln
-- mkdir tools
-- nuget install OpenCover -Version 4.6.519 -OutputDirectory tools
-- nuget install coveralls.net -Version 0.7.0 -OutputDirectory tools
+- dotnet restore Unosquare.Labs.EmbedIO.sln
+- cmd: mkdir tools
+- cmd: nuget install OpenCover -Version 4.6.519 -OutputDirectory tools
+- cmd: nuget install coveralls.net -Version 0.7.0 -OutputDirectory tools
 build_script:
-- msbuild /p:Configuration=%CONFIGURATION% Unosquare.Labs.EmbedIO.sln
+- cmd: msbuild /p:Configuration=Release Unosquare.Labs.EmbedIO.sln
+- sh: |
+        cd src/Unosquare.Labs.EmbedIO
+        msbuild /verbosity:quiet /p:Configuration=Release;TargetFrameworks="netstandard2.0;netstandard1.3" 
+        cd ..
+        cd ..
+        pwd
 test_script:
-- dotnet test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c %CONFIGURATION% -f netcoreapp2.0
-- dotnet test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c %CONFIGURATION% -f net47
-- tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c %CONFIGURATION% -f net46" -output:coverage.xml -filter:"+[Unosquare.Labs.EmbedIO*]* -[Unosquare.Labs.EmbedIO.Test*]*" -register:userdotnet
+- dotnet test test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f netcoreapp2.0
+- cmd: dotnet test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f net47
+- cmd: tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f net46" -output:coverage.xml -filter:"+[Unosquare.Labs.EmbedIO*]* -[Unosquare.Labs.EmbedIO.Test*]*" -register:userdotnet
 - ps: |
         if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
         {
