@@ -14,33 +14,30 @@
     using Net;
 #endif
 		/**
-		 * @brief Basic authentication module. Will return 401 for request if it hasn't authentication header
+		 * @brief
 		 */
+     /// <summary>
+     /// Basic authentication module. Will return 401 for request if it hasn't authentication header
+     /// </summary>
     class AuthModule : WebModuleBase
     {
         Dictionary<string, string> accounts = new Dictionary<string, string>();
 
-				/**
-				 * @brief Register new account for login
-				 *
-				 * @Param username account username
-				 * @Param password account password
-				 *
-				 * @Returns   
-				 */
+         /// <summary>
+         /// Registers new account for login.
+         /// </summary>
+         /// <param name="username">account username</param>
+         /// <param name="password">account password</param>
         public void AddAccount(string username, string password)
         {
             accounts.Add(username, password);
         }
 
-				/**
-				 * @brief adds auth module to server. It will be request authentication header and return 401 if request hasn't
-				 *
-				 * @Param username basic username
-				 * @Param password basic password
-				 *
-				 * @Returns   
-				 */
+         /// <summary>
+         /// Initializes a new instance of the <see cref="CorsModule"/> class.
+         /// </summary>
+         /// <param name="username">account username</param>
+         /// <param name="password">account password</param>
         public AuthModule(string username, string password)
         {
             AddAccount(username, password);
@@ -70,13 +67,18 @@
             });
         }
 
-				/**
-				 * @brief find authentication field in headers. You can use this method for check any request headers and find user account name
-				 *
-				 * @Param request
-				 *
-				 * @Returns pair user-password
-				 */
+         /// <summary>
+         /// Finds authentication field in headers. You can use this method for check any request headers and find user account name.
+         /// </summary>
+         /// <param name="request">The HttpListenerRequest.</param>
+         /// <exception cref="Exception">
+         /// origins
+         /// or
+         /// headers
+         /// or
+         /// methods
+         /// </exception>
+         /// <returns>pair user-password</returns>
         static public KeyValuePair<string, string> GetAccountData(HttpListenerRequest request)
         {
             var authHeader = request.Headers["Authorization"];
@@ -100,13 +102,11 @@
             return new KeyValuePair<string, string>(name, password);
         }
 
-				/**
-				 * @brief checks if headers has authentication matching registered users
-				 *
-				 * @Param request
-				 *
-				 * @Returns true if header contains registered account data
-				 */
+         /// <summary>
+         /// Checks if headers has authentication matching registered users.
+         /// </summary>
+         /// <param name="request">The HttpListenerRequest.</param>
+         /// <returns>true if header contains registered account data</returns>
         public bool IsAuthorized(HttpListenerRequest request)
         {
             try
@@ -123,6 +123,7 @@
             return true;
         }
 
+        /// <inheritdoc />
         public override string Name => nameof(AuthModule);
     }
 }
