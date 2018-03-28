@@ -13,9 +13,7 @@
 #else
     using Net;
 #endif
-		/**
-		 * @brief
-		 */
+
      /// <summary>
      /// Basic authentication module. Will return 401 for request if it hasn't authentication header
      /// </summary>
