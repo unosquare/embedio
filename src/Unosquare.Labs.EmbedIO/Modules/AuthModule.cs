@@ -7,7 +7,6 @@
     using System.Collections.Generic;
 		using System.Text;
 		using System.Net.Http.Headers;
-		using System.Security.Principal;
 #if NET47
     using System.Net;
 #else
