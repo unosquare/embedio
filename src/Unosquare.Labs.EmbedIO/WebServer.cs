@@ -152,6 +152,17 @@
         public static WebServer Create(string urlPrefix) => new WebServer(urlPrefix);
 
         /// <summary>
+        /// Static method to create webserver instance
+        /// </summary>
+        /// <param name="urlPrefix">The URL prefix.</param>
+        /// <param name="routingStrategy">Matching/Parsing of URL: choose from: Wildcard, Regex, Simple </param>
+        /// <returns>The webserver instance.</returns>
+        public static WebServer Create(string urlPrefix, RoutingStrategy routingStrategy)
+        {
+            return new WebServer(urlPrefix, routingStrategy);
+        }
+        
+        /// <summary>
         /// Gets the module registered for the given type.
         /// Returns null if no module matches the given type.
         /// </summary>
