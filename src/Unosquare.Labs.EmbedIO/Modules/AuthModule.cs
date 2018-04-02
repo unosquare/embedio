@@ -5,8 +5,8 @@
     using System;
     using System.Linq;
     using System.Collections.Generic;
-		using System.Text;
-		using System.Net.Http.Headers;
+    using System.Text;
+    using System.Net.Http.Headers;
 #if NET47
     using System.Net;
 #else
@@ -92,9 +92,9 @@
             var encoding = Encoding.GetEncoding("iso-8859-1");
             var credentials = encoding.GetString(Convert.FromBase64String(authHeaderVal.Parameter));
 
-            int separator = credentials.IndexOf(':');
-            string name = credentials.Substring(0, separator);
-            string password = credentials.Substring(separator + 1);
+            var separator = credentials.IndexOf(':');
+            var name = credentials.Substring(0, separator);
+            var password = credentials.Substring(separator + 1);
 
             return new KeyValuePair<string, string>(name, password);
         }
