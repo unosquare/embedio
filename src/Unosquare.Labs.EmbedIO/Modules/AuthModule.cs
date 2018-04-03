@@ -6,7 +6,6 @@
     using System.Linq;
     using System.Collections.Generic;
     using System.Text;
-    using System.Net.Http.Headers;
 #if NET47
     using System.Net;
 #else
