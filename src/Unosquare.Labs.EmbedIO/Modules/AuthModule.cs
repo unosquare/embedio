@@ -95,9 +95,9 @@
             var encoding = Encoding.GetEncoding("iso-8859-1");
             var credentials = encoding.GetString(Convert.FromBase64String(authHeader.Split(' ')[1]));
 
-            int separator = credentials.IndexOf(':');
-            string name = credentials.Substring(0, separator);
-            string password = credentials.Substring(separator + 1);
+            var separator = credentials.IndexOf(':');
+            var name = credentials.Substring(0, separator);
+            var password = credentials.Substring(separator + 1);
 
             return new KeyValuePair<string, string>(name, password);
         }
