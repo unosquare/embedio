@@ -1,44 +1,53 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
-    using Constants;
-    using System.Threading.Tasks;
+	using Constants;
     using System;
     using System.Linq;
+	using System.Text;
+	using System.Threading.Tasks;
     using System.Collections.Generic;
-		using System.Text;
-		using System.Net.Http.Headers;
 #if NET47
     using System.Net;
 #else
     using Net;
 #endif
 
-     /// <summary>
-     /// Basic authentication module. Will return 401 for request if it hasn't authentication header
-     /// </summary>
+      /// <summary>
+    /// Simple authorisation module that requests http auth from client
+    /// Will return 401 + WWW-Authenticate header if request isn't authorised
+    /// </summary>
     class AuthModule : WebModuleBase
     {
+        /// <summary>
+        /// List of registred accounts. User-Password pair
+        /// </summary>
         Dictionary<string, string> accounts = new Dictionary<string, string>();
 
-         /// <summary>
-         /// Registers new account for login.
-         /// </summary>
-         /// <param name="username">account username</param>
-         /// <param name="password">account password</param>
+        /// <summary>
+        /// Add new account
+        /// </summary>
+        /// <param name="username">account username</param>
+        /// <param name="password">account password</param>
         public void AddAccount(string username, string password)
         {
             accounts.Add(username, password);
         }
 
-         /// <summary>
-         /// Initializes a new instance of the <see cref="CorsModule"/> class.
-         /// </summary>
-         /// <param name="username">account username</param>
-         /// <param name="password">account password</param>
-        public AuthModule(string username, string password)
+        /// <summary>
+        /// Construct with one registered account
+        /// </summary>
+        /// <param name="username">account username</param>
+        /// <param name="password">account password</param>
+        public AuthModule(string username, string password) : this()
         {
             AddAccount(username, password);
+        }
 
+        /// <summary>
+        /// Constructor. Use AddAccount(user, password) after that if you want to connect somehow
+        /// </summary>
+        public AuthModule()
+        {
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (context, ct) =>
             {
                 try
@@ -64,33 +73,27 @@
             });
         }
 
-         /// <summary>
-         /// Finds authentication field in headers. You can use this method for check any request headers and find user account name.
-         /// </summary>
-         /// <param name="request">The HttpListenerRequest.</param>
-         /// <exception cref="Exception">
-         /// origins
-         /// or
-         /// headers
-         /// or
-         /// methods
-         /// </exception>
-         /// <returns>pair user-password</returns>
+        /// <summary>
+        /// Parses request for account data
+        /// </summary>
+        /// <param name="request">HttpListenerRequest</param>
+        /// <returns>user-password KeyValuePair from request</returns>
+        /// <exception>
+        /// if request isn't authorised
+        /// </exception>
         static public KeyValuePair<string, string> GetAccountData(HttpListenerRequest request)
         {
             var authHeader = request.Headers["Authorization"];
             if (authHeader == null) throw new Exception("Authorization header not found");
 
-            var authHeaderVal = AuthenticationHeaderValue.Parse(authHeader);
-
             // RFC 2617 sec 1.2, "scheme" name is case-insensitive
-            if (!authHeaderVal.Scheme.Equals("basic",
-                    StringComparison.OrdinalIgnoreCase) ||
-                authHeaderVal.Parameter == null)
+            // header contains name and parameter separated by space. If it equals just "basic" - it's empty
+            if (!authHeader.Equals("basic",
+                    StringComparison.OrdinalIgnoreCase))
                     throw new Exception("Authorization header not found");
 
             var encoding = Encoding.GetEncoding("iso-8859-1");
-            var credentials = encoding.GetString(Convert.FromBase64String(authHeaderVal.Parameter));
+            var credentials = encoding.GetString(Convert.FromBase64String(authHeader.Split(' ')[1]));
 
             int separator = credentials.IndexOf(':');
             string name = credentials.Substring(0, separator);
@@ -99,11 +102,13 @@
             return new KeyValuePair<string, string>(name, password);
         }
 
-         /// <summary>
-         /// Checks if headers has authentication matching registered users.
-         /// </summary>
-         /// <param name="request">The HttpListenerRequest.</param>
-         /// <returns>true if header contains registered account data</returns>
+        /// <summary>
+        /// Validates request and returns true if that account data registred in this module and request has auth data  
+        /// </summary>
+        /// <param name="request">HttpListenerRequest</param>
+        /// <returns>
+        /// true if request authorised
+        /// </returns>
         public bool IsAuthorized(HttpListenerRequest request)
         {
             try
@@ -122,5 +127,6 @@
 
         /// <inheritdoc />
         public override string Name => nameof(AuthModule);
+
     }
 }
