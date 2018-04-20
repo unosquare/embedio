@@ -27,7 +27,7 @@
         /// Initializes a new instance of the <see cref="WebServer"/> class.
         /// </summary>
         public WebServer()
-            : this(new[] {"http://*/"})
+            : this(new[] { "http://*/" })
         {
             // placeholder
         }
@@ -38,7 +38,7 @@
         /// <param name="port">The port.</param>
         /// <param name="strategy">The strategy.</param>
         public WebServer(int port, RoutingStrategy strategy = RoutingStrategy.Wildcard)
-            : this(new[] {"http://*:" + port + "/"}, strategy)
+            : this(new[] { "http://*:" + port + "/" }, strategy)
         {
             // placeholder
         }
@@ -49,7 +49,7 @@
         /// <param name="urlPrefix">The URL prefix.</param>
         /// <param name="strategy">The strategy.</param>
         public WebServer(string urlPrefix, RoutingStrategy strategy = RoutingStrategy.Wildcard)
-            : this(new[] {urlPrefix}, strategy)
+            : this(new[] { urlPrefix }, strategy)
         {
             // placeholder
         }
@@ -94,8 +94,8 @@
         /// <value>
         /// The on method not allowed.
         /// </value>
-        public Func<HttpListenerContext,Task<bool>> OnMethodNotAllowed { get; set; } = ctx =>
-            ctx.HtmlResponseAsync(Responses.Response405Html, System.Net.HttpStatusCode.MethodNotAllowed);
+        public Func<HttpListenerContext, Task<bool>> OnMethodNotAllowed { get; set; } = ctx =>
+             ctx.HtmlResponseAsync(Responses.Response405Html, System.Net.HttpStatusCode.MethodNotAllowed);
 
         /// <summary>
         /// The on not found
@@ -161,7 +161,7 @@
         {
             return new WebServer(urlPrefix, routingStrategy);
         }
-        
+
         /// <summary>
         /// Gets the module registered for the given type.
         /// Returns null if no module matches the given type.
@@ -247,8 +247,8 @@
                         handler = GetHandlerFromPath(context, module);
                         break;
                 }
-                
-                if (handler?.ResponseHandler == null )
+
+                if (handler?.ResponseHandler == null)
                 {
                     continue;
                 }
@@ -279,7 +279,7 @@
                 catch (Exception ex)
                 {
                     // Handle exceptions by returning a 500 (Internal Server Error) 
-                    if (context.Response.StatusCode != (int) System.Net.HttpStatusCode.Unauthorized)
+                    if (context.Response.StatusCode != (int)System.Net.HttpStatusCode.Unauthorized)
                     {
                         var errorMessage = ex.ExceptionMessage($"Failing module name: {module.Name}");
 
@@ -289,7 +289,7 @@
                         // Send the response over with the corresponding status code.
                         await context.HtmlResponseAsync(
                             System.Net.WebUtility.HtmlEncode(string.Format(Responses.Response500HtmlFormat,
-                                errorMessage, 
+                                errorMessage,
                                 ex.StackTrace)),
                             System.Net.HttpStatusCode.InternalServerError,
                             ct);
@@ -323,6 +323,9 @@
 
             "Started HTTP Listener".Info(nameof(WebServer));
 
+            // close port when the cancellation token is cancelled
+            ct.Register(() => Listener?.Stop());
+
             // Disposing the web server will close the listener.
             await Task.Factory.StartNew(async () =>
             {
@@ -340,6 +343,11 @@
                         HandleClientRequest(clientSocket, ct);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     }
+                    catch (HttpListenerException)
+                    {
+                        if (!ct.IsCancellationRequested)
+                            throw;
+                    }
                     catch (OperationCanceledException)
                     {
                         // Forward cancellations out to the caller.
@@ -356,7 +364,7 @@
                 }
             }, ct);
         }
-        
+
         /// <inheritdoc />
         public void Dispose()
         {
@@ -414,7 +422,7 @@
             return module.Handlers.FirstOrDefault(x =>
                 (x.Path == ModuleMap.AnyPath || x.Path == path) &&
                 (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
-        }        
+        }
 
         /// <summary>
         /// Gets the module registered for the given type.
@@ -451,11 +459,11 @@
                 var processResult = await ProcessRequest(context, ct);
 
                 // Return a 404 (Not Found) response if no module/handler handled the response.
-               if (processResult == false)
+                if (processResult == false)
                 {
                     "No module generated a response. Sending 404 - Not Found".Error();
 
-                    await OnNotFound(context);                 
+                    await OnNotFound(context);
                 }
             }
             catch (Exception ex)

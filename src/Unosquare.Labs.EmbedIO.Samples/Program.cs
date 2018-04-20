@@ -3,6 +3,7 @@
     using Swan;
     using Modules;
     using System;
+    using System.Threading;
     
     internal class Program
     {
@@ -25,20 +26,19 @@
             foreach (var person in dbContext.People.SelectAll())
                 dbContext.People.Delete(person);
 
-            dbContext.People.Insert(new Person()
+            dbContext.People.Insert(new Person
             {
                 Name = "Mario Di Vece",
                 Age = 31,
                 EmailAddress = "mario@unosquare.com"
             });
-            dbContext.People.Insert(new Person()
+            dbContext.People.Insert(new Person
             {
                 Name = "Geovanni Perez",
                 Age = 32,
                 EmailAddress = "geovanni.perez@unosquare.com"
             });
-
-            dbContext.People.Insert(new Person()
+            dbContext.People.Insert(new Person
             {
                 Name = "Luis Gonzalez",
                 Age = 29,
@@ -84,8 +84,8 @@
                 server.RunAsync();
 
                 // Fire up the browser to show the content!
-#if DEBUG && !NETCOREAPP2_0
-                var browser = new System.Diagnostics.Process()
+#if DEBUG
+                var browser = new System.Diagnostics.Process
                 {
                     StartInfo = new System.Diagnostics.ProcessStartInfo(url.Replace("*", "localhost"))
                     {
