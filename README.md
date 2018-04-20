@@ -149,9 +149,6 @@ namespace Company.Project
             var cts = new CancellationTokenSource();
             var task = server.RunAsync(cts.Token);
 
-            // Wait for any key to be pressed before disposing of our web server.
-            // In a service, we'd manage the lifecycle of our web server using
-            // something like a BackgroundWorker or a ManualResetEvent.
             Console.ReadKey(true);
             cts.Cancel();
 
