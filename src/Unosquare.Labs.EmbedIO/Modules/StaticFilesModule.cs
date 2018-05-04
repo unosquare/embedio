@@ -277,7 +277,7 @@
             CancellationToken ct)
         {
             var streamBuffer = new byte[ChunkSize];
-            var sendData = 0;
+            long sendData = 0;
             var readBufferSize = ChunkSize;
 
             while (true)
