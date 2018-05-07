@@ -318,25 +318,7 @@ namespace Unosquare.Net
                     if (cookie != null)
                         cookies.Add(cookie);
 
-                    string name;
-                    var val = string.Empty;
-
-                    var pos = pair.IndexOf('=');
-                    if (pos == -1)
-                    {
-                        name = pair;
-                    }
-                    else if (pos == pair.Length - 1)
-                    {
-                        name = pair.Substring(0, pos).TrimEnd(' ');
-                    }
-                    else
-                    {
-                        name = pair.Substring(0, pos).TrimEnd(' ');
-                        val = pair.Substring(pos + 1).TrimStart(' ');
-                    }
-
-                    cookie = new Cookie(name, val);
+                    cookie = ParseCookie(pair);
                     if (ver != 0)
                         cookie.Version = ver;
                 }
@@ -348,12 +330,36 @@ namespace Unosquare.Net
             return cookies;
         }
 
+        private static Cookie ParseCookie(string pair)
+        {
+            string name;
+            var val = string.Empty;
+
+            var pos = pair.IndexOf('=');
+            if (pos == -1)
+            {
+                name = pair;
+            }
+            else if (pos == pair.Length - 1)
+            {
+                name = pair.Substring(0, pos).TrimEnd(' ');
+            }
+            else
+            {
+                name = pair.Substring(0, pos).TrimEnd(' ');
+                val = pair.Substring(pos + 1).TrimStart(' ');
+            }
+
+            return new Cookie(name, val);
+        }
+
         private static CookieCollection ParseResponse(string value)
         {
             var cookies = new CookieCollection();
 
             Cookie cookie = null;
             var pairs = SplitCookieHeaderValue(value);
+
             for (var i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i].Trim();
@@ -376,7 +382,7 @@ namespace Unosquare.Net
                         new[] { "ddd, dd'-'MMM'-'yyyy HH':'mm':'ss 'GMT'", "r" },
                         new CultureInfo("en-US"),
                         DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal,
-                        out DateTime expires))
+                        out var expires))
                         expires = DateTime.Now;
 
                     if (cookie != null && cookie.Expires == DateTime.MinValue)
@@ -426,26 +432,8 @@ namespace Unosquare.Net
                 {
                     if (cookie != null)
                         cookies.Add(cookie);
-
-                    string name;
-                    var val = string.Empty;
-
-                    var pos = pair.IndexOf('=');
-                    if (pos == -1)
-                    {
-                        name = pair;
-                    }
-                    else if (pos == pair.Length - 1)
-                    {
-                        name = pair.Substring(0, pos).TrimEnd(' ');
-                    }
-                    else
-                    {
-                        name = pair.Substring(0, pos).TrimEnd(' ');
-                        val = pair.Substring(pos + 1).TrimStart(' ');
-                    }
-
-                    cookie = new Cookie(name, val);
+                    
+                    cookie = ParseCookie(pair);
                 }
             }
 
