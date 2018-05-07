@@ -237,30 +237,30 @@
         private static bool CalculateRange(
             string partialHeader,
             long fileSize,
-            out int lowerByteIndex,
-            out int upperByteIndex)
+            out long lowerByteIndex,
+            out long upperByteIndex)
         {
             lowerByteIndex = 0;
             upperByteIndex = 0;
 
             var range = partialHeader.Replace("bytes=", string.Empty).Split('-');
 
-            if (range.Length == 2 && int.TryParse(range[0], out lowerByteIndex) &&
-                int.TryParse(range[1], out upperByteIndex))
+            if (range.Length == 2 && long.TryParse(range[0], out lowerByteIndex) &&
+                long.TryParse(range[1], out upperByteIndex))
             {
                 return true;
             }
 
-            if ((range.Length == 2 && int.TryParse(range[0], out lowerByteIndex) &&
+            if ((range.Length == 2 && long.TryParse(range[0], out lowerByteIndex) &&
                  string.IsNullOrWhiteSpace(range[1])) ||
-                (range.Length == 1 && int.TryParse(range[0], out lowerByteIndex)))
+                (range.Length == 1 && long.TryParse(range[0], out lowerByteIndex)))
             {
                 upperByteIndex = (int) fileSize;
                 return true;
             }
 
             if (range.Length == 2 && string.IsNullOrWhiteSpace(range[0]) &&
-                int.TryParse(range[1], out upperByteIndex))
+                long.TryParse(range[1], out upperByteIndex))
             {
                 lowerByteIndex = (int) fileSize - upperByteIndex;
                 upperByteIndex = (int) fileSize;
@@ -273,11 +273,11 @@
         private static async Task WriteToOutputStream(
             HttpListenerResponse response,
             Stream buffer,
-            int lowerByteIndex,
+            long lowerByteIndex,
             CancellationToken ct)
         {
             var streamBuffer = new byte[ChunkSize];
-            var sendData = 0;
+            long sendData = 0;
             var readBufferSize = ChunkSize;
 
             while (true)
@@ -433,7 +433,7 @@
                     return false;
                 }
 
-                var lowerByteIndex = 0;
+                long lowerByteIndex = 0;
 
                 if (usingPartial &&
                     CalculateRange(partialHeader, fileSize, out lowerByteIndex, out var upperByteIndex))
