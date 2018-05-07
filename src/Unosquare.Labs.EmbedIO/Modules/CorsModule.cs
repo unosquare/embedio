@@ -46,11 +46,11 @@
             if (methods == null) throw new ArgumentNullException(nameof(methods));
             
             var validOrigins =
-                origins.ToLower()
+                origins.ToLowerInvariant()
                     .Split(Strings.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries)
                     .Select(x => x.Trim());
             var validMethods =
-                methods.ToLower()
+                methods.ToLowerInvariant()
                     .Split(Strings.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries)
                     .Select(x => x.Trim());
 
@@ -110,22 +110,20 @@
             if (string.IsNullOrWhiteSpace(currentMethod)) 
                 return Task.FromResult(true);
 
-            var currentMethods = currentMethod.ToLower()
+            var currentMethods = currentMethod.ToLowerInvariant()
                 .Split(Strings.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim());
 
             if (methods == Strings.CorsWildcard || currentMethods.All(validMethods.Contains))
             {
                 context.Response.Headers.Add(Headers.AccessControlAllowMethods + currentMethod);
-            }
-            else
-            {
-                context.Response.StatusCode = (int) System.Net.HttpStatusCode.BadRequest;
 
-                return Task.FromResult(false);
+                return Task.FromResult(true);
             }
 
-            return Task.FromResult(true);
+            context.Response.StatusCode = (int) System.Net.HttpStatusCode.BadRequest;
+
+            return Task.FromResult(false);
         }
     }
 }
