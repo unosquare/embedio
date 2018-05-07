@@ -41,12 +41,12 @@
             if (IgnoreWebConnect)
                 Assert.Inconclusive("WebSocket Connect not available");
 
-            var wsUrl = WebServerUrl.Replace("http", "ws") + "bigdata";
+            var webSocketUrl = WebServerUrl.Replace("http", "ws") + "bigdata";
 
             var ct = new CancellationTokenSource();
 #if NET47
             var clientSocket = new ClientWebSocket();
-            await clientSocket.ConnectAsync(new Uri(wsUrl), ct.Token);
+            await clientSocket.ConnectAsync(new Uri(webSocketUrl), ct.Token);
 
             Assert.AreEqual(WebSocketState.Open, clientSocket.State, "Connection is open");
 
@@ -59,7 +59,7 @@
             Assert.AreEqual(System.Text.Encoding.UTF8.GetString(buffer.Array).Substring(0, 100),
                 Json.Serialize(BigDataWebSocket.BigDataObject).Substring(0, 100), "Initial chars are equal");
 #else
-            var clientSocket = new WebSocket(wsUrl);
+            var clientSocket = new WebSocket(webSocketUrl);
             await clientSocket.ConnectAsync(ct.Token);
             clientSocket.OnMessage += (s, e) =>
             {
