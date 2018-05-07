@@ -125,17 +125,7 @@ namespace Unosquare.Net
             if (statusLine.Length != 3)
                 throw new ArgumentException("Invalid status line: " + headerParts[0]);
 
-            var headers = new NameValueCollection();
-
-            for (var i = 1; i < headerParts.Length; i++)
-            {
-                var parts = headerParts[i].Split(':');
-
-                headers[parts[0]] = parts[1];
-            }
-
-            return new HttpResponse(
-              int.Parse(statusLine[1]), statusLine[2], new Version(statusLine[0].Substring(5)), headers);
+            return new HttpResponse(int.Parse(statusLine[1]), statusLine[2], new Version(statusLine[0].Substring(5)), ParseHeaders(headerParts));
         }
     }
 }
