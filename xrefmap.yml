@@ -3863,19 +3863,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.WebHeaderCollection.GetValues
   nameWithType: WebHeaderCollection.GetValues
-- uid: Unosquare.Net.WebHeaderCollection.IsRestricted(System.String,System.Boolean)
-  name: IsRestricted(String, Boolean)
-  href: api/Unosquare.Net.WebHeaderCollection.html#Unosquare_Net_WebHeaderCollection_IsRestricted_System_String_System_Boolean_
-  commentId: M:Unosquare.Net.WebHeaderCollection.IsRestricted(System.String,System.Boolean)
-  fullName: Unosquare.Net.WebHeaderCollection.IsRestricted(System.String, System.Boolean)
-  nameWithType: WebHeaderCollection.IsRestricted(String, Boolean)
-- uid: Unosquare.Net.WebHeaderCollection.IsRestricted*
-  name: IsRestricted
-  href: api/Unosquare.Net.WebHeaderCollection.html#Unosquare_Net_WebHeaderCollection_IsRestricted_
-  commentId: Overload:Unosquare.Net.WebHeaderCollection.IsRestricted
-  isSpec: "True"
-  fullName: Unosquare.Net.WebHeaderCollection.IsRestricted
-  nameWithType: WebHeaderCollection.IsRestricted
 - uid: Unosquare.Net.WebHeaderCollection.Item(System.Net.HttpRequestHeader)
   name: Item[Net.HttpRequestHeader]
   href: api/Unosquare.Net.WebHeaderCollection.html#Unosquare_Net_WebHeaderCollection_Item_System_Net_HttpRequestHeader_
