@@ -8,6 +8,7 @@
     using System.IO.Compression;
     using System.Linq;
     using System.Text;
+    using Swan;
     using Swan.Formatters;
     using System.Threading;
     using System.Threading.Tasks;
@@ -635,10 +636,7 @@
 
         #endregion
 
-        internal static string CleanParamId(this string val)
-            => val.Replace("{", string.Empty)
-                .Replace("}", string.Empty)
-                .Replace("?", string.Empty);
+        internal static string CleanParamId(this string val) => val.ReplaceAll(string.Empty, '{', '}', '?');
 
         internal static Uri ToUri(this string uriString)
         {

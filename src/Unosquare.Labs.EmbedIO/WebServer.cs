@@ -38,7 +38,7 @@
         /// <param name="port">The port.</param>
         /// <param name="strategy">The strategy.</param>
         public WebServer(int port, RoutingStrategy strategy = RoutingStrategy.Wildcard)
-            : this(new[] { "http://*:" + port + "/" }, strategy)
+            : this(new[] { $"http://*:{port}/" }, strategy)
         {
             // placeholder
         }
@@ -157,10 +157,7 @@
         /// <param name="urlPrefix">The URL prefix.</param>
         /// <param name="routingStrategy">Matching/Parsing of URL: choose from: Wildcard, Regex, Simple </param>
         /// <returns>The webserver instance.</returns>
-        public static WebServer Create(string urlPrefix, RoutingStrategy routingStrategy)
-        {
-            return new WebServer(urlPrefix, routingStrategy);
-        }
+        public static WebServer Create(string urlPrefix, RoutingStrategy routingStrategy) => new WebServer(urlPrefix, routingStrategy);
 
         /// <summary>
         /// Gets the module registered for the given type.
@@ -182,6 +179,7 @@
         {
             if (module == null) return;
             var existingModule = Module(module.GetType());
+
             if (existingModule == null)
             {
                 module.Server = this;

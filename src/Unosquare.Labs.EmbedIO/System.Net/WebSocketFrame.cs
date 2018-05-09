@@ -305,10 +305,7 @@ Extended Payload Length: {extPayloadLen}
 
         public override string ToString() => BitConverter.ToString(ToArray());
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         internal static WebSocketFrame CreateCloseFrame(PayloadData payloadData, bool mask)
         {
