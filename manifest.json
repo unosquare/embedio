@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "CODE_OF_CONDUCT.html",
-          "hash": "lJ1ZTlHtXR3JA4/m0nd/+g=="
+          "hash": "iJG7gRkKa2sxjmQZ4QvAFg=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "nEJcejdGwbo6Tkoc/p/xbw=="
+          "hash": "hSART6OO0Q1fyu9fRR6nvg=="
         }
       },
       "is_incremental": false,
@@ -554,7 +554,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.WebHeaderCollection.html",
-          "hash": "jbC2G2nrrNIXgP6hX7gSXQ=="
+          "hash": "shqnDlVQgf4HQCE4bpJglA=="
         }
       },
       "is_incremental": false,
@@ -713,11 +713,11 @@
         "incrementalPhase": "build"
       },
       "processors": {
-        "ConceptualDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build"
         },
-        "ManagedReferenceDocumentProcessor": {
+        "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build"
         },
