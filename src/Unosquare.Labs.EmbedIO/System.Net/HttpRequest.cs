@@ -149,15 +149,7 @@ namespace Unosquare.Net
             if (requestLine.Length != 3)
                 throw new ArgumentException("Invalid request line: " + headerParts[0]);
 
-            var headers = new NameValueCollection();
-            for (var i = 1; i < headerParts.Length; i++)
-            {
-                var parts = headerParts[i].Split(':');
-
-                headers[parts[0]] = parts[1];
-            }
-
-            return new HttpRequest(requestLine[0], requestLine[1], new Version(requestLine[2].Substring(5)), headers);
+            return new HttpRequest(requestLine[0], requestLine[1], new Version(requestLine[2].Substring(5)), ParseHeaders(headerParts));
         }
         
         internal Task<HttpResponse> GetResponse(Stream stream)

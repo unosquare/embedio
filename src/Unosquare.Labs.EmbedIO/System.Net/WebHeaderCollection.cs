@@ -493,26 +493,6 @@ namespace Unosquare.Net
         }
 
         /// <summary>
-        /// Determines whether the specified header can be set for the request or the response.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if the header is restricted; otherwise, <c>false</c>.
-        /// </returns>
-        /// <param name="headerName">
-        /// A <see cref="string"/> that represents the name of the header to test.
-        /// </param>
-        /// <param name="response">
-        /// <c>true</c> if does the test for the response; for the request, <c>false</c>.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="headerName"/> is <see langword="null"/> or empty.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="headerName"/> contains invalid characters.
-        /// </exception>
-        public static bool IsRestricted(string headerName, bool response = false) => InternalIsRestricted(CheckName(headerName), response);
-
-        /// <summary>
         /// Adds a header to the collection without checking if the header is on
         /// the restricted header list.
         /// </summary>

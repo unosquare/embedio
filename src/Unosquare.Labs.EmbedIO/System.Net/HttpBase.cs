@@ -81,6 +81,19 @@ namespace Unosquare.Net
             _entityBodyData = data;
         }
 
+        protected static NameValueCollection ParseHeaders(string[] headerParts)
+        {
+            var headers = new NameValueCollection();
+            for (var i = 1; i < headerParts.Length; i++)
+            {
+                var parts = headerParts[i].Split(':');
+
+                headers[parts[0]] = parts[1];
+            }
+
+            return headers;
+        }
+
         internal static string GetValue(string nameAndValue)
         {
             var idx = nameAndValue.IndexOf('=');

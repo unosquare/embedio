@@ -292,8 +292,6 @@ using System.Security.Cryptography.X509Certificates;
 
                 if (nread == 0)
                 {
-                    // if (ms.Length > 0)
-                    // SendError (); // Why bother?
                     CloseSocket();
                     Unbind();
                     return;

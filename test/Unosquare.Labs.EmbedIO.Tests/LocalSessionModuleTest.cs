@@ -18,12 +18,25 @@
         public LocalSessionModuleTest()
             : base((ws) =>
             {
-                ws.RegisterModule(new LocalSessionModule {Expiration = TimeSpan.FromSeconds(1)});
+                ws.RegisterModule(new LocalSessionModule { Expiration = TimeSpan.FromSeconds(1) });
                 ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()));
                 ws.RegisterModule(new WebApiModule());
                 ws.Module<WebApiModule>().RegisterController<TestLocalSessionController>();
             }, Constants.RoutingStrategy.Wildcard)
         {
+        }
+
+        protected async Task ValidateCookie(HttpRequestMessage request, HttpClient client, HttpClientHandler handler)
+        {
+            using (var response = await client.SendAsync(request))
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+            }
+
+            Assert.IsNotNull(handler.CookieContainer, "Cookies are not null");
+            Assert.Greater(handler.CookieContainer.GetCookies(new Uri(WebServerUrl)).Count,
+                0,
+                "Cookies are not empty");
         }
 
         protected async Task GetFile(string content)
@@ -34,18 +47,9 @@
 
                 using (var client = new HttpClient(handler))
                 {
-                    var secondRequest = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
-                    using (var response = await client.SendAsync(secondRequest))
-                    {
-                        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
-                        Assert.IsNotNull(handler.CookieContainer, "Cookies are not null");
-                        Assert.Greater(handler.CookieContainer.GetCookies(new Uri(WebServerUrl)).Count, 
-                            0,
-                            "Cookies are not empty");
-
-                        Assert.AreNotEqual(content, handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl)));
-                    }
+                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
+                    await ValidateCookie(request, client, handler);
+                    Assert.AreNotEqual(content, handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl)));
                 }
             }
         }
@@ -115,21 +119,8 @@
                     using (var client = new HttpClient(handler))
                     {
                         var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
-                        string content;
-
-                        using (var response = await client.SendAsync(request))
-                        {
-                            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
-                            Assert.IsNotNull(handler.CookieContainer, "Cookies are not null");
-                            Assert.Greater(
-                                handler.CookieContainer.GetCookies(new Uri(WebServerUrl)).Count, 
-                                0,
-                                "Cookies are not empty");
-
-                            content = handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl));
-                        }
-
+                        await ValidateCookie(request, client, handler);
+                        var content = handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl));
                         await Task.Delay(WaitTimeSpan);
 
                         Task.WaitAll(
@@ -185,19 +176,9 @@
                     {
                         var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
 
-                        using (var response = await client.SendAsync(request))
-                        {
-                            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
-                            Assert.IsNotNull(handler.CookieContainer, "Cookies are not null");
-                            Assert.Greater(
-                                handler.CookieContainer.GetCookies(new Uri(WebServerUrl)).Count, 
-                                0,
-                                "Cookies are not empty");
-
-                            Assert.IsNotEmpty(handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl)),
-                                "Cookie content is not null");
-                        }
+                        await ValidateCookie(request, client, handler);
+                        Assert.IsNotEmpty(handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl)),
+                            "Cookie content is not null");
                     }
                 }
             }
