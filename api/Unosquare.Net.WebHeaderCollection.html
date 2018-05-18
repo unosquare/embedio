@@ -678,6 +678,78 @@ the <code data-dev-comment-type="paramref" class="paramref">headerName</code>.</
   </table>
   
   
+  <a id="Unosquare_Net_WebHeaderCollection_IsRestricted_" data-uid="Unosquare.Net.WebHeaderCollection.IsRestricted*"></a>
+  <h4 id="Unosquare_Net_WebHeaderCollection_IsRestricted_System_String_System_Boolean_" data-uid="Unosquare.Net.WebHeaderCollection.IsRestricted(System.String,System.Boolean)">IsRestricted(String, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Determines whether the specified header can be set for the request or the response.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsRestricted(string headerName, bool response = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">headerName</span></td>
+        <td><p>A <span class="xref">System.String</span> that represents the name of the header to test.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">response</span></td>
+        <td><p><code>true</code> if does the test for the response; for the request, <code>false</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><code>true</code> if the header is restricted; otherwise, <code>false</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">headerName</code> is <span class="xref">null</span> or empty.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">headerName</code> contains invalid characters.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Unosquare_Net_WebHeaderCollection_Remove_" data-uid="Unosquare.Net.WebHeaderCollection.Remove*"></a>
   <h4 id="Unosquare_Net_WebHeaderCollection_Remove_System_Net_HttpRequestHeader_" data-uid="Unosquare.Net.WebHeaderCollection.Remove(System.Net.HttpRequestHeader)">Remove(Net.HttpRequestHeader)</h4>
   <div class="markdown level1 summary"><p>Removes the specified request <code data-dev-comment-type="paramref" class="paramref">header</code> from the collection.</p>

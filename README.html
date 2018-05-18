@@ -225,6 +225,9 @@
             var cts = new CancellationTokenSource();
             var task = server.RunAsync(cts.Token);
 
+            // Wait for any key to be pressed before disposing of our web server.
+            // In a service, we&#39;d manage the lifecycle of our web server using
+            // something like a BackgroundWorker or a ManualResetEvent.
             Console.ReadKey(true);
             cts.Cancel();
 
@@ -385,7 +388,7 @@ public class WebSocketsChatServer : WebSocketsServer
               <div class="contribution">
                 <ul class="nav">
                   <li class="top-sep">
-                    <a href="https://github.com/unosquare/embedio/blob/master/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/unosquare/embedio/blob/BasicAuthUnitTests/README.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
