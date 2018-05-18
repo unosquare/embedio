@@ -321,34 +321,46 @@
 
             "Started HTTP Listener".Info(nameof(WebServer));
 
-            // Disposing the web server will close the listener.
-            while (Listener != null && Listener.IsListening && !ct.IsCancellationRequested)
-            {
-                try
-                {
-                    var clientSocket = await Listener.GetContextAsync().ConfigureAwait(false);
-                    if (ct.IsCancellationRequested)
-                        return;
+            // close port when the cancellation token is cancelled
+            ct.Register(() => Listener?.Stop());
 
-                    // Spawn off each client task asynchronously
+            // Disposing the web server will close the listener.
+            await Task.Factory.StartNew(async () =>
+            {
+                // Disposing the web server will close the listener.           
+                while (Listener != null && Listener.IsListening && !ct.IsCancellationRequested)
+                {
+                    try
+                    {
+                        var clientSocket = await Listener.GetContextAsync().ConfigureAwait(false);
+                        if (ct.IsCancellationRequested)
+                            return;
+
+                        // Spawn off each client task asynchronously
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                    HandleClientRequest(clientSocket, ct);
+                        HandleClientRequest(clientSocket, ct);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                    }
+                    catch (HttpListenerException)
+                    {
+                        if (!ct.IsCancellationRequested)
+                            throw;
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        // Forward cancellations out to the caller.
+                        throw;
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        // Ignore disposed Listener
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.Log(nameof(WebServer));
+                    }
                 }
-                catch (OperationCanceledException)
-                {
-                    // Forward cancellations out to the caller.
-                    throw;
-                }
-                catch (ObjectDisposedException)
-                {
-                    // Ignore disposed Listener
-                }
-                catch (Exception ex)
-                {
-                    ex.Log(nameof(WebServer));
-                }
-            }
+            }, ct);
         }
 
         /// <inheritdoc />
