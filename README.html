@@ -8,7 +8,7 @@
     <title>NuGet Installation: | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="NuGet Installation: | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 2.36.0.0">
+    <meta name="generator" content="docfx 2.36.1.0">
     
     <link rel="shortcut icon" href="src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
     <link rel="stylesheet" href="styles/docfx.vendor.css">
@@ -225,9 +225,6 @@
             var cts = new CancellationTokenSource();
             var task = server.RunAsync(cts.Token);
 
-            // Wait for any key to be pressed before disposing of our web server.
-            // In a service, we&#39;d manage the lifecycle of our web server using
-            // something like a BackgroundWorker or a ManualResetEvent.
             Console.ReadKey(true);
             cts.Cancel();
 
