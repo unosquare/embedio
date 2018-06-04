@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <Copyright>Copyright (c) 2016-2017 - Unosquare</Copyright>
-    <TargetFrameworks>net46;net47;netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks>net46;net47;netcoreapp2.1</TargetFrameworks>
     <TestProjectType>UnitTest</TestProjectType>
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
     <LangVersion>7.1</LangVersion>
@@ -22,12 +22,12 @@
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
     <packagereference Include="NUnit3TestAdapter" Version="3.10.0"></packagereference>
     <PackageReference Include="NUnit" Version="3.10.1" />
   </ItemGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
     <DefineConstants>$(DefineConstants);NET47</DefineConstants>
   </PropertyGroup>
 

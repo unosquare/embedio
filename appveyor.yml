@@ -36,7 +36,7 @@ build_script:
         cd ..
         pwd
 test_script:
-- dotnet test test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f netcoreapp2.0
+- dotnet test test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f netcoreapp2.1
 - cmd: dotnet test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f net47
 - cmd: tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f net46" -output:coverage.xml -filter:"+[Unosquare.Labs.EmbedIO*]* -[Unosquare.Labs.EmbedIO.Test*]*" -register:userdotnet
 - ps: |
