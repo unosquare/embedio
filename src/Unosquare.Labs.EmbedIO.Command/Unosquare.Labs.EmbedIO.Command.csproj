@@ -1,14 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <Description>Portable web server ready to use</Description>
     <Copyright>Copyright (c) 2016-2017 - Unosquare</Copyright>
     <AssemblyTitle>EmbedIO CLI</AssemblyTitle>
-    <TargetFrameworks>net46;netcoreapp2.1</TargetFrameworks>
-    <AssemblyName>Unosquare.Labs.EmbedIO.Command</AssemblyName>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <OutputType>Exe</OutputType>
-    <PackageId>Unosquare.Labs.EmbedIO.Command</PackageId>
     <LangVersion>7.1</LangVersion>
+
+    <PackageId>Unosquare.Labs.EmbedIO.Command</PackageId>
+    <AssemblyName>embedio-cli</AssemblyName>
+    <Version>0.1.0</Version>
+    <PackageVersion>0.1.0</PackageVersion>
+    <IsPackable>true</IsPackable>
+    <PackAsTool>true</PackAsTool>
   </PropertyGroup>
 
   <ItemGroup>
