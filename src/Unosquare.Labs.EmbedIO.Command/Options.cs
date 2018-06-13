@@ -7,16 +7,13 @@
     /// </summary>
     internal class Options
     {
-        [ArgumentOption('p', "path", Required = true, HelpText = "WWW-root path.")]
+        [ArgumentOption('p', "path", HelpText = "WWW-root path.", DefaultValue = "./")]
         public string RootPath { get; set; }
 
         [ArgumentOption('o', "port", HelpText = "HTTP port.", DefaultValue = 9696)]
         public int Port { get; set; }
         
-        [ArgumentOption('a', "api", HelpText = "Specify assembly to load.")]
+        [ArgumentOption('a', "api", HelpText = "Specify assembly to load.", DefaultValue = "./")]
         public string ApiAssemblies { get; set; }
-
-        [ArgumentOption('v', "noverb", HelpText = "Output Web server info.", DefaultValue = false)]
-        public bool NoVerbose { get; set; } // TODO: implement with SWAN
     }
 }

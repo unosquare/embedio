@@ -2,6 +2,8 @@ namespace Unosquare.Labs.EmbedIO.Command
 {
     using Swan;
     using System;
+    using System.IO;
+    using System.Linq;
     using System.Reflection;
 
     /// <summary>
@@ -27,7 +29,7 @@ namespace Unosquare.Labs.EmbedIO.Command
             {
                 server.WithLocalSession();
 
-                server.EnableCors().WithStaticFolderAt(options.RootPath);
+                server.EnableCors().WithStaticFolderAt(SearchForWwwRootFolder(options.RootPath));
                 //server.EnableCors().WithStaticFolderAt(options.RootPath,
                 //    defaultDocument: Properties.Settings.Default.HtmlDefaultDocument);
 
@@ -37,7 +39,7 @@ namespace Unosquare.Labs.EmbedIO.Command
                 if (string.IsNullOrEmpty(options.ApiAssemblies) == false)
                 {
                     $"Registering Assembly {options.ApiAssemblies}".Debug();
-                    LoadApi(options.ApiAssemblies, server);
+                    LoadApi(server, options.ApiAssemblies);
                 }
 
                 // start the server
@@ -51,18 +53,38 @@ namespace Unosquare.Labs.EmbedIO.Command
         /// </summary>
         /// <param name="apiPath"></param>
         /// <param name="server"></param>
-        private static void LoadApi(string apiPath, WebServer server)
+        private static void LoadApi(WebServer server, string apiPath)
         {
             try
             {
-                var assembly = Assembly.LoadFile(apiPath);
+                "Assembly LoadApi".WriteLine(ConsoleColor.Yellow);
+
+                var assembly = Assembly.LoadFrom(apiPath);
 
                 server.LoadApiControllers(assembly).LoadWebSockets(assembly);
+            }
+            catch (FileNotFoundException fnfex) {
+                $"Assembly FileNotFoundException {fnfex.Message}".Debug();
             }
             catch (Exception ex)
             {
                 ex.Log(nameof(Program));
             }
+        }
+
+        private static string SearchForWwwRootFolder(string rootPath)
+        {
+            var wwwroot = "wwwroot";
+            if (rootPath.Equals(wwwroot)) return rootPath;
+
+            var wwwrootpath = Path.Combine(rootPath, wwwroot);
+            if (Directory.Exists(wwwrootpath))
+            {
+                $"Serving: {wwwrootpath}".Debug();
+                return wwwrootpath;
+            }
+            
+            return rootPath;
         }
     }
 }
