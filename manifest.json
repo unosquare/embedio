@@ -214,6 +214,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.Labs.EmbedIO.Modules.AuthModule.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.AuthModule.html",
+          "hash": "Q19AQ5i9Q2hroD+YbZw0NA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Unosquare.Labs.EmbedIO.Modules.CorsModule.yml",
       "output": {
         ".html": {
@@ -338,7 +350,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.html",
-          "hash": "xYxqh+Ofshz3NU4Pg0gMpg=="
+          "hash": "hommBZjCH5OOVA+j0a6B0A=="
         }
       },
       "is_incremental": false,
@@ -362,7 +374,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.WebModuleBase.html",
-          "hash": "gMhL3VWcHaqkYcEGSL01OQ=="
+          "hash": "0VJuwpRTJWFnodqisFXsrQ=="
         }
       },
       "is_incremental": false,
@@ -650,7 +662,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "8+2kO0V7oLL5otV9eWuJ4g=="
+          "hash": "TJNnFT8XkjCZgAW8lLOrbg=="
         }
       },
       "is_incremental": false,
@@ -713,8 +725,9 @@
         "incrementalPhase": "build"
       },
       "processors": {
-        "ConceptualDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         },
         "ManagedReferenceDocumentProcessor": {
@@ -726,9 +739,8 @@
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         },
-        "TocDocumentProcessor": {
+        "ConceptualDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         }
       }

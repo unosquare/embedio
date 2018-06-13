@@ -1026,6 +1026,70 @@ references:
   commentId: N:Unosquare.Labs.EmbedIO.Modules
   fullName: Unosquare.Labs.EmbedIO.Modules
   nameWithType: Unosquare.Labs.EmbedIO.Modules
+- uid: Unosquare.Labs.EmbedIO.Modules.AuthModule
+  name: AuthModule
+  href: api/Unosquare.Labs.EmbedIO.Modules.AuthModule.html
+  commentId: T:Unosquare.Labs.EmbedIO.Modules.AuthModule
+  fullName: Unosquare.Labs.EmbedIO.Modules.AuthModule
+  nameWithType: AuthModule
+- uid: Unosquare.Labs.EmbedIO.Modules.AuthModule.#ctor
+  name: AuthModule()
+  href: api/Unosquare.Labs.EmbedIO.Modules.AuthModule.html#Unosquare_Labs_EmbedIO_Modules_AuthModule__ctor
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.AuthModule.#ctor
+  fullName: Unosquare.Labs.EmbedIO.Modules.AuthModule.AuthModule()
+  nameWithType: AuthModule.AuthModule()
+- uid: Unosquare.Labs.EmbedIO.Modules.AuthModule.#ctor(System.String,System.String)
+  name: AuthModule(String, String)
+  href: api/Unosquare.Labs.EmbedIO.Modules.AuthModule.html#Unosquare_Labs_EmbedIO_Modules_AuthModule__ctor_System_String_System_String_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.AuthModule.#ctor(System.String,System.String)
+  fullName: Unosquare.Labs.EmbedIO.Modules.AuthModule.AuthModule(System.String, System.String)
+  nameWithType: AuthModule.AuthModule(String, String)
+- uid: Unosquare.Labs.EmbedIO.Modules.AuthModule.#ctor*
+  name: AuthModule
+  href: api/Unosquare.Labs.EmbedIO.Modules.AuthModule.html#Unosquare_Labs_EmbedIO_Modules_AuthModule__ctor_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.AuthModule.#ctor
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.AuthModule.AuthModule
+  nameWithType: AuthModule.AuthModule
+- uid: Unosquare.Labs.EmbedIO.Modules.AuthModule.AddAccount(System.String,System.String)
+  name: AddAccount(String, String)
+  href: api/Unosquare.Labs.EmbedIO.Modules.AuthModule.html#Unosquare_Labs_EmbedIO_Modules_AuthModule_AddAccount_System_String_System_String_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.AuthModule.AddAccount(System.String,System.String)
+  fullName: Unosquare.Labs.EmbedIO.Modules.AuthModule.AddAccount(System.String, System.String)
+  nameWithType: AuthModule.AddAccount(String, String)
+- uid: Unosquare.Labs.EmbedIO.Modules.AuthModule.AddAccount*
+  name: AddAccount
+  href: api/Unosquare.Labs.EmbedIO.Modules.AuthModule.html#Unosquare_Labs_EmbedIO_Modules_AuthModule_AddAccount_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.AuthModule.AddAccount
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.AuthModule.AddAccount
+  nameWithType: AuthModule.AddAccount
+- uid: Unosquare.Labs.EmbedIO.Modules.AuthModule.IsAuthorized(Unosquare.Net.HttpListenerRequest)
+  name: IsAuthorized(HttpListenerRequest)
+  href: api/Unosquare.Labs.EmbedIO.Modules.AuthModule.html#Unosquare_Labs_EmbedIO_Modules_AuthModule_IsAuthorized_Unosquare_Net_HttpListenerRequest_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.AuthModule.IsAuthorized(Unosquare.Net.HttpListenerRequest)
+  fullName: Unosquare.Labs.EmbedIO.Modules.AuthModule.IsAuthorized(Unosquare.Net.HttpListenerRequest)
+  nameWithType: AuthModule.IsAuthorized(HttpListenerRequest)
+- uid: Unosquare.Labs.EmbedIO.Modules.AuthModule.IsAuthorized*
+  name: IsAuthorized
+  href: api/Unosquare.Labs.EmbedIO.Modules.AuthModule.html#Unosquare_Labs_EmbedIO_Modules_AuthModule_IsAuthorized_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.AuthModule.IsAuthorized
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.AuthModule.IsAuthorized
+  nameWithType: AuthModule.IsAuthorized
+- uid: Unosquare.Labs.EmbedIO.Modules.AuthModule.Name
+  name: Name
+  href: api/Unosquare.Labs.EmbedIO.Modules.AuthModule.html#Unosquare_Labs_EmbedIO_Modules_AuthModule_Name
+  commentId: P:Unosquare.Labs.EmbedIO.Modules.AuthModule.Name
+  fullName: Unosquare.Labs.EmbedIO.Modules.AuthModule.Name
+  nameWithType: AuthModule.Name
+- uid: Unosquare.Labs.EmbedIO.Modules.AuthModule.Name*
+  name: Name
+  href: api/Unosquare.Labs.EmbedIO.Modules.AuthModule.html#Unosquare_Labs_EmbedIO_Modules_AuthModule_Name_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.AuthModule.Name
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.AuthModule.Name
+  nameWithType: AuthModule.Name
 - uid: Unosquare.Labs.EmbedIO.Modules.CorsModule
   name: CorsModule
   href: api/Unosquare.Labs.EmbedIO.Modules.CorsModule.html
