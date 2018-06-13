@@ -1,10 +1,9 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
-	using Constants;
+    using Constants;
     using System;
-    using System.Linq;
-	using System.Text;
-	using System.Threading.Tasks;
+    using System.Text;
+    using System.Threading.Tasks;
     using System.Collections.Generic;
 #if NET47
     using System.Net;
@@ -12,39 +11,27 @@
     using Net;
 #endif
 
-      /// <summary>
+    /// <summary>
     /// Simple authorisation module that requests http auth from client
     /// Will return 401 + WWW-Authenticate header if request isn't authorised
     /// </summary>
-    class AuthModule : WebModuleBase
+    public class AuthModule : WebModuleBase
     {
-        /// <summary>
-        /// List of registred accounts. User-Password pair
-        /// </summary>
-        Dictionary<string, string> accounts = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _accounts = new Dictionary<string, string>();
 
         /// <summary>
-        /// Add new account
+        /// Initializes a new instance of the <see cref="AuthModule"/> class.
         /// </summary>
-        /// <param name="username">account username</param>
-        /// <param name="password">account password</param>
-        public void AddAccount(string username, string password)
-        {
-            accounts.Add(username, password);
-        }
-
-        /// <summary>
-        /// Construct with one registered account
-        /// </summary>
-        /// <param name="username">account username</param>
-        /// <param name="password">account password</param>
-        public AuthModule(string username, string password) : this()
+        /// <param name="username">The username.</param>
+        /// <param name="password">The password.</param>
+        public AuthModule(string username, string password)
+            : this()
         {
             AddAccount(username, password);
         }
 
         /// <summary>
-        /// Constructor. Use AddAccount(user, password) after that if you want to connect somehow
+        /// Initializes a new instance of the <see cref="AuthModule"/> class.
         /// </summary>
         public AuthModule()
         {
@@ -61,46 +48,16 @@
                     context.Response.StatusCode = 401;
                 }
 
-                if (context.Response.StatusCode == 401)
-                {
-                    context.Response.Headers.Add("WWW-Authenticate",
-                        string.Format("Basic realm=\"{0}\"", "Realm"));
+                if (context.Response.StatusCode != 401) return Task.FromResult(false);
 
-                    return Task.FromResult(true);
-                }
+                context.Response.Headers.Add("WWW-Authenticate", string.Format("Basic realm=\"{0}\"", "Realm"));
 
-                return Task.FromResult(false);
+                return Task.FromResult(true);
             });
         }
 
-        /// <summary>
-        /// Parses request for account data
-        /// </summary>
-        /// <param name="request">HttpListenerRequest</param>
-        /// <returns>user-password KeyValuePair from request</returns>
-        /// <exception>
-        /// if request isn't authorised
-        /// </exception>
-        static public KeyValuePair<string, string> GetAccountData(HttpListenerRequest request)
-        {
-            var authHeader = request.Headers["Authorization"];
-            if (authHeader == null) throw new Exception("Authorization header not found");
-
-            // RFC 2617 sec 1.2, "scheme" name is case-insensitive
-            // header contains name and parameter separated by space. If it equals just "basic" - it's empty
-            if (!authHeader.Equals("basic",
-                    StringComparison.OrdinalIgnoreCase))
-                    throw new Exception("Authorization header not found");
-
-            var encoding = Encoding.GetEncoding("iso-8859-1");
-            var credentials = encoding.GetString(Convert.FromBase64String(authHeader.Split(' ')[1]));
-
-            var separator = credentials.IndexOf(':');
-            var name = credentials.Substring(0, separator);
-            var password = credentials.Substring(separator + 1);
-
-            return new KeyValuePair<string, string>(name, password);
-        }
+        /// <inheritdoc />
+        public override string Name => nameof(AuthModule);
 
         /// <summary>
         /// Validates request and returns true if that account data registred in this module and request has auth data  
@@ -114,7 +71,8 @@
             try
             {
                 var data = GetAccountData(request);
-                if (!accounts.TryGetValue(data.Key, out string password) || password != data.Value)
+
+                if (!_accounts.TryGetValue(data.Key, out var password) || password != data.Value)
                     return false;
             }
             catch
@@ -125,8 +83,38 @@
             return true;
         }
 
-        /// <inheritdoc />
-        public override string Name => nameof(AuthModule);
+        /// <summary>
+        /// Add new account
+        /// </summary>
+        /// <param name="username">account username</param>
+        /// <param name="password">account password</param>
+        public void AddAccount(string username, string password) => _accounts.Add(username, password);
 
+        /// <summary>
+        /// Parses request for account data
+        /// </summary>
+        /// <param name="request">HttpListenerRequest</param>
+        /// <returns>user-password KeyValuePair from request</returns>
+        /// <exception>
+        /// if request isn't authorised
+        /// </exception>
+        private static KeyValuePair<string, string> GetAccountData(HttpListenerRequest request)
+        {
+            var authHeader = request.Headers["Authorization"];
+            if (authHeader == null) throw new Exception("Authorization header not found");
+
+            // RFC 2617 sec 1.2, "scheme" name is case-insensitive
+            // header contains name and parameter separated by space. If it equals just "basic" - it's empty
+            if (!authHeader.Equals("basic", StringComparison.OrdinalIgnoreCase))
+                throw new Exception("Authorization header not found");
+
+            var credentials = Encoding.GetEncoding("iso-8859-1").GetString(Convert.FromBase64String(authHeader.Split(' ')[1]));
+
+            var separator = credentials.IndexOf(':');
+            var name = credentials.Substring(0, separator);
+            var password = credentials.Substring(separator + 1);
+
+            return new KeyValuePair<string, string>(name, password);
+        }
     }
 }
