@@ -57,17 +57,26 @@ namespace Unosquare.Labs.EmbedIO.Command
         {
             try
             {
-                "Assembly LoadApi".WriteLine(ConsoleColor.Yellow);
+                $"Assembly LoadApi path: {apiPath}".Info(nameof(LoadApi));
+                var files = Directory.GetFiles(Path.GetFullPath(apiPath));
 
-                var assembly = Assembly.LoadFrom(apiPath);
+                foreach (var file in files)
+                {
+                    if (Path.GetExtension(file).Equals(".dll"))
+                    {
+                        $"Assembly File Dll: {file}".Info(nameof(LoadApi));
 
-                server.LoadApiControllers(assembly).LoadWebSockets(assembly);
+                        var assembly = Assembly.LoadFile(file);
+                        server.LoadApiControllers(assembly).LoadWebSockets(assembly);
+                    }
+                }
             }
             catch (FileNotFoundException fnfex) {
                 $"Assembly FileNotFoundException {fnfex.Message}".Debug();
             }
             catch (Exception ex)
             {
+                $"Assembly Exception {ex.Message}".Debug();
                 ex.Log(nameof(Program));
             }
         }
@@ -80,10 +89,11 @@ namespace Unosquare.Labs.EmbedIO.Command
             var wwwrootpath = Path.Combine(rootPath, wwwroot);
             if (Directory.Exists(wwwrootpath))
             {
-                $"Serving: {wwwrootpath}".Debug();
+                $"Serving from {wwwrootpath}".Info(nameof(SearchForWwwRootFolder));
                 return wwwrootpath;
+
             }
-            
+
             return rootPath;
         }
     }
