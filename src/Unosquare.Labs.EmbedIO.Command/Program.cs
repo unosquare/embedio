@@ -17,22 +17,24 @@ namespace Unosquare.Labs.EmbedIO.Command
         private static void Main(string[] args)
         {
             var options = new Options();
-            var currentDirectory = Directory.GetCurrentDirectory();
 
             Runtime.WriteWelcomeBanner();
-            
+
             if (!Runtime.ArgumentParser.ParseArguments(args, options)) return;
 
+            var currentDirectory = Directory.GetCurrentDirectory();
+
             "Press any key to stop the server.".Info();
-            
+
             using (var server = new WebServer($"http://localhost:{options.Port}/"))
             {
                 server.WithLocalSession();
+                server.EnableCors();
 
                 server.EnableCors();
 
                 // Static files
-                if(options.RootPath != null || options.ApiAssemblies == null)
+                if (options.RootPath != null || options.ApiAssemblies == null)
                     server.WithStaticFolderAt(options.RootPath ?? SearchForWwwRootFolder(currentDirectory));
 
                 // Watch Files
@@ -42,12 +44,6 @@ namespace Unosquare.Labs.EmbedIO.Command
                 // Assemblies
                 $"Registering Assembly {options.ApiAssemblies}".Debug();
                 LoadApi(server, options.ApiAssemblies ?? currentDirectory);
-
-                //server.EnableCors().WithStaticFolderAt(options.RootPath,
-                //    defaultDocument: Properties.Settings.Default.HtmlDefaultDocument);
-
-                //server.Module<StaticFilesModule>().DefaultExtension = Properties.Settings.Default.HtmlDefaultExtension;
-                //server.Module<StaticFilesModule>().UseRamCache = Properties.Settings.Default.UseRamCache;
 
                 // start the server
                 server.RunAsync();
@@ -65,25 +61,25 @@ namespace Unosquare.Labs.EmbedIO.Command
             try
             {
                 var fullPath = Path.GetFullPath(apiPath);
+
                 if (Path.GetExtension(apiPath).Equals(".dll"))
                 {
-                    server.LoadApiControllers(Assembly.LoadFile(fullPath)).LoadWebSockets(Assembly.LoadFile(fullPath));
+                    var assembly = Assembly.LoadFile(fullPath);
+                    server.LoadApiControllers(assembly).LoadWebSockets(assembly);
                 }
                 else
                 {
-                    var files = Directory.GetFiles(fullPath);
+                    var files = Directory.GetFiles(fullPath, "*.dll");
 
                     foreach (var file in files)
                     {
-                        if (Path.GetExtension(file).Equals(".dll"))
-                        {
-                            var assembly = Assembly.LoadFile(file);
-                            server.LoadApiControllers(assembly).LoadWebSockets(assembly);
-                        }
+                        var assembly = Assembly.LoadFile(file);
+                        server.LoadApiControllers(assembly).LoadWebSockets(assembly);
                     }
                 }
             }
-            catch (FileNotFoundException fnfex) {
+            catch (FileNotFoundException fnfex)
+            {
                 $"Assembly FileNotFoundException {fnfex.Message}".Debug();
             }
             catch (Exception ex)
@@ -96,10 +92,7 @@ namespace Unosquare.Labs.EmbedIO.Command
         private static string SearchForWwwRootFolder(string rootPath)
         {
             var wwwrootpath = Path.Combine(rootPath, "wwwroot");
-            if (Directory.Exists(wwwrootpath))
-                return wwwrootpath;                
-
-            return rootPath;
+            return Directory.Exists(wwwrootpath) ? wwwrootpath : rootPath;
         }
     }
 }
