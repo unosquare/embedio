@@ -1,24 +1,22 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Command
 {
-    using System;
-    using System.Linq;
+    using Swan.Formatters;
     using System.Net;
     using System.Net.WebSockets;
-    using Unosquare.Labs.EmbedIO.Modules;
-    using Unosquare.Swan;
+    using Modules;
 
     public static class WebSocketWatcher
     {
-        private static WebServer server;
+        public static WebServer Server { get; private set; }
 
         public static void Setup()
         {            
-            server = new WebServer("http://localhost:9697/");
+            Server = new WebServer("http://localhost:9697/");
 
-            server.RegisterModule(new WebSocketsModule());
-            server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsWatcherServer>();
+            Server.RegisterModule(new WebSocketsModule());
+            Server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsWatcherServer>();
 
-            server.RunAsync();
+            Server.RunAsync();
         }
     }
 
@@ -28,24 +26,19 @@
         public WebSocketsWatcherServer()
             : base(true)
         {
-
+            Watcher.Instance.RefreshPage += (s, e) => Broadcast(Json.Serialize(new { Update=true }));
         }
 
         public override string ServerName => nameof(WebSocketWatcher);
 
         protected override void OnClientConnected(WebSocketContext context, IPEndPoint localEndPoint, IPEndPoint remoteEndPoint)
         {
-            Send(context, "Watching Files!!!");
-
-            foreach (var ws in WebSockets.Where(ws => ws != context))
-            {
-                Send(ws, "Refresh!!!");
-            }
+            // placeholder
         }
 
         protected override void OnClientDisconnected(WebSocketContext context)
         {
-            Send(context, "Close connection!!!");
+            // placeholder
         }
 
         protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
@@ -55,10 +48,7 @@
 
         protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
         {
-            foreach (var ws in WebSockets.Where(ws => ws != context))
-            {
-                Send(ws, rxBuffer.ToText());
-            }
+            // placeholder
         }
     }
 

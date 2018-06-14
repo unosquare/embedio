@@ -16,9 +16,9 @@ namespace Unosquare.Labs.EmbedIO.Command
         /// <param name="args"></param>
         private static void Main(string[] args)
         {
-            var options = new Options();
-
             Runtime.WriteWelcomeBanner();
+
+            var options = new Options();
 
             if (!Runtime.ArgumentParser.ParseArguments(args, options)) return;
 
@@ -26,7 +26,9 @@ namespace Unosquare.Labs.EmbedIO.Command
 
             "Press any key to stop the server.".Info();
 
-            using (var server = new WebServer($"http://localhost:{options.Port}/"))
+            var url = $"http://localhost:{options.Port}/";
+
+            using (var server = new WebServer(url))
             {
                 server.WithLocalSession();
                 server.EnableCors();
@@ -36,8 +38,8 @@ namespace Unosquare.Labs.EmbedIO.Command
                     server.WithStaticFolderAt(options.RootPath ?? SearchForWwwRootFolder(currentDirectory));
 
                 // Watch Files
-                if (options.Watch)
-                    Watcher.WatchFiles(options.RootPath ?? SearchForWwwRootFolder(currentDirectory));
+                if (!options.NoWatch)
+                    Watcher.Instance.WatchFiles(options.RootPath ?? SearchForWwwRootFolder(currentDirectory));
 
                 // Assemblies
                 $"Registering Assembly {options.ApiAssemblies}".Debug();
@@ -45,6 +47,14 @@ namespace Unosquare.Labs.EmbedIO.Command
 
                 // start the server
                 server.RunAsync();
+                
+                var browser = new System.Diagnostics.Process
+                {
+                    StartInfo = new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true }
+                };
+
+                browser.Start();
+
                 Console.ReadKey();
             }
         }

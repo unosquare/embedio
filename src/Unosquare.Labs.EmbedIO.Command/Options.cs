@@ -16,7 +16,7 @@
         [ArgumentOption('a', "api", HelpText = "Specify assembly to load.")]
         public string ApiAssemblies { get; set; }
 
-        [ArgumentOption('w', "watch", DefaultValue = false, HelpText = "Watch changes on files" )]
-        public bool Watch { get; set; }
+        [ArgumentOption("no-watch", DefaultValue = false, HelpText = "Disable watch filesystem" )]
+        public bool NoWatch { get; set; }
     }
 }
