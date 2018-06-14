@@ -5,6 +5,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using System.Collections.Generic;
+    using System.Collections.Concurrent;
 #if NET47
     using System.Net;
 #else
@@ -17,7 +18,7 @@
     /// </summary>
     public class AuthModule : WebModuleBase
     {
-        private readonly Dictionary<string, string> _accounts = new Dictionary<string, string>();
+        private readonly ConcurrentDictionary<string, string> _accounts = new ConcurrentDictionary<string, string>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthModule"/> class.
@@ -50,7 +51,7 @@
 
                 if (context.Response.StatusCode != 401) return Task.FromResult(false);
 
-                context.Response.Headers.Add("WWW-Authenticate", string.Format("Basic realm=\"{0}\"", "Realm"));
+                context.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Realm\"");
 
                 return Task.FromResult(true);
             });
@@ -88,7 +89,7 @@
         /// </summary>
         /// <param name="username">account username</param>
         /// <param name="password">account password</param>
-        public void AddAccount(string username, string password) => _accounts.Add(username, password);
+        public void AddAccount(string username, string password) => _accounts.TryAdd(username, password);
 
         /// <summary>
         /// Parses request for account data
@@ -103,12 +104,14 @@
             var authHeader = request.Headers["Authorization"];
             if (authHeader == null) throw new Exception("Authorization header not found");
 
+            var authHeaderParts = authHeader.Split(' ');
+
             // RFC 2617 sec 1.2, "scheme" name is case-insensitive
             // header contains name and parameter separated by space. If it equals just "basic" - it's empty
-            if (!authHeader.Equals("basic", StringComparison.OrdinalIgnoreCase))
+            if (!authHeaderParts[0].Equals("basic", StringComparison.OrdinalIgnoreCase))
                 throw new Exception("Authorization header not found");
 
-            var credentials = Encoding.GetEncoding("iso-8859-1").GetString(Convert.FromBase64String(authHeader.Split(' ')[1]));
+            var credentials = Encoding.GetEncoding("iso-8859-1").GetString(Convert.FromBase64String(authHeaderParts[1]));
 
             var separator = credentials.IndexOf(':');
             var name = credentials.Substring(0, separator);
