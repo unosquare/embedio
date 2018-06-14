@@ -3,7 +3,6 @@ namespace Unosquare.Labs.EmbedIO.Command
     using Swan;
     using System;
     using System.IO;
-    using System.Linq;
     using System.Reflection;
 
     /// <summary>
@@ -31,10 +30,14 @@ namespace Unosquare.Labs.EmbedIO.Command
                 server.WithLocalSession();
 
                 server.EnableCors();
-                
-                // using static files
+
+                // Static files
                 if(options.RootPath != null || options.ApiAssemblies == null)
                     server.WithStaticFolderAt(options.RootPath ?? SearchForWwwRootFolder(currentDirectory));
+
+                // Watch Files
+                if (options.Watch)
+                    Watcher.WatchFiles(options.RootPath ?? SearchForWwwRootFolder(currentDirectory));
 
                 // Assemblies
                 $"Registering Assembly {options.ApiAssemblies}".Debug();
@@ -94,7 +97,7 @@ namespace Unosquare.Labs.EmbedIO.Command
         {
             var wwwrootpath = Path.Combine(rootPath, "wwwroot");
             if (Directory.Exists(wwwrootpath))
-                return wwwrootpath;
+                return wwwrootpath;                
 
             return rootPath;
         }
