@@ -30,9 +30,7 @@ namespace Unosquare.Labs.EmbedIO.Command
             {
                 server.WithLocalSession();
                 server.EnableCors();
-
-                server.EnableCors();
-
+                
                 // Static files
                 if (options.RootPath != null || options.ApiAssemblies == null)
                     server.WithStaticFolderAt(options.RootPath ?? SearchForWwwRootFolder(currentDirectory));

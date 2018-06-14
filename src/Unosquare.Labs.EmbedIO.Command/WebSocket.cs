@@ -9,17 +9,16 @@
 
     public static class WebSocketWatcher
     {
+        private static WebServer server;
+
         public static void Setup()
         {            
-            using (var server = new WebServer("http://localhost:9697/"))
-            {
-                server.RegisterModule(new WebSocketsModule());
-                server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsWatcherServer>();
+            server = new WebServer("http://localhost:9697/");
 
-                server.RunAsync();
+            server.RegisterModule(new WebSocketsModule());
+            server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsWatcherServer>();
 
-                Console.ReadKey(true);
-            }
+            server.RunAsync();
         }
     }
 
