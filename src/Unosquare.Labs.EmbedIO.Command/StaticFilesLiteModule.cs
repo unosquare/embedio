@@ -43,8 +43,7 @@
         /// <param name="useDirectoryBrowser">if set to <c>true</c> [use directory browser].</param>
         /// <exception cref="ArgumentException">Path ' + fileSystemPath + ' does not exist.</exception>
         public StaticFilesLiteModule(
-            string fileSystemPath,
-            bool useDirectoryBrowser = false)
+            string fileSystemPath)
         {
             if (!Directory.Exists(fileSystemPath))
                 throw new ArgumentException($"Path '{fileSystemPath}' does not exist.");
@@ -59,11 +58,11 @@
         private static async Task WriteToOutputStream(
             HttpListenerResponse response,
             Stream buffer,
-            long lowerByteIndex,
             CancellationToken ct)
         {
             var streamBuffer = new byte[ChunkSize];
             long sendData = 0;
+            long lowerByteIndex = 0;
             var readBufferSize = ChunkSize;
 
             while (true)
@@ -82,8 +81,6 @@
 
         private static Task<bool> HandleDirectory(HttpListenerContext context, string localPath, CancellationToken ct)
         {
-            "Handdle Directory".WriteLine(ConsoleColor.Yellow);
-
             var entries = new[] { context.Request.RawUrl == "/" ? string.Empty : "<a href='../'>../</a>" }
                 .Concat(
                     Directory.GetDirectories(localPath)
@@ -131,53 +128,28 @@
             return context.HtmlResponseAsync(content, cancellationToken: ct);
         }
 
-        private Task<bool> HandleGet(HttpListenerContext context, CancellationToken ct, bool sendBuffer = true)
+        private Task<bool> HandleGet(HttpListenerContext context, CancellationToken ct)
         {
             var index = Path.Combine(FullPath, DefaultDocument);
 
             if (File.Exists(index))
-                return HandleFile(context, index, sendBuffer, ct);
-            else
+                return HandleFile(context, index, ct);
+            
+            if (Directory.Exists(index))
                 return HandleDirectory(context, FullPath, ct);
+            
+            return false;
         }
 
-        private async Task<bool> HandleFile(HttpListenerContext context, string localPath, bool sendBuffer, CancellationToken ct)
+        private async Task<bool> HandleFile(HttpListenerContext context, string localPath, CancellationToken ct)
         {
             Stream buffer = null;
 
             try
             {
-                var partialHeader = context.RequestHeader(Headers.Range);
-                var fileDate = File.GetLastWriteTime(localPath);
-
-                $"File System: {localPath}".Debug();
-
-                if (sendBuffer)
-                {
-                    buffer = new FileStream(localPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                }
-
-                // check to see if the file was modified or e-tag is the same
-                var utcFileDateString = fileDate.ToUniversalTime()
-                    .ToString("ddd, dd MMM yyyy HH:mm:ss 'GMT'", new CultureInfo("en-US"));
-
-                var fileSize = new FileInfo(localPath).Length;
-
-                if (sendBuffer == false)
-                {
-                    context.Response.ContentLength64 = buffer?.Length ?? fileSize;
-                    return true;
-                }
-
-                // If buffer is null something is really wrong
-                if (buffer == null)
-                {
-                    return false;
-                }
-
-                long lowerByteIndex = 0;
-
-                await WriteToOutputStream(context.Response, buffer, lowerByteIndex, ct);
+                buffer = new FileStream(localPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+               
+                await WriteToOutputStream(context.Response, buffer, ct);
             }
             catch (HttpListenerException)
             {
