@@ -35,7 +35,7 @@ namespace Unosquare.Labs.EmbedIO.Command
                 
                 // Static files
                 if (options.RootPath != null || options.ApiAssemblies == null)
-                    server.WithStaticFolderAt(options.RootPath ?? SearchForWwwRootFolder(currentDirectory));
+                    server.RegisterModule(new StaticFilesLiteModule(options.RootPath ?? SearchForWwwRootFolder(currentDirectory)));
 
                 // Watch Files
                 if (!options.NoWatch)
