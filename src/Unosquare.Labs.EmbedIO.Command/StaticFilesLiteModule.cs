@@ -1,19 +1,23 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Command
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
-    using Unosquare.Labs.EmbedIO.Constants;
-    using Unosquare.Swan;
+    using Constants;
+    using Swan;
 
     class StaticFilesLiteModule
         : WebModuleBase
     {
-        public override string Name => nameof(StaticFilesLiteModule).Humanize();
+        private readonly Lazy<Dictionary<string, string>> _mimeTypes =
+            new Lazy<Dictionary<string, string>>(
+                () =>
+                    new Dictionary<string, string>(Constants.MimeTypes.DefaultMimeTypes, StringComparer.InvariantCultureIgnoreCase));
 
         /// <summary>
         /// The chunk size for sending files
@@ -32,29 +36,24 @@
 
         private const string DefaultDocument = "index.html";
 
-        private string FullPath;
+        private readonly string _fullPath;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StaticFilesModule" /> class.
+        /// Initializes a new instance of the <see cref="StaticFilesLiteModule"/> class.
         /// </summary>
         /// <param name="fileSystemPath">The file system path.</param>
-        /// <param name="headers">The headers to set in every request.</param>
-        /// <param name="additionalPaths">The additional paths.</param>
-        /// <param name="useDirectoryBrowser">if set to <c>true</c> [use directory browser].</param>
-        /// <exception cref="ArgumentException">Path ' + fileSystemPath + ' does not exist.</exception>
-        public StaticFilesLiteModule(
-            string fileSystemPath)
+        /// <exception cref="ArgumentException"></exception>
+        public StaticFilesLiteModule(string fileSystemPath)
         {
             if (!Directory.Exists(fileSystemPath))
                 throw new ArgumentException($"Path '{fileSystemPath}' does not exist.");
 
-            FullPath = Path.GetFullPath(fileSystemPath);
+            _fullPath = Path.GetFullPath(fileSystemPath);
 
-            // It's need it?
-            // DefaultDocument = DefaultDocumentName;
-
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (context, ct) => HandleGet(context, ct));
+            AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, HandleGet);
         }
+        
+        public override string Name => nameof(StaticFilesLiteModule).Humanize();
 
         private static async Task WriteToOutputStream(
             HttpListenerResponse response,
@@ -130,15 +129,20 @@
 
         private Task<bool> HandleGet(HttpListenerContext context, CancellationToken ct)
         {
-            var path = Path.Combine(FullPath, DefaultDocument);
+            var urlPath = context.Request.Url.LocalPath.Replace('/', Path.DirectorySeparatorChar);
+            var basePath = Path.Combine(_fullPath, urlPath.TrimStart(new[] { Path.DirectorySeparatorChar }));
 
+            if (urlPath.Last() == Path.DirectorySeparatorChar)
+                urlPath = urlPath + DefaultDocument;
+
+            urlPath = urlPath.TrimStart(new[] { Path.DirectorySeparatorChar });
+
+            var path = Path.Combine(_fullPath, urlPath);
+            
             if (File.Exists(path))
                 return HandleFile(context, path, ct);
             
-            if (Directory.Exists(path))
-                return HandleDirectory(context, FullPath, ct);
-
-            return Task.FromResult(false);
+            return Directory.Exists(basePath) ? HandleDirectory(context, basePath, ct) : Task.FromResult(false);
         }
 
         private async Task<bool> HandleFile(HttpListenerContext context, string localPath, CancellationToken ct)
@@ -147,10 +151,16 @@
 
             try
             {
+                var fileExtension = Path.GetExtension(localPath);
+
+                if (_mimeTypes.Value.ContainsKey(fileExtension))
+                    context.Response.ContentType = _mimeTypes.Value[fileExtension];
+
                 buffer = new FileStream(localPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 context.Response.ContentLength64 = buffer.Length;
 
                 await WriteToOutputStream(context.Response, buffer, ct);
+                
             }
             catch (HttpListenerException)
             {

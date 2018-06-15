@@ -31,7 +31,6 @@ namespace Unosquare.Labs.EmbedIO.Command
             using (var server = new WebServer(url))
             {
                 server.WithLocalSession();
-                server.EnableCors();
                 
                 // Static files
                 if (options.RootPath != null || options.ApiAssemblies == null)

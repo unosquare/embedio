@@ -513,7 +513,7 @@
             if (MimeTypes.Value.ContainsKey(fileExtension))
                 response.ContentType = MimeTypes.Value[fileExtension];
 
-            SetDefautlCacheHeaders(response);
+            SetDefaultCacheHeaders(response);
 
             response.AddHeader(Headers.LastModified, utcFileDateString);
             response.AddHeader(Headers.AcceptRanges, "bytes");
@@ -543,7 +543,7 @@
             return false;
         }
 
-        private void SetDefautlCacheHeaders(HttpListenerResponse response)
+        private void SetDefaultCacheHeaders(HttpListenerResponse response)
         {
             response.AddHeader(Headers.CacheControl,
                 DefaultHeaders.GetValueOrDefault(Headers.CacheControl, "private"));
@@ -553,7 +553,7 @@
 
         private void SetStatusCode304(HttpListenerResponse response)
         {
-            SetDefautlCacheHeaders(response);
+            SetDefaultCacheHeaders(response);
 
             response.ContentType = string.Empty;
             response.StatusCode = 304;
