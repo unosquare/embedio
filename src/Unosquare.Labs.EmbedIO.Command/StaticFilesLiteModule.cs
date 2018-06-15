@@ -49,6 +49,7 @@
                 throw new ArgumentException($"Path '{fileSystemPath}' does not exist.");
 
             FullPath = Path.GetFullPath(fileSystemPath);
+
             // It's need it?
             // DefaultDocument = DefaultDocumentName;
 
@@ -62,14 +63,13 @@
         {
             var streamBuffer = new byte[ChunkSize];
             long sendData = 0;
-            long lowerByteIndex = 0;
             var readBufferSize = ChunkSize;
 
             while (true)
             {
                 if (sendData + ChunkSize > response.ContentLength64) readBufferSize = (int)(response.ContentLength64 - sendData);
 
-                buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
+                buffer.Seek(sendData, SeekOrigin.Begin);
                 var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct);
 
                 if (read == 0) break;
@@ -130,15 +130,15 @@
 
         private Task<bool> HandleGet(HttpListenerContext context, CancellationToken ct)
         {
-            var index = Path.Combine(FullPath, DefaultDocument);
+            var path = Path.Combine(FullPath, DefaultDocument);
 
-            if (File.Exists(index))
-                return HandleFile(context, index, ct);
+            if (File.Exists(path))
+                return HandleFile(context, path, ct);
             
-            if (Directory.Exists(index))
+            if (Directory.Exists(path))
                 return HandleDirectory(context, FullPath, ct);
-            
-            return false;
+
+            return Task.FromResult(false);
         }
 
         private async Task<bool> HandleFile(HttpListenerContext context, string localPath, CancellationToken ct)
@@ -148,7 +148,8 @@
             try
             {
                 buffer = new FileStream(localPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-               
+                context.Response.ContentLength64 = buffer.Length;
+
                 await WriteToOutputStream(context.Response, buffer, ct);
             }
             catch (HttpListenerException)
