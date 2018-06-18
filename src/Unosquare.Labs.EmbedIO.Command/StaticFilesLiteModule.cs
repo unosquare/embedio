@@ -6,6 +6,7 @@
     using System.IO;
     using System.Linq;
     using System.Net;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     using Constants;
@@ -157,6 +158,11 @@
                     context.Response.ContentType = _mimeTypes.Value[fileExtension];
 
                 buffer = new FileStream(localPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+ 
+                if (Path.GetExtension(localPath).Equals(".html") || Path.GetExtension(localPath).Equals(".htm"))
+                    buffer = WriteJsWebSocket(localPath);
+
+
                 context.Response.ContentLength64 = buffer.Length;
 
                 await WriteToOutputStream(context.Response, buffer, ct);
@@ -172,6 +178,15 @@
             }
 
             return true;
+        }
+
+        private static Stream WriteJsWebSocket(string path)
+        {
+            var file = File.ReadAllText(path, Encoding.UTF8);
+            var jsTag = "<script>var ws=new WebSocket('ws://'+document.location.hostname+':"+ Program.WsPort + "/watcher');ws.onmessage=function(){document.location.reload()};</script>";
+            var newFile = file.Insert(file.IndexOf("</body>"), jsTag);
+
+            return new MemoryStream(Encoding.UTF8.GetBytes(newFile));
         }
     }
 }

@@ -10,6 +10,8 @@ namespace Unosquare.Labs.EmbedIO.Command
     /// </summary>
     internal class Program
     {
+
+        public static int WsPort { get; set; }
         /// <summary>
         /// Load WebServer instance
         /// </summary>
@@ -27,6 +29,7 @@ namespace Unosquare.Labs.EmbedIO.Command
             "Press any key to stop the server.".Info();
 
             var url = $"http://localhost:{options.Port}/";
+            WsPort = options.Port + 1;
 
             using (var server = new WebServer(url))
             {

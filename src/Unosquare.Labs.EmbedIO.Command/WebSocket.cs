@@ -10,8 +10,8 @@
         public static WebServer Server { get; private set; }
 
         public static void Setup()
-        {            
-            Server = new WebServer("http://localhost:9697/");
+        {
+            Server = new WebServer("http://localhost:"+ Program.WsPort + "/");
 
             Server.RegisterModule(new WebSocketsModule());
             Server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsWatcherServer>();
