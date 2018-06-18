@@ -26,7 +26,6 @@ install:
 before_script:
   - if [[ $DOTNETCORE == "" ]]; then export LD_LIBRARY_PATH=/usr/local/lib; fi
   - if [[ $DOTNETCORE == "" && $TRAVIS_OS_NAME = "linux" ]]; then sed -i 's/uap10.0;netstandard1.3;net46;net47;netstandard2.0/net46/g' ./src/Unosquare.Labs.EmbedIO/Unosquare.Labs.EmbedIO.csproj; fi
-  - if [[ $DOTNETCORE == "" && $TRAVIS_OS_NAME = "linux" ]]; then sed -i 's/net46;netcoreapp2.1/net46/g' ./src/Unosquare.Labs.EmbedIO.Command/Unosquare.Labs.EmbedIO.Command.csproj; fi
   - if [[ $DOTNETCORE == "" && $TRAVIS_OS_NAME = "linux" ]]; then sed -i 's/net46;net47;netcoreapp2.1/net46/g' ./src/Unosquare.Labs.EmbedIO.Samples/Unosquare.Labs.EmbedIO.Samples.csproj; fi
   - if [[ $DOTNETCORE == "" && $TRAVIS_OS_NAME = "linux" ]]; then sed -i 's/net46;net47;netcoreapp2.1/net46/g' ./test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj; fi
 script:
