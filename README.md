@@ -321,5 +321,17 @@ public class WebSocketsChatServer : WebSocketsServer
 }
 ```
 
+Related Projects and Nugets
+---------------------------
+
+Name | Author | Description
+-----|--------|--------------
+EmbedIO.OWIN |  Mario Di Vece, Geo Perez | EmbedIO can use the OWIN platform in two different approach: You can use EmbedIO as OWIN server and use all OWIN framework with EmbedIO modules.
+Microsoft.AspNetCore.Server.EmbedIO | Dju  | EmbedIO web server support for ASP.NET Core, as a drop-in replacement for Kestrel
+Butterfly.EmbedIO | Fireshark Studios, LLC | Implementation of Butterfly.Core.Channel and Butterfly.Core.WebApi using the EmbedIO server
+EmbedIO.LiteLibWebApi | Unosquare | Allow to expose a sqlite database as REST api using EmbedIO WebApi and LiteLib libraries
+embedio-cli | Unosquare | A dotnet global tool that enables start any web folder or EmbedIO assembly (WebAPI or WebSocket) from command line.
+EmbedIO.BearerToken  | Mario Di Vece, Geo Perez | Allow to authenticate with a Bearer Token. It uses a Token endpoint (at /token path) and with a defined validation delegate create a JsonWebToken. The module can check all incoming requests or a paths
+
 ## Notes
 [1] - EmbedIO uses lowercase URL parts. In Windows systems, this is the expected behavior but in Unix systems using MONO please refer to [Mono IOMap](http://www.mono-project.com/docs/advanced/iomap/) if you want to work with case-insensitive URL parts.
