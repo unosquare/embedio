@@ -370,7 +370,49 @@ public class WebSocketsChatServer : WebSocketsServer
         this.Broadcast(&quot;Someone left the chat room.&quot;);
     }
 }
-</code></pre><h2 id="notes">Notes</h2>
+</code></pre><h2 id="related-projects-and-nugets">Related Projects and Nugets</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Author</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EmbedIO.OWIN</td>
+<td>Mario Di Vece, Geo Perez</td>
+<td>EmbedIO can use the OWIN platform in two different approach: You can use EmbedIO as OWIN server and use all OWIN framework with EmbedIO modules.</td>
+</tr>
+<tr>
+<td>Microsoft.AspNetCore.Server.EmbedIO</td>
+<td>Dju</td>
+<td>EmbedIO web server support for ASP.NET Core, as a drop-in replacement for Kestrel</td>
+</tr>
+<tr>
+<td>Butterfly.EmbedIO</td>
+<td>Fireshark Studios, LLC</td>
+<td>Implementation of Butterfly.Core.Channel and Butterfly.Core.WebApi using the EmbedIO server</td>
+</tr>
+<tr>
+<td>EmbedIO.LiteLibWebApi</td>
+<td>Unosquare</td>
+<td>Allow to expose a sqlite database as REST api using EmbedIO WebApi and LiteLib libraries</td>
+</tr>
+<tr>
+<td>embedio-cli</td>
+<td>Unosquare</td>
+<td>A dotnet global tool that enables start any web folder or EmbedIO assembly (WebAPI or WebSocket) from command line.</td>
+</tr>
+<tr>
+<td>EmbedIO.BearerToken</td>
+<td>Mario Di Vece, Geo Perez</td>
+<td>Allow to authenticate with a Bearer Token. It uses a Token endpoint (at /token path) and with a defined validation delegate create a JsonWebToken. The module can check all incoming requests or a paths</td>
+</tr>
+</tbody>
+</table>
+<h2 id="notes">Notes</h2>
 <p>[1] - EmbedIO uses lowercase URL parts. In Windows systems, this is the expected behavior but in Unix systems using MONO please refer to <a href="http://www.mono-project.com/docs/advanced/iomap/">Mono IOMap</a> if you want to work with case-insensitive URL parts.</p>
 </article>
           </div>
