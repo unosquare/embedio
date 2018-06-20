@@ -9,6 +9,20 @@
 
 *:star: Please star this project if you find it useful!*
 
+
+- [Overview](#overview)
+    - [Some usage scenarios](#some-usage-scenarios)
+- [NuGet Installation](#nuget-installation)
+- [Examples](#examples)
+    - [Basic Example](#basic-example)
+    - [Fluent Example](#fluent-example)
+    - [REST API Example](#rest-api-example)
+    - [WebSockets Example](#websockets-example)
+- [Related Projects and Nugets](#related-projects-and-nugets)
+- [Notes](#notes)
+
+
+## Overview
 A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework and .NET Core.
 
 * Written entirely in C#, using our helpful library [SWAN](https://github.com/unosquare/swan)
@@ -25,7 +39,7 @@ A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework
 
 *For detailed usage and REST API implementation, download the code and take a look at the Samples project*
 
-**Some usage scenarios**:
+### **Some usage scenarios**:
 
 * Write a cross-platform GUI entirely in CSS/HTML/JS
 * Write a game using Babylon.js and make EmbedIO your serve your code and assets
@@ -44,14 +58,14 @@ Some notes regarding WebSocket and runtimes support:
 
 EmbedIO before version 1.4.0 uses Newtonsoft JSON and an internal logger subsystem based on ILog interface.
 
-NuGet Installation:
--------------------
+## NuGet Installation:
 ```
 PM> Install-Package EmbedIO
 ```
 
-Basic Example:
---------------
+## Examples
+
+## Basic Example:
 
 *Please note the comments are the important part here. More info is available in the samples.*
 
@@ -115,8 +129,7 @@ namespace Company.Project
 }
 ```
 
-Fluent Example:
----------------
+## Fluent Example:
 
 Many extension methods are available. This allows you to create a web server instance in a fluent style by dotting in configuration options.
 
@@ -166,8 +179,7 @@ namespace Company.Project
 }
 ```
 
-REST API Example:
------------------
+## REST API Example:
 
 The WebApi module supports two routing strategies: Wildcard and Regex. By default, and in order to maintain backward compatibility, the WebApi module will use the **Wildcard Routing Strategy** and match routes using the asterisk `*` character in the route. **For example:** 
 - The route `/api/people/*` will match any request with a URL starting with the two first URL segments `api` and `people` and ending with anything. The route `/api/people/hello` will be matched.
@@ -240,8 +252,7 @@ public class PeopleController : WebApiController
 }
 ```
 
-WebSockets Example:
--------------------
+## WebSockets Example:
 
 *During server setup:*
 
@@ -320,6 +331,17 @@ public class WebSocketsChatServer : WebSocketsServer
     }
 }
 ```
+
+## Related Projects and Nugets
+
+Name | Author | Description
+-----|--------|--------------
+[Butterfly.EmbedIO](https://www.nuget.org/packages/Butterfly.EmbedIO/) | Fireshark Studios, LLC | Implementation of Butterfly.Core.Channel and Butterfly.Core.WebApi using the EmbedIO server
+[embedio-cli](https://github.com/unosquare/embedio-cli) | Unosquare | A dotnet global tool that enables start any web folder or EmbedIO assembly (WebAPI or WebSocket) from command line.
+[EmbedIO.BearerToken](https://www.nuget.org/packages/EmbedIO.BearerToken/)  | Unosquare | Allow to authenticate with a Bearer Token. It uses a Token endpoint (at /token path) and with a defined validation delegate create a JsonWebToken. The module can check all incoming requests or a paths
+[EmbedIO.LiteLibWebApi](https://www.nuget.org/packages/EmbedIO.LiteLibWebApi/) | Unosquare | Allow to expose a sqlite database as REST api using EmbedIO WebApi and LiteLib libraries
+[EmbedIO.OWIN](https://www.nuget.org/packages/EmbedIO.OWIN/) | Unosquare | EmbedIO can use the OWIN platform in two different approach: You can use EmbedIO as OWIN server and use all OWIN framework with EmbedIO modules.
+[Microsoft.AspNetCore.Server.EmbedIO](https://www.nuget.org/packages/Microsoft.AspNetCore.Server.EmbedIO/) | Dju  | EmbedIO web server support for ASP.NET Core, as a drop-in replacement for Kestrel
 
 ## Notes
 [1] - EmbedIO uses lowercase URL parts. In Windows systems, this is the expected behavior but in Unix systems using MONO please refer to [Mono IOMap](http://www.mono-project.com/docs/advanced/iomap/) if you want to work with case-insensitive URL parts.
