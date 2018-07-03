@@ -302,7 +302,7 @@
             if (validateFunc == null) validateFunc = () => false;
             if (requestPath == basePath && !validateFunc()) return new Dictionary<string, object>();
 
-            var regex = new Regex(RouteParamRegex.Replace(basePath, RegexRouteReplace));
+            var regex = new Regex(RouteParamRegex.Replace(basePath, RegexRouteReplace), RegexOptions.IgnoreCase);
             var match = regex.Match(requestPath);
 
             var pathParts = basePath.Split('/');

@@ -44,7 +44,7 @@
                 if (context.Request.IsWebSocketRequest == false)
                     return false;
 
-                var path = string.Empty;
+                string path;
 
                 // retrieve the request path
                 switch (Server.RoutingStrategy)
