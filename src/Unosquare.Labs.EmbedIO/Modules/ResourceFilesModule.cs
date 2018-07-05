@@ -43,20 +43,20 @@
 
             if (sourceAssembly.GetName() == null)
                 throw new ArgumentException($"Assembly '{sourceAssembly}' not valid.");
-            
+
             UseGzip = true;
             _sourceAssembly = sourceAssembly;
             _resourcePathRoot = resourcePath;
-            
+
             headers?.ForEach(DefaultHeaders.Add);
 
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Head, (context, ct) => HandleGet(context, ct, false));
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (context, ct) => HandleGet(context, ct));
         }
 
-          /// <inheritdoc />
+        /// <inheritdoc />
         public override string Name => nameof(ResourceFilesModule).Humanize();
-        
+
         private static string PathResourcerize(string s) => s == "/" ? "index.html" : s.Substring(1, s.Length - 1).Replace('/', '.');
 
         private async Task<bool> HandleGet(HttpListenerContext context, CancellationToken ct, bool sendBuffer = true)
@@ -67,11 +67,11 @@
             {
                 var localPath = PathResourcerize(context.RequestPathCaseSensitive());
                 var partialHeader = context.RequestHeader(Headers.Range);
-                
+
                 $"Resource System: {localPath}".Debug();
 
                 buffer = _sourceAssembly.GetManifestResourceStream($"{_resourcePathRoot}.{localPath}");
-                
+
                 // If buffer is null something is really wrong
                 if (buffer == null)
                 {
@@ -90,7 +90,7 @@
                     context.Response.ContentLength64 = buffer.Length;
                     return true;
                 }
-                
+
                 await WriteFileAsync(partialHeader?.StartsWith("bytes=") == true, partialHeader, buffer.Length, context, buffer, ct);
             }
             catch (HttpListenerException)
@@ -107,10 +107,7 @@
 
         private void SetHeaders(HttpListenerResponse response, string localPath, string utcFileDateString)
         {
-            var fileExtension = ".html";
-
-            if (localPath.Contains("."))
-                fileExtension = $".{localPath.Split('.').Last()}";
+            var fileExtension = localPath.Contains(".") ? $".{localPath.Split('.').Last()}" : ".html";
 
             if (MimeTypes.Value.ContainsKey(fileExtension))
                 response.ContentType = MimeTypes.Value[fileExtension];

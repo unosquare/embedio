@@ -207,15 +207,15 @@
             {
                 $"Failed to unregister module '{moduleType}' because no module with that type has been previously registered."
                     .Warn(nameof(WebServer));
-            }
-            else
-            {
-                var module = Module(moduleType);
-                _modules.Remove(module);
 
-                if (module == SessionModule)
-                    SessionModule = null;
+                return;
             }
+
+            var module = Module(moduleType);
+            _modules.Remove(module);
+
+            if (module == SessionModule)
+                SessionModule = null;
         }
 
         /// <summary>
