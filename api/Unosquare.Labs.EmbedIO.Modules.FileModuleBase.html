@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class WebModuleBase
+    <title>Class FileModuleBase
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class WebModuleBase
+    <meta name="title" content="Class FileModuleBase
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.37.0.0">
     
@@ -77,26 +77,20 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase">
+            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase">
   
   
-  <h1 id="Unosquare_Labs_EmbedIO_WebModuleBase" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase" class="text-break">Class WebModuleBase
+  <h1 id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase" class="text-break">Class FileModuleBase
   </h1>
-  <div class="markdown level0 summary"><p>Base class to define custom web modules.
-Inherit from this class and use the AddHandler Method to register your method calls.</p>
-</div>
+  <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">WebModuleBase</span></div>
-      <div class="level2"><a class="xref" href="Unosquare.Labs.EmbedIO.Modules.AuthModule.html">AuthModule</a></div>
-      <div class="level2"><a class="xref" href="Unosquare.Labs.EmbedIO.Modules.CorsModule.html">CorsModule</a></div>
-      <div class="level2"><a class="xref" href="Unosquare.Labs.EmbedIO.Modules.FallbackModule.html">FallbackModule</a></div>
-      <div class="level2"><a class="xref" href="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html">FileModuleBase</a></div>
-      <div class="level2"><a class="xref" href="Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.html">LocalSessionModule</a></div>
-      <div class="level2"><a class="xref" href="Unosquare.Labs.EmbedIO.Modules.WebApiModule.html">WebApiModule</a></div>
-      <div class="level2"><a class="xref" href="Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.html">WebSocketsModule</a></div>
+    <div class="level1"><a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html">WebModuleBase</a></div>
+    <div class="level2"><span class="xref">FileModuleBase</span></div>
+      <div class="level3"><a class="xref" href="Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.html">ResourceFilesModule</a></div>
+      <div class="level3"><a class="xref" href="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html">StaticFilesModule</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -104,6 +98,27 @@ Inherit from this class and use the AddHandler Method to register your method ca
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_Name">WebModuleBase.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_Handlers">WebModuleBase.Handlers</a>
+    </div>
+    <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_Server">WebModuleBase.Server</a>
+    </div>
+    <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_IsWatchdogEnabled">WebModuleBase.IsWatchdogEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_WatchdogInterval">WebModuleBase.WatchdogInterval</a>
+    </div>
+    <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_System_Func_Unosquare_Net_HttpListenerContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___">WebModuleBase.AddHandler(String, HttpVerbs, Func&lt;HttpListenerContext, CancellationToken, Task&lt;Boolean&gt;&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_RunWatchdog">WebModuleBase.RunWatchdog()</a>
+    </div>
     <div>
       <span class="xref">System.Object.ToString()</span>
     </div>
@@ -126,36 +141,50 @@ Inherit from this class and use the AddHandler Method to register your method ca
       <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.html">Unosquare.Labs.EmbedIO</a></h6>
-  <h5 id="Unosquare_Labs_EmbedIO_WebModuleBase_syntax">Syntax</h5>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.html">Unosquare.Labs.EmbedIO.Modules</a></h6>
+  <h5 id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class WebModuleBase : IWebModule</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class FileModuleBase : WebModuleBase, IWebModule</code></pre>
   </div>
-  <h3 id="constructors">Constructors
+  <h3 id="fields">Fields
   </h3>
   
   
-  <a id="Unosquare_Labs_EmbedIO_WebModuleBase__ctor_" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase.#ctor*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_WebModuleBase__ctor" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase.#ctor">WebModuleBase()</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html">WebModuleBase</a> class.</p>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_MaxGzipInputLength" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.MaxGzipInputLength">MaxGzipInputLength</h4>
+  <div class="markdown level1 summary"><p>The maximum gzip input length</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected WebModuleBase()</code></pre>
+    <pre><code class="lang-csharp hljs">protected const int MaxGzipInputLength = 4194304</code></pre>
   </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
   </h3>
   
   
-  <a id="Unosquare_Labs_EmbedIO_WebModuleBase_Handlers_" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase.Handlers*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_WebModuleBase_Handlers" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase.Handlers">Handlers</h4>
-  <div class="markdown level1 summary"><p>Gets the registered handlers.</p>
+  <a id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_DefaultHeaders_" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.DefaultHeaders*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_DefaultHeaders" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.DefaultHeaders">DefaultHeaders</h4>
+  <div class="markdown level1 summary"><p>The default headers</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ModuleMap Handlers { get; protected set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, string&gt; DefaultHeaders { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -167,22 +196,48 @@ Inherit from this class and use the AddHandler Method to register your method ca
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.ModuleMap.html">ModuleMap</a></td>
-        <td><p>The handlers.</p>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_MimeTypes_" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.MimeTypes*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_MimeTypes" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.MimeTypes">MimeTypes</h4>
+  <div class="markdown level1 summary"><p>Gets the collection holding the MIME types.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Lazy&lt;ReadOnlyDictionary&lt;string, string&gt;&gt; MimeTypes { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Lazy</span>&lt;<span class="xref">System.Collections.ObjectModel.ReadOnlyDictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>&gt;&gt;</td>
+        <td><p>The MIME types.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_WebModuleBase_IsWatchdogEnabled_" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase.IsWatchdogEnabled*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_WebModuleBase_IsWatchdogEnabled" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase.IsWatchdogEnabled">IsWatchdogEnabled</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is watchdog enabled.</p>
+  <a id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_UseGzip_" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.UseGzip*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_UseGzip" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.UseGzip">UseGzip</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [use gzip].</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsWatchdogEnabled { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool UseGzip { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -195,89 +250,7 @@ Inherit from this class and use the AddHandler Method to register your method ca
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><p><code>true</code> if this instance is watchdog enabled; otherwise, <code>false</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_WebModuleBase_Name_" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase.Name*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_WebModuleBase_Name" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase.Name">Name</h4>
-  <div class="markdown level1 summary"><p>Gets the friendly name of the module.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract string Name { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><p>The name.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_WebModuleBase_Server_" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase.Server*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_WebModuleBase_Server" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase.Server">Server</h4>
-  <div class="markdown level1 summary"><p>Gets the associated Web Server object.
-This property is automatically set when the module is registered</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public WebServer Server { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
-        <td><p>The server.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_WebModuleBase_WatchdogInterval_" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase.WatchdogInterval*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_WebModuleBase_WatchdogInterval" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase.WatchdogInterval">WatchdogInterval</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the watchdog interval.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TimeSpan WatchdogInterval { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.TimeSpan</span></td>
-        <td><p>The watchdog interval.</p>
+        <td><p><code>true</code> if [use gzip]; otherwise, <code>false</code>.</p>
 </td>
       </tr>
     </tbody>
@@ -286,14 +259,14 @@ This property is automatically set when the module is registered</p>
   </h3>
   
   
-  <a id="Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_System_Func_Unosquare_Net_HttpListenerContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs,System.Func{Unosquare.Net.HttpListenerContext,System.Threading.CancellationToken,System.Threading.Tasks.Task{System.Boolean}})">AddHandler(String, HttpVerbs, Func&lt;HttpListenerContext, CancellationToken, Task&lt;Boolean&gt;&gt;)</h4>
-  <div class="markdown level1 summary"><p>Adds a handler that gets called when a path and verb are matched.</p>
+  <a id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_SetDefaultCacheHeaders_" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.SetDefaultCacheHeaders*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_SetDefaultCacheHeaders_Unosquare_Net_HttpListenerResponse_" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.SetDefaultCacheHeaders(Unosquare.Net.HttpListenerResponse)">SetDefaultCacheHeaders(HttpListenerResponse)</h4>
+  <div class="markdown level1 summary"><p>Sets the default cache headers.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void AddHandler(string path, HttpVerbs verb, Func&lt;HttpListenerContext, CancellationToken, Task&lt;bool&gt;&gt; handler)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void SetDefaultCacheHeaders(HttpListenerResponse response)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -306,65 +279,88 @@ This property is automatically set when the module is registered</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">path</span></td>
-        <td><p>The path.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.HttpVerbs.html">HttpVerbs</a></td>
-        <td><span class="parametername">verb</span></td>
-        <td><p>The verb.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Func</span>&lt;<a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a>, <span class="xref">System.Threading.CancellationToken</span>, <span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Boolean</span>&gt;&gt;</td>
-        <td><span class="parametername">handler</span></td>
-        <td><p>The handler.</p>
+        <td><a class="xref" href="Unosquare.Net.HttpListenerResponse.html">HttpListenerResponse</a></td>
+        <td><span class="parametername">response</span></td>
+        <td><p>The response.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_WriteFileAsync_" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_WriteFileAsync_System_Boolean_System_String_System_Int64_Unosquare_Net_HttpListenerContext_System_IO_Stream_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.Boolean,System.String,System.Int64,Unosquare.Net.HttpListenerContext,System.IO.Stream,System.Threading.CancellationToken)">WriteFileAsync(Boolean, String, Int64, HttpListenerContext, Stream, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Writes the file asynchronous.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Task WriteFileAsync(bool usingPartial, string partialHeader, long fileSize, HttpListenerContext context, Stream buffer, CancellationToken ct)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Condition</th>
+        <th>Name</th>
+        <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentNullException</span></td>
-        <td><p>path
-or
-handler</p>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">usingPartial</span></td>
+        <td><p>if set to <code>true</code> [using partial].</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">partialHeader</span></td>
+        <td><p>The partial header.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><span class="parametername">fileSize</span></td>
+        <td><p>Size of the file.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The buffer.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">ct</span></td>
+        <td><p>The ct.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_WebModuleBase_Finalize_" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase.Finalize*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_WebModuleBase_Finalize" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase.Finalize">Finalize()</h4>
-  <div class="markdown level1 summary"><p>Finalizes an instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html">WebModuleBase</a> class.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void Finalize()</code></pre>
-  </div>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_WebModuleBase_RunWatchdog_" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase.RunWatchdog*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_WebModuleBase_RunWatchdog" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase.RunWatchdog">RunWatchdog()</h4>
-  <div class="markdown level1 summary"><p>Runs the watchdog.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void RunWatchdog()</code></pre>
-  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>A task representing the write action.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html">IWebModule</a>

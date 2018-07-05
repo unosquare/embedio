@@ -1176,6 +1176,83 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule.RedirectUrl
   nameWithType: FallbackModule.RedirectUrl
+- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase
+  name: FileModuleBase
+  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html
+  commentId: T:Unosquare.Labs.EmbedIO.Modules.FileModuleBase
+  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase
+  nameWithType: FileModuleBase
+- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.DefaultHeaders
+  name: DefaultHeaders
+  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_DefaultHeaders
+  commentId: P:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.DefaultHeaders
+  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.DefaultHeaders
+  nameWithType: FileModuleBase.DefaultHeaders
+- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.DefaultHeaders*
+  name: DefaultHeaders
+  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_DefaultHeaders_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.DefaultHeaders
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.DefaultHeaders
+  nameWithType: FileModuleBase.DefaultHeaders
+- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.MaxGzipInputLength
+  name: MaxGzipInputLength
+  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_MaxGzipInputLength
+  commentId: F:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.MaxGzipInputLength
+  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.MaxGzipInputLength
+  nameWithType: FileModuleBase.MaxGzipInputLength
+- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.MimeTypes
+  name: MimeTypes
+  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_MimeTypes
+  commentId: P:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.MimeTypes
+  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.MimeTypes
+  nameWithType: FileModuleBase.MimeTypes
+- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.MimeTypes*
+  name: MimeTypes
+  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_MimeTypes_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.MimeTypes
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.MimeTypes
+  nameWithType: FileModuleBase.MimeTypes
+- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.SetDefaultCacheHeaders(Unosquare.Net.HttpListenerResponse)
+  name: SetDefaultCacheHeaders(HttpListenerResponse)
+  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_SetDefaultCacheHeaders_Unosquare_Net_HttpListenerResponse_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.SetDefaultCacheHeaders(Unosquare.Net.HttpListenerResponse)
+  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.SetDefaultCacheHeaders(Unosquare.Net.HttpListenerResponse)
+  nameWithType: FileModuleBase.SetDefaultCacheHeaders(HttpListenerResponse)
+- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.SetDefaultCacheHeaders*
+  name: SetDefaultCacheHeaders
+  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_SetDefaultCacheHeaders_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.SetDefaultCacheHeaders
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.SetDefaultCacheHeaders
+  nameWithType: FileModuleBase.SetDefaultCacheHeaders
+- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.UseGzip
+  name: UseGzip
+  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_UseGzip
+  commentId: P:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.UseGzip
+  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.UseGzip
+  nameWithType: FileModuleBase.UseGzip
+- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.UseGzip*
+  name: UseGzip
+  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_UseGzip_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.UseGzip
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.UseGzip
+  nameWithType: FileModuleBase.UseGzip
+- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.Boolean,System.String,System.Int64,Unosquare.Net.HttpListenerContext,System.IO.Stream,System.Threading.CancellationToken)
+  name: WriteFileAsync(Boolean, String, Int64, HttpListenerContext, Stream, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_WriteFileAsync_System_Boolean_System_String_System_Int64_Unosquare_Net_HttpListenerContext_System_IO_Stream_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.Boolean,System.String,System.Int64,Unosquare.Net.HttpListenerContext,System.IO.Stream,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.Boolean, System.String, System.Int64, Unosquare.Net.HttpListenerContext, System.IO.Stream, System.Threading.CancellationToken)
+  nameWithType: FileModuleBase.WriteFileAsync(Boolean, String, Int64, HttpListenerContext, Stream, CancellationToken)
+- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync*
+  name: WriteFileAsync
+  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_WriteFileAsync_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync
+  nameWithType: FileModuleBase.WriteFileAsync
 - uid: Unosquare.Labs.EmbedIO.Modules.LocalSessionModule
   name: LocalSessionModule
   href: api/Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.html
@@ -1320,12 +1397,15 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule
   fullName: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule
   nameWithType: ResourceFilesModule
-- uid: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.#ctor(System.Reflection.Assembly,System.String)
-  name: ResourceFilesModule(Assembly, String)
-  href: api/Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.html#Unosquare_Labs_EmbedIO_Modules_ResourceFilesModule__ctor_System_Reflection_Assembly_System_String_
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.#ctor(System.Reflection.Assembly,System.String)
-  fullName: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.ResourceFilesModule(System.Reflection.Assembly, System.String)
-  nameWithType: ResourceFilesModule.ResourceFilesModule(Assembly, String)
+- uid: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.#ctor(System.Reflection.Assembly,System.String,System.Collections.Generic.Dictionary{System.String,System.String})
+  name: ResourceFilesModule(Assembly, String, Dictionary<String, String>)
+  href: api/Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.html#Unosquare_Labs_EmbedIO_Modules_ResourceFilesModule__ctor_System_Reflection_Assembly_System_String_System_Collections_Generic_Dictionary_System_String_System_String__
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.#ctor(System.Reflection.Assembly,System.String,System.Collections.Generic.Dictionary{System.String,System.String})
+  name.vb: ResourceFilesModule(Assembly, String, Dictionary(Of String, String))
+  fullName: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.ResourceFilesModule(System.Reflection.Assembly, System.String, System.Collections.Generic.Dictionary<System.String, System.String>)
+  fullName.vb: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.ResourceFilesModule(System.Reflection.Assembly, System.String, System.Collections.Generic.Dictionary(Of System.String, System.String))
+  nameWithType: ResourceFilesModule.ResourceFilesModule(Assembly, String, Dictionary<String, String>)
+  nameWithType.vb: ResourceFilesModule.ResourceFilesModule(Assembly, String, Dictionary(Of String, String))
 - uid: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.#ctor*
   name: ResourceFilesModule
   href: api/Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.html#Unosquare_Labs_EmbedIO_Modules_ResourceFilesModule__ctor_
@@ -1333,32 +1413,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.ResourceFilesModule
   nameWithType: ResourceFilesModule.ResourceFilesModule
-- uid: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.DefaultHeaders
-  name: DefaultHeaders
-  href: api/Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.html#Unosquare_Labs_EmbedIO_Modules_ResourceFilesModule_DefaultHeaders
-  commentId: P:Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.DefaultHeaders
-  fullName: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.DefaultHeaders
-  nameWithType: ResourceFilesModule.DefaultHeaders
-- uid: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.DefaultHeaders*
-  name: DefaultHeaders
-  href: api/Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.html#Unosquare_Labs_EmbedIO_Modules_ResourceFilesModule_DefaultHeaders_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.DefaultHeaders
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.DefaultHeaders
-  nameWithType: ResourceFilesModule.DefaultHeaders
-- uid: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.MimeTypes
-  name: MimeTypes
-  href: api/Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.html#Unosquare_Labs_EmbedIO_Modules_ResourceFilesModule_MimeTypes
-  commentId: P:Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.MimeTypes
-  fullName: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.MimeTypes
-  nameWithType: ResourceFilesModule.MimeTypes
-- uid: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.MimeTypes*
-  name: MimeTypes
-  href: api/Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.html#Unosquare_Labs_EmbedIO_Modules_ResourceFilesModule_MimeTypes_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.MimeTypes
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.MimeTypes
-  nameWithType: ResourceFilesModule.MimeTypes
 - uid: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.Name
   name: Name
   href: api/Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.html#Unosquare_Labs_EmbedIO_Modules_ResourceFilesModule_Name
@@ -1454,19 +1508,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.DefaultExtension
   nameWithType: StaticFilesModule.DefaultExtension
-- uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.DefaultHeaders
-  name: DefaultHeaders
-  href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_DefaultHeaders
-  commentId: P:Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.DefaultHeaders
-  fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.DefaultHeaders
-  nameWithType: StaticFilesModule.DefaultHeaders
-- uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.DefaultHeaders*
-  name: DefaultHeaders
-  href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_DefaultHeaders_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.DefaultHeaders
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.DefaultHeaders
-  nameWithType: StaticFilesModule.DefaultHeaders
 - uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.FileSystemPath
   name: FileSystemPath
   href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_FileSystemPath
@@ -1493,19 +1534,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.MaxRamCacheFileSize
   nameWithType: StaticFilesModule.MaxRamCacheFileSize
-- uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.MimeTypes
-  name: MimeTypes
-  href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_MimeTypes
-  commentId: P:Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.MimeTypes
-  fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.MimeTypes
-  nameWithType: StaticFilesModule.MimeTypes
-- uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.MimeTypes*
-  name: MimeTypes
-  href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_MimeTypes_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.MimeTypes
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.MimeTypes
-  nameWithType: StaticFilesModule.MimeTypes
 - uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Name
   name: Name
   href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_Name
@@ -1545,19 +1573,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.UnregisterVirtualPath
   nameWithType: StaticFilesModule.UnregisterVirtualPath
-- uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.UseGzip
-  name: UseGzip
-  href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_UseGzip
-  commentId: P:Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.UseGzip
-  fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.UseGzip
-  nameWithType: StaticFilesModule.UseGzip
-- uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.UseGzip*
-  name: UseGzip
-  href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_UseGzip_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.UseGzip
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.UseGzip
-  nameWithType: StaticFilesModule.UseGzip
 - uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.UseRamCache
   name: UseRamCache
   href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_UseRamCache
