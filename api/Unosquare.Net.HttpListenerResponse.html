@@ -388,12 +388,12 @@ implements the IDisposable interface, and that object has been disposed</p>
   
   <a id="Unosquare_Net_HttpListenerResponse_ProtocolVersion_" data-uid="Unosquare.Net.HttpListenerResponse.ProtocolVersion*"></a>
   <h4 id="Unosquare_Net_HttpListenerResponse_ProtocolVersion" data-uid="Unosquare.Net.HttpListenerResponse.ProtocolVersion">ProtocolVersion</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the protocol version.</p>
+  <div class="markdown level1 summary"><p>Gets the protocol version.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Version ProtocolVersion { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Version ProtocolVersion { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -407,38 +407,6 @@ implements the IDisposable interface, and that object has been disposed</p>
       <tr>
         <td><span class="xref">System.Version</span></td>
         <td><p>The protocol version.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ObjectDisposedException</span></td>
-        <td><p>Is thrown when you try to access a member of an object that implements the
-IDisposable interface, and that object has been disposed</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.InvalidOperationException</span></td>
-        <td><p>Cannot be changed after headers are sent.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.ArgumentNullException</span></td>
-        <td><p>value</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Must be 1.0 or 1.1 - value</p>
 </td>
       </tr>
     </tbody>
