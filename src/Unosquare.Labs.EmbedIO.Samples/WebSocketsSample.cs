@@ -152,7 +152,7 @@
             var process = new Process
             {
                 EnableRaisingEvents = true,
-                StartInfo = new ProcessStartInfo()
+                StartInfo = new ProcessStartInfo
                 {
                     CreateNoWindow = true,
                     ErrorDialog = false,

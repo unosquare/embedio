@@ -655,7 +655,7 @@ using System.Threading.Tasks;
     /// <summary>
     /// Define HTTP Versions
     /// </summary>
-    internal class HttpVersion
+    internal static class HttpVersion
     {
         /// <summary>
         /// The version 1.0

@@ -29,7 +29,7 @@
             _webServer = new WebServer(WebServerUrl, _routeStrategy);
 
             _builder(_webServer);
-            var runTask = _webServer.RunAsync();
+            _webServer.RunAsync();
         }
 
         [TearDown]

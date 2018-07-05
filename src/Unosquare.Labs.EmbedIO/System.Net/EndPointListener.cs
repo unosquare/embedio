@@ -62,7 +62,7 @@ using System.Security.Cryptography;
                 _secure = secure;
 				_cert = listener.LoadCertificateAndKey (addr, port);
 #else
-                throw new Exception("SSL is not supported");
+                throw new ArgumentException("SSL is not supported");
 #endif
             }
 
