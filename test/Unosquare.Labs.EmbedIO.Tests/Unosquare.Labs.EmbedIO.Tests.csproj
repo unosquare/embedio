@@ -9,9 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Remove="Resources\sub\index.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\index.html" />
+    <EmbeddedResource Include="Resources\sub\index.html" />
   </ItemGroup>
 
   <ItemGroup>

@@ -51,7 +51,7 @@
         public WebServer Server { get; set; }
         
         /// <inheritdoc/>
-        public bool IsWatchdogEnabled { get; set; } = false;
+        public bool IsWatchdogEnabled { get; set; }
         
         /// <inheritdoc/>
         public TimeSpan WatchdogInterval { get; set; } = TimeSpan.FromSeconds(30);

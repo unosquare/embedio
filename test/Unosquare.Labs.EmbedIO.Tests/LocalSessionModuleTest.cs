@@ -156,10 +156,11 @@
                             Assert.AreEqual(resonse.StatusCode, HttpStatusCode.OK, "Status OK");
                             var responseCookies = handler.CookieContainer.GetCookies(uri).Cast<Cookie>();
                             Assert.IsNotNull(responseCookies, "Cookies are not null");
+
                             Assert.Greater(responseCookies.Count(), 0, "Cookies are not empty");
                             var cookieName =
                                 responseCookies.FirstOrDefault(c => c.Name == TestLocalSessionController.CookieName);
-                            Assert.AreEqual(TestLocalSessionController.CookieName, cookieName.Name);
+                            Assert.AreEqual(TestLocalSessionController.CookieName, cookieName?.Name);
                         }
                     }
                 }

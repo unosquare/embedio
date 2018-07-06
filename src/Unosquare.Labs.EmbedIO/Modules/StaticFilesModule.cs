@@ -22,22 +22,12 @@
     /// Represents a simple module to server static files from the file system.
     /// </summary>
     public class StaticFilesModule
-        : WebModuleBase
+        : FileModuleBase
     {
         /// <summary>
         /// Default document constant to "index.html"
         /// </summary>
         public const string DefaultDocumentName = "index.html";
-
-        /// <summary>
-        /// The chunk size for sending files
-        /// </summary>
-        private const int ChunkSize = 256 * 1024;
-
-        /// <summary>
-        /// The maximum gzip input length
-        /// </summary>
-        private const int MaxGzipInputLength = 4 * 1024 * 1024;
 
         /// <summary>
         /// Maximal length of entry in DirectoryBrowser
@@ -50,11 +40,6 @@
         private const int SizeIndent = 20;
 
         private readonly VirtualPaths _virtualPaths;
-
-        private readonly Lazy<Dictionary<string, string>> _mimeTypes =
-            new Lazy<Dictionary<string, string>>(
-                () =>
-                    new Dictionary<string, string>(Constants.MimeTypes.DefaultMimeTypes, Strings.StandardStringComparer));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StaticFilesModule"/> class.
@@ -148,18 +133,7 @@
             get => _virtualPaths.DefaultExtension;
             set => _virtualPaths.DefaultExtension = value;
         }
-
-        /// <summary>
-        /// Gets the collection holding the MIME types.
-        /// </summary>
-        /// <value>
-        /// The MIME types.
-        /// </value>
-        public Lazy<ReadOnlyDictionary<string, string>> MimeTypes
-            =>
-                new Lazy<ReadOnlyDictionary<string, string>>(
-                    () => new ReadOnlyDictionary<string, string>(_mimeTypes.Value));
-
+        
         /// <summary>
         /// Gets the file system path from which files are retrieved.
         /// </summary>
@@ -176,19 +150,6 @@
         ///   <c>true</c> if [use ram cache]; otherwise, <c>false</c>.
         /// </value>
         public bool UseRamCache { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [use gzip].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [use gzip]; otherwise, <c>false</c>.
-        /// </value>
-        public bool UseGzip { get; set; }
-
-        /// <summary>
-        /// The default headers
-        /// </summary>
-        public Dictionary<string, string> DefaultHeaders { get; } = new Dictionary<string, string>();
 
         /// <summary>
         /// Gets the virtual paths.
@@ -233,66 +194,6 @@
         /// Clears the RAM cache.
         /// </summary>
         public void ClearRamCache() => RamCache.Clear();
-
-        private static bool CalculateRange(
-            string partialHeader,
-            long fileSize,
-            out long lowerByteIndex,
-            out long upperByteIndex)
-        {
-            lowerByteIndex = 0;
-            upperByteIndex = 0;
-
-            var range = partialHeader.Replace("bytes=", string.Empty).Split('-');
-
-            if (range.Length == 2 && long.TryParse(range[0], out lowerByteIndex) &&
-                long.TryParse(range[1], out upperByteIndex))
-            {
-                return true;
-            }
-
-            if ((range.Length == 2 && long.TryParse(range[0], out lowerByteIndex) &&
-                 string.IsNullOrWhiteSpace(range[1])) ||
-                (range.Length == 1 && long.TryParse(range[0], out lowerByteIndex)))
-            {
-                upperByteIndex = (int) fileSize;
-                return true;
-            }
-
-            if (range.Length == 2 && string.IsNullOrWhiteSpace(range[0]) &&
-                long.TryParse(range[1], out upperByteIndex))
-            {
-                lowerByteIndex = (int) fileSize - upperByteIndex;
-                upperByteIndex = (int) fileSize;
-                return true;
-            }
-
-            return false;
-        }
-
-        private static async Task WriteToOutputStream(
-            HttpListenerResponse response,
-            Stream buffer,
-            long lowerByteIndex,
-            CancellationToken ct)
-        {
-            var streamBuffer = new byte[ChunkSize];
-            long sendData = 0;
-            var readBufferSize = ChunkSize;
-
-            while (true)
-            {
-                if (sendData + ChunkSize > response.ContentLength64) readBufferSize = (int)(response.ContentLength64 - sendData);
-
-                buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
-                var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct);
-
-                if (read == 0) break;
-
-                sendData += read;
-                await response.OutputStream.WriteAsync(streamBuffer, 0, readBufferSize, ct);
-            }
-        }
 
         private static Task<bool> HandleDirectory(HttpListenerContext context, string localPath, CancellationToken ct)
         {
@@ -345,9 +246,7 @@
 
         private Task<bool> HandleGet(HttpListenerContext context, CancellationToken ct, bool sendBuffer = true)
         {
-            var validationResult = ValidatePath(context, out var requestFullLocalPath);
-
-            switch (validationResult)
+            switch (ValidatePath(context, out var requestFullLocalPath))
             {
                 case VirtualPathStatus.Forbidden:
                     context.Response.StatusCode = (int) System.Net.HttpStatusCode.Forbidden;
@@ -356,9 +255,9 @@
                     return HandleFile(context, requestFullLocalPath, sendBuffer, ct);
                 case VirtualPathStatus.Directory:
                     return HandleDirectory(context, requestFullLocalPath, ct);
+                default: 
+                    return Task.FromResult(false);
             }
-
-            return Task.FromResult(false);
         }
 
         private async Task<bool> HandleFile(HttpListenerContext context, string localPath, bool sendBuffer, CancellationToken ct)
@@ -433,56 +332,7 @@
                     return false;
                 }
 
-                long lowerByteIndex = 0;
-
-                if (usingPartial &&
-                    CalculateRange(partialHeader, fileSize, out lowerByteIndex, out var upperByteIndex))
-                {
-                    if (upperByteIndex > fileSize)
-                    {
-                        // invalid partial request
-                        context.Response.StatusCode = 416;
-                        context.Response.AddHeader(Headers.ContentRanges, $"bytes */{fileSize}");
-
-                        return true;
-                    }
-
-                    if (upperByteIndex == fileSize)
-                    {
-                        context.Response.ContentLength64 = buffer.Length;
-                    }
-                    else
-                    {
-                        context.Response.StatusCode = 206;
-                        context.Response.ContentLength64 = upperByteIndex - lowerByteIndex + 1;
-
-                        context.Response.AddHeader(Headers.ContentRanges,
-                            $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
-
-                        $"Opening stream {localPath} bytes {lowerByteIndex}-{upperByteIndex} size {context.Response.ContentLength64}"
-                            .Debug();
-                    }
-                }
-                else
-                {
-                    if (UseGzip &&
-                        context.RequestHeader(Headers.AcceptEncoding).Contains(Headers.CompressionGzip) &&
-                        buffer.Length < MaxGzipInputLength &&
-
-                        // Ignore audio/video from compression
-                        context.Response.ContentType?.StartsWith("audio") == false &&
-                        context.Response.ContentType?.StartsWith("video") == false)
-                    {
-                        // Perform compression if available
-                        buffer = buffer.Compress();
-                        context.Response.AddHeader(Headers.ContentEncoding, Headers.CompressionGzip);
-                        lowerByteIndex = 0;
-                    }
-
-                    context.Response.ContentLength64 = buffer.Length;
-                }
-
-                await WriteToOutputStream(context.Response, buffer, lowerByteIndex, ct);
+                await WriteFileAsync(usingPartial, partialHeader, fileSize, context, buffer, ct);
             }
             catch (HttpListenerException)
             {
@@ -541,14 +391,6 @@
             response.AddHeader(Headers.ETag, currentHash);
 
             return false;
-        }
-
-        private void SetDefaultCacheHeaders(HttpListenerResponse response)
-        {
-            response.AddHeader(Headers.CacheControl,
-                DefaultHeaders.GetValueOrDefault(Headers.CacheControl, "private"));
-            response.AddHeader(Headers.Pragma, DefaultHeaders.GetValueOrDefault(Headers.Pragma, string.Empty));
-            response.AddHeader(Headers.Expires, DefaultHeaders.GetValueOrDefault(Headers.Expires, string.Empty));
         }
 
         private void SetStatusCode304(HttpListenerResponse response)

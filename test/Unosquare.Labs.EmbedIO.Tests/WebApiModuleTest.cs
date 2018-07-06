@@ -94,7 +94,7 @@
             {
                 using (var client = new HttpClient())
                 {
-                    var model = new Person() {Key = 10, Name = "Test"};
+                    var model = new Person {Key = 10, Name = "Test"};
                     var payloadJson = new StringContent(
                         Json.Serialize(model),
                         System.Text.Encoding.UTF8,
