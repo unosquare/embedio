@@ -22,6 +22,19 @@
             return context.JsonResponse(new {Ok = true});
         }
 
+        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regex")]
+        public bool GetPeople(WebServer server, HttpListenerContext context)
+        {
+            try
+            {
+                return context.JsonResponse(PeopleRepository.Database);
+            }
+            catch (Exception ex)
+            {
+                return context.JsonExceptionResponse(ex);
+            }
+        }
+
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regex/{id}")]
         public bool GetPerson(WebServer server, HttpListenerContext context, int id)
         {
