@@ -1,10 +1,10 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
-    using System;
     using Swan;
     using Modules;
     using Swan.Formatters;
 #if NET47
+    using System;
 using System.Net.WebSockets;
 #else
     using Net;

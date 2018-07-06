@@ -12,8 +12,6 @@
 
     public static class TestHelper
     {
-        private const string Placeholder = "This is a placeholder";
-
         public const string BigDataFile = "bigdata.bin";
 
         public const string SmallDataFile = "smalldata.bin";
@@ -24,25 +22,17 @@
 
         public static string[] RandomHtmls = {"abc.html", "wkp.html", "zxy.html"};
 
+        private const string Placeholder = "This is a placeholder";
+
         public static string RootPath()
         {
             var assemblyPath = Path.GetDirectoryName(typeof(StaticFilesModuleTest).GetTypeInfo().Assembly.Location);
             return Path.Combine(assemblyPath ?? throw new InvalidOperationException(), "html");
         }
 
-        public static byte[] GetBigData()
-        {
-            return File.Exists(Path.Combine(RootPath(), BigDataFile))
-                ? File.ReadAllBytes(Path.Combine(RootPath(), BigDataFile))
-                : null;
-        }
-
-        public static byte[] GetSmallData()
-        {
-            return File.Exists(Path.Combine(RootPath(), SmallDataFile))
-                ? File.ReadAllBytes(Path.Combine(RootPath(), SmallDataFile))
-                : null;
-        }
+        public static byte[] GetBigData() => File.Exists(Path.Combine(RootPath(), BigDataFile))
+            ? File.ReadAllBytes(Path.Combine(RootPath(), BigDataFile))
+            : null;
 
         public static string SetupStaticFolder(bool onlyIndex = true)
         {
@@ -84,14 +74,10 @@
             return rootPath;
         }
 
-        public static string GetStaticFolderInstanceIndexFileContents(string instanceName)
-        {
-            var content = Resources.Index;
-            if (string.IsNullOrWhiteSpace(instanceName)) return content;
-
-            Assert.IsTrue(content.Contains(Placeholder), "Setup error");
-            return content.Replace(Placeholder, "Instance name is " + instanceName);
-        }
+        public static string GetStaticFolderInstanceIndexFileContents(string instanceName) =>
+            string.IsNullOrWhiteSpace(instanceName)
+                ? Resources.Index
+                : Resources.Index.Replace(Placeholder, "Instance name is " + instanceName);
 
         public static string SetupStaticFolderInstance(string instanceName)
         {

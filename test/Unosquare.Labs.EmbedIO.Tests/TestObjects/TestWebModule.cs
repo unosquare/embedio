@@ -5,9 +5,9 @@
 
     public class TestWebModule : WebModuleBase
     {
-        public static string RedirectUrl = "redirect";
-        public static string RedirectAbsoluteUrl = "redirectAbsolute";
-        public static string AnotherUrl = "anotherUrl";
+        public const string RedirectUrl = "redirect";
+        public const string RedirectAbsoluteUrl = "redirectAbsolute";
+        public const string AnotherUrl = "anotherUrl";
 
         public TestWebModule()
         {

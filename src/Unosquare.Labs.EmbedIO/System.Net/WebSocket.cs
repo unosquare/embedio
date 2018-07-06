@@ -1400,7 +1400,8 @@ namespace Unosquare.Net
             var quo = len / FragmentLength;
             var rem = (int)(len % FragmentLength);
 
-            byte[] buff = null;
+            byte[] buff;
+
             if (quo == 0)
             {
                 buff = new byte[rem];

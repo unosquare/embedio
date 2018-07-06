@@ -38,7 +38,6 @@ namespace Unosquare.Net
         private int _offset;
         private int _length;
         private long _remainingBody;
-        private bool _disposed = false;        
         
         internal RequestStream(Stream stream, byte[] buffer, int offset, int length, long contentlength = -1)
         {
@@ -69,11 +68,9 @@ namespace Unosquare.Net
         
         public override int Read([In, Out] byte[] buffer, int offset, int count)
         {
-            if (_disposed)
-                throw new ObjectDisposedException(typeof(RequestStream).ToString());
-
             // Call FillFromBuffer to check for buffer boundaries even when remaining_body is 0
             var nread = FillFromBuffer(buffer, offset, count);
+
             if (nread == -1)
             { // No more bytes available (Content-Length)
                 return 0;

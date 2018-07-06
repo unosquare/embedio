@@ -49,7 +49,6 @@ namespace Unosquare.Net
         private CookieCollection _cookies;
         private bool _keepAlive = true;
         private ResponseStream _outputStream;
-        private Version _version = HttpVersion.Version11;
         private int _statusCode = 200;
         private bool _chunked;
 
@@ -182,42 +181,12 @@ namespace Unosquare.Net
             _outputStream ?? (_outputStream = _context.Connection.GetResponseStream());
 
         /// <summary>
-        /// Gets or sets the protocol version.
+        /// Gets the protocol version.
         /// </summary>
         /// <value>
         /// The protocol version.
         /// </value>
-        /// <exception cref="System.ObjectDisposedException">
-        /// Is thrown when you try to access a member of an object that implements the
-        /// IDisposable interface, and that object has been disposed
-        /// </exception>
-        /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
-        /// <exception cref="System.ArgumentNullException">value</exception>
-        /// <exception cref="System.ArgumentException">Must be 1.0 or 1.1 - value</exception>
-        public Version ProtocolVersion
-        {
-            get => _version;
-
-            set
-            {
-                if (_disposed)
-                    throw new ObjectDisposedException(GetType().ToString());
-
-                if (HeadersSent)
-                    throw new InvalidOperationException(CannotChangeHeaderWarning);
-
-                if (value == null)
-                    throw new ArgumentNullException(nameof(value));
-
-                if (value.Major != 1 || (value.Minor != 0 && value.Minor != 1))
-                    throw new ArgumentException("Must be 1.0 or 1.1", nameof(value));
-
-                if (_disposed)
-                    throw new ObjectDisposedException(GetType().ToString());
-
-                _version = value;
-            }
-        }
+        public Version ProtocolVersion { get; } = HttpVersion.Version11;
 
         /// <summary>
         /// Gets or sets a value indicating whether [send chunked].
@@ -454,7 +423,7 @@ namespace Unosquare.Net
             }
 
             var writer = new StreamWriter(ms, Encoding.UTF8, 256);
-            writer.Write("HTTP/{0} {1} {2}\r\n", _version, _statusCode, StatusDescription);
+            writer.Write("HTTP/{0} {1} {2}\r\n", ProtocolVersion, _statusCode, StatusDescription);
             var headersStr = FormatHeaders(Headers);
             writer.Write(headersStr);
             writer.Flush();
@@ -462,7 +431,7 @@ namespace Unosquare.Net
             if (_outputStream == null)
                 _outputStream = _context.Connection.GetResponseStream();
 
-            /* Assumes that the ms was at position 0 */
+            // Assumes that the ms was at position 0
             ms.Position = preamble;
             HeadersSent = true;
         }

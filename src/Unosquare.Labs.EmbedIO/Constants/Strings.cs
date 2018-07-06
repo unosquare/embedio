@@ -49,15 +49,5 @@
 #else
            StringComparer.OrdinalIgnoreCase;
 #endif
-
-        /// <summary>
-        /// The static file string comparer
-        /// </summary>
-        internal static StringComparer StaticFileStringComparer { get; } =
-#if !NETSTANDARD1_3 && !UWP
-            StringComparer.InvariantCulture;
-#else
-           StringComparer.Ordinal;
-#endif
     }
 }
