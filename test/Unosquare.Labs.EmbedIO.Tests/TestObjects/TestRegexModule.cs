@@ -7,9 +7,9 @@
     {
         public TestRegexModule()
         {
-            AddHandler("/data/{id}/", Constants.HttpVerbs.Any, (ctx, ct) =>
+            AddHandler("/data/{id}", Constants.HttpVerbs.Any, (ctx, ct) =>
             {
-                var buffer = Encoding.UTF8.GetBytes(ctx.RequestRegexUrlParams("/data/{id}/")["id"].ToString());
+                var buffer = Encoding.UTF8.GetBytes(ctx.RequestRegexUrlParams("/data/{id}")["id"].ToString());
                 ctx.Response.OutputStream.Write(buffer, 0, buffer.Length);
 
                 return Task.FromResult(true);
