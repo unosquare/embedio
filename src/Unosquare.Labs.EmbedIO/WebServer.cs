@@ -324,9 +324,11 @@
             // close port when the cancellation token is cancelled
             ct.Register(() => Listener?.Stop());
 
-            // Disposing the web server will close the listener.
-            await Task.Factory.StartNew(async () =>
+            try
             {
+                foreach (var module in _modules)
+                    module.Start(ct);
+
                 // Disposing the web server will close the listener.           
                 while (Listener != null && Listener.IsListening && !ct.IsCancellationRequested)
                 {
@@ -360,7 +362,13 @@
                         ex.Log(nameof(WebServer));
                     }
                 }
-            }, ct);
+
+                "Cleaning up".Info(nameof(WebServer));
+            }
+            catch (TaskCanceledException)
+            {
+                // Ignore
+            }
         }
 
         /// <inheritdoc />

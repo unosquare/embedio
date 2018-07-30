@@ -57,6 +57,14 @@
         TimeSpan WatchdogInterval { get; set; }
 
         /// <summary>
+        /// Gets or sets the cancellation token.
+        /// </summary>
+        /// <value>
+        /// The cancellation token.
+        /// </value>
+        CancellationToken CancellationToken { get; }
+
+        /// <summary>
         /// Adds a handler that gets called when a path and verb are matched.
         /// </summary>
         /// <param name="path">The path.</param>
@@ -68,6 +76,12 @@
         /// handler
         /// </exception>
         void AddHandler(string path, HttpVerbs verb, Func<HttpListenerContext, CancellationToken, Task<bool>> handler);
+
+        /// <summary>
+        /// Starts the webmodule.
+        /// </summary>
+        /// <param name="ct">The cancellation token.</param>
+        void Start(CancellationToken ct);
 
         /// <summary>
         /// Runs the watchdog.

@@ -30,10 +30,6 @@
         private readonly Dictionary<string, WebSocketsServer> _serverMap =
             new Dictionary<string, WebSocketsServer>(StringComparer.OrdinalIgnoreCase);
 
-#if NETSTANDARD2_0
-        private readonly Regex splitter = new Regex(@"(\s|[,;])+");
-#endif
-        
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Unosquare.Labs.EmbedIO.Modules.WebSocketsModule" /> class.
         /// </summary>
@@ -63,7 +59,7 @@
                         break;
                 }
 
-                if (string.IsNullOrEmpty(path) && !_serverMap.ContainsKey(path))
+                if (string.IsNullOrEmpty(path) || !_serverMap.ContainsKey(path))
                 {
                     return false;
                 }
@@ -99,18 +95,15 @@
             if (socketType == null)
                 throw new ArgumentNullException(nameof(socketType));
 
-            var attribute =
-                socketType.GetTypeInfo().GetCustomAttributes(typeof(WebSocketHandlerAttribute), true).FirstOrDefault()
-                    as
-                    WebSocketHandlerAttribute;
-
-            if (attribute == null)
+            if (!(socketType.GetTypeInfo().GetCustomAttribute<WebSocketHandlerAttribute>()
+                is WebSocketHandlerAttribute attribute))
             {
-                throw new ArgumentException("Argument 'socketType' needs a WebSocketHandlerAttribute",
+                throw new ArgumentException(
+                    $"Argument '{nameof(socketType)}' needs a {nameof(WebSocketHandlerAttribute)}",
                     nameof(socketType));
             }
 
-            _serverMap[attribute.Path] = (WebSocketsServer)Activator.CreateInstance(socketType);
+            _serverMap[attribute.Path] = (WebSocketsServer) Activator.CreateInstance(socketType);
         }
 
         /// <summary>
@@ -148,6 +141,13 @@
             _serverMap[path] = server ?? throw new ArgumentNullException(nameof(server));
         }
 
+        /// <inheritdoc />
+        public override void RunWatchdog()
+        {
+            foreach (var instance in _serverMap)
+                instance.Value.CancellationToken = CancellationToken;
+        }
+
         /// <summary>
         /// Normalizes a path meant for Regex matching returns the registered
         /// path in the internal map.
@@ -178,14 +178,12 @@
     /// </summary>
     public abstract class WebSocketsServer : IDisposable
     {
-        private readonly bool _enableDisconnectedSocketColletion;
         private readonly object _syncRoot = new object();
         private readonly List<WebSocketContext> _mWebSockets = new List<WebSocketContext>(10);
 #if NET47
         private readonly int _maximumMessageSize;
 #endif
         private bool _isDisposing;
-        private CancellationToken _ct;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebSocketsServer" /> class.
@@ -194,12 +192,11 @@
         /// <param name="maxMessageSize">Maximum size of the message in bytes. Enter 0 or negative number to prevent checks.</param>
         protected WebSocketsServer(bool enableConnectionWatchdog, int maxMessageSize = 0)
         {
-            _enableDisconnectedSocketColletion = enableConnectionWatchdog;
 #if NET47
             _maximumMessageSize = maxMessageSize;
 #endif
-
-            RunConnectionWatchdog();
+            if (enableConnectionWatchdog)
+                RunConnectionWatchdog();
         }
 
         /// <summary>
@@ -229,6 +226,14 @@
         }
 
         /// <summary>
+        /// Gets or sets the cancellation token.
+        /// </summary>
+        /// <value>
+        /// The cancellation token.
+        /// </value>
+        public CancellationToken CancellationToken { get; set; } = default;
+
+        /// <summary>
         /// Gets the name of the server.
         /// </summary>
         /// <value>
@@ -250,15 +255,9 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="ct">The cancellation token.</param>
-        /// <returns>A task that represents the asynchronous of websocket connection operation</returns>
-#if NET47
-        public async Task AcceptWebSocket(System.Net.HttpListenerContext context, CancellationToken ct)
-#else
+        /// <returns>A task that represents the asynchronous of websocket connection operation.</returns>
         public async Task AcceptWebSocket(HttpListenerContext context, CancellationToken ct)
-#endif
         {
-            _ct = ct;
-
             // first, accept the websocket
             $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
 
@@ -319,7 +318,7 @@
 
                     var frameBytes = new byte[receiveResult.Count];
                     Array.Copy(receiveBuffer, frameBytes, frameBytes.Length);
-                    this.OnFrameReceived(webSocketContext, frameBytes, receiveResult);
+                    OnFrameReceived(webSocketContext, frameBytes, receiveResult);
 
                     // add the response to the multi-part response
                     receivedMessage.AddRange(frameBytes);
@@ -338,7 +337,7 @@
                     // if we're at the end of the message, process the message
                     if (receiveResult.EndOfMessage)
                     {
-                        this.OnMessageReceived(webSocketContext, receivedMessage.ToArray(), receiveResult);
+                        OnMessageReceived(webSocketContext, receivedMessage.ToArray(), receiveResult);
                         receivedMessage.Clear();
                     }
                 }
@@ -396,9 +395,9 @@
                     new ArraySegment<byte>(buffer),
                     WebSocketMessageType.Text,
                     true,
-                    _ct);
+                    CancellationToken);
 #else
-                await webSocket.WebSocket.SendAsync(buffer, Opcode.Text, _ct);
+                await webSocket.WebSocket.SendAsync(buffer, Opcode.Text, CancellationToken);
 #endif
             }
             catch (Exception ex)
@@ -423,9 +422,9 @@
                     new ArraySegment<byte>(payload),
                     WebSocketMessageType.Binary,
                     true,
-                    _ct);
+                    CancellationToken);
 #else
-                await webSocket.WebSocket.SendAsync(payload, Opcode.Binary, _ct);
+                await webSocket.WebSocket.SendAsync(payload, Opcode.Binary, CancellationToken);
 #endif
             }
             catch (Exception ex)
@@ -466,9 +465,9 @@
             try
             {
 #if NET47
-                await webSocket.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, _ct);
+                await webSocket.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken);
 #else
-                await webSocket.WebSocket.CloseAsync(ct: _ct);
+                await webSocket.WebSocket.CloseAsync(ct: CancellationToken);
 #endif
             }
             catch (Exception ex)
@@ -512,8 +511,8 @@
         /// <param name="remoteEndPoint">The remote endpoint.</param>
         protected abstract void OnClientConnected(
             WebSocketContext context,
-            System.Net.IPEndPoint localEndPoint,
-            System.Net.IPEndPoint remoteEndPoint);
+            IPEndPoint localEndPoint,
+            IPEndPoint remoteEndPoint);
 #else
         /// <summary>
         /// Called when this WebSockets Server accepts a new WebSockets client.
@@ -552,8 +551,6 @@
         /// </summary>
         private void RunConnectionWatchdog()
         {
-            if (_enableDisconnectedSocketColletion == false) return;
-
             var watchDogTask = Task.Factory.StartNew(async () =>
             {
                 while (_isDisposing == false)
@@ -562,9 +559,9 @@
                         CollectDisconnected();
 
                     // TODO: make this sleep configurable.
-                    await Task.Delay(TimeSpan.FromSeconds(30), _ct);
+                    await Task.Delay(TimeSpan.FromSeconds(30), CancellationToken);
                 }
-            }, _ct);
+            }, CancellationToken);
         }
 
         /// <summary>

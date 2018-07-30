@@ -1,49 +1,39 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
     using Swan;
+    using System.Threading.Tasks;
+    using System.Threading;
     using Modules;
     using System;
-    
+
     internal class Program
     {
         /// <summary>
         /// Defines the entry point of the application.
         /// </summary>
         /// <param name="args">The arguments.</param>
-        private static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
-            $"Running on Mono Runtime: {Runtime.IsUsingMonoRuntime}".Info();
-
             var url = "http://localhost:8787/";
 
             if (args.Length > 0)
                 url = args[0];
 
-#if !MONO
-            var dbContext = new AppDbContext();
+            AppDbContext.InitDatabase();
 
-            foreach (var person in dbContext.People.SelectAll())
-                dbContext.People.Delete(person);
+            var ctSource = new CancellationTokenSource();
+            ctSource.Token.Register(() => "Shutting down".Info());
 
-            dbContext.People.Insert(new Person
+#pragma warning disable 4014
+            Task.Run(() =>
+#pragma warning restore 4014
             {
-                Name = "Mario Di Vece",
-                Age = 31,
-                EmailAddress = "mario@unosquare.com"
-            });
-            dbContext.People.Insert(new Person
-            {
-                Name = "Geovanni Perez",
-                Age = 32,
-                EmailAddress = "geovanni.perez@unosquare.com"
-            });
-            dbContext.People.Insert(new Person
-            {
-                Name = "Luis Gonzalez",
-                Age = 29,
-                EmailAddress = "luis.gonzalez@unosquare.com"
-            });
-#endif
+                // Wait for any key to be pressed before disposing of our web server.
+                Console.ReadLine();
+
+                ctSource.Cancel();
+            }, ctSource.Token);
+
 
             // Our web server is disposable. 
             using (var server = new WebServer(url))
@@ -77,13 +67,9 @@
                 // It registers the WebSocketsModule and registers the server for the given paths(s)
                 WebSocketsSample.Setup(server);
 
-                server.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(new { Message = "Error " })));
-
-                // Once we've registered our modules and configured them, we call the RunAsync() method.
-                server.RunAsync();
+                server.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(new {Message = "Error "})));
 
                 // Fire up the browser to show the content!
-#if DEBUG
                 var browser = new System.Diagnostics.Process
                 {
                     StartInfo = new System.Diagnostics.ProcessStartInfo(url.Replace("*", "localhost"))
@@ -91,12 +77,14 @@
                         UseShellExecute = true
                     }
                 };
+
                 browser.Start();
-#endif
-                // Wait for any key to be pressed before disposing of our web server.
-                // In a service we'd manage the lifecycle of of our web server using
-                // something like a BackgroundWorker or a ManualResetEvent.
-                Console.ReadKey(true);
+
+                // Once we've registered our modules and configured them, we call the RunAsync() method.
+                if (!ctSource.IsCancellationRequested)
+                    await server.RunAsync(ctSource.Token);
+
+                "Bye".Info();
             }
         }
     }
