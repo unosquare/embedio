@@ -24,6 +24,7 @@
             var ctSource = new CancellationTokenSource();
             ctSource.Token.Register(() => "Shutting down".Info());
 
+            // Set a task waiting for press key to exit
 #pragma warning disable 4014
             Task.Run(() =>
 #pragma warning restore 4014

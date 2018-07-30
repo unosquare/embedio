@@ -224,6 +224,9 @@ namespace Unosquare.Net
                         return context;
                 }
 
+                if (!IsListening)
+                    return null;
+
                 await Task.Delay(10);
             }
         }

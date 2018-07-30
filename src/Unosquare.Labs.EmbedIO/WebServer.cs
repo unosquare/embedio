@@ -229,22 +229,7 @@
             // Iterate though the loaded modules to match up a request and possibly generate a response.
             foreach (var module in Modules)
             {
-                // Establish the handler
-                Map handler;
-
-                // Only wildcard is process in web server, Regex is used inside WebAPI
-                switch (RoutingStrategy)
-                {
-                    case RoutingStrategy.Wildcard:
-                        handler = GetHandlerFromWildcardPath(context, module);
-                        break;
-                    case RoutingStrategy.Regex:
-                        handler = GetHandlerFromRegexPath(context, module);
-                        break;
-                    default:
-                        handler = GetHandlerFromPath(context, module);
-                        break;
-                }
+                var handler = GetHandler(context, module);
 
                 if (handler?.ResponseHandler == null)
                 {
@@ -362,12 +347,14 @@
                         ex.Log(nameof(WebServer));
                     }
                 }
-
-                "Cleaning up".Info(nameof(WebServer));
             }
             catch (TaskCanceledException)
             {
                 // Ignore
+            }
+            finally
+            {
+                "Cleaning up".Info(nameof(WebServer));
             }
         }
 
@@ -400,23 +387,34 @@
 
             "Listener Closed.".Info(nameof(WebServer));
         }
+        
+        private Map GetHandler(HttpListenerContext context, IWebModule module)
+        {
+            switch (RoutingStrategy)
+            {
+                case RoutingStrategy.Wildcard:
+                    return GetHandlerFromWildcardPath(context, module);
+                case RoutingStrategy.Regex:
+                    return GetHandlerFromRegexPath(context, module);
+                case RoutingStrategy.Simple:
+                    return GetHandlerFromPath(context, module);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(RoutingStrategy));
+            }
+        }
 
         private static Map GetHandlerFromPath(HttpListenerContext context, IWebModule module)
-        {
-            return module.Handlers.FirstOrDefault(x =>
-                string.Equals(
-                    x.Path,
-                    x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath(),
-                    StringComparison.OrdinalIgnoreCase) &&
-                x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
-        }
+            => module.Handlers.FirstOrDefault(x =>
+            string.Equals(
+                x.Path,
+                x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath(),
+                StringComparison.OrdinalIgnoreCase) &&
+            x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
 
         private static Map GetHandlerFromRegexPath(HttpListenerContext context, IWebModule module)
-        {
-            return module.Handlers.FirstOrDefault(x =>
-                (x.Path == ModuleMap.AnyPath || context.RequestRegexUrlParams(x.Path) != null) &&
-                (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
-        }
+            => module.Handlers.FirstOrDefault(x =>
+            (x.Path == ModuleMap.AnyPath || context.RequestRegexUrlParams(x.Path) != null) &&
+            (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
 
         private static Map GetHandlerFromWildcardPath(HttpListenerContext context, IWebModule module)
         {
