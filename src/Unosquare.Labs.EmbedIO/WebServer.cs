@@ -202,7 +202,7 @@
         public void UnregisterModule(Type moduleType)
         {
             var existingModule = Module(moduleType);
-
+            
             if (existingModule == null)
             {
                 $"Failed to unregister module '{moduleType}' because no module with that type has been previously registered."
@@ -365,10 +365,6 @@
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (!disposing) return;
@@ -386,21 +382,6 @@
             }
 
             "Listener Closed.".Info(nameof(WebServer));
-        }
-        
-        private Map GetHandler(HttpListenerContext context, IWebModule module)
-        {
-            switch (RoutingStrategy)
-            {
-                case RoutingStrategy.Wildcard:
-                    return GetHandlerFromWildcardPath(context, module);
-                case RoutingStrategy.Regex:
-                    return GetHandlerFromRegexPath(context, module);
-                case RoutingStrategy.Simple:
-                    return GetHandlerFromPath(context, module);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(RoutingStrategy));
-            }
         }
 
         private static Map GetHandlerFromPath(HttpListenerContext context, IWebModule module)
@@ -427,13 +408,22 @@
                 (x.Path == ModuleMap.AnyPath || x.Path == path) &&
                 (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
         }
+        
+        private Map GetHandler(HttpListenerContext context, IWebModule module)
+        {
+            switch (RoutingStrategy)
+            {
+                case RoutingStrategy.Wildcard:
+                    return GetHandlerFromWildcardPath(context, module);
+                case RoutingStrategy.Regex:
+                    return GetHandlerFromRegexPath(context, module);
+                case RoutingStrategy.Simple:
+                    return GetHandlerFromPath(context, module);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(RoutingStrategy));
+            }
+        }
 
-        /// <summary>
-        /// Gets the module registered for the given type.
-        /// Returns null if no module matches the given type.
-        /// </summary>
-        /// <param name="moduleType">Type of the module.</param>
-        /// <returns>Web module registered for the given type</returns>
         private IWebModule Module(Type moduleType) => Modules.FirstOrDefault(m => m.GetType() == moduleType);
 
         /// <summary>
