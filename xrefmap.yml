@@ -885,6 +885,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.IWebModule.AddHandler
   nameWithType: IWebModule.AddHandler
+- uid: Unosquare.Labs.EmbedIO.IWebModule.CancellationToken
+  name: CancellationToken
+  href: api/Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_CancellationToken
+  commentId: P:Unosquare.Labs.EmbedIO.IWebModule.CancellationToken
+  fullName: Unosquare.Labs.EmbedIO.IWebModule.CancellationToken
+  nameWithType: IWebModule.CancellationToken
+- uid: Unosquare.Labs.EmbedIO.IWebModule.CancellationToken*
+  name: CancellationToken
+  href: api/Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_CancellationToken_
+  commentId: Overload:Unosquare.Labs.EmbedIO.IWebModule.CancellationToken
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.IWebModule.CancellationToken
+  nameWithType: IWebModule.CancellationToken
 - uid: Unosquare.Labs.EmbedIO.IWebModule.Handlers
   name: Handlers
   href: api/Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_Handlers
@@ -950,6 +963,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.IWebModule.Server
   nameWithType: IWebModule.Server
+- uid: Unosquare.Labs.EmbedIO.IWebModule.Start(System.Threading.CancellationToken)
+  name: Start(CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_Start_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.IWebModule.Start(System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.IWebModule.Start(System.Threading.CancellationToken)
+  nameWithType: IWebModule.Start(CancellationToken)
+- uid: Unosquare.Labs.EmbedIO.IWebModule.Start*
+  name: Start
+  href: api/Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_Start_
+  commentId: Overload:Unosquare.Labs.EmbedIO.IWebModule.Start
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.IWebModule.Start
+  nameWithType: IWebModule.Start
 - uid: Unosquare.Labs.EmbedIO.IWebModule.WatchdogInterval
   name: WatchdogInterval
   href: api/Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_WatchdogInterval
@@ -1848,6 +1874,19 @@ references:
   fullName.vb: Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.RegisterWebSocketsServer(Of T)(System.String, T)
   nameWithType: WebSocketsModule.RegisterWebSocketsServer<T>(String, T)
   nameWithType.vb: WebSocketsModule.RegisterWebSocketsServer(Of T)(String, T)
+- uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.RunWatchdog
+  name: RunWatchdog()
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.html#Unosquare_Labs_EmbedIO_Modules_WebSocketsModule_RunWatchdog
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.RunWatchdog
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.RunWatchdog()
+  nameWithType: WebSocketsModule.RunWatchdog()
+- uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.RunWatchdog*
+  name: RunWatchdog
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.html#Unosquare_Labs_EmbedIO_Modules_WebSocketsModule_RunWatchdog_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.RunWatchdog
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.RunWatchdog
+  nameWithType: WebSocketsModule.RunWatchdog
 - uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer
   name: WebSocketsServer
   href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html
@@ -1908,6 +1947,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Broadcast
   nameWithType: WebSocketsServer.Broadcast
+- uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.CancellationToken
+  name: CancellationToken
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html#Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_CancellationToken
+  commentId: P:Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.CancellationToken
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.CancellationToken
+  nameWithType: WebSocketsServer.CancellationToken
+- uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.CancellationToken*
+  name: CancellationToken
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html#Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_CancellationToken_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.CancellationToken
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.CancellationToken
+  nameWithType: WebSocketsServer.CancellationToken
 - uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Close(Unosquare.Net.WebSocketContext)
   name: Close(WebSocketContext)
   href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html#Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Close_Unosquare_Net_WebSocketContext_
@@ -2181,19 +2233,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler
   nameWithType: WebModuleBase.AddHandler
-- uid: Unosquare.Labs.EmbedIO.WebModuleBase.Finalize
-  name: Finalize()
-  href: api/Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_Finalize
-  commentId: M:Unosquare.Labs.EmbedIO.WebModuleBase.Finalize
-  fullName: Unosquare.Labs.EmbedIO.WebModuleBase.Finalize()
-  nameWithType: WebModuleBase.Finalize()
-- uid: Unosquare.Labs.EmbedIO.WebModuleBase.Finalize*
-  name: Finalize
-  href: api/Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_Finalize_
-  commentId: Overload:Unosquare.Labs.EmbedIO.WebModuleBase.Finalize
+- uid: Unosquare.Labs.EmbedIO.WebModuleBase.CancellationToken
+  name: CancellationToken
+  href: api/Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_CancellationToken
+  commentId: P:Unosquare.Labs.EmbedIO.WebModuleBase.CancellationToken
+  fullName: Unosquare.Labs.EmbedIO.WebModuleBase.CancellationToken
+  nameWithType: WebModuleBase.CancellationToken
+- uid: Unosquare.Labs.EmbedIO.WebModuleBase.CancellationToken*
+  name: CancellationToken
+  href: api/Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_CancellationToken_
+  commentId: Overload:Unosquare.Labs.EmbedIO.WebModuleBase.CancellationToken
   isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.WebModuleBase.Finalize
-  nameWithType: WebModuleBase.Finalize
+  fullName: Unosquare.Labs.EmbedIO.WebModuleBase.CancellationToken
+  nameWithType: WebModuleBase.CancellationToken
 - uid: Unosquare.Labs.EmbedIO.WebModuleBase.Handlers
   name: Handlers
   href: api/Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_Handlers
@@ -2259,6 +2311,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.WebModuleBase.Server
   nameWithType: WebModuleBase.Server
+- uid: Unosquare.Labs.EmbedIO.WebModuleBase.Start(System.Threading.CancellationToken)
+  name: Start(CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_Start_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.WebModuleBase.Start(System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.WebModuleBase.Start(System.Threading.CancellationToken)
+  nameWithType: WebModuleBase.Start(CancellationToken)
+- uid: Unosquare.Labs.EmbedIO.WebModuleBase.Start*
+  name: Start
+  href: api/Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_Start_
+  commentId: Overload:Unosquare.Labs.EmbedIO.WebModuleBase.Start
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.WebModuleBase.Start
+  nameWithType: WebModuleBase.Start
 - uid: Unosquare.Labs.EmbedIO.WebModuleBase.WatchdogInterval
   name: WatchdogInterval
   href: api/Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_WatchdogInterval
