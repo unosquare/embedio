@@ -43,8 +43,7 @@
         {
             using (var client = new HttpClient())
             {
-                //Determine the absolute Uri by combining with WebServerUrl
-                Uri uri = new Uri(new Uri(WebServerUrl), partialUrl);
+                var uri = new Uri(new Uri(WebServerUrl), partialUrl);
                 return await client.GetStringAsync(uri);
             }
         }

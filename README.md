@@ -165,15 +165,9 @@ namespace Company.Project
             Console.ReadKey(true);
             cts.Cancel();
 
-            try
-            {
-                task.Wait();
-            } catch (AggregateException)
-            {
-                // We'd also actually verify the exception cause was that the task
-                // was cancelled.
-                server.Dispose();
-            }
+			// Wait before dispose server
+            task.Wait();
+            server.Dispose();
         }
     }
 }
