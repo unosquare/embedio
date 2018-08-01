@@ -231,7 +231,7 @@
         /// <value>
         /// The cancellation token.
         /// </value>
-        public CancellationToken CancellationToken { get; set; };
+        public CancellationToken CancellationToken { get; set; }
 
         /// <summary>
         /// Gets the name of the server.
