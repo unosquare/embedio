@@ -10,6 +10,7 @@
     using System.Linq;
     using System.Net.Http;
     using System.Text;
+    using System.Threading;
     using System.Threading.Tasks;
     using TestObjects;
 
@@ -21,7 +22,7 @@
         private const string Prefix = "http://localhost:9696";
 
         private static string[] GetMultiplePrefixes()
-            => new[] {"http://localhost:9696", "http://localhost:9697", "http://localhost:9698"};
+            => new[] { "http://localhost:9696", "http://localhost:9697", "http://localhost:9698" };
 
         [SetUp]
         public void Setup()
@@ -61,6 +62,24 @@
                 var instance = new WebServer(GetMultiplePrefixes());
                 Assert.IsNotNull(instance.Listener, "It has a HttpListener");
                 Assert.AreEqual(instance.Listener.Prefixes.Count, 3);
+            }
+        }
+
+        public class TaskCancellation : WebServerTest
+        {
+            [Test]
+            public void WithCancellationRequested_ExitsSuccessfully()
+            {
+                var instance = new WebServer("http://localhost:9696");
+
+                var cts = new CancellationTokenSource();
+                var task = instance.RunAsync(cts.Token);
+                cts.Cancel();
+
+                task.Wait();
+                instance.Dispose();
+
+                Assert.IsTrue(task.IsCompleted);
             }
         }
 

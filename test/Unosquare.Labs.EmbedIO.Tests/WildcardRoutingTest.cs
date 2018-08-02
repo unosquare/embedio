@@ -2,7 +2,7 @@
 {
     using NUnit.Framework;
     using System.Threading.Tasks;
-    using Unosquare.Labs.EmbedIO.Tests.TestObjects;
+    using TestObjects;
 
     [TestFixture]
     public class WildcardRoutingTest : FixtureBase

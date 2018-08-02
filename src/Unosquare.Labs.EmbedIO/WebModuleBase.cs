@@ -17,28 +17,12 @@
     public abstract class WebModuleBase 
         : IWebModule
     {
-        private readonly CancellationTokenSource _cts = new CancellationTokenSource();
-
         /// <summary>
         /// Initializes a new instance of the <see cref="WebModuleBase"/> class.
         /// </summary>
         protected WebModuleBase()
         {
             Handlers = new ModuleMap();
-
-            var watchDogTask = Task.Factory.StartNew(async () =>
-            {
-                RunWatchdog();
-                await Task.Delay(WatchdogInterval, _cts.Token);
-            }, _cts.Token);
-        }
-
-        /// <summary>
-        /// Finalizes an instance of the <see cref="WebModuleBase"/> class.
-        /// </summary>
-        ~WebModuleBase()
-        {
-            _cts.Cancel();
         }
 
         /// <inheritdoc/>
@@ -55,6 +39,9 @@
         
         /// <inheritdoc/>
         public TimeSpan WatchdogInterval { get; set; } = TimeSpan.FromSeconds(30);
+
+        /// <inheritdoc />
+        public CancellationToken CancellationToken { get; protected set; }
         
         /// <inheritdoc/>
         public void AddHandler(string path, HttpVerbs verb, Func<HttpListenerContext, CancellationToken, Task<bool>> handler)
@@ -66,6 +53,28 @@
                 throw new ArgumentNullException(nameof(handler));
 
             Handlers.Add(new Map {Path = path, Verb = verb, ResponseHandler = handler});
+        }
+
+        /// <inheritdoc />
+        public void Start(CancellationToken ct)
+        {
+            CancellationToken = ct;
+
+            var watchDogTask = Task.Factory.StartNew(async () =>
+            {
+                try
+                {
+                    while (!ct.IsCancellationRequested)
+                    {
+                        RunWatchdog();
+                        await Task.Delay(WatchdogInterval, ct);
+                    }
+                }
+                catch (TaskCanceledException)
+                {
+                    // ignore
+                }
+            }, ct);
         }
         
         /// <inheritdoc/>

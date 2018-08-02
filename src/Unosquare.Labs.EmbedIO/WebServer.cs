@@ -202,7 +202,7 @@
         public void UnregisterModule(Type moduleType)
         {
             var existingModule = Module(moduleType);
-
+            
             if (existingModule == null)
             {
                 $"Failed to unregister module '{moduleType}' because no module with that type has been previously registered."
@@ -229,22 +229,7 @@
             // Iterate though the loaded modules to match up a request and possibly generate a response.
             foreach (var module in Modules)
             {
-                // Establish the handler
-                Map handler;
-
-                // Only wildcard is process in web server, Regex is used inside WebAPI
-                switch (RoutingStrategy)
-                {
-                    case RoutingStrategy.Wildcard:
-                        handler = GetHandlerFromWildcardPath(context, module);
-                        break;
-                    case RoutingStrategy.Regex:
-                        handler = GetHandlerFromRegexPath(context, module);
-                        break;
-                    default:
-                        handler = GetHandlerFromPath(context, module);
-                        break;
-                }
+                var handler = GetHandler(context, module);
 
                 if (handler?.ResponseHandler == null)
                 {
@@ -324,9 +309,11 @@
             // close port when the cancellation token is cancelled
             ct.Register(() => Listener?.Stop());
 
-            // Disposing the web server will close the listener.
-            await Task.Factory.StartNew(async () =>
+            try
             {
+                foreach (var module in _modules)
+                    module.Start(ct);
+
                 // Disposing the web server will close the listener.           
                 while (Listener != null && Listener.IsListening && !ct.IsCancellationRequested)
                 {
@@ -360,7 +347,15 @@
                         ex.Log(nameof(WebServer));
                     }
                 }
-            }, ct);
+            }
+            catch (TaskCanceledException)
+            {
+                // Ignore
+            }
+            finally
+            {
+                "Cleaning up".Info(nameof(WebServer));
+            }
         }
 
         /// <inheritdoc />
@@ -370,10 +365,6 @@
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (!disposing) return;
@@ -394,21 +385,17 @@
         }
 
         private static Map GetHandlerFromPath(HttpListenerContext context, IWebModule module)
-        {
-            return module.Handlers.FirstOrDefault(x =>
-                string.Equals(
-                    x.Path,
-                    x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath(),
-                    StringComparison.OrdinalIgnoreCase) &&
-                x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
-        }
+            => module.Handlers.FirstOrDefault(x =>
+            string.Equals(
+                x.Path,
+                x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath(),
+                StringComparison.OrdinalIgnoreCase) &&
+            x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
 
         private static Map GetHandlerFromRegexPath(HttpListenerContext context, IWebModule module)
-        {
-            return module.Handlers.FirstOrDefault(x =>
-                (x.Path == ModuleMap.AnyPath || context.RequestRegexUrlParams(x.Path) != null) &&
-                (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
-        }
+            => module.Handlers.FirstOrDefault(x =>
+            (x.Path == ModuleMap.AnyPath || context.RequestRegexUrlParams(x.Path) != null) &&
+            (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
 
         private static Map GetHandlerFromWildcardPath(HttpListenerContext context, IWebModule module)
         {
@@ -421,13 +408,22 @@
                 (x.Path == ModuleMap.AnyPath || x.Path == path) &&
                 (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
         }
+        
+        private Map GetHandler(HttpListenerContext context, IWebModule module)
+        {
+            switch (RoutingStrategy)
+            {
+                case RoutingStrategy.Wildcard:
+                    return GetHandlerFromWildcardPath(context, module);
+                case RoutingStrategy.Regex:
+                    return GetHandlerFromRegexPath(context, module);
+                case RoutingStrategy.Simple:
+                    return GetHandlerFromPath(context, module);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(RoutingStrategy));
+            }
+        }
 
-        /// <summary>
-        /// Gets the module registered for the given type.
-        /// Returns null if no module matches the given type.
-        /// </summary>
-        /// <param name="moduleType">Type of the module.</param>
-        /// <returns>Web module registered for the given type</returns>
         private IWebModule Module(Type moduleType) => Modules.FirstOrDefault(m => m.GetType() == moduleType);
 
         /// <summary>
