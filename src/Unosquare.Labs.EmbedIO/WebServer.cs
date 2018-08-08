@@ -447,7 +447,7 @@
                 requestId = string.Concat(DateTime.Now.Ticks.ToString(), requestEndpoint).GetHashCode().ToString("x2");
 
                 // Log the request and its ID
-                $"Start of Request {requestId} - Source {requestEndpoint} - {context.RequestVerb().ToString().ToUpperInvariant()}: {context.RequestPath()}"
+                $"Start of Request {requestId} - Source {requestEndpoint} - {context.RequestVerb().ToString().ToUpperInvariant()}: {context.Request.Url.PathAndQuery} - {context.Request.UserAgent}"
                     .Debug(nameof(WebServer));
 
                 var processResult = await ProcessRequest(context, ct);
