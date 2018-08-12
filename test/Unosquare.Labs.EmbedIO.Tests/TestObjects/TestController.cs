@@ -143,8 +143,12 @@
         [WebApiHandler(HttpVerbs.Get, "/namePublic")]
         public bool GetNamePublic(WebServer server, HttpListenerContext context)
         {
-            context.Response.Headers.Add("Cache-Control: public");
             return context.JsonResponse(WebName);
+        }
+
+        public override void SetDefaultHeaders(HttpListenerContext context)
+        {
+            context.Response.Headers.Add("Cache-Control: public");
         }
     }
 }
