@@ -127,6 +127,8 @@
 
     public class TestControllerWithConstructor : WebApiController
     {
+        public const string CustomHeader = "X-Custom";
+
         public TestControllerWithConstructor(string name = "Test")
         {
             WebName = name;
@@ -137,18 +139,21 @@
         [WebApiHandler(HttpVerbs.Get, "/name")]
         public bool GetName(WebServer server, HttpListenerContext context)
         {
+            context.NoCache();
             return context.JsonResponse(WebName);
         }
 
         [WebApiHandler(HttpVerbs.Get, "/namePublic")]
         public bool GetNamePublic(WebServer server, HttpListenerContext context)
         {
+            context.Response.Headers.Add("Cache-Control: public");
             return context.JsonResponse(WebName);
         }
 
         public override void SetDefaultHeaders(HttpListenerContext context)
         {
-            context.Response.Headers.Add("Cache-Control: public");
+            // do nothing with cache
+            context.Response.Headers.Add($"{CustomHeader}: {WebName}");
         }
     }
 }

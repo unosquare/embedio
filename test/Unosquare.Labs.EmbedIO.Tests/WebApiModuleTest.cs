@@ -21,9 +21,9 @@
         public class WebApiWithConstructor : WebApiModuleTest
         {
             [Test]
-            public async Task GetWebApiWithName_RetursSameName()
+            public async Task GetWebApiWithCustomHeader_ReturnsNameFromConstructor()
             {
-                const string name = "Test";
+                const string name = nameof(TestControllerWithConstructor);
 
                 _webServer.Module<WebApiModule>().RegisterController(() => new TestControllerWithConstructor(name));
                 using (var client = new HttpClient())
@@ -32,11 +32,7 @@
 
                     using (var response = await client.SendAsync(request))
                     {
-                        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
-                        var body = await response.Content.ReadAsStringAsync();
-
-                        Assert.AreEqual(body, name);
+                        Assert.AreEqual(name, response.Headers.FirstOrDefault(x => x.Key == TestControllerWithConstructor.CustomHeader).Value.FirstOrDefault());
                     }
                 }
             }
@@ -61,7 +57,7 @@
             }
 
             [Test]
-            public async Task GetWebApiWithCacheControlDefaultc_ReturnsValidResponse()
+            public async Task GetWebApiWithCacheControlDefault_ReturnsValidResponse()
             {
                 _webServer.Module<WebApiModule>().RegisterController(() => new TestControllerWithConstructor());
                 using (var client = new HttpClient())
@@ -70,7 +66,7 @@
 
                     using (var response = await client.SendAsync(request))
                     {
-                        Assert.IsTrue(response.Headers.CacheControl.Public, "Cache is not public");
+                        Assert.IsFalse(response.Headers.CacheControl.Public, "Cache is not public");
 
                         Assert.IsTrue(response.Headers.CacheControl.NoStore);
                         Assert.IsTrue(response.Headers.CacheControl.NoCache);
