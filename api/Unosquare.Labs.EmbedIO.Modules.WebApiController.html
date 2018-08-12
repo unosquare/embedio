@@ -83,7 +83,7 @@
   <h1 id="Unosquare_Labs_EmbedIO_Modules_WebApiController" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController" class="text-break">Class WebApiController
   </h1>
   <div class="markdown level0 summary"><p>Inherit from this class and define your own Web API methods
-You must RegisterController in the Web API Module to make it active</p>
+You must RegisterController in the Web API Module to make it active.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -120,6 +120,43 @@ You must RegisterController in the Web API Module to make it active</p>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public abstract class WebApiController</code></pre>
   </div>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_SetDefaultHeaders_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_SetDefaultHeaders_Unosquare_Net_HttpListenerContext_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders(Unosquare.Net.HttpListenerContext)">SetDefaultHeaders(HttpListenerContext)</h4>
+  <div class="markdown level1 summary"><p>Sets the default headers to the Web API response.
+By default will set:</p>
+<p>Expires - Mon, 26 Jul 1997 05:00:00 GMT
+LastModified - (Current Date)
+CacheControl - no-store, no-cache, must-revalidate
+Pragma - no-cache</p>
+<p>Previous values are defined to avoid caching from client.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void SetDefaultHeaders(HttpListenerContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>

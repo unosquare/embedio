@@ -1631,6 +1631,19 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.Modules.WebApiController
   fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController
   nameWithType: WebApiController
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders(Unosquare.Net.HttpListenerContext)
+  name: SetDefaultHeaders(HttpListenerContext)
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_SetDefaultHeaders_Unosquare_Net_HttpListenerContext_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders(Unosquare.Net.HttpListenerContext)
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders(Unosquare.Net.HttpListenerContext)
+  nameWithType: WebApiController.SetDefaultHeaders(HttpListenerContext)
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders*
+  name: SetDefaultHeaders
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_SetDefaultHeaders_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders
+  nameWithType: WebApiController.SetDefaultHeaders
 - uid: Unosquare.Labs.EmbedIO.Modules.WebApiHandlerAttribute
   name: WebApiHandlerAttribute
   href: api/Unosquare.Labs.EmbedIO.Modules.WebApiHandlerAttribute.html
