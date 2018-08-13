@@ -213,6 +213,9 @@ public class PeopleController : WebApiController
             return context.JsonExceptionResponse(ex);
         }
     }
+    
+    // You can override the default headers and add custom headers to each API Response.
+    public override void SetDefaultHeaders(HttpListenerContext context) => context.NoCache();
 }
 ```
 
@@ -245,6 +248,8 @@ public class PeopleController : WebApiController
     }
 }
 ```
+
+The `SetDefaultHeaders` method will add a no-cache policy to all Web API responses. If you plan to handle a differente policy or even custom headers to each different Web API method we recommend you override this method as you need.
 
 ## WebSockets Example:
 

@@ -73,11 +73,11 @@
                     !methods.TryGetValue(verb, out var methodPair))
                     throw new InvalidOperationException($"No method found for path {path} and verb {verb}.");
 
-                // ensure module does not return cached responses
-                context.NoCache();
+                // ensure module does not return cached responses by default or the custom headers
+                methodPair.SetDefaultHeaders(context);
 
                 // Log the handler to be use
-                $"Handler: {methodPair.MethodCache.MethodInfo.DeclaringType?.FullName}.{methodPair.MethodCache.MethodInfo.Name}"
+                $"Handler: {methodPair.MethodCache.ControllerName}.{methodPair.MethodCache.MethodInfo.Name}"
                     .Debug(nameof(WebApiModule));
 
                 // Initially, only the server and context objects will be available
@@ -280,9 +280,22 @@
 
     /// <summary>
     /// Inherit from this class and define your own Web API methods
-    /// You must RegisterController in the Web API Module to make it active
+    /// You must RegisterController in the Web API Module to make it active.
     /// </summary>
     public abstract class WebApiController
     {
+        /// <summary>
+        /// Sets the default headers to the Web API response.
+        /// By default will set:
+        ///
+        /// Expires - Mon, 26 Jul 1997 05:00:00 GMT
+        /// LastModified - (Current Date)
+        /// CacheControl - no-store, no-cache, must-revalidate
+        /// Pragma - no-cache
+        ///
+        /// Previous values are defined to avoid caching from client.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        public virtual void SetDefaultHeaders(HttpListenerContext context) => context.NoCache();
     }
 }

@@ -17,24 +17,61 @@
             : base(ws => ws.WithWebApiController<TestController>(), Constants.RoutingStrategy.Wildcard)
         {
         }
-        
-        [Test]
-        public async Task WebApiWithConstructor()
+
+        public class WebApiWithConstructor : WebApiModuleTest
         {
-            const string name = "Test";
-
-            _webServer.Module<WebApiModule>().RegisterController(() => new TestControllerWithConstructor(name));
-            using (var client = new HttpClient())
+            [Test]
+            public async Task GetWebApiWithCustomHeader_ReturnsNameFromConstructor()
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "name");
+                const string name = nameof(TestControllerWithConstructor);
 
-                using (var response = await client.SendAsync(request))
+                _webServer.Module<WebApiModule>().RegisterController(() => new TestControllerWithConstructor(name));
+                using (var client = new HttpClient())
                 {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "name");
 
-                    var body = await response.Content.ReadAsStringAsync();
+                    using (var response = await client.SendAsync(request))
+                    {
+                        Assert.AreEqual(name, response.Headers.FirstOrDefault(x => x.Key == TestControllerWithConstructor.CustomHeader).Value.FirstOrDefault());
+                    }
+                }
+            }
 
-                    Assert.AreEqual(body, name);
+            [Test]
+            public async Task GetWebApiWithCacheControlPublic_ReturnsValidResponse()
+            {
+                _webServer.Module<WebApiModule>().RegisterController(() => new TestControllerWithConstructor());
+                using (var client = new HttpClient())
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "namePublic");
+
+                    using (var response = await client.SendAsync(request))
+                    {
+                        Assert.IsTrue(response.Headers.CacheControl.Public, "Cache is public");
+
+                        Assert.IsFalse(response.Headers.CacheControl.NoStore, "Cache is not No-Store");
+                        Assert.IsFalse(response.Headers.CacheControl.NoCache, "Cache is not No-Cache");
+                        Assert.IsFalse(response.Headers.CacheControl.MustRevalidate, "Cache is not Must-Revalidate");
+                    }
+                }
+            }
+
+            [Test]
+            public async Task GetWebApiWithCacheControlDefault_ReturnsValidResponse()
+            {
+                _webServer.Module<WebApiModule>().RegisterController(() => new TestControllerWithConstructor());
+                using (var client = new HttpClient())
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "name");
+
+                    using (var response = await client.SendAsync(request))
+                    {
+                        Assert.IsFalse(response.Headers.CacheControl.Public, "Cache is not public");
+
+                        Assert.IsTrue(response.Headers.CacheControl.NoStore);
+                        Assert.IsTrue(response.Headers.CacheControl.NoCache);
+                        Assert.IsTrue(response.Headers.CacheControl.MustRevalidate);
+                    }
                 }
             }
         }
@@ -62,7 +99,7 @@
 
                         Assert.IsNotNull(remoteList, "Json Object is not null");
                         Assert.AreEqual(
-                            remoteList.Count, 
+                            remoteList.Count,
                             PeopleRepository.Database.Count,
                             "Remote list count equals local list");
                     }
@@ -94,7 +131,7 @@
             {
                 using (var client = new HttpClient())
                 {
-                    var model = new Person {Key = 10, Name = "Test"};
+                    var model = new Person { Key = 10, Name = "Test" };
                     var payloadJson = new StringContent(
                         Json.Serialize(model),
                         System.Text.Encoding.UTF8,
@@ -177,7 +214,7 @@
                 }
             }
         }
-        
+
         internal class FormDataSample
         {
             public string test { get; set; }

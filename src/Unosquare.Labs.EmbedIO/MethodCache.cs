@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
+    using Modules;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -13,6 +14,9 @@
         public MethodCache(MethodInfo methodInfo)
         {
             MethodInfo = methodInfo;
+            ControllerName = methodInfo.DeclaringType.FullName;
+            SetDefaultHeadersMethodInfo = methodInfo.DeclaringType
+                .GetMethod(nameof(WebApiController.SetDefaultHeaders));
             IsTask = methodInfo.ReturnType == typeof(Task<bool>);
             AdditionalParameters = methodInfo.GetParameters()
                 .Skip(2)
@@ -32,9 +36,10 @@
         public delegate bool SyncDelegate(object instance, object[] arguments);
 
         public MethodInfo MethodInfo { get; }
+        public MethodInfo SetDefaultHeadersMethodInfo { get; }
         public bool IsTask { get; }
         public List<AddtionalParameterInfo> AdditionalParameters { get; }
-
+        public string ControllerName { get; }
         public AsyncDelegate AsyncInvoke { get; }
         public SyncDelegate SyncInvoke { get; }
 
@@ -107,6 +112,12 @@
             return MethodCache.IsTask
                 ? MethodCache.AsyncInvoke(controller, arguments)
                 : Task.FromResult(MethodCache.SyncInvoke(controller, arguments));
+        }
+
+        public void SetDefaultHeaders(object context)
+        {
+            var controller = _controllerFactory();
+            MethodCache.SetDefaultHeadersMethodInfo?.Invoke(controller, new[] { context });
         }
     }
 
