@@ -8,7 +8,7 @@
     <title>Overview | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Overview | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 2.37.2.0">
+    <meta name="generator" content="docfx 2.38.0.0">
     
     <link rel="shortcut icon" href="src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
     <link rel="stylesheet" href="styles/docfx.vendor.css">
@@ -284,6 +284,9 @@ server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;()
             return context.JsonExceptionResponse(ex);
         }
     }
+
+    // You can override the default headers and add custom headers to each API Response.
+    public override void SetDefaultHeaders(HttpListenerContext context) =&gt; context.NoCache();
 }
 </code></pre><p><em>Or if you want to use the Wildcard strategy (which is the default):</em></p>
 <pre><code class="lang-csharp">public class PeopleController : WebApiController
@@ -311,7 +314,8 @@ server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;()
         }
     }
 }
-</code></pre><h2 id="websockets-example">WebSockets Example:</h2>
+</code></pre><p>The <code>SetDefaultHeaders</code> method will add a no-cache policy to all Web API responses. If you plan to handle a differente policy or even custom headers to each different Web API method we recommend you override this method as you need.</p>
+<h2 id="websockets-example">WebSockets Example:</h2>
 <p><em>During server setup:</em></p>
 <pre><code class="lang-csharp">server.RegisterModule(new WebSocketsModule());
 server.Module&lt;WebSocketsModule&gt;().RegisterWebSocketsServer&lt;WebSocketsChatServer&gt;(&quot;/chat&quot;);
