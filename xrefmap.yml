@@ -2130,19 +2130,6 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.SessionInfo
   fullName: Unosquare.Labs.EmbedIO.SessionInfo
   nameWithType: SessionInfo
-- uid: Unosquare.Labs.EmbedIO.SessionInfo.#ctor
-  name: SessionInfo()
-  href: api/Unosquare.Labs.EmbedIO.SessionInfo.html#Unosquare_Labs_EmbedIO_SessionInfo__ctor
-  commentId: M:Unosquare.Labs.EmbedIO.SessionInfo.#ctor
-  fullName: Unosquare.Labs.EmbedIO.SessionInfo.SessionInfo()
-  nameWithType: SessionInfo.SessionInfo()
-- uid: Unosquare.Labs.EmbedIO.SessionInfo.#ctor*
-  name: SessionInfo
-  href: api/Unosquare.Labs.EmbedIO.SessionInfo.html#Unosquare_Labs_EmbedIO_SessionInfo__ctor_
-  commentId: Overload:Unosquare.Labs.EmbedIO.SessionInfo.#ctor
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.SessionInfo.SessionInfo
-  nameWithType: SessionInfo.SessionInfo
 - uid: Unosquare.Labs.EmbedIO.SessionInfo.Data
   name: Data
   href: api/Unosquare.Labs.EmbedIO.SessionInfo.html#Unosquare_Labs_EmbedIO_SessionInfo_Data
