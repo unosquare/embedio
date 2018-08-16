@@ -5,20 +5,16 @@
     using System.Collections.Concurrent;
 
     /// <summary>
-    /// Represents the contents of an HTTP Session
+    /// Represents the contents of an HTTP Session.
     /// </summary>
     public class SessionInfo
     {
+        private readonly Lazy<ConcurrentDictionary<string, object>> _lazyData =
+            new Lazy<ConcurrentDictionary<string, object>>(() =>
+                new ConcurrentDictionary<string, object>(Strings.StandardStringComparer));
+        
         /// <summary>
-        /// Initializes a new instance of the <see cref="SessionInfo"/> class.
-        /// </summary>
-        public SessionInfo()
-        {
-            Data = new ConcurrentDictionary<string, object>(Strings.StandardStringComparer);
-        }
-
-        /// <summary>
-        /// Current Session Identifier
+        /// Current Session Identifier.
         /// </summary>
         public string SessionId { get; set; }
 
@@ -39,16 +35,16 @@
         public DateTime LastActivity { get; set; }
 
         /// <summary>
-        /// Current Session Data Repository
+        /// Current Session Data Repository.
         /// </summary>
-        public ConcurrentDictionary<string, object> Data { get; protected set; }
+        public ConcurrentDictionary<string, object> Data => _lazyData.Value;
 
         /// <summary>
         /// Retrieve an item or set an item. If the key does not exist, it returns null.
-        /// This is an indexer providing a shortcut to the underlying Data dictionary
+        /// This is an indexer providing a shortcut to the underlying Data dictionary.
         /// </summary>
-        /// <param name="key">The key as an indexer</param>
-        /// <returns>An object that represents current session data repository</returns>
+        /// <param name="key">The key as an indexer.</param>
+        /// <returns>An object that represents current session data repository.</returns>
         public object this[string key]
         {
             get => Data.ContainsKey(key) ? Data[key] : null;

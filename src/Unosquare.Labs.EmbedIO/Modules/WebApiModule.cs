@@ -101,7 +101,7 @@
         public override string Name => "Web API Module";
 
         /// <summary>
-        /// Gets the number of controller objects registered in this API
+        /// Gets the number of controller objects registered in this API.
         /// </summary>
         public int ControllersCount => _controllerTypes.Count;
 
@@ -109,7 +109,7 @@
         /// Registers the controller.
         /// </summary>
         /// <typeparam name="T">The type of register controller</typeparam>
-        /// <exception cref="System.ArgumentException">Controller types must be unique within the module</exception>
+        /// <exception cref="System.ArgumentException">Controller types must be unique within the module.</exception>
         public void RegisterController<T>()
             where T : WebApiController, new()
         {
@@ -121,7 +121,7 @@
         /// </summary>
         /// <typeparam name="T">The type of register controller</typeparam>
         /// <param name="controllerFactory">The controller factory method</param>
-        /// <exception cref="System.ArgumentException">Controller types must be unique within the module</exception>
+        /// <exception cref="System.ArgumentException">Controller types must be unique within the module.</exception>
         public void RegisterController<T>(Func<T> controllerFactory)
             where T : WebApiController
         {
@@ -223,9 +223,8 @@
         private string NormalizeWildcardPath(HttpVerbs verb, HttpListenerContext context)
         {
             var path = context.RequestWilcardPath(_delegateMap.Keys
-                .Where(k => k.Contains("/" + ModuleMap.AnyPath))
-                .Select(s => s.ToLowerInvariant())
-                .ToArray());
+                .Where(k => k.Contains(ModuleMap.AnyPathRoute))
+                .Select(s => s.ToLowerInvariant()));
 
             if (_delegateMap.ContainsKey(path) == false)
                 return null;
@@ -258,8 +257,7 @@
                 case RoutingStrategy.Wildcard:
                     path = context.RequestWilcardPath(_delegateMap.Keys
                         .Where(k => k.Contains("/" + ModuleMap.AnyPath))
-                        .Select(s => s.ToLowerInvariant())
-                        .ToArray());
+                        .Select(s => s.ToLowerInvariant()));
                     break;
                 case RoutingStrategy.Regex:
                     path = context.Request.Url.LocalPath;

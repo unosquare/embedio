@@ -135,7 +135,7 @@
         /// Gets the request path for the specified context.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns>Path for the specified context</returns>
+        /// <returns>Path for the specified context.</returns>
         public static string RequestPath(this HttpListenerContext context)
             => context.Request.Url.LocalPath.ToLowerInvariant();
 
@@ -145,8 +145,8 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="wildcardPaths">The wildcard paths.</param>
-        /// <returns>Path for the specified context</returns>
-        public static string RequestWilcardPath(this HttpListenerContext context, string[] wildcardPaths)
+        /// <returns>Path for the specified context.</returns>
+        public static string RequestWilcardPath(this HttpListenerContext context, IEnumerable<string> wildcardPaths)
         {
             var path = context.Request.Url.LocalPath.ToLowerInvariant();
 
@@ -167,7 +167,7 @@
         /// Gets the request path for the specified context case sensitive.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns>Path for the specified context</returns>
+        /// <returns>Path for the specified context.</returns>
         public static string RequestPathCaseSensitive(this HttpListenerContext context)
             => context.Request.Url.LocalPath;
 
@@ -356,12 +356,12 @@
 
         /// <summary>
         /// Sets a response static code of 302 and adds a Location header to the response
-        /// in order to direct the client to a different URL
+        /// in order to direct the client to a different URL.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="location">The location.</param>
         /// <param name="useAbsoluteUrl">if set to <c>true</c> [use absolute URL].</param>
-        /// <returns><b>true</b> if the headers were set, otherwise <b>false</b></returns>
+        /// <returns><b>true</b> if the headers were set, otherwise <b>false</b>.</returns>
         public static bool Redirect(this HttpListenerContext context, string location, bool useAbsoluteUrl = true)
         {
             if (useAbsoluteUrl)
