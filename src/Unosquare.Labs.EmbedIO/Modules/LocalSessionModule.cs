@@ -21,18 +21,18 @@
         : WebModuleBase, ISessionWebModule
     {
         /// <summary>
-        /// Defines the session cookie name
+        /// Defines the session cookie name.
         /// </summary>
         private const string SessionCookieName = "__session";
 
         /// <summary>
-        /// The concurrent dictionary holding the sessions
+        /// The concurrent dictionary holding the sessions.
         /// </summary>
         private readonly Dictionary<string, SessionInfo> _sessions =
             new Dictionary<string, SessionInfo>(Strings.StandardStringComparer);
 
         /// <summary>
-        /// The sessions dictionary synchronization lock
+        /// The sessions dictionary synchronization lock.
         /// </summary>
         private readonly object _sessionsSyncLock = new object();
 
@@ -100,7 +100,7 @@
 
         /// <summary>
         /// Gets or sets the expiration.
-        /// By default, expiration is 30 minutes
+        /// By default, expiration is 30 minutes.
         /// </summary>
         /// <inheritdoc />
         public TimeSpan Expiration { get; set; } = TimeSpan.FromMinutes(30);
@@ -111,7 +111,7 @@
         /// If a route is specified, then session cookies will be created only for the given path.
         /// Examples of this are:
         ///     "/"
-        ///     "/app1/"
+        ///     "/app1/".
         /// </summary>
         /// <value>
         /// The cookie path.
@@ -129,7 +129,7 @@
         /// The <see cref="SessionInfo"/>.
         /// </value>
         /// <param name="cookieValue">The cookie value.</param>
-        /// <returns>Session info with the specified cookie value</returns>
+        /// <returns>Session info with the specified cookie value.</returns>
         public SessionInfo this[string cookieValue]
         {
             get
@@ -212,7 +212,7 @@
                 {
                     SessionId = sessionId,
                     DateCreated = DateTime.UtcNow,
-                    LastActivity = DateTime.UtcNow
+                    LastActivity = DateTime.UtcNow,
                 };
 
                 return sessionCookie;
