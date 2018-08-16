@@ -146,7 +146,7 @@
         /// <param name="context">The context.</param>
         /// <param name="wildcardPaths">The wildcard paths.</param>
         /// <returns>Path for the specified context</returns>
-        public static string RequestWilcardPath(this HttpListenerContext context, string[] wildcardPaths)
+        public static string RequestWilcardPath(this HttpListenerContext context, IEnumerable<string> wildcardPaths)
         {
             var path = context.Request.Url.LocalPath.ToLowerInvariant();
 

@@ -223,9 +223,8 @@
         private string NormalizeWildcardPath(HttpVerbs verb, HttpListenerContext context)
         {
             var path = context.RequestWilcardPath(_delegateMap.Keys
-                .Where(k => k.Contains("/" + ModuleMap.AnyPath))
-                .Select(s => s.ToLowerInvariant())
-                .ToArray());
+                .Where(k => k.Contains(ModuleMap.AnyPathRoute))
+                .Select(s => s.ToLowerInvariant()));
 
             if (_delegateMap.ContainsKey(path) == false)
                 return null;
@@ -258,8 +257,7 @@
                 case RoutingStrategy.Wildcard:
                     path = context.RequestWilcardPath(_delegateMap.Keys
                         .Where(k => k.Contains("/" + ModuleMap.AnyPath))
-                        .Select(s => s.ToLowerInvariant())
-                        .ToArray());
+                        .Select(s => s.ToLowerInvariant()));
                     break;
                 case RoutingStrategy.Regex:
                     path = context.Request.Url.LocalPath;

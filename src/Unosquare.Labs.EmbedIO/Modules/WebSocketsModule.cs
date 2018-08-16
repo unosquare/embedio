@@ -48,8 +48,7 @@
                     case RoutingStrategy.Wildcard:
                         path = context.RequestWilcardPath(_serverMap.Keys
                         .Where(k => k.Contains("/" + ModuleMap.AnyPath))
-                        .Select(s => s.ToLowerInvariant())
-                        .ToArray());
+                        .Select(s => s.ToLowerInvariant()));
                         break;
                     case RoutingStrategy.Regex:
                         path = NormalizeRegexPath(context);
