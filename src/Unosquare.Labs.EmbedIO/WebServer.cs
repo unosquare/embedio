@@ -16,7 +16,7 @@
 #endif
 
     /// <summary>
-    /// Represents our tiny web server used to handle requests
+    /// Represents our tiny web server used to handle requests.
     /// </summary>
     public class WebServer
         : IDisposable
@@ -57,12 +57,12 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
         /// NOTE: urlPrefix must be specified as something similar to: http://localhost:9696/
-        /// Please notice the ending slash. -- It is important
+        /// Please notice the ending slash. -- It is important.
         /// </summary>
         /// <param name="urlPrefixes">The URL prefix.</param>
-        /// <param name="routingStrategy">The routing strategy</param>
-        /// <exception cref="InvalidOperationException">The HTTP Listener is not supported in this OS</exception>
-        /// <exception cref="ArgumentException">Argument urlPrefix must be specified</exception>
+        /// <param name="routingStrategy">The routing strategy.</param>
+        /// <exception cref="InvalidOperationException">The HTTP Listener is not supported in this OS.</exception>
+        /// <exception cref="ArgumentException">Argument urlPrefix must be specified.</exception>
         public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy = RoutingStrategy.Wildcard)
         {
             if (HttpListener.IsSupported == false)
@@ -89,7 +89,7 @@
         }
 
         /// <summary>
-        /// The on method not allowed
+        /// The on method not allowed.
         /// </summary>
         /// <value>
         /// The on method not allowed.
@@ -98,7 +98,7 @@
              ctx.HtmlResponseAsync(Responses.Response405Html, System.Net.HttpStatusCode.MethodNotAllowed);
 
         /// <summary>
-        /// The on not found
+        /// The on not found.
         /// </summary>
         /// <value>
         /// The on not found.
@@ -123,7 +123,7 @@
         public HttpListenerPrefixCollection UrlPrefixes => Listener.Prefixes;
 
         /// <summary>
-        /// Gets a list of registered modules
+        /// Gets a list of registered modules.
         /// </summary>
         /// <value>
         /// The modules.
@@ -145,17 +145,17 @@
         public RoutingStrategy RoutingStrategy { get; protected set; }
 
         /// <summary>
-        /// Static method to create webserver instance
+        /// Static method to create webserver instance.
         /// </summary>
         /// <param name="urlPrefix">The URL prefix.</param>
         /// <returns>The webserver instance.</returns>
         public static WebServer Create(string urlPrefix) => new WebServer(urlPrefix);
 
         /// <summary>
-        /// Static method to create webserver instance
+        /// Static method to create webserver instance.
         /// </summary>
         /// <param name="urlPrefix">The URL prefix.</param>
-        /// <param name="routingStrategy">Matching/Parsing of URL: choose from: Wildcard, Regex, Simple </param>
+        /// <param name="routingStrategy">Matching/Parsing of URL: choose from: Wildcard, Regex, Simple. </param>
         /// <returns>The webserver instance.</returns>
         public static WebServer Create(string urlPrefix, RoutingStrategy routingStrategy) => new WebServer(urlPrefix, routingStrategy);
 
@@ -163,8 +163,8 @@
         /// Gets the module registered for the given type.
         /// Returns null if no module matches the given type.
         /// </summary>
-        /// <typeparam name="T">The type of module</typeparam>
-        /// <returns>Module registered for the given type</returns>
+        /// <typeparam name="T">The type of module.</typeparam>
+        /// <returns>Module registered for the given type.</returns>
         public T Module<T>()
             where T : class, IWebModule
         {
@@ -219,11 +219,11 @@
         }
 
         /// <summary>
-        /// Process HttpListener Request and returns true if it was handled
+        /// Process HttpListener Request and returns true if it was handled.
         /// </summary>
-        /// <param name="context">The HttpListenerContext</param>
+        /// <param name="context">The HttpListenerContext.</param>
         /// <param name="ct">The cancellation token.</param>
-        /// <returns>True if it was handled; otherwise, false</returns>
+        /// <returns>True if it was handled; otherwise, false.</returns>
         public async Task<bool> ProcessRequest(HttpListenerContext context, CancellationToken ct)
         {
             // Iterate though the loaded modules to match up a request and possibly generate a response.
@@ -287,7 +287,7 @@
         }
 
         /// <summary>
-        /// Starts the listener and the registered modules
+        /// Starts the listener and the registered modules.
         /// </summary>
         /// <param name="ct">The cancellation token; when cancelled, the server cancels all pending requests and stops.</param>
         /// <returns>
@@ -401,8 +401,7 @@
         {
             var path = context.RequestWilcardPath(module.Handlers
                 .Where(k => k.Path.Contains("/" + ModuleMap.AnyPath))
-                .Select(s => s.Path.ToLowerInvariant())
-                .ToArray());
+                .Select(s => s.Path.ToLowerInvariant()));
 
             return module.Handlers.FirstOrDefault(x =>
                 (x.Path == ModuleMap.AnyPath || x.Path == path) &&
@@ -431,7 +430,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="ct">The cancellation token.</param>
-        /// <returns>A task that represents the asynchronous of client request</returns>
+        /// <returns>A task that represents the asynchronous of client request.</returns>
         private async Task HandleClientRequest(HttpListenerContext context, CancellationToken ct)
         {
             // start with an empty request ID
