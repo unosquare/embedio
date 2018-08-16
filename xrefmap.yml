@@ -661,15 +661,15 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.RequestVerb
   nameWithType: Extensions.RequestVerb
-- uid: Unosquare.Labs.EmbedIO.Extensions.RequestWilcardPath(Unosquare.Net.HttpListenerContext,System.String[])
-  name: RequestWilcardPath(HttpListenerContext, String[])
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestWilcardPath_Unosquare_Net_HttpListenerContext_System_String___
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.RequestWilcardPath(Unosquare.Net.HttpListenerContext,System.String[])
-  name.vb: RequestWilcardPath(HttpListenerContext, String())
-  fullName: Unosquare.Labs.EmbedIO.Extensions.RequestWilcardPath(Unosquare.Net.HttpListenerContext, System.String[])
-  fullName.vb: Unosquare.Labs.EmbedIO.Extensions.RequestWilcardPath(Unosquare.Net.HttpListenerContext, System.String())
-  nameWithType: Extensions.RequestWilcardPath(HttpListenerContext, String[])
-  nameWithType.vb: Extensions.RequestWilcardPath(HttpListenerContext, String())
+- uid: Unosquare.Labs.EmbedIO.Extensions.RequestWilcardPath(Unosquare.Net.HttpListenerContext,System.Collections.Generic.IEnumerable{System.String})
+  name: RequestWilcardPath(HttpListenerContext, IEnumerable<String>)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestWilcardPath_Unosquare_Net_HttpListenerContext_System_Collections_Generic_IEnumerable_System_String__
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.RequestWilcardPath(Unosquare.Net.HttpListenerContext,System.Collections.Generic.IEnumerable{System.String})
+  name.vb: RequestWilcardPath(HttpListenerContext, IEnumerable(Of String))
+  fullName: Unosquare.Labs.EmbedIO.Extensions.RequestWilcardPath(Unosquare.Net.HttpListenerContext, System.Collections.Generic.IEnumerable<System.String>)
+  fullName.vb: Unosquare.Labs.EmbedIO.Extensions.RequestWilcardPath(Unosquare.Net.HttpListenerContext, System.Collections.Generic.IEnumerable(Of System.String))
+  nameWithType: Extensions.RequestWilcardPath(HttpListenerContext, IEnumerable<String>)
+  nameWithType.vb: Extensions.RequestWilcardPath(HttpListenerContext, IEnumerable(Of String))
 - uid: Unosquare.Labs.EmbedIO.Extensions.RequestWilcardPath*
   name: RequestWilcardPath
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestWilcardPath_
