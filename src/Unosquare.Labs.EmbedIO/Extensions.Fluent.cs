@@ -121,10 +121,11 @@
                 throw new ArgumentNullException(nameof(webserver));
 
             var types = (assembly ?? Assembly.GetEntryAssembly()).GetTypes();
-            var apiControllers =
-                types.Where(x => x.GetTypeInfo().IsClass
+            var apiControllers = types
+                .Where(x => x.GetTypeInfo().IsClass
                                  && !x.GetTypeInfo().IsAbstract
-                                 && x.GetTypeInfo().IsSubclassOf(typeof(WebApiController))).ToArray();
+                                 && x.GetTypeInfo().IsSubclassOf(typeof(WebApiController)))
+                .ToArray();
             
             foreach (var apiController in apiControllers)
             {
