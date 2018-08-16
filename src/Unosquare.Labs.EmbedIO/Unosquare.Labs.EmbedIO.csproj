@@ -28,7 +28,7 @@
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta008">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Unosquare.Swan.Lite" Version="0.33.3" />
+    <PackageReference Include="Unosquare.Swan.Lite" Version="0.33.4" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'uap10.0' ">
