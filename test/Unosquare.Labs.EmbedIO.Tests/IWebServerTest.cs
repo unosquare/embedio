@@ -32,5 +32,40 @@
                 Assert.AreEqual(1, webserver.Modules.Count);
             }
         }
+
+        [Test]
+        public void UnregisterWebModule_ReturnsValidInstance()
+        {
+            using (var webserver = new TestWebServer())
+            {
+                webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse("OK")));
+                webserver.UnregisterModule(typeof(FallbackModule));
+
+                Assert.AreEqual(0, webserver.Modules.Count);
+            }
+        }
+        
+        [Test]
+        public void RegisterSessionModule_ReturnsValidInstance()
+        {
+            using (var webserver = new TestWebServer())
+            {
+                webserver.RegisterModule(new LocalSessionModule());
+
+                Assert.NotNull(webserver.SessionModule);
+            }
+        }
+
+        [Test]
+        public void UnregisterSessionModule_ReturnsValidInstance()
+        {
+            using (var webserver = new TestWebServer())
+            {
+                webserver.RegisterModule(new LocalSessionModule());
+                webserver.UnregisterModule(typeof(LocalSessionModule));
+
+                Assert.IsNull(webserver.SessionModule);
+            }
+        }
     }
 }
