@@ -17,8 +17,7 @@
     /// <summary>
     /// Represents our tiny web server used to handle requests.
     /// </summary>
-    public class WebServer
-        : IDisposable
+    public class WebServer : IWebServer
     {
         private readonly List<IWebModule> _modules = new List<IWebModule>(4);
 
@@ -121,26 +120,13 @@
         /// </value>
         public HttpListenerPrefixCollection UrlPrefixes => Listener.Prefixes;
 
-        /// <summary>
-        /// Gets a list of registered modules.
-        /// </summary>
-        /// <value>
-        /// The modules.
-        /// </value>
+        /// <inheritdoc />
         public ReadOnlyCollection<IWebModule> Modules => _modules.AsReadOnly();
 
-        /// <summary>
-        /// Gets registered the ISessionModule.
-        /// </summary>
-        /// <value>
-        /// The session module.
-        /// </value>
+        /// <inheritdoc />
         public ISessionWebModule SessionModule { get; protected set; }
 
-        /// <summary>
-        /// Gets the URL RoutingStrategy used in this instance.
-        /// By default it is set to Wildcard, but Regex is the recommended value.
-        /// </summary>
+        /// <inheritdoc />
         public RoutingStrategy RoutingStrategy { get; protected set; }
 
         /// <summary>
@@ -158,22 +144,14 @@
         /// <returns>The webserver instance.</returns>
         public static WebServer Create(string urlPrefix, RoutingStrategy routingStrategy) => new WebServer(urlPrefix, routingStrategy);
 
-        /// <summary>
-        /// Gets the module registered for the given type.
-        /// Returns null if no module matches the given type.
-        /// </summary>
-        /// <typeparam name="T">The type of module.</typeparam>
-        /// <returns>Module registered for the given type.</returns>
+        /// <inheritdoc />
         public T Module<T>()
             where T : class, IWebModule
         {
             return Module(typeof(T)) as T;
         }
 
-        /// <summary>
-        /// Registers an instance of a web module. Only 1 instance per type is allowed.
-        /// </summary>
-        /// <param name="module">The module.</param>
+        /// <inheritdoc />
         public void RegisterModule(IWebModule module)
         {
             if (module == null) return;
@@ -194,10 +172,7 @@
             }
         }
 
-        /// <summary>
-        /// Unregisters the module identified by its type.
-        /// </summary>
-        /// <param name="moduleType">Type of the module.</param>
+        /// <inheritdoc/>
         public void UnregisterModule(Type moduleType)
         {
             var existingModule = Module(moduleType);
@@ -217,18 +192,12 @@
                 SessionModule = null;
         }
 
-        /// <summary>
-        /// Starts the listener and the registered modules.
-        /// </summary>
-        /// <param name="ct">The cancellation token; when cancelled, the server cancels all pending requests and stops.</param>
-        /// <returns>
-        /// Returns the task that the HTTP listener is running inside of, so that it can be waited upon after it's been canceled.
-        /// </returns>
-        /// <exception cref="System.InvalidOperationException">The method was already called.</exception>
-        /// <exception cref="System.OperationCanceledException">Cancellation was requested.</exception>
+        /// <inheritdoc />
+        /// <exception cref="T:System.InvalidOperationException">The method was already called.</exception>
+        /// <exception cref="T:System.OperationCanceledException">Cancellation was requested.</exception>
         /// <remarks>
         /// Both the server and client requests are queued separately on the thread pool,
-        /// so it is safe to call <see cref="Task.Wait()" /> in a synchronous method.
+        /// so it is safe to call <see cref="M:System.Threading.Tasks.Task.Wait" /> in a synchronous method.
         /// </remarks>
         public async Task RunAsync(CancellationToken ct = default)
         {
