@@ -60,13 +60,13 @@
                 ex.Log(nameof(WebServer), "Error handling request.");
             }
         }
-        
+
         /// <inheritdoc />
         public void Dispose()
         {
             // Always close the response stream no matter what.
             _context?.Response.OutputStream.Close();
-            $"End of Request {_requestId}".Debug(nameof(WebServer));           
+            $"End of Request {_requestId}".Debug(nameof(WebServer));
         }
 
         /// <summary>
@@ -82,7 +82,7 @@
                 var callback = GetHandler(module);
 
                 if (callback == null) continue;
-                
+
                 try
                 {
                     // Inject the Server property of the module via reflection if not already there. (mini IoC ;))
@@ -106,7 +106,7 @@
                 catch (Exception ex)
                 {
                     // Handle exceptions by returning a 500 (Internal Server Error) 
-                    if (_context.Response.StatusCode != (int) System.Net.HttpStatusCode.Unauthorized)
+                    if (_context.Response.StatusCode != (int)System.Net.HttpStatusCode.Unauthorized)
                     {
                         await ResponseServerError(ct, ex, module.Name);
                     }
@@ -121,10 +121,11 @@
 
         private Task ResponseServerError(CancellationToken ct, Exception ex, string module)
         {
-            var errorMessage = ex.ExceptionMessage($"Failing module name: {module}");
+            var priorMessage = $"Failing module name: {module}";
+            var errorMessage = ex.ExceptionMessage(priorMessage);
 
             // Log the exception message.
-            ex.Log(nameof(WebServer), $"Failing module name: {module}");
+            ex.Log(nameof(WebServer), priorMessage);
 
             // Send the response over with the corresponding status code.
             return _context.HtmlResponseAsync(
@@ -154,7 +155,8 @@
                 .Where(k => k.Path.Contains("/" + ModuleMap.AnyPath))
                 .Select(s => s.Path.ToLowerInvariant()));
 
-            return module.Handlers.FirstOrDefault(x =>
+            return module.Handlers
+                .FirstOrDefault(x =>
                 (x.Path == ModuleMap.AnyPath || x.Path == path) &&
                 (x.Verb == HttpVerbs.Any || x.Verb == _context.RequestVerb()));
         }

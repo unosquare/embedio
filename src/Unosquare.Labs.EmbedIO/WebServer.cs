@@ -299,11 +299,8 @@
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposing) return;
-
-            // free managed resources
-            if (Listener == null) return;
-
+            if (!disposing || Listener == null) return;
+            
             try
             {
                 (Listener as IDisposable).Dispose();
