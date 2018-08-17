@@ -3,9 +3,7 @@
     using Constants;
     using Swan;
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 #if NET47
@@ -86,12 +84,7 @@
             "Finished Loading Web Server.".Info(nameof(WebServer));
         }
 
-        /// <summary>
-        /// Gets or sets the on method not allowed.
-        /// </summary>
-        /// <value>
-        /// The on method not allowed.
-        /// </value>
+        /// <inheritdoc />
         public Func<HttpListenerContext, Task<bool>> OnMethodNotAllowed { get; set; } = ctx =>
              ctx.HtmlResponseAsync(Responses.Response405Html, System.Net.HttpStatusCode.MethodNotAllowed);
 
@@ -124,7 +117,7 @@
         public ReadOnlyCollection<IWebModule> Modules => _modules.AsReadOnly();
 
         /// <inheritdoc />
-        public ISessionWebModule SessionModule { get; protected set; }
+        public ISessionWebModule SessionModule => _modules.SessionModule;   
 
         /// <inheritdoc />
         public RoutingStrategy RoutingStrategy { get; protected set; }

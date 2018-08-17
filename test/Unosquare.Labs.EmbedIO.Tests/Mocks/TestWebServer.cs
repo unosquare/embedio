@@ -5,6 +5,11 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Constants;
+#if NET47
+    using System.Net;
+#else
+    using Net;
+#endif
 
     internal class TestWebServer : IWebServer
     {
@@ -19,7 +24,8 @@
         public RoutingStrategy RoutingStrategy { get; }
 
         public ReadOnlyCollection<IWebModule> Modules => _modules.AsReadOnly();
-        
+        public Func<HttpListenerContext, Task<bool>> OnMethodNotAllowed { get; set; }
+
         public T Module<T>()
             where T : class, IWebModule
         {

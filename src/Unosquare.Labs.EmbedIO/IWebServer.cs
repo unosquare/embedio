@@ -5,6 +5,11 @@
     using System.Threading;
     using System.Collections.ObjectModel;
     using System.Threading.Tasks;
+#if NET47
+    using System.Net;
+#else
+    using Net;
+#endif
 
     /// <summary>
     /// Interface to create a WebServer class
@@ -36,6 +41,14 @@
         /// The modules.
         /// </value>
         ReadOnlyCollection<IWebModule> Modules { get; }
+        
+        /// <summary>
+        /// Gets or sets the on method not allowed.
+        /// </summary>
+        /// <value>
+        /// The on method not allowed.
+        /// </value>
+        Func<HttpListenerContext, Task<bool>> OnMethodNotAllowed { get; set; }
 
         /// <summary>
         /// Gets the module registered for the given type.

@@ -32,7 +32,7 @@
         public ModuleMap Handlers { get; protected set; }
         
         /// <inheritdoc/>
-        public WebServer Server { get; set; }
+        public IWebServer Server { get; set; }
         
         /// <inheritdoc/>
         public bool IsWatchdogEnabled { get; set; }
