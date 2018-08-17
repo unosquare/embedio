@@ -23,11 +23,13 @@
         }
         
         [Test]
-        public void AddWebModule_ReturnsValidInstance()
+        public void RegisterWebModule_ReturnsValidInstance()
         {
             using (var webserver = new TestWebServer())
             {
                 webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse("OK")));
+
+                Assert.AreEqual(1, webserver.Modules.Count);
             }
         }
     }

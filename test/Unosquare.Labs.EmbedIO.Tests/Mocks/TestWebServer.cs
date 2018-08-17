@@ -6,27 +6,29 @@
     using System.Threading.Tasks;
     using Constants;
 
-    public class TestWebServer : IWebServer
+    internal class TestWebServer : IWebServer
     {
-        public ISessionWebModule SessionModule { get; }
-        public RoutingStrategy RoutingStrategy { get; }
-        public ReadOnlyCollection<IWebModule> Modules { get; }
+        private readonly WebModules _modules = new WebModules();
 
-        public T Module<T>() 
+        public TestWebServer(RoutingStrategy routingStrategy = RoutingStrategy.Wildcard)
+        {
+            RoutingStrategy = routingStrategy;
+        }
+
+        public ISessionWebModule SessionModule => _modules.SessionModule;
+        public RoutingStrategy RoutingStrategy { get; }
+
+        public ReadOnlyCollection<IWebModule> Modules => _modules.AsReadOnly();
+        
+        public T Module<T>()
             where T : class, IWebModule
         {
-            throw new NotImplementedException();
+            return _modules.Module<T>();
         }
 
-        public void RegisterModule(IWebModule module)
-        {
-            throw new NotImplementedException();
-        }
+        public void RegisterModule(IWebModule module) => _modules.RegisterModule(module, this);
 
-        public void UnregisterModule(Type moduleType)
-        {
-            throw new NotImplementedException();
-        }
+        public void UnregisterModule(Type moduleType) => _modules.UnregisterModule(moduleType);
 
         public Task RunAsync(CancellationToken ct = default)
         {

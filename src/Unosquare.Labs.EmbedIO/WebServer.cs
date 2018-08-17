@@ -19,7 +19,7 @@
     /// </summary>
     public class WebServer : IWebServer
     {
-        private readonly List<IWebModule> _modules = new List<IWebModule>(4);
+        private readonly WebModules _modules = new WebModules();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
@@ -148,49 +148,14 @@
         public T Module<T>()
             where T : class, IWebModule
         {
-            return Module(typeof(T)) as T;
+            return _modules.Module<T>();
         }
 
         /// <inheritdoc />
-        public void RegisterModule(IWebModule module)
-        {
-            if (module == null) return;
-            var existingModule = Module(module.GetType());
-
-            if (existingModule == null)
-            {
-                module.Server = this;
-                _modules.Add(module);
-
-                if (module is ISessionWebModule webModule)
-                    SessionModule = webModule;
-            }
-            else
-            {
-                $"Failed to register module '{module.GetType()}' because a module with the same type already exists."
-                    .Warn(nameof(WebServer));
-            }
-        }
+        public void RegisterModule(IWebModule module) => _modules.RegisterModule(module, this);
 
         /// <inheritdoc/>
-        public void UnregisterModule(Type moduleType)
-        {
-            var existingModule = Module(moduleType);
-
-            if (existingModule == null)
-            {
-                $"Failed to unregister module '{moduleType}' because no module with that type has been previously registered."
-                    .Warn(nameof(WebServer));
-
-                return;
-            }
-
-            var module = Module(moduleType);
-            _modules.Remove(module);
-
-            if (module == SessionModule)
-                SessionModule = null;
-        }
+        public void UnregisterModule(Type moduleType) => _modules.UnregisterModule(moduleType);
 
         /// <inheritdoc />
         /// <exception cref="T:System.InvalidOperationException">The method was already called.</exception>
@@ -285,7 +250,5 @@
 
             "Listener Closed.".Info(nameof(WebServer));
         }
-
-        private IWebModule Module(Type moduleType) => Modules.FirstOrDefault(m => m.GetType() == moduleType);
     }
 }

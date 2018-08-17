@@ -38,7 +38,7 @@
         /// <value>
         /// The server.
         /// </value>
-        WebServer Server { get; set; }
+        IWebServer Server { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is watchdog enabled.
