@@ -162,128 +162,133 @@
 #endif
         }
 
-        [Test]
-        public void WebMap()
+        public class General : WebServerTest
         {
-            var map = new Map
+            [Test]
+            public void WebMap()
             {
-                Path = DefaultPath,
-                ResponseHandler = (ctx, ws) => Task.FromResult(false),
-                Verb = HttpVerbs.Any
-            };
+                var map = new Map
+                {
+                    Path = DefaultPath,
+                    ResponseHandler = (ctx, ws) => Task.FromResult(false),
+                    Verb = HttpVerbs.Any
+                };
 
-            Assert.AreEqual(map.Path, DefaultPath, "Default Path is correct");
-            Assert.AreEqual(map.Verb, HttpVerbs.Any, "Default Verb is correct");
-        }
+                Assert.AreEqual(map.Path, DefaultPath, "Default Path is correct");
+                Assert.AreEqual(map.Verb, HttpVerbs.Any, "Default Verb is correct");
+            }
 
-        [Test]
-        public void ExceptionText()
-        {
-            Assert.ThrowsAsync<HttpRequestException>(async () =>
+            [Test]
+            public void ExceptionText()
+            {
+                Assert.ThrowsAsync<HttpRequestException>(async () =>
+                {
+                    var url = Resources.GetServerAddress();
+
+                    using (var instance = new WebServer(url))
+                    {
+                        instance.RegisterModule(new FallbackModule((ctx, ct) => throw new Exception("Error")));
+
+                        var runTask = instance.RunAsync();
+                        var request = new HttpClient();
+                        await request.GetStringAsync(url);
+                    }
+                });
+            }
+
+            [Test]
+            public void EmptyModules_NotFoundStatusCode()
+            {
+                Assert.ThrowsAsync<HttpRequestException>(async () =>
+                {
+                    var url = Resources.GetServerAddress();
+
+                    using (var instance = new WebServer(url))
+                    {
+                        var runTask = instance.RunAsync();
+                        var request = new HttpClient();
+                        await request.GetStringAsync(url);
+                    }
+                });
+            }
+
+            [TestCase("iso-8859-1")]
+            [TestCase("utf-8")]
+            [TestCase("utf-16")]
+            public async Task EncodingTest(string encodeName)
             {
                 var url = Resources.GetServerAddress();
 
                 using (var instance = new WebServer(url))
                 {
-                    instance.RegisterModule(new FallbackModule((ctx, ct) => throw new Exception("Error")));
-
-                    var runTask = instance.RunAsync();
-                    var request = new HttpClient();
-                    await request.GetStringAsync(url);
-                }
-            });
-        }
-
-        [Test]
-        public void EmptyModules_NotFoundStatusCode()
-        {
-            Assert.ThrowsAsync<HttpRequestException>(async () =>
-            {
-                var url = Resources.GetServerAddress();
-
-                using (var instance = new WebServer(url))
-                {
-                    var runTask = instance.RunAsync();
-                    var request = new HttpClient();
-                    await request.GetStringAsync(url);
-                }
-            });
-        }
-
-        [TestCase("iso-8859-1")]
-        [TestCase("utf-8")]
-        [TestCase("utf-16")]
-        public async Task EncodingTest(string encodeName)
-        {
-            var url = Resources.GetServerAddress();
-
-            using (var instance = new WebServer(url))
-            {
-                instance.RegisterModule(new FallbackModule((ctx, ct) =>
-                {
-                    var encoding = Encoding.GetEncoding("UTF-8");
-
-                    try
+                    instance.RegisterModule(new FallbackModule((ctx, ct) =>
                     {
-                        var encodeValue =
-                            ctx.Request.ContentType.Split(';')
-                                .FirstOrDefault(x => x.Trim().StartsWith("charset", StringComparison.OrdinalIgnoreCase))
-                                ?
-                                .Split('=')
-                                .Skip(1)
-                                .FirstOrDefault()?
-                                .Trim();
-                        encoding = Encoding.GetEncoding(encodeValue ?? throw new InvalidOperationException());
-                    }
-                    catch
-                    {
-                        Assert.Inconclusive("Invalid encoding in system");
-                    }
+                        var encoding = Encoding.GetEncoding("UTF-8");
 
-                    ctx.JsonResponse(new EncodeCheck
-                    {
-                        Encoding = encoding.EncodingName,
-                        IsValid = ctx.Request.ContentEncoding.EncodingName == encoding.EncodingName
-                    });
-
-                    return true;
-                }));
-
-                var runTask = instance.RunAsync();
-
-                using (var client = new HttpClient())
-                {
-                    client.DefaultRequestHeaders.Accept
-                        .Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                    var request = new HttpRequestMessage(HttpMethod.Post, url + TestWebModule.RedirectUrl)
-                    {
-                        Content = new StringContent("POST DATA", Encoding.GetEncoding(encodeName), "application/json")
-                    };
-
-                    using (var response = await client.SendAsync(request))
-                    {
-                        var stream = await response.Content.ReadAsStreamAsync();
-                        using (var ms = new MemoryStream())
+                        try
                         {
-                            stream.CopyTo(ms);
-                            var data = ms.ToArray().ToText();
+                            var encodeValue =
+                                ctx.Request.ContentType.Split(';')
+                                    .FirstOrDefault(x =>
+                                        x.Trim().StartsWith("charset", StringComparison.OrdinalIgnoreCase))
+                                    ?
+                                    .Split('=')
+                                    .Skip(1)
+                                    .FirstOrDefault()?
+                                    .Trim();
+                            encoding = Encoding.GetEncoding(encodeValue ?? throw new InvalidOperationException());
+                        }
+                        catch
+                        {
+                            Assert.Inconclusive("Invalid encoding in system");
+                        }
 
-                            Assert.IsNotNull(data, "Data is not empty");
-                            var model = Json.Deserialize<EncodeCheck>(data);
+                        ctx.JsonResponse(new EncodeCheck
+                        {
+                            Encoding = encoding.EncodingName,
+                            IsValid = ctx.Request.ContentEncoding.EncodingName == encoding.EncodingName
+                        });
 
-                            Assert.IsNotNull(model);
-                            Assert.IsTrue(model.IsValid);
+                        return true;
+                    }));
+
+                    var runTask = instance.RunAsync();
+
+                    using (var client = new HttpClient())
+                    {
+                        client.DefaultRequestHeaders.Accept
+                            .Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                        var request = new HttpRequestMessage(HttpMethod.Post, url + TestWebModule.RedirectUrl)
+                        {
+                            Content = new StringContent("POST DATA", Encoding.GetEncoding(encodeName),
+                                "application/json")
+                        };
+
+                        using (var response = await client.SendAsync(request))
+                        {
+                            var stream = await response.Content.ReadAsStreamAsync();
+                            using (var ms = new MemoryStream())
+                            {
+                                stream.CopyTo(ms);
+                                var data = ms.ToArray().ToText();
+
+                                Assert.IsNotNull(data, "Data is not empty");
+                                var model = Json.Deserialize<EncodeCheck>(data);
+
+                                Assert.IsNotNull(model);
+                                Assert.IsTrue(model.IsValid);
+                            }
                         }
                     }
                 }
             }
-        }
 
-        internal class EncodeCheck
-        {
-            public string Encoding { get; set; }
+            internal class EncodeCheck
+            {
+                public string Encoding { get; set; }
 
-            public bool IsValid { get; set; }
+                public bool IsValid { get; set; }
+            }
         }
     }
 }

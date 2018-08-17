@@ -10,7 +10,7 @@
     /// Interface to create a WebServer class
     /// </summary>
     /// <seealso cref="System.IDisposable" />
-    interface IWebServer : IDisposable
+    public interface IWebServer : IDisposable
     {
         /// <summary>
         /// Gets registered the ISessionModule.
