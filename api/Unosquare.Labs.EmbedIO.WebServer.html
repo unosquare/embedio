@@ -121,7 +121,7 @@
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.html">Unosquare.Labs.EmbedIO</a></h6>
   <h5 id="Unosquare_Labs_EmbedIO_WebServer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class WebServer : IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public class WebServer : IWebServer, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -297,8 +297,7 @@ Please notice the ending slash. -- It is important.</p>
   
   <a id="Unosquare_Labs_EmbedIO_WebServer_Modules_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Modules*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_WebServer_Modules" data-uid="Unosquare.Labs.EmbedIO.WebServer.Modules">Modules</h4>
-  <div class="markdown level1 summary"><p>Gets a list of registered modules.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -315,8 +314,7 @@ Please notice the ending slash. -- It is important.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1">ReadOnlyCollection</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html">IWebModule</a>&gt;</td>
-        <td><p>The modules.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -378,9 +376,7 @@ Please notice the ending slash. -- It is important.</p>
   
   <a id="Unosquare_Labs_EmbedIO_WebServer_RoutingStrategy_" data-uid="Unosquare.Labs.EmbedIO.WebServer.RoutingStrategy*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_WebServer_RoutingStrategy" data-uid="Unosquare.Labs.EmbedIO.WebServer.RoutingStrategy">RoutingStrategy</h4>
-  <div class="markdown level1 summary"><p>Gets the URL RoutingStrategy used in this instance.
-By default it is set to Wildcard, but Regex is the recommended value.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -405,8 +401,7 @@ By default it is set to Wildcard, but Regex is the recommended value.</p>
   
   <a id="Unosquare_Labs_EmbedIO_WebServer_SessionModule_" data-uid="Unosquare.Labs.EmbedIO.WebServer.SessionModule*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_WebServer_SessionModule" data-uid="Unosquare.Labs.EmbedIO.WebServer.SessionModule">SessionModule</h4>
-  <div class="markdown level1 summary"><p>Gets registered the ISessionModule.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -423,8 +418,7 @@ By default it is set to Wildcard, but Regex is the recommended value.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="Unosquare.Labs.EmbedIO.ISessionWebModule.html">ISessionWebModule</a></td>
-        <td><p>The session module.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -594,9 +588,7 @@ By default it is set to Wildcard, but Regex is the recommended value.</p>
   
   <a id="Unosquare_Labs_EmbedIO_WebServer_Module_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Module*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_WebServer_Module__1" data-uid="Unosquare.Labs.EmbedIO.WebServer.Module``1">Module&lt;T&gt;()</h4>
-  <div class="markdown level1 summary"><p>Gets the module registered for the given type.
-Returns null if no module matches the given type.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -614,8 +606,7 @@ Returns null if no module matches the given type.</p>
     <tbody>
       <tr>
         <td><span class="xref">T</span></td>
-        <td><p>Module registered for the given type.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -630,8 +621,7 @@ Returns null if no module matches the given type.</p>
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td><p>The type of module.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -639,8 +629,7 @@ Returns null if no module matches the given type.</p>
   
   <a id="Unosquare_Labs_EmbedIO_WebServer_RegisterModule_" data-uid="Unosquare.Labs.EmbedIO.WebServer.RegisterModule*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_WebServer_RegisterModule_Unosquare_Labs_EmbedIO_IWebModule_" data-uid="Unosquare.Labs.EmbedIO.WebServer.RegisterModule(Unosquare.Labs.EmbedIO.IWebModule)">RegisterModule(IWebModule)</h4>
-  <div class="markdown level1 summary"><p>Registers an instance of a web module. Only 1 instance per type is allowed.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -659,8 +648,7 @@ Returns null if no module matches the given type.</p>
       <tr>
         <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html">IWebModule</a></td>
         <td><span class="parametername">module</span></td>
-        <td><p>The module.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -668,8 +656,7 @@ Returns null if no module matches the given type.</p>
   
   <a id="Unosquare_Labs_EmbedIO_WebServer_RunAsync_" data-uid="Unosquare.Labs.EmbedIO.WebServer.RunAsync*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_WebServer_RunAsync_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.WebServer.RunAsync(System.Threading.CancellationToken)">RunAsync(CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Starts the listener and the registered modules.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -688,8 +675,7 @@ Returns null if no module matches the given type.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
         <td><span class="parametername">ct</span></td>
-        <td><p>The cancellation token; when cancelled, the server cancels all pending requests and stops.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -704,8 +690,7 @@ Returns null if no module matches the given type.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
-        <td><p>Returns the task that the HTTP listener is running inside of, so that it can be waited upon after it&apos;s been canceled.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -738,8 +723,7 @@ so it is safe to call <a class="xref" href="https://docs.microsoft.com/dotnet/ap
   
   <a id="Unosquare_Labs_EmbedIO_WebServer_UnregisterModule_" data-uid="Unosquare.Labs.EmbedIO.WebServer.UnregisterModule*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_WebServer_UnregisterModule_System_Type_" data-uid="Unosquare.Labs.EmbedIO.WebServer.UnregisterModule(System.Type)">UnregisterModule(Type)</h4>
-  <div class="markdown level1 summary"><p>Unregisters the module identified by its type.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -758,8 +742,7 @@ so it is safe to call <a class="xref" href="https://docs.microsoft.com/dotnet/ap
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">moduleType</span></td>
-        <td><p>Type of the module.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
