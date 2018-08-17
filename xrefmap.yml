@@ -1024,6 +1024,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.IWebServer.Modules
   nameWithType: IWebServer.Modules
+- uid: Unosquare.Labs.EmbedIO.IWebServer.OnMethodNotAllowed
+  name: OnMethodNotAllowed
+  href: api/Unosquare.Labs.EmbedIO.IWebServer.html#Unosquare_Labs_EmbedIO_IWebServer_OnMethodNotAllowed
+  commentId: P:Unosquare.Labs.EmbedIO.IWebServer.OnMethodNotAllowed
+  fullName: Unosquare.Labs.EmbedIO.IWebServer.OnMethodNotAllowed
+  nameWithType: IWebServer.OnMethodNotAllowed
+- uid: Unosquare.Labs.EmbedIO.IWebServer.OnMethodNotAllowed*
+  name: OnMethodNotAllowed
+  href: api/Unosquare.Labs.EmbedIO.IWebServer.html#Unosquare_Labs_EmbedIO_IWebServer_OnMethodNotAllowed_
+  commentId: Overload:Unosquare.Labs.EmbedIO.IWebServer.OnMethodNotAllowed
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.IWebServer.OnMethodNotAllowed
+  nameWithType: IWebServer.OnMethodNotAllowed
 - uid: Unosquare.Labs.EmbedIO.IWebServer.RegisterModule(Unosquare.Labs.EmbedIO.IWebModule)
   name: RegisterModule(IWebModule)
   href: api/Unosquare.Labs.EmbedIO.IWebServer.html#Unosquare_Labs_EmbedIO_IWebServer_RegisterModule_Unosquare_Labs_EmbedIO_IWebModule_
