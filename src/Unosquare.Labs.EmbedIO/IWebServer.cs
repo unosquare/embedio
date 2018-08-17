@@ -49,6 +49,14 @@
         /// The on method not allowed.
         /// </value>
         Func<HttpListenerContext, Task<bool>> OnMethodNotAllowed { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the on not found.
+        /// </summary>
+        /// <value>
+        /// The on not found.
+        /// </value>
+        Func<HttpListenerContext, Task<bool>> OnNotFound { get; set; }
 
         /// <summary>
         /// Gets the module registered for the given type.

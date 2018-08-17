@@ -16,10 +16,10 @@
     internal class HttpHandler
     {
         private readonly HttpListenerContext _context;
-        private readonly WebServer _server;
+        private readonly IWebServer _server;
         private string _requestId = "(not set)";
 
-        public HttpHandler(HttpListenerContext context, WebServer server)
+        public HttpHandler(HttpListenerContext context, IWebServer server)
         {
             _context = context;
             _server = server;
@@ -43,27 +43,27 @@
 
                 // Log the request and its ID
                 $"Start of Request {_requestId} - Source {requestEndpoint} - {_context.RequestVerb().ToString().ToUpperInvariant()}: {_context.Request.Url.PathAndQuery} - {_context.Request.UserAgent}"
-                    .Debug(nameof(WebServer));
+                    .Debug(nameof(HttpHandler));
 
                 var processResult = await ProcessRequest(ct);
 
                 // Return a 404 (Not Found) response if no module/handler handled the response.
                 if (processResult == false)
                 {
-                    "No module generated a response. Sending 404 - Not Found".Error(nameof(WebServer));
+                    "No module generated a response. Sending 404 - Not Found".Error(nameof(HttpHandler));
 
                     await _server.OnNotFound(_context);
                 }
             }
             catch (Exception ex)
             {
-                ex.Log(nameof(WebServer), "Error handling request.");
+                ex.Log(nameof(HttpHandler), "Error handling request.");
             }
             finally
             {
                 // Always close the response stream no matter what.
                 _context?.Response.OutputStream.Close();
-                $"End of Request {_requestId}".Debug(nameof(WebServer));
+                $"End of Request {_requestId}".Debug(nameof(HttpHandler));
             }
         }
         
@@ -85,12 +85,12 @@
                 {
                     // Log the module and handler to be called and invoke as a callback.
                     $"{module.Name}::{callback.GetMethodInfo().DeclaringType?.Name}.{callback.GetMethodInfo().Name}"
-                        .Debug(nameof(WebServer));
+                        .Debug(nameof(HttpHandler));
 
                     // Execute the callback
                     var handleResult = await callback(_context, ct);
 
-                    $"Result: {handleResult}".Trace(nameof(WebServer));
+                    $"Result: {handleResult}".Trace(nameof(HttpHandler));
 
                     // callbacks can instruct the server to stop bubbling the request through the rest of the modules by returning true;
                     if (handleResult)
@@ -120,7 +120,7 @@
             var errorMessage = ex.ExceptionMessage(priorMessage);
 
             // Log the exception message.
-            ex.Log(nameof(WebServer), priorMessage);
+            ex.Log(nameof(HttpHandler), priorMessage);
 
             // Send the response over with the corresponding status code.
             return _context.HtmlResponseAsync(

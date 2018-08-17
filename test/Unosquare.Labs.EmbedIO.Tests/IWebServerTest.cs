@@ -67,5 +67,20 @@
                 Assert.IsNull(webserver.SessionModule);
             }
         }
+
+        [Test]
+        public void RunsServerAndRequestDAta_ReturnsValidData()
+        {
+            using (var webserver = new TestWebServer())
+            {
+                webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse("OK")));
+                webserver.RunAsync();
+                var client = webserver.GetClient();
+
+                client.GetResponse();
+
+                Assert.IsNotNull(client.Context.Response);
+            }
+        }
     }
 }
