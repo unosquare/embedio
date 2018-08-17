@@ -7,19 +7,14 @@
     using Swan;
     using System;
     using System.Threading.Tasks;
-#if NET47
-    using System.Net;
-#else
-    using Net;
-#endif
 
     internal class HttpHandler
     {
-        private readonly HttpListenerContext _context;
+        private readonly IHttpContext _context;
         private readonly IWebServer _server;
         private string _requestId = "(not set)";
 
-        public HttpHandler(HttpListenerContext context, IWebServer server)
+        public HttpHandler(IHttpContext context, IWebServer server)
         {
             _context = context;
             _server = server;
@@ -156,7 +151,7 @@
                 (x.Verb == HttpVerbs.Any || x.Verb == _context.RequestVerb()));
         }
 
-        private Func<HttpListenerContext, CancellationToken, Task<bool>> GetHandler(IWebModule module)
+        private Func<IHttpContext, CancellationToken, Task<bool>> GetHandler(IWebModule module)
         {
             Map handler;
 

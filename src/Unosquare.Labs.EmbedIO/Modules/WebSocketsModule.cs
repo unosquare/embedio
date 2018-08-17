@@ -151,7 +151,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>A string that represents the registered path in the internal map.</returns>
-        private string NormalizeRegexPath(HttpListenerContext context)
+        private string NormalizeRegexPath(IHttpContext context)
         {
             var path = string.Empty;
 
@@ -253,21 +253,18 @@
         /// <param name="context">The context.</param>
         /// <param name="ct">The cancellation token.</param>
         /// <returns>A task that represents the asynchronous of websocket connection operation.</returns>
-        public async Task AcceptWebSocket(HttpListenerContext context, CancellationToken ct)
+        public async Task AcceptWebSocket(IHttpContext context, CancellationToken ct)
         {
-            // first, accept the websocket
-            $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
-
 #if NET47
             const int receiveBufferSize = 2048;
 #endif
 
+            // first, accept the websocket
+            $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
+
             var webSocketContext =
 #if NET47
-                await context.AcceptWebSocketAsync(
-                    subProtocol: null,
-                    receiveBufferSize: receiveBufferSize,
-                    keepAliveInterval: TimeSpan.FromSeconds(30));
+                await (context as HttpContext).AcceptWebSocketAsync(receiveBufferSize);
 #else
                 await context.AcceptWebSocketAsync();
 #endif

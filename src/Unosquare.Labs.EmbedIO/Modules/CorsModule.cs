@@ -5,16 +5,7 @@
     using System;
     using System.Linq;
     using System.Collections.Generic;
-#if NET47
-    using System.Net;
-#else
-    using Net;
-#endif
-
-    // TODO: Add Whitelist origins with Regex
-    // TODO: Add Path Regex, just apply CORS in some paths
-    // TODO: Handle valid headers in other modules
-
+    
     /// <summary>
     /// CORS control Module
     /// Cross-origin resource sharing (CORS) is a mechanism that allows restricted resources (e.g. fonts) 
@@ -95,7 +86,7 @@
 
         private static Task<bool> ValidateHttpOptions(
             string methods, 
-            HttpListenerContext context,
+            IHttpContext context,
             IEnumerable<string> validMethods)
         {
             var currentMethod = context.RequestHeader(Headers.AccessControlRequestMethod);

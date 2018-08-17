@@ -38,16 +38,12 @@
     public class WebApiModule 
         : WebModuleBase
     {
-        #region Immutable Declarations
-
         private readonly List<Type> _controllerTypes = new List<Type>();
 
         private readonly Dictionary<string, Dictionary<HttpVerbs, MethodCacheInstance>> _delegateMap
             =
             new Dictionary<string, Dictionary<HttpVerbs, MethodCacheInstance>>(
                 Strings.StandardStringComparer);
-
-        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebApiModule"/> class.
@@ -191,7 +187,7 @@
         /// <returns>A string that represents the registered path in the internal delegate map.</returns>
         private string NormalizeRegexPath(
             HttpVerbs verb,
-            HttpListenerContext context,
+            IHttpContext context,
             Dictionary<string, object> routeParams)
         {
             var path = context.Request.Url.LocalPath;
@@ -220,7 +216,7 @@
         /// <param name="verb">The verb.</param>
         /// <param name="context">The context.</param>
         /// <returns>A string that represents the registered path.</returns>
-        private string NormalizeWildcardPath(HttpVerbs verb, HttpListenerContext context)
+        private string NormalizeWildcardPath(HttpVerbs verb, IHttpContext context)
         {
             var path = context.RequestWilcardPath(_delegateMap.Keys
                 .Where(k => k.Contains(ModuleMap.AnyPathRoute))
@@ -248,7 +244,7 @@
         /// </summary>
         /// <param name="context"> The HttpListener context.</param>
         /// <returns><c>true</c> if the path is found, otherwise <c>false</c>.</returns>
-        private bool IsMethodNotAllowed(HttpListenerContext context)
+        private bool IsMethodNotAllowed(IHttpContext context)
         {
             string path;
 
@@ -294,6 +290,6 @@
         /// Previous values are defined to avoid caching from client.
         /// </summary>
         /// <param name="context">The context.</param>
-        public virtual void SetDefaultHeaders(HttpListenerContext context) => context.NoCache();
+        public virtual void SetDefaultHeaders(IHttpContext context) => context.NoCache();
     }
 }

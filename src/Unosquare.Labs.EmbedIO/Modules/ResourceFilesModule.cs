@@ -59,7 +59,7 @@
 
         private static string PathResourcerize(string s) => s == "/" ? "index.html" : s.Substring(1, s.Length - 1).Replace('/', '.');
 
-        private async Task<bool> HandleGet(HttpListenerContext context, CancellationToken ct, bool sendBuffer = true)
+        private async Task<bool> HandleGet(IHttpContext context, CancellationToken ct, bool sendBuffer = true)
         {
             Stream buffer = null;
 
@@ -105,7 +105,7 @@
             return true;
         }
 
-        private void SetHeaders(HttpListenerResponse response, string localPath, string utcFileDateString)
+        private void SetHeaders(IHttpResponse response, string localPath, string utcFileDateString)
         {
             var fileExtension = localPath.Contains(".") ? $".{localPath.Split('.').Last()}" : ".html";
 

@@ -195,7 +195,7 @@
         /// </summary>
         public void ClearRamCache() => RamCache.Clear();
 
-        private static Task<bool> HandleDirectory(HttpListenerContext context, string localPath, CancellationToken ct)
+        private static Task<bool> HandleDirectory(IHttpContext context, string localPath, CancellationToken ct)
         {
             var entries = new[] {context.Request.RawUrl == "/" ? string.Empty : "<a href='../'>../</a>"}
                 .Concat(
@@ -244,7 +244,7 @@
             return context.HtmlResponseAsync(content, cancellationToken: ct);
         }
 
-        private Task<bool> HandleGet(HttpListenerContext context, CancellationToken ct, bool sendBuffer = true)
+        private Task<bool> HandleGet(IHttpContext context, CancellationToken ct, bool sendBuffer = true)
         {
             switch (ValidatePath(context, out var requestFullLocalPath))
             {
@@ -260,7 +260,7 @@
             }
         }
 
-        private async Task<bool> HandleFile(HttpListenerContext context, string localPath, bool sendBuffer, CancellationToken ct)
+        private async Task<bool> HandleFile(IHttpContext context, string localPath, bool sendBuffer, CancellationToken ct)
         {
             Stream buffer = null;
 
@@ -346,7 +346,7 @@
             return true;
         }
 
-        private VirtualPathStatus ValidatePath(HttpListenerContext context, out string requestFullLocalPath)
+        private VirtualPathStatus ValidatePath(IHttpContext context, out string requestFullLocalPath)
         {
             var baseLocalPath = FileSystemPath;
             var requestLocalPath = _virtualPaths.GetUrlPath(context.RequestPathCaseSensitive(), ref baseLocalPath);
@@ -356,7 +356,7 @@
             return _virtualPaths.ExistsLocalPath(requestLocalPath, ref requestFullLocalPath);
         }
 
-        private void SetHeaders(HttpListenerResponse response, string localPath, string utcFileDateString)
+        private void SetHeaders(IHttpResponse response, string localPath, string utcFileDateString)
         {
             var fileExtension = Path.GetExtension(localPath);
 
@@ -370,7 +370,7 @@
         }
 
         private bool UpdateFileCache(
-            HttpListenerResponse response,
+            IHttpResponse response,
             Stream buffer,
             DateTime fileDate,
             string requestHash,
@@ -393,7 +393,7 @@
             return false;
         }
 
-        private void SetStatusCode304(HttpListenerResponse response)
+        private void SetStatusCode304(IHttpResponse response)
         {
             SetDefaultCacheHeaders(response);
 

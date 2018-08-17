@@ -9,7 +9,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 #if NET47
-    using System.Net;
+    using System.Net.WebSockets;
 #else
     using Net;
 #endif
@@ -152,7 +152,7 @@
         }
 
         /// <inheritdoc />
-        public SessionInfo GetSession(HttpListenerContext context)
+        public SessionInfo GetSession(IHttpContext context)
         {
             lock (_sessionsSyncLock)
             {
@@ -164,11 +164,7 @@
         }
 
         /// <inheritdoc />
-#if NET47
-        public SessionInfo GetSession(System.Net.WebSockets.WebSocketContext context)
-#else
         public SessionInfo GetSession(WebSocketContext context)
-#endif
         {
             lock (_sessionsSyncLock)
             {
@@ -180,7 +176,7 @@
         }
 
         /// <inheritdoc />
-        public void DeleteSession(HttpListenerContext context) => DeleteSession(GetSession(context));
+        public void DeleteSession(IHttpContext context) => DeleteSession(GetSession(context));
 
         /// <inheritdoc />
         public void DeleteSession(SessionInfo session)
@@ -224,7 +220,7 @@
         /// System.Net.Cookie.Value only supports a single value and we need to pick the one that potentially exists.
         /// </summary>
         /// <param name="context">The context.</param>
-        private void FixupSessionCookie(HttpListenerContext context)
+        private void FixupSessionCookie(IHttpContext context)
         {
             // get the real "__session" cookie value because sometimes there's more than 1 value and System.Net.Cookie only supports 1 value per cookie
             if (context.Request.Headers[Headers.Cookie] == null) return;

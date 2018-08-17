@@ -70,7 +70,7 @@
             bool usingPartial,
             string partialHeader,
             long fileSize,
-            HttpListenerContext context,
+            IHttpContext context,
             Stream buffer,
             CancellationToken ct)
         {
@@ -127,7 +127,7 @@
         /// Sets the default cache headers.
         /// </summary>
         /// <param name="response">The response.</param>
-        protected void SetDefaultCacheHeaders(HttpListenerResponse response)
+        protected void SetDefaultCacheHeaders(IHttpResponse response)
         {
             response.AddHeader(Headers.CacheControl,
                 DefaultHeaders.GetValueOrDefault(Headers.CacheControl, "private"));
@@ -136,7 +136,7 @@
         }
 
         private static async Task WriteToOutputStream(
-            HttpListenerResponse response,
+            IHttpResponse response,
             Stream buffer,
             long lowerByteIndex,
             CancellationToken ct)

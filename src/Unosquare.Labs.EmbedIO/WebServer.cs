@@ -85,11 +85,11 @@
         }
 
         /// <inheritdoc />
-        public Func<HttpListenerContext, Task<bool>> OnMethodNotAllowed { get; set; } = ctx =>
+        public Func<IHttpContext, Task<bool>> OnMethodNotAllowed { get; set; } = ctx =>
              ctx.HtmlResponseAsync(Responses.Response405Html, System.Net.HttpStatusCode.MethodNotAllowed);
         
         /// <inheritdoc />
-        public Func<HttpListenerContext, Task<bool>> OnNotFound { get; set; } = ctx =>
+        public Func<IHttpContext, Task<bool>> OnNotFound { get; set; } = ctx =>
             ctx.HtmlResponseAsync(Responses.Response404Html, System.Net.HttpStatusCode.NotFound);
 
         /// <summary>
@@ -181,7 +181,7 @@
                             return;
 
                         // Spawn off each client task asynchronously
-                        var handler = new HttpHandler(clientSocket, this);
+                        var handler = new HttpHandler(new HttpContext(clientSocket), this);
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                         handler.HandleClientRequest(ct);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed

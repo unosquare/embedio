@@ -4,11 +4,6 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-#if NET47
-    using System.Net;
-#else
-    using Net;
-#endif
 
     /// <summary>
     /// Base class to define custom web modules.
@@ -44,7 +39,7 @@
         public CancellationToken CancellationToken { get; protected set; }
         
         /// <inheritdoc/>
-        public void AddHandler(string path, HttpVerbs verb, Func<HttpListenerContext, CancellationToken, Task<bool>> handler)
+        public void AddHandler(string path, HttpVerbs verb, Func<IHttpContext, CancellationToken, Task<bool>> handler)
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));

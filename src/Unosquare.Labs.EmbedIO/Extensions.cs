@@ -13,9 +13,7 @@
     using System.Threading;
     using System.Threading.Tasks;
 #if NET47
-    using System.Net;
     using System.Net.WebSockets;
-
 #else
     using Net;
 #endif
@@ -49,7 +47,7 @@
         /// <param name="context">The context.</param>
         /// <param name="server">The server.</param>
         /// <returns>A session object for the given server context.</returns>
-        public static SessionInfo GetSession(this HttpListenerContext context, WebServer server) 
+        public static SessionInfo GetSession(this IHttpContext context, WebServer server) 
             => server.GetSession(context);
 
         /// <summary>
@@ -57,7 +55,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="server">The server.</param>
-        public static void DeleteSession(this HttpListenerContext context, WebServer server)
+        public static void DeleteSession(this IHttpContext context, WebServer server)
         {
             server.DeleteSession(context);
         }
@@ -67,7 +65,7 @@
         /// </summary>
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
-        public static void DeleteSession(this WebServer server, HttpListenerContext context)
+        public static void DeleteSession(this WebServer server, IHttpContext context)
         {
             server.SessionModule?.DeleteSession(context);
         }
@@ -89,10 +87,7 @@
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
         /// <returns>A session info for the given server context.</returns>
-        public static SessionInfo GetSession(this WebServer server, HttpListenerContext context)
-        {
-            return server.SessionModule?.GetSession(context);
-        }
+        public static SessionInfo GetSession(this WebServer server, IHttpContext context) => server.SessionModule?.GetSession(context);
 
         /// <summary>
         /// Gets the session object associated to the current context.
@@ -101,14 +96,7 @@
         /// <param name="context">The context.</param>
         /// <param name="server">The server.</param>
         /// <returns>A session info for the given websocket context.</returns>
-#if NET47
-        public static SessionInfo GetSession(this System.Net.WebSockets.WebSocketContext context, WebServer server)
-#else
-        public static SessionInfo GetSession(this WebSocketContext context, WebServer server)
-#endif
-        {
-            return server.SessionModule?.GetSession(context);
-        }
+        public static SessionInfo GetSession(this WebSocketContext context, WebServer server) => server.SessionModule?.GetSession(context);
 
         /// <summary>
         /// Gets the session.
@@ -116,14 +104,7 @@
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
         /// <returns>A session info for the given websocket context.</returns>
-#if NET47
-        public static SessionInfo GetSession(this WebServer server, System.Net.WebSockets.WebSocketContext context)
-#else
-        public static SessionInfo GetSession(this WebServer server, WebSocketContext context)
-#endif
-        {
-            return server.SessionModule?.GetSession(context);
-        }
+        public static SessionInfo GetSession(this WebServer server, WebSocketContext context) => server.SessionModule?.GetSession(context);
 
         #endregion
 
@@ -134,7 +115,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>Path for the specified context.</returns>
-        public static string RequestPath(this HttpListenerContext context)
+        public static string RequestPath(this IHttpContext context)
             => context.Request.Url.LocalPath.ToLowerInvariant();
 
         /// <summary>
@@ -144,7 +125,7 @@
         /// <param name="context">The context.</param>
         /// <param name="wildcardPaths">The wildcard paths.</param>
         /// <returns>Path for the specified context.</returns>
-        public static string RequestWilcardPath(this HttpListenerContext context, IEnumerable<string> wildcardPaths)
+        public static string RequestWilcardPath(this IHttpContext context, IEnumerable<string> wildcardPaths)
         {
             var path = context.Request.Url.LocalPath.ToLowerInvariant();
 
@@ -166,7 +147,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>Path for the specified context.</returns>
-        public static string RequestPathCaseSensitive(this HttpListenerContext context)
+        public static string RequestPathCaseSensitive(this IHttpContext context)
             => context.Request.Url.LocalPath;
 
         /// <summary>
@@ -174,7 +155,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>HTTP verb result of the conversion of this context.</returns>
-        public static HttpVerbs RequestVerb(this HttpListenerContext context)
+        public static HttpVerbs RequestVerb(this IHttpContext context)
         {
             Enum.TryParse(context.Request.HttpMethod.ToLowerInvariant().Trim(), true, out HttpVerbs verb);
             return verb;
@@ -187,7 +168,7 @@
         /// <param name="context">The context.</param>
         /// <param name="key">The key.</param>
         /// <returns>A string that represents the value for the specified query string key.</returns>
-        public static string QueryString(this HttpListenerContext context, string key)
+        public static string QueryString(this IHttpContext context, string key)
             => context.InQueryString(key) ? context.Request.QueryString[key] : null;
 
         /// <summary>
@@ -196,7 +177,7 @@
         /// <param name="context">The context.</param>
         /// <param name="key">The key.</param>
         /// <returns>True if a key exists within the Request's query string; otherwise, false.</returns>
-        public static bool InQueryString(this HttpListenerContext context, string key)
+        public static bool InQueryString(this IHttpContext context, string key)
             => context.Request.QueryString.AllKeys.Contains(key);
 
         /// <summary>
@@ -205,7 +186,7 @@
         /// <param name="context">The context.</param>
         /// <param name="headerName">Name of the header.</param>
         /// <returns>Specified request the header when is true; otherwise, empty string. </returns>
-        public static string RequestHeader(this HttpListenerContext context, string headerName)
+        public static string RequestHeader(this IHttpContext context, string headerName)
             => context.Request.Headers[headerName] ?? string.Empty;
 
         /// <summary>
@@ -214,7 +195,7 @@
         /// <param name="context">The context.</param>
         /// <param name="headerName">Name of the header.</param>
         /// <returns>True if request headers is not a null; otherwise, false.</returns>
-        public static bool HasRequestHeader(this HttpListenerContext context, string headerName)
+        public static bool HasRequestHeader(this IHttpContext context, string headerName)
             => context.Request.Headers[headerName] != null;
 
         /// <summary>
@@ -227,7 +208,7 @@
         /// The rest of the stream as a string, from the current position to the end.
         /// If the current position is at the end of the stream, returns an empty string.
         /// </returns>
-        public static string RequestBody(this HttpListenerContext context)
+        public static string RequestBody(this IHttpContext context)
         {
             if (context.Request.HasEntityBody == false)
                 return null;
@@ -247,7 +228,7 @@
         /// <param name="context">The context.</param>
         /// <param name="basePath">The base path.</param>
         /// <returns>The params from the request.</returns>
-        public static string[] RequestWildcardUrlParams(this HttpListenerContext context, string basePath)
+        public static string[] RequestWildcardUrlParams(this IHttpContext context, string basePath)
             => RequestWildcardUrlParams(context.RequestPath(), basePath);
 
         /// <summary>
@@ -280,7 +261,7 @@
         /// <param name="context">The context.</param>
         /// <param name="basePath">The base path.</param>
         /// <returns>The params from the request.</returns>
-        public static Dictionary<string, object> RequestRegexUrlParams(this HttpListenerContext context,
+        public static Dictionary<string, object> RequestRegexUrlParams(this IHttpContext context,
             string basePath)
             => RequestRegexUrlParams(context.RequestPath(), basePath);
 
@@ -343,7 +324,7 @@
         /// Sends headers to disable caching on the client side.
         /// </summary>
         /// <param name="context">The context.</param>
-        public static void NoCache(this HttpListenerContext context)
+        public static void NoCache(this IHttpContext context)
         {
             context.Response.AddHeader(Headers.Expires, "Mon, 26 Jul 1997 05:00:00 GMT");
             context.Response.AddHeader(Headers.LastModified,
@@ -360,7 +341,7 @@
         /// <param name="location">The location.</param>
         /// <param name="useAbsoluteUrl">if set to <c>true</c> [use absolute URL].</param>
         /// <returns><b>true</b> if the headers were set, otherwise <b>false</b>.</returns>
-        public static bool Redirect(this HttpListenerContext context, string location, bool useAbsoluteUrl = true)
+        public static bool Redirect(this IHttpContext context, string location, bool useAbsoluteUrl = true)
         {
             if (useAbsoluteUrl)
             {
@@ -385,7 +366,7 @@
         /// <param name="context">The context.</param>
         /// <param name="data">The data.</param>
         /// <returns>A <c>true</c> value of type ref=JsonResponseAsync".</returns>
-        public static bool JsonResponse(this HttpListenerContext context, object data)
+        public static bool JsonResponse(this IHttpContext context, object data)
             => context.JsonResponseAsync(data).GetAwaiter().GetResult();
 
         /// <summary>
@@ -394,7 +375,7 @@
         /// <param name="context">The context.</param>
         /// <param name="data">The data.</param>
         /// <returns>A <c>true</c> value of type ref=JsonResponseAsync".</returns>
-        public static Task<bool> JsonResponseAsync(this HttpListenerContext context, object data)
+        public static Task<bool> JsonResponseAsync(this IHttpContext context, object data)
             => context.JsonResponseAsync(Json.Serialize(data));
 
         /// <summary>
@@ -403,7 +384,7 @@
         /// <param name="context">The context.</param>
         /// <param name="json">The JSON.</param>
         /// <returns> A <c>true</c> value of type ref=JsonResponseAsync".</returns>
-        public static bool JsonResponse(this HttpListenerContext context, string json)
+        public static bool JsonResponse(this IHttpContext context, string json)
             => context.JsonResponseAsync(json).GetAwaiter().GetResult();
 
         /// <summary>
@@ -414,7 +395,7 @@
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A task for writing the output stream.</returns>
         public static Task<bool> JsonResponseAsync(
-            this HttpListenerContext context,
+            this IHttpContext context,
             string json,
             CancellationToken cancellationToken = default)
         {
@@ -430,7 +411,7 @@
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A task for writing the output stream.</returns>
         public static Task<bool> HtmlResponseAsync(
-            this HttpListenerContext context,
+            this IHttpContext context,
             string htmlContent,
             System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.OK,
             CancellationToken cancellationToken = default)
@@ -447,7 +428,7 @@
         /// <param name="statusCode">The status code.</param>
         /// <returns>A <c>true</c> value when the exception is written to the HTTP Response.</returns>
         public static bool JsonExceptionResponse(
-            this HttpListenerContext context,
+            this IHttpContext context,
             Exception ex,
             System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.InternalServerError)
         {
@@ -463,7 +444,7 @@
         /// <param name="statusCode">The status code.</param>
         /// <returns>A task for writing the output stream.</returns>
         public static Task<bool> JsonExceptionResponseAsync(
-            this HttpListenerContext context,
+            this IHttpContext context,
             Exception ex,
             System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.InternalServerError)
         {
@@ -481,7 +462,7 @@
         /// <param name="encoding">The encoding.</param>
         /// <returns>A task for writing the output stream.</returns>
         public static async Task<bool> StringResponseAsync(
-            this HttpListenerContext context,
+            this IHttpContext context,
             string content,
             string contentType = "application/json",
             CancellationToken cancellationToken = default,
@@ -504,7 +485,7 @@
         /// <returns>
         /// Parses the json as a given type from the request body.
         /// </returns>
-        public static T ParseJson<T>(this HttpListenerContext context)
+        public static T ParseJson<T>(this IHttpContext context)
             where T : class
         {
             return ParseJson<T>(context.RequestBody());
@@ -542,7 +523,7 @@
         /// </summary>
         /// <param name="context">The context to request body as string.</param>
         /// <returns>A collection that represents KVPs from request data.</returns>
-        public static Dictionary<string, object> RequestFormDataDictionary(this HttpListenerContext context)
+        public static Dictionary<string, object> RequestFormDataDictionary(this IHttpContext context)
             => RequestFormDataDictionary(context.RequestBody());
 
         #endregion

@@ -1,31 +1,4 @@
 ﻿#if !NET47
-//
-// System.Net.HttpConnection
-//
-// Author:
-// Gonzalo Paniagua Javier (gonzalo.mono@gmail.com)
-//
-// Copyright (c) 2005-2009 Novell, Inc. (http://www.novell.com)
-// Copyright (c) 2012 Xamarin, Inc. (http://xamarin.com)
-//
-// Permission is hereby granted, free of charge, to any person obtaining
-// a copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to
-// permit persons to whom the Software is furnished to do so, subject to
-// the following conditions:
-// 
-// The above copyright notice and this permission notice shall be
-// included in all copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 namespace Unosquare.Net
 {
     using System;
@@ -186,7 +159,7 @@ using System.Security.Cryptography.X509Certificates;
         {
             return _oStream ??
                    (_oStream =
-                       new ResponseStream(Stream, _context.Response, _context.Listener?.IgnoreWriteExceptions ?? true));
+                       new ResponseStream(Stream, _context.HttpListenerResponse, _context.Listener?.IgnoreWriteExceptions ?? true));
         }
 
         internal void Close(bool forceClose = false)
@@ -207,7 +180,7 @@ using System.Security.Cryptography.X509Certificates;
 
             if (!forceClose)
             {
-                if (_context.Request.FlushInput().GetAwaiter().GetResult())
+                if (_context.HttpListenerRequest.FlushInput().GetAwaiter().GetResult())
                 {
                     Reuses++;
                     Unbind();
@@ -300,7 +273,7 @@ using System.Security.Cryptography.X509Certificates;
                 if (ProcessInput(_ms))
                 {
                     if (!_context.HaveError)
-                        _context.Request.FinishInitialization();
+                        _context.HttpListenerRequest.FinishInitialization();
 
                     if (_context.HaveError || !_epl.BindContext(_context))
                     {
@@ -377,14 +350,14 @@ using System.Security.Cryptography.X509Certificates;
 
                 if (_inputState == InputState.RequestLine)
                 {
-                    _context.Request.SetRequestLine(line);
+                    _context.HttpListenerRequest.SetRequestLine(line);
                     _inputState = InputState.Headers;
                 }
                 else
                 {
                     try
                     {
-                        _context.Request.AddHeader(line);
+                        _context.HttpListenerRequest.AddHeader(line);
                     }
                     catch (Exception e)
                     {

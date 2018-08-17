@@ -5,11 +5,6 @@
     using System.Threading;
     using System.Collections.ObjectModel;
     using System.Threading.Tasks;
-#if NET47
-    using System.Net;
-#else
-    using Net;
-#endif
 
     /// <summary>
     /// Interface to create a WebServer class
@@ -48,7 +43,7 @@
         /// <value>
         /// The on method not allowed.
         /// </value>
-        Func<HttpListenerContext, Task<bool>> OnMethodNotAllowed { get; set; }
+        Func<IHttpContext, Task<bool>> OnMethodNotAllowed { get; set; }
         
         /// <summary>
         /// Gets or sets the on not found.
@@ -56,7 +51,7 @@
         /// <value>
         /// The on not found.
         /// </value>
-        Func<HttpListenerContext, Task<bool>> OnNotFound { get; set; }
+        Func<IHttpContext, Task<bool>> OnNotFound { get; set; }
 
         /// <summary>
         /// Gets the module registered for the given type.
