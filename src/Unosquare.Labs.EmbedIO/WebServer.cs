@@ -7,7 +7,6 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading;
-    using System.Reflection;
     using System.Threading.Tasks;
 #if NET47
     using System.Net;
@@ -89,7 +88,7 @@
         }
 
         /// <summary>
-        /// The on method not allowed.
+        /// Gets or sets the on method not allowed.
         /// </summary>
         /// <value>
         /// The on method not allowed.
@@ -98,7 +97,7 @@
              ctx.HtmlResponseAsync(Responses.Response405Html, System.Net.HttpStatusCode.MethodNotAllowed);
 
         /// <summary>
-        /// The on not found.
+        /// Gets or sets the on not found.
         /// </summary>
         /// <value>
         /// The on not found.
@@ -219,74 +218,6 @@
         }
 
         /// <summary>
-        /// Process HttpListener Request and returns true if it was handled.
-        /// </summary>
-        /// <param name="context">The HttpListenerContext.</param>
-        /// <param name="ct">The cancellation token.</param>
-        /// <returns>True if it was handled; otherwise, false.</returns>
-        public async Task<bool> ProcessRequest(HttpListenerContext context, CancellationToken ct)
-        {
-            // Iterate though the loaded modules to match up a request and possibly generate a response.
-            foreach (var module in Modules)
-            {
-                var handler = GetHandler(context, module);
-
-                if (handler?.ResponseHandler == null)
-                {
-                    continue;
-                }
-
-                // Establish the callback
-                var callback = handler.ResponseHandler;
-
-                try
-                {
-                    // Inject the Server property of the module via reflection if not already there. (mini IoC ;))
-                    module.Server = module.Server ?? this;
-
-                    // Log the module and handler to be called and invoke as a callback.
-                    $"{module.Name}::{callback.GetMethodInfo().DeclaringType?.Name}.{callback.GetMethodInfo().Name}"
-                        .Debug(nameof(WebServer));
-
-                    // Execute the callback
-                    var handleResult = await callback(context, ct);
-
-                    $"Result: {handleResult}".Trace(nameof(WebServer));
-
-                    // callbacks can instruct the server to stop bubbling the request through the rest of the modules by returning true;
-                    if (handleResult)
-                    {
-                        return true;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Handle exceptions by returning a 500 (Internal Server Error) 
-                    if (context.Response.StatusCode != (int)System.Net.HttpStatusCode.Unauthorized)
-                    {
-                        var errorMessage = ex.ExceptionMessage($"Failing module name: {module.Name}");
-
-                        // Log the exception message.
-                        ex.Log(nameof(WebServer), $"Failing module name: {module.Name}");
-
-                        // Send the response over with the corresponding status code.
-                        await context.HtmlResponseAsync(
-                            System.Net.WebUtility.HtmlEncode(string.Format(Responses.Response500HtmlFormat,
-                                errorMessage,
-                                ex.StackTrace)),
-                            System.Net.HttpStatusCode.InternalServerError,
-                            ct);
-                    }
-
-                    // Finally set the handled flag to true and exit.
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// Starts the listener and the registered modules.
         /// </summary>
         /// <param name="ct">The cancellation token; when cancelled, the server cancels all pending requests and stops.</param>
@@ -325,7 +256,8 @@
 
                         // Spawn off each client task asynchronously
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                        HandleClientRequest(clientSocket, ct);
+                        using (var handler = new HttpHandler(clientSocket, this))
+                            handler.HandleClientRequest(ct);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     }
                     catch (HttpListenerException)
@@ -384,91 +316,6 @@
             "Listener Closed.".Info(nameof(WebServer));
         }
 
-        private static Map GetHandlerFromPath(HttpListenerContext context, IWebModule module)
-            => module.Handlers.FirstOrDefault(x =>
-            string.Equals(
-                x.Path,
-                x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : context.RequestPath(),
-                StringComparison.OrdinalIgnoreCase) &&
-            x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : context.RequestVerb()));
-
-        private static Map GetHandlerFromRegexPath(HttpListenerContext context, IWebModule module)
-            => module.Handlers.FirstOrDefault(x =>
-            (x.Path == ModuleMap.AnyPath || context.RequestRegexUrlParams(x.Path) != null) &&
-            (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
-
-        private static Map GetHandlerFromWildcardPath(HttpListenerContext context, IWebModule module)
-        {
-            var path = context.RequestWilcardPath(module.Handlers
-                .Where(k => k.Path.Contains("/" + ModuleMap.AnyPath))
-                .Select(s => s.Path.ToLowerInvariant()));
-
-            return module.Handlers.FirstOrDefault(x =>
-                (x.Path == ModuleMap.AnyPath || x.Path == path) &&
-                (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
-        }
-        
-        private Map GetHandler(HttpListenerContext context, IWebModule module)
-        {
-            switch (RoutingStrategy)
-            {
-                case RoutingStrategy.Wildcard:
-                    return GetHandlerFromWildcardPath(context, module);
-                case RoutingStrategy.Regex:
-                    return GetHandlerFromRegexPath(context, module);
-                case RoutingStrategy.Simple:
-                    return GetHandlerFromPath(context, module);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(RoutingStrategy));
-            }
-        }
-
         private IWebModule Module(Type moduleType) => Modules.FirstOrDefault(m => m.GetType() == moduleType);
-
-        /// <summary>
-        /// Handles the client request.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="ct">The cancellation token.</param>
-        /// <returns>A task that represents the asynchronous of client request.</returns>
-        private async Task HandleClientRequest(HttpListenerContext context, CancellationToken ct)
-        {
-            // start with an empty request ID
-            var requestId = "(not set)";
-
-            try
-            {
-                // Create a request endpoint string
-                var requestEndpoint =
-                    $"{context.Request?.RemoteEndPoint?.Address}:{context.Request?.RemoteEndPoint?.Port}";
-
-                // Generate a random request ID. It's currently not important but could be useful in the future.
-                requestId = string.Concat(DateTime.Now.Ticks.ToString(), requestEndpoint).GetHashCode().ToString("x2");
-
-                // Log the request and its ID
-                $"Start of Request {requestId} - Source {requestEndpoint} - {context.RequestVerb().ToString().ToUpperInvariant()}: {context.Request.Url.PathAndQuery} - {context.Request.UserAgent}"
-                    .Debug(nameof(WebServer));
-
-                var processResult = await ProcessRequest(context, ct);
-
-                // Return a 404 (Not Found) response if no module/handler handled the response.
-                if (processResult == false)
-                {
-                    "No module generated a response. Sending 404 - Not Found".Error();
-
-                    await OnNotFound(context);
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebServer), "Error handling request.");
-            }
-            finally
-            {
-                // Always close the response stream no matter what.
-                context?.Response.OutputStream.Close();
-                $"End of Request {requestId}".Debug(nameof(WebServer));
-            }
-        }
     }
 }
