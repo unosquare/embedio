@@ -35,7 +35,7 @@ namespace Unosquare.Net
     using System.Text;
 
     /// <summary>
-    /// Represents an HTTP Listener's response
+    /// Represents an HTTP Listener's response.
     /// </summary>
     /// <seealso cref="IDisposable" />
     public sealed class HttpListenerResponse : IDisposable
@@ -70,10 +70,10 @@ namespace Unosquare.Net
         /// </value>
         /// <exception cref="System.ObjectDisposedException">
         /// Is thrown when you try to access a member of an object that implements the 
-        /// IDisposable interface, and that object has been disposed
+        /// IDisposable interface, and that object has been disposed.
         /// </exception>
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">Must be >= 0 - value</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">Must be >= 0 - value.</exception>
         public long ContentLength64
         {
             get => _contentLength;
@@ -102,7 +102,7 @@ namespace Unosquare.Net
         /// </value>
         /// <exception cref="System.ObjectDisposedException">
         /// Is thrown when you try to access a member of an object that implements the IDisposable 
-        /// interface, and that object has been disposed
+        /// interface, and that object has been disposed.
         /// </exception>
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public string ContentType
@@ -152,7 +152,7 @@ namespace Unosquare.Net
         /// </value>
         /// <exception cref="System.ObjectDisposedException">
         /// Is thrown when you try to access a member of an object that 
-        /// implements the IDisposable interface, and that object has been disposed
+        /// implements the IDisposable interface, and that object has been disposed.
         /// </exception>
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public bool KeepAlive
@@ -196,7 +196,7 @@ namespace Unosquare.Net
         /// </value>
         /// <exception cref="System.ObjectDisposedException">
         /// Is thrown when you try to access a member of an object that implements the 
-        /// IDisposable interface, and that object has been disposed
+        /// IDisposable interface, and that object has been disposed.
         /// </exception>
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public bool SendChunked
@@ -223,7 +223,7 @@ namespace Unosquare.Net
         /// </value>
         /// <exception cref="System.ObjectDisposedException">
         /// Is thrown when you try to access a member of an object that implements the 
-        /// IDisposable interface, and that object has been disposed
+        /// IDisposable interface, and that object has been disposed.
         /// </exception>
         /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
         /// <exception cref="System.Net.ProtocolViolationException">StatusCode must be between 100 and 999.</exception>
@@ -278,12 +278,12 @@ namespace Unosquare.Net
         /// <param name="value">The value.</param>
         /// <exception cref="System.ArgumentNullException">
         /// Is thrown when a null reference is passed to a 
-        /// method that does not accept it as a valid argument
+        /// method that does not accept it as a valid argument.
         /// </exception>
-        /// <exception cref="System.ArgumentException">'name' cannot be empty</exception>
+        /// <exception cref="System.ArgumentException">'name' cannot be empty.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Is thrown when the value of an argument is outside the 
-        /// allowable range of values as defined by the invoked method
+        /// allowable range of values as defined by the invoked method.
         /// </exception>
         public void AddHeader(string name, string value)
         {
@@ -314,7 +314,7 @@ namespace Unosquare.Net
         /// <param name="cookie">The cookie.</param>
         /// <exception cref="System.ArgumentNullException">
         ///  Is thrown when a null reference is passed to a method
-        ///  that does not accept it as a valid argument
+        ///  that does not accept it as a valid argument.
         /// </exception>
         /// <exception cref="System.ArgumentException">The cookie already exists.</exception>
         public void SetCookie(System.Net.Cookie cookie)

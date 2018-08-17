@@ -36,7 +36,7 @@ namespace Unosquare.Net
     using System.Threading.Tasks;
 
     /// <summary>
-    /// The MONO implementation of the standard Http Listener class
+    /// The MONO implementation of the standard Http Listener class.
     /// </summary>
     /// <seealso cref="IDisposable" />
     public sealed class HttpListener : IDisposable
@@ -213,7 +213,7 @@ namespace Unosquare.Net
         /// <summary>
         /// Gets the HTTP context asynchronously.
         /// </summary>
-        /// <returns>A task that represents the time delay for the httpListenerContext</returns>
+        /// <returns>A task that represents the time delay for the httpListenerContext.</returns>
         public async Task<HttpListenerContext> GetContextAsync()
         {
             while (true)

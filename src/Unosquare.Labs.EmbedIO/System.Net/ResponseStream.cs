@@ -33,7 +33,7 @@ namespace Unosquare.Net
     using System.Text;
 
     /// <summary>
-    /// Represents a Response stream
+    /// Represents a Response stream.
     /// </summary>
     /// <seealso cref="System.IO.Stream" />
     public class ResponseStream 

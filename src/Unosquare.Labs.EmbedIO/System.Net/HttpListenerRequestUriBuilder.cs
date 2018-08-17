@@ -150,7 +150,7 @@ namespace Unosquare.Net
         /// should be "http[s]://server[:port]/*" to be compatible with pre-4.0 behavior.
         /// </summary>
         /// <param name="path">The path.</param>
-        /// <returns>The path with asterisk</returns>
+        /// <returns>The path with asterisk.</returns>
         private static string AddSlashToAsteriskOnlyPath(string path) => path.Length == 1 && path[0] == '*' ? "/*" : path;
 
         private Uri Build()

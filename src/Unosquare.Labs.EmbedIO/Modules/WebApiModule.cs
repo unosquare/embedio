@@ -15,25 +15,25 @@
 #endif
 
     /// <summary>
-    /// A delegate that handles certain action in a module given a path and a verb
+    /// A delegate that handles certain action in a module given a path and a verb.
     /// </summary>
     /// <param name="server">The server.</param>
     /// <param name="context">The context.</param>
-    /// <returns><b>true</b> if the response was completed, otherwise <b>false</b></returns>
+    /// <returns><b>true</b> if the response was completed, otherwise. <b>false</b></returns>
     internal delegate bool ResponseHandler(WebServer server, HttpListenerContext context);
 
     /// <summary>
-    /// An async delegate that handles certain action in a module given a path and a verb
+    /// An async delegate that handles certain action in a module given a path and a verb.
     /// </summary>
     /// <param name="server">The server.</param>
     /// <param name="context">The context.</param>
-    /// <returns>A task with <b>true</b> if the response was completed, otherwise <b>false</b></returns>
+    /// <returns>A task with <b>true</b> if the response was completed, otherwise. <b>false</b></returns>
     internal delegate Task<bool> AsyncResponseHandler(WebServer server, HttpListenerContext context);
 
     /// <summary>
     /// A very simple module to register class methods as handlers.
     /// Public instance methods that match the WebServerModule.ResponseHandler signature, and have the WebApi handler attribute
-    /// will be used to respond to web server requests
+    /// will be used to respond to web server requests.
     /// </summary>
     public class WebApiModule 
         : WebModuleBase
@@ -108,7 +108,7 @@
         /// <summary>
         /// Registers the controller.
         /// </summary>
-        /// <typeparam name="T">The type of register controller</typeparam>
+        /// <typeparam name="T">The type of register controller.</typeparam>
         /// <exception cref="System.ArgumentException">Controller types must be unique within the module.</exception>
         public void RegisterController<T>()
             where T : WebApiController, new()
@@ -119,8 +119,8 @@
         /// <summary>
         /// Registers the controller.
         /// </summary>
-        /// <typeparam name="T">The type of register controller</typeparam>
-        /// <param name="controllerFactory">The controller factory method</param>
+        /// <typeparam name="T">The type of register controller.</typeparam>
+        /// <param name="controllerFactory">The controller factory method.</param>
         /// <exception cref="System.ArgumentException">Controller types must be unique within the module.</exception>
         public void RegisterController<T>(Func<T> controllerFactory)
             where T : WebApiController
@@ -188,7 +188,7 @@
         /// <param name="verb">The verb.</param>
         /// <param name="context">The context.</param>
         /// <param name="routeParams">The route parameters.</param>
-        /// <returns>A string that represents the registered path in the internal delegate map</returns>
+        /// <returns>A string that represents the registered path in the internal delegate map.</returns>
         private string NormalizeRegexPath(
             HttpVerbs verb,
             HttpListenerContext context,
@@ -219,7 +219,7 @@
         /// </summary>
         /// <param name="verb">The verb.</param>
         /// <param name="context">The context.</param>
-        /// <returns>A string that represents the registered path</returns>
+        /// <returns>A string that represents the registered path.</returns>
         private string NormalizeWildcardPath(HttpVerbs verb, HttpListenerContext context)
         {
             var path = context.RequestWilcardPath(_delegateMap.Keys
@@ -246,8 +246,8 @@
         /// <summary>
         /// Looks for a path that matches the one provided by the context.
         /// </summary>
-        /// <param name="context"> The HttpListener context</param>
-        /// <returns><c>true</c> if the path is found, otherwise <c>false</c></returns>
+        /// <param name="context"> The HttpListener context.</param>
+        /// <returns><c>true</c> if the path is found, otherwise <c>false</c>.</returns>
         private bool IsMethodNotAllowed(HttpListenerContext context)
         {
             string path;

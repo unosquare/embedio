@@ -4,19 +4,19 @@
     using System.Globalization;
 
     /// <summary>
-    /// Defines assembly-wide constants
+    /// Defines assembly-wide constants.
     /// </summary>
     internal static class Strings
     {
         internal const string UrlEncodedContentType = "application/x-www-form-urlencoded";
 
         /// <summary>
-        ///  Default Browser time format
+        ///  Default Browser time format.
         /// </summary>
         internal const string BrowserTimeFormat = "ddd, dd MMM yyyy HH:mm:ss 'GMT'";
 
         /// <summary>
-        /// Default CORS rule
+        /// Default CORS rule.
         /// </summary>
         internal const string CorsWildcard = "*";
 
@@ -31,7 +31,7 @@
         internal static readonly char[] CookieSplitChars = {';', ','};
 
         /// <summary>
-        /// The format culture used for header outputs
+        /// The format culture used for header outputs.
         /// </summary>
         internal static CultureInfo StandardCultureInfo { get; } =
 #if !NETSTANDARD1_3 && !UWP
@@ -41,7 +41,7 @@
 #endif
 
         /// <summary>
-        /// The standard string comparer
+        /// The standard string comparer.
         /// </summary>
         internal static StringComparer StandardStringComparer { get; } =
 #if !NETSTANDARD1_3 && !UWP

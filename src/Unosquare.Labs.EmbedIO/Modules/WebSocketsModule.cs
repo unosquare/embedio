@@ -18,14 +18,12 @@
 #endif
 
     /// <summary>
-    /// A WebSockets module conforming to RFC 6455
-    /// Works only on Chrome 16+, Firefox 11+ and IE 10+
-    /// This module is experimental and still needs extensive testing.
+    /// A WebSockets module conforming to RFC 6455.
     /// </summary>
     public class WebSocketsModule : WebModuleBase
     {
         /// <summary>
-        /// Holds the collection of paths and WebSockets Servers registered
+        /// Holds the collection of paths and WebSockets Servers registered.
         /// </summary>
         private readonly Dictionary<string, WebSocketsServer> _serverMap =
             new Dictionary<string, WebSocketsServer>(StringComparer.OrdinalIgnoreCase);
@@ -76,7 +74,7 @@
         /// Registers the web sockets server given a WebSocketsServer Type.
         /// </summary>
         /// <typeparam name="T">The type of WebSocket server.</typeparam>
-        /// <exception cref="ArgumentException">Argument 'path' cannot be null;path</exception>
+        /// <exception cref="ArgumentException">Argument 'path' cannot be null;path.</exception>
         public void RegisterWebSocketsServer<T>()
             where T : WebSocketsServer, new()
         {
@@ -87,8 +85,8 @@
         /// Registers the web sockets server given a WebSocketsServer Type.
         /// </summary>
         /// <param name="socketType">Type of the socket.</param>
-        /// <exception cref="System.ArgumentNullException">socketType</exception>
-        /// <exception cref="System.ArgumentException">Argument 'socketType' needs a WebSocketHandlerAttribute - socketType</exception>
+        /// <exception cref="System.ArgumentNullException">socketType.</exception>
+        /// <exception cref="System.ArgumentException">Argument 'socketType' needs a WebSocketHandlerAttribute - socketType.</exception>
         public void RegisterWebSocketsServer(Type socketType)
         {
             if (socketType == null)
@@ -108,9 +106,9 @@
         /// <summary>
         /// Registers the web sockets server given a WebSocketsServer Type.
         /// </summary>
-        /// <typeparam name="T">The type of WebSocket server</typeparam>
-        /// <param name="path">The path. For example: '/echo'</param>
-        /// <exception cref="ArgumentException">Argument 'path' cannot be null;path</exception>
+        /// <typeparam name="T">The type of WebSocket server.</typeparam>
+        /// <param name="path">The path. For example: '/echo'.</param>
+        /// <exception cref="ArgumentException">Argument 'path' cannot be null;path.</exception>
         public void RegisterWebSocketsServer<T>(string path)
             where T : WebSocketsServer, new()
         {
@@ -123,13 +121,13 @@
         /// <summary>
         /// Registers the web sockets server.
         /// </summary>
-        /// <typeparam name="T">The type of WebSocket server</typeparam>
-        /// <param name="path">The path. For example: '/echo'</param>
+        /// <typeparam name="T">The type of WebSocket server.</typeparam>
+        /// <param name="path">The path. For example: '/echo'.</param>
         /// <param name="server">The server.</param>
         /// <exception cref="System.ArgumentNullException">
         /// path
         /// or
-        /// server
+        /// server.
         /// </exception>
         public void RegisterWebSocketsServer<T>(string path, T server)
             where T : WebSocketsServer
@@ -152,7 +150,7 @@
         /// path in the internal map.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns>A string that represents the registered path in the internal map</returns>
+        /// <returns>A string that represents the registered path in the internal map.</returns>
         private string NormalizeRegexPath(HttpListenerContext context)
         {
             var path = string.Empty;
@@ -173,7 +171,7 @@
     /// <summary>
     /// A base class that defines how to handle WebSockets connections.
     /// It keeps a list of connected WebSockets and has the basic logic to handle connections
-    /// and data transmission
+    /// and data transmission.
     /// </summary>
     public abstract class WebSocketsServer : IDisposable
     {
@@ -378,7 +376,7 @@
         }
 
         /// <summary>
-        /// Sends a UTF-8 payload
+        /// Sends a UTF-8 payload.
         /// </summary>
         /// <param name="webSocket">The web socket.</param>
         /// <param name="payload">The payload.</param>
@@ -406,7 +404,7 @@
         }
 
         /// <summary>
-        /// Sends a binary payload
+        /// Sends a binary payload.
         /// </summary>
         /// <param name="webSocket">The web socket.</param>
         /// <param name="payload">The payload.</param>
@@ -580,7 +578,7 @@
         }
 
         /// <summary>
-        /// Removes and disposes all disconnected sockets
+        /// Removes and disposes all disconnected sockets.
         /// </summary>
         private void CollectDisconnected()
         {

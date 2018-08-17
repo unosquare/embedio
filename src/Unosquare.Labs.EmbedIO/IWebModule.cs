@@ -11,7 +11,7 @@
 #endif
 
     /// <summary>
-    /// Interface to create web modules
+    /// Interface to create web modules.
     /// </summary>
     public interface IWebModule
     {
@@ -33,7 +33,7 @@
 
         /// <summary>
         /// Gets the associated Web Server object.
-        /// This property is automatically set when the module is registered
+        /// This property is automatically set when the module is registered.
         /// </summary>
         /// <value>
         /// The server.
@@ -73,7 +73,7 @@
         /// <exception cref="ArgumentNullException">
         /// path
         /// or
-        /// handler
+        /// handler.
         /// </exception>
         void AddHandler(string path, HttpVerbs verb, Func<HttpListenerContext, CancellationToken, Task<bool>> handler);
 

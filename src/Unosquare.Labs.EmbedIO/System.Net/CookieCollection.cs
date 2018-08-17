@@ -12,7 +12,7 @@ namespace Unosquare.Net
     using Labs.EmbedIO;
 
     /// <summary>
-    /// Represents Cookie collection
+    /// Represents Cookie collection.
     /// </summary>
     /// <seealso cref="System.Collections.ICollection" />
     public class CookieCollection 

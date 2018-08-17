@@ -131,13 +131,13 @@ namespace Unosquare.Net
         /// the specified WebSocket URL.
         /// </summary>
         /// <param name="url">A <see cref="string" /> that represents the WebSocket URL to connect.</param>
-        /// <exception cref="System.ArgumentNullException">url</exception>
+        /// <exception cref="System.ArgumentNullException">url.</exception>
         /// <exception cref="System.ArgumentException">
         /// An empty string. - url
         /// or
         /// url
         /// or
-        /// protocols
+        /// protocols.
         /// </exception>
         /// <exception cref="ArgumentNullException"><paramref name="url" /> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentException"><para>
@@ -333,7 +333,7 @@ namespace Unosquare.Net
         ///   </para>
         ///   <para>
         ///   The Origin header has the following syntax:
-        ///   <c>&lt;scheme&gt;://&lt;host&gt;[:&lt;port&gt;]</c>
+        ///   <c>&lt;scheme&gt;://&lt;host&gt;[:&lt;port&gt;]</c>.
         ///   </para>
         /// </value>
         public string Origin
@@ -487,7 +487,7 @@ namespace Unosquare.Net
         /// <param name="reason">The reason.</param>
         /// <param name="ct">The cancellation token.</param>
         /// <returns>
-        /// A task that represents the asynchronous closes websocket connection
+        /// A task that represents the asynchronous closes websocket connection.
         /// </returns>
         public async Task CloseAsync(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null, CancellationToken ct = default)
         {
@@ -523,7 +523,7 @@ namespace Unosquare.Net
         /// <param name="ct">The cancellation token.</param>
         /// <returns>
         /// If CheckIfAvailable statement terminates execution of the method; otherwise, 
-        /// establishes a WebSocket connection
+        /// establishes a WebSocket connection.
         /// </returns>
         /// <remarks>
         /// <para>
@@ -620,7 +620,7 @@ namespace Unosquare.Net
         /// <param name="ct">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous of send 
-        /// binary data using websocket
+        /// binary data using websocket.
         /// </returns>
         public async Task SendAsync(byte[] data, Opcode opcode, CancellationToken ct = default)
         {

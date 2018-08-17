@@ -34,7 +34,7 @@
         /// or
         /// headers
         /// or
-        /// methods
+        /// methods.
         /// </exception>
         public CorsModule(
             string origins = Strings.CorsWildcard, 

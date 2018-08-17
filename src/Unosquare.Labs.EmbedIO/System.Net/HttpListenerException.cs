@@ -4,7 +4,7 @@ namespace Unosquare.Net
     using System;
 
     /// <summary>
-    /// Represents an HTTP Listener's exception
+    /// Represents an HTTP Listener's exception.
     /// </summary>
     public class HttpListenerException : Exception
     {

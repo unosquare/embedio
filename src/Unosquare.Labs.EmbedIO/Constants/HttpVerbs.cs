@@ -1,7 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Constants
 {
     /// <summary>
-    /// Enumerates the different HTTP Verbs
+    /// Enumerates the different HTTP Verbs.
     /// </summary>
     public enum HttpVerbs
     {

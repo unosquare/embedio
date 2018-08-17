@@ -11,7 +11,7 @@ namespace Unosquare.Net
     using Swan;
 
     /// <summary>
-    /// Represents some System.NET custom extensions
+    /// Represents some System.NET custom extensions.
     /// </summary>
     internal static class NetExtensions
     {

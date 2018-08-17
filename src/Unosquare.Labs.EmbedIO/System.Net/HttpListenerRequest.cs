@@ -44,7 +44,7 @@ using System.Threading.Tasks;
 #endif
 
     /// <summary>
-    /// Represents an HTTP Listener's request
+    /// Represents an HTTP Listener's request.
     /// </summary>
     public sealed class HttpListenerRequest
     {
@@ -148,7 +148,7 @@ using System.Threading.Tasks;
         }
 
         /// <summary>
-        /// Gets the content length in a 64-bit integer
+        /// Gets the content length in a 64-bit integer.
         /// </summary>
         /// <value>
         /// The content length64.
@@ -214,7 +214,7 @@ using System.Threading.Tasks;
 #endif
 
         /// <summary>
-        /// Gets the Keep-Alive value for this request
+        /// Gets the Keep-Alive value for this request.
         /// </summary>
         public bool KeepAlive
         {
@@ -653,20 +653,20 @@ using System.Threading.Tasks;
     }
 
     /// <summary>
-    /// Define HTTP Versions
+    /// Define HTTP Versions.
     /// </summary>
     internal static class HttpVersion
     {
         /// <summary>
-        /// The version 1.0
+        /// The version 1.0.
         /// </summary>
-        /// <devdoc>[To be supplied.]</devdoc>
+        /// <devdoc>[To be supplied.].</devdoc>
         public static readonly Version Version10 = new Version(1, 0);
 
         /// <summary>
-        /// The version 1.1
+        /// The version 1.1.
         /// </summary>
-        /// <devdoc>[To be supplied.]</devdoc>
+        /// <devdoc>[To be supplied.].</devdoc>
         public static readonly Version Version11 = new Version(1, 1);
     }
 }

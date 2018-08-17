@@ -12,9 +12,9 @@
         /// <param name="requestBody">The request body.</param>
         /// <param name="contentTypeHeader">The content type header.</param>
         /// <returns>
-        /// A collection that represents the request body string
+        /// A collection that represents the request body string.
         /// </returns>
-        /// <exception cref="System.NotImplementedException">multipart/form-data Content Type parsing is not yet implemented</exception>
+        /// <exception cref="System.NotImplementedException">multipart/form-data Content Type parsing is not yet implemented.</exception>
         internal static Dictionary<string, object> ParseAsDictionary(
             string requestBody,
             string contentTypeHeader = Constants.Strings.UrlEncodedContentType)

@@ -5,7 +5,7 @@ namespace Unosquare.Net
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a collection of HTTP listener prefixes
+    /// Represents a collection of HTTP listener prefixes.
     /// </summary>
     public class HttpListenerPrefixCollection : List<string>
     {
@@ -46,8 +46,8 @@ namespace Unosquare.Net
         /// Removes the specified URI prefix.
         /// </summary>
         /// <param name="uriPrefix">The URI prefix.</param>
-        /// <returns>True if "uriPrefix" was removed; otherwise, false</returns>
-        /// <exception cref="System.ArgumentNullException">uriPrefix</exception>
+        /// <returns>True if "uriPrefix" was removed; otherwise, false.</returns>
+        /// <exception cref="System.ArgumentNullException">uriPrefix.</exception>
         public new bool Remove(string uriPrefix)
         {
             if (uriPrefix == null)

@@ -83,7 +83,7 @@ namespace Unosquare.Net
     }
 
     /// <summary>
-    /// The event arguments for connection failure events
+    /// The event arguments for connection failure events.
     /// </summary>
     /// <seealso cref="System.EventArgs" />
     public class ConnectionFailureEventArgs : EventArgs

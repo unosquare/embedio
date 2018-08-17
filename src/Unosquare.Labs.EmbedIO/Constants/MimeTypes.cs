@@ -3,7 +3,7 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a MimeType collection
+    /// Represents a MimeType collection.
     /// </summary>
     public static class MimeTypes
     {
@@ -11,7 +11,7 @@
         /// A big list of default MIME types.
         /// </summary>
         /// <remarks>
-        /// Originally started from: http://stackoverflow.com/questions/1029740/get-mime-type-from-filename-extension
+        /// Originally started from: http://stackoverflow.com/questions/1029740/get-mime-type-from-filename-extension.
         /// </remarks>
         public static readonly Dictionary<string, string> DefaultMimeTypes =
             new Dictionary<string, string>(Strings.StandardStringComparer)

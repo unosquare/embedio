@@ -25,17 +25,17 @@
         : FileModuleBase
     {
         /// <summary>
-        /// Default document constant to "index.html"
+        /// Default document constant to "index.html".
         /// </summary>
         public const string DefaultDocumentName = "index.html";
 
         /// <summary>
-        /// Maximal length of entry in DirectoryBrowser
+        /// Maximal length of entry in DirectoryBrowser.
         /// </summary>
         private const int MaxEntryLength = 50;
 
         /// <summary>
-        /// How many characters used after time in DirectoryBrowser
+        /// How many characters used after time in DirectoryBrowser.
         /// </summary>
         private const int SizeIndent = 20;
 
@@ -109,7 +109,7 @@
         /// <summary>
         /// Gets or sets the default document.
         /// Defaults to "index.html"
-        /// Example: "root.xml"
+        /// Example: "root.xml".
         /// </summary>
         /// <value>
         /// The default document.
@@ -123,7 +123,7 @@
         /// <summary>
         /// Gets or sets the default extension.
         /// Defaults to null
-        /// Example: ".html"
+        /// Example: ".html".
         /// </summary>
         /// <value>
         /// The default extension.
@@ -144,7 +144,7 @@
 
         /// <summary>
         /// Gets or sets a value indicating whether or not to use the RAM Cache feature
-        /// RAM Cache will only cache files that are MaxRamCacheSize in bytes or less
+        /// RAM Cache will only cache files that are MaxRamCacheSize in bytes or less.
         /// </summary>
         /// <value>
         ///   <c>true</c> if [use ram cache]; otherwise, <c>false</c>.
@@ -176,7 +176,7 @@
         /// <param name="virtualPath">The virtual path.</param>
         /// <param name="physicalPath">The physical path.</param>
         /// <exception cref="InvalidOperationException">
-        /// Is thrown when a method call is invalid for the object's current state
+        /// Is thrown when a method call is invalid for the object's current state.
         /// </exception>
         public void RegisterVirtualPath(string virtualPath, string physicalPath)
             => _virtualPaths.RegisterVirtualPath(virtualPath, physicalPath);
@@ -186,7 +186,7 @@
         /// </summary>
         /// <param name="virtualPath">The virtual path.</param>
         /// <exception cref="InvalidOperationException">
-        /// Is thrown when a method call is invalid for the object's current state
+        /// Is thrown when a method call is invalid for the object's current state.
         /// </exception>
         public void UnregisterVirtualPath(string virtualPath) => _virtualPaths.UnregisterVirtualPath(virtualPath);
 

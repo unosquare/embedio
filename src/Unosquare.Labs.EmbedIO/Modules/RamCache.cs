@@ -37,7 +37,7 @@
         }
 
         /// <summary>
-        /// Represents a RAM Cache dictionary entry
+        /// Represents a RAM Cache dictionary entry.
         /// </summary>
         internal class RamCacheEntry
         {

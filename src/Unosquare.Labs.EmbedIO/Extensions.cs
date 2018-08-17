@@ -21,7 +21,7 @@
 #endif
 
     /// <summary>
-    /// Extension methods to help your coding!
+    /// Extension methods to help your coding!.
     /// </summary>
     public static partial class Extensions
     {
@@ -48,7 +48,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="server">The server.</param>
-        /// <returns>A session object for the given server context</returns>
+        /// <returns>A session object for the given server context.</returns>
         public static SessionInfo GetSession(this HttpListenerContext context, WebServer server)
         {
             return server.GetSession(context);
@@ -90,7 +90,7 @@
         /// </summary>
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
-        /// <returns>A session info for the given server context</returns>
+        /// <returns>A session info for the given server context.</returns>
         public static SessionInfo GetSession(this WebServer server, HttpListenerContext context)
         {
             return server.SessionModule?.GetSession(context);
@@ -102,7 +102,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="server">The server.</param>
-        /// <returns>A session info for the given websocket context</returns>
+        /// <returns>A session info for the given websocket context.</returns>
 #if NET47
         public static SessionInfo GetSession(this System.Net.WebSockets.WebSocketContext context, WebServer server)
 #else
@@ -117,7 +117,7 @@
         /// </summary>
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
-        /// <returns>A session info for the given websocket context</returns>
+        /// <returns>A session info for the given websocket context.</returns>
 #if NET47
         public static SessionInfo GetSession(this WebServer server, System.Net.WebSockets.WebSocketContext context)
 #else
@@ -175,7 +175,7 @@
         /// Retrieves the Request HTTP Verb (also called Method) of this context.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns>HTTP verb result of the conversion of this context</returns>
+        /// <returns>HTTP verb result of the conversion of this context.</returns>
         public static HttpVerbs RequestVerb(this HttpListenerContext context)
         {
             Enum.TryParse(context.Request.HttpMethod.ToLowerInvariant().Trim(), true, out HttpVerbs verb);
@@ -188,16 +188,16 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="key">The key.</param>
-        /// <returns>A string that represents the value for the specified query string key</returns>
+        /// <returns>A string that represents the value for the specified query string key.</returns>
         public static string QueryString(this HttpListenerContext context, string key)
             => context.InQueryString(key) ? context.Request.QueryString[key] : null;
 
         /// <summary>
-        /// Determines if a key exists within the Request's query string
+        /// Determines if a key exists within the Request's query string.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="key">The key.</param>
-        /// <returns>True if a key exists within the Request's query string; otherwise, false</returns>
+        /// <returns>True if a key exists within the Request's query string; otherwise, false.</returns>
         public static bool InQueryString(this HttpListenerContext context, string key)
             => context.Request.QueryString.AllKeys.Contains(key);
 
@@ -206,7 +206,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="headerName">Name of the header.</param>
-        /// <returns>Specified request the header when is true; otherwise, empty string </returns>
+        /// <returns>Specified request the header when is true; otherwise, empty string. </returns>
         public static string RequestHeader(this HttpListenerContext context, string headerName)
             => context.Request.Headers[headerName] ?? string.Empty;
 
@@ -215,7 +215,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="headerName">Name of the header.</param>
-        /// <returns>True if request headers is not a null; otherwise, false</returns>
+        /// <returns>True if request headers is not a null; otherwise, false.</returns>
         public static bool HasRequestHeader(this HttpListenerContext context, string headerName)
             => context.Request.Headers[headerName] != null;
 
@@ -227,7 +227,7 @@
         /// <param name="context">The context.</param>
         /// <returns>
         /// The rest of the stream as a string, from the current position to the end.
-        /// If the current position is at the end of the stream, returns an empty string
+        /// If the current position is at the end of the stream, returns an empty string.
         /// </returns>
         public static string RequestBody(this HttpListenerContext context)
         {
@@ -271,7 +271,7 @@
         /// Requests the regex URL parameters.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="urlPattern">The url pattern </param>
+        /// <param name="urlPattern">The url pattern. </param>
         /// <returns>The params from the request.</returns>
         public static Dictionary<string,object> RequestRegexUrlParams(this WebSocketContext context, string urlPattern)
           => RequestRegexUrlParams(context.RequestUri.LocalPath, urlPattern);
@@ -382,39 +382,39 @@
         #region JSON and Exception Extensions
 
         /// <summary>
-        /// Outputs a Json Response given a data object
+        /// Outputs a Json Response given a data object.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="data">The data.</param>
-        /// <returns>A <c>true</c> value of type ref=JsonResponseAsync"</returns>
+        /// <returns>A <c>true</c> value of type ref=JsonResponseAsync".</returns>
         public static bool JsonResponse(this HttpListenerContext context, object data)
             => context.JsonResponseAsync(data).GetAwaiter().GetResult();
 
         /// <summary>
-        /// Outputs async a Json Response given a data object
+        /// Outputs async a Json Response given a data object.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="data">The data.</param>
-        /// <returns>A <c>true</c> value of type ref=JsonResponseAsync"</returns>
+        /// <returns>A <c>true</c> value of type ref=JsonResponseAsync".</returns>
         public static Task<bool> JsonResponseAsync(this HttpListenerContext context, object data)
             => context.JsonResponseAsync(Json.Serialize(data));
 
         /// <summary>
-        /// Outputs a Json Response given a Json string
+        /// Outputs a Json Response given a Json string.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="json">The JSON.</param>
-        /// <returns> A <c>true</c> value of type ref=JsonResponseAsync"</returns>
+        /// <returns> A <c>true</c> value of type ref=JsonResponseAsync".</returns>
         public static bool JsonResponse(this HttpListenerContext context, string json)
             => context.JsonResponseAsync(json).GetAwaiter().GetResult();
 
         /// <summary>
-        /// Outputs async a JSON Response given a JSON string
+        /// Outputs async a JSON Response given a JSON string.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="json">The JSON.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>A task for writing the output stream</returns>
+        /// <returns>A task for writing the output stream.</returns>
         public static Task<bool> JsonResponseAsync(
             this HttpListenerContext context,
             string json,
@@ -424,13 +424,13 @@
         }
 
         /// <summary>
-        /// Outputs a HTML Response given a HTML content
+        /// Outputs a HTML Response given a HTML content.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="htmlContent">Content of the HTML.</param>
         /// <param name="statusCode">The status code.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>A task for writing the output stream</returns>
+        /// <returns>A task for writing the output stream.</returns>
         public static Task<bool> HtmlResponseAsync(
             this HttpListenerContext context,
             string htmlContent,
@@ -447,7 +447,7 @@
         /// <param name="context">The context.</param>
         /// <param name="ex">The ex.</param>
         /// <param name="statusCode">The status code.</param>
-        /// <returns>A <c>true</c> value when the exception is written to the HTTP Response</returns>
+        /// <returns>A <c>true</c> value when the exception is written to the HTTP Response.</returns>
         public static bool JsonExceptionResponse(
             this HttpListenerContext context,
             Exception ex,
@@ -463,7 +463,7 @@
         /// <param name="context">The context.</param>
         /// <param name="ex">The ex.</param>
         /// <param name="statusCode">The status code.</param>
-        /// <returns>A task for writing the output stream</returns>
+        /// <returns>A task for writing the output stream.</returns>
         public static Task<bool> JsonExceptionResponseAsync(
             this HttpListenerContext context,
             Exception ex,
@@ -474,14 +474,14 @@
         }
 
         /// <summary>
-        /// Outputs async a string response given a string
+        /// Outputs async a string response given a string.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="content">The content.</param>
         /// <param name="contentType">Type of the content.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <param name="encoding">The encoding.</param>
-        /// <returns>A task for writing the output stream</returns>
+        /// <returns>A task for writing the output stream.</returns>
         public static async Task<bool> StringResponseAsync(
             this HttpListenerContext context,
             string content,
@@ -501,10 +501,10 @@
         /// Parses the JSON as a given type from the request body.
         /// Please note the underlying input stream is not rewindable.
         /// </summary>
-        /// <typeparam name="T">The type of specified object type</typeparam>
+        /// <typeparam name="T">The type of specified object type.</typeparam>
         /// <param name="context">The context.</param>
         /// <returns>
-        /// Parses the json as a given type from the request body
+        /// Parses the json as a given type from the request body.
         /// </returns>
         public static T ParseJson<T>(this HttpListenerContext context)
             where T : class
@@ -515,10 +515,10 @@
         /// <summary>
         /// Parses the JSON as a given type from the request body string.
         /// </summary>
-        /// <typeparam name="T">The type of specified object type</typeparam>
+        /// <typeparam name="T">The type of specified object type.</typeparam>
         /// <param name="requestBody">The request body.</param>
         /// <returns>
-        /// A string that represents the json as a given type from the request body string
+        /// A string that represents the json as a given type from the request body string.
         /// </returns>
         public static T ParseJson<T>(this string requestBody)
             where T : class
@@ -531,10 +531,10 @@
         #region Data Parsing Methods
 
         /// <summary>
-        /// Returns a dictionary of KVPs from Request data
+        /// Returns a dictionary of KVPs from Request data.
         /// </summary>
         /// <param name="requestBody">The request body.</param>
-        /// <returns>A collection that represents KVPs from request data</returns>
+        /// <returns>A collection that represents KVPs from request data.</returns>
         public static Dictionary<string, object> RequestFormDataDictionary(this string requestBody)
             => FormDataParser.ParseAsDictionary(requestBody);
 
@@ -542,8 +542,8 @@
         /// Returns dictionary from Request POST data
         /// Please note the underlying input stream is not rewindable.
         /// </summary>
-        /// <param name="context">The context to request body as string</param>
-        /// <returns>A collection that represents KVPs from request data</returns>
+        /// <param name="context">The context to request body as string.</param>
+        /// <returns>A collection that represents KVPs from request data.</returns>
         public static Dictionary<string, object> RequestFormDataDictionary(this HttpListenerContext context)
             => RequestFormDataDictionary(context.RequestBody());
 
@@ -557,7 +557,7 @@
         /// <param name="buffer">The buffer.</param>
         /// <param name="method">The method.</param>
         /// <param name="mode">The mode.</param>
-        /// <returns>Block of bytes of compressed stream</returns>
+        /// <returns>Block of bytes of compressed stream.</returns>
         public static MemoryStream Compress(
             this Stream buffer,
             CompressionMethod method = CompressionMethod.Gzip,
@@ -623,7 +623,7 @@
         /// <param name="buffer">The buffer.</param>
         /// <param name="method">The method.</param>
         /// <param name="mode">The mode.</param>
-        /// <returns>Block of bytes of compressed stream </returns>
+        /// <returns>Block of bytes of compressed stream. </returns>
         public static byte[] Compress(
             this byte[] buffer, 
             CompressionMethod method = CompressionMethod.Gzip,

@@ -18,12 +18,12 @@
         : WebModuleBase
     {
         /// <summary>
-        /// The maximum gzip input length
+        /// The maximum gzip input length.
         /// </summary>
         protected const int MaxGzipInputLength = 4 * 1024 * 1024;
 
         /// <summary>
-        /// The chunk size for sending files
+        /// The chunk size for sending files.
         /// </summary>
         private const int ChunkSize = 256 * 1024;
 
@@ -44,7 +44,7 @@
                     () => new ReadOnlyDictionary<string, string>(_mimeTypes.Value));
 
         /// <summary>
-        /// The default headers
+        /// The default headers.
         /// </summary>
         public Dictionary<string, string> DefaultHeaders { get; } = new Dictionary<string, string>();
 

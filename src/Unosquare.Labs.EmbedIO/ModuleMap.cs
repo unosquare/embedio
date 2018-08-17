@@ -31,12 +31,12 @@
     public class Map
     {
         /// <summary>
-        /// The HTTP resource path
+        /// The HTTP resource path.
         /// </summary>
         public string Path { get; set; }
 
         /// <summary>
-        /// The HTTP Verb of this Map
+        /// The HTTP Verb of this Map.
         /// </summary>
         public HttpVerbs Verb { get; set; }
 

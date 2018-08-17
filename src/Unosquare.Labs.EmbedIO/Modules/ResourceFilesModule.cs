@@ -31,7 +31,7 @@
         /// <param name="sourceAssembly">The source assembly.</param>
         /// <param name="resourcePath">The resource path.</param>
         /// <param name="headers">The headers.</param>
-        /// <exception cref="ArgumentNullException">sourceAssembly</exception>
+        /// <exception cref="ArgumentNullException">sourceAssembly.</exception>
         /// <exception cref="ArgumentException">Path ' + fileSystemPath + ' does not exist.</exception>
         public ResourceFilesModule(
             Assembly sourceAssembly,

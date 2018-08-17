@@ -9,7 +9,7 @@ namespace Unosquare.Net
     using System;
 
     /// <summary>
-    /// Represents a WS Receive result
+    /// Represents a WS Receive result.
     /// </summary>
     public class WebSocketReceiveResult
     {
@@ -51,7 +51,7 @@ namespace Unosquare.Net
     }
 
     /// <summary>
-    /// Enums WS Message Type
+    /// Enums WS Message Type.
     /// </summary>
     public enum WebSocketMessageType
     {

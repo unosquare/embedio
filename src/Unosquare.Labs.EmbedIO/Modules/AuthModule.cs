@@ -14,7 +14,7 @@
 
     /// <summary>
     /// Simple authorisation module that requests http auth from client
-    /// Will return 401 + WWW-Authenticate header if request isn't authorised
+    /// Will return 401 + WWW-Authenticate header if request isn't authorised.
     /// </summary>
     public class AuthModule : WebModuleBase
     {
@@ -61,11 +61,11 @@
         public override string Name => nameof(AuthModule);
 
         /// <summary>
-        /// Validates request and returns true if that account data registred in this module and request has auth data  
+        /// Validates request and returns true if that account data registred in this module and request has auth data.  
         /// </summary>
-        /// <param name="request">HttpListenerRequest</param>
+        /// <param name="request">HttpListenerRequest.</param>
         /// <returns>
-        /// true if request authorised
+        /// true if request authorised.
         /// </returns>
         public bool IsAuthorized(HttpListenerRequest request)
         {
@@ -85,19 +85,19 @@
         }
 
         /// <summary>
-        /// Add new account
+        /// Add new account.
         /// </summary>
-        /// <param name="username">account username</param>
-        /// <param name="password">account password</param>
+        /// <param name="username">account username.</param>
+        /// <param name="password">account password.</param>
         public void AddAccount(string username, string password) => _accounts.TryAdd(username, password);
 
         /// <summary>
-        /// Parses request for account data
+        /// Parses request for account data.
         /// </summary>
-        /// <param name="request">HttpListenerRequest</param>
-        /// <returns>user-password KeyValuePair from request</returns>
+        /// <param name="request">HttpListenerRequest.</param>
+        /// <returns>user-password KeyValuePair from request.</returns>
         /// <exception>
-        /// if request isn't authorised
+        /// if request isn't authorised.
         /// </exception>
         private static KeyValuePair<string, string> GetAccountData(HttpListenerRequest request)
         {

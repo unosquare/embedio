@@ -155,9 +155,8 @@ packages/*
 !packages/repositories.config
 project.lock.json
 TestResult.xml
-/.vs/restore.dg
 /src/Unosquare.Labs.EmbedIO.Samples/mydbfile.db
-/.vs/config
+.vs/
 /src/Unosquare.Labs.EmbedIO.Command/nuget.config
 /src/Unosquare.Labs.EmbedIO/nuget.config
 /src/Unosquare.Labs.EmbedIO.Samples/nuget.config
@@ -167,7 +166,6 @@ TestResult.xml
 /_site
 /_api
 /tools
-/.vs/*
 
 # JetBrains Rider IDE folder
 .idea/
