@@ -2483,19 +2483,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.WebServer.OnNotFound
   nameWithType: WebServer.OnNotFound
-- uid: Unosquare.Labs.EmbedIO.WebServer.ProcessRequest(Unosquare.Net.HttpListenerContext,System.Threading.CancellationToken)
-  name: ProcessRequest(HttpListenerContext, CancellationToken)
-  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_ProcessRequest_Unosquare_Net_HttpListenerContext_System_Threading_CancellationToken_
-  commentId: M:Unosquare.Labs.EmbedIO.WebServer.ProcessRequest(Unosquare.Net.HttpListenerContext,System.Threading.CancellationToken)
-  fullName: Unosquare.Labs.EmbedIO.WebServer.ProcessRequest(Unosquare.Net.HttpListenerContext, System.Threading.CancellationToken)
-  nameWithType: WebServer.ProcessRequest(HttpListenerContext, CancellationToken)
-- uid: Unosquare.Labs.EmbedIO.WebServer.ProcessRequest*
-  name: ProcessRequest
-  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_ProcessRequest_
-  commentId: Overload:Unosquare.Labs.EmbedIO.WebServer.ProcessRequest
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.WebServer.ProcessRequest
-  nameWithType: WebServer.ProcessRequest
 - uid: Unosquare.Labs.EmbedIO.WebServer.RegisterModule(Unosquare.Labs.EmbedIO.IWebModule)
   name: RegisterModule(IWebModule)
   href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_RegisterModule_Unosquare_Labs_EmbedIO_IWebModule_
