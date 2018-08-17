@@ -201,7 +201,7 @@
         public void UnregisterModule(Type moduleType)
         {
             var existingModule = Module(moduleType);
-            
+
             if (existingModule == null)
             {
                 $"Failed to unregister module '{moduleType}' because no module with that type has been previously registered."
@@ -256,8 +256,8 @@
 
                         // Spawn off each client task asynchronously
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                        using (var handler = new HttpHandler(clientSocket, this))
-                            handler.HandleClientRequest(ct);
+                        var handler = new HttpHandler(clientSocket, this);
+                        handler.HandleClientRequest(ct);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     }
                     catch (HttpListenerException)
@@ -300,7 +300,7 @@
         protected virtual void Dispose(bool disposing)
         {
             if (!disposing || Listener == null) return;
-            
+
             try
             {
                 (Listener as IDisposable).Dispose();

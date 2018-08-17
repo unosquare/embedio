@@ -13,7 +13,7 @@
     using Net;
 #endif
 
-    internal class HttpHandler : IDisposable
+    internal class HttpHandler
     {
         private readonly HttpListenerContext _context;
         private readonly WebServer _server;
@@ -59,16 +59,14 @@
             {
                 ex.Log(nameof(WebServer), "Error handling request.");
             }
+            finally
+            {
+                // Always close the response stream no matter what.
+                _context?.Response.OutputStream.Close();
+                $"End of Request {_requestId}".Debug(nameof(WebServer));
+            }
         }
-
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            // Always close the response stream no matter what.
-            _context?.Response.OutputStream.Close();
-            $"End of Request {_requestId}".Debug(nameof(WebServer));
-        }
-
+        
         /// <summary>
         /// Process HttpListener Request and returns <c>true</c>  if it was handled.
         /// </summary>
