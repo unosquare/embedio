@@ -49,10 +49,8 @@
         /// <param name="context">The context.</param>
         /// <param name="server">The server.</param>
         /// <returns>A session object for the given server context.</returns>
-        public static SessionInfo GetSession(this HttpListenerContext context, WebServer server)
-        {
-            return server.GetSession(context);
-        }
+        public static SessionInfo GetSession(this HttpListenerContext context, WebServer server) 
+            => server.GetSession(context);
 
         /// <summary>
         /// Deletes the session object associated to the current context.
