@@ -242,8 +242,13 @@
 
             try
             {
+                // Init modules
                 foreach (var module in _modules)
+                {
+                    // Inject the Server property of the module via reflection if not already there. (mini IoC ;))
+                    module.Server = this;
                     module.Start(ct);
+                }
 
                 // Disposing the web server will close the listener.           
                 while (Listener != null && Listener.IsListening && !ct.IsCancellationRequested)

@@ -83,9 +83,6 @@
 
                 try
                 {
-                    // Inject the Server property of the module via reflection if not already there. (mini IoC ;))
-                    module.Server = module.Server ?? _server;
-
                     // Log the module and handler to be called and invoke as a callback.
                     $"{module.Name}::{callback.GetMethodInfo().DeclaringType?.Name}.{callback.GetMethodInfo().Name}"
                         .Debug(nameof(WebServer));
