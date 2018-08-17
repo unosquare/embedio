@@ -82,9 +82,9 @@
                 Server = server;
             }
 
-            public HttpListenerContext Context { get; set; }
+            public HttpListenerContext Context { get; }
 
-            public TestWebServer Server { get; set; }
+            public TestWebServer Server { get; }
 
             public void GetResponse()
             {
