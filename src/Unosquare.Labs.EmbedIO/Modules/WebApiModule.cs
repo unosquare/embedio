@@ -70,9 +70,8 @@
                     .Debug(nameof(WebApiModule));
 
                 // Initially, only the server and context objects will be available
-                var args = new object[methodPair.MethodCache.AdditionalParameters.Count + 2];
-                args[0] = Server;
-                args[1] = context;
+                var args = new object[methodPair.MethodCache.AdditionalParameters.Count + 1];
+                args[0] = context;
 
                 // Select the routing strategy
                 switch (Server.RoutingStrategy)

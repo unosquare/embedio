@@ -29,12 +29,11 @@
         /// 
         /// Notice the wildcard is important
         /// </summary>
-        /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException">Key Not Found:  + lastSegment</exception>
         [WebApiHandler(HttpVerbs.Get, RelativePath + "people/*")]
-        public bool GetPeople(WebServer server, IHttpContext context)
+        public bool GetPeople(IHttpContext context)
         {
             try
             {
@@ -75,12 +74,11 @@
         /// 
         /// Notice the wildcard is important
         /// </summary>
-        /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException">Key Not Found:  + lastSegment</exception>
         [WebApiHandler(HttpVerbs.Post, RelativePath + "people/*")]
-        public async Task<bool> PostPeople(WebServer server, IHttpContext context)
+        public async Task<bool> PostPeople(IHttpContext context)
         {
             try
             {
@@ -98,11 +96,10 @@
         /// <summary>
         /// Echoes the request form data in JSON format
         /// </summary>
-        /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
         /// <returns></returns>
         [WebApiHandler(HttpVerbs.Post, RelativePath + "echo/*")]
-        public bool Echo(WebServer server, IHttpContext context)
+        public bool Echo(IHttpContext context)
         {
             try
             {
