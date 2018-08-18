@@ -19,7 +19,6 @@
                 .GetMethod(nameof(WebApiController.SetDefaultHeaders));
             IsTask = methodInfo.ReturnType == typeof(Task<bool>);
             AdditionalParameters = methodInfo.GetParameters()
-                .Skip(1)
                 .Select(x => new AddtionalParameterInfo(x))
                 .ToList();
 
@@ -80,9 +79,9 @@
 
     internal class MethodCacheInstance
     {
-        private readonly Func<object> _controllerFactory;
+        private readonly Func<IHttpContext, object> _controllerFactory;
 
-        public MethodCacheInstance(Func<object> controllerFactory, MethodCache cache)
+        public MethodCacheInstance(Func<IHttpContext, object> controllerFactory, MethodCache cache)
         {
             _controllerFactory = controllerFactory;
             MethodCache = cache;
@@ -98,15 +97,15 @@
                 var param = MethodCache.AdditionalParameters[i];
 
                 // convert and add to arguments, if null use default value
-                arguments[i + 1] = parameters.ContainsKey(param.Info.Name)
+                arguments[i] = parameters.ContainsKey(param.Info.Name)
                     ? param.GetValue((string) parameters[param.Info.Name])
                     : param.Default;
             }
         }
 
-        public Task<bool> Invoke(object[] arguments)
+        public Task<bool> Invoke(IHttpContext context, object[] arguments)
         {
-            var controller = _controllerFactory();
+            var controller = _controllerFactory(context);
 
             // Now, check if the call is handled asynchronously.
             return MethodCache.IsTask
@@ -114,10 +113,10 @@
                 : Task.FromResult(MethodCache.SyncInvoke(controller, arguments));
         }
 
-        public void SetDefaultHeaders(object context)
+        public void SetDefaultHeaders(IHttpContext context)
         {
-            var controller = _controllerFactory();
-            MethodCache.SetDefaultHeadersMethodInfo?.Invoke(controller, new[] { context });
+            var controller = _controllerFactory(context);
+            MethodCache.SetDefaultHeadersMethodInfo?.Invoke(controller, null);
         }
     }
 

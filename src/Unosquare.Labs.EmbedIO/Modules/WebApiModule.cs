@@ -12,16 +12,14 @@
     /// <summary>
     /// A delegate that handles certain action in a module given a path and a verb.
     /// </summary>
-    /// <param name="context">The context.</param>
     /// <returns><b>true</b> if the response was completed, otherwise. <b>false</b></returns>
-    internal delegate bool ResponseHandler(IHttpContext context);
+    internal delegate bool ResponseHandler();
 
     /// <summary>
     /// An async delegate that handles certain action in a module given a path and a verb.
     /// </summary>
-    /// <param name="context">The context.</param>
     /// <returns>A task with <b>true</b> if the response was completed, otherwise. <b>false</b></returns>
-    internal delegate Task<bool> AsyncResponseHandler(IHttpContext context);
+    internal delegate Task<bool> AsyncResponseHandler();
 
     /// <summary>
     /// A very simple module to register class methods as handlers.
@@ -70,17 +68,16 @@
                     .Debug(nameof(WebApiModule));
 
                 // Initially, only the server and context objects will be available
-                var args = new object[methodPair.MethodCache.AdditionalParameters.Count + 1];
-                args[0] = context;
-
+                var args = new object[methodPair.MethodCache.AdditionalParameters.Count];
+                
                 // Select the routing strategy
                 switch (Server.RoutingStrategy)
                 {
                     case RoutingStrategy.Regex:
                         methodPair.ParseArguments(regExRouteParams, args);
-                        return await methodPair.Invoke(args);
+                        return await methodPair.Invoke(context, args);
                     default:
-                        return await methodPair.Invoke(args);
+                        return await methodPair.Invoke(context, args);
                 }
             });
         }
@@ -110,7 +107,7 @@
         /// <typeparam name="T">The type of register controller.</typeparam>
         /// <param name="controllerFactory">The controller factory method.</param>
         /// <exception cref="System.ArgumentException">Controller types must be unique within the module.</exception>
-        public void RegisterController<T>(Func<T> controllerFactory)
+        public void RegisterController<T>(Func<IHttpContext, T> controllerFactory)
             where T : WebApiController
         {
             RegisterController(typeof(T), controllerFactory);
@@ -121,27 +118,26 @@
         /// </summary>
         /// <param name="controllerType">Type of the controller.</param>
         public void RegisterController(Type controllerType)
-            => RegisterController(controllerType, () => Activator.CreateInstance(controllerType));
+            => RegisterController(controllerType, (ctx) => Activator.CreateInstance(controllerType, ctx));
 
         /// <summary>
         /// Registers the controller.
         /// </summary>
         /// <param name="controllerType">Type of the controller.</param>
         /// <param name="controllerFactory">The controller factory method.</param>
-        public void RegisterController(Type controllerType, Func<object> controllerFactory)
+        public void RegisterController(Type controllerType, Func<IHttpContext, object> controllerFactory)
         {
             if (_controllerTypes.Contains(controllerType))
                 throw new ArgumentException("Controller types must be unique within the module");
 
-            var protoDelegate = new ResponseHandler(context => true);
-            var protoAsyncDelegate = new AsyncResponseHandler(context => Task.FromResult(true));
+            var protoDelegate = new ResponseHandler(() => true);
+            var protoAsyncDelegate = new AsyncResponseHandler(() => Task.FromResult(true));
             var methods = controllerType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .Where(
                     m => (m.ReturnType == protoDelegate.GetMethodInfo().ReturnType
                           || m.ReturnType == protoAsyncDelegate.GetMethodInfo().ReturnType)
                          && m.GetParameters()
                              .Select(pi => pi.ParameterType)
-                             .Take(1)
                              .SequenceEqual(protoDelegate.GetMethodInfo().GetParameters()
                                  .Select(pi => pi.ParameterType)));
 
@@ -265,12 +261,22 @@
         }
     }
 
+    /// <inheritdoc />
     /// <summary>
     /// Inherit from this class and define your own Web API methods
     /// You must RegisterController in the Web API Module to make it active.
     /// </summary>
-    public abstract class WebApiController
+    public abstract class WebApiController : IHttpContext
     {
+        /// <inheritdoc />
+        public IHttpRequest Request { get; internal set; }
+
+        /// <inheritdoc />
+        public IHttpResponse Response { get; internal set; }
+
+        /// <inheritdoc />
+        public IWebServer WebServer { get; internal set; }
+
         /// <summary>
         /// Sets the default headers to the Web API response.
         /// By default will set:
@@ -282,7 +288,6 @@
         ///
         /// Previous values are defined to avoid caching from client.
         /// </summary>
-        /// <param name="context">The context.</param>
-        public virtual void SetDefaultHeaders(IHttpContext context) => context.NoCache();
+        public virtual void SetDefaultHeaders() => this.NoCache();
     }
 }
