@@ -11,13 +11,11 @@
     internal class HttpHandler
     {
         private readonly IHttpContext _context;
-        private readonly IWebServer _server;
         private string _requestId = "(not set)";
 
-        public HttpHandler(IHttpContext context, IWebServer server)
+        public HttpHandler(IHttpContext context)
         {
             _context = context;
-            _server = server;
         }
 
         /// <summary>
@@ -47,7 +45,7 @@
                 {
                     "No module generated a response. Sending 404 - Not Found".Error(nameof(HttpHandler));
 
-                    await _server.OnNotFound(_context);
+                    await _context.WebServer.OnNotFound(_context);
                 }
             }
             catch (Exception ex)
@@ -57,11 +55,15 @@
             finally
             {
                 // Always close the response stream no matter what.
+#if NET47
                 _context?.Response.OutputStream.Close();
+#else
+                (_context?.Response.OutputStream as Net.ResponseStream)?.Close();
+#endif
                 $"End of Request {_requestId}".Debug(nameof(HttpHandler));
             }
         }
-        
+
         /// <summary>
         /// Process HttpListener Request and returns <c>true</c>  if it was handled.
         /// </summary>
@@ -70,7 +72,7 @@
         public async Task<bool> ProcessRequest(CancellationToken ct)
         {
             // Iterate though the loaded modules to match up a request and possibly generate a response.
-            foreach (var module in _server.Modules)
+            foreach (var module in _context.WebServer.Modules)
             {
                 var callback = GetHandler(module);
 
@@ -155,7 +157,7 @@
         {
             Map handler;
 
-            switch (_server.RoutingStrategy)
+            switch (_context.WebServer.RoutingStrategy)
             {
                 case RoutingStrategy.Wildcard:
                     handler = GetHandlerFromWildcardPath(module);

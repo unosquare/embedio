@@ -6,11 +6,6 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Modules;
-#if NET47
-    using System.Net;
-#else
-    using Net;
-#endif
 
     public class TestController : WebApiController
     {
@@ -21,7 +16,7 @@
         public const string GetMiddlePath = RelativePath + "person/*/select";
 
         [WebApiHandler(HttpVerbs.Get, "/" + GetMiddlePath)]
-        public bool GetPerson(WebServer server, HttpListenerContext context)
+        public bool GetPerson(IHttpContext context)
         {
             try
             {
@@ -43,7 +38,7 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + GetPath + "*")]
-        public bool GetPeople(WebServer server, HttpListenerContext context)
+        public bool GetPeople(IHttpContext context)
         {
             try
             {
@@ -69,7 +64,7 @@
         }
 
         [WebApiHandler(HttpVerbs.Post, "/" + GetPath + "*")]
-        public bool PostPeople(WebServer server, HttpListenerContext context)
+        public bool PostPeople(IHttpContext context)
         {
             try
             {
@@ -84,7 +79,7 @@
         }
 
         [WebApiHandler(HttpVerbs.Post, "/" + EchoPath + "*")]
-        public bool PostEcho(WebServer server, HttpListenerContext context)
+        public bool PostEcho(IHttpContext context)
         {
             try
             {
@@ -99,7 +94,7 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + GetAsyncPath + "*")]
-        public Task<bool> GetPeopleAsync(WebServer server, HttpListenerContext context)
+        public Task<bool> GetPeopleAsync(IHttpContext context)
         {
             try
             {
@@ -137,20 +132,20 @@
         public string WebName { get; set; }
 
         [WebApiHandler(HttpVerbs.Get, "/name")]
-        public bool GetName(WebServer server, HttpListenerContext context)
+        public bool GetName(IHttpContext context)
         {
             context.NoCache();
             return context.JsonResponse(WebName);
         }
 
         [WebApiHandler(HttpVerbs.Get, "/namePublic")]
-        public bool GetNamePublic(WebServer server, HttpListenerContext context)
+        public bool GetNamePublic(IHttpContext context)
         {
             context.Response.Headers.Add("Cache-Control: public");
             return context.JsonResponse(WebName);
         }
 
-        public override void SetDefaultHeaders(HttpListenerContext context)
+        public override void SetDefaultHeaders(IHttpContext context)
         {
             // do nothing with cache
             context.Response.Headers.Add($"{CustomHeader}: {WebName}");

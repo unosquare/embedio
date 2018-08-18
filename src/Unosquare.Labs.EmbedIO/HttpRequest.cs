@@ -35,6 +35,7 @@ namespace Unosquare.Labs.EmbedIO
         public string UserAgent { get; }
         public bool IsWebSocketRequest { get; set; }
         public IPEndPoint LocalEndPoint { get; }
+        public string ContentType { get; }
     }
 }
 #endif

@@ -8,27 +8,20 @@
     using System.Reflection;
     using System.Threading.Tasks;
     using Swan;
-#if NET47
-    using System.Net;
-#else
-    using Net;
-#endif
 
     /// <summary>
     /// A delegate that handles certain action in a module given a path and a verb.
     /// </summary>
-    /// <param name="server">The server.</param>
     /// <param name="context">The context.</param>
     /// <returns><b>true</b> if the response was completed, otherwise. <b>false</b></returns>
-    internal delegate bool ResponseHandler(WebServer server, HttpListenerContext context);
+    internal delegate bool ResponseHandler(IHttpContext context);
 
     /// <summary>
     /// An async delegate that handles certain action in a module given a path and a verb.
     /// </summary>
-    /// <param name="server">The server.</param>
     /// <param name="context">The context.</param>
     /// <returns>A task with <b>true</b> if the response was completed, otherwise. <b>false</b></returns>
-    internal delegate Task<bool> AsyncResponseHandler(WebServer server, HttpListenerContext context);
+    internal delegate Task<bool> AsyncResponseHandler(IHttpContext context);
 
     /// <summary>
     /// A very simple module to register class methods as handlers.
@@ -141,8 +134,8 @@
             if (_controllerTypes.Contains(controllerType))
                 throw new ArgumentException("Controller types must be unique within the module");
 
-            var protoDelegate = new ResponseHandler((server, context) => true);
-            var protoAsyncDelegate = new AsyncResponseHandler((server, context) => Task.FromResult(true));
+            var protoDelegate = new ResponseHandler(context => true);
+            var protoAsyncDelegate = new AsyncResponseHandler(context => Task.FromResult(true));
             var methods = controllerType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .Where(
                     m => (m.ReturnType == protoDelegate.GetMethodInfo().ReturnType

@@ -142,5 +142,13 @@
         /// The local end point.
         /// </value>
         System.Net.IPEndPoint LocalEndPoint { get; }
+
+        /// <summary>
+        /// Gets the type of the content.
+        /// </summary>
+        /// <value>
+        /// The type of the content.
+        /// </value>
+        string ContentType { get; }
     }
 }

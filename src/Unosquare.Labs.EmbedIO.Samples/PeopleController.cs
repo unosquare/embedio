@@ -8,11 +8,6 @@
     using System.Threading.Tasks;
     using Tubular;
     using Tubular.ObjectModel;
-#if NET47
-    using System.Net;
-#else
-    using Net;
-#endif
 
     /// <inheritdoc />
     /// <summary>
@@ -39,7 +34,7 @@
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException">Key Not Found:  + lastSegment</exception>
         [WebApiHandler(HttpVerbs.Get, RelativePath + "people/*")]
-        public bool GetPeople(WebServer server, HttpListenerContext context)
+        public bool GetPeople(WebServer server, IHttpContext context)
         {
             try
             {
@@ -85,7 +80,7 @@
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException">Key Not Found:  + lastSegment</exception>
         [WebApiHandler(HttpVerbs.Post, RelativePath + "people/*")]
-        public async Task<bool> PostPeople(WebServer server, HttpListenerContext context)
+        public async Task<bool> PostPeople(WebServer server, IHttpContext context)
         {
             try
             {
@@ -107,7 +102,7 @@
         /// <param name="context">The context.</param>
         /// <returns></returns>
         [WebApiHandler(HttpVerbs.Post, RelativePath + "echo/*")]
-        public bool Echo(WebServer server, HttpListenerContext context)
+        public bool Echo(WebServer server, IHttpContext context)
         {
             try
             {

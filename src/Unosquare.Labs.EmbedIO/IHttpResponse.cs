@@ -53,6 +53,14 @@
         Stream OutputStream { get; }
 
         /// <summary>
+        /// Gets the cookies.
+        /// </summary>
+        /// <value>
+        /// The cookies.
+        /// </value>
+        CookieCollection Cookies { get; }
+
+        /// <summary>
         /// Adds the header.
         /// </summary>
         /// <param name="headerName">Name of the header.</param>

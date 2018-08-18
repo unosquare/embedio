@@ -20,15 +20,14 @@ namespace Unosquare.Net
             Response = new HttpListenerResponse(this);
         }
 
-        /// <summary>
-        /// Gets the request.
-        /// </summary>
+        /// <inheritdoc />
         public IHttpRequest Request { get; }
 
-        /// <summary>
-        /// Gets the response.
-        /// </summary>
+        /// <inheritdoc />
         public IHttpResponse Response { get; }
+
+        /// <inheritdoc />
+        public IWebServer WebServer { get; internal set; }
 
         internal HttpListenerRequest HttpListenerRequest => Request as HttpListenerRequest;
 

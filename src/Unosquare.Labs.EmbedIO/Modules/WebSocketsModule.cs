@@ -266,7 +266,7 @@
 #if NET47
                 await (context as HttpContext).AcceptWebSocketAsync(receiveBufferSize);
 #else
-                await context.AcceptWebSocketAsync();
+                await (context as HttpListenerContext).AcceptWebSocketAsync();
 #endif
 
             // remove the disconnected clients

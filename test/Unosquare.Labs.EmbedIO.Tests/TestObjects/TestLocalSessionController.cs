@@ -2,11 +2,6 @@
 {
     using Constants;
     using Modules;
-#if NET47
-    using System.Net;
-#else
-    using Net;
-#endif
 
     public class TestLocalSessionController : WebApiController
     {
@@ -19,7 +14,7 @@
         public const string CookieName = "MyCookie";
 
         [WebApiHandler(HttpVerbs.Get, "/getcookie")]
-        public bool GetCookieC(WebServer server, HttpListenerContext context)
+        public bool GetCookieC(WebServer server, IHttpContext context)
         {
             var cookie = new System.Net.Cookie(CookieName, CookieName);
             context.Response.Cookies.Add(cookie);
@@ -28,7 +23,7 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/deletesession")]
-        public bool DeleteSessionC(WebServer server, HttpListenerContext context)
+        public bool DeleteSessionC(WebServer server, IHttpContext context)
         {
             server.DeleteSession(context);
 
@@ -36,7 +31,7 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/putdata")]
-        public bool PutDataSession(WebServer server, HttpListenerContext context)
+        public bool PutDataSession(WebServer server, IHttpContext context)
         {
             server.GetSession(context).Data.TryAdd("sessionData", MyData);
 
@@ -44,7 +39,7 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/getdata")]
-        public bool GetDataSession(WebServer server, HttpListenerContext context)
+        public bool GetDataSession(WebServer server, IHttpContext context)
         {
             return context.JsonResponse(server.GetSession(context).Data.TryGetValue("sessionData", out var data)
                 ? data.ToString()
@@ -52,7 +47,7 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/geterror")]
-        public bool GetError(WebServer server, HttpListenerContext context)
+        public bool GetError(WebServer server, IHttpContext context)
         {
             return false;
         }

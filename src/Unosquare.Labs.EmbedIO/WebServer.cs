@@ -87,7 +87,7 @@
         /// <inheritdoc />
         public Func<IHttpContext, Task<bool>> OnMethodNotAllowed { get; set; } = ctx =>
              ctx.HtmlResponseAsync(Responses.Response405Html, System.Net.HttpStatusCode.MethodNotAllowed);
-        
+
         /// <inheritdoc />
         public Func<IHttpContext, Task<bool>> OnNotFound { get; set; } = ctx =>
             ctx.HtmlResponseAsync(Responses.Response404Html, System.Net.HttpStatusCode.NotFound);
@@ -112,7 +112,7 @@
         public ReadOnlyCollection<IWebModule> Modules => _modules.AsReadOnly();
 
         /// <inheritdoc />
-        public ISessionWebModule SessionModule => _modules.SessionModule;   
+        public ISessionWebModule SessionModule => _modules.SessionModule;
 
         /// <inheritdoc />
         public RoutingStrategy RoutingStrategy { get; protected set; }
@@ -180,8 +180,18 @@
                         if (ct.IsCancellationRequested)
                             return;
 
+                        #if !NET47
+                        clientSocket.WebServer = this;
+                        #endif
+
                         // Spawn off each client task asynchronously
-                        var handler = new HttpHandler(new HttpContext(clientSocket), this);
+                        var handler =
+#if NET47
+                            new HttpHandler(new HttpContext(clientSocket, this));
+#else
+                            new HttpHandler(clientSocket);
+#endif
+
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                         handler.HandleClientRequest(ct);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed

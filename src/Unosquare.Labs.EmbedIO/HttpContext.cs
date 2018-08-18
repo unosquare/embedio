@@ -15,13 +15,14 @@ namespace Unosquare.Labs.EmbedIO
         private readonly HttpListenerContext _context;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HttpContext"/> class.
+        /// Initializes a new instance of the <see cref="HttpContext" /> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public HttpContext(HttpListenerContext context)
+        /// <param name="server">The server.</param>
+        public HttpContext(HttpListenerContext context, IWebServer server)
         {
             _context = context;
-
+            WebServer = server;
             Request = new HttpRequest(_context);
             Response = new HttpResponse(_context);
         }
@@ -31,6 +32,9 @@ namespace Unosquare.Labs.EmbedIO
 
         /// <inheritdoc />
         public IHttpResponse Response { get; }
+
+        /// <inheritdoc />
+        public IWebServer WebServer { get; }
 
         /// <summary>
         /// Accepts the web socket asynchronous.

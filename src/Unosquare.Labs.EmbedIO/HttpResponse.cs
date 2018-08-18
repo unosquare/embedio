@@ -18,6 +18,8 @@ namespace Unosquare.Labs.EmbedIO
         public long ContentLength64 { get; set; }
         public string ContentType { get; set; }
         public Stream OutputStream { get; }
+        public CookieCollection Cookies { get; }
+
         public void AddHeader(string headerName, string value)
         {
             throw new System.NotImplementedException();

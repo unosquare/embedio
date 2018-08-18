@@ -73,6 +73,7 @@ namespace Unosquare.Net
             set => throw new NotSupportedException();
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Closes this instance.
         /// </summary>

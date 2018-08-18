@@ -14,7 +14,7 @@
 
     internal class TestWebServer : IWebServer
     {
-        private readonly ConcurrentQueue<HttpListenerContext> _entryQueue = new ConcurrentQueue<HttpListenerContext>();
+        private readonly ConcurrentQueue<IHttpContext> _entryQueue = new ConcurrentQueue<IHttpContext>();
 
         private readonly WebModules _modules = new WebModules();
 
@@ -27,8 +27,8 @@
         public RoutingStrategy RoutingStrategy { get; }
 
         public ReadOnlyCollection<IWebModule> Modules => _modules.AsReadOnly();
-        public Func<HttpListenerContext, Task<bool>> OnMethodNotAllowed { get; set; }
-        public Func<HttpListenerContext, Task<bool>> OnNotFound { get; set; }
+        public Func<IHttpContext, Task<bool>> OnMethodNotAllowed { get; set; }
+        public Func<IHttpContext, Task<bool>> OnNotFound { get; set; }
 
         public T Module<T>()
             where T : class, IWebModule
@@ -49,7 +49,7 @@
                     return;
 
                 // Spawn off each client task asynchronously
-                var handler = new HttpHandler(clientSocket, this);
+                var handler = new HttpHandler(clientSocket);
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 handler.HandleClientRequest(ct);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
@@ -63,7 +63,7 @@
 
         public TestHttpClient GetClient(string url = "/") => new TestHttpClient(this);
 
-        private async Task<HttpListenerContext> GetContextAsync(CancellationToken ct)
+        private async Task<IHttpContext> GetContextAsync(CancellationToken ct)
         {
             while (!ct.IsCancellationRequested)
             {
@@ -82,7 +82,7 @@
                 Server = server;
             }
 
-            public HttpListenerContext Context { get; }
+            public IHttpContext Context { get; }
 
             public TestWebServer Server { get; }
 

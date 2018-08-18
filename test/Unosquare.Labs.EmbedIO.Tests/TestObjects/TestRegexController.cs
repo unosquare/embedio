@@ -6,24 +6,19 @@
     using System.Threading.Tasks;
     using Constants;
     using Modules;
-#if NET47
-    using System.Net;
-#else
-    using Net;
-#endif
 
     public class TestRegexController : WebApiController
     {
         public const string RelativePath = "api/";
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "empty")]
-        public bool GetEmpty(WebServer server, HttpListenerContext context)
+        public bool GetEmpty(IHttpContext context)
         {
             return context.JsonResponse(new {Ok = true});
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regex")]
-        public bool GetPeople(WebServer server, HttpListenerContext context)
+        public bool GetPeople(IHttpContext context)
         {
             try
             {
@@ -36,7 +31,7 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regex/{id}")]
-        public bool GetPerson(WebServer server, HttpListenerContext context, int id)
+        public bool GetPerson(IHttpContext context, int id)
         {
             try
             {
@@ -56,7 +51,7 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexopt/{id?}")]
-        public bool GetPerson(WebServer server, HttpListenerContext context, int? id)
+        public bool GetPerson(IHttpContext context, int? id)
         {
             try
             {
@@ -81,7 +76,7 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexAsync/{id}")]
-        public async Task<bool> GetPersonAsync(WebServer server, HttpListenerContext context, int id)
+        public async Task<bool> GetPersonAsync(IHttpContext context, int id)
         {
             try
             {
@@ -103,7 +98,7 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexdate/{date}")]
-        public bool GetPerson(WebServer server, HttpListenerContext context, DateTime date)
+        public bool GetPerson(IHttpContext context, DateTime date)
         {
             try
             {
@@ -123,7 +118,7 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regextwo/{skill}/{age}")]
-        public bool GetPerson(WebServer server, HttpListenerContext context, string skill, int age)
+        public bool GetPerson(IHttpContext context, string skill, int age)
         {
             try
             {

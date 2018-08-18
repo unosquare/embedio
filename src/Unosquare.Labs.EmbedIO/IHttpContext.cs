@@ -20,5 +20,13 @@
         /// The response.
         /// </value>
         IHttpResponse Response { get; }
+
+        /// <summary>
+        /// Gets or sets the web server.
+        /// </summary>
+        /// <value>
+        /// The web server.
+        /// </value>
+        IWebServer WebServer { get; }
     }
 }
