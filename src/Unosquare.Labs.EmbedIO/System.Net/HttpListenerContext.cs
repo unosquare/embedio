@@ -63,11 +63,6 @@ namespace Unosquare.Net
 
             return _websocketContext;
         }
-
-        public string RequestHeader(string header)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 

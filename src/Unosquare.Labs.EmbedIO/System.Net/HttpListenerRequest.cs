@@ -99,7 +99,7 @@ using System.Threading.Tasks;
                     .Select(x => new
                     {
                         Charset = x[0],
-                        Q = x.Length == 1 ? 1m : decimal.Parse(x[1].Trim().Replace("q=", string.Empty))
+                        Q = x.Length == 1 ? 1m : decimal.Parse(x[1].Trim().Replace("q=", string.Empty)),
                     })
                     .OrderBy(x => x.Q)
                     .Select(x => x.Charset)
@@ -205,7 +205,6 @@ using System.Threading.Tasks;
         public Uri UrlReferrer { get; private set; }
 
         /// <inheritdoc />
-
         public string UserAgent => Headers["user-agent"];
 
         /// <summary>

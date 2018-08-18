@@ -8,12 +8,11 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Constants;
-#if NET47
-    using System.Net;
-#else
-    using Net;
-#endif
 
+    /// <summary>
+    /// Represents a files module base
+    /// </summary>
+    /// <seealso cref="Unosquare.Labs.EmbedIO.WebModuleBase" />
     public abstract class FileModuleBase
         : WebModuleBase
     {

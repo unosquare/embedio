@@ -1,5 +1,4 @@
 ﻿#if !NET47
-//
 // System.Net.EndPointManager
 //
 // Author:

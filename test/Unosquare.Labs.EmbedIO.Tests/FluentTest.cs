@@ -15,7 +15,7 @@
         {
             {"/Server/web", TestHelper.SetupStaticFolder()},
             {"/Server/api", TestHelper.SetupStaticFolder()},
-            {"/Server/database", TestHelper.SetupStaticFolder()}
+            {"/Server/database", TestHelper.SetupStaticFolder()},
         };
         
         private string _rootPath;
