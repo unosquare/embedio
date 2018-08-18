@@ -238,13 +238,13 @@
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_DeleteSession_" data-uid="Unosquare.Labs.EmbedIO.Extensions.DeleteSession*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_DeleteSession_Unosquare_Labs_EmbedIO_IHttpContext_Unosquare_Labs_EmbedIO_WebServer_" data-uid="Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.IHttpContext,Unosquare.Labs.EmbedIO.WebServer)">DeleteSession(IHttpContext, WebServer)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_DeleteSession_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.IHttpContext)">DeleteSession(IHttpContext)</h4>
   <div class="markdown level1 summary"><p>Deletes the session object associated to the current context.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void DeleteSession(this IHttpContext context, WebServer server)</code></pre>
+    <pre><code class="lang-csharp hljs">public static void DeleteSession(this IHttpContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -262,59 +262,18 @@
         <td><p>The context.</p>
 </td>
       </tr>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
-        <td><span class="parametername">server</span></td>
-        <td><p>The server.</p>
-</td>
-      </tr>
     </tbody>
   </table>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_DeleteSession_" data-uid="Unosquare.Labs.EmbedIO.Extensions.DeleteSession*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_DeleteSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.WebServer,Unosquare.Labs.EmbedIO.IHttpContext)">DeleteSession(WebServer, IHttpContext)</h4>
-  <div class="markdown level1 summary"><p>Deletes the session object associated to the current context.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void DeleteSession(this WebServer server, IHttpContext context)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
-        <td><span class="parametername">server</span></td>
-        <td><p>The server.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>The context.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_Extensions_DeleteSession_" data-uid="Unosquare.Labs.EmbedIO.Extensions.DeleteSession*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_DeleteSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Labs_EmbedIO_SessionInfo_" data-uid="Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.WebServer,Unosquare.Labs.EmbedIO.SessionInfo)">DeleteSession(WebServer, SessionInfo)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_DeleteSession_Unosquare_Labs_EmbedIO_IHttpContext_Unosquare_Labs_EmbedIO_SessionInfo_" data-uid="Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.IHttpContext,Unosquare.Labs.EmbedIO.SessionInfo)">DeleteSession(IHttpContext, SessionInfo)</h4>
   <div class="markdown level1 summary"><p>Deletes the given session object.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void DeleteSession(this WebServer server, SessionInfo session)</code></pre>
+    <pre><code class="lang-csharp hljs">public static void DeleteSession(this IHttpContext context, SessionInfo session)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -327,9 +286,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
-        <td><span class="parametername">server</span></td>
-        <td><p>The server.</p>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
 </td>
       </tr>
       <tr>
@@ -422,14 +381,14 @@
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_GetSession_" data-uid="Unosquare.Labs.EmbedIO.Extensions.GetSession*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_IHttpContext_Unosquare_Labs_EmbedIO_WebServer_" data-uid="Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IHttpContext,Unosquare.Labs.EmbedIO.WebServer)">GetSession(IHttpContext, WebServer)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IHttpContext)">GetSession(IHttpContext)</h4>
   <div class="markdown level1 summary"><p>Gets the session object associated to the current context.
 Returns null if the LocalSessionWebModule has not been loaded.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static SessionInfo GetSession(this IHttpContext context, WebServer server)</code></pre>
+    <pre><code class="lang-csharp hljs">public static SessionInfo GetSession(this IHttpContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -441,64 +400,6 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>The context.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
-        <td><span class="parametername">server</span></td>
-        <td><p>The server.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.SessionInfo.html">SessionInfo</a></td>
-        <td><p>A session object for the given server context.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_Extensions_GetSession_" data-uid="Unosquare.Labs.EmbedIO.Extensions.GetSession*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.WebServer,Unosquare.Labs.EmbedIO.IHttpContext)">GetSession(WebServer, IHttpContext)</h4>
-  <div class="markdown level1 summary"><p>Gets the session object associated to the current context.
-Returns null if the LocalSessionWebModule has not been loaded.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static SessionInfo GetSession(this WebServer server, IHttpContext context)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
-        <td><span class="parametername">server</span></td>
-        <td><p>The server.</p>
-</td>
-      </tr>
       <tr>
         <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
@@ -518,7 +419,7 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="Unosquare.Labs.EmbedIO.SessionInfo.html">SessionInfo</a></td>
-        <td><p>A session info for the given server context.</p>
+        <td><p>A session object for the given server context.</p>
 </td>
       </tr>
     </tbody>

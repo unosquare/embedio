@@ -281,24 +281,18 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.Compress
   nameWithType: Extensions.Compress
-- uid: Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.IHttpContext,Unosquare.Labs.EmbedIO.WebServer)
-  name: DeleteSession(IHttpContext, WebServer)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_DeleteSession_Unosquare_Labs_EmbedIO_IHttpContext_Unosquare_Labs_EmbedIO_WebServer_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.IHttpContext,Unosquare.Labs.EmbedIO.WebServer)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.IHttpContext, Unosquare.Labs.EmbedIO.WebServer)
-  nameWithType: Extensions.DeleteSession(IHttpContext, WebServer)
-- uid: Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.WebServer,Unosquare.Labs.EmbedIO.IHttpContext)
-  name: DeleteSession(WebServer, IHttpContext)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_DeleteSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Labs_EmbedIO_IHttpContext_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.WebServer,Unosquare.Labs.EmbedIO.IHttpContext)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.WebServer, Unosquare.Labs.EmbedIO.IHttpContext)
-  nameWithType: Extensions.DeleteSession(WebServer, IHttpContext)
-- uid: Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.WebServer,Unosquare.Labs.EmbedIO.SessionInfo)
-  name: DeleteSession(WebServer, SessionInfo)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_DeleteSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Labs_EmbedIO_SessionInfo_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.WebServer,Unosquare.Labs.EmbedIO.SessionInfo)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.WebServer, Unosquare.Labs.EmbedIO.SessionInfo)
-  nameWithType: Extensions.DeleteSession(WebServer, SessionInfo)
+- uid: Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.IHttpContext)
+  name: DeleteSession(IHttpContext)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_DeleteSession_Unosquare_Labs_EmbedIO_IHttpContext_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.IHttpContext)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.IHttpContext)
+  nameWithType: Extensions.DeleteSession(IHttpContext)
+- uid: Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.IHttpContext,Unosquare.Labs.EmbedIO.SessionInfo)
+  name: DeleteSession(IHttpContext, SessionInfo)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_DeleteSession_Unosquare_Labs_EmbedIO_IHttpContext_Unosquare_Labs_EmbedIO_SessionInfo_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.IHttpContext,Unosquare.Labs.EmbedIO.SessionInfo)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.IHttpContext, Unosquare.Labs.EmbedIO.SessionInfo)
+  nameWithType: Extensions.DeleteSession(IHttpContext, SessionInfo)
 - uid: Unosquare.Labs.EmbedIO.Extensions.DeleteSession*
   name: DeleteSession
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_DeleteSession_
@@ -319,18 +313,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.EnableCors
   nameWithType: Extensions.EnableCors
-- uid: Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IHttpContext,Unosquare.Labs.EmbedIO.WebServer)
-  name: GetSession(IHttpContext, WebServer)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_IHttpContext_Unosquare_Labs_EmbedIO_WebServer_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IHttpContext,Unosquare.Labs.EmbedIO.WebServer)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IHttpContext, Unosquare.Labs.EmbedIO.WebServer)
-  nameWithType: Extensions.GetSession(IHttpContext, WebServer)
-- uid: Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.WebServer,Unosquare.Labs.EmbedIO.IHttpContext)
-  name: GetSession(WebServer, IHttpContext)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Labs_EmbedIO_IHttpContext_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.WebServer,Unosquare.Labs.EmbedIO.IHttpContext)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.WebServer, Unosquare.Labs.EmbedIO.IHttpContext)
-  nameWithType: Extensions.GetSession(WebServer, IHttpContext)
+- uid: Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IHttpContext)
+  name: GetSession(IHttpContext)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_IHttpContext_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IHttpContext)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IHttpContext)
+  nameWithType: Extensions.GetSession(IHttpContext)
 - uid: Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.WebServer,Unosquare.Net.WebSocketContext)
   name: GetSession(WebServer, WebSocketContext)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Net_WebSocketContext_
