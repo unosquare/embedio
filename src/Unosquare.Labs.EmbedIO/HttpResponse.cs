@@ -1,6 +1,8 @@
 ﻿#if NET47
 namespace Unosquare.Labs.EmbedIO
 {
+    using System;
+    using System.Text;
     using System.IO;
     using System.Net;
 
@@ -50,6 +52,27 @@ namespace Unosquare.Labs.EmbedIO
 
         /// <inheritdoc />
         public CookieCollection Cookies => _response.Cookies;
+
+        /// <inheritdoc />
+        public Encoding ContentEncoding
+        {
+            get => _response.ContentEncoding;
+            set => _response.ContentEncoding = value;
+        }
+        
+        /// <inheritdoc />
+        public bool KeepAlive
+        {
+            get => _response.KeepAlive;
+            set => _response.KeepAlive = value;
+        }
+        
+        /// <inheritdoc />
+        public Version ProtocolVersion
+        {
+            get => _response.ProtocolVersion;
+            set => _response.ProtocolVersion = value;
+        }
 
         /// <inheritdoc />
         public void AddHeader(string headerName, string value) => _response.AddHeader(headerName, value);

@@ -1,5 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
+    using System;
+    using System.Text;
     using System.IO;
 #if NET47
     using System.Net;
@@ -59,6 +61,30 @@
         /// The cookies.
         /// </value>
         CookieCollection Cookies { get; }
+
+        /// <summary>
+        /// Gets or sets the content encoding.
+        /// </summary>
+        /// <value>
+        /// The content encoding.
+        /// </value>
+        Encoding ContentEncoding { get;set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [keep alive].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [keep alive]; otherwise, <c>false</c>.
+        /// </value>
+        bool KeepAlive { get; set; }
+
+        /// <summary>
+        /// Gets or sets the protocol version.
+        /// </summary>
+        /// <value>
+        /// The protocol version.
+        /// </value>
+        Version ProtocolVersion { get; set; }
 
         /// <summary>
         /// Adds the header.

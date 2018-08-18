@@ -74,6 +74,15 @@ namespace Unosquare.Labs.EmbedIO
         
         /// <inheritdoc />
         public string ContentType => _request.ContentType;
+
+        /// <inheritdoc />
+        public long ContentLength64 => _request.ContentLength64;
+        
+        /// <inheritdoc />
+        public bool IsAuthenticated => _request.IsAuthenticated;
+        
+        /// <inheritdoc />
+        public Uri UrlReferrer => _request.UrlReferrer;
     }
 }
 #endif

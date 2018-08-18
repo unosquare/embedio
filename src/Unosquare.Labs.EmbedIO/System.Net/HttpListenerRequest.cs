@@ -75,12 +75,7 @@ using System.Threading.Tasks;
         }
 #endif
 
-        /// <summary>
-        /// Gets the content encoding.
-        /// </summary>
-        /// <value>
-        /// The content encoding.
-        /// </value>
+        /// <inheritdoc />
         public Encoding ContentEncoding
         {
             get
@@ -119,63 +114,33 @@ using System.Threading.Tasks;
             }
         }
 
-        /// <summary>
-        /// Gets the content length in a 64-bit integer.
-        /// </summary>
-        /// <value>
-        /// The content length64.
-        /// </value>
+        /// <inheritdoc />
         public long ContentLength64 { get; private set; }
 
-        /// <summary>
-        /// Gets the MIME type of the content.
-        /// </summary>
-        /// <value>
-        /// The type of the content.
-        /// </value>
+        /// <inheritdoc />
         public string ContentType => Headers["content-type"];
 
-        /// <summary>
-        /// Gets the cookies collection.
-        /// </summary>
-        /// <value>
-        /// The cookies.
-        /// </value>
+        /// <inheritdoc />
         public CookieCollection Cookies => _cookies ?? (_cookies = new CookieCollection());
 
-        /// <summary>
-        /// Gets a value indicating whether this instance has entity body.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance has entity body; otherwise, <c>false</c>.
-        /// </value>
+        /// <inheritdoc />
         public bool HasEntityBody => ContentLength64 > 0;
 
-        /// <summary>
-        /// Gets the request headers.
-        /// </summary>
+        /// <inheritdoc />
         public NameValueCollection Headers { get; }
 
-        /// <summary>
-        /// Gets the HTTP method.
-        /// </summary>
+        /// <inheritdoc />
         public string HttpMethod { get; private set; }
 
-        /// <summary>
-        /// Gets the input stream.
-        /// </summary>
+        /// <inheritdoc />
         public Stream InputStream => _inputStream ??
                                      (_inputStream =
                                          ContentLength64 > 0 ? _context.Connection.GetRequestStream(ContentLength64) : Stream.Null);
 
-        /// <summary>
-        /// Gets a value indicating whether this request is authenticated.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAuthenticated => false;
 
-        /// <summary>
-        /// Gets a value indicating whether this request is local.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsLocal => LocalEndPoint?.Address?.Equals(RemoteEndPoint?.Address) ?? true;
 
 #if SSL
@@ -185,9 +150,7 @@ using System.Threading.Tasks;
         public bool IsSecureConnection => _context.Connection.IsSecure;
 #endif
 
-        /// <summary>
-        /// Gets the Keep-Alive value for this request.
-        /// </summary>
+        /// <inheritdoc />
         public bool KeepAlive
         {
             get
@@ -219,53 +182,30 @@ using System.Threading.Tasks;
                 return _keepAlive;
             }
         }
-
-        /// <summary>
-        /// Gets the local endpoint.
-        /// </summary>
+        
+        /// <inheritdoc />
         public IPEndPoint LocalEndPoint => _context.Connection.LocalEndPoint;
 
-        /// <summary>
-        /// Gets the protocol version.
-        /// </summary>
+        /// <inheritdoc />
         public Version ProtocolVersion { get; private set; }
 
-        /// <summary>
-        /// Gets the query string.
-        /// </summary>
+        /// <inheritdoc />
         public NameValueCollection QueryString { get; private set; }
 
-        /// <summary>
-        /// Gets the raw URL.
-        /// </summary>
+        /// <inheritdoc />
         public string RawUrl { get; private set; }
-
-        /// <summary>
-        /// Gets the remote endpoint.
-        /// </summary>
+        
+        /// <inheritdoc />
         public IPEndPoint RemoteEndPoint => _context.Connection.RemoteEndPoint;
-
-        /// <summary>
-        /// Gets the request trace identifier.
-        /// </summary>
-        public Guid RequestTraceIdentifier => Guid.Empty;
-
-        /// <summary>
-        /// Gets the URL.
-        /// </summary>
+        
+        /// <inheritdoc />
         public Uri Url => _url;
 
-        /// <summary>
-        /// Gets the URL referrer.
-        /// </summary>
-        /// <value>
-        /// The URL referrer.
-        /// </value>
+        /// <inheritdoc />
         public Uri UrlReferrer { get; private set; }
 
-        /// <summary>
-        /// Gets the user agent.
-        /// </summary>
+        /// <inheritdoc />
+
         public string UserAgent => Headers["user-agent"];
 
         /// <summary>
@@ -285,15 +225,8 @@ using System.Threading.Tasks;
         /// Gets the user languages.
         /// </summary>
         public string[] UserLanguages { get; private set; }
-
-        /// <summary>
-        /// Gets the name of the service.
-        /// </summary>
-        public string ServiceName => null;
-
-        /// <summary>
-        /// Gets a value indicating whether this request is a web socket request.
-        /// </summary>
+        
+        /// <inheritdoc />
         public bool IsWebSocketRequest => HttpMethod == "GET" && ProtocolVersion > HttpVersion.Version10 && Headers.Contains("Upgrade", "websocket") && Headers.Contains("Connection", "Upgrade");
 
         internal void SetRequestLine(string req)

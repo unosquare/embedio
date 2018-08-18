@@ -246,7 +246,7 @@
                         ctx.JsonResponse(new EncodeCheck
                         {
                             Encoding = encoding.EncodingName,
-                            IsValid = ctx.Request.ContentEncoding.EncodingName == encoding.EncodingName
+                            IsValid = ctx.Request.ContentEncoding.EncodingName == encoding.EncodingName,
                         });
 
                         return true;
@@ -260,8 +260,7 @@
                             .Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                         var request = new HttpRequestMessage(HttpMethod.Post, url + TestWebModule.RedirectUrl)
                         {
-                            Content = new StringContent("POST DATA", Encoding.GetEncoding(encodeName),
-                                "application/json")
+                            Content = new StringContent("POST DATA", Encoding.GetEncoding(encodeName), "application/json")
                         };
 
                         using (var response = await client.SendAsync(request))

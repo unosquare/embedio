@@ -150,5 +150,29 @@
         /// The type of the content.
         /// </value>
         string ContentType { get; }
+
+        /// <summary>
+        /// Gets the content length64.
+        /// </summary>
+        /// <value>
+        /// The content length64.
+        /// </value>
+        long ContentLength64 { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is authenticated.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is authenticated; otherwise, <c>false</c>.
+        /// </value>
+        bool IsAuthenticated { get; }
+
+        /// <summary>
+        /// Gets the URL referrer.
+        /// </summary>
+        /// <value>
+        /// The URL referrer.
+        /// </value>
+        Uri UrlReferrer { get; }
     }
 }
