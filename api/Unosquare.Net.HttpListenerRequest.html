@@ -82,13 +82,17 @@
   
   <h1 id="Unosquare_Net_HttpListenerRequest" data-uid="Unosquare.Net.HttpListenerRequest" class="text-break">Class HttpListenerRequest
   </h1>
-  <div class="markdown level0 summary"><p>Represents an HTTP Listener&apos;s request.</p>
+  <div class="markdown level0 summary"><p>Represents an HTTP Listener Request.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">HttpListenerRequest</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpRequest.html">IHttpRequest</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -117,7 +121,7 @@
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Net.html">Unosquare.Net</a></h6>
   <h5 id="Unosquare_Net_HttpListenerRequest_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class HttpListenerRequest</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class HttpListenerRequest : IHttpRequest</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -805,6 +809,10 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.IHttpRequest.html">IHttpRequest</a>
+  </div>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>

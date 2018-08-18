@@ -92,6 +92,7 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpResponse.html">IHttpResponse</a></div>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
   </div>
   <div class="inheritedMembers">
@@ -121,7 +122,7 @@
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Net.html">Unosquare.Net</a></h6>
   <h5 id="Unosquare_Net_HttpListenerResponse_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class HttpListenerResponse : IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class HttpListenerResponse : IHttpResponse, IDisposable</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -366,7 +367,7 @@ implements the IDisposable interface, and that object has been disposed.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ResponseStream OutputStream { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Stream OutputStream { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -378,7 +379,7 @@ implements the IDisposable interface, and that object has been disposed.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.ResponseStream.html">ResponseStream</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.stream">Stream</a></td>
         <td><p>The output stream.</p>
 </td>
       </tr>
@@ -687,6 +688,9 @@ that does not accept it as a valid argument.</p>
     <pre><code class="lang-csharp hljs">void IDisposable.Dispose()</code></pre>
   </div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.IHttpResponse.html">IHttpResponse</a>
+  </div>
   <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
   </div>

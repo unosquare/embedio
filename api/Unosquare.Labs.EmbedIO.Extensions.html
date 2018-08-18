@@ -238,6 +238,76 @@
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_DeleteSession_" data-uid="Unosquare.Labs.EmbedIO.Extensions.DeleteSession*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_DeleteSession_Unosquare_Labs_EmbedIO_IHttpContext_Unosquare_Labs_EmbedIO_WebServer_" data-uid="Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.IHttpContext,Unosquare.Labs.EmbedIO.WebServer)">DeleteSession(IHttpContext, WebServer)</h4>
+  <div class="markdown level1 summary"><p>Deletes the session object associated to the current context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void DeleteSession(this IHttpContext context, WebServer server)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
+        <td><span class="parametername">server</span></td>
+        <td><p>The server.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Extensions_DeleteSession_" data-uid="Unosquare.Labs.EmbedIO.Extensions.DeleteSession*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_DeleteSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.WebServer,Unosquare.Labs.EmbedIO.IHttpContext)">DeleteSession(WebServer, IHttpContext)</h4>
+  <div class="markdown level1 summary"><p>Deletes the session object associated to the current context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void DeleteSession(this WebServer server, IHttpContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
+        <td><span class="parametername">server</span></td>
+        <td><p>The server.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Extensions_DeleteSession_" data-uid="Unosquare.Labs.EmbedIO.Extensions.DeleteSession*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_Extensions_DeleteSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Labs_EmbedIO_SessionInfo_" data-uid="Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.WebServer,Unosquare.Labs.EmbedIO.SessionInfo)">DeleteSession(WebServer, SessionInfo)</h4>
   <div class="markdown level1 summary"><p>Deletes the given session object.</p>
 </div>
@@ -266,76 +336,6 @@
         <td><a class="xref" href="Unosquare.Labs.EmbedIO.SessionInfo.html">SessionInfo</a></td>
         <td><span class="parametername">session</span></td>
         <td><p>The session info.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_Extensions_DeleteSession_" data-uid="Unosquare.Labs.EmbedIO.Extensions.DeleteSession*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_DeleteSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Net_HttpListenerContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.WebServer,Unosquare.Net.HttpListenerContext)">DeleteSession(WebServer, HttpListenerContext)</h4>
-  <div class="markdown level1 summary"><p>Deletes the session object associated to the current context.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void DeleteSession(this WebServer server, HttpListenerContext context)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
-        <td><span class="parametername">server</span></td>
-        <td><p>The server.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>The context.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_Extensions_DeleteSession_" data-uid="Unosquare.Labs.EmbedIO.Extensions.DeleteSession*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_DeleteSession_Unosquare_Net_HttpListenerContext_Unosquare_Labs_EmbedIO_WebServer_" data-uid="Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Net.HttpListenerContext,Unosquare.Labs.EmbedIO.WebServer)">DeleteSession(HttpListenerContext, WebServer)</h4>
-  <div class="markdown level1 summary"><p>Deletes the session object associated to the current context.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void DeleteSession(this HttpListenerContext context, WebServer server)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>The context.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
-        <td><span class="parametername">server</span></td>
-        <td><p>The server.</p>
 </td>
       </tr>
     </tbody>
@@ -422,14 +422,66 @@
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_GetSession_" data-uid="Unosquare.Labs.EmbedIO.Extensions.GetSession*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Net_HttpListenerContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.WebServer,Unosquare.Net.HttpListenerContext)">GetSession(WebServer, HttpListenerContext)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_IHttpContext_Unosquare_Labs_EmbedIO_WebServer_" data-uid="Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IHttpContext,Unosquare.Labs.EmbedIO.WebServer)">GetSession(IHttpContext, WebServer)</h4>
   <div class="markdown level1 summary"><p>Gets the session object associated to the current context.
 Returns null if the LocalSessionWebModule has not been loaded.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static SessionInfo GetSession(this WebServer server, HttpListenerContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public static SessionInfo GetSession(this IHttpContext context, WebServer server)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
+        <td><span class="parametername">server</span></td>
+        <td><p>The server.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.SessionInfo.html">SessionInfo</a></td>
+        <td><p>A session object for the given server context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Extensions_GetSession_" data-uid="Unosquare.Labs.EmbedIO.Extensions.GetSession*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.WebServer,Unosquare.Labs.EmbedIO.IHttpContext)">GetSession(WebServer, IHttpContext)</h4>
+  <div class="markdown level1 summary"><p>Gets the session object associated to the current context.
+Returns null if the LocalSessionWebModule has not been loaded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static SessionInfo GetSession(this WebServer server, IHttpContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -448,7 +500,7 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -525,58 +577,6 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_GetSession_" data-uid="Unosquare.Labs.EmbedIO.Extensions.GetSession*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Net_HttpListenerContext_Unosquare_Labs_EmbedIO_WebServer_" data-uid="Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Net.HttpListenerContext,Unosquare.Labs.EmbedIO.WebServer)">GetSession(HttpListenerContext, WebServer)</h4>
-  <div class="markdown level1 summary"><p>Gets the session object associated to the current context.
-Returns null if the LocalSessionWebModule has not been loaded.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static SessionInfo GetSession(this HttpListenerContext context, WebServer server)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>The context.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
-        <td><span class="parametername">server</span></td>
-        <td><p>The server.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.SessionInfo.html">SessionInfo</a></td>
-        <td><p>A session object for the given server context.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_Extensions_GetSession_" data-uid="Unosquare.Labs.EmbedIO.Extensions.GetSession*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Net_WebSocketContext_Unosquare_Labs_EmbedIO_WebServer_" data-uid="Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Net.WebSocketContext,Unosquare.Labs.EmbedIO.WebServer)">GetSession(WebSocketContext, WebServer)</h4>
   <div class="markdown level1 summary"><p>Gets the session object associated to the current context.
 Returns null if the LocalSessionWebModule has not been loaded.</p>
@@ -629,13 +629,13 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_HasRequestHeader_" data-uid="Unosquare.Labs.EmbedIO.Extensions.HasRequestHeader*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_HasRequestHeader_Unosquare_Net_HttpListenerContext_System_String_" data-uid="Unosquare.Labs.EmbedIO.Extensions.HasRequestHeader(Unosquare.Net.HttpListenerContext,System.String)">HasRequestHeader(HttpListenerContext, String)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_HasRequestHeader_Unosquare_Labs_EmbedIO_IHttpContext_System_String_" data-uid="Unosquare.Labs.EmbedIO.Extensions.HasRequestHeader(Unosquare.Labs.EmbedIO.IHttpContext,System.String)">HasRequestHeader(IHttpContext, String)</h4>
   <div class="markdown level1 summary"><p>Determines whether [has request header] [the specified context].</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool HasRequestHeader(this HttpListenerContext context, string headerName)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool HasRequestHeader(this IHttpContext context, string headerName)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -648,7 +648,7 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -680,13 +680,13 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_HtmlResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_HtmlResponseAsync_Unosquare_Net_HttpListenerContext_System_String_System_Net_HttpStatusCode_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Net.HttpListenerContext,System.String,System.Net.HttpStatusCode,System.Threading.CancellationToken)">HtmlResponseAsync(HttpListenerContext, String, Net.HttpStatusCode, CancellationToken)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_HtmlResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_Net_HttpStatusCode_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Net.HttpStatusCode,System.Threading.CancellationToken)">HtmlResponseAsync(IHttpContext, String, Net.HttpStatusCode, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Outputs a HTML Response given a HTML content.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; HtmlResponseAsync(this HttpListenerContext context, string htmlContent, Net.HttpStatusCode statusCode = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; HtmlResponseAsync(this IHttpContext context, string htmlContent, Net.HttpStatusCode statusCode = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -699,7 +699,7 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -743,13 +743,13 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_InQueryString_" data-uid="Unosquare.Labs.EmbedIO.Extensions.InQueryString*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_InQueryString_Unosquare_Net_HttpListenerContext_System_String_" data-uid="Unosquare.Labs.EmbedIO.Extensions.InQueryString(Unosquare.Net.HttpListenerContext,System.String)">InQueryString(HttpListenerContext, String)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_InQueryString_Unosquare_Labs_EmbedIO_IHttpContext_System_String_" data-uid="Unosquare.Labs.EmbedIO.Extensions.InQueryString(Unosquare.Labs.EmbedIO.IHttpContext,System.String)">InQueryString(IHttpContext, String)</h4>
   <div class="markdown level1 summary"><p>Determines if a key exists within the Request&apos;s query string.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool InQueryString(this HttpListenerContext context, string key)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool InQueryString(this IHttpContext context, string key)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -762,7 +762,7 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -794,13 +794,13 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponse_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponse*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponse_Unosquare_Net_HttpListenerContext_System_Exception_System_Net_HttpStatusCode_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponse(Unosquare.Net.HttpListenerContext,System.Exception,System.Net.HttpStatusCode)">JsonExceptionResponse(HttpListenerContext, Exception, Net.HttpStatusCode)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponse_Unosquare_Labs_EmbedIO_IHttpContext_System_Exception_System_Net_HttpStatusCode_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponse(Unosquare.Labs.EmbedIO.IHttpContext,System.Exception,System.Net.HttpStatusCode)">JsonExceptionResponse(IHttpContext, Exception, Net.HttpStatusCode)</h4>
   <div class="markdown level1 summary"><p>Outputs async a JSON Response given an exception.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool JsonExceptionResponse(this HttpListenerContext context, Exception ex, Net.HttpStatusCode statusCode = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool JsonExceptionResponse(this IHttpContext context, Exception ex, Net.HttpStatusCode statusCode = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -813,7 +813,7 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -851,13 +851,13 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponseAsync_Unosquare_Net_HttpListenerContext_System_Exception_System_Net_HttpStatusCode_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Net.HttpListenerContext,System.Exception,System.Net.HttpStatusCode)">JsonExceptionResponseAsync(HttpListenerContext, Exception, Net.HttpStatusCode)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Exception_System_Net_HttpStatusCode_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Exception,System.Net.HttpStatusCode)">JsonExceptionResponseAsync(IHttpContext, Exception, Net.HttpStatusCode)</h4>
   <div class="markdown level1 summary"><p>Outputs a JSON Response given an exception.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonExceptionResponseAsync(this HttpListenerContext context, Exception ex, Net.HttpStatusCode statusCode = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonExceptionResponseAsync(this IHttpContext context, Exception ex, Net.HttpStatusCode statusCode = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -870,7 +870,7 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -908,13 +908,13 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_JsonResponse_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponse*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonResponse_Unosquare_Net_HttpListenerContext_System_Object_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponse(Unosquare.Net.HttpListenerContext,System.Object)">JsonResponse(HttpListenerContext, Object)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonResponse_Unosquare_Labs_EmbedIO_IHttpContext_System_Object_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponse(Unosquare.Labs.EmbedIO.IHttpContext,System.Object)">JsonResponse(IHttpContext, Object)</h4>
   <div class="markdown level1 summary"><p>Outputs a Json Response given a data object.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool JsonResponse(this HttpListenerContext context, object data)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool JsonResponse(this IHttpContext context, object data)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -927,7 +927,7 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -959,13 +959,13 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_JsonResponse_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponse*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonResponse_Unosquare_Net_HttpListenerContext_System_String_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponse(Unosquare.Net.HttpListenerContext,System.String)">JsonResponse(HttpListenerContext, String)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonResponse_Unosquare_Labs_EmbedIO_IHttpContext_System_String_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponse(Unosquare.Labs.EmbedIO.IHttpContext,System.String)">JsonResponse(IHttpContext, String)</h4>
   <div class="markdown level1 summary"><p>Outputs a Json Response given a Json string.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool JsonResponse(this HttpListenerContext context, string json)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool JsonResponse(this IHttpContext context, string json)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -978,7 +978,7 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -1010,13 +1010,13 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Net_HttpListenerContext_System_Object_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Net.HttpListenerContext,System.Object)">JsonResponseAsync(HttpListenerContext, Object)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Object_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Object)">JsonResponseAsync(IHttpContext, Object)</h4>
   <div class="markdown level1 summary"><p>Outputs async a Json Response given a data object.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonResponseAsync(this HttpListenerContext context, object data)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonResponseAsync(this IHttpContext context, object data)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1029,7 +1029,7 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -1061,13 +1061,13 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Net_HttpListenerContext_System_String_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Net.HttpListenerContext,System.String,System.Threading.CancellationToken)">JsonResponseAsync(HttpListenerContext, String, CancellationToken)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Threading.CancellationToken)">JsonResponseAsync(IHttpContext, String, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Outputs async a JSON Response given a JSON string.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonResponseAsync(this HttpListenerContext context, string json, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonResponseAsync(this IHttpContext context, string json, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1080,7 +1080,7 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -1319,13 +1319,13 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_NoCache_" data-uid="Unosquare.Labs.EmbedIO.Extensions.NoCache*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_NoCache_Unosquare_Net_HttpListenerContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.NoCache(Unosquare.Net.HttpListenerContext)">NoCache(HttpListenerContext)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_NoCache_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.NoCache(Unosquare.Labs.EmbedIO.IHttpContext)">NoCache(IHttpContext)</h4>
   <div class="markdown level1 summary"><p>Sends headers to disable caching on the client side.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void NoCache(this HttpListenerContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public static void NoCache(this IHttpContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1338,7 +1338,7 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -1410,14 +1410,14 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_ParseJson_" data-uid="Unosquare.Labs.EmbedIO.Extensions.ParseJson*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_ParseJson__1_Unosquare_Net_HttpListenerContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.ParseJson``1(Unosquare.Net.HttpListenerContext)">ParseJson&lt;T&gt;(HttpListenerContext)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_ParseJson__1_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.ParseJson``1(Unosquare.Labs.EmbedIO.IHttpContext)">ParseJson&lt;T&gt;(IHttpContext)</h4>
   <div class="markdown level1 summary"><p>Parses the JSON as a given type from the request body.
 Please note the underlying input stream is not rewindable.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static T ParseJson&lt;T&gt;(this HttpListenerContext context)
+    <pre><code class="lang-csharp hljs">public static T ParseJson&lt;T&gt;(this IHttpContext context)
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1431,7 +1431,7 @@ Please note the underlying input stream is not rewindable.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -1473,14 +1473,14 @@ Please note the underlying input stream is not rewindable.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_QueryString_" data-uid="Unosquare.Labs.EmbedIO.Extensions.QueryString*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_QueryString_Unosquare_Net_HttpListenerContext_System_String_" data-uid="Unosquare.Labs.EmbedIO.Extensions.QueryString(Unosquare.Net.HttpListenerContext,System.String)">QueryString(HttpListenerContext, String)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_QueryString_Unosquare_Labs_EmbedIO_IHttpContext_System_String_" data-uid="Unosquare.Labs.EmbedIO.Extensions.QueryString(Unosquare.Labs.EmbedIO.IHttpContext,System.String)">QueryString(IHttpContext, String)</h4>
   <div class="markdown level1 summary"><p>Gets the value for the specified query string key.
 If the value does not exist it returns null.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string QueryString(this HttpListenerContext context, string key)</code></pre>
+    <pre><code class="lang-csharp hljs">public static string QueryString(this IHttpContext context, string key)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1493,7 +1493,7 @@ If the value does not exist it returns null.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -1525,14 +1525,14 @@ If the value does not exist it returns null.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_Redirect_" data-uid="Unosquare.Labs.EmbedIO.Extensions.Redirect*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_Redirect_Unosquare_Net_HttpListenerContext_System_String_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Extensions.Redirect(Unosquare.Net.HttpListenerContext,System.String,System.Boolean)">Redirect(HttpListenerContext, String, Boolean)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_Redirect_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Extensions.Redirect(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Boolean)">Redirect(IHttpContext, String, Boolean)</h4>
   <div class="markdown level1 summary"><p>Sets a response static code of 302 and adds a Location header to the response
 in order to direct the client to a different URL.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool Redirect(this HttpListenerContext context, string location, bool useAbsoluteUrl = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool Redirect(this IHttpContext context, string location, bool useAbsoluteUrl = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1545,7 +1545,7 @@ in order to direct the client to a different URL.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -1583,7 +1583,7 @@ in order to direct the client to a different URL.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_RequestBody_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestBody*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestBody_Unosquare_Net_HttpListenerContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestBody(Unosquare.Net.HttpListenerContext)">RequestBody(HttpListenerContext)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestBody_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestBody(Unosquare.Labs.EmbedIO.IHttpContext)">RequestBody(IHttpContext)</h4>
   <div class="markdown level1 summary"><p>Retrieves the request body as a string.
 Note that once this method returns, the underlying input stream cannot be read again as 
 it is not rewindable for obvious reasons. This functionality is by design.</p>
@@ -1591,7 +1591,7 @@ it is not rewindable for obvious reasons. This functionality is by design.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string RequestBody(this HttpListenerContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public static string RequestBody(this IHttpContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1604,7 +1604,7 @@ it is not rewindable for obvious reasons. This functionality is by design.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -1676,14 +1676,14 @@ If the current position is at the end of the stream, returns an empty string.</p
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionary_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionary*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionary_Unosquare_Net_HttpListenerContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionary(Unosquare.Net.HttpListenerContext)">RequestFormDataDictionary(HttpListenerContext)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionary_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionary(Unosquare.Labs.EmbedIO.IHttpContext)">RequestFormDataDictionary(IHttpContext)</h4>
   <div class="markdown level1 summary"><p>Returns dictionary from Request POST data
 Please note the underlying input stream is not rewindable.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Dictionary&lt;string, object&gt; RequestFormDataDictionary(this HttpListenerContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Dictionary&lt;string, object&gt; RequestFormDataDictionary(this IHttpContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1696,7 +1696,7 @@ Please note the underlying input stream is not rewindable.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context to request body as string.</p>
 </td>
@@ -1722,13 +1722,13 @@ Please note the underlying input stream is not rewindable.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_RequestHeader_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestHeader*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestHeader_Unosquare_Net_HttpListenerContext_System_String_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestHeader(Unosquare.Net.HttpListenerContext,System.String)">RequestHeader(HttpListenerContext, String)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestHeader_Unosquare_Labs_EmbedIO_IHttpContext_System_String_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestHeader(Unosquare.Labs.EmbedIO.IHttpContext,System.String)">RequestHeader(IHttpContext, String)</h4>
   <div class="markdown level1 summary"><p>Retrieves the specified request the header.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string RequestHeader(this HttpListenerContext context, string headerName)</code></pre>
+    <pre><code class="lang-csharp hljs">public static string RequestHeader(this IHttpContext context, string headerName)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1741,7 +1741,7 @@ Please note the underlying input stream is not rewindable.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -1773,13 +1773,13 @@ Please note the underlying input stream is not rewindable.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_RequestPath_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestPath*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestPath_Unosquare_Net_HttpListenerContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestPath(Unosquare.Net.HttpListenerContext)">RequestPath(HttpListenerContext)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestPath_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestPath(Unosquare.Labs.EmbedIO.IHttpContext)">RequestPath(IHttpContext)</h4>
   <div class="markdown level1 summary"><p>Gets the request path for the specified context.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string RequestPath(this HttpListenerContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public static string RequestPath(this IHttpContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1792,7 +1792,7 @@ Please note the underlying input stream is not rewindable.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -1818,13 +1818,13 @@ Please note the underlying input stream is not rewindable.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_RequestPathCaseSensitive_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestPathCaseSensitive*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestPathCaseSensitive_Unosquare_Net_HttpListenerContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestPathCaseSensitive(Unosquare.Net.HttpListenerContext)">RequestPathCaseSensitive(HttpListenerContext)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestPathCaseSensitive_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestPathCaseSensitive(Unosquare.Labs.EmbedIO.IHttpContext)">RequestPathCaseSensitive(IHttpContext)</h4>
   <div class="markdown level1 summary"><p>Gets the request path for the specified context case sensitive.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string RequestPathCaseSensitive(this HttpListenerContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public static string RequestPathCaseSensitive(this IHttpContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1837,7 +1837,7 @@ Please note the underlying input stream is not rewindable.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -1920,13 +1920,13 @@ Please note the underlying input stream is not rewindable.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_RequestRegexUrlParams_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestRegexUrlParams*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestRegexUrlParams_Unosquare_Net_HttpListenerContext_System_String_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestRegexUrlParams(Unosquare.Net.HttpListenerContext,System.String)">RequestRegexUrlParams(HttpListenerContext, String)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestRegexUrlParams_Unosquare_Labs_EmbedIO_IHttpContext_System_String_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestRegexUrlParams(Unosquare.Labs.EmbedIO.IHttpContext,System.String)">RequestRegexUrlParams(IHttpContext, String)</h4>
   <div class="markdown level1 summary"><p>Requests the regex URL parameters.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Dictionary&lt;string, object&gt; RequestRegexUrlParams(this HttpListenerContext context, string basePath)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Dictionary&lt;string, object&gt; RequestRegexUrlParams(this IHttpContext context, string basePath)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1939,7 +1939,7 @@ Please note the underlying input stream is not rewindable.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -2022,13 +2022,13 @@ Please note the underlying input stream is not rewindable.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_RequestVerb_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestVerb*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestVerb_Unosquare_Net_HttpListenerContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestVerb(Unosquare.Net.HttpListenerContext)">RequestVerb(HttpListenerContext)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestVerb_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestVerb(Unosquare.Labs.EmbedIO.IHttpContext)">RequestVerb(IHttpContext)</h4>
   <div class="markdown level1 summary"><p>Retrieves the Request HTTP Verb (also called Method) of this context.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static HttpVerbs RequestVerb(this HttpListenerContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public static HttpVerbs RequestVerb(this IHttpContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2041,7 +2041,7 @@ Please note the underlying input stream is not rewindable.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -2067,14 +2067,14 @@ Please note the underlying input stream is not rewindable.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_RequestWilcardPath_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestWilcardPath*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestWilcardPath_Unosquare_Net_HttpListenerContext_System_Collections_Generic_IEnumerable_System_String__" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestWilcardPath(Unosquare.Net.HttpListenerContext,System.Collections.Generic.IEnumerable{System.String})">RequestWilcardPath(HttpListenerContext, IEnumerable&lt;String&gt;)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestWilcardPath_Unosquare_Labs_EmbedIO_IHttpContext_System_Collections_Generic_IEnumerable_System_String__" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestWilcardPath(Unosquare.Labs.EmbedIO.IHttpContext,System.Collections.Generic.IEnumerable{System.String})">RequestWilcardPath(IHttpContext, IEnumerable&lt;String&gt;)</h4>
   <div class="markdown level1 summary"><p>Gets the request path for the specified context using a wildcard paths to 
 match.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string RequestWilcardPath(this HttpListenerContext context, IEnumerable&lt;string&gt; wildcardPaths)</code></pre>
+    <pre><code class="lang-csharp hljs">public static string RequestWilcardPath(this IHttpContext context, IEnumerable&lt;string&gt; wildcardPaths)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2087,7 +2087,7 @@ match.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -2170,13 +2170,13 @@ match.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_RequestWildcardUrlParams_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestWildcardUrlParams*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestWildcardUrlParams_Unosquare_Net_HttpListenerContext_System_String_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestWildcardUrlParams(Unosquare.Net.HttpListenerContext,System.String)">RequestWildcardUrlParams(HttpListenerContext, String)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestWildcardUrlParams_Unosquare_Labs_EmbedIO_IHttpContext_System_String_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestWildcardUrlParams(Unosquare.Labs.EmbedIO.IHttpContext,System.String)">RequestWildcardUrlParams(IHttpContext, String)</h4>
   <div class="markdown level1 summary"><p>Requests the wildcard URL parameters.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string[] RequestWildcardUrlParams(this HttpListenerContext context, string basePath)</code></pre>
+    <pre><code class="lang-csharp hljs">public static string[] RequestWildcardUrlParams(this IHttpContext context, string basePath)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2189,7 +2189,7 @@ match.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -2221,13 +2221,13 @@ match.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_StringResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_StringResponseAsync_Unosquare_Net_HttpListenerContext_System_String_System_String_System_Threading_CancellationToken_System_Text_Encoding_" data-uid="Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Net.HttpListenerContext,System.String,System.String,System.Threading.CancellationToken,System.Text.Encoding)">StringResponseAsync(HttpListenerContext, String, String, CancellationToken, Encoding)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_StringResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_String_System_Threading_CancellationToken_System_Text_Encoding_" data-uid="Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.String,System.Threading.CancellationToken,System.Text.Encoding)">StringResponseAsync(IHttpContext, String, String, CancellationToken, Encoding)</h4>
   <div class="markdown level1 summary"><p>Outputs async a string response given a string.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; StringResponseAsync(this HttpListenerContext context, string content, string contentType = &quot;application/json&quot;, CancellationToken cancellationToken = default(CancellationToken), Encoding encoding = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; StringResponseAsync(this IHttpContext context, string content, string contentType = &quot;application/json&quot;, CancellationToken cancellationToken = default(CancellationToken), Encoding encoding = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2240,7 +2240,7 @@ match.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
