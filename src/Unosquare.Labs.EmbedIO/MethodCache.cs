@@ -98,7 +98,7 @@
                 var param = MethodCache.AdditionalParameters[i];
 
                 // convert and add to arguments, if null use default value
-                arguments[i + 2] = parameters.ContainsKey(param.Info.Name)
+                arguments[i + 1] = parameters.ContainsKey(param.Info.Name)
                     ? param.GetValue((string) parameters[param.Info.Name])
                     : param.Default;
             }

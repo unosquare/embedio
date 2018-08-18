@@ -28,7 +28,7 @@
         private const string RegexRouteReplace = "([^//]*)";
         private const string WildcardRouteReplace = "(.*)";
 
-        private static readonly byte[] LastByte = {0x00};
+        private static readonly byte[] LastByte = { 0x00 };
 
         private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -46,7 +46,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>A session object for the given server context.</returns>
-        public static SessionInfo GetSession(this IHttpContext context) 
+        public static SessionInfo GetSession(this IHttpContext context)
             => context.WebServer.SessionModule?.GetSession(context);
 
         /// <summary>
@@ -57,7 +57,7 @@
         {
             context.WebServer.SessionModule?.DeleteSession(context);
         }
-        
+
         /// <summary>
         /// Deletes the given session object.
         /// </summary>
@@ -67,7 +67,7 @@
         {
             context.WebServer.SessionModule?.DeleteSession(session);
         }
-        
+
         /// <summary>
         /// Gets the session object associated to the current context.
         /// Returns null if the LocalSessionWebModule has not been loaded.
@@ -221,7 +221,7 @@
             var match = new Regex(basePath.Replace("*", WildcardRouteReplace)).Match(requestPath);
 
             return match.Success
-                ? match.Groups[1].Value.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries)
+                ? match.Groups[1].Value.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries)
                 : null;
         }
 
@@ -231,7 +231,7 @@
         /// <param name="context">The context.</param>
         /// <param name="urlPattern">The url pattern. </param>
         /// <returns>The params from the request.</returns>
-        public static Dictionary<string,object> RequestRegexUrlParams(this WebSocketContext context, string urlPattern)
+        public static Dictionary<string, object> RequestRegexUrlParams(this WebSocketContext context, string urlPattern)
           => RequestRegexUrlParams(context.RequestUri.LocalPath, urlPattern);
 
         /// <summary>
@@ -261,7 +261,7 @@
             if (validateFunc == null) validateFunc = () => false;
             if (requestPath == basePath && !validateFunc()) return new Dictionary<string, object>();
 
-            var regex = new Regex(String.Concat("^",RouteParamRegex.Replace(basePath, RegexRouteReplace),"$"), RegexOptions.IgnoreCase);
+            var regex = new Regex(string.Concat("^", RouteParamRegex.Replace(basePath, RegexRouteReplace), "$"), RegexOptions.IgnoreCase);
             var match = regex.Match(requestPath);
 
             var pathParts = basePath.Split('/');
@@ -280,7 +280,7 @@
                 {
                     return pathParts
                         .Where(x => x.StartsWith("{"))
-                        .ToDictionary(x => x.CleanParamId(), x => (object) null);
+                        .ToDictionary(x => x.CleanParamId(), x => (object)null);
                 }
             }
             else
@@ -289,7 +289,7 @@
 
                 return pathParts
                     .Where(x => x.StartsWith("{"))
-                    .ToDictionary(x => x.CleanParamId(), x => (object) match.Groups[i++].Value);
+                    .ToDictionary(x => x.CleanParamId(), x => (object)match.Groups[i++].Value);
             }
 
             return null;
@@ -395,7 +395,7 @@
             System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.OK,
             CancellationToken cancellationToken = default)
         {
-            context.Response.StatusCode = (int) statusCode;
+            context.Response.StatusCode = (int)statusCode;
             return context.StringResponseAsync(htmlContent, Responses.HtmlContentType, cancellationToken);
         }
 
@@ -583,7 +583,7 @@
         /// <param name="mode">The mode.</param>
         /// <returns>Block of bytes of compressed stream. </returns>
         public static byte[] Compress(
-            this byte[] buffer, 
+            this byte[] buffer,
             CompressionMethod method = CompressionMethod.Gzip,
             CompressionMode mode = CompressionMode.Compress)
         {

@@ -45,7 +45,7 @@
                 {
                     case RoutingStrategy.Wildcard:
                         path = context.RequestWilcardPath(_serverMap.Keys
-                        .Where(k => k.Contains("/" + ModuleMap.AnyPath))
+                        .Where(k => k.Contains(ModuleMap.AnyPathRoute))
                         .Select(s => s.ToLowerInvariant()));
                         break;
                     case RoutingStrategy.Regex:

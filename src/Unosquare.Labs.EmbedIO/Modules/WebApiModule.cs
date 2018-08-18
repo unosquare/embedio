@@ -244,14 +244,15 @@
             {
                 case RoutingStrategy.Wildcard:
                     path = context.RequestWilcardPath(_delegateMap.Keys
-                        .Where(k => k.Contains("/" + ModuleMap.AnyPath))
+                        .Where(k => k.Contains(ModuleMap.AnyPathRoute))
                         .Select(s => s.ToLowerInvariant()));
                     break;
                 case RoutingStrategy.Regex:
                     path = context.Request.Url.LocalPath;
                     foreach (var route in _delegateMap.Keys)
                     {
-                        if (path.RequestRegexUrlParams(route) != null) return true;
+                        if (path.RequestRegexUrlParams(route) != null) 
+                            return true;
                     }
 
                     return false;
