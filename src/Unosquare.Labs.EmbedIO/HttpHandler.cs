@@ -144,7 +144,7 @@
         private Map GetHandlerFromWildcardPath(IWebModule module)
         {
             var path = _context.RequestWilcardPath(module.Handlers
-                .Where(k => k.Path.Contains("/" + ModuleMap.AnyPath))
+                .Where(k => k.Path.Contains(ModuleMap.AnyPathRoute))
                 .Select(s => s.Path.ToLowerInvariant()));
 
             return module.Handlers

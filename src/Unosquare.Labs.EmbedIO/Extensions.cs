@@ -136,7 +136,7 @@
         /// <returns>HTTP verb result of the conversion of this context.</returns>
         public static HttpVerbs RequestVerb(this IHttpContext context)
         {
-            Enum.TryParse(context.Request.HttpMethod.ToLowerInvariant().Trim(), true, out HttpVerbs verb);
+            Enum.TryParse(context.Request.HttpMethod.Trim(), true, out HttpVerbs verb);
             return verb;
         }
 
