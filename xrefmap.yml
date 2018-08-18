@@ -857,6 +857,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.IHttpRequest.ContentEncoding
   nameWithType: IHttpRequest.ContentEncoding
+- uid: Unosquare.Labs.EmbedIO.IHttpRequest.ContentLength64
+  name: ContentLength64
+  href: api/Unosquare.Labs.EmbedIO.IHttpRequest.html#Unosquare_Labs_EmbedIO_IHttpRequest_ContentLength64
+  commentId: P:Unosquare.Labs.EmbedIO.IHttpRequest.ContentLength64
+  fullName: Unosquare.Labs.EmbedIO.IHttpRequest.ContentLength64
+  nameWithType: IHttpRequest.ContentLength64
+- uid: Unosquare.Labs.EmbedIO.IHttpRequest.ContentLength64*
+  name: ContentLength64
+  href: api/Unosquare.Labs.EmbedIO.IHttpRequest.html#Unosquare_Labs_EmbedIO_IHttpRequest_ContentLength64_
+  commentId: Overload:Unosquare.Labs.EmbedIO.IHttpRequest.ContentLength64
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.IHttpRequest.ContentLength64
+  nameWithType: IHttpRequest.ContentLength64
 - uid: Unosquare.Labs.EmbedIO.IHttpRequest.ContentType
   name: ContentType
   href: api/Unosquare.Labs.EmbedIO.IHttpRequest.html#Unosquare_Labs_EmbedIO_IHttpRequest_ContentType
@@ -935,6 +948,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.IHttpRequest.InputStream
   nameWithType: IHttpRequest.InputStream
+- uid: Unosquare.Labs.EmbedIO.IHttpRequest.IsAuthenticated
+  name: IsAuthenticated
+  href: api/Unosquare.Labs.EmbedIO.IHttpRequest.html#Unosquare_Labs_EmbedIO_IHttpRequest_IsAuthenticated
+  commentId: P:Unosquare.Labs.EmbedIO.IHttpRequest.IsAuthenticated
+  fullName: Unosquare.Labs.EmbedIO.IHttpRequest.IsAuthenticated
+  nameWithType: IHttpRequest.IsAuthenticated
+- uid: Unosquare.Labs.EmbedIO.IHttpRequest.IsAuthenticated*
+  name: IsAuthenticated
+  href: api/Unosquare.Labs.EmbedIO.IHttpRequest.html#Unosquare_Labs_EmbedIO_IHttpRequest_IsAuthenticated_
+  commentId: Overload:Unosquare.Labs.EmbedIO.IHttpRequest.IsAuthenticated
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.IHttpRequest.IsAuthenticated
+  nameWithType: IHttpRequest.IsAuthenticated
 - uid: Unosquare.Labs.EmbedIO.IHttpRequest.IsLocal
   name: IsLocal
   href: api/Unosquare.Labs.EmbedIO.IHttpRequest.html#Unosquare_Labs_EmbedIO_IHttpRequest_IsLocal
@@ -1052,6 +1078,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.IHttpRequest.Url
   nameWithType: IHttpRequest.Url
+- uid: Unosquare.Labs.EmbedIO.IHttpRequest.UrlReferrer
+  name: UrlReferrer
+  href: api/Unosquare.Labs.EmbedIO.IHttpRequest.html#Unosquare_Labs_EmbedIO_IHttpRequest_UrlReferrer
+  commentId: P:Unosquare.Labs.EmbedIO.IHttpRequest.UrlReferrer
+  fullName: Unosquare.Labs.EmbedIO.IHttpRequest.UrlReferrer
+  nameWithType: IHttpRequest.UrlReferrer
+- uid: Unosquare.Labs.EmbedIO.IHttpRequest.UrlReferrer*
+  name: UrlReferrer
+  href: api/Unosquare.Labs.EmbedIO.IHttpRequest.html#Unosquare_Labs_EmbedIO_IHttpRequest_UrlReferrer_
+  commentId: Overload:Unosquare.Labs.EmbedIO.IHttpRequest.UrlReferrer
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.IHttpRequest.UrlReferrer
+  nameWithType: IHttpRequest.UrlReferrer
 - uid: Unosquare.Labs.EmbedIO.IHttpRequest.UserAgent
   name: UserAgent
   href: api/Unosquare.Labs.EmbedIO.IHttpRequest.html#Unosquare_Labs_EmbedIO_IHttpRequest_UserAgent
@@ -1084,6 +1123,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.IHttpResponse.AddHeader
   nameWithType: IHttpResponse.AddHeader
+- uid: Unosquare.Labs.EmbedIO.IHttpResponse.ContentEncoding
+  name: ContentEncoding
+  href: api/Unosquare.Labs.EmbedIO.IHttpResponse.html#Unosquare_Labs_EmbedIO_IHttpResponse_ContentEncoding
+  commentId: P:Unosquare.Labs.EmbedIO.IHttpResponse.ContentEncoding
+  fullName: Unosquare.Labs.EmbedIO.IHttpResponse.ContentEncoding
+  nameWithType: IHttpResponse.ContentEncoding
+- uid: Unosquare.Labs.EmbedIO.IHttpResponse.ContentEncoding*
+  name: ContentEncoding
+  href: api/Unosquare.Labs.EmbedIO.IHttpResponse.html#Unosquare_Labs_EmbedIO_IHttpResponse_ContentEncoding_
+  commentId: Overload:Unosquare.Labs.EmbedIO.IHttpResponse.ContentEncoding
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.IHttpResponse.ContentEncoding
+  nameWithType: IHttpResponse.ContentEncoding
 - uid: Unosquare.Labs.EmbedIO.IHttpResponse.ContentLength64
   name: ContentLength64
   href: api/Unosquare.Labs.EmbedIO.IHttpResponse.html#Unosquare_Labs_EmbedIO_IHttpResponse_ContentLength64
@@ -1136,6 +1188,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.IHttpResponse.Headers
   nameWithType: IHttpResponse.Headers
+- uid: Unosquare.Labs.EmbedIO.IHttpResponse.KeepAlive
+  name: KeepAlive
+  href: api/Unosquare.Labs.EmbedIO.IHttpResponse.html#Unosquare_Labs_EmbedIO_IHttpResponse_KeepAlive
+  commentId: P:Unosquare.Labs.EmbedIO.IHttpResponse.KeepAlive
+  fullName: Unosquare.Labs.EmbedIO.IHttpResponse.KeepAlive
+  nameWithType: IHttpResponse.KeepAlive
+- uid: Unosquare.Labs.EmbedIO.IHttpResponse.KeepAlive*
+  name: KeepAlive
+  href: api/Unosquare.Labs.EmbedIO.IHttpResponse.html#Unosquare_Labs_EmbedIO_IHttpResponse_KeepAlive_
+  commentId: Overload:Unosquare.Labs.EmbedIO.IHttpResponse.KeepAlive
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.IHttpResponse.KeepAlive
+  nameWithType: IHttpResponse.KeepAlive
 - uid: Unosquare.Labs.EmbedIO.IHttpResponse.OutputStream
   name: OutputStream
   href: api/Unosquare.Labs.EmbedIO.IHttpResponse.html#Unosquare_Labs_EmbedIO_IHttpResponse_OutputStream
@@ -1149,6 +1214,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.IHttpResponse.OutputStream
   nameWithType: IHttpResponse.OutputStream
+- uid: Unosquare.Labs.EmbedIO.IHttpResponse.ProtocolVersion
+  name: ProtocolVersion
+  href: api/Unosquare.Labs.EmbedIO.IHttpResponse.html#Unosquare_Labs_EmbedIO_IHttpResponse_ProtocolVersion
+  commentId: P:Unosquare.Labs.EmbedIO.IHttpResponse.ProtocolVersion
+  fullName: Unosquare.Labs.EmbedIO.IHttpResponse.ProtocolVersion
+  nameWithType: IHttpResponse.ProtocolVersion
+- uid: Unosquare.Labs.EmbedIO.IHttpResponse.ProtocolVersion*
+  name: ProtocolVersion
+  href: api/Unosquare.Labs.EmbedIO.IHttpResponse.html#Unosquare_Labs_EmbedIO_IHttpResponse_ProtocolVersion_
+  commentId: Overload:Unosquare.Labs.EmbedIO.IHttpResponse.ProtocolVersion
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.IHttpResponse.ProtocolVersion
+  nameWithType: IHttpResponse.ProtocolVersion
 - uid: Unosquare.Labs.EmbedIO.IHttpResponse.SetCookie(System.Net.Cookie)
   name: SetCookie(Net.Cookie)
   href: api/Unosquare.Labs.EmbedIO.IHttpResponse.html#Unosquare_Labs_EmbedIO_IHttpResponse_SetCookie_System_Net_Cookie_
@@ -3914,32 +3992,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.HttpListenerRequest.RemoteEndPoint
   nameWithType: HttpListenerRequest.RemoteEndPoint
-- uid: Unosquare.Net.HttpListenerRequest.RequestTraceIdentifier
-  name: RequestTraceIdentifier
-  href: api/Unosquare.Net.HttpListenerRequest.html#Unosquare_Net_HttpListenerRequest_RequestTraceIdentifier
-  commentId: P:Unosquare.Net.HttpListenerRequest.RequestTraceIdentifier
-  fullName: Unosquare.Net.HttpListenerRequest.RequestTraceIdentifier
-  nameWithType: HttpListenerRequest.RequestTraceIdentifier
-- uid: Unosquare.Net.HttpListenerRequest.RequestTraceIdentifier*
-  name: RequestTraceIdentifier
-  href: api/Unosquare.Net.HttpListenerRequest.html#Unosquare_Net_HttpListenerRequest_RequestTraceIdentifier_
-  commentId: Overload:Unosquare.Net.HttpListenerRequest.RequestTraceIdentifier
-  isSpec: "True"
-  fullName: Unosquare.Net.HttpListenerRequest.RequestTraceIdentifier
-  nameWithType: HttpListenerRequest.RequestTraceIdentifier
-- uid: Unosquare.Net.HttpListenerRequest.ServiceName
-  name: ServiceName
-  href: api/Unosquare.Net.HttpListenerRequest.html#Unosquare_Net_HttpListenerRequest_ServiceName
-  commentId: P:Unosquare.Net.HttpListenerRequest.ServiceName
-  fullName: Unosquare.Net.HttpListenerRequest.ServiceName
-  nameWithType: HttpListenerRequest.ServiceName
-- uid: Unosquare.Net.HttpListenerRequest.ServiceName*
-  name: ServiceName
-  href: api/Unosquare.Net.HttpListenerRequest.html#Unosquare_Net_HttpListenerRequest_ServiceName_
-  commentId: Overload:Unosquare.Net.HttpListenerRequest.ServiceName
-  isSpec: "True"
-  fullName: Unosquare.Net.HttpListenerRequest.ServiceName
-  nameWithType: HttpListenerRequest.ServiceName
 - uid: Unosquare.Net.HttpListenerRequest.Url
   name: Url
   href: api/Unosquare.Net.HttpListenerRequest.html#Unosquare_Net_HttpListenerRequest_Url
@@ -4180,12 +4232,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.HttpListenerResponse.SendChunked
   nameWithType: HttpListenerResponse.SendChunked
-- uid: Unosquare.Net.HttpListenerResponse.SetCookie(System.Net.Cookie)
-  name: SetCookie(Net.Cookie)
-  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_SetCookie_System_Net_Cookie_
-  commentId: M:Unosquare.Net.HttpListenerResponse.SetCookie(System.Net.Cookie)
-  fullName: Unosquare.Net.HttpListenerResponse.SetCookie(System.Net.Cookie)
-  nameWithType: HttpListenerResponse.SetCookie(Net.Cookie)
+- uid: Unosquare.Net.HttpListenerResponse.SetCookie(Cookie)
+  name: SetCookie(Cookie)
+  href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_SetCookie_Cookie_
+  commentId: M:Unosquare.Net.HttpListenerResponse.SetCookie(Cookie)
+  fullName: Unosquare.Net.HttpListenerResponse.SetCookie(Cookie)
+  nameWithType: HttpListenerResponse.SetCookie(Cookie)
 - uid: Unosquare.Net.HttpListenerResponse.SetCookie*
   name: SetCookie
   href: api/Unosquare.Net.HttpListenerResponse.html#Unosquare_Net_HttpListenerResponse_SetCookie_

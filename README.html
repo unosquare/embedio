@@ -270,7 +270,7 @@ server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;()
 <pre><code class="lang-csharp">public class PeopleController : WebApiController
 {
     [WebApiHandler(HttpVerbs.Get, &quot;/api/people/{id}&quot;)]
-    public bool GetPeople(WebServer server, HttpListenerContext context, int id)
+    public bool GetPeople(IHttpContext context, int id)
     {
         try
         {
@@ -286,13 +286,13 @@ server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;()
     }
 
     // You can override the default headers and add custom headers to each API Response.
-    public override void SetDefaultHeaders(HttpListenerContext context) =&gt; context.NoCache();
+    public override void SetDefaultHeaders(IHttpContext context) =&gt; context.NoCache();
 }
 </code></pre><p><em>Or if you want to use the Wildcard strategy (which is the default):</em></p>
 <pre><code class="lang-csharp">public class PeopleController : WebApiController
 {
     [WebApiHandler(HttpVerbs.Get, &quot;/api/people/*&quot;)]
-    public bool GetPeople(WebServer server, HttpListenerContext context)
+    public bool GetPeople(IHttpContext context)
     {
         try
         {
