@@ -29,58 +29,58 @@ namespace Unosquare.Labs.EmbedIO
 
         /// <inheritdoc />
         public Version ProtocolVersion => _request.ProtocolVersion;
-        
+
         /// <inheritdoc />
         public bool KeepAlive => _request.KeepAlive;
 
         /// <inheritdoc />
         public CookieCollection Cookies => _request.Cookies;
-        
+
         /// <inheritdoc />
         public string RawUrl => _request.RawUrl;
-        
+
         /// <inheritdoc />
         public NameValueCollection QueryString => _request.QueryString;
-        
+
         /// <inheritdoc />
         public string HttpMethod => _request.HttpMethod;
-        
+
         /// <inheritdoc />
         public Uri Url => _request.Url;
-        
+
         /// <inheritdoc />
         public bool HasEntityBody => _request.HasEntityBody;
-        
+
         /// <inheritdoc />
         public Stream InputStream => _request.InputStream;
 
         /// <inheritdoc />
         public Encoding ContentEncoding => _request.ContentEncoding;
-        
+
         /// <inheritdoc />
         public IPEndPoint RemoteEndPoint => _request.RemoteEndPoint;
-        
+
         /// <inheritdoc />
         public bool IsLocal => _request.IsLocal;
-        
+
         /// <inheritdoc />
-        public string UserAgent { get; }
-        
+        public string UserAgent => _request.UserAgent;
+
         /// <inheritdoc />
-        public bool IsWebSocketRequest { get; set; }
-        
+        public bool IsWebSocketRequest => _request.IsWebSocketRequest;
+
         /// <inheritdoc />
-        public IPEndPoint LocalEndPoint { get; }
-        
+        public IPEndPoint LocalEndPoint => _request.LocalEndPoint;
+
         /// <inheritdoc />
         public string ContentType => _request.ContentType;
 
         /// <inheritdoc />
         public long ContentLength64 => _request.ContentLength64;
-        
+
         /// <inheritdoc />
         public bool IsAuthenticated => _request.IsAuthenticated;
-        
+
         /// <inheritdoc />
         public Uri UrlReferrer => _request.UrlReferrer;
     }
