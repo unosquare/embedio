@@ -12,26 +12,26 @@
         public const string RelativePath = "api/";
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "empty")]
-        public bool GetEmpty(IHttpContext context)
+        public bool GetEmpty()
         {
-            return context.JsonResponse(new {Ok = true});
+            return this.JsonResponse(new {Ok = true});
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regex")]
-        public bool GetPeople(IHttpContext context)
+        public bool GetPeople()
         {
             try
             {
-                return context.JsonResponse(PeopleRepository.Database);
+                return this.JsonResponse(PeopleRepository.Database);
             }
             catch (Exception ex)
             {
-                return context.JsonExceptionResponse(ex);
+                return this.JsonExceptionResponse(ex);
             }
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regex/{id}")]
-        public bool GetPerson(IHttpContext context, int id)
+        public bool GetPerson(, int id)
         {
             try
             {
@@ -39,44 +39,44 @@
 
                 if (item != null)
                 {
-                    return context.JsonResponse(item);
+                    return this.JsonResponse(item);
                 }
 
                 throw new KeyNotFoundException($"Key Not Found: {id}");
             }
             catch (Exception ex)
             {
-                return context.JsonExceptionResponse(ex);
+                return this.JsonExceptionResponse(ex);
             }
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexopt/{id?}")]
-        public bool GetPerson(IHttpContext context, int? id)
+        public bool GetPerson(, int? id)
         {
             try
             {
                 if (id.HasValue == false)
                 {
-                    return context.JsonResponse(PeopleRepository.Database);
+                    return this.JsonResponse(PeopleRepository.Database);
                 }
 
                 var item = PeopleRepository.Database.FirstOrDefault(p => p.Key == id);
 
                 if (item != null)
                 {
-                    return context.JsonResponse(item);
+                    return this.JsonResponse(item);
                 }
 
                 throw new KeyNotFoundException($"Key Not Found: {id}");
             }
             catch (Exception ex)
             {
-                return context.JsonExceptionResponse(ex);
+                return this.JsonExceptionResponse(ex);
             }
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexAsync/{id}")]
-        public async Task<bool> GetPersonAsync(IHttpContext context, int id)
+        public async Task<bool> GetPersonAsync(, int id)
         {
             try
             {
@@ -86,19 +86,19 @@
 
                 if (item != null)
                 {
-                    return await context.JsonResponseAsync(item);
+                    return await this.JsonResponseAsync(item);
                 }
 
                 throw new KeyNotFoundException($"Key Not Found: {id}");
             }
             catch (Exception ex)
             {
-                return await context.JsonExceptionResponseAsync(ex);
+                return await this.JsonExceptionResponseAsync(ex);
             }
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexdate/{date}")]
-        public bool GetPerson(IHttpContext context, DateTime date)
+        public bool GetPerson(, DateTime date)
         {
             try
             {
@@ -106,19 +106,19 @@
 
                 if (item != null)
                 {
-                    return context.JsonResponse(item);
+                    return this.JsonResponse(item);
                 }
 
                 throw new KeyNotFoundException($"Key Not Found: {date}");
             }
             catch (Exception ex)
             {
-                return context.JsonExceptionResponse(ex);
+                return this.JsonExceptionResponse(ex);
             }
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regextwo/{skill}/{age}")]
-        public bool GetPerson(IHttpContext context, string skill, int age)
+        public bool GetPerson(, string skill, int age)
         {
             try
             {
@@ -127,14 +127,14 @@
 
                 if (item != null)
                 {
-                    return context.JsonResponse(item);
+                    return this.JsonResponse(item);
                 }
 
                 throw new KeyNotFoundException($"Key Not Found: {skill}-{age}");
             }
             catch (Exception ex)
             {
-                return context.JsonExceptionResponse(ex);
+                return this.JsonExceptionResponse(ex);
             }
         }
     }

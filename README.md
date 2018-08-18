@@ -199,23 +199,23 @@ server.Module<WebApiModule>().RegisterController<PeopleController>();
 public class PeopleController : WebApiController
 {
     [WebApiHandler(HttpVerbs.Get, "/api/people/{id}")]
-    public bool GetPeople(IHttpContext context, int id)
+    public bool GetPeople(int id)
     {
         try
         {
             if (People.Any(p => p.Key == id))
             {
-                return context.JsonResponse(People.FirstOrDefault(p => p.Key == id));
+                return this.JsonResponse(People.FirstOrDefault(p => p.Key == id));
             }
         }
         catch (Exception ex)
         {
-            return context.JsonExceptionResponse(ex);
+            return this.JsonExceptionResponse(ex);
         }
     }
     
     // You can override the default headers and add custom headers to each API Response.
-    public override void SetDefaultHeaders(IHttpContext context) => context.NoCache();
+    public override void SetDefaultHeaders() => this.NoCache();
 }
 ```
 
@@ -225,25 +225,25 @@ public class PeopleController : WebApiController
 public class PeopleController : WebApiController
 {
     [WebApiHandler(HttpVerbs.Get, "/api/people/*")]
-    public bool GetPeople(IHttpContext context)
+    public bool GetPeople()
     {
         try
         {
-            var lastSegment = context.Request.Url.Segments.Last();
+            var lastSegment = this.Request.Url.Segments.Last();
             if (lastSegment.EndsWith("/"))
-                return context.JsonResponse(People);
+                return this.JsonResponse(People);
 
             int key = 0;
             if (int.TryParse(lastSegment, out key) && People.Any(p => p.Key == key))
             {
-                return context.JsonResponse(People.FirstOrDefault(p => p.Key == key));
+                return this.JsonResponse(People.FirstOrDefault(p => p.Key == key));
             }
 
             throw new KeyNotFoundException("Key Not Found: " + lastSegment);
         }
         catch (Exception ex)
         {
-            return context.JsonExceptionResponse(ex);
+            return this.JsonExceptionResponse(ex);
         }
     }
 }

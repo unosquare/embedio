@@ -29,24 +29,23 @@
         /// 
         /// Notice the wildcard is important
         /// </summary>
-        /// <param name="context">The context.</param>
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException">Key Not Found:  + lastSegment</exception>
         [WebApiHandler(HttpVerbs.Get, RelativePath + "people/*")]
-        public bool GetPeople(IHttpContext context)
+        public bool GetPeople()
         {
             try
             {
                 // read the last segment
-                var lastSegment = context.Request.Url.Segments.Last();
+                var lastSegment = Request.Url.Segments.Last();
 
                 // if it ends with a / means we need to list people
                 if (lastSegment.EndsWith("/"))
-                    return context.JsonResponse(_dbContext.People.SelectAll());
+                    return this.JsonResponse(_dbContext.People.SelectAll());
 
                 // if it ends with "first" means we need to show first record of people
                 if (lastSegment.EndsWith("first"))
-                    return context.JsonResponse(_dbContext.People.SelectAll().First());
+                    return this.JsonResponse(_dbContext.People.SelectAll().First());
 
                 // otherwise, we need to parse the key and respond with the entity accordingly
                 if (!int.TryParse(lastSegment, out var key))
@@ -55,61 +54,53 @@
                 var single = _dbContext.People.Single(key);
 
                 if (single != null)
-                    return context.JsonResponse(single);
+                    return this.JsonResponse(single);
 
                 throw new KeyNotFoundException("Key Not Found: " + lastSegment);
             }
             catch (Exception ex)
             {
-                return context.JsonExceptionResponse(ex);
+                return this.JsonExceptionResponse(ex);
             }
         }
 
         /// <summary>
         /// Posts the people Tubular model.
-        /// This will respond to 
-        ///     GET http://localhost:9696/api/people/
-        ///     GET http://localhost:9696/api/people/1
-        ///     GET http://localhost:9696/api/people/{n}
-        /// 
-        /// Notice the wildcard is important
         /// </summary>
-        /// <param name="context">The context.</param>
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException">Key Not Found:  + lastSegment</exception>
         [WebApiHandler(HttpVerbs.Post, RelativePath + "people/*")]
-        public async Task<bool> PostPeople(IHttpContext context)
+        public async Task<bool> PostPeople()
         {
             try
             {
-                var model = context.ParseJson<GridDataRequest>();
+                var model = this.ParseJson<GridDataRequest>();
                 var data = await _dbContext.People.SelectAllAsync();
 
-                return context.JsonResponse(model.CreateGridDataResponse(data.AsQueryable()));
+                return this.JsonResponse(model.CreateGridDataResponse(data.AsQueryable()));
             }
             catch (Exception ex)
             {
-                return context.JsonExceptionResponse(ex);
+                return this.JsonExceptionResponse(ex);
             }
         }
 
         /// <summary>
         /// Echoes the request form data in JSON format
         /// </summary>
-        /// <param name="context">The context.</param>
         /// <returns></returns>
         [WebApiHandler(HttpVerbs.Post, RelativePath + "echo/*")]
-        public bool Echo(IHttpContext context)
+        public bool Echo()
         {
             try
             {
-                var content = context.RequestFormDataDictionary();
+                var content = this.RequestFormDataDictionary();
 
-                return context.JsonResponse(content);
+                return this.JsonResponse(content);
             }
             catch (Exception ex)
             {
-                return context.JsonExceptionResponse(ex);
+                return this.JsonExceptionResponse(ex);
             }
         }
     }

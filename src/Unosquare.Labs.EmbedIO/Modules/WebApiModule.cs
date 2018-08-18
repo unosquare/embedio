@@ -268,6 +268,13 @@
     /// </summary>
     public abstract class WebApiController : IHttpContext
     {
+        protected WebApiController(IHttpContext context)
+        {
+            Request = context.Request;
+            Response = context.Response;
+            WebServer = context.WebServer;
+        }
+
         /// <inheritdoc />
         public IHttpRequest Request { get; internal set; }
 
