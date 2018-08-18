@@ -141,7 +141,7 @@
                           || m.ReturnType == protoAsyncDelegate.GetMethodInfo().ReturnType)
                          && m.GetParameters()
                              .Select(pi => pi.ParameterType)
-                             .Take(2)
+                             .Take(1)
                              .SequenceEqual(protoDelegate.GetMethodInfo().GetParameters()
                                  .Select(pi => pi.ParameterType)));
 

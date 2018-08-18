@@ -19,7 +19,7 @@
                 .GetMethod(nameof(WebApiController.SetDefaultHeaders));
             IsTask = methodInfo.ReturnType == typeof(Task<bool>);
             AdditionalParameters = methodInfo.GetParameters()
-                .Skip(2)
+                .Skip(1)
                 .Select(x => new AddtionalParameterInfo(x))
                 .ToList();
 
