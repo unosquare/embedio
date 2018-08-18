@@ -1,5 +1,4 @@
-﻿#if !MONO
-namespace Unosquare.Labs.EmbedIO.Samples
+﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
     using LiteLib;
     using Swan;
@@ -21,4 +20,3 @@ namespace Unosquare.Labs.EmbedIO.Samples
         public string PhotoUrl => $"http://www.gravatar.com/avatar/{EmailAddress.ComputeMD5().ToUpperHex()}.png?s=100";
     }
 }
-#endif

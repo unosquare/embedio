@@ -93,20 +93,7 @@ namespace Unosquare.Net
         }
 
         internal static string CheckSendParameter(byte[] data) => data == null ? "'data' is null." : null;
-
-        internal static string CheckSendParameter(string data) => data == null ? "'data' is null." : null;
-
-        internal static string CheckSendParameters(Stream stream, int length)
-        {
-            return stream == null
-                ? "'stream' is null."
-                : !stream.CanRead
-                    ? "'stream' cannot be read."
-                    : length < 1
-                        ? "'length' is less than 1."
-                        : null;
-        }
-
+        
         internal bool CheckHandshakeResponse(HttpResponse response, out string message)
         {
             message = null;

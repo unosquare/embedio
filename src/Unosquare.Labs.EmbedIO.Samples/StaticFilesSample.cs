@@ -22,7 +22,7 @@
                 var assemblyPath = Path.GetDirectoryName(typeof(Program).GetTypeInfo().Assembly.Location);
 
                 // This lets you edit the files without restarting the server.
-#if DEBUG && !MONO
+#if DEBUG
                 return Path.Combine(Directory.GetParent(assemblyPath).Parent.Parent.FullName, "html");
 #else
                 // This is when you have deployed the server.

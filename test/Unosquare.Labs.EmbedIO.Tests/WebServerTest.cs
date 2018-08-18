@@ -109,7 +109,7 @@
                 Assert.AreEqual(webModule.Handlers.Last().Verb, HttpVerbs.Any, "Default Verb is correct");
             }
 
-#if NETCOREAPP2_0
+#if NETCOREAPP2_1
             [Test]
             public async Task Redirect()
             {
@@ -171,7 +171,7 @@
                 {
                     Path = DefaultPath,
                     ResponseHandler = (ctx, ws) => Task.FromResult(false),
-                    Verb = HttpVerbs.Any
+                    Verb = HttpVerbs.Any,
                 };
 
                 Assert.AreEqual(map.Path, DefaultPath, "Default Path is correct");
