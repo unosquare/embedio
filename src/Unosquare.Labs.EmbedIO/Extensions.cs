@@ -45,50 +45,29 @@
         /// Returns null if the LocalSessionWebModule has not been loaded.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="server">The server.</param>
         /// <returns>A session object for the given server context.</returns>
-        public static SessionInfo GetSession(this IHttpContext context, WebServer server) 
-            => server.GetSession(context);
+        public static SessionInfo GetSession(this IHttpContext context) 
+            => context.WebServer.SessionModule?.GetSession(context);
 
         /// <summary>
         /// Deletes the session object associated to the current context.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="server">The server.</param>
-        public static void DeleteSession(this IHttpContext context, WebServer server)
+        public static void DeleteSession(this IHttpContext context)
         {
-            server.DeleteSession(context);
+            context.WebServer.SessionModule?.DeleteSession(context);
         }
-
-        /// <summary>
-        /// Deletes the session object associated to the current context.
-        /// </summary>
-        /// <param name="server">The server.</param>
-        /// <param name="context">The context.</param>
-        public static void DeleteSession(this WebServer server, IHttpContext context)
-        {
-            server.SessionModule?.DeleteSession(context);
-        }
-
+        
         /// <summary>
         /// Deletes the given session object.
         /// </summary>
-        /// <param name="server">The server.</param>
-        /// <param name="session">The session info.</param>
-        public static void DeleteSession(this WebServer server, SessionInfo session)
-        {
-            server.SessionModule?.DeleteSession(session);
-        }
-
-        /// <summary>
-        /// Gets the session object associated to the current context.
-        /// Returns null if the LocalSessionWebModule has not been loaded.
-        /// </summary>
-        /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
-        /// <returns>A session info for the given server context.</returns>
-        public static SessionInfo GetSession(this WebServer server, IHttpContext context) => server.SessionModule?.GetSession(context);
-
+        /// <param name="session">The session info.</param>
+        public static void DeleteSession(this IHttpContext context, SessionInfo session)
+        {
+            context.WebServer.SessionModule?.DeleteSession(session);
+        }
+        
         /// <summary>
         /// Gets the session object associated to the current context.
         /// Returns null if the LocalSessionWebModule has not been loaded.

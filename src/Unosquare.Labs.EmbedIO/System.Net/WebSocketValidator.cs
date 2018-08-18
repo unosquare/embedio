@@ -2,7 +2,6 @@
 namespace Unosquare.Net
 {
     using System;
-    using System.IO;
     using System.Linq;
     using System.Text;
     using Labs.EmbedIO.Constants;
@@ -31,20 +30,7 @@ namespace Unosquare.Net
                 ? "This operation isn't available in: " + state.ToString().ToLower()
                 : null;
         }
-
-        internal static string CheckCloseParameters(CloseStatusCode code, string reason, bool client)
-        {
-            return code == CloseStatusCode.NoStatus
-                ? (!string.IsNullOrEmpty(reason) ? "NoStatus cannot have a reason." : null)
-                : code == CloseStatusCode.MandatoryExtension && !client
-                    ? "MandatoryExtension cannot be used by a server."
-                    : code == CloseStatusCode.ServerError && client
-                        ? "ServerError cannot be used by a client."
-                        : !string.IsNullOrEmpty(reason) && Encoding.UTF8.GetBytes(reason).Length > 123
-                            ? "A reason has greater than the allowable max size."
-                            : null;
-        }
-
+        
         internal static bool CheckParametersForClose(CloseStatusCode code, string reason, bool client, out string message)
         {
             message = null;

@@ -14,7 +14,7 @@
         public const string CookieName = "MyCookie";
 
         [WebApiHandler(HttpVerbs.Get, "/getcookie")]
-        public bool GetCookieC(WebServer server, IHttpContext context)
+        public bool GetCookieC(IHttpContext context)
         {
             var cookie = new System.Net.Cookie(CookieName, CookieName);
             context.Response.Cookies.Add(cookie);
@@ -23,31 +23,31 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/deletesession")]
-        public bool DeleteSessionC(WebServer server, IHttpContext context)
+        public bool DeleteSessionC(IHttpContext context)
         {
-            server.DeleteSession(context);
+            context.DeleteSession();
 
             return context.JsonResponse("Deleted");
         }
 
         [WebApiHandler(HttpVerbs.Get, "/putdata")]
-        public bool PutDataSession(WebServer server, IHttpContext context)
+        public bool PutDataSession(IHttpContext context)
         {
-            server.GetSession(context).Data.TryAdd("sessionData", MyData);
+            context.GetSession()?.Data.TryAdd("sessionData", MyData);
 
-            return context.JsonResponse(server.GetSession(context).Data["sessionData"].ToString());
+            return context.JsonResponse(context.GetSession().Data["sessionData"].ToString());
         }
 
         [WebApiHandler(HttpVerbs.Get, "/getdata")]
-        public bool GetDataSession(WebServer server, IHttpContext context)
+        public bool GetDataSession(IHttpContext context)
         {
-            return context.JsonResponse(server.GetSession(context).Data.TryGetValue("sessionData", out var data)
+            return context.JsonResponse(context.GetSession().Data.TryGetValue("sessionData", out var data)
                 ? data.ToString()
                 : string.Empty);
         }
 
         [WebApiHandler(HttpVerbs.Get, "/geterror")]
-        public bool GetError(WebServer server, IHttpContext context)
+        public bool GetError(IHttpContext context)
         {
             return false;
         }
