@@ -3649,19 +3649,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.HttpListenerContext.Request
   nameWithType: HttpListenerContext.Request
-- uid: Unosquare.Net.HttpListenerContext.RequestHeader(System.String)
-  name: RequestHeader(String)
-  href: api/Unosquare.Net.HttpListenerContext.html#Unosquare_Net_HttpListenerContext_RequestHeader_System_String_
-  commentId: M:Unosquare.Net.HttpListenerContext.RequestHeader(System.String)
-  fullName: Unosquare.Net.HttpListenerContext.RequestHeader(System.String)
-  nameWithType: HttpListenerContext.RequestHeader(String)
-- uid: Unosquare.Net.HttpListenerContext.RequestHeader*
-  name: RequestHeader
-  href: api/Unosquare.Net.HttpListenerContext.html#Unosquare_Net_HttpListenerContext_RequestHeader_
-  commentId: Overload:Unosquare.Net.HttpListenerContext.RequestHeader
-  isSpec: "True"
-  fullName: Unosquare.Net.HttpListenerContext.RequestHeader
-  nameWithType: HttpListenerContext.RequestHeader
 - uid: Unosquare.Net.HttpListenerContext.Response
   name: Response
   href: api/Unosquare.Net.HttpListenerContext.html#Unosquare_Net_HttpListenerContext_Response
