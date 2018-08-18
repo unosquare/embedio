@@ -199,7 +199,7 @@ server.Module<WebApiModule>().RegisterController<PeopleController>();
 public class PeopleController : WebApiController
 {
     [WebApiHandler(HttpVerbs.Get, "/api/people/{id}")]
-    public bool GetPeople(WebServer server, HttpListenerContext context, int id)
+    public bool GetPeople(IHttpContext context, int id)
     {
         try
         {
@@ -215,7 +215,7 @@ public class PeopleController : WebApiController
     }
     
     // You can override the default headers and add custom headers to each API Response.
-    public override void SetDefaultHeaders(HttpListenerContext context) => context.NoCache();
+    public override void SetDefaultHeaders(IHttpContext context) => context.NoCache();
 }
 ```
 
@@ -225,7 +225,7 @@ public class PeopleController : WebApiController
 public class PeopleController : WebApiController
 {
     [WebApiHandler(HttpVerbs.Get, "/api/people/*")]
-    public bool GetPeople(WebServer server, HttpListenerContext context)
+    public bool GetPeople(IHttpContext context)
     {
         try
         {
