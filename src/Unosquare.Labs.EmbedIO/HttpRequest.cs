@@ -8,7 +8,7 @@ namespace Unosquare.Labs.EmbedIO
     using System.IO;
 
     /// <summary>
-    /// Represents a wrapper for HttpListenerContext.Request
+    /// Represents a wrapper for HttpListenerContext.Request.
     /// </summary>
     /// <seealso cref="Unosquare.Labs.EmbedIO.IHttpRequest" />
     public class HttpRequest : IHttpRequest

@@ -7,7 +7,7 @@ namespace Unosquare.Labs.EmbedIO
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Represents a wrapper aroun a regular HttpListenerContext.
+    /// Represents a wrapper around a regular HttpListenerContext.
     /// </summary>
     /// <seealso cref="Unosquare.Labs.EmbedIO.IHttpContext" />
     public class HttpContext : IHttpContext

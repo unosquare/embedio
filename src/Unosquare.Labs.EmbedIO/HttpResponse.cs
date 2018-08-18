@@ -4,31 +4,58 @@ namespace Unosquare.Labs.EmbedIO
     using System.IO;
     using System.Net;
 
+    /// <summary>
+    /// Represents a wrapper for HttpListenerContext.Response.
+    /// </summary>
+    /// <seealso cref="Unosquare.Labs.EmbedIO.IHttpResponse" />
     public class HttpResponse : IHttpResponse
     {
-        private readonly HttpListenerContext _context;
+        private readonly HttpListenerResponse _response;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HttpResponse"/> class.
+        /// </summary>
+        /// <param name="context">The context.</param>
         public HttpResponse(HttpListenerContext context)
         {
-            _context = context;
+            _response = context.Response;
         }
 
-        public WebHeaderCollection Headers { get; }
-        public int StatusCode { get; set; }
-        public long ContentLength64 { get; set; }
-        public string ContentType { get; set; }
-        public Stream OutputStream { get; }
-        public CookieCollection Cookies { get; }
+        /// <inheritdoc />
+        public WebHeaderCollection Headers => _response.Headers;
 
-        public void AddHeader(string headerName, string value)
+        /// <inheritdoc />
+        public int StatusCode
         {
-            throw new System.NotImplementedException();
+            get => _response.StatusCode;
+            set => _response.StatusCode = value;
         }
 
-        public void SetCookie(Cookie sessionCookie)
+        /// <inheritdoc />
+        public long ContentLength64
         {
-            throw new System.NotImplementedException();
+            get => _response.ContentLength64;
+            set => _response.ContentLength64 = value;
         }
+
+        /// <inheritdoc />
+        public string ContentType
+        {
+            get => _response.ContentType;
+            set => _response.ContentType = value;
+        }
+
+        /// <inheritdoc />
+        public Stream OutputStream => _response.OutputStream;
+
+        /// <inheritdoc />
+        public CookieCollection Cookies => _response.Cookies;
+
+        /// <inheritdoc />
+        public void AddHeader(string headerName, string value) => _response.AddHeader(headerName, value);
+
+        /// <inheritdoc />
+        public void SetCookie(Cookie sessionCookie) => _response.SetCookie(sessionCookie);
     }
 }
 #endif
