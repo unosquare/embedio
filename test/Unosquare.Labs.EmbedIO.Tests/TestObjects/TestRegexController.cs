@@ -11,6 +11,11 @@
     {
         public const string RelativePath = "api/";
 
+        public TestRegexController(IHttpContext context)
+            : base(context)
+        {
+        }
+
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "empty")]
         public bool GetEmpty()
         {
@@ -31,7 +36,7 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regex/{id}")]
-        public bool GetPerson(, int id)
+        public bool GetPerson(int id)
         {
             try
             {
@@ -51,7 +56,7 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexopt/{id?}")]
-        public bool GetPerson(, int? id)
+        public bool GetPerson(int? id)
         {
             try
             {
@@ -76,7 +81,7 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexAsync/{id}")]
-        public async Task<bool> GetPersonAsync(, int id)
+        public async Task<bool> GetPersonAsync(int id)
         {
             try
             {
@@ -98,7 +103,7 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexdate/{date}")]
-        public bool GetPerson(, DateTime date)
+        public bool GetPerson(DateTime date)
         {
             try
             {
@@ -118,7 +123,7 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regextwo/{skill}/{age}")]
-        public bool GetPerson(, string skill, int age)
+        public bool GetPerson(string skill, int age)
         {
             try
             {

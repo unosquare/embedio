@@ -15,6 +15,11 @@
         public const string GetAsyncPath = RelativePath + "asyncPeople/";
         public const string GetMiddlePath = RelativePath + "person/*/select";
 
+        public TestController(IHttpContext context)
+            : base(context)
+        {
+        }
+
         [WebApiHandler(HttpVerbs.Get, "/" + GetMiddlePath)]
         public bool GetPerson()
         {

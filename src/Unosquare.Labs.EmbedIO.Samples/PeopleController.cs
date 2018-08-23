@@ -20,6 +20,11 @@
         private readonly AppDbContext _dbContext = new AppDbContext();
         private const string RelativePath = "/api/";
 
+        public PeopleController(IHttpContext context)
+            : base(context)
+        {
+        }
+
         /// <summary>
         /// Gets the people.
         /// This will respond to 

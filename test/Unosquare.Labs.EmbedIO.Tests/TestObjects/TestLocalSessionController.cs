@@ -13,6 +13,11 @@
         public const string MyData = "MyData";
         public const string CookieName = "MyCookie";
 
+        public TestLocalSessionController(IHttpContext context)
+            : base(context)
+        {
+        }
+
         [WebApiHandler(HttpVerbs.Get, "/getcookie")]
         public bool GetCookieC()
         {

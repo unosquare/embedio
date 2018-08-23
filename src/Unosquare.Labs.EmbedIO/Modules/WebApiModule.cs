@@ -96,7 +96,7 @@
         /// <typeparam name="T">The type of register controller.</typeparam>
         /// <exception cref="System.ArgumentException">Controller types must be unique within the module.</exception>
         public void RegisterController<T>()
-            where T : WebApiController, new()
+            where T : WebApiController
         {
             RegisterController(typeof(T));
         }
