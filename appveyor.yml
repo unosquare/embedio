@@ -16,8 +16,6 @@ environment:
   op_build_user_email: "geovanni.perez@gmail.com"
   access_token:
        secure: HzWdswNyfQbQ0vLk9IQyO+Ei9mxoPYp9rvv6HPhtC9J/Fm7EHRzyV953pbPRXI9I
-init:
-  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 before_build:
 - ps: |
         if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
@@ -68,5 +66,3 @@ after_build:
             git push origin gh-pages -q
             CD ..
         }
-on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
