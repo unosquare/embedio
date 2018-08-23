@@ -2205,12 +2205,51 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.Modules.WebApiController
   fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController
   nameWithType: WebApiController
-- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders(Unosquare.Labs.EmbedIO.IHttpContext)
-  name: SetDefaultHeaders(IHttpContext)
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_SetDefaultHeaders_Unosquare_Labs_EmbedIO_IHttpContext_
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders(Unosquare.Labs.EmbedIO.IHttpContext)
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders(Unosquare.Labs.EmbedIO.IHttpContext)
-  nameWithType: WebApiController.SetDefaultHeaders(IHttpContext)
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.#ctor(Unosquare.Labs.EmbedIO.IHttpContext)
+  name: WebApiController(IHttpContext)
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController__ctor_Unosquare_Labs_EmbedIO_IHttpContext_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiController.#ctor(Unosquare.Labs.EmbedIO.IHttpContext)
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.WebApiController(Unosquare.Labs.EmbedIO.IHttpContext)
+  nameWithType: WebApiController.WebApiController(IHttpContext)
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.#ctor*
+  name: WebApiController
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController__ctor_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebApiController.#ctor
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.WebApiController
+  nameWithType: WebApiController.WebApiController
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.Request
+  name: Request
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_Request
+  commentId: P:Unosquare.Labs.EmbedIO.Modules.WebApiController.Request
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.Request
+  nameWithType: WebApiController.Request
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.Request*
+  name: Request
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_Request_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebApiController.Request
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.Request
+  nameWithType: WebApiController.Request
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.Response
+  name: Response
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_Response
+  commentId: P:Unosquare.Labs.EmbedIO.Modules.WebApiController.Response
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.Response
+  nameWithType: WebApiController.Response
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.Response*
+  name: Response
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_Response_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebApiController.Response
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.Response
+  nameWithType: WebApiController.Response
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders
+  name: SetDefaultHeaders()
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_SetDefaultHeaders
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders()
+  nameWithType: WebApiController.SetDefaultHeaders()
 - uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders*
   name: SetDefaultHeaders
   href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_SetDefaultHeaders_
@@ -2218,6 +2257,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders
   nameWithType: WebApiController.SetDefaultHeaders
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.WebServer
+  name: WebServer
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_WebServer
+  commentId: P:Unosquare.Labs.EmbedIO.Modules.WebApiController.WebServer
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.WebServer
+  nameWithType: WebApiController.WebServer
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.WebServer*
+  name: WebServer
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_WebServer_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebApiController.WebServer
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.WebServer
+  nameWithType: WebApiController.WebServer
 - uid: Unosquare.Labs.EmbedIO.Modules.WebApiHandlerAttribute
   name: WebApiHandlerAttribute
   href: api/Unosquare.Labs.EmbedIO.Modules.WebApiHandlerAttribute.html
@@ -2323,15 +2375,15 @@ references:
   commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController(System.Type)
   fullName: Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController(System.Type)
   nameWithType: WebApiModule.RegisterController(Type)
-- uid: Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController(System.Type,System.Func{System.Object})
-  name: RegisterController(Type, Func<Object>)
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiModule.html#Unosquare_Labs_EmbedIO_Modules_WebApiModule_RegisterController_System_Type_System_Func_System_Object__
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController(System.Type,System.Func{System.Object})
-  name.vb: RegisterController(Type, Func(Of Object))
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController(System.Type, System.Func<System.Object>)
-  fullName.vb: Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController(System.Type, System.Func(Of System.Object))
-  nameWithType: WebApiModule.RegisterController(Type, Func<Object>)
-  nameWithType.vb: WebApiModule.RegisterController(Type, Func(Of Object))
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController(System.Type,System.Func{Unosquare.Labs.EmbedIO.IHttpContext,System.Object})
+  name: RegisterController(Type, Func<IHttpContext, Object>)
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiModule.html#Unosquare_Labs_EmbedIO_Modules_WebApiModule_RegisterController_System_Type_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_Object__
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController(System.Type,System.Func{Unosquare.Labs.EmbedIO.IHttpContext,System.Object})
+  name.vb: RegisterController(Type, Func(Of IHttpContext, Object))
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController(System.Type, System.Func<Unosquare.Labs.EmbedIO.IHttpContext, System.Object>)
+  fullName.vb: Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController(System.Type, System.Func(Of Unosquare.Labs.EmbedIO.IHttpContext, System.Object))
+  nameWithType: WebApiModule.RegisterController(Type, Func<IHttpContext, Object>)
+  nameWithType.vb: WebApiModule.RegisterController(Type, Func(Of IHttpContext, Object))
 - uid: Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController*
   name: RegisterController
   href: api/Unosquare.Labs.EmbedIO.Modules.WebApiModule.html#Unosquare_Labs_EmbedIO_Modules_WebApiModule_RegisterController_
@@ -2348,15 +2400,15 @@ references:
   fullName.vb: Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController(Of T)()
   nameWithType: WebApiModule.RegisterController<T>()
   nameWithType.vb: WebApiModule.RegisterController(Of T)()
-- uid: Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController``1(System.Func{``0})
-  name: RegisterController<T>(Func<T>)
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiModule.html#Unosquare_Labs_EmbedIO_Modules_WebApiModule_RegisterController__1_System_Func___0__
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController``1(System.Func{``0})
-  name.vb: RegisterController(Of T)(Func(Of T))
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController<T>(System.Func<T>)
-  fullName.vb: Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController(Of T)(System.Func(Of T))
-  nameWithType: WebApiModule.RegisterController<T>(Func<T>)
-  nameWithType.vb: WebApiModule.RegisterController(Of T)(Func(Of T))
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController``1(System.Func{Unosquare.Labs.EmbedIO.IHttpContext,``0})
+  name: RegisterController<T>(Func<IHttpContext, T>)
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiModule.html#Unosquare_Labs_EmbedIO_Modules_WebApiModule_RegisterController__1_System_Func_Unosquare_Labs_EmbedIO_IHttpContext___0__
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController``1(System.Func{Unosquare.Labs.EmbedIO.IHttpContext,``0})
+  name.vb: RegisterController(Of T)(Func(Of IHttpContext, T))
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController<T>(System.Func<Unosquare.Labs.EmbedIO.IHttpContext, T>)
+  fullName.vb: Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController(Of T)(System.Func(Of Unosquare.Labs.EmbedIO.IHttpContext, T))
+  nameWithType: WebApiModule.RegisterController<T>(Func<IHttpContext, T>)
+  nameWithType.vb: WebApiModule.RegisterController(Of T)(Func(Of IHttpContext, T))
 - uid: Unosquare.Labs.EmbedIO.Modules.WebSocketHandlerAttribute
   name: WebSocketHandlerAttribute
   href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketHandlerAttribute.html
