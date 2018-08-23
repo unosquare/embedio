@@ -85,8 +85,6 @@
         {
             try
             {
-                await Task.Delay(TimeSpan.FromSeconds(1));
-
                 var item = PeopleRepository.Database.FirstOrDefault(p => p.Key == id);
 
                 if (item != null)

@@ -133,13 +133,8 @@
             var protoDelegate = new ResponseHandler(() => true);
             var protoAsyncDelegate = new AsyncResponseHandler(() => Task.FromResult(true));
             var methods = controllerType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                .Where(
-                    m => (m.ReturnType == protoDelegate.GetMethodInfo().ReturnType
-                          || m.ReturnType == protoAsyncDelegate.GetMethodInfo().ReturnType)
-                         && m.GetParameters()
-                             .Select(pi => pi.ParameterType)
-                             .SequenceEqual(protoDelegate.GetMethodInfo().GetParameters()
-                                 .Select(pi => pi.ParameterType)));
+                .Where(m => m.ReturnType == protoDelegate.GetMethodInfo().ReturnType
+                          || m.ReturnType == protoAsyncDelegate.GetMethodInfo().ReturnType);
 
             foreach (var method in methods)
             {
