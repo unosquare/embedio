@@ -1,6 +1,5 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
-    using System;
     using System.Net;
     using System.Collections;
 
@@ -16,5 +15,15 @@
         /// </summary>
         /// <param name="cookie">The cookie.</param>
         void Add(Cookie cookie);
+
+        /// <summary>
+        /// Gets the <see cref="Cookie"/> with the specified name.
+        /// </summary>
+        /// <value>
+        /// The <see cref="Cookie"/>.
+        /// </value>
+        /// <param name="name">The name.</param>
+        /// <returns>The cookie matching the specified name.</returns>
+        Cookie this[string name] { get; }
     }
 }

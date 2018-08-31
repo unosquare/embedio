@@ -147,14 +147,14 @@
         [WebApiHandler(HttpVerbs.Get, "/namePublic")]
         public bool GetNamePublic()
         {
-            Response.Headers.Add("Cache-Control: public");
+            Response.AddHeader("Cache-Control", "public");
             return this.JsonResponse(WebName);
         }
 
         public override void SetDefaultHeaders()
         {
             // do nothing with cache
-            Response.Headers.Add($"{CustomHeader}: {WebName}");
+            Response.AddHeader(CustomHeader, WebName);
         }
     }
 }

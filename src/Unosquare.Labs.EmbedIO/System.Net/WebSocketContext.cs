@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Net
 {
     using System;
+    using Labs.EmbedIO;
     using System.Collections.Specialized;
     using System.IO;
 
@@ -24,7 +25,7 @@
         /// <value>
         /// A <see cref="CookieCollection"/> that contains the cookies.
         /// </value>
-        public CookieCollection CookieCollection => _context.Request.Cookies;
+        public ICookieCollection CookieCollection => _context.Request.Cookies;
 
         /// <summary>
         /// Gets the HTTP headers included in the request.

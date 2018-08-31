@@ -76,7 +76,7 @@
         }
 
         /// <inheritdoc />
-        public ICollection Cookies => CookieCollection;
+        public ICookieCollection Cookies => CookieCollection;
 
         /// <inheritdoc />
         public NameValueCollection Headers => HeaderCollection;

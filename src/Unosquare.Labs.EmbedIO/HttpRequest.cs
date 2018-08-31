@@ -2,7 +2,6 @@
 namespace Unosquare.Labs.EmbedIO
 {
     using System;
-    using System.Collections;
     using System.Text;
     using System.Collections.Specialized;
     using System.IO;
@@ -35,7 +34,7 @@ namespace Unosquare.Labs.EmbedIO
         public bool KeepAlive => _request.KeepAlive;
 
         /// <inheritdoc />
-        public ICollection Cookies => _request.Cookies;
+        public ICookieCollection Cookies => new CookieCollection(_request.Cookies);
 
         /// <inheritdoc />
         public string RawUrl => _request.RawUrl;

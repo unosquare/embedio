@@ -6,23 +6,18 @@
     using System.Globalization;
     using System.Linq;
     using System.Net;
-    using System.Reflection;
     using System.Text;
+    using System.Reflection;
     using Labs.EmbedIO;
 
     /// <summary>
     /// Represents Cookie collection.
     /// </summary>
-    /// <seealso cref="System.Collections.ICollection" />
     public class CookieCollection 
-        : ICookieCollection
+        : List<Cookie>, ICookieCollection
     {
-        private readonly List<Cookie> _list = new List<Cookie>();
         private object _sync;
         
-        /// <inheritdoc />
-        public int Count => _list.Count;
-
         /// <summary>
         /// Gets a value indicating whether the collection is read-only.
         /// </summary>
@@ -36,61 +31,9 @@
         public bool IsSynchronized => false;
         
         /// <inheritdoc />
-        public object SyncRoot => _sync ?? (_sync = ((ICollection)_list).SyncRoot);
+        public object SyncRoot => _sync ?? (_sync = ((ICollection)this).SyncRoot);
 
-        internal IEnumerable<Cookie> Sorted
-        {
-            get
-            {
-                var list = new List<Cookie>(_list);
-
-                if (list.Count > 1)
-                    list.Sort(CompareCookieWithinSorted);
-
-                return list;
-            }
-        }
-
-        internal IList<Cookie> List => _list;
-
-        /// <summary>
-        /// Gets the <see cref="Cookie"/> at the specified <paramref name="index"/> from
-        /// the collection.
-        /// </summary>
-        /// <value>
-        /// A <see cref="Cookie"/> at the specified <paramref name="index"/> in the collection.
-        /// </value>
-        /// <param name="index">
-        /// An <see cref="int"/> that represents the zero-based index of the <see cref="Cookie"/>
-        /// to find.
-        /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="index"/> is out of allowable range of indexes for the collection.
-        /// </exception>
-        public Cookie this[int index]
-        {
-            get
-            {
-                if (index < 0 || index >= _list.Count)
-                    throw new ArgumentOutOfRangeException(nameof(index));
-
-                return _list[index];
-            }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Cookie"/> with the specified <paramref name="name"/> from
-        /// the collection.
-        /// </summary>
-        /// <value>
-        /// A <see cref="Cookie"/> with the specified <paramref name="name"/> in the collection.
-        /// </value>
-        /// <param name="name">
-        /// A <see cref="string"/> that represents the name of the <see cref="Cookie"/> to find.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="name"/> is <see langword="null"/>.
-        /// </exception>
+        /// <inheritdoc />
         public Cookie this[string name]
         {
             get
@@ -98,12 +41,18 @@
                 if (name == null)
                     throw new ArgumentNullException(nameof(name));
 
-                return Sorted.FirstOrDefault(cookie => cookie.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                if (Count == 0)
+                    return null;
+                var list = new List<Cookie>(this);
+
+                list.Sort(CompareCookieWithinSorted);
+
+                return list.FirstOrDefault(cookie => cookie.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
             }
         }
 
         /// <inheritdoc />
-        public void Add(Cookie cookie)
+        public new void Add(Cookie cookie)
         {
             if (cookie == null)
                 throw new ArgumentNullException(nameof(cookie));
@@ -111,31 +60,13 @@
             var pos = SearchCookie(cookie);
             if (pos == -1)
             {
-                _list.Add(cookie);
+                base.Add(cookie);
                 return;
             }
 
-            _list[pos] = cookie;
+            this[pos] = cookie;
         }
 
-        /// <summary>
-        /// Adds the specified <paramref name="cookies"/> to the collection.
-        /// </summary>
-        /// <param name="cookies">
-        /// A <see cref="CookieCollection"/> that contains the cookies to add.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="cookies"/> is <see langword="null"/>.
-        /// </exception>
-        public void Add(CookieCollection cookies)
-        {
-            if (cookies == null)
-                throw new ArgumentNullException(nameof(cookies));
-
-            foreach (Cookie cookie in cookies)
-                Add(cookie);
-        }
-        
         /// <inheritdoc />
         public void CopyTo(Array array, int index)
         {
@@ -148,7 +79,7 @@
             if (array.Rank > 1)
                 throw new ArgumentException("Multidimensional.", nameof(array));
 
-            if (array.Length - index < _list.Count)
+            if (array.Length - index < Count)
             {
                 throw new ArgumentException(
                       "The number of elements in this collection is greater than the available space of the destination array.");
@@ -160,50 +91,11 @@
                     "The elements in this collection cannot be cast automatically to the type of the destination array.");
             }
 
-            ((IList)_list).CopyTo(array, index);
+            ((IList)this).CopyTo(array, index);
         }
 
-        /// <summary>
-        /// Copies the elements of the collection to the specified array of <see cref="Cookie"/>,
-        /// starting at the specified <paramref name="index"/> in the <paramref name="array"/>.
-        /// </summary>
-        /// <param name="array">
-        /// An array of <see cref="Cookie"/> that represents the destination of the elements
-        /// copied from the collection.
-        /// </param>
-        /// <param name="index">
-        /// An <see cref="int"/> that represents the zero-based index in <paramref name="array"/>
-        /// at which copying begins.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="array"/> is <see langword="null"/>.
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="index"/> is less than zero.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// The number of elements in the collection is greater than the available space from
-        /// <paramref name="index"/> to the end of the destination <paramref name="array"/>.
-        /// </exception>
-        public void CopyTo(Cookie[] array, int index)
-        {
-            if (array == null)
-                throw new ArgumentNullException(nameof(array));
-
-            if (index < 0)
-                throw new ArgumentOutOfRangeException(nameof(index), "Less than zero.");
-
-            if (array.Length - index < _list.Count)
-            {
-                throw new ArgumentException(
-                      "The number of elements in this collection is greater than the available space of the destination array.");
-            }
-
-            _list.CopyTo(array, index);
-        }
-        
         /// <inheritdoc />
-        public IEnumerator GetEnumerator() => _list.GetEnumerator();
+        public IEnumerator GetEnumerator() => base.GetEnumerator();
 
         internal static string GetValue(string nameAndValue, bool unquote = false)
         {
@@ -215,53 +107,13 @@
             return unquote ? val.Unquote() : val;
         }
 
-        internal static CookieCollection Parse(string value, bool response)
-        {
-            return response
-                ? ParseResponse(value)
-                : ParseRequest(value);
-        }
-
-        internal void SetOrRemove(Cookie cookie)
-        {
-            var pos = SearchCookie(cookie);
-            if (pos == -1)
-            {
-                if (!cookie.Expired)
-                    _list.Add(cookie);
-
-                return;
-            }
-
-            if (!cookie.Expired)
-            {
-                _list[pos] = cookie;
-                return;
-            }
-
-            _list.RemoveAt(pos);
-        }
-
-        internal void SetOrRemove(CookieCollection cookies)
-        {
-            foreach (Cookie cookie in cookies)
-                SetOrRemove(cookie);
-        }
-
-        internal void Sort()
-        {
-            if (_list.Count > 1)
-                _list.Sort(CompareCookieWithinSort);
-        }
+        internal static CookieCollection Parse(string value, bool response) => response
+            ? ParseResponse(value)
+            : ParseRequest(value);
 
         private static string[] SplitCookieHeaderValue(string value)
             => new List<string>(value.SplitHeaderValue(Labs.EmbedIO.Constants.Strings.CookieSplitChars)).ToArray();
-
-        private static int CompareCookieWithinSort(Cookie x, Cookie y)
-        {
-            return (x.Name.Length + x.Value.Length) - (y.Name.Length + y.Value.Length);
-        }
-
+        
         private static int CompareCookieWithinSorted(Cookie x, Cookie y)
         {
             var ret = x.Version - y.Version;
@@ -441,9 +293,9 @@
             var domain = cookie.Domain;
             var ver = cookie.Version;
 
-            for (var i = _list.Count - 1; i >= 0; i--)
+            for (var i = Count - 1; i >= 0; i--)
             {
-                var c = _list[i];
+                var c = this[i];
                 if (c.Name.Equals(name, StringComparison.OrdinalIgnoreCase) &&
                     c.Path.Equals(path, StringComparison.OrdinalIgnoreCase) &&
                     c.Domain.Equals(domain, StringComparison.OrdinalIgnoreCase) &&

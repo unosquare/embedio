@@ -2,7 +2,6 @@
 namespace Unosquare.Labs.EmbedIO
 {
     using System;
-    using System.Collections;
     using System.Collections.Specialized;
     using System.Text;
     using System.IO;
@@ -11,7 +10,7 @@ namespace Unosquare.Labs.EmbedIO
     /// <summary>
     /// Represents a wrapper for HttpListenerContext.Response.
     /// </summary>
-    /// <seealso cref="Unosquare.Labs.EmbedIO.IHttpResponse" />
+    /// <seealso cref="IHttpResponse" />
     public class HttpResponse : IHttpResponse
     {
         private readonly HttpListenerResponse _response;
@@ -53,7 +52,7 @@ namespace Unosquare.Labs.EmbedIO
         public Stream OutputStream => _response.OutputStream;
 
         /// <inheritdoc />
-        public ICollection Cookies => _response.Cookies;
+        public ICookieCollection Cookies => new CookieCollection(_response.Cookies);
 
         /// <inheritdoc />
         public Encoding ContentEncoding

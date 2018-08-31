@@ -1,7 +1,6 @@
 ﻿namespace Unosquare.Net
 {
     using System;
-    using System.Collections;
     using System.Collections.Specialized;
     using System.IO;
     using System.Linq;
@@ -122,7 +121,7 @@ using System.Threading.Tasks;
         public string ContentType => Headers["content-type"];
 
         /// <inheritdoc />
-        public ICollection Cookies => _cookies ?? (_cookies = new CookieCollection());
+        public ICookieCollection Cookies => _cookies ?? (_cookies = new CookieCollection());
         
         /// <inheritdoc />
         public bool HasEntityBody => ContentLength64 > 0;

@@ -40,6 +40,9 @@ namespace Unosquare.Labs.EmbedIO
 
         /// <inheritdoc />
         public void Add(Cookie cookie) => _cookieCollection.Add(cookie);
+
+        /// <inheritdoc />
+        public Cookie this[string name] => _cookieCollection[name];
     }
 }
 #endif
