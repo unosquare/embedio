@@ -310,11 +310,10 @@ using System.Security.Cryptography;
             var c = coll.Count;
             for (var i = 0; i < c; i++)
             {
-                if (coll[i].Path == prefix.Path)
-                {
-                    coll.RemoveAt(i);
-                    return true;
-                }
+                if (coll[i].Path != prefix.Path) continue;
+
+                coll.RemoveAt(i);
+                return true;
             }
 
             return false;

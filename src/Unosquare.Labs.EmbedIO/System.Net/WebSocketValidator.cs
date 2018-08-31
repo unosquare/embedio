@@ -30,45 +30,33 @@
                 : null;
         }
         
-        internal static bool CheckParametersForClose(CloseStatusCode code, string reason, bool client, out string message)
+        internal static bool CheckParametersForClose(CloseStatusCode code, string reason, bool client = true)
         {
-            message = null;
-
             if (code == CloseStatusCode.NoStatus && !string.IsNullOrEmpty(reason))
             {
-                message = "'code' cannot have a reason.";
+                "'code' cannot have a reason.".Error();
                 return false;
             }
 
             if (code == CloseStatusCode.MandatoryExtension && !client)
             {
-                message = "'code' cannot be used by a server.";
+                "'code' cannot be used by a server.".Error();
                 return false;
             }
 
             if (code == CloseStatusCode.ServerError && client)
             {
-                message = "'code' cannot be used by a client.";
+                "'code' cannot be used by a client.".Error();
                 return false;
             }
 
             if (!string.IsNullOrEmpty(reason) && Encoding.UTF8.GetBytes(reason).Length > 123)
             {
-                message = "The size of 'reason' is greater than the allowable max size.";
+                "The size of 'reason' is greater than the allowable max size.".Error();
                 return false;
             }
 
             return true;
-        }
-
-        internal static bool CheckWaitTime(TimeSpan time, out string message)
-        {
-            message = null;
-
-            if (time > TimeSpan.Zero) return true;
-
-            message = "A wait time is zero or less.";
-            return false;
         }
 
         internal static string CheckPingParameter(string message, out byte[] bytes)
@@ -123,31 +111,29 @@
             return true;
         }
 
-        internal bool CheckIfAvailable(out string message, bool connecting = true, bool open = true, bool closing = false, bool closed = false)
+        internal bool CheckIfAvailable(bool connecting = true, bool open = true, bool closing = false, bool closed = false)
         {
-            message = null;
-
             if (!connecting && _webSocket.State == WebSocketState.Connecting)
             {
-                message = "This operation isn't available in: connecting";
+                "This operation isn't available in: connecting".Error();
                 return false;
             }
 
             if (!open && _webSocket.State == WebSocketState.Open)
             {
-                message = "This operation isn't available in: open";
+                "This operation isn't available in: open".Error();
                 return false;
             }
 
             if (!closing && _webSocket.State == WebSocketState.Closing)
             {
-                message = "This operation isn't available in: closing";
+                "This operation isn't available in: closing".Error();
                 return false;
             }
 
             if (!closed && _webSocket.State == WebSocketState.Closed)
             {
-                message = "This operation isn't available in: closed";
+                "This operation isn't available in: closed".Error();
                 return false;
             }
 
@@ -155,7 +141,6 @@
         }
 
         internal bool CheckIfAvailable(
-            out string message,
             bool client,
             bool server,
             bool connecting,
@@ -165,17 +150,17 @@
         {
             if (!client && _webSocket.IsClient)
             {
-                message = "This operation isn't available in: client";
+                "This operation isn't available in: client".Error();
                 return false;
             }
 
             if (!server && !_webSocket.IsClient)
             {
-                message = "This operation isn't available in: server";
+                "This operation isn't available in: server".Error();
                 return false;
             }
 
-            return CheckIfAvailable(out message, connecting, open, closing, closed);
+            return CheckIfAvailable(connecting, open, closing, closed);
         }
 
         // As server

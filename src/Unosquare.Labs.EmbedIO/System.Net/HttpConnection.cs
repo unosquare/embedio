@@ -16,14 +16,14 @@ using System.Security.Cryptography.X509Certificates;
         private enum InputState
         {
             RequestLine,
-            Headers
+            Headers,
         }
 
         private enum LineState
         {
             None,
             Cr,
-            Lf
+            Lf,
         }
 
         private const int BufferSize = 8192;
@@ -101,19 +101,10 @@ using System.Security.Cryptography.X509Certificates;
 
         public Stream Stream { get; }
 
-        public IPEndPoint LocalEndPoint
-        {
-            get
-            {
-                if (_localEp != null)
-                    return _localEp;
-
-                _localEp = (IPEndPoint)_sock.LocalEndPoint;
-                return _localEp;
-            }
-        }
+        public IPEndPoint LocalEndPoint => _localEp ?? (_localEp = (IPEndPoint)_sock.LocalEndPoint);
 
         public IPEndPoint RemoteEndPoint => (IPEndPoint)_sock?.RemoteEndPoint;
+
 #if SSL
         public bool IsSecure { get; }
 #endif
@@ -154,12 +145,9 @@ using System.Security.Cryptography.X509Certificates;
             return _iStream;
         }
 
-        public ResponseStream GetResponseStream()
-        {
-            return _oStream ??
-                   (_oStream =
-                       new ResponseStream(Stream, _context.HttpListenerResponse, _context.Listener?.IgnoreWriteExceptions ?? true));
-        }
+        public ResponseStream GetResponseStream() => _oStream ??
+                                                     (_oStream =
+                                                         new ResponseStream(Stream, _context.HttpListenerResponse, _context.Listener?.IgnoreWriteExceptions ?? true));
 
         internal void Close(bool forceClose = false)
         {
@@ -412,11 +400,10 @@ using System.Security.Cryptography.X509Certificates;
 
         private void Unbind()
         {
-            if (_contextBound)
-            {
-                _epl.UnbindContext(_context);
-                _contextBound = false;
-            }
+            if (!_contextBound) return;
+
+            _epl.UnbindContext(_context);
+            _contextBound = false;
         }
 
         private void CloseSocket()

@@ -30,6 +30,6 @@
         /// Equivalent to numeric value 3. Indicates that the connection has been closed or
         /// couldn't be established.
         /// </summary>
-        Closed = 3
+        Closed = 3,
     }
 }

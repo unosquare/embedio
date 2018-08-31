@@ -75,7 +75,7 @@
         /// <value>
         /// A <see cref="string"/> that represents the value of the Origin header.
         /// </value>
-        public string Origin => _context.Request.Headers["Origin"];
+        public string Origin => _context.Request.Headers[Labs.EmbedIO.Constants.Headers.Origin];
 
         /// <summary>
         /// Gets the query string included in the request.

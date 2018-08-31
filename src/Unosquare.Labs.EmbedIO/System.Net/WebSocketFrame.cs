@@ -142,8 +142,6 @@
 
         public Fin Fin { get; private set; }
 
-        public bool IsBinary => Opcode == Opcode.Binary;
-
         public bool IsClose => Opcode == Opcode.Close;
 
         public bool IsCompressed => Rsv1 == Rsv.On;
@@ -365,7 +363,7 @@ Extended Payload Length: {extPayloadLen}
                 Rsv3 = rsv3,
                 Opcode = (Opcode)opcode,
                 Mask = mask,
-                PayloadLength = payloadLen
+                PayloadLength = payloadLen,
             };
         }
 

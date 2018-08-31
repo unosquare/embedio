@@ -86,7 +86,7 @@
                       "The number of elements in this collection is greater than the available space of the destination array.");
             }
 
-            if (!array.GetType().GetElementType().IsAssignableFrom(typeof(Cookie)))
+            if (array.GetType().GetElementType()?.IsAssignableFrom(typeof(Cookie)) != true)
             {
                 throw new InvalidCastException(
                     "The elements in this collection cannot be cast automatically to the type of the destination array.");
@@ -98,6 +98,7 @@
         internal static string GetValue(string nameAndValue, bool unquote = false)
         {
             var idx = nameAndValue.IndexOf('=');
+
             if (idx < 0 || idx == nameAndValue.Length - 1)
                 return null;
 
@@ -207,12 +208,11 @@
                 if (pair.Length == 0)
                     continue;
 
-                if (pair.StartsWith("version", StringComparison.OrdinalIgnoreCase))
+                if (pair.StartsWith("version", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
-                    if (cookie != null)
                         cookie.Version = int.Parse(GetValue(pair, true));
                 }
-                else if (pair.StartsWith("expires", StringComparison.OrdinalIgnoreCase))
+                else if (pair.StartsWith("expires", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
                     var buff = new StringBuilder(GetValue(pair), 32);
                     if (i < pairs.Length - 1)
@@ -226,7 +226,7 @@
                         out var expires))
                         expires = DateTime.Now;
 
-                    if (cookie != null && cookie.Expires == DateTime.MinValue)
+                    if (cookie.Expires == DateTime.MinValue)
                         cookie.Expires = expires.ToLocalTime();
                 }
                 else if (pair.StartsWith("max-age", StringComparison.OrdinalIgnoreCase) && cookie != null)

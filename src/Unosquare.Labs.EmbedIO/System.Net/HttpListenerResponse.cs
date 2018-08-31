@@ -1,7 +1,6 @@
 ﻿namespace Unosquare.Net
 {
     using System;
-    using System.Collections;
     using System.Globalization;
     using System.Collections.Specialized;
     using System.Linq;
@@ -185,26 +184,12 @@
             Close(true);
         }
 
-        /// <summary>
-        /// Adds the header.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="value">The value.</param>
-        /// <exception cref="System.ArgumentNullException">
-        /// Is thrown when a null reference is passed to a 
-        /// method that does not accept it as a valid argument.
-        /// </exception>
-        /// <exception cref="System.ArgumentException">'name' cannot be empty.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">
-        /// Is thrown when the value of an argument is outside the 
-        /// allowable range of values as defined by the invoked method.
-        /// </exception>
+        /// <inheritdoc />
         public void AddHeader(string name, string value)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("'name' cannot be empty", nameof(name));
 
-            // TODO: check for forbidden headers and invalid characters
             if (value.Length > 65535)
                 throw new ArgumentOutOfRangeException(nameof(value));
 
@@ -222,15 +207,7 @@
             Close(false);
         }
 
-        /// <summary>
-        /// Sets the cookie.
-        /// </summary>
-        /// <param name="cookie">The cookie.</param>
-        /// <exception cref="System.ArgumentNullException">
-        ///  Is thrown when a null reference is passed to a method
-        ///  that does not accept it as a valid argument.
-        /// </exception>
-        /// <exception cref="System.ArgumentException">The cookie already exists.</exception>
+        /// <inheritdoc />
         public void SetCookie(Cookie cookie)
         {
             if (cookie == null)
@@ -238,7 +215,7 @@
 
             if (_cookies != null)
             {
-                if (_cookies.Cast<Cookie>().Any(c =>
+                if (_cookies.Any(c =>
                     cookie.Name == c.Name && cookie.Domain == c.Domain && cookie.Path == c.Path))
                     throw new ArgumentException("The cookie already exists.");
             }
@@ -332,25 +309,14 @@
 
             if (_cookies != null)
             {
-                foreach (Cookie cookie in _cookies)
+                foreach (var cookie in _cookies)
                     HeaderCollection.AddWithoutValidate("Set-Cookie", CookieToClientString(cookie));
             }
 
-            var writer = new StreamWriter(ms, Encoding.UTF8, 256);
-            writer.Write("HTTP/{0} {1} {2}\r\n", ProtocolVersion, _statusCode, StatusDescription);
-            var headersStr = FormatHeaders(HeaderCollection);
-            writer.Write(headersStr);
-            writer.Flush();
-            var preamble = Encoding.UTF8.GetPreamble().Length;
-            if (_outputStream == null)
-                _outputStream = _context.Connection.GetResponseStream();
-
-            // Assumes that the ms was at position 0
-            ms.Position = preamble;
-            HeadersSent = true;
+            WriteHeaders(ms);
         }
 
-        private static string FormatHeaders(WebHeaderCollection headers)
+        private static string FormatHeaders(NameValueCollection headers)
         {
             var sb = new StringBuilder();
 
@@ -392,6 +358,22 @@
             _disposed = true;
 
             _context.Connection.Close(force);
+        }
+        private void WriteHeaders(Stream ms)
+        {
+            var writer = new StreamWriter(ms, Encoding.UTF8, 256);
+            writer.Write("HTTP/{0} {1} {2}\r\n", ProtocolVersion, _statusCode, StatusDescription);
+            var headersStr = FormatHeaders(HeaderCollection);
+            writer.Write(headersStr);
+            writer.Flush();
+
+            var preamble = Encoding.UTF8.GetPreamble().Length;
+            if (_outputStream == null)
+                _outputStream = _context.Connection.GetResponseStream();
+
+            // Assumes that the ms was at position 0
+            ms.Position = preamble;
+            HeadersSent = true;
         }
     }
 }

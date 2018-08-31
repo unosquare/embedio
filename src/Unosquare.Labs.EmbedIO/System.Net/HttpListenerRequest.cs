@@ -540,10 +540,7 @@ using System.Threading.Tasks;
         /// Gets the client certificate.
         /// </summary>
         /// <returns></returns>
-        public X509Certificate2 GetClientCertificate()
-        {
-            return _context.Connection.ClientCertificate;
-        }
+        public X509Certificate2 GetClientCertificate() => _context.Connection.ClientCertificate;
 
         /// <summary>
         /// Gets the client certificate asynchronously.

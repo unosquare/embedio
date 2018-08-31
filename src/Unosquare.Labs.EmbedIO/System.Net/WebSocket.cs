@@ -25,23 +25,10 @@
     {
         internal const string Version = "13";
 
-        /// <summary>
-        /// Represents the empty array of <see cref="byte"/> used internally.
-        /// </summary>
+        // Represents the empty array of <see cref="byte"/> used internally.
         internal static readonly byte[] EmptyBytes = new byte[0];
 
-        /// <summary>
-        /// Represents the length used to determine whether the data should be fragmented in sending.
-        /// </summary>
-        /// <remarks>
-        ///   <para>
-        ///   The data will be fragmented if that length is greater than the value of this field.
-        ///   </para>
-        ///   <para>
-        ///   If you would like to change the value, you must set it to a value between <c>125</c> and
-        ///   <c>Int32.MaxValue - 14</c> inclusive.
-        ///   </para>
-        /// </remarks>
+        // Represents the length used to determine whether the data should be fragmented in sending.
         internal static readonly int FragmentLength = 1016;
 
         /// <summary>
@@ -73,7 +60,7 @@
         private AutoResetEvent _receivePong;
 #if SSL
         private ClientSslConfiguration _sslConfig;
-#endif        
+#endif
         private Stream _stream;
         private TcpClient _tcpClient;
         private Uri _uri;
@@ -107,7 +94,7 @@
             if (url.Length == 0)
                 throw new ArgumentException("An empty string.", nameof(url));
 
-            if (!url.TryCreateWebSocketUri(out _uri, out string msg))
+            if (!url.TryCreateWebSocketUri(out _uri, out var msg))
                 throw new ArgumentException(msg, nameof(url));
 
             _base64Key = CreateBase64Key();
@@ -118,7 +105,7 @@
             IsSecure = _uri.Scheme == "wss";
 #endif
             _waitTime = TimeSpan.FromSeconds(5);
-            _forMessageEventQueue = ((ICollection)_messageEventQueue).SyncRoot;
+            _forMessageEventQueue = ((ICollection) _messageEventQueue).SyncRoot;
             _validator = new WebSocketValidator(this);
         }
 
@@ -133,7 +120,7 @@
 #endif
             _stream = context.Stream;
             _waitTime = TimeSpan.FromSeconds(1);
-            _forMessageEventQueue = ((ICollection)_messageEventQueue).SyncRoot;
+            _forMessageEventQueue = ((ICollection) _messageEventQueue).SyncRoot;
             _validator = new WebSocketValidator(this);
         }
 
@@ -172,9 +159,8 @@
             {
                 lock (_forState)
                 {
-                    if (!_validator.CheckIfAvailable(out var msg, true, false, true, false, false))
+                    if (!_validator.CheckIfAvailable(true, false, true, false, false))
                     {
-                        msg.Error();
                         Error("An error has occurred in setting the compression.");
 
                         return;
@@ -199,7 +185,7 @@
             {
                 lock (CookieCollection.SyncRoot)
                 {
-                    foreach (Cookie cookie in CookieCollection)
+                    foreach (var cookie in CookieCollection)
                         yield return cookie;
                 }
             }
@@ -231,11 +217,9 @@
             {
                 lock (_forState)
                 {
-                    if (!_validator.CheckIfAvailable(out var msg, true, false, true, false, false))
+                    if (!_validator.CheckIfAvailable(true, false, true, false, false))
                     {
-                        msg.Error();
                         Error("An error has occurred in setting the enable redirection.");
-
                         return;
                     }
 
@@ -262,12 +246,12 @@
         public bool IsAlive => PingAsync().Result; // TODO: Change?
 
 #if SSL
-        /// <summary>
-        /// Gets a value indicating whether the WebSocket connection is secure.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the connection is secure; otherwise, <c>false</c>.
-        /// </value>
+/// <summary>
+/// Gets a value indicating whether the WebSocket connection is secure.
+/// </summary>
+/// <value>
+/// <c>true</c> if the connection is secure; otherwise, <c>false</c>.
+/// </value>
         public bool IsSecure { get; private set; }
 #endif
 
@@ -297,11 +281,9 @@
             {
                 lock (_forState)
                 {
-                    if (!_validator.CheckIfAvailable(out string msg, true, false, true, false, false))
+                    if (!_validator.CheckIfAvailable(true, false, true, false, false))
                     {
-                        msg.Error();
                         Error("An error has occurred in setting the origin.");
-
                         return;
                     }
 
@@ -311,7 +293,7 @@
                         return;
                     }
 
-                    if (!Uri.TryCreate(value, UriKind.Absolute, out Uri origin) || origin.Segments.Length > 1)
+                    if (!Uri.TryCreate(value, UriKind.Absolute, out var origin) || origin.Segments.Length > 1)
                     {
                         "The syntax of an origin must be '<scheme>://<host>[:<port>]'.".Error();
                         Error("An error has occurred in setting the origin.");
@@ -394,12 +376,9 @@
             {
                 lock (_forState)
                 {
-                    if (!_validator.CheckIfAvailable(out var msg, true, true, true, false, false) ||
-                        !WebSocketValidator.CheckWaitTime(value, out msg))
+                    if (value == TimeSpan.Zero || !_validator.CheckIfAvailable(true, true, true, false, false))
                     {
-                        msg.Error();
                         Error("An error has occurred in setting the wait time.");
-
                         return;
                     }
 
@@ -442,21 +421,19 @@
         /// <returns>
         /// A task that represents the asynchronous closes websocket connection.
         /// </returns>
-        public async Task CloseAsync(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null, CancellationToken ct = default)
+        public async Task CloseAsync(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null,
+            CancellationToken ct = default)
         {
-            if (!_validator.CheckIfAvailable(out var msg))
+            if (!_validator.CheckIfAvailable())
             {
-                msg.Error();
                 Error("An error has occurred in closing the connection.");
-
                 return;
             }
 
-            if (code != CloseStatusCode.Undefined && !WebSocketValidator.CheckParametersForClose(code, reason, IsClient, out msg))
+            if (code != CloseStatusCode.Undefined &&
+                !WebSocketValidator.CheckParametersForClose(code, reason, IsClient))
             {
-                msg.Error();
                 Error("An error has occurred in closing the connection.");
-
                 return;
             }
 
@@ -487,9 +464,8 @@
         /// </para></remarks>
         public async Task ConnectAsync(CancellationToken ct = default)
         {
-            if (!_validator.CheckIfAvailable(out var msg, true, false, true, false, false))
+            if (!_validator.CheckIfAvailable(true, false, true, false, false))
             {
-                msg.Error();
                 Error("An error has occurred in connecting.");
 
                 return;
@@ -599,9 +575,8 @@
         /// </param>
         public void SetCookie(Cookie cookie)
         {
-            if (!_validator.CheckIfAvailable(out var msg, true, false, true, false, false) || cookie == null)
+            if (cookie == null || !_validator.CheckIfAvailable(true, false, true, false, false))
             {
-                msg.Error();
                 Error("An error has occurred in setting a cookie.");
 
                 return;
@@ -609,9 +584,8 @@
 
             lock (_forState)
             {
-                if (!_validator.CheckIfAvailable(out msg, true, false, false, true))
+                if (!_validator.CheckIfAvailable(true, false, false, true))
                 {
-                    msg.Error();
                     Error("An error has occurred in setting a cookie.");
 
                     return;
@@ -666,7 +640,8 @@
         }
 
         // As server
-        internal async Task CloseAsync(CloseEventArgs e, byte[] frameAsBytes, bool receive, CancellationToken ct = default)
+        internal async Task CloseAsync(CloseEventArgs e, byte[] frameAsBytes, bool receive,
+            CancellationToken ct = default)
         {
             lock (_forState)
             {
@@ -703,7 +678,8 @@
         }
 
         // As client
-        internal bool ValidateSecWebSocketAcceptHeader(string value) => value?.TrimStart() == CreateResponseKey(_base64Key);
+        internal bool ValidateSecWebSocketAcceptHeader(string value) =>
+            value?.TrimStart() == CreateResponseKey(_base64Key);
 
         // As server
         internal async Task InternalAcceptAsync()
@@ -828,7 +804,11 @@
             }
         }
 
-        private async Task<bool> CloseHandshakeAsync(byte[] frameAsBytes, bool receive, bool received, CancellationToken ct)
+        private async Task<bool> CloseHandshakeAsync(
+            byte[] frameAsBytes, 
+            bool receive, 
+            bool received,
+            CancellationToken ct)
         {
             var sent = frameAsBytes != null;
 
@@ -939,16 +919,11 @@
         private void Error(string message, Exception exception = null)
             => OnError?.Invoke(this, new ConnectionFailureEventArgs(exception ?? new Exception(message)));
 
-        private void Fatal(string message, Exception exception = null)
-        {
-            Fatal(message, (exception as WebSocketException)?.Code ?? CloseStatusCode.Abnormal);
-        }
+        private void Fatal(string message, Exception exception = null) => Fatal(message,
+            (exception as WebSocketException)?.Code ?? CloseStatusCode.Abnormal);
 
-        private void Fatal(string message, CloseStatusCode code)
-        {
-            // TODO: Wait?
+        private void Fatal(string message, CloseStatusCode code) =>
             InternalCloseAsync(new CloseEventArgs(code, message), !IsOpcodeReserved(code), false).Wait();
-        }
 
         private void Message()
         {
@@ -989,8 +964,7 @@
 
                     e = _messageEventQueue.Dequeue();
                 }
-            }
-            while (true);
+            } while (true);
         }
 
         private void Messages(MessageEventArgs e)
@@ -1346,7 +1320,7 @@
                 return Send(Fin.Final, opcode, EmptyBytes, compressed, ct);
 
             var quo = len / FragmentLength;
-            var rem = (int)(len % FragmentLength);
+            var rem = (int) (len % FragmentLength);
 
             byte[] buff;
 
