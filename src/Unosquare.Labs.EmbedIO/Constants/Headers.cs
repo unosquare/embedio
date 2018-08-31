@@ -8,17 +8,17 @@
         /// <summary>
         /// Access-Control-Allow-Origin HTTP Header.
         /// </summary>
-        public const string AccessControlAllowOrigin = "Access-Control-Allow-Origin: *";
+        public const string AccessControlAllowOrigin = "Access-Control-Allow-Origin";
 
         /// <summary>
         /// Access-Control-Allow-Headers HTTP Header.
         /// </summary>
-        public const string AccessControlAllowHeaders = "Access-Control-Allow-Headers: ";
+        public const string AccessControlAllowHeaders = "Access-Control-Allow-Headers";
 
         /// <summary>
         /// Access-Control-Allow-Methods HTTP Header.
         /// </summary>
-        public const string AccessControlAllowMethods = "Access-Control-Allow-Methods: ";
+        public const string AccessControlAllowMethods = "Access-Control-Allow-Methods";
 
         /// <summary>
         /// Origin HTTP Header.

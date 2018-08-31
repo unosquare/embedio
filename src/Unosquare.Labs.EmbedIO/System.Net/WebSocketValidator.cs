@@ -1,5 +1,4 @@
-﻿#if !NET47
-namespace Unosquare.Net
+﻿namespace Unosquare.Net
 {
     using System;
     using System.Linq;
@@ -323,4 +322,3 @@ namespace Unosquare.Net
         private static bool ValidateSecWebSocketVersionServerHeader(string value) => value == null || value == WebSocket.Version;
     }
 }
-#endif

@@ -1,5 +1,4 @@
-﻿#if !NET47
-namespace Unosquare.Net
+﻿namespace Unosquare.Net
 {
     /// <summary>
     /// Indicates the WebSocket frame type.
@@ -42,4 +41,3 @@ namespace Unosquare.Net
         Pong = 0xa
     }
 }
-#endif

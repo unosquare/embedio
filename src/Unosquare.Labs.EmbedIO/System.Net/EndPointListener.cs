@@ -1,5 +1,4 @@
-﻿#if !NET47
-namespace Unosquare.Net
+﻿namespace Unosquare.Net
 {
     using System;
     using System.Collections.Generic;
@@ -392,4 +391,3 @@ using System.Security.Cryptography;
         }
     }
 }
-#endif

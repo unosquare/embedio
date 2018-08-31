@@ -11,7 +11,7 @@
         /// <value>
         /// The request.
         /// </value>
-        IHttpRequest Request { get;  }
+        IHttpRequest Request { get; }
 
         /// <summary>
         /// Gets the HTTP Response.
@@ -27,6 +27,6 @@
         /// <value>
         /// The web server.
         /// </value>
-        IWebServer WebServer { get; }
+        IWebServer WebServer { get; set; }
     }
 }

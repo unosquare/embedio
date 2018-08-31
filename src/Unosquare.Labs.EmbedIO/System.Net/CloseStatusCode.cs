@@ -1,5 +1,4 @@
-﻿#if !NET47
-namespace Unosquare.Net
+﻿namespace Unosquare.Net
 {
     /// <summary>
     /// Indicates the status code for the WebSocket connection close.
@@ -96,4 +95,3 @@ namespace Unosquare.Net
         TlsHandshakeFailure = 1015
     }
 }
-#endif

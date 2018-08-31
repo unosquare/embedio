@@ -277,7 +277,7 @@
         public IHttpResponse Response { get; internal set; }
 
         /// <inheritdoc />
-        public IWebServer WebServer { get; internal set; }
+        public IWebServer WebServer { get; set; }
 
         /// <summary>
         /// Sets the default headers to the Web API response.

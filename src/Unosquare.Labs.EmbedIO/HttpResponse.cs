@@ -1,7 +1,9 @@
-﻿#if NET47
+﻿#if !NETSTANDARD1_3 && !UWP
 namespace Unosquare.Labs.EmbedIO
 {
     using System;
+    using System.Collections;
+    using System.Collections.Specialized;
     using System.Text;
     using System.IO;
     using System.Net;
@@ -24,7 +26,7 @@ namespace Unosquare.Labs.EmbedIO
         }
 
         /// <inheritdoc />
-        public WebHeaderCollection Headers => _response.Headers;
+        public NameValueCollection Headers => _response.Headers;
 
         /// <inheritdoc />
         public int StatusCode
@@ -51,7 +53,7 @@ namespace Unosquare.Labs.EmbedIO
         public Stream OutputStream => _response.OutputStream;
 
         /// <inheritdoc />
-        public CookieCollection Cookies => _response.Cookies;
+        public ICollection Cookies => _response.Cookies;
 
         /// <inheritdoc />
         public Encoding ContentEncoding

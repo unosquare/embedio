@@ -1,14 +1,10 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using System.Text;
+    using System.Collections;
     using System.IO;
     using System.Collections.Specialized;
     using System;
-#if NET47
-    using System.Net;
-#else
-    using Net;
-#endif
 
     /// <summary>
     /// Interface to create a HTTP Request.
@@ -45,7 +41,7 @@
         /// <value>
         /// The cookies.
         /// </value>
-        CookieCollection Cookies { get; }
+        ICookieCollection Cookies { get; }
 
         /// <summary>
         /// Gets the raw URL.

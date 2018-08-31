@@ -1,5 +1,4 @@
-﻿#if !NET47
-namespace Unosquare.Net
+﻿namespace Unosquare.Net
 {
     using System;
     using System.Collections;
@@ -16,7 +15,7 @@ namespace Unosquare.Net
     /// </summary>
     /// <seealso cref="System.Collections.ICollection" />
     public class CookieCollection 
-        : ICollection
+        : ICookieCollection
     {
         private readonly List<Cookie> _list = new List<Cookie>();
         private object _sync;
@@ -103,15 +102,7 @@ namespace Unosquare.Net
             }
         }
 
-        /// <summary>
-        /// Adds the specified <paramref name="cookie"/> to the collection.
-        /// </summary>
-        /// <param name="cookie">
-        /// A <see cref="Cookie"/> to add.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="cookie"/> is <see langword="null"/>.
-        /// </exception>
+        /// <inheritdoc />
         public void Add(Cookie cookie)
         {
             if (cookie == null)
@@ -464,5 +455,3 @@ namespace Unosquare.Net
         }
     }
 }
-
-#endif

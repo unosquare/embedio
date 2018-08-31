@@ -24,7 +24,7 @@
             var cookie = new System.Net.Cookie(CookieName, CookieName);
             Response.Cookies.Add(cookie);
 
-            return this.JsonResponse(this.Response.Cookies[CookieName]);
+            return this.JsonResponse(Response.Cookies[CookieName]);
         }
 
         [WebApiHandler(HttpVerbs.Get, "/deletesession")]

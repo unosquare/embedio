@@ -1,5 +1,4 @@
-﻿#if !NET47
-namespace Unosquare.Net
+﻿namespace Unosquare.Net
 {
     /// <summary>
     /// Indicates the state of a WebSocket connection.
@@ -34,4 +33,3 @@ namespace Unosquare.Net
         Closed = 3
     }
 }
-#endif

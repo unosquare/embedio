@@ -1,13 +1,10 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using System;
+    using System.Collections;
+    using System.Collections.Specialized;
     using System.Text;
     using System.IO;
-#if NET47
-    using System.Net;
-#else
-    using Net;
-#endif
 
     /// <summary>
     /// Interface to create a HTTP Response.
@@ -20,7 +17,7 @@
         /// <value>
         /// The headers.
         /// </value>
-        WebHeaderCollection Headers { get; }
+        NameValueCollection Headers { get; }
 
         /// <summary>
         /// Gets or sets the status code.
@@ -60,7 +57,7 @@
         /// <value>
         /// The cookies.
         /// </value>
-        CookieCollection Cookies { get; }
+        ICookieCollection Cookies { get; }
 
         /// <summary>
         /// Gets or sets the content encoding.

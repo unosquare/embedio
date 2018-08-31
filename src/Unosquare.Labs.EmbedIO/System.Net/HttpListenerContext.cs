@@ -1,5 +1,4 @@
-﻿#if !NET47
-namespace Unosquare.Net
+﻿namespace Unosquare.Net
 {
     using System;
     using System.Threading.Tasks;
@@ -27,7 +26,7 @@ namespace Unosquare.Net
         public IHttpResponse Response { get; }
 
         /// <inheritdoc />
-        public IWebServer WebServer { get; internal set; }
+        public IWebServer WebServer { get; set; }
 
         internal HttpListenerRequest HttpListenerRequest => Request as HttpListenerRequest;
 
@@ -65,5 +64,3 @@ namespace Unosquare.Net
         }
     }
 }
-
-#endif

@@ -1,48 +1,4 @@
-﻿#if !NET47
-#region License
-/*
- * WebSocket.cs
- *
- * A C# implementation of the WebSocket interface.
- *
- * This code is derived from WebSocket.java
- * (http://github.com/adamac/Java-WebSocket-client).
- *
- * The MIT License
- *
- * Copyright (c) 2009 Adam MacBeth
- * Copyright (c) 2010-2016 sta.blockhead
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-#endregion
-
-#region Contributors
-/*
- * Contributors:
- * - Frank Razenberg <frank@zzattack.org>
- * - David Wood <dpwood@gmail.com>
- * - Liryna <liryna.stark@gmail.com>
- */
-#endregion
-
-namespace Unosquare.Net
+﻿namespace Unosquare.Net
 {
     using System;
     using System.Collections;
@@ -96,7 +52,6 @@ namespace Unosquare.Net
         private const string Guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 
         private readonly Action<MessageEventArgs> _message;
-        private readonly bool _client;
         private readonly object _forState = new object();
         private readonly Queue<MessageEventArgs> _messageEventQueue = new Queue<MessageEventArgs>();
         private readonly object _forMessageEventQueue;
@@ -158,7 +113,7 @@ namespace Unosquare.Net
                 throw new ArgumentException(msg, nameof(url));
 
             _base64Key = CreateBase64Key();
-            _client = true;
+            IsClient = true;
 
             _message = Messagec;
 #if SSL
@@ -424,7 +379,7 @@ namespace Unosquare.Net
         /// <value>
         /// A <see cref="Uri"/> that represents the URL used to connect, or accepted.
         /// </value>
-        public Uri Url => _client ? _uri : _context.RequestUri;
+        public Uri Url => IsClient ? _uri : _context.RequestUri;
 
         /// <summary>
         /// Gets or sets the wait time for the response to the Ping or Close.
@@ -457,7 +412,7 @@ namespace Unosquare.Net
 
         internal bool InContinuation => _inContinuation;
 
-        internal bool IsClient => _client;
+        internal bool IsClient { get; private set; }
 
         internal bool IsExtensionsRequested => _extensionsRequested;
 
@@ -499,7 +454,7 @@ namespace Unosquare.Net
                 return;
             }
 
-            if (code != CloseStatusCode.Undefined && !WebSocketValidator.CheckParametersForClose(code, reason, _client, out msg))
+            if (code != CloseStatusCode.Undefined && !WebSocketValidator.CheckParametersForClose(code, reason, IsClient, out msg))
             {
                 msg.Error();
                 Error("An error has occurred in closing the connection.");
@@ -577,7 +532,7 @@ namespace Unosquare.Net
         /// </returns>
         public async Task<bool> PingAsync()
         {
-            var bytes = _client
+            var bytes = IsClient
                 ? WebSocketFrame.CreatePingFrame(true).ToArray()
                 : WebSocketFrame.EmptyPingBytes;
 
@@ -609,7 +564,7 @@ namespace Unosquare.Net
                 return false;
             }
 
-            return await PingAsync(WebSocketFrame.CreatePingFrame(data, _client).ToArray(), _waitTime);
+            return await PingAsync(WebSocketFrame.CreatePingFrame(data, IsClient).ToArray(), _waitTime);
         }
 
         /// <summary>
@@ -857,7 +812,7 @@ namespace Unosquare.Net
 
             "Begin closing the connection.".Info();
 
-            var bytes = send ? WebSocketFrame.CreateCloseFrame(e.PayloadData, _client).ToArray() : null;
+            var bytes = send ? WebSocketFrame.CreateCloseFrame(e.PayloadData, IsClient).ToArray() : null;
             e.WasClean = await CloseHandshakeAsync(bytes, receive, received, ct);
             ReleaseResources();
 
@@ -1111,7 +1066,7 @@ namespace Unosquare.Net
         }
 
         // As client
-        private void ProcessCookies(CookieCollection cookies)
+        private void ProcessCookies(ICollection cookies)
         {
             if (cookies.Count == 0)
                 return;
@@ -1185,7 +1140,7 @@ namespace Unosquare.Net
 
         private bool ProcessPingFrame(WebSocketFrame frame)
         {
-            if (Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, _client).ToArray()))
+            if (Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, IsClient).ToArray()))
             {
                 "Returned a pong.".Info();
             }
@@ -1320,7 +1275,7 @@ namespace Unosquare.Net
 
         private void ReleaseResources()
         {
-            if (_client)
+            if (IsClient)
                 ReleaseClientResources();
             else
                 ReleaseServerResources();
@@ -1331,7 +1286,7 @@ namespace Unosquare.Net
         // As server
         private void ReleaseServerResources()
         {
-            if (_client)
+            if (IsClient)
                 return;
 
             _context.CloseAsync();
@@ -1452,7 +1407,7 @@ namespace Unosquare.Net
                     return false;
                 }
 
-                return SendBytes(new WebSocketFrame(fin, opcode, data, compressed, _client).ToArray(), ct);
+                return SendBytes(new WebSocketFrame(fin, opcode, data, compressed, IsClient).ToArray(), ct);
             }
         }
 
@@ -1610,5 +1565,3 @@ namespace Unosquare.Net
         }
     }
 }
-
-#endif

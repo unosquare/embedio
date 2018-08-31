@@ -1,5 +1,4 @@
-﻿#if !NET47
-namespace Unosquare.Net
+﻿namespace Unosquare.Net
 {
     using System.Collections.Generic;
     using System.Collections.Specialized;
@@ -183,4 +182,3 @@ namespace Unosquare.Net
             value.StartsWith(method.ToExtensionString());
     }
 }
-#endif

@@ -1,8 +1,9 @@
-﻿#if !NET47
-namespace Unosquare.Net
+﻿namespace Unosquare.Net
 {
     using System;
+    using System.Collections;
     using System.Globalization;
+    using System.Collections.Specialized;
     using System.Linq;
     using System.Net;
     using System.IO;
@@ -13,7 +14,8 @@ namespace Unosquare.Net
     /// Represents an HTTP Listener's response.
     /// </summary>
     /// <seealso cref="IDisposable" />
-    public sealed class HttpListenerResponse : IHttpResponse, IDisposable
+    public sealed class HttpListenerResponse 
+        : IHttpResponse, IDisposable
     {
         private const string CannotChangeHeaderWarning = "Cannot be changed after headers are sent.";
         private readonly HttpListenerContext _context;
@@ -74,15 +76,11 @@ namespace Unosquare.Net
         }
 
         /// <inheritdoc />
-        public CookieCollection Cookies
-        {
-            get => _cookies ?? (_cookies = new CookieCollection());
-            set => _cookies = value;
-        }
+        public ICollection Cookies => CookieCollection;
 
         /// <inheritdoc />
-        public WebHeaderCollection Headers { get; set; } = new WebHeaderCollection();
-
+        public NameValueCollection Headers => HeaderCollection;
+        
         /// <inheritdoc />
         public bool KeepAlive
         {
@@ -161,6 +159,14 @@ namespace Unosquare.Net
         /// The status description.
         /// </value>
         public string StatusDescription { get; set; } = "OK";
+        
+        internal CookieCollection CookieCollection
+        {
+            get => _cookies ?? (_cookies = new CookieCollection());
+            set => _cookies = value;
+        }
+
+        internal WebHeaderCollection HeaderCollection { get; set; } = new WebHeaderCollection();
 
         internal bool HeadersSent { get; private set; }
         internal object HeadersLock { get; } = new object();
@@ -250,20 +256,20 @@ namespace Unosquare.Net
             {
                 if (_contentType.IndexOf("charset=", StringComparison.Ordinal) == -1)
                 {
-                    Headers.AddWithoutValidate("Content-Type", _contentType + "; charset=" + Encoding.UTF8.WebName);
+                    HeaderCollection.AddWithoutValidate("Content-Type", _contentType + "; charset=" + Encoding.UTF8.WebName);
                 }
                 else
                 {
-                    Headers.AddWithoutValidate("Content-Type", _contentType);
+                    HeaderCollection.AddWithoutValidate("Content-Type", _contentType);
                 }
             }
 
             if (Headers["Server"] == null)
-                Headers.AddWithoutValidate("Server", "embedio/1.0");
+                HeaderCollection.AddWithoutValidate("Server", "embedio/1.0");
 
             var inv = CultureInfo.InvariantCulture;
             if (Headers["Date"] == null)
-                Headers.AddWithoutValidate("Date", DateTime.UtcNow.ToString("r", inv));
+                HeaderCollection.AddWithoutValidate("Date", DateTime.UtcNow.ToString("r", inv));
 
             if (!_chunked)
             {
@@ -274,7 +280,7 @@ namespace Unosquare.Net
                 }
 
                 if (_clSet)
-                    Headers.AddWithoutValidate("Content-Length", _contentLength.ToString(inv));
+                    HeaderCollection.AddWithoutValidate("Content-Length", _contentLength.ToString(inv));
             }
 
             var v = _context.Request.ProtocolVersion;
@@ -299,12 +305,12 @@ namespace Unosquare.Net
             // They sent both KeepAlive: true and Connection: close!?
             if (!_keepAlive || connClose)
             {
-                Headers.AddWithoutValidate("Connection", "close");
+                HeaderCollection.AddWithoutValidate("Connection", "close");
                 connClose = true;
             }
 
             if (_chunked)
-                Headers.AddWithoutValidate("Transfer-Encoding", "chunked");
+                HeaderCollection.AddWithoutValidate("Transfer-Encoding", "chunked");
 
             var reuses = _context.Connection.Reuses;
             if (reuses >= 100)
@@ -312,27 +318,27 @@ namespace Unosquare.Net
                 ForceCloseChunked = true;
                 if (!connClose)
                 {
-                    Headers.AddWithoutValidate("Connection", "close");
+                    HeaderCollection.AddWithoutValidate("Connection", "close");
                     connClose = true;
                 }
             }
 
             if (!connClose)
             {
-                Headers.AddWithoutValidate("Keep-Alive", $"timeout=15,max={100 - reuses}");
+                HeaderCollection.AddWithoutValidate("Keep-Alive", $"timeout=15,max={100 - reuses}");
                 if (_context.Request.ProtocolVersion <= HttpVersion.Version10)
-                    Headers.AddWithoutValidate("Connection", "keep-alive");
+                    HeaderCollection.AddWithoutValidate("Connection", "keep-alive");
             }
 
             if (_cookies != null)
             {
                 foreach (Cookie cookie in _cookies)
-                    Headers.AddWithoutValidate("Set-Cookie", CookieToClientString(cookie));
+                    HeaderCollection.AddWithoutValidate("Set-Cookie", CookieToClientString(cookie));
             }
 
             var writer = new StreamWriter(ms, Encoding.UTF8, 256);
             writer.Write("HTTP/{0} {1} {2}\r\n", ProtocolVersion, _statusCode, StatusDescription);
-            var headersStr = FormatHeaders(Headers);
+            var headersStr = FormatHeaders(HeaderCollection);
             writer.Write(headersStr);
             writer.Flush();
             var preamble = Encoding.UTF8.GetPreamble().Length;
@@ -389,4 +395,3 @@ namespace Unosquare.Net
         }
     }
 }
-#endif

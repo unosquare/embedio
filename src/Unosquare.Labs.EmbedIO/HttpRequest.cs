@@ -1,11 +1,12 @@
-﻿#if NET47
+﻿#if !NETSTANDARD1_3 && !UWP
 namespace Unosquare.Labs.EmbedIO
 {
     using System;
+    using System.Collections;
     using System.Text;
-    using System.Net;
     using System.Collections.Specialized;
     using System.IO;
+    using System.Net;
 
     /// <summary>
     /// Represents a wrapper for HttpListenerContext.Request.
@@ -34,7 +35,7 @@ namespace Unosquare.Labs.EmbedIO
         public bool KeepAlive => _request.KeepAlive;
 
         /// <inheritdoc />
-        public CookieCollection Cookies => _request.Cookies;
+        public ICollection Cookies => _request.Cookies;
 
         /// <inheritdoc />
         public string RawUrl => _request.RawUrl;

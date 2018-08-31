@@ -1,11 +1,11 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
-    using System.Linq;
     using Constants;
-    using System.Threading;
-    using System.Reflection;
     using Swan;
     using System;
+    using System.Linq;
+    using System.Reflection;
+    using System.Threading;
     using System.Threading.Tasks;
 
     internal class HttpHandler
@@ -98,7 +98,7 @@
                 catch (Exception ex)
                 {
                     // Handle exceptions by returning a 500 (Internal Server Error) 
-                    if (_context.Response.StatusCode != (int)System.Net.HttpStatusCode.Unauthorized)
+                    if (_context.Response.StatusCode != (int) System.Net.HttpStatusCode.Unauthorized)
                     {
                         await ResponseServerError(ct, ex, module.Name);
                     }
@@ -149,8 +149,8 @@
 
             return module.Handlers
                 .FirstOrDefault(x =>
-                (x.Path == ModuleMap.AnyPath || x.Path == path) &&
-                (x.Verb == HttpVerbs.Any || x.Verb == _context.RequestVerb()));
+                    (x.Path == ModuleMap.AnyPath || x.Path == path) &&
+                    (x.Verb == HttpVerbs.Any || x.Verb == _context.RequestVerb()));
         }
 
         private Func<IHttpContext, CancellationToken, Task<bool>> GetHandler(IWebModule module)

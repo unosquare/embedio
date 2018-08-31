@@ -1,4 +1,4 @@
-﻿#if NET47
+﻿#if !NETSTANDARD1_3 && !UWP
 namespace Unosquare.Labs.EmbedIO
 {
     using System.Net;
@@ -18,11 +18,9 @@ namespace Unosquare.Labs.EmbedIO
         /// Initializes a new instance of the <see cref="HttpContext" /> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="server">The server.</param>
-        public HttpContext(HttpListenerContext context, IWebServer server)
+        public HttpContext(HttpListenerContext context)
         {
             _context = context;
-            WebServer = server;
             Request = new HttpRequest(_context);
             Response = new HttpResponse(_context);
         }
@@ -34,7 +32,7 @@ namespace Unosquare.Labs.EmbedIO
         public IHttpResponse Response { get; }
 
         /// <inheritdoc />
-        public IWebServer WebServer { get; }
+        public IWebServer WebServer { get; set; }
 
         /// <summary>
         /// Accepts the web socket asynchronous.
@@ -42,11 +40,9 @@ namespace Unosquare.Labs.EmbedIO
         /// <param name="receiveBufferSize">Size of the receive buffer.</param>
         /// <returns>The WebSocketContext.</returns>
         public Task<HttpListenerWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize)
-        {
-            return _context.AcceptWebSocketAsync(subProtocol: null,
+            => _context.AcceptWebSocketAsync(subProtocol: null,
                 receiveBufferSize: receiveBufferSize,
                 keepAliveInterval: TimeSpan.FromSeconds(30));
-        }
     }
 }
 #endif

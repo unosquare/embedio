@@ -1,5 +1,4 @@
-﻿#if !NET47
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 // <copyright file="WebSocketReceiveResult.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
@@ -71,4 +70,3 @@ namespace Unosquare.Net
         Close = 2
     }
 }
-#endif

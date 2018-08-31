@@ -1,7 +1,7 @@
-﻿#if !NET47
-namespace Unosquare.Net
+﻿namespace Unosquare.Net
 {
     using System;
+    using System.Collections;
     using System.Collections.Specialized;
     using System.IO;
     using System.Linq;
@@ -18,7 +18,8 @@ using System.Threading.Tasks;
     /// <summary>
     /// Represents an HTTP Listener Request.
     /// </summary>
-    public sealed class HttpListenerRequest : IHttpRequest
+    public sealed class HttpListenerRequest 
+        : IHttpRequest
     {
         private static readonly byte[] HttpStatus100 = Encoding.UTF8.GetBytes("HTTP/1.1 100 Continue\r\n\r\n");
         private static readonly char[] Separators = { ' ' };
@@ -121,8 +122,8 @@ using System.Threading.Tasks;
         public string ContentType => Headers["content-type"];
 
         /// <inheritdoc />
-        public CookieCollection Cookies => _cookies ?? (_cookies = new CookieCollection());
-
+        public ICollection Cookies => _cookies ?? (_cookies = new CookieCollection());
+        
         /// <inheritdoc />
         public bool HasEntityBody => ContentLength64 > 0;
 
@@ -574,4 +575,3 @@ using System.Threading.Tasks;
         public static readonly Version Version11 = new Version(1, 1);
     }
 }
-#endif

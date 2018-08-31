@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using Constants;
+    using System.Collections.Generic;
     using Swan;
     using System;
     using System.Collections.ObjectModel;
@@ -14,6 +15,8 @@
 
     /// <summary>
     /// Represents our tiny web server used to handle requests.
+    ///
+    /// This is the default implementation of <c>IWebServer</c>.
     /// </summary>
     public class WebServer : IWebServer
     {
@@ -57,27 +60,53 @@
         /// </summary>
         /// <param name="urlPrefixes">The URL prefix.</param>
         /// <param name="routingStrategy">The routing strategy.</param>
-        /// <exception cref="InvalidOperationException">The HTTP Listener is not supported in this OS.</exception>
         /// <exception cref="ArgumentException">Argument urlPrefix must be specified.</exception>
         public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy = RoutingStrategy.Wildcard)
+         : this(urlPrefixes, routingStrategy, HttpListenerFactory.Create())
         {
-            if (HttpListener.IsSupported == false)
-                throw new InvalidOperationException("The HTTP Listener is not supported in this OS");
+            // placeholder
+        }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebServer" /> class.
+        /// NOTE: urlPrefix must be specified as something similar to: http://localhost:9696/
+        /// Please notice the ending slash. -- It is important.
+        /// </summary>
+        /// <param name="urlPrefixes">The URL prefix.</param>
+        /// <param name="routingStrategy">The routing strategy.</param>
+        /// <param name="mode">The mode.</param>
+        /// <exception cref="ArgumentException">Argument urlPrefix must be specified.</exception>
+        public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy, HttpListenerMode mode = HttpListenerMode.EmbedIO)
+            : this(urlPrefixes, routingStrategy, HttpListenerFactory.Create(mode))
+        {
+            // placeholder
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebServer" /> class.
+        /// NOTE: urlPrefix must be specified as something similar to: http://localhost:9696/
+        /// Please notice the ending slash. -- It is important.
+        /// </summary>
+        /// <param name="urlPrefixes">The URL prefix.</param>
+        /// <param name="routingStrategy">The routing strategy.</param>
+        /// <param name="httpListener">The HTTP listener.</param>
+        /// <exception cref="ArgumentException">Argument urlPrefix must be specified.</exception>
+        public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy, IHttpListener httpListener)
+        {
             if (urlPrefixes == null || urlPrefixes.Length <= 0)
                 throw new ArgumentException("At least 1 URL prefix in urlPrefixes must be specified");
 
             RoutingStrategy = routingStrategy;
-            Listener = new HttpListener();
+            Listener = httpListener;
 
             foreach (var prefix in urlPrefixes)
             {
-                var urlPrefix = new String(prefix?.ToCharArray());
+                var urlPrefix = new string(prefix?.ToCharArray());
 
                 if (urlPrefix.EndsWith("/") == false) urlPrefix = urlPrefix + "/";
                 urlPrefix = urlPrefix.ToLowerInvariant();
 
-                Listener.Prefixes.Add(urlPrefix);
+                Listener.AddPrefix(urlPrefix);
                 $"Web server prefix '{urlPrefix}' added.".Info(nameof(WebServer));
             }
 
@@ -98,7 +127,7 @@
         /// <value>
         /// The listener.
         /// </value>
-        public HttpListener Listener { get; protected set; }
+        public IHttpListener Listener { get; protected set; }
 
         /// <summary>
         /// Gets the URL Prefix for which the server is serving requests.
@@ -106,7 +135,7 @@
         /// <value>
         /// The URL prefix.
         /// </value>
-        public HttpListenerPrefixCollection UrlPrefixes => Listener.Prefixes;
+        public List<string> UrlPrefixes => Listener.Prefixes;
 
         /// <inheritdoc />
         public ReadOnlyCollection<IWebModule> Modules => _modules.AsReadOnly();
@@ -177,22 +206,15 @@
                     try
                     {
                         var clientSocket = await Listener.GetContextAsync().ConfigureAwait(false);
+
                         if (ct.IsCancellationRequested)
                             return;
 
-                        #if !NET47
                         clientSocket.WebServer = this;
-                        #endif
+                        
+#pragma warning disable CS4014
+                        var handler = new HttpHandler(clientSocket);
 
-                        // Spawn off each client task asynchronously
-                        var handler =
-#if NET47
-                            new HttpHandler(new HttpContext(clientSocket, this));
-#else
-                            new HttpHandler(clientSocket);
-#endif
-
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                         handler.HandleClientRequest(ct);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     }
