@@ -4204,19 +4204,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.CookieCollection.CopyTo
   nameWithType: CookieCollection.CopyTo
-- uid: Unosquare.Net.CookieCollection.GetEnumerator
-  name: GetEnumerator()
-  href: api/Unosquare.Net.CookieCollection.html#Unosquare_Net_CookieCollection_GetEnumerator
-  commentId: M:Unosquare.Net.CookieCollection.GetEnumerator
-  fullName: Unosquare.Net.CookieCollection.GetEnumerator()
-  nameWithType: CookieCollection.GetEnumerator()
-- uid: Unosquare.Net.CookieCollection.GetEnumerator*
-  name: GetEnumerator
-  href: api/Unosquare.Net.CookieCollection.html#Unosquare_Net_CookieCollection_GetEnumerator_
-  commentId: Overload:Unosquare.Net.CookieCollection.GetEnumerator
-  isSpec: "True"
-  fullName: Unosquare.Net.CookieCollection.GetEnumerator
-  nameWithType: CookieCollection.GetEnumerator
 - uid: Unosquare.Net.CookieCollection.IsReadOnly
   name: IsReadOnly
   href: api/Unosquare.Net.CookieCollection.html#Unosquare_Net_CookieCollection_IsReadOnly
