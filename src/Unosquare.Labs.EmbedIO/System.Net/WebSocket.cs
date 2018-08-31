@@ -60,8 +60,6 @@
         private string _base64Key;
 
         private CompressionMethod _compression = CompressionMethod.None;
-        private bool _extensionsRequested;
-        private bool _inContinuation;
         private volatile WebSocketState _readyState = WebSocketState.Connecting;
         private WebSocketContext _context;
         private bool _enableRedirection;
@@ -410,11 +408,11 @@
             }
         }
 
-        internal bool InContinuation => _inContinuation;
+        internal bool InContinuation { get; private set; }
 
-        internal bool IsClient { get; private set; }
+        internal bool IsClient { get; }
 
-        internal bool IsExtensionsRequested => _extensionsRequested;
+        internal bool IsExtensionsRequested { get; private set; }
 
         internal CookieCollection CookieCollection { get; } = new CookieCollection();
 
@@ -489,7 +487,7 @@
         /// </para></remarks>
         public async Task ConnectAsync(CancellationToken ct = default)
         {
-            if (!_validator.CheckIfAvailable(out string msg, true, false, true, false, false))
+            if (!_validator.CheckIfAvailable(out var msg, true, false, true, false, false))
             {
                 msg.Error();
                 Error("An error has occurred in connecting.");
@@ -554,17 +552,16 @@
             if (string.IsNullOrEmpty(message))
                 return await PingAsync();
 
-            var msg = WebSocketValidator.CheckPingParameter(message, out byte[] data);
+            var msg = WebSocketValidator.CheckPingParameter(message, out var data);
 
-            if (msg != null)
-            {
-                msg.Error();
-                Error("An error has occurred in sending a ping.");
+            if (msg == null)
+                return await PingAsync(WebSocketFrame.CreatePingFrame(data, IsClient).ToArray(), _waitTime);
 
-                return false;
-            }
+            msg.Error();
+            Error("An error has occurred in sending a ping.");
 
-            return await PingAsync(WebSocketFrame.CreatePingFrame(data, IsClient).ToArray(), _waitTime);
+            return false;
+
         }
 
         /// <summary>
@@ -750,13 +747,10 @@
             return ret;
         }
 
-        private static bool IsOpcodeReserved(CloseStatusCode code)
-        {
-            return code == CloseStatusCode.Undefined ||
-                   code == CloseStatusCode.NoStatus ||
-                   code == CloseStatusCode.Abnormal ||
-                   code == CloseStatusCode.TlsHandshakeFailure;
-        }
+        private static bool IsOpcodeReserved(CloseStatusCode code) => code == CloseStatusCode.Undefined ||
+                                                                      code == CloseStatusCode.NoStatus ||
+                                                                      code == CloseStatusCode.Abnormal ||
+                                                                      code == CloseStatusCode.TlsHandshakeFailure;
 
         // As server
         private async Task<bool> AcceptHandshakeAsync()
@@ -866,13 +860,11 @@
             }
 
             var len = buff.Length;
-            if (len > 2)
-            {
-                buff.Length = len - 2;
-                return buff.ToString();
-            }
 
-            return null;
+            if (len <= 2) return null;
+
+            buff.Length = len - 2;
+            return buff.ToString();
         }
 
         // As client
@@ -886,9 +878,9 @@
 
             headers["Sec-WebSocket-Key"] = _base64Key;
 
-            _extensionsRequested = _compression != CompressionMethod.None;
+            IsExtensionsRequested = _compression != CompressionMethod.None;
 
-            if (_extensionsRequested)
+            if (IsExtensionsRequested)
                 headers["Sec-WebSocket-Extensions"] = CreateExtensions();
 
             headers["Sec-WebSocket-Version"] = Version;
@@ -920,7 +912,7 @@
             await SetClientStream();
             var res = await SendHandshakeRequestAsync();
 
-            if (!_validator.CheckHandshakeResponse(res, out string msg))
+            if (!_validator.CheckHandshakeResponse(res, out var msg))
             {
                 msg.Error();
                 Fatal("An error has occurred while connecting.", CloseStatusCode.ProtocolError);
@@ -928,7 +920,7 @@
                 return false;
             }
 
-            if (_extensionsRequested)
+            if (IsExtensionsRequested)
                 ProcessSecWebSocketExtensionsServerHeader(res.Headers["Sec-WebSocket-Extensions"]);
 
             ProcessCookies(res.Cookies);
@@ -1105,7 +1097,7 @@
 
         private bool ProcessFragmentFrame(WebSocketFrame frame)
         {
-            if (!_inContinuation)
+            if (!InContinuation)
             {
                 // Must process first fragment.
                 if (frame.IsContinuation)
@@ -1114,7 +1106,7 @@
                 _fragmentsOpcode = frame.Opcode;
                 _fragmentsCompressed = frame.IsCompressed;
                 _fragmentsBuffer = new MemoryStream();
-                _inContinuation = true;
+                InContinuation = true;
             }
 
             using (var input = new MemoryStream(frame.PayloadData.ApplicationData))
@@ -1132,7 +1124,7 @@
                 }
 
                 _fragmentsBuffer = null;
-                _inContinuation = false;
+                InContinuation = false;
             }
 
             return true;
@@ -1189,6 +1181,7 @@
             foreach (var e in value.SplitHeaderValue(Strings.CommaSplitChar))
             {
                 var ext = e.Trim();
+
                 if (!comp && ext.IsCompressionExtension(CompressionMethod.Deflate))
                 {
                     _compression = CompressionMethod.Deflate;
@@ -1249,7 +1242,7 @@
             {
                 _fragmentsBuffer.Dispose();
                 _fragmentsBuffer = null;
-                _inContinuation = false;
+                InContinuation = false;
             }
 
             if (_receivePong != null)
@@ -1401,13 +1394,12 @@
         {
             lock (_forState)
             {
-                if (_readyState != WebSocketState.Open)
-                {
-                    "The sending has been interrupted.".Error();
-                    return false;
-                }
+                if (_readyState == WebSocketState.Open)
+                    return SendBytes(new WebSocketFrame(fin, opcode, data, compressed, IsClient).ToArray(), ct);
 
-                return SendBytes(new WebSocketFrame(fin, opcode, data, compressed, IsClient).ToArray(), ct);
+                "The sending has been interrupted.".Error();
+                return false;
+
             }
         }
 
@@ -1429,21 +1421,23 @@
         // As client
         private async Task<HttpResponse> SendHandshakeRequestAsync()
         {
-            var req = CreateHandshakeRequest();
-            var res = await req.GetResponse(_stream);
-
-            if (res.IsUnauthorized)
+            while (true)
             {
-                throw new InvalidOperationException("Authentication is not supported");
-            }
+                var req = CreateHandshakeRequest();
+                var res = await req.GetResponse(_stream);
 
-            if (!res.IsRedirect) return res;
+                if (res.IsUnauthorized)
+                {
+                    throw new InvalidOperationException("Authentication is not supported");
+                }
 
-            var url = res.Headers["Location"];
-            $"Received a redirection to '{url}'.".Warn();
+                if (!res.IsRedirect) return res;
 
-            if (_enableRedirection)
-            {
+                var url = res.Headers["Location"];
+                $"Received a redirection to '{url}'.".Warn();
+
+                if (!_enableRedirection) return res;
+
                 if (string.IsNullOrEmpty(url))
                 {
                     "No url to redirect is located.".Error();
@@ -1464,10 +1458,7 @@
 #endif
 
                 await SetClientStream();
-                return await SendHandshakeRequestAsync();
             }
-
-            return res;
         }
 
         // As server

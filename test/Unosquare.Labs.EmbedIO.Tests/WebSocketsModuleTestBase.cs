@@ -14,7 +14,6 @@
 
     public abstract class WebSocketsModuleTestBase : FixtureBase
     {
-        protected readonly bool IgnoreWebConnect = Swan.Runtime.OS != Swan.OperatingSystem.Windows;
         private readonly string _url;
 
         protected WebSocketsModuleTestBase(RoutingStrategy strategy, Action<WebServer> builder, string url)
@@ -22,6 +21,8 @@
         {
             _url = url;
         }
+
+        protected bool IgnoreWebConnect => Swan.Runtime.OS != Swan.OperatingSystem.Windows;
 
         protected async Task ConnectWebSocket()
         {

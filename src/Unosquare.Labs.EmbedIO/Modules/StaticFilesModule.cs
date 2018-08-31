@@ -360,7 +360,7 @@
         {
             var fileExtension = Path.GetExtension(localPath);
 
-            if (MimeTypes.Value.ContainsKey(fileExtension))
+            if (!string.IsNullOrWhiteSpace(fileExtension) && MimeTypes.Value.ContainsKey(fileExtension))
                 response.ContentType = MimeTypes.Value[fileExtension];
 
             SetDefaultCacheHeaders(response);

@@ -43,6 +43,7 @@
 
                 if (Count == 0)
                     return null;
+
                 var list = new List<Cookie>(this);
 
                 list.Sort(CompareCookieWithinSorted);
@@ -93,9 +94,6 @@
 
             ((IList)this).CopyTo(array, index);
         }
-
-        /// <inheritdoc />
-        public IEnumerator GetEnumerator() => base.GetEnumerator();
 
         internal static string GetValue(string nameAndValue, bool unquote = false)
         {

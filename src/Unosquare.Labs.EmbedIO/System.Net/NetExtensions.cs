@@ -175,9 +175,6 @@
             => collection[name]?.Split(Strings.CommaSplitChar)
                    .Any(val => val.Trim().Equals(value, StringComparison.OrdinalIgnoreCase)) == true;
         
-        internal static bool Contains(this string value, params char[] chars)
-            => chars?.Length == 0 || (!string.IsNullOrEmpty(value) && value.IndexOfAny(chars) > -1);
-
         internal static bool IsCompressionExtension(this string value, CompressionMethod method) =>
             value.StartsWith(method.ToExtensionString());
     }

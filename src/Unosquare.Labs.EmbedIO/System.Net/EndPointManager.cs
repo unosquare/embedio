@@ -106,7 +106,7 @@
                     var iphost = new IPHostEntry
                     {
                         HostName = host,
-                        AddressList = Dns.GetHostAddressesAsync(host).Result
+                        AddressList = Dns.GetHostAddressesAsync(host).Result,
                     };
 
                     addr = iphost.AddressList[0];

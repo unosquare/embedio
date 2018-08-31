@@ -17,10 +17,7 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "empty")]
-        public bool GetEmpty()
-        {
-            return this.JsonResponse(new {Ok = true});
-        }
+        public bool GetEmpty() => this.JsonResponse(new {Ok = true});
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regex")]
         public bool GetPeople()
@@ -40,14 +37,7 @@
         {
             try
             {
-                var item = PeopleRepository.Database.FirstOrDefault(p => p.Key == id);
-
-                if (item != null)
-                {
-                    return this.JsonResponse(item);
-                }
-
-                throw new KeyNotFoundException($"Key Not Found: {id}");
+                return CheckPerson(id);
             }
             catch (Exception ex)
             {
@@ -60,19 +50,7 @@
         {
             try
             {
-                if (id.HasValue == false)
-                {
-                    return this.JsonResponse(PeopleRepository.Database);
-                }
-
-                var item = PeopleRepository.Database.FirstOrDefault(p => p.Key == id);
-
-                if (item != null)
-                {
-                    return this.JsonResponse(item);
-                }
-
-                throw new KeyNotFoundException($"Key Not Found: {id}");
+                return id.HasValue ? CheckPerson(id.Value) : this.JsonResponse(PeopleRepository.Database);
             }
             catch (Exception ex)
             {
@@ -85,14 +63,7 @@
         {
             try
             {
-                var item = PeopleRepository.Database.FirstOrDefault(p => p.Key == id);
-
-                if (item != null)
-                {
-                    return await this.JsonResponseAsync(item);
-                }
-
-                throw new KeyNotFoundException($"Key Not Found: {id}");
+                return CheckPerson(id);
             }
             catch (Exception ex)
             {
@@ -139,6 +110,14 @@
             {
                 return this.JsonExceptionResponse(ex);
             }
+        }
+        
+        private bool CheckPerson(int id)
+        {
+            var item = PeopleRepository.Database.FirstOrDefault(p => p.Key == id);
+
+            if (item == null) throw new KeyNotFoundException($"Key Not Found: {id}");
+            return this.JsonResponse(item);
         }
     }
 }

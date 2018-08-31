@@ -27,14 +27,8 @@
             {
                 // read the middle segment
                 var segment = Request.Url.Segments.Reverse().Skip(1).First().Replace("/", string.Empty);
-
-                // otherwise, we need to parse the key and respond with the entity accordingly
-                if (int.TryParse(segment, out var key) && PeopleRepository.Database.Any(p => p.Key == key))
-                {
-                    return this.JsonResponse(PeopleRepository.Database.FirstOrDefault(p => p.Key == key));
-                }
-
-                throw new KeyNotFoundException($"Key Not Found: {segment}");
+                
+                return CheckPerson(segment);
             }
             catch (Exception ex)
             {
@@ -54,13 +48,7 @@
                 if (lastSegment.EndsWith("/"))
                     return this.JsonResponse(PeopleRepository.Database);
 
-                // otherwise, we need to parse the key and respond with the entity accordingly
-                if (int.TryParse(lastSegment, out var key) && PeopleRepository.Database.Any(p => p.Key == key))
-                {
-                    return this.JsonResponse(PeopleRepository.Database.FirstOrDefault(p => p.Key == key));
-                }
-
-                throw new KeyNotFoundException($"Key Not Found: {lastSegment}");
+                return CheckPerson(lastSegment);
             }
             catch (Exception ex)
             {
@@ -110,18 +98,22 @@
                 if (lastSegment.EndsWith("/"))
                     return this.JsonResponseAsync(PeopleRepository.Database);
 
-                // otherwise, we need to parse the key and respond with the entity accordingly
-                if (int.TryParse(lastSegment, out var key) && PeopleRepository.Database.Any(p => p.Key == key))
-                {
-                    return this.JsonResponseAsync(PeopleRepository.Database.FirstOrDefault(p => p.Key == key));
-                }
-
-                throw new KeyNotFoundException($"Key Not Found: {lastSegment}");
+                return Task.FromResult(CheckPerson(lastSegment));
             }
             catch (Exception ex)
             {
                 return this.JsonExceptionResponseAsync(ex);
             }
+        }
+        
+        private bool CheckPerson(string personKey)
+        {
+            if (int.TryParse(personKey, out var key) && PeopleRepository.Database.Any(p => p.Key == key))
+            {
+                return this.JsonResponse(PeopleRepository.Database.FirstOrDefault(p => p.Key == key));
+            }
+
+            throw new KeyNotFoundException($"Key Not Found: {personKey}");
         }
     }
 

@@ -13,16 +13,18 @@
     {
         public MethodCache(MethodInfo methodInfo)
         {
+            var type = methodInfo?.DeclaringType ?? throw new ArgumentNullException(nameof(methodInfo));
+
             MethodInfo = methodInfo;
-            ControllerName = methodInfo.DeclaringType.FullName;
-            SetDefaultHeadersMethodInfo = methodInfo.DeclaringType
+            ControllerName = type.FullName;
+            SetDefaultHeadersMethodInfo = type
                 .GetMethod(nameof(WebApiController.SetDefaultHeaders));
             IsTask = methodInfo.ReturnType == typeof(Task<bool>);
             AdditionalParameters = methodInfo.GetParameters()
                 .Select(x => new AddtionalParameterInfo(x))
                 .ToList();
 
-            var invokeDelegate = BuildDelegate(methodInfo, IsTask);
+            var invokeDelegate = BuildDelegate(methodInfo, IsTask, type);
 
             if (IsTask)
                 AsyncInvoke = (AsyncDelegate) invokeDelegate;
@@ -42,7 +44,7 @@
         public AsyncDelegate AsyncInvoke { get; }
         public SyncDelegate SyncInvoke { get; }
 
-        private static Delegate BuildDelegate(MethodInfo methodInfo, bool isAsync)
+        private static Delegate BuildDelegate(MethodInfo methodInfo, bool isAsync, Type type)
         {
             var instanceExpression = Expression.Parameter(typeof(object), "instance");
             var argumentsExpression = Expression.Parameter(typeof(object[]), "arguments");
@@ -56,7 +58,7 @@
                 .ToList();
 
             var callExpression = Expression.Call(
-                Expression.Convert(instanceExpression, methodInfo.DeclaringType),
+                Expression.Convert(instanceExpression, type),
                 methodInfo,
                 argumentExpressions);
 
