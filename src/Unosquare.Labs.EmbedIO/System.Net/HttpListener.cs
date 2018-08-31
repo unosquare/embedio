@@ -13,7 +13,7 @@
     /// Based on MONO HttpListner class.
     /// </summary>
     /// <seealso cref="IDisposable" />
-    public sealed class HttpListener : IHttpListener, IDisposable
+    public sealed class HttpListener : IHttpListener
     {
         private readonly ConcurrentDictionary<Guid, HttpListenerContext> _ctxQueue;
         private readonly ConcurrentDictionary<HttpConnection, object> _connections;

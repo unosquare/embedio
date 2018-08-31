@@ -1,12 +1,14 @@
-﻿namespace Unosquare.Labs.EmbedIO
+﻿
+namespace Unosquare.Labs.EmbedIO
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
     /// <summary>
     /// Interface to create a HTTP Listener.
     /// </summary>
-    public interface IHttpListener
+    public interface IHttpListener : IDisposable
     {
         /// <summary>
         /// Gets or sets a value indicating whether the listener should ignore write exceptions.

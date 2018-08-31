@@ -266,7 +266,7 @@
 
             try
             {
-                (Listener as IDisposable).Dispose();
+                Listener.Dispose();
             }
             finally
             {
