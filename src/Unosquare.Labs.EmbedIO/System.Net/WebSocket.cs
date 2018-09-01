@@ -421,7 +421,9 @@
         /// <returns>
         /// A task that represents the asynchronous closes websocket connection.
         /// </returns>
-        public async Task CloseAsync(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null,
+        public async Task CloseAsync(
+            CloseStatusCode code = CloseStatusCode.Undefined, 
+            string reason = null,
             CancellationToken ct = default)
         {
             if (!_validator.CheckIfAvailable())
@@ -640,7 +642,10 @@
         }
 
         // As server
-        internal async Task CloseAsync(CloseEventArgs e, byte[] frameAsBytes, bool receive,
+        internal async Task CloseAsync(
+            CloseEventArgs e, 
+            byte[] frameAsBytes, 
+            bool receive,
             CancellationToken ct = default)
         {
             lock (_forState)
@@ -733,7 +738,7 @@
         {
             $"A request from {_context.UserEndPoint}:\n{_context}".Debug();
 
-            if (!_validator.CheckHandshakeRequest(_context, out string msg))
+            if (!_validator.CheckHandshakeRequest(_context, out var msg))
             {
                 await SendHttpResponseAsync(CreateHandshakeFailureResponse(HttpStatusCode.BadRequest));
 

@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="LiteLib" Version="0.15.2" />
-    <PackageReference Include="Tubular.ServerSide" Version="1.4.5" />
+    <PackageReference Include="Tubular.ServerSide" Version="1.5.0" />
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
