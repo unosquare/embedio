@@ -539,7 +539,6 @@
             Error("An error has occurred in sending a ping.");
 
             return false;
-
         }
 
         /// <summary>
@@ -623,65 +622,7 @@
 
             return Convert.ToBase64String(src);
         }
-
-        // As server
-        internal async Task CloseAsync(HttpResponse response)
-        {
-            lock (_forState)
-            {
-                _readyState = WebSocketState.Closing;
-            }
-
-            await SendHttpResponseAsync(response);
-            ReleaseServerResources();
-
-            lock (_forState)
-            {
-                _readyState = WebSocketState.Closed;
-            }
-        }
-
-        // As server
-        internal async Task CloseAsync(
-            CloseEventArgs e, 
-            byte[] frameAsBytes, 
-            bool receive,
-            CancellationToken ct = default)
-        {
-            lock (_forState)
-            {
-                if (_readyState == WebSocketState.Closing)
-                {
-                    "The closing is already in progress.".Debug();
-                    return;
-                }
-
-                if (_readyState == WebSocketState.Closed)
-                {
-                    "The connection has been closed.".Debug();
-                    return;
-                }
-
-                _readyState = WebSocketState.Closing;
-            }
-
-            // TODO: Fix
-            e.WasClean = await CloseHandshakeAsync(frameAsBytes, receive, false, ct).ConfigureAwait(false);
-            ReleaseServerResources();
-            ReleaseCommonResources();
-
-            _readyState = WebSocketState.Closed;
-
-            try
-            {
-                OnClose?.Invoke(this, e);
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-            }
-        }
-
+        
         // As client
         internal bool ValidateSecWebSocketAcceptHeader(string value) =>
             value?.TrimStart() == CreateResponseKey(_base64Key);
@@ -1042,7 +983,7 @@
             if (cookies.Count == 0)
                 return;
 
-            foreach (Cookie cookie in CookieCollection)
+            foreach (var cookie in CookieCollection)
             {
                 if (CookieCollection[cookie.Name] == null)
                 {
@@ -1375,11 +1316,11 @@
             {
                 if (_readyState == WebSocketState.Open)
                     return SendBytes(new WebSocketFrame(fin, opcode, data, compressed, IsClient).ToArray(), ct);
-
-                "The sending has been interrupted.".Error();
-                return false;
-
             }
+            
+            "The sending has been interrupted.".Error();
+
+            return false;
         }
 
         private bool SendBytes(byte[] bytes, CancellationToken ct)
