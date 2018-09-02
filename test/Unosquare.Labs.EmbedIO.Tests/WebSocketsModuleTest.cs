@@ -71,6 +71,7 @@
             var buffer = System.Text.Encoding.UTF8.GetBytes("HOLA");
             await clientSocket.SendAsync(buffer, Opcode.Text, ct.Token);
             await Task.Delay(500, ct.Token);
+            await clientSocket.CloseAsync(CloseStatusCode.Normal, ct: ct.Token);
 #endif
         }
     }

@@ -336,8 +336,14 @@
                     }
                 }
 #else
-                webSocketContext.WebSocket.OnMessage += (s, e) =>
+                webSocketContext.WebSocket.OnMessage += async (s, e) =>
                 {
+                    if (e.Opcode == Opcode.Close)
+                    {
+                        await webSocketContext.WebSocket.CloseAsync(CloseStatusCode.Normal, ct: CancellationToken);
+                        return;
+                    }
+
                     var isText = e.IsText ? WebSocketMessageType.Text : WebSocketMessageType.Binary;
 
                     OnMessageReceived(webSocketContext,
@@ -461,7 +467,7 @@
 #if NET47
                 await webSocket.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken);
 #else
-                await webSocket.WebSocket.CloseAsync(ct: CancellationToken);
+                await webSocket.WebSocket.CloseAsync(CloseStatusCode.Normal, ct: CancellationToken);
 #endif
             }
             catch (Exception ex)
