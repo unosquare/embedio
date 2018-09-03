@@ -20,6 +20,6 @@
         /// <summary>
         /// The simple strategy
         /// </summary>
-        Simple
+        Simple,
     }
 }

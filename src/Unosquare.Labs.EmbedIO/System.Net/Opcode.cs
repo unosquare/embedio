@@ -38,6 +38,6 @@
         /// <summary>
         /// Equivalent to numeric value 10. Indicates pong frame.
         /// </summary>
-        Pong = 0xa
+        Pong = 0xa,
     }
 }

@@ -17,7 +17,7 @@
                 this[localPath] = new RamCacheEntry
                 {
                     LastModified = fileDate,
-                    Buffer = memoryStream.ToArray()
+                    Buffer = memoryStream.ToArray(),
                 };
             }
         }
