@@ -530,12 +530,12 @@
             if (string.IsNullOrEmpty(message))
                 return await PingAsync();
 
-            var msg = WebSocketValidator.CheckPingParameter(message, out var data);
+            var data = Encoding.UTF8.GetBytes(message);
 
-            if (msg == null)
+            if (data.Length <= 125)
                 return await PingAsync(WebSocketFrame.CreatePingFrame(data, IsClient).ToArray(), _waitTime);
 
-            msg.Error();
+            "A message has greater than the allowable max size.".Error();
             Error("An error has occurred in sending a ping.");
 
             return false;

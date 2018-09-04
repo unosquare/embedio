@@ -359,6 +359,7 @@
 
             _context.Connection.Close(force);
         }
+
         private void WriteHeaders(Stream ms)
         {
             var writer = new StreamWriter(ms, Encoding.UTF8, 256);

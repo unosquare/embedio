@@ -46,11 +46,11 @@
             set => throw new NotSupportedException();
         }
 
-        /// <inheritdoc />
         /// <summary>
         /// Closes this instance.
         /// </summary>
 #if NET46
+        /// <inheritdoc />
         public override void Close()
 #else
         public void Close()
