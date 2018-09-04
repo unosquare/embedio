@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class HttpListenerRequest
+    <title>Class HttpRequest
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class HttpListenerRequest
+    <meta name="title" content="Class HttpRequest
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.39.1.0">
     
@@ -77,18 +77,18 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Unosquare.Net.HttpListenerRequest">
+            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.HttpRequest">
   
   
-  <h1 id="Unosquare_Net_HttpListenerRequest" data-uid="Unosquare.Net.HttpListenerRequest" class="text-break">Class HttpListenerRequest
+  <h1 id="Unosquare_Labs_EmbedIO_HttpRequest" data-uid="Unosquare.Labs.EmbedIO.HttpRequest" class="text-break">Class HttpRequest
   </h1>
-  <div class="markdown level0 summary"><p>Represents an HTTP Listener Request.</p>
+  <div class="markdown level0 summary"><p>Represents a wrapper for HttpListenerContext.Request.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">HttpListenerRequest</span></div>
+    <div class="level1"><span class="xref">HttpRequest</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -118,44 +118,48 @@
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Net.html">Unosquare.Net</a></h6>
-  <h5 id="Unosquare_Net_HttpListenerRequest_syntax">Syntax</h5>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.html">Unosquare.Labs.EmbedIO</a></h6>
+  <h5 id="Unosquare_Labs_EmbedIO_HttpRequest_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class HttpListenerRequest : IHttpRequest</code></pre>
+    <pre><code class="lang-csharp hljs">public class HttpRequest : IHttpRequest</code></pre>
   </div>
-  <h3 id="properties">Properties
+  <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_AcceptTypes_" data-uid="Unosquare.Net.HttpListenerRequest.AcceptTypes*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_AcceptTypes" data-uid="Unosquare.Net.HttpListenerRequest.AcceptTypes">AcceptTypes</h4>
-  <div class="markdown level1 summary"><p>Gets the MIME accept types.</p>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest__ctor_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.#ctor*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest__ctor_HttpListenerContext_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.#ctor(HttpListenerContext)">HttpRequest(HttpListenerContext)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.HttpRequest.html">HttpRequest</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string[] AcceptTypes { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public HttpRequest(HttpListenerContext context)</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
+        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
-        <td><p>The accept types.</p>
+        <td><span class="xref">HttpListenerContext</span></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
 </td>
       </tr>
     </tbody>
   </table>
+  <h3 id="properties">Properties
+  </h3>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_ContentEncoding_" data-uid="Unosquare.Net.HttpListenerRequest.ContentEncoding*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_ContentEncoding" data-uid="Unosquare.Net.HttpListenerRequest.ContentEncoding">ContentEncoding</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest_ContentEncoding_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.ContentEncoding*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest_ContentEncoding" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.ContentEncoding">ContentEncoding</h4>
   <div class="markdown level1 summary"><p>Gets the content encoding.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -181,8 +185,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_ContentLength64_" data-uid="Unosquare.Net.HttpListenerRequest.ContentLength64*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_ContentLength64" data-uid="Unosquare.Net.HttpListenerRequest.ContentLength64">ContentLength64</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest_ContentLength64_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.ContentLength64*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest_ContentLength64" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.ContentLength64">ContentLength64</h4>
   <div class="markdown level1 summary"><p>Gets the content length64.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -208,8 +212,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_ContentType_" data-uid="Unosquare.Net.HttpListenerRequest.ContentType*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_ContentType" data-uid="Unosquare.Net.HttpListenerRequest.ContentType">ContentType</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest_ContentType_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.ContentType*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest_ContentType" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.ContentType">ContentType</h4>
   <div class="markdown level1 summary"><p>Gets the type of the content.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -235,8 +239,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_Cookies_" data-uid="Unosquare.Net.HttpListenerRequest.Cookies*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_Cookies" data-uid="Unosquare.Net.HttpListenerRequest.Cookies">Cookies</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest_Cookies_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.Cookies*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest_Cookies" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.Cookies">Cookies</h4>
   <div class="markdown level1 summary"><p>Gets the cookies.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -262,8 +266,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_HasEntityBody_" data-uid="Unosquare.Net.HttpListenerRequest.HasEntityBody*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_HasEntityBody" data-uid="Unosquare.Net.HttpListenerRequest.HasEntityBody">HasEntityBody</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest_HasEntityBody_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.HasEntityBody*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest_HasEntityBody" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.HasEntityBody">HasEntityBody</h4>
   <div class="markdown level1 summary"><p>Gets a value indicating whether this instance has entity body.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -289,8 +293,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_Headers_" data-uid="Unosquare.Net.HttpListenerRequest.Headers*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_Headers" data-uid="Unosquare.Net.HttpListenerRequest.Headers">Headers</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest_Headers_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.Headers*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest_Headers" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.Headers">Headers</h4>
   <div class="markdown level1 summary"><p>Gets the headers.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -316,8 +320,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_HttpMethod_" data-uid="Unosquare.Net.HttpListenerRequest.HttpMethod*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_HttpMethod" data-uid="Unosquare.Net.HttpListenerRequest.HttpMethod">HttpMethod</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest_HttpMethod_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.HttpMethod*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest_HttpMethod" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.HttpMethod">HttpMethod</h4>
   <div class="markdown level1 summary"><p>Gets the HTTP method.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -343,8 +347,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_InputStream_" data-uid="Unosquare.Net.HttpListenerRequest.InputStream*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_InputStream" data-uid="Unosquare.Net.HttpListenerRequest.InputStream">InputStream</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest_InputStream_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.InputStream*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest_InputStream" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.InputStream">InputStream</h4>
   <div class="markdown level1 summary"><p>Gets the input stream.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -370,8 +374,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_IsAuthenticated_" data-uid="Unosquare.Net.HttpListenerRequest.IsAuthenticated*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_IsAuthenticated" data-uid="Unosquare.Net.HttpListenerRequest.IsAuthenticated">IsAuthenticated</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest_IsAuthenticated_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.IsAuthenticated*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest_IsAuthenticated" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.IsAuthenticated">IsAuthenticated</h4>
   <div class="markdown level1 summary"><p>Gets a value indicating whether this instance is authenticated.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -397,8 +401,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_IsLocal_" data-uid="Unosquare.Net.HttpListenerRequest.IsLocal*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_IsLocal" data-uid="Unosquare.Net.HttpListenerRequest.IsLocal">IsLocal</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest_IsLocal_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.IsLocal*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest_IsLocal" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.IsLocal">IsLocal</h4>
   <div class="markdown level1 summary"><p>Gets a value indicating whether this instance is local.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -424,8 +428,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_IsWebSocketRequest_" data-uid="Unosquare.Net.HttpListenerRequest.IsWebSocketRequest*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_IsWebSocketRequest" data-uid="Unosquare.Net.HttpListenerRequest.IsWebSocketRequest">IsWebSocketRequest</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest_IsWebSocketRequest_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.IsWebSocketRequest*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest_IsWebSocketRequest" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.IsWebSocketRequest">IsWebSocketRequest</h4>
   <div class="markdown level1 summary"><p>Gets a value indicating whether this instance is web socket request.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -451,8 +455,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_KeepAlive_" data-uid="Unosquare.Net.HttpListenerRequest.KeepAlive*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_KeepAlive" data-uid="Unosquare.Net.HttpListenerRequest.KeepAlive">KeepAlive</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest_KeepAlive_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.KeepAlive*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest_KeepAlive" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.KeepAlive">KeepAlive</h4>
   <div class="markdown level1 summary"><p>Gets a value indicating whether [keep alive].</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -478,8 +482,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_LocalEndPoint_" data-uid="Unosquare.Net.HttpListenerRequest.LocalEndPoint*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_LocalEndPoint" data-uid="Unosquare.Net.HttpListenerRequest.LocalEndPoint">LocalEndPoint</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest_LocalEndPoint_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.LocalEndPoint*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest_LocalEndPoint" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.LocalEndPoint">LocalEndPoint</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -503,8 +507,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_ProtocolVersion_" data-uid="Unosquare.Net.HttpListenerRequest.ProtocolVersion*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_ProtocolVersion" data-uid="Unosquare.Net.HttpListenerRequest.ProtocolVersion">ProtocolVersion</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest_ProtocolVersion_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.ProtocolVersion*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest_ProtocolVersion" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.ProtocolVersion">ProtocolVersion</h4>
   <div class="markdown level1 summary"><p>Gets the protocol version.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -530,8 +534,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_QueryString_" data-uid="Unosquare.Net.HttpListenerRequest.QueryString*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_QueryString" data-uid="Unosquare.Net.HttpListenerRequest.QueryString">QueryString</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest_QueryString_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.QueryString*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest_QueryString" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.QueryString">QueryString</h4>
   <div class="markdown level1 summary"><p>Gets the query string.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -557,8 +561,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_RawUrl_" data-uid="Unosquare.Net.HttpListenerRequest.RawUrl*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_RawUrl" data-uid="Unosquare.Net.HttpListenerRequest.RawUrl">RawUrl</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest_RawUrl_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.RawUrl*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest_RawUrl" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.RawUrl">RawUrl</h4>
   <div class="markdown level1 summary"><p>Gets the raw URL.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -584,8 +588,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_RemoteEndPoint_" data-uid="Unosquare.Net.HttpListenerRequest.RemoteEndPoint*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_RemoteEndPoint" data-uid="Unosquare.Net.HttpListenerRequest.RemoteEndPoint">RemoteEndPoint</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest_RemoteEndPoint_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.RemoteEndPoint*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest_RemoteEndPoint" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.RemoteEndPoint">RemoteEndPoint</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -609,8 +613,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_Url_" data-uid="Unosquare.Net.HttpListenerRequest.Url*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_Url" data-uid="Unosquare.Net.HttpListenerRequest.Url">Url</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest_Url_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.Url*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest_Url" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.Url">Url</h4>
   <div class="markdown level1 summary"><p>Gets the URL.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -636,8 +640,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_UrlReferrer_" data-uid="Unosquare.Net.HttpListenerRequest.UrlReferrer*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_UrlReferrer" data-uid="Unosquare.Net.HttpListenerRequest.UrlReferrer">UrlReferrer</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest_UrlReferrer_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.UrlReferrer*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest_UrlReferrer" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.UrlReferrer">UrlReferrer</h4>
   <div class="markdown level1 summary"><p>Gets the URL referrer.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -663,8 +667,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerRequest_UserAgent_" data-uid="Unosquare.Net.HttpListenerRequest.UserAgent*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_UserAgent" data-uid="Unosquare.Net.HttpListenerRequest.UserAgent">UserAgent</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpRequest_UserAgent_" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.UserAgent*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpRequest_UserAgent" data-uid="Unosquare.Labs.EmbedIO.HttpRequest.UserAgent">UserAgent</h4>
   <div class="markdown level1 summary"><p>Gets the user agent.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -688,88 +692,13 @@
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Unosquare_Net_HttpListenerRequest_UserHostAddress_" data-uid="Unosquare.Net.HttpListenerRequest.UserHostAddress*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_UserHostAddress" data-uid="Unosquare.Net.HttpListenerRequest.UserHostAddress">UserHostAddress</h4>
-  <div class="markdown level1 summary"><p>Gets the user host address.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string UserHostAddress { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Net_HttpListenerRequest_UserHostName_" data-uid="Unosquare.Net.HttpListenerRequest.UserHostName*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_UserHostName" data-uid="Unosquare.Net.HttpListenerRequest.UserHostName">UserHostName</h4>
-  <div class="markdown level1 summary"><p>Gets the name of the user host.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string UserHostName { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><p>The name of the user host.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Net_HttpListenerRequest_UserLanguages_" data-uid="Unosquare.Net.HttpListenerRequest.UserLanguages*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_UserLanguages" data-uid="Unosquare.Net.HttpListenerRequest.UserLanguages">UserLanguages</h4>
-  <div class="markdown level1 summary"><p>Gets the user languages.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string[] UserLanguages { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Unosquare.Labs.EmbedIO.IHttpRequest.html">IHttpRequest</a>
+  </div>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpRequest.html">IHttpRequest</a></div>
   </div>
 
 <h3 id="disqus_thread">Comments</h3>

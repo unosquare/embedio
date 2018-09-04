@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class CorsModule
+    <title>Class HttpListenerFactory
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class CorsModule
+    <meta name="title" content="Class HttpListenerFactory
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.39.1.0">
     
@@ -77,52 +77,21 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.Modules.CorsModule">
+            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.HttpListenerFactory">
   
   
-  <h1 id="Unosquare_Labs_EmbedIO_Modules_CorsModule" data-uid="Unosquare.Labs.EmbedIO.Modules.CorsModule" class="text-break">Class CorsModule
+  <h1 id="Unosquare_Labs_EmbedIO_HttpListenerFactory" data-uid="Unosquare.Labs.EmbedIO.HttpListenerFactory" class="text-break">Class HttpListenerFactory
   </h1>
-  <div class="markdown level0 summary"><p>CORS control Module
-Cross-origin resource sharing (CORS) is a mechanism that allows restricted resources (e.g. fonts) 
-on a web page to be requested from another domain outside the domain from which the resource originated.</p>
+  <div class="markdown level0 summary"><p>Represents a Factory to create a HTTP Listener.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html">WebModuleBase</a></div>
-    <div class="level2"><span class="xref">CorsModule</span></div>
-  </div>
-  <div classs="implements">
-    <h5>Implements</h5>
-    <div><a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html">IWebModule</a></div>
+    <div class="level1"><span class="xref">HttpListenerFactory</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_Handlers">WebModuleBase.Handlers</a>
-    </div>
-    <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_Server">WebModuleBase.Server</a>
-    </div>
-    <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_IsWatchdogEnabled">WebModuleBase.IsWatchdogEnabled</a>
-    </div>
-    <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_WatchdogInterval">WebModuleBase.WatchdogInterval</a>
-    </div>
-    <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_CancellationToken">WebModuleBase.CancellationToken</a>
-    </div>
-    <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___">WebModuleBase.AddHandler(String, HttpVerbs, Func&lt;IHttpContext, CancellationToken, Task&lt;Boolean&gt;&gt;)</a>
-    </div>
-    <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_Start_System_Threading_CancellationToken_">WebModuleBase.Start(CancellationToken)</a>
-    </div>
-    <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_RunWatchdog">WebModuleBase.RunWatchdog()</a>
-    </div>
     <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
     </div>
@@ -145,23 +114,52 @@ on a web page to be requested from another domain outside the domain from which 
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.html">Unosquare.Labs.EmbedIO.Modules</a></h6>
-  <h5 id="Unosquare_Labs_EmbedIO_Modules_CorsModule_syntax">Syntax</h5>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.html">Unosquare.Labs.EmbedIO</a></h6>
+  <h5 id="Unosquare_Labs_EmbedIO_HttpListenerFactory_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class CorsModule : WebModuleBase, IWebModule</code></pre>
+    <pre><code class="lang-csharp hljs">public static class HttpListenerFactory</code></pre>
   </div>
-  <h3 id="constructors">Constructors
+  <h3 id="methods">Methods
   </h3>
   
   
-  <a id="Unosquare_Labs_EmbedIO_Modules_CorsModule__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.CorsModule.#ctor*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_CorsModule__ctor_System_String_System_String_System_String_" data-uid="Unosquare.Labs.EmbedIO.Modules.CorsModule.#ctor(System.String,System.String,System.String)">CorsModule(String, String, String)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.CorsModule.html">CorsModule</a> class.</p>
+  <a id="Unosquare_Labs_EmbedIO_HttpListenerFactory_Create_" data-uid="Unosquare.Labs.EmbedIO.HttpListenerFactory.Create*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpListenerFactory_Create" data-uid="Unosquare.Labs.EmbedIO.HttpListenerFactory.Create">Create()</h4>
+  <div class="markdown level1 summary"><p>Creates this instance with the default mode.</p>
+<p>The default HTTP Listener is Microsoft for net47 and
+netstandard2.0 target frameworks, otherwise EmbedIO.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CorsModule(string origins = &quot;*&quot;, string headers = &quot;*&quot;, string methods = &quot;*&quot;)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IHttpListener Create()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpListener.html">IHttpListener</a></td>
+        <td><p>A HTTP Listener.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_HttpListenerFactory_Create_" data-uid="Unosquare.Labs.EmbedIO.HttpListenerFactory.Create*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpListenerFactory_Create_Unosquare_Labs_EmbedIO_HttpListenerMode_" data-uid="Unosquare.Labs.EmbedIO.HttpListenerFactory.Create(Unosquare.Labs.EmbedIO.HttpListenerMode)">Create(HttpListenerMode)</h4>
+  <div class="markdown level1 summary"><p>Creates the specified mode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IHttpListener Create(HttpListenerMode mode)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -174,21 +172,25 @@ on a web page to be requested from another domain outside the domain from which 
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">origins</span></td>
-        <td><p>The origins.</p>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.HttpListenerMode.html">HttpListenerMode</a></td>
+        <td><span class="parametername">mode</span></td>
+        <td><p>The mode.</p>
 </td>
       </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">headers</span></td>
-        <td><p>The headers.</p>
-</td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
+    </thead>
+    <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">methods</span></td>
-        <td><p>The methods.</p>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpListener.html">IHttpListener</a></td>
+        <td><p>A HTTP Listener.</p>
 </td>
       </tr>
     </tbody>
@@ -203,51 +205,12 @@ on a web page to be requested from another domain outside the domain from which 
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>origins
-or
-headers
-or
-methods.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>mode - null</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h3 id="properties">Properties
-  </h3>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_Modules_CorsModule_Name_" data-uid="Unosquare.Labs.EmbedIO.Modules.CorsModule.Name*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_CorsModule_Name" data-uid="Unosquare.Labs.EmbedIO.Modules.CorsModule.Name">Name</h4>
-  <div class="markdown level1 summary"><p>Gets the friendly name of the module.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override string Name { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><p>The name.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_Name">WebModuleBase.Name</a></div>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html">IWebModule</a>
-  </div>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>

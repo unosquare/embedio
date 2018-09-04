@@ -113,7 +113,7 @@
       <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_CancellationToken">WebModuleBase.CancellationToken</a>
     </div>
     <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_System_Func_Unosquare_Net_HttpListenerContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___">WebModuleBase.AddHandler(String, HttpVerbs, Func&lt;HttpListenerContext, CancellationToken, Task&lt;Boolean&gt;&gt;)</a>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___">WebModuleBase.AddHandler(String, HttpVerbs, Func&lt;IHttpContext, CancellationToken, Task&lt;Boolean&gt;&gt;)</a>
     </div>
     <div>
       <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_Start_System_Threading_CancellationToken_">WebModuleBase.Start(CancellationToken)</a>
@@ -153,13 +153,13 @@
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_Func_Unosquare_Net_HttpListenerContext_System_Threading_CancellationToken_System_Boolean__" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.Func{Unosquare.Net.HttpListenerContext,System.Threading.CancellationToken,System.Boolean})">FallbackModule(Func&lt;HttpListenerContext, CancellationToken, Boolean&gt;)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_Threading_CancellationToken_System_Boolean__" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.Func{Unosquare.Labs.EmbedIO.IHttpContext,System.Threading.CancellationToken,System.Boolean})">FallbackModule(Func&lt;IHttpContext, CancellationToken, Boolean&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.FallbackModule.html">FallbackModule</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FallbackModule(Func&lt;HttpListenerContext, CancellationToken, bool&gt; action)</code></pre>
+    <pre><code class="lang-csharp hljs">public FallbackModule(Func&lt;IHttpContext, CancellationToken, bool&gt; action)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -172,7 +172,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
         <td><span class="parametername">action</span></td>
         <td><p>The action.</p>
 </td>

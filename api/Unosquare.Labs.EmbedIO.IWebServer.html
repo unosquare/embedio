@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Interface IWebModule
+    <title>Interface IWebServer
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Interface IWebModule
+    <meta name="title" content="Interface IWebServer
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.39.1.0">
     
@@ -77,31 +77,37 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.IWebModule">
+            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.IWebServer">
   
   
-  <h1 id="Unosquare_Labs_EmbedIO_IWebModule" data-uid="Unosquare.Labs.EmbedIO.IWebModule" class="text-break">Interface IWebModule
+  <h1 id="Unosquare_Labs_EmbedIO_IWebServer" data-uid="Unosquare.Labs.EmbedIO.IWebServer" class="text-break">Interface IWebServer
   </h1>
-  <div class="markdown level0 summary"><p>Interface to create web modules.</p>
+  <div class="markdown level0 summary"><p>Interface to create a WebServer class</p>
 </div>
   <div class="markdown level0 conceptual"></div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable.dispose#System_IDisposable_Dispose">IDisposable.Dispose()</a>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.html">Unosquare.Labs.EmbedIO</a></h6>
-  <h5 id="Unosquare_Labs_EmbedIO_IWebModule_syntax">Syntax</h5>
+  <h5 id="Unosquare_Labs_EmbedIO_IWebServer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IWebModule</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IWebServer : IDisposable</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
   
   
-  <a id="Unosquare_Labs_EmbedIO_IWebModule_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.CancellationToken*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_CancellationToken" data-uid="Unosquare.Labs.EmbedIO.IWebModule.CancellationToken">CancellationToken</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the cancellation token.</p>
+  <a id="Unosquare_Labs_EmbedIO_IWebServer_Modules_" data-uid="Unosquare.Labs.EmbedIO.IWebServer.Modules*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IWebServer_Modules" data-uid="Unosquare.Labs.EmbedIO.IWebServer.Modules">Modules</h4>
+  <div class="markdown level1 summary"><p>Gets a list of registered modules.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">CancellationToken CancellationToken { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">ReadOnlyCollection&lt;IWebModule&gt; Modules { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -113,22 +119,22 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
-        <td><p>The cancellation token.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1">ReadOnlyCollection</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html">IWebModule</a>&gt;</td>
+        <td><p>The modules.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_IWebModule_Handlers_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.Handlers*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_Handlers" data-uid="Unosquare.Labs.EmbedIO.IWebModule.Handlers">Handlers</h4>
-  <div class="markdown level1 summary"><p>Gets the registered handlers.</p>
+  <a id="Unosquare_Labs_EmbedIO_IWebServer_OnMethodNotAllowed_" data-uid="Unosquare.Labs.EmbedIO.IWebServer.OnMethodNotAllowed*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IWebServer_OnMethodNotAllowed" data-uid="Unosquare.Labs.EmbedIO.IWebServer.OnMethodNotAllowed">OnMethodNotAllowed</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the on method not allowed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">ModuleMap Handlers { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">Func&lt;IHttpContext, Task&lt;bool&gt;&gt; OnMethodNotAllowed { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -140,22 +146,22 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.ModuleMap.html">ModuleMap</a></td>
-        <td><p>The handlers.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;&gt;</td>
+        <td><p>The on method not allowed.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_IWebModule_IsWatchdogEnabled_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.IsWatchdogEnabled*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_IsWatchdogEnabled" data-uid="Unosquare.Labs.EmbedIO.IWebModule.IsWatchdogEnabled">IsWatchdogEnabled</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is watchdog enabled.</p>
+  <a id="Unosquare_Labs_EmbedIO_IWebServer_OnNotFound_" data-uid="Unosquare.Labs.EmbedIO.IWebServer.OnNotFound*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IWebServer_OnNotFound" data-uid="Unosquare.Labs.EmbedIO.IWebServer.OnNotFound">OnNotFound</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the on not found.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">bool IsWatchdogEnabled { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">Func&lt;IHttpContext, Task&lt;bool&gt;&gt; OnNotFound { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -167,22 +173,23 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><code>true</code> if this instance is watchdog enabled; otherwise, <code>false</code>.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;&gt;</td>
+        <td><p>The on not found.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_IWebModule_Name_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.Name*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_Name" data-uid="Unosquare.Labs.EmbedIO.IWebModule.Name">Name</h4>
-  <div class="markdown level1 summary"><p>Gets the friendly name of the module.</p>
+  <a id="Unosquare_Labs_EmbedIO_IWebServer_RoutingStrategy_" data-uid="Unosquare.Labs.EmbedIO.IWebServer.RoutingStrategy*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IWebServer_RoutingStrategy" data-uid="Unosquare.Labs.EmbedIO.IWebServer.RoutingStrategy">RoutingStrategy</h4>
+  <div class="markdown level1 summary"><p>Gets the URL RoutingStrategy used in this instance.
+By default it is set to Wildcard, but Regex is the recommended value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">string Name { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">RoutingStrategy RoutingStrategy { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -194,23 +201,22 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><p>The name.</p>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.html">RoutingStrategy</a></td>
+        <td><p>The routing strategy.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_IWebModule_Server_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.Server*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_Server" data-uid="Unosquare.Labs.EmbedIO.IWebModule.Server">Server</h4>
-  <div class="markdown level1 summary"><p>Gets the associated Web Server object.
-This property is automatically set when the module is registered.</p>
+  <a id="Unosquare_Labs_EmbedIO_IWebServer_SessionModule_" data-uid="Unosquare.Labs.EmbedIO.IWebServer.SessionModule*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IWebServer_SessionModule" data-uid="Unosquare.Labs.EmbedIO.IWebServer.SessionModule">SessionModule</h4>
+  <div class="markdown level1 summary"><p>Gets registered the ISessionModule.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IWebServer Server { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">ISessionWebModule SessionModule { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -222,35 +228,8 @@ This property is automatically set when the module is registered.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
-        <td><p>The server.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_IWebModule_WatchdogInterval_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.WatchdogInterval*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_WatchdogInterval" data-uid="Unosquare.Labs.EmbedIO.IWebModule.WatchdogInterval">WatchdogInterval</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the watchdog interval.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">TimeSpan WatchdogInterval { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
-        <td><p>The watchdog interval.</p>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.ISessionWebModule.html">ISessionWebModule</a></td>
+        <td><p>The session module.</p>
 </td>
       </tr>
     </tbody>
@@ -259,14 +238,59 @@ This property is automatically set when the module is registered.</p>
   </h3>
   
   
-  <a id="Unosquare_Labs_EmbedIO_IWebModule_AddHandler_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.AddHandler*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___" data-uid="Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs,System.Func{Unosquare.Labs.EmbedIO.IHttpContext,System.Threading.CancellationToken,System.Threading.Tasks.Task{System.Boolean}})">AddHandler(String, HttpVerbs, Func&lt;IHttpContext, CancellationToken, Task&lt;Boolean&gt;&gt;)</h4>
-  <div class="markdown level1 summary"><p>Adds a handler that gets called when a path and verb are matched.</p>
+  <a id="Unosquare_Labs_EmbedIO_IWebServer_Module_" data-uid="Unosquare.Labs.EmbedIO.IWebServer.Module*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IWebServer_Module__1" data-uid="Unosquare.Labs.EmbedIO.IWebServer.Module``1">Module&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Gets the module registered for the given type.
+Returns null if no module matches the given type.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void AddHandler(string path, HttpVerbs verb, Func&lt;IHttpContext, CancellationToken, Task&lt;bool&gt;&gt; handler)</code></pre>
+    <pre><code class="lang-csharp hljs">T Module&lt;T&gt;()
+    where T : class, IWebModule</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>Module registered for the given type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type of module.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_IWebServer_RegisterModule_" data-uid="Unosquare.Labs.EmbedIO.IWebServer.RegisterModule*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IWebServer_RegisterModule_Unosquare_Labs_EmbedIO_IWebModule_" data-uid="Unosquare.Labs.EmbedIO.IWebServer.RegisterModule(Unosquare.Labs.EmbedIO.IWebModule)">RegisterModule(IWebModule)</h4>
+  <div class="markdown level1 summary"><p>Registers an instance of a web module. Only 1 instance per type is allowed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void RegisterModule(IWebModule module)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -279,64 +303,23 @@ This property is automatically set when the module is registered.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">path</span></td>
-        <td><p>The path.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.HttpVerbs.html">HttpVerbs</a></td>
-        <td><span class="parametername">verb</span></td>
-        <td><p>The verb.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;&gt;</td>
-        <td><span class="parametername">handler</span></td>
-        <td><p>The handler.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>path
-or
-handler.</p>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html">IWebModule</a></td>
+        <td><span class="parametername">module</span></td>
+        <td><p>The module.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_IWebModule_RunWatchdog_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.RunWatchdog*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_RunWatchdog" data-uid="Unosquare.Labs.EmbedIO.IWebModule.RunWatchdog">RunWatchdog()</h4>
-  <div class="markdown level1 summary"><p>Runs the watchdog.</p>
+  <a id="Unosquare_Labs_EmbedIO_IWebServer_RunAsync_" data-uid="Unosquare.Labs.EmbedIO.IWebServer.RunAsync*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IWebServer_RunAsync_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.IWebServer.RunAsync(System.Threading.CancellationToken)">RunAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Starts the listener and the registered modules.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void RunWatchdog()</code></pre>
-  </div>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_IWebModule_Start_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.Start*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_Start_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.Start(System.Threading.CancellationToken)">Start(CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Starts the webmodule.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void Start(CancellationToken ct)</code></pre>
+    <pre><code class="lang-csharp hljs">Task RunAsync(CancellationToken ct = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -351,11 +334,60 @@ handler.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
         <td><span class="parametername">ct</span></td>
-        <td><p>The cancellation token.</p>
+        <td><p>The cancellation token; when cancelled, the server cancels all pending requests and stops.</p>
 </td>
       </tr>
     </tbody>
   </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>Returns the task that the HTTP listener is running inside of, so that it can be waited upon after it&apos;s been canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_IWebServer_UnregisterModule_" data-uid="Unosquare.Labs.EmbedIO.IWebServer.UnregisterModule*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IWebServer_UnregisterModule_System_Type_" data-uid="Unosquare.Labs.EmbedIO.IWebServer.UnregisterModule(System.Type)">UnregisterModule(Type)</h4>
+  <div class="markdown level1 summary"><p>Unregisters the module identified by its type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void UnregisterModule(Type moduleType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">moduleType</span></td>
+        <td><p>Type of the module.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+  </div>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>

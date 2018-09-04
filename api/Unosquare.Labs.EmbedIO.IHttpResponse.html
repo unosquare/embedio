@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Interface IWebModule
+    <title>Interface IHttpResponse
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Interface IWebModule
+    <meta name="title" content="Interface IHttpResponse
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.39.1.0">
     
@@ -77,31 +77,31 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.IWebModule">
+            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse">
   
   
-  <h1 id="Unosquare_Labs_EmbedIO_IWebModule" data-uid="Unosquare.Labs.EmbedIO.IWebModule" class="text-break">Interface IWebModule
+  <h1 id="Unosquare_Labs_EmbedIO_IHttpResponse" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse" class="text-break">Interface IHttpResponse
   </h1>
-  <div class="markdown level0 summary"><p>Interface to create web modules.</p>
+  <div class="markdown level0 summary"><p>Interface to create a HTTP Response.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.html">Unosquare.Labs.EmbedIO</a></h6>
-  <h5 id="Unosquare_Labs_EmbedIO_IWebModule_syntax">Syntax</h5>
+  <h5 id="Unosquare_Labs_EmbedIO_IHttpResponse_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IWebModule</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IHttpResponse</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
   
   
-  <a id="Unosquare_Labs_EmbedIO_IWebModule_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.CancellationToken*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_CancellationToken" data-uid="Unosquare.Labs.EmbedIO.IWebModule.CancellationToken">CancellationToken</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the cancellation token.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpResponse_ContentEncoding_" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.ContentEncoding*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpResponse_ContentEncoding" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.ContentEncoding">ContentEncoding</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the content encoding.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">CancellationToken CancellationToken { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">Encoding ContentEncoding { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -113,22 +113,22 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
-        <td><p>The cancellation token.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.text.encoding">Encoding</a></td>
+        <td><p>The content encoding.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_IWebModule_Handlers_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.Handlers*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_Handlers" data-uid="Unosquare.Labs.EmbedIO.IWebModule.Handlers">Handlers</h4>
-  <div class="markdown level1 summary"><p>Gets the registered handlers.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpResponse_ContentLength64_" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.ContentLength64*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpResponse_ContentLength64" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.ContentLength64">ContentLength64</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the content length64.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">ModuleMap Handlers { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">long ContentLength64 { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -140,22 +140,103 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.ModuleMap.html">ModuleMap</a></td>
-        <td><p>The handlers.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><p>The content length64.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_IWebModule_IsWatchdogEnabled_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.IsWatchdogEnabled*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_IsWatchdogEnabled" data-uid="Unosquare.Labs.EmbedIO.IWebModule.IsWatchdogEnabled">IsWatchdogEnabled</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is watchdog enabled.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpResponse_ContentType_" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.ContentType*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpResponse_ContentType" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.ContentType">ContentType</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the type of the content.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">bool IsWatchdogEnabled { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">string ContentType { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>The type of the content.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_IHttpResponse_Cookies_" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.Cookies*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpResponse_Cookies" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.Cookies">Cookies</h4>
+  <div class="markdown level1 summary"><p>Gets the cookies.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ICookieCollection Cookies { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.ICookieCollection.html">ICookieCollection</a></td>
+        <td><p>The cookies.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_IHttpResponse_Headers_" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.Headers*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpResponse_Headers" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.Headers">Headers</h4>
+  <div class="markdown level1 summary"><p>Gets the headers.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">NameValueCollection Headers { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">NameValueCollection</span></td>
+        <td><p>The headers.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_IHttpResponse_KeepAlive_" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.KeepAlive*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpResponse_KeepAlive" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.KeepAlive">KeepAlive</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [keep alive].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool KeepAlive { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -168,21 +249,21 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><code>true</code> if this instance is watchdog enabled; otherwise, <code>false</code>.</p>
+        <td><p><code>true</code> if [keep alive]; otherwise, <code>false</code>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_IWebModule_Name_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.Name*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_Name" data-uid="Unosquare.Labs.EmbedIO.IWebModule.Name">Name</h4>
-  <div class="markdown level1 summary"><p>Gets the friendly name of the module.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpResponse_OutputStream_" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.OutputStream*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpResponse_OutputStream" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.OutputStream">OutputStream</h4>
+  <div class="markdown level1 summary"><p>Gets the output stream.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">string Name { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">Stream OutputStream { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -194,23 +275,22 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><p>The name.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.stream">Stream</a></td>
+        <td><p>The output stream.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_IWebModule_Server_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.Server*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_Server" data-uid="Unosquare.Labs.EmbedIO.IWebModule.Server">Server</h4>
-  <div class="markdown level1 summary"><p>Gets the associated Web Server object.
-This property is automatically set when the module is registered.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpResponse_ProtocolVersion_" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.ProtocolVersion*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpResponse_ProtocolVersion" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.ProtocolVersion">ProtocolVersion</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the protocol version.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IWebServer Server { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">Version ProtocolVersion { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -222,22 +302,22 @@ This property is automatically set when the module is registered.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
-        <td><p>The server.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.version">Version</a></td>
+        <td><p>The protocol version.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_IWebModule_WatchdogInterval_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.WatchdogInterval*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_WatchdogInterval" data-uid="Unosquare.Labs.EmbedIO.IWebModule.WatchdogInterval">WatchdogInterval</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the watchdog interval.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpResponse_StatusCode_" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.StatusCode*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpResponse_StatusCode" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.StatusCode">StatusCode</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the status code.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">TimeSpan WatchdogInterval { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">int StatusCode { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -249,8 +329,8 @@ This property is automatically set when the module is registered.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
-        <td><p>The watchdog interval.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p>The status code.</p>
 </td>
       </tr>
     </tbody>
@@ -259,14 +339,14 @@ This property is automatically set when the module is registered.</p>
   </h3>
   
   
-  <a id="Unosquare_Labs_EmbedIO_IWebModule_AddHandler_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.AddHandler*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___" data-uid="Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs,System.Func{Unosquare.Labs.EmbedIO.IHttpContext,System.Threading.CancellationToken,System.Threading.Tasks.Task{System.Boolean}})">AddHandler(String, HttpVerbs, Func&lt;IHttpContext, CancellationToken, Task&lt;Boolean&gt;&gt;)</h4>
-  <div class="markdown level1 summary"><p>Adds a handler that gets called when a path and verb are matched.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpResponse_AddHeader_" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.AddHeader*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpResponse_AddHeader_System_String_System_String_" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.AddHeader(System.String,System.String)">AddHeader(String, String)</h4>
+  <div class="markdown level1 summary"><p>Adds the header.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void AddHandler(string path, HttpVerbs verb, Func&lt;IHttpContext, CancellationToken, Task&lt;bool&gt;&gt; handler)</code></pre>
+    <pre><code class="lang-csharp hljs">void AddHeader(string headerName, string value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -280,63 +360,28 @@ This property is automatically set when the module is registered.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">path</span></td>
-        <td><p>The path.</p>
+        <td><span class="parametername">headerName</span></td>
+        <td><p>Name of the header.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.HttpVerbs.html">HttpVerbs</a></td>
-        <td><span class="parametername">verb</span></td>
-        <td><p>The verb.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;&gt;</td>
-        <td><span class="parametername">handler</span></td>
-        <td><p>The handler.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>path
-or
-handler.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_IWebModule_RunWatchdog_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.RunWatchdog*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_RunWatchdog" data-uid="Unosquare.Labs.EmbedIO.IWebModule.RunWatchdog">RunWatchdog()</h4>
-  <div class="markdown level1 summary"><p>Runs the watchdog.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpResponse_SetCookie_" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.SetCookie*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpResponse_SetCookie_System_Net_Cookie_" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.SetCookie(System.Net.Cookie)">SetCookie(Net.Cookie)</h4>
+  <div class="markdown level1 summary"><p>Sets the cookie.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void RunWatchdog()</code></pre>
-  </div>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_IWebModule_Start_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.Start*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_Start_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.Start(System.Threading.CancellationToken)">Start(CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Starts the webmodule.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void Start(CancellationToken ct)</code></pre>
+    <pre><code class="lang-csharp hljs">void SetCookie(Net.Cookie sessionCookie)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -349,9 +394,9 @@ handler.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
-        <td><span class="parametername">ct</span></td>
-        <td><p>The cancellation token.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.net.cookie">Net.Cookie</a></td>
+        <td><span class="parametername">sessionCookie</span></td>
+        <td><p>The session cookie.</p>
 </td>
       </tr>
     </tbody>

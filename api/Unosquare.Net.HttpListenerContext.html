@@ -90,6 +90,10 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">HttpListenerContext</span></div>
   </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
@@ -117,7 +121,7 @@
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Net.html">Unosquare.Net</a></h6>
   <h5 id="Unosquare_Net_HttpListenerContext_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class HttpListenerContext</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class HttpListenerContext : IHttpContext</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -125,12 +129,12 @@
   
   <a id="Unosquare_Net_HttpListenerContext_Request_" data-uid="Unosquare.Net.HttpListenerContext.Request*"></a>
   <h4 id="Unosquare_Net_HttpListenerContext_Request" data-uid="Unosquare.Net.HttpListenerContext.Request">Request</h4>
-  <div class="markdown level1 summary"><p>Gets the request.</p>
+  <div class="markdown level1 summary"><p>Gets the HTTP Request.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public HttpListenerRequest Request { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IHttpRequest Request { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -142,8 +146,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerRequest.html">HttpListenerRequest</a></td>
-        <td></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpRequest.html">IHttpRequest</a></td>
+        <td><p>The request.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -151,12 +156,12 @@
   
   <a id="Unosquare_Net_HttpListenerContext_Response_" data-uid="Unosquare.Net.HttpListenerContext.Response*"></a>
   <h4 id="Unosquare_Net_HttpListenerContext_Response" data-uid="Unosquare.Net.HttpListenerContext.Response">Response</h4>
-  <div class="markdown level1 summary"><p>Gets the response.</p>
+  <div class="markdown level1 summary"><p>Gets the HTTP Response.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public HttpListenerResponse Response { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IHttpResponse Response { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -168,8 +173,36 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerResponse.html">HttpListenerResponse</a></td>
-        <td></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpResponse.html">IHttpResponse</a></td>
+        <td><p>The response.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Net_HttpListenerContext_WebServer_" data-uid="Unosquare.Net.HttpListenerContext.WebServer*"></a>
+  <h4 id="Unosquare_Net_HttpListenerContext_WebServer" data-uid="Unosquare.Net.HttpListenerContext.WebServer">WebServer</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the web server.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IWebServer WebServer { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
+        <td><p>The web server.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -219,6 +252,10 @@ the WebSocket handshake request.</p>
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>
+  </div>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>

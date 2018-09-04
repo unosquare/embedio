@@ -92,6 +92,7 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpResponse.html">IHttpResponse</a></div>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
   </div>
   <div class="inheritedMembers">
@@ -121,7 +122,7 @@
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Net.html">Unosquare.Net</a></h6>
   <h5 id="Unosquare_Net_HttpListenerResponse_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class HttpListenerResponse : IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class HttpListenerResponse : IHttpResponse, IDisposable</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -134,7 +135,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Encoding ContentEncoding { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Encoding ContentEncoding { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -147,7 +148,8 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.text.encoding">Encoding</a></td>
-        <td></td>
+        <td><p>The content encoding.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -155,7 +157,7 @@
   
   <a id="Unosquare_Net_HttpListenerResponse_ContentLength64_" data-uid="Unosquare.Net.HttpListenerResponse.ContentLength64*"></a>
   <h4 id="Unosquare_Net_HttpListenerResponse_ContentLength64" data-uid="Unosquare.Net.HttpListenerResponse.ContentLength64">ContentLength64</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the content length.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the content length64.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -178,38 +180,11 @@
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></td>
-        <td><p>Is thrown when you try to access a member of an object that implements the 
-IDisposable interface, and that object has been disposed.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
-        <td><p>Cannot be changed after headers are sent.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
-        <td><p>Must be &gt;= 0 - value.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <a id="Unosquare_Net_HttpListenerResponse_ContentType_" data-uid="Unosquare.Net.HttpListenerResponse.ContentType*"></a>
   <h4 id="Unosquare_Net_HttpListenerResponse_ContentType" data-uid="Unosquare.Net.HttpListenerResponse.ContentType">ContentType</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the MIME type of the content.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the type of the content.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -232,38 +207,16 @@ IDisposable interface, and that object has been disposed.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></td>
-        <td><p>Is thrown when you try to access a member of an object that implements the IDisposable 
-interface, and that object has been disposed.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
-        <td><p>Cannot be changed after headers are sent.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <a id="Unosquare_Net_HttpListenerResponse_Cookies_" data-uid="Unosquare.Net.HttpListenerResponse.Cookies*"></a>
   <h4 id="Unosquare_Net_HttpListenerResponse_Cookies" data-uid="Unosquare.Net.HttpListenerResponse.Cookies">Cookies</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the cookies collection.</p>
+  <div class="markdown level1 summary"><p>Gets the cookies.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CookieCollection Cookies { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ICookieCollection Cookies { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -275,7 +228,7 @@ interface, and that object has been disposed.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.CookieCollection.html">CookieCollection</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.ICookieCollection.html">ICookieCollection</a></td>
         <td><p>The cookies.</p>
 </td>
       </tr>
@@ -285,12 +238,12 @@ interface, and that object has been disposed.</p>
   
   <a id="Unosquare_Net_HttpListenerResponse_Headers_" data-uid="Unosquare.Net.HttpListenerResponse.Headers*"></a>
   <h4 id="Unosquare_Net_HttpListenerResponse_Headers" data-uid="Unosquare.Net.HttpListenerResponse.Headers">Headers</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the headers.</p>
+  <div class="markdown level1 summary"><p>Gets the headers.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public WebHeaderCollection Headers { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public NameValueCollection Headers { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -302,7 +255,7 @@ interface, and that object has been disposed.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.WebHeaderCollection.html">WebHeaderCollection</a></td>
+        <td><span class="xref">NameValueCollection</span></td>
         <td><p>The headers.</p>
 </td>
       </tr>
@@ -312,7 +265,7 @@ interface, and that object has been disposed.</p>
   
   <a id="Unosquare_Net_HttpListenerResponse_KeepAlive_" data-uid="Unosquare.Net.HttpListenerResponse.KeepAlive*"></a>
   <h4 id="Unosquare_Net_HttpListenerResponse_KeepAlive" data-uid="Unosquare.Net.HttpListenerResponse.KeepAlive">KeepAlive</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the Keep-Alive value.</p>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [keep alive].</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -335,28 +288,6 @@ interface, and that object has been disposed.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></td>
-        <td><p>Is thrown when you try to access a member of an object that 
-implements the IDisposable interface, and that object has been disposed.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
-        <td><p>Cannot be changed after headers are sent.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <a id="Unosquare_Net_HttpListenerResponse_OutputStream_" data-uid="Unosquare.Net.HttpListenerResponse.OutputStream*"></a>
@@ -366,7 +297,7 @@ implements the IDisposable interface, and that object has been disposed.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ResponseStream OutputStream { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Stream OutputStream { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -378,7 +309,7 @@ implements the IDisposable interface, and that object has been disposed.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.ResponseStream.html">ResponseStream</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.stream">Stream</a></td>
         <td><p>The output stream.</p>
 </td>
       </tr>
@@ -388,12 +319,12 @@ implements the IDisposable interface, and that object has been disposed.</p>
   
   <a id="Unosquare_Net_HttpListenerResponse_ProtocolVersion_" data-uid="Unosquare.Net.HttpListenerResponse.ProtocolVersion*"></a>
   <h4 id="Unosquare_Net_HttpListenerResponse_ProtocolVersion" data-uid="Unosquare.Net.HttpListenerResponse.ProtocolVersion">ProtocolVersion</h4>
-  <div class="markdown level1 summary"><p>Gets the protocol version.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the protocol version.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Version ProtocolVersion { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Version ProtocolVersion { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -487,28 +418,6 @@ IDisposable interface, and that object has been disposed.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></td>
-        <td><p>Is thrown when you try to access a member of an object that implements the 
-IDisposable interface, and that object has been disposed.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
-        <td><p>Cannot be changed after headers are sent.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <a id="Unosquare_Net_HttpListenerResponse_StatusDescription_" data-uid="Unosquare.Net.HttpListenerResponse.StatusDescription*"></a>
@@ -573,41 +482,12 @@ IDisposable interface, and that object has been disposed.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">name</span></td>
-        <td><p>The name.</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">value</span></td>
         <td><p>The value.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>Is thrown when a null reference is passed to a 
-method that does not accept it as a valid argument.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>&apos;name&apos; cannot be empty.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
-        <td><p>Is thrown when the value of an argument is outside the 
-allowable range of values as defined by the invoked method.</p>
 </td>
       </tr>
     </tbody>
@@ -626,13 +506,12 @@ allowable range of values as defined by the invoked method.</p>
   
   
   <a id="Unosquare_Net_HttpListenerResponse_SetCookie_" data-uid="Unosquare.Net.HttpListenerResponse.SetCookie*"></a>
-  <h4 id="Unosquare_Net_HttpListenerResponse_SetCookie_System_Net_Cookie_" data-uid="Unosquare.Net.HttpListenerResponse.SetCookie(System.Net.Cookie)">SetCookie(Net.Cookie)</h4>
-  <div class="markdown level1 summary"><p>Sets the cookie.</p>
-</div>
+  <h4 id="Unosquare_Net_HttpListenerResponse_SetCookie_Cookie_" data-uid="Unosquare.Net.HttpListenerResponse.SetCookie(Cookie)">SetCookie(Cookie)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetCookie(Net.Cookie cookie)</code></pre>
+    <pre><code class="lang-csharp hljs">public void SetCookie(Cookie cookie)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -645,32 +524,9 @@ allowable range of values as defined by the invoked method.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.net.cookie">Net.Cookie</a></td>
+        <td><span class="xref">Cookie</span></td>
         <td><span class="parametername">cookie</span></td>
-        <td><p>The cookie.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>Is thrown when a null reference is passed to a method
-that does not accept it as a valid argument.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>The cookie already exists.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -687,6 +543,9 @@ that does not accept it as a valid argument.</p>
     <pre><code class="lang-csharp hljs">void IDisposable.Dispose()</code></pre>
   </div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.IHttpResponse.html">IHttpResponse</a>
+  </div>
   <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
   </div>

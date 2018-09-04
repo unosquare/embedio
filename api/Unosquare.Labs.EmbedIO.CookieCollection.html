@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class HttpListener
+    <title>Class CookieCollection
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class HttpListener
+    <meta name="title" content="Class CookieCollection
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.39.1.0">
     
@@ -77,24 +77,24 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Unosquare.Net.HttpListener">
+            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.CookieCollection">
   
   
-  <h1 id="Unosquare_Net_HttpListener" data-uid="Unosquare.Net.HttpListener" class="text-break">Class HttpListener
+  <h1 id="Unosquare_Labs_EmbedIO_CookieCollection" data-uid="Unosquare.Labs.EmbedIO.CookieCollection" class="text-break">Class CookieCollection
   </h1>
-  <div class="markdown level0 summary"><p>The EmbedIO implementation of the standard HTTP Listener class.</p>
-<p>Based on MONO HttpListner class.</p>
+  <div class="markdown level0 summary"><p>Represetns a wrapper for <code>System.Net.CookieCollection</code>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">HttpListener</span></div>
+    <div class="level1"><span class="xref">CookieCollection</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpListener.html">IHttpListener</a></div>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    <div><a class="xref" href="Unosquare.Labs.EmbedIO.ICookieCollection.html">ICookieCollection</a></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.icollection">ICollection</a></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -120,36 +120,78 @@
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Net.html">Unosquare.Net</a></h6>
-  <h5 id="Unosquare_Net_HttpListener_syntax">Syntax</h5>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.html">Unosquare.Labs.EmbedIO</a></h6>
+  <h5 id="Unosquare_Labs_EmbedIO_CookieCollection_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class HttpListener : IHttpListener, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public class CookieCollection : ICookieCollection, ICollection, IEnumerable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="Unosquare_Net_HttpListener__ctor_" data-uid="Unosquare.Net.HttpListener.#ctor*"></a>
-  <h4 id="Unosquare_Net_HttpListener__ctor" data-uid="Unosquare.Net.HttpListener.#ctor">HttpListener()</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Net.HttpListener.html">HttpListener</a> class.</p>
+  <a id="Unosquare_Labs_EmbedIO_CookieCollection__ctor_" data-uid="Unosquare.Labs.EmbedIO.CookieCollection.#ctor*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_CookieCollection__ctor_System_Net_CookieCollection_" data-uid="Unosquare.Labs.EmbedIO.CookieCollection.#ctor(System.Net.CookieCollection)">CookieCollection(Net.CookieCollection)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.CookieCollection.html">CookieCollection</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public HttpListener()</code></pre>
+    <pre><code class="lang-csharp hljs">public CookieCollection(Net.CookieCollection cookieCollection)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.net.cookiecollection">Net.CookieCollection</a></td>
+        <td><span class="parametername">cookieCollection</span></td>
+        <td><p>The cookie collection.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
   </h3>
   
   
-  <a id="Unosquare_Net_HttpListener_IgnoreWriteExceptions_" data-uid="Unosquare.Net.HttpListener.IgnoreWriteExceptions*"></a>
-  <h4 id="Unosquare_Net_HttpListener_IgnoreWriteExceptions" data-uid="Unosquare.Net.HttpListener.IgnoreWriteExceptions">IgnoreWriteExceptions</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the listener should ignore write exceptions.</p>
-</div>
+  <a id="Unosquare_Labs_EmbedIO_CookieCollection_Count_" data-uid="Unosquare.Labs.EmbedIO.CookieCollection.Count*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_CookieCollection_Count" data-uid="Unosquare.Labs.EmbedIO.CookieCollection.Count">Count</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IgnoreWriteExceptions { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_CookieCollection_IsSynchronized_" data-uid="Unosquare.Labs.EmbedIO.CookieCollection.IsSynchronized*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_CookieCollection_IsSynchronized" data-uid="Unosquare.Labs.EmbedIO.CookieCollection.IsSynchronized">IsSynchronized</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsSynchronized { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -162,142 +204,20 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><code>true</code> if [ignore write exceptions]; otherwise, <code>false</code>.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Net_HttpListener_IsListening_" data-uid="Unosquare.Net.HttpListener.IsListening*"></a>
-  <h4 id="Unosquare_Net_HttpListener_IsListening" data-uid="Unosquare.Net.HttpListener.IsListening">IsListening</h4>
-  <div class="markdown level1 summary"><p>Gets a value indicating whether this instance is listening.</p>
+  <a id="Unosquare_Labs_EmbedIO_CookieCollection_Item_" data-uid="Unosquare.Labs.EmbedIO.CookieCollection.Item*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_CookieCollection_Item_System_String_" data-uid="Unosquare.Labs.EmbedIO.CookieCollection.Item(System.String)">Item[String]</h4>
+  <div class="markdown level1 summary"><p>Gets the <see cref="!:Cookie"></see> with the specified name.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsListening { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><code>true</code> if this instance is listening; otherwise, <code>false</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Net_HttpListener_IsSupported_" data-uid="Unosquare.Net.HttpListener.IsSupported*"></a>
-  <h4 id="Unosquare_Net_HttpListener_IsSupported" data-uid="Unosquare.Net.HttpListener.IsSupported">IsSupported</h4>
-  <div class="markdown level1 summary"><p>Gets a value indicating whether this instance is supported.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool IsSupported { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><code>true</code> if this instance is supported; otherwise, <code>false</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Net_HttpListener_Prefixes_" data-uid="Unosquare.Net.HttpListener.Prefixes*"></a>
-  <h4 id="Unosquare_Net_HttpListener_Prefixes" data-uid="Unosquare.Net.HttpListener.Prefixes">Prefixes</h4>
-  <div class="markdown level1 summary"><p>Gets the prefixes.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;string&gt; Prefixes { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
-        <td><p>The prefixes.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Net_HttpListener_Realm_" data-uid="Unosquare.Net.HttpListener.Realm*"></a>
-  <h4 id="Unosquare_Net_HttpListener_Realm" data-uid="Unosquare.Net.HttpListener.Realm">Realm</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the realm.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Realm { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><p>The realm.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="methods">Methods
-  </h3>
-  
-  
-  <a id="Unosquare_Net_HttpListener_Abort_" data-uid="Unosquare.Net.HttpListener.Abort*"></a>
-  <h4 id="Unosquare_Net_HttpListener_Abort" data-uid="Unosquare.Net.HttpListener.Abort">Abort()</h4>
-  <div class="markdown level1 summary"><p>Aborts this listener.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Abort()</code></pre>
-  </div>
-  
-  
-  <a id="Unosquare_Net_HttpListener_AddPrefix_" data-uid="Unosquare.Net.HttpListener.AddPrefix*"></a>
-  <h4 id="Unosquare_Net_HttpListener_AddPrefix_System_String_" data-uid="Unosquare.Net.HttpListener.AddPrefix(System.String)">AddPrefix(String)</h4>
-  <div class="markdown level1 summary"><p>Adds the prefix.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void AddPrefix(string urlPrefix)</code></pre>
+    <pre><code class="lang-csharp hljs">public Cookie this[string name] { get; }</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -311,43 +231,125 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">urlPrefix</span></td>
-        <td><p>The URL prefix.</p>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Cookie</span></td>
+        <td><p>The <see cref="!:Cookie"></see>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Net_HttpListener_Close_" data-uid="Unosquare.Net.HttpListener.Close*"></a>
-  <h4 id="Unosquare_Net_HttpListener_Close" data-uid="Unosquare.Net.HttpListener.Close">Close()</h4>
-  <div class="markdown level1 summary"><p>Closes this listener.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Close()</code></pre>
-  </div>
-  
-  
-  <a id="Unosquare_Net_HttpListener_Dispose_" data-uid="Unosquare.Net.HttpListener.Dispose*"></a>
-  <h4 id="Unosquare_Net_HttpListener_Dispose" data-uid="Unosquare.Net.HttpListener.Dispose">Dispose()</h4>
+  <a id="Unosquare_Labs_EmbedIO_CookieCollection_SyncRoot_" data-uid="Unosquare.Labs.EmbedIO.CookieCollection.SyncRoot*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_CookieCollection_SyncRoot" data-uid="Unosquare.Labs.EmbedIO.CookieCollection.SyncRoot">SyncRoot</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+    <pre><code class="lang-csharp hljs">public object SyncRoot { get; }</code></pre>
   </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
   
   
-  <a id="Unosquare_Net_HttpListener_GetContextAsync_" data-uid="Unosquare.Net.HttpListener.GetContextAsync*"></a>
-  <h4 id="Unosquare_Net_HttpListener_GetContextAsync" data-uid="Unosquare.Net.HttpListener.GetContextAsync">GetContextAsync()</h4>
-  <div class="markdown level1 summary"><p>Gets the HTTP context asynchronous.</p>
+  <a id="Unosquare_Labs_EmbedIO_CookieCollection_Add_" data-uid="Unosquare.Labs.EmbedIO.CookieCollection.Add*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_CookieCollection_Add_Cookie_" data-uid="Unosquare.Labs.EmbedIO.CookieCollection.Add(Cookie)">Add(Cookie)</h4>
+  <div class="markdown level1 summary"><p>Adds the specified cookie.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;IHttpContext&gt; GetContextAsync()</code></pre>
+    <pre><code class="lang-csharp hljs">public void Add(Cookie cookie)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Cookie</span></td>
+        <td><span class="parametername">cookie</span></td>
+        <td><p>The cookie.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_CookieCollection_CopyTo_" data-uid="Unosquare.Labs.EmbedIO.CookieCollection.CopyTo*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_CookieCollection_CopyTo_System_Array_System_Int32_" data-uid="Unosquare.Labs.EmbedIO.CookieCollection.CopyTo(System.Array,System.Int32)">CopyTo(Array, Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CopyTo(Array array, int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.array">Array</a></td>
+        <td><span class="parametername">array</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_CookieCollection_GetEnumerator_" data-uid="Unosquare.Labs.EmbedIO.CookieCollection.GetEnumerator*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_CookieCollection_GetEnumerator" data-uid="Unosquare.Labs.EmbedIO.CookieCollection.GetEnumerator">GetEnumerator()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator GetEnumerator()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -359,44 +361,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>&gt;</td>
-        <td><p>A task that represents the time delay for the HTTP Context.</p>
-</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.ienumerator">IEnumerator</a></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Unosquare_Net_HttpListener_Start_" data-uid="Unosquare.Net.HttpListener.Start*"></a>
-  <h4 id="Unosquare_Net_HttpListener_Start" data-uid="Unosquare.Net.HttpListener.Start">Start()</h4>
-  <div class="markdown level1 summary"><p>Starts this listener.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Start()</code></pre>
-  </div>
-  
-  
-  <a id="Unosquare_Net_HttpListener_Stop_" data-uid="Unosquare.Net.HttpListener.Stop*"></a>
-  <h4 id="Unosquare_Net_HttpListener_Stop" data-uid="Unosquare.Net.HttpListener.Stop">Stop()</h4>
-  <div class="markdown level1 summary"><p>Stops this listener.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Stop()</code></pre>
-  </div>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.IHttpListener.html">IHttpListener</a>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.ICookieCollection.html">ICookieCollection</a>
   </div>
   <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.icollection">System.Collections.ICollection</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.ienumerable">System.Collections.IEnumerable</a>
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">
-      <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+      <div><a class="xref" href="Unosquare.Labs.EmbedIO.ICookieCollection.html">ICookieCollection</a></div>
   </div>
 
 <h3 id="disqus_thread">Comments</h3>
