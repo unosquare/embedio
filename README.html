@@ -8,7 +8,7 @@
     <title>Overview | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Overview | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 1.0.0.0">
+    <meta name="generator" content="docfx 2.39.1.0">
     
     <link rel="shortcut icon" href="src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
     <link rel="stylesheet" href="styles/docfx.vendor.css">
@@ -269,58 +269,48 @@ server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;()
 </code></pre><p><em>And our controller class (using Regex Strategy) looks like:</em></p>
 <pre><code class="lang-csharp">public class PeopleController : WebApiController
 {
-    public PeopleController(IHttpContext context)
-    : base(context)
-    {
-    }
-
     [WebApiHandler(HttpVerbs.Get, &quot;/api/people/{id}&quot;)]
-    public bool GetPeople(int id)
+    public bool GetPeople(WebServer server, HttpListenerContext context, int id)
     {
         try
         {
             if (People.Any(p =&gt; p.Key == id))
             {
-                return this.JsonResponse(People.FirstOrDefault(p =&gt; p.Key == id));
+                return context.JsonResponse(People.FirstOrDefault(p =&gt; p.Key == id));
             }
         }
         catch (Exception ex)
         {
-            return this.JsonExceptionResponse(ex);
+            return context.JsonExceptionResponse(ex);
         }
     }
 
     // You can override the default headers and add custom headers to each API Response.
-    public override void SetDefaultHeaders() =&gt; this.NoCache();
+    public override void SetDefaultHeaders(HttpListenerContext context) =&gt; context.NoCache();
 }
 </code></pre><p><em>Or if you want to use the Wildcard strategy (which is the default):</em></p>
 <pre><code class="lang-csharp">public class PeopleController : WebApiController
 {
-    public PeopleController(IHttpContext context)
-    : base(context)
-    {
-    }
-
     [WebApiHandler(HttpVerbs.Get, &quot;/api/people/*&quot;)]
-    public bool GetPeople()
+    public bool GetPeople(WebServer server, HttpListenerContext context)
     {
         try
         {
-            var lastSegment = this.Request.Url.Segments.Last();
+            var lastSegment = context.Request.Url.Segments.Last();
             if (lastSegment.EndsWith(&quot;/&quot;))
-                return this.JsonResponse(People);
+                return context.JsonResponse(People);
 
             int key = 0;
             if (int.TryParse(lastSegment, out key) &amp;&amp; People.Any(p =&gt; p.Key == key))
             {
-                return this.JsonResponse(People.FirstOrDefault(p =&gt; p.Key == key));
+                return context.JsonResponse(People.FirstOrDefault(p =&gt; p.Key == key));
             }
 
             throw new KeyNotFoundException(&quot;Key Not Found: &quot; + lastSegment);
         }
         catch (Exception ex)
         {
-            return this.JsonExceptionResponse(ex);
+            return context.JsonExceptionResponse(ex);
         }
     }
 }
@@ -342,9 +332,12 @@ public class WebSocketsChatServer : WebSocketsServer
         // placeholder
     }
 
-    /// &lt;inheritdoc/&gt;
-    public override string ServerName =&gt; &quot;Chat Server&quot;
-
+    /// &lt;summary&gt;
+    /// Called when this WebSockets Server receives a full message (EndOfMessage) form a WebSockets client.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
+    /// &lt;param name=&quot;rxBuffer&quot;&gt;The rx buffer.&lt;/param&gt;
+    /// &lt;param name=&quot;rxResult&quot;&gt;The rx result.&lt;/param&gt;
     protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
     {
         var session = this.WebServer.GetSession(context);
@@ -355,6 +348,13 @@ public class WebSocketsChatServer : WebSocketsServer
         }
     }
 
+    /// &lt;inheritdoc/&gt;
+    public override string ServerName =&gt; &quot;Chat Server&quot;
+
+    /// &lt;summary&gt;
+    /// Called when this WebSockets Server accepts a new WebSockets client.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
     protected override void OnClientConnected(WebSocketContext context)
     {
         this.Send(context, &quot;Welcome to the chat room!&quot;);
@@ -365,10 +365,22 @@ public class WebSocketsChatServer : WebSocketsServer
                 this.Send(ws, &quot;Someone joined the chat room.&quot;);
         }
     }
+
+    /// &lt;summary&gt;
+    /// Called when this WebSockets Server receives a message frame regardless if the frame represents the EndOfMessage.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
+    /// &lt;param name=&quot;rxBuffer&quot;&gt;The rx buffer.&lt;/param&gt;
+    /// &lt;param name=&quot;rxResult&quot;&gt;The rx result.&lt;/param&gt;
     protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
     {
         return;
     }
+
+    /// &lt;summary&gt;
+    /// Called when the server has removed a WebSockets connected client for any reason.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
     protected override void OnClientDisconnected(WebSocketContext context)
     {
         this.Broadcast(&quot;Someone left the chat room.&quot;);
@@ -431,7 +443,7 @@ public class WebSocketsChatServer : WebSocketsServer
               <div class="contribution">
                 <ul class="nav">
                   <li class="top-sep">
-                    <a href="https://github.com/unosquare/embedio/blob/RefactorAbstraction/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/unosquare/embedio/blob/v1.X/README.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

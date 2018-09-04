@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class WebServer
    | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 1.0.0.0">
+    <meta name="generator" content="docfx 2.39.1.0">
     
     <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -83,7 +83,6 @@
   <h1 id="Unosquare_Labs_EmbedIO_WebServer" data-uid="Unosquare.Labs.EmbedIO.WebServer" class="text-break">Class WebServer
   </h1>
   <div class="markdown level0 summary"><p>Represents our tiny web server used to handle requests.</p>
-<p>This is the default implementation of <code>IWebServer</code>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -93,7 +92,6 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></div>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
   </div>
   <div class="inheritedMembers">
@@ -123,7 +121,7 @@
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.html">Unosquare.Labs.EmbedIO</a></h6>
   <h5 id="Unosquare_Labs_EmbedIO_WebServer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class WebServer : IWebServer, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public class WebServer : IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -255,123 +253,10 @@ Please notice the ending slash. -- It is important.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>Argument urlPrefix must be specified.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
+        <td><p>The HTTP Listener is not supported in this OS.</p>
 </td>
       </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_WebServer__ctor_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_WebServer__ctor_System_String___Unosquare_Labs_EmbedIO_Constants_RoutingStrategy_Unosquare_Labs_EmbedIO_HttpListenerMode_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor(System.String[],Unosquare.Labs.EmbedIO.Constants.RoutingStrategy,Unosquare.Labs.EmbedIO.HttpListenerMode)">WebServer(String[], RoutingStrategy, HttpListenerMode)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a> class.
-NOTE: urlPrefix must be specified as something similar to: <a href="http://localhost:9696/">http://localhost:9696/</a>
-Please notice the ending slash. -- It is important.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy, HttpListenerMode mode = HttpListenerMode.EmbedIO)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
-        <td><span class="parametername">urlPrefixes</span></td>
-        <td><p>The URL prefix.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.html">RoutingStrategy</a></td>
-        <td><span class="parametername">routingStrategy</span></td>
-        <td><p>The routing strategy.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.HttpListenerMode.html">HttpListenerMode</a></td>
-        <td><span class="parametername">mode</span></td>
-        <td><p>The mode.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>Argument urlPrefix must be specified.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_WebServer__ctor_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_WebServer__ctor_System_String___Unosquare_Labs_EmbedIO_Constants_RoutingStrategy_Unosquare_Labs_EmbedIO_IHttpListener_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor(System.String[],Unosquare.Labs.EmbedIO.Constants.RoutingStrategy,Unosquare.Labs.EmbedIO.IHttpListener)">WebServer(String[], RoutingStrategy, IHttpListener)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a> class.
-NOTE: urlPrefix must be specified as something similar to: <a href="http://localhost:9696/">http://localhost:9696/</a>
-Please notice the ending slash. -- It is important.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy, IHttpListener httpListener)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
-        <td><span class="parametername">urlPrefixes</span></td>
-        <td><p>The URL prefix.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.html">RoutingStrategy</a></td>
-        <td><span class="parametername">routingStrategy</span></td>
-        <td><p>The routing strategy.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpListener.html">IHttpListener</a></td>
-        <td><span class="parametername">httpListener</span></td>
-        <td><p>The HTTP listener.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
         <td><p>Argument urlPrefix must be specified.</p>
@@ -390,7 +275,7 @@ Please notice the ending slash. -- It is important.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IHttpListener Listener { get; protected set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public HttpListener Listener { get; protected set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -402,7 +287,7 @@ Please notice the ending slash. -- It is important.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpListener.html">IHttpListener</a></td>
+        <td><a class="xref" href="Unosquare.Net.HttpListener.html">HttpListener</a></td>
         <td><p>The listener.</p>
 </td>
       </tr>
@@ -439,12 +324,12 @@ Please notice the ending slash. -- It is important.</p>
   
   <a id="Unosquare_Labs_EmbedIO_WebServer_OnMethodNotAllowed_" data-uid="Unosquare.Labs.EmbedIO.WebServer.OnMethodNotAllowed*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_WebServer_OnMethodNotAllowed" data-uid="Unosquare.Labs.EmbedIO.WebServer.OnMethodNotAllowed">OnMethodNotAllowed</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the on method not allowed.</p>
+  <div class="markdown level1 summary"><p>The on method not allowed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Func&lt;IHttpContext, Task&lt;bool&gt;&gt; OnMethodNotAllowed { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Func&lt;HttpListenerContext, Task&lt;bool&gt;&gt; OnMethodNotAllowed { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -456,7 +341,7 @@ Please notice the ending slash. -- It is important.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;&gt;</td>
         <td><p>The on method not allowed.</p>
 </td>
       </tr>
@@ -466,12 +351,12 @@ Please notice the ending slash. -- It is important.</p>
   
   <a id="Unosquare_Labs_EmbedIO_WebServer_OnNotFound_" data-uid="Unosquare.Labs.EmbedIO.WebServer.OnNotFound*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_WebServer_OnNotFound" data-uid="Unosquare.Labs.EmbedIO.WebServer.OnNotFound">OnNotFound</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the on not found.</p>
+  <div class="markdown level1 summary"><p>The on not found.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Func&lt;IHttpContext, Task&lt;bool&gt;&gt; OnNotFound { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Func&lt;HttpListenerContext, Task&lt;bool&gt;&gt; OnNotFound { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -483,7 +368,7 @@ Please notice the ending slash. -- It is important.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;&gt;</td>
         <td><p>The on not found.</p>
 </td>
       </tr>
@@ -512,8 +397,7 @@ By default it is set to Wildcard, but Regex is the recommended value.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.html">RoutingStrategy</a></td>
-        <td><p>The routing strategy.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -526,7 +410,7 @@ By default it is set to Wildcard, but Regex is the recommended value.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ISessionWebModule SessionModule { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ISessionWebModule SessionModule { get; protected set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -553,7 +437,7 @@ By default it is set to Wildcard, but Regex is the recommended value.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;string&gt; UrlPrefixes { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public HttpListenerPrefixCollection UrlPrefixes { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -565,7 +449,7 @@ By default it is set to Wildcard, but Regex is the recommended value.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><a class="xref" href="Unosquare.Net.HttpListenerPrefixCollection.html">HttpListenerPrefixCollection</a></td>
         <td><p>The URL prefix.</p>
 </td>
       </tr>
@@ -683,8 +567,7 @@ By default it is set to Wildcard, but Regex is the recommended value.</p>
   
   <a id="Unosquare_Labs_EmbedIO_WebServer_Dispose_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Dispose*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_WebServer_Dispose_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.WebServer.Dispose(System.Boolean)">Dispose(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Releases unmanaged and - optionally - managed resources.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -703,8 +586,7 @@ By default it is set to Wildcard, but Regex is the recommended value.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">disposing</span></td>
-        <td><p><code>true</code> to release both managed and unmanaged resources; <code>false</code> to release only unmanaged resources.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -749,6 +631,57 @@ Returns null if no module matches the given type.</p>
       <tr>
         <td><span class="parametername">T</span></td>
         <td><p>The type of module.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_WebServer_ProcessRequest_" data-uid="Unosquare.Labs.EmbedIO.WebServer.ProcessRequest*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer_ProcessRequest_Unosquare_Net_HttpListenerContext_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.WebServer.ProcessRequest(Unosquare.Net.HttpListenerContext,System.Threading.CancellationToken)">ProcessRequest(HttpListenerContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Process HttpListener Request and returns true if it was handled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;bool&gt; ProcessRequest(HttpListenerContext context, CancellationToken ct)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The HttpListenerContext.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><p>True if it was handled; otherwise, false.</p>
 </td>
       </tr>
     </tbody>
@@ -882,9 +815,6 @@ so it is safe to call <a class="xref" href="https://docs.microsoft.com/dotnet/ap
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
-  <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a>
-  </div>
   <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
   </div>

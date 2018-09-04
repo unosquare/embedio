@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class FileModuleBase
    | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 1.0.0.0">
+    <meta name="generator" content="docfx 2.39.1.0">
     
     <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -82,8 +82,7 @@
   
   <h1 id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase" class="text-break">Class FileModuleBase
   </h1>
-  <div class="markdown level0 summary"><p>Represents a files module base</p>
-</div>
+  <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -118,7 +117,7 @@
       <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_CancellationToken">WebModuleBase.CancellationToken</a>
     </div>
     <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___">WebModuleBase.AddHandler(String, HttpVerbs, Func&lt;IHttpContext, CancellationToken, Task&lt;Boolean&gt;&gt;)</a>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_System_Func_Unosquare_Net_HttpListenerContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___">WebModuleBase.AddHandler(String, HttpVerbs, Func&lt;HttpListenerContext, CancellationToken, Task&lt;Boolean&gt;&gt;)</a>
     </div>
     <div>
       <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_Start_System_Threading_CancellationToken_">WebModuleBase.Start(CancellationToken)</a>
@@ -267,13 +266,13 @@
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_SetDefaultCacheHeaders_" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.SetDefaultCacheHeaders*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_SetDefaultCacheHeaders_Unosquare_Labs_EmbedIO_IHttpResponse_" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.SetDefaultCacheHeaders(Unosquare.Labs.EmbedIO.IHttpResponse)">SetDefaultCacheHeaders(IHttpResponse)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_SetDefaultCacheHeaders_Unosquare_Net_HttpListenerResponse_" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.SetDefaultCacheHeaders(Unosquare.Net.HttpListenerResponse)">SetDefaultCacheHeaders(HttpListenerResponse)</h4>
   <div class="markdown level1 summary"><p>Sets the default cache headers.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void SetDefaultCacheHeaders(IHttpResponse response)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void SetDefaultCacheHeaders(HttpListenerResponse response)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -286,7 +285,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpResponse.html">IHttpResponse</a></td>
+        <td><a class="xref" href="Unosquare.Net.HttpListenerResponse.html">HttpListenerResponse</a></td>
         <td><span class="parametername">response</span></td>
         <td><p>The response.</p>
 </td>
@@ -296,13 +295,13 @@
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_WriteFileAsync_" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_WriteFileAsync_System_Boolean_System_String_System_Int64_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_Stream_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.Boolean,System.String,System.Int64,Unosquare.Labs.EmbedIO.IHttpContext,System.IO.Stream,System.Threading.CancellationToken)">WriteFileAsync(Boolean, String, Int64, IHttpContext, Stream, CancellationToken)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_WriteFileAsync_System_Boolean_System_String_System_Int64_Unosquare_Net_HttpListenerContext_System_IO_Stream_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.Boolean,System.String,System.Int64,Unosquare.Net.HttpListenerContext,System.IO.Stream,System.Threading.CancellationToken)">WriteFileAsync(Boolean, String, Int64, HttpListenerContext, Stream, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Writes the file asynchronous.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Task WriteFileAsync(bool usingPartial, string partialHeader, long fileSize, IHttpContext context, Stream buffer, CancellationToken ct)</code></pre>
+    <pre><code class="lang-csharp hljs">protected Task WriteFileAsync(bool usingPartial, string partialHeader, long fileSize, HttpListenerContext context, Stream buffer, CancellationToken ct)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -333,7 +332,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -371,10 +370,6 @@
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html">IWebModule</a>
-  </div>
-  <h3 id="seealso">See Also</h3>
-  <div class="seealso">
-      <div><a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html">WebModuleBase</a></div>
   </div>
 
 <h3 id="disqus_thread">Comments</h3>
