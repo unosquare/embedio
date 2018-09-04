@@ -59,8 +59,6 @@
             Assert.AreEqual(System.Text.Encoding.UTF8.GetString(buffer.Array).Substring(0, 100),
                 Json.Serialize(BigDataWebSocket.BigDataObject).Substring(0, 100), 
                 "Initial chars are equal");
-
-            await clientSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "OK", ct.Token);
 #else
             var clientSocket = new WebSocket(webSocketUrl);
             await clientSocket.ConnectAsync(ct.Token);
@@ -74,7 +72,6 @@
             var buffer = System.Text.Encoding.UTF8.GetBytes("HOLA");
             await clientSocket.SendAsync(buffer, Opcode.Text, ct.Token);
             await Task.Delay(500, ct.Token);
-            await clientSocket.CloseAsync(CloseStatusCode.Normal, ct: ct.Token);
 #endif
         }
     }
