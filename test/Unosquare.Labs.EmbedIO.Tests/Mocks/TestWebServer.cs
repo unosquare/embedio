@@ -95,9 +95,15 @@
 
                 testServer._entryQueue.Enqueue(this);
 
-                // wait to init the connection
-                while (Response.OutputStream.Length == 0)
-                    await Task.Delay(10);
+                try
+                {
+                    while (Response.OutputStream.Position == 0)
+                        await Task.Delay(1);
+                }
+                catch
+                {
+                    // ignore
+                }
 
                 return Encoding.UTF8.GetString((Response.OutputStream as MemoryStream)?.ToArray());
             }
