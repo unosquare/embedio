@@ -98,7 +98,7 @@
                     throw new InvalidOperationException();
                 
                 while (ms.Length == 0)
-                    await Task.Delay(100);
+                    await Task.Delay(10);
 
                 return Encoding.UTF8.GetString(ms.ToArray());
             }
