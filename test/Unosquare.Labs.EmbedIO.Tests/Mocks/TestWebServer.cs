@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests.Mocks
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.Concurrent;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
@@ -47,7 +48,7 @@
 
                 if (ct.IsCancellationRequested || clientSocket == null)
                     return;
-                
+
                 // Usually we don't wait, but for testing let's do it.
                 var handler = new HttpHandler(clientSocket);
                 await handler.HandleClientRequest(ct);
@@ -94,13 +95,11 @@
 
                 testServer._entryQueue.Enqueue(this);
 
-                if (!(Response.OutputStream is MemoryStream ms))
-                    throw new InvalidOperationException();
-                
-                while (ms.Length == 0)
+                // wait to init the connection
+                while (Response.OutputStream.Length == 0)
                     await Task.Delay(10);
 
-                return Encoding.UTF8.GetString(ms.ToArray());
+                return Encoding.UTF8.GetString((Response.OutputStream as MemoryStream)?.ToArray());
             }
         }
 
