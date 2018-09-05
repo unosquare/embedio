@@ -43,6 +43,6 @@
         /// <summary>
         /// PUT method
         /// </summary>
-        Put
+        Put,
     }
 }

@@ -24,6 +24,6 @@
         /// <summary>
         /// Specifies GZIP.
         /// </summary>
-        Gzip
+        Gzip,
     }
 }

@@ -2,11 +2,6 @@
 {
     using Constants;
     using Modules;
-#if NET47
-    using System.Net;
-#else
-    using Net;
-#endif
 
     public class TestLocalSessionController : WebApiController
     {
@@ -18,41 +13,46 @@
         public const string MyData = "MyData";
         public const string CookieName = "MyCookie";
 
+        public TestLocalSessionController(IHttpContext context)
+            : base(context)
+        {
+        }
+
         [WebApiHandler(HttpVerbs.Get, "/getcookie")]
-        public bool GetCookieC(WebServer server, HttpListenerContext context)
+        public bool GetCookieC()
         {
             var cookie = new System.Net.Cookie(CookieName, CookieName);
-            context.Response.Cookies.Add(cookie);
+            Response.Cookies.Add(cookie);
 
-            return context.JsonResponse(context.Response.Cookies[CookieName]);
+            return this.JsonResponse(Response.Cookies[CookieName]);
         }
 
         [WebApiHandler(HttpVerbs.Get, "/deletesession")]
-        public bool DeleteSessionC(WebServer server, HttpListenerContext context)
+        public bool DeleteSessionC()
         {
-            server.DeleteSession(context);
+            this.DeleteSession();
 
-            return context.JsonResponse("Deleted");
+            return this.JsonResponse("Deleted");
         }
 
         [WebApiHandler(HttpVerbs.Get, "/putdata")]
-        public bool PutDataSession(WebServer server, HttpListenerContext context)
+        public bool PutDataSession()
         {
-            server.GetSession(context).Data.TryAdd("sessionData", MyData);
+            this.GetSession()?.Data.TryAdd("sessionData", MyData);
 
-            return context.JsonResponse(server.GetSession(context).Data["sessionData"].ToString());
+            return this.JsonResponse(this.GetSession().Data["sessionData"].ToString());
         }
 
         [WebApiHandler(HttpVerbs.Get, "/getdata")]
-        public bool GetDataSession(WebServer server, HttpListenerContext context)
+        public bool GetDataSession()
         {
-            return context.JsonResponse(server.GetSession(context).Data.TryGetValue("sessionData", out var data)
+            return this.JsonResponse(this.GetSession().Data.TryGetValue("sessionData", out var data)
                 ? data.ToString()
                 : string.Empty);
         }
 
         [WebApiHandler(HttpVerbs.Get, "/geterror")]
-        public bool GetError(WebServer server, HttpListenerContext context)
+        public bool GetError()
         {
             return false;
         }

@@ -6,11 +6,6 @@
     using System.Threading.Tasks;
     using System.Collections.Generic;
     using System.Collections.Concurrent;
-#if NET47
-    using System.Net;
-#else
-    using Net;
-#endif
 
     /// <summary>
     /// Simple authorisation module that requests http auth from client
@@ -61,13 +56,13 @@
         public override string Name => nameof(AuthModule);
 
         /// <summary>
-        /// Validates request and returns true if that account data registred in this module and request has auth data.  
+        /// Validates request and returns <c>true</c> if that account data registred in this module and request has auth data.
         /// </summary>
-        /// <param name="request">HttpListenerRequest.</param>
+        /// <param name="request">The HTTP Request.</param>
         /// <returns>
-        /// true if request authorised.
+        /// <c>true</c> if request authorised, otherwise <c>false</c>.
         /// </returns>
-        public bool IsAuthorized(HttpListenerRequest request)
+        public bool IsAuthorized(IHttpRequest request)
         {
             try
             {
@@ -94,12 +89,12 @@
         /// <summary>
         /// Parses request for account data.
         /// </summary>
-        /// <param name="request">HttpListenerRequest.</param>
+        /// <param name="request">The HTTP Request.</param>
         /// <returns>user-password KeyValuePair from request.</returns>
         /// <exception>
         /// if request isn't authorised.
         /// </exception>
-        private static KeyValuePair<string, string> GetAccountData(HttpListenerRequest request)
+        private static KeyValuePair<string, string> GetAccountData(IHttpRequest request)
         {
             var authHeader = request.Headers["Authorization"];
             if (authHeader == null) throw new Exception("Authorization header not found");

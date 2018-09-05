@@ -8,27 +8,18 @@
     using System.Reflection;
     using System.Threading.Tasks;
     using Swan;
-#if NET47
-    using System.Net;
-#else
-    using Net;
-#endif
 
     /// <summary>
     /// A delegate that handles certain action in a module given a path and a verb.
     /// </summary>
-    /// <param name="server">The server.</param>
-    /// <param name="context">The context.</param>
     /// <returns><b>true</b> if the response was completed, otherwise. <b>false</b></returns>
-    internal delegate bool ResponseHandler(WebServer server, HttpListenerContext context);
+    internal delegate bool ResponseHandler();
 
     /// <summary>
     /// An async delegate that handles certain action in a module given a path and a verb.
     /// </summary>
-    /// <param name="server">The server.</param>
-    /// <param name="context">The context.</param>
     /// <returns>A task with <b>true</b> if the response was completed, otherwise. <b>false</b></returns>
-    internal delegate Task<bool> AsyncResponseHandler(WebServer server, HttpListenerContext context);
+    internal delegate Task<bool> AsyncResponseHandler();
 
     /// <summary>
     /// A very simple module to register class methods as handlers.
@@ -38,16 +29,12 @@
     public class WebApiModule 
         : WebModuleBase
     {
-        #region Immutable Declarations
-
         private readonly List<Type> _controllerTypes = new List<Type>();
 
         private readonly Dictionary<string, Dictionary<HttpVerbs, MethodCacheInstance>> _delegateMap
             =
             new Dictionary<string, Dictionary<HttpVerbs, MethodCacheInstance>>(
                 Strings.StandardStringComparer);
-
-        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebApiModule"/> class.
@@ -81,18 +68,16 @@
                     .Debug(nameof(WebApiModule));
 
                 // Initially, only the server and context objects will be available
-                var args = new object[methodPair.MethodCache.AdditionalParameters.Count + 2];
-                args[0] = Server;
-                args[1] = context;
-
+                var args = new object[methodPair.MethodCache.AdditionalParameters.Count];
+                
                 // Select the routing strategy
                 switch (Server.RoutingStrategy)
                 {
                     case RoutingStrategy.Regex:
                         methodPair.ParseArguments(regExRouteParams, args);
-                        return await methodPair.Invoke(args);
+                        return await methodPair.Invoke(context, args);
                     default:
-                        return await methodPair.Invoke(args);
+                        return await methodPair.Invoke(context, args);
                 }
             });
         }
@@ -111,7 +96,7 @@
         /// <typeparam name="T">The type of register controller.</typeparam>
         /// <exception cref="System.ArgumentException">Controller types must be unique within the module.</exception>
         public void RegisterController<T>()
-            where T : WebApiController, new()
+            where T : WebApiController
         {
             RegisterController(typeof(T));
         }
@@ -122,7 +107,7 @@
         /// <typeparam name="T">The type of register controller.</typeparam>
         /// <param name="controllerFactory">The controller factory method.</param>
         /// <exception cref="System.ArgumentException">Controller types must be unique within the module.</exception>
-        public void RegisterController<T>(Func<T> controllerFactory)
+        public void RegisterController<T>(Func<IHttpContext, T> controllerFactory)
             where T : WebApiController
         {
             RegisterController(typeof(T), controllerFactory);
@@ -133,29 +118,23 @@
         /// </summary>
         /// <param name="controllerType">Type of the controller.</param>
         public void RegisterController(Type controllerType)
-            => RegisterController(controllerType, () => Activator.CreateInstance(controllerType));
+            => RegisterController(controllerType, (ctx) => Activator.CreateInstance(controllerType, ctx));
 
         /// <summary>
         /// Registers the controller.
         /// </summary>
         /// <param name="controllerType">Type of the controller.</param>
         /// <param name="controllerFactory">The controller factory method.</param>
-        public void RegisterController(Type controllerType, Func<object> controllerFactory)
+        public void RegisterController(Type controllerType, Func<IHttpContext, object> controllerFactory)
         {
             if (_controllerTypes.Contains(controllerType))
                 throw new ArgumentException("Controller types must be unique within the module");
 
-            var protoDelegate = new ResponseHandler((server, context) => true);
-            var protoAsyncDelegate = new AsyncResponseHandler((server, context) => Task.FromResult(true));
+            var protoDelegate = new ResponseHandler(() => true);
+            var protoAsyncDelegate = new AsyncResponseHandler(() => Task.FromResult(true));
             var methods = controllerType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                .Where(
-                    m => (m.ReturnType == protoDelegate.GetMethodInfo().ReturnType
-                          || m.ReturnType == protoAsyncDelegate.GetMethodInfo().ReturnType)
-                         && m.GetParameters()
-                             .Select(pi => pi.ParameterType)
-                             .Take(2)
-                             .SequenceEqual(protoDelegate.GetMethodInfo().GetParameters()
-                                 .Select(pi => pi.ParameterType)));
+                .Where(m => m.ReturnType == protoDelegate.GetMethodInfo().ReturnType
+                          || m.ReturnType == protoAsyncDelegate.GetMethodInfo().ReturnType);
 
             foreach (var method in methods)
             {
@@ -191,7 +170,7 @@
         /// <returns>A string that represents the registered path in the internal delegate map.</returns>
         private string NormalizeRegexPath(
             HttpVerbs verb,
-            HttpListenerContext context,
+            IHttpContext context,
             Dictionary<string, object> routeParams)
         {
             var path = context.Request.Url.LocalPath;
@@ -220,7 +199,7 @@
         /// <param name="verb">The verb.</param>
         /// <param name="context">The context.</param>
         /// <returns>A string that represents the registered path.</returns>
-        private string NormalizeWildcardPath(HttpVerbs verb, HttpListenerContext context)
+        private string NormalizeWildcardPath(HttpVerbs verb, IHttpContext context)
         {
             var path = context.RequestWilcardPath(_delegateMap.Keys
                 .Where(k => k.Contains(ModuleMap.AnyPathRoute))
@@ -248,7 +227,7 @@
         /// </summary>
         /// <param name="context"> The HttpListener context.</param>
         /// <returns><c>true</c> if the path is found, otherwise <c>false</c>.</returns>
-        private bool IsMethodNotAllowed(HttpListenerContext context)
+        private bool IsMethodNotAllowed(IHttpContext context)
         {
             string path;
 
@@ -256,14 +235,15 @@
             {
                 case RoutingStrategy.Wildcard:
                     path = context.RequestWilcardPath(_delegateMap.Keys
-                        .Where(k => k.Contains("/" + ModuleMap.AnyPath))
+                        .Where(k => k.Contains(ModuleMap.AnyPathRoute))
                         .Select(s => s.ToLowerInvariant()));
                     break;
                 case RoutingStrategy.Regex:
                     path = context.Request.Url.LocalPath;
                     foreach (var route in _delegateMap.Keys)
                     {
-                        if (path.RequestRegexUrlParams(route) != null) return true;
+                        if (path.RequestRegexUrlParams(route) != null) 
+                            return true;
                     }
 
                     return false;
@@ -276,12 +256,29 @@
         }
     }
 
+    /// <inheritdoc />
     /// <summary>
     /// Inherit from this class and define your own Web API methods
     /// You must RegisterController in the Web API Module to make it active.
     /// </summary>
-    public abstract class WebApiController
+    public abstract class WebApiController : IHttpContext
     {
+        protected WebApiController(IHttpContext context)
+        {
+            Request = context.Request;
+            Response = context.Response;
+            WebServer = context.WebServer;
+        }
+
+        /// <inheritdoc />
+        public IHttpRequest Request { get; internal set; }
+
+        /// <inheritdoc />
+        public IHttpResponse Response { get; internal set; }
+
+        /// <inheritdoc />
+        public IWebServer WebServer { get; set; }
+
         /// <summary>
         /// Sets the default headers to the Web API response.
         /// By default will set:
@@ -293,7 +290,6 @@
         ///
         /// Previous values are defined to avoid caching from client.
         /// </summary>
-        /// <param name="context">The context.</param>
-        public virtual void SetDefaultHeaders(HttpListenerContext context) => context.NoCache();
+        public virtual void SetDefaultHeaders() => this.NoCache();
     }
 }

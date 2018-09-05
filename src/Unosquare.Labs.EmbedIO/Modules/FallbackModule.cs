@@ -4,11 +4,6 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-#if NET47
-    using System.Net;
-#else
-    using Net;
-#endif
 
     /// <summary>
     /// Represents a module to fallback any request.
@@ -21,7 +16,7 @@
         /// Initializes a new instance of the <see cref="FallbackModule" /> class.
         /// </summary>
         /// <param name="action">The action.</param>
-        public FallbackModule(Func<HttpListenerContext, CancellationToken, bool> action)
+        public FallbackModule(Func<IHttpContext, CancellationToken, bool> action)
         {
             AddHandler(
                 ModuleMap.AnyPath, 

@@ -1,5 +1,4 @@
-﻿#if !NET47
-namespace Unosquare.Net
+﻿namespace Unosquare.Net
 {
     using System;
 
@@ -20,4 +19,3 @@ namespace Unosquare.Net
         public int ErrorCode { get; }
     }
 }
-#endif

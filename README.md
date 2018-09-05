@@ -198,24 +198,29 @@ server.Module<WebApiModule>().RegisterController<PeopleController>();
 ```csharp
 public class PeopleController : WebApiController
 {
+    public PeopleController(IHttpContext context)
+    : base(context)
+    {
+    }
+
     [WebApiHandler(HttpVerbs.Get, "/api/people/{id}")]
-    public bool GetPeople(WebServer server, HttpListenerContext context, int id)
+    public bool GetPeople(int id)
     {
         try
         {
             if (People.Any(p => p.Key == id))
             {
-                return context.JsonResponse(People.FirstOrDefault(p => p.Key == id));
+                return this.JsonResponse(People.FirstOrDefault(p => p.Key == id));
             }
         }
         catch (Exception ex)
         {
-            return context.JsonExceptionResponse(ex);
+            return this.JsonExceptionResponse(ex);
         }
     }
     
     // You can override the default headers and add custom headers to each API Response.
-    public override void SetDefaultHeaders(HttpListenerContext context) => context.NoCache();
+    public override void SetDefaultHeaders() => this.NoCache();
 }
 ```
 
@@ -224,26 +229,31 @@ public class PeopleController : WebApiController
 ```csharp
 public class PeopleController : WebApiController
 {
+    public PeopleController(IHttpContext context)
+    : base(context)
+    {
+    }
+
     [WebApiHandler(HttpVerbs.Get, "/api/people/*")]
-    public bool GetPeople(WebServer server, HttpListenerContext context)
+    public bool GetPeople()
     {
         try
         {
-            var lastSegment = context.Request.Url.Segments.Last();
+            var lastSegment = this.Request.Url.Segments.Last();
             if (lastSegment.EndsWith("/"))
-                return context.JsonResponse(People);
+                return this.JsonResponse(People);
 
             int key = 0;
             if (int.TryParse(lastSegment, out key) && People.Any(p => p.Key == key))
             {
-                return context.JsonResponse(People.FirstOrDefault(p => p.Key == key));
+                return this.JsonResponse(People.FirstOrDefault(p => p.Key == key));
             }
 
             throw new KeyNotFoundException("Key Not Found: " + lastSegment);
         }
         catch (Exception ex)
         {
-            return context.JsonExceptionResponse(ex);
+            return this.JsonExceptionResponse(ex);
         }
     }
 }
@@ -275,12 +285,9 @@ public class WebSocketsChatServer : WebSocketsServer
         // placeholder
     }
 
-    /// <summary>
-    /// Called when this WebSockets Server receives a full message (EndOfMessage) form a WebSockets client.
-    /// </summary>
-    /// <param name="context">The context.</param>
-    /// <param name="rxBuffer">The rx buffer.</param>
-    /// <param name="rxResult">The rx result.</param>
+    /// <inheritdoc/>
+    public override string ServerName => "Chat Server"
+
     protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
     {
         var session = this.WebServer.GetSession(context);
@@ -291,13 +298,6 @@ public class WebSocketsChatServer : WebSocketsServer
         }
     }
 
-    /// <inheritdoc/>
-    public override string ServerName => "Chat Server"
-
-    /// <summary>
-    /// Called when this WebSockets Server accepts a new WebSockets client.
-    /// </summary>
-    /// <param name="context">The context.</param>
     protected override void OnClientConnected(WebSocketContext context)
     {
         this.Send(context, "Welcome to the chat room!");
@@ -308,22 +308,10 @@ public class WebSocketsChatServer : WebSocketsServer
                 this.Send(ws, "Someone joined the chat room.");
         }
     }
-
-    /// <summary>
-    /// Called when this WebSockets Server receives a message frame regardless if the frame represents the EndOfMessage.
-    /// </summary>
-    /// <param name="context">The context.</param>
-    /// <param name="rxBuffer">The rx buffer.</param>
-    /// <param name="rxResult">The rx result.</param>
     protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
     {
         return;
     }
-
-    /// <summary>
-    /// Called when the server has removed a WebSockets connected client for any reason.
-    /// </summary>
-    /// <param name="context">The context.</param>
     protected override void OnClientDisconnected(WebSocketContext context)
     {
         this.Broadcast("Someone left the chat room.");

@@ -5,16 +5,7 @@
     using System;
     using System.Linq;
     using System.Collections.Generic;
-#if NET47
-    using System.Net;
-#else
-    using Net;
-#endif
-
-    // TODO: Add Whitelist origins with Regex
-    // TODO: Add Path Regex, just apply CORS in some paths
-    // TODO: Handle valid headers in other modules
-
+    
     /// <summary>
     /// CORS control Module
     /// Cross-origin resource sharing (CORS) is a mechanism that allows restricted resources (e.g. fonts) 
@@ -23,6 +14,8 @@
     public class CorsModule 
         : WebModuleBase
     {
+        private const string Wildcard = "*";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CorsModule"/> class.
         /// </summary>
@@ -60,7 +53,7 @@
                 if (origins == Strings.CorsWildcard && headers == Strings.CorsWildcard &&
                     methods == Strings.CorsWildcard)
                 {
-                    context.Response.Headers.Add(Headers.AccessControlAllowOrigin);
+                    context.Response.AddHeader(Headers.AccessControlAllowOrigin, Wildcard);
                     return Task.FromResult(false);
                 }
 
@@ -78,7 +71,7 @@
 
                 if (validOrigins.Contains(currentOrigin))
                 {
-                    context.Response.Headers.Add(Headers.AccessControlAllowOrigin.Replace("*", currentOrigin));
+                    context.Response.AddHeader(Headers.AccessControlAllowOrigin,  currentOrigin);
 
                     if (context.RequestVerb() == HttpVerbs.Options)
                     {
@@ -95,7 +88,7 @@
 
         private static Task<bool> ValidateHttpOptions(
             string methods, 
-            HttpListenerContext context,
+            IHttpContext context,
             IEnumerable<string> validMethods)
         {
             var currentMethod = context.RequestHeader(Headers.AccessControlRequestMethod);
@@ -104,7 +97,7 @@
             if (!string.IsNullOrWhiteSpace(currentHeader))
             {
                 // TODO: I need to remove headers out from AllowHeaders
-                context.Response.Headers.Add(Headers.AccessControlAllowHeaders + currentHeader);
+                context.Response.AddHeader(Headers.AccessControlAllowHeaders, currentHeader);
             }
 
             if (string.IsNullOrWhiteSpace(currentMethod)) 
@@ -116,7 +109,7 @@
 
             if (methods == Strings.CorsWildcard || currentMethods.All(validMethods.Contains))
             {
-                context.Response.Headers.Add(Headers.AccessControlAllowMethods + currentMethod);
+                context.Response.AddHeader(Headers.AccessControlAllowMethods, currentMethod);
 
                 return Task.FromResult(true);
             }

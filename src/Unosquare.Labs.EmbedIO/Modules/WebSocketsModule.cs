@@ -45,7 +45,7 @@
                 {
                     case RoutingStrategy.Wildcard:
                         path = context.RequestWilcardPath(_serverMap.Keys
-                        .Where(k => k.Contains("/" + ModuleMap.AnyPath))
+                        .Where(k => k.Contains(ModuleMap.AnyPathRoute))
                         .Select(s => s.ToLowerInvariant()));
                         break;
                     case RoutingStrategy.Regex:
@@ -151,7 +151,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>A string that represents the registered path in the internal map.</returns>
-        private string NormalizeRegexPath(HttpListenerContext context)
+        private string NormalizeRegexPath(IHttpContext context)
         {
             var path = string.Empty;
 
@@ -253,23 +253,20 @@
         /// <param name="context">The context.</param>
         /// <param name="ct">The cancellation token.</param>
         /// <returns>A task that represents the asynchronous of websocket connection operation.</returns>
-        public async Task AcceptWebSocket(HttpListenerContext context, CancellationToken ct)
+        public async Task AcceptWebSocket(IHttpContext context, CancellationToken ct)
         {
-            // first, accept the websocket
-            $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
-
 #if NET47
             const int receiveBufferSize = 2048;
 #endif
 
+            // first, accept the websocket
+            $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
+
             var webSocketContext =
 #if NET47
-                await context.AcceptWebSocketAsync(
-                    subProtocol: null,
-                    receiveBufferSize: receiveBufferSize,
-                    keepAliveInterval: TimeSpan.FromSeconds(30));
+                await (context as HttpContext).AcceptWebSocketAsync(receiveBufferSize);
 #else
-                await context.AcceptWebSocketAsync();
+                await (context as HttpListenerContext).AcceptWebSocketAsync();
 #endif
 
             // remove the disconnected clients
@@ -339,8 +336,14 @@
                     }
                 }
 #else
-                webSocketContext.WebSocket.OnMessage += (s, e) =>
+                webSocketContext.WebSocket.OnMessage += async (s, e) =>
                 {
+                    if (e.Opcode == Opcode.Close)
+                    {
+                        await webSocketContext.WebSocket.CloseAsync(CloseStatusCode.Normal, ct: CancellationToken);
+                        return;
+                    }
+
                     var isText = e.IsText ? WebSocketMessageType.Text : WebSocketMessageType.Binary;
 
                     OnMessageReceived(webSocketContext,
@@ -464,7 +467,7 @@
 #if NET47
                 await webSocket.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken);
 #else
-                await webSocket.WebSocket.CloseAsync(ct: CancellationToken);
+                await webSocket.WebSocket.CloseAsync(CloseStatusCode.Normal, ct: CancellationToken);
 #endif
             }
             catch (Exception ex)

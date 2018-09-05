@@ -1,44 +1,20 @@
-﻿#if !NET47
-//
-// System.Net.HttpListenerResponse
-//
-// Author:
-// Gonzalo Paniagua Javier (gonzalo@novell.com)
-//
-// Copyright (c) 2005 Novell, Inc. (http://www.novell.com)
-//
-// Permission is hereby granted, free of charge, to any person obtaining
-// a copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to
-// permit persons to whom the Software is furnished to do so, subject to
-// the following conditions:
-// 
-// The above copyright notice and this permission notice shall be
-// included in all copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-namespace Unosquare.Net
+﻿namespace Unosquare.Net
 {
     using System;
     using System.Globalization;
+    using System.Collections.Specialized;
     using System.Linq;
     using System.Net;
     using System.IO;
     using System.Text;
+    using Labs.EmbedIO;
 
     /// <summary>
     /// Represents an HTTP Listener's response.
     /// </summary>
     /// <seealso cref="IDisposable" />
-    public sealed class HttpListenerResponse : IDisposable
+    public sealed class HttpListenerResponse 
+        : IHttpResponse, IDisposable
     {
         private const string CannotChangeHeaderWarning = "Cannot be changed after headers are sent.";
         private readonly HttpListenerContext _context;
@@ -57,23 +33,10 @@ namespace Unosquare.Net
             _context = context;
         }
 
-        /// <summary>
-        /// Gets or sets the content encoding.
-        /// </summary>
-        public Encoding ContentEncoding => Encoding.UTF8;
+        /// <inheritdoc />
+        public Encoding ContentEncoding { get; set; } = Encoding.UTF8;
 
-        /// <summary>
-        /// Gets or sets the content length.
-        /// </summary>
-        /// <value>
-        /// The content length64.
-        /// </value>
-        /// <exception cref="System.ObjectDisposedException">
-        /// Is thrown when you try to access a member of an object that implements the 
-        /// IDisposable interface, and that object has been disposed.
-        /// </exception>
-        /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">Must be >= 0 - value.</exception>
+        /// <inheritdoc />
         public long ContentLength64
         {
             get => _contentLength;
@@ -94,24 +57,13 @@ namespace Unosquare.Net
             }
         }
 
-        /// <summary>
-        /// Gets or sets the MIME type of the content.
-        /// </summary>
-        /// <value>
-        /// The type of the content.
-        /// </value>
-        /// <exception cref="System.ObjectDisposedException">
-        /// Is thrown when you try to access a member of an object that implements the IDisposable 
-        /// interface, and that object has been disposed.
-        /// </exception>
-        /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
+        /// <inheritdoc />
         public string ContentType
         {
             get => _contentType;
 
             set
             {
-                // TODO: is null ok?
                 if (_disposed)
                     throw new ObjectDisposedException(GetType().ToString());
 
@@ -122,39 +74,13 @@ namespace Unosquare.Net
             }
         }
 
-        // RFC 2109, 2965 + the netscape specification at http://wp.netscape.com/newsref/std/cookie_spec.html
+        /// <inheritdoc />
+        public ICookieCollection Cookies => CookieCollection;
 
-        /// <summary>
-        /// Gets or sets the cookies collection.
-        /// </summary>
-        /// <value>
-        /// The cookies.
-        /// </value>
-        public CookieCollection Cookies
-        {
-            get => _cookies ?? (_cookies = new CookieCollection());
-            set => _cookies = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the headers.
-        /// </summary>
-        /// <value>
-        /// The headers.
-        /// </value>
-        public WebHeaderCollection Headers { get; set; } = new WebHeaderCollection();
-
-        /// <summary>
-        /// Gets or sets the Keep-Alive value.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [keep alive]; otherwise, <c>false</c>.
-        /// </value>
-        /// <exception cref="System.ObjectDisposedException">
-        /// Is thrown when you try to access a member of an object that 
-        /// implements the IDisposable interface, and that object has been disposed.
-        /// </exception>
-        /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
+        /// <inheritdoc />
+        public NameValueCollection Headers => HeaderCollection;
+        
+        /// <inheritdoc />
         public bool KeepAlive
         {
             get => _keepAlive;
@@ -171,22 +97,12 @@ namespace Unosquare.Net
             }
         }
 
-        /// <summary>
-        /// Gets the output stream.
-        /// </summary>
-        /// <value>
-        /// The output stream.
-        /// </value>
-        public ResponseStream OutputStream =>
+        /// <inheritdoc />
+        public Stream OutputStream =>
             _outputStream ?? (_outputStream = _context.Connection.GetResponseStream());
 
-        /// <summary>
-        /// Gets the protocol version.
-        /// </summary>
-        /// <value>
-        /// The protocol version.
-        /// </value>
-        public Version ProtocolVersion { get; } = HttpVersion.Version11;
+        /// <inheritdoc />
+        public Version ProtocolVersion { get; set; } = HttpVersion.Version11;
 
         /// <summary>
         /// Gets or sets a value indicating whether [send chunked].
@@ -215,18 +131,7 @@ namespace Unosquare.Net
             }
         }
 
-        /// <summary>
-        /// Gets or sets the status code.
-        /// </summary>
-        /// <value>
-        /// The status code.
-        /// </value>
-        /// <exception cref="System.ObjectDisposedException">
-        /// Is thrown when you try to access a member of an object that implements the 
-        /// IDisposable interface, and that object has been disposed.
-        /// </exception>
-        /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
-        /// <exception cref="System.Net.ProtocolViolationException">StatusCode must be between 100 and 999.</exception>
+        /// <inheritdoc />
         public int StatusCode
         {
             get => _statusCode;
@@ -240,7 +145,7 @@ namespace Unosquare.Net
                     throw new InvalidOperationException(CannotChangeHeaderWarning);
 
                 if (value < 100 || value > 999)
-                    throw new System.Net.ProtocolViolationException("StatusCode must be between 100 and 999.");
+                    throw new ProtocolViolationException("StatusCode must be between 100 and 999.");
                 _statusCode = value;
                 StatusDescription = HttpListenerResponseHelper.GetStatusDescription(value);
             }
@@ -253,6 +158,14 @@ namespace Unosquare.Net
         /// The status description.
         /// </value>
         public string StatusDescription { get; set; } = "OK";
+        
+        internal CookieCollection CookieCollection
+        {
+            get => _cookies ?? (_cookies = new CookieCollection());
+            set => _cookies = value;
+        }
+
+        internal WebHeaderCollection HeaderCollection { get; set; } = new WebHeaderCollection();
 
         internal bool HeadersSent { get; private set; }
         internal object HeadersLock { get; } = new object();
@@ -271,26 +184,12 @@ namespace Unosquare.Net
             Close(true);
         }
 
-        /// <summary>
-        /// Adds the header.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="value">The value.</param>
-        /// <exception cref="System.ArgumentNullException">
-        /// Is thrown when a null reference is passed to a 
-        /// method that does not accept it as a valid argument.
-        /// </exception>
-        /// <exception cref="System.ArgumentException">'name' cannot be empty.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">
-        /// Is thrown when the value of an argument is outside the 
-        /// allowable range of values as defined by the invoked method.
-        /// </exception>
+        /// <inheritdoc />
         public void AddHeader(string name, string value)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("'name' cannot be empty", nameof(name));
 
-            // TODO: check for forbidden headers and invalid characters
             if (value.Length > 65535)
                 throw new ArgumentOutOfRangeException(nameof(value));
 
@@ -308,23 +207,15 @@ namespace Unosquare.Net
             Close(false);
         }
 
-        /// <summary>
-        /// Sets the cookie.
-        /// </summary>
-        /// <param name="cookie">The cookie.</param>
-        /// <exception cref="System.ArgumentNullException">
-        ///  Is thrown when a null reference is passed to a method
-        ///  that does not accept it as a valid argument.
-        /// </exception>
-        /// <exception cref="System.ArgumentException">The cookie already exists.</exception>
-        public void SetCookie(System.Net.Cookie cookie)
+        /// <inheritdoc />
+        public void SetCookie(Cookie cookie)
         {
             if (cookie == null)
                 throw new ArgumentNullException(nameof(cookie));
 
             if (_cookies != null)
             {
-                if (_cookies.Cast<Cookie>().Any(c =>
+                if (_cookies.Any(c =>
                     cookie.Name == c.Name && cookie.Domain == c.Domain && cookie.Path == c.Path))
                     throw new ArgumentException("The cookie already exists.");
             }
@@ -342,20 +233,20 @@ namespace Unosquare.Net
             {
                 if (_contentType.IndexOf("charset=", StringComparison.Ordinal) == -1)
                 {
-                    Headers.AddWithoutValidate("Content-Type", _contentType + "; charset=" + Encoding.UTF8.WebName);
+                    HeaderCollection.AddWithoutValidate("Content-Type", _contentType + "; charset=" + Encoding.UTF8.WebName);
                 }
                 else
                 {
-                    Headers.AddWithoutValidate("Content-Type", _contentType);
+                    HeaderCollection.AddWithoutValidate("Content-Type", _contentType);
                 }
             }
 
             if (Headers["Server"] == null)
-                Headers.AddWithoutValidate("Server", "embedio/1.0");
+                HeaderCollection.AddWithoutValidate("Server", "embedio/1.0");
 
             var inv = CultureInfo.InvariantCulture;
             if (Headers["Date"] == null)
-                Headers.AddWithoutValidate("Date", DateTime.UtcNow.ToString("r", inv));
+                HeaderCollection.AddWithoutValidate("Date", DateTime.UtcNow.ToString("r", inv));
 
             if (!_chunked)
             {
@@ -366,7 +257,7 @@ namespace Unosquare.Net
                 }
 
                 if (_clSet)
-                    Headers.AddWithoutValidate("Content-Length", _contentLength.ToString(inv));
+                    HeaderCollection.AddWithoutValidate("Content-Length", _contentLength.ToString(inv));
             }
 
             var v = _context.Request.ProtocolVersion;
@@ -391,12 +282,12 @@ namespace Unosquare.Net
             // They sent both KeepAlive: true and Connection: close!?
             if (!_keepAlive || connClose)
             {
-                Headers.AddWithoutValidate("Connection", "close");
+                HeaderCollection.AddWithoutValidate("Connection", "close");
                 connClose = true;
             }
 
             if (_chunked)
-                Headers.AddWithoutValidate("Transfer-Encoding", "chunked");
+                HeaderCollection.AddWithoutValidate("Transfer-Encoding", "chunked");
 
             var reuses = _context.Connection.Reuses;
             if (reuses >= 100)
@@ -404,39 +295,28 @@ namespace Unosquare.Net
                 ForceCloseChunked = true;
                 if (!connClose)
                 {
-                    Headers.AddWithoutValidate("Connection", "close");
+                    HeaderCollection.AddWithoutValidate("Connection", "close");
                     connClose = true;
                 }
             }
 
             if (!connClose)
             {
-                Headers.AddWithoutValidate("Keep-Alive", $"timeout=15,max={100 - reuses}");
+                HeaderCollection.AddWithoutValidate("Keep-Alive", $"timeout=15,max={100 - reuses}");
                 if (_context.Request.ProtocolVersion <= HttpVersion.Version10)
-                    Headers.AddWithoutValidate("Connection", "keep-alive");
+                    HeaderCollection.AddWithoutValidate("Connection", "keep-alive");
             }
 
             if (_cookies != null)
             {
-                foreach (System.Net.Cookie cookie in _cookies)
-                    Headers.AddWithoutValidate("Set-Cookie", CookieToClientString(cookie));
+                foreach (var cookie in _cookies)
+                    HeaderCollection.AddWithoutValidate("Set-Cookie", CookieToClientString(cookie));
             }
 
-            var writer = new StreamWriter(ms, Encoding.UTF8, 256);
-            writer.Write("HTTP/{0} {1} {2}\r\n", ProtocolVersion, _statusCode, StatusDescription);
-            var headersStr = FormatHeaders(Headers);
-            writer.Write(headersStr);
-            writer.Flush();
-            var preamble = Encoding.UTF8.GetPreamble().Length;
-            if (_outputStream == null)
-                _outputStream = _context.Connection.GetResponseStream();
-
-            // Assumes that the ms was at position 0
-            ms.Position = preamble;
-            HeadersSent = true;
+            WriteHeaders(ms);
         }
 
-        private static string FormatHeaders(WebHeaderCollection headers)
+        private static string FormatHeaders(NameValueCollection headers)
         {
             var sb = new StringBuilder();
 
@@ -446,7 +326,7 @@ namespace Unosquare.Net
             return sb.Append("\r\n").ToString();
         }
 
-        private static string CookieToClientString(System.Net.Cookie cookie)
+        private static string CookieToClientString(Cookie cookie)
         {
             if (cookie.Name.Length == 0)
                 return string.Empty;
@@ -470,7 +350,7 @@ namespace Unosquare.Net
             return result.ToString();
         }
 
-        private static string QuotedString(System.Net.Cookie cookie, string value)
+        private static string QuotedString(Cookie cookie, string value)
             => cookie.Version == 0 || value.IsToken() ? value : "\"" + value.Replace("\"", "\\\"") + "\"";
 
         private void Close(bool force)
@@ -479,6 +359,22 @@ namespace Unosquare.Net
 
             _context.Connection.Close(force);
         }
+
+        private void WriteHeaders(Stream ms)
+        {
+            var writer = new StreamWriter(ms, Encoding.UTF8, 256);
+            writer.Write("HTTP/{0} {1} {2}\r\n", ProtocolVersion, _statusCode, StatusDescription);
+            var headersStr = FormatHeaders(HeaderCollection);
+            writer.Write(headersStr);
+            writer.Flush();
+
+            var preamble = Encoding.UTF8.GetPreamble().Length;
+            if (_outputStream == null)
+                _outputStream = _context.Connection.GetResponseStream();
+
+            // Assumes that the ms was at position 0
+            ms.Position = preamble;
+            HeadersSent = true;
+        }
     }
 }
-#endif

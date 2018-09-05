@@ -5,11 +5,6 @@
     using System.Threading;
     using System.Threading.Tasks;
     using System.Collections.Generic;
-#if NET47
-    using System.Net;
-#else
-    using Net;
-#endif
 
     /// <inheritdoc />
     /// <summary>
@@ -43,6 +38,6 @@
         /// <summary>
         /// The delegate to call for the given path and verb.
         /// </summary>
-        public Func<HttpListenerContext, CancellationToken, Task<bool>> ResponseHandler { get; set; }
+        public Func<IHttpContext, CancellationToken, Task<bool>> ResponseHandler { get; set; }
     }
 }

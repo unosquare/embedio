@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 #if NET47
-    using System.Net;
+    using System.Net.WebSockets;
 #else
     using Net;
 #endif
@@ -37,14 +37,14 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>A session info for the given server context.</returns>
-        SessionInfo GetSession(HttpListenerContext context);
+        SessionInfo GetSession(IHttpContext context);
 
         /// <summary>
         /// Delete the session object for the given context
         /// If no session exists for the context, then null is returned.
         /// </summary>
         /// <param name="context">The context.</param>
-        void DeleteSession(HttpListenerContext context);
+        void DeleteSession(IHttpContext context);
 
         /// <summary>
         /// Delete a session for the given session info
@@ -59,10 +59,6 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>A session object for the given WebSocket context.</returns>
-#if NET47
-        SessionInfo GetSession(System.Net.WebSockets.WebSocketContext context);
-#else
         SessionInfo GetSession(WebSocketContext context);
-#endif
     }
 }

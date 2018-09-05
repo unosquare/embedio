@@ -222,7 +222,7 @@
         /// <returns>An instance of webserver.</returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
         public static WebServer WithWebApiController<T>(this WebServer webserver)
-            where T : WebApiController, new()
+            where T : WebApiController
         {
             if (webserver == null)
                 throw new ArgumentNullException(nameof(webserver));

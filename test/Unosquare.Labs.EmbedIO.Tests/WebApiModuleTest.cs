@@ -25,7 +25,7 @@
             {
                 const string name = nameof(TestControllerWithConstructor);
 
-                _webServer.Module<WebApiModule>().RegisterController(() => new TestControllerWithConstructor(name));
+                _webServer.Module<WebApiModule>().RegisterController((ctx) => new TestControllerWithConstructor(ctx, name));
                 using (var client = new HttpClient())
                 {
                     var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "name");
@@ -40,7 +40,7 @@
             [Test]
             public async Task GetWebApiWithCacheControlPublic_ReturnsValidResponse()
             {
-                _webServer.Module<WebApiModule>().RegisterController(() => new TestControllerWithConstructor());
+                _webServer.Module<WebApiModule>().RegisterController((ctx) => new TestControllerWithConstructor(ctx));
                 using (var client = new HttpClient())
                 {
                     var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "namePublic");
@@ -59,7 +59,7 @@
             [Test]
             public async Task GetWebApiWithCacheControlDefault_ReturnsValidResponse()
             {
-                _webServer.Module<WebApiModule>().RegisterController(() => new TestControllerWithConstructor());
+                _webServer.Module<WebApiModule>().RegisterController((ctx) => new TestControllerWithConstructor(ctx));
                 using (var client = new HttpClient())
                 {
                     var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "name");

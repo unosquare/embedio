@@ -4,11 +4,6 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-#if NET47
-    using System.Net;
-#else
-    using Net;
-#endif
 
     /// <summary>
     /// Interface to create web modules.
@@ -38,7 +33,7 @@
         /// <value>
         /// The server.
         /// </value>
-        WebServer Server { get; set; }
+        IWebServer Server { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is watchdog enabled.
@@ -75,7 +70,7 @@
         /// or
         /// handler.
         /// </exception>
-        void AddHandler(string path, HttpVerbs verb, Func<HttpListenerContext, CancellationToken, Task<bool>> handler);
+        void AddHandler(string path, HttpVerbs verb, Func<IHttpContext, CancellationToken, Task<bool>> handler);
 
         /// <summary>
         /// Starts the webmodule.

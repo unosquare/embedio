@@ -68,7 +68,7 @@
                 // It registers the WebSocketsModule and registers the server for the given paths(s)
                 WebSocketsSample.Setup(server);
 
-                server.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(new {Message = "Error "})));
+                server.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(new {Message = "Error"})));
 
                 // Fire up the browser to show the content!
                 var browser = new System.Diagnostics.Process

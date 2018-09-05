@@ -1,8 +1,5 @@
-﻿#if !NET47
-namespace Unosquare.Net
+﻿namespace Unosquare.Net
 {
-    using System;
-    using System.IO;
     using System.Linq;
     using System.Text;
     using Labs.EmbedIO.Constants;
@@ -31,59 +28,34 @@ namespace Unosquare.Net
                 ? "This operation isn't available in: " + state.ToString().ToLower()
                 : null;
         }
-
-        internal static string CheckCloseParameters(CloseStatusCode code, string reason, bool client)
+        
+        internal static bool CheckParametersForClose(CloseStatusCode code, string reason, bool client = true)
         {
-            return code == CloseStatusCode.NoStatus
-                ? (!string.IsNullOrEmpty(reason) ? "NoStatus cannot have a reason." : null)
-                : code == CloseStatusCode.MandatoryExtension && !client
-                    ? "MandatoryExtension cannot be used by a server."
-                    : code == CloseStatusCode.ServerError && client
-                        ? "ServerError cannot be used by a client."
-                        : !string.IsNullOrEmpty(reason) && Encoding.UTF8.GetBytes(reason).Length > 123
-                            ? "A reason has greater than the allowable max size."
-                            : null;
-        }
-
-        internal static bool CheckParametersForClose(CloseStatusCode code, string reason, bool client, out string message)
-        {
-            message = null;
-
             if (code == CloseStatusCode.NoStatus && !string.IsNullOrEmpty(reason))
             {
-                message = "'code' cannot have a reason.";
+                "'code' cannot have a reason.".Error();
                 return false;
             }
 
             if (code == CloseStatusCode.MandatoryExtension && !client)
             {
-                message = "'code' cannot be used by a server.";
+                "'code' cannot be used by a server.".Error();
                 return false;
             }
 
             if (code == CloseStatusCode.ServerError && client)
             {
-                message = "'code' cannot be used by a client.";
+                "'code' cannot be used by a client.".Error();
                 return false;
             }
 
             if (!string.IsNullOrEmpty(reason) && Encoding.UTF8.GetBytes(reason).Length > 123)
             {
-                message = "The size of 'reason' is greater than the allowable max size.";
+                "The size of 'reason' is greater than the allowable max size.".Error();
                 return false;
             }
 
             return true;
-        }
-
-        internal static bool CheckWaitTime(TimeSpan time, out string message)
-        {
-            message = null;
-
-            if (time > TimeSpan.Zero) return true;
-
-            message = "A wait time is zero or less.";
-            return false;
         }
 
         internal static string CheckPingParameter(string message, out byte[] bytes)
@@ -93,20 +65,7 @@ namespace Unosquare.Net
         }
 
         internal static string CheckSendParameter(byte[] data) => data == null ? "'data' is null." : null;
-
-        internal static string CheckSendParameter(string data) => data == null ? "'data' is null." : null;
-
-        internal static string CheckSendParameters(Stream stream, int length)
-        {
-            return stream == null
-                ? "'stream' is null."
-                : !stream.CanRead
-                    ? "'stream' cannot be read."
-                    : length < 1
-                        ? "'length' is less than 1."
-                        : null;
-        }
-
+        
         internal bool CheckHandshakeResponse(HttpResponse response, out string message)
         {
             message = null;
@@ -151,31 +110,29 @@ namespace Unosquare.Net
             return true;
         }
 
-        internal bool CheckIfAvailable(out string message, bool connecting = true, bool open = true, bool closing = false, bool closed = false)
+        internal bool CheckIfAvailable(bool connecting = true, bool open = true, bool closing = false, bool closed = false)
         {
-            message = null;
-
             if (!connecting && _webSocket.State == WebSocketState.Connecting)
             {
-                message = "This operation isn't available in: connecting";
+                "This operation isn't available in: connecting".Error();
                 return false;
             }
 
             if (!open && _webSocket.State == WebSocketState.Open)
             {
-                message = "This operation isn't available in: open";
+                "This operation isn't available in: open".Error();
                 return false;
             }
 
             if (!closing && _webSocket.State == WebSocketState.Closing)
             {
-                message = "This operation isn't available in: closing";
+                "This operation isn't available in: closing".Error();
                 return false;
             }
 
             if (!closed && _webSocket.State == WebSocketState.Closed)
             {
-                message = "This operation isn't available in: closed";
+                "This operation isn't available in: closed".Error();
                 return false;
             }
 
@@ -183,7 +140,6 @@ namespace Unosquare.Net
         }
 
         internal bool CheckIfAvailable(
-            out string message,
             bool client,
             bool server,
             bool connecting,
@@ -193,17 +149,17 @@ namespace Unosquare.Net
         {
             if (!client && _webSocket.IsClient)
             {
-                message = "This operation isn't available in: client";
+                "This operation isn't available in: client".Error();
                 return false;
             }
 
             if (!server && !_webSocket.IsClient)
             {
-                message = "This operation isn't available in: server";
+                "This operation isn't available in: server".Error();
                 return false;
             }
 
-            return CheckIfAvailable(out message, connecting, open, closing, closed);
+            return CheckIfAvailable(connecting, open, closing, closed);
         }
 
         // As server
@@ -301,6 +257,7 @@ namespace Unosquare.Net
                 return false;
 
             var comp = _webSocket.Compression != CompressionMethod.None;
+
             foreach (var e in value.SplitHeaderValue(Strings.CommaSplitChar))
             {
                 var ext = e.Trim();
@@ -350,4 +307,3 @@ namespace Unosquare.Net
         private static bool ValidateSecWebSocketVersionServerHeader(string value) => value == null || value == WebSocket.Version;
     }
 }
-#endif

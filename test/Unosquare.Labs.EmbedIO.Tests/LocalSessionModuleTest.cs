@@ -16,7 +16,7 @@
         protected TimeSpan WaitTimeSpan = TimeSpan.FromSeconds(1);
 
         public LocalSessionModuleTest()
-            : base((ws) =>
+            : base(ws =>
             {
                 ws.RegisterModule(new LocalSessionModule { Expiration = TimeSpan.FromSeconds(1) });
                 ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()));

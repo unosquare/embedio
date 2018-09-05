@@ -1,48 +1,4 @@
-﻿#if !NET47
-#region License
-/*
- * WebSocket.cs
- *
- * A C# implementation of the WebSocket interface.
- *
- * This code is derived from WebSocket.java
- * (http://github.com/adamac/Java-WebSocket-client).
- *
- * The MIT License
- *
- * Copyright (c) 2009 Adam MacBeth
- * Copyright (c) 2010-2016 sta.blockhead
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-#endregion
-
-#region Contributors
-/*
- * Contributors:
- * - Frank Razenberg <frank@zzattack.org>
- * - David Wood <dpwood@gmail.com>
- * - Liryna <liryna.stark@gmail.com>
- */
-#endregion
-
-namespace Unosquare.Net
+﻿namespace Unosquare.Net
 {
     using System;
     using System.Collections;
@@ -69,23 +25,10 @@ namespace Unosquare.Net
     {
         internal const string Version = "13";
 
-        /// <summary>
-        /// Represents the empty array of <see cref="byte"/> used internally.
-        /// </summary>
+        // Represents the empty array of <see cref="byte"/> used internally.
         internal static readonly byte[] EmptyBytes = new byte[0];
 
-        /// <summary>
-        /// Represents the length used to determine whether the data should be fragmented in sending.
-        /// </summary>
-        /// <remarks>
-        ///   <para>
-        ///   The data will be fragmented if that length is greater than the value of this field.
-        ///   </para>
-        ///   <para>
-        ///   If you would like to change the value, you must set it to a value between <c>125</c> and
-        ///   <c>Int32.MaxValue - 14</c> inclusive.
-        ///   </para>
-        /// </remarks>
+        // Represents the length used to determine whether the data should be fragmented in sending.
         internal static readonly int FragmentLength = 1016;
 
         /// <summary>
@@ -96,7 +39,6 @@ namespace Unosquare.Net
         private const string Guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 
         private readonly Action<MessageEventArgs> _message;
-        private readonly bool _client;
         private readonly object _forState = new object();
         private readonly Queue<MessageEventArgs> _messageEventQueue = new Queue<MessageEventArgs>();
         private readonly object _forMessageEventQueue;
@@ -105,8 +47,6 @@ namespace Unosquare.Net
         private string _base64Key;
 
         private CompressionMethod _compression = CompressionMethod.None;
-        private bool _extensionsRequested;
-        private bool _inContinuation;
         private volatile WebSocketState _readyState = WebSocketState.Connecting;
         private WebSocketContext _context;
         private bool _enableRedirection;
@@ -120,7 +60,7 @@ namespace Unosquare.Net
         private AutoResetEvent _receivePong;
 #if SSL
         private ClientSslConfiguration _sslConfig;
-#endif        
+#endif
         private Stream _stream;
         private TcpClient _tcpClient;
         private Uri _uri;
@@ -154,18 +94,18 @@ namespace Unosquare.Net
             if (url.Length == 0)
                 throw new ArgumentException("An empty string.", nameof(url));
 
-            if (!url.TryCreateWebSocketUri(out _uri, out string msg))
+            if (!url.TryCreateWebSocketUri(out _uri, out var msg))
                 throw new ArgumentException(msg, nameof(url));
 
             _base64Key = CreateBase64Key();
-            _client = true;
+            IsClient = true;
 
             _message = Messagec;
 #if SSL
             IsSecure = _uri.Scheme == "wss";
 #endif
             _waitTime = TimeSpan.FromSeconds(5);
-            _forMessageEventQueue = ((ICollection)_messageEventQueue).SyncRoot;
+            _forMessageEventQueue = ((ICollection) _messageEventQueue).SyncRoot;
             _validator = new WebSocketValidator(this);
         }
 
@@ -180,7 +120,7 @@ namespace Unosquare.Net
 #endif
             _stream = context.Stream;
             _waitTime = TimeSpan.FromSeconds(1);
-            _forMessageEventQueue = ((ICollection)_messageEventQueue).SyncRoot;
+            _forMessageEventQueue = ((ICollection) _messageEventQueue).SyncRoot;
             _validator = new WebSocketValidator(this);
         }
 
@@ -219,9 +159,8 @@ namespace Unosquare.Net
             {
                 lock (_forState)
                 {
-                    if (!_validator.CheckIfAvailable(out var msg, true, false, true, false, false))
+                    if (!_validator.CheckIfAvailable(true, false, true, false, false))
                     {
-                        msg.Error();
                         Error("An error has occurred in setting the compression.");
 
                         return;
@@ -246,7 +185,7 @@ namespace Unosquare.Net
             {
                 lock (CookieCollection.SyncRoot)
                 {
-                    foreach (Cookie cookie in CookieCollection)
+                    foreach (var cookie in CookieCollection)
                         yield return cookie;
                 }
             }
@@ -278,11 +217,9 @@ namespace Unosquare.Net
             {
                 lock (_forState)
                 {
-                    if (!_validator.CheckIfAvailable(out var msg, true, false, true, false, false))
+                    if (!_validator.CheckIfAvailable(true, false, true, false, false))
                     {
-                        msg.Error();
                         Error("An error has occurred in setting the enable redirection.");
-
                         return;
                     }
 
@@ -309,12 +246,12 @@ namespace Unosquare.Net
         public bool IsAlive => PingAsync().Result; // TODO: Change?
 
 #if SSL
-        /// <summary>
-        /// Gets a value indicating whether the WebSocket connection is secure.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the connection is secure; otherwise, <c>false</c>.
-        /// </value>
+/// <summary>
+/// Gets a value indicating whether the WebSocket connection is secure.
+/// </summary>
+/// <value>
+/// <c>true</c> if the connection is secure; otherwise, <c>false</c>.
+/// </value>
         public bool IsSecure { get; private set; }
 #endif
 
@@ -344,11 +281,9 @@ namespace Unosquare.Net
             {
                 lock (_forState)
                 {
-                    if (!_validator.CheckIfAvailable(out string msg, true, false, true, false, false))
+                    if (!_validator.CheckIfAvailable(true, false, true, false, false))
                     {
-                        msg.Error();
                         Error("An error has occurred in setting the origin.");
-
                         return;
                     }
 
@@ -358,7 +293,7 @@ namespace Unosquare.Net
                         return;
                     }
 
-                    if (!Uri.TryCreate(value, UriKind.Absolute, out Uri origin) || origin.Segments.Length > 1)
+                    if (!Uri.TryCreate(value, UriKind.Absolute, out var origin) || origin.Segments.Length > 1)
                     {
                         "The syntax of an origin must be '<scheme>://<host>[:<port>]'.".Error();
                         Error("An error has occurred in setting the origin.");
@@ -424,7 +359,7 @@ namespace Unosquare.Net
         /// <value>
         /// A <see cref="Uri"/> that represents the URL used to connect, or accepted.
         /// </value>
-        public Uri Url => _client ? _uri : _context.RequestUri;
+        public Uri Url => IsClient ? _uri : _context.RequestUri;
 
         /// <summary>
         /// Gets or sets the wait time for the response to the Ping or Close.
@@ -441,12 +376,9 @@ namespace Unosquare.Net
             {
                 lock (_forState)
                 {
-                    if (!_validator.CheckIfAvailable(out var msg, true, true, true, false, false) ||
-                        !WebSocketValidator.CheckWaitTime(value, out msg))
+                    if (value == TimeSpan.Zero || !_validator.CheckIfAvailable(true, true, true, false, false))
                     {
-                        msg.Error();
                         Error("An error has occurred in setting the wait time.");
-
                         return;
                     }
 
@@ -455,11 +387,11 @@ namespace Unosquare.Net
             }
         }
 
-        internal bool InContinuation => _inContinuation;
+        internal bool InContinuation { get; private set; }
 
-        internal bool IsClient => _client;
+        internal bool IsClient { get; }
 
-        internal bool IsExtensionsRequested => _extensionsRequested;
+        internal bool IsExtensionsRequested { get; private set; }
 
         internal CookieCollection CookieCollection { get; } = new CookieCollection();
 
@@ -489,21 +421,19 @@ namespace Unosquare.Net
         /// <returns>
         /// A task that represents the asynchronous closes websocket connection.
         /// </returns>
-        public async Task CloseAsync(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null, CancellationToken ct = default)
+        public async Task CloseAsync(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null,
+            CancellationToken ct = default)
         {
-            if (!_validator.CheckIfAvailable(out var msg))
+            if (!_validator.CheckIfAvailable())
             {
-                msg.Error();
                 Error("An error has occurred in closing the connection.");
-
                 return;
             }
 
-            if (code != CloseStatusCode.Undefined && !WebSocketValidator.CheckParametersForClose(code, reason, _client, out msg))
+            if (code != CloseStatusCode.Undefined &&
+                !WebSocketValidator.CheckParametersForClose(code, reason, IsClient))
             {
-                msg.Error();
                 Error("An error has occurred in closing the connection.");
-
                 return;
             }
 
@@ -534,9 +464,8 @@ namespace Unosquare.Net
         /// </para></remarks>
         public async Task ConnectAsync(CancellationToken ct = default)
         {
-            if (!_validator.CheckIfAvailable(out string msg, true, false, true, false, false))
+            if (!_validator.CheckIfAvailable(true, false, true, false, false))
             {
-                msg.Error();
                 Error("An error has occurred in connecting.");
 
                 return;
@@ -577,7 +506,7 @@ namespace Unosquare.Net
         /// </returns>
         public async Task<bool> PingAsync()
         {
-            var bytes = _client
+            var bytes = IsClient
                 ? WebSocketFrame.CreatePingFrame(true).ToArray()
                 : WebSocketFrame.EmptyPingBytes;
 
@@ -599,17 +528,16 @@ namespace Unosquare.Net
             if (string.IsNullOrEmpty(message))
                 return await PingAsync();
 
-            var msg = WebSocketValidator.CheckPingParameter(message, out byte[] data);
+            var msg = WebSocketValidator.CheckPingParameter(message, out var data);
 
-            if (msg != null)
-            {
-                msg.Error();
-                Error("An error has occurred in sending a ping.");
+            if (msg == null)
+                return await PingAsync(WebSocketFrame.CreatePingFrame(data, IsClient).ToArray(), _waitTime);
 
-                return false;
-            }
+            msg.Error();
+            Error("An error has occurred in sending a ping.");
 
-            return await PingAsync(WebSocketFrame.CreatePingFrame(data, _client).ToArray(), _waitTime);
+            return false;
+
         }
 
         /// <summary>
@@ -647,9 +575,8 @@ namespace Unosquare.Net
         /// </param>
         public void SetCookie(Cookie cookie)
         {
-            if (!_validator.CheckIfAvailable(out var msg, true, false, true, false, false) || cookie == null)
+            if (cookie == null || !_validator.CheckIfAvailable(true, false, true, false, false))
             {
-                msg.Error();
                 Error("An error has occurred in setting a cookie.");
 
                 return;
@@ -657,9 +584,8 @@ namespace Unosquare.Net
 
             lock (_forState)
             {
-                if (!_validator.CheckIfAvailable(out msg, true, false, false, true))
+                if (!_validator.CheckIfAvailable(true, false, false, true))
                 {
-                    msg.Error();
                     Error("An error has occurred in setting a cookie.");
 
                     return;
@@ -714,7 +640,8 @@ namespace Unosquare.Net
         }
 
         // As server
-        internal async Task CloseAsync(CloseEventArgs e, byte[] frameAsBytes, bool receive, CancellationToken ct = default)
+        internal async Task CloseAsync(CloseEventArgs e, byte[] frameAsBytes, bool receive,
+            CancellationToken ct = default)
         {
             lock (_forState)
             {
@@ -751,7 +678,8 @@ namespace Unosquare.Net
         }
 
         // As client
-        internal bool ValidateSecWebSocketAcceptHeader(string value) => value?.TrimStart() == CreateResponseKey(_base64Key);
+        internal bool ValidateSecWebSocketAcceptHeader(string value) =>
+            value?.TrimStart() == CreateResponseKey(_base64Key);
 
         // As server
         internal async Task InternalAcceptAsync()
@@ -795,13 +723,10 @@ namespace Unosquare.Net
             return ret;
         }
 
-        private static bool IsOpcodeReserved(CloseStatusCode code)
-        {
-            return code == CloseStatusCode.Undefined ||
-                   code == CloseStatusCode.NoStatus ||
-                   code == CloseStatusCode.Abnormal ||
-                   code == CloseStatusCode.TlsHandshakeFailure;
-        }
+        private static bool IsOpcodeReserved(CloseStatusCode code) => code == CloseStatusCode.Undefined ||
+                                                                      code == CloseStatusCode.NoStatus ||
+                                                                      code == CloseStatusCode.Abnormal ||
+                                                                      code == CloseStatusCode.TlsHandshakeFailure;
 
         // As server
         private async Task<bool> AcceptHandshakeAsync()
@@ -857,7 +782,7 @@ namespace Unosquare.Net
 
             "Begin closing the connection.".Info();
 
-            var bytes = send ? WebSocketFrame.CreateCloseFrame(e.PayloadData, _client).ToArray() : null;
+            var bytes = send ? WebSocketFrame.CreateCloseFrame(e.PayloadData, IsClient).ToArray() : null;
             e.WasClean = await CloseHandshakeAsync(bytes, receive, received, ct);
             ReleaseResources();
 
@@ -879,7 +804,11 @@ namespace Unosquare.Net
             }
         }
 
-        private async Task<bool> CloseHandshakeAsync(byte[] frameAsBytes, bool receive, bool received, CancellationToken ct)
+        private async Task<bool> CloseHandshakeAsync(
+            byte[] frameAsBytes, 
+            bool receive, 
+            bool received,
+            CancellationToken ct)
         {
             var sent = frameAsBytes != null;
 
@@ -911,13 +840,11 @@ namespace Unosquare.Net
             }
 
             var len = buff.Length;
-            if (len > 2)
-            {
-                buff.Length = len - 2;
-                return buff.ToString();
-            }
 
-            return null;
+            if (len <= 2) return null;
+
+            buff.Length = len - 2;
+            return buff.ToString();
         }
 
         // As client
@@ -931,9 +858,9 @@ namespace Unosquare.Net
 
             headers["Sec-WebSocket-Key"] = _base64Key;
 
-            _extensionsRequested = _compression != CompressionMethod.None;
+            IsExtensionsRequested = _compression != CompressionMethod.None;
 
-            if (_extensionsRequested)
+            if (IsExtensionsRequested)
                 headers["Sec-WebSocket-Extensions"] = CreateExtensions();
 
             headers["Sec-WebSocket-Version"] = Version;
@@ -965,7 +892,7 @@ namespace Unosquare.Net
             await SetClientStream();
             var res = await SendHandshakeRequestAsync();
 
-            if (!_validator.CheckHandshakeResponse(res, out string msg))
+            if (!_validator.CheckHandshakeResponse(res, out var msg))
             {
                 msg.Error();
                 Fatal("An error has occurred while connecting.", CloseStatusCode.ProtocolError);
@@ -973,7 +900,7 @@ namespace Unosquare.Net
                 return false;
             }
 
-            if (_extensionsRequested)
+            if (IsExtensionsRequested)
                 ProcessSecWebSocketExtensionsServerHeader(res.Headers["Sec-WebSocket-Extensions"]);
 
             ProcessCookies(res.Cookies);
@@ -992,16 +919,11 @@ namespace Unosquare.Net
         private void Error(string message, Exception exception = null)
             => OnError?.Invoke(this, new ConnectionFailureEventArgs(exception ?? new Exception(message)));
 
-        private void Fatal(string message, Exception exception = null)
-        {
-            Fatal(message, (exception as WebSocketException)?.Code ?? CloseStatusCode.Abnormal);
-        }
+        private void Fatal(string message, Exception exception = null) => Fatal(message,
+            (exception as WebSocketException)?.Code ?? CloseStatusCode.Abnormal);
 
-        private void Fatal(string message, CloseStatusCode code)
-        {
-            // TODO: Wait?
+        private void Fatal(string message, CloseStatusCode code) =>
             InternalCloseAsync(new CloseEventArgs(code, message), !IsOpcodeReserved(code), false).Wait();
-        }
 
         private void Message()
         {
@@ -1042,8 +964,7 @@ namespace Unosquare.Net
 
                     e = _messageEventQueue.Dequeue();
                 }
-            }
-            while (true);
+            } while (true);
         }
 
         private void Messages(MessageEventArgs e)
@@ -1111,7 +1032,7 @@ namespace Unosquare.Net
         }
 
         // As client
-        private void ProcessCookies(CookieCollection cookies)
+        private void ProcessCookies(ICollection cookies)
         {
             if (cookies.Count == 0)
                 return;
@@ -1150,7 +1071,7 @@ namespace Unosquare.Net
 
         private bool ProcessFragmentFrame(WebSocketFrame frame)
         {
-            if (!_inContinuation)
+            if (!InContinuation)
             {
                 // Must process first fragment.
                 if (frame.IsContinuation)
@@ -1159,7 +1080,7 @@ namespace Unosquare.Net
                 _fragmentsOpcode = frame.Opcode;
                 _fragmentsCompressed = frame.IsCompressed;
                 _fragmentsBuffer = new MemoryStream();
-                _inContinuation = true;
+                InContinuation = true;
             }
 
             using (var input = new MemoryStream(frame.PayloadData.ApplicationData))
@@ -1177,7 +1098,7 @@ namespace Unosquare.Net
                 }
 
                 _fragmentsBuffer = null;
-                _inContinuation = false;
+                InContinuation = false;
             }
 
             return true;
@@ -1185,7 +1106,7 @@ namespace Unosquare.Net
 
         private bool ProcessPingFrame(WebSocketFrame frame)
         {
-            if (Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, _client).ToArray()))
+            if (Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, IsClient).ToArray()))
             {
                 "Returned a pong.".Info();
             }
@@ -1234,6 +1155,7 @@ namespace Unosquare.Net
             foreach (var e in value.SplitHeaderValue(Strings.CommaSplitChar))
             {
                 var ext = e.Trim();
+
                 if (!comp && ext.IsCompressionExtension(CompressionMethod.Deflate))
                 {
                     _compression = CompressionMethod.Deflate;
@@ -1294,7 +1216,7 @@ namespace Unosquare.Net
             {
                 _fragmentsBuffer.Dispose();
                 _fragmentsBuffer = null;
-                _inContinuation = false;
+                InContinuation = false;
             }
 
             if (_receivePong != null)
@@ -1320,7 +1242,7 @@ namespace Unosquare.Net
 
         private void ReleaseResources()
         {
-            if (_client)
+            if (IsClient)
                 ReleaseClientResources();
             else
                 ReleaseServerResources();
@@ -1331,7 +1253,7 @@ namespace Unosquare.Net
         // As server
         private void ReleaseServerResources()
         {
-            if (_client)
+            if (IsClient)
                 return;
 
             _context.CloseAsync();
@@ -1398,7 +1320,7 @@ namespace Unosquare.Net
                 return Send(Fin.Final, opcode, EmptyBytes, compressed, ct);
 
             var quo = len / FragmentLength;
-            var rem = (int)(len % FragmentLength);
+            var rem = (int) (len % FragmentLength);
 
             byte[] buff;
 
@@ -1446,13 +1368,12 @@ namespace Unosquare.Net
         {
             lock (_forState)
             {
-                if (_readyState != WebSocketState.Open)
-                {
-                    "The sending has been interrupted.".Error();
-                    return false;
-                }
+                if (_readyState == WebSocketState.Open)
+                    return SendBytes(new WebSocketFrame(fin, opcode, data, compressed, IsClient).ToArray(), ct);
 
-                return SendBytes(new WebSocketFrame(fin, opcode, data, compressed, _client).ToArray(), ct);
+                "The sending has been interrupted.".Error();
+                return false;
+
             }
         }
 
@@ -1474,21 +1395,23 @@ namespace Unosquare.Net
         // As client
         private async Task<HttpResponse> SendHandshakeRequestAsync()
         {
-            var req = CreateHandshakeRequest();
-            var res = await req.GetResponse(_stream);
-
-            if (res.IsUnauthorized)
+            while (true)
             {
-                throw new InvalidOperationException("Authentication is not supported");
-            }
+                var req = CreateHandshakeRequest();
+                var res = await req.GetResponse(_stream);
 
-            if (!res.IsRedirect) return res;
+                if (res.IsUnauthorized)
+                {
+                    throw new InvalidOperationException("Authentication is not supported");
+                }
 
-            var url = res.Headers["Location"];
-            $"Received a redirection to '{url}'.".Warn();
+                if (!res.IsRedirect) return res;
 
-            if (_enableRedirection)
-            {
+                var url = res.Headers["Location"];
+                $"Received a redirection to '{url}'.".Warn();
+
+                if (!_enableRedirection) return res;
+
                 if (string.IsNullOrEmpty(url))
                 {
                     "No url to redirect is located.".Error();
@@ -1509,10 +1432,7 @@ namespace Unosquare.Net
 #endif
 
                 await SetClientStream();
-                return await SendHandshakeRequestAsync();
             }
-
-            return res;
         }
 
         // As server
@@ -1610,5 +1530,3 @@ namespace Unosquare.Net
         }
     }
 }
-
-#endif

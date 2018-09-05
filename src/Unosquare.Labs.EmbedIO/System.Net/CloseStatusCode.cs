@@ -1,5 +1,4 @@
-﻿#if !NET47
-namespace Unosquare.Net
+﻿namespace Unosquare.Net
 {
     /// <summary>
     /// Indicates the status code for the WebSocket connection close.
@@ -93,7 +92,6 @@ namespace Unosquare.Net
         /// Equivalent to close status 1015. Indicates that the connection was closed
         /// due to a failure to perform a TLS handshake. A Reserved value.
         /// </summary>
-        TlsHandshakeFailure = 1015
+        TlsHandshakeFailure = 1015,
     }
 }
-#endif
