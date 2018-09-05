@@ -22,7 +22,7 @@
             _code = 1005;
             _reason = string.Empty;
 
-            _data = WebSocketStream.EmptyBytes;
+            _data = WebSocket.EmptyBytes;
 
             _codeSet = true;
             _reasonSet = true;
@@ -57,7 +57,7 @@
 
         internal byte[] ExtensionData => ExtensionDataLength > 0
             ? _data.SubArray(0, ExtensionDataLength)
-            : WebSocketStream.EmptyBytes;
+            : WebSocket.EmptyBytes;
 
         internal ulong Length => (ulong)_length;
 

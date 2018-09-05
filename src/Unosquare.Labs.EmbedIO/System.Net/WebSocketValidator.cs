@@ -31,17 +31,22 @@
         
         internal static bool CheckParametersForClose(CloseStatusCode code, string reason, bool client = true)
         {
-            switch (code)
+            if (code == CloseStatusCode.NoStatus && !string.IsNullOrEmpty(reason))
             {
-                case CloseStatusCode.NoStatus when !string.IsNullOrEmpty(reason):
-                    "'code' cannot have a reason.".Error();
-                    return false;
-                case CloseStatusCode.MandatoryExtension when !client:
-                    "'code' cannot be used by a server.".Error();
-                    return false;
-                case CloseStatusCode.ServerError when client:
-                    "'code' cannot be used by a client.".Error();
-                    return false;
+                "'code' cannot have a reason.".Error();
+                return false;
+            }
+
+            if (code == CloseStatusCode.MandatoryExtension && !client)
+            {
+                "'code' cannot be used by a server.".Error();
+                return false;
+            }
+
+            if (code == CloseStatusCode.ServerError && client)
+            {
+                "'code' cannot be used by a client.".Error();
+                return false;
             }
 
             if (!string.IsNullOrEmpty(reason) && Encoding.UTF8.GetBytes(reason).Length > 123)
@@ -51,6 +56,12 @@
             }
 
             return true;
+        }
+
+        internal static string CheckPingParameter(string message, out byte[] bytes)
+        {
+            bytes = Encoding.UTF8.GetBytes(message);
+            return bytes.Length > 125 ? "A message has greater than the allowable max size." : null;
         }
 
         internal static string CheckSendParameter(byte[] data) => data == null ? "'data' is null." : null;
@@ -101,20 +112,28 @@
 
         internal bool CheckIfAvailable(bool connecting = true, bool open = true, bool closing = false, bool closed = false)
         {
-            switch (_webSocket.State)
+            if (!connecting && _webSocket.State == WebSocketState.Connecting)
             {
-                case WebSocketState.Connecting when !connecting:
-                    "This operation isn't available in: connecting".Error();
-                    return false;
-                case WebSocketState.Open when !open:
-                    "This operation isn't available in: open".Error();
-                    return false;
-                case WebSocketState.Closing when !closing:
-                    "This operation isn't available in: closing".Error();
-                    return false;
-                case WebSocketState.Closed when !closed:
-                    "This operation isn't available in: closed".Error();
-                    return false;
+                "This operation isn't available in: connecting".Error();
+                return false;
+            }
+
+            if (!open && _webSocket.State == WebSocketState.Open)
+            {
+                "This operation isn't available in: open".Error();
+                return false;
+            }
+
+            if (!closing && _webSocket.State == WebSocketState.Closing)
+            {
+                "This operation isn't available in: closing".Error();
+                return false;
+            }
+
+            if (!closed && _webSocket.State == WebSocketState.Closed)
+            {
+                "This operation isn't available in: closed".Error();
+                return false;
             }
 
             return true;
@@ -161,20 +180,19 @@
             }
 
             var headers = context.Headers;
-
-            if (string.IsNullOrWhiteSpace(headers["Sec-WebSocket-Key"]))
+            if (!ValidateSecWebSocketKeyHeader(headers["Sec-WebSocket-Key"]))
             {
                 message = "Includes no Sec-WebSocket-Key header, or it has an invalid value.";
                 return false;
             }
 
-            if (headers["Sec-WebSocket-Version"] != WebSocket.Version)
+            if (!ValidateSecWebSocketVersionClientHeader(headers["Sec-WebSocket-Version"]))
             {
                 message = "Includes no Sec-WebSocket-Version header, or it has an invalid value.";
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(headers["Sec-WebSocket-Protocol"]))
+            if (!ValidateSecWebSocketProtocolClientHeader(headers["Sec-WebSocket-Protocol"]))
             {
                 message = "Includes an invalid Sec-WebSocket-Protocol header.";
                 return false;
@@ -239,6 +257,7 @@
                 return false;
 
             var comp = _webSocket.Compression != CompressionMethod.None;
+
             foreach (var e in value.SplitHeaderValue(Strings.CommaSplitChar))
             {
                 var ext = e.Trim();
@@ -275,6 +294,14 @@
 
             return true;
         }
+
+        // As server
+        private static bool ValidateSecWebSocketKeyHeader(string value) => !string.IsNullOrEmpty(value);
+
+        private static bool ValidateSecWebSocketProtocolClientHeader(string value) => value == null || value.Length > 0;
+
+        // As server
+        private static bool ValidateSecWebSocketVersionClientHeader(string value) => value != null && value == WebSocket.Version;
 
         // As client
         private static bool ValidateSecWebSocketVersionServerHeader(string value) => value == null || value == WebSocket.Version;
