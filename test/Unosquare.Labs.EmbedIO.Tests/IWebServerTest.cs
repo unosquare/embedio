@@ -24,7 +24,7 @@
                 Assert.IsNotNull(webserver);
             }
         }
-        
+
         [Test]
         public void RegisterWebModule_ReturnsValidInstance()
         {
@@ -47,7 +47,7 @@
                 Assert.AreEqual(0, webserver.Modules.Count);
             }
         }
-        
+
         [Test]
         public void RegisterSessionModule_ReturnsValidInstance()
         {
@@ -76,7 +76,7 @@
         {
             using (var webserver = new TestWebServer())
             {
-                webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(new Person { Name = "Test"})));
+                webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(new Person { Name = "Test" })));
                 webserver.RunAsync();
 
                 var client = webserver.GetClient();

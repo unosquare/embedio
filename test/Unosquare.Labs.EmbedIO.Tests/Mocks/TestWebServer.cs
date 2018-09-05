@@ -118,7 +118,7 @@
             public string RawUrl { get; }
             public NameValueCollection QueryString { get; }
             public string HttpMethod { get; } = HttpVerbs.Get.ToString();
-            public Uri Url { get; private set; }
+            public Uri Url { get; }
             public bool HasEntityBody { get; }
             public Stream InputStream { get; }
             public Encoding ContentEncoding { get; }
