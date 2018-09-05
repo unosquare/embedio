@@ -1,11 +1,9 @@
 ﻿namespace Unosquare.Net
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
     using Labs.EmbedIO;
     using Labs.EmbedIO.Constants;
+    using System.Collections.Generic;
+    using System.IO;
 
     internal class WebSocketStream : MemoryStream
     {
@@ -24,29 +22,21 @@
             _isClient = isClient;
         }
 
-        public IEnumerable<byte[]> GetFramesBytes()
+        public IEnumerable<WebSocketFrame> GetFrames()
         {
-            var frames = _compression != CompressionMethod.None
-                ? GetFrame(this.Compress(_compression), true)
-                : GetFrame(this, false);
+            var compressed = _compression != CompressionMethod.None;
+            Stream stream = _compression != CompressionMethod.None
+                ? this.Compress(_compression)
+                : this;
 
-            if (!frames.Any())
-                throw new InvalidOperationException("The sending has been interrupted.");
-
-            return frames.Select(y => y.ToArray());
-        }
-
-        private List<WebSocketFrame> GetFrame(Stream stream, bool compressed)
-        {
-            var list = new List<WebSocketFrame>();
             var len = stream.Length;
 
             /* Not fragmented */
 
             if (len == 0)
             {
-                list.Add(new WebSocketFrame(Fin.Final, _opcode, EmptyBytes, compressed, _isClient));
-                return list;
+                yield return new WebSocketFrame(Fin.Final, _opcode, EmptyBytes, compressed, _isClient);
+                yield break;
             }
 
             var quo = len / FragmentLength;
@@ -59,31 +49,35 @@
                 buff = new byte[rem];
 
                 if (stream.Read(buff, 0, rem) == rem)
-                    list.Add(new WebSocketFrame(Fin.Final, _opcode, buff, compressed, _isClient));
+                    yield return new WebSocketFrame(Fin.Final, _opcode, buff, compressed, _isClient);
 
-                return list;
+                yield break;
             }
 
             buff = new byte[FragmentLength];
             if (quo == 1 && rem == 0)
             {
                 if (stream.Read(buff, 0, FragmentLength) == FragmentLength)
-                    list.Add(new WebSocketFrame(Fin.Final, _opcode, buff, compressed, _isClient));
+                    yield return new WebSocketFrame(Fin.Final, _opcode, buff, compressed, _isClient);
 
-                return list;
+                yield break;
             }
 
             /* Send fragmented */
 
             // Begin
-            if (stream.Read(buff, 0, FragmentLength) == FragmentLength)
-                list.Add(new WebSocketFrame(Fin.More, _opcode, buff, compressed, _isClient));
+            if (stream.Read(buff, 0, FragmentLength) != FragmentLength)
+                yield break;
+
+            yield return new WebSocketFrame(Fin.More, _opcode, buff, compressed, _isClient);
 
             var n = rem == 0 ? quo - 2 : quo - 1;
             for (var i = 0; i < n; i++)
             {
-                if (stream.Read(buff, 0, FragmentLength) == FragmentLength)
-                    list.Add(new WebSocketFrame(Fin.More, Opcode.Cont, buff, compressed, _isClient));
+                if (stream.Read(buff, 0, FragmentLength) != FragmentLength)
+                    yield break;
+
+                yield return new WebSocketFrame(Fin.More, Opcode.Cont, buff, compressed, _isClient);
             }
 
             // End
@@ -93,9 +87,7 @@
                 buff = new byte[rem];
 
             if (stream.Read(buff, 0, rem) == rem)
-                list.Add(new WebSocketFrame(Fin.Final, Opcode.Cont, buff, compressed, _isClient));
-
-            return list;
+                yield return new WebSocketFrame(Fin.Final, Opcode.Cont, buff, compressed, _isClient);
         }
     }
 }

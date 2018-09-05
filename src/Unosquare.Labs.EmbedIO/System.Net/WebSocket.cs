@@ -562,8 +562,8 @@
                 var stream = new WebSocketStream(data, opcode, _compression, IsClient);
 
                 // TODO: add async
-                foreach (var bytes in stream.GetFramesBytes())
-                    Send(bytes);
+                foreach (var frame in stream.GetFrames())
+                    Send(frame);
             }
             catch (Exception ex)
             {
@@ -915,7 +915,8 @@
 
                     e = _messageEventQueue.Dequeue();
                 }
-            } while (true);
+            } 
+            while (true);
         }
 
         private void Messages(MessageEventArgs e)
@@ -1049,7 +1050,7 @@
 
         private bool ProcessPingFrame(WebSocketFrame frame)
         {
-            if (Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, IsClient).ToArray()))
+            if (Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, IsClient)))
             {
                 "Returned a pong.".Info();
             }
@@ -1204,7 +1205,7 @@
             _context = null;
         }
 
-        private bool Send(byte[] frameAsBytes)
+        private bool Send(WebSocketFrame frame)
         {
             lock (_forState)
             {
@@ -1215,6 +1216,7 @@
                 }
             }
 
+            var frameAsBytes = frame.ToArray();
             _stream.Write(frameAsBytes, 0, frameAsBytes.Length);
             return true;
         }
