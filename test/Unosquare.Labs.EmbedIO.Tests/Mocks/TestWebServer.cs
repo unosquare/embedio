@@ -47,12 +47,10 @@
 
                 if (ct.IsCancellationRequested || clientSocket == null)
                     return;
-
-                // Spawn off each client task asynchronously
+                
+                // Usually we don't wait, but for testing let's do it.
                 var handler = new HttpHandler(clientSocket);
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                handler.HandleClientRequest(ct);
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                await handler.HandleClientRequest(ct);
             }
         }
 
@@ -86,7 +84,7 @@
             public IHttpResponse Response { get; private set; }
             public IWebServer WebServer { get; set; }
 
-            public async Task GetAsync(string url)
+            public async Task<string> GetAsync(string url)
             {
                 Request = new TestHttpRequest(url);
                 Response = new TestHttpResponse();
@@ -96,8 +94,13 @@
 
                 testServer._entryQueue.Enqueue(this);
 
-                while (!testServer._entryQueue.IsEmpty)
+                if (!(Response.OutputStream is MemoryStream ms))
+                    throw new InvalidOperationException();
+                
+                while (ms.Length == 0)
                     await Task.Delay(100);
+
+                return Encoding.UTF8.GetString(ms.ToArray());
             }
         }
 
@@ -114,7 +117,7 @@
             public ICookieCollection Cookies { get; }
             public string RawUrl { get; }
             public NameValueCollection QueryString { get; }
-            public string HttpMethod { get; }
+            public string HttpMethod { get; } = HttpVerbs.Get.ToString();
             public Uri Url { get; private set; }
             public bool HasEntityBody { get; }
             public Stream InputStream { get; }

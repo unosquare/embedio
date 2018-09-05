@@ -1,7 +1,7 @@
-﻿
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using NUnit.Framework;
+    using Swan.Formatters;
     using TestObjects;
     using System.Threading.Tasks;
     using Mocks;
@@ -81,9 +81,13 @@ namespace Unosquare.Labs.EmbedIO.Tests
 
                 var client = webserver.GetClient();
 
-                await client.GetAsync("http://test/");
-                
-                Assert.IsNotNull(client.ParseJson<Person>());
+                var data = await client.GetAsync("http://test/");
+                Assert.IsNotNull(data);
+
+                var person = Json.Deserialize<Person>(data);
+                Assert.IsNotNull(person);
+
+                Assert.AreEqual(person.Name, "Test");
             }
         }
     }
