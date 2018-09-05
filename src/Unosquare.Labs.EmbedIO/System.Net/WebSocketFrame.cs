@@ -106,7 +106,7 @@
             if (len < 126)
             {
                 PayloadLength = (byte)len;
-                ExtendedPayloadLength = WebSocket.EmptyBytes;
+                ExtendedPayloadLength = WebSocketStream.EmptyBytes;
             }
             else if (len < 0x010000)
             {
@@ -128,7 +128,7 @@
             else
             {
                 Mask = Mask.Off;
-                MaskingKey = WebSocket.EmptyBytes;
+                MaskingKey = WebSocketStream.EmptyBytes;
             }
 
             PayloadData = payloadData;
@@ -305,7 +305,7 @@ Extended Payload Length: {extPayloadLen}
 
             Mask = Mask.Off;
             PayloadData.Mask(MaskingKey);
-            MaskingKey = WebSocket.EmptyBytes;
+            MaskingKey = WebSocketStream.EmptyBytes;
         }
 
         private static byte[] CreateMaskingKey()
@@ -379,7 +379,7 @@ Extended Payload Length: {extPayloadLen}
 
             if (len == 0)
             {
-                frame.ExtendedPayloadLength = WebSocket.EmptyBytes;
+                frame.ExtendedPayloadLength = WebSocketStream.EmptyBytes;
 
                 return;
             }
@@ -400,7 +400,7 @@ Extended Payload Length: {extPayloadLen}
             var len = frame.IsMasked ? 4 : 0;
             if (len == 0)
             {
-                frame.MaskingKey = WebSocket.EmptyBytes;
+                frame.MaskingKey = WebSocketStream.EmptyBytes;
 
                 return;
             }

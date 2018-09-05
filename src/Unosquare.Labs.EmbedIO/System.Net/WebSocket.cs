@@ -1,5 +1,8 @@
 ﻿namespace Unosquare.Net
 {
+    using Labs.EmbedIO;
+    using Labs.EmbedIO.Constants;
+    using Swan;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -10,9 +13,6 @@
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-    using Labs.EmbedIO;
-    using Labs.EmbedIO.Constants;
-    using Swan;
 
     /// <summary>
     /// Implements the WebSocket interface.
@@ -24,12 +24,6 @@
     public class WebSocket : IDisposable
     {
         internal const string Version = "13";
-
-        // Represents the empty array of <see cref="byte"/> used internally.
-        internal static readonly byte[] EmptyBytes = new byte[0];
-
-        // Represents the length used to determine whether the data should be fragmented in sending.
-        internal static readonly int FragmentLength = 1016;
 
         /// <summary>
         /// Represents the random number generator used internally.
@@ -553,8 +547,7 @@
         /// </returns>
         public async Task SendAsync(byte[] data, Opcode opcode, CancellationToken ct = default)
         {
-            var msg = WebSocketValidator.CheckIfAvailable(_readyState) ??
-                      WebSocketValidator.CheckSendParameter(data);
+            var msg = WebSocketValidator.CheckIfAvailable(_readyState);
 
             if (msg != null)
             {
@@ -564,7 +557,19 @@
                 return;
             }
 
-            Send(opcode, new MemoryStream(data), ct);
+            try
+            {
+                var stream = new WebSocketStream(data, opcode, _compression, IsClient);
+
+                // TODO: add async
+                foreach (var bytes in stream.GetFramesBytes())
+                    Send(bytes);
+            }
+            catch (Exception ex)
+            {
+                ex.Log(nameof(WebSocket));
+                Error("An error has occurred in sending data.", ex);
+            }
         }
 
         /// <summary>
@@ -985,20 +990,12 @@
 
             foreach (var cookie in CookieCollection)
             {
+                if (!cookie.Expired) continue;
+
                 if (CookieCollection[cookie.Name] == null)
-                {
-                    if (!cookie.Expired)
-                        CookieCollection.Add(cookie);
-
-                    continue;
-                }
-
-                if (!cookie.Expired)
                 {
                     CookieCollection.Add(cookie);
                 }
-
-                // TODO: Clear cookie
             }
         }
 
@@ -1221,123 +1218,7 @@
             _stream.Write(frameAsBytes, 0, frameAsBytes.Length);
             return true;
         }
-
-        private async Task<bool> Send(Opcode opcode, Stream stream, CancellationToken ct)
-        {
-            var src = stream;
-            var compressed = false;
-            var sent = false;
-
-            try
-            {
-                if (_compression != CompressionMethod.None)
-                {
-                    stream = stream.Compress(_compression);
-                    compressed = true;
-                }
-
-                sent = await Send(opcode, stream, compressed, ct);
-                if (!sent)
-                    Error("The sending has been interrupted.");
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-                Error("An exception has occurred while sending data.", ex);
-            }
-            finally
-            {
-                if (compressed)
-                    stream.Dispose();
-
-                src.Dispose();
-            }
-
-            return sent;
-        }
-
-        private async Task<bool> Send(Opcode opcode, Stream stream, bool compressed, CancellationToken ct)
-        {
-            var len = stream.Length;
-
-            /* Not fragmented */
-
-            if (len == 0)
-                return Send(Fin.Final, opcode, EmptyBytes, compressed, ct);
-
-            var quo = len / FragmentLength;
-            var rem = (int) (len % FragmentLength);
-
-            byte[] buff;
-
-            if (quo == 0)
-            {
-                buff = new byte[rem];
-                return stream.Read(buff, 0, rem) == rem &&
-                       Send(Fin.Final, opcode, buff, compressed, ct);
-            }
-
-            buff = new byte[FragmentLength];
-            if (quo == 1 && rem == 0)
-            {
-                return stream.Read(buff, 0, FragmentLength) == FragmentLength &&
-                       Send(Fin.Final, opcode, buff, compressed, ct);
-            }
-
-            /* Send fragmented */
-
-            // Begin
-            if (stream.Read(buff, 0, FragmentLength) != FragmentLength ||
-                !Send(Fin.More, opcode, buff, compressed, ct))
-                return false;
-
-            var n = rem == 0 ? quo - 2 : quo - 1;
-            for (long i = 0; i < n; i++)
-            {
-                if (stream.Read(buff, 0, FragmentLength) != FragmentLength ||
-                    !Send(Fin.More, Opcode.Cont, buff, compressed, ct))
-                {
-                    return false;
-                }
-            }
-
-            // End
-            if (rem == 0)
-                rem = FragmentLength;
-            else
-                buff = new byte[rem];
-
-            return stream.Read(buff, 0, rem) == rem && Send(Fin.Final, Opcode.Cont, buff, compressed, ct);
-        }
-
-        private bool Send(Fin fin, Opcode opcode, byte[] data, bool compressed, CancellationToken ct)
-        {
-            lock (_forState)
-            {
-                if (_readyState == WebSocketState.Open)
-                    return SendBytes(new WebSocketFrame(fin, opcode, data, compressed, IsClient).ToArray(), ct);
-            }
-            
-            "The sending has been interrupted.".Error();
-
-            return false;
-        }
-
-        private bool SendBytes(byte[] bytes, CancellationToken ct)
-        {
-            try
-            {
-                // TODO: Use async here
-                _stream.Write(bytes, 0, bytes.Length);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-                return false;
-            }
-        }
-
+        
         // As client
         private async Task<HttpResponse> SendHandshakeRequestAsync()
         {
