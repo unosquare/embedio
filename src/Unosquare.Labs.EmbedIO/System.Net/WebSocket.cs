@@ -597,8 +597,8 @@
                     return;
                 }
 
-                // TODO: lock (CookieCollection.SyncRoot)
-                CookieCollection.Add(cookie);
+                lock (CookieCollection.SyncRoot)
+                    CookieCollection.Add(cookie);
             }
         }
 

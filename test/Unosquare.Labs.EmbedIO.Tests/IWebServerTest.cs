@@ -1,6 +1,9 @@
-﻿namespace Unosquare.Labs.EmbedIO.Tests
+﻿
+namespace Unosquare.Labs.EmbedIO.Tests
 {
     using NUnit.Framework;
+    using TestObjects;
+    using System.Threading.Tasks;
     using Mocks;
     using Modules;
     using Swan;
@@ -69,19 +72,18 @@
         }
 
         [Test]
-        public void RunsServerAndRequestDAta_ReturnsValidData()
+        public async Task RunsServerAndRequestData_ReturnsValidData()
         {
-            Assert.Ignore("Pending implementation");
-
             using (var webserver = new TestWebServer())
             {
-                webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse("OK")));
+                webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(new Person { Name = "Test"})));
                 webserver.RunAsync();
+
                 var client = webserver.GetClient();
 
-                client.GetResponse();
-
-                Assert.IsNotNull(client.Context.Response);
+                await client.GetAsync("http://test/");
+                
+                Assert.IsNotNull(client.ParseJson<Person>());
             }
         }
     }

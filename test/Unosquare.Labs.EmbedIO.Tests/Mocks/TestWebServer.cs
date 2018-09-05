@@ -3,6 +3,10 @@
     using System;
     using System.Collections.Concurrent;
     using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
+    using System.IO;
+    using System.Net;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     using Constants;
@@ -40,6 +44,7 @@
             while (!ct.IsCancellationRequested)
             {
                 var clientSocket = await GetContextAsync(ct);
+
                 if (ct.IsCancellationRequested || clientSocket == null)
                     return;
 
@@ -70,20 +75,80 @@
             return null;
         }
 
-        public class TestHttpClient
+        public class TestHttpClient : IHttpContext
         {
-            public TestHttpClient(TestWebServer server)
+            public TestHttpClient(IWebServer server)
             {
-                Server = server;
+                WebServer = server;
             }
 
-            public IHttpContext Context { get; }
+            public IHttpRequest Request { get; private set; }
+            public IHttpResponse Response { get; private set; }
+            public IWebServer WebServer { get; set; }
 
-            public TestWebServer Server { get; }
-
-            public void GetResponse()
+            public async Task GetAsync(string url)
             {
-                Server._entryQueue.Enqueue(Context);
+                Request = new TestHttpRequest(url);
+                Response = new TestHttpResponse();
+
+                if (!(WebServer is TestWebServer testServer))
+                    throw new InvalidOperationException();
+
+                testServer._entryQueue.Enqueue(this);
+
+                while (!testServer._entryQueue.IsEmpty)
+                    await Task.Delay(100);
+            }
+        }
+
+        public class TestHttpRequest : IHttpRequest
+        {
+            public TestHttpRequest(string url)
+            {
+                Url = new Uri(url);
+            }
+
+            public NameValueCollection Headers { get; }
+            public Version ProtocolVersion { get; }
+            public bool KeepAlive { get; }
+            public ICookieCollection Cookies { get; }
+            public string RawUrl { get; }
+            public NameValueCollection QueryString { get; }
+            public string HttpMethod { get; }
+            public Uri Url { get; private set; }
+            public bool HasEntityBody { get; }
+            public Stream InputStream { get; }
+            public Encoding ContentEncoding { get; }
+            public IPEndPoint RemoteEndPoint { get; }
+            public bool IsLocal { get; }
+            public string UserAgent { get; }
+            public bool IsWebSocketRequest { get; }
+            public IPEndPoint LocalEndPoint { get; }
+            public string ContentType { get; }
+            public long ContentLength64 { get; }
+            public bool IsAuthenticated { get; }
+            public Uri UrlReferrer { get; }
+        }
+
+        public class TestHttpResponse : IHttpResponse
+        {
+            public NameValueCollection Headers { get; }
+            public int StatusCode { get; set; }
+            public long ContentLength64 { get; set; }
+            public string ContentType { get; set; }
+            public Stream OutputStream { get; } = new MemoryStream();
+            public ICookieCollection Cookies { get; }
+            public Encoding ContentEncoding { get; set; }
+            public bool KeepAlive { get; set; }
+            public Version ProtocolVersion { get; set; }
+            public void AddHeader(string headerName, string value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void SetCookie(Cookie sessionCookie)
+            {
+                throw new NotImplementedException();
             }
         }
     }
