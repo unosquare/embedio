@@ -56,16 +56,17 @@
 
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (context, ct) =>
             {
+                var isOptions = context.RequestVerb() == HttpVerbs.Options;
+                var currentOrigin = context.RequestHeader(Headers.Origin);
+
                 // If we allow all we don't need to filter
                 if (origins == Strings.CorsWildcard && headers == Strings.CorsWildcard &&
                     methods == Strings.CorsWildcard)
                 {
                     context.Response.Headers.Add(Headers.AccessControlAllowOrigin);
-                    return Task.FromResult(false);
+                    return isOptions ? ValidateHttpOptions(methods, context, validMethods) : Task.FromResult(false);
                 }
 
-                var currentOrigin = context.RequestHeader(Headers.Origin);
-                
                 if (string.IsNullOrWhiteSpace(currentOrigin) && context.Request.IsLocal)
                 {
                     return Task.FromResult(false);
@@ -80,7 +81,7 @@
                 {
                     context.Response.Headers.Add(Headers.AccessControlAllowOrigin.Replace("*", currentOrigin));
 
-                    if (context.RequestVerb() == HttpVerbs.Options)
+                    if (isOptions)
                     {
                         return ValidateHttpOptions(methods, context, validMethods);
                     }
