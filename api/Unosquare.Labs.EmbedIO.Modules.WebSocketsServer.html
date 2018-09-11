@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class WebSocketsServer
    | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 2.39.1.0">
+    <meta name="generator" content="docfx 2.39.2.0">
     
     <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -288,14 +288,14 @@ and data transmission.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_AcceptWebSocket_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.AcceptWebSocket*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_AcceptWebSocket_Unosquare_Labs_EmbedIO_IHttpContext_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.AcceptWebSocket(Unosquare.Labs.EmbedIO.IHttpContext,System.Threading.CancellationToken)">AcceptWebSocket(IHttpContext, CancellationToken)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_AcceptWebSocket_Unosquare_Net_HttpListenerContext_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.AcceptWebSocket(Unosquare.Net.HttpListenerContext,System.Threading.CancellationToken)">AcceptWebSocket(HttpListenerContext, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Accepts the WebSocket connection.
 This is a blocking call so it must be called within an independent thread.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task AcceptWebSocket(IHttpContext context, CancellationToken ct)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task AcceptWebSocket(HttpListenerContext context, CancellationToken ct)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -308,7 +308,7 @@ This is a blocking call so it must be called within an independent thread.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>

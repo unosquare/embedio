@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IWebModule
    | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 2.39.1.0">
+    <meta name="generator" content="docfx 2.39.2.0">
     
     <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -210,7 +210,7 @@ This property is automatically set when the module is registered.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IWebServer Server { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">WebServer Server { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -222,7 +222,7 @@ This property is automatically set when the module is registered.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
         <td><p>The server.</p>
 </td>
       </tr>
@@ -260,13 +260,13 @@ This property is automatically set when the module is registered.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_IWebModule_AddHandler_" data-uid="Unosquare.Labs.EmbedIO.IWebModule.AddHandler*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___" data-uid="Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs,System.Func{Unosquare.Labs.EmbedIO.IHttpContext,System.Threading.CancellationToken,System.Threading.Tasks.Task{System.Boolean}})">AddHandler(String, HttpVerbs, Func&lt;IHttpContext, CancellationToken, Task&lt;Boolean&gt;&gt;)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_IWebModule_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_System_Func_Unosquare_Net_HttpListenerContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___" data-uid="Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs,System.Func{Unosquare.Net.HttpListenerContext,System.Threading.CancellationToken,System.Threading.Tasks.Task{System.Boolean}})">AddHandler(String, HttpVerbs, Func&lt;HttpListenerContext, CancellationToken, Task&lt;Boolean&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds a handler that gets called when a path and verb are matched.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void AddHandler(string path, HttpVerbs verb, Func&lt;IHttpContext, CancellationToken, Task&lt;bool&gt;&gt; handler)</code></pre>
+    <pre><code class="lang-csharp hljs">void AddHandler(string path, HttpVerbs verb, Func&lt;HttpListenerContext, CancellationToken, Task&lt;bool&gt;&gt; handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -291,7 +291,7 @@ This property is automatically set when the module is registered.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;&gt;</td>
         <td><span class="parametername">handler</span></td>
         <td><p>The handler.</p>
 </td>

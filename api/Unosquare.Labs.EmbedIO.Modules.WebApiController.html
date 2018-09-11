@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class WebApiController
    | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 2.39.1.0">
+    <meta name="generator" content="docfx 2.39.2.0">
     
     <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -91,10 +91,6 @@ You must RegisterController in the Web API Module to make it active.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">WebApiController</span></div>
   </div>
-  <div classs="implements">
-    <h5>Implements</h5>
-    <div><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></div>
-  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
@@ -122,19 +118,26 @@ You must RegisterController in the Web API Module to make it active.</p>
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.html">Unosquare.Labs.EmbedIO.Modules</a></h6>
   <h5 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class WebApiController : IHttpContext</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class WebApiController</code></pre>
   </div>
-  <h3 id="constructors">Constructors
+  <h3 id="methods">Methods
   </h3>
   
   
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.#ctor*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController__ctor_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.#ctor(Unosquare.Labs.EmbedIO.IHttpContext)">WebApiController(IHttpContext)</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_SetDefaultHeaders_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_SetDefaultHeaders_Unosquare_Net_HttpListenerContext_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders(Unosquare.Net.HttpListenerContext)">SetDefaultHeaders(HttpListenerContext)</h4>
+  <div class="markdown level1 summary"><p>Sets the default headers to the Web API response.
+By default will set:</p>
+<p>Expires - Mon, 26 Jul 1997 05:00:00 GMT
+LastModified - (Current Date)
+CacheControl - no-store, no-cache, must-revalidate
+Pragma - no-cache</p>
+<p>Previous values are defined to avoid caching from client.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected WebApiController(IHttpContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual void SetDefaultHeaders(HttpListenerContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -147,118 +150,13 @@ You must RegisterController in the Web API Module to make it active.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
         <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="properties">Properties
-  </h3>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_Request_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.Request*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_Request" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.Request">Request</h4>
-  <div class="markdown level1 summary"><p>Gets the HTTP Request.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IHttpRequest Request { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpRequest.html">IHttpRequest</a></td>
-        <td><p>The request.</p>
+        <td><p>The context.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_Response_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.Response*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_Response" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.Response">Response</h4>
-  <div class="markdown level1 summary"><p>Gets the HTTP Response.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IHttpResponse Response { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpResponse.html">IHttpResponse</a></td>
-        <td><p>The response.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_WebServer_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.WebServer*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_WebServer" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.WebServer">WebServer</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the web server.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IWebServer WebServer { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
-        <td><p>The web server.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="methods">Methods
-  </h3>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_SetDefaultHeaders_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_SetDefaultHeaders" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders">SetDefaultHeaders()</h4>
-  <div class="markdown level1 summary"><p>Sets the default headers to the Web API response.
-By default will set:</p>
-<p>Expires - Mon, 26 Jul 1997 05:00:00 GMT
-LastModified - (Current Date)
-CacheControl - no-store, no-cache, must-revalidate
-Pragma - no-cache</p>
-<p>Previous values are defined to avoid caching from client.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void SetDefaultHeaders()</code></pre>
-  </div>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>
-  </div>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>

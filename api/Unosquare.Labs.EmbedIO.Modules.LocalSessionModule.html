@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class LocalSessionModule
    | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 2.39.1.0">
+    <meta name="generator" content="docfx 2.39.2.0">
     
     <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -114,7 +114,7 @@
       <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_CancellationToken">WebModuleBase.CancellationToken</a>
     </div>
     <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___">WebModuleBase.AddHandler(String, HttpVerbs, Func&lt;IHttpContext, CancellationToken, Task&lt;Boolean&gt;&gt;)</a>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_System_Func_Unosquare_Net_HttpListenerContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___">WebModuleBase.AddHandler(String, HttpVerbs, Func&lt;HttpListenerContext, CancellationToken, Task&lt;Boolean&gt;&gt;)</a>
     </div>
     <div>
       <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_Start_System_Threading_CancellationToken_">WebModuleBase.Start(CancellationToken)</a>
@@ -329,36 +329,6 @@ Direct access is guaranteed to be thread-safe.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_LocalSessionModule_DeleteSession_" data-uid="Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.DeleteSession*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_LocalSessionModule_DeleteSession_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.DeleteSession(Unosquare.Labs.EmbedIO.IHttpContext)">DeleteSession(IHttpContext)</h4>
-  <div class="markdown level1 summary"><p>Delete the session object for the given context
-If no session exists for the context, then null is returned.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void DeleteSession(IHttpContext context)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>The context.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_Modules_LocalSessionModule_DeleteSession_" data-uid="Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.DeleteSession*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_Modules_LocalSessionModule_DeleteSession_Unosquare_Labs_EmbedIO_SessionInfo_" data-uid="Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.DeleteSession(Unosquare.Labs.EmbedIO.SessionInfo)">DeleteSession(SessionInfo)</h4>
   <div class="markdown level1 summary"><p>Delete a session for the given session info
 No exceptions are thrown if the session is not found.</p>
@@ -388,15 +358,15 @@ No exceptions are thrown if the session is not found.</p>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_Modules_LocalSessionModule_GetSession_" data-uid="Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.GetSession*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_LocalSessionModule_GetSession_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.GetSession(Unosquare.Labs.EmbedIO.IHttpContext)">GetSession(IHttpContext)</h4>
-  <div class="markdown level1 summary"><p>Gets a session object for the given server context.
+  <a id="Unosquare_Labs_EmbedIO_Modules_LocalSessionModule_DeleteSession_" data-uid="Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.DeleteSession*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_LocalSessionModule_DeleteSession_Unosquare_Net_HttpListenerContext_" data-uid="Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.DeleteSession(Unosquare.Net.HttpListenerContext)">DeleteSession(HttpListenerContext)</h4>
+  <div class="markdown level1 summary"><p>Delete the session object for the given context
 If no session exists for the context, then null is returned.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SessionInfo GetSession(IHttpContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public void DeleteSession(HttpListenerContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -409,7 +379,37 @@ If no session exists for the context, then null is returned.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Modules_LocalSessionModule_GetSession_" data-uid="Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.GetSession*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_LocalSessionModule_GetSession_Unosquare_Net_HttpListenerContext_" data-uid="Unosquare.Labs.EmbedIO.Modules.LocalSessionModule.GetSession(Unosquare.Net.HttpListenerContext)">GetSession(HttpListenerContext)</h4>
+  <div class="markdown level1 summary"><p>Gets a session object for the given server context.
+If no session exists for the context, then null is returned.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SessionInfo GetSession(HttpListenerContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>

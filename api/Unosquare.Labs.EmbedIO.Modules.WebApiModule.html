@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class WebApiModule
    | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 2.39.1.0">
+    <meta name="generator" content="docfx 2.39.2.0">
     
     <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -115,7 +115,7 @@ will be used to respond to web server requests.</p>
       <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_CancellationToken">WebModuleBase.CancellationToken</a>
     </div>
     <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___">WebModuleBase.AddHandler(String, HttpVerbs, Func&lt;IHttpContext, CancellationToken, Task&lt;Boolean&gt;&gt;)</a>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_System_Func_Unosquare_Net_HttpListenerContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___">WebModuleBase.AddHandler(String, HttpVerbs, Func&lt;HttpListenerContext, CancellationToken, Task&lt;Boolean&gt;&gt;)</a>
     </div>
     <div>
       <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_Start_System_Threading_CancellationToken_">WebModuleBase.Start(CancellationToken)</a>
@@ -254,13 +254,13 @@ will be used to respond to web server requests.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_WebApiModule_RegisterController_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiModule_RegisterController_System_Type_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_Object__" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController(System.Type,System.Func{Unosquare.Labs.EmbedIO.IHttpContext,System.Object})">RegisterController(Type, Func&lt;IHttpContext, Object&gt;)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiModule_RegisterController_System_Type_System_Func_System_Object__" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController(System.Type,System.Func{System.Object})">RegisterController(Type, Func&lt;Object&gt;)</h4>
   <div class="markdown level1 summary"><p>Registers the controller.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void RegisterController(Type controllerType, Func&lt;IHttpContext, object&gt; controllerFactory)</code></pre>
+    <pre><code class="lang-csharp hljs">public void RegisterController(Type controllerType, Func&lt;object&gt; controllerFactory)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -279,7 +279,7 @@ will be used to respond to web server requests.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
         <td><span class="parametername">controllerFactory</span></td>
         <td><p>The controller factory method.</p>
 </td>
@@ -296,7 +296,7 @@ will be used to respond to web server requests.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void RegisterController&lt;T&gt;()
-    where T : WebApiController</code></pre>
+    where T : WebApiController, new()</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -333,13 +333,13 @@ will be used to respond to web server requests.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_WebApiModule_RegisterController_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiModule_RegisterController__1_System_Func_Unosquare_Labs_EmbedIO_IHttpContext___0__" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController``1(System.Func{Unosquare.Labs.EmbedIO.IHttpContext,``0})">RegisterController&lt;T&gt;(Func&lt;IHttpContext, T&gt;)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiModule_RegisterController__1_System_Func___0__" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiModule.RegisterController``1(System.Func{``0})">RegisterController&lt;T&gt;(Func&lt;T&gt;)</h4>
   <div class="markdown level1 summary"><p>Registers the controller.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void RegisterController&lt;T&gt;(Func&lt;IHttpContext, T&gt; controllerFactory)
+    <pre><code class="lang-csharp hljs">public void RegisterController&lt;T&gt;(Func&lt;T&gt; controllerFactory)
     where T : WebApiController</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -353,7 +353,7 @@ will be used to respond to web server requests.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>, T&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;T&gt;</td>
         <td><span class="parametername">controllerFactory</span></td>
         <td><p>The controller factory method.</p>
 </td>
