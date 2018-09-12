@@ -23,6 +23,18 @@
                 HttpVerbs.Any, 
                 (context, ct) => Task.FromResult(action(context, ct)));
         }
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FallbackModule" /> class.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        public FallbackModule(Func<IHttpContext, CancellationToken, Task<bool>> action)
+        {
+            AddHandler(
+                ModuleMap.AnyPath, 
+                HttpVerbs.Any, 
+                action);
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FallbackModule"/> class.

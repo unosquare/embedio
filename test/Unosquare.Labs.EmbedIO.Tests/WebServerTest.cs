@@ -187,7 +187,7 @@
 
                     using (var instance = new WebServer(url))
                     {
-                        instance.RegisterModule(new FallbackModule((ctx, ct) => throw new Exception("Error")));
+                        instance.RegisterModule(new FallbackModule(async (ctx, ct) => throw new Exception("Error")));
 
                         var runTask = instance.RunAsync();
                         var request = new HttpClient();
@@ -258,9 +258,10 @@
                     {
                         client.DefaultRequestHeaders.Accept
                             .Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
                         var request = new HttpRequestMessage(HttpMethod.Post, url + TestWebModule.RedirectUrl)
                         {
-                            Content = new StringContent("POST DATA", Encoding.GetEncoding(encodeName), "application/json")
+                            Content = new StringContent("POST DATA", Encoding.GetEncoding(encodeName), "application/json"),
                         };
 
                         using (var response = await client.SendAsync(request))
