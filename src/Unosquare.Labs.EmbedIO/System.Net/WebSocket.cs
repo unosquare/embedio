@@ -1146,17 +1146,18 @@
             _validator.CheckReceivedFrame(frame);
 
             frame.Unmask();
-            return frame.IsFragment
-                ? ProcessFragmentFrame(frame)
-                : frame.IsData
-                    ? ProcessDataFrame(frame)
-                    : frame.IsPing
-                        ? ProcessPingFrame(frame)
-                        : frame.IsPong
-                            ? ProcessPongFrame()
-                            : frame.IsClose
-                                ? ProcessCloseFrame(frame)
-                                : ProcessUnsupportedFrame(frame);
+            if (frame.IsFragment)
+                return ProcessFragmentFrame(frame);
+            else if (frame.IsData)
+                return ProcessDataFrame(frame);
+            else
+                return frame.IsPing
+                    ? ProcessPingFrame(frame)
+                    : frame.IsPong
+                        ? ProcessPongFrame()
+                        : frame.IsClose
+                            ? ProcessCloseFrame(frame)
+                            : ProcessUnsupportedFrame(frame);
         }
 
         // As server
@@ -1399,11 +1400,13 @@
             _exitReceiving = new AutoResetEvent(false);
             _receivePong = new AutoResetEvent(false);
 
+            var frameStream = new WebSocketFrameStream(_stream);
+
             async void Receive()
             {
                 try
                 {
-                    var frame = await WebSocketFrame.ReadFrameAsync(_stream);
+                    var frame = await frameStream.ReadFrameAsync();
                     var result = ProcessReceivedFrame(frame);
 
                     if (!result || _readyState == WebSocketState.Closed)
