@@ -58,12 +58,6 @@
             return true;
         }
 
-        internal static string CheckPingParameter(string message, out byte[] bytes)
-        {
-            bytes = Encoding.UTF8.GetBytes(message);
-            return bytes.Length > 125 ? "A message has greater than the allowable max size." : null;
-        }
-
         internal bool CheckHandshakeResponse(HttpResponse response, out string message)
         {
             message = null;

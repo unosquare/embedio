@@ -421,7 +421,9 @@
         /// <returns>
         /// A task that represents the asynchronous closes websocket connection.
         /// </returns>
-        public async Task CloseAsync(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null,
+        public async Task CloseAsync(
+            CloseStatusCode code = CloseStatusCode.Undefined, 
+            string reason = null,
             CancellationToken ct = default)
         {
             if (!_validator.CheckIfAvailable())
@@ -504,13 +506,13 @@
         /// <c>true</c> if the <see cref="WebSocket"/> receives a pong to this ping in a time;
         /// otherwise, <c>false</c>.
         /// </returns>
-        public async Task<bool> PingAsync()
+        public Task<bool> PingAsync()
         {
             var bytes = IsClient
                 ? WebSocketFrame.CreatePingFrame(true).ToArray()
                 : WebSocketFrame.EmptyPingBytes;
 
-            return await PingAsync(bytes, _waitTime);
+            return PingAsync(bytes, _waitTime);
         }
 
         /// <summary>
@@ -528,16 +530,15 @@
             if (string.IsNullOrEmpty(message))
                 return await PingAsync();
 
-            var msg = WebSocketValidator.CheckPingParameter(message, out var data);
+            var data = Encoding.UTF8.GetBytes(message);
 
-            if (msg == null)
+            if (data.Length <= 125)
                 return await PingAsync(WebSocketFrame.CreatePingFrame(data, IsClient).ToArray(), _waitTime);
 
-            msg.Error();
+            "A message has greater than the allowable max size.".Error();
             Error("An error has occurred in sending a ping.");
 
             return false;
-
         }
 
         /// <summary>
@@ -586,12 +587,7 @@
         /// </param>
         public void SetCookie(Cookie cookie)
         {
-            if (cookie == null || !_validator.CheckIfAvailable(true, false, true, false, false))
-            {
-                Error("An error has occurred in setting a cookie.");
-
-                return;
-            }
+            if (cookie == null) return;
 
             lock (_forState)
             {
@@ -601,10 +597,10 @@
 
                     return;
                 }
-
-                // TODO: lock (CookieCollection.SyncRoot)
-                CookieCollection.Add(cookie);
             }
+
+            lock (CookieCollection.SyncRoot)
+                CookieCollection.Add(cookie);
         }
 
         /// <inheritdoc />
