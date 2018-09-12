@@ -552,8 +552,7 @@
         /// </returns>
         public async Task SendAsync(byte[] data, Opcode opcode, CancellationToken ct = default)
         {
-            var msg = WebSocketValidator.CheckIfAvailable(_readyState) ??
-                      WebSocketValidator.CheckSendParameter(data);
+            var msg = WebSocketValidator.CheckIfAvailable(_readyState);
 
             if (msg != null)
             {
@@ -563,7 +562,19 @@
                 return;
             }
 
-            Send(opcode, new MemoryStream(data), ct);
+            try
+            {
+                var stream = new WebSocketStream(data, opcode, _compression, IsClient);
+
+                // TODO: add async
+                foreach (var frame in stream.GetFrames())
+                    Send(frame);
+            }
+            catch (Exception ex)
+            {
+                ex.Log(nameof(WebSocket));
+                Error("An error has occurred in sending data.", ex);
+            }
         }
 
         /// <summary>
@@ -1106,7 +1117,7 @@
 
         private bool ProcessPingFrame(WebSocketFrame frame)
         {
-            if (Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, IsClient).ToArray()))
+            if (Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, IsClient)))
             {
                 "Returned a pong.".Info();
             }
@@ -1261,7 +1272,7 @@
             _context = null;
         }
 
-        private bool Send(byte[] frameAsBytes)
+        private bool Send(WebSocketFrame frame)
         {
             lock (_forState)
             {
@@ -1272,6 +1283,7 @@
                 }
             }
 
+            var frameAsBytes = frame.ToArray();
             _stream.Write(frameAsBytes, 0, frameAsBytes.Length);
             return true;
         }
@@ -1436,9 +1448,8 @@
         }
 
         // As server
-        private Task SendHttpResponseAsync(HttpResponse response)
+        private Task SendHttpResponseAsync(HttpBase response)
         {
-            $"A response to the server:\n {response.Stringify()}".Debug();
             var bytes = response.ToByteArray();
 
             return _stream.WriteAsync(bytes, 0, bytes.Length);

@@ -64,8 +64,6 @@
             return bytes.Length > 125 ? "A message has greater than the allowable max size." : null;
         }
 
-        internal static string CheckSendParameter(byte[] data) => data == null ? "'data' is null." : null;
-        
         internal bool CheckHandshakeResponse(HttpResponse response, out string message)
         {
             message = null;
