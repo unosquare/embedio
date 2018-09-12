@@ -82,13 +82,17 @@
   
   <h1 id="Unosquare_Net_HttpListenerRequest" data-uid="Unosquare.Net.HttpListenerRequest" class="text-break">Class HttpListenerRequest
   </h1>
-  <div class="markdown level0 summary"><p>Represents an HTTP Listener&apos;s request.</p>
+  <div class="markdown level0 summary"><p>Represents an HTTP Listener Request.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">HttpListenerRequest</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpRequest.html">IHttpRequest</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -117,7 +121,7 @@
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Net.html">Unosquare.Net</a></h6>
   <h5 id="Unosquare_Net_HttpListenerRequest_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class HttpListenerRequest</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class HttpListenerRequest : IHttpRequest</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -179,7 +183,7 @@
   
   <a id="Unosquare_Net_HttpListenerRequest_ContentLength64_" data-uid="Unosquare.Net.HttpListenerRequest.ContentLength64*"></a>
   <h4 id="Unosquare_Net_HttpListenerRequest_ContentLength64" data-uid="Unosquare.Net.HttpListenerRequest.ContentLength64">ContentLength64</h4>
-  <div class="markdown level1 summary"><p>Gets the content length in a 64-bit integer.</p>
+  <div class="markdown level1 summary"><p>Gets the content length64.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -206,7 +210,7 @@
   
   <a id="Unosquare_Net_HttpListenerRequest_ContentType_" data-uid="Unosquare.Net.HttpListenerRequest.ContentType*"></a>
   <h4 id="Unosquare_Net_HttpListenerRequest_ContentType" data-uid="Unosquare.Net.HttpListenerRequest.ContentType">ContentType</h4>
-  <div class="markdown level1 summary"><p>Gets the MIME type of the content.</p>
+  <div class="markdown level1 summary"><p>Gets the type of the content.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -233,12 +237,12 @@
   
   <a id="Unosquare_Net_HttpListenerRequest_Cookies_" data-uid="Unosquare.Net.HttpListenerRequest.Cookies*"></a>
   <h4 id="Unosquare_Net_HttpListenerRequest_Cookies" data-uid="Unosquare.Net.HttpListenerRequest.Cookies">Cookies</h4>
-  <div class="markdown level1 summary"><p>Gets the cookies collection.</p>
+  <div class="markdown level1 summary"><p>Gets the cookies.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CookieCollection Cookies { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ICookieCollection Cookies { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -250,7 +254,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.CookieCollection.html">CookieCollection</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.ICookieCollection.html">ICookieCollection</a></td>
         <td><p>The cookies.</p>
 </td>
       </tr>
@@ -287,7 +291,7 @@
   
   <a id="Unosquare_Net_HttpListenerRequest_Headers_" data-uid="Unosquare.Net.HttpListenerRequest.Headers*"></a>
   <h4 id="Unosquare_Net_HttpListenerRequest_Headers" data-uid="Unosquare.Net.HttpListenerRequest.Headers">Headers</h4>
-  <div class="markdown level1 summary"><p>Gets the request headers.</p>
+  <div class="markdown level1 summary"><p>Gets the headers.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -305,7 +309,8 @@
     <tbody>
       <tr>
         <td><span class="xref">NameValueCollection</span></td>
-        <td></td>
+        <td><p>The headers.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -331,7 +336,8 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><p>The HTTP method.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -357,7 +363,8 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.stream">Stream</a></td>
-        <td></td>
+        <td><p>The input stream.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -365,7 +372,7 @@
   
   <a id="Unosquare_Net_HttpListenerRequest_IsAuthenticated_" data-uid="Unosquare.Net.HttpListenerRequest.IsAuthenticated*"></a>
   <h4 id="Unosquare_Net_HttpListenerRequest_IsAuthenticated" data-uid="Unosquare.Net.HttpListenerRequest.IsAuthenticated">IsAuthenticated</h4>
-  <div class="markdown level1 summary"><p>Gets a value indicating whether this request is authenticated.</p>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this instance is authenticated.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -383,7 +390,8 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
+        <td><p><code>true</code> if this instance is authenticated; otherwise, <code>false</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -391,7 +399,7 @@
   
   <a id="Unosquare_Net_HttpListenerRequest_IsLocal_" data-uid="Unosquare.Net.HttpListenerRequest.IsLocal*"></a>
   <h4 id="Unosquare_Net_HttpListenerRequest_IsLocal" data-uid="Unosquare.Net.HttpListenerRequest.IsLocal">IsLocal</h4>
-  <div class="markdown level1 summary"><p>Gets a value indicating whether this request is local.</p>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this instance is local.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -409,7 +417,8 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
+        <td><p><code>true</code> if this instance is local; otherwise, <code>false</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -417,7 +426,7 @@
   
   <a id="Unosquare_Net_HttpListenerRequest_IsWebSocketRequest_" data-uid="Unosquare.Net.HttpListenerRequest.IsWebSocketRequest*"></a>
   <h4 id="Unosquare_Net_HttpListenerRequest_IsWebSocketRequest" data-uid="Unosquare.Net.HttpListenerRequest.IsWebSocketRequest">IsWebSocketRequest</h4>
-  <div class="markdown level1 summary"><p>Gets a value indicating whether this request is a web socket request.</p>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this instance is web socket request.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -435,7 +444,8 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
+        <td><p><code>true</code> if this instance is web socket request; otherwise, <code>false</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -443,7 +453,7 @@
   
   <a id="Unosquare_Net_HttpListenerRequest_KeepAlive_" data-uid="Unosquare.Net.HttpListenerRequest.KeepAlive*"></a>
   <h4 id="Unosquare_Net_HttpListenerRequest_KeepAlive" data-uid="Unosquare.Net.HttpListenerRequest.KeepAlive">KeepAlive</h4>
-  <div class="markdown level1 summary"><p>Gets the Keep-Alive value for this request.</p>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether [keep alive].</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -461,7 +471,8 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
+        <td><p><code>true</code> if [keep alive]; otherwise, <code>false</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -469,8 +480,7 @@
   
   <a id="Unosquare_Net_HttpListenerRequest_LocalEndPoint_" data-uid="Unosquare.Net.HttpListenerRequest.LocalEndPoint*"></a>
   <h4 id="Unosquare_Net_HttpListenerRequest_LocalEndPoint" data-uid="Unosquare.Net.HttpListenerRequest.LocalEndPoint">LocalEndPoint</h4>
-  <div class="markdown level1 summary"><p>Gets the local endpoint.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -513,7 +523,8 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.version">Version</a></td>
-        <td></td>
+        <td><p>The protocol version.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -539,7 +550,8 @@
     <tbody>
       <tr>
         <td><span class="xref">NameValueCollection</span></td>
-        <td></td>
+        <td><p>The query string.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -565,7 +577,8 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><p>The raw URL.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -573,8 +586,7 @@
   
   <a id="Unosquare_Net_HttpListenerRequest_RemoteEndPoint_" data-uid="Unosquare.Net.HttpListenerRequest.RemoteEndPoint*"></a>
   <h4 id="Unosquare_Net_HttpListenerRequest_RemoteEndPoint" data-uid="Unosquare.Net.HttpListenerRequest.RemoteEndPoint">RemoteEndPoint</h4>
-  <div class="markdown level1 summary"><p>Gets the remote endpoint.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -591,58 +603,6 @@
     <tbody>
       <tr>
         <td><span class="xref">IPEndPoint</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Net_HttpListenerRequest_RequestTraceIdentifier_" data-uid="Unosquare.Net.HttpListenerRequest.RequestTraceIdentifier*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_RequestTraceIdentifier" data-uid="Unosquare.Net.HttpListenerRequest.RequestTraceIdentifier">RequestTraceIdentifier</h4>
-  <div class="markdown level1 summary"><p>Gets the request trace identifier.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Guid RequestTraceIdentifier { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Net_HttpListenerRequest_ServiceName_" data-uid="Unosquare.Net.HttpListenerRequest.ServiceName*"></a>
-  <h4 id="Unosquare_Net_HttpListenerRequest_ServiceName" data-uid="Unosquare.Net.HttpListenerRequest.ServiceName">ServiceName</h4>
-  <div class="markdown level1 summary"><p>Gets the name of the service.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ServiceName { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -669,7 +629,8 @@
     <tbody>
       <tr>
         <td><span class="xref">Uri</span></td>
-        <td></td>
+        <td><p>The URL.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -722,7 +683,8 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><p>The user agent.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -805,6 +767,10 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.IHttpRequest.html">IHttpRequest</a>
+  </div>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>

@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class HttpListenerResponse
+    <title>Class HttpResponse
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class HttpListenerResponse
+    <meta name="title" content="Class HttpResponse
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.39.2.0">
     
@@ -77,23 +77,22 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Unosquare.Net.HttpListenerResponse">
+            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.HttpResponse">
   
   
-  <h1 id="Unosquare_Net_HttpListenerResponse" data-uid="Unosquare.Net.HttpListenerResponse" class="text-break">Class HttpListenerResponse
+  <h1 id="Unosquare_Labs_EmbedIO_HttpResponse" data-uid="Unosquare.Labs.EmbedIO.HttpResponse" class="text-break">Class HttpResponse
   </h1>
-  <div class="markdown level0 summary"><p>Represents an HTTP Listener&apos;s response.</p>
+  <div class="markdown level0 summary"><p>Represents a wrapper for HttpListenerContext.Response.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">HttpListenerResponse</span></div>
+    <div class="level1"><span class="xref">HttpResponse</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpResponse.html">IHttpResponse</a></div>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -119,17 +118,48 @@
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Net.html">Unosquare.Net</a></h6>
-  <h5 id="Unosquare_Net_HttpListenerResponse_syntax">Syntax</h5>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.html">Unosquare.Labs.EmbedIO</a></h6>
+  <h5 id="Unosquare_Labs_EmbedIO_HttpResponse_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class HttpListenerResponse : IHttpResponse, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public class HttpResponse : IHttpResponse</code></pre>
   </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_HttpResponse__ctor_" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.#ctor*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpResponse__ctor_HttpListenerContext_" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.#ctor(HttpListenerContext)">HttpResponse(HttpListenerContext)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.HttpResponse.html">HttpResponse</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpResponse(HttpListenerContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">HttpListenerContext</span></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
   </h3>
   
   
-  <a id="Unosquare_Net_HttpListenerResponse_ContentEncoding_" data-uid="Unosquare.Net.HttpListenerResponse.ContentEncoding*"></a>
-  <h4 id="Unosquare_Net_HttpListenerResponse_ContentEncoding" data-uid="Unosquare.Net.HttpListenerResponse.ContentEncoding">ContentEncoding</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpResponse_ContentEncoding_" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.ContentEncoding*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpResponse_ContentEncoding" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.ContentEncoding">ContentEncoding</h4>
   <div class="markdown level1 summary"><p>Gets or sets the content encoding.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -155,8 +185,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerResponse_ContentLength64_" data-uid="Unosquare.Net.HttpListenerResponse.ContentLength64*"></a>
-  <h4 id="Unosquare_Net_HttpListenerResponse_ContentLength64" data-uid="Unosquare.Net.HttpListenerResponse.ContentLength64">ContentLength64</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpResponse_ContentLength64_" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.ContentLength64*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpResponse_ContentLength64" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.ContentLength64">ContentLength64</h4>
   <div class="markdown level1 summary"><p>Gets or sets the content length64.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -182,8 +212,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerResponse_ContentType_" data-uid="Unosquare.Net.HttpListenerResponse.ContentType*"></a>
-  <h4 id="Unosquare_Net_HttpListenerResponse_ContentType" data-uid="Unosquare.Net.HttpListenerResponse.ContentType">ContentType</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpResponse_ContentType_" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.ContentType*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpResponse_ContentType" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.ContentType">ContentType</h4>
   <div class="markdown level1 summary"><p>Gets or sets the type of the content.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -209,8 +239,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerResponse_Cookies_" data-uid="Unosquare.Net.HttpListenerResponse.Cookies*"></a>
-  <h4 id="Unosquare_Net_HttpListenerResponse_Cookies" data-uid="Unosquare.Net.HttpListenerResponse.Cookies">Cookies</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpResponse_Cookies_" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.Cookies*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpResponse_Cookies" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.Cookies">Cookies</h4>
   <div class="markdown level1 summary"><p>Gets the cookies.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -236,8 +266,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerResponse_Headers_" data-uid="Unosquare.Net.HttpListenerResponse.Headers*"></a>
-  <h4 id="Unosquare_Net_HttpListenerResponse_Headers" data-uid="Unosquare.Net.HttpListenerResponse.Headers">Headers</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpResponse_Headers_" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.Headers*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpResponse_Headers" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.Headers">Headers</h4>
   <div class="markdown level1 summary"><p>Gets the headers.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -263,8 +293,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerResponse_KeepAlive_" data-uid="Unosquare.Net.HttpListenerResponse.KeepAlive*"></a>
-  <h4 id="Unosquare_Net_HttpListenerResponse_KeepAlive" data-uid="Unosquare.Net.HttpListenerResponse.KeepAlive">KeepAlive</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpResponse_KeepAlive_" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.KeepAlive*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpResponse_KeepAlive" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.KeepAlive">KeepAlive</h4>
   <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [keep alive].</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -290,8 +320,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerResponse_OutputStream_" data-uid="Unosquare.Net.HttpListenerResponse.OutputStream*"></a>
-  <h4 id="Unosquare_Net_HttpListenerResponse_OutputStream" data-uid="Unosquare.Net.HttpListenerResponse.OutputStream">OutputStream</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpResponse_OutputStream_" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.OutputStream*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpResponse_OutputStream" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.OutputStream">OutputStream</h4>
   <div class="markdown level1 summary"><p>Gets the output stream.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -317,8 +347,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerResponse_ProtocolVersion_" data-uid="Unosquare.Net.HttpListenerResponse.ProtocolVersion*"></a>
-  <h4 id="Unosquare_Net_HttpListenerResponse_ProtocolVersion" data-uid="Unosquare.Net.HttpListenerResponse.ProtocolVersion">ProtocolVersion</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpResponse_ProtocolVersion_" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.ProtocolVersion*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpResponse_ProtocolVersion" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.ProtocolVersion">ProtocolVersion</h4>
   <div class="markdown level1 summary"><p>Gets or sets the protocol version.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -344,57 +374,8 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerResponse_SendChunked_" data-uid="Unosquare.Net.HttpListenerResponse.SendChunked*"></a>
-  <h4 id="Unosquare_Net_HttpListenerResponse_SendChunked" data-uid="Unosquare.Net.HttpListenerResponse.SendChunked">SendChunked</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [send chunked].</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool SendChunked { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><code>true</code> if [send chunked]; otherwise, <code>false</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></td>
-        <td><p>Is thrown when you try to access a member of an object that implements the 
-IDisposable interface, and that object has been disposed.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
-        <td><p>Cannot be changed after headers are sent.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Net_HttpListenerResponse_StatusCode_" data-uid="Unosquare.Net.HttpListenerResponse.StatusCode*"></a>
-  <h4 id="Unosquare_Net_HttpListenerResponse_StatusCode" data-uid="Unosquare.Net.HttpListenerResponse.StatusCode">StatusCode</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpResponse_StatusCode_" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.StatusCode*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpResponse_StatusCode" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.StatusCode">StatusCode</h4>
   <div class="markdown level1 summary"><p>Gets or sets the status code.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -418,56 +399,18 @@ IDisposable interface, and that object has been disposed.</p>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Unosquare_Net_HttpListenerResponse_StatusDescription_" data-uid="Unosquare.Net.HttpListenerResponse.StatusDescription*"></a>
-  <h4 id="Unosquare_Net_HttpListenerResponse_StatusDescription" data-uid="Unosquare.Net.HttpListenerResponse.StatusDescription">StatusDescription</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the status description.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string StatusDescription { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><p>The status description.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="Unosquare_Net_HttpListenerResponse_Abort_" data-uid="Unosquare.Net.HttpListenerResponse.Abort*"></a>
-  <h4 id="Unosquare_Net_HttpListenerResponse_Abort" data-uid="Unosquare.Net.HttpListenerResponse.Abort">Abort()</h4>
-  <div class="markdown level1 summary"><p>Aborts this instance.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Abort()</code></pre>
-  </div>
-  
-  
-  <a id="Unosquare_Net_HttpListenerResponse_AddHeader_" data-uid="Unosquare.Net.HttpListenerResponse.AddHeader*"></a>
-  <h4 id="Unosquare_Net_HttpListenerResponse_AddHeader_System_String_System_String_" data-uid="Unosquare.Net.HttpListenerResponse.AddHeader(System.String,System.String)">AddHeader(String, String)</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpResponse_AddHeader_" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.AddHeader*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpResponse_AddHeader_System_String_System_String_" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.AddHeader(System.String,System.String)">AddHeader(String, String)</h4>
   <div class="markdown level1 summary"><p>Adds the header.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void AddHeader(string name, string value)</code></pre>
+    <pre><code class="lang-csharp hljs">public void AddHeader(string headerName, string value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -481,8 +424,9 @@ IDisposable interface, and that object has been disposed.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">name</span></td>
-        <td></td>
+        <td><span class="parametername">headerName</span></td>
+        <td><p>Name of the header.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
@@ -494,24 +438,13 @@ IDisposable interface, and that object has been disposed.</p>
   </table>
   
   
-  <a id="Unosquare_Net_HttpListenerResponse_Close_" data-uid="Unosquare.Net.HttpListenerResponse.Close*"></a>
-  <h4 id="Unosquare_Net_HttpListenerResponse_Close" data-uid="Unosquare.Net.HttpListenerResponse.Close">Close()</h4>
-  <div class="markdown level1 summary"><p>Closes this instance.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Close()</code></pre>
-  </div>
-  
-  
-  <a id="Unosquare_Net_HttpListenerResponse_SetCookie_" data-uid="Unosquare.Net.HttpListenerResponse.SetCookie*"></a>
-  <h4 id="Unosquare_Net_HttpListenerResponse_SetCookie_Cookie_" data-uid="Unosquare.Net.HttpListenerResponse.SetCookie(Cookie)">SetCookie(Cookie)</h4>
+  <a id="Unosquare_Labs_EmbedIO_HttpResponse_SetCookie_" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.SetCookie*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpResponse_SetCookie_Cookie_" data-uid="Unosquare.Labs.EmbedIO.HttpResponse.SetCookie(Cookie)">SetCookie(Cookie)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetCookie(Cookie cookie)</code></pre>
+    <pre><code class="lang-csharp hljs">public void SetCookie(Cookie sessionCookie)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -525,33 +458,18 @@ IDisposable interface, and that object has been disposed.</p>
     <tbody>
       <tr>
         <td><span class="xref">Cookie</span></td>
-        <td><span class="parametername">cookie</span></td>
+        <td><span class="parametername">sessionCookie</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h3 id="eii">Explicit Interface Implementations
-  </h3>
-  
-  
-  <a id="Unosquare_Net_HttpListenerResponse_System_IDisposable_Dispose_" data-uid="Unosquare.Net.HttpListenerResponse.System#IDisposable#Dispose*"></a>
-  <h4 id="Unosquare_Net_HttpListenerResponse_System_IDisposable_Dispose" data-uid="Unosquare.Net.HttpListenerResponse.System#IDisposable#Dispose">IDisposable.Dispose()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void IDisposable.Dispose()</code></pre>
-  </div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Unosquare.Labs.EmbedIO.IHttpResponse.html">IHttpResponse</a>
   </div>
-  <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
-  </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">
-      <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+      <div><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpResponse.html">IHttpResponse</a></div>
   </div>
 
 <h3 id="disqus_thread">Comments</h3>

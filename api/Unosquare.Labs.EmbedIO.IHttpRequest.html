@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class Headers
+    <title>Interface IHttpRequest
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class Headers
+    <meta name="title" content="Interface IHttpRequest
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.39.2.0">
     
@@ -77,61 +77,33 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers">
+            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest">
   
   
-  <h1 id="Unosquare_Labs_EmbedIO_Constants_Headers" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers" class="text-break">Class Headers
+  <h1 id="Unosquare_Labs_EmbedIO_IHttpRequest" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest" class="text-break">Interface IHttpRequest
   </h1>
-  <div class="markdown level0 summary"><p>HTTP Header Constants.</p>
+  <div class="markdown level0 summary"><p>Interface to create a HTTP Request.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
-  <div class="inheritance">
-    <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">Headers</span></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-  </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.Constants.html">Unosquare.Labs.EmbedIO.Constants</a></h6>
-  <h5 id="Unosquare_Labs_EmbedIO_Constants_Headers_syntax">Syntax</h5>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.html">Unosquare.Labs.EmbedIO</a></h6>
+  <h5 id="Unosquare_Labs_EmbedIO_IHttpRequest_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class Headers</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IHttpRequest</code></pre>
   </div>
-  <h3 id="fields">Fields
+  <h3 id="properties">Properties
   </h3>
   
   
-  <h4 id="Unosquare_Labs_EmbedIO_Constants_Headers_AcceptEncoding" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers.AcceptEncoding">AcceptEncoding</h4>
-  <div class="markdown level1 summary"><p>Accept-Encoding HTTP Header.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpRequest_ContentEncoding_" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.ContentEncoding*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpRequest_ContentEncoding" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.ContentEncoding">ContentEncoding</h4>
+  <div class="markdown level1 summary"><p>Gets the content encoding.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string AcceptEncoding = &quot;Accept-Encoding&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">Encoding ContentEncoding { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -141,22 +113,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.text.encoding">Encoding</a></td>
+        <td><p>The content encoding.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Unosquare_Labs_EmbedIO_Constants_Headers_AcceptRanges" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers.AcceptRanges">AcceptRanges</h4>
-  <div class="markdown level1 summary"><p>Accept-Ranges HTTP Header.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpRequest_ContentLength64_" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.ContentLength64*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpRequest_ContentLength64" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.ContentLength64">ContentLength64</h4>
+  <div class="markdown level1 summary"><p>Gets the content length64.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string AcceptRanges = &quot;Accept-Ranges&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">long ContentLength64 { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -166,22 +140,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><p>The content length64.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Unosquare_Labs_EmbedIO_Constants_Headers_AccessControlAllowHeaders" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers.AccessControlAllowHeaders">AccessControlAllowHeaders</h4>
-  <div class="markdown level1 summary"><p>Access-Control-Allow-Headers HTTP Header.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpRequest_ContentType_" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.ContentType*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpRequest_ContentType" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.ContentType">ContentType</h4>
+  <div class="markdown level1 summary"><p>Gets the type of the content.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string AccessControlAllowHeaders = &quot;Access-Control-Allow-Headers&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">string ContentType { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -192,21 +168,23 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><p>The type of the content.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Unosquare_Labs_EmbedIO_Constants_Headers_AccessControlAllowMethods" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers.AccessControlAllowMethods">AccessControlAllowMethods</h4>
-  <div class="markdown level1 summary"><p>Access-Control-Allow-Methods HTTP Header.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpRequest_Cookies_" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.Cookies*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpRequest_Cookies" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.Cookies">Cookies</h4>
+  <div class="markdown level1 summary"><p>Gets the cookies.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string AccessControlAllowMethods = &quot;Access-Control-Allow-Methods&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">ICookieCollection Cookies { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -216,22 +194,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.ICookieCollection.html">ICookieCollection</a></td>
+        <td><p>The cookies.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Unosquare_Labs_EmbedIO_Constants_Headers_AccessControlAllowOrigin" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers.AccessControlAllowOrigin">AccessControlAllowOrigin</h4>
-  <div class="markdown level1 summary"><p>Access-Control-Allow-Origin HTTP Header.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpRequest_HasEntityBody_" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.HasEntityBody*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpRequest_HasEntityBody" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.HasEntityBody">HasEntityBody</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this instance has entity body.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string AccessControlAllowOrigin = &quot;Access-Control-Allow-Origin&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">bool HasEntityBody { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -241,22 +221,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if this instance has entity body; otherwise, <code>false</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Unosquare_Labs_EmbedIO_Constants_Headers_AccessControlRequestHeaders" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers.AccessControlRequestHeaders">AccessControlRequestHeaders</h4>
-  <div class="markdown level1 summary"><p>Access-Control-Request-Headers HTTP Header.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpRequest_Headers_" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.Headers*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpRequest_Headers" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.Headers">Headers</h4>
+  <div class="markdown level1 summary"><p>Gets the headers.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string AccessControlRequestHeaders = &quot;Access-Control-Request-Headers&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">NameValueCollection Headers { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -266,22 +248,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><span class="xref">NameValueCollection</span></td>
+        <td><p>The headers.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Unosquare_Labs_EmbedIO_Constants_Headers_AccessControlRequestMethod" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers.AccessControlRequestMethod">AccessControlRequestMethod</h4>
-  <div class="markdown level1 summary"><p>Access-Control-Request-Headers HTTP Method.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpRequest_HttpMethod_" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.HttpMethod*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpRequest_HttpMethod" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.HttpMethod">HttpMethod</h4>
+  <div class="markdown level1 summary"><p>Gets the HTTP method.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string AccessControlRequestMethod = &quot;Access-Control-Request-Method&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">string HttpMethod { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -292,21 +276,23 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><p>The HTTP method.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Unosquare_Labs_EmbedIO_Constants_Headers_CacheControl" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers.CacheControl">CacheControl</h4>
-  <div class="markdown level1 summary"><p>Cache-Control HTTP Header.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpRequest_InputStream_" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.InputStream*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpRequest_InputStream" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.InputStream">InputStream</h4>
+  <div class="markdown level1 summary"><p>Gets the input stream.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string CacheControl = &quot;Cache-Control&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">Stream InputStream { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -316,22 +302,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.stream">Stream</a></td>
+        <td><p>The input stream.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Unosquare_Labs_EmbedIO_Constants_Headers_CompressionGzip" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers.CompressionGzip">CompressionGzip</h4>
-  <div class="markdown level1 summary"><p>The header compression gzip.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpRequest_IsAuthenticated_" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.IsAuthenticated*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpRequest_IsAuthenticated" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.IsAuthenticated">IsAuthenticated</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this instance is authenticated.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string CompressionGzip = &quot;gzip&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">bool IsAuthenticated { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -341,22 +329,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if this instance is authenticated; otherwise, <code>false</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Unosquare_Labs_EmbedIO_Constants_Headers_ContentEncoding" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers.ContentEncoding">ContentEncoding</h4>
-  <div class="markdown level1 summary"><p>Content-Encoding HTTP Header.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpRequest_IsLocal_" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.IsLocal*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpRequest_IsLocal" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.IsLocal">IsLocal</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this instance is local.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string ContentEncoding = &quot;Content-Encoding&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">bool IsLocal { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -366,22 +356,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if this instance is local; otherwise, <code>false</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Unosquare_Labs_EmbedIO_Constants_Headers_ContentRanges" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers.ContentRanges">ContentRanges</h4>
-  <div class="markdown level1 summary"><p>Content-Range HTTP Header.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpRequest_IsWebSocketRequest_" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.IsWebSocketRequest*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpRequest_IsWebSocketRequest" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.IsWebSocketRequest">IsWebSocketRequest</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this instance is web socket request.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string ContentRanges = &quot;Content-Range&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">bool IsWebSocketRequest { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -391,22 +383,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if this instance is web socket request; otherwise, <code>false</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Unosquare_Labs_EmbedIO_Constants_Headers_Cookie" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers.Cookie">Cookie</h4>
-  <div class="markdown level1 summary"><p>The cookie header.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpRequest_KeepAlive_" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.KeepAlive*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpRequest_KeepAlive" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.KeepAlive">KeepAlive</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether [keep alive].</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string Cookie = &quot;Cookie&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">bool KeepAlive { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -416,22 +410,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if [keep alive]; otherwise, <code>false</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Unosquare_Labs_EmbedIO_Constants_Headers_ETag" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers.ETag">ETag</h4>
-  <div class="markdown level1 summary"><p>ETag HTTP Header.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpRequest_LocalEndPoint_" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.LocalEndPoint*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpRequest_LocalEndPoint" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.LocalEndPoint">LocalEndPoint</h4>
+  <div class="markdown level1 summary"><p>Gets the local end point.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string ETag = &quot;ETag&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">Net.IPEndPoint LocalEndPoint { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -441,22 +437,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.net.ipendpoint">Net.IPEndPoint</a></td>
+        <td><p>The local end point.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Unosquare_Labs_EmbedIO_Constants_Headers_Expires" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers.Expires">Expires</h4>
-  <div class="markdown level1 summary"><p>Expires HTTP Header.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpRequest_ProtocolVersion_" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.ProtocolVersion*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpRequest_ProtocolVersion" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.ProtocolVersion">ProtocolVersion</h4>
+  <div class="markdown level1 summary"><p>Gets the protocol version.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string Expires = &quot;Expires&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">Version ProtocolVersion { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -466,22 +464,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.version">Version</a></td>
+        <td><p>The protocol version.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Unosquare_Labs_EmbedIO_Constants_Headers_IfModifiedSince" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers.IfModifiedSince">IfModifiedSince</h4>
-  <div class="markdown level1 summary"><p>If-Modified-Since HTTP Header.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpRequest_QueryString_" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.QueryString*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpRequest_QueryString" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.QueryString">QueryString</h4>
+  <div class="markdown level1 summary"><p>Gets the query string.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string IfModifiedSince = &quot;If-Modified-Since&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">NameValueCollection QueryString { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -491,22 +491,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><span class="xref">NameValueCollection</span></td>
+        <td><p>The query string.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Unosquare_Labs_EmbedIO_Constants_Headers_IfNotMatch" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers.IfNotMatch">IfNotMatch</h4>
-  <div class="markdown level1 summary"><p>If-None-Match HTTP Header.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpRequest_RawUrl_" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.RawUrl*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpRequest_RawUrl" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.RawUrl">RawUrl</h4>
+  <div class="markdown level1 summary"><p>Gets the raw URL.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string IfNotMatch = &quot;If-None-Match&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">string RawUrl { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -517,21 +519,23 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><p>The raw URL.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Unosquare_Labs_EmbedIO_Constants_Headers_LastModified" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers.LastModified">LastModified</h4>
-  <div class="markdown level1 summary"><p>Last-Modified HTTP Header.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpRequest_RemoteEndPoint_" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.RemoteEndPoint*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpRequest_RemoteEndPoint" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.RemoteEndPoint">RemoteEndPoint</h4>
+  <div class="markdown level1 summary"><p>Gets the remote end point.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string LastModified = &quot;Last-Modified&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">Net.IPEndPoint RemoteEndPoint { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -541,22 +545,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.net.ipendpoint">Net.IPEndPoint</a></td>
+        <td><p>The remote end point.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Unosquare_Labs_EmbedIO_Constants_Headers_Origin" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers.Origin">Origin</h4>
-  <div class="markdown level1 summary"><p>Origin HTTP Header.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpRequest_Url_" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.Url*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpRequest_Url" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.Url">Url</h4>
+  <div class="markdown level1 summary"><p>Gets the URL.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string Origin = &quot;Origin&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">Uri Url { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -566,22 +572,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><span class="xref">Uri</span></td>
+        <td><p>The URL.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Unosquare_Labs_EmbedIO_Constants_Headers_Pragma" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers.Pragma">Pragma</h4>
-  <div class="markdown level1 summary"><p>Pragma HTTP Header.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpRequest_UrlReferrer_" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.UrlReferrer*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpRequest_UrlReferrer" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.UrlReferrer">UrlReferrer</h4>
+  <div class="markdown level1 summary"><p>Gets the URL referrer.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string Pragma = &quot;Pragma&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">Uri UrlReferrer { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -591,22 +599,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><span class="xref">Uri</span></td>
+        <td><p>The URL referrer.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Unosquare_Labs_EmbedIO_Constants_Headers_Range" data-uid="Unosquare.Labs.EmbedIO.Constants.Headers.Range">Range</h4>
-  <div class="markdown level1 summary"><p>Range HTTP Header.</p>
+  <a id="Unosquare_Labs_EmbedIO_IHttpRequest_UserAgent_" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.UserAgent*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpRequest_UserAgent" data-uid="Unosquare.Labs.EmbedIO.IHttpRequest.UserAgent">UserAgent</h4>
+  <div class="markdown level1 summary"><p>Gets the user agent.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string Range = &quot;Range&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">string UserAgent { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -617,7 +627,8 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><p>The user agent.</p>
+</td>
       </tr>
     </tbody>
   </table>

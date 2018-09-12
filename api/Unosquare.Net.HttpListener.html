@@ -82,7 +82,8 @@
   
   <h1 id="Unosquare_Net_HttpListener" data-uid="Unosquare.Net.HttpListener" class="text-break">Class HttpListener
   </h1>
-  <div class="markdown level0 summary"><p>The MONO implementation of the standard Http Listener class.</p>
+  <div class="markdown level0 summary"><p>The EmbedIO implementation of the standard HTTP Listener class.</p>
+<p>Based on MONO HttpListner class.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -92,6 +93,7 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpListener.html">IHttpListener</a></div>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
   </div>
   <div class="inheritedMembers">
@@ -121,7 +123,7 @@
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Net.html">Unosquare.Net</a></h6>
   <h5 id="Unosquare_Net_HttpListener_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class HttpListener : IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class HttpListener : IHttpListener, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -228,7 +230,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public HttpListenerPrefixCollection Prefixes { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public List&lt;string&gt; Prefixes { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -240,7 +242,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.HttpListenerPrefixCollection.html">HttpListenerPrefixCollection</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><p>The prefixes.</p>
 </td>
       </tr>
@@ -288,6 +290,35 @@
   </div>
   
   
+  <a id="Unosquare_Net_HttpListener_AddPrefix_" data-uid="Unosquare.Net.HttpListener.AddPrefix*"></a>
+  <h4 id="Unosquare_Net_HttpListener_AddPrefix_System_String_" data-uid="Unosquare.Net.HttpListener.AddPrefix(System.String)">AddPrefix(String)</h4>
+  <div class="markdown level1 summary"><p>Adds the prefix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddPrefix(string urlPrefix)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">urlPrefix</span></td>
+        <td><p>The URL prefix.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Unosquare_Net_HttpListener_Close_" data-uid="Unosquare.Net.HttpListener.Close*"></a>
   <h4 id="Unosquare_Net_HttpListener_Close" data-uid="Unosquare.Net.HttpListener.Close">Close()</h4>
   <div class="markdown level1 summary"><p>Closes this listener.</p>
@@ -299,14 +330,24 @@
   </div>
   
   
+  <a id="Unosquare_Net_HttpListener_Dispose_" data-uid="Unosquare.Net.HttpListener.Dispose*"></a>
+  <h4 id="Unosquare_Net_HttpListener_Dispose" data-uid="Unosquare.Net.HttpListener.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  
+  
   <a id="Unosquare_Net_HttpListener_GetContextAsync_" data-uid="Unosquare.Net.HttpListener.GetContextAsync*"></a>
   <h4 id="Unosquare_Net_HttpListener_GetContextAsync" data-uid="Unosquare.Net.HttpListener.GetContextAsync">GetContextAsync()</h4>
-  <div class="markdown level1 summary"><p>Gets the HTTP context asynchronously.</p>
+  <div class="markdown level1 summary"><p>Gets the HTTP context asynchronous.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;HttpListenerContext&gt; GetContextAsync()</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;IHttpContext&gt; GetContextAsync()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -318,8 +359,8 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Unosquare.Net.HttpListenerContext.html">HttpListenerContext</a>&gt;</td>
-        <td><p>A task that represents the time delay for the httpListenerContext.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>&gt;</td>
+        <td><p>A task that represents the time delay for the HTTP Context.</p>
 </td>
       </tr>
     </tbody>
@@ -346,19 +387,10 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void Stop()</code></pre>
   </div>
-  <h3 id="eii">Explicit Interface Implementations
-  </h3>
-  
-  
-  <a id="Unosquare_Net_HttpListener_System_IDisposable_Dispose_" data-uid="Unosquare.Net.HttpListener.System#IDisposable#Dispose*"></a>
-  <h4 id="Unosquare_Net_HttpListener_System_IDisposable_Dispose" data-uid="Unosquare.Net.HttpListener.System#IDisposable#Dispose">IDisposable.Dispose()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void IDisposable.Dispose()</code></pre>
-  </div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.IHttpListener.html">IHttpListener</a>
+  </div>
   <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
   </div>
