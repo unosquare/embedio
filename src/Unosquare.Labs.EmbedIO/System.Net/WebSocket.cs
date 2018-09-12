@@ -563,9 +563,11 @@
                 return;
             }
 
+            WebSocketStream stream = null;
+
             try
             {
-                var stream = new WebSocketStream(data, opcode, _compression, IsClient);
+                stream = new WebSocketStream(data, opcode, _compression, IsClient);
 
                 // TODO: add async
                 foreach (var frame in stream.GetFrames())
@@ -575,6 +577,10 @@
             {
                 ex.Log(nameof(WebSocket));
                 Error("An error has occurred in sending data.", ex);
+            }
+            finally
+            {
+                stream?.Dispose();
             }
         }
 
@@ -1512,6 +1518,7 @@
                 {
                     var frame = await WebSocketFrame.ReadFrameAsync(_stream);
                     var result = ProcessReceivedFrame(frame);
+
                     if (!result || _readyState == WebSocketState.Closed)
                     {
                         _exitReceiving?.Set();
