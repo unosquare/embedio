@@ -99,7 +99,7 @@
             if (!string.IsNullOrEmpty(webSocket.Origin))
                 headers["Origin"] = webSocket.Origin;
 
-            headers["Sec-WebSocket-Key"] = webSocket._base64Key;
+            headers["Sec-WebSocket-Key"] = webSocket.WebSocketKey.KeyValue;
 
             webSocket.IsExtensionsRequested = webSocket.Compression != CompressionMethod.None;
 

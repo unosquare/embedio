@@ -6,7 +6,6 @@
     using System.IO;
     using System.Net;
     using System.Net.Sockets;
-    using System.Security.Cryptography;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
@@ -29,20 +28,11 @@
         // Represents the length used to determine whether the data should be fragmented in sending.
         internal static readonly int FragmentLength = 1016;
 
-        /// <summary>
-        /// Represents the random number generator used internally.
-        /// </summary>
-        internal static readonly RandomNumberGenerator RandomNumber = RandomNumberGenerator.Create();
-
-        private const string Guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
-
         private readonly Action<MessageEventArgs> _message;
         private readonly object _forState = new object();
         private readonly Queue<MessageEventArgs> _messageEventQueue = new Queue<MessageEventArgs>();
         private readonly object _forMessageEventQueue;
         private readonly WebSocketValidator _validator;
-
-        internal string _base64Key;
 
         private CompressionMethod _compression = CompressionMethod.None;
         private volatile WebSocketState _readyState = WebSocketState.Connecting;
@@ -95,7 +85,7 @@
             if (!url.TryCreateWebSocketUri(out _uri, out var msg))
                 throw new ArgumentException(msg, nameof(url));
 
-            _base64Key = CreateBase64Key();
+            WebSocketKey = new WebSocketKey(true);
             IsClient = true;
 
             _message = Messagec;
@@ -103,7 +93,7 @@
             IsSecure = _uri.Scheme == "wss";
 #endif
             _waitTime = TimeSpan.FromSeconds(5);
-            _forMessageEventQueue = ((ICollection) _messageEventQueue).SyncRoot;
+            _forMessageEventQueue = ((ICollection)_messageEventQueue).SyncRoot;
             _validator = new WebSocketValidator(this);
         }
 
@@ -113,12 +103,14 @@
             _context = context;
 
             _message = Messages;
+            WebSocketKey = new WebSocketKey(false);
+
 #if SSL
             IsSecure = context.IsSecureConnection;
 #endif
             _stream = context.Stream;
             _waitTime = TimeSpan.FromSeconds(1);
-            _forMessageEventQueue = ((ICollection) _messageEventQueue).SyncRoot;
+            _forMessageEventQueue = ((ICollection)_messageEventQueue).SyncRoot;
             _validator = new WebSocketValidator(this);
         }
 
@@ -407,7 +399,18 @@
         // As server
         internal bool IgnoreExtensions { get; set; } = true;
 
-        internal bool IsConnected => _readyState == WebSocketState.Open || _readyState == WebSocketState.Closing;
+        internal bool IsConnected
+        {
+            get
+            {
+                lock (_forState)
+                {
+                    return _readyState == WebSocketState.Open || _readyState == WebSocketState.Closing;
+                }
+            }
+        }
+
+        internal WebSocketKey WebSocketKey { get; }
 
         /// <summary>
         /// Closes the WebSocket connection asynchronously, and releases
@@ -420,7 +423,7 @@
         /// A task that represents the asynchronous closes websocket connection.
         /// </returns>
         public async Task CloseAsync(
-            CloseStatusCode code = CloseStatusCode.Undefined, 
+            CloseStatusCode code = CloseStatusCode.Undefined,
             string reason = null,
             CancellationToken ct = default)
         {
@@ -614,29 +617,10 @@
             InternalCloseAsync(new CloseEventArgs(CloseStatusCode.Away)).Wait();
         }
 
-        // As client
-        internal static string CreateBase64Key()
-        {
-            var src = new byte[16];
-            RandomNumber.GetBytes(src);
-
-            return Convert.ToBase64String(src);
-        }
-
-        internal static string CreateResponseKey(string base64Key)
-        {
-            var buff = new StringBuilder(base64Key, 64);
-            buff.Append(Guid);
-            var sha1 = SHA1.Create();
-            var src = sha1.ComputeHash(Encoding.UTF8.GetBytes(buff.ToString()));
-
-            return Convert.ToBase64String(src);
-        }
-
         // As server
         internal async Task CloseAsync(
-            CloseEventArgs e, 
-            byte[] frameAsBytes, 
+            CloseEventArgs e,
+            byte[] frameAsBytes,
             bool receive,
             CancellationToken ct = default)
         {
@@ -676,7 +660,7 @@
 
         // As client
         internal bool ValidateSecWebSocketAcceptHeader(string value) =>
-            value?.TrimStart() == CreateResponseKey(_base64Key);
+            value?.TrimStart() == WebSocketKey.CreateResponseKey();
 
         // As server
         internal async Task InternalAcceptAsync()
@@ -740,7 +724,7 @@
                 return false;
             }
 
-            _base64Key = _context.Headers["Sec-WebSocket-Key"];
+            WebSocketKey.KeyValue = _context.Headers["Sec-WebSocket-Key"];
 
             if (!IgnoreExtensions)
                 ProcessSecWebSocketExtensionsClientHeader(_context.Headers["Sec-WebSocket-Extensions"]);
@@ -802,8 +786,8 @@
         }
 
         private async Task<bool> CloseHandshakeAsync(
-            byte[] frameAsBytes, 
-            bool receive, 
+            byte[] frameAsBytes,
+            bool receive,
             bool received,
             CancellationToken ct)
         {
@@ -829,7 +813,7 @@
             var ret = HttpResponse.CreateWebSocketResponse();
 
             var headers = ret.Headers;
-            headers["Sec-WebSocket-Accept"] = CreateResponseKey(_base64Key);
+            headers["Sec-WebSocket-Accept"] = WebSocketKey.CreateResponseKey();
 
             if (_extensions != null)
                 headers["Sec-WebSocket-Extensions"] = _extensions;

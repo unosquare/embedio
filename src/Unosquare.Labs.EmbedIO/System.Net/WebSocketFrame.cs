@@ -327,7 +327,7 @@ Extended Payload Length: {extPayloadLen}
         private static byte[] CreateMaskingKey()
         {
             var key = new byte[4];
-            WebSocket.RandomNumber.GetBytes(key);
+            WebSocketKey.RandomNumber.GetBytes(key);
 
             return key;
         }
