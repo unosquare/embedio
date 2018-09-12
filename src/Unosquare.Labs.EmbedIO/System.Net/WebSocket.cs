@@ -636,23 +636,6 @@
         }
 
         // As server
-        internal async Task CloseAsync(HttpResponse response)
-        {
-            lock (_forState)
-            {
-                _readyState = WebSocketState.Closing;
-            }
-
-            await SendHttpResponseAsync(response);
-            ReleaseServerResources();
-
-            lock (_forState)
-            {
-                _readyState = WebSocketState.Closed;
-            }
-        }
-
-        // As server
         internal async Task CloseAsync(
             CloseEventArgs e, 
             byte[] frameAsBytes, 
