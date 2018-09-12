@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Net
 {
     using System;
+    using Labs.EmbedIO.Constants;
     using System.Collections.Specialized;
     using System.IO;
     using System.Text;
@@ -55,7 +56,8 @@
                 return;
 
             var buff = new StringBuilder(64);
-            foreach (System.Net.Cookie cookie in cookies)
+
+            foreach (var cookie in cookies)
             {
                 if (!cookie.Expired)
                     buff.AppendFormat("{0}; ", cookie);
@@ -88,23 +90,27 @@
             return output.ToString();
         }
         
-        internal static HttpRequest CreateWebSocketRequest(Uri uri)
+        internal static HttpRequest CreateHandshakeRequest(WebSocket webSocket)
         {
-            var req = new HttpRequest("GET", uri.PathAndQuery);
-            var headers = req.Headers;
+            var ret = CreateWebSocketRequest(webSocket.Url);
 
-            // Only includes a port number in the Host header value if it's non-default.
-            // See: https://tools.ietf.org/html/rfc6455#page-17
-            var port = uri.Port;
-            var schm = uri.Scheme;
-            headers["Host"] = (port == 80 && schm == "ws") || (port == 443 && schm == "wss")
-                              ? uri.DnsSafeHost
-                              : uri.Authority;
+            var headers = ret.Headers;
 
-            headers["Upgrade"] = "websocket";
-            headers["Connection"] = "Upgrade";
+            if (!string.IsNullOrEmpty(webSocket.Origin))
+                headers["Origin"] = webSocket.Origin;
 
-            return req;
+            headers["Sec-WebSocket-Key"] = webSocket._base64Key;
+
+            webSocket.IsExtensionsRequested = webSocket.Compression != CompressionMethod.None;
+
+            if (webSocket.IsExtensionsRequested)
+                headers["Sec-WebSocket-Extensions"] = CreateExtensions(webSocket.Compression);
+
+            headers["Sec-WebSocket-Version"] = Strings.WebSocketVersion;
+
+            ret.SetCookies(webSocket.CookieCollection);
+
+            return ret;
         }
 
         internal static HttpRequest Parse(string[] headerParts)
@@ -122,6 +128,46 @@
             stream.Write(buff, 0, buff.Length);
 
             return ReadAsync(stream, HttpResponse.Parse);
+        }
+        
+        // As client
+        private static string CreateExtensions(CompressionMethod compression)
+        {
+            var buff = new StringBuilder(80);
+
+            if (compression != CompressionMethod.None)
+            {
+                var str = compression.ToExtensionString(
+                    "server_no_context_takeover", "client_no_context_takeover");
+
+                buff.AppendFormat("{0}, ", str);
+            }
+
+            var len = buff.Length;
+
+            if (len <= 2) return null;
+
+            buff.Length = len - 2;
+            return buff.ToString();
+        }
+
+        private static HttpRequest CreateWebSocketRequest(Uri uri)
+        {
+            var req = new HttpRequest("GET", uri.PathAndQuery);
+            var headers = req.Headers;
+
+            // Only includes a port number in the Host header value if it's non-default.
+            // See: https://tools.ietf.org/html/rfc6455#page-17
+            var port = uri.Port;
+            var schm = uri.Scheme;
+            headers["Host"] = (port == 80 && schm == "ws") || (port == 443 && schm == "wss")
+                ? uri.DnsSafeHost
+                : uri.Authority;
+
+            headers["Upgrade"] = "websocket";
+            headers["Connection"] = "Upgrade";
+
+            return req;
         }
     }
 }

@@ -254,9 +254,9 @@
         private static bool ValidateSecWebSocketProtocolClientHeader(string value) => value == null || value.Length > 0;
 
         // As server
-        private static bool ValidateSecWebSocketVersionClientHeader(string value) => value != null && value == WebSocket.Version;
+        private static bool ValidateSecWebSocketVersionClientHeader(string value) => value != null && value == Strings.WebSocketVersion;
 
         // As client
-        private static bool ValidateSecWebSocketVersionServerHeader(string value) => value == null || value == WebSocket.Version;
+        private static bool ValidateSecWebSocketVersionServerHeader(string value) => value == null || value == Strings.WebSocketVersion;
     }
 }

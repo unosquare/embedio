@@ -23,8 +23,6 @@
     /// </remarks>
     public class WebSocket : IDisposable
     {
-        internal const string Version = "13";
-
         // Represents the empty array of <see cref="byte"/> used internally.
         internal static readonly byte[] EmptyBytes = new byte[0];
 
@@ -44,7 +42,7 @@
         private readonly object _forMessageEventQueue;
         private readonly WebSocketValidator _validator;
 
-        private string _base64Key;
+        internal string _base64Key;
 
         private CompressionMethod _compression = CompressionMethod.None;
         private volatile WebSocketState _readyState = WebSocketState.Connecting;
@@ -316,15 +314,15 @@
         public WebSocketState State => _readyState;
 
 #if SSL
-/// <summary>
-/// Gets or sets the SSL configuration used to authenticate the server and
-/// optionally the client for secure connection.
-/// </summary>
-/// <value>
-/// A <see cref="ClientSslConfiguration"/> that represents the configuration used
-/// to authenticate the server and optionally the client for secure connection,
-/// or <see langword="null"/> if the <see cref="WebSocket"/> is used in a server.
-/// </value>
+        /// <summary>
+        /// Gets or sets the SSL configuration used to authenticate the server and
+        /// optionally the client for secure connection.
+        /// </summary>
+        /// <value>
+        /// A <see cref="ClientSslConfiguration"/> that represents the configuration used
+        /// to authenticate the server and optionally the client for secure connection,
+        /// or <see langword="null"/> if the <see cref="WebSocket"/> is used in a server.
+        /// </value>
         public ClientSslConfiguration SslConfiguration
         {
             get
@@ -391,7 +389,7 @@
 
         internal bool IsClient { get; }
 
-        internal bool IsExtensionsRequested { get; private set; }
+        internal bool IsExtensionsRequested { get; set; }
 
         internal CookieCollection CookieCollection { get; } = new CookieCollection();
 
@@ -717,7 +715,7 @@
         private static HttpResponse CreateHandshakeFailureResponse(HttpStatusCode code)
         {
             var ret = HttpResponse.CreateCloseResponse(code);
-            ret.Headers["Sec-WebSocket-Version"] = Version;
+            ret.Headers["Sec-WebSocket-Version"] = Strings.WebSocketVersion;
 
             return ret;
         }
@@ -821,50 +819,6 @@
 
             var ret = sent && received;
             $"Was clean?: {ret}\n  sent: {sent}\n  received: {received}".Trace();
-
-            return ret;
-        }
-
-        // As client
-        private string CreateExtensions()
-        {
-            var buff = new StringBuilder(80);
-
-            if (_compression != CompressionMethod.None)
-            {
-                var str = _compression.ToExtensionString(
-                    "server_no_context_takeover", "client_no_context_takeover");
-
-                buff.AppendFormat("{0}, ", str);
-            }
-
-            var len = buff.Length;
-
-            if (len <= 2) return null;
-
-            buff.Length = len - 2;
-            return buff.ToString();
-        }
-
-        // As client
-        private HttpRequest CreateHandshakeRequest()
-        {
-            var ret = HttpRequest.CreateWebSocketRequest(_uri);
-
-            var headers = ret.Headers;
-            if (!string.IsNullOrEmpty(_origin))
-                headers["Origin"] = _origin;
-
-            headers["Sec-WebSocket-Key"] = _base64Key;
-
-            IsExtensionsRequested = _compression != CompressionMethod.None;
-
-            if (IsExtensionsRequested)
-                headers["Sec-WebSocket-Extensions"] = CreateExtensions();
-
-            headers["Sec-WebSocket-Version"] = Version;
-
-            ret.SetCookies(CookieCollection);
 
             return ret;
         }
@@ -1269,7 +1223,7 @@
         {
             while (true)
             {
-                var req = CreateHandshakeRequest();
+                var req = HttpRequest.CreateHandshakeRequest(this);
                 var res = await req.GetResponse(_stream);
 
                 if (res.IsUnauthorized)
