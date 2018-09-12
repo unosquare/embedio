@@ -200,45 +200,6 @@
             return true;
         }
 
-        internal void CheckReceivedFrame(WebSocketFrame frame)
-        {
-            var masked = frame.IsMasked;
-
-            if (_webSocket.IsClient && masked)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, "A frame from the server is masked.");
-            }
-
-            if (!_webSocket.IsClient && !masked)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, "A frame from a client isn't masked.");
-            }
-
-            if (_webSocket.InContinuation && frame.IsData)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError,
-                    "A data frame has been received while receiving continuation frames.");
-            }
-
-            if (frame.IsCompressed && _webSocket.Compression == CompressionMethod.None)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError,
-                    "A compressed frame has been received without any agreement for it.");
-            }
-
-            if (frame.Rsv2 == Rsv.On)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError,
-                    "The RSV2 of a frame is non-zero without any negotiation for it.");
-            }
-
-            if (frame.Rsv3 == Rsv.On)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError,
-                    "The RSV3 of a frame is non-zero without any negotiation for it.");
-            }
-        }
-        
         // As client
         internal bool ValidateSecWebSocketExtensionsServerHeader(string value)
         {

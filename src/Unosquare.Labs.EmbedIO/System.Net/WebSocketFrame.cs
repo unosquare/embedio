@@ -2,9 +2,9 @@
 {
     using System.Collections;
     using System.Collections.Generic;
+    using Labs.EmbedIO.Constants;
     using System.IO;
     using System;
-    using System.Threading.Tasks;
     using Swan;
 
     /// <summary>
@@ -274,6 +274,45 @@ Extended Payload Length: {extPayloadLen}
         internal static WebSocketFrame CreatePingFrame(bool mask) => new WebSocketFrame(Fin.Final, Opcode.Ping, new PayloadData(), false, mask);
 
         internal static WebSocketFrame CreatePingFrame(byte[] data, bool mask) => new WebSocketFrame(Fin.Final, Opcode.Ping, new PayloadData(data), false, mask);
+        
+        internal void Validate(WebSocket webSocket)
+        {
+            var masked = IsMasked;
+
+            if (webSocket.IsClient && masked)
+            {
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "A frame from the server is masked.");
+            }
+
+            if (!webSocket.IsClient && !masked)
+            {
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "A frame from a client isn't masked.");
+            }
+
+            if (webSocket.InContinuation && IsData)
+            {
+                throw new WebSocketException(CloseStatusCode.ProtocolError,
+                    "A data frame has been received while receiving continuation frames.");
+            }
+
+            if (IsCompressed && webSocket.Compression == CompressionMethod.None)
+            {
+                throw new WebSocketException(CloseStatusCode.ProtocolError,
+                    "A compressed frame has been received without any agreement for it.");
+            }
+
+            if (Rsv2 == Rsv.On)
+            {
+                throw new WebSocketException(CloseStatusCode.ProtocolError,
+                    "The RSV2 of a frame is non-zero without any negotiation for it.");
+            }
+
+            if (Rsv3 == Rsv.On)
+            {
+                throw new WebSocketException(CloseStatusCode.ProtocolError,
+                    "The RSV3 of a frame is non-zero without any negotiation for it.");
+            }
+        }
 
         internal void Unmask()
         {
@@ -294,6 +333,5 @@ Extended Payload Length: {extPayloadLen}
         }
 
         private static bool IsOpcodeData(Opcode opcode) => opcode == Opcode.Text || opcode == Opcode.Binary;
-
     }
 }

@@ -16,7 +16,7 @@
             _unmask = unmask;
         }
 
-        internal async Task<WebSocketFrame> ReadFrameAsync()
+        internal async Task<WebSocketFrame> ReadFrameAsync(WebSocket webSocket)
         {
             var frame = ProcessHeader(await _stream.ReadBytesAsync(2));
 
@@ -26,6 +26,10 @@
 
             if (_unmask)
                 frame.Unmask();
+
+            frame.Validate(webSocket);
+
+            frame.Unmask();
 
             return frame;
         }

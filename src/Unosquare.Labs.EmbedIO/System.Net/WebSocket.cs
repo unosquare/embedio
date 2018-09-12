@@ -1055,20 +1055,10 @@
 
             foreach (var cookie in CookieCollection)
             {
-                if (CookieCollection[cookie.Name] == null)
-                {
-                    if (!cookie.Expired)
-                        CookieCollection.Add(cookie);
-
-                    continue;
-                }
-
                 if (!cookie.Expired)
                 {
                     CookieCollection.Add(cookie);
                 }
-
-                // TODO: Clear cookie
             }
         }
 
@@ -1143,9 +1133,6 @@
 
         private bool ProcessReceivedFrame(WebSocketFrame frame)
         {
-            _validator.CheckReceivedFrame(frame);
-
-            frame.Unmask();
             if (frame.IsFragment)
                 return ProcessFragmentFrame(frame);
             else if (frame.IsData)
@@ -1406,7 +1393,7 @@
             {
                 try
                 {
-                    var frame = await frameStream.ReadFrameAsync();
+                    var frame = await frameStream.ReadFrameAsync(this);
                     var result = ProcessReceivedFrame(frame);
 
                     if (!result || _readyState == WebSocketState.Closed)
