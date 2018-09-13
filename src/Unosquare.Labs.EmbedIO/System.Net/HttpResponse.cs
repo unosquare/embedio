@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Specialized;
+    using Labs.EmbedIO.Constants;
     using System.Net;
     using System.Text;
 
@@ -75,6 +76,7 @@
         {
             var res = new HttpResponse(code);
             res.Headers["Connection"] = "close";
+            res.Headers["Sec-WebSocket-Version"] = Strings.WebSocketVersion;
 
             return res;
         }

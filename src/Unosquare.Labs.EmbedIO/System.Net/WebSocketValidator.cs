@@ -14,21 +14,6 @@
             _webSocket = webSocket;
         }
 
-        internal static string CheckIfAvailable(
-            WebSocketState state,
-            bool connecting = false,
-            bool open = true,
-            bool closing = false,
-            bool closed = false)
-        {
-            return (!connecting && state == WebSocketState.Connecting) ||
-                   (!open && state == WebSocketState.Open) ||
-                   (!closing && state == WebSocketState.Closing) ||
-                   (!closed && state == WebSocketState.Closed)
-                ? "This operation isn't available in: " + state.ToString().ToLower()
-                : null;
-        }
-        
         internal static bool CheckParametersForClose(CloseStatusCode code, string reason, bool client = true)
         {
             if (code == CloseStatusCode.NoStatus && !string.IsNullOrEmpty(reason))
@@ -214,35 +199,31 @@
             foreach (var e in value.SplitHeaderValue(Strings.CommaSplitChar))
             {
                 var ext = e.Trim();
-                if (comp && ext.IsCompressionExtension(_webSocket.Compression))
+                if (!comp || !ext.IsCompressionExtension(_webSocket.Compression))
+                    return false;
+
+                if (!ext.Contains("server_no_context_takeover"))
                 {
-                    if (!ext.Contains("server_no_context_takeover"))
-                    {
-                        "The server hasn't sent back 'server_no_context_takeover'.".Error();
-                        return false;
-                    }
-
-                    if (!ext.Contains("client_no_context_takeover"))
-                        "The server hasn't sent back 'client_no_context_takeover'.".Info();
-
-                    var method = _webSocket.Compression.ToExtensionString();
-                    var invalid =
-                        ext.SplitHeaderValue(';').Any(
-                            t =>
-                            {
-                                t = t.Trim();
-                                return t != method
-                                       && t != "server_no_context_takeover"
-                                       && t != "client_no_context_takeover";
-                            });
-
-                    if (invalid)
-                        return false;
-                }
-                else
-                {
+                    "The server hasn't sent back 'server_no_context_takeover'.".Error();
                     return false;
                 }
+
+                if (!ext.Contains("client_no_context_takeover"))
+                    "The server hasn't sent back 'client_no_context_takeover'.".Info();
+
+                var method = _webSocket.Compression.ToExtensionString();
+                var invalid =
+                    ext.SplitHeaderValue(';').Any(
+                        t =>
+                        {
+                            t = t.Trim();
+                            return t != method
+                                   && t != "server_no_context_takeover"
+                                   && t != "client_no_context_takeover";
+                        });
+
+                if (invalid)
+                    return false;
             }
 
             return true;

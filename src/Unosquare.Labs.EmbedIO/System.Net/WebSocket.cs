@@ -115,24 +115,9 @@
         }
 
         /// <summary>
-        /// Occurs when the WebSocket connection has been closed.
-        /// </summary>
-        public event EventHandler<CloseEventArgs> OnClose;
-
-        /// <summary>
-        /// Occurs when the <see cref="WebSocket"/> gets an error.
-        /// </summary>
-        public event EventHandler<ConnectionFailureEventArgs> OnError;
-
-        /// <summary>
         /// Occurs when the <see cref="WebSocket"/> receives a message.
         /// </summary>
         public event EventHandler<MessageEventArgs> OnMessage;
-
-        /// <summary>
-        /// Occurs when the WebSocket connection has been established.
-        /// </summary>
-        public event EventHandler OnOpen;
 
         /// <summary>
         /// Gets or sets the compression method used to compress a message on the WebSocket connection.
@@ -150,11 +135,7 @@
                 lock (_forState)
                 {
                     if (!_validator.CheckIfAvailable(true, false, true, false, false))
-                    {
-                        Error("An error has occurred in setting the compression.");
-
                         return;
-                    }
 
                     _compression = value;
                 }
@@ -208,10 +189,7 @@
                 lock (_forState)
                 {
                     if (!_validator.CheckIfAvailable(true, false, true, false, false))
-                    {
-                        Error("An error has occurred in setting the enable redirection.");
                         return;
-                    }
 
                     _enableRedirection = value;
                 }
@@ -272,10 +250,7 @@
                 lock (_forState)
                 {
                     if (!_validator.CheckIfAvailable(true, false, true, false, false))
-                    {
-                        Error("An error has occurred in setting the origin.");
                         return;
-                    }
 
                     if (string.IsNullOrEmpty(value))
                     {
@@ -286,8 +261,7 @@
                     if (!Uri.TryCreate(value, UriKind.Absolute, out var origin) || origin.Segments.Length > 1)
                     {
                         "The syntax of an origin must be '<scheme>://<host>[:<port>]'.".Error();
-                        Error("An error has occurred in setting the origin.");
-
+                    
                         return;
                     }
 
@@ -367,10 +341,7 @@
                 lock (_forState)
                 {
                     if (value == TimeSpan.Zero || !_validator.CheckIfAvailable(true, true, true, false, false))
-                    {
-                        Error("An error has occurred in setting the wait time.");
                         return;
-                    }
 
                     _waitTime = value;
                 }
@@ -428,17 +399,11 @@
             CancellationToken ct = default)
         {
             if (!_validator.CheckIfAvailable())
-            {
-                Error("An error has occurred in closing the connection.");
                 return;
-            }
 
             if (code != CloseStatusCode.Undefined &&
                 !WebSocketValidator.CheckParametersForClose(code, reason, IsClient))
-            {
-                Error("An error has occurred in closing the connection.");
                 return;
-            }
 
             if (code == CloseStatusCode.NoStatus)
             {
@@ -468,11 +433,7 @@
         public async Task ConnectAsync(CancellationToken ct = default)
         {
             if (!_validator.CheckIfAvailable(true, false, true, false, false))
-            {
-                Error("An error has occurred in connecting.");
-
                 return;
-            }
 
             try
             {
@@ -537,7 +498,6 @@
                 return await PingAsync(WebSocketFrame.CreatePingFrame(data, IsClient).ToArray(), _waitTime);
 
             "A message has greater than the allowable max size.".Error();
-            Error("An error has occurred in sending a ping.");
 
             return false;
         }
@@ -554,15 +514,8 @@
         /// </returns>
         public async Task SendAsync(byte[] data, Opcode opcode, CancellationToken ct = default)
         {
-            var msg = WebSocketValidator.CheckIfAvailable(_readyState);
-
-            if (msg != null)
-            {
-                msg.Error();
-                Error("An error has occurred in sending data.");
-
-                return;
-            }
+            if (_readyState != WebSocketState.Open)
+                throw new WebSocketException(CloseStatusCode.Normal, $"This operation isn\'t available in: {_readyState.ToString()}");
 
             WebSocketStream stream = null;
 
@@ -573,11 +526,6 @@
                 // TODO: add async
                 foreach (var frame in stream.GetFrames())
                     Send(frame);
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-                Error("An error has occurred in sending data.", ex);
             }
             finally
             {
@@ -599,11 +547,7 @@
             lock (_forState)
             {
                 if (!_validator.CheckIfAvailable(true, false, false, true))
-                {
-                    Error("An error has occurred in setting a cookie.");
-
                     return;
-                }
             }
 
             lock (CookieCollection.SyncRoot)
@@ -647,15 +591,6 @@
             ReleaseCommonResources();
 
             _readyState = WebSocketState.Closed;
-
-            try
-            {
-                OnClose?.Invoke(this, e);
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-            }
         }
 
         // As client
@@ -695,15 +630,6 @@
             return _receivePong != null && _receivePong.WaitOne(timeout);
         }
 
-        // As server
-        private static HttpResponse CreateHandshakeFailureResponse(HttpStatusCode code)
-        {
-            var ret = HttpResponse.CreateCloseResponse(code);
-            ret.Headers["Sec-WebSocket-Version"] = Strings.WebSocketVersion;
-
-            return ret;
-        }
-
         private static bool IsOpcodeReserved(CloseStatusCode code) => code == CloseStatusCode.Undefined ||
                                                                       code == CloseStatusCode.NoStatus ||
                                                                       code == CloseStatusCode.Abnormal ||
@@ -716,7 +642,7 @@
 
             if (!_validator.CheckHandshakeRequest(_context, out var msg))
             {
-                await SendHttpResponseAsync(CreateHandshakeFailureResponse(HttpStatusCode.BadRequest));
+                await SendHttpResponseAsync(HttpResponse.CreateCloseResponse(HttpStatusCode.BadRequest));
 
                 msg.Error();
                 Fatal("An error has occurred while accepting.", CloseStatusCode.ProtocolError);
@@ -772,16 +698,6 @@
             lock (_forState)
             {
                 _readyState = WebSocketState.Closed;
-            }
-
-            try
-            {
-                OnClose?.Invoke(this, e);
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-                Error("An exception has occurred during the OnClose event.", ex);
             }
         }
 
@@ -853,9 +769,6 @@
             }
         }
 
-        private void Error(string message, Exception exception = null)
-            => OnError?.Invoke(this, new ConnectionFailureEventArgs(exception ?? new Exception(message)));
-
         private void Fatal(string message, Exception exception = null) => Fatal(message,
             (exception as WebSocketException)?.Code ?? CloseStatusCode.Abnormal);
 
@@ -888,7 +801,6 @@
                 catch (Exception ex)
                 {
                     ex.Log(nameof(WebSocket));
-                    Error("An exception has occurred during an OnMessage event.", ex);
                 }
 
                 lock (_forMessageEventQueue)
@@ -913,7 +825,6 @@
             catch (Exception ex)
             {
                 ex.Log(nameof(WebSocket));
-                Error("An exception has occurred during an OnMessage event.", ex);
             }
 
             lock (_forMessageEventQueue)
@@ -934,16 +845,6 @@
         {
             _inMessage = true;
             StartReceiving();
-
-            try
-            {
-                OnOpen?.Invoke(this, EventArgs.Empty);
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-                Error("An exception has occurred during the OnOpen event.", ex);
-            }
 
             MessageEventArgs e;
             lock (_forMessageEventQueue)
@@ -1056,16 +957,16 @@
         {
             if (frame.IsFragment)
                 return ProcessFragmentFrame(frame);
-            else if (frame.IsData)
+            if (frame.IsData)
                 return ProcessDataFrame(frame);
-            else
-                return frame.IsPing
-                    ? ProcessPingFrame(frame)
-                    : frame.IsPong
-                        ? ProcessPongFrame()
-                        : frame.IsClose
-                            ? ProcessCloseFrame(frame)
-                            : ProcessUnsupportedFrame(frame);
+            
+            return frame.IsPing
+                ? ProcessPingFrame(frame)
+                : frame.IsPong
+                    ? ProcessPongFrame()
+                    : frame.IsClose
+                        ? ProcessCloseFrame(frame)
+                        : ProcessUnsupportedFrame(frame);
         }
 
         // As server
