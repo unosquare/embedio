@@ -69,13 +69,6 @@
 
     internal class WebSocketFrame : IEnumerable<byte>
     {
-        /// <summary>
-        /// Represents the ping frame without the payload data as an array of <see cref="byte"/>.
-        /// </summary>
-        /// <remarks>
-        /// The value of this field is created from a non masked frame, so it can only be used to
-        /// send a ping from a server.
-        /// </remarks>
         internal static readonly byte[] EmptyPingBytes;
         
         static WebSocketFrame()
@@ -142,27 +135,11 @@
 
         public Fin Fin { get; internal set; }
 
-        public bool IsClose => Opcode == Opcode.Close;
-
         public bool IsCompressed => Rsv1 == Rsv.On;
-
-        public bool IsContinuation => Opcode == Opcode.Cont;
-
-        public bool IsControl => Opcode >= Opcode.Close;
-
-        public bool IsData => Opcode == Opcode.Text || Opcode == Opcode.Binary;
-
-        public bool IsFinal => Fin == Fin.Final;
-
+        
         public bool IsFragment => Fin == Fin.More || Opcode == Opcode.Cont;
 
         public bool IsMasked => Mask == Mask.On;
-
-        public bool IsPing => Opcode == Opcode.Ping;
-
-        public bool IsPong => Opcode == Opcode.Pong;
-
-        public bool IsText => Opcode == Opcode.Text;
 
         public ulong Length => 2 + (ulong)(ExtendedPayloadLength.Length + MaskingKey.Length) + PayloadData.Length;
 
@@ -208,7 +185,7 @@
                 ? string.Empty
                 : payloadLen > 125
                     ? "---"
-                    : IsText && !(IsFragment || IsMasked || IsCompressed)
+                    : Opcode == Opcode.Text && !(IsFragment || IsMasked || IsCompressed)
                         ? PayloadData.ApplicationData.ToText()
                         : PayloadData.ToString();
 
@@ -289,7 +266,7 @@ Extended Payload Length: {extPayloadLen}
                 throw new WebSocketException(CloseStatusCode.ProtocolError, "A frame from a client isn't masked.");
             }
 
-            if (webSocket.InContinuation && IsData)
+            if (webSocket.InContinuation && (Opcode == Opcode.Text || Opcode == Opcode.Binary))
             {
                 throw new WebSocketException(CloseStatusCode.ProtocolError,
                     "A data frame has been received while receiving continuation frames.");

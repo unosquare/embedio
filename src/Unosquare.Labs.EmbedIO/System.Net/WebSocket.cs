@@ -778,12 +778,10 @@
             _message.BeginInvoke(e, ar => _message.EndInvoke(ar), null);
         }
 
-        private bool ProcessCloseFrame(WebSocketFrame frame)
+        private void ProcessCloseFrame(WebSocketFrame frame)
         {
             var payload = frame.PayloadData;
             InternalCloseAsync(new CloseEventArgs(payload), !payload.HasReservedCode, false, true).Wait();
-
-            return false;
         }
 
         // As client
@@ -798,7 +796,7 @@
             }
         }
 
-        private bool ProcessDataFrame(WebSocketFrame frame)
+        private void ProcessDataFrame(WebSocketFrame frame)
         {
             _messageEventQueue.Enqueue(
                 frame.IsCompressed
@@ -807,8 +805,6 @@
                         frame.PayloadData.ApplicationData.Compress(_compression,
                             System.IO.Compression.CompressionMode.Decompress))
                     : new MessageEventArgs(frame));
-
-            return true;
         }
 
         private bool ProcessFragmentFrame(WebSocketFrame frame)
@@ -816,7 +812,7 @@
             if (!InContinuation)
             {
                 // Must process first fragment.
-                if (frame.IsContinuation)
+                if (frame.Opcode == Opcode.Cont)
                     return true;
 
                 _fragmentsOpcode = frame.Opcode;
@@ -828,7 +824,7 @@
             using (var input = new MemoryStream(frame.PayloadData.ApplicationData))
                 input.CopyTo(_fragmentsBuffer, 1024);
 
-            if (frame.IsFinal)
+            if (frame.Fin == Fin.Final)
             {
                 using (_fragmentsBuffer)
                 {
@@ -846,22 +842,18 @@
             return true;
         }
 
-        private bool ProcessPingFrame(WebSocketFrame frame)
+        private void ProcessPingFrame(WebSocketFrame frame)
         {
             Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, IsClient));
 
             if (EmitOnPing)
                 _messageEventQueue.Enqueue(new MessageEventArgs(frame));
-
-            return true;
         }
 
-        private bool ProcessPongFrame()
+        private void ProcessPongFrame()
         {
             _receivePong.Set();
             "Received a pong.".Info();
-
-            return true;
         }
 
         private bool ProcessReceivedFrame(WebSocketFrame frame)
@@ -869,18 +861,28 @@
             if (frame.IsFragment)
                 return ProcessFragmentFrame(frame);
 
-            if (frame.IsData)
-                return ProcessDataFrame(frame);
+            switch (frame.Opcode)
+            {
+                case Opcode.Text:
+                case Opcode.Binary:
+                    ProcessDataFrame(frame);
+                    break;
+                case Opcode.Ping:
+                    ProcessPingFrame(frame);
+                    break;
+                case Opcode.Pong:
+                    ProcessPongFrame();
+                    break;
+                case Opcode.Close:
+                    ProcessCloseFrame(frame);
+                    break;
+                default:
+                    $"An unsupported frame: {frame.PrintToString()}".Error();
+                    Fatal("There is no way to handle it.", CloseStatusCode.PolicyViolation);
+                    return false;
+            }
 
-            if (frame.IsPing)
-                return ProcessPingFrame(frame);
-
-            if (frame.IsPong)
-                return ProcessPongFrame();
-            
-            return frame.IsClose
-                ? ProcessCloseFrame(frame)
-                : ProcessUnsupportedFrame(frame);
+            return true;
         }
 
         // As server
@@ -926,14 +928,6 @@
             }
 
             _extensions = value;
-        }
-
-        private bool ProcessUnsupportedFrame(WebSocketFrame frame)
-        {
-            $"An unsupported frame: {frame.PrintToString()}".Error();
-            Fatal("There is no way to handle it.", CloseStatusCode.PolicyViolation);
-
-            return false;
         }
 
         // As client
