@@ -5675,30 +5675,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.WebSocket.IsAlive
   nameWithType: WebSocket.IsAlive
-- uid: Unosquare.Net.WebSocket.OnClose
-  name: OnClose
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_OnClose
-  commentId: E:Unosquare.Net.WebSocket.OnClose
-  fullName: Unosquare.Net.WebSocket.OnClose
-  nameWithType: WebSocket.OnClose
-- uid: Unosquare.Net.WebSocket.OnError
-  name: OnError
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_OnError
-  commentId: E:Unosquare.Net.WebSocket.OnError
-  fullName: Unosquare.Net.WebSocket.OnError
-  nameWithType: WebSocket.OnError
 - uid: Unosquare.Net.WebSocket.OnMessage
   name: OnMessage
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_OnMessage
   commentId: E:Unosquare.Net.WebSocket.OnMessage
   fullName: Unosquare.Net.WebSocket.OnMessage
   nameWithType: WebSocket.OnMessage
-- uid: Unosquare.Net.WebSocket.OnOpen
-  name: OnOpen
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_OnOpen
-  commentId: E:Unosquare.Net.WebSocket.OnOpen
-  fullName: Unosquare.Net.WebSocket.OnOpen
-  nameWithType: WebSocket.OnOpen
 - uid: Unosquare.Net.WebSocket.Origin
   name: Origin
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Origin
