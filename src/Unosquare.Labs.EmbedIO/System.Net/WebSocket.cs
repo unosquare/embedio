@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
     using System.Net;
@@ -30,8 +31,7 @@
 
         private readonly Action<MessageEventArgs> _message;
         private readonly object _forState = new object();
-        private readonly Queue<MessageEventArgs> _messageEventQueue = new Queue<MessageEventArgs>();
-        private readonly object _forMessageEventQueue;
+        private readonly ConcurrentQueue<MessageEventArgs> _messageEventQueue = new ConcurrentQueue<MessageEventArgs>();
         private readonly WebSocketValidator _validator;
 
         private CompressionMethod _compression = CompressionMethod.None;
@@ -93,7 +93,6 @@
             IsSecure = _uri.Scheme == "wss";
 #endif
             _waitTime = TimeSpan.FromSeconds(5);
-            _forMessageEventQueue = ((ICollection)_messageEventQueue).SyncRoot;
             _validator = new WebSocketValidator(this);
         }
 
@@ -110,7 +109,6 @@
 #endif
             _stream = context.Stream;
             _waitTime = TimeSpan.FromSeconds(1);
-            _forMessageEventQueue = ((ICollection)_messageEventQueue).SyncRoot;
             _validator = new WebSocketValidator(this);
         }
 
@@ -261,7 +259,7 @@
                     if (!Uri.TryCreate(value, UriKind.Absolute, out var origin) || origin.Segments.Length > 1)
                     {
                         "The syntax of an origin must be '<scheme>://<host>[:<port>]'.".Error();
-                    
+
                         return;
                     }
 
@@ -355,17 +353,6 @@
         internal bool IsExtensionsRequested { get; set; }
 
         internal CookieCollection CookieCollection { get; } = new CookieCollection();
-
-        internal bool HasMessage
-        {
-            get
-            {
-                lock (_forMessageEventQueue)
-                {
-                    return _messageEventQueue.Count > 0;
-                }
-            }
-        }
 
         // As server
         internal bool IgnoreExtensions { get; set; } = true;
@@ -555,43 +542,7 @@
         }
 
         /// <inheritdoc />
-        public void Dispose()
-        {
-            // TODO: this is correct?
-            InternalCloseAsync(new CloseEventArgs(CloseStatusCode.Away)).Wait();
-        }
-
-        // As server
-        internal async Task CloseAsync(
-            CloseEventArgs e,
-            byte[] frameAsBytes,
-            bool receive,
-            CancellationToken ct = default)
-        {
-            lock (_forState)
-            {
-                if (_readyState == WebSocketState.Closing)
-                {
-                    "The closing is already in progress.".Debug();
-                    return;
-                }
-
-                if (_readyState == WebSocketState.Closed)
-                {
-                    "The connection has been closed.".Debug();
-                    return;
-                }
-
-                _readyState = WebSocketState.Closing;
-            }
-
-            // TODO: Fix
-            e.WasClean = await CloseHandshakeAsync(frameAsBytes, receive, false, ct).ConfigureAwait(false);
-            ReleaseServerResources();
-            ReleaseCommonResources();
-
-            _readyState = WebSocketState.Closed;
-        }
+        public void Dispose() => InternalCloseAsync(new CloseEventArgs(CloseStatusCode.Away)).Wait();
 
         // As client
         internal bool ValidateSecWebSocketAcceptHeader(string value) =>
@@ -717,10 +668,7 @@
             received = received ||
                        (receive && sent && _exitReceiving != null && _exitReceiving.WaitOne(_waitTime));
 
-            var ret = sent && received;
-            $"Was clean?: {ret}\n  sent: {sent}\n  received: {received}".Trace();
-
-            return ret;
+            return sent && received;
         }
 
         // As server
@@ -761,14 +709,6 @@
             return true;
         }
 
-        private void EnqueueToMessageEventQueue(MessageEventArgs e)
-        {
-            lock (_forMessageEventQueue)
-            {
-                _messageEventQueue.Enqueue(e);
-            }
-        }
-
         private void Fatal(string message, Exception exception = null) => Fatal(message,
             (exception as WebSocketException)?.Code ?? CloseStatusCode.Abnormal);
 
@@ -777,17 +717,13 @@
 
         private void Message()
         {
-            MessageEventArgs e;
-            lock (_forMessageEventQueue)
-            {
-                if (_inMessage || _messageEventQueue.Count == 0 || _readyState != WebSocketState.Open)
-                    return;
+            if (_inMessage || _messageEventQueue.IsEmpty || _readyState != WebSocketState.Open)
+                return;
 
-                _inMessage = true;
-                e = _messageEventQueue.Dequeue();
-            }
+            _inMessage = true;
 
-            _message(e);
+            if (_messageEventQueue.TryDequeue(out var e))
+                _message(e);
         }
 
         private void Messagec(MessageEventArgs e)
@@ -803,17 +739,13 @@
                     ex.Log(nameof(WebSocket));
                 }
 
-                lock (_forMessageEventQueue)
+                if (!_messageEventQueue.TryDequeue(out e) || _readyState != WebSocketState.Open)
                 {
-                    if (_messageEventQueue.Count == 0 || _readyState != WebSocketState.Open)
-                    {
-                        _inMessage = false;
-                        break;
-                    }
-
-                    e = _messageEventQueue.Dequeue();
+                    _inMessage = false;
+                    break;
                 }
-            } while (true);
+            }
+            while (true);
         }
 
         private void Messages(MessageEventArgs e)
@@ -827,15 +759,10 @@
                 ex.Log(nameof(WebSocket));
             }
 
-            lock (_forMessageEventQueue)
+            if (!_messageEventQueue.TryDequeue(out e) || _readyState != WebSocketState.Open)
             {
-                if (_messageEventQueue.Count == 0 || _readyState != WebSocketState.Open)
-                {
-                    _inMessage = false;
-                    return;
-                }
-
-                e = _messageEventQueue.Dequeue();
+                _inMessage = false;
+                return;
             }
 
             Task.Factory.StartNew(() => Messages(e));
@@ -846,16 +773,10 @@
             _inMessage = true;
             StartReceiving();
 
-            MessageEventArgs e;
-            lock (_forMessageEventQueue)
+            if (!_messageEventQueue.TryDequeue(out var e) || _readyState != WebSocketState.Open)
             {
-                if (_messageEventQueue.Count == 0 || _readyState != WebSocketState.Open)
-                {
-                    _inMessage = false;
-                    return;
-                }
-
-                e = _messageEventQueue.Dequeue();
+                _inMessage = false;
+                return;
             }
 
             _message.BeginInvoke(e, ar => _message.EndInvoke(ar), null);
@@ -870,12 +791,9 @@
         }
 
         // As client
-        private void ProcessCookies(ICollection cookies)
+        private void ProcessCookies(IEnumerable cookies)
         {
-            if (cookies.Count == 0)
-                return;
-
-            foreach (var cookie in CookieCollection)
+            foreach (Cookie cookie in cookies)
             {
                 if (!cookie.Expired)
                 {
@@ -886,7 +804,7 @@
 
         private bool ProcessDataFrame(WebSocketFrame frame)
         {
-            EnqueueToMessageEventQueue(
+            _messageEventQueue.Enqueue(
                 frame.IsCompressed
                     ? new MessageEventArgs(
                         frame.Opcode,
@@ -922,7 +840,7 @@
                         ? _fragmentsBuffer.Compress(_compression, System.IO.Compression.CompressionMode.Decompress)
                         : _fragmentsBuffer;
 
-                    EnqueueToMessageEventQueue(new MessageEventArgs(_fragmentsOpcode, data.ToArray()));
+                    _messageEventQueue.Enqueue(new MessageEventArgs(_fragmentsOpcode, data.ToArray()));
                 }
 
                 _fragmentsBuffer = null;
@@ -940,7 +858,7 @@
             }
 
             if (EmitOnPing)
-                EnqueueToMessageEventQueue(new MessageEventArgs(frame));
+                _messageEventQueue.Enqueue(new MessageEventArgs(frame));
 
             return true;
         }
@@ -959,7 +877,7 @@
                 return ProcessFragmentFrame(frame);
             if (frame.IsData)
                 return ProcessDataFrame(frame);
-            
+
             return frame.IsPing
                 ? ProcessPingFrame(frame)
                 : frame.IsPong
@@ -1203,8 +1121,10 @@
 
         private void StartReceiving()
         {
-            if (_messageEventQueue.Count > 0)
-                _messageEventQueue.Clear();
+            while (_messageEventQueue.TryDequeue(out _))
+            {
+                // do nothing
+            }
 
             _exitReceiving = new AutoResetEvent(false);
             _receivePong = new AutoResetEvent(false);
@@ -1216,6 +1136,10 @@
                 try
                 {
                     var frame = await frameStream.ReadFrameAsync(this);
+                    
+                    if (frame == null)
+                        return;
+
                     var result = ProcessReceivedFrame(frame);
 
                     if (!result || _readyState == WebSocketState.Closed)
@@ -1228,7 +1152,7 @@
                     // Receive next asap because the Ping or Close needs a response to it.
                     Receive();
 
-                    if (_inMessage || !HasMessage || _readyState != WebSocketState.Open)
+                    if (_inMessage || _messageEventQueue.IsEmpty || _readyState != WebSocketState.Open)
                         return;
 
                     Message();

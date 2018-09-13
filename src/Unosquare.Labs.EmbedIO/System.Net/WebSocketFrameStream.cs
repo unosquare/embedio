@@ -18,6 +18,8 @@
 
         internal async Task<WebSocketFrame> ReadFrameAsync(WebSocket webSocket)
         {
+            if (_stream == null) return null;
+
             var frame = ProcessHeader(await _stream.ReadBytesAsync(2));
 
             await ReadExtendedPayloadLengthAsync(frame);

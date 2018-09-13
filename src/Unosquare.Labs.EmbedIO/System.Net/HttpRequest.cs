@@ -15,7 +15,7 @@
         internal HttpRequest(string method, string uri)
           : this(method, uri, HttpVersion.Version11, new NameValueCollection())
         {
-            Headers["User-Agent"] = "embedio/1.0";
+            Headers["User-Agent"] = "embedio/2.0";
         }
 
         private HttpRequest(string method, string uri, Version version, NameValueCollection headers)
@@ -116,8 +116,9 @@
         internal static HttpRequest Parse(string[] headerParts)
         {
             var requestLine = headerParts[0].Split(new[] { ' ' }, 3);
+
             if (requestLine.Length != 3)
-                throw new ArgumentException("Invalid request line: " + headerParts[0]);
+                throw new ArgumentException($"Invalid request line: {headerParts[0]}");
 
             return new HttpRequest(requestLine[0], requestLine[1], new Version(requestLine[2].Substring(5)), ParseHeaders(headerParts));
         }
@@ -127,7 +128,7 @@
             var buff = ToByteArray();
             stream.Write(buff, 0, buff.Length);
 
-            return ReadAsync(stream, HttpResponse.Parse);
+            return ReadAsync(stream);
         }
         
         // As client

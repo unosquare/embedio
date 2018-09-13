@@ -1,8 +1,8 @@
 ﻿namespace Unosquare.Net
 {
+    using Labs.EmbedIO.Constants;
     using System;
     using System.Collections.Specialized;
-    using Labs.EmbedIO.Constants;
     using System.Net;
     using System.Text;
 
@@ -18,7 +18,7 @@
         {
             StatusCode = code;
             Reason = reason;
-            Headers["Server"] = "embedio/1.0";
+            Headers["Server"] = "embedio/2.0";
         }
         
         public CookieCollection Cookies => Headers.GetCookies(true);
@@ -97,7 +97,7 @@
             var statusLine = headerParts[0].Split(new[] { ' ' }, 3);
 
             if (statusLine.Length != 3)
-                throw new ArgumentException("Invalid status line: " + headerParts[0]);
+                throw new ArgumentException($"Invalid status line: {headerParts[0]}");
 
             return new HttpResponse(int.Parse(statusLine[1]), statusLine[2], new Version(statusLine[0].Substring(5)), ParseHeaders(headerParts));
         }

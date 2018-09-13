@@ -242,7 +242,7 @@
             }
 
             if (Headers["Server"] == null)
-                HeaderCollection.AddWithoutValidate("Server", "embedio/1.0");
+                HeaderCollection.AddWithoutValidate("Server", "embedio/2.0");
 
             var inv = CultureInfo.InvariantCulture;
             if (Headers["Date"] == null)
