@@ -23,11 +23,7 @@
     /// </remarks>
     public class WebSocket : IDisposable
     {
-        // Represents the empty array of <see cref="byte"/> used internally.
         internal static readonly byte[] EmptyBytes = new byte[0];
-
-        // Represents the length used to determine whether the data should be fragmented in sending.
-        internal static readonly int FragmentLength = 1016;
 
         private readonly Action<MessageEventArgs> _message;
         private readonly object _forState = new object();
@@ -852,10 +848,7 @@
 
         private bool ProcessPingFrame(WebSocketFrame frame)
         {
-            if (Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, IsClient)))
-            {
-                "Returned a pong.".Info();
-            }
+            Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, IsClient));
 
             if (EmitOnPing)
                 _messageEventQueue.Enqueue(new MessageEventArgs(frame));
@@ -875,16 +868,19 @@
         {
             if (frame.IsFragment)
                 return ProcessFragmentFrame(frame);
+
             if (frame.IsData)
                 return ProcessDataFrame(frame);
 
-            return frame.IsPing
-                ? ProcessPingFrame(frame)
-                : frame.IsPong
-                    ? ProcessPongFrame()
-                    : frame.IsClose
-                        ? ProcessCloseFrame(frame)
-                        : ProcessUnsupportedFrame(frame);
+            if (frame.IsPing)
+                return ProcessPingFrame(frame);
+
+            if (frame.IsPong)
+                return ProcessPongFrame();
+            
+            return frame.IsClose
+                ? ProcessCloseFrame(frame)
+                : ProcessUnsupportedFrame(frame);
         }
 
         // As server
@@ -1005,20 +1001,19 @@
             _context = null;
         }
 
-        private bool Send(WebSocketFrame frame)
+        private void Send(WebSocketFrame frame)
         {
             lock (_forState)
             {
                 if (_readyState != WebSocketState.Open)
                 {
                     "The sending has been interrupted.".Error();
-                    return false;
+                    return;
                 }
             }
 
             var frameAsBytes = frame.ToArray();
             _stream.Write(frameAsBytes, 0, frameAsBytes.Length);
-            return true;
         }
 
         // As client
