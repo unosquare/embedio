@@ -43,49 +43,42 @@
             return true;
         }
 
-        internal bool CheckHandshakeResponse(HttpResponse response, out string message)
+        internal void ThrowIfInvalidResponse(HttpResponse response)
         {
-            message = null;
-
             if (response.IsRedirect)
             {
-                message = "Indicates the redirection.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "Indicates the redirection.");
             }
 
             if (response.IsUnauthorized)
             {
-                message = "Requires the authentication.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "Requires the authentication.");
             }
 
             if (!response.IsWebSocketResponse)
             {
-                message = "Not a WebSocket handshake response.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "Not a WebSocket handshake response.");
             }
 
             var headers = response.Headers;
-            if (!_webSocket.ValidateSecWebSocketAcceptHeader(headers["Sec-WebSocket-Accept"]))
+            if (!ValidateSecWebSocketAcceptHeader(headers["Sec-WebSocket-Accept"]))
             {
-                message = "Includes no Sec-WebSocket-Accept header, or it has an invalid value.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "Includes no Sec-WebSocket-Accept header, or it has an invalid value.");
             }
 
             if (!ValidateSecWebSocketExtensionsServerHeader(headers["Sec-WebSocket-Extensions"]))
             {
-                message = "Includes an invalid Sec-WebSocket-Extensions header.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "Includes an invalid Sec-WebSocket-Extensions header.");
             }
 
             if (!ValidateSecWebSocketVersionServerHeader(headers["Sec-WebSocket-Version"]))
             {
-                message = "Includes an invalid Sec-WebSocket-Version header.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "Includes an invalid Sec-WebSocket-Version header.");
             }
-
-            return true;
         }
+
+        internal bool ValidateSecWebSocketAcceptHeader(string value) =>
+            value?.TrimStart() == _webSocket.WebSocketKey.CreateResponseKey();
 
         internal bool CheckIfAvailable(bool connecting = true, bool open = true, bool closing = false, bool closed = false)
         {
@@ -140,49 +133,39 @@
         }
 
         // As server
-        internal bool CheckHandshakeRequest(WebSocketContext context, out string message)
+        internal void ThrowIfInvalid(WebSocketContext context)
         {
-            message = null;
-
             if (context.RequestUri == null)
             {
-                message = "Specifies an invalid Request-URI.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "Specifies an invalid Request-URI.");
             }
 
             if (!context.IsWebSocketRequest)
             {
-                message = "Not a WebSocket handshake request.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "Not a WebSocket handshake request.");
             }
 
             var headers = context.Headers;
             if (!ValidateSecWebSocketKeyHeader(headers["Sec-WebSocket-Key"]))
             {
-                message = "Includes no Sec-WebSocket-Key header, or it has an invalid value.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "Includes no Sec-WebSocket-Key header, or it has an invalid value.");
             }
 
             if (!ValidateSecWebSocketVersionClientHeader(headers["Sec-WebSocket-Version"]))
             {
-                message = "Includes no Sec-WebSocket-Version header, or it has an invalid value.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "Includes no Sec-WebSocket-Version header, or it has an invalid value.");
             }
 
             if (!ValidateSecWebSocketProtocolClientHeader(headers["Sec-WebSocket-Protocol"]))
             {
-                message = "Includes an invalid Sec-WebSocket-Protocol header.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "Includes an invalid Sec-WebSocket-Protocol header.");
             }
 
             if (!_webSocket.IgnoreExtensions
                 && !string.IsNullOrWhiteSpace(headers["Sec-WebSocket-Extensions"]))
             {
-                message = "Includes an invalid Sec-WebSocket-Extensions header.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "Includes an invalid Sec-WebSocket-Extensions header.");
             }
-
-            return true;
         }
 
         // As client

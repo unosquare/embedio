@@ -1,4 +1,6 @@
-﻿namespace Unosquare.Net
+﻿using System.Linq;
+
+namespace Unosquare.Net
 {
     using System;
     using System.Collections;
@@ -425,10 +427,7 @@
                     _readyState = WebSocketState.Connecting;
                 }
 
-                var handShake = await DoHandshakeAsync();
-
-                if (!handShake)
-                    return;
+                await DoHandshakeAsync();
 
                 lock (_forState)
                 {
@@ -540,19 +539,21 @@
         /// <inheritdoc />
         public void Dispose() => InternalCloseAsync(new CloseEventArgs(CloseStatusCode.Away)).Wait();
 
-        // As client
-        internal bool ValidateSecWebSocketAcceptHeader(string value) =>
-            value?.TrimStart() == WebSocketKey.CreateResponseKey();
-
         // As server
         internal async Task InternalAcceptAsync()
         {
             try
             {
-                var handShake = await AcceptHandshakeAsync();
+                $"A request from {_context.UserEndPoint}:\n{_context}".Debug();
 
-                if (handShake == false)
-                    return;
+                _validator.ThrowIfInvalid(_context);
+
+                WebSocketKey.KeyValue = _context.Headers["Sec-WebSocket-Key"];
+
+                if (!IgnoreExtensions)
+                    ProcessSecWebSocketExtensionsClientHeader(_context.Headers["Sec-WebSocket-Extensions"]);
+
+                await SendHandshakeAsync();
 
                 _readyState = WebSocketState.Open;
             }
@@ -581,30 +582,6 @@
                                                                       code == CloseStatusCode.NoStatus ||
                                                                       code == CloseStatusCode.Abnormal ||
                                                                       code == CloseStatusCode.TlsHandshakeFailure;
-
-        // As server
-        private async Task<bool> AcceptHandshakeAsync()
-        {
-            $"A request from {_context.UserEndPoint}:\n{_context}".Debug();
-
-            if (!_validator.CheckHandshakeRequest(_context, out var msg))
-            {
-                await SendHttpResponseAsync(HttpResponse.CreateCloseResponse(HttpStatusCode.BadRequest));
-
-                msg.Error();
-                Fatal("An error has occurred while accepting.", CloseStatusCode.ProtocolError);
-
-                return false;
-            }
-
-            WebSocketKey.KeyValue = _context.Headers["Sec-WebSocket-Key"];
-
-            if (!IgnoreExtensions)
-                ProcessSecWebSocketExtensionsClientHeader(_context.Headers["Sec-WebSocket-Extensions"]);
-
-            await SendHttpResponseAsync(CreateHandshakeResponse());
-            return true;
-        }
 
         // As client
         private async Task InternalCloseAsync(
@@ -667,42 +644,18 @@
             return sent && received;
         }
 
-        // As server
-        private HttpResponse CreateHandshakeResponse()
-        {
-            var ret = HttpResponse.CreateWebSocketResponse();
-
-            var headers = ret.Headers;
-            headers["Sec-WebSocket-Accept"] = WebSocketKey.CreateResponseKey();
-
-            if (_extensions != null)
-                headers["Sec-WebSocket-Extensions"] = _extensions;
-
-            ret.SetCookies(CookieCollection);
-
-            return ret;
-        }
-
         // As client
-        private async Task<bool> DoHandshakeAsync()
+        private async Task DoHandshakeAsync()
         {
             await SetClientStream();
             var res = await SendHandshakeRequestAsync();
 
-            if (!_validator.CheckHandshakeResponse(res, out var msg))
-            {
-                msg.Error();
-                Fatal("An error has occurred while connecting.", CloseStatusCode.ProtocolError);
-
-                return false;
-            }
+            _validator.ThrowIfInvalidResponse(res);
 
             if (IsExtensionsRequested)
                 ProcessSecWebSocketExtensionsServerHeader(res.Headers["Sec-WebSocket-Extensions"]);
 
-            ProcessCookies(res.Cookies);
-
-            return true;
+            CookieCollection.AddRange(res.Cookies.Where(y => !y.Expired));
         }
 
         private void Fatal(string message, Exception exception = null) => Fatal(message,
@@ -735,11 +688,10 @@
                     ex.Log(nameof(WebSocket));
                 }
 
-                if (!_messageEventQueue.TryDequeue(out e) || _readyState != WebSocketState.Open)
-                {
-                    _inMessage = false;
-                    break;
-                }
+                if (_messageEventQueue.TryDequeue(out e) && _readyState == WebSocketState.Open) continue;
+
+                _inMessage = false;
+                break;
             }
             while (true);
         }
@@ -782,18 +734,6 @@
         {
             var payload = frame.PayloadData;
             InternalCloseAsync(new CloseEventArgs(payload), !payload.HasReservedCode, false, true).Wait();
-        }
-
-        // As client
-        private void ProcessCookies(IEnumerable cookies)
-        {
-            foreach (Cookie cookie in cookies)
-            {
-                if (!cookie.Expired)
-                {
-                    CookieCollection.Add(cookie);
-                }
-            }
         }
 
         private void ProcessDataFrame(WebSocketFrame frame)
@@ -1054,9 +994,19 @@
         }
 
         // As server
-        private Task SendHttpResponseAsync(HttpBase response)
+        private Task SendHandshakeAsync()
         {
-            var bytes = response.ToByteArray();
+            var ret = HttpResponse.CreateWebSocketResponse();
+
+            var headers = ret.Headers;
+            headers["Sec-WebSocket-Accept"] = WebSocketKey.CreateResponseKey();
+
+            if (_extensions != null)
+                headers["Sec-WebSocket-Extensions"] = _extensions;
+
+            ret.SetCookies(CookieCollection);
+
+            var bytes = ret.ToByteArray();
 
             return _stream.WriteAsync(bytes, 0, bytes.Length);
         }
@@ -1125,7 +1075,7 @@
                 try
                 {
                     var frame = await frameStream.ReadFrameAsync(this);
-                    
+
                     if (frame == null)
                         return;
 
