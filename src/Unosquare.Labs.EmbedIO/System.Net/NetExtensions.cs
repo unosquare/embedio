@@ -103,51 +103,28 @@
             return !(BitConverter.IsLittleEndian ^ (order == Endianness.Little));
         }
         
-        internal static bool TryCreateWebSocketUri(
-            this string uriString, out Uri result, out string message)
+        internal static Uri CreateWebSocketUri(this string uriString)
         {
-            result = null;
+            if (uriString == null)
+                throw new ArgumentNullException(nameof(uriString));
 
             var uri = uriString.ToUri();
+
             if (uri == null)
-            {
-                message = "An invalid URI string: " + uriString;
-                return false;
-            }
+                throw new ArgumentNullException(nameof(uriString));
 
             if (!uri.IsAbsoluteUri)
-            {
-                message = $"Not an absolute URI: {uriString}";
-                return false;
-            }
+                throw new ArgumentException($"Not an absolute URI: {uriString}");
 
-            var schm = uri.Scheme;
-            if (!(schm == "ws" || schm == "wss"))
-            {
-                message = $"The scheme part isn\'t \'ws\' or \'wss\': {uriString}";
-                return false;
-            }
+            if (!(uri.Scheme == "ws" || uri.Scheme == "wss"))
+                throw new ArgumentException($"The scheme part isn\'t \'ws\' or \'wss\': {uriString}");
 
             if (uri.Fragment.Length > 0)
-            {
-                message = $"Includes the fragment component: {uriString}";
-                return false;
-            }
+                throw new ArgumentException($"Includes the fragment component: {uriString}");
 
-            var port = uri.Port;
-            if (port == 0)
-            {
-                message = $"The port part is zero: {uriString}";
-                return false;
-            }
-
-            result = port != -1
+            return uri.Port != -1
                 ? uri
-                : new Uri(
-                    $"{schm}://{uri.Host}:{(schm == "ws" ? 80 : 443)}{uri.PathAndQuery}");
-
-            message = string.Empty;
-            return true;
+                : new Uri($"{uri.Scheme}://{uri.Host}:{(uri.Scheme == "ws" ? 80 : 443)}{uri.PathAndQuery}");
         }
 
         internal static bool IsToken(this string value) =>

@@ -70,14 +70,7 @@
         /// </para></exception>
         public WebSocket(string url)
         {
-            if (url == null)
-                throw new ArgumentNullException(nameof(url));
-
-            if (url.Length == 0)
-                throw new ArgumentException("An empty string.", nameof(url));
-
-            if (!url.TryCreateWebSocketUri(out _uri, out var msg))
-                throw new ArgumentException(msg, nameof(url));
+            _uri = url.CreateWebSocketUri();
 
             WebSocketKey = new WebSocketKey(true);
             IsClient = true;
@@ -528,7 +521,17 @@
         }
 
         /// <inheritdoc />
-        public void Dispose() => InternalCloseAsync(new CloseEventArgs(CloseStatusCode.Away)).Wait();
+        public void Dispose()
+        {
+            try
+            {
+                InternalCloseAsync(new CloseEventArgs(CloseStatusCode.Away)).Wait();
+            }
+            catch
+            {
+                // Ignored
+            }
+        }
 
         // As server
         internal async Task InternalAcceptAsync()
@@ -721,10 +724,10 @@
             _message.BeginInvoke(e, ar => _message.EndInvoke(ar), null);
         }
 
-        private void ProcessCloseFrame(WebSocketFrame frame)
+        private Task ProcessCloseFrame(WebSocketFrame frame)
         {
             var payload = frame.PayloadData;
-            InternalCloseAsync(new CloseEventArgs(payload), !payload.HasReservedCode, false, true).Wait();
+            return InternalCloseAsync(new CloseEventArgs(payload), !payload.HasReservedCode, false, true);
         }
 
         private void ProcessDataFrame(WebSocketFrame frame)
@@ -738,13 +741,13 @@
                     : new MessageEventArgs(frame));
         }
 
-        private bool ProcessFragmentFrame(WebSocketFrame frame)
+        private void ProcessFragmentFrame(WebSocketFrame frame)
         {
             if (!InContinuation)
             {
                 // Must process first fragment.
                 if (frame.Opcode == Opcode.Cont)
-                    return true;
+                    return;
 
                 _fragmentsBuffer = new FragmentBuffer(frame.Opcode, frame.IsCompressed);
                 InContinuation = true;
@@ -762,8 +765,6 @@
                 _fragmentsBuffer = null;
                 InContinuation = false;
             }
-
-            return true;
         }
 
         private void ProcessPingFrame(WebSocketFrame frame)
@@ -780,33 +781,37 @@
             "Received a pong.".Info();
         }
 
-        private bool ProcessReceivedFrame(WebSocketFrame frame)
+        private Task<bool> ProcessReceivedFrame(WebSocketFrame frame)
         {
             if (frame.IsFragment)
-                return ProcessFragmentFrame(frame);
-
-            switch (frame.Opcode)
             {
-                case Opcode.Text:
-                case Opcode.Binary:
-                    ProcessDataFrame(frame);
-                    break;
-                case Opcode.Ping:
-                    ProcessPingFrame(frame);
-                    break;
-                case Opcode.Pong:
-                    ProcessPongFrame();
-                    break;
-                case Opcode.Close:
-                    ProcessCloseFrame(frame);
-                    break;
-                default:
-                    $"An unsupported frame: {frame.PrintToString()}".Error();
-                    Fatal("There is no way to handle it.", CloseStatusCode.PolicyViolation);
-                    return false;
+                ProcessFragmentFrame(frame);
+            }
+            else
+            {
+                switch (frame.Opcode)
+                {
+                    case Opcode.Text:
+                    case Opcode.Binary:
+                        ProcessDataFrame(frame);
+                        break;
+                    case Opcode.Ping:
+                        ProcessPingFrame(frame);
+                        break;
+                    case Opcode.Pong:
+                        ProcessPongFrame();
+                        break;
+                    case Opcode.Close:
+                        ProcessCloseFrame(frame);
+                        break;
+                    default:
+                        $"An unsupported frame: {frame.PrintToString()}".Error();
+                        Fatal("There is no way to handle it.", CloseStatusCode.PolicyViolation);
+                        return Task.FromResult(false);
+                }
             }
 
-            return true;
+            return Task.FromResult(true);
         }
 
         // As server
@@ -960,12 +965,7 @@
                     return res;
                 }
 
-                if (!url.TryCreateWebSocketUri(out var uri, out var msg))
-                {
-                    $"An invalid url to redirect is located: {msg}".Error();
-                    return res;
-                }
-
+                var uri = url.CreateWebSocketUri();
                 ReleaseClientResources();
 
                 _uri = uri;
@@ -1063,7 +1063,7 @@
                     if (frame == null)
                         return;
 
-                    var result = ProcessReceivedFrame(frame);
+                    var result = await ProcessReceivedFrame(frame);
 
                     if (!result || _readyState == WebSocketState.Closed)
                     {

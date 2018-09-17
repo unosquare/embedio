@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Net;
+    using System.Net.Sockets;
 
     internal static class EndPointManager
     {
@@ -80,10 +81,8 @@
         private static void AddPrefixInternal(string p, HttpListener listener)
         {
             var lp = new ListenerPrefix(p);
-            if (lp.Path.IndexOf('%') != -1)
-                throw new HttpListenerException(400, "Invalid path.");
 
-            if (lp.Path.IndexOf("//", StringComparison.Ordinal) != -1) // TODO: Code?
+            if (lp.Path.IndexOf('%') != -1 || lp.Path.IndexOf("//", StringComparison.Ordinal) != -1)
                 throw new HttpListenerException(400, "Invalid path.");
 
             // listens on all the interfaces if host name cannot be parsed by IPAddress.
@@ -144,12 +143,19 @@
 
         private static void RemovePrefixInternal(string prefix, HttpListener listener)
         {
-            var lp = new ListenerPrefix(prefix);
-            if (lp.Path.IndexOf('%') != -1 || lp.Path.IndexOf("//", StringComparison.Ordinal) != -1)
-                return;
+            try
+            {
+                var lp = new ListenerPrefix(prefix);
+                if (lp.Path.IndexOf('%') != -1 || lp.Path.IndexOf("//", StringComparison.Ordinal) != -1)
+                    return;
 
-            var epl = GetEpListener(lp.Host, lp.Port, listener, lp.Secure);
-            epl.RemovePrefix(lp, listener);
+                var epl = GetEpListener(lp.Host, lp.Port, listener, lp.Secure);
+                epl.RemovePrefix(lp, listener);
+            }
+            catch (SocketException)
+            {
+                // ignored
+            }
         }
     }
 }

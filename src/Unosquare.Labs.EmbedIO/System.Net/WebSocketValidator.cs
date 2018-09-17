@@ -61,7 +61,7 @@
             }
 
             var headers = response.Headers;
-            if (!ValidateSecWebSocketAcceptHeader(headers["Sec-WebSocket-Accept"]))
+            if (headers["Sec-WebSocket-Accept"]?.TrimStart() != _webSocket.WebSocketKey.CreateResponseKey())
             {
                 throw new WebSocketException(CloseStatusCode.ProtocolError, "Includes no Sec-WebSocket-Accept header, or it has an invalid value.");
             }
@@ -76,9 +76,6 @@
                 throw new WebSocketException(CloseStatusCode.ProtocolError, "Includes an invalid Sec-WebSocket-Version header.");
             }
         }
-
-        internal bool ValidateSecWebSocketAcceptHeader(string value) =>
-            value?.TrimStart() == _webSocket.WebSocketKey.CreateResponseKey();
 
         internal bool CheckIfAvailable(bool connecting = true, bool open = true, bool closing = false, bool closed = false)
         {
