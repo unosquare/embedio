@@ -827,7 +827,7 @@
             {
                 var ext = e.Trim();
 
-                if (!comp && ext.IsCompressionExtension(CompressionMethod.Deflate))
+                if (!comp && ext.StartsWith(CompressionMethod.Deflate.ToExtensionString()))
                 {
                     _compression = CompressionMethod.Deflate;
                     buff.AppendFormat(

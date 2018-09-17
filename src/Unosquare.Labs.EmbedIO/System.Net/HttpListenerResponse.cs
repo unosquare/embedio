@@ -362,19 +362,21 @@
 
         private void WriteHeaders(Stream ms)
         {
-            var writer = new StreamWriter(ms, Encoding.UTF8, 256);
-            writer.Write("HTTP/{0} {1} {2}\r\n", ProtocolVersion, _statusCode, StatusDescription);
-            var headersStr = FormatHeaders(HeaderCollection);
-            writer.Write(headersStr);
-            writer.Flush();
+            using (var writer = new StreamWriter(ms, Encoding.UTF8, 256))
+            {
+                writer.Write("HTTP/{0} {1} {2}\r\n", ProtocolVersion, _statusCode, StatusDescription);
+                var headersStr = FormatHeaders(HeaderCollection);
+                writer.Write(headersStr);
+                writer.Flush();
 
-            var preamble = Encoding.UTF8.GetPreamble().Length;
-            if (_outputStream == null)
-                _outputStream = _context.Connection.GetResponseStream();
+                var preamble = Encoding.UTF8.GetPreamble().Length;
+                if (_outputStream == null)
+                    _outputStream = _context.Connection.GetResponseStream();
 
-            // Assumes that the ms was at position 0
-            ms.Position = preamble;
-            HeadersSent = true;
+                // Assumes that the ms was at position 0
+                ms.Position = preamble;
+                HeadersSent = true;
+            }
         }
     }
 }

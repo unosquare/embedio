@@ -1,11 +1,10 @@
 ﻿namespace Unosquare.Net
 {
-    using System.Collections;
-    using System.Collections.Generic;
     using Labs.EmbedIO.Constants;
-    using System.IO;
-    using System;
     using Swan;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// Indicates whether a WebSocket frame is the final frame of a message.
@@ -67,7 +66,7 @@
         On = 0x1,
     }
 
-    internal class WebSocketFrame : IEnumerable<byte>
+    internal class WebSocketFrame
     {
         internal static readonly byte[] EmptyPingBytes;
         
@@ -104,12 +103,12 @@
             else if (len < 0x010000)
             {
                 PayloadLength = (byte)126;
-                ExtendedPayloadLength = ((ushort)len).InternalToByteArray(Endianness.Big);
+                ExtendedPayloadLength = ((ushort)len).ToByteArray(Endianness.Big);
             }
             else
             {
                 PayloadLength = (byte)127;
-                ExtendedPayloadLength = len.InternalToByteArray(Endianness.Big);
+                ExtendedPayloadLength = len.ToByteArray(Endianness.Big);
             }
 
             if (mask)
@@ -140,8 +139,6 @@
         public bool IsFragment => Fin == Fin.More || Opcode == Opcode.Cont;
 
         public bool IsMasked => Mask == Mask.On;
-
-        public ulong Length => 2 + (ulong)(ExtendedPayloadLength.Length + MaskingKey.Length) + PayloadData.Length;
 
         public Mask Mask { get; internal set; }
 
@@ -207,13 +204,14 @@ Extended Payload Length: {extPayloadLen}
             using (var buff = new MemoryStream())
             {
                 var header = (int)Fin;
+
                 header = (header << 1) + (int)Rsv1;
                 header = (header << 1) + (int)Rsv2;
                 header = (header << 1) + (int)Rsv3;
                 header = (header << 4) + (int)Opcode;
                 header = (header << 1) + (int)Mask;
                 header = (header << 7) + (int)PayloadLength;
-                buff.Write(((ushort)header).InternalToByteArray(Endianness.Big), 0, 2);
+                buff.Write(((ushort)header).ToByteArray(Endianness.Big), 0, 2);
 
                 if (PayloadLength > 125)
                     buff.Write(ExtendedPayloadLength, 0, PayloadLength == 126 ? 2 : 8);
@@ -235,16 +233,11 @@ Extended Payload Length: {extPayloadLen}
                     }
                 }
 
-#if NET46
-                buff.Close();
-#endif
                 return buff.ToArray();
             }
         }
 
         public override string ToString() => BitConverter.ToString(ToArray());
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         internal static WebSocketFrame CreateCloseFrame(PayloadData payloadData, bool mask) => new WebSocketFrame(Fin.Final, Opcode.Close, payloadData, false, mask);
 

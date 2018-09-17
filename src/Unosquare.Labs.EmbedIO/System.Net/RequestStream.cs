@@ -60,20 +60,11 @@
             return nread;
         }
         
-        public override long Seek(long offset, SeekOrigin origin)
-        {
-            throw new NotSupportedException();
-        }
+        public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
 
-        public override void SetLength(long value)
-        {
-            throw new NotSupportedException();
-        }
+        public override void SetLength(long value) => throw new NotSupportedException();
 
-        public override void Write(byte[] buffer, int offset, int count)
-        {
-            throw new NotSupportedException();
-        }
+        public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
 
         // Returns 0 if we can keep reading from the base stream,
         // > 0 if we read something from the buffer.

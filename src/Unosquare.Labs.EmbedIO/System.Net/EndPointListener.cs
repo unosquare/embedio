@@ -205,6 +205,7 @@ using System.Security.Cryptography;
         {
             e.AcceptSocket = null;
             bool asyn;
+
             try
             {
                 asyn = socket.AcceptAsync(e);

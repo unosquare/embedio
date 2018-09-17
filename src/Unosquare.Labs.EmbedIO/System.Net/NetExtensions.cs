@@ -70,7 +70,7 @@
             return str.Trim();
         }
         
-        internal static byte[] InternalToByteArray(this ushort value, Endianness order)
+        internal static byte[] ToByteArray(this ushort value, Endianness order)
         {
             var bytes = BitConverter.GetBytes(value);
             if (!order.IsHostOrder())
@@ -79,7 +79,7 @@
             return bytes;
         }
 
-        internal static byte[] InternalToByteArray(this ulong value, Endianness order)
+        internal static byte[] ToByteArray(this ulong value, Endianness order)
         {
             var bytes = BitConverter.GetBytes(value);
             if (!order.IsHostOrder())
@@ -151,8 +151,5 @@
         internal static bool Contains(this NameValueCollection collection, string name, string value)
             => collection[name]?.Split(Strings.CommaSplitChar)
                    .Any(val => val.Trim().Equals(value, StringComparison.OrdinalIgnoreCase)) == true;
-        
-        internal static bool IsCompressionExtension(this string value, CompressionMethod method) =>
-            value.StartsWith(method.ToExtensionString());
     }
 }

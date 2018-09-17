@@ -156,7 +156,7 @@
                       "The payload data of a frame cannot be read from the stream.");
             }
 
-            frame.PayloadData = new PayloadData(bytes, (long)len);
+            frame.PayloadData = new PayloadData(bytes);
         }
     }
 }

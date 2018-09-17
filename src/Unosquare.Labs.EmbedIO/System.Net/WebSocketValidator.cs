@@ -161,7 +161,7 @@
             if (!_webSocket.IgnoreExtensions
                 && !string.IsNullOrWhiteSpace(headers[Headers.WebSocketExtensions]))
             {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid Headers.WebSocketExtensions header.");
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {Headers.WebSocketExtensions} header.");
             }
         }
 
@@ -179,7 +179,7 @@
             foreach (var e in value.SplitHeaderValue(Strings.CommaSplitChar))
             {
                 var ext = e.Trim();
-                if (!comp || !ext.IsCompressionExtension(_webSocket.Compression))
+                if (!comp || !ext.StartsWith(_webSocket.Compression.ToExtensionString()))
                     return false;
 
                 if (!ext.Contains("server_no_context_takeover"))
