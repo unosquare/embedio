@@ -163,6 +163,36 @@ references:
   commentId: F:Unosquare.Labs.EmbedIO.Constants.Headers.Range
   fullName: Unosquare.Labs.EmbedIO.Constants.Headers.Range
   nameWithType: Headers.Range
+- uid: Unosquare.Labs.EmbedIO.Constants.Headers.WebSocketAccept
+  name: WebSocketAccept
+  href: api/Unosquare.Labs.EmbedIO.Constants.Headers.html#Unosquare_Labs_EmbedIO_Constants_Headers_WebSocketAccept
+  commentId: F:Unosquare.Labs.EmbedIO.Constants.Headers.WebSocketAccept
+  fullName: Unosquare.Labs.EmbedIO.Constants.Headers.WebSocketAccept
+  nameWithType: Headers.WebSocketAccept
+- uid: Unosquare.Labs.EmbedIO.Constants.Headers.WebSocketExtensions
+  name: WebSocketExtensions
+  href: api/Unosquare.Labs.EmbedIO.Constants.Headers.html#Unosquare_Labs_EmbedIO_Constants_Headers_WebSocketExtensions
+  commentId: F:Unosquare.Labs.EmbedIO.Constants.Headers.WebSocketExtensions
+  fullName: Unosquare.Labs.EmbedIO.Constants.Headers.WebSocketExtensions
+  nameWithType: Headers.WebSocketExtensions
+- uid: Unosquare.Labs.EmbedIO.Constants.Headers.WebSocketKey
+  name: WebSocketKey
+  href: api/Unosquare.Labs.EmbedIO.Constants.Headers.html#Unosquare_Labs_EmbedIO_Constants_Headers_WebSocketKey
+  commentId: F:Unosquare.Labs.EmbedIO.Constants.Headers.WebSocketKey
+  fullName: Unosquare.Labs.EmbedIO.Constants.Headers.WebSocketKey
+  nameWithType: Headers.WebSocketKey
+- uid: Unosquare.Labs.EmbedIO.Constants.Headers.WebSocketProtocol
+  name: WebSocketProtocol
+  href: api/Unosquare.Labs.EmbedIO.Constants.Headers.html#Unosquare_Labs_EmbedIO_Constants_Headers_WebSocketProtocol
+  commentId: F:Unosquare.Labs.EmbedIO.Constants.Headers.WebSocketProtocol
+  fullName: Unosquare.Labs.EmbedIO.Constants.Headers.WebSocketProtocol
+  nameWithType: Headers.WebSocketProtocol
+- uid: Unosquare.Labs.EmbedIO.Constants.Headers.WebSocketVersion
+  name: WebSocketVersion
+  href: api/Unosquare.Labs.EmbedIO.Constants.Headers.html#Unosquare_Labs_EmbedIO_Constants_Headers_WebSocketVersion
+  commentId: F:Unosquare.Labs.EmbedIO.Constants.Headers.WebSocketVersion
+  fullName: Unosquare.Labs.EmbedIO.Constants.Headers.WebSocketVersion
+  nameWithType: Headers.WebSocketVersion
 - uid: Unosquare.Labs.EmbedIO.Constants.HttpVerbs
   name: HttpVerbs
   href: api/Unosquare.Labs.EmbedIO.Constants.HttpVerbs.html
