@@ -10,13 +10,15 @@
         private static readonly Dictionary<IPAddress, Dictionary<int, EndPointListener>> IPToEndpoints =
             new Dictionary<IPAddress, Dictionary<int, EndPointListener>>();
 
+        private static readonly object SyncRoot = new object();
+
         public static void AddListener(HttpListener listener)
         {
             var added = new List<string>();
 
             try
             {
-                lock (IPToEndpoints)
+                lock (SyncRoot)
                 {
                     foreach (var prefix in listener.Prefixes)
                     {
@@ -38,7 +40,7 @@
 
         public static void AddPrefix(string prefix, HttpListener listener)
         {
-            lock (IPToEndpoints)
+            lock (SyncRoot)
             {
                 AddPrefixInternal(prefix, listener);
             }
@@ -46,7 +48,7 @@
 
         public static void RemoveEndPoint(EndPointListener epl, IPEndPoint ep)
         {
-            lock (IPToEndpoints)
+            lock (SyncRoot)
             {
                 var p = IPToEndpoints[ep.Address];
                 p.Remove(ep.Port);
@@ -61,7 +63,7 @@
 
         public static void RemoveListener(HttpListener listener)
         {
-            lock (IPToEndpoints)
+            lock (SyncRoot)
             {
                 foreach (var prefix in listener.Prefixes)
                 {
@@ -72,7 +74,7 @@
 
         public static void RemovePrefix(string prefix, HttpListener listener)
         {
-            lock (IPToEndpoints)
+            lock (SyncRoot)
             {
                 RemovePrefixInternal(prefix, listener);
             }
