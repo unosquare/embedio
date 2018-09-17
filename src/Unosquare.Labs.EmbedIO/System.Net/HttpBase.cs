@@ -61,7 +61,8 @@
             .Split(';')
             .Select(p => p.Trim())
             .Where(part => part.StartsWith("charset", StringComparison.OrdinalIgnoreCase))
-            .Select(part => Encoding.GetEncoding(GetValue(part))).FirstOrDefault();
+            .Select(part => Encoding.GetEncoding(GetValue(part)))
+            .FirstOrDefault();
 
         protected static NameValueCollection ParseHeaders(string[] headerParts)
         {

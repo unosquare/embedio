@@ -6,6 +6,7 @@
     using System.IO;
     using System.Text;
     using System.Threading.Tasks;
+    using HttpHeaders = Labs.EmbedIO.Constants.Headers;
 
     internal class HttpRequest : HttpBase
     {
@@ -68,7 +69,7 @@
             if (len > 2)
             {
                 buff.Length = len - 2;
-                Headers["Cookie"] = buff.ToString();
+                Headers[HttpHeaders.Cookie] = buff.ToString();
             }
         }
 
@@ -97,16 +98,16 @@
             var headers = ret.Headers;
 
             if (!string.IsNullOrEmpty(webSocket.Origin))
-                headers["Origin"] = webSocket.Origin;
+                headers[HttpHeaders.Origin] = webSocket.Origin;
 
-            headers["Sec-WebSocket-Key"] = webSocket.WebSocketKey.KeyValue;
+            headers[HttpHeaders.WebSocketKey] = webSocket.WebSocketKey.KeyValue;
 
             webSocket.IsExtensionsRequested = webSocket.Compression != CompressionMethod.None;
 
             if (webSocket.IsExtensionsRequested)
-                headers["Sec-WebSocket-Extensions"] = CreateExtensions(webSocket.Compression);
+                headers[HttpHeaders.WebSocketExtensions] = CreateExtensions(webSocket.Compression);
 
-            headers["Sec-WebSocket-Version"] = Strings.WebSocketVersion;
+            headers[HttpHeaders.WebSocketVersion] = Strings.WebSocketVersion;
 
             ret.SetCookies(webSocket.CookieCollection);
 

@@ -1,6 +1,5 @@
 ﻿namespace Unosquare.Net
 {
-    using Labs.EmbedIO.Constants;
     using System;
     using System.Collections.Specialized;
     using System.Net;
@@ -40,22 +39,12 @@
 
         public int StatusCode { get; }
         
-        /// <summary>
-        /// Sets the cookies.
-        /// </summary>
-        /// <param name="cookies">The cookies.</param>
         public void SetCookies(CookieCollection cookies)
         {
             foreach (var cookie in cookies)
                 Headers.Add("Set-Cookie", cookie.ToString());
         }
 
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String" /> that represents this instance.
-        /// </returns>
         public override string ToString()
         {
             var output = new StringBuilder(64)
@@ -72,15 +61,6 @@
             return output.ToString();
         }
 
-        internal static HttpResponse CreateCloseResponse(HttpStatusCode code)
-        {
-            var res = new HttpResponse(code);
-            res.Headers["Connection"] = "close";
-            res.Headers["Sec-WebSocket-Version"] = Strings.WebSocketVersion;
-
-            return res;
-        }
-        
         internal static HttpResponse CreateWebSocketResponse()
         {
             var res = new HttpResponse(HttpStatusCode.SwitchingProtocols);

@@ -270,31 +270,31 @@
                     {
                         "SecWebSocketAccept",
                         new HttpHeaderInfo(
-                            "Sec-WebSocket-Accept",
+                            HttpHeaders.WebSocketAccept,
                             HttpHeaderType.Response | HttpHeaderType.Restricted)
                     },
                     {
                         "SecWebSocketExtensions",
                         new HttpHeaderInfo(
-                            "Sec-WebSocket-Extensions",
+                            HttpHeaders.WebSocketExtensions,
                             HttpHeaderType.Request | HttpHeaderType.Response | HttpHeaderType.Restricted | HttpHeaderType.MultiValueInRequest)
                     },
                     {
                         "SecWebSocketKey",
                         new HttpHeaderInfo(
-                            "Sec-WebSocket-Key",
+                            HttpHeaders.WebSocketKey,
                             HttpHeaderType.Request | HttpHeaderType.Restricted)
                     },
                     {
                         "SecWebSocketProtocol",
                         new HttpHeaderInfo(
-                            "Sec-WebSocket-Protocol",
+                            HttpHeaders.WebSocketProtocol,
                             HttpHeaderType.Request | HttpHeaderType.Response | HttpHeaderType.MultiValueInRequest)
                     },
                     {
                         "SecWebSocketVersion",
                         new HttpHeaderInfo(
-                            "Sec-WebSocket-Version",
+                            HttpHeaders.WebSocketVersion,
                             HttpHeaderType.Request | HttpHeaderType.Response | HttpHeaderType.Restricted | HttpHeaderType.MultiValueInResponse)
                     },
                     {
@@ -374,7 +374,7 @@
                         new HttpHeaderInfo(
                             "WWW-Authenticate",
                             HttpHeaderType.Response | HttpHeaderType.MultiValue)
-                    }
+                    },
                 };
         
         internal HttpHeaderType State { get; private set; }

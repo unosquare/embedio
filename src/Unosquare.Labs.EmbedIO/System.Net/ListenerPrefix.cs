@@ -1,7 +1,6 @@
 ﻿namespace Unosquare.Net
 {
     using System;
-    using System.Net;
 
     internal sealed class ListenerPrefix
     {
@@ -14,8 +13,6 @@
         }
 
         public HttpListener Listener { get; set; }
-
-        public IPAddress[] Addresses { get; set; }
 
         public bool Secure { get; private set; }
 
