@@ -1,9 +1,7 @@
-﻿using System.Linq;
-
-namespace Unosquare.Net
+﻿namespace Unosquare.Net
 {
     using System;
-    using System.Collections;
+    using System.Linq;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
@@ -38,9 +36,7 @@ namespace Unosquare.Net
         private bool _enableRedirection;
         private AutoResetEvent _exitReceiving;
         private string _extensions;
-        private MemoryStream _fragmentsBuffer;
-        private bool _fragmentsCompressed;
-        private Opcode _fragmentsOpcode;
+        private FragmentBuffer _fragmentsBuffer;
         private volatile bool _inMessage;
         private string _origin;
         private AutoResetEvent _receivePong;
@@ -378,26 +374,25 @@ namespace Unosquare.Net
         /// <returns>
         /// A task that represents the asynchronous closes websocket connection.
         /// </returns>
-        public async Task CloseAsync(
+        public Task CloseAsync(
             CloseStatusCode code = CloseStatusCode.Undefined,
             string reason = null,
             CancellationToken ct = default)
         {
             if (!_validator.CheckIfAvailable())
-                return;
+                return Task.CompletedTask;
 
             if (code != CloseStatusCode.Undefined &&
                 !WebSocketValidator.CheckParametersForClose(code, reason, IsClient))
-                return;
-
-            if (code == CloseStatusCode.NoStatus)
             {
-                await InternalCloseAsync(new CloseEventArgs(), ct: ct);
-                return;
+                return Task.CompletedTask;
             }
 
+            if (code == CloseStatusCode.NoStatus)
+                return InternalCloseAsync(new CloseEventArgs(), ct: ct);
+
             var send = !IsOpcodeReserved(code);
-            await InternalCloseAsync(new CloseEventArgs(code, reason), send, send, ct: ct);
+            return InternalCloseAsync(new CloseEventArgs(code, reason), send, send, ct: ct);
         }
 
         /// <summary>
@@ -423,16 +418,12 @@ namespace Unosquare.Net
             try
             {
                 lock (_forState)
-                {
                     _readyState = WebSocketState.Connecting;
-                }
 
                 await DoHandshakeAsync();
 
                 lock (_forState)
-                {
                     _readyState = WebSocketState.Open;
-                }
 
                 Open();
             }
@@ -755,24 +746,17 @@ namespace Unosquare.Net
                 if (frame.Opcode == Opcode.Cont)
                     return true;
 
-                _fragmentsOpcode = frame.Opcode;
-                _fragmentsCompressed = frame.IsCompressed;
-                _fragmentsBuffer = new MemoryStream();
+                _fragmentsBuffer = new FragmentBuffer(frame.Opcode, frame.IsCompressed);
                 InContinuation = true;
             }
 
-            using (var input = new MemoryStream(frame.PayloadData.ApplicationData))
-                input.CopyTo(_fragmentsBuffer, 1024);
+            _fragmentsBuffer.AddPayload(frame.PayloadData.ApplicationData);
 
             if (frame.Fin == Fin.Final)
             {
                 using (_fragmentsBuffer)
                 {
-                    var data = _fragmentsCompressed
-                        ? _fragmentsBuffer.Compress(_compression, System.IO.Compression.CompressionMode.Decompress)
-                        : _fragmentsBuffer;
-
-                    _messageEventQueue.Enqueue(new MessageEventArgs(_fragmentsOpcode, data.ToArray()));
+                    _messageEventQueue.Enqueue(_fragmentsBuffer.GetMessage(_compression));
                 }
 
                 _fragmentsBuffer = null;

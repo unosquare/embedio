@@ -14,7 +14,7 @@
             _webSocket = webSocket;
         }
 
-        internal static bool CheckParametersForClose(CloseStatusCode code, string reason, bool client = true)
+        internal static bool CheckParametersForClose(CloseStatusCode code, string reason, bool client)
         {
             if (code == CloseStatusCode.NoStatus && !string.IsNullOrEmpty(reason))
             {
