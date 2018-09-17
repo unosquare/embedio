@@ -1,6 +1,5 @@
 ﻿namespace Unosquare.Net
 {
-    using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Sockets;
@@ -84,7 +83,7 @@
         {
             var lp = new ListenerPrefix(p);
 
-            if (lp.Path.IndexOf('%') != -1 || lp.Path.IndexOf("//", StringComparison.Ordinal) != -1)
+            if (!lp.IsValid())
                 throw new HttpListenerException(400, "Invalid path.");
 
             // listens on all the interfaces if host name cannot be parsed by IPAddress.
@@ -148,7 +147,8 @@
             try
             {
                 var lp = new ListenerPrefix(prefix);
-                if (lp.Path.IndexOf('%') != -1 || lp.Path.IndexOf("//", StringComparison.Ordinal) != -1)
+
+                if (!lp.IsValid())
                     return;
 
                 var epl = GetEpListener(lp.Host, lp.Port, listener, lp.Secure);

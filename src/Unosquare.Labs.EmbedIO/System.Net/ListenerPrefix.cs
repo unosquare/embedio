@@ -71,19 +71,19 @@
                 throw new ArgumentException("The prefix must end with '/'");
         }
 
+        public bool IsValid() => Path.IndexOf('%') == -1 && Path.IndexOf("//", StringComparison.Ordinal) == -1;
+
         public override string ToString() => _original;
 
         // Equals and GetHashCode are required to detect duplicates in HttpListenerPrefixCollection.
-        public override bool Equals(object o)
-        {
-            return o is ListenerPrefix other && _original == other._original;
-        }
+        public override bool Equals(object o) => o is ListenerPrefix other && _original == other._original;
 
         public override int GetHashCode() => _original.GetHashCode();
 
         private void Parse(string uri)
         {
-            ushort defaultPort = 80;
+            var defaultPort = 80;
+
             if (uri.StartsWith("https://"))
             {
                 defaultPort = 443;
@@ -97,6 +97,7 @@
 
             var colon = uri.IndexOf(':', startHost, length - startHost);
             int root;
+
             if (colon > 0)
             {
                 Host = uri.Substring(startHost, colon - startHost);
