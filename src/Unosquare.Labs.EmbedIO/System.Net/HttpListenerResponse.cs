@@ -1,19 +1,19 @@
 ﻿namespace Unosquare.Net
 {
+    using Labs.EmbedIO;
     using System;
-    using System.Globalization;
     using System.Collections.Specialized;
+    using System.Globalization;
+    using System.IO;
     using System.Linq;
     using System.Net;
-    using System.IO;
     using System.Text;
-    using Labs.EmbedIO;
 
     /// <summary>
     /// Represents an HTTP Listener's response.
     /// </summary>
     /// <seealso cref="IDisposable" />
-    public sealed class HttpListenerResponse 
+    public sealed class HttpListenerResponse
         : IHttpResponse, IDisposable
     {
         private const string CannotChangeHeaderWarning = "Cannot be changed after headers are sent.";
@@ -79,7 +79,7 @@
 
         /// <inheritdoc />
         public NameValueCollection Headers => HeaderCollection;
-        
+
         /// <inheritdoc />
         public bool KeepAlive
         {
@@ -158,7 +158,7 @@
         /// The status description.
         /// </value>
         public string StatusDescription { get; set; } = "OK";
-        
+
         internal CookieCollection CookieCollection
         {
             get => _cookies ?? (_cookies = new CookieCollection());
@@ -362,21 +362,19 @@
 
         private void WriteHeaders(Stream ms)
         {
-            using (var writer = new StreamWriter(ms, Encoding.UTF8, 256))
-            {
-                writer.Write("HTTP/{0} {1} {2}\r\n", ProtocolVersion, _statusCode, StatusDescription);
-                var headersStr = FormatHeaders(HeaderCollection);
-                writer.Write(headersStr);
-                writer.Flush();
+            var writer = new StreamWriter(ms, Encoding.UTF8, 256);
+            writer.Write("HTTP/{0} {1} {2}\r\n", ProtocolVersion, _statusCode, StatusDescription);
+            var headersStr = FormatHeaders(HeaderCollection);
+            writer.Write(headersStr);
+            writer.Flush();
 
-                var preamble = Encoding.UTF8.GetPreamble().Length;
-                if (_outputStream == null)
-                    _outputStream = _context.Connection.GetResponseStream();
+            var preamble = Encoding.UTF8.GetPreamble().Length;
+            if (_outputStream == null)
+                _outputStream = _context.Connection.GetResponseStream();
 
-                // Assumes that the ms was at position 0
-                ms.Position = preamble;
-                HeadersSent = true;
-            }
+            // Assumes that the ms was at position 0
+            ms.Position = preamble;
+            HeadersSent = true;
         }
     }
 }
