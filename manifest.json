@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "CODE_OF_CONDUCT.html",
-          "hash": "VYazZrm4SK+4gGG3mgLxaA=="
+          "hash": "PeG0+H4OBETShZ2SsDjCwg=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "QW4OlvrhYi0gxbQ7HNqU4w=="
+          "hash": "eu7N+KbnCI8NJia58ESBjw=="
         }
       },
       "is_incremental": false,
@@ -893,6 +893,11 @@
         "incrementalPhase": "build"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build"
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build"
@@ -904,11 +909,6 @@
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build"
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         }
       }
