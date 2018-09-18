@@ -103,7 +103,7 @@
         /// <value>
         /// A <see cref="string"/> that represents the value of the Sec-WebSocket-Key header.
         /// </value>
-        public string SecWebSocketKey => _context.Request.Headers["Sec-WebSocket-Key"];
+        public string SecWebSocketKey => _context.Request.Headers[Labs.EmbedIO.Constants.Headers.WebSocketKey];
 
         /// <summary>
         /// Gets the value of the Sec-WebSocket-Version header included in the request.
@@ -114,7 +114,7 @@
         /// <value>
         /// A <see cref="string"/> that represents the value of the Sec-WebSocket-Version header.
         /// </value>
-        public string SecWebSocketVersion => _context.Request.Headers["Sec-WebSocket-Version"];
+        public string SecWebSocketVersion => _context.Request.Headers[Labs.EmbedIO.Constants.Headers.WebSocketVersion];
 
         /// <summary>
         /// Gets the server endpoint as an IP address and a port number.

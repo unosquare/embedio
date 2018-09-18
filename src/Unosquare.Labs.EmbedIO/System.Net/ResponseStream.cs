@@ -77,7 +77,7 @@
                             ms.Write(bytes, 0, bytes.Length);
                         }
 
-                        InternalWrite(ms.ToArray(), (int)start, (int)(ms.Length - start));
+                        InternalWrite(ms.ToArray(), (int) start, (int) (ms.Length - start));
                         _trailerSent = true;
                     }
                     else if (chunked && !_trailerSent)
@@ -86,6 +86,10 @@
                         InternalWrite(bytes, 0, bytes.Length);
                         _trailerSent = true;
                     }
+                }
+                catch (ObjectDisposedException)
+                {
+                    // Ignored
                 }
                 catch (IOException)
                 {

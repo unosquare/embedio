@@ -35,7 +35,7 @@
         {
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, async (context, ct) =>
             {
-                if (context.Request.IsWebSocketRequest == false)
+                if (!context.Request.IsWebSocketRequest)
                     return false;
 
                 string path;
@@ -63,6 +63,7 @@
 
                 // Accept the WebSocket -- this is a blocking method until the WebSocketCloses
                 await _serverMap[path].AcceptWebSocket(context, ct);
+
                 return true;
             });
         }
@@ -100,7 +101,7 @@
                     nameof(socketType));
             }
 
-            _serverMap[attribute.Path] = (WebSocketsServer) Activator.CreateInstance(socketType);
+            _serverMap[attribute.Path] = (WebSocketsServer)Activator.CreateInstance(socketType);
         }
 
         /// <summary>
@@ -290,7 +291,7 @@
             try
             {
 #if NET47
-                // define a receive buffer
+// define a receive buffer
                 var receiveBuffer = new byte[receiveBufferSize];
 
                 // define a dynamic buffer that holds multi-part receptions
@@ -356,6 +357,10 @@
                     await Task.Delay(500, ct);
                 }
 #endif
+            }
+            catch (TaskCanceledException)
+            {
+                // ignore
             }
             catch (Exception ex)
             {

@@ -14,22 +14,7 @@
             _webSocket = webSocket;
         }
 
-        internal static string CheckIfAvailable(
-            WebSocketState state,
-            bool connecting = false,
-            bool open = true,
-            bool closing = false,
-            bool closed = false)
-        {
-            return (!connecting && state == WebSocketState.Connecting) ||
-                   (!open && state == WebSocketState.Open) ||
-                   (!closing && state == WebSocketState.Closing) ||
-                   (!closed && state == WebSocketState.Closed)
-                ? "This operation isn't available in: " + state.ToString().ToLower()
-                : null;
-        }
-        
-        internal static bool CheckParametersForClose(CloseStatusCode code, string reason, bool client = true)
+        internal static bool CheckParametersForClose(CloseStatusCode code, string reason, bool client)
         {
             if (code == CloseStatusCode.NoStatus && !string.IsNullOrEmpty(reason))
             {
@@ -58,56 +43,38 @@
             return true;
         }
 
-        internal static string CheckPingParameter(string message, out byte[] bytes)
+        internal void ThrowIfInvalidResponse(HttpResponse response)
         {
-            bytes = Encoding.UTF8.GetBytes(message);
-            return bytes.Length > 125 ? "A message has greater than the allowable max size." : null;
-        }
-
-        internal static string CheckSendParameter(byte[] data) => data == null ? "'data' is null." : null;
-        
-        internal bool CheckHandshakeResponse(HttpResponse response, out string message)
-        {
-            message = null;
-
             if (response.IsRedirect)
             {
-                message = "Indicates the redirection.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "Indicates the redirection.");
             }
 
             if (response.IsUnauthorized)
             {
-                message = "Requires the authentication.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "Requires the authentication.");
             }
 
             if (!response.IsWebSocketResponse)
             {
-                message = "Not a WebSocket handshake response.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "Not a WebSocket handshake response.");
             }
 
             var headers = response.Headers;
-            if (!_webSocket.ValidateSecWebSocketAcceptHeader(headers["Sec-WebSocket-Accept"]))
+            if (headers[Headers.WebSocketAccept]?.TrimStart() != _webSocket.WebSocketKey.CreateResponseKey())
             {
-                message = "Includes no Sec-WebSocket-Accept header, or it has an invalid value.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {Headers.WebSocketAccept} header, or it has an invalid value.");
             }
 
-            if (!ValidateSecWebSocketExtensionsServerHeader(headers["Sec-WebSocket-Extensions"]))
+            if (!ValidateSecWebSocketExtensionsServerHeader(headers[Headers.WebSocketExtensions]))
             {
-                message = "Includes an invalid Sec-WebSocket-Extensions header.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {Headers.WebSocketExtensions} header.");
             }
 
-            if (!ValidateSecWebSocketVersionServerHeader(headers["Sec-WebSocket-Version"]))
+            if (!ValidateSecWebSocketVersionServerHeader(headers[Headers.WebSocketVersion]))
             {
-                message = "Includes an invalid Sec-WebSocket-Version header.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {Headers.WebSocketVersion} header.");
             }
-
-            return true;
         }
 
         internal bool CheckIfAvailable(bool connecting = true, bool open = true, bool closing = false, bool closed = false)
@@ -163,90 +130,41 @@
         }
 
         // As server
-        internal bool CheckHandshakeRequest(WebSocketContext context, out string message)
+        internal void ThrowIfInvalid(WebSocketContext context)
         {
-            message = null;
-
             if (context.RequestUri == null)
             {
-                message = "Specifies an invalid Request-URI.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "Specifies an invalid Request-URI.");
             }
 
             if (!context.IsWebSocketRequest)
             {
-                message = "Not a WebSocket handshake request.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, "Not a WebSocket handshake request.");
             }
 
             var headers = context.Headers;
-            if (!ValidateSecWebSocketKeyHeader(headers["Sec-WebSocket-Key"]))
+            if (string.IsNullOrEmpty(headers[Headers.WebSocketKey]))
             {
-                message = "Includes no Sec-WebSocket-Key header, or it has an invalid value.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {Headers.WebSocketKey} header, or it has an invalid value.");
             }
 
-            if (!ValidateSecWebSocketVersionClientHeader(headers["Sec-WebSocket-Version"]))
+            if (!ValidateSecWebSocketVersionClientHeader(headers[Headers.WebSocketVersion]))
             {
-                message = "Includes no Sec-WebSocket-Version header, or it has an invalid value.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {Headers.WebSocketVersion} header, or it has an invalid value.");
             }
 
-            if (!ValidateSecWebSocketProtocolClientHeader(headers["Sec-WebSocket-Protocol"]))
+            if (!ValidateSecWebSocketProtocolClientHeader(headers[Headers.WebSocketProtocol]))
             {
-                message = "Includes an invalid Sec-WebSocket-Protocol header.";
-                return false;
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {Headers.WebSocketProtocol} header.");
             }
 
             if (!_webSocket.IgnoreExtensions
-                && !string.IsNullOrWhiteSpace(headers["Sec-WebSocket-Extensions"]))
+                && !string.IsNullOrWhiteSpace(headers[Headers.WebSocketExtensions]))
             {
-                message = "Includes an invalid Sec-WebSocket-Extensions header.";
-                return false;
-            }
-
-            return true;
-        }
-
-        internal void CheckReceivedFrame(WebSocketFrame frame)
-        {
-            var masked = frame.IsMasked;
-
-            if (_webSocket.IsClient && masked)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, "A frame from the server is masked.");
-            }
-
-            if (!_webSocket.IsClient && !masked)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, "A frame from a client isn't masked.");
-            }
-
-            if (_webSocket.InContinuation && frame.IsData)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError,
-                    "A data frame has been received while receiving continuation frames.");
-            }
-
-            if (frame.IsCompressed && _webSocket.Compression == CompressionMethod.None)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError,
-                    "A compressed frame has been received without any agreement for it.");
-            }
-
-            if (frame.Rsv2 == Rsv.On)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError,
-                    "The RSV2 of a frame is non-zero without any negotiation for it.");
-            }
-
-            if (frame.Rsv3 == Rsv.On)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError,
-                    "The RSV3 of a frame is non-zero without any negotiation for it.");
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {Headers.WebSocketExtensions} header.");
             }
         }
-        
+
         // As client
         internal bool ValidateSecWebSocketExtensionsServerHeader(string value)
         {
@@ -261,49 +179,42 @@
             foreach (var e in value.SplitHeaderValue(Strings.CommaSplitChar))
             {
                 var ext = e.Trim();
-                if (comp && ext.IsCompressionExtension(_webSocket.Compression))
+                if (!comp || !ext.StartsWith(_webSocket.Compression.ToExtensionString()))
+                    return false;
+
+                if (!ext.Contains("server_no_context_takeover"))
                 {
-                    if (!ext.Contains("server_no_context_takeover"))
-                    {
-                        "The server hasn't sent back 'server_no_context_takeover'.".Error();
-                        return false;
-                    }
-
-                    if (!ext.Contains("client_no_context_takeover"))
-                        "The server hasn't sent back 'client_no_context_takeover'.".Info();
-
-                    var method = _webSocket.Compression.ToExtensionString();
-                    var invalid =
-                        ext.SplitHeaderValue(';').Any(
-                            t =>
-                            {
-                                t = t.Trim();
-                                return t != method
-                                       && t != "server_no_context_takeover"
-                                       && t != "client_no_context_takeover";
-                            });
-
-                    if (invalid)
-                        return false;
-                }
-                else
-                {
+                    "The server hasn't sent back 'server_no_context_takeover'.".Error();
                     return false;
                 }
+
+                if (!ext.Contains("client_no_context_takeover"))
+                    "The server hasn't sent back 'client_no_context_takeover'.".Info();
+
+                var method = _webSocket.Compression.ToExtensionString();
+                var invalid =
+                    ext.SplitHeaderValue(';').Any(
+                        t =>
+                        {
+                            t = t.Trim();
+                            return t != method
+                                   && t != "server_no_context_takeover"
+                                   && t != "client_no_context_takeover";
+                        });
+
+                if (invalid)
+                    return false;
             }
 
             return true;
         }
 
-        // As server
-        private static bool ValidateSecWebSocketKeyHeader(string value) => !string.IsNullOrEmpty(value);
-
         private static bool ValidateSecWebSocketProtocolClientHeader(string value) => value == null || value.Length > 0;
 
         // As server
-        private static bool ValidateSecWebSocketVersionClientHeader(string value) => value != null && value == WebSocket.Version;
+        private static bool ValidateSecWebSocketVersionClientHeader(string value) => value != null && value == Strings.WebSocketVersion;
 
         // As client
-        private static bool ValidateSecWebSocketVersionServerHeader(string value) => value == null || value == WebSocket.Version;
+        private static bool ValidateSecWebSocketVersionServerHeader(string value) => value == null || value == Strings.WebSocketVersion;
     }
 }

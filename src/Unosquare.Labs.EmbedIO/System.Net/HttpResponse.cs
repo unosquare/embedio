@@ -17,7 +17,7 @@
         {
             StatusCode = code;
             Reason = reason;
-            Headers["Server"] = "embedio/1.0";
+            Headers["Server"] = "embedio/2.0";
         }
         
         public CookieCollection Cookies => Headers.GetCookies(true);
@@ -39,22 +39,12 @@
 
         public int StatusCode { get; }
         
-        /// <summary>
-        /// Sets the cookies.
-        /// </summary>
-        /// <param name="cookies">The cookies.</param>
         public void SetCookies(CookieCollection cookies)
         {
             foreach (var cookie in cookies)
                 Headers.Add("Set-Cookie", cookie.ToString());
         }
 
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String" /> that represents this instance.
-        /// </returns>
         public override string ToString()
         {
             var output = new StringBuilder(64)
@@ -71,14 +61,6 @@
             return output.ToString();
         }
 
-        internal static HttpResponse CreateCloseResponse(HttpStatusCode code)
-        {
-            var res = new HttpResponse(code);
-            res.Headers["Connection"] = "close";
-
-            return res;
-        }
-        
         internal static HttpResponse CreateWebSocketResponse()
         {
             var res = new HttpResponse(HttpStatusCode.SwitchingProtocols);
@@ -95,7 +77,7 @@
             var statusLine = headerParts[0].Split(new[] { ' ' }, 3);
 
             if (statusLine.Length != 3)
-                throw new ArgumentException("Invalid status line: " + headerParts[0]);
+                throw new ArgumentException($"Invalid status line: {headerParts[0]}");
 
             return new HttpResponse(int.Parse(statusLine[1]), statusLine[2], new Version(statusLine[0].Substring(5)), ParseHeaders(headerParts));
         }

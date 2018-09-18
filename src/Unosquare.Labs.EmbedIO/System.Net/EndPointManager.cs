@@ -1,13 +1,15 @@
 ﻿namespace Unosquare.Net
 {
-    using System;
     using System.Collections.Generic;
     using System.Net;
+    using System.Net.Sockets;
 
     internal static class EndPointManager
     {
         private static readonly Dictionary<IPAddress, Dictionary<int, EndPointListener>> IPToEndpoints =
             new Dictionary<IPAddress, Dictionary<int, EndPointListener>>();
+
+        private static readonly object SyncRoot = new object();
 
         public static void AddListener(HttpListener listener)
         {
@@ -15,7 +17,7 @@
 
             try
             {
-                lock (IPToEndpoints)
+                lock (SyncRoot)
                 {
                     foreach (var prefix in listener.Prefixes)
                     {
@@ -37,7 +39,7 @@
 
         public static void AddPrefix(string prefix, HttpListener listener)
         {
-            lock (IPToEndpoints)
+            lock (SyncRoot)
             {
                 AddPrefixInternal(prefix, listener);
             }
@@ -45,7 +47,7 @@
 
         public static void RemoveEndPoint(EndPointListener epl, IPEndPoint ep)
         {
-            lock (IPToEndpoints)
+            lock (SyncRoot)
             {
                 var p = IPToEndpoints[ep.Address];
                 p.Remove(ep.Port);
@@ -60,7 +62,7 @@
 
         public static void RemoveListener(HttpListener listener)
         {
-            lock (IPToEndpoints)
+            lock (SyncRoot)
             {
                 foreach (var prefix in listener.Prefixes)
                 {
@@ -71,7 +73,7 @@
 
         public static void RemovePrefix(string prefix, HttpListener listener)
         {
-            lock (IPToEndpoints)
+            lock (SyncRoot)
             {
                 RemovePrefixInternal(prefix, listener);
             }
@@ -80,10 +82,8 @@
         private static void AddPrefixInternal(string p, HttpListener listener)
         {
             var lp = new ListenerPrefix(p);
-            if (lp.Path.IndexOf('%') != -1)
-                throw new HttpListenerException(400, "Invalid path.");
 
-            if (lp.Path.IndexOf("//", StringComparison.Ordinal) != -1) // TODO: Code?
+            if (!lp.IsValid())
                 throw new HttpListenerException(400, "Invalid path.");
 
             // listens on all the interfaces if host name cannot be parsed by IPAddress.
@@ -144,12 +144,20 @@
 
         private static void RemovePrefixInternal(string prefix, HttpListener listener)
         {
-            var lp = new ListenerPrefix(prefix);
-            if (lp.Path.IndexOf('%') != -1 || lp.Path.IndexOf("//", StringComparison.Ordinal) != -1)
-                return;
+            try
+            {
+                var lp = new ListenerPrefix(prefix);
 
-            var epl = GetEpListener(lp.Host, lp.Port, listener, lp.Secure);
-            epl.RemovePrefix(lp, listener);
+                if (!lp.IsValid())
+                    return;
+
+                var epl = GetEpListener(lp.Host, lp.Port, listener, lp.Secure);
+                epl.RemovePrefix(lp, listener);
+            }
+            catch (SocketException)
+            {
+                // ignored
+            }
         }
     }
 }

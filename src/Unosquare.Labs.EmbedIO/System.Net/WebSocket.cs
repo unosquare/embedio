@@ -1,12 +1,12 @@
 ﻿namespace Unosquare.Net
 {
     using System;
-    using System.Collections;
+    using System.Linq;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
     using System.Net;
     using System.Net.Sockets;
-    using System.Security.Cryptography;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
@@ -23,28 +23,12 @@
     /// </remarks>
     public class WebSocket : IDisposable
     {
-        internal const string Version = "13";
-
-        // Represents the empty array of <see cref="byte"/> used internally.
         internal static readonly byte[] EmptyBytes = new byte[0];
-
-        // Represents the length used to determine whether the data should be fragmented in sending.
-        internal static readonly int FragmentLength = 1016;
-
-        /// <summary>
-        /// Represents the random number generator used internally.
-        /// </summary>
-        internal static readonly RandomNumberGenerator RandomNumber = RandomNumberGenerator.Create();
-
-        private const string Guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 
         private readonly Action<MessageEventArgs> _message;
         private readonly object _forState = new object();
-        private readonly Queue<MessageEventArgs> _messageEventQueue = new Queue<MessageEventArgs>();
-        private readonly object _forMessageEventQueue;
+        private readonly ConcurrentQueue<MessageEventArgs> _messageEventQueue = new ConcurrentQueue<MessageEventArgs>();
         private readonly WebSocketValidator _validator;
-
-        private string _base64Key;
 
         private CompressionMethod _compression = CompressionMethod.None;
         private volatile WebSocketState _readyState = WebSocketState.Connecting;
@@ -52,9 +36,7 @@
         private bool _enableRedirection;
         private AutoResetEvent _exitReceiving;
         private string _extensions;
-        private MemoryStream _fragmentsBuffer;
-        private bool _fragmentsCompressed;
-        private Opcode _fragmentsOpcode;
+        private FragmentBuffer _fragmentsBuffer;
         private volatile bool _inMessage;
         private string _origin;
         private AutoResetEvent _receivePong;
@@ -88,16 +70,9 @@
         /// </para></exception>
         public WebSocket(string url)
         {
-            if (url == null)
-                throw new ArgumentNullException(nameof(url));
+            _uri = url.CreateWebSocketUri();
 
-            if (url.Length == 0)
-                throw new ArgumentException("An empty string.", nameof(url));
-
-            if (!url.TryCreateWebSocketUri(out _uri, out var msg))
-                throw new ArgumentException(msg, nameof(url));
-
-            _base64Key = CreateBase64Key();
+            WebSocketKey = new WebSocketKey(true);
             IsClient = true;
 
             _message = Messagec;
@@ -105,7 +80,6 @@
             IsSecure = _uri.Scheme == "wss";
 #endif
             _waitTime = TimeSpan.FromSeconds(5);
-            _forMessageEventQueue = ((ICollection) _messageEventQueue).SyncRoot;
             _validator = new WebSocketValidator(this);
         }
 
@@ -115,34 +89,20 @@
             _context = context;
 
             _message = Messages;
+            WebSocketKey = new WebSocketKey(false);
+
 #if SSL
             IsSecure = context.IsSecureConnection;
 #endif
             _stream = context.Stream;
             _waitTime = TimeSpan.FromSeconds(1);
-            _forMessageEventQueue = ((ICollection) _messageEventQueue).SyncRoot;
             _validator = new WebSocketValidator(this);
         }
-
-        /// <summary>
-        /// Occurs when the WebSocket connection has been closed.
-        /// </summary>
-        public event EventHandler<CloseEventArgs> OnClose;
-
-        /// <summary>
-        /// Occurs when the <see cref="WebSocket"/> gets an error.
-        /// </summary>
-        public event EventHandler<ConnectionFailureEventArgs> OnError;
 
         /// <summary>
         /// Occurs when the <see cref="WebSocket"/> receives a message.
         /// </summary>
         public event EventHandler<MessageEventArgs> OnMessage;
-
-        /// <summary>
-        /// Occurs when the WebSocket connection has been established.
-        /// </summary>
-        public event EventHandler OnOpen;
 
         /// <summary>
         /// Gets or sets the compression method used to compress a message on the WebSocket connection.
@@ -160,11 +120,7 @@
                 lock (_forState)
                 {
                     if (!_validator.CheckIfAvailable(true, false, true, false, false))
-                    {
-                        Error("An error has occurred in setting the compression.");
-
                         return;
-                    }
 
                     _compression = value;
                 }
@@ -218,10 +174,7 @@
                 lock (_forState)
                 {
                     if (!_validator.CheckIfAvailable(true, false, true, false, false))
-                    {
-                        Error("An error has occurred in setting the enable redirection.");
                         return;
-                    }
 
                     _enableRedirection = value;
                 }
@@ -282,10 +235,7 @@
                 lock (_forState)
                 {
                     if (!_validator.CheckIfAvailable(true, false, true, false, false))
-                    {
-                        Error("An error has occurred in setting the origin.");
                         return;
-                    }
 
                     if (string.IsNullOrEmpty(value))
                     {
@@ -296,7 +246,6 @@
                     if (!Uri.TryCreate(value, UriKind.Absolute, out var origin) || origin.Segments.Length > 1)
                     {
                         "The syntax of an origin must be '<scheme>://<host>[:<port>]'.".Error();
-                        Error("An error has occurred in setting the origin.");
 
                         return;
                     }
@@ -316,15 +265,15 @@
         public WebSocketState State => _readyState;
 
 #if SSL
-/// <summary>
-/// Gets or sets the SSL configuration used to authenticate the server and
-/// optionally the client for secure connection.
-/// </summary>
-/// <value>
-/// A <see cref="ClientSslConfiguration"/> that represents the configuration used
-/// to authenticate the server and optionally the client for secure connection,
-/// or <see langword="null"/> if the <see cref="WebSocket"/> is used in a server.
-/// </value>
+        /// <summary>
+        /// Gets or sets the SSL configuration used to authenticate the server and
+        /// optionally the client for secure connection.
+        /// </summary>
+        /// <value>
+        /// A <see cref="ClientSslConfiguration"/> that represents the configuration used
+        /// to authenticate the server and optionally the client for secure connection,
+        /// or <see langword="null"/> if the <see cref="WebSocket"/> is used in a server.
+        /// </value>
         public ClientSslConfiguration SslConfiguration
         {
             get
@@ -377,10 +326,7 @@
                 lock (_forState)
                 {
                     if (value == TimeSpan.Zero || !_validator.CheckIfAvailable(true, true, true, false, false))
-                    {
-                        Error("An error has occurred in setting the wait time.");
                         return;
-                    }
 
                     _waitTime = value;
                 }
@@ -391,25 +337,25 @@
 
         internal bool IsClient { get; }
 
-        internal bool IsExtensionsRequested { get; private set; }
+        internal bool IsExtensionsRequested { get; set; }
 
         internal CookieCollection CookieCollection { get; } = new CookieCollection();
-
-        internal bool HasMessage
-        {
-            get
-            {
-                lock (_forMessageEventQueue)
-                {
-                    return _messageEventQueue.Count > 0;
-                }
-            }
-        }
 
         // As server
         internal bool IgnoreExtensions { get; set; } = true;
 
-        internal bool IsConnected => _readyState == WebSocketState.Open || _readyState == WebSocketState.Closing;
+        internal bool IsConnected
+        {
+            get
+            {
+                lock (_forState)
+                {
+                    return _readyState == WebSocketState.Open || _readyState == WebSocketState.Closing;
+                }
+            }
+        }
+
+        internal WebSocketKey WebSocketKey { get; }
 
         /// <summary>
         /// Closes the WebSocket connection asynchronously, and releases
@@ -421,30 +367,25 @@
         /// <returns>
         /// A task that represents the asynchronous closes websocket connection.
         /// </returns>
-        public async Task CloseAsync(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null,
+        public Task CloseAsync(
+            CloseStatusCode code = CloseStatusCode.Undefined,
+            string reason = null,
             CancellationToken ct = default)
         {
             if (!_validator.CheckIfAvailable())
-            {
-                Error("An error has occurred in closing the connection.");
-                return;
-            }
+                return Task.CompletedTask;
 
             if (code != CloseStatusCode.Undefined &&
                 !WebSocketValidator.CheckParametersForClose(code, reason, IsClient))
             {
-                Error("An error has occurred in closing the connection.");
-                return;
+                return Task.CompletedTask;
             }
 
             if (code == CloseStatusCode.NoStatus)
-            {
-                await InternalCloseAsync(new CloseEventArgs(), ct: ct);
-                return;
-            }
+                return InternalCloseAsync(new CloseEventArgs(), ct: ct);
 
             var send = !IsOpcodeReserved(code);
-            await InternalCloseAsync(new CloseEventArgs(code, reason), send, send, ct: ct);
+            return InternalCloseAsync(new CloseEventArgs(code, reason), send, send, ct: ct);
         }
 
         /// <summary>
@@ -465,28 +406,17 @@
         public async Task ConnectAsync(CancellationToken ct = default)
         {
             if (!_validator.CheckIfAvailable(true, false, true, false, false))
-            {
-                Error("An error has occurred in connecting.");
-
                 return;
-            }
 
             try
             {
                 lock (_forState)
-                {
                     _readyState = WebSocketState.Connecting;
-                }
 
-                var handShake = await DoHandshakeAsync();
-
-                if (!handShake)
-                    return;
+                await DoHandshakeAsync();
 
                 lock (_forState)
-                {
                     _readyState = WebSocketState.Open;
-                }
 
                 Open();
             }
@@ -504,13 +434,13 @@
         /// <c>true</c> if the <see cref="WebSocket"/> receives a pong to this ping in a time;
         /// otherwise, <c>false</c>.
         /// </returns>
-        public async Task<bool> PingAsync()
+        public Task<bool> PingAsync()
         {
             var bytes = IsClient
                 ? WebSocketFrame.CreatePingFrame(true).ToArray()
                 : WebSocketFrame.EmptyPingBytes;
 
-            return await PingAsync(bytes, _waitTime);
+            return PingAsync(bytes, _waitTime);
         }
 
         /// <summary>
@@ -528,16 +458,14 @@
             if (string.IsNullOrEmpty(message))
                 return await PingAsync();
 
-            var msg = WebSocketValidator.CheckPingParameter(message, out var data);
+            var data = Encoding.UTF8.GetBytes(message);
 
-            if (msg == null)
+            if (data.Length <= 125)
                 return await PingAsync(WebSocketFrame.CreatePingFrame(data, IsClient).ToArray(), _waitTime);
 
-            msg.Error();
-            Error("An error has occurred in sending a ping.");
+            "A message has greater than the allowable max size.".Error();
 
             return false;
-
         }
 
         /// <summary>
@@ -552,18 +480,23 @@
         /// </returns>
         public async Task SendAsync(byte[] data, Opcode opcode, CancellationToken ct = default)
         {
-            var msg = WebSocketValidator.CheckIfAvailable(_readyState) ??
-                      WebSocketValidator.CheckSendParameter(data);
+            if (_readyState != WebSocketState.Open)
+                throw new WebSocketException(CloseStatusCode.Normal, $"This operation isn\'t available in: {_readyState.ToString()}");
 
-            if (msg != null)
+            WebSocketStream stream = null;
+
+            try
             {
-                msg.Error();
-                Error("An error has occurred in sending data.");
+                stream = new WebSocketStream(data, opcode, _compression, IsClient);
 
-                return;
+                // TODO: add async
+                foreach (var frame in stream.GetFrames())
+                    Send(frame);
             }
-
-            Send(opcode, new MemoryStream(data), ct);
+            finally
+            {
+                stream?.Dispose();
+            }
         }
 
         /// <summary>
@@ -575,121 +508,46 @@
         /// </param>
         public void SetCookie(Cookie cookie)
         {
-            if (cookie == null || !_validator.CheckIfAvailable(true, false, true, false, false))
-            {
-                Error("An error has occurred in setting a cookie.");
-
-                return;
-            }
+            if (cookie == null) return;
 
             lock (_forState)
             {
                 if (!_validator.CheckIfAvailable(true, false, false, true))
-                {
-                    Error("An error has occurred in setting a cookie.");
-
                     return;
-                }
-
-                // TODO: lock (CookieCollection.SyncRoot)
-                CookieCollection.Add(cookie);
             }
+
+            lock (CookieCollection.SyncRoot)
+                CookieCollection.Add(cookie);
         }
 
         /// <inheritdoc />
         public void Dispose()
         {
-            // TODO: this is correct?
-            InternalCloseAsync(new CloseEventArgs(CloseStatusCode.Away)).Wait();
-        }
-
-        // As client
-        internal static string CreateBase64Key()
-        {
-            var src = new byte[16];
-            RandomNumber.GetBytes(src);
-
-            return Convert.ToBase64String(src);
-        }
-
-        internal static string CreateResponseKey(string base64Key)
-        {
-            var buff = new StringBuilder(base64Key, 64);
-            buff.Append(Guid);
-            var sha1 = SHA1.Create();
-            var src = sha1.ComputeHash(Encoding.UTF8.GetBytes(buff.ToString()));
-
-            return Convert.ToBase64String(src);
-        }
-
-        // As server
-        internal async Task CloseAsync(HttpResponse response)
-        {
-            lock (_forState)
-            {
-                _readyState = WebSocketState.Closing;
-            }
-
-            await SendHttpResponseAsync(response);
-            ReleaseServerResources();
-
-            lock (_forState)
-            {
-                _readyState = WebSocketState.Closed;
-            }
-        }
-
-        // As server
-        internal async Task CloseAsync(CloseEventArgs e, byte[] frameAsBytes, bool receive,
-            CancellationToken ct = default)
-        {
-            lock (_forState)
-            {
-                if (_readyState == WebSocketState.Closing)
-                {
-                    "The closing is already in progress.".Debug();
-                    return;
-                }
-
-                if (_readyState == WebSocketState.Closed)
-                {
-                    "The connection has been closed.".Debug();
-                    return;
-                }
-
-                _readyState = WebSocketState.Closing;
-            }
-
-            // TODO: Fix
-            e.WasClean = await CloseHandshakeAsync(frameAsBytes, receive, false, ct).ConfigureAwait(false);
-            ReleaseServerResources();
-            ReleaseCommonResources();
-
-            _readyState = WebSocketState.Closed;
-
             try
             {
-                OnClose?.Invoke(this, e);
+                InternalCloseAsync(new CloseEventArgs(CloseStatusCode.Away)).Wait();
             }
-            catch (Exception ex)
+            catch
             {
-                ex.Log(nameof(WebSocket));
+                // Ignored
             }
         }
-
-        // As client
-        internal bool ValidateSecWebSocketAcceptHeader(string value) =>
-            value?.TrimStart() == CreateResponseKey(_base64Key);
 
         // As server
         internal async Task InternalAcceptAsync()
         {
             try
             {
-                var handShake = await AcceptHandshakeAsync();
+                $"A request from {_context.UserEndPoint}:\n{_context}".Debug();
 
-                if (handShake == false)
-                    return;
+                _validator.ThrowIfInvalid(_context);
+
+                WebSocketKey.KeyValue = _context.Headers[Headers.WebSocketKey];
+
+                if (!IgnoreExtensions)
+                    ProcessSecWebSocketExtensionsClientHeader(_context.Headers[Headers.WebSocketExtensions]);
+
+                await SendHandshakeAsync();
 
                 _readyState = WebSocketState.Open;
             }
@@ -714,43 +572,10 @@
             return _receivePong != null && _receivePong.WaitOne(timeout);
         }
 
-        // As server
-        private static HttpResponse CreateHandshakeFailureResponse(HttpStatusCode code)
-        {
-            var ret = HttpResponse.CreateCloseResponse(code);
-            ret.Headers["Sec-WebSocket-Version"] = Version;
-
-            return ret;
-        }
-
         private static bool IsOpcodeReserved(CloseStatusCode code) => code == CloseStatusCode.Undefined ||
                                                                       code == CloseStatusCode.NoStatus ||
                                                                       code == CloseStatusCode.Abnormal ||
                                                                       code == CloseStatusCode.TlsHandshakeFailure;
-
-        // As server
-        private async Task<bool> AcceptHandshakeAsync()
-        {
-            $"A request from {_context.UserEndPoint}:\n{_context}".Debug();
-
-            if (!_validator.CheckHandshakeRequest(_context, out string msg))
-            {
-                await SendHttpResponseAsync(CreateHandshakeFailureResponse(HttpStatusCode.BadRequest));
-
-                msg.Error();
-                Fatal("An error has occurred while accepting.", CloseStatusCode.ProtocolError);
-
-                return false;
-            }
-
-            _base64Key = _context.Headers["Sec-WebSocket-Key"];
-
-            if (!IgnoreExtensions)
-                ProcessSecWebSocketExtensionsClientHeader(_context.Headers["Sec-WebSocket-Extensions"]);
-
-            await SendHttpResponseAsync(CreateHandshakeResponse());
-            return true;
-        }
 
         // As client
         private async Task InternalCloseAsync(
@@ -792,21 +617,11 @@
             {
                 _readyState = WebSocketState.Closed;
             }
-
-            try
-            {
-                OnClose?.Invoke(this, e);
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-                Error("An exception has occurred during the OnClose event.", ex);
-            }
         }
 
         private async Task<bool> CloseHandshakeAsync(
-            byte[] frameAsBytes, 
-            bool receive, 
+            byte[] frameAsBytes,
+            bool receive,
             bool received,
             CancellationToken ct)
         {
@@ -820,104 +635,22 @@
             received = received ||
                        (receive && sent && _exitReceiving != null && _exitReceiving.WaitOne(_waitTime));
 
-            var ret = sent && received;
-            $"Was clean?: {ret}\n  sent: {sent}\n  received: {received}".Trace();
-
-            return ret;
+            return sent && received;
         }
 
         // As client
-        private string CreateExtensions()
-        {
-            var buff = new StringBuilder(80);
-
-            if (_compression != CompressionMethod.None)
-            {
-                var str = _compression.ToExtensionString(
-                    "server_no_context_takeover", "client_no_context_takeover");
-
-                buff.AppendFormat("{0}, ", str);
-            }
-
-            var len = buff.Length;
-
-            if (len <= 2) return null;
-
-            buff.Length = len - 2;
-            return buff.ToString();
-        }
-
-        // As client
-        private HttpRequest CreateHandshakeRequest()
-        {
-            var ret = HttpRequest.CreateWebSocketRequest(_uri);
-
-            var headers = ret.Headers;
-            if (!string.IsNullOrEmpty(_origin))
-                headers["Origin"] = _origin;
-
-            headers["Sec-WebSocket-Key"] = _base64Key;
-
-            IsExtensionsRequested = _compression != CompressionMethod.None;
-
-            if (IsExtensionsRequested)
-                headers["Sec-WebSocket-Extensions"] = CreateExtensions();
-
-            headers["Sec-WebSocket-Version"] = Version;
-
-            ret.SetCookies(CookieCollection);
-
-            return ret;
-        }
-
-        // As server
-        private HttpResponse CreateHandshakeResponse()
-        {
-            var ret = HttpResponse.CreateWebSocketResponse();
-
-            var headers = ret.Headers;
-            headers["Sec-WebSocket-Accept"] = CreateResponseKey(_base64Key);
-
-            if (_extensions != null)
-                headers["Sec-WebSocket-Extensions"] = _extensions;
-
-            ret.SetCookies(CookieCollection);
-
-            return ret;
-        }
-
-        // As client
-        private async Task<bool> DoHandshakeAsync()
+        private async Task DoHandshakeAsync()
         {
             await SetClientStream();
             var res = await SendHandshakeRequestAsync();
 
-            if (!_validator.CheckHandshakeResponse(res, out var msg))
-            {
-                msg.Error();
-                Fatal("An error has occurred while connecting.", CloseStatusCode.ProtocolError);
-
-                return false;
-            }
+            _validator.ThrowIfInvalidResponse(res);
 
             if (IsExtensionsRequested)
-                ProcessSecWebSocketExtensionsServerHeader(res.Headers["Sec-WebSocket-Extensions"]);
+                ProcessSecWebSocketExtensionsServerHeader(res.Headers[Headers.WebSocketExtensions]);
 
-            ProcessCookies(res.Cookies);
-
-            return true;
+            CookieCollection.AddRange(res.Cookies.Where(y => !y.Expired));
         }
-
-        private void EnqueueToMessageEventQueue(MessageEventArgs e)
-        {
-            lock (_forMessageEventQueue)
-            {
-                _messageEventQueue.Enqueue(e);
-            }
-        }
-
-        private void Error(string message, Exception exception = null)
-            => OnError?.Invoke(this, new ConnectionFailureEventArgs(exception ?? new Exception(message)));
 
         private void Fatal(string message, Exception exception = null) => Fatal(message,
             (exception as WebSocketException)?.Code ?? CloseStatusCode.Abnormal);
@@ -927,17 +660,13 @@
 
         private void Message()
         {
-            MessageEventArgs e;
-            lock (_forMessageEventQueue)
-            {
-                if (_inMessage || _messageEventQueue.Count == 0 || _readyState != WebSocketState.Open)
-                    return;
+            if (_inMessage || _messageEventQueue.IsEmpty || _readyState != WebSocketState.Open)
+                return;
 
-                _inMessage = true;
-                e = _messageEventQueue.Dequeue();
-            }
+            _inMessage = true;
 
-            _message(e);
+            if (_messageEventQueue.TryDequeue(out var e))
+                _message(e);
         }
 
         private void Messagec(MessageEventArgs e)
@@ -951,20 +680,14 @@
                 catch (Exception ex)
                 {
                     ex.Log(nameof(WebSocket));
-                    Error("An exception has occurred during an OnMessage event.", ex);
                 }
 
-                lock (_forMessageEventQueue)
-                {
-                    if (_messageEventQueue.Count == 0 || _readyState != WebSocketState.Open)
-                    {
-                        _inMessage = false;
-                        break;
-                    }
+                if (_messageEventQueue.TryDequeue(out e) && _readyState == WebSocketState.Open) continue;
 
-                    e = _messageEventQueue.Dequeue();
-                }
-            } while (true);
+                _inMessage = false;
+                break;
+            }
+            while (true);
         }
 
         private void Messages(MessageEventArgs e)
@@ -976,18 +699,12 @@
             catch (Exception ex)
             {
                 ex.Log(nameof(WebSocket));
-                Error("An exception has occurred during an OnMessage event.", ex);
             }
 
-            lock (_forMessageEventQueue)
+            if (!_messageEventQueue.TryDequeue(out e) || _readyState != WebSocketState.Open)
             {
-                if (_messageEventQueue.Count == 0 || _readyState != WebSocketState.Open)
-                {
-                    _inMessage = false;
-                    return;
-                }
-
-                e = _messageEventQueue.Dequeue();
+                _inMessage = false;
+                return;
             }
 
             Task.Factory.StartNew(() => Messages(e));
@@ -998,149 +715,103 @@
             _inMessage = true;
             StartReceiving();
 
-            try
+            if (!_messageEventQueue.TryDequeue(out var e) || _readyState != WebSocketState.Open)
             {
-                OnOpen?.Invoke(this, EventArgs.Empty);
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-                Error("An exception has occurred during the OnOpen event.", ex);
-            }
-
-            MessageEventArgs e;
-            lock (_forMessageEventQueue)
-            {
-                if (_messageEventQueue.Count == 0 || _readyState != WebSocketState.Open)
-                {
-                    _inMessage = false;
-                    return;
-                }
-
-                e = _messageEventQueue.Dequeue();
+                _inMessage = false;
+                return;
             }
 
             _message.BeginInvoke(e, ar => _message.EndInvoke(ar), null);
         }
 
-        private bool ProcessCloseFrame(WebSocketFrame frame)
+        private Task ProcessCloseFrame(WebSocketFrame frame)
         {
             var payload = frame.PayloadData;
-            InternalCloseAsync(new CloseEventArgs(payload), !payload.HasReservedCode, false, true).Wait();
-
-            return false;
+            return InternalCloseAsync(new CloseEventArgs(payload), !payload.HasReservedCode, false, true);
         }
 
-        // As client
-        private void ProcessCookies(ICollection cookies)
+        private void ProcessDataFrame(WebSocketFrame frame)
         {
-            if (cookies.Count == 0)
-                return;
-
-            foreach (Cookie cookie in CookieCollection)
-            {
-                if (CookieCollection[cookie.Name] == null)
-                {
-                    if (!cookie.Expired)
-                        CookieCollection.Add(cookie);
-
-                    continue;
-                }
-
-                if (!cookie.Expired)
-                {
-                    CookieCollection.Add(cookie);
-                }
-
-                // TODO: Clear cookie
-            }
-        }
-
-        private bool ProcessDataFrame(WebSocketFrame frame)
-        {
-            EnqueueToMessageEventQueue(
+            _messageEventQueue.Enqueue(
                 frame.IsCompressed
                     ? new MessageEventArgs(
                         frame.Opcode,
                         frame.PayloadData.ApplicationData.Compress(_compression,
                             System.IO.Compression.CompressionMode.Decompress))
                     : new MessageEventArgs(frame));
-
-            return true;
         }
 
-        private bool ProcessFragmentFrame(WebSocketFrame frame)
+        private void ProcessFragmentFrame(WebSocketFrame frame)
         {
             if (!InContinuation)
             {
                 // Must process first fragment.
-                if (frame.IsContinuation)
-                    return true;
+                if (frame.Opcode == Opcode.Cont)
+                    return;
 
-                _fragmentsOpcode = frame.Opcode;
-                _fragmentsCompressed = frame.IsCompressed;
-                _fragmentsBuffer = new MemoryStream();
+                _fragmentsBuffer = new FragmentBuffer(frame.Opcode, frame.IsCompressed);
                 InContinuation = true;
             }
 
-            using (var input = new MemoryStream(frame.PayloadData.ApplicationData))
-                input.CopyTo(_fragmentsBuffer, 1024);
+            _fragmentsBuffer.AddPayload(frame.PayloadData.ApplicationData);
 
-            if (frame.IsFinal)
+            if (frame.Fin == Fin.Final)
             {
                 using (_fragmentsBuffer)
                 {
-                    var data = _fragmentsCompressed
-                        ? _fragmentsBuffer.Compress(_compression, System.IO.Compression.CompressionMode.Decompress)
-                        : _fragmentsBuffer;
-
-                    EnqueueToMessageEventQueue(new MessageEventArgs(_fragmentsOpcode, data.ToArray()));
+                    _messageEventQueue.Enqueue(_fragmentsBuffer.GetMessage(_compression));
                 }
 
                 _fragmentsBuffer = null;
                 InContinuation = false;
             }
-
-            return true;
         }
 
-        private bool ProcessPingFrame(WebSocketFrame frame)
+        private void ProcessPingFrame(WebSocketFrame frame)
         {
-            if (Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, IsClient).ToArray()))
-            {
-                "Returned a pong.".Info();
-            }
+            Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, IsClient));
 
             if (EmitOnPing)
-                EnqueueToMessageEventQueue(new MessageEventArgs(frame));
-
-            return true;
+                _messageEventQueue.Enqueue(new MessageEventArgs(frame));
         }
 
-        private bool ProcessPongFrame()
+        private void ProcessPongFrame()
         {
             _receivePong.Set();
             "Received a pong.".Info();
-
-            return true;
         }
 
-        private bool ProcessReceivedFrame(WebSocketFrame frame)
+        private Task<bool> ProcessReceivedFrame(WebSocketFrame frame)
         {
-            _validator.CheckReceivedFrame(frame);
+            if (frame.IsFragment)
+            {
+                ProcessFragmentFrame(frame);
+            }
+            else
+            {
+                switch (frame.Opcode)
+                {
+                    case Opcode.Text:
+                    case Opcode.Binary:
+                        ProcessDataFrame(frame);
+                        break;
+                    case Opcode.Ping:
+                        ProcessPingFrame(frame);
+                        break;
+                    case Opcode.Pong:
+                        ProcessPongFrame();
+                        break;
+                    case Opcode.Close:
+                        ProcessCloseFrame(frame);
+                        break;
+                    default:
+                        $"An unsupported frame: {frame.PrintToString()}".Error();
+                        Fatal("There is no way to handle it.", CloseStatusCode.PolicyViolation);
+                        return Task.FromResult(false);
+                }
+            }
 
-            frame.Unmask();
-            return frame.IsFragment
-                ? ProcessFragmentFrame(frame)
-                : frame.IsData
-                    ? ProcessDataFrame(frame)
-                    : frame.IsPing
-                        ? ProcessPingFrame(frame)
-                        : frame.IsPong
-                            ? ProcessPongFrame()
-                            : frame.IsClose
-                                ? ProcessCloseFrame(frame)
-                                : ProcessUnsupportedFrame(frame);
+            return Task.FromResult(true);
         }
 
         // As server
@@ -1156,7 +827,7 @@
             {
                 var ext = e.Trim();
 
-                if (!comp && ext.IsCompressionExtension(CompressionMethod.Deflate))
+                if (!comp && ext.StartsWith(CompressionMethod.Deflate.ToExtensionString()))
                 {
                     _compression = CompressionMethod.Deflate;
                     buff.AppendFormat(
@@ -1186,14 +857,6 @@
             }
 
             _extensions = value;
-        }
-
-        private bool ProcessUnsupportedFrame(WebSocketFrame frame)
-        {
-            $"An unsupported frame: {frame.PrintToString()}".Error();
-            Fatal("There is no way to handle it.", CloseStatusCode.PolicyViolation);
-
-            return false;
         }
 
         // As client
@@ -1261,135 +924,19 @@
             _context = null;
         }
 
-        private bool Send(byte[] frameAsBytes)
+        private void Send(WebSocketFrame frame)
         {
             lock (_forState)
             {
                 if (_readyState != WebSocketState.Open)
                 {
                     "The sending has been interrupted.".Error();
-                    return false;
+                    return;
                 }
             }
 
+            var frameAsBytes = frame.ToArray();
             _stream.Write(frameAsBytes, 0, frameAsBytes.Length);
-            return true;
-        }
-
-        private async Task<bool> Send(Opcode opcode, Stream stream, CancellationToken ct)
-        {
-            var src = stream;
-            var compressed = false;
-            var sent = false;
-
-            try
-            {
-                if (_compression != CompressionMethod.None)
-                {
-                    stream = stream.Compress(_compression);
-                    compressed = true;
-                }
-
-                sent = await Send(opcode, stream, compressed, ct);
-                if (!sent)
-                    Error("The sending has been interrupted.");
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-                Error("An exception has occurred while sending data.", ex);
-            }
-            finally
-            {
-                if (compressed)
-                    stream.Dispose();
-
-                src.Dispose();
-            }
-
-            return sent;
-        }
-
-        private async Task<bool> Send(Opcode opcode, Stream stream, bool compressed, CancellationToken ct)
-        {
-            var len = stream.Length;
-
-            /* Not fragmented */
-
-            if (len == 0)
-                return Send(Fin.Final, opcode, EmptyBytes, compressed, ct);
-
-            var quo = len / FragmentLength;
-            var rem = (int) (len % FragmentLength);
-
-            byte[] buff;
-
-            if (quo == 0)
-            {
-                buff = new byte[rem];
-                return stream.Read(buff, 0, rem) == rem &&
-                       Send(Fin.Final, opcode, buff, compressed, ct);
-            }
-
-            buff = new byte[FragmentLength];
-            if (quo == 1 && rem == 0)
-            {
-                return stream.Read(buff, 0, FragmentLength) == FragmentLength &&
-                       Send(Fin.Final, opcode, buff, compressed, ct);
-            }
-
-            /* Send fragmented */
-
-            // Begin
-            if (stream.Read(buff, 0, FragmentLength) != FragmentLength ||
-                !Send(Fin.More, opcode, buff, compressed, ct))
-                return false;
-
-            var n = rem == 0 ? quo - 2 : quo - 1;
-            for (long i = 0; i < n; i++)
-            {
-                if (stream.Read(buff, 0, FragmentLength) != FragmentLength ||
-                    !Send(Fin.More, Opcode.Cont, buff, compressed, ct))
-                {
-                    return false;
-                }
-            }
-
-            // End
-            if (rem == 0)
-                rem = FragmentLength;
-            else
-                buff = new byte[rem];
-
-            return stream.Read(buff, 0, rem) == rem && Send(Fin.Final, Opcode.Cont, buff, compressed, ct);
-        }
-
-        private bool Send(Fin fin, Opcode opcode, byte[] data, bool compressed, CancellationToken ct)
-        {
-            lock (_forState)
-            {
-                if (_readyState == WebSocketState.Open)
-                    return SendBytes(new WebSocketFrame(fin, opcode, data, compressed, IsClient).ToArray(), ct);
-
-                "The sending has been interrupted.".Error();
-                return false;
-
-            }
-        }
-
-        private bool SendBytes(byte[] bytes, CancellationToken ct)
-        {
-            try
-            {
-                // TODO: Use async here
-                _stream.Write(bytes, 0, bytes.Length);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-                return false;
-            }
         }
 
         // As client
@@ -1397,7 +944,7 @@
         {
             while (true)
             {
-                var req = CreateHandshakeRequest();
+                var req = HttpRequest.CreateHandshakeRequest(this);
                 var res = await req.GetResponse(_stream);
 
                 if (res.IsUnauthorized)
@@ -1418,12 +965,7 @@
                     return res;
                 }
 
-                if (!url.TryCreateWebSocketUri(out var uri, out var msg))
-                {
-                    $"An invalid url to redirect is located: {msg}".Error();
-                    return res;
-                }
-
+                var uri = url.CreateWebSocketUri();
                 ReleaseClientResources();
 
                 _uri = uri;
@@ -1436,10 +978,19 @@
         }
 
         // As server
-        private Task SendHttpResponseAsync(HttpResponse response)
+        private Task SendHandshakeAsync()
         {
-            $"A response to the server:\n {response.Stringify()}".Debug();
-            var bytes = response.ToByteArray();
+            var ret = HttpResponse.CreateWebSocketResponse();
+
+            var headers = ret.Headers;
+            headers[Headers.WebSocketAccept] = WebSocketKey.CreateResponseKey();
+
+            if (_extensions != null)
+                headers[Headers.WebSocketExtensions] = _extensions;
+
+            ret.SetCookies(CookieCollection);
+
+            var bytes = ret.ToByteArray();
 
             return _stream.WriteAsync(bytes, 0, bytes.Length);
         }
@@ -1493,18 +1044,27 @@
 
         private void StartReceiving()
         {
-            if (_messageEventQueue.Count > 0)
-                _messageEventQueue.Clear();
+            while (_messageEventQueue.TryDequeue(out _))
+            {
+                // do nothing
+            }
 
             _exitReceiving = new AutoResetEvent(false);
             _receivePong = new AutoResetEvent(false);
+
+            var frameStream = new WebSocketFrameStream(_stream);
 
             async void Receive()
             {
                 try
                 {
-                    var frame = await WebSocketFrame.ReadFrameAsync(_stream);
-                    var result = ProcessReceivedFrame(frame);
+                    var frame = await frameStream.ReadFrameAsync(this);
+
+                    if (frame == null)
+                        return;
+
+                    var result = await ProcessReceivedFrame(frame);
+
                     if (!result || _readyState == WebSocketState.Closed)
                     {
                         _exitReceiving?.Set();
@@ -1515,7 +1075,7 @@
                     // Receive next asap because the Ping or Close needs a response to it.
                     Receive();
 
-                    if (_inMessage || !HasMessage || _readyState != WebSocketState.Open)
+                    if (_inMessage || _messageEventQueue.IsEmpty || _readyState != WebSocketState.Open)
                         return;
 
                     Message();

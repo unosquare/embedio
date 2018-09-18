@@ -205,6 +205,7 @@ using System.Security.Cryptography;
         {
             e.AcceptSocket = null;
             bool asyn;
+
             try
             {
                 asyn = socket.AcceptAsync(e);
@@ -274,16 +275,11 @@ using System.Security.Cryptography;
 
             foreach (var p in list)
             {
-                var ppath = p.Path;
-                if (ppath.Length < bestLength)
-                    continue;
+                if (p.Path.Length < bestLength || !path.StartsWith(p.Path)) continue;
 
-                if (path.StartsWith(ppath))
-                {
-                    bestLength = ppath.Length;
-                    bestMatch = p.Listener;
-                    prefix = p;
-                }
+                bestLength = p.Path.Length;
+                bestMatch = p.Listener;
+                prefix = p;
             }
 
             return bestMatch;

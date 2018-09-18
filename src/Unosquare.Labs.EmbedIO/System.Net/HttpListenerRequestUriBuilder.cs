@@ -363,7 +363,7 @@
         {
             Success,
             InvalidString,
-            EncodingError
+            EncodingError,
         }
     }
 }

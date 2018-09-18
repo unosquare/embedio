@@ -1,19 +1,19 @@
 ﻿namespace Unosquare.Net
 {
+    using Labs.EmbedIO;
     using System;
-    using System.Globalization;
     using System.Collections.Specialized;
+    using System.Globalization;
+    using System.IO;
     using System.Linq;
     using System.Net;
-    using System.IO;
     using System.Text;
-    using Labs.EmbedIO;
 
     /// <summary>
     /// Represents an HTTP Listener's response.
     /// </summary>
     /// <seealso cref="IDisposable" />
-    public sealed class HttpListenerResponse 
+    public sealed class HttpListenerResponse
         : IHttpResponse, IDisposable
     {
         private const string CannotChangeHeaderWarning = "Cannot be changed after headers are sent.";
@@ -79,7 +79,7 @@
 
         /// <inheritdoc />
         public NameValueCollection Headers => HeaderCollection;
-        
+
         /// <inheritdoc />
         public bool KeepAlive
         {
@@ -158,7 +158,7 @@
         /// The status description.
         /// </value>
         public string StatusDescription { get; set; } = "OK";
-        
+
         internal CookieCollection CookieCollection
         {
             get => _cookies ?? (_cookies = new CookieCollection());
@@ -242,7 +242,7 @@
             }
 
             if (Headers["Server"] == null)
-                HeaderCollection.AddWithoutValidate("Server", "embedio/1.0");
+                HeaderCollection.AddWithoutValidate("Server", "embedio/2.0");
 
             var inv = CultureInfo.InvariantCulture;
             if (Headers["Date"] == null)

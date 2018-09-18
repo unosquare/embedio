@@ -50,20 +50,20 @@
         internal static string GetValue(string nameAndValue)
         {
             var idx = nameAndValue.IndexOf('=');
+
             if (idx < 0 || idx == nameAndValue.Length - 1)
                 return null;
 
             return nameAndValue.Substring(idx + 1).Trim().Unquote();
         }
 
-        internal static Encoding GetEncoding(string contentType)
-        {
-            return contentType.Split(';')
-                .Select(p => p.Trim())
-                .Where(part => part.StartsWith("charset", StringComparison.OrdinalIgnoreCase))
-                .Select(part => Encoding.GetEncoding(GetValue(part))).FirstOrDefault();
-        }
-        
+        internal static Encoding GetEncoding(string contentType) => contentType
+            .Split(';')
+            .Select(p => p.Trim())
+            .Where(part => part.StartsWith("charset", StringComparison.OrdinalIgnoreCase))
+            .Select(part => Encoding.GetEncoding(GetValue(part)))
+            .FirstOrDefault();
+
         protected static NameValueCollection ParseHeaders(string[] headerParts)
         {
             var headers = new NameValueCollection();
@@ -77,12 +77,10 @@
             return headers;
         }
 
-        protected static async Task<T> ReadAsync<T>(
+        protected static async Task<HttpResponse> ReadAsync(
             Stream stream, 
-            Func<string[], T> parser,
             int millisecondsTimeout = 90000, 
             CancellationToken ct = default)
-            where T : HttpBase
         {
             var timeout = false;
             var timer = new Timer(
@@ -101,7 +99,7 @@
 
             try
             {
-                var http = parser(ReadHeaders(stream));
+                var http = HttpResponse.Parse(ReadHeaders(stream));
                 var contentLen = http.Headers["Content-Length"];
 
                 if (!string.IsNullOrEmpty(contentLen))
