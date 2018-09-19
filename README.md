@@ -26,7 +26,7 @@ A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework
 
 * Written entirely in C#, using our helpful library [SWAN](https://github.com/unosquare/swan)
 * Network operations use the async/await pattern: Responses are handled asynchronously
-* Multiple implementations support: EmbedIO can use Microsoft `HttpListener` or internal Http Listener based on MONO/WebSocket-Sharp projects
+* Multiple implementations support: EmbedIO can use Microsoft `HttpListener` or internal Http Listener based on [Mono](https://www.mono-project.com/)/[websocket-sharp](https://github.com/sta/websocket-sharp/) projects
 * Cross-platform: tested on multiple OS and runtimes. From Windows .NET Framework to Linux MONO.
 * Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out [EmbedIO Extras](https://github.com/unosquare/embedio-extras) for additional modules
 * Small memory footprint
@@ -41,10 +41,10 @@ A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework
 Some notes regarding WebSocket and runtimes support:
 
 | Runtime | HTTP implementation | WebSocket support | Notes |
-| --- | --- | --- |
-| NET46 | *Unosquare* and Microsoft | Yes | Support Win7+ OS using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
-| NET47 | Unosquare and *Microsoft* | | Yes | Support Win8+ OS using native System.Net library |
-| NETSTANDARD13 | *Unosquare* and Microsoft (only Windows) | Yes | Support Windows, Linux and macOS using native System.Net library |
+| --- | --- | --- | --- |
+| NET46 | *Unosquare* and Microsoft | Yes | Support Win7+ OS, Linux and macOS.  |
+| NET47 | Unosquare and *Microsoft* | | Yes | Support Win8+ OS. |
+| NETSTANDARD13 | *Unosquare* | Yes | Support Windows, Linux and macOS using native System.Net library |
 | NETSTANDARD20 | Unosquare and *Microsoft* | Yes | Support Windows, Linux and macOS using native System.Net library |
 | UAP | *Unosquare* | No | Support Windows Universal Platform. More information [here](https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT) |
 
