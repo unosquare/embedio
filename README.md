@@ -53,6 +53,7 @@ Some notes regarding WebSocket and runtimes support:
 * `IHttpListener` is runtime/platform independent, you can choose Unosquare `HttpListener` implementation with NET47 or NETSTANDARD20. This separation of implementations brings new access to interfaces from common Http objects like `IHttpRequest`, `IHttpContext` and mor.
 * `IWebServer` is a new interface to create custom web server implementation, like a Test Web Server where all the operations are in-memory to speed up unit testing. Similar to [TestServer from OWIN](https://msdn.microsoft.com/en-us/library/microsoft.owin.testing.testserver(v=vs.113).aspx)
 * `WebApiController` is renewed. Reduce the methods overhead removing the WebServer and Context arguments. See example belows.
+* `RoutingStrategy.Regex` is the default routing scheme.
 * General improvements in how the Unosquare `HttpListner` is working and code clean-up.
 
 *Note* - We encourage to upgrade to new EmbedIO. Branch version 1.X will not be longer mantain, and issues will be tested against 2.X and resolved just there.

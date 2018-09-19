@@ -7,14 +7,20 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Interface to create a WebServer class
+    /// Interface to create a WebServer class.
+    ///
+    /// The basic behaviour for a WebServer is register/unregister modules and
+    /// run asynchronous to receive incoming HTTP Requests.
     /// </summary>
     /// <seealso cref="System.IDisposable" />
     public interface IWebServer : IDisposable
     {
         /// <summary>
-        /// Gets registered the ISessionModule.
-        /// </summary>
+        /// Gets registered SessionModule (if any).
+        ///
+        /// SessionModule is an implementation of <c>ISessionModule</c>
+        /// to handle session data.
+        /// </summary>  
         /// <value>
         /// The session module.
         /// </value>
@@ -22,6 +28,7 @@
         
         /// <summary>
         /// Gets the URL RoutingStrategy used in this instance.
+        /// 
         /// By default it is set to Wildcard, but Regex is the recommended value.
         /// </summary>
         /// <value>
