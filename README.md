@@ -10,6 +10,7 @@
 *:star: Please star this project if you find it useful!*
 
 - [Overview](#overview)
+    - [EmbedIO 2.0 - What's new](#embedio-20---whats-new)
     - [Some usage scenarios](#some-usage-scenarios)
 - [NuGet Installation](#nuget-installation)
 - [Examples](#examples)
@@ -18,8 +19,6 @@
     - [REST API Example](#rest-api-example)
     - [WebSockets Example](#websockets-example)
 - [Related Projects and Nugets](#related-projects-and-nugets)
-- [Notes](#notes)
-
 
 ## Overview
 
