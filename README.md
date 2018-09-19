@@ -12,7 +12,7 @@
 - [Overview](#overview)
     - [EmbedIO 2.0 - What's new](#embedio-20---whats-new)
     - [Some usage scenarios](#some-usage-scenarios)
-- [NuGet Installation](#nuget-installation)
+- [Installation](#installation)
 - [Examples](#examples)
     - [Basic Example](#basic-example)
     - [Fluent Example](#fluent-example)
@@ -66,19 +66,30 @@ Some notes regarding WebSocket and runtimes support:
 * Write client applications with real-time communication between them using WebSockets
 * Write internal web server for Xamarin Forms applications
 
-## NuGet Installation:
+## Installation:
+
+You can start using EmbedIO downloading the nuget.
+
+### Package Manager
+
 ```
 PM> Install-Package EmbedIO
+```
+
+### .NET CLI
+
+```
+> dotnet add package EmbedIO
 ```
 
 ## Examples
 
 ## Basic Example:
 
-*Please note the comments are the important part here. More info is available in the samples.*
+Please note the comments are the important part here. More info is available in the samples.
 
 ```csharp
-namespace Company.Project
+namespace Unosquare
 {
     using System;
     using Unosquare.Labs.EmbedIO;
@@ -142,7 +153,7 @@ namespace Company.Project
 Many extension methods are available. This allows you to create a web server instance in a fluent style by dotting in configuration options.
 
 ```csharp
-namespace Company.Project
+namespace Unosquare
 {
     using System;
     using Unosquare.Labs.EmbedIO;
@@ -184,12 +195,15 @@ namespace Company.Project
 ## REST API Example:
 
 The WebApi module supports two routing strategies: Wildcard and Regex. By default, and in order to maintain backward compatibility, the WebApi module will use the **Wildcard Routing Strategy** and match routes using the asterisk `*` character in the route. **For example:** 
+
 - The route `/api/people/*` will match any request with a URL starting with the two first URL segments `api` and `people` and ending with anything. The route `/api/people/hello` will be matched.
 - You can also use wildcards in the middle of the route. The route `/api/people/*/details` will match requests starting with the two first URL segments `api` and `people`, and end with a `details` segment. The route `/api/people/hello/details` will be matched. 
 
 *Note that most REST services can be designed with this simpler Wildcard routing strategy. However, the Regex matching strategy is the current recommended approach as we might be deprecating the Wildcard strategy altogether*
 
-On the other hand, the **Regex Routing Strategy** will try to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API 2. A method with the following route `/api/people/{id}` is going to match any request URL with three segments: the first two `api` and `people` and the last one is going to be parsed or converted to the type in the `id` argument of the handling method signature. Please read on if this was confusing as it is much simpler than it sounds. Additionally, you can put multiple values to match, for example `/api/people/{mainSkill}/{age}`, and receive the parsed values from the URL straight into the arguments of your handler method.
+On the other hand, the **Regex Routing Strategy** will try to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API. 
+
+A method with the following route `/api/people/{id}` is going to match any request URL with three segments: the first two `api` and `people` and the last one is going to be parsed or converted to the type in the `id` argument of the handling method signature. Please read on if this was confusing as it is much simpler than it sounds. Additionally, you can put multiple values to match, for example `/api/people/{mainSkill}/{age}`, and receive the parsed values from the URL straight into the arguments of your handler method.
 
 *During server setup:*
 
