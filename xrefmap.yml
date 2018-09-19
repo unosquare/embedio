@@ -4044,51 +4044,6 @@ references:
   commentId: N:Unosquare.Net
   fullName: Unosquare.Net
   nameWithType: Unosquare.Net
-- uid: Unosquare.Net.CloseEventArgs
-  name: CloseEventArgs
-  href: api/Unosquare.Net.CloseEventArgs.html
-  commentId: T:Unosquare.Net.CloseEventArgs
-  fullName: Unosquare.Net.CloseEventArgs
-  nameWithType: CloseEventArgs
-- uid: Unosquare.Net.CloseEventArgs.Code
-  name: Code
-  href: api/Unosquare.Net.CloseEventArgs.html#Unosquare_Net_CloseEventArgs_Code
-  commentId: P:Unosquare.Net.CloseEventArgs.Code
-  fullName: Unosquare.Net.CloseEventArgs.Code
-  nameWithType: CloseEventArgs.Code
-- uid: Unosquare.Net.CloseEventArgs.Code*
-  name: Code
-  href: api/Unosquare.Net.CloseEventArgs.html#Unosquare_Net_CloseEventArgs_Code_
-  commentId: Overload:Unosquare.Net.CloseEventArgs.Code
-  isSpec: "True"
-  fullName: Unosquare.Net.CloseEventArgs.Code
-  nameWithType: CloseEventArgs.Code
-- uid: Unosquare.Net.CloseEventArgs.Reason
-  name: Reason
-  href: api/Unosquare.Net.CloseEventArgs.html#Unosquare_Net_CloseEventArgs_Reason
-  commentId: P:Unosquare.Net.CloseEventArgs.Reason
-  fullName: Unosquare.Net.CloseEventArgs.Reason
-  nameWithType: CloseEventArgs.Reason
-- uid: Unosquare.Net.CloseEventArgs.Reason*
-  name: Reason
-  href: api/Unosquare.Net.CloseEventArgs.html#Unosquare_Net_CloseEventArgs_Reason_
-  commentId: Overload:Unosquare.Net.CloseEventArgs.Reason
-  isSpec: "True"
-  fullName: Unosquare.Net.CloseEventArgs.Reason
-  nameWithType: CloseEventArgs.Reason
-- uid: Unosquare.Net.CloseEventArgs.WasClean
-  name: WasClean
-  href: api/Unosquare.Net.CloseEventArgs.html#Unosquare_Net_CloseEventArgs_WasClean
-  commentId: P:Unosquare.Net.CloseEventArgs.WasClean
-  fullName: Unosquare.Net.CloseEventArgs.WasClean
-  nameWithType: CloseEventArgs.WasClean
-- uid: Unosquare.Net.CloseEventArgs.WasClean*
-  name: WasClean
-  href: api/Unosquare.Net.CloseEventArgs.html#Unosquare_Net_CloseEventArgs_WasClean_
-  commentId: Overload:Unosquare.Net.CloseEventArgs.WasClean
-  isSpec: "True"
-  fullName: Unosquare.Net.CloseEventArgs.WasClean
-  nameWithType: CloseEventArgs.WasClean
 - uid: Unosquare.Net.CloseStatusCode
   name: CloseStatusCode
   href: api/Unosquare.Net.CloseStatusCode.html
@@ -4173,38 +4128,6 @@ references:
   commentId: F:Unosquare.Net.CloseStatusCode.UnsupportedData
   fullName: Unosquare.Net.CloseStatusCode.UnsupportedData
   nameWithType: CloseStatusCode.UnsupportedData
-- uid: Unosquare.Net.ConnectionFailureEventArgs
-  name: ConnectionFailureEventArgs
-  href: api/Unosquare.Net.ConnectionFailureEventArgs.html
-  commentId: T:Unosquare.Net.ConnectionFailureEventArgs
-  fullName: Unosquare.Net.ConnectionFailureEventArgs
-  nameWithType: ConnectionFailureEventArgs
-- uid: Unosquare.Net.ConnectionFailureEventArgs.#ctor(System.Exception)
-  name: ConnectionFailureEventArgs(Exception)
-  href: api/Unosquare.Net.ConnectionFailureEventArgs.html#Unosquare_Net_ConnectionFailureEventArgs__ctor_System_Exception_
-  commentId: M:Unosquare.Net.ConnectionFailureEventArgs.#ctor(System.Exception)
-  fullName: Unosquare.Net.ConnectionFailureEventArgs.ConnectionFailureEventArgs(System.Exception)
-  nameWithType: ConnectionFailureEventArgs.ConnectionFailureEventArgs(Exception)
-- uid: Unosquare.Net.ConnectionFailureEventArgs.#ctor*
-  name: ConnectionFailureEventArgs
-  href: api/Unosquare.Net.ConnectionFailureEventArgs.html#Unosquare_Net_ConnectionFailureEventArgs__ctor_
-  commentId: Overload:Unosquare.Net.ConnectionFailureEventArgs.#ctor
-  isSpec: "True"
-  fullName: Unosquare.Net.ConnectionFailureEventArgs.ConnectionFailureEventArgs
-  nameWithType: ConnectionFailureEventArgs.ConnectionFailureEventArgs
-- uid: Unosquare.Net.ConnectionFailureEventArgs.Error
-  name: Error
-  href: api/Unosquare.Net.ConnectionFailureEventArgs.html#Unosquare_Net_ConnectionFailureEventArgs_Error
-  commentId: P:Unosquare.Net.ConnectionFailureEventArgs.Error
-  fullName: Unosquare.Net.ConnectionFailureEventArgs.Error
-  nameWithType: ConnectionFailureEventArgs.Error
-- uid: Unosquare.Net.ConnectionFailureEventArgs.Error*
-  name: Error
-  href: api/Unosquare.Net.ConnectionFailureEventArgs.html#Unosquare_Net_ConnectionFailureEventArgs_Error_
-  commentId: Overload:Unosquare.Net.ConnectionFailureEventArgs.Error
-  isSpec: "True"
-  fullName: Unosquare.Net.ConnectionFailureEventArgs.Error
-  nameWithType: ConnectionFailureEventArgs.Error
 - uid: Unosquare.Net.CookieCollection
   name: CookieCollection
   href: api/Unosquare.Net.CookieCollection.html

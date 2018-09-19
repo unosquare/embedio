@@ -278,21 +278,18 @@
     }
 }
 </code></pre><h2 id="rest-api-example">REST API Example:</h2>
-<p>The WebApi module supports two routing strategies: Wildcard and Regex. By default, and in order to maintain backward compatibility, the WebApi module will use the <strong>Wildcard Routing Strategy</strong> and match routes using the asterisk <code>*</code> character in the route. <strong>For example:</strong> </p>
-<ul>
-<li>The route <code>/api/people/*</code> will match any request with a URL starting with the two first URL segments <code>api</code> and <code>people</code> and ending with anything. The route <code>/api/people/hello</code> will be matched.</li>
-<li>You can also use wildcards in the middle of the route. The route <code>/api/people/*/details</code> will match requests starting with the two first URL segments <code>api</code> and <code>people</code>, and end with a <code>details</code> segment. The route <code>/api/people/hello/details</code> will be matched. </li>
-</ul>
-<p><em>Note that most REST services can be designed with this simpler Wildcard routing strategy. However, the Regex matching strategy is the current recommended approach as we might be deprecating the Wildcard strategy altogether</em></p>
-<p>On the other hand, the <strong>Regex Routing Strategy</strong> will try to match and resolve the values from a route template, in a similar fashion to Microsoft&#39;s Web API. </p>
-<p>A method with the following route <code>/api/people/{id}</code> is going to match any request URL with three segments: the first two <code>api</code> and <code>people</code> and the last one is going to be parsed or converted to the type in the <code>id</code> argument of the handling method signature. Please read on if this was confusing as it is much simpler than it sounds. Additionally, you can put multiple values to match, for example <code>/api/people/{mainSkill}/{age}</code>, and receive the parsed values from the URL straight into the arguments of your handler method.</p>
-<p><em>During server setup:</em></p>
-<pre><code class="lang-csharp">// The routing strategy is Wildcard by default, but you can change it to Regex as follows:
-var server =  new WebServer(&quot;http://localhost:9696/&quot;, RoutingStrategy.Regex);
+<p>The WebApi module supports two routing strategies: Wildcard and Regex. By default, the WebApi module will use the <strong>Regex Routing Strategy</strong> to try to match and 
+resolve the values from a route template, in a similar fashion to Microsoft&#39;s Web API. </p>
+<p>A method with the following route <code>/api/people/{id}</code> is going to match any request URL with three segments: the first two <code>api</code> and <code>people</code> and the last 
+one is going to be parsed or converted to the type in the <code>id</code> argument of the handling method signature. Please read on if this was confusing as it is 
+much simpler than it sounds. Additionally, you can put multiple values to match, for example <code>/api/people/{mainSkill}/{age}</code>, and receive the 
+parsed values from the URL straight into the arguments of your handler method.</p>
+<p>During server setup:</p>
+<pre><code class="lang-csharp">var server =  new WebServer(&quot;http://localhost:9696/&quot;, RoutingStrategy.Regex);
 
 server.RegisterModule(new WebApiModule());
 server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;();
-</code></pre><p><em>And our controller class (using Regex Strategy) looks like:</em></p>
+</code></pre><p>And our controller class (using default Regex Strategy) looks like:</p>
 <pre><code class="lang-csharp">public class PeopleController : WebApiController
 {
     public PeopleController(IHttpContext context)
@@ -319,8 +316,19 @@ server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;()
     // You can override the default headers and add custom headers to each API Response.
     public override void SetDefaultHeaders() =&gt; this.NoCache();
 }
-</code></pre><p><em>Or if you want to use the Wildcard strategy (which is the default):</em></p>
-<pre><code class="lang-csharp">public class PeopleController : WebApiController
+</code></pre><p>The previous default strategy (Wildcard) match routes using the asterisk <code>*</code> character in the route. <strong>For example:</strong> </p>
+<ul>
+<li>The route <code>/api/people/*</code> will match any request with a URL starting with the two first URL segments <code>api</code> and 
+<code>people</code> and ending with anything. The route <code>/api/people/hello</code> will be matched.</li>
+<li>You can also use wildcards in the middle of the route. The route <code>/api/people/*/details</code> will match requests 
+starting with the two first URL segments <code>api</code> and <code>people</code>, and end with a <code>details</code> segment. The route <code>/api/people/hello/details</code> will be matched. </li>
+</ul>
+<p>During server setup:</p>
+<pre><code class="lang-csharp">var server =  new WebServer(&quot;http://localhost:9696/&quot;, RoutingStrategy.Regex);
+
+server.RegisterModule(new WebApiModule());
+server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;();
+</code></pre><pre><code class="lang-csharp">public class PeopleController : WebApiController
 {
     public PeopleController(IHttpContext context)
     : base(context)
@@ -368,7 +376,6 @@ public class WebSocketsChatServer : WebSocketsServer
         // placeholder
     }
 
-    /// &lt;inheritdoc/&gt;
     public override string ServerName =&gt; &quot;Chat Server&quot;
 
     protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
@@ -391,10 +398,12 @@ public class WebSocketsChatServer : WebSocketsServer
                 this.Send(ws, &quot;Someone joined the chat room.&quot;);
         }
     }
+
     protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
     {
         return;
     }
+
     protected override void OnClientDisconnected(WebSocketContext context)
     {
         this.Broadcast(&quot;Someone left the chat room.&quot;);
