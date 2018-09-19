@@ -99,58 +99,43 @@
 <ul>
 <li>Written entirely in C#, using our helpful library <a href="https://github.com/unosquare/swan">SWAN</a></li>
 <li>Network operations use the async/await pattern: Responses are handled asynchronously</li>
-<li>Cross-platform[1]: tested in Mono on Windows and on a custom Yocto image for the Raspberry Pi</li>
-<li>Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras" target="_blank">EmbedIO Extras</a> for additional modules.</li>
+<li>Multiple implementations support: EmbedIO can use Microsoft <code>HttpListener</code> or internal Http Listener based on MONO/WebSocket-Sharp projects</li>
+<li>Cross-platform: tested on multiple OS and runtimes. From Windows .NET Framework to Linux MONO.</li>
+<li>Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras">EmbedIO Extras</a> for additional modules</li>
 <li>Small memory footprint</li>
 <li>Create REST APIs quickly with the out-of-the-box Web API module</li>
-<li>Serve static files with 1 line of code (also out-of-the-box)</li>
+<li>Serve static or embedded files with 1 line of code (also out-of-the-box)</li>
 <li>Handle sessions with the built-in LocalSessionWebModule</li>
-<li>WebSockets support (see notes below)</li>
+<li>WebSockets support</li>
 <li>CORS support. Origin, Header and Method validation with OPTIONS preflight</li>
 <li>Supports HTTP 206 Partial Content</li>
-</ul>
-<p><em>For detailed usage and REST API implementation, download the code and take a look at the Samples project</em></p>
-<h3 id="some-usage-scenarios"><strong>Some usage scenarios</strong>:</h3>
-<ul>
-<li>Write a cross-platform GUI entirely in CSS/HTML/JS</li>
-<li>Write a game using Babylon.js and make EmbedIO your serve your code and assets</li>
-<li>Create GUIs for Windows services or Linux daemons</li>
-<li>Works well with <a href="https://github.com/unosquare/litelib" target="_blank">LiteLib</a> - add SQLite support in minutes!</li>
-<li>Write client applications with real-time communication between them</li>
+<li>And many more options in the same package</li>
 </ul>
 <p>Some notes regarding WebSocket and runtimes support:</p>
-<table>
-<thead>
-<tr>
-<th>Runtime</th>
-<th>WebSocket support</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>NET46</td>
-<td>Yes</td>
-<td>Support Win7+ OS using a custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a></td>
-</tr>
-<tr>
-<td>NET47</td>
-<td>Yes</td>
-<td>Support Win8+ OS using native System.Net library</td>
-</tr>
-<tr>
-<td>NETSTANDARD*</td>
-<td>Yes</td>
-<td>Support Windows, Linux and macOS using native System.Net library</td>
-</tr>
-<tr>
-<td>UAP</td>
-<td>No</td>
-<td>Support Windows Universal Platform. More information <a href="https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT">here</a></td>
-</tr>
-</tbody>
-</table>
-<p>EmbedIO before version 1.4.0 uses Newtonsoft JSON and an internal logger subsystem based on ILog interface.</p>
+<p>| Runtime | HTTP implementation | WebSocket support | Notes |
+| --- | --- | --- |
+| NET46 | <em>Unosquare</em> and Microsoft | Yes | Support Win7+ OS using a custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a> |
+| NET47 | Unosquare and <em>Microsoft</em> | | Yes | Support Win8+ OS using native System.Net library |
+| NETSTANDARD13 | <em>Unosquare</em> and Microsoft (only Windows) | Yes | Support Windows, Linux and macOS using native System.Net library |
+| NETSTANDARD20 | Unosquare and <em>Microsoft</em> | Yes | Support Windows, Linux and macOS using native System.Net library |
+| UAP | <em>Unosquare</em> | No | Support Windows Universal Platform. More information <a href="https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT">here</a> |</p>
+<h3 id="embedio-20---whats-new">EmbedIO 2.0 - What&#39;s new</h3>
+<ul>
+<li><code>IHttpListener</code> is runtime/platform independent, you can choose Unosquare <code>HttpListener</code> implementation with NET47 or NETSTANDARD20. This separation of implementations brings new access to interfaces from common Http objects like <code>IHttpRequest</code>, <code>IHttpContext</code> and mor.</li>
+<li><code>IWebServer</code> is a new interface to create custom web server implementation, like a Test Web Server where all the operations are in-memory to speed up unit testing. Similar to <a href="https://msdn.microsoft.com/en-us/library/microsoft.owin.testing.testserver(v=vs.113).aspx">TestServer from OWIN</a></li>
+<li><code>WebApiController</code> is renewed. Reduce the methods overhead removing the WebServer and Context arguments. See example belows.</li>
+<li>General improvements in how the Unosquare <code>HttpListner</code> is working and code clean-up.</li>
+</ul>
+<p><em>Note</em> - We encourage to upgrade to new EmbedIO. Branch version 1.X will not be longer mantain, and issues will be tested against 2.X and resolved just there.</p>
+<h3 id="some-usage-scenarios">Some usage scenarios:</h3>
+<ul>
+<li>Write a cross-platform GUI entirely in using React/AngularJS/Vue.js or any Javascript framework</li>
+<li>Write a game using Babylon.js and make EmbedIO your serve your code and assets</li>
+<li>Create GUIs for Windows services or Linux daemons</li>
+<li>Works well with <a href="https://github.com/unosquare/litelib">LiteLib</a> - add SQLite support in minutes!</li>
+<li>Write client applications with real-time communication between them using WebSockets</li>
+<li>Write internal web server for Xamarin Forms applications</li>
+</ul>
 <h2 id="nuget-installation">NuGet Installation:</h2>
 <pre><code>PM&gt; Install-Package EmbedIO
 </code></pre><h2 id="examples">Examples</h2>
@@ -416,8 +401,6 @@ public class WebSocketsChatServer : WebSocketsServer
 </tr>
 </tbody>
 </table>
-<h2 id="notes">Notes</h2>
-<p>[1] - EmbedIO uses lowercase URL parts. In Windows systems, this is the expected behavior but in Unix systems using MONO please refer to <a href="http://www.mono-project.com/docs/advanced/iomap/">Mono IOMap</a> if you want to work with case-insensitive URL parts.</p>
 </article>
           </div>
           
