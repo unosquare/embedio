@@ -382,10 +382,10 @@
             }
 
             if (code == CloseStatusCode.NoStatus)
-                return InternalCloseAsync(new CloseEventArgs(), ct: ct);
+                return InternalCloseAsync(ct: ct);
 
             var send = !IsOpcodeReserved(code);
-            return InternalCloseAsync(new CloseEventArgs(code, reason), send, send, ct: ct);
+            return InternalCloseAsync(new PayloadData((ushort) code, reason), send, send, ct: ct);
         }
 
         /// <summary>
@@ -453,19 +453,19 @@
         /// <param name="message">
         /// A <see cref="string"/> that represents the message to send.
         /// </param>
-        public async Task<bool> PingAsync(string message)
+        public Task<bool> PingAsync(string message)
         {
             if (string.IsNullOrEmpty(message))
-                return await PingAsync();
+                return PingAsync();
 
             var data = Encoding.UTF8.GetBytes(message);
 
             if (data.Length <= 125)
-                return await PingAsync(WebSocketFrame.CreatePingFrame(data, IsClient).ToArray(), _waitTime);
+                return PingAsync(WebSocketFrame.CreatePingFrame(data, IsClient).ToArray(), _waitTime);
 
             "A message has greater than the allowable max size.".Error();
 
-            return false;
+            return Task.FromResult(false);
         }
 
         /// <summary>
@@ -525,7 +525,7 @@
         {
             try
             {
-                InternalCloseAsync(new CloseEventArgs(CloseStatusCode.Away)).Wait();
+                InternalCloseAsync(new PayloadData((ushort) CloseStatusCode.Away)).Wait();
             }
             catch
             {
@@ -579,7 +579,7 @@
 
         // As client
         private async Task InternalCloseAsync(
-            CloseEventArgs e,
+            PayloadData payloadData = null,
             bool send = true,
             bool receive = true,
             bool received = false,
@@ -607,8 +607,8 @@
 
             "Begin closing the connection.".Info();
 
-            var bytes = send ? WebSocketFrame.CreateCloseFrame(e.PayloadData, IsClient).ToArray() : null;
-            e.WasClean = await CloseHandshakeAsync(bytes, receive, received, ct);
+            var bytes = send ? WebSocketFrame.CreateCloseFrame(payloadData, IsClient).ToArray() : null;
+            await CloseHandshakeAsync(bytes, receive, received, ct);
             ReleaseResources();
 
             "End closing the connection.".Info();
@@ -656,7 +656,7 @@
             (exception as WebSocketException)?.Code ?? CloseStatusCode.Abnormal);
 
         private void Fatal(string message, CloseStatusCode code) =>
-            InternalCloseAsync(new CloseEventArgs(code, message), !IsOpcodeReserved(code), false).Wait();
+            InternalCloseAsync(new PayloadData((ushort) code, message), !IsOpcodeReserved(code), false).Wait();
 
         private void Message()
         {
@@ -727,7 +727,7 @@
         private Task ProcessCloseFrame(WebSocketFrame frame)
         {
             var payload = frame.PayloadData;
-            return InternalCloseAsync(new CloseEventArgs(payload), !payload.HasReservedCode, false, true);
+            return InternalCloseAsync(payload, !payload.HasReservedCode, false, true);
         }
 
         private void ProcessDataFrame(WebSocketFrame frame)

@@ -139,10 +139,11 @@
             {
                 var url = Resources.GetServerAddress();
 
-                using (var instance = new WebServer(url))
+                using (var instance = new WebServer(url, RoutingStrategy.Wildcard))
                 {
                     instance.RegisterModule(new TestWebModule());
                     var runTask = instance.RunAsync();
+
                     using (var handler = new HttpClientHandler())
                     {
                         handler.AllowAutoRedirect = false;

@@ -29,7 +29,7 @@
             new Dictionary<string, WebSocketsServer>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Unosquare.Labs.EmbedIO.Modules.WebSocketsModule" /> class.
+        /// Initializes a new instance of the <see cref="WebSocketsModule"/> class.
         /// </summary>
         public WebSocketsModule()
         {
