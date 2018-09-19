@@ -3866,12 +3866,6 @@ references:
   commentId: M:Unosquare.Labs.EmbedIO.WebServer.Create(System.String)
   fullName: Unosquare.Labs.EmbedIO.WebServer.Create(System.String)
   nameWithType: WebServer.Create(String)
-- uid: Unosquare.Labs.EmbedIO.WebServer.Create(System.String,Unosquare.Labs.EmbedIO.Constants.RoutingStrategy)
-  name: Create(String, RoutingStrategy)
-  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_Create_System_String_Unosquare_Labs_EmbedIO_Constants_RoutingStrategy_
-  commentId: M:Unosquare.Labs.EmbedIO.WebServer.Create(System.String,Unosquare.Labs.EmbedIO.Constants.RoutingStrategy)
-  fullName: Unosquare.Labs.EmbedIO.WebServer.Create(System.String, Unosquare.Labs.EmbedIO.Constants.RoutingStrategy)
-  nameWithType: WebServer.Create(String, RoutingStrategy)
 - uid: Unosquare.Labs.EmbedIO.WebServer.Create*
   name: Create
   href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_Create_

@@ -99,7 +99,7 @@
 <ul>
 <li>Written entirely in C#, using our helpful library <a href="https://github.com/unosquare/swan">SWAN</a></li>
 <li>Network operations use the async/await pattern: Responses are handled asynchronously</li>
-<li>Multiple implementations support: EmbedIO can use Microsoft <code>HttpListener</code> or internal Http Listener based on MONO/WebSocket-Sharp projects</li>
+<li>Multiple implementations support: EmbedIO can use Microsoft <code>HttpListener</code> or internal Http Listener based on <a href="https://www.mono-project.com/">Mono</a>/<a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a> projects</li>
 <li>Cross-platform: tested on multiple OS and runtimes. From Windows .NET Framework to Linux MONO.</li>
 <li>Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras">EmbedIO Extras</a> for additional modules</li>
 <li>Small memory footprint</li>
@@ -112,18 +112,54 @@
 <li>And many more options in the same package</li>
 </ul>
 <p>Some notes regarding WebSocket and runtimes support:</p>
-<p>| Runtime | HTTP implementation | WebSocket support | Notes |
-| --- | --- | --- |
-| NET46 | <em>Unosquare</em> and Microsoft | Yes | Support Win7+ OS using a custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a> |
-| NET47 | Unosquare and <em>Microsoft</em> | | Yes | Support Win8+ OS using native System.Net library |
-| NETSTANDARD13 | <em>Unosquare</em> and Microsoft (only Windows) | Yes | Support Windows, Linux and macOS using native System.Net library |
-| NETSTANDARD20 | Unosquare and <em>Microsoft</em> | Yes | Support Windows, Linux and macOS using native System.Net library |
-| UAP | <em>Unosquare</em> | No | Support Windows Universal Platform. More information <a href="https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT">here</a> |</p>
+<table>
+<thead>
+<tr>
+<th>Runtime</th>
+<th>HTTP implementation</th>
+<th>WebSocket support</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NET46</td>
+<td><em>Unosquare</em> and Microsoft</td>
+<td>Yes</td>
+<td>Support Win7+ OS, Linux and macOS.</td>
+</tr>
+<tr>
+<td>NET47</td>
+<td>Unosquare and <em>Microsoft</em></td>
+<td></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>NETSTANDARD13</td>
+<td><em>Unosquare</em></td>
+<td>Yes</td>
+<td>Support Windows, Linux and macOS using native System.Net library</td>
+</tr>
+<tr>
+<td>NETSTANDARD20</td>
+<td>Unosquare and <em>Microsoft</em></td>
+<td>Yes</td>
+<td>Support Windows, Linux and macOS using native System.Net library</td>
+</tr>
+<tr>
+<td>UAP</td>
+<td><em>Unosquare</em></td>
+<td>No</td>
+<td>Support Windows Universal Platform. More information <a href="https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT">here</a></td>
+</tr>
+</tbody>
+</table>
 <h3 id="embedio-20---whats-new">EmbedIO 2.0 - What&#39;s new</h3>
 <ul>
 <li><code>IHttpListener</code> is runtime/platform independent, you can choose Unosquare <code>HttpListener</code> implementation with NET47 or NETSTANDARD20. This separation of implementations brings new access to interfaces from common Http objects like <code>IHttpRequest</code>, <code>IHttpContext</code> and mor.</li>
 <li><code>IWebServer</code> is a new interface to create custom web server implementation, like a Test Web Server where all the operations are in-memory to speed up unit testing. Similar to <a href="https://msdn.microsoft.com/en-us/library/microsoft.owin.testing.testserver(v=vs.113).aspx">TestServer from OWIN</a></li>
 <li><code>WebApiController</code> is renewed. Reduce the methods overhead removing the WebServer and Context arguments. See example belows.</li>
+<li><code>RoutingStrategy.Regex</code> is the default routing scheme.</li>
 <li>General improvements in how the Unosquare <code>HttpListner</code> is working and code clean-up.</li>
 </ul>
 <p><em>Note</em> - We encourage to upgrade to new EmbedIO. Branch version 1.X will not be longer mantain, and issues will be tested against 2.X and resolved just there.</p>
