@@ -80,10 +80,11 @@
 <p><em><span class="emoji" shortcode="star">⭐</span> Please star this project if you find it useful!</em></p>
 <ul>
 <li><a href="#overview">Overview</a><ul>
+<li><a href="#embedio-20---whats-new">EmbedIO 2.0 - What&#39;s new</a></li>
 <li><a href="#some-usage-scenarios">Some usage scenarios</a></li>
 </ul>
 </li>
-<li><a href="#nuget-installation">NuGet Installation</a></li>
+<li><a href="#installation">Installation</a></li>
 <li><a href="#examples">Examples</a><ul>
 <li><a href="#basic-example">Basic Example</a></li>
 <li><a href="#fluent-example">Fluent Example</a></li>
@@ -92,7 +93,6 @@
 </ul>
 </li>
 <li><a href="#related-projects-and-nugets">Related Projects and Nugets</a></li>
-<li><a href="#notes">Notes</a></li>
 </ul>
 <h2 id="overview">Overview</h2>
 <p>A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework and .NET Core.</p>
@@ -136,12 +136,16 @@
 <li>Write client applications with real-time communication between them using WebSockets</li>
 <li>Write internal web server for Xamarin Forms applications</li>
 </ul>
-<h2 id="nuget-installation">NuGet Installation:</h2>
+<h2 id="installation">Installation:</h2>
+<p>You can start using EmbedIO downloading the nuget.</p>
+<h3 id="package-manager">Package Manager</h3>
 <pre><code>PM&gt; Install-Package EmbedIO
+</code></pre><h3 id="net-cli">.NET CLI</h3>
+<pre><code>&gt; dotnet add package EmbedIO
 </code></pre><h2 id="examples">Examples</h2>
 <h2 id="basic-example">Basic Example:</h2>
-<p><em>Please note the comments are the important part here. More info is available in the samples.</em></p>
-<pre><code class="lang-csharp">namespace Company.Project
+<p>Please note the comments are the important part here. More info is available in the samples.</p>
+<pre><code class="lang-csharp">namespace Unosquare
 {
     using System;
     using Unosquare.Labs.EmbedIO;
@@ -200,7 +204,7 @@
 }
 </code></pre><h2 id="fluent-example">Fluent Example:</h2>
 <p>Many extension methods are available. This allows you to create a web server instance in a fluent style by dotting in configuration options.</p>
-<pre><code class="lang-csharp">namespace Company.Project
+<pre><code class="lang-csharp">namespace Unosquare
 {
     using System;
     using Unosquare.Labs.EmbedIO;
@@ -244,7 +248,8 @@
 <li>You can also use wildcards in the middle of the route. The route <code>/api/people/*/details</code> will match requests starting with the two first URL segments <code>api</code> and <code>people</code>, and end with a <code>details</code> segment. The route <code>/api/people/hello/details</code> will be matched. </li>
 </ul>
 <p><em>Note that most REST services can be designed with this simpler Wildcard routing strategy. However, the Regex matching strategy is the current recommended approach as we might be deprecating the Wildcard strategy altogether</em></p>
-<p>On the other hand, the <strong>Regex Routing Strategy</strong> will try to match and resolve the values from a route template, in a similar fashion to Microsoft&#39;s Web API 2. A method with the following route <code>/api/people/{id}</code> is going to match any request URL with three segments: the first two <code>api</code> and <code>people</code> and the last one is going to be parsed or converted to the type in the <code>id</code> argument of the handling method signature. Please read on if this was confusing as it is much simpler than it sounds. Additionally, you can put multiple values to match, for example <code>/api/people/{mainSkill}/{age}</code>, and receive the parsed values from the URL straight into the arguments of your handler method.</p>
+<p>On the other hand, the <strong>Regex Routing Strategy</strong> will try to match and resolve the values from a route template, in a similar fashion to Microsoft&#39;s Web API. </p>
+<p>A method with the following route <code>/api/people/{id}</code> is going to match any request URL with three segments: the first two <code>api</code> and <code>people</code> and the last one is going to be parsed or converted to the type in the <code>id</code> argument of the handling method signature. Please read on if this was confusing as it is much simpler than it sounds. Additionally, you can put multiple values to match, for example <code>/api/people/{mainSkill}/{age}</code>, and receive the parsed values from the URL straight into the arguments of your handler method.</p>
 <p><em>During server setup:</em></p>
 <pre><code class="lang-csharp">// The routing strategy is Wildcard by default, but you can change it to Regex as follows:
 var server =  new WebServer(&quot;http://localhost:9696/&quot;, RoutingStrategy.Regex);
