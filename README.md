@@ -195,28 +195,24 @@ namespace Unosquare
 
 ## REST API Example:
 
-The WebApi module supports two routing strategies: Wildcard and Regex. By default, and in order to maintain backward compatibility, the WebApi module will use the **Wildcard Routing Strategy** and match routes using the asterisk `*` character in the route. **For example:** 
+The WebApi module supports two routing strategies: Wildcard and Regex. By default, the WebApi module will use the **Regex Routing Strategy** to try to match and 
+resolve the values from a route template, in a similar fashion to Microsoft's Web API. 
 
-- The route `/api/people/*` will match any request with a URL starting with the two first URL segments `api` and `people` and ending with anything. The route `/api/people/hello` will be matched.
-- You can also use wildcards in the middle of the route. The route `/api/people/*/details` will match requests starting with the two first URL segments `api` and `people`, and end with a `details` segment. The route `/api/people/hello/details` will be matched. 
+A method with the following route `/api/people/{id}` is going to match any request URL with three segments: the first two `api` and `people` and the last 
+one is going to be parsed or converted to the type in the `id` argument of the handling method signature. Please read on if this was confusing as it is 
+much simpler than it sounds. Additionally, you can put multiple values to match, for example `/api/people/{mainSkill}/{age}`, and receive the 
+parsed values from the URL straight into the arguments of your handler method.
 
-*Note that most REST services can be designed with this simpler Wildcard routing strategy. However, the Regex matching strategy is the current recommended approach as we might be deprecating the Wildcard strategy altogether*
-
-On the other hand, the **Regex Routing Strategy** will try to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API. 
-
-A method with the following route `/api/people/{id}` is going to match any request URL with three segments: the first two `api` and `people` and the last one is going to be parsed or converted to the type in the `id` argument of the handling method signature. Please read on if this was confusing as it is much simpler than it sounds. Additionally, you can put multiple values to match, for example `/api/people/{mainSkill}/{age}`, and receive the parsed values from the URL straight into the arguments of your handler method.
-
-*During server setup:*
+During server setup:
 
 ```csharp
-// The routing strategy is Wildcard by default, but you can change it to Regex as follows:
 var server =  new WebServer("http://localhost:9696/", RoutingStrategy.Regex);
 
 server.RegisterModule(new WebApiModule());
 server.Module<WebApiModule>().RegisterController<PeopleController>();
 ```
 
-*And our controller class (using Regex Strategy) looks like:*
+And our controller class (using default Regex Strategy) looks like:
 
 ```csharp
 public class PeopleController : WebApiController
@@ -247,7 +243,21 @@ public class PeopleController : WebApiController
 }
 ```
 
-*Or if you want to use the Wildcard strategy (which is the default):*
+The previous default strategy (Wildcard) match routes using the asterisk `*` character in the route. **For example:** 
+
+- The route `/api/people/*` will match any request with a URL starting with the two first URL segments `api` and 
+`people` and ending with anything. The route `/api/people/hello` will be matched.
+- You can also use wildcards in the middle of the route. The route `/api/people/*/details` will match requests 
+starting with the two first URL segments `api` and `people`, and end with a `details` segment. The route `/api/people/hello/details` will be matched. 
+
+During server setup:
+
+```csharp
+var server =  new WebServer("http://localhost:9696/", RoutingStrategy.Regex);
+
+server.RegisterModule(new WebApiModule());
+server.Module<WebApiModule>().RegisterController<PeopleController>();
+```
 
 ```csharp
 public class PeopleController : WebApiController
@@ -308,7 +318,6 @@ public class WebSocketsChatServer : WebSocketsServer
         // placeholder
     }
 
-    /// <inheritdoc/>
     public override string ServerName => "Chat Server"
 
     protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
@@ -331,10 +340,12 @@ public class WebSocketsChatServer : WebSocketsServer
                 this.Send(ws, "Someone joined the chat room.");
         }
     }
+
     protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
     {
         return;
     }
+
     protected override void OnClientDisconnected(WebSocketContext context)
     {
         this.Broadcast("Someone left the chat room.");
