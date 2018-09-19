@@ -9,7 +9,6 @@
 
 *:star: Please star this project if you find it useful!*
 
-
 - [Overview](#overview)
     - [Some usage scenarios](#some-usage-scenarios)
 - [NuGet Installation](#nuget-installation)
@@ -23,40 +22,50 @@
 
 
 ## Overview
+
 A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework and .NET Core.
 
 * Written entirely in C#, using our helpful library [SWAN](https://github.com/unosquare/swan)
 * Network operations use the async/await pattern: Responses are handled asynchronously
-* Cross-platform[1]: tested in Mono on Windows and on a custom Yocto image for the Raspberry Pi
-* Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras" target="_blank">EmbedIO Extras</a> for additional modules.
+* Multiple implementations support: EmbedIO can use Microsoft `HttpListener` or internal Http Listener based on MONO/WebSocket-Sharp projects
+* Cross-platform: tested on multiple OS and runtimes. From Windows .NET Framework to Linux MONO.
+* Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out [EmbedIO Extras](https://github.com/unosquare/embedio-extras) for additional modules
 * Small memory footprint
 * Create REST APIs quickly with the out-of-the-box Web API module
-* Serve static files with 1 line of code (also out-of-the-box)
+* Serve static or embedded files with 1 line of code (also out-of-the-box)
 * Handle sessions with the built-in LocalSessionWebModule
-* WebSockets support (see notes below)
+* WebSockets support
 * CORS support. Origin, Header and Method validation with OPTIONS preflight
 * Supports HTTP 206 Partial Content
-
-*For detailed usage and REST API implementation, download the code and take a look at the Samples project*
-
-### **Some usage scenarios**:
-
-* Write a cross-platform GUI entirely in CSS/HTML/JS
-* Write a game using Babylon.js and make EmbedIO your serve your code and assets
-* Create GUIs for Windows services or Linux daemons
-* Works well with <a href="https://github.com/unosquare/litelib" target="_blank">LiteLib</a> - add SQLite support in minutes!
-* Write client applications with real-time communication between them
+* And many more options in the same package
 
 Some notes regarding WebSocket and runtimes support:
 
-| Runtime | WebSocket support | Notes |
+| Runtime | HTTP implementation | WebSocket support | Notes |
 | --- | --- | --- |
-| NET46 | Yes | Support Win7+ OS using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
-| NET47 | Yes | Support Win8+ OS using native System.Net library |
-| NETSTANDARD* | Yes | Support Windows, Linux and macOS using native System.Net library |
-| UAP | No | Support Windows Universal Platform. More information [here](https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT) |
+| NET46 | *Unosquare* and Microsoft | Yes | Support Win7+ OS using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
+| NET47 | Unosquare and *Microsoft* | | Yes | Support Win8+ OS using native System.Net library |
+| NETSTANDARD13 | *Unosquare* and Microsoft (only Windows) | Yes | Support Windows, Linux and macOS using native System.Net library |
+| NETSTANDARD20 | Unosquare and *Microsoft* | Yes | Support Windows, Linux and macOS using native System.Net library |
+| UAP | *Unosquare* | No | Support Windows Universal Platform. More information [here](https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT) |
 
-EmbedIO before version 1.4.0 uses Newtonsoft JSON and an internal logger subsystem based on ILog interface.
+### EmbedIO 2.0 - What's new
+
+* `IHttpListener` is runtime/platform independent, you can choose Unosquare `HttpListener` implementation with NET47 or NETSTANDARD20. This separation of implementations brings new access to interfaces from common Http objects like `IHttpRequest`, `IHttpContext` and mor.
+* `IWebServer` is a new interface to create custom web server implementation, like a Test Web Server where all the operations are in-memory to speed up unit testing. Similar to [TestServer from OWIN](https://msdn.microsoft.com/en-us/library/microsoft.owin.testing.testserver(v=vs.113).aspx)
+* `WebApiController` is renewed. Reduce the methods overhead removing the WebServer and Context arguments. See example belows.
+* General improvements in how the Unosquare `HttpListner` is working and code clean-up.
+
+*Note* - We encourage to upgrade to new EmbedIO. Branch version 1.X will not be longer mantain, and issues will be tested against 2.X and resolved just there.
+
+### Some usage scenarios:
+
+* Write a cross-platform GUI entirely in using React/AngularJS/Vue.js or any Javascript framework
+* Write a game using Babylon.js and make EmbedIO your serve your code and assets
+* Create GUIs for Windows services or Linux daemons
+* Works well with [LiteLib](https://github.com/unosquare/litelib) - add SQLite support in minutes!
+* Write client applications with real-time communication between them using WebSockets
+* Write internal web server for Xamarin Forms applications
 
 ## NuGet Installation:
 ```
@@ -329,6 +338,3 @@ Name | Author | Description
 [EmbedIO.LiteLibWebApi](https://www.nuget.org/packages/EmbedIO.LiteLibWebApi/) | Unosquare | Allow to expose a sqlite database as REST api using EmbedIO WebApi and LiteLib libraries
 [EmbedIO.OWIN](https://www.nuget.org/packages/EmbedIO.OWIN/) | Unosquare | EmbedIO can use the OWIN platform in two different approach: You can use EmbedIO as OWIN server and use all OWIN framework with EmbedIO modules.
 [Microsoft.AspNetCore.Server.EmbedIO](https://www.nuget.org/packages/Microsoft.AspNetCore.Server.EmbedIO/) | Dju  | EmbedIO web server support for ASP.NET Core, as a drop-in replacement for Kestrel
-
-## Notes
-[1] - EmbedIO uses lowercase URL parts. In Windows systems, this is the expected behavior but in Unix systems using MONO please refer to [Mono IOMap](http://www.mono-project.com/docs/advanced/iomap/) if you want to work with case-insensitive URL parts.
