@@ -443,12 +443,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.DeleteSession
   nameWithType: Extensions.DeleteSession
-- uid: Unosquare.Labs.EmbedIO.Extensions.EnableCors(Unosquare.Labs.EmbedIO.WebServer,System.String,System.String,System.String)
-  name: EnableCors(WebServer, String, String, String)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_EnableCors_Unosquare_Labs_EmbedIO_WebServer_System_String_System_String_System_String_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.EnableCors(Unosquare.Labs.EmbedIO.WebServer,System.String,System.String,System.String)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.EnableCors(Unosquare.Labs.EmbedIO.WebServer, System.String, System.String, System.String)
-  nameWithType: Extensions.EnableCors(WebServer, String, String, String)
+- uid: Unosquare.Labs.EmbedIO.Extensions.EnableCors(Unosquare.Labs.EmbedIO.IWebServer,System.String,System.String,System.String)
+  name: EnableCors(IWebServer, String, String, String)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_EnableCors_Unosquare_Labs_EmbedIO_IWebServer_System_String_System_String_System_String_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.EnableCors(Unosquare.Labs.EmbedIO.IWebServer,System.String,System.String,System.String)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.EnableCors(Unosquare.Labs.EmbedIO.IWebServer, System.String, System.String, System.String)
+  nameWithType: Extensions.EnableCors(IWebServer, String, String, String)
 - uid: Unosquare.Labs.EmbedIO.Extensions.EnableCors*
   name: EnableCors
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_EnableCors_
@@ -584,18 +584,18 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync
   nameWithType: Extensions.JsonResponseAsync
+- uid: Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers(Unosquare.Labs.EmbedIO.IWebServer,System.Reflection.Assembly)
+  name: LoadApiControllers(IWebServer, Assembly)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_LoadApiControllers_Unosquare_Labs_EmbedIO_IWebServer_System_Reflection_Assembly_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers(Unosquare.Labs.EmbedIO.IWebServer,System.Reflection.Assembly)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers(Unosquare.Labs.EmbedIO.IWebServer, System.Reflection.Assembly)
+  nameWithType: Extensions.LoadApiControllers(IWebServer, Assembly)
 - uid: Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers(Unosquare.Labs.EmbedIO.Modules.WebApiModule,System.Reflection.Assembly)
   name: LoadApiControllers(WebApiModule, Assembly)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_LoadApiControllers_Unosquare_Labs_EmbedIO_Modules_WebApiModule_System_Reflection_Assembly_
   commentId: M:Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers(Unosquare.Labs.EmbedIO.Modules.WebApiModule,System.Reflection.Assembly)
   fullName: Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers(Unosquare.Labs.EmbedIO.Modules.WebApiModule, System.Reflection.Assembly)
   nameWithType: Extensions.LoadApiControllers(WebApiModule, Assembly)
-- uid: Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers(Unosquare.Labs.EmbedIO.WebServer,System.Reflection.Assembly)
-  name: LoadApiControllers(WebServer, Assembly)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_LoadApiControllers_Unosquare_Labs_EmbedIO_WebServer_System_Reflection_Assembly_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers(Unosquare.Labs.EmbedIO.WebServer,System.Reflection.Assembly)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers(Unosquare.Labs.EmbedIO.WebServer, System.Reflection.Assembly)
-  nameWithType: Extensions.LoadApiControllers(WebServer, Assembly)
 - uid: Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers*
   name: LoadApiControllers
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_LoadApiControllers_
@@ -603,12 +603,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers
   nameWithType: Extensions.LoadApiControllers
-- uid: Unosquare.Labs.EmbedIO.Extensions.LoadWebSockets(Unosquare.Labs.EmbedIO.WebServer,System.Reflection.Assembly)
-  name: LoadWebSockets(WebServer, Assembly)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_LoadWebSockets_Unosquare_Labs_EmbedIO_WebServer_System_Reflection_Assembly_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.LoadWebSockets(Unosquare.Labs.EmbedIO.WebServer,System.Reflection.Assembly)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.LoadWebSockets(Unosquare.Labs.EmbedIO.WebServer, System.Reflection.Assembly)
-  nameWithType: Extensions.LoadWebSockets(WebServer, Assembly)
+- uid: Unosquare.Labs.EmbedIO.Extensions.LoadWebSockets(Unosquare.Labs.EmbedIO.IWebServer,System.Reflection.Assembly)
+  name: LoadWebSockets(IWebServer, Assembly)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_LoadWebSockets_Unosquare_Labs_EmbedIO_IWebServer_System_Reflection_Assembly_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.LoadWebSockets(Unosquare.Labs.EmbedIO.IWebServer,System.Reflection.Assembly)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.LoadWebSockets(Unosquare.Labs.EmbedIO.IWebServer, System.Reflection.Assembly)
+  nameWithType: Extensions.LoadWebSockets(IWebServer, Assembly)
 - uid: Unosquare.Labs.EmbedIO.Extensions.LoadWebSockets*
   name: LoadWebSockets
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_LoadWebSockets_
@@ -840,12 +840,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync
   nameWithType: Extensions.StringResponseAsync
-- uid: Unosquare.Labs.EmbedIO.Extensions.WithLocalSession(Unosquare.Labs.EmbedIO.WebServer)
-  name: WithLocalSession(WebServer)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithLocalSession_Unosquare_Labs_EmbedIO_WebServer_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.WithLocalSession(Unosquare.Labs.EmbedIO.WebServer)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.WithLocalSession(Unosquare.Labs.EmbedIO.WebServer)
-  nameWithType: Extensions.WithLocalSession(WebServer)
+- uid: Unosquare.Labs.EmbedIO.Extensions.WithLocalSession(Unosquare.Labs.EmbedIO.IWebServer)
+  name: WithLocalSession(IWebServer)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithLocalSession_Unosquare_Labs_EmbedIO_IWebServer_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.WithLocalSession(Unosquare.Labs.EmbedIO.IWebServer)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.WithLocalSession(Unosquare.Labs.EmbedIO.IWebServer)
+  nameWithType: Extensions.WithLocalSession(IWebServer)
 - uid: Unosquare.Labs.EmbedIO.Extensions.WithLocalSession*
   name: WithLocalSession
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithLocalSession_
@@ -853,12 +853,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.WithLocalSession
   nameWithType: Extensions.WithLocalSession
-- uid: Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt(Unosquare.Labs.EmbedIO.WebServer,System.String,System.String,System.Boolean)
-  name: WithStaticFolderAt(WebServer, String, String, Boolean)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithStaticFolderAt_Unosquare_Labs_EmbedIO_WebServer_System_String_System_String_System_Boolean_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt(Unosquare.Labs.EmbedIO.WebServer,System.String,System.String,System.Boolean)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt(Unosquare.Labs.EmbedIO.WebServer, System.String, System.String, System.Boolean)
-  nameWithType: Extensions.WithStaticFolderAt(WebServer, String, String, Boolean)
+- uid: Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt(Unosquare.Labs.EmbedIO.IWebServer,System.String,System.String,System.Boolean)
+  name: WithStaticFolderAt(IWebServer, String, String, Boolean)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithStaticFolderAt_Unosquare_Labs_EmbedIO_IWebServer_System_String_System_String_System_Boolean_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt(Unosquare.Labs.EmbedIO.IWebServer,System.String,System.String,System.Boolean)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt(Unosquare.Labs.EmbedIO.IWebServer, System.String, System.String, System.Boolean)
+  nameWithType: Extensions.WithStaticFolderAt(IWebServer, String, String, Boolean)
 - uid: Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt*
   name: WithStaticFolderAt
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithStaticFolderAt_
@@ -866,15 +866,15 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt
   nameWithType: Extensions.WithStaticFolderAt
-- uid: Unosquare.Labs.EmbedIO.Extensions.WithVirtualPaths(Unosquare.Labs.EmbedIO.WebServer,System.Collections.Generic.Dictionary{System.String,System.String},System.String)
-  name: WithVirtualPaths(WebServer, Dictionary<String, String>, String)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithVirtualPaths_Unosquare_Labs_EmbedIO_WebServer_System_Collections_Generic_Dictionary_System_String_System_String__System_String_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.WithVirtualPaths(Unosquare.Labs.EmbedIO.WebServer,System.Collections.Generic.Dictionary{System.String,System.String},System.String)
-  name.vb: WithVirtualPaths(WebServer, Dictionary(Of String, String), String)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.WithVirtualPaths(Unosquare.Labs.EmbedIO.WebServer, System.Collections.Generic.Dictionary<System.String, System.String>, System.String)
-  fullName.vb: Unosquare.Labs.EmbedIO.Extensions.WithVirtualPaths(Unosquare.Labs.EmbedIO.WebServer, System.Collections.Generic.Dictionary(Of System.String, System.String), System.String)
-  nameWithType: Extensions.WithVirtualPaths(WebServer, Dictionary<String, String>, String)
-  nameWithType.vb: Extensions.WithVirtualPaths(WebServer, Dictionary(Of String, String), String)
+- uid: Unosquare.Labs.EmbedIO.Extensions.WithVirtualPaths(Unosquare.Labs.EmbedIO.IWebServer,System.Collections.Generic.Dictionary{System.String,System.String},System.String)
+  name: WithVirtualPaths(IWebServer, Dictionary<String, String>, String)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithVirtualPaths_Unosquare_Labs_EmbedIO_IWebServer_System_Collections_Generic_Dictionary_System_String_System_String__System_String_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.WithVirtualPaths(Unosquare.Labs.EmbedIO.IWebServer,System.Collections.Generic.Dictionary{System.String,System.String},System.String)
+  name.vb: WithVirtualPaths(IWebServer, Dictionary(Of String, String), String)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.WithVirtualPaths(Unosquare.Labs.EmbedIO.IWebServer, System.Collections.Generic.Dictionary<System.String, System.String>, System.String)
+  fullName.vb: Unosquare.Labs.EmbedIO.Extensions.WithVirtualPaths(Unosquare.Labs.EmbedIO.IWebServer, System.Collections.Generic.Dictionary(Of System.String, System.String), System.String)
+  nameWithType: Extensions.WithVirtualPaths(IWebServer, Dictionary<String, String>, String)
+  nameWithType.vb: Extensions.WithVirtualPaths(IWebServer, Dictionary(Of String, String), String)
 - uid: Unosquare.Labs.EmbedIO.Extensions.WithVirtualPaths*
   name: WithVirtualPaths
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithVirtualPaths_
@@ -882,12 +882,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.WithVirtualPaths
   nameWithType: Extensions.WithVirtualPaths
-- uid: Unosquare.Labs.EmbedIO.Extensions.WithWebApi(Unosquare.Labs.EmbedIO.WebServer,System.Reflection.Assembly)
-  name: WithWebApi(WebServer, Assembly)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithWebApi_Unosquare_Labs_EmbedIO_WebServer_System_Reflection_Assembly_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.WithWebApi(Unosquare.Labs.EmbedIO.WebServer,System.Reflection.Assembly)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.WithWebApi(Unosquare.Labs.EmbedIO.WebServer, System.Reflection.Assembly)
-  nameWithType: Extensions.WithWebApi(WebServer, Assembly)
+- uid: Unosquare.Labs.EmbedIO.Extensions.WithWebApi(Unosquare.Labs.EmbedIO.IWebServer,System.Reflection.Assembly)
+  name: WithWebApi(IWebServer, Assembly)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithWebApi_Unosquare_Labs_EmbedIO_IWebServer_System_Reflection_Assembly_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.WithWebApi(Unosquare.Labs.EmbedIO.IWebServer,System.Reflection.Assembly)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.WithWebApi(Unosquare.Labs.EmbedIO.IWebServer, System.Reflection.Assembly)
+  nameWithType: Extensions.WithWebApi(IWebServer, Assembly)
 - uid: Unosquare.Labs.EmbedIO.Extensions.WithWebApi*
   name: WithWebApi
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithWebApi_
@@ -902,21 +902,21 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.WithWebApiController
   nameWithType: Extensions.WithWebApiController
-- uid: Unosquare.Labs.EmbedIO.Extensions.WithWebApiController``1(Unosquare.Labs.EmbedIO.WebServer)
-  name: WithWebApiController<T>(WebServer)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithWebApiController__1_Unosquare_Labs_EmbedIO_WebServer_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.WithWebApiController``1(Unosquare.Labs.EmbedIO.WebServer)
-  name.vb: WithWebApiController(Of T)(WebServer)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.WithWebApiController<T>(Unosquare.Labs.EmbedIO.WebServer)
-  fullName.vb: Unosquare.Labs.EmbedIO.Extensions.WithWebApiController(Of T)(Unosquare.Labs.EmbedIO.WebServer)
-  nameWithType: Extensions.WithWebApiController<T>(WebServer)
-  nameWithType.vb: Extensions.WithWebApiController(Of T)(WebServer)
-- uid: Unosquare.Labs.EmbedIO.Extensions.WithWebSocket(Unosquare.Labs.EmbedIO.WebServer,System.Reflection.Assembly)
-  name: WithWebSocket(WebServer, Assembly)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithWebSocket_Unosquare_Labs_EmbedIO_WebServer_System_Reflection_Assembly_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.WithWebSocket(Unosquare.Labs.EmbedIO.WebServer,System.Reflection.Assembly)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.WithWebSocket(Unosquare.Labs.EmbedIO.WebServer, System.Reflection.Assembly)
-  nameWithType: Extensions.WithWebSocket(WebServer, Assembly)
+- uid: Unosquare.Labs.EmbedIO.Extensions.WithWebApiController``1(Unosquare.Labs.EmbedIO.IWebServer)
+  name: WithWebApiController<T>(IWebServer)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithWebApiController__1_Unosquare_Labs_EmbedIO_IWebServer_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.WithWebApiController``1(Unosquare.Labs.EmbedIO.IWebServer)
+  name.vb: WithWebApiController(Of T)(IWebServer)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.WithWebApiController<T>(Unosquare.Labs.EmbedIO.IWebServer)
+  fullName.vb: Unosquare.Labs.EmbedIO.Extensions.WithWebApiController(Of T)(Unosquare.Labs.EmbedIO.IWebServer)
+  nameWithType: Extensions.WithWebApiController<T>(IWebServer)
+  nameWithType.vb: Extensions.WithWebApiController(Of T)(IWebServer)
+- uid: Unosquare.Labs.EmbedIO.Extensions.WithWebSocket(Unosquare.Labs.EmbedIO.IWebServer,System.Reflection.Assembly)
+  name: WithWebSocket(IWebServer, Assembly)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithWebSocket_Unosquare_Labs_EmbedIO_IWebServer_System_Reflection_Assembly_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.WithWebSocket(Unosquare.Labs.EmbedIO.IWebServer,System.Reflection.Assembly)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.WithWebSocket(Unosquare.Labs.EmbedIO.IWebServer, System.Reflection.Assembly)
+  nameWithType: Extensions.WithWebSocket(IWebServer, Assembly)
 - uid: Unosquare.Labs.EmbedIO.Extensions.WithWebSocket*
   name: WithWebSocket
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WithWebSocket_

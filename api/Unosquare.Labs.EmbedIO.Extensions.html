@@ -302,13 +302,13 @@
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_EnableCors_" data-uid="Unosquare.Labs.EmbedIO.Extensions.EnableCors*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_EnableCors_Unosquare_Labs_EmbedIO_WebServer_System_String_System_String_System_String_" data-uid="Unosquare.Labs.EmbedIO.Extensions.EnableCors(Unosquare.Labs.EmbedIO.WebServer,System.String,System.String,System.String)">EnableCors(WebServer, String, String, String)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_EnableCors_Unosquare_Labs_EmbedIO_IWebServer_System_String_System_String_System_String_" data-uid="Unosquare.Labs.EmbedIO.Extensions.EnableCors(Unosquare.Labs.EmbedIO.IWebServer,System.String,System.String,System.String)">EnableCors(IWebServer, String, String, String)</h4>
   <div class="markdown level1 summary"><p>Enables CORS in the WebServer.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static WebServer EnableCors(this WebServer webserver, string origins = &quot;*&quot;, string headers = &quot;*&quot;, string methods = &quot;*&quot;)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IWebServer EnableCors(this IWebServer webserver, string origins = &quot;*&quot;, string headers = &quot;*&quot;, string methods = &quot;*&quot;)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -321,7 +321,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
         <td><span class="parametername">webserver</span></td>
         <td><p>The webserver instance.</p>
 </td>
@@ -356,7 +356,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
         <td><p>An instance of the tiny web server used to handle request.</p>
 </td>
       </tr>
@@ -1019,6 +1019,73 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_LoadApiControllers_" data-uid="Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_LoadApiControllers_Unosquare_Labs_EmbedIO_IWebServer_System_Reflection_Assembly_" data-uid="Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers(Unosquare.Labs.EmbedIO.IWebServer,System.Reflection.Assembly)">LoadApiControllers(IWebServer, Assembly)</h4>
+  <div class="markdown level1 summary"><p>Load all the WebApi Controllers in an assembly.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IWebServer LoadApiControllers(this IWebServer webserver, Assembly assembly = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
+        <td><span class="parametername">webserver</span></td>
+        <td><p>The webserver instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.assembly">Assembly</a></td>
+        <td><span class="parametername">assembly</span></td>
+        <td><p>The assembly to load WebApi Controllers from. Leave null to load from the currently executing assembly.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
+        <td><p>An instance of webserver.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>webserver.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Extensions_LoadApiControllers_" data-uid="Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_Extensions_LoadApiControllers_Unosquare_Labs_EmbedIO_Modules_WebApiModule_System_Reflection_Assembly_" data-uid="Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers(Unosquare.Labs.EmbedIO.Modules.WebApiModule,System.Reflection.Assembly)">LoadApiControllers(WebApiModule, Assembly)</h4>
   <div class="markdown level1 summary"><p>Load all the WebApi Controllers in an assembly.</p>
 </div>
@@ -1085,81 +1152,14 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_Extensions_LoadApiControllers_" data-uid="Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_LoadApiControllers_Unosquare_Labs_EmbedIO_WebServer_System_Reflection_Assembly_" data-uid="Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers(Unosquare.Labs.EmbedIO.WebServer,System.Reflection.Assembly)">LoadApiControllers(WebServer, Assembly)</h4>
-  <div class="markdown level1 summary"><p>Load all the WebApi Controllers in an assembly.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static WebServer LoadApiControllers(this WebServer webserver, Assembly assembly = null)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
-        <td><span class="parametername">webserver</span></td>
-        <td><p>The webserver instance.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.assembly">Assembly</a></td>
-        <td><span class="parametername">assembly</span></td>
-        <td><p>The assembly to load WebApi Controllers from. Leave null to load from the currently executing assembly.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
-        <td><p>An instance of webserver.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>webserver.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Unosquare_Labs_EmbedIO_Extensions_LoadWebSockets_" data-uid="Unosquare.Labs.EmbedIO.Extensions.LoadWebSockets*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_LoadWebSockets_Unosquare_Labs_EmbedIO_WebServer_System_Reflection_Assembly_" data-uid="Unosquare.Labs.EmbedIO.Extensions.LoadWebSockets(Unosquare.Labs.EmbedIO.WebServer,System.Reflection.Assembly)">LoadWebSockets(WebServer, Assembly)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_LoadWebSockets_Unosquare_Labs_EmbedIO_IWebServer_System_Reflection_Assembly_" data-uid="Unosquare.Labs.EmbedIO.Extensions.LoadWebSockets(Unosquare.Labs.EmbedIO.IWebServer,System.Reflection.Assembly)">LoadWebSockets(IWebServer, Assembly)</h4>
   <div class="markdown level1 summary"><p>Load all the WebSockets in an assembly.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static WebServer LoadWebSockets(this WebServer webserver, Assembly assembly = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IWebServer LoadWebSockets(this IWebServer webserver, Assembly assembly = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1172,7 +1172,7 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
         <td><span class="parametername">webserver</span></td>
         <td><p>The webserver instance.</p>
 </td>
@@ -1195,7 +1195,7 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
         <td><p>An instance of webserver.</p>
 </td>
       </tr>
@@ -2191,13 +2191,13 @@ match.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_WithLocalSession_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithLocalSession*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_WithLocalSession_Unosquare_Labs_EmbedIO_WebServer_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithLocalSession(Unosquare.Labs.EmbedIO.WebServer)">WithLocalSession(WebServer)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_WithLocalSession_Unosquare_Labs_EmbedIO_IWebServer_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithLocalSession(Unosquare.Labs.EmbedIO.IWebServer)">WithLocalSession(IWebServer)</h4>
   <div class="markdown level1 summary"><p>Add StaticFilesModule to WebServer.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static WebServer WithLocalSession(this WebServer webserver)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IWebServer WithLocalSession(this IWebServer webserver)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2210,7 +2210,7 @@ match.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
         <td><span class="parametername">webserver</span></td>
         <td><p>The webserver instance.</p>
 </td>
@@ -2227,7 +2227,7 @@ match.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
         <td><p>An instance of a web module.</p>
 </td>
       </tr>
@@ -2252,13 +2252,13 @@ match.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_WithStaticFolderAt_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_WithStaticFolderAt_Unosquare_Labs_EmbedIO_WebServer_System_String_System_String_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt(Unosquare.Labs.EmbedIO.WebServer,System.String,System.String,System.Boolean)">WithStaticFolderAt(WebServer, String, String, Boolean)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_WithStaticFolderAt_Unosquare_Labs_EmbedIO_IWebServer_System_String_System_String_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithStaticFolderAt(Unosquare.Labs.EmbedIO.IWebServer,System.String,System.String,System.Boolean)">WithStaticFolderAt(IWebServer, String, String, Boolean)</h4>
   <div class="markdown level1 summary"><p>Add the StaticFilesModule to the specified WebServer.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static WebServer WithStaticFolderAt(this WebServer webserver, string rootPath, string defaultDocument = &quot;index.html&quot;, bool useDirectoryBrowser = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IWebServer WithStaticFolderAt(this IWebServer webserver, string rootPath, string defaultDocument = &quot;index.html&quot;, bool useDirectoryBrowser = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2271,7 +2271,7 @@ match.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
         <td><span class="parametername">webserver</span></td>
         <td><p>The webserver instance.</p>
 </td>
@@ -2306,7 +2306,7 @@ match.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
         <td><p>An instance of webserver.</p>
 </td>
       </tr>
@@ -2331,13 +2331,13 @@ match.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_WithVirtualPaths_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithVirtualPaths*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_WithVirtualPaths_Unosquare_Labs_EmbedIO_WebServer_System_Collections_Generic_Dictionary_System_String_System_String__System_String_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithVirtualPaths(Unosquare.Labs.EmbedIO.WebServer,System.Collections.Generic.Dictionary{System.String,System.String},System.String)">WithVirtualPaths(WebServer, Dictionary&lt;String, String&gt;, String)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_WithVirtualPaths_Unosquare_Labs_EmbedIO_IWebServer_System_Collections_Generic_Dictionary_System_String_System_String__System_String_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithVirtualPaths(Unosquare.Labs.EmbedIO.IWebServer,System.Collections.Generic.Dictionary{System.String,System.String},System.String)">WithVirtualPaths(IWebServer, Dictionary&lt;String, String&gt;, String)</h4>
   <div class="markdown level1 summary"><p>Add the StaticFilesModule with multiple paths.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static WebServer WithVirtualPaths(this WebServer webserver, Dictionary&lt;string, string&gt; virtualPaths, string defaultDocument = &quot;index.html&quot;)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IWebServer WithVirtualPaths(this IWebServer webserver, Dictionary&lt;string, string&gt; virtualPaths, string defaultDocument = &quot;index.html&quot;)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2350,7 +2350,7 @@ match.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
         <td><span class="parametername">webserver</span></td>
         <td><p>The webserver.</p>
 </td>
@@ -2379,7 +2379,7 @@ match.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
         <td><p>An instance of a web module.</p>
 </td>
       </tr>
@@ -2404,13 +2404,13 @@ match.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_WithWebApi_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithWebApi*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_WithWebApi_Unosquare_Labs_EmbedIO_WebServer_System_Reflection_Assembly_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithWebApi(Unosquare.Labs.EmbedIO.WebServer,System.Reflection.Assembly)">WithWebApi(WebServer, Assembly)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_WithWebApi_Unosquare_Labs_EmbedIO_IWebServer_System_Reflection_Assembly_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithWebApi(Unosquare.Labs.EmbedIO.IWebServer,System.Reflection.Assembly)">WithWebApi(IWebServer, Assembly)</h4>
   <div class="markdown level1 summary"><p>Add WebApiModule to WebServer.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static WebServer WithWebApi(this WebServer webserver, Assembly assembly = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IWebServer WithWebApi(this IWebServer webserver, Assembly assembly = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2423,7 +2423,7 @@ match.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
         <td><span class="parametername">webserver</span></td>
         <td><p>The webserver instance.</p>
 </td>
@@ -2446,7 +2446,7 @@ match.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
         <td><p>An instance of webserver.</p>
 </td>
       </tr>
@@ -2471,13 +2471,13 @@ match.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_WithWebApiController_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithWebApiController*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_WithWebApiController__1_Unosquare_Labs_EmbedIO_WebServer_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithWebApiController``1(Unosquare.Labs.EmbedIO.WebServer)">WithWebApiController&lt;T&gt;(WebServer)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_WithWebApiController__1_Unosquare_Labs_EmbedIO_IWebServer_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithWebApiController``1(Unosquare.Labs.EmbedIO.IWebServer)">WithWebApiController&lt;T&gt;(IWebServer)</h4>
   <div class="markdown level1 summary"><p>Add WebApi Controller to WebServer.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static WebServer WithWebApiController&lt;T&gt;(this WebServer webserver)
+    <pre><code class="lang-csharp hljs">public static IWebServer WithWebApiController&lt;T&gt;(this IWebServer webserver)
     where T : WebApiController</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -2491,7 +2491,7 @@ match.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
         <td><span class="parametername">webserver</span></td>
         <td><p>The webserver instance.</p>
 </td>
@@ -2508,7 +2508,7 @@ match.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
         <td><p>An instance of webserver.</p>
 </td>
       </tr>
@@ -2549,13 +2549,13 @@ match.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_WithWebSocket_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithWebSocket*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_WithWebSocket_Unosquare_Labs_EmbedIO_WebServer_System_Reflection_Assembly_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithWebSocket(Unosquare.Labs.EmbedIO.WebServer,System.Reflection.Assembly)">WithWebSocket(WebServer, Assembly)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_WithWebSocket_Unosquare_Labs_EmbedIO_IWebServer_System_Reflection_Assembly_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithWebSocket(Unosquare.Labs.EmbedIO.IWebServer,System.Reflection.Assembly)">WithWebSocket(IWebServer, Assembly)</h4>
   <div class="markdown level1 summary"><p>Add WebSocketsModule to WebServer.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static WebServer WithWebSocket(this WebServer webserver, Assembly assembly = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IWebServer WithWebSocket(this IWebServer webserver, Assembly assembly = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2568,7 +2568,7 @@ match.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
         <td><span class="parametername">webserver</span></td>
         <td><p>The webserver instance.</p>
 </td>
@@ -2591,7 +2591,7 @@ match.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
         <td><p>An instance of webserver.</p>
 </td>
       </tr>
