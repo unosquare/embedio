@@ -67,6 +67,6 @@ namespace Unosquare.Net
         /// <summary>
         /// The close
         /// </summary>
-        Close = 2
+        Close = 2,
     }
 }

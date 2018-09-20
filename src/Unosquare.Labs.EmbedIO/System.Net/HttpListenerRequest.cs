@@ -333,7 +333,6 @@ using System.Threading.Tasks;
             if (colon == -1 || colon == 0)
             {
                 _context.ErrorMessage = "Bad Request";
-                _context.ErrorStatus = 400;
                 return;
             }
 

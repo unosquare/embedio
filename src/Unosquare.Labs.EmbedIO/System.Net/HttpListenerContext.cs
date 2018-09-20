@@ -5,7 +5,8 @@
     using Labs.EmbedIO;
 
     /// <summary>
-    /// Provides access to the request and response objects used by the HttpListener class. This class cannot be inherited.
+    /// Provides access to the request and response objects used by the HttpListener class.
+    /// This class cannot be inherited.
     /// </summary>
     public sealed class HttpListenerContext : IHttpContext
     {
@@ -33,8 +34,6 @@
         internal HttpListenerResponse HttpListenerResponse => Response as HttpListenerResponse;
         
         internal HttpListener Listener { get; set; }
-
-        internal int ErrorStatus { get; set; } = 400;
 
         internal string ErrorMessage { get; set; }
 

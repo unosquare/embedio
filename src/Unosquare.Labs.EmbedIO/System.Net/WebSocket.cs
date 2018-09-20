@@ -537,8 +537,6 @@
         {
             try
             {
-                $"A request from {_context.UserEndPoint}:\n{_context}".Debug();
-
                 _validator.ThrowIfInvalid(_context);
 
                 WebSocketKey.KeyValue = _context.Headers[Headers.WebSocketKey];

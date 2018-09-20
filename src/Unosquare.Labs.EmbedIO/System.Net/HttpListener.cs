@@ -110,19 +110,6 @@
         public List<string> Prefixes => _prefixes.ToList();
 
         /// <summary>
-        /// Gets or sets the realm.
-        /// </summary>
-        /// <value>
-        /// The realm.
-        /// </value>
-        public string Realm { get; set; }
-
-        /// <summary>
-        /// Aborts this listener.
-        /// </summary>
-        public void Abort() => Close();
-
-        /// <summary>
         /// Closes this listener.
         /// </summary>
         public void Close()
@@ -206,16 +193,16 @@
         {
             EndPointManager.RemoveListener(this);
 
-            var conns = new List<HttpConnection>();
+            var list = new List<HttpConnection>();
 
             var keys = _connections.Keys;
             var connsArray = new HttpConnection[keys.Count];
             keys.CopyTo(connsArray, 0);
             _connections.Clear();
-            conns.AddRange(connsArray);
+            list.AddRange(connsArray);
 
-            for (var i = conns.Count - 1; i >= 0; i--)
-                conns[i].Close(true);
+            for (var i = list.Count - 1; i >= 0; i--)
+                list[i].Close(true);
 
             if (closeExisting == false) return;
 

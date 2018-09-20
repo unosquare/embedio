@@ -36,14 +36,6 @@
         public NameValueCollection Headers => _context.Request.Headers;
 
         /// <summary>
-        /// Gets the value of the Host header included in the request.
-        /// </summary>
-        /// <value>
-        /// A <see cref="string"/> that represents the value of the Host header.
-        /// </value>
-        public string Host => _context.Request.Headers["Host"];
-
-        /// <summary>
         /// Gets a value indicating whether the client connected from the local computer.
         /// </summary>
         /// <value>
@@ -51,14 +43,17 @@
         /// </value>
         public bool IsLocal => _context.Request.IsLocal;
 
-#if SSL 
         /// <summary>
         /// Gets a value indicating whether the WebSocket connection is secured.
         /// </summary>
         /// <value>
         /// <c>true</c> if the connection is secured; otherwise, <c>false</c>.
         /// </value>
-        public bool IsSecureConnection => _context.Connection.IsSecure;
+        public bool IsSecureConnection => 
+#if SSL 
+            _context.Connection.IsSecure;
+#else
+            false;
 #endif
 
         /// <summary>
@@ -76,14 +71,6 @@
         /// A <see cref="string"/> that represents the value of the Origin header.
         /// </value>
         public string Origin => _context.Request.Headers[Labs.EmbedIO.Constants.Headers.Origin];
-
-        /// <summary>
-        /// Gets the query string included in the request.
-        /// </summary>
-        /// <value>
-        /// A <see cref="NameValueCollection"/> that contains the query string parameters.
-        /// </value>
-        public NameValueCollection QueryString => _context.Request.QueryString;
 
         /// <summary>
         /// Gets the URI requested by the client.
@@ -115,22 +102,6 @@
         /// A <see cref="string"/> that represents the value of the Sec-WebSocket-Version header.
         /// </value>
         public string SecWebSocketVersion => _context.Request.Headers[Labs.EmbedIO.Constants.Headers.WebSocketVersion];
-
-        /// <summary>
-        /// Gets the server endpoint as an IP address and a port number.
-        /// </summary>
-        /// <value>
-        /// A <see cref="System.Net.IPEndPoint"/> that represents the server endpoint.
-        /// </value>
-        public System.Net.IPEndPoint ServerEndPoint => _context.Connection.LocalEndPoint;
-
-        /// <summary>
-        /// Gets the client endpoint as an IP address and a port number.
-        /// </summary>
-        /// <value>
-        /// A <see cref="System.Net.IPEndPoint"/> that represents the client endpoint.
-        /// </value>
-        public System.Net.IPEndPoint UserEndPoint => _context.Connection.RemoteEndPoint;
 
         /// <summary>
         /// Gets the <see cref="WebSocket"/> instance used for

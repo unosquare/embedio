@@ -70,8 +70,6 @@
 
         public bool IsValid() => Path.IndexOf('%') == -1 && Path.IndexOf("//", StringComparison.Ordinal) == -1;
 
-        public override string ToString() => _original;
-
         // Equals and GetHashCode are required to detect duplicates in HttpListenerPrefixCollection.
         public override bool Equals(object o) => o is ListenerPrefix other && _original == other._original;
 
