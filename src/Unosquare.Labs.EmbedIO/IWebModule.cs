@@ -73,7 +73,7 @@
         void AddHandler(string path, HttpVerbs verb, Func<IHttpContext, CancellationToken, Task<bool>> handler);
 
         /// <summary>
-        /// Starts the webmodule.
+        /// Starts the Web Module.
         /// </summary>
         /// <param name="ct">The cancellation token.</param>
         void Start(CancellationToken ct);

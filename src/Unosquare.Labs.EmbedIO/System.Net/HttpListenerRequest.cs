@@ -9,15 +9,14 @@
     using System.Threading.Tasks;
     using Labs.EmbedIO;
 #if SSL
-using System.Security.Authentication.ExtendedProtection;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
+    using System.Security.Authentication.ExtendedProtection;
+    using System.Security.Cryptography.X509Certificates;
 #endif
 
     /// <summary>
     /// Represents an HTTP Listener Request.
     /// </summary>
-    public sealed class HttpListenerRequest 
+    internal sealed class HttpListenerRequest 
         : IHttpRequest
     {
         private static readonly byte[] HttpStatus100 = Encoding.UTF8.GetBytes("HTTP/1.1 100 Continue\r\n\r\n");
@@ -207,22 +206,10 @@ using System.Threading.Tasks;
         /// <inheritdoc />
         public string UserAgent => Headers["user-agent"];
 
-        /// <summary>
-        /// Gets the user host address.
-        /// </summary>
         public string UserHostAddress => LocalEndPoint.ToString();
 
-        /// <summary>
-        /// Gets the name of the user host.
-        /// </summary>
-        /// <value>
-        /// The name of the user host.
-        /// </value>
         public string UserHostName => Headers["host"];
 
-        /// <summary>
-        /// Gets the user languages.
-        /// </summary>
         public string[] UserLanguages { get; private set; }
         
         /// <inheritdoc />
@@ -308,10 +295,6 @@ using System.Threading.Tasks;
 
             CreateQueryString(_url.Query);
 
-            // Use reference source HttpListenerRequestUriBuilder to process url.
-            // Fixes #29927
-            _url = HttpListenerRequestUriBuilder.GetRequestUri(RawUrl, _url);
-
             if (!_clSet)
             {
                 if (string.Compare(HttpMethod, "POST", StringComparison.OrdinalIgnoreCase) == 0 ||
@@ -333,7 +316,6 @@ using System.Threading.Tasks;
             if (colon == -1 || colon == 0)
             {
                 _context.ErrorMessage = "Bad Request";
-                _context.ErrorStatus = 400;
                 return;
             }
 

@@ -335,17 +335,16 @@ using System.Security.Cryptography;
 
                 foreach (var p in result.Keys)
                 {
-                    var ppath = p.Path;
-                    if (ppath.Length < bestLength)
+                    if (p.Path.Length < bestLength)
                         continue;
 
                     if (p.Host != host || p.Port != port)
                         continue;
 
-                    if (!path.StartsWith(ppath) && !pathSlash.StartsWith(ppath))
+                    if (!path.StartsWith(p.Path) && !pathSlash.StartsWith(p.Path))
                         continue;
 
-                    bestLength = ppath.Length;
+                    bestLength = p.Path.Length;
                     bestMatch = result[p];
                     prefix = p;
                 }

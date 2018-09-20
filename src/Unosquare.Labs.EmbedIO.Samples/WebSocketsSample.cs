@@ -83,9 +83,6 @@
         protected override void OnClientDisconnected(WebSocketContext context)
         {
             Broadcast("Someone left the chat room.");
-#if !NET47
-            $"WebSocket closed: {context.UserEndPoint}".Info();
-#endif
         }
     }
     

@@ -11,68 +11,88 @@
 
 **This README is for EmbedIO v2.x. Click [here](https://github.com/unosquare/embedio/tree/v1.X) if you are using EmbedIO v1.x.**
 
-
 - [Overview](#overview)
+    - [EmbedIO 2.0 - What's new](#embedio-20---whats-new)
     - [Some usage scenarios](#some-usage-scenarios)
-- [NuGet Installation](#nuget-installation)
+- [Installation](#installation)
 - [Examples](#examples)
     - [Basic Example](#basic-example)
     - [Fluent Example](#fluent-example)
     - [REST API Example](#rest-api-example)
     - [WebSockets Example](#websockets-example)
 - [Related Projects and Nugets](#related-projects-and-nugets)
-- [Notes](#notes)
-
 
 ## Overview
+
 A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework and .NET Core.
 
 * Written entirely in C#, using our helpful library [SWAN](https://github.com/unosquare/swan)
 * Network operations use the async/await pattern: Responses are handled asynchronously
-* Cross-platform[1]: tested in Mono on Windows and on a custom Yocto image for the Raspberry Pi
-* Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras" target="_blank">EmbedIO Extras</a> for additional modules.
+* Multiple implementations support: EmbedIO can use Microsoft `HttpListener` or internal Http Listener based on [Mono](https://www.mono-project.com/)/[websocket-sharp](https://github.com/sta/websocket-sharp/) projects
+* Cross-platform: tested on multiple OS and runtimes. From Windows .NET Framework to Linux MONO.
+* Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out [EmbedIO Extras](https://github.com/unosquare/embedio-extras) for additional modules
 * Small memory footprint
 * Create REST APIs quickly with the out-of-the-box Web API module
-* Serve static files with 1 line of code (also out-of-the-box)
+* Serve static or embedded files with 1 line of code (also out-of-the-box)
 * Handle sessions with the built-in LocalSessionWebModule
-* WebSockets support (see notes below)
+* WebSockets support
 * CORS support. Origin, Header and Method validation with OPTIONS preflight
 * Supports HTTP 206 Partial Content
-
-*For detailed usage and REST API implementation, download the code and take a look at the Samples project*
-
-### **Some usage scenarios**:
-
-* Write a cross-platform GUI entirely in CSS/HTML/JS
-* Write a game using Babylon.js and make EmbedIO your serve your code and assets
-* Create GUIs for Windows services or Linux daemons
-* Works well with <a href="https://github.com/unosquare/litelib" target="_blank">LiteLib</a> - add SQLite support in minutes!
-* Write client applications with real-time communication between them
+* And many more options in the same package
 
 Some notes regarding WebSocket and runtimes support:
 
-| Runtime | WebSocket support | Notes |
-| --- | --- | --- |
-| NET46 | Yes | Support Win7+ OS using a custom System.Net implementation based on Mono and [websocket-sharp](https://github.com/sta/websocket-sharp/) |
-| NET47 | Yes | Support Win8+ OS using native System.Net library |
-| NETSTANDARD* | Yes | Support Windows, Linux and macOS using native System.Net library |
-| UAP | No | Support Windows Universal Platform. More information [here](https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT) |
+| Runtime | HTTP implementation | WebSocket support | Notes |
+| --- | --- | --- | --- |
+| NET46 | *Unosquare* and Microsoft | Yes | Support Win7+ OS, Linux and macOS.  |
+| NET47 | Unosquare and *Microsoft* | | Yes | Support Win8+ OS. |
+| NETSTANDARD13 | *Unosquare* | Yes | Support Windows, Linux and macOS using native System.Net library |
+| NETSTANDARD20 | Unosquare and *Microsoft* | Yes | Support Windows, Linux and macOS using native System.Net library |
+| UAP | *Unosquare* | No | Support Windows Universal Platform. More information [here](https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT) |
 
-EmbedIO before version 1.4.0 uses Newtonsoft JSON and an internal logger subsystem based on ILog interface.
+### EmbedIO 2.0 - What's new
 
-## NuGet Installation:
+* `IHttpListener` is runtime/platform independent, you can choose Unosquare `HttpListener` implementation with NET47 or NETSTANDARD20. This separation of implementations brings new access to interfaces from common Http objects like `IHttpRequest`, `IHttpContext` and mor.
+* `IWebServer` is a new interface to create custom web server implementation, like a Test Web Server where all the operations are in-memory to speed up unit testing. Similar to [TestServer from OWIN](https://msdn.microsoft.com/en-us/library/microsoft.owin.testing.testserver(v=vs.113).aspx)
+* `WebApiController` is renewed. Reduce the methods overhead removing the WebServer and Context arguments. See example belows.
+* `RoutingStrategy.Regex` is the default routing scheme.
+* General improvements in how the Unosquare `HttpListner` is working and code clean-up.
+
+*Note* - We encourage to upgrade to the newest EmbedIO version. Branch version 1.X will no longer be maintained, and issues will be tested against 2.X and resolved just there.
+
+### Some usage scenarios:
+
+* Write a cross-platform GUI entirely using React/AngularJS/Vue.js or any Javascript framework
+* Write a game using Babylon.js and make EmbedIO your serve your code and assets
+* Create GUIs for Windows services or Linux daemons
+* Works well with [LiteLib](https://github.com/unosquare/litelib) - add SQLite support in minutes!
+* Write client applications with real-time communication between them using WebSockets
+* Write internal web server for Xamarin Forms applications
+
+## Installation:
+
+You can start using EmbedIO by just downloading the nuget.
+
+### Package Manager
+
 ```
 PM> Install-Package EmbedIO
+```
+
+### .NET CLI
+
+```
+> dotnet add package EmbedIO
 ```
 
 ## Examples
 
 ## Basic Example:
 
-*Please note the comments are the important part here. More info is available in the samples.*
+Please note the comments are the important part here. More info is available in the samples.
 
 ```csharp
-namespace Company.Project
+namespace Unosquare
 {
     using System;
     using Unosquare.Labs.EmbedIO;
@@ -136,7 +156,7 @@ namespace Company.Project
 Many extension methods are available. This allows you to create a web server instance in a fluent style by dotting in configuration options.
 
 ```csharp
-namespace Company.Project
+namespace Unosquare
 {
     using System;
     using Unosquare.Labs.EmbedIO;
@@ -177,25 +197,23 @@ namespace Company.Project
 
 ## REST API Example:
 
-The WebApi module supports two routing strategies: Wildcard and Regex. By default, and in order to maintain backward compatibility, the WebApi module will use the **Wildcard Routing Strategy** and match routes using the asterisk `*` character in the route. **For example:** 
-- The route `/api/people/*` will match any request with a URL starting with the two first URL segments `api` and `people` and ending with anything. The route `/api/people/hello` will be matched.
-- You can also use wildcards in the middle of the route. The route `/api/people/*/details` will match requests starting with the two first URL segments `api` and `people`, and end with a `details` segment. The route `/api/people/hello/details` will be matched. 
+The WebApi module supports two routing strategies: Wildcard and Regex. By default, the WebApi module will use the **Regex Routing Strategy** trying to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API. 
 
-*Note that most REST services can be designed with this simpler Wildcard routing strategy. However, the Regex matching strategy is the current recommended approach as we might be deprecating the Wildcard strategy altogether*
+A method with the following route `/api/people/{id}` is going to match any request URL with three segments: the first two `api` and `people` and the last 
+one is going to be parsed or converted to the type in the `id` argument of the handling method signature. Please read on if this was confusing as it is 
+much simpler than it sounds. Additionally, you can put multiple values to match, for example `/api/people/{mainSkill}/{age}`, and receive the 
+parsed values from the URL straight into the arguments of your handler method.
 
-On the other hand, the **Regex Routing Strategy** will try to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API 2. A method with the following route `/api/people/{id}` is going to match any request URL with three segments: the first two `api` and `people` and the last one is going to be parsed or converted to the type in the `id` argument of the handling method signature. Please read on if this was confusing as it is much simpler than it sounds. Additionally, you can put multiple values to match, for example `/api/people/{mainSkill}/{age}`, and receive the parsed values from the URL straight into the arguments of your handler method.
-
-*During server setup:*
+During server setup:
 
 ```csharp
-// The routing strategy is Wildcard by default, but you can change it to Regex as follows:
 var server =  new WebServer("http://localhost:9696/", RoutingStrategy.Regex);
 
 server.RegisterModule(new WebApiModule());
 server.Module<WebApiModule>().RegisterController<PeopleController>();
 ```
 
-*And our controller class (using Regex Strategy) looks like:*
+And our controller class (using default Regex Strategy) looks like:
 
 ```csharp
 public class PeopleController : WebApiController
@@ -226,7 +244,21 @@ public class PeopleController : WebApiController
 }
 ```
 
-*Or if you want to use the Wildcard strategy (which is the default):*
+The previous default strategy (Wildcard) matches routes using the asterisk `*` character in the route. **For example:** 
+
+- The route `/api/people/*` will match any request with a URL starting with the two first URL segments `api` and 
+`people` and ending with anything. The route `/api/people/hello` will be matched.
+- You can also use wildcards in the middle of the route. The route `/api/people/*/details` will match requests 
+starting with the two first URL segments `api` and `people`, and end with a `details` segment. The route `/api/people/hello/details` will be matched. 
+
+During server setup:
+
+```csharp
+var server =  new WebServer("http://localhost:9696/", RoutingStrategy.Regex);
+
+server.RegisterModule(new WebApiModule());
+server.Module<WebApiModule>().RegisterController<PeopleController>();
+```
 
 ```csharp
 public class PeopleController : WebApiController
@@ -287,7 +319,6 @@ public class WebSocketsChatServer : WebSocketsServer
         // placeholder
     }
 
-    /// <inheritdoc/>
     public override string ServerName => "Chat Server"
 
     protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
@@ -310,10 +341,12 @@ public class WebSocketsChatServer : WebSocketsServer
                 this.Send(ws, "Someone joined the chat room.");
         }
     }
+
     protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
     {
         return;
     }
+
     protected override void OnClientDisconnected(WebSocketContext context)
     {
         this.Broadcast("Someone left the chat room.");
@@ -331,6 +364,3 @@ Name | Author | Description
 [EmbedIO.LiteLibWebApi](https://www.nuget.org/packages/EmbedIO.LiteLibWebApi/) | Unosquare | Allow to expose a sqlite database as REST api using EmbedIO WebApi and LiteLib libraries
 [EmbedIO.OWIN](https://www.nuget.org/packages/EmbedIO.OWIN/) | Unosquare | EmbedIO can use the OWIN platform in two different approach: You can use EmbedIO as OWIN server and use all OWIN framework with EmbedIO modules.
 [Microsoft.AspNetCore.Server.EmbedIO](https://www.nuget.org/packages/Microsoft.AspNetCore.Server.EmbedIO/) | Dju  | EmbedIO web server support for ASP.NET Core, as a drop-in replacement for Kestrel
-
-## Notes
-[1] - EmbedIO uses lowercase URL parts. In Windows systems, this is the expected behavior but in Unix systems using MONO please refer to [Mono IOMap](http://www.mono-project.com/docs/advanced/iomap/) if you want to work with case-insensitive URL parts.

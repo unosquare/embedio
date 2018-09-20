@@ -615,29 +615,7 @@
             return idx < 10 && value.Substring(0, idx.Value).IsPredefinedScheme();
         }
 
-        internal static bool IsPredefinedScheme(this string value)
-        {
-            if (value == null || value.Length < 2)
-                return false;
-
-            var c = value[0];
-
-            switch (c)
-            {
-                case 'h':
-                    return value == "http" || value == "https";
-                case 'w':
-                    return value == "ws" || value == "wss";
-                case 'f':
-                    return value == "file" || value == "ftp";
-                case 'n':
-                    c = value[1];
-                    return c == 'e'
-                        ? value == "news" || value == "net.pipe" || value == "net.tcp"
-                        : value == "nntp";
-                default:
-                    return (c == 'g' && value == "gopher") || (c == 'm' && value == "mailto");
-            }
-        }
+        internal static bool IsPredefinedScheme(this string value) => value != null && 
+                                                                      (value == "http" || value == "https" || value == "ws" || value == "wss");
     }
 }

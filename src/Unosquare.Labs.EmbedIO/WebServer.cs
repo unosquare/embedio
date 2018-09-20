@@ -16,7 +16,11 @@
     /// <summary>
     /// Represents our tiny web server used to handle requests.
     ///
-    /// This is the default implementation of <c>IWebServer</c>.
+    /// This is the default implementation of <c>IWebServer</c> and it's ready to select
+    /// the <c>IHttpListener</c> implementation via the proper constructor.
+    ///
+    /// By default, the WebServer will use the Regex RoutingStrategy for
+    /// all registered modules (<c>IWebModule</c>) and EmbedIO Listener (<c>HttpListenerMode</c>).
     /// </summary>
     public class WebServer : IWebServer
     {
@@ -24,6 +28,9 @@
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
+        ///
+        /// Default settings are Regex RoutingStrategy, EmbedIO HttpListenerMode, and binding all
+        /// network interfaces with HTTP protocol and default port (http://*:80/).
         /// </summary>
         public WebServer()
             : this(new[] { "http://*/" })
@@ -33,10 +40,13 @@
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
+        /// 
+        /// Default settings are Regex RoutingStrategy, EmbedIO HttpListenerMode, and binding all
+        /// network interfaces with HTTP protocol with the selected port (http://*:{port}/).
         /// </summary>
         /// <param name="port">The port.</param>
         /// <param name="strategy">The strategy.</param>
-        public WebServer(int port, RoutingStrategy strategy = RoutingStrategy.Wildcard)
+        public WebServer(int port, RoutingStrategy strategy = RoutingStrategy.Regex)
             : this(new[] { $"http://*:{port}/" }, strategy)
         {
             // placeholder
@@ -44,10 +54,16 @@
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer" /> class.
+        ///
+        /// Default settings are Regex RoutingStrategy and EmbedIO HttpListenerMode.
         /// </summary>
+        /// <remarks>
+        /// <c>urlPrefix</c> must be specified as something similar to: http://localhost:9696/
+        /// Please notice the ending slash. -- It is important.
+        /// </remarks>
         /// <param name="urlPrefix">The URL prefix.</param>
         /// <param name="strategy">The strategy.</param>
-        public WebServer(string urlPrefix, RoutingStrategy strategy = RoutingStrategy.Wildcard)
+        public WebServer(string urlPrefix, RoutingStrategy strategy = RoutingStrategy.Regex)
             : this(new[] { urlPrefix }, strategy)
         {
             // placeholder
@@ -55,13 +71,17 @@
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
-        /// NOTE: urlPrefix must be specified as something similar to: http://localhost:9696/
-        /// Please notice the ending slash. -- It is important.
+        ///
+        /// Default settings are Regex RoutingStrategy and EmbedIO HttpListenerMode.
         /// </summary>
+        /// <remarks>
+        /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/
+        /// Please notice the ending slash. -- It is important.
+        /// </remarks>
         /// <param name="urlPrefixes">The URL prefix.</param>
         /// <param name="routingStrategy">The routing strategy.</param>
         /// <exception cref="ArgumentException">Argument urlPrefix must be specified.</exception>
-        public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy = RoutingStrategy.Wildcard)
+        public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy = RoutingStrategy.Regex)
          : this(urlPrefixes, routingStrategy, HttpListenerFactory.Create())
         {
             // placeholder
@@ -69,9 +89,13 @@
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer" /> class.
-        /// NOTE: urlPrefix must be specified as something similar to: http://localhost:9696/
-        /// Please notice the ending slash. -- It is important.
+        /// 
+        /// Default setting is EmbedIO HttpListenerMode.
         /// </summary>
+        /// <remarks>
+        /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/
+        /// Please notice the ending slash. -- It is important.
+        /// </remarks>
         /// <param name="urlPrefixes">The URL prefix.</param>
         /// <param name="routingStrategy">The routing strategy.</param>
         /// <param name="mode">The mode.</param>
@@ -84,9 +108,11 @@
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer" /> class.
-        /// NOTE: urlPrefix must be specified as something similar to: http://localhost:9696/
-        /// Please notice the ending slash. -- It is important.
         /// </summary>
+        /// <remarks>
+        /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/
+        /// Please notice the ending slash. -- It is important.
+        /// </remarks>
         /// <param name="urlPrefixes">The URL prefix.</param>
         /// <param name="routingStrategy">The routing strategy.</param>
         /// <param name="httpListener">The HTTP listener.</param>
@@ -147,19 +173,11 @@
         public RoutingStrategy RoutingStrategy { get; protected set; }
 
         /// <summary>
-        /// Static method to create webserver instance.
+        /// Static method to create webserver instance using a single URL prefix.
         /// </summary>
         /// <param name="urlPrefix">The URL prefix.</param>
         /// <returns>The webserver instance.</returns>
         public static WebServer Create(string urlPrefix) => new WebServer(urlPrefix);
-
-        /// <summary>
-        /// Static method to create webserver instance.
-        /// </summary>
-        /// <param name="urlPrefix">The URL prefix.</param>
-        /// <param name="routingStrategy">Matching/Parsing of URL: choose from: Wildcard, Regex, Simple. </param>
-        /// <returns>The webserver instance.</returns>
-        public static WebServer Create(string urlPrefix, RoutingStrategy routingStrategy) => new WebServer(urlPrefix, routingStrategy);
 
         /// <inheritdoc />
         public T Module<T>()
@@ -211,7 +229,7 @@
                             return;
 
                         clientSocket.WebServer = this;
-                        
+
 #pragma warning disable CS4014
                         var handler = new HttpHandler(clientSocket);
 
@@ -259,7 +277,8 @@
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposing">
-        ///   <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        ///   <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
             if (!disposing || Listener == null) return;

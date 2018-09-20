@@ -8,8 +8,8 @@
     using System.Collections.Concurrent;
 
     /// <summary>
-    /// Simple authorisation module that requests http auth from client
-    /// Will return 401 + WWW-Authenticate header if request isn't authorised.
+    /// Simple authorization module that requests http auth from client
+    /// will return 401 + WWW-Authenticate header if request isn't authorized.
     /// </summary>
     public class AuthModule : WebModuleBase
     {
@@ -56,11 +56,11 @@
         public override string Name => nameof(AuthModule);
 
         /// <summary>
-        /// Validates request and returns <c>true</c> if that account data registred in this module and request has auth data.
+        /// Validates request and returns <c>true</c> if that account data registered in this module and request has auth data.
         /// </summary>
         /// <param name="request">The HTTP Request.</param>
         /// <returns>
-        /// <c>true</c> if request authorised, otherwise <c>false</c>.
+        /// <c>true</c> if request authorized, otherwise <c>false</c>.
         /// </returns>
         public bool IsAuthorized(IHttpRequest request)
         {
@@ -92,7 +92,7 @@
         /// <param name="request">The HTTP Request.</param>
         /// <returns>user-password KeyValuePair from request.</returns>
         /// <exception>
-        /// if request isn't authorised.
+        /// if request isn't authorized.
         /// </exception>
         private static KeyValuePair<string, string> GetAccountData(IHttpRequest request)
         {

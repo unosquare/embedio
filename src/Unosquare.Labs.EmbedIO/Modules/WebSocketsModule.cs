@@ -29,7 +29,7 @@
             new Dictionary<string, WebSocketsServer>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Unosquare.Labs.EmbedIO.Modules.WebSocketsModule" /> class.
+        /// Initializes a new instance of the <see cref="WebSocketsModule"/> class.
         /// </summary>
         public WebSocketsModule()
         {
@@ -291,7 +291,7 @@
             try
             {
 #if NET47
-// define a receive buffer
+                // define a receive buffer
                 var receiveBuffer = new byte[receiveBufferSize];
 
                 // define a dynamic buffer that holds multi-part receptions

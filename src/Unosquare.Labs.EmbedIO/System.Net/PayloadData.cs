@@ -11,8 +11,6 @@
 
         private readonly byte[] _data;
         private ushort? _code;
-        private string _reason;
-        private bool _reasonSet;
         
         internal PayloadData(byte[] data)
         {
@@ -22,20 +20,12 @@
         internal PayloadData(ushort code = 1005, string reason = null)
         {
             _code = code;
-            _reason = reason ?? string.Empty;
-
             _data = code == 1005 ? WebSocket.EmptyBytes : Append(code, reason);
-
-            _reasonSet = true;
         }
 
         internal byte[] ApplicationData => ExtensionDataLength > 0
             ? _data.SubArray(ExtensionDataLength, _data.Length - ExtensionDataLength)
             : _data;
-
-        internal byte[] ExtensionData => ExtensionDataLength > 0
-            ? _data.SubArray(0, ExtensionDataLength)
-            : WebSocket.EmptyBytes;
 
         internal ulong Length => (ulong)_data.Length;
 
@@ -61,23 +51,6 @@
                    Code == (ushort)CloseStatusCode.Abnormal ||
                    Code == (ushort)CloseStatusCode.TlsHandshakeFailure);
 
-        internal string Reason
-        {
-            get
-            {
-                if (!_reasonSet)
-                {
-                    _reason = _data.Length > 2
-                              ? _data.SubArray(2, _data.Length - 2).ToText()
-                              : string.Empty;
-
-                    _reasonSet = true;
-                }
-
-                return _reason;
-            }
-        }
-        
         public override string ToString() => BitConverter.ToString(_data);
 
         internal static byte[] Append(ushort code, string reason)

@@ -121,7 +121,7 @@
 
         private VirtualPathStatus ExistsPath(string urlPath, ref string localPath)
         {
-            // check if the path is just a directoy and return
+            // check if the path is just a directory and return
             if (UseDirectoryBrowser && Directory.Exists(localPath))
             {
                 return VirtualPathStatus.Directory;

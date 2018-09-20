@@ -319,7 +319,6 @@ using System.Security.Cryptography.X509Certificates;
                 catch
                 {
                     _context.ErrorMessage = "Bad request";
-                    _context.ErrorStatus = 400;
                     return true;
                 }
 
@@ -349,7 +348,6 @@ using System.Security.Cryptography.X509Certificates;
                     catch (Exception e)
                     {
                         _context.ErrorMessage = e.Message;
-                        _context.ErrorStatus = 400;
                         return true;
                     }
                 }

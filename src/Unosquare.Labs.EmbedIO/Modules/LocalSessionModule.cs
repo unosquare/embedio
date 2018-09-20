@@ -52,7 +52,7 @@
 
                     if (requestSessionCookie != null)
                     {
-                        FixupSessionCookie(context);
+                        FixUpSessionCookie(context);
                         isSessionRegistered = _sessions.ContainsKey(requestSessionCookie.Value);
                     }
 
@@ -220,7 +220,7 @@
         /// System.Net.Cookie.Value only supports a single value and we need to pick the one that potentially exists.
         /// </summary>
         /// <param name="context">The context.</param>
-        private void FixupSessionCookie(IHttpContext context)
+        private void FixUpSessionCookie(IHttpContext context)
         {
             // get the real "__session" cookie value because sometimes there's more than 1 value and System.Net.Cookie only supports 1 value per cookie
             if (context.Request.Headers[Headers.Cookie] == null) return;
