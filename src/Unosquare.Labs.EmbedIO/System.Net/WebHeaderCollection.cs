@@ -376,184 +376,8 @@
         
         internal HttpHeaderType State { get; private set; }
         
-        public string this[System.Net.HttpResponseHeader header]
-        {
-            get => Get(Convert(header.ToString()));
-
-            set => Add(header, value);
-        }
-        
         public void AddWithoutValidate(string headerName, string headerValue) => Add(headerName, headerValue, true);
         
-        public void Add(string header)
-        {
-            if (string.IsNullOrEmpty(header))
-                throw new ArgumentNullException(nameof(header));
-
-            var pos = CheckColonSeparated(header);
-            Add(header.Substring(0, pos), header.Substring(pos + 1), false);
-        }
-
-        public void Add(System.Net.HttpRequestHeader header, string value)
-        {
-            DoWithCheckingState(AddWithoutCheckingName, Convert(header.ToString()), value, false, true);
-        }
-
-        public void Add(System.Net.HttpResponseHeader header, string value)
-        {
-            DoWithCheckingState(AddWithoutCheckingName, Convert(header.ToString()), value, true, true);
-        }
-
-        /// <inheritdoc />
-        public override void Add(string name, string value)
-        {
-            Add(name, value, false);
-        }
-
-        /// <inheritdoc />
-        public override void Clear()
-        {
-            base.Clear();
-            State = HttpHeaderType.Unspecified;
-        }
-
-        /// <inheritdoc />
-        public override string[] GetValues(int index)
-        {
-            var vals = base.GetValues(index);
-            return vals != null && vals.Length > 0 ? vals : null;
-        }
-
-        /// <inheritdoc />
-        public override string[] GetValues(string header)
-        {
-            var vals = base.GetValues(header);
-            return vals != null && vals.Length > 0 ? vals : null;
-        }
-        
-        /// <summary>
-        /// Removes the specified request <paramref name="header"/> from the collection.
-        /// </summary>
-        /// <param name="header">
-        /// One of theHttpRequestHeader enum values, represents
-        /// the request header to remove.
-        /// </param>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="header"/> is a restricted header.
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// The current <see cref="WebHeaderCollection"/> instance doesn't allow
-        /// the request <paramref name="header"/>.
-        /// </exception>
-        public void Remove(System.Net.HttpRequestHeader header)
-        {
-            DoWithCheckingState(RemoveWithoutCheckingName, Convert(header.ToString()), null, false, false);
-        }
-
-        /// <summary>
-        /// Removes the specified response <paramref name="header"/> from the collection.
-        /// </summary>
-        /// <param name="header">
-        /// One of the <see cref="System.Net.HttpResponseHeader"/> enum values, represents
-        /// the response header to remove.
-        /// </param>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="header"/> is a restricted header.
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// The current <see cref="WebHeaderCollection"/> instance doesn't allow
-        /// the response <paramref name="header"/>.
-        /// </exception>
-        public void Remove(System.Net.HttpResponseHeader header)
-        {
-            DoWithCheckingState(RemoveWithoutCheckingName, Convert(header.ToString()), null, true, false);
-        }
-        
-        /// <inheritdoc />
-        public override void Remove(string name)
-        {
-            DoWithCheckingState(RemoveWithoutCheckingName, CheckName(name), null, false);
-        }
-
-        /// <summary>
-        /// Sets the specified request <paramref name="header"/> to the specified value.
-        /// </summary>
-        /// <param name="header">
-        /// One of theHttpRequestHeader enum values, represents
-        /// the request header to set.
-        /// </param>
-        /// <param name="value">
-        /// A <see cref="string"/> that represents the value of the request header to set.
-        /// </param>
-        /// <exception cref="ArgumentException">
-        ///   <para>
-        ///   <paramref name="header"/> is a restricted header.
-        ///   </para>
-        ///   <para>
-        ///   -or-
-        ///   </para>
-        ///   <para>
-        ///   <paramref name="value"/> contains invalid characters.
-        ///   </para>
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The length of <paramref name="value"/> is greater than 65,535 characters.
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// The current <see cref="WebHeaderCollection"/> instance doesn't allow
-        /// the request <paramref name="header"/>.
-        /// </exception>
-        public void Set(System.Net.HttpRequestHeader header, string value)
-        {
-            DoWithCheckingState(SetWithoutCheckingName, Convert(header.ToString()), value, false, true);
-        }
-
-        /// <summary>
-        /// Sets the specified response <paramref name="header"/> to the specified value.
-        /// </summary>
-        /// <param name="header">
-        /// One of the <see cref="System.Net.HttpResponseHeader"/> enum values, represents
-        /// the response header to set.
-        /// </param>
-        /// <param name="value">
-        /// A <see cref="string"/> that represents the value of the response header to set.
-        /// </param>
-        /// <exception cref="ArgumentException">
-        ///   <para>
-        ///   <paramref name="header"/> is a restricted header.
-        ///   </para>
-        ///   <para>
-        ///   -or-
-        ///   </para>
-        ///   <para>
-        ///   <paramref name="value"/> contains invalid characters.
-        ///   </para>
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The length of <paramref name="value"/> is greater than 65,535 characters.
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// The current <see cref="WebHeaderCollection"/> instance doesn't allow
-        /// the response <paramref name="header"/>.
-        /// </exception>
-        public void Set(System.Net.HttpResponseHeader header, string value)
-        {
-            DoWithCheckingState(SetWithoutCheckingName, Convert(header.ToString()), value, true, true);
-        }
-        
-        /// <inheritdoc />
-        public override void Set(string name, string value)
-        {
-            DoWithCheckingState(SetWithoutCheckingName, CheckName(name), value);
-        }
-
-        /// <summary>
-        /// Returns a <see cref="string"/> that represents the current
-        /// <see cref="WebHeaderCollection"/>.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="string"/> that represents the current <see cref="WebHeaderCollection"/>.
-        /// </returns>
         public override string ToString()
         {
             var buff = new StringBuilder();
@@ -588,42 +412,7 @@
 
             return true;
         }
-
-        internal static bool IsMultiValue(string headerName, bool response)
-        {
-            if (string.IsNullOrEmpty(headerName))
-                return false;
-            
-            return GetHeaderInfo(headerName)?.IsMultiValue(response) == true;
-        }
-
-        internal void InternalRemove(string name) => base.Remove(name);
-
-        internal void InternalSet(string header, bool response)
-        {
-            var pos = CheckColonSeparated(header);
-            InternalSet(header.Substring(0, pos), header.Substring(pos + 1), response);
-        }
-
-        internal void InternalSet(string name, string value, bool response)
-        {
-            value = CheckValue(value);
-
-            if (IsMultiValue(name, response))
-                base.Add(name, value);
-            else
-                base.Set(name, value);
-        }
-
-        private static int CheckColonSeparated(string header)
-        {
-            var idx = header.IndexOf(':');
-            if (idx == -1)
-                throw new ArgumentException("No colon could be found.", nameof(header));
-
-            return idx;
-        }
-
+        
         private static HttpHeaderType CheckHeaderType(string name)
         {
             var info = GetHeaderInfo(name);
@@ -668,8 +457,6 @@
             if (InternalIsRestricted(name))
                 throw new ArgumentException("This header must be modified with the appropriate property.");
         }
-
-        private static string Convert(string key) => Headers.TryGetValue(key, out var info) ? info.Name : string.Empty;
 
         private static HttpHeaderInfo GetHeaderInfo(string name)
             => Headers.Values.FirstOrDefault(info => info.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
@@ -733,18 +520,6 @@
             if (setState && State == HttpHeaderType.Unspecified)
                 State = response ? HttpHeaderType.Response : HttpHeaderType.Request;
         }
-        
-        private void RemoveWithoutCheckingName(string name, string unuse)
-        {
-            CheckRestricted(name);
-            base.Remove(name);
-        }
-
-        private void SetWithoutCheckingName(string name, string value)
-        {
-            CheckRestricted(name);
-            base.Set(name, value);
-        }
     }
 
     [Flags]
@@ -801,19 +576,6 @@
         public string Name { get; }
 
         public HttpHeaderType Type { get; }
-
-        internal bool IsMultiValueInRequest
-            => (Type & HttpHeaderType.MultiValueInRequest) == HttpHeaderType.MultiValueInRequest;
-
-        internal bool IsMultiValueInResponse
-            => (Type & HttpHeaderType.MultiValueInResponse) == HttpHeaderType.MultiValueInResponse;
-
-        public bool IsMultiValue(bool response)
-        {
-            return (Type & HttpHeaderType.MultiValue) == HttpHeaderType.MultiValue
-                ? (response ? IsResponse : IsRequest)
-                : (response ? IsMultiValueInResponse : IsMultiValueInRequest);
-        }
 
         public bool IsRestricted(bool response)
         {

@@ -130,11 +130,9 @@
             if (_controllerTypes.Contains(controllerType))
                 throw new ArgumentException("Controller types must be unique within the module");
 
-            var protoDelegate = new ResponseHandler(() => true);
-            var protoAsyncDelegate = new AsyncResponseHandler(() => Task.FromResult(true));
             var methods = controllerType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                .Where(m => m.ReturnType == protoDelegate.GetMethodInfo().ReturnType
-                          || m.ReturnType == protoAsyncDelegate.GetMethodInfo().ReturnType);
+                .Where(m => m.ReturnType == typeof(bool)
+                          || m.ReturnType == typeof(Task<bool>));
 
             foreach (var method in methods)
             {

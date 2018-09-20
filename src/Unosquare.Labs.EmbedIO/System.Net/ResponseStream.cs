@@ -5,11 +5,7 @@
     using System.Runtime.InteropServices;
     using System.Text;
 
-    /// <summary>
-    /// Represents a Response stream.
-    /// </summary>
-    /// <seealso cref="System.IO.Stream" />
-    public class ResponseStream 
+    internal class ResponseStream 
         : Stream
     {
         private static readonly byte[] Crlf = { 13, 10 };
@@ -47,12 +43,8 @@
         }
 
 #if NET46 || NET47
-        /// <inheritdoc />
         public override void Close()
 #else
-        /// <summary>
-        /// Closes this instance.
-        /// </summary>
         public void Close()
 #endif
         {

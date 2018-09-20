@@ -27,10 +27,6 @@
             ? _data.SubArray(ExtensionDataLength, _data.Length - ExtensionDataLength)
             : _data;
 
-        internal byte[] ExtensionData => ExtensionDataLength > 0
-            ? _data.SubArray(0, ExtensionDataLength)
-            : WebSocket.EmptyBytes;
-
         internal ulong Length => (ulong)_data.Length;
 
         internal ushort Code

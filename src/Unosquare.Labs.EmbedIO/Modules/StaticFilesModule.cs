@@ -210,7 +210,7 @@
                                 Name = (name + Path.DirectorySeparatorChar).Truncate(MaxEntryLength, "..>"),
                                 Url = Uri.EscapeDataString(name) + Path.DirectorySeparatorChar,
                                 ModificationTime = new DirectoryInfo(path).LastWriteTimeUtc,
-                                Size = "-"
+                                Size = "-",
                             };
                         })
                         .OrderBy(x => x.Name)
@@ -225,7 +225,7 @@
                                     Name = name.Truncate(MaxEntryLength, "..>"),
                                     Url = Uri.EscapeDataString(name),
                                     ModificationTime = fileInfo.LastWriteTimeUtc,
-                                    Size = fileInfo.Length.FormatBytes()
+                                    Size = fileInfo.Length.FormatBytes(),
                                 };
                             })
                             .OrderBy(x => x.Name))

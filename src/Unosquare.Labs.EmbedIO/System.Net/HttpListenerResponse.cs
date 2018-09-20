@@ -13,7 +13,7 @@
     /// Represents an HTTP Listener's response.
     /// </summary>
     /// <seealso cref="IDisposable" />
-    public sealed class HttpListenerResponse
+    internal sealed class HttpListenerResponse
         : IHttpResponse, IDisposable
     {
         private const string CannotChangeHeaderWarning = "Cannot be changed after headers are sent.";
@@ -173,17 +173,6 @@
 
         void IDisposable.Dispose() => Close(true);
 
-        /// <summary>
-        /// Aborts this instance.
-        /// </summary>
-        public void Abort()
-        {
-            if (_disposed == false)
-                return;
-
-            Close(true);
-        }
-
         /// <inheritdoc />
         public void AddHeader(string name, string value)
         {
@@ -196,15 +185,9 @@
             Headers[name] = value;
         }
 
-        /// <summary>
-        /// Closes this instance.
-        /// </summary>
         public void Close()
         {
-            if (_disposed)
-                return;
-
-            Close(false);
+            if (!_disposed) Close(false);
         }
 
         /// <inheritdoc />
@@ -231,18 +214,14 @@
         {
             if (_contentType != null)
             {
-                if (_contentType.IndexOf("charset=", StringComparison.Ordinal) == -1)
-                {
-                    HeaderCollection.AddWithoutValidate("Content-Type", _contentType + "; charset=" + Encoding.UTF8.WebName);
-                }
-                else
-                {
-                    HeaderCollection.AddWithoutValidate("Content-Type", _contentType);
-                }
+                HeaderCollection.AddWithoutValidate("Content-Type",
+                    _contentType.IndexOf("charset=", StringComparison.Ordinal) == -1
+                        ? $"{_contentType}; charset={Encoding.UTF8.WebName}"
+                        : _contentType);
             }
 
             if (Headers["Server"] == null)
-                HeaderCollection.AddWithoutValidate("Server", "embedio/2.0");
+                HeaderCollection.AddWithoutValidate("Server", HttpResponse.ServerVersion);
 
             var inv = CultureInfo.InvariantCulture;
             if (Headers["Date"] == null)
