@@ -385,7 +385,7 @@
                 return InternalCloseAsync(ct: ct);
 
             var send = !IsOpcodeReserved(code);
-            return InternalCloseAsync(new PayloadData((ushort) code, reason), send, send, ct: ct);
+            return InternalCloseAsync(new PayloadData((ushort)code, reason), send, send, ct: ct);
         }
 
         /// <summary>
@@ -489,9 +489,8 @@
             {
                 stream = new WebSocketStream(data, opcode, _compression, IsClient);
 
-                // TODO: add async
                 foreach (var frame in stream.GetFrames())
-                    Send(frame);
+                    await Send(frame);
             }
             finally
             {
@@ -525,7 +524,7 @@
         {
             try
             {
-                InternalCloseAsync(new PayloadData((ushort) CloseStatusCode.Away)).Wait();
+                InternalCloseAsync(new PayloadData((ushort)CloseStatusCode.Away)).Wait();
             }
             catch
             {
@@ -656,7 +655,7 @@
             (exception as WebSocketException)?.Code ?? CloseStatusCode.Abnormal);
 
         private void Fatal(string message, CloseStatusCode code) =>
-            InternalCloseAsync(new PayloadData((ushort) code, message), !IsOpcodeReserved(code), false).Wait();
+            InternalCloseAsync(new PayloadData((ushort)code, message), !IsOpcodeReserved(code), false).Wait();
 
         private void Message()
         {
@@ -767,12 +766,12 @@
             }
         }
 
-        private void ProcessPingFrame(WebSocketFrame frame)
+        private Task ProcessPingFrame(WebSocketFrame frame)
         {
-            Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, IsClient));
-
             if (EmitOnPing)
                 _messageEventQueue.Enqueue(new MessageEventArgs(frame));
+
+            return Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, IsClient));
         }
 
         private void ProcessPongFrame()
@@ -781,7 +780,7 @@
             "Received a pong.".Info();
         }
 
-        private Task<bool> ProcessReceivedFrame(WebSocketFrame frame)
+        private async Task<bool> ProcessReceivedFrame(WebSocketFrame frame)
         {
             if (frame.IsFragment)
             {
@@ -796,22 +795,22 @@
                         ProcessDataFrame(frame);
                         break;
                     case Opcode.Ping:
-                        ProcessPingFrame(frame);
+                        await ProcessPingFrame(frame);
                         break;
                     case Opcode.Pong:
                         ProcessPongFrame();
                         break;
                     case Opcode.Close:
-                        ProcessCloseFrame(frame);
+                        await ProcessCloseFrame(frame);
                         break;
                     default:
                         $"An unsupported frame: {frame.PrintToString()}".Error();
                         Fatal("There is no way to handle it.", CloseStatusCode.PolicyViolation);
-                        return Task.FromResult(false);
+                        return false;
                 }
             }
 
-            return Task.FromResult(true);
+            return true;
         }
 
         // As server
@@ -924,19 +923,19 @@
             _context = null;
         }
 
-        private void Send(WebSocketFrame frame)
+        private Task Send(WebSocketFrame frame)
         {
             lock (_forState)
             {
                 if (_readyState != WebSocketState.Open)
                 {
                     "The sending has been interrupted.".Error();
-                    return;
+                    return Task.CompletedTask;
                 }
             }
 
             var frameAsBytes = frame.ToArray();
-            _stream.Write(frameAsBytes, 0, frameAsBytes.Length);
+            return _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length);
         }
 
         // As client
