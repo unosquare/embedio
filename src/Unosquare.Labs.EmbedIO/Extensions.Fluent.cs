@@ -26,8 +26,8 @@
         /// An instance of webserver.
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
-        public static WebServer WithStaticFolderAt(
-            this WebServer webserver,
+        public static IWebServer WithStaticFolderAt(
+            this IWebServer webserver,
             string rootPath,
             string defaultDocument = StaticFilesModule.DefaultDocumentName,
             bool useDirectoryBrowser = false)
@@ -48,8 +48,8 @@
         /// <param name="defaultDocument">The default document.</param>
         /// <returns>An instance of a web module.</returns>
         /// <exception cref="System.ArgumentNullException">webserver.</exception>
-        public static WebServer WithVirtualPaths(
-            this WebServer webserver,
+        public static IWebServer WithVirtualPaths(
+            this IWebServer webserver,
             Dictionary<string, string> virtualPaths,
             string defaultDocument = StaticFilesModule.DefaultDocumentName)
         {
@@ -66,7 +66,7 @@
         /// <param name="webserver">The webserver instance.</param>
         /// <returns>An instance of a web module.</returns>
         /// <exception cref="System.ArgumentNullException">webserver.</exception>
-        public static WebServer WithLocalSession(this WebServer webserver)
+        public static IWebServer WithLocalSession(this IWebServer webserver)
         {
             if (webserver == null)
                 throw new ArgumentNullException(nameof(webserver));
@@ -83,7 +83,7 @@
         /// <param name="assembly">The assembly to load WebApi Controllers from. Leave null to avoid autoloading.</param>
         /// <returns>An instance of webserver.</returns>
         /// <exception cref="System.ArgumentNullException">webserver.</exception>
-        public static WebServer WithWebApi(this WebServer webserver, Assembly assembly = null)
+        public static IWebServer WithWebApi(this IWebServer webserver, Assembly assembly = null)
         {
             if (webserver == null)
                 throw new ArgumentNullException(nameof(webserver));
@@ -99,7 +99,7 @@
         /// <param name="assembly">The assembly to load Web Sockets from. Leave null to avoid autoloading.</param>
         /// <returns>An instance of webserver.</returns>
         /// <exception cref="System.ArgumentNullException">webserver.</exception>
-        public static WebServer WithWebSocket(this WebServer webserver, Assembly assembly = null)
+        public static IWebServer WithWebSocket(this IWebServer webserver, Assembly assembly = null)
         {
             if (webserver == null)
                 throw new ArgumentNullException(nameof(webserver));
@@ -115,7 +115,7 @@
         /// <param name="assembly">The assembly to load WebApi Controllers from. Leave null to load from the currently executing assembly.</param>
         /// <returns>An instance of webserver.</returns>
         /// <exception cref="System.ArgumentNullException">webserver.</exception>
-        public static WebServer LoadApiControllers(this WebServer webserver, Assembly assembly = null)
+        public static IWebServer LoadApiControllers(this IWebServer webserver, Assembly assembly = null)
         {
             if (webserver == null)
                 throw new ArgumentNullException(nameof(webserver));
@@ -172,7 +172,7 @@
         /// <param name="assembly">The assembly to load WebSocketsServer types from. Leave null to load from the currently executing assembly.</param>
         /// <returns>An instance of webserver.</returns>
         /// <exception cref="System.ArgumentNullException">webserver.</exception>
-        public static WebServer LoadWebSockets(this WebServer webserver, Assembly assembly = null)
+        public static IWebServer LoadWebSockets(this IWebServer webserver, Assembly assembly = null)
         {
             if (webserver == null)
                 throw new ArgumentNullException(nameof(webserver));
@@ -200,8 +200,8 @@
         /// <param name="methods">The valid method, default all.</param>
         /// <returns>An instance of the tiny web server used to handle request.</returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
-        public static WebServer EnableCors(
-            this WebServer webserver,
+        public static IWebServer EnableCors(
+            this IWebServer webserver,
             string origins = Strings.CorsWildcard,
             string headers = Strings.CorsWildcard,
             string methods = Strings.CorsWildcard)
@@ -221,7 +221,7 @@
         /// <param name="webserver">The webserver instance.</param>
         /// <returns>An instance of webserver.</returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
-        public static WebServer WithWebApiController<T>(this WebServer webserver)
+        public static IWebServer WithWebApiController<T>(this IWebServer webserver)
             where T : WebApiController
         {
             if (webserver == null)

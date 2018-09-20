@@ -7,6 +7,8 @@
 
     internal class HttpResponse : HttpBase
     {
+        private const string ServerVersion = "embedio/2.0";
+
         internal HttpResponse(HttpStatusCode code)
           : this((int) code, HttpListenerResponseHelper.GetStatusDescription((int)code), HttpVersion.Version11, new NameValueCollection())
         {
@@ -17,7 +19,7 @@
         {
             StatusCode = code;
             Reason = reason;
-            Headers["Server"] = "embedio/2.0";
+            Headers["Server"] = ServerVersion;
         }
         
         public CookieCollection Cookies => Headers.GetCookies(true);

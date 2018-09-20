@@ -6,7 +6,7 @@ namespace Unosquare.Labs.EmbedIO
     using System.Net;
 
     /// <summary>
-    /// Represetns a wrapper for <c>System.Net.CookieCollection</c>.
+    /// Represents a wrapper for <c>System.Net.CookieCollection</c>.
     /// </summary>
     /// <seealso cref="Unosquare.Labs.EmbedIO.ICookieCollection" />
     public class CookieCollection
@@ -22,13 +22,7 @@ namespace Unosquare.Labs.EmbedIO
         {
             _cookieCollection = cookieCollection;
         }
-
-        /// <inheritdoc />
-        public IEnumerator GetEnumerator() => _cookieCollection.GetEnumerator();
-
-        /// <inheritdoc />
-        public void CopyTo(Array array, int index) => _cookieCollection.CopyTo(array, index);
-
+        
         /// <inheritdoc />
         public int Count => _cookieCollection.Count;
 
@@ -39,10 +33,16 @@ namespace Unosquare.Labs.EmbedIO
         public object SyncRoot => _cookieCollection.SyncRoot;
 
         /// <inheritdoc />
-        public void Add(Cookie cookie) => _cookieCollection.Add(cookie);
+        public Cookie this[string name] => _cookieCollection[name];
 
         /// <inheritdoc />
-        public Cookie this[string name] => _cookieCollection[name];
+        public IEnumerator GetEnumerator() => _cookieCollection.GetEnumerator();
+
+        /// <inheritdoc />
+        public void CopyTo(Array array, int index) => _cookieCollection.CopyTo(array, index);
+
+        /// <inheritdoc />
+        public void Add(Cookie cookie) => _cookieCollection.Add(cookie);
     }
 }
 #endif
