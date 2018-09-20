@@ -21,7 +21,7 @@
                 .GetMethod(nameof(WebApiController.SetDefaultHeaders));
             IsTask = methodInfo.ReturnType == typeof(Task<bool>);
             AdditionalParameters = methodInfo.GetParameters()
-                .Select(x => new AddtionalParameterInfo(x))
+                .Select(x => new AdditionalParameterInfo(x))
                 .ToList();
 
             var invokeDelegate = BuildDelegate(methodInfo, IsTask, type);
@@ -39,7 +39,7 @@
         public MethodInfo MethodInfo { get; }
         public MethodInfo SetDefaultHeadersMethodInfo { get; }
         public bool IsTask { get; }
-        public List<AddtionalParameterInfo> AdditionalParameters { get; }
+        public List<AdditionalParameterInfo> AdditionalParameters { get; }
         public string ControllerName { get; }
         public AsyncDelegate AsyncInvoke { get; }
         public SyncDelegate SyncInvoke { get; }
@@ -122,11 +122,11 @@
         }
     }
 
-    internal class AddtionalParameterInfo
+    internal class AdditionalParameterInfo
     {
         private readonly TypeConverter _converter;
 
-        public AddtionalParameterInfo(ParameterInfo parameterInfo)
+        public AdditionalParameterInfo(ParameterInfo parameterInfo)
         {
             Info = parameterInfo;
             _converter = TypeDescriptor.GetConverter(parameterInfo.ParameterType);

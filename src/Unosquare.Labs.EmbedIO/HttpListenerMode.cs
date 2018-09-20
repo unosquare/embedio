@@ -1,7 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     /// <summary>
-    /// Enums all the HTTP listener availables.
+    /// Enums all the HTTP listener available.
     /// </summary>
     public enum HttpListenerMode
     {

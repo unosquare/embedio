@@ -57,7 +57,7 @@
         /// <inheritdoc />
         public override string Name => nameof(ResourceFilesModule).Humanize();
 
-        private static string PathResourcerize(string s) => s == "/" ? "index.html" : s.Substring(1, s.Length - 1).Replace('/', '.');
+        private static string FixPath(string s) => s == "/" ? "index.html" : s.Substring(1, s.Length - 1).Replace('/', '.');
 
         private async Task<bool> HandleGet(IHttpContext context, CancellationToken ct, bool sendBuffer = true)
         {
@@ -65,7 +65,7 @@
 
             try
             {
-                var localPath = PathResourcerize(context.RequestPathCaseSensitive());
+                var localPath = FixPath(context.RequestPathCaseSensitive());
                 var partialHeader = context.RequestHeader(Headers.Range);
 
                 $"Resource System: {localPath}".Debug();
