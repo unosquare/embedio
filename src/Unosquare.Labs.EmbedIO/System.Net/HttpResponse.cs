@@ -7,7 +7,7 @@
 
     internal class HttpResponse : HttpBase
     {
-        private const string ServerVersion = "embedio/2.0";
+        internal const string ServerVersion = "embedio/2.0";
 
         internal HttpResponse(HttpStatusCode code)
           : this((int) code, HttpListenerResponseHelper.GetStatusDescription((int)code), HttpVersion.Version11, new NameValueCollection())

@@ -18,15 +18,6 @@
     {
         private object _sync;
         
-        /// <summary>
-        /// Gets a value indicating whether the collection is read-only.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the collection is read-only; otherwise, <c>false</c>.
-        /// The default value is <c>true</c>.
-        /// </value>
-        public bool IsReadOnly => true;
-
         /// <inheritdoc />
         public bool IsSynchronized => false;
         

@@ -7,10 +7,7 @@
     using System.Text;
     using HttpHeaders = Labs.EmbedIO.Constants.Headers;
 
-    /// <summary>
-    /// Provides a collection of the HTTP headers associated with a request or response.
-    /// </summary>
-    public class WebHeaderCollection 
+    internal class WebHeaderCollection 
         : NameValueCollection
     {
         private static readonly Dictionary<string, HttpHeaderInfo> Headers = new Dictionary<string, HttpHeaderInfo>(StringComparer.OrdinalIgnoreCase)
@@ -379,136 +376,15 @@
         
         internal HttpHeaderType State { get; private set; }
         
-        /// <summary>
-        /// Gets or sets the specified request <paramref name="header"/> in the collection.
-        /// </summary>
-        /// <value>
-        /// A <see cref="string"/> that represents the value of the request <paramref name="header"/>.
-        /// </value>
-        /// <param name="header">
-        /// One of the HttpRequestHeader enum values, represents
-        /// the request header to get or set.
-        /// </param>
-        /// <exception cref="ArgumentException">
-        ///   <para>
-        ///   <paramref name="header"/> is a restricted header.
-        ///   </para>
-        ///   <para>
-        ///   -or-
-        ///   </para>
-        ///   <para>
-        ///   <paramref name="value"/> contains invalid characters.
-        ///   </para>
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The length of <paramref name="value"/> is greater than 65,535 characters.
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// The current <see cref="WebHeaderCollection"/> instance doesn't allow
-        /// the request <paramref name="header"/>.
-        /// </exception>
-        public string this[System.Net.HttpRequestHeader header]
-        {
-            get => Get(Convert(header));
-
-            set => Add(header, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the specified response <paramref name="header"/> in the collection.
-        /// </summary>
-        /// <value>
-        /// A <see cref="string"/> that represents the value of the response <paramref name="header"/>.
-        /// </value>
-        /// <param name="header">
-        /// One of the HttpResponseHeader enum values, represents
-        /// the response header to get or set.
-        /// </param>
-        /// <exception cref="ArgumentException">
-        ///   <para>
-        ///   <paramref name="header"/> is a restricted header.
-        ///   </para>
-        ///   <para>
-        ///   -or-
-        ///   </para>
-        ///   <para>
-        ///   <paramref name="value"/> contains invalid characters.
-        ///   </para>
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The length of <paramref name="value"/> is greater than 65,535 characters.
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// The current <see cref="WebHeaderCollection"/> instance doesn't allow
-        /// the response <paramref name="header"/>.
-        /// </exception>
         public string this[System.Net.HttpResponseHeader header]
         {
-            get => Get(Convert(header));
+            get => Get(Convert(header.ToString()));
 
             set => Add(header, value);
         }
-
-        /// <summary>
-        /// Adds a header to the collection without checking if the header is on
-        /// the restricted header list.
-        /// </summary>
-        /// <param name="headerName">
-        /// A <see cref="string"/> that represents the name of the header to add.
-        /// </param>
-        /// <param name="headerValue">
-        /// A <see cref="string"/> that represents the value of the header to add.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="headerName"/> is <see langword="null"/> or empty.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="headerName"/> or <paramref name="headerValue"/> contains invalid characters.
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The length of <paramref name="headerValue"/> is greater than 65,535 characters.
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// The current <see cref="WebHeaderCollection"/> instance doesn't allow
-        /// the <paramref name="headerName"/>.
-        /// </exception>
+        
         public void AddWithoutValidate(string headerName, string headerValue) => Add(headerName, headerValue, true);
         
-        /// <summary>
-        /// Adds the specified <paramref name="header"/> to the collection.
-        /// </summary>
-        /// <param name="header">
-        /// A <see cref="string"/> that represents the header with the name and value separated by
-        /// a colon (<c>':'</c>).
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="header"/> is <see langword="null"/>, empty, or the name part of
-        /// <paramref name="header"/> is empty.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        ///   <para>
-        ///   <paramref name="header"/> doesn't contain a colon.
-        ///   </para>
-        ///   <para>
-        ///   -or-
-        ///   </para>
-        ///   <para>
-        ///   <paramref name="header"/> is a restricted header.
-        ///   </para>
-        ///   <para>
-        ///   -or-
-        ///   </para>
-        ///   <para>
-        ///   The name or value part of <paramref name="header"/> contains invalid characters.
-        ///   </para>
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The length of the value part of <paramref name="header"/> is greater than 65,535 characters.
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// The current <see cref="WebHeaderCollection"/> instance doesn't allow
-        /// the <paramref name="header"/>.
-        /// </exception>
         public void Add(string header)
         {
             if (string.IsNullOrEmpty(header))
@@ -518,72 +394,14 @@
             Add(header.Substring(0, pos), header.Substring(pos + 1), false);
         }
 
-        /// <summary>
-        /// Adds the specified request <paramref name="header"/> with
-        /// the specified <paramref name="value"/> to the collection.
-        /// </summary>
-        /// <param name="header">
-        /// One of theHttpRequestHeader enum values, represents
-        /// the request header to add.
-        /// </param>
-        /// <param name="value">
-        /// A <see cref="string"/> that represents the value of the header to add.
-        /// </param>
-        /// <exception cref="ArgumentException">
-        ///   <para>
-        ///   <paramref name="header"/> is a restricted header.
-        ///   </para>
-        ///   <para>
-        ///   -or-
-        ///   </para>
-        ///   <para>
-        ///   <paramref name="value"/> contains invalid characters.
-        ///   </para>
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The length of <paramref name="value"/> is greater than 65,535 characters.
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// The current <see cref="WebHeaderCollection"/> instance doesn't allow
-        /// the request <paramref name="header"/>.
-        /// </exception>
         public void Add(System.Net.HttpRequestHeader header, string value)
         {
-            DoWithCheckingState(AddWithoutCheckingName, Convert(header), value, false, true);
+            DoWithCheckingState(AddWithoutCheckingName, Convert(header.ToString()), value, false, true);
         }
 
-        /// <summary>
-        /// Adds the specified response <paramref name="header"/> with
-        /// the specified <paramref name="value"/> to the collection.
-        /// </summary>
-        /// <param name="header">
-        /// One of the <see cref="System.Net.HttpResponseHeader"/> enum values, represents
-        /// the response header to add.
-        /// </param>
-        /// <param name="value">
-        /// A <see cref="string"/> that represents the value of the header to add.
-        /// </param>
-        /// <exception cref="ArgumentException">
-        ///   <para>
-        ///   <paramref name="header"/> is a restricted header.
-        ///   </para>
-        ///   <para>
-        ///   -or-
-        ///   </para>
-        ///   <para>
-        ///   <paramref name="value"/> contains invalid characters.
-        ///   </para>
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The length of <paramref name="value"/> is greater than 65,535 characters.
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// The current <see cref="WebHeaderCollection"/> instance doesn't allow
-        /// the response <paramref name="header"/>.
-        /// </exception>
         public void Add(System.Net.HttpResponseHeader header, string value)
         {
-            DoWithCheckingState(AddWithoutCheckingName, Convert(header), value, true, true);
+            DoWithCheckingState(AddWithoutCheckingName, Convert(header.ToString()), value, true, true);
         }
 
         /// <inheritdoc />
@@ -629,7 +447,7 @@
         /// </exception>
         public void Remove(System.Net.HttpRequestHeader header)
         {
-            DoWithCheckingState(RemoveWithoutCheckingName, Convert(header), null, false, false);
+            DoWithCheckingState(RemoveWithoutCheckingName, Convert(header.ToString()), null, false, false);
         }
 
         /// <summary>
@@ -648,7 +466,7 @@
         /// </exception>
         public void Remove(System.Net.HttpResponseHeader header)
         {
-            DoWithCheckingState(RemoveWithoutCheckingName, Convert(header), null, true, false);
+            DoWithCheckingState(RemoveWithoutCheckingName, Convert(header.ToString()), null, true, false);
         }
         
         /// <inheritdoc />
@@ -687,7 +505,7 @@
         /// </exception>
         public void Set(System.Net.HttpRequestHeader header, string value)
         {
-            DoWithCheckingState(SetWithoutCheckingName, Convert(header), value, false, true);
+            DoWithCheckingState(SetWithoutCheckingName, Convert(header.ToString()), value, false, true);
         }
 
         /// <summary>
@@ -720,7 +538,7 @@
         /// </exception>
         public void Set(System.Net.HttpResponseHeader header, string value)
         {
-            DoWithCheckingState(SetWithoutCheckingName, Convert(header), value, true, true);
+            DoWithCheckingState(SetWithoutCheckingName, Convert(header.ToString()), value, true, true);
         }
         
         /// <inheritdoc />
@@ -745,10 +563,6 @@
 
             return buff.Append("\r\n").ToString();
         }
-
-        internal static string Convert(System.Net.HttpRequestHeader header) => Convert(header.ToString());
-
-        internal static string Convert(System.Net.HttpResponseHeader header) => Convert(header.ToString());
 
         internal static bool IsHeaderName(string name) =>!string.IsNullOrEmpty(name) && name.IsToken();
 
@@ -969,7 +783,7 @@
         /// <summary>
         /// The multi-value in response
         /// </summary>
-        MultiValueInResponse = 1 << 5
+        MultiValueInResponse = 1 << 5,
     }
 
     internal class HttpHeaderInfo

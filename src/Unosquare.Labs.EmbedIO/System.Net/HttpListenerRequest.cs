@@ -308,10 +308,6 @@ using System.Threading.Tasks;
 
             CreateQueryString(_url.Query);
 
-            // Use reference source HttpListenerRequestUriBuilder to process url.
-            // Fixes #29927
-            _url = HttpListenerRequestUriBuilder.GetRequestUri(RawUrl, _url);
-
             if (!_clSet)
             {
                 if (string.Compare(HttpMethod, "POST", StringComparison.OrdinalIgnoreCase) == 0 ||

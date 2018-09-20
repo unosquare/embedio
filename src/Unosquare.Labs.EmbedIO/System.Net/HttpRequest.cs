@@ -10,13 +10,10 @@
 
     internal class HttpRequest : HttpBase
     {
-        private bool _websocketRequest;
-        private bool _websocketRequestSet;
-        
         internal HttpRequest(string method, string uri)
           : this(method, uri, HttpVersion.Version11, new NameValueCollection())
         {
-            Headers["User-Agent"] = "embedio/2.0";
+            Headers["User-Agent"] = HttpResponse.ServerVersion;
         }
 
         private HttpRequest(string method, string uri, Version version, NameValueCollection headers)
@@ -29,25 +26,6 @@
         public CookieCollection Cookies => Headers.GetCookies(false);
 
         public string HttpMethod { get; }
-
-        public bool IsWebSocketRequest
-        {
-            get
-            {
-                if (!_websocketRequestSet)
-                {
-                    var headers = Headers;
-                    _websocketRequest = HttpMethod == "GET" &&
-                                        ProtocolVersion > HttpVersion.Version10 &&
-                                        headers.Contains("Upgrade", "websocket") &&
-                                        headers.Contains("Connection", "Upgrade");
-
-                    _websocketRequestSet = true;
-                }
-
-                return _websocketRequest;
-            }
-        }
 
         public string RequestUri { get; }
         
@@ -84,9 +62,8 @@
 
             output.Append(CrLf);
 
-            var entity = EntityBody;
-            if (entity.Length > 0)
-                output.Append(entity);
+            if (EntityBody.Length > 0)
+                output.Append(EntityBody);
 
             return output.ToString();
         }
@@ -114,16 +91,6 @@
             return ret;
         }
 
-        internal static HttpRequest Parse(string[] headerParts)
-        {
-            var requestLine = headerParts[0].Split(new[] { ' ' }, 3);
-
-            if (requestLine.Length != 3)
-                throw new ArgumentException($"Invalid request line: {headerParts[0]}");
-
-            return new HttpRequest(requestLine[0], requestLine[1], new Version(requestLine[2].Substring(5)), ParseHeaders(headerParts));
-        }
-        
         internal Task<HttpResponse> GetResponse(Stream stream)
         {
             var buff = ToByteArray();
@@ -156,18 +123,12 @@
         private static HttpRequest CreateWebSocketRequest(Uri uri)
         {
             var req = new HttpRequest("GET", uri.PathAndQuery);
-            var headers = req.Headers;
-
-            // Only includes a port number in the Host header value if it's non-default.
-            // See: https://tools.ietf.org/html/rfc6455#page-17
-            var port = uri.Port;
-            var schm = uri.Scheme;
-            headers["Host"] = (port == 80 && schm == "ws") || (port == 443 && schm == "wss")
+            req.Headers["Host"] = (uri.Port == 80 && uri.Scheme == "ws") || (uri.Port == 443 && uri.Scheme == "wss")
                 ? uri.DnsSafeHost
                 : uri.Authority;
 
-            headers["Upgrade"] = "websocket";
-            headers["Connection"] = "Upgrade";
+            req.Headers["Upgrade"] = "websocket";
+            req.Headers["Connection"] = "Upgrade";
 
             return req;
         }
