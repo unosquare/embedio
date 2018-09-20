@@ -4234,19 +4234,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.HttpListener.HttpListener
   nameWithType: HttpListener.HttpListener
-- uid: Unosquare.Net.HttpListener.Abort
-  name: Abort()
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_Abort
-  commentId: M:Unosquare.Net.HttpListener.Abort
-  fullName: Unosquare.Net.HttpListener.Abort()
-  nameWithType: HttpListener.Abort()
-- uid: Unosquare.Net.HttpListener.Abort*
-  name: Abort
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_Abort_
-  commentId: Overload:Unosquare.Net.HttpListener.Abort
-  isSpec: "True"
-  fullName: Unosquare.Net.HttpListener.Abort
-  nameWithType: HttpListener.Abort
 - uid: Unosquare.Net.HttpListener.AddPrefix(System.String)
   name: AddPrefix(String)
   href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_AddPrefix_System_String_
@@ -4351,19 +4338,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.HttpListener.Prefixes
   nameWithType: HttpListener.Prefixes
-- uid: Unosquare.Net.HttpListener.Realm
-  name: Realm
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_Realm
-  commentId: P:Unosquare.Net.HttpListener.Realm
-  fullName: Unosquare.Net.HttpListener.Realm
-  nameWithType: HttpListener.Realm
-- uid: Unosquare.Net.HttpListener.Realm*
-  name: Realm
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_Realm_
-  commentId: Overload:Unosquare.Net.HttpListener.Realm
-  isSpec: "True"
-  fullName: Unosquare.Net.HttpListener.Realm
-  nameWithType: HttpListener.Realm
 - uid: Unosquare.Net.HttpListener.Start
   name: Start()
   href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_Start
@@ -5760,19 +5734,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.WebSocketContext.Headers
   nameWithType: WebSocketContext.Headers
-- uid: Unosquare.Net.WebSocketContext.Host
-  name: Host
-  href: api/Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_Host
-  commentId: P:Unosquare.Net.WebSocketContext.Host
-  fullName: Unosquare.Net.WebSocketContext.Host
-  nameWithType: WebSocketContext.Host
-- uid: Unosquare.Net.WebSocketContext.Host*
-  name: Host
-  href: api/Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_Host_
-  commentId: Overload:Unosquare.Net.WebSocketContext.Host
-  isSpec: "True"
-  fullName: Unosquare.Net.WebSocketContext.Host
-  nameWithType: WebSocketContext.Host
 - uid: Unosquare.Net.WebSocketContext.IsLocal
   name: IsLocal
   href: api/Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_IsLocal
@@ -5786,6 +5747,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.WebSocketContext.IsLocal
   nameWithType: WebSocketContext.IsLocal
+- uid: Unosquare.Net.WebSocketContext.IsSecureConnection
+  name: IsSecureConnection
+  href: api/Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_IsSecureConnection
+  commentId: P:Unosquare.Net.WebSocketContext.IsSecureConnection
+  fullName: Unosquare.Net.WebSocketContext.IsSecureConnection
+  nameWithType: WebSocketContext.IsSecureConnection
+- uid: Unosquare.Net.WebSocketContext.IsSecureConnection*
+  name: IsSecureConnection
+  href: api/Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_IsSecureConnection_
+  commentId: Overload:Unosquare.Net.WebSocketContext.IsSecureConnection
+  isSpec: "True"
+  fullName: Unosquare.Net.WebSocketContext.IsSecureConnection
+  nameWithType: WebSocketContext.IsSecureConnection
 - uid: Unosquare.Net.WebSocketContext.IsWebSocketRequest
   name: IsWebSocketRequest
   href: api/Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_IsWebSocketRequest
@@ -5812,19 +5786,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.WebSocketContext.Origin
   nameWithType: WebSocketContext.Origin
-- uid: Unosquare.Net.WebSocketContext.QueryString
-  name: QueryString
-  href: api/Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_QueryString
-  commentId: P:Unosquare.Net.WebSocketContext.QueryString
-  fullName: Unosquare.Net.WebSocketContext.QueryString
-  nameWithType: WebSocketContext.QueryString
-- uid: Unosquare.Net.WebSocketContext.QueryString*
-  name: QueryString
-  href: api/Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_QueryString_
-  commentId: Overload:Unosquare.Net.WebSocketContext.QueryString
-  isSpec: "True"
-  fullName: Unosquare.Net.WebSocketContext.QueryString
-  nameWithType: WebSocketContext.QueryString
 - uid: Unosquare.Net.WebSocketContext.RequestUri
   name: RequestUri
   href: api/Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_RequestUri
@@ -5864,19 +5825,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.WebSocketContext.SecWebSocketVersion
   nameWithType: WebSocketContext.SecWebSocketVersion
-- uid: Unosquare.Net.WebSocketContext.ServerEndPoint
-  name: ServerEndPoint
-  href: api/Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_ServerEndPoint
-  commentId: P:Unosquare.Net.WebSocketContext.ServerEndPoint
-  fullName: Unosquare.Net.WebSocketContext.ServerEndPoint
-  nameWithType: WebSocketContext.ServerEndPoint
-- uid: Unosquare.Net.WebSocketContext.ServerEndPoint*
-  name: ServerEndPoint
-  href: api/Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_ServerEndPoint_
-  commentId: Overload:Unosquare.Net.WebSocketContext.ServerEndPoint
-  isSpec: "True"
-  fullName: Unosquare.Net.WebSocketContext.ServerEndPoint
-  nameWithType: WebSocketContext.ServerEndPoint
 - uid: Unosquare.Net.WebSocketContext.ToString
   name: ToString()
   href: api/Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_ToString
@@ -5890,19 +5838,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.WebSocketContext.ToString
   nameWithType: WebSocketContext.ToString
-- uid: Unosquare.Net.WebSocketContext.UserEndPoint
-  name: UserEndPoint
-  href: api/Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_UserEndPoint
-  commentId: P:Unosquare.Net.WebSocketContext.UserEndPoint
-  fullName: Unosquare.Net.WebSocketContext.UserEndPoint
-  nameWithType: WebSocketContext.UserEndPoint
-- uid: Unosquare.Net.WebSocketContext.UserEndPoint*
-  name: UserEndPoint
-  href: api/Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_UserEndPoint_
-  commentId: Overload:Unosquare.Net.WebSocketContext.UserEndPoint
-  isSpec: "True"
-  fullName: Unosquare.Net.WebSocketContext.UserEndPoint
-  nameWithType: WebSocketContext.UserEndPoint
 - uid: Unosquare.Net.WebSocketContext.WebSocket
   name: WebSocket
   href: api/Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_WebSocket
