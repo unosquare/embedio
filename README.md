@@ -9,6 +9,8 @@
 
 *:star: Please star this project if you find it useful!*
 
+**This README is for EmbedIO v2.x. Click [here](https://github.com/unosquare/embedio/tree/v1.X) if you are using EmbedIO v1.x.**
+
 - [Overview](#overview)
     - [EmbedIO 2.0 - What's new](#embedio-20---whats-new)
     - [Some usage scenarios](#some-usage-scenarios)
