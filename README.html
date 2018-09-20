@@ -163,10 +163,10 @@
 <li><code>RoutingStrategy.Regex</code> is the default routing scheme.</li>
 <li>General improvements in how the Unosquare <code>HttpListner</code> is working and code clean-up.</li>
 </ul>
-<p><em>Note</em> - We encourage to upgrade to new EmbedIO. Branch version 1.X will not be longer mantain, and issues will be tested against 2.X and resolved just there.</p>
+<p><em>Note</em> - We encourage to upgrade to the newest EmbedIO version. Branch version 1.X will no longer be maintained, and issues will be tested against 2.X and resolved just there.</p>
 <h3 id="some-usage-scenarios">Some usage scenarios:</h3>
 <ul>
-<li>Write a cross-platform GUI entirely in using React/AngularJS/Vue.js or any Javascript framework</li>
+<li>Write a cross-platform GUI entirely using React/AngularJS/Vue.js or any Javascript framework</li>
 <li>Write a game using Babylon.js and make EmbedIO your serve your code and assets</li>
 <li>Create GUIs for Windows services or Linux daemons</li>
 <li>Works well with <a href="https://github.com/unosquare/litelib">LiteLib</a> - add SQLite support in minutes!</li>
@@ -174,7 +174,7 @@
 <li>Write internal web server for Xamarin Forms applications</li>
 </ul>
 <h2 id="installation">Installation:</h2>
-<p>You can start using EmbedIO downloading the nuget.</p>
+<p>You can start using EmbedIO by just downloading the nuget.</p>
 <h3 id="package-manager">Package Manager</h3>
 <pre><code>PM&gt; Install-Package EmbedIO
 </code></pre><h3 id="net-cli">.NET CLI</h3>
@@ -279,8 +279,7 @@
     }
 }
 </code></pre><h2 id="rest-api-example">REST API Example:</h2>
-<p>The WebApi module supports two routing strategies: Wildcard and Regex. By default, the WebApi module will use the <strong>Regex Routing Strategy</strong> to try to match and 
-resolve the values from a route template, in a similar fashion to Microsoft&#39;s Web API. </p>
+<p>The WebApi module supports two routing strategies: Wildcard and Regex. By default, the WebApi module will use the <strong>Regex Routing Strategy</strong> trying to match and resolve the values from a route template, in a similar fashion to Microsoft&#39;s Web API. </p>
 <p>A method with the following route <code>/api/people/{id}</code> is going to match any request URL with three segments: the first two <code>api</code> and <code>people</code> and the last 
 one is going to be parsed or converted to the type in the <code>id</code> argument of the handling method signature. Please read on if this was confusing as it is 
 much simpler than it sounds. Additionally, you can put multiple values to match, for example <code>/api/people/{mainSkill}/{age}</code>, and receive the 
@@ -317,7 +316,7 @@ server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;()
     // You can override the default headers and add custom headers to each API Response.
     public override void SetDefaultHeaders() =&gt; this.NoCache();
 }
-</code></pre><p>The previous default strategy (Wildcard) match routes using the asterisk <code>*</code> character in the route. <strong>For example:</strong> </p>
+</code></pre><p>The previous default strategy (Wildcard) matches routes using the asterisk <code>*</code> character in the route. <strong>For example:</strong> </p>
 <ul>
 <li>The route <code>/api/people/*</code> will match any request with a URL starting with the two first URL segments <code>api</code> and 
 <code>people</code> and ending with anything. The route <code>/api/people/hello</code> will be matched.</li>
