@@ -9,6 +9,7 @@
         /// The EmbedIO mode
         /// </summary>
         EmbedIO,
+
 #if !NETSTANDARD1_3 && !UWP
         /// <summary>
         /// The Microsoft mode

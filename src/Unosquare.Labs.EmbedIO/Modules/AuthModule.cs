@@ -9,7 +9,7 @@
 
     /// <summary>
     /// Simple authorisation module that requests http auth from client
-    /// Will return 401 + WWW-Authenticate header if request isn't authorised.
+    /// will return 401 + WWW-Authenticate header if request isn't authorised.
     /// </summary>
     public class AuthModule : WebModuleBase
     {

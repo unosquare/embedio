@@ -10,7 +10,7 @@
     /// <summary>
     /// The EmbedIO implementation of the standard HTTP Listener class.
     ///
-    /// Based on MONO HttpListner class.
+    /// Based on MONO HttpListener class.
     /// </summary>
     /// <seealso cref="IDisposable" />
     public sealed class HttpListener : IHttpListener

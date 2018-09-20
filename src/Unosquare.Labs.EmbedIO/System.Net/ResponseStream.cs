@@ -46,20 +46,20 @@
             set => throw new NotSupportedException();
         }
 
-        /// <summary>
-        /// Closes this instance.
-        /// </summary>
 #if NET46 || NET47
         /// <inheritdoc />
         public override void Close()
 #else
+        /// <summary>
+        /// Closes this instance.
+        /// </summary>
         public void Close()
 #endif
         {
             if (_disposed) return;
 
             _disposed = true;
-            var ms = GetHeaders(true);
+            var ms = GetHeaders();
             var chunked = _response.SendChunked;
 
             if (_stream.CanWrite)
@@ -175,7 +175,7 @@
 
         private static byte[] GetChunkSizeBytes(int size, bool final) => Encoding.UTF8.GetBytes($"{size:x}\r\n{(final ? "\r\n" : string.Empty)}");
 
-        private MemoryStream GetHeaders(bool closing)
+        private MemoryStream GetHeaders(bool closing = true)
         {
             // SendHeaders works on shared headers
             lock (_response.HeadersLock)

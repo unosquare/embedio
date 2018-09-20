@@ -291,7 +291,7 @@
             try
             {
 #if NET47
-// define a receive buffer
+                // define a receive buffer
                 var receiveBuffer = new byte[receiveBufferSize];
 
                 // define a dynamic buffer that holds multi-part receptions
