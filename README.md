@@ -58,11 +58,11 @@ Some notes regarding WebSocket and runtimes support:
 * `RoutingStrategy.Regex` is the default routing scheme.
 * General improvements in how the Unosquare `HttpListner` is working and code clean-up.
 
-*Note* - We encourage to upgrade to new EmbedIO. Branch version 1.X will not be longer mantain, and issues will be tested against 2.X and resolved just there.
+*Note* - We encourage to upgrade to the newest EmbedIO version. Branch version 1.X will no longer be maintained, and issues will be tested against 2.X and resolved just there.
 
 ### Some usage scenarios:
 
-* Write a cross-platform GUI entirely in using React/AngularJS/Vue.js or any Javascript framework
+* Write a cross-platform GUI entirely using React/AngularJS/Vue.js or any Javascript framework
 * Write a game using Babylon.js and make EmbedIO your serve your code and assets
 * Create GUIs for Windows services or Linux daemons
 * Works well with [LiteLib](https://github.com/unosquare/litelib) - add SQLite support in minutes!
@@ -71,7 +71,7 @@ Some notes regarding WebSocket and runtimes support:
 
 ## Installation:
 
-You can start using EmbedIO downloading the nuget.
+You can start using EmbedIO by just downloading the nuget.
 
 ### Package Manager
 
@@ -197,8 +197,7 @@ namespace Unosquare
 
 ## REST API Example:
 
-The WebApi module supports two routing strategies: Wildcard and Regex. By default, the WebApi module will use the **Regex Routing Strategy** to try to match and 
-resolve the values from a route template, in a similar fashion to Microsoft's Web API. 
+The WebApi module supports two routing strategies: Wildcard and Regex. By default, the WebApi module will use the **Regex Routing Strategy** trying to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API. 
 
 A method with the following route `/api/people/{id}` is going to match any request URL with three segments: the first two `api` and `people` and the last 
 one is going to be parsed or converted to the type in the `id` argument of the handling method signature. Please read on if this was confusing as it is 
@@ -245,7 +244,7 @@ public class PeopleController : WebApiController
 }
 ```
 
-The previous default strategy (Wildcard) match routes using the asterisk `*` character in the route. **For example:** 
+The previous default strategy (Wildcard) matches routes using the asterisk `*` character in the route. **For example:** 
 
 - The route `/api/people/*` will match any request with a URL starting with the two first URL segments `api` and 
 `people` and ending with anything. The route `/api/people/hello` will be matched.
