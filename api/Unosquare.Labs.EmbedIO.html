@@ -119,7 +119,10 @@ Inherit from this class and use the AddHandler Method to register your method ca
 </section>
       <h4><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></h4>
       <section><p>Represents our tiny web server used to handle requests.</p>
-<p>This is the default implementation of <code>IWebServer</code>.</p>
+<p>This is the default implementation of <code>IWebServer</code> and it&apos;s ready to select
+the <code>IHttpListener</code> implementation via the proper constructor.</p>
+<p>By default, the WebServer will use the Regex RoutingStrategy for
+all registered modules (<code>IWebModule</code>) and EmbedIO Listener (<code>HttpListenerMode</code>).</p>
 </section>
     <h3 id="interfaces">Interfaces
   </h3>
@@ -145,7 +148,9 @@ Inherit from this class and use the AddHandler Method to register your method ca
       <section><p>Interface to create web modules.</p>
 </section>
       <h4><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></h4>
-      <section><p>Interface to create a WebServer class</p>
+      <section><p>Interface to create a WebServer class.</p>
+<p>The basic behaviour for a WebServer is register/unregister modules and
+run asynchronous to receive incoming HTTP Requests.</p>
 </section>
     <h3 id="enums">Enums
   </h3>
