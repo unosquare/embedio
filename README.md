@@ -44,7 +44,7 @@ Some notes regarding WebSocket and runtimes support:
 
 | Runtime | HTTP implementation | WebSocket support | Notes |
 | --- | --- | --- | --- |
-| NET46 | *Unosquare* and Microsoft | Yes | Support Win7+ OS, Linux and macOS.  |
+| NET452 | *Unosquare* and Microsoft | Yes | Support Win7+ OS, Linux and macOS.  |
 | NET47 | Unosquare and *Microsoft* | | Yes | Support Win8+ OS. |
 | NETSTANDARD13 | *Unosquare* | Yes | Support Windows, Linux and macOS using native System.Net library |
 | NETSTANDARD20 | Unosquare and *Microsoft* | Yes | Support Windows, Linux and macOS using native System.Net library |

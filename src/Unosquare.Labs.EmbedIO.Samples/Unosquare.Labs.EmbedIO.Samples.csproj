@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net46;net47;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>net452;net47;netcoreapp2.1</TargetFrameworks>
     <AssemblyName>Unosquare.Labs.EmbedIO.Samples</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>Unosquare.Labs.EmbedIO.Samples</PackageId>
@@ -31,14 +31,12 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.106" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.106" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 

@@ -5,7 +5,7 @@
     <Copyright>Copyright © Unosquare 2013-2018</Copyright>
     <AssemblyTitle>EmbedIO Web Server</AssemblyTitle>
     <Authors>Unosquare</Authors>
-    <TargetFrameworks>uap10.0;netstandard1.3;net46;net47;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>uap10.0;netstandard1.3;net452;net47;netstandard2.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Unosquare.Labs.EmbedIO</AssemblyName>
     <PackageId>EmbedIO</PackageId>

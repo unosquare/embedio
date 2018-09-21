@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Copyright>Copyright (c) 2016-2017 - Unosquare</Copyright>
-    <TargetFrameworks>net46;net47;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>net452;net47;netcoreapp2.1</TargetFrameworks>
     <TestProjectType>UnitTest</TestProjectType>
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
     <LangVersion>7.1</LangVersion>
@@ -38,10 +38,9 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Threading.Tasks" />
-    <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
