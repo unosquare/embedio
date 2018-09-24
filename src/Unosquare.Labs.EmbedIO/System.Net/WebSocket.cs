@@ -373,12 +373,12 @@
             CancellationToken ct = default)
         {
             if (!_validator.CheckIfAvailable())
-                return Task.CompletedTask;
+                return Task.Delay(0);
 
             if (code != CloseStatusCode.Undefined &&
                 !WebSocketValidator.CheckParametersForClose(code, reason, IsClient))
             {
-                return Task.CompletedTask;
+                return Task.Delay(0);
             }
 
             if (code == CloseStatusCode.NoStatus)
@@ -862,7 +862,7 @@
             _stream?.Dispose();
             _stream = null;
 
-#if NET46
+#if NET452
             _tcpClient?.Close();
 #else
             _tcpClient?.Dispose();
@@ -881,7 +881,7 @@
 
             if (_receivePong != null)
             {
-#if NET46
+#if NET452
                 _receivePong.Close();
 #else
                 _receivePong.Dispose();
@@ -891,7 +891,7 @@
 
             if (_exitReceiving != null)
             {
-#if NET46
+#if NET452
                 _exitReceiving.Close();
 #else
                 _exitReceiving.Dispose();
@@ -928,7 +928,7 @@
                 if (_readyState != WebSocketState.Open)
                 {
                     "The sending has been interrupted.".Error();
-                    return Task.CompletedTask;
+                    return Task.Delay(0);
                 }
             }
 
@@ -996,7 +996,7 @@
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         private async Task SetClientStream()
         {
-#if NET46
+#if NET452
             _tcpClient = new TcpClient(_uri.DnsSafeHost, _uri.Port);
 #else
             _tcpClient = new TcpClient();
