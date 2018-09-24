@@ -156,11 +156,15 @@
 </tbody>
 </table>
 <h3 id="embedio-20---whats-new">EmbedIO 2.0 - What&#39;s new</h3>
+<h4 id="breaking-changes">Breaking changes</h4>
+<ul>
+<li><code>WebApiController</code> is renewed. Reduce the methods overhead removing the WebServer and Context arguments. See example belows.</li>
+<li><code>RoutingStrategy.Regex</code> is the default routing scheme.</li>
+</ul>
+<h4 id="additional-changes">Additional changes</h4>
 <ul>
 <li><code>IHttpListener</code> is runtime/platform independent, you can choose Unosquare <code>HttpListener</code> implementation with NET47 or NETSTANDARD20. This separation of implementations brings new access to interfaces from common Http objects like <code>IHttpRequest</code>, <code>IHttpContext</code> and mor.</li>
 <li><code>IWebServer</code> is a new interface to create custom web server implementation, like a Test Web Server where all the operations are in-memory to speed up unit testing. Similar to <a href="https://msdn.microsoft.com/en-us/library/microsoft.owin.testing.testserver(v=vs.113).aspx">TestServer from OWIN</a></li>
-<li><code>WebApiController</code> is renewed. Reduce the methods overhead removing the WebServer and Context arguments. See example belows.</li>
-<li><code>RoutingStrategy.Regex</code> is the default routing scheme.</li>
 <li>General improvements in how the Unosquare <code>HttpListner</code> is working and code clean-up.</li>
 </ul>
 <p><em>Note</em> - We encourage to upgrade to the newest EmbedIO version. Branch version 1.X will no longer be maintained, and issues will be tested against 2.X and resolved just there.</p>
