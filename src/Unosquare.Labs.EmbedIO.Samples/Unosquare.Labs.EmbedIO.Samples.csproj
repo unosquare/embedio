@@ -28,7 +28,12 @@
     <DefineConstants>$(DefineConstants);NET47</DefineConstants>
   </PropertyGroup>
 
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
+    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.11" />
+  </ItemGroup>
+   
   <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
+    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.11" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
