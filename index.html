@@ -92,7 +92,7 @@
 </li>
 <li><a href="#related-projects-and-nugets">Related Projects and Nugets</a></li>
 </ul>
-<h2><a id="user-content-overview" class="anchor" aria-hidden="true" href="#overview"></a>Overview</h2>
+<h2><a id="user-content-overview" class="anchor" aria-hidden="true" name="#overview"></a>Overview</h2>
 <p>A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework and .NET Core.</p>
 <ul>
 <li>Written entirely in C#, using our helpful library <a href="https://github.com/unosquare/swan">SWAN</a></li>
@@ -150,20 +150,20 @@
 <td>No</td>
 <td>Support Windows Universal Platform. More information <a href="https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT">here</a></td>
 </tr></tbody></table>
-<h3><a id="user-content-embedio-20---whats-new" class="anchor" aria-hidden="true" href="#embedio-20---whats-new"></a>EmbedIO 2.0 - What's new</h3>
-<h4><a id="user-content-breaking-changes" class="anchor" aria-hidden="true" href="#breaking-changes"></a>Breaking changes</h4>
+<h3><a id="user-content-embedio-20---whats-new" class="anchor" aria-hidden="true" name="#embedio-20---whats-new"></a>EmbedIO 2.0 - What's new</h3>
+<h4><a id="user-content-breaking-changes" class="anchor" aria-hidden="true" name="#breaking-changes"></a>Breaking changes</h4>
 <ul>
 <li><code>WebApiController</code> is renewed. Reduce the methods overhead removing the WebServer and Context arguments. See example belows.</li>
 <li><code>RoutingStrategy.Regex</code> is the default routing scheme.</li>
 </ul>
-<h4><a id="user-content-additional-changes" class="anchor" aria-hidden="true" href="#additional-changes"></a>Additional changes</h4>
+<h4><a id="user-content-additional-changes" class="anchor" aria-hidden="true" name="#additional-changes"></a>Additional changes</h4>
 <ul>
 <li><code>IHttpListener</code> is runtime/platform independent, you can choose Unosquare <code>HttpListener</code> implementation with NET47 or NETSTANDARD20. This separation of implementations brings new access to interfaces from common Http objects like <code>IHttpRequest</code>, <code>IHttpContext</code> and mor.</li>
 <li><code>IWebServer</code> is a new interface to create custom web server implementation, like a Test Web Server where all the operations are in-memory to speed up unit testing. Similar to <a href="https://msdn.microsoft.com/en-us/library/microsoft.owin.testing.testserver(v=vs.113).aspx" rel="nofollow">TestServer from OWIN</a></li>
 <li>General improvements in how the Unosquare <code>HttpListner</code> is working and code clean-up.</li>
 </ul>
 <p><em>Note</em> - We encourage to upgrade to the newest EmbedIO version. Branch version 1.X will no longer be maintained, and issues will be tested against 2.X and resolved just there.</p>
-<h3><a id="user-content-some-usage-scenarios" class="anchor" aria-hidden="true" href="#some-usage-scenarios"></a>Some usage scenarios:</h3>
+<h3><a id="user-content-some-usage-scenarios" class="anchor" aria-hidden="true" name="#some-usage-scenarios"></a>Some usage scenarios:</h3>
 <ul>
 <li>Write a cross-platform GUI entirely using React/AngularJS/Vue.js or any Javascript framework</li>
 <li>Write a game using Babylon.js and make EmbedIO your serve your code and assets</li>
@@ -172,16 +172,16 @@
 <li>Write client applications with real-time communication between them using WebSockets</li>
 <li>Write internal web server for Xamarin Forms applications</li>
 </ul>
-<h2><a id="user-content-installation" class="anchor" aria-hidden="true" href="#installation"></a>Installation:</h2>
+<h2><a id="user-content-installation" class="anchor" aria-hidden="true" name="#installation"></a>Installation:</h2>
 <p>You can start using EmbedIO by just downloading the nuget.</p>
-<h3><a id="user-content-package-manager" class="anchor" aria-hidden="true" href="#package-manager"></a>Package Manager</h3>
+<h3><a id="user-content-package-manager" class="anchor" aria-hidden="true" name="#package-manager"></a>Package Manager</h3>
 <pre><code>PM&gt; Install-Package EmbedIO
 </code></pre>
-<h3><a id="user-content-net-cli" class="anchor" aria-hidden="true" href="#net-cli"></a>.NET CLI</h3>
+<h3><a id="user-content-net-cli" class="anchor" aria-hidden="true" name="#net-cli"></a>.NET CLI</h3>
 <pre><code>&gt; dotnet add package EmbedIO
 </code></pre>
-<h2><a id="user-content-examples" class="anchor" aria-hidden="true" href="#examples"></a>Examples</h2>
-<h2><a id="user-content-basic-example" class="anchor" aria-hidden="true" href="#basic-example"></a>Basic Example:</h2>
+<h2><a id="user-content-examples" class="anchor" aria-hidden="true" name="#examples"></a>Examples</h2>
+<h2><a id="user-content-basic-example" class="anchor" aria-hidden="true" name="#basic-example"></a>Basic Example:</h2>
 <p>Please note the comments are the important part here. More info is available in the samples.</p>
 <div class="highlight highlight-source-cs"><pre><span class="pl-k">namespace</span> <span class="pl-en">Unosquare</span>
 {
@@ -240,7 +240,7 @@
         }
     }
 }</pre></div>
-<h2><a id="user-content-fluent-example" class="anchor" aria-hidden="true" href="#fluent-example"></a>Fluent Example:</h2>
+<h2><a id="user-content-fluent-example" class="anchor" aria-hidden="true" name="#fluent-example"></a>Fluent Example:</h2>
 <p>Many extension methods are available. This allows you to create a web server instance in a fluent style by dotting in configuration options.</p>
 <div class="highlight highlight-source-cs"><pre><span class="pl-k">namespace</span> <span class="pl-en">Unosquare</span>
 {
@@ -279,7 +279,7 @@
         }
     }
 }</pre></div>
-<h2><a id="user-content-rest-api-example" class="anchor" aria-hidden="true" href="#rest-api-example"></a>REST API Example:</h2>
+<h2><a id="user-content-rest-api-example" class="anchor" aria-hidden="true" name="#rest-api-example"></a>REST API Example:</h2>
 <p>The WebApi module supports two routing strategies: Wildcard and Regex. By default, the WebApi module will use the <strong>Regex Routing Strategy</strong> trying to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API.</p>
 <p>A method with the following route <code>/api/people/{id}</code> is going to match any request URL with three segments: the first two <code>api</code> and <code>people</code> and the last
 one is going to be parsed or converted to the type in the <code>id</code> argument of the handling method signature. Please read on if this was confusing as it is
@@ -360,7 +360,7 @@ starting with the two first URL segments <code>api</code> and <code>people</code
     }
 }</pre></div>
 <p>The <code>SetDefaultHeaders</code> method will add a no-cache policy to all Web API responses. If you plan to handle a differente policy or even custom headers to each different Web API method we recommend you override this method as you need.</p>
-<h2><a id="user-content-websockets-example" class="anchor" aria-hidden="true" href="#websockets-example"></a>WebSockets Example:</h2>
+<h2><a id="user-content-websockets-example" class="anchor" aria-hidden="true" name="#websockets-example"></a>WebSockets Example:</h2>
 <p><em>During server setup:</em></p>
 <div class="highlight highlight-source-cs"><pre><span class="pl-smi">server</span>.<span class="pl-en">RegisterModule</span>(<span class="pl-k">new</span> <span class="pl-en">WebSocketsModule</span>());
 <span class="pl-smi">server</span>.<span class="pl-en">Module</span>&lt;<span class="pl-en">WebSocketsModule</span>&gt;().<span class="pl-en">RegisterWebSocketsServer</span>&lt;<span class="pl-en">WebSocketsChatServer</span>&gt;(<span class="pl-s"><span class="pl-pds">"</span>/chat<span class="pl-pds">"</span></span>);</pre></div>
@@ -409,7 +409,7 @@ starting with the two first URL segments <code>api</code> and <code>people</code
         <span class="pl-k">this</span>.<span class="pl-en">Broadcast</span>(<span class="pl-s"><span class="pl-pds">"</span>Someone left the chat room.<span class="pl-pds">"</span></span>);
     }
 }</pre></div>
-<h2><a id="user-content-related-projects-and-nugets" class="anchor" aria-hidden="true" href="#related-projects-and-nugets"></a>Related Projects and Nugets</h2>
+<h2><a id="user-content-related-projects-and-nugets" class="anchor" aria-hidden="true" name="#related-projects-and-nugets"></a>Related Projects and Nugets</h2>
 <table>
 <thead>
 <tr>
