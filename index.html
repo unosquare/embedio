@@ -5,27 +5,18 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="EmbedIO Webserver">
+    <meta name="description" content="EmbedIO - A tiny, cross-platform, module based web server by unosquare">
 
-    <!-- CSS (from CDN) -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.4/css/bootstrap.min.css" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.3.0/css/font-awesome.min.css" />
     <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/lumen/bootstrap.min.css" rel="stylesheet">
     <link href="//cdn.jsdelivr.net/highlight.js/8.5.0/styles/github.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="images/stylesheet.css" media="screen">
-
-    <!--[if lt IE 9]>
-            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-
-    <!-- JS (from CDN) -->
     <script src="//cdn.jsdelivr.net/g/jquery@3.2.1,bootstrap@3.3.7"></script>
     <script src="//cdn.jsdelivr.net/highlight.js/8.5.0/highlight.min.js"></script>
     <script>
         hljs.initHighlightingOnLoad();
     </script>
-    <!-- Favicons -->
     <link rel="icon" href="favicon.ico" />
 
     <title>EmbedIO - A tiny, cross-platform, module based web server by unosquare</title>
@@ -84,385 +75,382 @@
             <div class="container">
                 <p>A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework and .NET Core</p>
 
-                <h2 id="features">Features:</h2>
-                <ul>
-                    <li>Written entirely in C#</li>
-                    <li>Network operations use the async/await pattern: Responses are handled asynchronously</li>
-                    <li>Cross-platform[1]: tested in Mono on Windows and on a custom Yocto image for the Raspberry Pi</li>
-                    <li>Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras">EmbedIO Extras</a> for additional modules.</li>
-                    <li>Small memory footprint</li>
-                    <li>Create REST APIs quickly with the out-of-the-box Web Api module</li>
-                    <li>Serve static files with 1 line of code (also out-of-the-box)</li>
-                    <li>Handle sessions with the built-in LocalSessionWebModule</li>
-                    <li>WebSockets support (see notes below)</li>
-                    <li>CORS support. Origin, Header and Method validation with OPTIONS preflight</li>
-                    <li>Supports HTTP 206 Partial Content</li>                    
-                </ul>
-
-                <p>
-                    <em>
-                        For detailed usage and REST API implementation, download the code and take a look at the
-                        <a href="https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.Samples">Samples project</a>.
-                    </em>
-                </p>
-
-                <b>Some usage scenarios:</b>
-
-                <ul>
-                    <li>Write a cross-platform GUI entirely in CSS/HTML/JS</li>
-                    <li>Write a game using Babylon.js and make EmbedIO your serve your code and assets</li>
-                    <li>Create GUIs for Windows services or Linux daemons</li>
-                    <li>Works well with <a href="https://github.com/unosquare/litelib">LiteLib</a> - add SQLite support in minutes!</li>
-                    <li>Write client applications with real-time communication between them</li>
-                </ul>
-
-                <p>Some notes regarding WebSocket support:</p>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Runtime</th>
-                            <th>WebSocket support</th>
-                            <th>Notes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>NET452</td>
-                            <td>Yes</td>
-                            <td>
-                                Support Windows and Linux using custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a>.
-                                Nuget package doesn't provide this version but you can compile from Unosquare.Labs.EmbedIO.Lib solution file. This solution is to use in older environments and Mono
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>NET46</td>
-                            <td>Yes</td>
-                            <td>Support Win7+ OS using a custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a></td>
-                        </tr>
-                        <tr>
-                            <td>NET462</td>
-                            <td>Yes</td>
-                            <td>Support Win8+ OS using native System.Net library</td>
-                        </tr>
-                        <tr>
-                            <td>NETSTANDARD*</td>
-                            <td>Yes</td>
-                            <td>Support Windows, Linux and macOS using a custom System.Net implementation based on Mono and <a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a></td>
-                        </tr>
-                        <tr>
-                            <td>UAP</td>
-                            <td>No</td>
-                            <td>Support Windows Universal Plataform. More information <a href="https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT">here</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <p>EmbedIO before version 1.4.0 uses Newtonsoft JSON and an internal logger subsystem based on ILog interface.</p>
-                <hr />
-                <h2 id="nuget">NuGet Installation:</h2>
-
-                <div class="row">
-                    <div class="col-md-8"><pre><code>PM&gt; Install-Package EmbedIO</code></pre></div>
-                    <div class="col-md-4 text-center">
-                        <a href="http://badge.fury.io/nu/embedio"><img src="https://badge.fury.io/nu/embedio.svg" alt="NuGet version" height="18"></a>
-                    </div>
-                </div>
-                <hr />
-                <h2 id="basic">Basic Example:</h2>
-
-                <p>
-                    <em>Please note the comments are the important part here. More info is available in the samples.</em>
-                </p>
-
-                <pre><code class="csharp">namespace Company.Project
-{
-    using System;
-    using Unosquare.Labs.EmbedIO;
-    using Unosquare.Labs.EmbedIO.Modules;
-    class Program
-    {
-        /// &lt;summary&gt;
-        /// Defines the entry point of the application.
-        /// &lt;/summary&gt;
-        /// &lt;param name=&quot;args&quot;&gt;The arguments.&lt;/param&gt;
-        static void Main(string[] args)
-        {
-            var url = &quot;http://localhost:9696/&quot;;
-            if (args.Length &gt; 0)
-                url = args[0];
-            // Our web server is disposable.
-            using (var server = new WebServer(url, new SimpleConsoleLog()))
-            {
-                // First, we will configure our web server by adding Modules.
-                // Please note that order DOES matter.
-                // ================================================================================================
-                // If we want to enable sessions, we simply register the LocalSessionModule
-                // Beware that this is an in-memory session storage mechanism so, avoid storing very large objects.
-                // You can use the server.GetSession() method to get the SessionInfo object and manupulate it.
-                // You could potentially implement a distributed session module using something like Redis
-                server.RegisterModule(new Modules.LocalSessionModule());
-
-                // Here we setup serving of static files
-                server.RegisterModule(new Modules.StaticFilesModule(&quot;c:/web&quot;));
-                // The static files module will cache small files in ram until it detects they have been modified.
-                server.Module&lt;modules.staticfilesmodule&gt;().UseRamCache = true;
-                server.Module&lt;modules.staticfilesmodule&gt;().DefaultExtension = &quot;.html&quot;;
-                // We don&#39;t need to add the line below. The default document is always index.html.
-                //server.Module&lt;modules.staticfileswebmodule&gt;().DefaultDocument = &quot;index.html&quot;;
-
-                // Once we&#39;ve registered our modules and configured them, we call the RunAsync() method.
-                var task = server.RunAsync();
-
-                // Fire up the browser to show the content if we are debugging!
-#if DEBUG
-                var browser = new System.Diagnostics.Process() { 
-                    StartInfo = new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true } };
-                browser.Start();
-#endif
-                // Wait for any key to be pressed before disposing of our web server.
-                // In a service we&#39;d manage the lifecycle of of our web server using
-                // something like a BackgroundWorker or a ManualResetEvent.
-                Console.ReadKey(true);
-            }
-        }
-    }
-}</code></pre>
-                <hr />
-                <h2>Fluent Example:</h2>
-                <p>Many extension methods are available. This allows you to create a web server instance in a fluent style by dotting in configuration options.</p>
-                <pre><code class="csharp">
-namespace Company.Project
-{
-    using System;
-    using Unosquare.Labs.EmbedIO;
-
-    internal class Program
-    {
-        /// &lt;summary&gt;
-        /// Defines the entry point of the application.
-        /// &lt;/summary&gt;
-        /// &lt;param name=&quot;args&quot;&gt;The arguments.&lt;/param&gt;
-        private static void Main(string[] args)
-        {
-            var url = &quot;http://localhost:9696/&quot;;
-            if (args.Length &gt; 0)
-                url = args[0];
-            // Create Webserver and attach LocalSession and Static
-            // files module and CORS enabled
-            var server = WebServer
-                .CreateWithConsole(url)                                 
-                .EnableCors()
-                .WithLocalSession()
-                .WithStaticFolderAt(&quot;c:/web&quot;);
-                    
-            var cts = new CancellationTokenSource();
-            var task = server.RunAsync(cts.Token);
-          
-            // Wait for any key to be pressed before disposing of our web server.
-            // In a service we&#39;d manage the lifecycle of of our web server using
-            // something like a BackgroundWorker or a ManualResetEvent.
-            Console.ReadKey(true);                         
-            cts.Cancel();
-            try
-            {
-                task.Wait();
-            } catch (AggregateException)
-            {
-                // We'd also actually verify the exception cause was that the task
-                // was cancelled.
-                server.Dispose();
-            }
-        }
-    }
-}
+                <p><strong>This README is for EmbedIO v2.x. Click <a href="https://github.com/unosquare/embedio/tree/v1.X">here</a> if you are using EmbedIO v1.x.</strong></p>
+<ul>
+<li><a href="#overview">Overview</a>
+<ul>
+<li><a href="#embedio-20---whats-new">EmbedIO 2.0 - What's new</a></li>
+<li><a href="#some-usage-scenarios">Some usage scenarios</a></li>
+</ul>
+</li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#examples">Examples</a>
+<ul>
+<li><a href="#basic-example">Basic Example</a></li>
+<li><a href="#fluent-example">Fluent Example</a></li>
+<li><a href="#rest-api-example">REST API Example</a></li>
+<li><a href="#websockets-example">WebSockets Example</a></li>
+</ul>
+</li>
+<li><a href="#related-projects-and-nugets">Related Projects and Nugets</a></li>
+</ul>
+<h2><a id="user-content-overview" class="anchor" aria-hidden="true" href="#overview"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h2>
+<p>A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework and .NET Core.</p>
+<ul>
+<li>Written entirely in C#, using our helpful library <a href="https://github.com/unosquare/swan">SWAN</a></li>
+<li>Network operations use the async/await pattern: Responses are handled asynchronously</li>
+<li>Multiple implementations support: EmbedIO can use Microsoft <code>HttpListener</code> or internal Http Listener based on <a href="https://www.mono-project.com/" rel="nofollow">Mono</a>/<a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a> projects</li>
+<li>Cross-platform: tested on multiple OS and runtimes. From Windows .NET Framework to Linux MONO.</li>
+<li>Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras">EmbedIO Extras</a> for additional modules</li>
+<li>Small memory footprint</li>
+<li>Create REST APIs quickly with the out-of-the-box Web API module</li>
+<li>Serve static or embedded files with 1 line of code (also out-of-the-box)</li>
+<li>Handle sessions with the built-in LocalSessionWebModule</li>
+<li>WebSockets support</li>
+<li>CORS support. Origin, Header and Method validation with OPTIONS preflight</li>
+<li>Supports HTTP 206 Partial Content</li>
+<li>And many more options in the same package</li>
+</ul>
+<p>Some notes regarding WebSocket and runtimes support:</p>
+<table>
+<thead>
+<tr>
+<th>Runtime</th>
+<th>HTTP implementation</th>
+<th>WebSocket support</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NET452</td>
+<td><em>Unosquare</em> and Microsoft</td>
+<td>Yes</td>
+<td>Support Win7+ OS, Linux and macOS.</td>
+</tr>
+<tr>
+<td>NET47</td>
+<td>Unosquare and <em>Microsoft</em></td>
+<td></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>NETSTANDARD13</td>
+<td><em>Unosquare</em></td>
+<td>Yes</td>
+<td>Support Windows, Linux and macOS using native System.Net library</td>
+</tr>
+<tr>
+<td>NETSTANDARD20</td>
+<td>Unosquare and <em>Microsoft</em></td>
+<td>Yes</td>
+<td>Support Windows, Linux and macOS using native System.Net library</td>
+</tr>
+<tr>
+<td>UAP</td>
+<td><em>Unosquare</em></td>
+<td>No</td>
+<td>Support Windows Universal Platform. More information <a href="https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT">here</a></td>
+</tr></tbody></table>
+<h3><a id="user-content-embedio-20---whats-new" class="anchor" aria-hidden="true" href="#embedio-20---whats-new"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>EmbedIO 2.0 - What's new</h3>
+<h4><a id="user-content-breaking-changes" class="anchor" aria-hidden="true" href="#breaking-changes"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Breaking changes</h4>
+<ul>
+<li><code>WebApiController</code> is renewed. Reduce the methods overhead removing the WebServer and Context arguments. See example belows.</li>
+<li><code>RoutingStrategy.Regex</code> is the default routing scheme.</li>
+</ul>
+<h4><a id="user-content-additional-changes" class="anchor" aria-hidden="true" href="#additional-changes"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Additional changes</h4>
+<ul>
+<li><code>IHttpListener</code> is runtime/platform independent, you can choose Unosquare <code>HttpListener</code> implementation with NET47 or NETSTANDARD20. This separation of implementations brings new access to interfaces from common Http objects like <code>IHttpRequest</code>, <code>IHttpContext</code> and mor.</li>
+<li><code>IWebServer</code> is a new interface to create custom web server implementation, like a Test Web Server where all the operations are in-memory to speed up unit testing. Similar to <a href="https://msdn.microsoft.com/en-us/library/microsoft.owin.testing.testserver(v=vs.113).aspx" rel="nofollow">TestServer from OWIN</a></li>
+<li>General improvements in how the Unosquare <code>HttpListner</code> is working and code clean-up.</li>
+</ul>
+<p><em>Note</em> - We encourage to upgrade to the newest EmbedIO version. Branch version 1.X will no longer be maintained, and issues will be tested against 2.X and resolved just there.</p>
+<h3><a id="user-content-some-usage-scenarios" class="anchor" aria-hidden="true" href="#some-usage-scenarios"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Some usage scenarios:</h3>
+<ul>
+<li>Write a cross-platform GUI entirely using React/AngularJS/Vue.js or any Javascript framework</li>
+<li>Write a game using Babylon.js and make EmbedIO your serve your code and assets</li>
+<li>Create GUIs for Windows services or Linux daemons</li>
+<li>Works well with <a href="https://github.com/unosquare/litelib">LiteLib</a> - add SQLite support in minutes!</li>
+<li>Write client applications with real-time communication between them using WebSockets</li>
+<li>Write internal web server for Xamarin Forms applications</li>
+</ul>
+<h2><a id="user-content-installation" class="anchor" aria-hidden="true" href="#installation"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation:</h2>
+<p>You can start using EmbedIO by just downloading the nuget.</p>
+<h3><a id="user-content-package-manager" class="anchor" aria-hidden="true" href="#package-manager"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Package Manager</h3>
+<pre><code>PM&gt; Install-Package EmbedIO
 </code></pre>
-                <hr />
-                <h2 id="rest">REST API Example:</h2>
-
-                <p>
-                    The WebApi module supports two routing strategies: Wildcard and Regex. By default, and in order to maintain backwards compatibility, the WebApi module will use the <strong>Wildcard Routing Strategy</strong> and match routes using the
-                    asterisk <code>*</code> character in the route. <strong>For example:</strong>
-                </p>
-                <ul>
-                    <li>The route <code>/api/people/*</code> will match any request with a URL starting with the two first URL segments <code>api</code> and <code>people</code> and ending with anything. The route <code>/api/people/hello</code> will be matched.</li>
-                    <li>You can also use wildcards in the middle of the route. The route <code>/api/people/*/details</code> will match requests starting with the two first URL segments <code>api</code> and <code>people</code>, and ending with a <code>details</code>                        segment. The route <code>/api/people/hello/details</code> will be matched. </li>
-                </ul>
-
-                <p>
-                    <em>Note that most REST services can be designed with this simpler Wildcard routing strategy. However, the Regex matching strategy is the current recommended approach as we might be deprecating the Wildcard strategy altogether</em>
-
-                </p>
-                <p>
-                    On the other hand, the <strong>Regex Routing Strategy</strong> will try to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API 2. A method with the following route <code>/api/people/{id}</code>                    is going to match any request URL with three segments: the first two <code>api</code> and <code>people</code> and the last one is going to be parsed or converted to the type in the <code>id</code> argument of the handling method signature.
-                    Please read on if this was confusing as it is much simpler than it sounds. Additionally, you can put multiple values to match, for example <code>/api/people/{mainSkill}/{age}</code>, and receive the parsed values from the URL straight
-                    into the arguments of your handler method.
-                </p>
-
-                <p>
-                    <em>During server setup:</em>
-                </p>
-                <pre><code class="csharp">// The routing strategy is Wildcard by default, but you can change it to Regex as follows:
-var server =  new WebServer("http://localhost:9696/", new NullLog(), RoutingStrategy.Regex);
-
-server.RegisterModule(new WebApiModule());
-server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;();</code></pre>
-                <p>
-                    <em>And our controller class (using Regex Strategy) looks like:</em>
-                </p>
-                <pre><code class="csharp">public class PeopleController : WebApiController
+<h3><a id="user-content-net-cli" class="anchor" aria-hidden="true" href="#net-cli"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.NET CLI</h3>
+<pre><code>&gt; dotnet add package EmbedIO
+</code></pre>
+<h2><a id="user-content-examples" class="anchor" aria-hidden="true" href="#examples"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h2>
+<h2><a id="user-content-basic-example" class="anchor" aria-hidden="true" href="#basic-example"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Basic Example:</h2>
+<p>Please note the comments are the important part here. More info is available in the samples.</p>
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">namespace</span> <span class="pl-en">Unosquare</span>
 {
-    [WebApiHandler(HttpVerbs.Get, "/api/people/{id}")]
-    public bool GetPeople(WebServer server, HttpListenerContext context, int id)
+    <span class="pl-k">using</span> <span class="pl-en">System</span>;
+    <span class="pl-k">using</span> <span class="pl-en">Unosquare</span>.<span class="pl-en">Labs</span>.<span class="pl-en">EmbedIO</span>;
+    <span class="pl-k">using</span> <span class="pl-en">Unosquare</span>.<span class="pl-en">Labs</span>.<span class="pl-en">EmbedIO</span>.<span class="pl-en">Modules</span>;
+
+    <span class="pl-k">class</span> <span class="pl-en">Program</span>
     {
-        try
+        <span class="pl-c"><span class="pl-c">///</span> &lt;<span class="pl-ent"><span class="pl-ent">summary</span></span>&gt;</span>
+        <span class="pl-c"><span class="pl-c">///</span> Defines the entry point of the application.</span>
+        <span class="pl-c"><span class="pl-c">///</span> &lt;/<span class="pl-ent"><span class="pl-ent">summary</span></span>&gt;</span>
+        <span class="pl-c"><span class="pl-c">///</span> &lt;<span class="pl-ent"><span class="pl-ent">param</span></span> <span class="pl-e"><span class="pl-e">name</span></span>=<span class="pl-s"><span class="pl-pds">"</span>args<span class="pl-pds">"</span></span>&gt;The arguments.&lt;/<span class="pl-ent"><span class="pl-ent">param</span></span>&gt;</span>
+        <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">Main</span>(<span class="pl-k">string</span>[] <span class="pl-smi">args</span>)
         {
-            if (People.Any(p => p.Key == id))
+            <span class="pl-k">var</span> <span class="pl-smi">url</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>http://localhost:9696/<span class="pl-pds">"</span></span>;
+            <span class="pl-k">if</span> (<span class="pl-smi">args</span>.<span class="pl-smi">Length</span> <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>)
+                <span class="pl-smi">url</span> <span class="pl-k">=</span> <span class="pl-smi">args</span>[<span class="pl-c1">0</span>];
+
+            <span class="pl-c"><span class="pl-c">//</span> Our web server is disposable.</span>
+            <span class="pl-k">using</span> (<span class="pl-k">var</span> <span class="pl-smi">server</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">WebServer</span>(<span class="pl-smi">url</span>))
             {
-                return context.JsonResponse(People.FirstOrDefault(p => p.Key == id));
+                <span class="pl-c"><span class="pl-c">//</span> First, we will configure our web server by adding Modules.</span>
+                <span class="pl-c"><span class="pl-c">//</span> Please note that order DOES matter.</span>
+                <span class="pl-c"><span class="pl-c">//</span> ================================================================================================</span>
+                <span class="pl-c"><span class="pl-c">//</span> If we want to enable sessions, we simply register the LocalSessionModule</span>
+                <span class="pl-c"><span class="pl-c">//</span> Beware that this is an in-memory session storage mechanism so, avoid storing very large objects.</span>
+                <span class="pl-c"><span class="pl-c">//</span> You can use the server.GetSession() method to get the SessionInfo object and manupulate it.</span>
+                <span class="pl-c"><span class="pl-c">//</span> You could potentially implement a distributed session module using something like Redis</span>
+                <span class="pl-smi">server</span>.<span class="pl-en">RegisterModule</span>(<span class="pl-k">new</span> <span class="pl-en">LocalSessionModule</span>());
+
+                <span class="pl-c"><span class="pl-c">//</span> Here we setup serving of static files</span>
+                <span class="pl-smi">server</span>.<span class="pl-en">RegisterModule</span>(<span class="pl-k">new</span> <span class="pl-en">StaticFilesModule</span>(<span class="pl-s"><span class="pl-pds">"</span>c:/web<span class="pl-pds">"</span></span>));
+                <span class="pl-c"><span class="pl-c">//</span> The static files module will cache small files in ram until it detects they have been modified.</span>
+                <span class="pl-smi">server</span>.<span class="pl-en">Module</span>&lt;<span class="pl-en">StaticFilesModule</span>&gt;().<span class="pl-smi">UseRamCache</span> <span class="pl-k">=</span> <span class="pl-c1">true</span>;
+                <span class="pl-smi">server</span>.<span class="pl-en">Module</span>&lt;<span class="pl-en">StaticFilesModule</span>&gt;().<span class="pl-smi">DefaultExtension</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>.html<span class="pl-pds">"</span></span>;
+                <span class="pl-c"><span class="pl-c">//</span> We don't need to add the line below. The default document is always index.html.</span>
+                <span class="pl-c"><span class="pl-c">//</span>server.Module&lt;Modules.StaticFilesWebModule&gt;().DefaultDocument = "index.html";</span>
+
+                <span class="pl-c"><span class="pl-c">//</span> Once we've registered our modules and configured them, we call the RunAsync() method.</span>
+                <span class="pl-smi">server</span>.<span class="pl-en">RunAsync</span>();
+
+                <span class="pl-c"><span class="pl-c">//</span> Fire up the browser to show the content if we are debugging!</span>
+#<span class="pl-k">if</span> <span class="pl-en">DEBUG</span>
+                <span class="pl-k">var</span> <span class="pl-smi">browser</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-k">System</span>.<span class="pl-k">Diagnostics</span>.<span class="pl-en">Process</span>()
+                {
+                    <span class="pl-smi">StartInfo</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-k">System</span>.<span class="pl-k">Diagnostics</span>.<span class="pl-en">ProcessStartInfo</span>(<span class="pl-smi">url</span>) { <span class="pl-smi">UseShellExecute</span> <span class="pl-k">=</span> <span class="pl-c1">true</span> }
+                };
+                <span class="pl-smi">browser</span>.<span class="pl-en">Start</span>();
+#<span class="pl-k">endif</span>
+                <span class="pl-c"><span class="pl-c">//</span> Wait for any key to be pressed before disposing of our web server.</span>
+                <span class="pl-c"><span class="pl-c">//</span> In a service, we'd manage the lifecycle of our web server using</span>
+                <span class="pl-c"><span class="pl-c">//</span> something like a BackgroundWorker or a ManualResetEvent.</span>
+                <span class="pl-smi">Console</span>.<span class="pl-en">ReadKey</span>(<span class="pl-c1">true</span>);
             }
         }
-        catch (Exception ex)
+    }
+}</pre></div>
+<h2><a id="user-content-fluent-example" class="anchor" aria-hidden="true" href="#fluent-example"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Fluent Example:</h2>
+<p>Many extension methods are available. This allows you to create a web server instance in a fluent style by dotting in configuration options.</p>
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">namespace</span> <span class="pl-en">Unosquare</span>
+{
+    <span class="pl-k">using</span> <span class="pl-en">System</span>;
+    <span class="pl-k">using</span> <span class="pl-en">Unosquare</span>.<span class="pl-en">Labs</span>.<span class="pl-en">EmbedIO</span>;
+
+    <span class="pl-k">internal</span> <span class="pl-k">class</span> <span class="pl-en">Program</span>
+    {
+        <span class="pl-c"><span class="pl-c">///</span> &lt;<span class="pl-ent"><span class="pl-ent">summary</span></span>&gt;</span>
+        <span class="pl-c"><span class="pl-c">///</span> Defines the entry point of the application.</span>
+        <span class="pl-c"><span class="pl-c">///</span> &lt;/<span class="pl-ent"><span class="pl-ent">summary</span></span>&gt;</span>
+        <span class="pl-c"><span class="pl-c">///</span> &lt;<span class="pl-ent"><span class="pl-ent">param</span></span> <span class="pl-e"><span class="pl-e">name</span></span>=<span class="pl-s"><span class="pl-pds">"</span>args<span class="pl-pds">"</span></span>&gt;The arguments.&lt;/<span class="pl-ent"><span class="pl-ent">param</span></span>&gt;</span>
+        <span class="pl-k">private</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">Main</span>(<span class="pl-k">string</span>[] <span class="pl-smi">args</span>)
         {
-            return HandleError(context, ex, (int)HttpStatusCode.InternalServerError);
+            <span class="pl-k">var</span> <span class="pl-smi">url</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>http://localhost:9696/<span class="pl-pds">"</span></span>;
+            <span class="pl-k">if</span> (<span class="pl-smi">args</span>.<span class="pl-smi">Length</span> <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>)
+                <span class="pl-smi">url</span> <span class="pl-k">=</span> <span class="pl-smi">args</span>[<span class="pl-c1">0</span>];
+
+            <span class="pl-c"><span class="pl-c">//</span> Create Webserver and attach LocalSession and Static</span>
+            <span class="pl-c"><span class="pl-c">//</span> files module and CORS enabled</span>
+            <span class="pl-k">var</span> <span class="pl-smi">server</span> <span class="pl-k">=</span> <span class="pl-smi">WebServer</span>
+                .<span class="pl-en">Create</span>(<span class="pl-smi">url</span>)
+                .<span class="pl-en">EnableCors</span>()
+                .<span class="pl-en">WithLocalSession</span>()
+                .<span class="pl-en">WithStaticFolderAt</span>(<span class="pl-s"><span class="pl-pds">"</span>c:/web<span class="pl-pds">"</span></span>);
+
+            <span class="pl-k">var</span> <span class="pl-smi">cts</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">CancellationTokenSource</span>();
+            <span class="pl-k">var</span> <span class="pl-smi">task</span> <span class="pl-k">=</span> <span class="pl-smi">server</span>.<span class="pl-en">RunAsync</span>(<span class="pl-smi">cts</span>.<span class="pl-smi">Token</span>);
+
+            <span class="pl-smi">Console</span>.<span class="pl-en">ReadKey</span>(<span class="pl-c1">true</span>);
+            <span class="pl-smi">cts</span>.<span class="pl-en">Cancel</span>();
+
+			<span class="pl-c"><span class="pl-c">//</span> Wait before dispose server</span>
+            <span class="pl-smi">task</span>.<span class="pl-en">Wait</span>();
+            <span class="pl-smi">server</span>.<span class="pl-en">Dispose</span>();
         }
     }
-    protected bool HandleError(HttpListenerContext context, Exception ex, int statusCode = 500)
-    {
-        var errorResponse = new
-        {
-            Title = "Unexpected Error",
-            ErrorCode = ex.GetType().Name,
-            Description = ex.ExceptionMessage(),
-        };
-        context.Response.StatusCode = statusCode;
-        return context.JsonResponse(errorResponse);
-    }
-}</code></pre>
-                <p><em>Or if you want to use the Wildcard strategy (which is the default):</em></p>
-                <pre><code class="csharp">public class PeopleController : WebApiController
+}</pre></div>
+<h2><a id="user-content-rest-api-example" class="anchor" aria-hidden="true" href="#rest-api-example"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>REST API Example:</h2>
+<p>The WebApi module supports two routing strategies: Wildcard and Regex. By default, the WebApi module will use the <strong>Regex Routing Strategy</strong> trying to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API.</p>
+<p>A method with the following route <code>/api/people/{id}</code> is going to match any request URL with three segments: the first two <code>api</code> and <code>people</code> and the last
+one is going to be parsed or converted to the type in the <code>id</code> argument of the handling method signature. Please read on if this was confusing as it is
+much simpler than it sounds. Additionally, you can put multiple values to match, for example <code>/api/people/{mainSkill}/{age}</code>, and receive the
+parsed values from the URL straight into the arguments of your handler method.</p>
+<p>During server setup:</p>
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> <span class="pl-smi">server</span> <span class="pl-k">=</span>  <span class="pl-k">new</span> <span class="pl-en">WebServer</span>(<span class="pl-s"><span class="pl-pds">"</span>http://localhost:9696/<span class="pl-pds">"</span></span>, <span class="pl-smi">RoutingStrategy</span>.<span class="pl-smi">Regex</span>);
+
+<span class="pl-smi">server</span>.<span class="pl-en">RegisterModule</span>(<span class="pl-k">new</span> <span class="pl-en">WebApiModule</span>());
+<span class="pl-smi">server</span>.<span class="pl-en">Module</span>&lt;<span class="pl-en">WebApiModule</span>&gt;().<span class="pl-en">RegisterController</span>&lt;<span class="pl-en">PeopleController</span>&gt;();</pre></div>
+<p>And our controller class (using default Regex Strategy) looks like:</p>
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">PeopleController</span> : <span class="pl-en">WebApiController</span>
 {
-    [WebApiHandler(HttpVerbs.Get, "/api/people/*")]
-    public bool GetPeople(WebServer server, HttpListenerContext context)
+    <span class="pl-k">public</span> <span class="pl-en">PeopleController</span>(<span class="pl-en">IHttpContext</span> <span class="pl-smi">context</span>)
+    : <span class="pl-k">base</span>(<span class="pl-smi">context</span>)
     {
-        try
+    }
+
+    [<span class="pl-en">WebApiHandler</span>(<span class="pl-smi">HttpVerbs</span>.<span class="pl-smi">Get</span>, <span class="pl-s"><span class="pl-pds">"</span>/api/people/{id}<span class="pl-pds">"</span></span>)]
+    <span class="pl-k">public</span> <span class="pl-k">bool</span> <span class="pl-en">GetPeople</span>(<span class="pl-k">int</span> <span class="pl-smi">id</span>)
+    {
+        <span class="pl-k">try</span>
         {
-            var lastSegment = context.Request.Url.Segments.Last();
-            if (lastSegment.EndsWith("/"))
-                return context.JsonResponse(People);
-            int key = 0;
-            if (int.TryParse(lastSegment, out key) && People.Any(p => p.Key == key))
+            <span class="pl-k">if</span> (<span class="pl-smi">People</span>.<span class="pl-en">Any</span>(<span class="pl-smi">p</span> <span class="pl-k">=&gt;</span> <span class="pl-smi">p</span>.<span class="pl-smi">Key</span> <span class="pl-k">==</span> <span class="pl-smi">id</span>))
             {
-                return context.JsonResponse(People.FirstOrDefault(p => p.Key == key));
+                <span class="pl-k">return</span> <span class="pl-k">this</span>.<span class="pl-en">JsonResponse</span>(<span class="pl-smi">People</span>.<span class="pl-en">FirstOrDefault</span>(<span class="pl-smi">p</span> <span class="pl-k">=&gt;</span> <span class="pl-smi">p</span>.<span class="pl-smi">Key</span> <span class="pl-k">==</span> <span class="pl-smi">id</span>));
             }
-            throw new KeyNotFoundException("Key Not Found: " + lastSegment);
         }
-        catch (Exception ex)
+        <span class="pl-k">catch</span> (<span class="pl-en">Exception</span> <span class="pl-smi">ex</span>)
         {
-            return HandleError(context, ex, (int)HttpStatusCode.InternalServerError);
+            <span class="pl-k">return</span> <span class="pl-k">this</span>.<span class="pl-en">JsonExceptionResponse</span>(<span class="pl-smi">ex</span>);
         }
     }
-    protected bool HandleError(HttpListenerContext context, Exception ex, int statusCode = 500)
-    {
-        var errorResponse = new
-        {
-            Title = "Unexpected Error",
-            ErrorCode = ex.GetType().Name,
-            Description = ex.ExceptionMessage(),
-        };
-        context.Response.StatusCode = statusCode;
-        return context.JsonResponse(errorResponse);
-    }
-}</code></pre>
-                <hr />
-                <h2 id="websocket">Web Sockets Example:</h2>
-                <p>
-                    <em>During server setup:</em>
-                </p>
-                <pre><code class="csharp">server.RegisterModule(new WebSocketsModule());
-server.Module&lt;WebSocketsModule&gt;().RegisterWebSocketsServer&lt;WebSocketsChatServer&gt;(&quot;/chat&quot;);</code></pre>
-                <p>
-                    <em>And our web sockets server class looks like:</em>
-                </p>
-                <pre><code class="csharp">/// &lt;summary&gt;
-/// Defines a very simple chat server
-/// &lt;/summary&gt;
-public class WebSocketsChatServer : WebSocketsServer
+    
+    <span class="pl-c"><span class="pl-c">//</span> You can override the default headers and add custom headers to each API Response.</span>
+    <span class="pl-k">public</span> <span class="pl-k">override</span> <span class="pl-k">void</span> <span class="pl-en">SetDefaultHeaders</span>() <span class="pl-k">=&gt;</span> <span class="pl-k">this</span>.<span class="pl-en">NoCache</span>();
+}</pre></div>
+<p>The previous default strategy (Wildcard) matches routes using the asterisk <code>*</code> character in the route. <strong>For example:</strong></p>
+<ul>
+<li>The route <code>/api/people/*</code> will match any request with a URL starting with the two first URL segments <code>api</code> and
+<code>people</code> and ending with anything. The route <code>/api/people/hello</code> will be matched.</li>
+<li>You can also use wildcards in the middle of the route. The route <code>/api/people/*/details</code> will match requests
+starting with the two first URL segments <code>api</code> and <code>people</code>, and end with a <code>details</code> segment. The route <code>/api/people/hello/details</code> will be matched.</li>
+</ul>
+<p>During server setup:</p>
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> <span class="pl-smi">server</span> <span class="pl-k">=</span>  <span class="pl-k">new</span> <span class="pl-en">WebServer</span>(<span class="pl-s"><span class="pl-pds">"</span>http://localhost:9696/<span class="pl-pds">"</span></span>, <span class="pl-smi">RoutingStrategy</span>.<span class="pl-smi">Regex</span>);
+
+<span class="pl-smi">server</span>.<span class="pl-en">RegisterModule</span>(<span class="pl-k">new</span> <span class="pl-en">WebApiModule</span>());
+<span class="pl-smi">server</span>.<span class="pl-en">Module</span>&lt;<span class="pl-en">WebApiModule</span>&gt;().<span class="pl-en">RegisterController</span>&lt;<span class="pl-en">PeopleController</span>&gt;();</pre></div>
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">PeopleController</span> : <span class="pl-en">WebApiController</span>
 {
-    public WebSocketsChatServer()
-        : base(true, 0)
+    <span class="pl-k">public</span> <span class="pl-en">PeopleController</span>(<span class="pl-en">IHttpContext</span> <span class="pl-smi">context</span>)
+    : <span class="pl-k">base</span>(<span class="pl-smi">context</span>)
     {
-        // placeholder
     }
-    /// &lt;summary&gt;
-    /// Called when this WebSockets Server receives a full message (EndOfMessage) form a WebSockets client.
-    /// &lt;/summary&gt;
-    /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
-    /// &lt;param name=&quot;rxBuffer&quot;&gt;The rx buffer.&lt;/param&gt;
-    /// &lt;param name=&quot;rxResult&quot;&gt;The rx result.&lt;/param&gt;
-    protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
+
+    [<span class="pl-en">WebApiHandler</span>(<span class="pl-smi">HttpVerbs</span>.<span class="pl-smi">Get</span>, <span class="pl-s"><span class="pl-pds">"</span>/api/people/*<span class="pl-pds">"</span></span>)]
+    <span class="pl-k">public</span> <span class="pl-k">bool</span> <span class="pl-en">GetPeople</span>()
     {
-        var session = this.WebServer.GetSession(context);
-        foreach (var ws in this.WebSockets)
+        <span class="pl-k">try</span>
         {
-            if (ws != context)
-                this.Send(ws, Encoding.UTF8.GetString(rxBuffer));
+            <span class="pl-k">var</span> <span class="pl-smi">lastSegment</span> <span class="pl-k">=</span> <span class="pl-k">this</span>.<span class="pl-smi">Request</span>.<span class="pl-smi">Url</span>.<span class="pl-smi">Segments</span>.<span class="pl-en">Last</span>();
+            <span class="pl-k">if</span> (<span class="pl-smi">lastSegment</span>.<span class="pl-en">EndsWith</span>(<span class="pl-s"><span class="pl-pds">"</span>/<span class="pl-pds">"</span></span>))
+                <span class="pl-k">return</span> <span class="pl-k">this</span>.<span class="pl-en">JsonResponse</span>(<span class="pl-smi">People</span>);
+
+            <span class="pl-k">int</span> <span class="pl-smi">key</span> <span class="pl-k">=</span> <span class="pl-c1">0</span>;
+            <span class="pl-k">if</span> (<span class="pl-smi">int</span>.<span class="pl-en">TryParse</span>(<span class="pl-smi">lastSegment</span>, <span class="pl-k">out</span> <span class="pl-smi">key</span>) <span class="pl-k">&amp;&amp;</span> <span class="pl-smi">People</span>.<span class="pl-en">Any</span>(<span class="pl-smi">p</span> <span class="pl-k">=&gt;</span> <span class="pl-smi">p</span>.<span class="pl-smi">Key</span> <span class="pl-k">==</span> <span class="pl-smi">key</span>))
+            {
+                <span class="pl-k">return</span> <span class="pl-k">this</span>.<span class="pl-en">JsonResponse</span>(<span class="pl-smi">People</span>.<span class="pl-en">FirstOrDefault</span>(<span class="pl-smi">p</span> <span class="pl-k">=&gt;</span> <span class="pl-smi">p</span>.<span class="pl-smi">Key</span> <span class="pl-k">==</span> <span class="pl-smi">key</span>));
+            }
+
+            <span class="pl-k">throw</span> <span class="pl-k">new</span> <span class="pl-en">KeyNotFoundException</span>(<span class="pl-s"><span class="pl-pds">"</span>Key Not Found: <span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-smi">lastSegment</span>);
+        }
+        <span class="pl-k">catch</span> (<span class="pl-en">Exception</span> <span class="pl-smi">ex</span>)
+        {
+            <span class="pl-k">return</span> <span class="pl-k">this</span>.<span class="pl-en">JsonExceptionResponse</span>(<span class="pl-smi">ex</span>);
         }
     }
-    /// &lt;summary&gt;
-    /// Gets the name of the server.
-    /// &lt;/summary&gt;
-    /// &lt;value&gt;
-    /// The name of the server.
-    /// &lt;/value&gt;
-    public override string ServerName
+}</pre></div>
+<p>The <code>SetDefaultHeaders</code> method will add a no-cache policy to all Web API responses. If you plan to handle a differente policy or even custom headers to each different Web API method we recommend you override this method as you need.</p>
+<h2><a id="user-content-websockets-example" class="anchor" aria-hidden="true" href="#websockets-example"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>WebSockets Example:</h2>
+<p><em>During server setup:</em></p>
+<div class="highlight highlight-source-cs"><pre><span class="pl-smi">server</span>.<span class="pl-en">RegisterModule</span>(<span class="pl-k">new</span> <span class="pl-en">WebSocketsModule</span>());
+<span class="pl-smi">server</span>.<span class="pl-en">Module</span>&lt;<span class="pl-en">WebSocketsModule</span>&gt;().<span class="pl-en">RegisterWebSocketsServer</span>&lt;<span class="pl-en">WebSocketsChatServer</span>&gt;(<span class="pl-s"><span class="pl-pds">"</span>/chat<span class="pl-pds">"</span></span>);</pre></div>
+<p><em>And our web sockets server class looks like:</em></p>
+<div class="highlight highlight-source-cs"><pre><span class="pl-c"><span class="pl-c">///</span> &lt;<span class="pl-ent"><span class="pl-ent">summary</span></span>&gt;</span>
+<span class="pl-c"><span class="pl-c">///</span> Defines a very simple chat server</span>
+<span class="pl-c"><span class="pl-c">///</span> &lt;/<span class="pl-ent"><span class="pl-ent">summary</span></span>&gt;</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">WebSocketsChatServer</span> : <span class="pl-en">WebSocketsServer</span>
+{
+    <span class="pl-k">public</span> <span class="pl-en">WebSocketsChatServer</span>()
+        : <span class="pl-k">base</span>(<span class="pl-c1">true</span>, <span class="pl-c1">0</span>)
     {
-        get { return &quot;Chat Server&quot;; }
+        <span class="pl-c"><span class="pl-c">//</span> placeholder</span>
     }
-    /// &lt;summary&gt;
-    /// Called when this WebSockets Server accepts a new WebSockets client.
-    /// &lt;/summary&gt;
-    /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
-    protected override void OnClientConnected(WebSocketContext context)
+
+    <span class="pl-k">public</span> <span class="pl-k">override</span> <span class="pl-k">string</span> <span class="pl-smi">ServerName</span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">"</span>Chat Server<span class="pl-pds">"</span></span>
+
+    <span class="pl-smi">protected</span> <span class="pl-smi">override</span> <span class="pl-smi">void</span> <span class="pl-en">OnMessageReceived</span>(<span class="pl-en">WebSocketContext</span> <span class="pl-smi">context</span>, <span class="pl-k">byte</span>[] <span class="pl-smi">rxBuffer</span>, <span class="pl-en">WebSocketReceiveResult</span> <span class="pl-smi">rxResult</span>)
     {
-        this.Send(context, &quot;Welcome to the chat room!&quot;);
-        foreach (var ws in this.WebSockets)
+        <span class="pl-smi">var</span> <span class="pl-smi">session</span> <span class="pl-k">=</span> <span class="pl-k">this</span>.<span class="pl-smi">WebServer</span>.<span class="pl-en">GetSession</span>(<span class="pl-smi">context</span>);
+        <span class="pl-en">foreach</span> (<span class="pl-smi">var</span> <span class="pl-smi">ws</span> <span class="pl-smi">in</span> <span class="pl-k">this</span>.<span class="pl-smi">WebSockets</span>)
         {
-            if (ws != context)
-                this.Send(ws, &quot;Someone joined the chat room.&quot;);
+            <span class="pl-en">if</span> (<span class="pl-smi">ws</span> <span class="pl-k">!=</span> <span class="pl-smi">context</span>)
+                <span class="pl-k">this</span>.<span class="pl-en">Send</span>(<span class="pl-smi">ws</span>, <span class="pl-smi">rxBuffer</span>.<span class="pl-en">ToText</span>());
         }
     }
-    /// &lt;summary&gt;
-    /// Called when this WebSockets Server receives a message frame regardless if the frame represents the EndOfMessage.
-    /// &lt;/summary&gt;
-    /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
-    /// &lt;param name=&quot;rxBuffer&quot;&gt;The rx buffer.&lt;/param&gt;
-    /// &lt;param name=&quot;rxResult&quot;&gt;The rx result.&lt;/param&gt;
-    protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
+
+    <span class="pl-smi">protected</span> <span class="pl-smi">override</span> <span class="pl-smi">void</span> <span class="pl-en">OnClientConnected</span>(<span class="pl-en">WebSocketContext</span> <span class="pl-smi">context</span>)
     {
-        return;
+        <span class="pl-k">this</span>.<span class="pl-en">Send</span>(<span class="pl-smi">context</span>, <span class="pl-s"><span class="pl-pds">"</span>Welcome to the chat room!<span class="pl-pds">"</span></span>);
+        
+        <span class="pl-en">foreach</span> (<span class="pl-smi">var</span> <span class="pl-smi">ws</span> <span class="pl-smi">in</span> <span class="pl-k">this</span>.<span class="pl-smi">WebSockets</span>)
+        {
+            <span class="pl-en">if</span> (<span class="pl-smi">ws</span> <span class="pl-k">!=</span> <span class="pl-smi">context</span>)
+                <span class="pl-k">this</span>.<span class="pl-en">Send</span>(<span class="pl-smi">ws</span>, <span class="pl-s"><span class="pl-pds">"</span>Someone joined the chat room.<span class="pl-pds">"</span></span>);
+        }
     }
-    /// &lt;summary&gt;
-    /// Called when the server has removed a WebSockets connected client for any reason.
-    /// &lt;/summary&gt;
-    /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
-    protected override void OnClientDisconnected(WebSocketContext context)
+
+    <span class="pl-smi">protected</span> <span class="pl-smi">override</span> <span class="pl-smi">void</span> <span class="pl-en">OnFrameReceived</span>(<span class="pl-en">WebSocketContext</span> <span class="pl-smi">context</span>, <span class="pl-k">byte</span>[] <span class="pl-smi">rxBuffer</span>, <span class="pl-en">WebSocketReceiveResult</span> <span class="pl-smi">rxResult</span>)
     {
-        this.Broadcast(string.Format(&quot;Someone left the chat room.&quot;));
+        <span class="pl-smi">return</span>;
     }
-}</code></pre>
-                <hr />
-                <h2 id="cli">EmbedIO CLI</h2>
-                Start any web folder or EmbedIO-enabled DLL from command line. You can find <a href="https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.Command">EmbedIO CLI</a>.
-                <h3>Run web folder (static content only)</h3>
-                <pre><code>$ embediocli -p c:\wwwroot</code></pre>
-                <h3>Run web folder with WebAPI or WebSocket Assembly</h3>
-                <pre><code>$ embediocli -p c:\wwwroot --api mywebapi.dll</code></pre>
 
-                <hr />
-                <h2 id="notes">Notes</h2>
-                <p>[1] - EmbedIO uses lowercase URL parts. In Windows systems this is the expected behaviour but in Unix systems using MONO 
-                    please refer to <a href="http://www.mono-project.com/docs/advanced/iomap">Mono IOMap</a> if you want to work with case insensitive URL parts.</p>
-
-
+    <span class="pl-smi">protected</span> <span class="pl-smi">override</span> <span class="pl-smi">void</span> <span class="pl-en">OnClientDisconnected</span>(<span class="pl-en">WebSocketContext</span> <span class="pl-smi">context</span>)
+    {
+        <span class="pl-k">this</span>.<span class="pl-en">Broadcast</span>(<span class="pl-s"><span class="pl-pds">"</span>Someone left the chat room.<span class="pl-pds">"</span></span>);
+    }
+}</pre></div>
+<h2><a id="user-content-related-projects-and-nugets" class="anchor" aria-hidden="true" href="#related-projects-and-nugets"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Related Projects and Nugets</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Author</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.nuget.org/packages/Butterfly.EmbedIO/" rel="nofollow">Butterfly.EmbedIO</a></td>
+<td>Fireshark Studios, LLC</td>
+<td>Implementation of Butterfly.Core.Channel and Butterfly.Core.WebApi using the EmbedIO server</td>
+</tr>
+<tr>
+<td><a href="https://github.com/unosquare/embedio-cli">embedio-cli</a></td>
+<td>Unosquare</td>
+<td>A dotnet global tool that enables start any web folder or EmbedIO assembly (WebAPI or WebSocket) from command line.</td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/EmbedIO.BearerToken/" rel="nofollow">EmbedIO.BearerToken</a></td>
+<td>Unosquare</td>
+<td>Allow to authenticate with a Bearer Token. It uses a Token endpoint (at /token path) and with a defined validation delegate create a JsonWebToken. The module can check all incoming requests or a paths</td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/EmbedIO.LiteLibWebApi/" rel="nofollow">EmbedIO.LiteLibWebApi</a></td>
+<td>Unosquare</td>
+<td>Allow to expose a sqlite database as REST api using EmbedIO WebApi and LiteLib libraries</td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/EmbedIO.OWIN/" rel="nofollow">EmbedIO.OWIN</a></td>
+<td>Unosquare</td>
+<td>EmbedIO can use the OWIN platform in two different approach: You can use EmbedIO as OWIN server and use all OWIN framework with EmbedIO modules.</td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Microsoft.AspNetCore.Server.EmbedIO/" rel="nofollow">Microsoft.AspNetCore.Server.EmbedIO</a></td>
+<td>Dju</td>
+<td>EmbedIO web server support for ASP.NET Core, as a drop-in replacement for Kestrel</td>
+</tr></tbody></table>
             </div>
             <footer>
                 Brought to you by Unosquare<br />
