@@ -10,14 +10,18 @@
     public abstract class FixtureBase
     {
         private readonly Action<IWebServer> _builder;
-        public IWebServer _webServer;
+        private readonly bool _useTestWebServer;
         private readonly RoutingStrategy _routeStrategy;
 
-        protected FixtureBase(Action<IWebServer> builder, RoutingStrategy routeStrategy)
+        public IWebServer _webServer;
+
+        protected FixtureBase(Action<IWebServer> builder, RoutingStrategy routeStrategy = RoutingStrategy.Regex, bool useTestWebServer = false)
         {
             Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
+
             _builder = builder;
             _routeStrategy = routeStrategy;
+            _useTestWebServer = useTestWebServer;
         }
 
         public string WebServerUrl { get; private set; }
@@ -26,7 +30,9 @@
         public void Init()
         {
             WebServerUrl = Resources.GetServerAddress();
-            _webServer = new WebServer(WebServerUrl, _routeStrategy);
+            _webServer = _useTestWebServer
+                ? (IWebServer) new TestWebServer(_routeStrategy)
+                : new WebServer(WebServerUrl, _routeStrategy);
 
             _builder(_webServer);
             _webServer.RunAsync();
