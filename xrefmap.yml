@@ -3740,6 +3740,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Tests.TestHttpClient.Response
   nameWithType: TestHttpClient.Response
+- uid: Unosquare.Labs.EmbedIO.Tests.TestHttpClient.SendAsync(Unosquare.Labs.EmbedIO.Tests.TestHttpRequest)
+  name: SendAsync(TestHttpRequest)
+  href: api/Unosquare.Labs.EmbedIO.Tests.TestHttpClient.html#Unosquare_Labs_EmbedIO_Tests_TestHttpClient_SendAsync_Unosquare_Labs_EmbedIO_Tests_TestHttpRequest_
+  commentId: M:Unosquare.Labs.EmbedIO.Tests.TestHttpClient.SendAsync(Unosquare.Labs.EmbedIO.Tests.TestHttpRequest)
+  fullName: Unosquare.Labs.EmbedIO.Tests.TestHttpClient.SendAsync(Unosquare.Labs.EmbedIO.Tests.TestHttpRequest)
+  nameWithType: TestHttpClient.SendAsync(TestHttpRequest)
+- uid: Unosquare.Labs.EmbedIO.Tests.TestHttpClient.SendAsync*
+  name: SendAsync
+  href: api/Unosquare.Labs.EmbedIO.Tests.TestHttpClient.html#Unosquare_Labs_EmbedIO_Tests_TestHttpClient_SendAsync_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Tests.TestHttpClient.SendAsync
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Tests.TestHttpClient.SendAsync
+  nameWithType: TestHttpClient.SendAsync
 - uid: Unosquare.Labs.EmbedIO.Tests.TestHttpClient.WebServer
   name: WebServer
   href: api/Unosquare.Labs.EmbedIO.Tests.TestHttpClient.html#Unosquare_Labs_EmbedIO_Tests_TestHttpClient_WebServer
@@ -3759,12 +3772,12 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.Tests.TestHttpRequest
   fullName: Unosquare.Labs.EmbedIO.Tests.TestHttpRequest
   nameWithType: TestHttpRequest
-- uid: Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.#ctor(System.String)
-  name: TestHttpRequest(String)
-  href: api/Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.html#Unosquare_Labs_EmbedIO_Tests_TestHttpRequest__ctor_System_String_
-  commentId: M:Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.#ctor(System.String)
-  fullName: Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.TestHttpRequest(System.String)
-  nameWithType: TestHttpRequest.TestHttpRequest(String)
+- uid: Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.#ctor(System.String,System.String)
+  name: TestHttpRequest(String, String)
+  href: api/Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.html#Unosquare_Labs_EmbedIO_Tests_TestHttpRequest__ctor_System_String_System_String_
+  commentId: M:Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.#ctor(System.String,System.String)
+  fullName: Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.TestHttpRequest(System.String, System.String)
+  nameWithType: TestHttpRequest.TestHttpRequest(String, String)
 - uid: Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.#ctor*
   name: TestHttpRequest
   href: api/Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.html#Unosquare_Labs_EmbedIO_Tests_TestHttpRequest__ctor_
@@ -4103,6 +4116,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.Cookies
   nameWithType: TestHttpResponse.Cookies
+- uid: Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.Dispose
+  name: Dispose()
+  href: api/Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.html#Unosquare_Labs_EmbedIO_Tests_TestHttpResponse_Dispose
+  commentId: M:Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.Dispose
+  fullName: Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.Dispose()
+  nameWithType: TestHttpResponse.Dispose()
+- uid: Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.Dispose*
+  name: Dispose
+  href: api/Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.html#Unosquare_Labs_EmbedIO_Tests_TestHttpResponse_Dispose_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.Dispose
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.Dispose
+  nameWithType: TestHttpResponse.Dispose
 - uid: Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.Headers
   name: Headers
   href: api/Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.html#Unosquare_Labs_EmbedIO_Tests_TestHttpResponse_Headers
