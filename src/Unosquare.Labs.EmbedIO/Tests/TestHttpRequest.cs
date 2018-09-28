@@ -14,71 +14,74 @@
     public class TestHttpRequest : IHttpRequest
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TestHttpRequest"/> class.
+        /// Initializes a new instance of the <see cref="TestHttpRequest" /> class.
         /// </summary>
         /// <param name="url">The URL.</param>
-        public TestHttpRequest(string url)
+        /// <param name="httpMethod">The HTTP method.</param>
+        public TestHttpRequest(string url, string httpMethod = null)
         {
+            HttpMethod = httpMethod ?? HttpVerbs.Get.ToString();
             Url = new Uri(url);
+            RawUrl = url;
         }
 
         /// <inheritdoc />
-        public NameValueCollection Headers { get; }
+        public NameValueCollection Headers { get; } = new NameValueCollection();
 
         /// <inheritdoc />
-        public Version ProtocolVersion { get; }
-        
+        public Version ProtocolVersion { get; } = new Version(1, 0);
+
         /// <inheritdoc />
-        public bool KeepAlive { get; }
-        
+        public bool KeepAlive { get; } = false;
+
         /// <inheritdoc />
         public ICookieCollection Cookies { get; }
 
         /// <inheritdoc />
         public string RawUrl { get; }
-        
+
         /// <inheritdoc />
-        public NameValueCollection QueryString { get; }
-        
+        public NameValueCollection QueryString { get; } = new NameValueCollection();
+
         /// <inheritdoc />
-        public string HttpMethod { get; } = HttpVerbs.Get.ToString();
-        
+        public string HttpMethod { get; }
+
         /// <inheritdoc />
         public Uri Url { get; }
-        
+
         /// <inheritdoc />
         public bool HasEntityBody { get; }
-        
+
         /// <inheritdoc />
         public Stream InputStream { get; }
-        
+
         /// <inheritdoc />
         public Encoding ContentEncoding { get; }
-        
+
         /// <inheritdoc />
         public IPEndPoint RemoteEndPoint { get; }
-        
+
         /// <inheritdoc />
-        public bool IsLocal { get; }
-        
+        public bool IsLocal { get; } = true;
+
         /// <inheritdoc />
         public string UserAgent { get; }
-        
+
         /// <inheritdoc />
         public bool IsWebSocketRequest { get; }
-        
+
         /// <inheritdoc />
         public IPEndPoint LocalEndPoint { get; }
-        
+
         /// <inheritdoc />
         public string ContentType { get; }
-        
+
         /// <inheritdoc />
         public long ContentLength64 { get; }
-        
+
         /// <inheritdoc />
-        public bool IsAuthenticated { get; }
-        
+        public bool IsAuthenticated { get; } = false;
+
         /// <inheritdoc />
         public Uri UrlReferrer { get; }
     }

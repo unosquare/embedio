@@ -31,7 +31,7 @@
         {
             WebServerUrl = Resources.GetServerAddress();
             _webServer = _useTestWebServer
-                ? (IWebServer) new TestWebServer(_routeStrategy)
+                ? (IWebServer)new TestWebServer(_routeStrategy)
                 : new WebServer(WebServerUrl, _routeStrategy);
 
             _builder(_webServer);
@@ -55,6 +55,32 @@
                 var uri = new Uri(new Uri(WebServerUrl), partialUrl);
                 return await client.GetStringAsync(uri);
             }
+        }
+
+        public async Task<TestHttpResponse> SendAsync(TestHttpRequest request)
+        {
+            if (_webServer is TestWebServer testWebServer)
+                return await testWebServer.GetClient().SendAsync(request);
+
+            using (var client = new HttpClient())
+            {
+                var response = await client.SendAsync(request.ToHttpRequestMessage());
+
+                return response.ToTestHttpResponse();
+            }
+        }
+    }
+
+    internal static class TestExtensions
+    {
+        public static HttpRequestMessage ToHttpRequestMessage(this TestHttpRequest request)
+        {
+            return new HttpRequestMessage();
+        }
+
+        public static TestHttpResponse ToTestHttpResponse(this HttpResponseMessage response)
+        {
+            return new TestHttpResponse();
         }
     }
 }

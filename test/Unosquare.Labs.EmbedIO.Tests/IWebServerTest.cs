@@ -74,7 +74,7 @@
 
                 var client = webserver.GetClient();
 
-                var data = await client.GetAsync("http://test/");
+                var data = await client.GetAsync("/");
                 Assert.IsNotNull(data);
 
                 var person = Json.Deserialize<Person>(data);

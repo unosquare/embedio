@@ -50,7 +50,7 @@
         /// <exception cref="InvalidOperationException">The IWebServer implementation should be TestWebServer.</exception>
         public async Task<string> GetAsync(string url)
         {
-            Request = new TestHttpRequest(url);
+            Request = new TestHttpRequest($"http://test/{url}");
             Response = new TestHttpResponse();
 
             if (!(WebServer is TestWebServer testServer))
@@ -69,6 +69,17 @@
             }
 
             return Encoding.GetString((Response.OutputStream as MemoryStream)?.ToArray());
+        }
+
+        /// <summary>
+        /// Sends the asynchronous.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<TestHttpResponse> SendAsync(TestHttpRequest request)
+        {
+            throw new NotImplementedException();
         }
     }
 }

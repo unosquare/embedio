@@ -12,20 +12,23 @@
     [TestFixture]
     public class CorsModuleTest : FixtureBase
     {
-        private static readonly object TestObj = new {Message = "OK"};
+        private static readonly object TestObj = new { Message = "OK" };
 
         public CorsModuleTest()
-            : base(ws =>
-            {
-                ws.EnableCors(
-                    "http://client.cors-api.appspot.com,http://unosquare.github.io,http://run.plnkr.co",
-                    "content-type",
-                    "post,get");
+            : base(
+                ws =>
+                {
+                    ws.EnableCors(
+                        "http://client.cors-api.appspot.com,http://unosquare.github.io,http://run.plnkr.co",
+                        "content-type",
+                        "post,get");
 
-                ws.RegisterModule(new WebApiModule());
-                ws.Module<WebApiModule>().RegisterController<TestController>();
-                ws.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(TestObj)));
-            }, RoutingStrategy.Wildcard)
+                    ws.RegisterModule(new WebApiModule());
+                    ws.Module<WebApiModule>().RegisterController<TestController>();
+                    ws.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(TestObj)));
+                },
+                RoutingStrategy.Wildcard,
+                true)
         {
             // placeholder
         }
@@ -41,17 +44,14 @@
         [Test]
         public async Task RequestOptionsVerb_ReturnsOK()
         {
-            using (var client = new HttpClient())
-            {
-                var request = new HttpRequestMessage(HttpMethod.Options, WebServerUrl + TestController.GetPath);
-                request.Headers.Add(Headers.Origin, "http://unosquare.github.io");
-                request.Headers.Add(Headers.AccessControlRequestMethod, "post");
-                request.Headers.Add(Headers.AccessControlRequestHeaders, "content-type");
+            var request = new TestHttpRequest(WebServerUrl + TestController.GetPath, HttpMethod.Options.ToString());
+            request.Headers.Add(Headers.Origin, "http://unosquare.github.io");
+            request.Headers.Add(Headers.AccessControlRequestMethod, "post");
+            request.Headers.Add(Headers.AccessControlRequestHeaders, "content-type");
 
-                using (var response = await client.SendAsync(request))
-                {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-                }
+            using (var response = await SendAsync(request))
+            {
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
             }
         }
     }

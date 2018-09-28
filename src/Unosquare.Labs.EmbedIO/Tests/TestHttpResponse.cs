@@ -10,7 +10,7 @@
     /// Represents an <c>IHttpResponse</c> implementation for unit testing.
     /// </summary>
     /// <seealso cref="Unosquare.Labs.EmbedIO.IHttpResponse" />
-    public class TestHttpResponse : IHttpResponse
+    public class TestHttpResponse : IHttpResponse, IDisposable
     {
         /// <inheritdoc />
         public NameValueCollection Headers { get; }
@@ -49,6 +49,12 @@
         public void SetCookie(Cookie sessionCookie)
         {
             throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            OutputStream?.Dispose();
         }
     }
 }
