@@ -4,18 +4,10 @@
     using Swan.Formatters;
     using TestObjects;
     using System.Threading.Tasks;
-    using Mocks;
     using Modules;
-    using Swan;
 
     public class IWebServerTest
     {
-        [SetUp]
-        public void Setup()
-        {
-            Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
-        }
-
         [Test]
         public void SetupInMemoryWebServer_ReturnsValidInstance()
         {
@@ -30,7 +22,7 @@
         {
             using (var webserver = new TestWebServer())
             {
-                webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse("OK")));
+                webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(nameof(TestWebServer))));
 
                 Assert.AreEqual(1, webserver.Modules.Count);
             }
@@ -41,7 +33,7 @@
         {
             using (var webserver = new TestWebServer())
             {
-                webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse("OK")));
+                webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(nameof(TestWebServer))));
                 webserver.UnregisterModule(typeof(FallbackModule));
 
                 Assert.AreEqual(0, webserver.Modules.Count);
@@ -76,7 +68,8 @@
         {
             using (var webserver = new TestWebServer())
             {
-                webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(new Person { Name = "Test" })));
+                webserver.OnAny((ctx, ct) => ctx.JsonResponse(new Person {Name = nameof(Person)}));
+
                 webserver.RunAsync();
 
                 var client = webserver.GetClient();
@@ -87,7 +80,7 @@
                 var person = Json.Deserialize<Person>(data);
                 Assert.IsNotNull(person);
 
-                Assert.AreEqual(person.Name, "Test");
+                Assert.AreEqual(person.Name, nameof(Person));
             }
         }
     }
