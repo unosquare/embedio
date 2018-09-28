@@ -1,23 +1,23 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
+    using Constants;
+    using NUnit.Framework;
     using System;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using NUnit.Framework;
     using TestObjects;
-    using Constants;
 
     public abstract class FixtureBase
     {
-        private readonly Action<WebServer> _builder;
-        public WebServer _webServer;
+        private readonly Action<IWebServer> _builder;
+        public IWebServer _webServer;
         private readonly RoutingStrategy _routeStrategy;
 
-        protected FixtureBase(Action<WebServer> builder, RoutingStrategy routeSrtategy)
+        protected FixtureBase(Action<IWebServer> builder, RoutingStrategy routeStrategy)
         {
             Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
             _builder = builder;
-            _routeStrategy = routeSrtategy;
+            _routeStrategy = routeStrategy;
         }
 
         public string WebServerUrl { get; private set; }
@@ -41,6 +41,9 @@
 
         public async Task<string> GetString(string partialUrl)
         {
+            if (_webServer is TestWebServer testWebServer)
+                return await testWebServer.GetClient().GetAsync(partialUrl);
+
             using (var client = new HttpClient())
             {
                 var uri = new Uri(new Uri(WebServerUrl), partialUrl);

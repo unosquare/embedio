@@ -16,7 +16,7 @@
     {
         private readonly string _url;
 
-        protected WebSocketsModuleTestBase(RoutingStrategy strategy, Action<WebServer> builder, string url)
+        protected WebSocketsModuleTestBase(RoutingStrategy strategy, Action<IWebServer> builder, string url)
             : base(builder, strategy)
         {
             _url = url;
