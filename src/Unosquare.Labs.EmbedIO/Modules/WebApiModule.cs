@@ -261,6 +261,10 @@
     /// </summary>
     public abstract class WebApiController : IHttpContext
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebApiController"/> class.
+        /// </summary>
+        /// <param name="context">The context.</param>
         protected WebApiController(IHttpContext context)
         {
             Request = context.Request;
