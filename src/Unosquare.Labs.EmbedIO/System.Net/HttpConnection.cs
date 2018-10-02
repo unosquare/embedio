@@ -13,20 +13,8 @@ using System.Security.Cryptography.X509Certificates;
 
     internal sealed class HttpConnection
     {
-        private enum InputState
-        {
-            RequestLine,
-            Headers,
-        }
+        internal const int BufferSize = 8192;
 
-        private enum LineState
-        {
-            None,
-            Cr,
-            Lf,
-        }
-
-        private const int BufferSize = 8192;
         private readonly Timer _timer;
         private readonly EndPointListener _epl;
         private Socket _sock;
@@ -419,6 +407,19 @@ using System.Security.Cryptography.X509Certificates;
             }
 
             RemoveConnection();
+        }
+        
+        private enum InputState
+        {
+            RequestLine,
+            Headers,
+        }
+
+        private enum LineState
+        {
+            None,
+            Cr,
+            Lf,
         }
     }
 }

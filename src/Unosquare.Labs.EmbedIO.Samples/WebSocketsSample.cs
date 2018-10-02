@@ -5,11 +5,11 @@
     using System.Diagnostics;
     using Modules;
     using Swan;
-#if NET47
+#if NET452
+    using Net;
+#else
     using System.Threading;
     using System.Net.WebSockets;
-#else
-    using Net;
 #endif
 
     public static class WebSocketsSample
@@ -53,15 +53,15 @@
         /// <inheritdoc />
         public override string ServerName => nameof(WebSocketsChatServer);
 
-#if NET47 
+#if NET52 
+        /// <inheritdoc />
+        protected override void OnClientConnected(WebSocketContext context)
+#else
         /// <inheritdoc />
         protected override void OnClientConnected(
             WebSocketContext context, 
             System.Net.IPEndPoint localEndPoint,
             System.Net.IPEndPoint remoteEndPoint)
-#else
-        /// <inheritdoc />
-        protected override void OnClientConnected(WebSocketContext context)
 #endif
         {
             Send(context, "Welcome to the chat room!");
@@ -135,15 +135,16 @@
             return null;
         }
 
-#if NET47
+#if NET452
+        /// <inheritdoc />
+        protected override void OnClientConnected(WebSocketContext context)
+#else
+        
         /// <inheritdoc />
         protected override void OnClientConnected(
             WebSocketContext context, 
             System.Net.IPEndPoint localEndPoint,
             System.Net.IPEndPoint remoteEndPoint)
-#else
-        /// <inheritdoc />
-        protected override void OnClientConnected(WebSocketContext context)
 #endif
         {
             var process = new Process
@@ -190,10 +191,10 @@
                 {
                     var ws = FindContext(s as Process);
                     if (ws != null && ws.WebSocket.State == WebSocketState.Open)
-#if NET47
-                        ws.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Process exited", CancellationToken.None).GetAwaiter().GetResult();
-#else
+#if NET452
                         ws.WebSocket.CloseAsync().GetAwaiter().GetResult();
+#else
+                        ws.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Process exited", CancellationToken.None).GetAwaiter().GetResult();
 #endif
                 }
             };

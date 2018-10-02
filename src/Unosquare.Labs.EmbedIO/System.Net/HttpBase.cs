@@ -14,8 +14,6 @@
     {
         protected const string CrLf = "\r\n";
 
-        private const int HeadersMaxLength = 8192;
-
         private byte[] _entityBodyData;
 
         protected HttpBase(Version version, NameValueCollection headers)
@@ -138,30 +136,24 @@
         private static string[] ReadHeaders(Stream stream)
         {
             var buff = new List<byte>();
-            var cnt = 0;
             
-            bool EqualsWith(int i, char c)
+            bool EqualsWith(int i, int c)
             {
                 if (i == -1)
                     throw new EndOfStreamException("The header cannot be read from the data source.");
 
                 buff.Add((byte) i);
-                cnt++;
-
-                return i == c - 0;
+                return i == c;
             }
 
             var read = false;
-            while (cnt < HeadersMaxLength)
+            while (buff.Count < HttpConnection.BufferSize)
             {
-                if (EqualsWith(stream.ReadByte(), '\r') &&
-                    EqualsWith(stream.ReadByte(), '\n') &&
-                    EqualsWith(stream.ReadByte(), '\r') &&
-                    EqualsWith(stream.ReadByte(), '\n'))
-                {
-                    read = true;
-                    break;
-                }
+                if (!EqualsWith(stream.ReadByte(), '\r') || !EqualsWith(stream.ReadByte(), '\n') ||
+                    !EqualsWith(stream.ReadByte(), '\r') || !EqualsWith(stream.ReadByte(), '\n')) continue;
+
+                read = true;
+                break;
             }
 
             if (!read)

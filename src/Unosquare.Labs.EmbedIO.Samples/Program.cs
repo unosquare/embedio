@@ -37,7 +37,7 @@
 
 
             // Our web server is disposable. 
-            using (var server = new WebServer(url))
+            using (var server = new WebServer(new[] { url }, Constants.RoutingStrategy.Regex, HttpListenerMode.EmbedIO))
             {
                 // First, we will configure our web server by adding Modules.
                 // Please note that order DOES matter.
