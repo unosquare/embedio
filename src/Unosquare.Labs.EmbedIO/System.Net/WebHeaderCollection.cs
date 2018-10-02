@@ -7,7 +7,7 @@
     using System.Text;
     using HttpHeaders = Labs.EmbedIO.Constants.Headers;
 
-    internal class WebHeaderCollection 
+    internal class WebHeaderCollection
         : NameValueCollection
     {
         private static readonly Dictionary<string, HttpHeaderInfo> Headers = new Dictionary<string, HttpHeaderInfo>(StringComparer.OrdinalIgnoreCase)
@@ -373,11 +373,9 @@
                             HttpHeaderType.Response | HttpHeaderType.MultiValue)
                     },
                 };
-        
+
         internal HttpHeaderType State { get; private set; }
-        
-        public void AddWithoutValidate(string headerName, string headerValue) => Add(headerName, headerValue, true);
-        
+
         public override string ToString()
         {
             var buff = new StringBuilder();
@@ -387,8 +385,6 @@
 
             return buff.Append("\r\n").ToString();
         }
-
-        internal static bool IsHeaderName(string name) =>!string.IsNullOrEmpty(name) && name.IsToken();
 
         internal static bool IsHeaderValue(string value)
         {
@@ -412,10 +408,11 @@
 
             return true;
         }
-        
+
         private static HttpHeaderType CheckHeaderType(string name)
         {
             var info = GetHeaderInfo(name);
+
             return info == null
                 ? HttpHeaderType.Unspecified
                 : info.IsRequest && !info.IsResponse
@@ -423,18 +420,6 @@
                     : !info.IsRequest && info.IsResponse
                         ? HttpHeaderType.Response
                         : HttpHeaderType.Unspecified;
-        }
-
-        private static string CheckName(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException(nameof(name));
-
-            name = name.Trim();
-            if (!IsHeaderName(name))
-                throw new ArgumentException("Contains invalid characters.", nameof(name));
-
-            return name;
         }
 
         private static string CheckValue(string value)
@@ -452,37 +437,26 @@
             return value;
         }
 
-        private static void CheckRestricted(string name)
-        {
-            if (InternalIsRestricted(name))
-                throw new ArgumentException("This header must be modified with the appropriate property.");
-        }
-
         private static HttpHeaderInfo GetHeaderInfo(string name)
             => Headers.Values.FirstOrDefault(info => info.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
 
-        private static bool InternalIsRestricted(string name, bool response = true)
+        public override void Add(string name, string value)
         {
-            var info = GetHeaderInfo(name);
-            return info != null && info.IsRestricted(response);
+            var type = CheckHeaderType(name);
+
+            if (type == HttpHeaderType.Unspecified)
+            {
+                base.Add(name, CheckValue(value));
+            }
+            else
+            {
+                CheckState(type == HttpHeaderType.Response);
+
+                base.Add(name, CheckValue(value));
+
+                State = type == HttpHeaderType.Response ? HttpHeaderType.Response : HttpHeaderType.Request;
+            }
         }
-
-        private void Add(string name, string value, bool ignoreRestricted)
-        {
-            var act = ignoreRestricted
-                ? (Action<string, string>)AddWithoutCheckingNameAndRestricted
-                : AddWithoutCheckingName;
-
-            DoWithCheckingState(act, CheckName(name), value);
-        }
-
-        private void AddWithoutCheckingName(string name, string value)
-        {
-            CheckRestricted(name);
-            base.Add(name, value);
-        }
-
-        private void AddWithoutCheckingNameAndRestricted(string name, string value) => base.Add(name, CheckValue(value));
 
         private void CheckState(bool response)
         {
@@ -500,25 +474,6 @@
                 throw new InvalidOperationException(
                       "This collection has already been used to store the response headers.");
             }
-        }
-
-        private void DoWithCheckingState(
-            Action<string, string> action, string name, string value, bool setState = true)
-        {
-            var type = CheckHeaderType(name);
-
-            if (type == HttpHeaderType.Unspecified)
-                action(name, value);
-            else
-                DoWithCheckingState(action, name, value, type == HttpHeaderType.Response, setState);
-        }
-
-        private void DoWithCheckingState(Action<string, string> action, string name, string value, bool response, bool setState)
-        {
-            CheckState(response);
-            action(name, value);
-            if (setState && State == HttpHeaderType.Unspecified)
-                State = response ? HttpHeaderType.Response : HttpHeaderType.Request;
         }
     }
 
@@ -568,7 +523,7 @@
             Name = name;
             Type = type;
         }
-        
+
         public bool IsRequest => (Type & HttpHeaderType.Request) == HttpHeaderType.Request;
 
         public bool IsResponse => (Type & HttpHeaderType.Response) == HttpHeaderType.Response;
@@ -576,11 +531,5 @@
         public string Name { get; }
 
         public HttpHeaderType Type { get; }
-
-        public bool IsRestricted(bool response)
-        {
-            return (Type & HttpHeaderType.Restricted) == HttpHeaderType.Restricted &&
-                   (response ? IsResponse : IsRequest);
-        }
     }
 }

@@ -214,18 +214,19 @@
         {
             if (_contentType != null)
             {
-                HeaderCollection.AddWithoutValidate("Content-Type",
-                    _contentType.IndexOf("charset=", StringComparison.Ordinal) == -1
-                        ? $"{_contentType}; charset={Encoding.UTF8.WebName}"
-                        : _contentType);
+                var contenTypeValue = _contentType.IndexOf("charset=", StringComparison.Ordinal) == -1
+                    ? $"{_contentType}; charset={Encoding.UTF8.WebName}"
+                    : _contentType;
+
+                HeaderCollection.Add("Content-Type", contenTypeValue);
             }
 
             if (Headers["Server"] == null)
-                HeaderCollection.AddWithoutValidate("Server", HttpResponse.ServerVersion);
+                HeaderCollection.Add("Server", HttpResponse.ServerVersion);
 
             var inv = CultureInfo.InvariantCulture;
             if (Headers["Date"] == null)
-                HeaderCollection.AddWithoutValidate("Date", DateTime.UtcNow.ToString("r", inv));
+                HeaderCollection.Add("Date", DateTime.UtcNow.ToString("r", inv));
 
             if (!_chunked)
             {
@@ -236,7 +237,7 @@
                 }
 
                 if (_clSet)
-                    HeaderCollection.AddWithoutValidate("Content-Length", _contentLength.ToString(inv));
+                    HeaderCollection.Add("Content-Length", _contentLength.ToString(inv));
             }
 
             var v = _context.Request.ProtocolVersion;
@@ -261,12 +262,12 @@
             // They sent both KeepAlive: true and Connection: close!?
             if (!_keepAlive || connClose)
             {
-                HeaderCollection.AddWithoutValidate("Connection", "close");
+                HeaderCollection.Add("Connection", "close");
                 connClose = true;
             }
 
             if (_chunked)
-                HeaderCollection.AddWithoutValidate("Transfer-Encoding", "chunked");
+                HeaderCollection.Add("Transfer-Encoding", "chunked");
 
             var reuses = _context.Connection.Reuses;
             if (reuses >= 100)
@@ -274,22 +275,23 @@
                 ForceCloseChunked = true;
                 if (!connClose)
                 {
-                    HeaderCollection.AddWithoutValidate("Connection", "close");
+                    HeaderCollection.Add("Connection", "close");
                     connClose = true;
                 }
             }
 
             if (!connClose)
             {
-                HeaderCollection.AddWithoutValidate("Keep-Alive", $"timeout=15,max={100 - reuses}");
+                HeaderCollection.Add("Keep-Alive", $"timeout=15,max={100 - reuses}");
+
                 if (_context.Request.ProtocolVersion <= HttpVersion.Version10)
-                    HeaderCollection.AddWithoutValidate("Connection", "keep-alive");
+                    HeaderCollection.Add("Connection", "keep-alive");
             }
 
             if (_cookies != null)
             {
                 foreach (var cookie in _cookies)
-                    HeaderCollection.AddWithoutValidate("Set-Cookie", CookieToClientString(cookie));
+                    HeaderCollection.Add("Set-Cookie", CookieToClientString(cookie));
             }
 
             WriteHeaders(ms);
