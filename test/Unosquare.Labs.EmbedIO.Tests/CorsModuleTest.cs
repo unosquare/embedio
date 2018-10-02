@@ -28,7 +28,7 @@
                     ws.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(TestObj)));
                 },
                 RoutingStrategy.Wildcard,
-                false)
+                true)
         {
             // placeholder
         }
