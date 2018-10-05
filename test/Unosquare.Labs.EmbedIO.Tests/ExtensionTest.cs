@@ -57,7 +57,7 @@
     }
 
     [TestFixture]
-    public class RquestRegex
+    public class RequestRegex
     {
         private const string DefaultId = "id";
 
