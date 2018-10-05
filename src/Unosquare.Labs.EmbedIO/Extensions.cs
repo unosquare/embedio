@@ -210,9 +210,9 @@
         /// <param name="requestPath">The request path.</param>
         /// <param name="basePath">The base path.</param>
         /// <returns>The params from the request.</returns>
-        public static string[] RequestWildcardUrlParams(string requestPath, string basePath)
+        public static string[] RequestWildcardUrlParams(this string requestPath, string basePath)
         {
-            var match = RegexCache.MatchWildcardStrategy(requestPath, basePath);
+            var match = RegexCache.MatchWildcardStrategy(basePath, requestPath);
 
             return match.Success
                 ? match.Groups[1].Value.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries)
