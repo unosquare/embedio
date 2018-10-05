@@ -128,14 +128,6 @@
                 ct);
         }
 
-        private Map GetHandlerFromPath(IWebModule module)
-            => module.Handlers.FirstOrDefault(x =>
-                string.Equals(
-                    x.Path,
-                    x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : _context.RequestPath(),
-                    StringComparison.OrdinalIgnoreCase) &&
-                x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : _context.RequestVerb()));
-
         private Map GetHandlerFromRegexPath(IWebModule module)
             => module.Handlers.FirstOrDefault(x =>
                 (x.Path == ModuleMap.AnyPath || _context.RequestRegexUrlParams(x.Path) != null) &&
@@ -164,9 +156,6 @@
                     break;
                 case RoutingStrategy.Regex:
                     handler = GetHandlerFromRegexPath(module);
-                    break;
-                case RoutingStrategy.Simple:
-                    handler = GetHandlerFromPath(module);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(RoutingStrategy));

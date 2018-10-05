@@ -160,7 +160,7 @@
         public ReadOnlyDictionary<string, string> VirtualPaths => _virtualPaths.Collection;
 
         /// <inheritdoc />
-        public override string Name => nameof(StaticFilesModule).Humanize();
+        public override string Name => nameof(StaticFilesModule);
 
         /// <summary>
         /// Private collection holding the contents of the RAM Cache.

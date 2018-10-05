@@ -18,7 +18,7 @@
     public class WebSocketsModuleTest : WebSocketsModuleTestBase
     {
         public WebSocketsModuleTest()
-            : base(RoutingStrategy.Simple, ws =>
+            : base(RoutingStrategy.Wildcard, ws =>
                 {
                     ws.RegisterModule(new WebSocketsModule());
                     ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocket>();

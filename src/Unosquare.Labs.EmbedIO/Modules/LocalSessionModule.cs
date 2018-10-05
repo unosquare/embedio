@@ -119,7 +119,7 @@
         public string CookiePath { get; set; } = "/";
 
         /// <inheritdoc />
-        public override string Name => nameof(LocalSessionModule).Humanize();
+        public override string Name => nameof(LocalSessionModule);
 
         /// <summary>
         /// Gets the <see cref="SessionInfo"/> with the specified cookie value.

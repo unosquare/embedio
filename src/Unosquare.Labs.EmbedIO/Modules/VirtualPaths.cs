@@ -190,7 +190,7 @@
             /// <summary>
             /// The directory
             /// </summary>
-            Directory
+            Directory,
         }
     }
 }

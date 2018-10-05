@@ -69,7 +69,7 @@
         }
 
         /// <inheritdoc />
-        public override string Name => nameof(WebSocketsModule).Humanize();
+        public override string Name => nameof(WebSocketsModule);
 
         /// <summary>
         /// Registers the web sockets server given a WebSocketsServer Type.

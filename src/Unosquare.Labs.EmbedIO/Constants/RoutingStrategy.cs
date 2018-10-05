@@ -8,18 +8,13 @@
     public enum RoutingStrategy
     {
         /// <summary>
-        /// The wildcard strategy, default one
+        /// The wildcard strategy
         /// </summary>
         Wildcard,
 
         /// <summary>
-        /// The Regex strategy
+        /// The Regex strategy, default one
         /// </summary>
         Regex,
-
-        /// <summary>
-        /// The simple strategy
-        /// </summary>
-        Simple,
     }
 }
