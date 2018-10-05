@@ -271,12 +271,6 @@ references:
   commentId: F:Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.Regex
   fullName: Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.Regex
   nameWithType: RoutingStrategy.Regex
-- uid: Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.Simple
-  name: Simple
-  href: api/Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.html#Unosquare_Labs_EmbedIO_Constants_RoutingStrategy_Simple
-  commentId: F:Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.Simple
-  fullName: Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.Simple
-  nameWithType: RoutingStrategy.Simple
 - uid: Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.Wildcard
   name: Wildcard
   href: api/Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.html#Unosquare_Labs_EmbedIO_Constants_RoutingStrategy_Wildcard
