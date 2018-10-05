@@ -25,15 +25,9 @@
     {
         #region Constants
 
-        private const string RegexRouteReplace = "([^//]*)";
-        private const string WildcardRouteReplace = "(.*)";
-
         private static readonly byte[] LastByte = { 0x00 };
 
         private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        private static readonly Regex RouteParamRegex = new Regex(@"\{[^\/]*\}",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         #endregion
@@ -218,7 +212,7 @@
         /// <returns>The params from the request.</returns>
         public static string[] RequestWildcardUrlParams(string requestPath, string basePath)
         {
-            var match = new Regex(basePath.Replace("*", WildcardRouteReplace)).Match(requestPath);
+            var match = RegexCache.MatchWildcardStrategy(requestPath, basePath);
 
             return match.Success
                 ? match.Groups[1].Value.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries)
@@ -261,8 +255,7 @@
             if (validateFunc == null) validateFunc = () => false;
             if (requestPath == basePath && !validateFunc()) return new Dictionary<string, object>();
 
-            var regex = new Regex(string.Concat("^", RouteParamRegex.Replace(basePath, RegexRouteReplace), "$"), RegexOptions.IgnoreCase);
-            var match = regex.Match(requestPath);
+            var match = RegexCache.MatchRegexStrategy(basePath, requestPath);
 
             var pathParts = basePath.Split('/');
 
