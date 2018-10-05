@@ -101,7 +101,7 @@
         public override void Write(byte[] buffer, int offset, int count)
         {
             if (_disposed)
-                throw new ObjectDisposedException(GetType().ToString());
+                throw new ObjectDisposedException(nameof(ResponseStream));
 
             var chunked = _response.SendChunked;
 

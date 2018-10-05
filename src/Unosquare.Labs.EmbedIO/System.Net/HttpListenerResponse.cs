@@ -210,15 +210,15 @@
             _cookies.Add(cookie);
         }
 
-        internal void SendHeaders(bool closing, MemoryStream ms)
+        internal MemoryStream SendHeaders(bool closing)
         {
             if (_contentType != null)
             {
-                var contenTypeValue = _contentType.IndexOf("charset=", StringComparison.Ordinal) == -1
+                var contentTypeValue = _contentType.IndexOf("charset=", StringComparison.Ordinal) == -1
                     ? $"{_contentType}; charset={Encoding.UTF8.WebName}"
                     : _contentType;
 
-                HeaderCollection.Add("Content-Type", contenTypeValue);
+                HeaderCollection.Add("Content-Type", contentTypeValue);
             }
 
             if (Headers["Server"] == null)
@@ -294,17 +294,7 @@
                     HeaderCollection.Add("Set-Cookie", CookieToClientString(cookie));
             }
 
-            WriteHeaders(ms);
-        }
-
-        private static string FormatHeaders(NameValueCollection headers)
-        {
-            var sb = new StringBuilder();
-
-            foreach (var key in headers.AllKeys)
-                sb.Append(key).Append(": ").Append(headers[key]).Append("\r\n");
-
-            return sb.Append("\r\n").ToString();
+            return WriteHeaders();
         }
 
         private static string CookieToClientString(Cookie cookie)
@@ -340,22 +330,35 @@
 
             _context.Connection.Close(force);
         }
-
-        private void WriteHeaders(Stream ms)
+        
+        private string GetHeaderData()
         {
-            var writer = new StreamWriter(ms, Encoding.UTF8, 256);
-            writer.Write("HTTP/{0} {1} {2}\r\n", ProtocolVersion, _statusCode, StatusDescription);
-            var headersStr = FormatHeaders(HeaderCollection);
-            writer.Write(headersStr);
-            writer.Flush();
+            var sb = new StringBuilder()
+                .AppendFormat("HTTP/{0} {1} ", ProtocolVersion, _statusCode)
+                .Append(StatusDescription)
+                .Append("\r\n");
 
-            var preamble = Encoding.UTF8.GetPreamble().Length;
+            foreach (var key in HeaderCollection.AllKeys)
+                sb.Append(key).Append(": ").Append(HeaderCollection[key]).Append("\r\n");
+
+            return sb.Append("\r\n").ToString();
+        }
+
+        private MemoryStream WriteHeaders()
+        {
+            var stream = new MemoryStream();
+            var data = Encoding.UTF8.GetBytes(GetHeaderData());
+            stream.Write(Encoding.UTF8.GetPreamble(), 0, Encoding.UTF8.GetPreamble().Length);
+            stream.Write(data, 0, data.Length);
+
             if (_outputStream == null)
                 _outputStream = _context.Connection.GetResponseStream();
 
             // Assumes that the ms was at position 0
-            ms.Position = preamble;
+            stream.Position = Encoding.UTF8.GetPreamble().Length;
             HeadersSent = true;
+
+            return stream;
         }
     }
 }
