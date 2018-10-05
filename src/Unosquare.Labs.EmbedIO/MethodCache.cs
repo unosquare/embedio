@@ -17,8 +17,7 @@
 
             MethodInfo = methodInfo;
             ControllerName = type.FullName;
-            SetDefaultHeadersMethodInfo = type
-                .GetMethod(nameof(WebApiController.SetDefaultHeaders));
+            SetHeadersInvoke = ctrl => ctrl.SetDefaultHeaders();
             IsTask = methodInfo.ReturnType == typeof(Task<bool>);
             AdditionalParameters = methodInfo.GetParameters()
                 .Select(x => new AdditionalParameterInfo(x))
@@ -37,7 +36,7 @@
         public delegate bool SyncDelegate(object instance, object[] arguments);
 
         public MethodInfo MethodInfo { get; }
-        public MethodInfo SetDefaultHeadersMethodInfo { get; }
+        public Action<WebApiController> SetHeadersInvoke { get; }
         public bool IsTask { get; }
         public List<AdditionalParameterInfo> AdditionalParameters { get; }
         public string ControllerName { get; }
@@ -117,8 +116,8 @@
 
         public void SetDefaultHeaders(IHttpContext context)
         {
-            var controller = _controllerFactory(context);
-            MethodCache.SetDefaultHeadersMethodInfo?.Invoke(controller, null);
+            var controller = _controllerFactory(context) as WebApiController;
+            MethodCache.SetHeadersInvoke(controller);
         }
     }
 

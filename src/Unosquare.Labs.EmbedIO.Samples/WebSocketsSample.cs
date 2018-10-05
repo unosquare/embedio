@@ -53,7 +53,7 @@
         /// <inheritdoc />
         public override string ServerName => nameof(WebSocketsChatServer);
 
-#if NET52 
+#if NET452 
         /// <inheritdoc />
         protected override void OnClientConnected(WebSocketContext context)
 #else
