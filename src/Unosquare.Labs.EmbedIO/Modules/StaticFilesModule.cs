@@ -5,6 +5,7 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Collections.Concurrent;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -40,6 +41,9 @@
         private const int SizeIndent = 20;
 
         private readonly VirtualPaths _virtualPaths;
+
+        private readonly ConcurrentDictionary<string, Tuple<long, string>> _fileHashCache =
+            new ConcurrentDictionary<string, Tuple<long, string>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StaticFilesModule"/> class.
@@ -133,7 +137,7 @@
             get => _virtualPaths.DefaultExtension;
             set => _virtualPaths.DefaultExtension = value;
         }
-        
+
         /// <summary>
         /// Gets the file system path from which files are retrieved.
         /// </summary>
@@ -197,7 +201,7 @@
 
         private static Task<bool> HandleDirectory(IHttpContext context, string localPath, CancellationToken ct)
         {
-            var entries = new[] {context.Request.RawUrl == "/" ? string.Empty : "<a href='../'>../</a>"}
+            var entries = new[] { context.Request.RawUrl == "/" ? string.Empty : "<a href='../'>../</a>" }
                 .Concat(
                     Directory.GetDirectories(localPath)
                         .Select(path =>
@@ -249,13 +253,13 @@
             switch (ValidatePath(context, out var requestFullLocalPath))
             {
                 case VirtualPathStatus.Forbidden:
-                    context.Response.StatusCode = (int) System.Net.HttpStatusCode.Forbidden;
+                    context.Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
                     return Task.FromResult(true);
                 case VirtualPathStatus.File:
                     return HandleFile(context, requestFullLocalPath, sendBuffer, ct);
                 case VirtualPathStatus.Directory:
                     return HandleDirectory(context, requestFullLocalPath, ct);
-                default: 
+                default:
                     return Task.FromResult(false);
             }
         }
@@ -376,7 +380,11 @@
             string requestHash,
             string localPath)
         {
-            var currentHash = buffer.ComputeMD5().ToUpperHex() + '-' + fileDate.Ticks;
+            var currentHash = _fileHashCache.TryGetValue(localPath, out var currentTuple) && fileDate.Ticks == currentTuple.Item1
+                ? currentTuple.Item2
+                : $"{buffer.ComputeMD5().ToUpperHex()}-{fileDate.Ticks}";
+            
+            _fileHashCache.TryAdd(localPath, new Tuple<long, string>(fileDate.Ticks, currentHash));
 
             if (!string.IsNullOrWhiteSpace(requestHash) && requestHash == currentHash)
             {
