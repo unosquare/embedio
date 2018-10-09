@@ -1,10 +1,10 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
-    using Swan;
-    using System.Threading.Tasks;
-    using System.Threading;
     using Modules;
+    using Swan;
     using System;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     internal class Program
     {
@@ -14,7 +14,7 @@
         /// <param name="args">The arguments.</param>
         private static async Task Main(string[] args)
         {
-            var url = "http://localhost:8787/";
+            var url = "http://*:8787/";
 
             if (args.Length > 0)
                 url = args[0];
@@ -44,7 +44,7 @@
                 // ================================================================================================
                 // If we want to enable sessions, we simply register the LocalSessionModule
                 // Beware that this is an in-memory session storage mechanism so, avoid storing very large objects.
-                // You can use the server.GetSession() method to get the SessionInfo object and manupulate it.
+                // You can use the server.GetSession() method to get the SessionInfo object and manipulate it.
                 server.RegisterModule(new LocalSessionModule());
 
                 // Set the CORS Rules

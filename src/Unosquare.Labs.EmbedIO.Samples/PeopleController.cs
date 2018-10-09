@@ -17,7 +17,7 @@
     /// </summary>
     public class PeopleController : WebApiController
     {
-        private readonly AppDbContext _dbContext = new AppDbContext();
+        private readonly AppDbContext _dbContext = null;
         private const string RelativePath = "/api/";
 
         public PeopleController(IHttpContext context)
@@ -94,14 +94,14 @@
         /// Echoes the request form data in JSON format
         /// </summary>
         /// <returns></returns>
-        [WebApiHandler(HttpVerbs.Post, RelativePath + "echo/*")]
-        public bool Echo()
+        [WebApiHandler(HttpVerbs.Get, RelativePath + "echo/*")]
+        public async Task<bool> Echo()
         {
             try
             {
-                var content = this.RequestFormDataDictionary();
+                //var content = this.RequestFormDataDictionary();
 
-                return this.JsonResponse(content);
+                return await this.StringResponseAsync("OK");
             }
             catch (Exception ex)
             {

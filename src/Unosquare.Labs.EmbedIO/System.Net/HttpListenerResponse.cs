@@ -347,9 +347,10 @@
         private MemoryStream WriteHeaders()
         {
             var stream = new MemoryStream();
-            var data = Encoding.UTF8.GetBytes(GetHeaderData());
-            stream.Write(Encoding.UTF8.GetPreamble(), 0, Encoding.UTF8.GetPreamble().Length);
-            stream.Write(data, 0, data.Length);
+            var writer = new StreamWriter(stream, Encoding.UTF8, 256);
+            var headersStr = GetHeaderData();
+            writer.Write(headersStr);
+            writer.Flush();
 
             if (_outputStream == null)
                 _outputStream = _context.Connection.GetResponseStream();
