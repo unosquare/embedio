@@ -347,16 +347,16 @@
         private MemoryStream WriteHeaders()
         {
             var stream = new MemoryStream();
-            var writer = new StreamWriter(stream, Encoding.UTF8, 256);
-            var headersStr = GetHeaderData();
-            writer.Write(headersStr);
-            writer.Flush();
+            var data = Encoding.UTF8.GetBytes(GetHeaderData());
+            var preamble = Encoding.UTF8.GetPreamble();
+            stream.Write(preamble, 0, preamble.Length);
+            stream.Write(data, 0, data.Length);
 
             if (_outputStream == null)
                 _outputStream = _context.Connection.GetResponseStream();
 
             // Assumes that the ms was at position 0
-            stream.Position = Encoding.UTF8.GetPreamble().Length;
+            stream.Position = preamble.Length;
             HeadersSent = true;
 
             return stream;

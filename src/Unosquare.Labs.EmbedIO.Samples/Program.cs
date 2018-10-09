@@ -14,7 +14,7 @@
         /// <param name="args">The arguments.</param>
         private static async Task Main(string[] args)
         {
-            var url = "http://*:8787/";
+            var url = "http://localhost:8787/";
 
             if (args.Length > 0)
                 url = args[0];
