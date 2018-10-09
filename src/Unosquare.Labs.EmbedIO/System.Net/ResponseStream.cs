@@ -5,7 +5,7 @@
     using System.Runtime.InteropServices;
     using System.Text;
 
-    internal class ResponseStream 
+    internal class ResponseStream
         : Stream
     {
         private static readonly byte[] Crlf = { 13, 10 };
@@ -69,7 +69,7 @@
                             ms.Write(bytes, 0, bytes.Length);
                         }
 
-                        InternalWrite(ms.ToArray(), (int) start, (int) (ms.Length - start));
+                        InternalWrite(ms.ToArray(), (int)start, (int)(ms.Length - start));
                         _trailerSent = true;
                     }
                     else if (chunked && !_trailerSent)
@@ -103,33 +103,32 @@
             if (_disposed)
                 throw new ObjectDisposedException(nameof(ResponseStream));
 
+            byte[] bytes;
+            var ms = GetHeaders(false);
             var chunked = _response.SendChunked;
 
-            using (var ms = GetHeaders(false))
+            if (ms != null)
             {
-                byte[] bytes;
-
-                if (ms != null)
-                {
-                    var start = ms.Position; // After the possible preamble for the encoding
-                    ms.Position = ms.Length;
-                    if (chunked)
-                    {
-                        bytes = GetChunkSizeBytes(count, false);
-                        ms.Write(bytes, 0, bytes.Length);
-                    }
-
-                    var newCount = Math.Min(count, 16384 - (int) ms.Position + (int) start);
-                    ms.Write(buffer, offset, newCount);
-                    count -= newCount;
-                    offset += newCount;
-                    InternalWrite(ms.ToArray(), (int) start, (int) (ms.Length - start));
-                }
-                else if (chunked)
+                var start = ms.Position; // After the possible preamble for the encoding
+                ms.Position = ms.Length;
+                if (chunked)
                 {
                     bytes = GetChunkSizeBytes(count, false);
-                    InternalWrite(bytes, 0, bytes.Length);
+                    ms.Write(bytes, 0, bytes.Length);
                 }
+
+                var newCount = Math.Min(count, 16384 - (int)ms.Position + (int)start);
+                ms.Write(buffer, offset, newCount);
+                count -= newCount;
+                offset += newCount;
+                InternalWrite(ms.ToArray(), (int)start, (int)(ms.Length - start));
+                ms.SetLength(0);
+                ms.Capacity = 0; // 'dispose' the buffer in ms.
+            }
+            else if (chunked)
+            {
+                bytes = GetChunkSizeBytes(count, false);
+                InternalWrite(bytes, 0, bytes.Length);
             }
 
             if (count > 0)

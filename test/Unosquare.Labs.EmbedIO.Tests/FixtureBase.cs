@@ -53,6 +53,7 @@
             using (var client = new HttpClient())
             {
                 var uri = new Uri(new Uri(WebServerUrl), partialUrl);
+
                 return await client.GetStringAsync(uri);
             }
         }

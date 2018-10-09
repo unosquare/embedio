@@ -16,13 +16,11 @@
     public class CookieCollection 
         : List<Cookie>, ICookieCollection
     {
-        private object _sync;
-        
         /// <inheritdoc />
         public bool IsSynchronized => false;
         
         /// <inheritdoc />
-        public object SyncRoot => _sync ?? (_sync = ((ICollection)this).SyncRoot);
+        public object SyncRoot => ((ICollection)this).SyncRoot;
 
         /// <inheritdoc />
         public Cookie this[string name]

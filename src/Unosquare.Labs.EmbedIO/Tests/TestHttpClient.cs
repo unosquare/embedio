@@ -5,12 +5,11 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    /// <inheritdoc />
     /// <summary>
     /// Represents a HTTP Client for unit testing.
     /// </summary>
     /// <seealso cref="T:Unosquare.Labs.EmbedIO.IHttpContext" />
-    public class TestHttpClient : IHttpContext
+    public class TestHttpClient
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TestHttpClient" /> class.
@@ -23,13 +22,12 @@
             Encoding = encoding ?? Encoding.UTF8;
         }
 
-        /// <inheritdoc />
-        public IHttpRequest Request { get; private set; }
-
-        /// <inheritdoc />
-        public IHttpResponse Response { get; private set; }
-
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets the web server.
+        /// </summary>
+        /// <value>
+        /// The web server.
+        /// </value>
         public IWebServer WebServer { get; set; }
 
         /// <summary>
@@ -50,25 +48,9 @@
         /// <exception cref="InvalidOperationException">The IWebServer implementation should be TestWebServer.</exception>
         public async Task<string> GetAsync(string url)
         {
-            Request = new TestHttpRequest($"http://test/{url}");
-            Response = new TestHttpResponse();
+            var response = await SendAsync(new TestHttpRequest($"http://test/{url}"));
 
-            if (!(WebServer is TestWebServer testServer))
-                throw new InvalidOperationException("The IWebServer implementation should be TestWebServer.");
-
-            testServer.HttpContexts.Enqueue(this);
-
-            try
-            {
-                while (Response.OutputStream.Position == 0)
-                    await Task.Delay(1);
-            }
-            catch
-            {
-                // ignore
-            }
-
-            return Encoding.GetString((Response.OutputStream as MemoryStream)?.ToArray());
+            return Encoding.GetString((response.OutputStream as MemoryStream)?.ToArray());
         }
 
         /// <summary>
@@ -78,8 +60,25 @@
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         public async Task<TestHttpResponse> SendAsync(TestHttpRequest request)
-        {
-            throw new NotImplementedException();
+        {   
+            var context = new TestHttpContext(request, WebServer);
+
+            if (!(WebServer is TestWebServer testServer))
+                throw new InvalidOperationException("The IWebServer implementation should be TestWebServer.");
+
+            testServer.HttpContexts.Enqueue(context);
+
+            try
+            {
+                while (context.Response.OutputStream.Position == 0)
+                    await Task.Delay(1);
+            }
+            catch
+            {
+                // ignore
+            }
+
+            return context.Response as TestHttpResponse;
         }
     }
 }
