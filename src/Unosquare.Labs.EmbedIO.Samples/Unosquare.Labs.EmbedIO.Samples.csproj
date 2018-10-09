@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="LiteLib" Version="0.17.1" />
+    <PackageReference Include="LiteLib" Version="0.17.2" />
     <PackageReference Include="Tubular.ServerSide" Version="1.5.0" />
   </ItemGroup>
 
