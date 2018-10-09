@@ -542,7 +542,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Tests.TestHttpClient.html",
-          "hash": "NuySQ/A5ecIxmBcuTTGkog=="
+          "hash": "nYhVG+gEIOd87dh+1DxUvw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.Labs.EmbedIO.Tests.TestHttpContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.Labs.EmbedIO.Tests.TestHttpContext.html",
+          "hash": "V7rJ0F3jVu9xeCCxPFSITA=="
         }
       },
       "is_incremental": false,
@@ -590,7 +602,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Tests.html",
-          "hash": "q0/pl7Fl1hj+z5/RqSunaQ=="
+          "hash": "qpaRBapSE3hcpsuiGVfGWg=="
         }
       },
       "is_incremental": false,
@@ -806,7 +818,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "5Ne0SGSe8OZOlIDZMJ8beQ=="
+          "hash": "Q1QXg/7sxyM43drkKvgIuw=="
         }
       },
       "is_incremental": false,
