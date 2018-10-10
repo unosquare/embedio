@@ -57,7 +57,7 @@ Some notes regarding WebSocket and runtimes support:
 * `RoutingStrategy.Regex` is the default routing scheme.
 
 #### Additional changes
-* `IHttpListener` is runtime/platform independent, you can choose Unosquare `HttpListener` implementation with NET47 or NETSTANDARD20. This separation of implementations brings new access to interfaces from common Http objects like `IHttpRequest`, `IHttpContext` and mor.
+* `IHttpListener` is runtime/platform independent, you can choose Unosquare `HttpListener` implementation with NET47 or NETSTANDARD20. This separation of implementations brings new access to interfaces from common Http objects like `IHttpRequest`, `IHttpContext` and more.
 * `IWebServer` is a new interface to create custom web server implementation, like a Test Web Server where all the operations are in-memory to speed up unit testing. Similar to [TestServer from OWIN](https://msdn.microsoft.com/en-us/library/microsoft.owin.testing.testserver(v=vs.113).aspx)
 * General improvements in how the Unosquare `HttpListner` is working and code clean-up.
 
