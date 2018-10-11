@@ -5,12 +5,6 @@
     using System.Diagnostics;
     using Modules;
     using Swan;
-#if NET452
-    using Net;
-#else
-    using System.Threading;
-    using System.Net.WebSockets;
-#endif
 
     public static class WebSocketsSample
     {
@@ -40,8 +34,8 @@
         }
         
         /// <inheritdoc />
-        protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer,
-            WebSocketReceiveResult rxResult)
+        protected override void OnMessageReceived(IWebSocketContext context, byte[] rxBuffer,
+            IWebSocketReceiveResult rxResult)
         {
             foreach (var ws in WebSockets.Where(ws => ws != context))
             {
@@ -53,16 +47,11 @@
         /// <inheritdoc />
         public override string ServerName => nameof(WebSocketsChatServer);
 
-#if NET452 
-        /// <inheritdoc />
-        protected override void OnClientConnected(WebSocketContext context)
-#else
         /// <inheritdoc />
         protected override void OnClientConnected(
-            WebSocketContext context, 
+            IWebSocketContext context, 
             System.Net.IPEndPoint localEndPoint,
             System.Net.IPEndPoint remoteEndPoint)
-#endif
         {
             Send(context, "Welcome to the chat room!");
 
@@ -73,14 +62,14 @@
         }
         
         /// <inheritdoc />
-        protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer,
-            WebSocketReceiveResult rxResult)
+        protected override void OnFrameReceived(IWebSocketContext context, byte[] rxBuffer,
+            IWebSocketReceiveResult rxResult)
         {
             // placeholder
         }
         
         /// <inheritdoc />
-        protected override void OnClientDisconnected(WebSocketContext context)
+        protected override void OnClientDisconnected(IWebSocketContext context)
         {
             Broadcast("Someone left the chat room.");
         }
@@ -94,14 +83,14 @@
     public class WebSocketsTerminalServer : WebSocketsServer
     {
         // we'll keep track of the processes here
-        private readonly Dictionary<WebSocketContext, Process> _processes = new Dictionary<WebSocketContext, Process>();
+        private readonly Dictionary<IWebSocketContext, Process> _processes = new Dictionary<IWebSocketContext, Process>();
 
-        // The SyncRoot is used to send 1 thing at a time and multithreaded Processes dictionary.
+        // The SyncRoot is used to send 1 thing at a time and multi-threaded Processes dictionary.
         private readonly object _syncRoot = new object();
         
         /// <inheritdoc />
-        protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer,
-            WebSocketReceiveResult rxResult)
+        protected override void OnMessageReceived(IWebSocketContext context, byte[] rxBuffer,
+            IWebSocketReceiveResult rxResult)
         {
             lock (_syncRoot)
             {
@@ -111,8 +100,8 @@
         }
         
         /// <inheritdoc />
-        protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer,
-            WebSocketReceiveResult rxResult)
+        protected override void OnFrameReceived(IWebSocketContext context, byte[] rxBuffer,
+            IWebSocketReceiveResult rxResult)
         {
             // don't process partial frames
         }
@@ -122,7 +111,7 @@
         /// </summary>
         /// <param name="p">The p.</param>
         /// <returns></returns>
-        private WebSocketContext FindContext(Process p)
+        private IWebSocketContext FindContext(Process p)
         {
             lock (_syncRoot)
             {
@@ -135,17 +124,11 @@
             return null;
         }
 
-#if NET452
-        /// <inheritdoc />
-        protected override void OnClientConnected(WebSocketContext context)
-#else
-        
         /// <inheritdoc />
         protected override void OnClientConnected(
-            WebSocketContext context, 
+            IWebSocketContext context, 
             System.Net.IPEndPoint localEndPoint,
             System.Net.IPEndPoint remoteEndPoint)
-#endif
         {
             var process = new Process
             {
@@ -169,7 +152,8 @@
                 {
                     if ((s as Process).HasExited) return;
                     var ws = FindContext(s as Process);
-                    if (ws != null && ws.WebSocket.State == WebSocketState.Open)
+
+                    if (ws != null && ws.WebSocket.State == Net.WebSocketState.Open)
                         Send(ws, e.Data);
                 }
             };
@@ -180,7 +164,7 @@
                 {
                     if ((s as Process).HasExited) return;
                     var ws = FindContext(s as Process);
-                    if (ws != null && ws.WebSocket.State == WebSocketState.Open)
+                    if (ws != null && ws.WebSocket.State == Net.WebSocketState.Open)
                         Send(ws, e.Data);
                 }
             };
@@ -190,12 +174,8 @@
                 lock (_syncRoot)
                 {
                     var ws = FindContext(s as Process);
-                    if (ws != null && ws.WebSocket.State == WebSocketState.Open)
-#if NET452
-                        ws.WebSocket.CloseAsync().GetAwaiter().GetResult();
-#else
-                        ws.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Process exited", CancellationToken.None).GetAwaiter().GetResult();
-#endif
+                    if (ws != null && ws.WebSocket.State == Net.WebSocketState.Open)
+                        ws.WebSocket.CloseAsync(true).GetAwaiter().GetResult();
                 }
             };
 
@@ -212,7 +192,7 @@
         }
         
         /// <inheritdoc />
-        protected override void OnClientDisconnected(WebSocketContext context)
+        protected override void OnClientDisconnected(IWebSocketContext context)
         {
             lock (_syncRoot)
             {

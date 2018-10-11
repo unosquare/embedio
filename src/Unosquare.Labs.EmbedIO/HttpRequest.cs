@@ -22,6 +22,7 @@ namespace Unosquare.Labs.EmbedIO
         public HttpRequest(HttpListenerContext context)
         {
             _request = context.Request;
+            Cookies = new CookieCollection(_request.Cookies);
         }
 
         /// <inheritdoc />
@@ -34,7 +35,7 @@ namespace Unosquare.Labs.EmbedIO
         public bool KeepAlive => _request.KeepAlive;
 
         /// <inheritdoc />
-        public ICookieCollection Cookies => new CookieCollection(_request.Cookies);
+        public ICookieCollection Cookies { get; }
 
         /// <inheritdoc />
         public string RawUrl => _request.RawUrl;

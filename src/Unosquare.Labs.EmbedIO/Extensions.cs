@@ -12,11 +12,6 @@
     using Swan.Formatters;
     using System.Threading;
     using System.Threading.Tasks;
-#if NET47
-    using System.Net.WebSockets;
-#else
-    using Net;
-#endif
 
     /// <summary>
     /// Extension methods to help your coding!.
@@ -69,7 +64,7 @@
         /// <param name="context">The context.</param>
         /// <param name="server">The server.</param>
         /// <returns>A session info for the given websocket context.</returns>
-        public static SessionInfo GetSession(this WebSocketContext context, WebServer server) => server.SessionModule?.GetSession(context);
+        public static SessionInfo GetSession(this IWebSocketContext context, WebServer server) => server.SessionModule?.GetSession(context);
 
         /// <summary>
         /// Gets the session.
@@ -77,7 +72,7 @@
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
         /// <returns>A session info for the given websocket context.</returns>
-        public static SessionInfo GetSession(this WebServer server, WebSocketContext context) => server.SessionModule?.GetSession(context);
+        public static SessionInfo GetSession(this WebServer server, IWebSocketContext context) => server.SessionModule?.GetSession(context);
 
         #endregion
 
@@ -225,7 +220,7 @@
         /// <param name="context">The context.</param>
         /// <param name="urlPattern">The url pattern. </param>
         /// <returns>The params from the request.</returns>
-        public static Dictionary<string, object> RequestRegexUrlParams(this WebSocketContext context, string urlPattern)
+        public static Dictionary<string, object> RequestRegexUrlParams(this IWebSocketContext context, string urlPattern)
           => RequestRegexUrlParams(context.RequestUri.LocalPath, urlPattern);
 
         /// <summary>

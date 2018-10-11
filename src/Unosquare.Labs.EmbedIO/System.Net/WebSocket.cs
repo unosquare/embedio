@@ -21,7 +21,7 @@
     /// The WebSocket class provides a set of methods and properties for two-way communication using
     /// the WebSocket protocol (<see href="http://tools.ietf.org/html/rfc6455">RFC 6455</see>).
     /// </remarks>
-    public class WebSocket : IDisposable
+    public class WebSocket : IWebSocket
     {
         internal static readonly byte[] EmptyBytes = new byte[0];
 
@@ -255,14 +255,14 @@
             }
         }
 
-        /// <summary>
-        /// Gets the state of the WebSocket connection.
-        /// </summary>
-        /// <value>
-        /// One of the <see cref="WebSocketState"/> enum values, indicates the state of the connection.
-        /// The default value is <see cref="WebSocketState.Connecting"/>.
-        /// </value>
+        /// <inheritdoc />
         public WebSocketState State => _readyState;
+
+        /// <inheritdoc />
+        public Task SendAsync(byte[] buffer, bool isText, CancellationToken ct) => SendAsync(buffer, isText ? Opcode.Text : Opcode.Binary, ct);
+
+        /// <inheritdoc />
+        public Task CloseAsync(bool isNormal, CancellationToken ct) => isNormal ? CloseAsync(CloseStatusCode.Normal, ct: ct) : CloseAsync(ct: ct);
 
 #if SSL
         /// <summary>

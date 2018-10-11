@@ -281,6 +281,12 @@
         /// <inheritdoc />
         public IWebServer WebServer { get; set; }
 
+        /// <inheritdoc />
+        public Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Sets the default headers to the Web API response.
         /// By default will set:

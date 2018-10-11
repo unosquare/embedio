@@ -3,13 +3,12 @@ namespace Unosquare.Labs.EmbedIO
 {
     using System.Net;
     using System;
-    using System.Net.WebSockets;
     using System.Threading.Tasks;
 
     /// <summary>
     /// Represents a wrapper around a regular HttpListenerContext.
     /// </summary>
-    /// <seealso cref="Unosquare.Labs.EmbedIO.IHttpContext" />
+    /// <seealso cref="IHttpContext" />
     public class HttpContext : IHttpContext
     {
         private readonly HttpListenerContext _context;
@@ -34,15 +33,11 @@ namespace Unosquare.Labs.EmbedIO
         /// <inheritdoc />
         public IWebServer WebServer { get; set; }
 
-        /// <summary>
-        /// Accepts the web socket asynchronous.
-        /// </summary>
-        /// <param name="receiveBufferSize">Size of the receive buffer.</param>
-        /// <returns>The WebSocketContext.</returns>
-        public Task<HttpListenerWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize)
-            => _context.AcceptWebSocketAsync(subProtocol: null,
+        /// <inheritdoc />
+        public async Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize)
+            => new WebSocketContext(await _context.AcceptWebSocketAsync(subProtocol: null,
                 receiveBufferSize: receiveBufferSize,
-                keepAliveInterval: TimeSpan.FromSeconds(30));
+                keepAliveInterval: TimeSpan.FromSeconds(30)));
     }
 }
 #endif

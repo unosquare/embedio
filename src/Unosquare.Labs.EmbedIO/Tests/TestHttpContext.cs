@@ -1,4 +1,6 @@
-﻿namespace Unosquare.Labs.EmbedIO.Tests
+﻿using System.Threading.Tasks;
+
+namespace Unosquare.Labs.EmbedIO.Tests
 {
     /// <summary>
     /// Represents a Test Http Context.
@@ -25,5 +27,11 @@
 
         /// <inheritdoc />
         public IWebServer WebServer { get; set; }
+
+        /// <inheritdoc />
+        public Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
