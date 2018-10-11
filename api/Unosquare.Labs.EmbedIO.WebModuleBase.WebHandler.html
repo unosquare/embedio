@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Namespace Unosquare.Labs.EmbedIO
+    <title>Delegate WebModuleBase.WebHandler
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Namespace Unosquare.Labs.EmbedIO
+    <meta name="title" content="Delegate WebModuleBase.WebHandler
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.39.2.0">
     
@@ -77,91 +77,59 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO">
+            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase.WebHandler">
   
-  <h1 id="Unosquare_Labs_EmbedIO" data-uid="Unosquare.Labs.EmbedIO" class="text-break">Namespace Unosquare.Labs.EmbedIO
+  
+  <h1 id="Unosquare_Labs_EmbedIO_WebModuleBase_WebHandler" data-uid="Unosquare.Labs.EmbedIO.WebModuleBase.WebHandler" class="text-break">Delegate WebModuleBase.WebHandler
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Represents a Web Handler.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
-  <div class="markdown level0 remarks"></div>
-    <h3 id="classes">Classes
-  </h3>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.CookieCollection.html">CookieCollection</a></h4>
-      <section><p>Represents a wrapper for <code>System.Net.CookieCollection</code>.</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.Extensions.html">Extensions</a></h4>
-      <section><p>Extension methods to help your coding!.</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.HttpContext.html">HttpContext</a></h4>
-      <section><p>Represents a wrapper around a regular HttpListenerContext.</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.HttpListenerFactory.html">HttpListenerFactory</a></h4>
-      <section><p>Represents a Factory to create a HTTP Listener.</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.HttpRequest.html">HttpRequest</a></h4>
-      <section><p>Represents a wrapper for HttpListenerContext.Request.</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.HttpResponse.html">HttpResponse</a></h4>
-      <section><p>Represents a wrapper for HttpListenerContext.Response.</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.Map.html">Map</a></h4>
-      <section><p>Represents a binding of path and verb to a given method call (delegate).</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.ModuleMap.html">ModuleMap</a></h4>
-      <section><p>Represents a list which binds Paths and their corresponding HTTP Verbs to Method calls.</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.SessionInfo.html">SessionInfo</a></h4>
-      <section><p>Represents the contents of an HTTP Session.</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html">WebModuleBase</a></h4>
-      <section><p>Base class to define custom web modules.
-Inherit from this class and use the AddHandler Method to register your method calls.</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></h4>
-      <section><p>Represents our tiny web server used to handle requests.</p>
-<p>This is the default implementation of <code>IWebServer</code> and it&apos;s ready to select
-the <code>IHttpListener</code> implementation via the proper constructor.</p>
-<p>By default, the WebServer will use the Regex RoutingStrategy for
-all registered modules (<code>IWebModule</code>) and EmbedIO Listener (<code>HttpListenerMode</code>).</p>
-</section>
-    <h3 id="interfaces">Interfaces
-  </h3>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.ICookieCollection.html">ICookieCollection</a></h4>
-      <section><p>Interface for Cookie Collection.</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></h4>
-      <section><p>Interface to create a HTTP Context.</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpListener.html">IHttpListener</a></h4>
-      <section><p>Interface to create a HTTP Listener.</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpRequest.html">IHttpRequest</a></h4>
-      <section><p>Interface to create a HTTP Request.</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpResponse.html">IHttpResponse</a></h4>
-      <section><p>Interface to create a HTTP Response.</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.ISessionWebModule.html">ISessionWebModule</a></h4>
-      <section><p>Interface to create session modules.</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html">IWebModule</a></h4>
-      <section><p>Interface to create web modules.</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></h4>
-      <section><p>Interface to create a WebServer class.</p>
-<p>The basic behaviour for a WebServer is register/unregister modules and
-run asynchronous to receive incoming HTTP Requests.</p>
-</section>
-    <h3 id="enums">Enums
-  </h3>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.HttpListenerMode.html">HttpListenerMode</a></h4>
-      <section><p>Enums all the HTTP listener available.</p>
-</section>
-    <h3 id="delegates">Delegates
-  </h3>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.WebHandler.html">WebModuleBase.WebHandler</a></h4>
-      <section><p>Represents a Web Handler.</p>
-</section>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.html">Unosquare.Labs.EmbedIO</a></h6>
+  <h5 id="Unosquare_Labs_EmbedIO_WebModuleBase_WebHandler_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public delegate Task&lt;bool&gt; WebHandler(IHttpContext context, CancellationToken ct);</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td><p>The ct.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><p>A task representing the success of the web handler.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>
