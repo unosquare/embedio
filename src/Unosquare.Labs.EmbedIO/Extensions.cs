@@ -104,10 +104,7 @@
                 || (path.StartsWith(p.Substring(0, p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal)))
                     && path.EndsWith(p.Substring(p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal) + 1))));
 
-            if (string.IsNullOrWhiteSpace(wildcardMatch) == false)
-                path = wildcardMatch;
-
-            return path;
+            return string.IsNullOrWhiteSpace(wildcardMatch) ? path : wildcardMatch;
         }
 
         /// <summary>
