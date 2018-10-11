@@ -56,7 +56,7 @@
             Assert.IsNotNull(webServer.Module<WebApiModule>(), "It has WebApiModule");
             Assert.AreEqual(webServer.Module<WebApiModule>().ControllersCount, 4, "It has four controllers");
 
-            webServer.Dispose();
+            (webServer as IDisposable)?.Dispose();
         }
 
         [Test]
@@ -68,7 +68,7 @@
             Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
             Assert.IsNotNull(webServer.Module<WebSocketsModule>(), "It has WebSocketsModule");
 
-            webServer.Dispose();
+            (webServer as IDisposable)?.Dispose();
         }
 
         [Test]
@@ -82,7 +82,7 @@
             Assert.IsNotNull(webServer.Module<WebApiModule>(), "It has WebApiModule");
             Assert.AreEqual(webServer.Module<WebApiModule>().ControllersCount, 4, "It has four controllers");
 
-            webServer.Dispose();
+            (webServer as IDisposable)?.Dispose();
         }
 
         [Test]

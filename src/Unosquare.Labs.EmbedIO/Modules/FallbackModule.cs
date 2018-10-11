@@ -25,14 +25,14 @@
         }
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="FallbackModule" /> class.
+        /// Initializes a new instance of the <see cref="FallbackModule"/> class.
         /// </summary>
         /// <param name="action">The action.</param>
-        public FallbackModule(Func<IHttpContext, CancellationToken, Task<bool>> action)
+        public FallbackModule(WebHandler action)
         {
             AddHandler(
                 ModuleMap.AnyPath, 
-                HttpVerbs.Any, 
+                HttpVerbs.Any,
                 action);
         }
 

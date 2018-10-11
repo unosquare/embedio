@@ -12,6 +12,15 @@
     public abstract class WebModuleBase 
         : IWebModule
     {
+        
+        /// <summary>
+        /// Represents a Web Handler.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="ct">The ct.</param>
+        /// <returns>A task representing the success of the web handler.</returns>
+        public delegate Task<bool> WebHandler(IHttpContext context, CancellationToken ct);
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WebModuleBase"/> class.
         /// </summary>
@@ -39,7 +48,7 @@
         public CancellationToken CancellationToken { get; protected set; }
         
         /// <inheritdoc/>
-        public void AddHandler(string path, HttpVerbs verb, Func<IHttpContext, CancellationToken, Task<bool>> handler)
+        public void AddHandler(string path, HttpVerbs verb, WebHandler handler)
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
@@ -55,7 +64,7 @@
         {
             CancellationToken = ct;
 
-            var watchDogTask = Task.Factory.StartNew(async () =>
+            var watchDogTask = Task.Run(async () =>
             {
                 try
                 {

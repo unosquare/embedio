@@ -42,7 +42,7 @@
         public void Kill()
         {
             Task.Delay(500).Wait();
-            WebServerInstance?.Dispose();
+            (WebServerInstance as IDisposable)?.Dispose();
         }
 
         public async Task<string> GetString(string partialUrl)

@@ -145,7 +145,7 @@
                     (x.Verb == HttpVerbs.Any || x.Verb == _context.RequestVerb()));
         }
 
-        private Func<IHttpContext, CancellationToken, Task<bool>> GetHandler(IWebModule module)
+        private WebModuleBase.WebHandler GetHandler(IWebModule module)
         {
             Map handler;
 

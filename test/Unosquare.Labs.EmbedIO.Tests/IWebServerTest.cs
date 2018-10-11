@@ -11,77 +11,64 @@
         [Test]
         public void SetupInMemoryWebServer_ReturnsValidInstance()
         {
-            using (var webserver = new TestWebServer())
-            {
-                Assert.IsNotNull(webserver);
-            }
+            Assert.IsNotNull(new WebServer());
         }
 
         [Test]
         public void RegisterWebModule_ReturnsValidInstance()
         {
-            using (var webserver = new TestWebServer())
-            {
-                webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(nameof(TestWebServer))));
+            var webserver = new TestWebServer();
+            webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(nameof(TestWebServer))));
 
-                Assert.AreEqual(1, webserver.Modules.Count);
-            }
+            Assert.AreEqual(1, webserver.Modules.Count);
         }
 
         [Test]
         public void UnregisterWebModule_ReturnsValidInstance()
         {
-            using (var webserver = new TestWebServer())
-            {
-                webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(nameof(TestWebServer))));
-                webserver.UnregisterModule(typeof(FallbackModule));
+            var webserver = new TestWebServer();
+            webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(nameof(TestWebServer))));
+            webserver.UnregisterModule(typeof(FallbackModule));
 
-                Assert.AreEqual(0, webserver.Modules.Count);
-            }
+            Assert.AreEqual(0, webserver.Modules.Count);
         }
 
         [Test]
         public void RegisterSessionModule_ReturnsValidInstance()
         {
-            using (var webserver = new TestWebServer())
-            {
-                webserver.RegisterModule(new LocalSessionModule());
+            var webserver = new TestWebServer();
+            webserver.RegisterModule(new LocalSessionModule());
 
-                Assert.NotNull(webserver.SessionModule);
-            }
+            Assert.NotNull(webserver.SessionModule);
         }
 
         [Test]
         public void UnregisterSessionModule_ReturnsValidInstance()
         {
-            using (var webserver = new TestWebServer())
-            {
-                webserver.RegisterModule(new LocalSessionModule());
-                webserver.UnregisterModule(typeof(LocalSessionModule));
+            var webserver = new TestWebServer();
+            webserver.RegisterModule(new LocalSessionModule());
+            webserver.UnregisterModule(typeof(LocalSessionModule));
 
-                Assert.IsNull(webserver.SessionModule);
-            }
+            Assert.IsNull(webserver.SessionModule);
         }
 
         [Test]
         public async Task RunsServerAndRequestData_ReturnsValidData()
         {
-            using (var webserver = new TestWebServer())
-            {
-                webserver.OnAny((ctx, ct) => ctx.JsonResponse(new Person {Name = nameof(Person)}));
+            var webserver = new TestWebServer();
+            webserver.OnAny((ctx, ct) => ctx.JsonResponse(new Person { Name = nameof(Person) }));
 
-                webserver.RunAsync();
+            webserver.RunAsync();
 
-                var client = webserver.GetClient();
+            var client = webserver.GetClient();
 
-                var data = await client.GetAsync("/");
-                Assert.IsNotNull(data);
+            var data = await client.GetAsync("/");
+            Assert.IsNotNull(data);
 
-                var person = Json.Deserialize<Person>(data);
-                Assert.IsNotNull(person);
+            var person = Json.Deserialize<Person>(data);
+            Assert.IsNotNull(person);
 
-                Assert.AreEqual(person.Name, nameof(Person));
-            }
+            Assert.AreEqual(person.Name, nameof(Person));
         }
     }
 }
