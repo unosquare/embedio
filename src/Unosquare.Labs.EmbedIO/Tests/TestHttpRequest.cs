@@ -32,7 +32,7 @@
         public Version ProtocolVersion { get; } = new Version(1, 0);
 
         /// <inheritdoc />
-        public bool KeepAlive { get; } = false;
+        public bool KeepAlive { get; }
 
         /// <inheritdoc />
         public ICookieCollection Cookies { get; }
@@ -80,7 +80,7 @@
         public long ContentLength64 { get; }
 
         /// <inheritdoc />
-        public bool IsAuthenticated { get; } = false;
+        public bool IsAuthenticated { get; }
 
         /// <inheritdoc />
         public Uri UrlReferrer { get; }

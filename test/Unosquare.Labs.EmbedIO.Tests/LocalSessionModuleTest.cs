@@ -59,8 +59,8 @@
             [Test]
             public void HasSessionModule()
             {
-                Assert.IsNotNull(_webServer.SessionModule, "Session module is not null");
-                Assert.AreEqual(_webServer.SessionModule.Handlers.Count, 1, "Session module has one handler");
+                Assert.IsNotNull(WebServerInstance.SessionModule, "Session module is not null");
+                Assert.AreEqual(WebServerInstance.SessionModule.Handlers.Count, 1, "Session module has one handler");
             }
 
             [Test]

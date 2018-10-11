@@ -27,9 +27,9 @@
         protected async Task ConnectWebSocket()
         {
             var wsUrl = WebServerUrl.Replace("http", "ws") + _url;
-            Assert.IsNotNull(_webServer.Module<WebSocketsModule>(), "WebServer has WebSocketsModule");
+            Assert.IsNotNull(WebServerInstance.Module<WebSocketsModule>(), "WebServer has WebSocketsModule");
 
-            Assert.AreEqual(_webServer.Module<WebSocketsModule>().Handlers.Count, 1, "WebSocketModule has one handler");
+            Assert.AreEqual(WebServerInstance.Module<WebSocketsModule>().Handlers.Count, 1, "WebSocketModule has one handler");
 
             if (IgnoreWebConnect)
                 Assert.Inconclusive("WebSocket Connect not available");

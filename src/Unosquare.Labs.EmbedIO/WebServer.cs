@@ -22,7 +22,7 @@
     /// By default, the WebServer will use the Regex RoutingStrategy for
     /// all registered modules (<c>IWebModule</c>) and EmbedIO Listener (<c>HttpListenerMode</c>).
     /// </summary>
-    public class WebServer : IWebServer
+    public class WebServer : IWebServer, IDisposable
     {
         private readonly WebModules _modules = new WebModules();
 

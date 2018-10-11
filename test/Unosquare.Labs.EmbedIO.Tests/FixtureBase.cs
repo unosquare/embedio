@@ -13,8 +13,6 @@
         private readonly bool _useTestWebServer;
         private readonly RoutingStrategy _routeStrategy;
 
-        public IWebServer _webServer;
-
         protected FixtureBase(Action<IWebServer> builder, RoutingStrategy routeStrategy = RoutingStrategy.Regex, bool useTestWebServer = false)
         {
             Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
@@ -26,28 +24,30 @@
 
         public string WebServerUrl { get; private set; }
 
+        public IWebServer WebServerInstance { get; private set; }
+
         [SetUp]
         public void Init()
         {
             WebServerUrl = Resources.GetServerAddress();
-            _webServer = _useTestWebServer
+            WebServerInstance = _useTestWebServer
                 ? (IWebServer)new TestWebServer(_routeStrategy)
                 : new WebServer(WebServerUrl, _routeStrategy);
 
-            _builder(_webServer);
-            _webServer.RunAsync();
+            _builder(WebServerInstance);
+            WebServerInstance.RunAsync();
         }
 
         [TearDown]
         public void Kill()
         {
             Task.Delay(500).Wait();
-            _webServer?.Dispose();
+            WebServerInstance?.Dispose();
         }
 
         public async Task<string> GetString(string partialUrl)
         {
-            if (_webServer is TestWebServer testWebServer)
+            if (WebServerInstance is TestWebServer testWebServer)
                 return await testWebServer.GetClient().GetAsync(partialUrl);
 
             using (var client = new HttpClient())
@@ -60,7 +60,7 @@
 
         public async Task<TestHttpResponse> SendAsync(TestHttpRequest request)
         {
-            if (_webServer is TestWebServer testWebServer)
+            if (WebServerInstance is TestWebServer testWebServer)
                 return await testWebServer.GetClient().SendAsync(request);
 
             using (var client = new HttpClient())

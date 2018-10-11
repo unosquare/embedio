@@ -92,12 +92,6 @@
             RegisterModule(new FallbackModule(action));
         }
 
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            // do nothing
-        }
-
         /// <summary>
         /// Gets the test HTTP Client.
         /// </summary>

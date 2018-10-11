@@ -12,8 +12,7 @@
     /// The basic behaviour for a WebServer is register/unregister modules and
     /// run asynchronous to receive incoming HTTP Requests.
     /// </summary>
-    /// <seealso cref="System.IDisposable" />
-    public interface IWebServer : IDisposable
+    public interface IWebServer
     {
         /// <summary>
         /// Gets registered SessionModule (if any).

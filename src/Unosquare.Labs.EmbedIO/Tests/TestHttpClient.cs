@@ -45,7 +45,6 @@
         /// <returns>
         /// A task representing the GET call.
         /// </returns>
-        /// <exception cref="InvalidOperationException">The IWebServer implementation should be TestWebServer.</exception>
         public async Task<string> GetAsync(string url)
         {
             var response = await SendAsync(new TestHttpRequest($"http://test/{url}"));
@@ -54,11 +53,11 @@
         }
 
         /// <summary>
-        /// Sends the asynchronous.
+        /// Sends the HTTP request asynchronous.
         /// </summary>
         /// <param name="request">The request.</param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
+        /// <returns>A task representing the HTTP response.</returns>
+        /// <exception cref="InvalidOperationException">The IWebServer implementation should be TestWebServer.</exception>
         public async Task<TestHttpResponse> SendAsync(TestHttpRequest request)
         {   
             var context = new TestHttpContext(request, WebServer);

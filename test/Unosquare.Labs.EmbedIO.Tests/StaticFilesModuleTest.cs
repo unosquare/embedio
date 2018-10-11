@@ -63,7 +63,7 @@
                         Assert.IsTrue(string.IsNullOrWhiteSpace(response.Headers.Pragma.ToString()), "Pragma empty");
                     }
 
-                    _webServer.Module<StaticFilesModule>().DefaultHeaders.Add(Headers.Pragma, HeaderPragmaValue);
+                    WebServerInstance.Module<StaticFilesModule>().DefaultHeaders.Add(Headers.Pragma, HeaderPragmaValue);
 
                     request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
 

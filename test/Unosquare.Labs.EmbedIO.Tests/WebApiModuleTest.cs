@@ -25,7 +25,7 @@
             {
                 const string name = nameof(TestControllerWithConstructor);
 
-                _webServer.Module<WebApiModule>().RegisterController((ctx) => new TestControllerWithConstructor(ctx, name));
+                WebServerInstance.Module<WebApiModule>().RegisterController((ctx) => new TestControllerWithConstructor(ctx, name));
                 using (var client = new HttpClient())
                 {
                     var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "name");
@@ -40,7 +40,7 @@
             [Test]
             public async Task GetWebApiWithCacheControlPublic_ReturnsValidResponse()
             {
-                _webServer.Module<WebApiModule>().RegisterController((ctx) => new TestControllerWithConstructor(ctx));
+                WebServerInstance.Module<WebApiModule>().RegisterController((ctx) => new TestControllerWithConstructor(ctx));
                 using (var client = new HttpClient())
                 {
                     var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "namePublic");
@@ -59,7 +59,7 @@
             [Test]
             public async Task GetWebApiWithCacheControlDefault_ReturnsValidResponse()
             {
-                _webServer.Module<WebApiModule>().RegisterController((ctx) => new TestControllerWithConstructor(ctx));
+                WebServerInstance.Module<WebApiModule>().RegisterController((ctx) => new TestControllerWithConstructor(ctx));
                 using (var client = new HttpClient())
                 {
                     var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "name");
@@ -174,7 +174,7 @@
                     {
                         new KeyValuePair<string, string>("test", "data"),
                         new KeyValuePair<string, string>(label1, "1"),
-                        new KeyValuePair<string, string>(label2, "2")
+                        new KeyValuePair<string, string>(label2, "2"),
                     };
 
                     var formContent = new FormUrlEncodedContent(content);
@@ -198,7 +198,7 @@
                     var content = new[]
                     {
                         new KeyValuePair<string, string>("test", "data"),
-                        new KeyValuePair<string, string>("id", "1")
+                        new KeyValuePair<string, string>("id", "1"),
                     };
 
                     var formContent = new FormUrlEncodedContent(content);
