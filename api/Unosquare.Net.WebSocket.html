@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class WebSocket
    | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 2.39.2.0">
+    <meta name="generator" content="docfx 2.40.0.0">
     
     <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -92,6 +92,7 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocket.html">IWebSocket</a></div>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
   </div>
   <div class="inheritedMembers">
@@ -121,7 +122,7 @@
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Net.html">Unosquare.Net</a></h6>
   <h5 id="Unosquare_Net_WebSocket_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class WebSocket : IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public class WebSocket : IWebSocket, IDisposable</code></pre>
   </div>
   <h5 id="Unosquare_Net_WebSocket_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>The WebSocket class provides a set of methods and properties for two-way communication using
@@ -413,7 +414,7 @@ The Origin header has the following syntax:
   
   <a id="Unosquare_Net_WebSocket_State_" data-uid="Unosquare.Net.WebSocket.State*"></a>
   <h4 id="Unosquare_Net_WebSocket_State" data-uid="Unosquare.Net.WebSocket.State">State</h4>
-  <div class="markdown level1 summary"><p>Gets the state of the WebSocket connection.</p>
+  <div class="markdown level1 summary"><p>Gets the state.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -431,8 +432,7 @@ The Origin header has the following syntax:
     <tbody>
       <tr>
         <td><a class="xref" href="Unosquare.Net.WebSocketState.html">WebSocketState</a></td>
-        <td><p>One of the <a class="xref" href="Unosquare.Net.WebSocketState.html">WebSocketState</a> enum values, indicates the state of the connection.
-The default value is <a class="xref" href="Unosquare.Net.WebSocketState.html#Unosquare_Net_WebSocketState_Connecting">Connecting</a>.</p>
+        <td><p>The state.</p>
 </td>
       </tr>
     </tbody>
@@ -494,6 +494,51 @@ The default value is <a class="xref" href="Unosquare.Net.WebSocketState.html#Uno
   </table>
   <h3 id="methods">Methods
   </h3>
+  
+  
+  <a id="Unosquare_Net_WebSocket_CloseAsync_" data-uid="Unosquare.Net.WebSocket.CloseAsync*"></a>
+  <h4 id="Unosquare_Net_WebSocket_CloseAsync_System_Threading_CancellationToken_" data-uid="Unosquare.Net.WebSocket.CloseAsync(System.Threading.CancellationToken)">CloseAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Closes the asynchronous.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task CloseAsync(CancellationToken ct)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td><p>The ct.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>The task object representing the asynchronous operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="Unosquare_Net_WebSocket_CloseAsync_" data-uid="Unosquare.Net.WebSocket.CloseAsync*"></a>
@@ -692,6 +737,63 @@ otherwise, <code>false</code>.</p>
   
   
   <a id="Unosquare_Net_WebSocket_SendAsync_" data-uid="Unosquare.Net.WebSocket.SendAsync*"></a>
+  <h4 id="Unosquare_Net_WebSocket_SendAsync_System_Byte___System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Net.WebSocket.SendAsync(System.Byte[],System.Boolean,System.Threading.CancellationToken)">SendAsync(Byte[], Boolean, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Sends the asynchronous.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task SendAsync(byte[] buffer, bool isText, CancellationToken ct)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The buffer.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isText</span></td>
+        <td><p>if set to <code>true</code> [is text].</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td><p>The ct.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>A task that represents the asynchronous of send data using websocket.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Net_WebSocket_SendAsync_" data-uid="Unosquare.Net.WebSocket.SendAsync*"></a>
   <h4 id="Unosquare_Net_WebSocket_SendAsync_System_Byte___Unosquare_Net_Opcode_System_Threading_CancellationToken_" data-uid="Unosquare.Net.WebSocket.SendAsync(System.Byte[],Unosquare.Net.Opcode,System.Threading.CancellationToken)">SendAsync(Byte[], Opcode, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Sends binary <code data-dev-comment-type="paramref" class="paramref">data</code> using the WebSocket connection.</p>
 </div>
@@ -805,6 +907,9 @@ the WebSocket handshake request to the server.</p>
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocket.html">IWebSocket</a>
+  </div>
   <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
   </div>

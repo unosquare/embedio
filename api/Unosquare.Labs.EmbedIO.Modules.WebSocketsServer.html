@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class WebSocketsServer
    | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 2.39.2.0">
+    <meta name="generator" content="docfx 2.40.0.0">
     
     <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -265,7 +265,7 @@ and data transmission.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ReadOnlyCollection&lt;WebSocketContext&gt; WebSockets { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ReadOnlyCollection&lt;IWebSocketContext&gt; WebSockets { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -277,7 +277,7 @@ and data transmission.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1">ReadOnlyCollection</a>&lt;<a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1">ReadOnlyCollection</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a>&gt;</td>
         <td><p>The web sockets.</p>
 </td>
       </tr>
@@ -398,13 +398,13 @@ This is a blocking call so it must be called within an independent thread.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Close_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Close*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Close_Unosquare_Net_WebSocketContext_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Close(Unosquare.Net.WebSocketContext)">Close(WebSocketContext)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Close_Unosquare_Labs_EmbedIO_IWebSocketContext_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Close(Unosquare.Labs.EmbedIO.IWebSocketContext)">Close(IWebSocketContext)</h4>
   <div class="markdown level1 summary"><p>Closes the specified web socket, removes it and disposes it.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void Close(WebSocketContext webSocket)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual void Close(IWebSocketContext webSocket)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -417,7 +417,7 @@ This is a blocking call so it must be called within an independent thread.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a></td>
         <td><span class="parametername">webSocket</span></td>
         <td><p>The web socket.</p>
 </td>
@@ -466,13 +466,13 @@ This is a blocking call so it must be called within an independent thread.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnClientConnected_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnClientConnected*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnClientConnected_Unosquare_Net_WebSocketContext_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnClientConnected(Unosquare.Net.WebSocketContext)">OnClientConnected(WebSocketContext)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnClientConnected_Unosquare_Labs_EmbedIO_IWebSocketContext_System_Net_IPEndPoint_System_Net_IPEndPoint_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnClientConnected(Unosquare.Labs.EmbedIO.IWebSocketContext,System.Net.IPEndPoint,System.Net.IPEndPoint)">OnClientConnected(IWebSocketContext, Net.IPEndPoint, Net.IPEndPoint)</h4>
   <div class="markdown level1 summary"><p>Called when this WebSockets Server accepts a new WebSockets client.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected abstract void OnClientConnected(WebSocketContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">protected abstract void OnClientConnected(IWebSocketContext context, Net.IPEndPoint localEndPoint, Net.IPEndPoint remoteEndPoint)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -485,9 +485,21 @@ This is a blocking call so it must be called within an independent thread.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.net.ipendpoint">Net.IPEndPoint</a></td>
+        <td><span class="parametername">localEndPoint</span></td>
+        <td><p>The local endpoint.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.net.ipendpoint">Net.IPEndPoint</a></td>
+        <td><span class="parametername">remoteEndPoint</span></td>
+        <td><p>The remote endpoint.</p>
 </td>
       </tr>
     </tbody>
@@ -495,13 +507,13 @@ This is a blocking call so it must be called within an independent thread.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnClientDisconnected_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnClientDisconnected*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnClientDisconnected_Unosquare_Net_WebSocketContext_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnClientDisconnected(Unosquare.Net.WebSocketContext)">OnClientDisconnected(WebSocketContext)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnClientDisconnected_Unosquare_Labs_EmbedIO_IWebSocketContext_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnClientDisconnected(Unosquare.Labs.EmbedIO.IWebSocketContext)">OnClientDisconnected(IWebSocketContext)</h4>
   <div class="markdown level1 summary"><p>Called when the server has removed a WebSockets connected client for any reason.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected abstract void OnClientDisconnected(WebSocketContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">protected abstract void OnClientDisconnected(IWebSocketContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -514,7 +526,7 @@ This is a blocking call so it must be called within an independent thread.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
@@ -524,13 +536,13 @@ This is a blocking call so it must be called within an independent thread.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnFrameReceived_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnFrameReceived*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnFrameReceived_Unosquare_Net_WebSocketContext_System_Byte___Unosquare_Net_WebSocketReceiveResult_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnFrameReceived(Unosquare.Net.WebSocketContext,System.Byte[],Unosquare.Net.WebSocketReceiveResult)">OnFrameReceived(WebSocketContext, Byte[], WebSocketReceiveResult)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnFrameReceived_Unosquare_Labs_EmbedIO_IWebSocketContext_System_Byte___Unosquare_Labs_EmbedIO_IWebSocketReceiveResult_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnFrameReceived(Unosquare.Labs.EmbedIO.IWebSocketContext,System.Byte[],Unosquare.Labs.EmbedIO.IWebSocketReceiveResult)">OnFrameReceived(IWebSocketContext, Byte[], IWebSocketReceiveResult)</h4>
   <div class="markdown level1 summary"><p>Called when this WebSockets Server receives a message frame regardless if the frame represents the EndOfMessage.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected abstract void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)</code></pre>
+    <pre><code class="lang-csharp hljs">protected abstract void OnFrameReceived(IWebSocketContext context, byte[] buffer, IWebSocketReceiveResult result)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -543,21 +555,21 @@ This is a blocking call so it must be called within an independent thread.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
-        <td><span class="parametername">rxBuffer</span></td>
-        <td><p>The response buffer.</p>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The buffer.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.WebSocketReceiveResult.html">WebSocketReceiveResult</a></td>
-        <td><span class="parametername">rxResult</span></td>
-        <td><p>The response result.</p>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketReceiveResult.html">IWebSocketReceiveResult</a></td>
+        <td><span class="parametername">result</span></td>
+        <td><p>The result.</p>
 </td>
       </tr>
     </tbody>
@@ -565,13 +577,13 @@ This is a blocking call so it must be called within an independent thread.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnMessageReceived_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnMessageReceived*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnMessageReceived_Unosquare_Net_WebSocketContext_System_Byte___Unosquare_Net_WebSocketReceiveResult_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnMessageReceived(Unosquare.Net.WebSocketContext,System.Byte[],Unosquare.Net.WebSocketReceiveResult)">OnMessageReceived(WebSocketContext, Byte[], WebSocketReceiveResult)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_OnMessageReceived_Unosquare_Labs_EmbedIO_IWebSocketContext_System_Byte___Unosquare_Labs_EmbedIO_IWebSocketReceiveResult_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnMessageReceived(Unosquare.Labs.EmbedIO.IWebSocketContext,System.Byte[],Unosquare.Labs.EmbedIO.IWebSocketReceiveResult)">OnMessageReceived(IWebSocketContext, Byte[], IWebSocketReceiveResult)</h4>
   <div class="markdown level1 summary"><p>Called when this WebSockets Server receives a full message (EndOfMessage) form a WebSockets client.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected abstract void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)</code></pre>
+    <pre><code class="lang-csharp hljs">protected abstract void OnMessageReceived(IWebSocketContext context, byte[] buffer, IWebSocketReceiveResult result)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -584,21 +596,21 @@ This is a blocking call so it must be called within an independent thread.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
-        <td><span class="parametername">rxBuffer</span></td>
-        <td><p>The response buffer.</p>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The buffer.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.WebSocketReceiveResult.html">WebSocketReceiveResult</a></td>
-        <td><span class="parametername">rxResult</span></td>
-        <td><p>The response result.</p>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketReceiveResult.html">IWebSocketReceiveResult</a></td>
+        <td><span class="parametername">result</span></td>
+        <td><p>The result.</p>
 </td>
       </tr>
     </tbody>
@@ -606,13 +618,13 @@ This is a blocking call so it must be called within an independent thread.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Send_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Send*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Send_Unosquare_Net_WebSocketContext_System_Byte___" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Send(Unosquare.Net.WebSocketContext,System.Byte[])">Send(WebSocketContext, Byte[])</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Send_Unosquare_Labs_EmbedIO_IWebSocketContext_System_Byte___" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Send(Unosquare.Labs.EmbedIO.IWebSocketContext,System.Byte[])">Send(IWebSocketContext, Byte[])</h4>
   <div class="markdown level1 summary"><p>Sends a binary payload.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void Send(WebSocketContext webSocket, byte[] payload)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual void Send(IWebSocketContext webSocket, byte[] payload)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -625,7 +637,7 @@ This is a blocking call so it must be called within an independent thread.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a></td>
         <td><span class="parametername">webSocket</span></td>
         <td><p>The web socket.</p>
 </td>
@@ -641,13 +653,13 @@ This is a blocking call so it must be called within an independent thread.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Send_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Send*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Send_Unosquare_Net_WebSocketContext_System_String_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Send(Unosquare.Net.WebSocketContext,System.String)">Send(WebSocketContext, String)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Send_Unosquare_Labs_EmbedIO_IWebSocketContext_System_String_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Send(Unosquare.Labs.EmbedIO.IWebSocketContext,System.String)">Send(IWebSocketContext, String)</h4>
   <div class="markdown level1 summary"><p>Sends a UTF-8 payload.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void Send(WebSocketContext webSocket, string payload)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual void Send(IWebSocketContext webSocket, string payload)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -660,7 +672,7 @@ This is a blocking call so it must be called within an independent thread.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a></td>
         <td><span class="parametername">webSocket</span></td>
         <td><p>The web socket.</p>
 </td>
