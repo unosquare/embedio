@@ -262,7 +262,7 @@
         public Task SendAsync(byte[] buffer, bool isText, CancellationToken ct) => SendAsync(buffer, isText ? Opcode.Text : Opcode.Binary, ct);
 
         /// <inheritdoc />
-        public Task CloseAsync(bool isNormal, CancellationToken ct) => isNormal ? CloseAsync(CloseStatusCode.Normal, ct: ct) : CloseAsync(ct: ct);
+        public Task CloseAsync(CancellationToken ct) => CloseAsync(CloseStatusCode.Normal, ct: ct);
 
 #if SSL
         /// <summary>

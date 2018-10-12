@@ -12,23 +12,29 @@ namespace Unosquare.Labs.EmbedIO
     /// <inheritdoc />
     public class WebSocket : IWebSocket
     {
-        private readonly System.Net.WebSockets.WebSocket _webSocket;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="WebSocket"/> class.
         /// </summary>
         /// <param name="webSocket">The web socket.</param>
         public WebSocket(System.Net.WebSockets.WebSocket webSocket)
         {
-            _webSocket = webSocket;
+            SystemWebSocket = webSocket;
         }
+
+        /// <summary>
+        /// Gets the real WebSocket object from System.Net.
+        /// </summary>
+        /// <value>
+        /// The system web socket.
+        /// </value>
+        public System.Net.WebSockets.WebSocket SystemWebSocket { get; }
 
         /// <inheritdoc />
         public Net.WebSocketState State
         {
             get
             {
-                switch (_webSocket.State)
+                switch (SystemWebSocket.State)
                 {
                     case WebSocketState.Connecting:
                         return Net.WebSocketState.Connecting;
@@ -41,22 +47,19 @@ namespace Unosquare.Labs.EmbedIO
         }
 
         /// <inheritdoc />
-        public void Dispose() => _webSocket?.Dispose();
+        public void Dispose() => SystemWebSocket?.Dispose();
 
         /// <inheritdoc />
         public Task SendAsync(byte[] buffer, bool isText, CancellationToken ct)
-            => _webSocket.SendAsync(
+            => SystemWebSocket.SendAsync(
                 new ArraySegment<byte>(buffer),
                 isText ? WebSocketMessageType.Text : WebSocketMessageType.Binary,
                 true,
                 ct);
 
         /// <inheritdoc />
-        public Task CloseAsync(bool isNormal, CancellationToken ct) =>
-            _webSocket.CloseAsync(
-                isNormal ? WebSocketCloseStatus.NormalClosure : WebSocketCloseStatus.MessageTooBig,
-                isNormal ? string.Empty : $"Message too big. Maximum is XXX bytes.", // TODO: Complete
-                ct);
+        public Task CloseAsync(CancellationToken ct) =>
+            SystemWebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, ct);
     }
 }
 #endif

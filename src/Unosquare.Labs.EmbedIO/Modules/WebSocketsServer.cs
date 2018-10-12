@@ -16,9 +16,11 @@
     /// </summary>
     public abstract class WebSocketsServer : IDisposable
     {
+        private const int ReceiveBufferSize = 2048;
+
         private readonly object _syncRoot = new object();
         private readonly List<IWebSocketContext> _mWebSockets = new List<IWebSocketContext>(10);
-#if NET47
+#if !NETSTANDARD1_3 && !UWP
         private readonly int _maximumMessageSize;
 #endif
         private bool _isDisposing;
@@ -96,12 +98,10 @@
         /// <returns>A task that represents the asynchronous of websocket connection operation.</returns>
         public async Task AcceptWebSocket(IHttpContext context, CancellationToken ct)
         {
-            const int receiveBufferSize = 2048;
-
             // first, accept the websocket
             $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
 
-            var webSocketContext = await context.AcceptWebSocketAsync(receiveBufferSize);
+            var webSocketContext = await context.AcceptWebSocketAsync(ReceiveBufferSize);
 
             // remove the disconnected clients
             CollectDisconnected();
@@ -119,68 +119,16 @@
 
             try
             {
-#if NET47
-                // define a receive buffer
-                var receiveBuffer = new byte[receiveBufferSize];
-
-                // define a dynamic buffer that holds multi-part receptions
-                var receivedMessage = new List<byte>(receiveBuffer.Length * 2);
-
-                // poll the WebSockets connections for reception
-                while (webSocketContext.WebSocket.State == Net.WebSocketState.Open)
+#if !NETSTANDARD1_3 && !UWP
+                if (webSocketContext.WebSocket is WebSocket systemWebSocket)
                 {
-                    // retrieve the result (blocking)
-                    var receiveResult = new WebSocketReceiveResult(await ((System.Net.WebSockets.WebSocket) webSocketContext.WebSocket).ReceiveAsync(new ArraySegment<byte>(receiveBuffer), ct));
-
-                    if (receiveResult.MessageType == (int) System.Net.WebSockets.WebSocketMessageType.Close)
-                    {
-                        // close the connection if requested by the client
-                        await webSocketContext.WebSocket.CloseAsync(true, ct);
-                        return;
-                    }
-
-                    var frameBytes = new byte[receiveResult.Count];
-                    Array.Copy(receiveBuffer, frameBytes, frameBytes.Length);
-                    OnFrameReceived(webSocketContext, frameBytes, receiveResult);
-
-                    // add the response to the multi-part response
-                    receivedMessage.AddRange(frameBytes);
-
-                    if (receivedMessage.Count > _maximumMessageSize && _maximumMessageSize > 0)
-                    {
-                        // close the connection if message exceeds max length
-                        await webSocketContext.WebSocket.CloseAsync(false, ct);
-
-                        // exit the loop; we're done
-                        return;
-                    }
-
-                    // if we're at the end of the message, process the message
-                    if (receiveResult.EndOfMessage)
-                    {
-                        OnMessageReceived(webSocketContext, receivedMessage.ToArray(), receiveResult);
-                        receivedMessage.Clear();
-                    }
+                    await ProcessSystemWebsocket(webSocketContext, systemWebSocket.SystemWebSocket, ct);
                 }
-#else
-                ((Net.WebSocket) webSocketContext.WebSocket).OnMessage += async (s, e) =>
-                {
-                    if (e.Opcode == Net.Opcode.Close)
-                    {
-                        await webSocketContext.WebSocket.CloseAsync(true, ct: CancellationToken);
-                        return;
-                    }
-
-                    OnMessageReceived(webSocketContext,
-                        e.RawData,
-                        new Net.WebSocketReceiveResult(e.RawData.Length, e.Opcode));
-                };
-
-                while (webSocketContext.WebSocket.State == Net.WebSocketState.Open || webSocketContext.WebSocket.State == Net.WebSocketState.Closing)
-                {
-                    await Task.Delay(500, ct);
-                }
+                else
 #endif
+                {
+                    await ProcessEmbedIOWebSocket(webSocketContext, ct);
+                }
             }
             catch (TaskCanceledException)
             {
@@ -218,7 +166,7 @@
             {
                 if (payload == null) payload = string.Empty;
                 var buffer = Encoding.GetBytes(payload);
-                
+
                 await webSocket.WebSocket.SendAsync(buffer, true, CancellationToken);
             }
             catch (Exception ex)
@@ -277,7 +225,7 @@
 
             try
             {
-                await webSocket.WebSocket.CloseAsync(true, CancellationToken);
+                await webSocket.WebSocket.CloseAsync(CancellationToken);
             }
             catch (Exception ex)
             {
@@ -352,7 +300,7 @@
         /// </summary>
         private void RunConnectionWatchdog()
         {
-            var watchDogTask = Task.Run(async () =>
+            Task.Run(async () =>
             {
                 while (_isDisposing == false)
                 {
@@ -404,5 +352,78 @@
             $"{ServerName} - Collected {collectedCount} sockets. WebSocket Count: {WebSockets.Count}".Debug(
                 nameof(WebSocketsServer));
         }
+
+        private async Task ProcessEmbedIOWebSocket(IWebSocketContext webSocketContext, CancellationToken ct)
+        {
+            ((Net.WebSocket)webSocketContext.WebSocket).OnMessage += async (s, e) =>
+           {
+               if (e.Opcode == Net.Opcode.Close)
+               {
+                   await webSocketContext.WebSocket.CloseAsync(CancellationToken);
+                   return;
+               }
+
+               OnMessageReceived(webSocketContext,
+                   e.RawData,
+                   new Net.WebSocketReceiveResult(e.RawData.Length, e.Opcode));
+           };
+
+            while (webSocketContext.WebSocket.State == Net.WebSocketState.Open ||
+                   webSocketContext.WebSocket.State == Net.WebSocketState.Closing)
+            {
+                await Task.Delay(500, ct);
+            }
+        }
+#if !NETSTANDARD1_3 && !UWP
+        private async Task<bool> ProcessSystemWebsocket(IWebSocketContext context, System.Net.WebSockets.WebSocket webSocket, CancellationToken ct)
+        {
+            // define a receive buffer
+            var receiveBuffer = new byte[ReceiveBufferSize];
+
+            // define a dynamic buffer that holds multi-part receptions
+            var receivedMessage = new List<byte>(receiveBuffer.Length * 2);
+
+            // poll the WebSockets connections for reception
+            while (webSocket.State == System.Net.WebSockets.WebSocketState.Open)
+            {
+                // retrieve the result (blocking)
+                var receiveResult = new WebSocketReceiveResult(await webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), ct));
+
+                if (receiveResult.MessageType == (int)System.Net.WebSockets.WebSocketMessageType.Close)
+                {
+                    // close the connection if requested by the client
+                    await webSocket.CloseAsync(System.Net.WebSockets.WebSocketCloseStatus.NormalClosure, string.Empty, ct);
+                    return true;
+                }
+
+                var frameBytes = new byte[receiveResult.Count];
+                Array.Copy(receiveBuffer, frameBytes, frameBytes.Length);
+                OnFrameReceived(context, frameBytes, receiveResult);
+
+                // add the response to the multi-part response
+                receivedMessage.AddRange(frameBytes);
+
+                if (receivedMessage.Count > _maximumMessageSize && _maximumMessageSize > 0)
+                {
+                    // close the connection if message exceeds max length
+                    await webSocket.CloseAsync(System.Net.WebSockets.WebSocketCloseStatus.MessageTooBig,
+                        $"Message too big. Maximum is {_maximumMessageSize} bytes.",
+                        ct);
+
+                    // exit the loop; we're done
+                    return true;
+                }
+
+                // if we're at the end of the message, process the message
+                if (receiveResult.EndOfMessage)
+                {
+                    OnMessageReceived(context, receivedMessage.ToArray(), receiveResult);
+                    receivedMessage.Clear();
+                }
+            }
+
+            return false;
+        }
+#endif
     }
 }

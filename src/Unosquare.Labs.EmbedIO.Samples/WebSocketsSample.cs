@@ -175,7 +175,7 @@
                 {
                     var ws = FindContext(s as Process);
                     if (ws != null && ws.WebSocket.State == Net.WebSocketState.Open)
-                        ws.WebSocket.CloseAsync(true).GetAwaiter().GetResult();
+                        ws.WebSocket.CloseAsync().GetAwaiter().GetResult();
                 }
             };
 

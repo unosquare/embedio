@@ -34,9 +34,8 @@
         /// <summary>
         /// Closes the asynchronous.
         /// </summary>
-        /// <param name="isNormal">if set to <c>true</c> [is normal].</param>
         /// <param name="ct">The ct.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
-        Task CloseAsync(bool isNormal, CancellationToken ct = default);
+        Task CloseAsync(CancellationToken ct = default);
     }
 }
