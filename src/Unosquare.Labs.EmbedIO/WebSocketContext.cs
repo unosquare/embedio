@@ -28,7 +28,7 @@ namespace Unosquare.Labs.EmbedIO
         public ICookieCollection CookieCollection { get; }
 
         /// <inheritdoc />
-        public Uri RequestUri { get; }
+        public Uri RequestUri => _webSocketContext.RequestUri;
     }
 }
 #endif

@@ -373,12 +373,12 @@
             CancellationToken ct = default)
         {
             if (!_validator.CheckIfAvailable())
-                return Task.Delay(0);
+                return Task.Delay(0, ct);
 
             if (code != CloseStatusCode.Undefined &&
                 !WebSocketValidator.CheckParametersForClose(code, reason, IsClient))
             {
-                return Task.Delay(0);
+                return Task.Delay(0, ct);
             }
 
             if (code == CloseStatusCode.NoStatus)
