@@ -212,32 +212,14 @@ This class cannot be inherited.</p>
   
   
   <a id="Unosquare_Net_HttpListenerContext_AcceptWebSocketAsync_" data-uid="Unosquare.Net.HttpListenerContext.AcceptWebSocketAsync*"></a>
-  <h4 id="Unosquare_Net_HttpListenerContext_AcceptWebSocketAsync_System_Int32_" data-uid="Unosquare.Net.HttpListenerContext.AcceptWebSocketAsync(System.Int32)">AcceptWebSocketAsync(Int32)</h4>
-  <div class="markdown level1 summary"><p>Accepts the web socket asynchronous.</p>
+  <h4 id="Unosquare_Net_HttpListenerContext_AcceptWebSocketAsync" data-uid="Unosquare.Net.HttpListenerContext.AcceptWebSocketAsync">AcceptWebSocketAsync()</h4>
+  <div class="markdown level1 summary"><p>Accepts a WebSocket handshake request.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;IWebSocketContext&gt; AcceptWebSocketAsync(int receiveBufferSize)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;WebSocketContext&gt; AcceptWebSocketAsync()</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">receiveBufferSize</span></td>
-        <td><p>Size of the receive buffer.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -248,9 +230,25 @@ This class cannot be inherited.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a>&gt;</td>
-        <td><p>A <a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a> that represents
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a>&gt;</td>
+        <td><p>A <a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a> that represents
 the WebSocket handshake request.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
+        <td><p>This method has already been called.</p>
 </td>
       </tr>
     </tbody>

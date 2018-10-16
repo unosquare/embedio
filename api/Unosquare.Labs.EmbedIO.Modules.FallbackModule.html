@@ -113,7 +113,7 @@
       <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_CancellationToken">WebModuleBase.CancellationToken</a>
     </div>
     <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_Unosquare_Labs_EmbedIO_WebModuleBase_WebHandler_">WebModuleBase.AddHandler(String, HttpVerbs, WebModuleBase.WebHandler)</a>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___">WebModuleBase.AddHandler(String, HttpVerbs, Func&lt;IHttpContext, CancellationToken, Task&lt;Boolean&gt;&gt;)</a>
     </div>
     <div>
       <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_Start_System_Threading_CancellationToken_">WebModuleBase.Start(CancellationToken)</a>
@@ -182,6 +182,35 @@
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.Func{Unosquare.Labs.EmbedIO.IHttpContext,System.Threading.CancellationToken,System.Threading.Tasks.Task{System.Boolean}})">FallbackModule(Func&lt;IHttpContext, CancellationToken, Task&lt;Boolean&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.FallbackModule.html">FallbackModule</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FallbackModule(Func&lt;IHttpContext, CancellationToken, Task&lt;bool&gt;&gt; action)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;&gt;</td>
+        <td><span class="parametername">action</span></td>
+        <td><p>The action.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_String_" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.String)">FallbackModule(String)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.FallbackModule.html">FallbackModule</a> class.</p>
 </div>
@@ -204,35 +233,6 @@
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">redirectUrl</span></td>
         <td><p>The redirect URL.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_Unosquare_Labs_EmbedIO_WebModuleBase_WebHandler_" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(Unosquare.Labs.EmbedIO.WebModuleBase.WebHandler)">FallbackModule(WebModuleBase.WebHandler)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.FallbackModule.html">FallbackModule</a> class.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FallbackModule(WebModuleBase.WebHandler action)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.WebHandler.html">WebModuleBase.WebHandler</a></td>
-        <td><span class="parametername">action</span></td>
-        <td><p>The action.</p>
 </td>
       </tr>
     </tbody>
