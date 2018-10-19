@@ -18,9 +18,9 @@
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <param name="httpMethod">The HTTP method.</param>
-        public TestHttpRequest(string url, string httpMethod = null)
+        public TestHttpRequest(string url, HttpVerbs httpMethod = HttpVerbs.Get)
         {
-            HttpMethod = httpMethod ?? HttpVerbs.Get.ToString();
+            HttpMethod = httpMethod.ToString();
             Url = new Uri(url);
             RawUrl = url;
         }
