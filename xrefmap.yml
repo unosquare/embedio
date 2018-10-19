@@ -3995,12 +3995,12 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.Tests.TestHttpRequest
   fullName: Unosquare.Labs.EmbedIO.Tests.TestHttpRequest
   nameWithType: TestHttpRequest
-- uid: Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.#ctor(System.String,System.String)
-  name: TestHttpRequest(String, String)
-  href: api/Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.html#Unosquare_Labs_EmbedIO_Tests_TestHttpRequest__ctor_System_String_System_String_
-  commentId: M:Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.#ctor(System.String,System.String)
-  fullName: Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.TestHttpRequest(System.String, System.String)
-  nameWithType: TestHttpRequest.TestHttpRequest(String, String)
+- uid: Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.#ctor(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
+  name: TestHttpRequest(String, HttpVerbs)
+  href: api/Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.html#Unosquare_Labs_EmbedIO_Tests_TestHttpRequest__ctor_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_
+  commentId: M:Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.#ctor(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
+  fullName: Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.TestHttpRequest(System.String, Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
+  nameWithType: TestHttpRequest.TestHttpRequest(String, HttpVerbs)
 - uid: Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.#ctor*
   name: TestHttpRequest
   href: api/Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.html#Unosquare_Labs_EmbedIO_Tests_TestHttpRequest__ctor_
