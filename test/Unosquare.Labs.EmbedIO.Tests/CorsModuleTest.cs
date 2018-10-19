@@ -51,7 +51,7 @@
 
             using (var response = await SendAsync(request))
             {
-                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                Assert.AreEqual((int) HttpStatusCode.OK, response.StatusCode, "Status Code OK");
             }
         }
     }

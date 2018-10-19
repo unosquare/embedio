@@ -64,7 +64,7 @@
         /// <value>
         /// The content encoding.
         /// </value>
-        Encoding ContentEncoding { get; set; }
+        Encoding ContentEncoding { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether [keep alive].
@@ -80,7 +80,7 @@
         /// <value>
         /// The protocol version.
         /// </value>
-        Version ProtocolVersion { get; set; }
+        Version ProtocolVersion { get; }
 
         /// <summary>
         /// Adds the header.
@@ -94,5 +94,10 @@
         /// </summary>
         /// <param name="sessionCookie">The session cookie.</param>
         void SetCookie(System.Net.Cookie sessionCookie);
+
+        /// <summary>
+        /// Closes this instance and dispose the resources.
+        /// </summary>
+        void Close();
     }
 }

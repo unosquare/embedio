@@ -9,14 +9,14 @@
     /// <summary>
     /// Represents an <c>IHttpResponse</c> implementation for unit testing.
     /// </summary>
-    /// <seealso cref="Unosquare.Labs.EmbedIO.IHttpResponse" />
+    /// <seealso cref="IHttpResponse" />
     public class TestHttpResponse : IHttpResponse, IDisposable
     {
         /// <inheritdoc />
-        public NameValueCollection Headers { get; }
+        public NameValueCollection Headers { get; } = new NameValueCollection();
 
         /// <inheritdoc />
-        public int StatusCode { get; set; }
+        public int StatusCode { get; set; } = (int) HttpStatusCode.OK;
 
         /// <inheritdoc />
         public long ContentLength64 { get; set; }
@@ -28,27 +28,40 @@
         public Stream OutputStream { get; } = new MemoryStream();
 
         /// <inheritdoc />
-        public ICookieCollection Cookies { get; }
+        public ICookieCollection Cookies { get; } = new Net.CookieCollection();
 
         /// <inheritdoc />
-        public Encoding ContentEncoding { get; set; }
+        public Encoding ContentEncoding { get; } = Encoding.UTF8;
 
         /// <inheritdoc />
         public bool KeepAlive { get; set; }
 
         /// <inheritdoc />
-        public Version ProtocolVersion { get; set; }
+        public Version ProtocolVersion { get; } = Net.HttpVersion.Version11;
+
+        /// <summary>
+        /// Gets the body.
+        /// </summary>
+        /// <value>
+        /// The body.
+        /// </value>
+        public byte[] Body { get; private set; }
+
+        internal bool IsClosed { get; private set; }
 
         /// <inheritdoc />
-        public void AddHeader(string headerName, string value)
-        {
-            throw new NotImplementedException();
-        }
+        public void AddHeader(string headerName, string value) => Headers.Add(headerName, value);
 
         /// <inheritdoc />
-        public void SetCookie(Cookie sessionCookie)
+        public void SetCookie(Cookie sessionCookie) => Cookies.Add(sessionCookie);
+
+        /// <inheritdoc />
+        public void Close()
         {
-            throw new NotImplementedException();
+            IsClosed = true;
+            Body = (OutputStream as MemoryStream)?.ToArray();
+
+            Dispose();
         }
 
         /// <inheritdoc />

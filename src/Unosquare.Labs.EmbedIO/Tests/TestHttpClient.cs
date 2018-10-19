@@ -63,13 +63,16 @@
             var context = new TestHttpContext(request, WebServer);
 
             if (!(WebServer is TestWebServer testServer))
-                throw new InvalidOperationException("The IWebServer implementation should be TestWebServer.");
+                throw new InvalidOperationException($"The {nameof(IWebServer)} implementation should be {nameof(TestWebServer)}.");
 
             testServer.HttpContexts.Enqueue(context);
 
+            if (!(context.Response is TestHttpResponse response))
+                throw new InvalidOperationException($"The response object is invalid.");
+            
             try
             {
-                while (context.Response.OutputStream.Position == 0)
+                while (!response.IsClosed)
                     await Task.Delay(1);
             }
             catch
@@ -77,7 +80,7 @@
                 // ignore
             }
 
-            return context.Response as TestHttpResponse;
+            return response;
         }
     }
 }

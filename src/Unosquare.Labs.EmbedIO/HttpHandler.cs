@@ -55,11 +55,8 @@
             finally
             {
                 // Always close the response stream no matter what.
-#if NET47
-                _context?.Response.OutputStream.Close();
-#else
-                (_context?.Response.OutputStream as Net.ResponseStream)?.Close();
-#endif
+                _context?.Response.Close();
+
                 $"End of Request {_requestId}".Debug(nameof(HttpHandler));
             }
         }

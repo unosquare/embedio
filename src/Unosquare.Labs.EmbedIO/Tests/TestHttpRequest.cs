@@ -10,7 +10,7 @@
     /// <summary>
     /// Represents an <c>IHttpRequest</c> implementation for unit testing.
     /// </summary>
-    /// <seealso cref="Unosquare.Labs.EmbedIO.IHttpRequest" />
+    /// <seealso cref="IHttpRequest" />
     public class TestHttpRequest : IHttpRequest
     {
         /// <summary>
@@ -29,7 +29,7 @@
         public NameValueCollection Headers { get; } = new NameValueCollection();
 
         /// <inheritdoc />
-        public Version ProtocolVersion { get; } = new Version(1, 0);
+        public Version ProtocolVersion { get; } = Net.HttpVersion.Version11;
 
         /// <inheritdoc />
         public bool KeepAlive { get; }

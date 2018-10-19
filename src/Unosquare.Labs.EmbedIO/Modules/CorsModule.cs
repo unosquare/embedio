@@ -56,7 +56,9 @@
                     methods == Strings.CorsWildcard)
                 {
                     context.Response.AddHeader(Headers.AccessControlAllowOrigin, Wildcard);
-                    return isOptions ? ValidateHttpOptions(methods, context, validMethods) : Task.FromResult(false);
+                    var result = isOptions && ValidateHttpOptions(methods, context, validMethods);
+
+                    return Task.FromResult(result);
                 }
 
                 var currentOrigin = context.RequestHeader(Headers.Origin);
@@ -77,7 +79,7 @@
 
                     if (isOptions)
                     {
-                        return ValidateHttpOptions(methods, context, validMethods);
+                        return Task.FromResult(ValidateHttpOptions(methods, context, validMethods));
                     }
                 }
 
@@ -88,7 +90,7 @@
         /// <inheritdoc />
         public override string Name => nameof(CorsModule);
 
-        private static Task<bool> ValidateHttpOptions(
+        private static bool ValidateHttpOptions(
             string methods, 
             IHttpContext context,
             IEnumerable<string> validMethods)
@@ -103,7 +105,7 @@
             }
 
             if (string.IsNullOrWhiteSpace(currentMethod)) 
-                return Task.FromResult(true);
+                return true;
 
             var currentMethods = currentMethod.ToLowerInvariant()
                 .Split(Strings.CommaSplitChar, StringSplitOptions.RemoveEmptyEntries)
@@ -113,12 +115,12 @@
             {
                 context.Response.AddHeader(Headers.AccessControlAllowMethods, currentMethod);
 
-                return Task.FromResult(true);
+                return true;
             }
 
             context.Response.StatusCode = (int) System.Net.HttpStatusCode.BadRequest;
 
-            return Task.FromResult(false);
+            return false;
         }
     }
 }
