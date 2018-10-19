@@ -49,7 +49,10 @@
         {
             var response = await SendAsync(new TestHttpRequest($"http://test/{url}"));
 
-            return Encoding.GetString((response.OutputStream as MemoryStream)?.ToArray());
+            var result = Encoding.GetString((response.OutputStream as MemoryStream)?.ToArray());
+
+            // Remove BOM
+            return result.Length > 0 && result[0] == 65279 ? result.Remove(0, 1) : result;
         }
 
         /// <summary>

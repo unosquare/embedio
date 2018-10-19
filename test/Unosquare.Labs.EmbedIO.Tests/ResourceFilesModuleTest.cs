@@ -3,8 +3,6 @@
     using Constants;
     using Modules;
     using NUnit.Framework;
-    using System.Net;
-    using System.Net.Http;
     using System.Threading.Tasks;
     using TestObjects;
 
@@ -17,44 +15,26 @@
                 {
                     ws.RegisterModule(new ResourceFilesModule(typeof(ResourceFilesModuleTest).Assembly,
                         "Unosquare.Labs.EmbedIO.Tests.Resources"));
-                }, RoutingStrategy.Wildcard)
+                },
+                RoutingStrategy.Wildcard,
+                true)
         {
         }
 
         [Test]
         public async Task GetIndexFile_ReturnsValidContentFromResource()
         {
-            using (var client = new HttpClient())
-            {
-                var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
+            var html = await GetString();
 
-                using (var response = await client.SendAsync(request))
-                {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
-                    var html = await response.Content.ReadAsStringAsync();
-
-                    Assert.AreEqual(Resources.Index, html, "Same content index.html");
-                }
-            }
+            Assert.AreEqual(Resources.Index, html, "Same content index.html");
         }
 
         [Test]
         public async Task GetSubfolderIndexFile_ReturnsValidContentFromResource()
         {
-            using (var client = new HttpClient())
-            {
-                var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "sub/index.html");
+            var html = await GetString("sub/index.html");
 
-                using (var response = await client.SendAsync(request))
-                {
-                    Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
-                    var html = await response.Content.ReadAsStringAsync();
-
-                    Assert.AreEqual(Resources.SubIndex, html, "Same content index.html");
-                }
-            }
+            Assert.AreEqual(Resources.SubIndex, html, "Same content index.html");
         }
     }
 }

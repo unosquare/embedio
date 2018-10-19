@@ -45,7 +45,7 @@
             (WebServerInstance as IDisposable)?.Dispose();
         }
 
-        public async Task<string> GetString(string partialUrl)
+        public async Task<string> GetString(string partialUrl = "")
         {
             if (WebServerInstance is TestWebServer testWebServer)
                 return await testWebServer.GetClient().GetAsync(partialUrl);
