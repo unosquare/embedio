@@ -106,7 +106,7 @@
       <a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_CancellationToken">IWebModule.CancellationToken</a>
     </div>
     <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_Threading_CancellationToken_System_Threading_Tasks_Task_System_Boolean___">IWebModule.AddHandler(String, HttpVerbs, Func&lt;IHttpContext, CancellationToken, Task&lt;Boolean&gt;&gt;)</a>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_Unosquare_Labs_EmbedIO_WebModuleBase_WebHandler_">IWebModule.AddHandler(String, HttpVerbs, WebModuleBase.WebHandler)</a>
     </div>
     <div>
       <a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_Start_System_Threading_CancellationToken_">IWebModule.Start(CancellationToken)</a>
@@ -288,14 +288,14 @@ If no session exists for the context, then null is returned.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_ISessionWebModule_GetSession_" data-uid="Unosquare.Labs.EmbedIO.ISessionWebModule.GetSession*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_ISessionWebModule_GetSession_Unosquare_Net_WebSocketContext_" data-uid="Unosquare.Labs.EmbedIO.ISessionWebModule.GetSession(Unosquare.Net.WebSocketContext)">GetSession(WebSocketContext)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_ISessionWebModule_GetSession_Unosquare_Labs_EmbedIO_IWebSocketContext_" data-uid="Unosquare.Labs.EmbedIO.ISessionWebModule.GetSession(Unosquare.Labs.EmbedIO.IWebSocketContext)">GetSession(IWebSocketContext)</h4>
   <div class="markdown level1 summary"><p>Gets a session object for the given WebSocket context.
 If no session exists for the context, then null is returned.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">SessionInfo GetSession(WebSocketContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">SessionInfo GetSession(IWebSocketContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -308,7 +308,7 @@ If no session exists for the context, then null is returned.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.WebSocketContext.html">WebSocketContext</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
 </td>

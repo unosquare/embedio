@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class HttpContext
+    <title>Class WebSocketContext
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class HttpContext
+    <meta name="title" content="Class WebSocketContext
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.40.0.0">
     
@@ -77,22 +77,22 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.HttpContext">
+            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.WebSocketContext">
   
   
-  <h1 id="Unosquare_Labs_EmbedIO_HttpContext" data-uid="Unosquare.Labs.EmbedIO.HttpContext" class="text-break">Class HttpContext
+  <h1 id="Unosquare_Labs_EmbedIO_WebSocketContext" data-uid="Unosquare.Labs.EmbedIO.WebSocketContext" class="text-break">Class WebSocketContext
   </h1>
-  <div class="markdown level0 summary"><p>Represents a wrapper around a regular HttpListenerContext.</p>
+  <div class="markdown level0 summary"><p>Represents a wrapper around a regular WebSocketContext.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">HttpContext</span></div>
+    <div class="level1"><span class="xref">WebSocketContext</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></div>
+    <div><a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -119,22 +119,22 @@
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.html">Unosquare.Labs.EmbedIO</a></h6>
-  <h5 id="Unosquare_Labs_EmbedIO_HttpContext_syntax">Syntax</h5>
+  <h5 id="Unosquare_Labs_EmbedIO_WebSocketContext_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class HttpContext : IHttpContext</code></pre>
+    <pre><code class="lang-csharp hljs">public class WebSocketContext : IWebSocketContext</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="Unosquare_Labs_EmbedIO_HttpContext__ctor_" data-uid="Unosquare.Labs.EmbedIO.HttpContext.#ctor*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_HttpContext__ctor_HttpListenerContext_" data-uid="Unosquare.Labs.EmbedIO.HttpContext.#ctor(HttpListenerContext)">HttpContext(HttpListenerContext)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.HttpContext.html">HttpContext</a> class.</p>
+  <a id="Unosquare_Labs_EmbedIO_WebSocketContext__ctor_" data-uid="Unosquare.Labs.EmbedIO.WebSocketContext.#ctor*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebSocketContext__ctor_System_Net_WebSockets_HttpListenerWebSocketContext_" data-uid="Unosquare.Labs.EmbedIO.WebSocketContext.#ctor(System.Net.WebSockets.HttpListenerWebSocketContext)">WebSocketContext(Net.WebSockets.HttpListenerWebSocketContext)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.WebSocketContext.html">WebSocketContext</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public HttpContext(HttpListenerContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public WebSocketContext(Net.WebSockets.HttpListenerWebSocketContext webSocketContext)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -147,9 +147,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">HttpListenerContext</span></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>The context.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.net.websockets.httplistenerwebsocketcontext">Net.WebSockets.HttpListenerWebSocketContext</a></td>
+        <td><span class="parametername">webSocketContext</span></td>
+        <td><p>The web socket context.</p>
 </td>
       </tr>
     </tbody>
@@ -158,14 +158,14 @@
   </h3>
   
   
-  <a id="Unosquare_Labs_EmbedIO_HttpContext_Request_" data-uid="Unosquare.Labs.EmbedIO.HttpContext.Request*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_HttpContext_Request" data-uid="Unosquare.Labs.EmbedIO.HttpContext.Request">Request</h4>
-  <div class="markdown level1 summary"><p>Gets the HTTP Request.</p>
+  <a id="Unosquare_Labs_EmbedIO_WebSocketContext_CookieCollection_" data-uid="Unosquare.Labs.EmbedIO.WebSocketContext.CookieCollection*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebSocketContext_CookieCollection" data-uid="Unosquare.Labs.EmbedIO.WebSocketContext.CookieCollection">CookieCollection</h4>
+  <div class="markdown level1 summary"><p>Gets the cookie collection.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IHttpRequest Request { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ICookieCollection CookieCollection { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -177,22 +177,22 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpRequest.html">IHttpRequest</a></td>
-        <td><p>The request.</p>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.ICookieCollection.html">ICookieCollection</a></td>
+        <td><p>The cookie collection.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_HttpContext_Response_" data-uid="Unosquare.Labs.EmbedIO.HttpContext.Response*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_HttpContext_Response" data-uid="Unosquare.Labs.EmbedIO.HttpContext.Response">Response</h4>
-  <div class="markdown level1 summary"><p>Gets the HTTP Response.</p>
+  <a id="Unosquare_Labs_EmbedIO_WebSocketContext_RequestUri_" data-uid="Unosquare.Labs.EmbedIO.WebSocketContext.RequestUri*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebSocketContext_RequestUri" data-uid="Unosquare.Labs.EmbedIO.WebSocketContext.RequestUri">RequestUri</h4>
+  <div class="markdown level1 summary"><p>Gets the request URI.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IHttpResponse Response { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Uri RequestUri { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -204,22 +204,22 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpResponse.html">IHttpResponse</a></td>
-        <td><p>The response.</p>
+        <td><span class="xref">Uri</span></td>
+        <td><p>The request URI.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_HttpContext_WebServer_" data-uid="Unosquare.Labs.EmbedIO.HttpContext.WebServer*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_HttpContext_WebServer" data-uid="Unosquare.Labs.EmbedIO.HttpContext.WebServer">WebServer</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the web server.</p>
+  <a id="Unosquare_Labs_EmbedIO_WebSocketContext_WebSocket_" data-uid="Unosquare.Labs.EmbedIO.WebSocketContext.WebSocket*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebSocketContext_WebSocket" data-uid="Unosquare.Labs.EmbedIO.WebSocketContext.WebSocket">WebSocket</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the web socket.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IWebServer WebServer { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IWebSocket WebSocket { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -231,67 +231,15 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
-        <td><p>The web server.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="methods">Methods
-  </h3>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_HttpContext_AcceptWebSocketAsync_" data-uid="Unosquare.Labs.EmbedIO.HttpContext.AcceptWebSocketAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_HttpContext_AcceptWebSocketAsync_System_Int32_" data-uid="Unosquare.Labs.EmbedIO.HttpContext.AcceptWebSocketAsync(System.Int32)">AcceptWebSocketAsync(Int32)</h4>
-  <div class="markdown level1 summary"><p>Accepts the web socket asynchronous.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;IWebSocketContext&gt; AcceptWebSocketAsync(int receiveBufferSize)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">receiveBufferSize</span></td>
-        <td><p>Size of the receive buffer.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a>&gt;</td>
-        <td><p>A <a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a> that represents
-the WebSocket handshake request.</p>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocket.html">IWebSocket</a></td>
+        <td><p>The web socket.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>
-  </div>
-  <h3 id="seealso">See Also</h3>
-  <div class="seealso">
-      <div><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a>
   </div>
 
 <h3 id="disqus_thread">Comments</h3>

@@ -91,6 +91,10 @@ a WebSocket handshake request received by the <a class="xref" href="Unosquare.Ne
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">WebSocketContext</span></div>
   </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a></div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
@@ -115,7 +119,7 @@ a WebSocket handshake request received by the <a class="xref" href="Unosquare.Ne
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Net.html">Unosquare.Net</a></h6>
   <h5 id="Unosquare_Net_WebSocketContext_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class WebSocketContext</code></pre>
+    <pre><code class="lang-csharp hljs">public class WebSocketContext : IWebSocketContext</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -123,7 +127,7 @@ a WebSocket handshake request received by the <a class="xref" href="Unosquare.Ne
   
   <a id="Unosquare_Net_WebSocketContext_CookieCollection_" data-uid="Unosquare.Net.WebSocketContext.CookieCollection*"></a>
   <h4 id="Unosquare_Net_WebSocketContext_CookieCollection" data-uid="Unosquare.Net.WebSocketContext.CookieCollection">CookieCollection</h4>
-  <div class="markdown level1 summary"><p>Gets the HTTP cookies included in the request.</p>
+  <div class="markdown level1 summary"><p>Gets the cookie collection.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -141,7 +145,7 @@ a WebSocket handshake request received by the <a class="xref" href="Unosquare.Ne
     <tbody>
       <tr>
         <td><a class="xref" href="Unosquare.Labs.EmbedIO.ICookieCollection.html">ICookieCollection</a></td>
-        <td><p>A <a class="xref" href="Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_CookieCollection">CookieCollection</a> that contains the cookies.</p>
+        <td><p>The cookie collection.</p>
 </td>
       </tr>
     </tbody>
@@ -373,13 +377,12 @@ it received a valid WebSocket handshake request.</p>
   
   <a id="Unosquare_Net_WebSocketContext_WebSocket_" data-uid="Unosquare.Net.WebSocketContext.WebSocket*"></a>
   <h4 id="Unosquare_Net_WebSocketContext_WebSocket" data-uid="Unosquare.Net.WebSocketContext.WebSocket">WebSocket</h4>
-  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_WebSocket">WebSocket</a> instance used for
-two-way communication between client and server.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the web socket.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public WebSocket WebSocket { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IWebSocket WebSocket { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -391,8 +394,8 @@ two-way communication between client and server.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.WebSocket.html">WebSocket</a></td>
-        <td><p>A <a class="xref" href="Unosquare.Net.WebSocketContext.html#Unosquare_Net_WebSocketContext_WebSocket">WebSocket</a>.</p>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocket.html">IWebSocket</a></td>
+        <td><p>The web socket.</p>
 </td>
       </tr>
     </tbody>
@@ -428,6 +431,14 @@ two-way communication between client and server.</p>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a>
+  </div>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a></div>
+  </div>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>
