@@ -39,10 +39,12 @@
         public ReadOnlyCollection<IWebModule> Modules => _modules.AsReadOnly();
         
         /// <inheritdoc />
-        public Func<IHttpContext, Task<bool>> OnMethodNotAllowed { get; set; }
-        
+        public Func<IHttpContext, Task<bool>> OnMethodNotAllowed { get; set; } = ctx =>
+            ctx.HtmlResponseAsync(Responses.Response405Html, System.Net.HttpStatusCode.MethodNotAllowed);
+
         /// <inheritdoc />
-        public Func<IHttpContext, Task<bool>> OnNotFound { get; set; }
+        public Func<IHttpContext, Task<bool>> OnNotFound { get; set; } = ctx =>
+            ctx.HtmlResponseAsync(Responses.Response404Html, System.Net.HttpStatusCode.NotFound);
 
         /// <summary>
         /// Gets the HTTP contexts.

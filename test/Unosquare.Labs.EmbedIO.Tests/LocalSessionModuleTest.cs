@@ -17,12 +17,14 @@
 
         public LocalSessionModuleTest()
             : base(ws =>
-            {
-                ws.RegisterModule(new LocalSessionModule { Expiration = TimeSpan.FromSeconds(1) });
-                ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()));
-                ws.RegisterModule(new WebApiModule());
-                ws.Module<WebApiModule>().RegisterController<TestLocalSessionController>();
-            }, Constants.RoutingStrategy.Wildcard)
+                {
+                    ws.RegisterModule(new LocalSessionModule { Expiration = TimeSpan.FromSeconds(1) });
+                    ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()));
+                    ws.RegisterModule(new WebApiModule());
+                    ws.Module<WebApiModule>().RegisterController<TestLocalSessionController>();
+                },
+                Constants.RoutingStrategy.Wildcard,
+                false)
         {
         }
 
@@ -151,9 +153,9 @@
                             WebServerUrl + TestLocalSessionController.GetCookie);
                         var uri = new Uri(WebServerUrl + TestLocalSessionController.GetCookie);
 
-                        using (var resonse = await client.SendAsync(request))
+                        using (var response = await client.SendAsync(request))
                         {
-                            Assert.AreEqual(resonse.StatusCode, HttpStatusCode.OK, "Status OK");
+                            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status OK");
                             var responseCookies = handler.CookieContainer.GetCookies(uri).Cast<Cookie>();
                             Assert.IsNotNull(responseCookies, "Cookies are not null");
 

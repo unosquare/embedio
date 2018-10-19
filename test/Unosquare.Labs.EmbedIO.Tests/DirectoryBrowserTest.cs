@@ -11,7 +11,8 @@
     {
         public DirectoryBrowserTest()
             : base(ws => ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder(false), true)),
-                RoutingStrategy.Wildcard)
+                RoutingStrategy.Wildcard,
+                true)
         {
         }
 

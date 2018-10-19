@@ -11,7 +11,7 @@
     using TestObjects;
 
     [TestFixture]
-    public class WebApiModuleTest : FixtureBase
+    public class WebApiModuleTest : PersonFixtureBase
     {
         public WebApiModuleTest()
             : base(ws => ws.WithWebApiController<TestController>(), Constants.RoutingStrategy.Wildcard)
@@ -79,7 +79,7 @@
         public class HttpGet : WebApiModuleTest
         {
             [Test]
-            public async Task JsonData()
+            public async Task JsonData_ReturnsOk()
             {
                 using (var client = new HttpClient())
                 {
@@ -104,30 +104,30 @@
                             "Remote list count equals local list");
                     }
 
-                    await TestHelper.ValidatePerson(WebServerUrl + TestController.GetPath + remoteList.First().Key);
+                    await ValidatePerson(WebServerUrl + TestController.GetPath + remoteList.First().Key);
                 }
             }
 
             [Test]
-            public async Task JsonDataWithMiddleUrl()
+            public async Task JsonDataWithMiddleUrl_ReturnsOk()
             {
                 var person = PeopleRepository.Database.First();
-                await TestHelper.ValidatePerson(WebServerUrl +
+                await ValidatePerson(WebServerUrl +
                                                 TestController.GetMiddlePath.Replace("*", person.Key.ToString()));
             }
 
             [Test]
-            public async Task JsonAsyncData()
+            public async Task JsonAsyncData_ReturnsOk()
             {
                 var person = PeopleRepository.Database.First();
-                await TestHelper.ValidatePerson(WebServerUrl + TestController.GetAsyncPath + person.Key);
+                await ValidatePerson(WebServerUrl + TestController.GetAsyncPath + person.Key);
             }
         }
 
         public class HttpPost : WebApiModuleTest
         {
             [Test]
-            public async Task JsonData()
+            public async Task JsonData_ReturnsOk()
             {
                 using (var client = new HttpClient())
                 {
@@ -166,7 +166,7 @@
         {
             [TestCase("id", "id")]
             [TestCase("id[0]", "id[1]")]
-            public async Task MultipleIndexedValues(string label1, string label2)
+            public async Task MultipleIndexedValues_ReturnsOk(string label1, string label2)
             {
                 using (var webClient = new HttpClient())
                 {
@@ -191,7 +191,7 @@
             }
 
             [Test]
-            public async Task TestDictionaryFormData()
+            public async Task TestDictionaryFormData_ReturnsOk()
             {
                 using (var webClient = new HttpClient())
                 {

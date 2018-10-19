@@ -52,7 +52,7 @@
                 // return a non-math if no handler hold the route
                 if (path == null)
                 {
-                    return IsMethodNotAllowed(context) && await Server.OnMethodNotAllowed(context);
+                    return IsMethodNotAllowed(context) && Server.OnMethodNotAllowed != null && await Server.OnMethodNotAllowed(context);
                 }
 
                 // search the path and verb

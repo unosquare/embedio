@@ -1,14 +1,10 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
-    using System.Net.Http;
-    using System.Threading.Tasks;
-    using Swan.Formatters;
-    using NUnit.Framework;
+    using Modules;
     using System;
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using Modules;
 
     public static class TestHelper
     {
@@ -118,25 +114,6 @@
                     rng.NextBytes(data);
                     stream.Write(data, 0, data.Length);
                 }
-            }
-        }
-
-        public static async Task ValidatePerson(string url, Person person = null)
-        {
-            person = person ?? PeopleRepository.Database.First();
-
-            using (var http = new HttpClient())
-            {
-                var jsonBody = await http.GetStringAsync(url);
-
-                Assert.IsNotNull(jsonBody, "Json Body is not null");
-                Assert.IsNotEmpty(jsonBody, "Json Body is not empty");
-
-                var item = Json.Deserialize<Person>(jsonBody);
-
-                Assert.IsNotNull(item, "Json Object is not null");
-                Assert.AreEqual(item.Name, person.Name, "Remote objects equality");
-                Assert.AreEqual(item.Name, PeopleRepository.Database.First().Name, "Remote and local objects equality");
             }
         }
     }

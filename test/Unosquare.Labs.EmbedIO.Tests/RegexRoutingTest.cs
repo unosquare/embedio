@@ -8,7 +8,7 @@
     public class RegexRoutingTest : FixtureBase
     {
         public RegexRoutingTest()
-            : base(ws => ws.RegisterModule(new TestRegexModule()), Constants.RoutingStrategy.Regex)
+            : base(ws => ws.RegisterModule(new TestRegexModule()), Constants.RoutingStrategy.Regex, false)
         {
         }
 

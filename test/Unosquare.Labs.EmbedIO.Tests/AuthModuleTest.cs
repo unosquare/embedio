@@ -5,7 +5,6 @@
     using NUnit.Framework;
     using System;
     using System.Net;
-    using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
 
@@ -62,7 +61,6 @@
             using (var response = await SendAsync(request))
             {
                 Assert.AreEqual((int)HttpStatusCode.Unauthorized, response.StatusCode, "Status Code Unauthorized");
-
             }
         }
     }

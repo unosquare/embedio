@@ -45,7 +45,14 @@
                 {
                     "No module generated a response. Sending 404 - Not Found".Error(nameof(HttpHandler));
 
-                    await _context.WebServer.OnNotFound(_context);
+                    if (_context.WebServer.OnNotFound == null)
+                    {
+                        _context.Response.StatusCode = 404;
+                    }
+                    else
+                    {
+                        await _context.WebServer.OnNotFound(_context);
+                    }
                 }
             }
             catch (Exception ex)

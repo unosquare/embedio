@@ -15,7 +15,7 @@
 
         protected FixtureBase(Action<IWebServer> builder, RoutingStrategy routeStrategy = RoutingStrategy.Regex, bool useTestWebServer = false)
         {
-            Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
+            Swan.Terminal.Settings.GlobalLoggingMessageType = Swan.LogMessageType.None;
 
             _builder = builder;
             _routeStrategy = routeStrategy;
