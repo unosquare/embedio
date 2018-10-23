@@ -85,10 +85,22 @@
   <div class="markdown level0 summary"><p>Interface to create a HTTP Response.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.IHttpBase.html#Unosquare_Labs_EmbedIO_IHttpBase_Headers">IHttpBase.Headers</a>
+    </div>
+    <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.IHttpBase.html#Unosquare_Labs_EmbedIO_IHttpBase_Cookies">IHttpBase.Cookies</a>
+    </div>
+    <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.IHttpBase.html#Unosquare_Labs_EmbedIO_IHttpBase_ProtocolVersion">IHttpBase.ProtocolVersion</a>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.html">Unosquare.Labs.EmbedIO</a></h6>
   <h5 id="Unosquare_Labs_EmbedIO_IHttpResponse_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IHttpResponse</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IHttpResponse : IHttpBase</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -175,60 +187,6 @@
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_IHttpResponse_Cookies_" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.Cookies*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IHttpResponse_Cookies" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.Cookies">Cookies</h4>
-  <div class="markdown level1 summary"><p>Gets the cookies.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">ICookieCollection Cookies { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.ICookieCollection.html">ICookieCollection</a></td>
-        <td><p>The cookies.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_IHttpResponse_Headers_" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.Headers*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IHttpResponse_Headers" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.Headers">Headers</h4>
-  <div class="markdown level1 summary"><p>Gets the headers.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">NameValueCollection Headers { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">NameValueCollection</span></td>
-        <td><p>The headers.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Unosquare_Labs_EmbedIO_IHttpResponse_KeepAlive_" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.KeepAlive*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_IHttpResponse_KeepAlive" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.KeepAlive">KeepAlive</h4>
   <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [keep alive].</p>
@@ -277,33 +235,6 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.stream">Stream</a></td>
         <td><p>The output stream.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_IHttpResponse_ProtocolVersion_" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.ProtocolVersion*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IHttpResponse_ProtocolVersion" data-uid="Unosquare.Labs.EmbedIO.IHttpResponse.ProtocolVersion">ProtocolVersion</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the protocol version.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Version ProtocolVersion { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.version">Version</a></td>
-        <td><p>The protocol version.</p>
 </td>
       </tr>
     </tbody>

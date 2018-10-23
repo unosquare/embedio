@@ -1521,6 +1521,51 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.ICookieCollection.Item
   nameWithType: ICookieCollection.Item
+- uid: Unosquare.Labs.EmbedIO.IHttpBase
+  name: IHttpBase
+  href: api/Unosquare.Labs.EmbedIO.IHttpBase.html
+  commentId: T:Unosquare.Labs.EmbedIO.IHttpBase
+  fullName: Unosquare.Labs.EmbedIO.IHttpBase
+  nameWithType: IHttpBase
+- uid: Unosquare.Labs.EmbedIO.IHttpBase.Cookies
+  name: Cookies
+  href: api/Unosquare.Labs.EmbedIO.IHttpBase.html#Unosquare_Labs_EmbedIO_IHttpBase_Cookies
+  commentId: P:Unosquare.Labs.EmbedIO.IHttpBase.Cookies
+  fullName: Unosquare.Labs.EmbedIO.IHttpBase.Cookies
+  nameWithType: IHttpBase.Cookies
+- uid: Unosquare.Labs.EmbedIO.IHttpBase.Cookies*
+  name: Cookies
+  href: api/Unosquare.Labs.EmbedIO.IHttpBase.html#Unosquare_Labs_EmbedIO_IHttpBase_Cookies_
+  commentId: Overload:Unosquare.Labs.EmbedIO.IHttpBase.Cookies
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.IHttpBase.Cookies
+  nameWithType: IHttpBase.Cookies
+- uid: Unosquare.Labs.EmbedIO.IHttpBase.Headers
+  name: Headers
+  href: api/Unosquare.Labs.EmbedIO.IHttpBase.html#Unosquare_Labs_EmbedIO_IHttpBase_Headers
+  commentId: P:Unosquare.Labs.EmbedIO.IHttpBase.Headers
+  fullName: Unosquare.Labs.EmbedIO.IHttpBase.Headers
+  nameWithType: IHttpBase.Headers
+- uid: Unosquare.Labs.EmbedIO.IHttpBase.Headers*
+  name: Headers
+  href: api/Unosquare.Labs.EmbedIO.IHttpBase.html#Unosquare_Labs_EmbedIO_IHttpBase_Headers_
+  commentId: Overload:Unosquare.Labs.EmbedIO.IHttpBase.Headers
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.IHttpBase.Headers
+  nameWithType: IHttpBase.Headers
+- uid: Unosquare.Labs.EmbedIO.IHttpBase.ProtocolVersion
+  name: ProtocolVersion
+  href: api/Unosquare.Labs.EmbedIO.IHttpBase.html#Unosquare_Labs_EmbedIO_IHttpBase_ProtocolVersion
+  commentId: P:Unosquare.Labs.EmbedIO.IHttpBase.ProtocolVersion
+  fullName: Unosquare.Labs.EmbedIO.IHttpBase.ProtocolVersion
+  nameWithType: IHttpBase.ProtocolVersion
+- uid: Unosquare.Labs.EmbedIO.IHttpBase.ProtocolVersion*
+  name: ProtocolVersion
+  href: api/Unosquare.Labs.EmbedIO.IHttpBase.html#Unosquare_Labs_EmbedIO_IHttpBase_ProtocolVersion_
+  commentId: Overload:Unosquare.Labs.EmbedIO.IHttpBase.ProtocolVersion
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.IHttpBase.ProtocolVersion
+  nameWithType: IHttpBase.ProtocolVersion
 - uid: Unosquare.Labs.EmbedIO.IHttpContext
   name: IHttpContext
   href: api/Unosquare.Labs.EmbedIO.IHttpContext.html
@@ -1721,19 +1766,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.IHttpRequest.ContentType
   nameWithType: IHttpRequest.ContentType
-- uid: Unosquare.Labs.EmbedIO.IHttpRequest.Cookies
-  name: Cookies
-  href: api/Unosquare.Labs.EmbedIO.IHttpRequest.html#Unosquare_Labs_EmbedIO_IHttpRequest_Cookies
-  commentId: P:Unosquare.Labs.EmbedIO.IHttpRequest.Cookies
-  fullName: Unosquare.Labs.EmbedIO.IHttpRequest.Cookies
-  nameWithType: IHttpRequest.Cookies
-- uid: Unosquare.Labs.EmbedIO.IHttpRequest.Cookies*
-  name: Cookies
-  href: api/Unosquare.Labs.EmbedIO.IHttpRequest.html#Unosquare_Labs_EmbedIO_IHttpRequest_Cookies_
-  commentId: Overload:Unosquare.Labs.EmbedIO.IHttpRequest.Cookies
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.IHttpRequest.Cookies
-  nameWithType: IHttpRequest.Cookies
 - uid: Unosquare.Labs.EmbedIO.IHttpRequest.HasEntityBody
   name: HasEntityBody
   href: api/Unosquare.Labs.EmbedIO.IHttpRequest.html#Unosquare_Labs_EmbedIO_IHttpRequest_HasEntityBody
@@ -1747,19 +1779,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.IHttpRequest.HasEntityBody
   nameWithType: IHttpRequest.HasEntityBody
-- uid: Unosquare.Labs.EmbedIO.IHttpRequest.Headers
-  name: Headers
-  href: api/Unosquare.Labs.EmbedIO.IHttpRequest.html#Unosquare_Labs_EmbedIO_IHttpRequest_Headers
-  commentId: P:Unosquare.Labs.EmbedIO.IHttpRequest.Headers
-  fullName: Unosquare.Labs.EmbedIO.IHttpRequest.Headers
-  nameWithType: IHttpRequest.Headers
-- uid: Unosquare.Labs.EmbedIO.IHttpRequest.Headers*
-  name: Headers
-  href: api/Unosquare.Labs.EmbedIO.IHttpRequest.html#Unosquare_Labs_EmbedIO_IHttpRequest_Headers_
-  commentId: Overload:Unosquare.Labs.EmbedIO.IHttpRequest.Headers
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.IHttpRequest.Headers
-  nameWithType: IHttpRequest.Headers
 - uid: Unosquare.Labs.EmbedIO.IHttpRequest.HttpMethod
   name: HttpMethod
   href: api/Unosquare.Labs.EmbedIO.IHttpRequest.html#Unosquare_Labs_EmbedIO_IHttpRequest_HttpMethod
@@ -1851,19 +1870,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.IHttpRequest.LocalEndPoint
   nameWithType: IHttpRequest.LocalEndPoint
-- uid: Unosquare.Labs.EmbedIO.IHttpRequest.ProtocolVersion
-  name: ProtocolVersion
-  href: api/Unosquare.Labs.EmbedIO.IHttpRequest.html#Unosquare_Labs_EmbedIO_IHttpRequest_ProtocolVersion
-  commentId: P:Unosquare.Labs.EmbedIO.IHttpRequest.ProtocolVersion
-  fullName: Unosquare.Labs.EmbedIO.IHttpRequest.ProtocolVersion
-  nameWithType: IHttpRequest.ProtocolVersion
-- uid: Unosquare.Labs.EmbedIO.IHttpRequest.ProtocolVersion*
-  name: ProtocolVersion
-  href: api/Unosquare.Labs.EmbedIO.IHttpRequest.html#Unosquare_Labs_EmbedIO_IHttpRequest_ProtocolVersion_
-  commentId: Overload:Unosquare.Labs.EmbedIO.IHttpRequest.ProtocolVersion
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.IHttpRequest.ProtocolVersion
-  nameWithType: IHttpRequest.ProtocolVersion
 - uid: Unosquare.Labs.EmbedIO.IHttpRequest.QueryString
   name: QueryString
   href: api/Unosquare.Labs.EmbedIO.IHttpRequest.html#Unosquare_Labs_EmbedIO_IHttpRequest_QueryString
@@ -2013,32 +2019,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.IHttpResponse.ContentType
   nameWithType: IHttpResponse.ContentType
-- uid: Unosquare.Labs.EmbedIO.IHttpResponse.Cookies
-  name: Cookies
-  href: api/Unosquare.Labs.EmbedIO.IHttpResponse.html#Unosquare_Labs_EmbedIO_IHttpResponse_Cookies
-  commentId: P:Unosquare.Labs.EmbedIO.IHttpResponse.Cookies
-  fullName: Unosquare.Labs.EmbedIO.IHttpResponse.Cookies
-  nameWithType: IHttpResponse.Cookies
-- uid: Unosquare.Labs.EmbedIO.IHttpResponse.Cookies*
-  name: Cookies
-  href: api/Unosquare.Labs.EmbedIO.IHttpResponse.html#Unosquare_Labs_EmbedIO_IHttpResponse_Cookies_
-  commentId: Overload:Unosquare.Labs.EmbedIO.IHttpResponse.Cookies
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.IHttpResponse.Cookies
-  nameWithType: IHttpResponse.Cookies
-- uid: Unosquare.Labs.EmbedIO.IHttpResponse.Headers
-  name: Headers
-  href: api/Unosquare.Labs.EmbedIO.IHttpResponse.html#Unosquare_Labs_EmbedIO_IHttpResponse_Headers
-  commentId: P:Unosquare.Labs.EmbedIO.IHttpResponse.Headers
-  fullName: Unosquare.Labs.EmbedIO.IHttpResponse.Headers
-  nameWithType: IHttpResponse.Headers
-- uid: Unosquare.Labs.EmbedIO.IHttpResponse.Headers*
-  name: Headers
-  href: api/Unosquare.Labs.EmbedIO.IHttpResponse.html#Unosquare_Labs_EmbedIO_IHttpResponse_Headers_
-  commentId: Overload:Unosquare.Labs.EmbedIO.IHttpResponse.Headers
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.IHttpResponse.Headers
-  nameWithType: IHttpResponse.Headers
 - uid: Unosquare.Labs.EmbedIO.IHttpResponse.KeepAlive
   name: KeepAlive
   href: api/Unosquare.Labs.EmbedIO.IHttpResponse.html#Unosquare_Labs_EmbedIO_IHttpResponse_KeepAlive
@@ -2065,19 +2045,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.IHttpResponse.OutputStream
   nameWithType: IHttpResponse.OutputStream
-- uid: Unosquare.Labs.EmbedIO.IHttpResponse.ProtocolVersion
-  name: ProtocolVersion
-  href: api/Unosquare.Labs.EmbedIO.IHttpResponse.html#Unosquare_Labs_EmbedIO_IHttpResponse_ProtocolVersion
-  commentId: P:Unosquare.Labs.EmbedIO.IHttpResponse.ProtocolVersion
-  fullName: Unosquare.Labs.EmbedIO.IHttpResponse.ProtocolVersion
-  nameWithType: IHttpResponse.ProtocolVersion
-- uid: Unosquare.Labs.EmbedIO.IHttpResponse.ProtocolVersion*
-  name: ProtocolVersion
-  href: api/Unosquare.Labs.EmbedIO.IHttpResponse.html#Unosquare_Labs_EmbedIO_IHttpResponse_ProtocolVersion_
-  commentId: Overload:Unosquare.Labs.EmbedIO.IHttpResponse.ProtocolVersion
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.IHttpResponse.ProtocolVersion
-  nameWithType: IHttpResponse.ProtocolVersion
 - uid: Unosquare.Labs.EmbedIO.IHttpResponse.SetCookie(System.Net.Cookie)
   name: SetCookie(Net.Cookie)
   href: api/Unosquare.Labs.EmbedIO.IHttpResponse.html#Unosquare_Labs_EmbedIO_IHttpResponse_SetCookie_System_Net_Cookie_
@@ -5047,19 +5014,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.WebSocket.CloseAsync
   nameWithType: WebSocket.CloseAsync
-- uid: Unosquare.Labs.EmbedIO.WebSocket.Dispose
-  name: Dispose()
-  href: api/Unosquare.Labs.EmbedIO.WebSocket.html#Unosquare_Labs_EmbedIO_WebSocket_Dispose
-  commentId: M:Unosquare.Labs.EmbedIO.WebSocket.Dispose
-  fullName: Unosquare.Labs.EmbedIO.WebSocket.Dispose()
-  nameWithType: WebSocket.Dispose()
-- uid: Unosquare.Labs.EmbedIO.WebSocket.Dispose*
-  name: Dispose
-  href: api/Unosquare.Labs.EmbedIO.WebSocket.html#Unosquare_Labs_EmbedIO_WebSocket_Dispose_
-  commentId: Overload:Unosquare.Labs.EmbedIO.WebSocket.Dispose
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.WebSocket.Dispose
-  nameWithType: WebSocket.Dispose
 - uid: Unosquare.Labs.EmbedIO.WebSocket.SendAsync(System.Byte[],System.Boolean,System.Threading.CancellationToken)
   name: SendAsync(Byte[], Boolean, CancellationToken)
   href: api/Unosquare.Labs.EmbedIO.WebSocket.html#Unosquare_Labs_EmbedIO_WebSocket_SendAsync_System_Byte___System_Boolean_System_Threading_CancellationToken_
@@ -5089,6 +5043,23 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.WebSocket.State
   nameWithType: WebSocket.State
+- uid: Unosquare.Labs.EmbedIO.WebSocket.System#IDisposable#Dispose
+  name: IDisposable.Dispose()
+  href: api/Unosquare.Labs.EmbedIO.WebSocket.html#Unosquare_Labs_EmbedIO_WebSocket_System_IDisposable_Dispose
+  commentId: M:Unosquare.Labs.EmbedIO.WebSocket.System#IDisposable#Dispose
+  name.vb: System.IDisposable.Dispose()
+  fullName: Unosquare.Labs.EmbedIO.WebSocket.System.IDisposable.Dispose()
+  nameWithType: WebSocket.IDisposable.Dispose()
+  nameWithType.vb: WebSocket.System.IDisposable.Dispose()
+- uid: Unosquare.Labs.EmbedIO.WebSocket.System#IDisposable#Dispose*
+  name: IDisposable.Dispose
+  href: api/Unosquare.Labs.EmbedIO.WebSocket.html#Unosquare_Labs_EmbedIO_WebSocket_System_IDisposable_Dispose_
+  commentId: Overload:Unosquare.Labs.EmbedIO.WebSocket.System#IDisposable#Dispose
+  isSpec: "True"
+  name.vb: System.IDisposable.Dispose
+  fullName: Unosquare.Labs.EmbedIO.WebSocket.System.IDisposable.Dispose
+  nameWithType: WebSocket.IDisposable.Dispose
+  nameWithType.vb: WebSocket.System.IDisposable.Dispose
 - uid: Unosquare.Labs.EmbedIO.WebSocket.SystemWebSocket
   name: SystemWebSocket
   href: api/Unosquare.Labs.EmbedIO.WebSocket.html#Unosquare_Labs_EmbedIO_WebSocket_SystemWebSocket
@@ -5798,19 +5769,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.WebSocket.Cookies
   nameWithType: WebSocket.Cookies
-- uid: Unosquare.Net.WebSocket.Dispose
-  name: Dispose()
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Dispose
-  commentId: M:Unosquare.Net.WebSocket.Dispose
-  fullName: Unosquare.Net.WebSocket.Dispose()
-  nameWithType: WebSocket.Dispose()
-- uid: Unosquare.Net.WebSocket.Dispose*
-  name: Dispose
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Dispose_
-  commentId: Overload:Unosquare.Net.WebSocket.Dispose
-  isSpec: "True"
-  fullName: Unosquare.Net.WebSocket.Dispose
-  nameWithType: WebSocket.Dispose
 - uid: Unosquare.Net.WebSocket.EmitOnPing
   name: EmitOnPing
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_EmitOnPing
@@ -5952,6 +5910,23 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.WebSocket.State
   nameWithType: WebSocket.State
+- uid: Unosquare.Net.WebSocket.System#IDisposable#Dispose
+  name: IDisposable.Dispose()
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_System_IDisposable_Dispose
+  commentId: M:Unosquare.Net.WebSocket.System#IDisposable#Dispose
+  name.vb: System.IDisposable.Dispose()
+  fullName: Unosquare.Net.WebSocket.System.IDisposable.Dispose()
+  nameWithType: WebSocket.IDisposable.Dispose()
+  nameWithType.vb: WebSocket.System.IDisposable.Dispose()
+- uid: Unosquare.Net.WebSocket.System#IDisposable#Dispose*
+  name: IDisposable.Dispose
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_System_IDisposable_Dispose_
+  commentId: Overload:Unosquare.Net.WebSocket.System#IDisposable#Dispose
+  isSpec: "True"
+  name.vb: System.IDisposable.Dispose
+  fullName: Unosquare.Net.WebSocket.System.IDisposable.Dispose
+  nameWithType: WebSocket.IDisposable.Dispose
+  nameWithType.vb: WebSocket.System.IDisposable.Dispose
 - uid: Unosquare.Net.WebSocket.Url
   name: Url
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Url
