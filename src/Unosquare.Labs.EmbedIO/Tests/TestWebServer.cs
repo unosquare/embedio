@@ -89,10 +89,7 @@
         /// Any verb and any path.
         /// </summary>
         /// <param name="action">The action.</param>
-        public void OnAny(Func<IHttpContext, CancellationToken, bool> action)
-        {
-            RegisterModule(new FallbackModule(action));
-        }
+        public void OnAny(Func<IHttpContext, CancellationToken, bool> action) => RegisterModule(new FallbackModule(action));
 
         /// <summary>
         /// Gets the test HTTP Client.

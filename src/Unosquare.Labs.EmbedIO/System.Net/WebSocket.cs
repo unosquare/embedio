@@ -258,12 +258,6 @@
         /// <inheritdoc />
         public WebSocketState State => _readyState;
 
-        /// <inheritdoc />
-        public Task SendAsync(byte[] buffer, bool isText, CancellationToken ct) => SendAsync(buffer, isText ? Opcode.Text : Opcode.Binary, ct);
-
-        /// <inheritdoc />
-        public Task CloseAsync(CancellationToken ct) => CloseAsync(CloseStatusCode.Normal, ct: ct);
-
 #if SSL
         /// <summary>
         /// Gets or sets the SSL configuration used to authenticate the server and
@@ -356,6 +350,12 @@
         }
 
         internal WebSocketKey WebSocketKey { get; }
+        
+        /// <inheritdoc />
+        public Task SendAsync(byte[] buffer, bool isText, CancellationToken ct) => SendAsync(buffer, isText ? Opcode.Text : Opcode.Binary, ct);
+
+        /// <inheritdoc />
+        public Task CloseAsync(CancellationToken ct) => CloseAsync(CloseStatusCode.Normal, ct: ct);
 
         /// <summary>
         /// Closes the WebSocket connection asynchronously, and releases
@@ -520,7 +520,7 @@
         }
 
         /// <inheritdoc />
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             try
             {

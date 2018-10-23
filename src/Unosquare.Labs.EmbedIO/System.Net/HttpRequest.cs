@@ -10,7 +10,7 @@
 
     internal class HttpRequest : HttpBase
     {
-        private HttpRequest(string method, string uri)
+        public HttpRequest(string method, string uri)
           : base(HttpVersion.Version11, new NameValueCollection())
         {
             HttpMethod = method;

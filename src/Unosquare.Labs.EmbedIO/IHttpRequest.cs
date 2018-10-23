@@ -5,27 +5,12 @@
     using System.Collections.Specialized;
     using System;
 
+    /// <inheritdoc />
     /// <summary>
     /// Interface to create a HTTP Request.
     /// </summary>
-    public interface IHttpRequest
+    public interface IHttpRequest : IHttpBase
     {
-        /// <summary>
-        /// Gets the headers.
-        /// </summary>
-        /// <value>
-        /// The headers.
-        /// </value>
-        NameValueCollection Headers { get; }
-
-        /// <summary>
-        /// Gets the protocol version.
-        /// </summary>
-        /// <value>
-        /// The protocol version.
-        /// </value>
-        Version ProtocolVersion { get; }
-
         /// <summary>
         /// Gets a value indicating whether [keep alive].
         /// </summary>
@@ -33,14 +18,6 @@
         ///   <c>true</c> if [keep alive]; otherwise, <c>false</c>.
         /// </value>
         bool KeepAlive { get; }
-
-        /// <summary>
-        /// Gets the cookies.
-        /// </summary>
-        /// <value>
-        /// The cookies.
-        /// </value>
-        ICookieCollection Cookies { get; }
 
         /// <summary>
         /// Gets the raw URL.

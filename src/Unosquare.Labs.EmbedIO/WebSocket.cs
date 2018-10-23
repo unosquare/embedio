@@ -47,7 +47,7 @@ namespace Unosquare.Labs.EmbedIO
         }
 
         /// <inheritdoc />
-        public void Dispose() => SystemWebSocket?.Dispose();
+        void IDisposable.Dispose() => SystemWebSocket?.Dispose();
 
         /// <inheritdoc />
         public Task SendAsync(byte[] buffer, bool isText, CancellationToken ct)

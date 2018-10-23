@@ -1,13 +1,11 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
-    using Swan;
     using Modules;
     using Swan.Formatters;
 
     [WebSocketHandler("/test/")]
     public class TestWebSocketBase : WebSocketsServer
     {
-        /// <inheritdoc />
         public override string ServerName => nameof(TestWebSocketBase);
 
         protected override void OnMessageReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
@@ -17,10 +15,9 @@
 
         protected override void OnFrameReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
         {
-            $"Data frame: {rxBuffer.ToText()}".Debug();
+            // Do nothing
         }
 
-        /// <inheritdoc />
         protected override void OnClientConnected(
             IWebSocketContext context, 
             System.Net.IPEndPoint localEndPoint,
@@ -2901,7 +2898,6 @@ i01jQpAUwrKkbVu2EzqXmNMgrAdDISXyvKBRr9frjUbDN8eG0uB5gWdshYxag9Ymu4MthcVMpvwB
 cygSR/MggDhTGBrfglUEKIXXbcbfwgukfyVEJJPOIP0xTtdAhAKBTNyWZuTIcRmIjIcgEEau",
         };
 
-        /// <inheritdoc />
         public override string ServerName => nameof(BigDataWebSocket);
 
         protected override void OnMessageReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
@@ -2911,21 +2907,20 @@ cygSR/MggDhTGBrfglUEKIXXbcbfwgukfyVEJJPOIP0xTtdAhAKBTNyWZuTIcRmIjIcgEEau",
 
         protected override void OnFrameReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
         {
-            $"Data frame: {rxBuffer.ToText()}".Debug();
+            // Do Nothing
         }
 
-        /// <inheritdoc />
         protected override void OnClientConnected(
             IWebSocketContext context, 
             System.Net.IPEndPoint localEndPoint,
             System.Net.IPEndPoint remoteEndPoint)
         {
-            // do nothing
+            // Do nothing
         }
 
         protected override void OnClientDisconnected(IWebSocketContext context)
         {
-            // do nothing
+            // Do nothing
         }
     }
 }
