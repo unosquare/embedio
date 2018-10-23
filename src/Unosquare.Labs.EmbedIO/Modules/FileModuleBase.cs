@@ -65,7 +65,7 @@
         /// <param name="buffer">The buffer.</param>
         /// <param name="ct">The ct.</param>
         /// <returns>A task representing the write action.</returns>
-        protected Task WriteFileAsync(
+        protected async Task WriteFileAsync(
             bool usingPartial,
             string partialHeader,
             long fileSize,
@@ -84,7 +84,7 @@
                     context.Response.StatusCode = 416;
                     context.Response.AddHeader(Headers.ContentRanges, $"bytes */{fileSize}");
 
-                    return Task.FromResult(0);
+                    return;
                 }
 
                 if (upperByteIndex == fileSize)
@@ -111,7 +111,7 @@
                     context.Response.ContentType?.StartsWith("video") == false)
                 {
                     // Perform compression if available
-                    buffer = buffer.Compress();
+                    buffer = await buffer.CompressAsync(cancellationToken: ct);
                     context.Response.AddHeader(Headers.ContentEncoding, Headers.CompressionGzip);
                     lowerByteIndex = 0;
                 }
@@ -119,7 +119,7 @@
                 context.Response.ContentLength64 = buffer.Length;
             }
 
-            return WriteToOutputStream(context.Response, buffer, lowerByteIndex, ct);
+            await WriteToOutputStream(context.Response, buffer, lowerByteIndex, ct);
         }
 
         /// <summary>

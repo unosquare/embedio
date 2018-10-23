@@ -2,6 +2,7 @@
 {
     using System.IO;
     using Labs.EmbedIO;
+    using System.Threading.Tasks;
     using Labs.EmbedIO.Constants;
 
     internal class FragmentBuffer : MemoryStream
@@ -15,16 +16,12 @@
             _fragmentsCompressed = frameIsCompressed;
         }
 
-        public void AddPayload(byte[] data)
-        {
-            using (var input = new MemoryStream(data))
-                input.CopyTo(this, 1024);
-        }
+        public void AddPayload(MemoryStream data) => data.CopyTo(this, 1024);
 
-        public MessageEventArgs GetMessage(CompressionMethod compression)
+        public async Task<MessageEventArgs> GetMessage(CompressionMethod compression)
         {
             var data = _fragmentsCompressed
-                ? this.Compress(compression, System.IO.Compression.CompressionMode.Decompress)
+                ? await this.CompressAsync(compression, System.IO.Compression.CompressionMode.Decompress)
                 : this;
 
             return new MessageEventArgs(_fragmentsOpcode, data.ToArray());

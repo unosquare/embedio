@@ -26,7 +26,15 @@
         internal MessageEventArgs(WebSocketFrame frame)
         {
             Opcode = frame.Opcode;
-            _rawData = frame.PayloadData.ApplicationData;
+
+            if (frame.IsCompressed)
+            {
+                _rawData = frame.PayloadData.ApplicationData.ToArray();
+            }
+            else
+            {
+                _rawData = frame.PayloadData.ApplicationData.ToArray();
+            }
         }
 
         internal MessageEventArgs(Opcode opcode, byte[] rawData)

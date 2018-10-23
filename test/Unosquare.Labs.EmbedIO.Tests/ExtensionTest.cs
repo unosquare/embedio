@@ -1,27 +1,31 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using System.Collections.Generic;
+    using System.IO;
     using NUnit.Framework;
+    using System.Threading.Tasks;
     using Constants;
 
     [TestFixture]
     public class GzipTest
     {
+        private readonly byte[] _buffer = System.Text.Encoding.UTF8.GetBytes("THIS IS DATA");
+
         [TestCase(CompressionMethod.Gzip)]
         [TestCase(CompressionMethod.Deflate)]
         [TestCase(CompressionMethod.None)]
-        public void Compress(CompressionMethod method)
+        public async Task Compress(CompressionMethod method)
         {
-            var buffer = System.Text.Encoding.UTF8.GetBytes("THIS IS DATA");
+            using (var ms = new MemoryStream(_buffer))
+            {
+                var compressBuffer = await ms.CompressAsync(method);
 
-            var compressBuffer = buffer.Compress(method);
+                Assert.IsNotNull(compressBuffer);
 
-            Assert.IsNotNull(compressBuffer);
+                var decompressBuffer = await compressBuffer.CompressAsync(method, System.IO.Compression.CompressionMode.Decompress);
 
-            var uncompressBuffer = compressBuffer.Compress(method, System.IO.Compression.CompressionMode.Decompress);
-
-            Assert.IsNotNull(uncompressBuffer);
-            Assert.AreEqual(uncompressBuffer, buffer);
+                Assert.AreEqual(decompressBuffer.ToArray(), _buffer);
+            }
         }
     }
 

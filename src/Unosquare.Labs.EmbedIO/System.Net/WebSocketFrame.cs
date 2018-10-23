@@ -183,7 +183,7 @@
                 : payloadLen > 125
                     ? "---"
                     : Opcode == Opcode.Text && !(IsFragment || IsMasked || IsCompressed)
-                        ? PayloadData.ApplicationData.ToText()
+                        ? PayloadData.ApplicationData.ToArray().ToText()
                         : PayloadData.ToString();
 
             return $@"
