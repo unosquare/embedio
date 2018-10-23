@@ -1,12 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net452;net47;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.1;net452</TargetFrameworks>
     <AssemblyName>Unosquare.Labs.EmbedIO.Samples</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>Unosquare.Labs.EmbedIO.Samples</PackageId>
-    <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
-    <LangVersion>7.1</LangVersion>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,20 +23,10 @@
     <PackageReference Include="Tubular.ServerSide" Version="1.5.0" />
   </ItemGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
-    <DefineConstants>$(DefineConstants);NET47</DefineConstants>
-  </PropertyGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
     <PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.11" />
   </ItemGroup>
    
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
-    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.11" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="Microsoft.CSharp" />

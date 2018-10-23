@@ -1,45 +1,32 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
-    using Swan;
     using Modules;
     using Swan.Formatters;
-#if NET47
-    using System.Net.WebSockets;
-#else
-    using Net;
-#endif
 
     [WebSocketHandler("/test/")]
     public class TestWebSocketBase : WebSocketsServer
     {
-        /// <inheritdoc />
         public override string ServerName => nameof(TestWebSocketBase);
 
-        protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
+        protected override void OnMessageReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
         {
             Send(context, "HELLO");
         }
 
-        protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
-        {
-            $"Data frame: {rxBuffer.ToText()}".Debug();
-        }
-
-#if NET47
-        /// <inheritdoc />
-        protected override void OnClientConnected(
-            WebSocketContext context, 
-            System.Net.IPEndPoint localEndPoint,
-            System.Net.IPEndPoint remoteEndPoint)
-#else
-        /// <inheritdoc />
-        protected override void OnClientConnected(WebSocketContext context)
-#endif
+        protected override void OnFrameReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
         {
             // Do nothing
         }
 
-        protected override void OnClientDisconnected(WebSocketContext context)
+        protected override void OnClientConnected(
+            IWebSocketContext context, 
+            System.Net.IPEndPoint localEndPoint,
+            System.Net.IPEndPoint remoteEndPoint)
+        {
+            // Do nothing
+        }
+
+        protected override void OnClientDisconnected(IWebSocketContext context)
         {
             // Do nothing
         }
@@ -2908,39 +2895,32 @@ qXTw4AEArtXqpcHS7l27APHQ4cODpdLevX/x0ENfGRwsPfDA/RMTE05hAJCOHj26e/euUqk0VCod
 PHgwBs3c3NzDDz9cKpV279796tFXEWn4xt0A0LlxxFCrAwcTg3nlKABJO3v8reMPPfSwuf7ss88a
 GB48cKBUKu3f/+QDD9xfKpX27dt7+PChECz79gJA6UN3F3pK6+mwkilfWgjWOtlgYN3WxI1Vre32
 i01jQpAUwrKkbVu2EzqXmNMgrAdDISXyvKBRr9frjUbDN8eG0uB5gWdshYxag9Ymu4MthcVMpvwB
-cygSR/MggDhTGBrfglUEKIXXbcbfwgukfyVEJJPOIP0xTtdAhAKBTNyWZuTIcRmIjIcgEEau"
+cygSR/MggDhTGBrfglUEKIXXbcbfwgukfyVEJJPOIP0xTtdAhAKBTNyWZuTIcRmIjIcgEEau",
         };
 
-        /// <inheritdoc />
         public override string ServerName => nameof(BigDataWebSocket);
 
-        protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
+        protected override void OnMessageReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
         {
             Send(context, Json.Serialize(BigDataObject));
         }
 
-        protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
+        protected override void OnFrameReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
         {
-            $"Data frame: {rxBuffer.ToText()}".Debug();
+            // Do Nothing
         }
 
-#if NET47
-        /// <inheritdoc />
         protected override void OnClientConnected(
-            WebSocketContext context, 
+            IWebSocketContext context, 
             System.Net.IPEndPoint localEndPoint,
             System.Net.IPEndPoint remoteEndPoint)
-#else
-        /// <inheritdoc />
-        protected override void OnClientConnected(WebSocketContext context)
-#endif
         {
-            // do nothing
+            // Do nothing
         }
 
-        protected override void OnClientDisconnected(WebSocketContext context)
+        protected override void OnClientDisconnected(IWebSocketContext context)
         {
-            // do nothing
+            // Do nothing
         }
     }
 }

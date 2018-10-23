@@ -10,17 +10,13 @@
 
     internal class HttpRequest : HttpBase
     {
-        internal HttpRequest(string method, string uri)
-          : this(method, uri, HttpVersion.Version11, new NameValueCollection())
-        {
-            Headers["User-Agent"] = HttpResponse.ServerVersion;
-        }
-
-        private HttpRequest(string method, string uri, Version version, NameValueCollection headers)
-          : base(version, headers)
+        public HttpRequest(string method, string uri)
+          : base(HttpVersion.Version11, new NameValueCollection())
         {
             HttpMethod = method;
             RequestUri = uri;
+
+            Headers["User-Agent"] = HttpResponse.ServerVersion;
         }
         
         public CookieCollection Cookies => Headers.GetCookies(false);

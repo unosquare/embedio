@@ -12,11 +12,6 @@
     using Swan.Formatters;
     using System.Threading;
     using System.Threading.Tasks;
-#if NET47
-    using System.Net.WebSockets;
-#else
-    using Net;
-#endif
 
     /// <summary>
     /// Extension methods to help your coding!.
@@ -25,15 +20,9 @@
     {
         #region Constants
 
-        private const string RegexRouteReplace = "([^//]*)";
-        private const string WildcardRouteReplace = "(.*)";
-
         private static readonly byte[] LastByte = { 0x00 };
 
         private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        private static readonly Regex RouteParamRegex = new Regex(@"\{[^\/]*\}",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         #endregion
@@ -75,7 +64,7 @@
         /// <param name="context">The context.</param>
         /// <param name="server">The server.</param>
         /// <returns>A session info for the given websocket context.</returns>
-        public static SessionInfo GetSession(this WebSocketContext context, WebServer server) => server.SessionModule?.GetSession(context);
+        public static SessionInfo GetSession(this IWebSocketContext context, WebServer server) => server.SessionModule?.GetSession(context);
 
         /// <summary>
         /// Gets the session.
@@ -83,7 +72,7 @@
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
         /// <returns>A session info for the given websocket context.</returns>
-        public static SessionInfo GetSession(this WebServer server, WebSocketContext context) => server.SessionModule?.GetSession(context);
+        public static SessionInfo GetSession(this WebServer server, IWebSocketContext context) => server.SessionModule?.GetSession(context);
 
         #endregion
 
@@ -115,10 +104,7 @@
                 || (path.StartsWith(p.Substring(0, p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal)))
                     && path.EndsWith(p.Substring(p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal) + 1))));
 
-            if (string.IsNullOrWhiteSpace(wildcardMatch) == false)
-                path = wildcardMatch;
-
-            return path;
+            return string.IsNullOrWhiteSpace(wildcardMatch) ? path : wildcardMatch;
         }
 
         /// <summary>
@@ -216,9 +202,9 @@
         /// <param name="requestPath">The request path.</param>
         /// <param name="basePath">The base path.</param>
         /// <returns>The params from the request.</returns>
-        public static string[] RequestWildcardUrlParams(string requestPath, string basePath)
+        public static string[] RequestWildcardUrlParams(this string requestPath, string basePath)
         {
-            var match = new Regex(basePath.Replace("*", WildcardRouteReplace)).Match(requestPath);
+            var match = RegexCache.MatchWildcardStrategy(basePath, requestPath);
 
             return match.Success
                 ? match.Groups[1].Value.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries)
@@ -231,7 +217,7 @@
         /// <param name="context">The context.</param>
         /// <param name="urlPattern">The url pattern. </param>
         /// <returns>The params from the request.</returns>
-        public static Dictionary<string, object> RequestRegexUrlParams(this WebSocketContext context, string urlPattern)
+        public static Dictionary<string, object> RequestRegexUrlParams(this IWebSocketContext context, string urlPattern)
           => RequestRegexUrlParams(context.RequestUri.LocalPath, urlPattern);
 
         /// <summary>
@@ -261,8 +247,7 @@
             if (validateFunc == null) validateFunc = () => false;
             if (requestPath == basePath && !validateFunc()) return new Dictionary<string, object>();
 
-            var regex = new Regex(string.Concat("^", RouteParamRegex.Replace(basePath, RegexRouteReplace), "$"), RegexOptions.IgnoreCase);
-            var match = regex.Match(requestPath);
+            var match = RegexCache.MatchRegexStrategy(basePath, requestPath);
 
             var pathParts = basePath.Split('/');
 

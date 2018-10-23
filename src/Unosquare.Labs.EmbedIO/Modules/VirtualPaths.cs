@@ -127,8 +127,7 @@
                 return VirtualPathStatus.Directory;
             }
 
-            if (string.IsNullOrWhiteSpace(DefaultExtension) == false && DefaultExtension.StartsWith(".") &&
-                File.Exists(localPath) == false)
+            if (DefaultExtension?.StartsWith(".") == true && !File.Exists(localPath))
             {
                 localPath += DefaultExtension;
             }
@@ -190,7 +189,7 @@
             /// <summary>
             /// The directory
             /// </summary>
-            Directory
+            Directory,
         }
     }
 }

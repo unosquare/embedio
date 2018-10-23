@@ -52,7 +52,7 @@
                 // return a non-math if no handler hold the route
                 if (path == null)
                 {
-                    return IsMethodNotAllowed(context) && await Server.OnMethodNotAllowed(context);
+                    return IsMethodNotAllowed(context) && Server.OnMethodNotAllowed != null && await Server.OnMethodNotAllowed(context);
                 }
 
                 // search the path and verb
@@ -261,6 +261,10 @@
     /// </summary>
     public abstract class WebApiController : IHttpContext
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebApiController"/> class.
+        /// </summary>
+        /// <param name="context">The context.</param>
         protected WebApiController(IHttpContext context)
         {
             Request = context.Request;
@@ -276,6 +280,12 @@
 
         /// <inheritdoc />
         public IWebServer WebServer { get; set; }
+
+        /// <inheritdoc />
+        public Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize)
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// Sets the default headers to the Web API response.

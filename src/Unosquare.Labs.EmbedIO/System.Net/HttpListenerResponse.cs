@@ -210,22 +210,23 @@
             _cookies.Add(cookie);
         }
 
-        internal void SendHeaders(bool closing, MemoryStream ms)
+        internal MemoryStream SendHeaders(bool closing)
         {
             if (_contentType != null)
             {
-                HeaderCollection.AddWithoutValidate("Content-Type",
-                    _contentType.IndexOf("charset=", StringComparison.Ordinal) == -1
-                        ? $"{_contentType}; charset={Encoding.UTF8.WebName}"
-                        : _contentType);
+                var contentTypeValue = _contentType.IndexOf("charset=", StringComparison.Ordinal) == -1
+                    ? $"{_contentType}; charset={Encoding.UTF8.WebName}"
+                    : _contentType;
+
+                HeaderCollection.Add("Content-Type", contentTypeValue);
             }
 
             if (Headers["Server"] == null)
-                HeaderCollection.AddWithoutValidate("Server", HttpResponse.ServerVersion);
+                HeaderCollection.Add("Server", HttpResponse.ServerVersion);
 
             var inv = CultureInfo.InvariantCulture;
             if (Headers["Date"] == null)
-                HeaderCollection.AddWithoutValidate("Date", DateTime.UtcNow.ToString("r", inv));
+                HeaderCollection.Add("Date", DateTime.UtcNow.ToString("r", inv));
 
             if (!_chunked)
             {
@@ -236,7 +237,7 @@
                 }
 
                 if (_clSet)
-                    HeaderCollection.AddWithoutValidate("Content-Length", _contentLength.ToString(inv));
+                    HeaderCollection.Add("Content-Length", _contentLength.ToString(inv));
             }
 
             var v = _context.Request.ProtocolVersion;
@@ -261,12 +262,12 @@
             // They sent both KeepAlive: true and Connection: close!?
             if (!_keepAlive || connClose)
             {
-                HeaderCollection.AddWithoutValidate("Connection", "close");
+                HeaderCollection.Add("Connection", "close");
                 connClose = true;
             }
 
             if (_chunked)
-                HeaderCollection.AddWithoutValidate("Transfer-Encoding", "chunked");
+                HeaderCollection.Add("Transfer-Encoding", "chunked");
 
             var reuses = _context.Connection.Reuses;
             if (reuses >= 100)
@@ -274,35 +275,26 @@
                 ForceCloseChunked = true;
                 if (!connClose)
                 {
-                    HeaderCollection.AddWithoutValidate("Connection", "close");
+                    HeaderCollection.Add("Connection", "close");
                     connClose = true;
                 }
             }
 
             if (!connClose)
             {
-                HeaderCollection.AddWithoutValidate("Keep-Alive", $"timeout=15,max={100 - reuses}");
+                HeaderCollection.Add("Keep-Alive", $"timeout=15,max={100 - reuses}");
+
                 if (_context.Request.ProtocolVersion <= HttpVersion.Version10)
-                    HeaderCollection.AddWithoutValidate("Connection", "keep-alive");
+                    HeaderCollection.Add("Connection", "keep-alive");
             }
 
             if (_cookies != null)
             {
                 foreach (var cookie in _cookies)
-                    HeaderCollection.AddWithoutValidate("Set-Cookie", CookieToClientString(cookie));
+                    HeaderCollection.Add("Set-Cookie", CookieToClientString(cookie));
             }
 
-            WriteHeaders(ms);
-        }
-
-        private static string FormatHeaders(NameValueCollection headers)
-        {
-            var sb = new StringBuilder();
-
-            foreach (var key in headers.AllKeys)
-                sb.Append(key).Append(": ").Append(headers[key]).Append("\r\n");
-
-            return sb.Append("\r\n").ToString();
+            return WriteHeaders();
         }
 
         private static string CookieToClientString(Cookie cookie)
@@ -338,22 +330,36 @@
 
             _context.Connection.Close(force);
         }
-
-        private void WriteHeaders(Stream ms)
+        
+        private string GetHeaderData()
         {
-            var writer = new StreamWriter(ms, Encoding.UTF8, 256);
-            writer.Write("HTTP/{0} {1} {2}\r\n", ProtocolVersion, _statusCode, StatusDescription);
-            var headersStr = FormatHeaders(HeaderCollection);
-            writer.Write(headersStr);
-            writer.Flush();
+            var sb = new StringBuilder()
+                .AppendFormat("HTTP/{0} {1} ", ProtocolVersion, _statusCode)
+                .Append(StatusDescription)
+                .Append("\r\n");
 
-            var preamble = Encoding.UTF8.GetPreamble().Length;
+            foreach (var key in HeaderCollection.AllKeys)
+                sb.Append(key).Append(": ").Append(HeaderCollection[key]).Append("\r\n");
+
+            return sb.Append("\r\n").ToString();
+        }
+
+        private MemoryStream WriteHeaders()
+        {
+            var stream = new MemoryStream();
+            var data = Encoding.UTF8.GetBytes(GetHeaderData());
+            var preamble = Encoding.UTF8.GetPreamble();
+            stream.Write(preamble, 0, preamble.Length);
+            stream.Write(data, 0, data.Length);
+
             if (_outputStream == null)
                 _outputStream = _context.Connection.GetResponseStream();
 
             // Assumes that the ms was at position 0
-            ms.Position = preamble;
+            stream.Position = preamble.Length;
             HeadersSent = true;
+
+            return stream;
         }
     }
 }

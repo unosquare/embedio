@@ -70,7 +70,7 @@
         /// or
         /// handler.
         /// </exception>
-        void AddHandler(string path, HttpVerbs verb, Func<IHttpContext, CancellationToken, Task<bool>> handler);
+        void AddHandler(string path, HttpVerbs verb, WebModuleBase.WebHandler handler);
 
         /// <summary>
         /// Starts the Web Module.

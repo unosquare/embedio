@@ -32,7 +32,7 @@
         [TestCase("/data/1/2", new[] {"1", "2"})]
         public void UrlParamsWithLastParams(string urlMatch, string[] expected)
         {
-            var result = Extensions.RequestWildcardUrlParams(urlMatch, "/data/*");
+            var result = urlMatch.RequestWildcardUrlParams("/data/*");
             Assert.AreEqual(expected.Length, result.Length);
             Assert.AreEqual(expected[0], result[0]);
         }
@@ -41,7 +41,7 @@
         [TestCase("/1/2/data", new[] {"1", "2"})]
         public void UrlParamsWithInitialParams(string urlMatch, string[] expected)
         {
-            var result = Extensions.RequestWildcardUrlParams(urlMatch, "/*/data");
+            var result = urlMatch.RequestWildcardUrlParams("/*/data");
             Assert.AreEqual(expected.Length, result.Length);
             Assert.AreEqual(expected[0], result[0]);
         }
@@ -50,14 +50,14 @@
         [TestCase("/api/1/2/data", new[] {"1", "2"})]
         public void UrlParamsWithMiddleParams(string urlMatch, string[] expected)
         {
-            var result = Extensions.RequestWildcardUrlParams(urlMatch, "/api/*/data");
+            var result = urlMatch.RequestWildcardUrlParams("/api/*/data");
             Assert.AreEqual(expected.Length, result.Length);
             Assert.AreEqual(expected[0], result[0]);
         }
     }
 
     [TestFixture]
-    public class RquestRegex
+    public class RequestRegex
     {
         private const string DefaultId = "id";
 

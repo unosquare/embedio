@@ -8,7 +8,7 @@
     public class RegexRoutingTest : FixtureBase
     {
         public RegexRoutingTest()
-            : base(ws => ws.RegisterModule(new TestRegexModule()), Constants.RoutingStrategy.Regex)
+            : base(ws => ws.RegisterModule(new TestRegexModule()), Constants.RoutingStrategy.Regex, true)
         {
         }
 
@@ -17,7 +17,7 @@
             [Test]
             public async Task GetDataWithoutRegex()
             {
-                var call = await GetString($"{WebServerUrl}empty");
+                var call = await GetString("empty");
 
                 Assert.AreEqual("data", call);
             }
@@ -25,7 +25,7 @@
             [Test]
             public async Task GetDataWithRegex()
             {
-                var call = await GetString($"{WebServerUrl}data/1");
+                var call = await GetString("data/1");
 
                 Assert.AreEqual("1", call);
             }
@@ -33,7 +33,7 @@
             [Test]
             public async Task GetDataWithMultipleRegex()
             {
-                var call = await GetString($"{WebServerUrl}data/1/dasdasasda");
+                var call = await GetString("data/1/dasdasasda");
 
                 Assert.AreEqual("dasdasasda", call);
             }

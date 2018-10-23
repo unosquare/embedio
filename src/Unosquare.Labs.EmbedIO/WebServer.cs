@@ -22,7 +22,7 @@
     /// By default, the WebServer will use the Regex RoutingStrategy for
     /// all registered modules (<c>IWebModule</c>) and EmbedIO Listener (<c>HttpListenerMode</c>).
     /// </summary>
-    public class WebServer : IWebServer
+    public class WebServer : IWebServer, IDisposable
     {
         private readonly WebModules _modules = new WebModules();
 
@@ -121,6 +121,8 @@
         {
             if (urlPrefixes == null || urlPrefixes.Length <= 0)
                 throw new ArgumentException("At least 1 URL prefix in urlPrefixes must be specified");
+
+            $"Running HTTPListener: {httpListener.GetType()}".Info(nameof(WebServer));
 
             RoutingStrategy = routingStrategy;
             Listener = httpListener;

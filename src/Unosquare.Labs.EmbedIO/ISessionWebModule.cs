@@ -2,11 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-#if NET47
-    using System.Net.WebSockets;
-#else
-    using Net;
-#endif
 
     /// <inheritdoc />
     /// <summary>
@@ -59,6 +54,6 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>A session object for the given WebSocket context.</returns>
-        SessionInfo GetSession(WebSocketContext context);
+        SessionInfo GetSession(IWebSocketContext context);
     }
 }

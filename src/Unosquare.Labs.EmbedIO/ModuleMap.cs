@@ -1,9 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using Constants;
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
     using System.Collections.Generic;
 
     /// <inheritdoc />
@@ -38,6 +35,6 @@
         /// <summary>
         /// The delegate to call for the given path and verb.
         /// </summary>
-        public Func<IHttpContext, CancellationToken, Task<bool>> ResponseHandler { get; set; }
+        public WebModuleBase.WebHandler ResponseHandler { get; set; }
     }
 }

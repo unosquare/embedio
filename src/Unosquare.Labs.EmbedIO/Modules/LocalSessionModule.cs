@@ -8,11 +8,6 @@
     using Swan;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-#if NET47
-    using System.Net.WebSockets;
-#else
-    using Net;
-#endif
 
     /// <summary>
     /// A simple module to handle in-memory sessions. Do not use for distributed applications.
@@ -36,8 +31,9 @@
         /// </summary>
         private readonly object _sessionsSyncLock = new object();
 
+        /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance of the <see cref="LocalSessionModule"/> class.
+        /// Initializes a new instance of the <see cref="T:Unosquare.Labs.EmbedIO.Modules.LocalSessionModule" /> class.
         /// </summary>
         public LocalSessionModule()
         {
@@ -119,7 +115,7 @@
         public string CookiePath { get; set; } = "/";
 
         /// <inheritdoc />
-        public override string Name => nameof(LocalSessionModule).Humanize();
+        public override string Name => nameof(LocalSessionModule);
 
         /// <summary>
         /// Gets the <see cref="SessionInfo"/> with the specified cookie value.
@@ -164,7 +160,7 @@
         }
 
         /// <inheritdoc />
-        public SessionInfo GetSession(WebSocketContext context)
+        public SessionInfo GetSession(IWebSocketContext context)
         {
             lock (_sessionsSyncLock)
             {

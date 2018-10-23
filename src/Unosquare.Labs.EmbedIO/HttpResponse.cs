@@ -22,6 +22,7 @@ namespace Unosquare.Labs.EmbedIO
         public HttpResponse(HttpListenerContext context)
         {
             _response = context.Response;
+            Cookies = new CookieCollection(_response.Cookies);
         }
 
         /// <inheritdoc />
@@ -52,7 +53,7 @@ namespace Unosquare.Labs.EmbedIO
         public Stream OutputStream => _response.OutputStream;
 
         /// <inheritdoc />
-        public ICookieCollection Cookies => new CookieCollection(_response.Cookies);
+        public ICookieCollection Cookies { get; }
 
         /// <inheritdoc />
         public Encoding ContentEncoding
@@ -80,6 +81,13 @@ namespace Unosquare.Labs.EmbedIO
 
         /// <inheritdoc />
         public void SetCookie(Cookie sessionCookie) => _response.SetCookie(sessionCookie);
+
+        /// <inheritdoc />
+        public void Close()
+        {
+            _response.OutputStream?.Close();
+            _response.OutputStream?.Dispose();
+        }
     }
 }
 #endif

@@ -1,23 +1,14 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
-    using System;
-    using System.Collections.Specialized;
     using System.Text;
     using System.IO;
 
+    /// <inheritdoc />
     /// <summary>
     /// Interface to create a HTTP Response.
     /// </summary>
-    public interface IHttpResponse
+    public interface IHttpResponse : IHttpBase
     {
-        /// <summary>
-        /// Gets the headers.
-        /// </summary>
-        /// <value>
-        /// The headers.
-        /// </value>
-        NameValueCollection Headers { get; }
-
         /// <summary>
         /// Gets or sets the status code.
         /// </summary>
@@ -51,20 +42,12 @@
         Stream OutputStream { get; }
 
         /// <summary>
-        /// Gets the cookies.
-        /// </summary>
-        /// <value>
-        /// The cookies.
-        /// </value>
-        ICookieCollection Cookies { get; }
-
-        /// <summary>
         /// Gets or sets the content encoding.
         /// </summary>
         /// <value>
         /// The content encoding.
         /// </value>
-        Encoding ContentEncoding { get; set; }
+        Encoding ContentEncoding { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether [keep alive].
@@ -73,14 +56,6 @@
         ///   <c>true</c> if [keep alive]; otherwise, <c>false</c>.
         /// </value>
         bool KeepAlive { get; set; }
-
-        /// <summary>
-        /// Gets or sets the protocol version.
-        /// </summary>
-        /// <value>
-        /// The protocol version.
-        /// </value>
-        Version ProtocolVersion { get; set; }
 
         /// <summary>
         /// Adds the header.
@@ -94,5 +69,10 @@
         /// </summary>
         /// <param name="sessionCookie">The session cookie.</param>
         void SetCookie(System.Net.Cookie sessionCookie);
+
+        /// <summary>
+        /// Closes this instance and dispose the resources.
+        /// </summary>
+        void Close();
     }
 }

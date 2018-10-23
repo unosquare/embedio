@@ -7,9 +7,11 @@
 
     /// <summary>
     /// Provides the properties used to access the information in
-    /// a WebSocket handshake request received by the <see cref="HttpListener"/>.
+    /// a WebSocket handshake request received by the <see cref="HttpListener" />.
     /// </summary>
-    public class WebSocketContext
+    /// <seealso cref="Unosquare.Labs.EmbedIO.IWebSocketContext" />
+    public class WebSocketContext 
+        : IWebSocketContext
     {
         private readonly HttpListenerContext _context;
 
@@ -19,12 +21,7 @@
             WebSocket = new WebSocket(this);
         }
 
-        /// <summary>
-        /// Gets the HTTP cookies included in the request.
-        /// </summary>
-        /// <value>
-        /// A <see cref="CookieCollection"/> that contains the cookies.
-        /// </value>
+        /// <inheritdoc />
         public ICookieCollection CookieCollection => _context.Request.Cookies;
 
         /// <summary>
@@ -103,14 +100,8 @@
         /// </value>
         public string SecWebSocketVersion => _context.Request.Headers[Labs.EmbedIO.Constants.Headers.WebSocketVersion];
 
-        /// <summary>
-        /// Gets the <see cref="WebSocket"/> instance used for
-        /// two-way communication between client and server.
-        /// </summary>
-        /// <value>
-        /// A <see cref="WebSocket"/>.
-        /// </value>
-        public WebSocket WebSocket { get; }
+        /// <inheritdoc />
+        public IWebSocket WebSocket { get; }
 
         internal Stream Stream => _context.Connection.Stream;
 

@@ -45,7 +45,14 @@
                 {
                     "No module generated a response. Sending 404 - Not Found".Error(nameof(HttpHandler));
 
-                    await _context.WebServer.OnNotFound(_context);
+                    if (_context.WebServer.OnNotFound == null)
+                    {
+                        _context.Response.StatusCode = 404;
+                    }
+                    else
+                    {
+                        await _context.WebServer.OnNotFound(_context);
+                    }
                 }
             }
             catch (Exception ex)
@@ -55,11 +62,8 @@
             finally
             {
                 // Always close the response stream no matter what.
-#if NET47
-                _context?.Response.OutputStream.Close();
-#else
-                (_context?.Response.OutputStream as Net.ResponseStream)?.Close();
-#endif
+                _context?.Response.Close();
+
                 $"End of Request {_requestId}".Debug(nameof(HttpHandler));
             }
         }
@@ -128,14 +132,6 @@
                 ct);
         }
 
-        private Map GetHandlerFromPath(IWebModule module)
-            => module.Handlers.FirstOrDefault(x =>
-                string.Equals(
-                    x.Path,
-                    x.Path == ModuleMap.AnyPath ? ModuleMap.AnyPath : _context.RequestPath(),
-                    StringComparison.OrdinalIgnoreCase) &&
-                x.Verb == (x.Verb == HttpVerbs.Any ? HttpVerbs.Any : _context.RequestVerb()));
-
         private Map GetHandlerFromRegexPath(IWebModule module)
             => module.Handlers.FirstOrDefault(x =>
                 (x.Path == ModuleMap.AnyPath || _context.RequestRegexUrlParams(x.Path) != null) &&
@@ -153,7 +149,7 @@
                     (x.Verb == HttpVerbs.Any || x.Verb == _context.RequestVerb()));
         }
 
-        private Func<IHttpContext, CancellationToken, Task<bool>> GetHandler(IWebModule module)
+        private WebModuleBase.WebHandler GetHandler(IWebModule module)
         {
             Map handler;
 
@@ -164,9 +160,6 @@
                     break;
                 case RoutingStrategy.Regex:
                     handler = GetHandlerFromRegexPath(module);
-                    break;
-                case RoutingStrategy.Simple:
-                    handler = GetHandlerFromPath(module);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(RoutingStrategy));

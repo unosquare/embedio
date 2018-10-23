@@ -12,13 +12,13 @@
         private int _length;
         private long _remainingBody;
         
-        internal RequestStream(Stream stream, byte[] buffer, int offset, int length, long contentlength = -1)
+        internal RequestStream(Stream stream, byte[] buffer, int offset, int length, long contentLength = -1)
         {
             _stream = stream;
             _buffer = buffer;
             _offset = offset;
             _length = length;
-            _remainingBody = contentlength;
+            _remainingBody = contentLength;
         }
 
         public override bool CanRead => true;
@@ -45,7 +45,8 @@
             var nread = FillFromBuffer(buffer, offset, count);
 
             if (nread == -1)
-            { // No more bytes available (Content-Length)
+            { 
+                // No more bytes available (Content-Length)
                 return 0;
             }
 
@@ -55,8 +56,10 @@
             }
 
             nread = _stream.Read(buffer, offset, count);
+            
             if (nread > 0 && _remainingBody > 0)
                 _remainingBody -= nread;
+
             return nread;
         }
         

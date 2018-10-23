@@ -1,5 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Interface to create a HTTP Context.
     /// </summary>
@@ -28,5 +30,15 @@
         /// The web server.
         /// </value>
         IWebServer WebServer { get; set; }
+
+        /// <summary>
+        /// Accepts the web socket asynchronous.
+        /// </summary>
+        /// <param name="receiveBufferSize">Size of the receive buffer.</param>
+        /// <returns>
+        /// A <see cref="IWebSocketContext" /> that represents
+        /// the WebSocket handshake request.
+        /// </returns>
+        Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize);
     }
 }

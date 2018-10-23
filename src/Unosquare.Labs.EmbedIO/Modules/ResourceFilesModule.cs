@@ -55,7 +55,7 @@
         }
 
         /// <inheritdoc />
-        public override string Name => nameof(ResourceFilesModule).Humanize();
+        public override string Name => nameof(ResourceFilesModule);
 
         private static string FixPath(string s) => s == "/" ? "index.html" : s.Substring(1, s.Length - 1).Replace('/', '.');
 

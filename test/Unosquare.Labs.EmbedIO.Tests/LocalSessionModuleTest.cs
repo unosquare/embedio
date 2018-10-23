@@ -17,12 +17,14 @@
 
         public LocalSessionModuleTest()
             : base(ws =>
-            {
-                ws.RegisterModule(new LocalSessionModule { Expiration = TimeSpan.FromSeconds(1) });
-                ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()));
-                ws.RegisterModule(new WebApiModule());
-                ws.Module<WebApiModule>().RegisterController<TestLocalSessionController>();
-            }, Constants.RoutingStrategy.Wildcard)
+                {
+                    ws.RegisterModule(new LocalSessionModule { Expiration = TimeSpan.FromSeconds(1) });
+                    ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()));
+                    ws.RegisterModule(new WebApiModule());
+                    ws.Module<WebApiModule>().RegisterController<TestLocalSessionController>();
+                },
+                Constants.RoutingStrategy.Wildcard,
+                false)
         {
         }
 
@@ -59,8 +61,8 @@
             [Test]
             public void HasSessionModule()
             {
-                Assert.IsNotNull(_webServer.SessionModule, "Session module is not null");
-                Assert.AreEqual(_webServer.SessionModule.Handlers.Count, 1, "Session module has one handler");
+                Assert.IsNotNull(WebServerInstance.SessionModule, "Session module is not null");
+                Assert.AreEqual(WebServerInstance.SessionModule.Handlers.Count, 1, "Session module has one handler");
             }
 
             [Test]
@@ -151,9 +153,9 @@
                             WebServerUrl + TestLocalSessionController.GetCookie);
                         var uri = new Uri(WebServerUrl + TestLocalSessionController.GetCookie);
 
-                        using (var resonse = await client.SendAsync(request))
+                        using (var response = await client.SendAsync(request))
                         {
-                            Assert.AreEqual(resonse.StatusCode, HttpStatusCode.OK, "Status OK");
+                            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status OK");
                             var responseCookies = handler.CookieContainer.GetCookies(uri).Cast<Cookie>();
                             Assert.IsNotNull(responseCookies, "Cookies are not null");
 

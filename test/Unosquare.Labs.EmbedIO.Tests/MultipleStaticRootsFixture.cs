@@ -9,22 +9,24 @@
     [TestFixture]
     public class MultipleStaticRootsFixture : FixtureBase
     {
-        private readonly string[] _instancesNames = {string.Empty, "A/", "B/", "C/", "A/C", "AAA/A/B/C/", "A/B/C"};
+        private static readonly string[] InstancesNames = {string.Empty, "A/", "B/", "C/", "A/C", "AAA/A/B/C/", "A/B/C"};
 
         public MultipleStaticRootsFixture()
             : base(ws =>
                     ws.RegisterModule(
-                        new StaticFilesModule(new[]
-                                {string.Empty, "A/", "B/", "C/", "A/C", "AAA/A/B/C/", "A/B/C"}
-                            .ToDictionary(x => "/" + x, TestHelper.SetupStaticFolderInstance)) {UseRamCache = true}),
-                Constants.RoutingStrategy.Wildcard)
+                        new StaticFilesModule(InstancesNames.ToDictionary(x => "/" + x, TestHelper.SetupStaticFolderInstance))
+                        {
+                            UseRamCache = true,
+                        }),
+                Constants.RoutingStrategy.Wildcard,
+                true)
         {
         }
 
         [Test]
         public async Task FileContentsMatchInstanceName()
         {
-            foreach (var item in _instancesNames)
+            foreach (var item in InstancesNames)
             {
                 var html = await GetString(item);
 

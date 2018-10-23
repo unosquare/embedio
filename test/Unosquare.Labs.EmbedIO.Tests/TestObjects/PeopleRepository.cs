@@ -25,7 +25,7 @@
                 Age = 31,
                 EmailAddress = "mario@unosquare.com",
                 DoB = new DateTime(1980, 1, 1),
-                MainSkill = "CSharp"
+                MainSkill = "CSharp",
             },
             new Person()
             {
@@ -34,7 +34,7 @@
                 Age = 32,
                 EmailAddress = "geovanni.perez@unosquare.com",
                 DoB = new DateTime(1980, 2, 2),
-                MainSkill = "Javascript"
+                MainSkill = "Javascript",
             },
             new Person()
             {
@@ -43,7 +43,7 @@
                 Age = 29,
                 EmailAddress = "luis.gonzalez@unosquare.com",
                 DoB = new DateTime(1980, 3, 3),
-                MainSkill = "PHP"
+                MainSkill = "PHP",
             },
         };
     }

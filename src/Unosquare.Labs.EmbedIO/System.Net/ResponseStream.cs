@@ -5,7 +5,7 @@
     using System.Runtime.InteropServices;
     using System.Text;
 
-    internal class ResponseStream 
+    internal class ResponseStream
         : Stream
     {
         private static readonly byte[] Crlf = { 13, 10 };
@@ -69,7 +69,7 @@
                             ms.Write(bytes, 0, bytes.Length);
                         }
 
-                        InternalWrite(ms.ToArray(), (int) start, (int) (ms.Length - start));
+                        InternalWrite(ms.ToArray(), (int)start, (int)(ms.Length - start));
                         _trailerSent = true;
                     }
                     else if (chunked && !_trailerSent)
@@ -101,11 +101,12 @@
         public override void Write(byte[] buffer, int offset, int count)
         {
             if (_disposed)
-                throw new ObjectDisposedException(GetType().ToString());
+                throw new ObjectDisposedException(nameof(ResponseStream));
 
             byte[] bytes;
             var ms = GetHeaders(false);
             var chunked = _response.SendChunked;
+
             if (ms != null)
             {
                 var start = ms.Position; // After the possible preamble for the encoding
@@ -169,16 +170,8 @@
 
         private MemoryStream GetHeaders(bool closing = true)
         {
-            // SendHeaders works on shared headers
             lock (_response.HeadersLock)
-            {
-                if (_response.HeadersSent)
-                    return null;
-
-                var ms = new MemoryStream();
-                _response.SendHeaders(closing, ms);
-                return ms;
-            }
+                return _response.HeadersSent ? null : _response.SendHeaders(closing);
         }
     }
 }

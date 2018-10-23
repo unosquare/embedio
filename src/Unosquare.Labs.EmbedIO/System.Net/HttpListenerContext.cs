@@ -43,21 +43,14 @@
 
         internal Guid Id { get; }
 
-        /// <summary>
-        /// Accepts a WebSocket handshake request.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="WebSocketContext" /> that represents
-        /// the WebSocket handshake request.
-        /// </returns>
-        /// <exception cref="InvalidOperationException">This method has already been called.</exception>
-        public async Task<WebSocketContext> AcceptWebSocketAsync()
+        /// <inheritdoc />
+        public async Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize)
         {
             if (_websocketContext != null)
                 throw new InvalidOperationException("The accepting is already in progress.");
 
             _websocketContext = new WebSocketContext(this);
-            await _websocketContext.WebSocket.InternalAcceptAsync();
+            await ((WebSocket) _websocketContext.WebSocket).InternalAcceptAsync();
 
             return _websocketContext;
         }

@@ -1,10 +1,10 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
-    using Swan;
-    using System.Threading.Tasks;
-    using System.Threading;
     using Modules;
+    using Swan;
     using System;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     internal class Program
     {
@@ -37,14 +37,14 @@
 
 
             // Our web server is disposable. 
-            using (var server = new WebServer(url))
+            using (var server = new WebServer(new[] { url }, Constants.RoutingStrategy.Regex, HttpListenerMode.EmbedIO))
             {
                 // First, we will configure our web server by adding Modules.
                 // Please note that order DOES matter.
                 // ================================================================================================
                 // If we want to enable sessions, we simply register the LocalSessionModule
                 // Beware that this is an in-memory session storage mechanism so, avoid storing very large objects.
-                // You can use the server.GetSession() method to get the SessionInfo object and manupulate it.
+                // You can use the server.GetSession() method to get the SessionInfo object and manipulate it.
                 server.RegisterModule(new LocalSessionModule());
 
                 // Set the CORS Rules
