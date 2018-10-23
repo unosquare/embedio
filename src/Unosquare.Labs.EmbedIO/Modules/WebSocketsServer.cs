@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Swan;
@@ -32,7 +31,7 @@
         /// <param name="maxMessageSize">Maximum size of the message in bytes. Enter 0 or negative number to prevent checks.</param>
         protected WebSocketsServer(bool enableConnectionWatchdog, int maxMessageSize = 0)
         {
-#if NET47
+#if !NETSTANDARD1_3 && !UWP
             _maximumMessageSize = maxMessageSize;
 #endif
             if (enableConnectionWatchdog)
@@ -164,8 +163,7 @@
         {
             try
             {
-                if (payload == null) payload = string.Empty;
-                var buffer = Encoding.GetBytes(payload);
+                var buffer = Encoding.GetBytes(payload ?? string.Empty);
 
                 await webSocket.WebSocket.SendAsync(buffer, true, CancellationToken);
             }
@@ -184,9 +182,7 @@
         {
             try
             {
-                if (payload == null) payload = new byte[0];
-
-                await webSocket.WebSocket.SendAsync(payload, false, CancellationToken);
+                await webSocket.WebSocket.SendAsync(payload ?? new byte[0], false, CancellationToken);
             }
             catch (Exception ex)
             {
@@ -200,8 +196,8 @@
         /// <param name="payload">The payload.</param>
         protected virtual void Broadcast(byte[] payload)
         {
-            WebSockets.ToList()
-                .ForEach(wsc => Send(wsc, payload));
+            foreach (var wsc in WebSockets)
+                Send(wsc, payload);
         }
 
         /// <summary>
@@ -210,8 +206,8 @@
         /// <param name="payload">The payload.</param>
         protected virtual void Broadcast(string payload)
         {
-            WebSockets.ToList()
-                .ForEach(wsc => Send(wsc, payload));
+            foreach (var wsc in WebSockets)
+                Send(wsc, payload);
         }
 
         /// <summary>

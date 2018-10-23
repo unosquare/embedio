@@ -9,14 +9,14 @@
 
     public abstract class PersonFixtureBase : FixtureBase
     {
-        protected PersonFixtureBase(Action<IWebServer> builder, RoutingStrategy routeStrategy = RoutingStrategy.Regex, bool useTestWebServer = false) 
+        protected PersonFixtureBase(Action<IWebServer> builder, RoutingStrategy routeStrategy = RoutingStrategy.Regex, bool useTestWebServer = false)
             : base(builder, routeStrategy, useTestWebServer)
         {
         }
 
-        protected async Task ValidatePerson(string url, Person person = null)
+        protected async Task ValidatePerson(string url)
         {
-            person = person ?? PeopleRepository.Database.First();
+            var current = PeopleRepository.Database.First();
 
             var jsonBody = await GetString(url);
 
@@ -26,8 +26,7 @@
             var item = Json.Deserialize<Person>(jsonBody);
 
             Assert.IsNotNull(item, "Json Object is not null");
-            Assert.AreEqual(item.Name, person.Name, "Remote objects equality");
-            Assert.AreEqual(item.Name, PeopleRepository.Database.First().Name, "Remote and local objects equality");
+            Assert.AreEqual(item.Name, current.Name, "Remote objects equality");
         }
     }
 }
