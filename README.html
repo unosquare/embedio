@@ -70,8 +70,7 @@
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
 
-<p><a href="https://app.codacy.com/app/UnosquareLabs/embedio?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=unosquare/embedio&amp;utm_campaign=Badge_Grade_Settings"><img src="https://api.codacy.com/project/badge/Grade/e24c50205c4e486dbbe2b734a790b751" alt="Codacy Badge"></a>
- <a href="https://github.com/igrigorik/ga-beacon"><img src="https://ga-beacon.appspot.com/UA-8535255-2/unosquare/embedio/" alt="Analytics"></a>
+<p> <a href="https://github.com/igrigorik/ga-beacon"><img src="https://ga-beacon.appspot.com/UA-8535255-2/unosquare/embedio/" alt="Analytics"></a>
  <a href="https://ci.appveyor.com/project/geoperez/embedio"><img src="https://ci.appveyor.com/api/projects/status/w59t7sct3a8ir96t?svg=true" alt="Build status"></a>
  <a href="https://travis-ci.org/unosquare/embedio"><img src="https://travis-ci.org/unosquare/embedio.svg?branch=master" alt="Build Status"></a>
  <a href="https://www.nuget.org/packages/Embedio"><img src="https://badge.fury.io/nu/embedio.svg" alt="NuGet version"></a>
@@ -152,7 +151,7 @@
 <td>UAP</td>
 <td><em>Unosquare</em></td>
 <td>No</td>
-<td>Support Windows Universal Platform.</td>
+<td>Support Windows Universal Platform. More information <a href="https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT">here</a></td>
 </tr>
 </tbody>
 </table>
@@ -376,17 +375,16 @@ server.Module&lt;WebSocketsModule&gt;().RegisterWebSocketsServer&lt;WebSocketsCh
 public class WebSocketsChatServer : WebSocketsServer
 {
     public WebSocketsChatServer()
-        : base(true)
+        : base(true, 0)
     {
         // placeholder
     }
 
     public override string ServerName =&gt; &quot;Chat Server&quot;
 
-    protected override void OnMessageReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
+    protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
     {
         var session = this.WebServer.GetSession(context);
-
         foreach (var ws in this.WebSockets)
         {
             if (ws != context)
@@ -394,10 +392,7 @@ public class WebSocketsChatServer : WebSocketsServer
         }
     }
 
-    protected override void OnClientConnected(
-            IWebSocketContext context,
-            System.Net.IPEndPoint localEndPoint,
-            System.Net.IPEndPoint remoteEndPoint)
+    protected override void OnClientConnected(WebSocketContext context)
     {
         this.Send(context, &quot;Welcome to the chat room!&quot;);
 
@@ -408,12 +403,12 @@ public class WebSocketsChatServer : WebSocketsServer
         }
     }
 
-    protected override void OnFrameReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
+    protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
     {
-        // placeholder
+        return;
     }
 
-    protected override void OnClientDisconnected(IWebSocketContext context)
+    protected override void OnClientDisconnected(WebSocketContext context)
     {
         this.Broadcast(&quot;Someone left the chat room.&quot;);
     }
@@ -473,7 +468,7 @@ public class WebSocketsChatServer : WebSocketsServer
               <div class="contribution">
                 <ul class="nav">
                   <li class="top-sep">
-                    <a href="https://github.com/unosquare/embedio/blob/CodacySecurity/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/unosquare/embedio/blob/FixExtension/README.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
