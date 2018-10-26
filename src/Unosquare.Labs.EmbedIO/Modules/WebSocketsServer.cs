@@ -370,6 +370,7 @@
                 await Task.Delay(500, ct);
             }
         }
+
 #if !NETSTANDARD1_3 && !UWP
         private async Task<bool> ProcessSystemWebsocket(IWebSocketContext context, System.Net.WebSockets.WebSocket webSocket, CancellationToken ct)
         {
@@ -411,11 +412,10 @@
                 }
 
                 // if we're at the end of the message, process the message
-                if (receiveResult.EndOfMessage)
-                {
-                    OnMessageReceived(context, receivedMessage.ToArray(), receiveResult);
-                    receivedMessage.Clear();
-                }
+                if (!receiveResult.EndOfMessage) continue;
+
+                OnMessageReceived(context, receivedMessage.ToArray(), receiveResult);
+                receivedMessage.Clear();
             }
 
             return false;
