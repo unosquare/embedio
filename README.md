@@ -49,7 +49,7 @@ Some notes regarding WebSocket and runtimes support:
 | NET47 | Unosquare and *Microsoft* | | Yes | Support Win8+ OS. |
 | NETSTANDARD13 | *Unosquare* | Yes | Support Windows, Linux and macOS using native System.Net library |
 | NETSTANDARD20 | Unosquare and *Microsoft* | Yes | Support Windows, Linux and macOS using native System.Net library |
-| UAP | *Unosquare* | No | Support Windows Universal Platform. More information [here](https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT) |
+| UAP | *Unosquare* | No | Support Windows Universal Platform. |
 
 ### EmbedIO 2.0 - What's new
 
@@ -318,16 +318,17 @@ server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsChatServer>
 public class WebSocketsChatServer : WebSocketsServer
 {
     public WebSocketsChatServer()
-        : base(true, 0)
+        : base(true)
     {
         // placeholder
     }
 
     public override string ServerName => "Chat Server"
 
-    protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
+    protected override void OnMessageReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
     {
         var session = this.WebServer.GetSession(context);
+
         foreach (var ws in this.WebSockets)
         {
             if (ws != context)
@@ -335,7 +336,10 @@ public class WebSocketsChatServer : WebSocketsServer
         }
     }
 
-    protected override void OnClientConnected(WebSocketContext context)
+    protected override void OnClientConnected(
+            IWebSocketContext context,
+            System.Net.IPEndPoint localEndPoint,
+            System.Net.IPEndPoint remoteEndPoint)
     {
         this.Send(context, "Welcome to the chat room!");
         
@@ -346,12 +350,12 @@ public class WebSocketsChatServer : WebSocketsServer
         }
     }
 
-    protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
+    protected override void OnFrameReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
     {
-        return;
+        // placeholder
     }
 
-    protected override void OnClientDisconnected(WebSocketContext context)
+    protected override void OnClientDisconnected(IWebSocketContext context)
     {
         this.Broadcast("Someone left the chat room.");
     }

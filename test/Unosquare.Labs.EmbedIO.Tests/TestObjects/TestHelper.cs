@@ -78,11 +78,9 @@
         public static string SetupStaticFolderInstance(string instanceName)
         {
             var folderName = instanceName.Replace('/', Path.DirectorySeparatorChar);
-            var folder =
-                Path.Combine(
-                    Path.GetDirectoryName(typeof(StaticFilesModuleTest).GetTypeInfo().Assembly.Location) ??
-                    throw new InvalidOperationException(),
-                    folderName);
+            var location = Path.GetDirectoryName(typeof(StaticFilesModuleTest).GetTypeInfo().Assembly.Location) ??
+                           throw new InvalidOperationException();
+            var folder = Path.Combine(location, folderName);
 
             if (Directory.Exists(folder) == false)
                 Directory.CreateDirectory(folder);

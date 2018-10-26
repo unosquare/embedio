@@ -180,7 +180,7 @@
         internal void RegisterContext(HttpListenerContext context)
         {
             if (_ctxQueue.TryAdd(context.Id, context) == false)
-                throw new Exception("Unable to register context");
+                throw new InvalidOperationException("Unable to register context");
         }
 
         internal void UnregisterContext(HttpListenerContext context) => _ctxQueue.TryRemove(context.Id, out _);

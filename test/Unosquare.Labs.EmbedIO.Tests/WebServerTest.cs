@@ -188,7 +188,7 @@
 
                     using (var instance = new WebServer(url))
                     {
-                        instance.RegisterModule(new FallbackModule(async (ctx, ct) => throw new Exception("Error")));
+                        instance.RegisterModule(new FallbackModule(async (ctx, ct) => throw new InvalidOperationException("Error")));
 
                         var runTask = instance.RunAsync();
                         var request = new HttpClient();
