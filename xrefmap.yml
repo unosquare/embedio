@@ -396,12 +396,21 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.Extensions
   fullName: Unosquare.Labs.EmbedIO.Extensions
   nameWithType: Extensions
-- uid: Unosquare.Labs.EmbedIO.Extensions.Compress(System.IO.Stream,Unosquare.Labs.EmbedIO.Constants.CompressionMethod)
-  name: Compress(Stream, CompressionMethod)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_Compress_System_IO_Stream_Unosquare_Labs_EmbedIO_Constants_CompressionMethod_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.Compress(System.IO.Stream,Unosquare.Labs.EmbedIO.Constants.CompressionMethod)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.Compress(System.IO.Stream, Unosquare.Labs.EmbedIO.Constants.CompressionMethod)
-  nameWithType: Extensions.Compress(Stream, CompressionMethod)
+- uid: Unosquare.Labs.EmbedIO.Extensions.Compress(System.Byte[],Unosquare.Labs.EmbedIO.Constants.CompressionMethod,CompressionMode)
+  name: Compress(Byte[], CompressionMethod, CompressionMode)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_Compress_System_Byte___Unosquare_Labs_EmbedIO_Constants_CompressionMethod_CompressionMode_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.Compress(System.Byte[],Unosquare.Labs.EmbedIO.Constants.CompressionMethod,CompressionMode)
+  name.vb: Compress(Byte(), CompressionMethod, CompressionMode)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.Compress(System.Byte[], Unosquare.Labs.EmbedIO.Constants.CompressionMethod, CompressionMode)
+  fullName.vb: Unosquare.Labs.EmbedIO.Extensions.Compress(System.Byte(), Unosquare.Labs.EmbedIO.Constants.CompressionMethod, CompressionMode)
+  nameWithType: Extensions.Compress(Byte[], CompressionMethod, CompressionMode)
+  nameWithType.vb: Extensions.Compress(Byte(), CompressionMethod, CompressionMode)
+- uid: Unosquare.Labs.EmbedIO.Extensions.Compress(System.IO.Stream,Unosquare.Labs.EmbedIO.Constants.CompressionMethod,CompressionMode)
+  name: Compress(Stream, CompressionMethod, CompressionMode)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_Compress_System_IO_Stream_Unosquare_Labs_EmbedIO_Constants_CompressionMethod_CompressionMode_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.Compress(System.IO.Stream,Unosquare.Labs.EmbedIO.Constants.CompressionMethod,CompressionMode)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.Compress(System.IO.Stream, Unosquare.Labs.EmbedIO.Constants.CompressionMethod, CompressionMode)
+  nameWithType: Extensions.Compress(Stream, CompressionMethod, CompressionMode)
 - uid: Unosquare.Labs.EmbedIO.Extensions.Compress*
   name: Compress
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_Compress_
@@ -409,19 +418,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.Compress
   nameWithType: Extensions.Compress
-- uid: Unosquare.Labs.EmbedIO.Extensions.CompressAsync(System.IO.Stream,Unosquare.Labs.EmbedIO.Constants.CompressionMethod,CompressionMode,System.Threading.CancellationToken)
-  name: CompressAsync(Stream, CompressionMethod, CompressionMode, CancellationToken)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_CompressAsync_System_IO_Stream_Unosquare_Labs_EmbedIO_Constants_CompressionMethod_CompressionMode_System_Threading_CancellationToken_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.CompressAsync(System.IO.Stream,Unosquare.Labs.EmbedIO.Constants.CompressionMethod,CompressionMode,System.Threading.CancellationToken)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.CompressAsync(System.IO.Stream, Unosquare.Labs.EmbedIO.Constants.CompressionMethod, CompressionMode, System.Threading.CancellationToken)
-  nameWithType: Extensions.CompressAsync(Stream, CompressionMethod, CompressionMode, CancellationToken)
-- uid: Unosquare.Labs.EmbedIO.Extensions.CompressAsync*
-  name: CompressAsync
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_CompressAsync_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.CompressAsync
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Extensions.CompressAsync
-  nameWithType: Extensions.CompressAsync
 - uid: Unosquare.Labs.EmbedIO.Extensions.DeleteSession(Unosquare.Labs.EmbedIO.IHttpContext)
   name: DeleteSession(IHttpContext)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_DeleteSession_Unosquare_Labs_EmbedIO_IHttpContext_
@@ -563,12 +559,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.JsonResponse
   nameWithType: Extensions.JsonResponse
-- uid: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Object,System.Threading.CancellationToken)
-  name: JsonResponseAsync(IHttpContext, Object, CancellationToken)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Object_System_Threading_CancellationToken_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Object,System.Threading.CancellationToken)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.Object, System.Threading.CancellationToken)
-  nameWithType: Extensions.JsonResponseAsync(IHttpContext, Object, CancellationToken)
+- uid: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Object)
+  name: JsonResponseAsync(IHttpContext, Object)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Object_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Object)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.Object)
+  nameWithType: Extensions.JsonResponseAsync(IHttpContext, Object)
 - uid: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Threading.CancellationToken)
   name: JsonResponseAsync(IHttpContext, String, CancellationToken)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_Threading_CancellationToken_

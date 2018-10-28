@@ -124,13 +124,13 @@
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_Compress_" data-uid="Unosquare.Labs.EmbedIO.Extensions.Compress*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_Compress_System_IO_Stream_Unosquare_Labs_EmbedIO_Constants_CompressionMethod_" data-uid="Unosquare.Labs.EmbedIO.Extensions.Compress(System.IO.Stream,Unosquare.Labs.EmbedIO.Constants.CompressionMethod)">Compress(Stream, CompressionMethod)</h4>
-  <div class="markdown level1 summary"><p>Compresses the specified buffer stream using the G-Zip compression algorithm.</p>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_Compress_System_Byte___Unosquare_Labs_EmbedIO_Constants_CompressionMethod_CompressionMode_" data-uid="Unosquare.Labs.EmbedIO.Extensions.Compress(System.Byte[],Unosquare.Labs.EmbedIO.Constants.CompressionMethod,CompressionMode)">Compress(Byte[], CompressionMethod, CompressionMode)</h4>
+  <div class="markdown level1 summary"><p>Compresses/Decompresses the specified buffer using the compression algorithm.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static MemoryStream Compress(this Stream buffer, CompressionMethod method = CompressionMethod.Gzip)</code></pre>
+    <pre><code class="lang-csharp hljs">public static byte[] Compress(this byte[] buffer, CompressionMethod method = CompressionMethod.Gzip, CompressionMode mode = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -143,7 +143,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.stream">Stream</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><span class="parametername">buffer</span></td>
         <td><p>The buffer.</p>
 </td>
@@ -152,6 +152,12 @@
         <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.CompressionMethod.html">CompressionMethod</a></td>
         <td><span class="parametername">method</span></td>
         <td><p>The method.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CompressionMode</span></td>
+        <td><span class="parametername">mode</span></td>
+        <td><p>The mode.</p>
 </td>
       </tr>
     </tbody>
@@ -166,22 +172,22 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.memorystream">MemoryStream</a></td>
-        <td><p>A block of bytes of compressed stream.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><p>Block of bytes of compressed stream. </p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_Extensions_CompressAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.CompressAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_CompressAsync_System_IO_Stream_Unosquare_Labs_EmbedIO_Constants_CompressionMethod_CompressionMode_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.CompressAsync(System.IO.Stream,Unosquare.Labs.EmbedIO.Constants.CompressionMethod,CompressionMode,System.Threading.CancellationToken)">CompressAsync(Stream, CompressionMethod, CompressionMode, CancellationToken)</h4>
+  <a id="Unosquare_Labs_EmbedIO_Extensions_Compress_" data-uid="Unosquare.Labs.EmbedIO.Extensions.Compress*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_Compress_System_IO_Stream_Unosquare_Labs_EmbedIO_Constants_CompressionMethod_CompressionMode_" data-uid="Unosquare.Labs.EmbedIO.Extensions.Compress(System.IO.Stream,Unosquare.Labs.EmbedIO.Constants.CompressionMethod,CompressionMode)">Compress(Stream, CompressionMethod, CompressionMode)</h4>
   <div class="markdown level1 summary"><p>Compresses the specified buffer stream using the G-Zip compression algorithm.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;MemoryStream&gt; CompressAsync(this Stream buffer, CompressionMethod method = CompressionMethod.Gzip, CompressionMode mode = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public static MemoryStream Compress(this Stream buffer, CompressionMethod method = CompressionMethod.Gzip, CompressionMode mode = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -211,12 +217,6 @@
         <td><p>The mode.</p>
 </td>
       </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token.</p>
-</td>
-      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -229,8 +229,8 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.memorystream">MemoryStream</a>&gt;</td>
-        <td><p>A task representing the block of bytes of compressed stream.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.memorystream">MemoryStream</a></td>
+        <td><p>Block of bytes of compressed stream.</p>
 </td>
       </tr>
     </tbody>
@@ -573,7 +573,7 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><code>true</code> if request headers is not a null; otherwise, false.</p>
+        <td><p>True if request headers is not a null; otherwise, false.</p>
 </td>
       </tr>
     </tbody>
@@ -687,7 +687,7 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><code>true</code> if a key exists within the Request&apos;s query string; otherwise, <code>false</code>.</p>
+        <td><p>True if a key exists within the Request&apos;s query string; otherwise, false.</p>
 </td>
       </tr>
     </tbody>
@@ -911,13 +911,13 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Object_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Object,System.Threading.CancellationToken)">JsonResponseAsync(IHttpContext, Object, CancellationToken)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Object_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Object)">JsonResponseAsync(IHttpContext, Object)</h4>
   <div class="markdown level1 summary"><p>Outputs async a Json Response given a data object.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonResponseAsync(this IHttpContext context, object data, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonResponseAsync(this IHttpContext context, object data)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -939,12 +939,6 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
         <td><span class="parametername">data</span></td>
         <td><p>The data.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token.</p>
 </td>
       </tr>
     </tbody>
@@ -1356,7 +1350,7 @@ Please note the underlying input stream is not rewindable.</p>
     <tbody>
       <tr>
         <td><span class="xref">T</span></td>
-        <td><p>Parses the JSON as a given type from the request body.</p>
+        <td><p>Parses the json as a given type from the request body.</p>
 </td>
       </tr>
     </tbody>
@@ -1672,7 +1666,7 @@ Please note the underlying input stream is not rewindable.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><p>Specified request the header when is <code>true</code>; otherwise, empty string.</p>
+        <td><p>Specified request the header when is true; otherwise, empty string. </p>
 </td>
       </tr>
     </tbody>
