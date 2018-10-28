@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:local="clr-namespace:EmbedIO.Forms.Sample" 
+    x:Class="EmbedIO.Forms.Sample.MainPage"
+    xmlns:wv="clr-namespace:Xam.Plugin.WebView.Abstractions;assembly=Xam.Plugin.WebView.Abstractions">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <wv:FormsWebView x:Name="WebContent" 
+                         ContentType="LocalFile" 
+                         Grid.Row="0" Grid.Column="0" 
+                         Source="html/index.html" />
+    </Grid>
+</ContentPage>
