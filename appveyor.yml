@@ -29,6 +29,7 @@ before_build:
 - cmd: nuget install coveralls.net -Version 0.7.0 -OutputDirectory tools
 build_script:
 - cmd: msbuild /verbosity:quiet /p:Configuration=Release Unosquare.Labs.EmbedIO.sln
+- cmd: msbuild /verbosity:quiet /p:Configuration=Release src/EmbedIO.Forms.Sample/EmbedIO.Forms.Sample.sln
 - sh: |
         cd src/Unosquare.Labs.EmbedIO
         msbuild /verbosity:quiet /p:Configuration=Release;TargetFrameworks="netstandard2.0;netstandard1.3" 
