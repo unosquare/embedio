@@ -251,8 +251,9 @@
             try
             {
                 ProtocolVersion = new Version(parts[2].Substring(5));
+
                 if (ProtocolVersion.Major < 1)
-                    throw new Exception();
+                    throw new InvalidOperationException();
             }
             catch
             {

@@ -50,7 +50,7 @@
                 {
                     var p = int.Parse(uri.Substring(colon + 1, root - colon - 1));
                     if (p <= 0 || p >= 65536)
-                        throw new Exception();
+                        throw new InvalidOperationException();
                 }
                 catch
                 {

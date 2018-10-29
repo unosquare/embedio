@@ -43,7 +43,7 @@ namespace Unosquare.Labs.EmbedIO
         /// <inheritdoc />
         public async Task<IHttpContext> GetContextAsync()=> new HttpContext(await _httpListener.GetContextAsync());
 
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             ((IDisposable) _httpListener)?.Dispose();
         }

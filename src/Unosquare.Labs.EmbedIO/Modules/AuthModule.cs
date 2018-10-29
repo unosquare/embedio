@@ -97,14 +97,15 @@
         private static KeyValuePair<string, string> GetAccountData(IHttpRequest request)
         {
             var authHeader = request.Headers["Authorization"];
-            if (authHeader == null) throw new Exception("Authorization header not found");
+            if (authHeader == null) 
+                throw new ArgumentException("Authorization header not found");
 
             var authHeaderParts = authHeader.Split(' ');
 
             // RFC 2617 sec 1.2, "scheme" name is case-insensitive
             // header contains name and parameter separated by space. If it equals just "basic" - it's empty
             if (!authHeaderParts[0].Equals("basic", StringComparison.OrdinalIgnoreCase))
-                throw new Exception("Authorization header not found");
+                throw new ArgumentException("Authorization header not found");
 
             var credentials = Encoding.GetEncoding("iso-8859-1").GetString(Convert.FromBase64String(authHeaderParts[1]));
 
