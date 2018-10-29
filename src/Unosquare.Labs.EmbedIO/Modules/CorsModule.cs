@@ -7,7 +7,7 @@
     using System.Collections.Generic;
     
     /// <summary>
-    /// CORS control Module
+    /// CORS control Module.
     /// Cross-origin resource sharing (CORS) is a mechanism that allows restricted resources (e.g. fonts) 
     /// on a web page to be requested from another domain outside the domain from which the resource originated.
     /// </summary>

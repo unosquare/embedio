@@ -1,15 +1,15 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
-    using System.Text.RegularExpressions;
     using Constants;
-    using System.Collections.Generic;
+    using Swan;
+    using Swan.Formatters;
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
     using System.Text;
-    using Swan;
-    using Swan.Formatters;
+    using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -141,7 +141,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="key">The key.</param>
-        /// <returns>True if a key exists within the Request's query string; otherwise, false.</returns>
+        /// <returns><c>true</c> if a key exists within the Request's query string; otherwise, <c>false</c>.</returns>
         public static bool InQueryString(this IHttpContext context, string key)
             => context.Request.QueryString.AllKeys.Contains(key);
 
@@ -150,7 +150,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="headerName">Name of the header.</param>
-        /// <returns>Specified request the header when is true; otherwise, empty string. </returns>
+        /// <returns>Specified request the header when is <c>true</c>; otherwise, empty string.</returns>
         public static string RequestHeader(this IHttpContext context, string headerName)
             => context.Request.Headers[headerName] ?? string.Empty;
 
@@ -159,7 +159,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="headerName">Name of the header.</param>
-        /// <returns>True if request headers is not a null; otherwise, false.</returns>
+        /// <returns><c>true</c> if request headers is not a null; otherwise, false.</returns>
         public static bool HasRequestHeader(this IHttpContext context, string headerName)
             => context.Request.Headers[headerName] != null;
 
@@ -338,9 +338,15 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="data">The data.</param>
-        /// <returns>A <c>true</c> value of type ref=JsonResponseAsync".</returns>
-        public static Task<bool> JsonResponseAsync(this IHttpContext context, object data)
-            => context.JsonResponseAsync(Json.Serialize(data));
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A <c>true</c> value of type ref=JsonResponseAsync".
+        /// </returns>
+        public static Task<bool> JsonResponseAsync(
+            this IHttpContext context,
+            object data,
+            CancellationToken cancellationToken = default)
+            => context.JsonResponseAsync(Json.Serialize(data), cancellationToken);
 
         /// <summary>
         /// Outputs a Json Response given a Json string.
@@ -362,9 +368,7 @@
             this IHttpContext context,
             string json,
             CancellationToken cancellationToken = default)
-        {
-            return context.StringResponseAsync(json, cancellationToken: cancellationToken);
-        }
+            => context.StringResponseAsync(json, cancellationToken: cancellationToken);
 
         /// <summary>
         /// Outputs a HTML Response given a HTML content.
@@ -447,7 +451,7 @@
         /// <typeparam name="T">The type of specified object type.</typeparam>
         /// <param name="context">The context.</param>
         /// <returns>
-        /// Parses the json as a given type from the request body.
+        /// Parses the JSON as a given type from the request body.
         /// </returns>
         public static T ParseJson<T>(this IHttpContext context)
             where T : class
@@ -500,11 +504,15 @@
         /// <param name="buffer">The buffer.</param>
         /// <param name="method">The method.</param>
         /// <param name="mode">The mode.</param>
-        /// <returns>Block of bytes of compressed stream.</returns>
-        public static MemoryStream Compress(
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A task representing the block of bytes of compressed stream.
+        /// </returns>
+        public static async Task<MemoryStream> CompressAsync(
             this Stream buffer,
             CompressionMethod method = CompressionMethod.Gzip,
-            CompressionMode mode = CompressionMode.Compress)
+            CompressionMode mode = CompressionMode.Compress,
+            CancellationToken cancellationToken = default)
         {
             buffer.Position = 0;
             var targetStream = new MemoryStream();
@@ -516,8 +524,8 @@
                     {
                         using (var compressor = new DeflateStream(targetStream, CompressionMode.Compress, true))
                         {
-                            buffer.CopyTo(compressor, 1024);
-                            buffer.CopyTo(compressor);
+                            await buffer.CopyToAsync(compressor, 1024, cancellationToken);
+                            await buffer.CopyToAsync(compressor);
 
                             // WebSocket use this
                             targetStream.Write(LastByte, 0, 1);
@@ -528,7 +536,7 @@
                     {
                         using (var compressor = new DeflateStream(buffer, CompressionMode.Decompress))
                         {
-                            compressor.CopyTo(targetStream);
+                            await compressor.CopyToAsync(targetStream);
                         }
                     }
 
@@ -538,20 +546,20 @@
                     {
                         using (var compressor = new GZipStream(targetStream, CompressionMode.Compress, true))
                         {
-                            buffer.CopyTo(compressor);
+                            await buffer.CopyToAsync(compressor);
                         }
                     }
                     else
                     {
                         using (var compressor = new GZipStream(buffer, CompressionMode.Decompress))
                         {
-                            compressor.CopyTo(targetStream);
+                            await compressor.CopyToAsync(targetStream);
                         }
                     }
 
                     break;
                 case CompressionMethod.None:
-                    buffer.CopyTo(targetStream);
+                    await buffer.CopyToAsync(targetStream);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(method), method, null);
@@ -561,21 +569,46 @@
         }
 
         /// <summary>
-        /// Compresses/Decompresses the specified buffer using the compression algorithm.
+        /// Compresses the specified buffer stream using the G-Zip compression algorithm.
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="method">The method.</param>
-        /// <param name="mode">The mode.</param>
-        /// <returns>Block of bytes of compressed stream. </returns>
-        public static byte[] Compress(
-            this byte[] buffer,
-            CompressionMethod method = CompressionMethod.Gzip,
-            CompressionMode mode = CompressionMode.Compress)
+        /// <returns>
+        /// A block of bytes of compressed stream.
+        /// </returns>
+        public static MemoryStream Compress(
+            this Stream buffer,
+            CompressionMethod method = CompressionMethod.Gzip)
         {
-            using (var stream = new MemoryStream(buffer))
+            buffer.Position = 0;
+            var targetStream = new MemoryStream();
+
+            switch (method)
             {
-                return stream.Compress(method, mode).ToArray();
+                case CompressionMethod.Deflate:
+                    using (var compressor = new DeflateStream(targetStream, CompressionMode.Compress, true))
+                    {
+                        buffer.CopyTo(compressor, 1024);
+                        buffer.CopyTo(compressor);
+
+                        // WebSocket use this
+                        targetStream.Write(LastByte, 0, 1);
+                        targetStream.Position = 0;
+                    }
+
+                    break;
+                case CompressionMethod.Gzip:
+                    using (var compressor = new GZipStream(targetStream, CompressionMode.Compress, true))
+                    {
+                        buffer.CopyTo(compressor);
+                    }
+
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(method), method, null);
             }
+
+            return targetStream;
         }
 
         #endregion
@@ -600,7 +633,7 @@
             return idx < 10 && value.Substring(0, idx.Value).IsPredefinedScheme();
         }
 
-        internal static bool IsPredefinedScheme(this string value) => value != null && 
+        internal static bool IsPredefinedScheme(this string value) => value != null &&
                                                                       (value == "http" || value == "https" || value == "ws" || value == "wss");
     }
 }

@@ -26,7 +26,7 @@
         internal MessageEventArgs(WebSocketFrame frame)
         {
             Opcode = frame.Opcode;
-            _rawData = frame.PayloadData.ApplicationData;
+            _rawData = frame.PayloadData.ApplicationData.ToArray();
         }
 
         internal MessageEventArgs(Opcode opcode, byte[] rawData)

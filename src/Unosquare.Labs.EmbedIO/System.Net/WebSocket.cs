@@ -350,7 +350,7 @@
         }
 
         internal WebSocketKey WebSocketKey { get; }
-        
+
         /// <inheritdoc />
         public Task SendAsync(byte[] buffer, bool isText, CancellationToken ct) => SendAsync(buffer, isText ? Opcode.Text : Opcode.Binary, ct);
 
@@ -704,7 +704,7 @@
                 return;
             }
 
-            Task.Factory.StartNew(() => Messages(e));
+            Task.Run(() => Messages(e));
         }
 
         private void Open()
@@ -721,24 +721,23 @@
             _message.BeginInvoke(e, ar => _message.EndInvoke(ar), null);
         }
 
-        private Task ProcessCloseFrame(WebSocketFrame frame)
+        private Task ProcessCloseFrame(WebSocketFrame frame) => InternalCloseAsync(frame.PayloadData, !frame.PayloadData.HasReservedCode, false, true);
+
+        private async Task ProcessDataFrame(WebSocketFrame frame)
         {
-            var payload = frame.PayloadData;
-            return InternalCloseAsync(payload, !payload.HasReservedCode, false, true);
+            if (frame.IsCompressed)
+            {
+                var ms = await frame.PayloadData.ApplicationData.CompressAsync(_compression, System.IO.Compression.CompressionMode.Decompress);
+
+                _messageEventQueue.Enqueue(new MessageEventArgs(frame.Opcode, ms.ToArray()));
+            }
+            else
+            {
+                _messageEventQueue.Enqueue(new MessageEventArgs(frame));
+            }
         }
 
-        private void ProcessDataFrame(WebSocketFrame frame)
-        {
-            _messageEventQueue.Enqueue(
-                frame.IsCompressed
-                    ? new MessageEventArgs(
-                        frame.Opcode,
-                        frame.PayloadData.ApplicationData.Compress(_compression,
-                            System.IO.Compression.CompressionMode.Decompress))
-                    : new MessageEventArgs(frame));
-        }
-
-        private void ProcessFragmentFrame(WebSocketFrame frame)
+        private async Task ProcessFragmentFrame(WebSocketFrame frame)
         {
             if (!InContinuation)
             {
@@ -756,7 +755,7 @@
             {
                 using (_fragmentsBuffer)
                 {
-                    _messageEventQueue.Enqueue(_fragmentsBuffer.GetMessage(_compression));
+                    _messageEventQueue.Enqueue(await _fragmentsBuffer.GetMessage(_compression));
                 }
 
                 _fragmentsBuffer = null;
@@ -782,7 +781,7 @@
         {
             if (frame.IsFragment)
             {
-                ProcessFragmentFrame(frame);
+                await ProcessFragmentFrame(frame);
             }
             else
             {
@@ -790,7 +789,7 @@
                 {
                     case Opcode.Text:
                     case Opcode.Binary:
-                        ProcessDataFrame(frame);
+                        await ProcessDataFrame(frame);
                         break;
                     case Opcode.Ping:
                         await ProcessPingFrame(frame);

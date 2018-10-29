@@ -2,9 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Text;
     using Swan;
-    
+
     internal class PayloadData 
     {
         public static readonly ulong MaxLength = long.MaxValue;
@@ -23,9 +24,7 @@
             _data = code == 1005 ? WebSocket.EmptyBytes : Append(code, reason);
         }
 
-        internal byte[] ApplicationData => ExtensionDataLength > 0
-            ? _data.SubArray(ExtensionDataLength, _data.Length - ExtensionDataLength)
-            : _data;
+        internal MemoryStream ApplicationData => new MemoryStream(_data);
 
         internal ulong Length => (ulong)_data.Length;
 
@@ -43,9 +42,7 @@
                 return _code.Value;
             }
         }
-
-        internal long ExtensionDataLength { get; set; }
-
+        
         internal bool HasReservedCode => _data.Length > 1 && (Code == (ushort)CloseStatusCode.Undefined ||
                    Code == (ushort)CloseStatusCode.NoStatus ||
                    Code == (ushort)CloseStatusCode.Abnormal ||
