@@ -152,7 +152,7 @@
 <td>UAP</td>
 <td><em>Unosquare</em></td>
 <td>No</td>
-<td>Support Windows Universal Platform. More information <a href="https://github.com/unosquare/embedio/tree/master/src/Unosquare.Labs.EmbedIO.IoT">here</a></td>
+<td>Support Windows Universal Platform.</td>
 </tr>
 </tbody>
 </table>
@@ -376,16 +376,17 @@ server.Module&lt;WebSocketsModule&gt;().RegisterWebSocketsServer&lt;WebSocketsCh
 public class WebSocketsChatServer : WebSocketsServer
 {
     public WebSocketsChatServer()
-        : base(true, 0)
+        : base(true)
     {
         // placeholder
     }
 
     public override string ServerName =&gt; &quot;Chat Server&quot;
 
-    protected override void OnMessageReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
+    protected override void OnMessageReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
     {
         var session = this.WebServer.GetSession(context);
+
         foreach (var ws in this.WebSockets)
         {
             if (ws != context)
@@ -393,7 +394,10 @@ public class WebSocketsChatServer : WebSocketsServer
         }
     }
 
-    protected override void OnClientConnected(WebSocketContext context)
+    protected override void OnClientConnected(
+            IWebSocketContext context,
+            System.Net.IPEndPoint localEndPoint,
+            System.Net.IPEndPoint remoteEndPoint)
     {
         this.Send(context, &quot;Welcome to the chat room!&quot;);
 
@@ -404,12 +408,12 @@ public class WebSocketsChatServer : WebSocketsServer
         }
     }
 
-    protected override void OnFrameReceived(WebSocketContext context, byte[] rxBuffer, WebSocketReceiveResult rxResult)
+    protected override void OnFrameReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
     {
-        return;
+        // placeholder
     }
 
-    protected override void OnClientDisconnected(WebSocketContext context)
+    protected override void OnClientDisconnected(IWebSocketContext context)
     {
         this.Broadcast(&quot;Someone left the chat room.&quot;);
     }
@@ -469,7 +473,7 @@ public class WebSocketsChatServer : WebSocketsServer
               <div class="contribution">
                 <ul class="nav">
                   <li class="top-sep">
-                    <a href="https://github.com/unosquare/embedio/blob/FixAndroid/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/unosquare/embedio/blob/master/README.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
