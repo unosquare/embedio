@@ -31,7 +31,7 @@ build_script:
 - cmd: msbuild /verbosity:quiet /p:Configuration=Release Unosquare.Labs.EmbedIO.sln
 - cmd: | 
       cd src/EmbedIO.Forms.Sample/
-      dotnet restore --verbosity q
+      msbuild /t:restore EmbedIO.Forms.Sample.sln
       msbuild /verbosity:quiet /p:Configuration=Release EmbedIO.Forms.Sample.sln
       cd ..
       cd ..
