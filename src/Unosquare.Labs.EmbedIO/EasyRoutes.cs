@@ -18,7 +18,7 @@
         /// The webserver instance.
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
-        public static IWebServer OnAny(this IWebServer webserver, WebModuleBase.WebHandler action)
+        public static IWebServer OnAny(this IWebServer webserver, WebHandler action)
             => AddFallbackModule(webserver, action, Constants.HttpVerbs.Any);
 
         /// <summary>
@@ -30,7 +30,7 @@
         /// The webserver instance.
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
-        public static IWebServer OnPost(this IWebServer webserver, WebModuleBase.WebHandler action)
+        public static IWebServer OnPost(this IWebServer webserver, WebHandler action)
             => AddFallbackModule(webserver, action, Constants.HttpVerbs.Post);
         
         /// <summary>
@@ -42,7 +42,7 @@
         /// The webserver instance.
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
-        public static IWebServer OnGet(this IWebServer webserver, WebModuleBase.WebHandler action)
+        public static IWebServer OnGet(this IWebServer webserver, WebHandler action)
             => AddFallbackModule(webserver, action, Constants.HttpVerbs.Get);
         
         /// <summary>
@@ -54,7 +54,7 @@
         /// The webserver instance.
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
-        public static IWebServer OnPut(this IWebServer webserver, WebModuleBase.WebHandler action)
+        public static IWebServer OnPut(this IWebServer webserver, WebHandler action)
             => AddFallbackModule(webserver, action, Constants.HttpVerbs.Put);
         
         /// <summary>
@@ -66,7 +66,7 @@
         /// The webserver instance.
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
-        public static IWebServer OnDelete(this IWebServer webserver, WebModuleBase.WebHandler action)
+        public static IWebServer OnDelete(this IWebServer webserver, WebHandler action)
             => AddFallbackModule(webserver, action, Constants.HttpVerbs.Delete);
         
         /// <summary>
@@ -78,7 +78,7 @@
         /// The webserver instance.
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
-        public static IWebServer OnHead(this IWebServer webserver, WebModuleBase.WebHandler action)
+        public static IWebServer OnHead(this IWebServer webserver, WebHandler action)
             => AddFallbackModule(webserver, action, Constants.HttpVerbs.Head);
         
         /// <summary>
@@ -90,7 +90,7 @@
         /// The webserver instance.
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
-        public static IWebServer OnOptions(this IWebServer webserver, WebModuleBase.WebHandler action)
+        public static IWebServer OnOptions(this IWebServer webserver, WebHandler action)
             => AddFallbackModule(webserver, action, Constants.HttpVerbs.Options);
         
         /// <summary>
@@ -102,10 +102,10 @@
         /// The webserver instance.
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
-        public static IWebServer OnPatch(this IWebServer webserver, WebModuleBase.WebHandler action)
+        public static IWebServer OnPatch(this IWebServer webserver, WebHandler action)
             => AddFallbackModule(webserver, action, Constants.HttpVerbs.Patch);
 
-        private static IWebServer AddFallbackModule(IWebServer webserver, WebModuleBase.WebHandler action, Constants.HttpVerbs verb)
+        private static IWebServer AddFallbackModule(IWebServer webserver, WebHandler action, Constants.HttpVerbs verb)
         {
             if (webserver == null)
                 throw new ArgumentNullException(nameof(webserver));

@@ -56,7 +56,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
             var server = new TestWebServer();
 
             server
-                .OnPost((ctx, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
+                .OnPut((ctx, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
 
             server.RunAsync();
 
@@ -71,7 +71,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
             var server = new TestWebServer();
 
             server
-                .OnPost((ctx, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
+                .OnHead((ctx, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
 
             server.RunAsync();
 
@@ -86,7 +86,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
             var server = new TestWebServer();
 
             server
-                .OnPost((ctx, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
+                .OnDelete((ctx, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
 
             server.RunAsync();
 
@@ -101,7 +101,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
             var server = new TestWebServer();
 
             server
-                .OnPost((ctx, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
+                .OnOptions((ctx, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
 
             server.RunAsync();
 
@@ -111,16 +111,16 @@ namespace Unosquare.Labs.EmbedIO.Tests
         }
 
         [Test]
-        public async Task AddOnPartial_ResponseOK()
+        public async Task AddOnPatch_ResponseOK()
         {
             var server = new TestWebServer();
 
             server
-                .OnPost((ctx, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
+                .OnPatch((ctx, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
 
             server.RunAsync();
 
-            var response = await server.GetClient().SendAsync(new TestHttpRequest(Constants.HttpVerbs.Partial));
+            var response = await server.GetClient().SendAsync(new TestHttpRequest(Constants.HttpVerbs.Patch));
 
             Assert.AreEqual(Ok, response.GetBodyAsString());
         }
