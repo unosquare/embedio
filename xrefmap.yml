@@ -3845,6 +3845,19 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.SessionInfo
   fullName: Unosquare.Labs.EmbedIO.SessionInfo
   nameWithType: SessionInfo
+- uid: Unosquare.Labs.EmbedIO.SessionInfo.#ctor(System.String)
+  name: SessionInfo(String)
+  href: api/Unosquare.Labs.EmbedIO.SessionInfo.html#Unosquare_Labs_EmbedIO_SessionInfo__ctor_System_String_
+  commentId: M:Unosquare.Labs.EmbedIO.SessionInfo.#ctor(System.String)
+  fullName: Unosquare.Labs.EmbedIO.SessionInfo.SessionInfo(System.String)
+  nameWithType: SessionInfo.SessionInfo(String)
+- uid: Unosquare.Labs.EmbedIO.SessionInfo.#ctor*
+  name: SessionInfo
+  href: api/Unosquare.Labs.EmbedIO.SessionInfo.html#Unosquare_Labs_EmbedIO_SessionInfo__ctor_
+  commentId: Overload:Unosquare.Labs.EmbedIO.SessionInfo.#ctor
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.SessionInfo.SessionInfo
+  nameWithType: SessionInfo.SessionInfo
 - uid: Unosquare.Labs.EmbedIO.SessionInfo.Data
   name: Data
   href: api/Unosquare.Labs.EmbedIO.SessionInfo.html#Unosquare_Labs_EmbedIO_SessionInfo_Data
