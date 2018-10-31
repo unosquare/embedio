@@ -23,12 +23,18 @@ before_build:
             git checkout $env:APPVEYOR_REPO_BRANCH -q
             cinst docfx -y --no-progress
         }
-- dotnet restore Unosquare.Labs.EmbedIO.sln --verbosity q
+- dotnet restore --verbosity q
 - cmd: mkdir tools
 - cmd: nuget install OpenCover -Version 4.6.519 -OutputDirectory tools
 - cmd: nuget install coveralls.net -Version 0.7.0 -OutputDirectory tools
 build_script:
 - cmd: msbuild /verbosity:quiet /p:Configuration=Release Unosquare.Labs.EmbedIO.sln
+- cmd: | 
+      cd src/EmbedIO.Forms.Sample/
+      msbuild /t:restore EmbedIO.Forms.Sample.sln
+      msbuild /verbosity:quiet /p:Configuration=Release EmbedIO.Forms.Sample.sln
+      cd ..
+      cd ..
 - sh: |
         cd src/Unosquare.Labs.EmbedIO
         msbuild /verbosity:quiet /p:Configuration=Release;TargetFrameworks="netstandard2.0;netstandard1.3" 

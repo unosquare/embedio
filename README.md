@@ -39,7 +39,9 @@ A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework
 * WebSockets support
 * CORS support. Origin, Header and Method validation with OPTIONS preflight
 * Supports HTTP 206 Partial Content
+* Support [Xamarin Forms](https://github.com/unosquare/embedio/tree/master/src/EmbedIO.Forms.Sample)
 * And many more options in the same package
+
 
 Some notes regarding WebSocket and runtimes support:
 
@@ -71,7 +73,7 @@ Some notes regarding WebSocket and runtimes support:
 * Create GUIs for Windows services or Linux daemons
 * Works well with [LiteLib](https://github.com/unosquare/litelib) - add SQLite support in minutes!
 * Write client applications with real-time communication between them using WebSockets
-* Write internal web server for Xamarin Forms applications
+* Write internal web server for [Xamarin Forms](https://github.com/unosquare/embedio/tree/master/src/EmbedIO.Forms.Sample) applications
 
 ## Installation:
 

@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
+using System.Net;
+using System.Net.Sockets;
 using Unosquare.Labs.EmbedIO;
 using Unosquare.Labs.EmbedIO.Modules;
 using Xamarin.Forms;
@@ -21,7 +23,7 @@ namespace EmbedIO.Forms.Sample
             // Handle when your app starts
             Task.Factory.StartNew(async () =>
             {
-                using (var server = new WebServer("http://localhost:8080"))
+                using (var server = new WebServer("http://" + GetLocalIpAddress() + ":8080"))
                 {
                     server.RegisterModule(new LocalSessionModule());
                     server.Module<StaticFilesModule>().UseRamCache = true;
@@ -30,6 +32,21 @@ namespace EmbedIO.Forms.Sample
                     await server.RunAsync();
                 }
             });
+        }
+        
+        private static string GetLocalIpAddress()
+        {
+            var listener = new TcpListener(IPAddress.Loopback, 0);
+            
+            try
+            {
+                listener.Start();
+                return ((IPEndPoint)listener.LocalEndpoint).Address.ToString();
+            }
+            finally
+            {
+                listener.Stop();
+            }
         }
     }
 }
