@@ -113,7 +113,7 @@
       <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_CancellationToken">WebModuleBase.CancellationToken</a>
     </div>
     <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_Unosquare_Labs_EmbedIO_WebModuleBase_WebHandler_">WebModuleBase.AddHandler(String, HttpVerbs, WebModuleBase.WebHandler)</a>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_Unosquare_Labs_EmbedIO_WebHandler_">WebModuleBase.AddHandler(String, HttpVerbs, WebHandler)</a>
     </div>
     <div>
       <a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_Start_System_Threading_CancellationToken_">WebModuleBase.Start(CancellationToken)</a>
@@ -153,13 +153,13 @@
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_Threading_CancellationToken_System_Boolean__" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.Func{Unosquare.Labs.EmbedIO.IHttpContext,System.Threading.CancellationToken,System.Boolean})">FallbackModule(Func&lt;IHttpContext, CancellationToken, Boolean&gt;)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_Threading_CancellationToken_System_Boolean__Unosquare_Labs_EmbedIO_Constants_HttpVerbs_" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.Func{Unosquare.Labs.EmbedIO.IHttpContext,System.Threading.CancellationToken,System.Boolean},Unosquare.Labs.EmbedIO.Constants.HttpVerbs)">FallbackModule(Func&lt;IHttpContext, CancellationToken, Boolean&gt;, HttpVerbs)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.FallbackModule.html">FallbackModule</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FallbackModule(Func&lt;IHttpContext, CancellationToken, bool&gt; action)</code></pre>
+    <pre><code class="lang-csharp hljs">public FallbackModule(Func&lt;IHttpContext, CancellationToken, bool&gt; action, HttpVerbs verb = HttpVerbs.Any)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -177,18 +177,24 @@
         <td><p>The action.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.HttpVerbs.html">HttpVerbs</a></td>
+        <td><span class="parametername">verb</span></td>
+        <td><p>The verb.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_String_" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.String)">FallbackModule(String)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs)">FallbackModule(String, HttpVerbs)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.FallbackModule.html">FallbackModule</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FallbackModule(string redirectUrl)</code></pre>
+    <pre><code class="lang-csharp hljs">public FallbackModule(string redirectUrl, HttpVerbs verb = HttpVerbs.Any)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -206,18 +212,40 @@
         <td><p>The redirect URL.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.HttpVerbs.html">HttpVerbs</a></td>
+        <td><span class="parametername">verb</span></td>
+        <td><p>The verb.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>redirectUrl</p>
+</td>
+      </tr>
     </tbody>
   </table>
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_Unosquare_Labs_EmbedIO_WebModuleBase_WebHandler_" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(Unosquare.Labs.EmbedIO.WebModuleBase.WebHandler)">FallbackModule(WebModuleBase.WebHandler)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_Unosquare_Labs_EmbedIO_WebHandler_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_" data-uid="Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(Unosquare.Labs.EmbedIO.WebHandler,Unosquare.Labs.EmbedIO.Constants.HttpVerbs)">FallbackModule(WebHandler, HttpVerbs)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.FallbackModule.html">FallbackModule</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FallbackModule(WebModuleBase.WebHandler action)</code></pre>
+    <pre><code class="lang-csharp hljs">public FallbackModule(WebHandler action, HttpVerbs verb = HttpVerbs.Any)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -230,9 +258,15 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebModuleBase.WebHandler.html">WebModuleBase.WebHandler</a></td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebHandler.html">WebHandler</a></td>
         <td><span class="parametername">action</span></td>
         <td><p>The action.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.HttpVerbs.html">HttpVerbs</a></td>
+        <td><span class="parametername">verb</span></td>
+        <td><p>The verb.</p>
 </td>
       </tr>
     </tbody>

@@ -390,6 +390,116 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.CookieCollection.SyncRoot
   nameWithType: CookieCollection.SyncRoot
+- uid: Unosquare.Labs.EmbedIO.EasyRoutes
+  name: EasyRoutes
+  href: api/Unosquare.Labs.EmbedIO.EasyRoutes.html
+  commentId: T:Unosquare.Labs.EmbedIO.EasyRoutes
+  fullName: Unosquare.Labs.EmbedIO.EasyRoutes
+  nameWithType: EasyRoutes
+- uid: Unosquare.Labs.EmbedIO.EasyRoutes.OnAny(Unosquare.Labs.EmbedIO.IWebServer,Unosquare.Labs.EmbedIO.WebHandler)
+  name: OnAny(IWebServer, WebHandler)
+  href: api/Unosquare.Labs.EmbedIO.EasyRoutes.html#Unosquare_Labs_EmbedIO_EasyRoutes_OnAny_Unosquare_Labs_EmbedIO_IWebServer_Unosquare_Labs_EmbedIO_WebHandler_
+  commentId: M:Unosquare.Labs.EmbedIO.EasyRoutes.OnAny(Unosquare.Labs.EmbedIO.IWebServer,Unosquare.Labs.EmbedIO.WebHandler)
+  fullName: Unosquare.Labs.EmbedIO.EasyRoutes.OnAny(Unosquare.Labs.EmbedIO.IWebServer, Unosquare.Labs.EmbedIO.WebHandler)
+  nameWithType: EasyRoutes.OnAny(IWebServer, WebHandler)
+- uid: Unosquare.Labs.EmbedIO.EasyRoutes.OnAny*
+  name: OnAny
+  href: api/Unosquare.Labs.EmbedIO.EasyRoutes.html#Unosquare_Labs_EmbedIO_EasyRoutes_OnAny_
+  commentId: Overload:Unosquare.Labs.EmbedIO.EasyRoutes.OnAny
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.EasyRoutes.OnAny
+  nameWithType: EasyRoutes.OnAny
+- uid: Unosquare.Labs.EmbedIO.EasyRoutes.OnDelete(Unosquare.Labs.EmbedIO.IWebServer,Unosquare.Labs.EmbedIO.WebHandler)
+  name: OnDelete(IWebServer, WebHandler)
+  href: api/Unosquare.Labs.EmbedIO.EasyRoutes.html#Unosquare_Labs_EmbedIO_EasyRoutes_OnDelete_Unosquare_Labs_EmbedIO_IWebServer_Unosquare_Labs_EmbedIO_WebHandler_
+  commentId: M:Unosquare.Labs.EmbedIO.EasyRoutes.OnDelete(Unosquare.Labs.EmbedIO.IWebServer,Unosquare.Labs.EmbedIO.WebHandler)
+  fullName: Unosquare.Labs.EmbedIO.EasyRoutes.OnDelete(Unosquare.Labs.EmbedIO.IWebServer, Unosquare.Labs.EmbedIO.WebHandler)
+  nameWithType: EasyRoutes.OnDelete(IWebServer, WebHandler)
+- uid: Unosquare.Labs.EmbedIO.EasyRoutes.OnDelete*
+  name: OnDelete
+  href: api/Unosquare.Labs.EmbedIO.EasyRoutes.html#Unosquare_Labs_EmbedIO_EasyRoutes_OnDelete_
+  commentId: Overload:Unosquare.Labs.EmbedIO.EasyRoutes.OnDelete
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.EasyRoutes.OnDelete
+  nameWithType: EasyRoutes.OnDelete
+- uid: Unosquare.Labs.EmbedIO.EasyRoutes.OnGet(Unosquare.Labs.EmbedIO.IWebServer,Unosquare.Labs.EmbedIO.WebHandler)
+  name: OnGet(IWebServer, WebHandler)
+  href: api/Unosquare.Labs.EmbedIO.EasyRoutes.html#Unosquare_Labs_EmbedIO_EasyRoutes_OnGet_Unosquare_Labs_EmbedIO_IWebServer_Unosquare_Labs_EmbedIO_WebHandler_
+  commentId: M:Unosquare.Labs.EmbedIO.EasyRoutes.OnGet(Unosquare.Labs.EmbedIO.IWebServer,Unosquare.Labs.EmbedIO.WebHandler)
+  fullName: Unosquare.Labs.EmbedIO.EasyRoutes.OnGet(Unosquare.Labs.EmbedIO.IWebServer, Unosquare.Labs.EmbedIO.WebHandler)
+  nameWithType: EasyRoutes.OnGet(IWebServer, WebHandler)
+- uid: Unosquare.Labs.EmbedIO.EasyRoutes.OnGet*
+  name: OnGet
+  href: api/Unosquare.Labs.EmbedIO.EasyRoutes.html#Unosquare_Labs_EmbedIO_EasyRoutes_OnGet_
+  commentId: Overload:Unosquare.Labs.EmbedIO.EasyRoutes.OnGet
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.EasyRoutes.OnGet
+  nameWithType: EasyRoutes.OnGet
+- uid: Unosquare.Labs.EmbedIO.EasyRoutes.OnHead(Unosquare.Labs.EmbedIO.IWebServer,Unosquare.Labs.EmbedIO.WebHandler)
+  name: OnHead(IWebServer, WebHandler)
+  href: api/Unosquare.Labs.EmbedIO.EasyRoutes.html#Unosquare_Labs_EmbedIO_EasyRoutes_OnHead_Unosquare_Labs_EmbedIO_IWebServer_Unosquare_Labs_EmbedIO_WebHandler_
+  commentId: M:Unosquare.Labs.EmbedIO.EasyRoutes.OnHead(Unosquare.Labs.EmbedIO.IWebServer,Unosquare.Labs.EmbedIO.WebHandler)
+  fullName: Unosquare.Labs.EmbedIO.EasyRoutes.OnHead(Unosquare.Labs.EmbedIO.IWebServer, Unosquare.Labs.EmbedIO.WebHandler)
+  nameWithType: EasyRoutes.OnHead(IWebServer, WebHandler)
+- uid: Unosquare.Labs.EmbedIO.EasyRoutes.OnHead*
+  name: OnHead
+  href: api/Unosquare.Labs.EmbedIO.EasyRoutes.html#Unosquare_Labs_EmbedIO_EasyRoutes_OnHead_
+  commentId: Overload:Unosquare.Labs.EmbedIO.EasyRoutes.OnHead
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.EasyRoutes.OnHead
+  nameWithType: EasyRoutes.OnHead
+- uid: Unosquare.Labs.EmbedIO.EasyRoutes.OnOptions(Unosquare.Labs.EmbedIO.IWebServer,Unosquare.Labs.EmbedIO.WebHandler)
+  name: OnOptions(IWebServer, WebHandler)
+  href: api/Unosquare.Labs.EmbedIO.EasyRoutes.html#Unosquare_Labs_EmbedIO_EasyRoutes_OnOptions_Unosquare_Labs_EmbedIO_IWebServer_Unosquare_Labs_EmbedIO_WebHandler_
+  commentId: M:Unosquare.Labs.EmbedIO.EasyRoutes.OnOptions(Unosquare.Labs.EmbedIO.IWebServer,Unosquare.Labs.EmbedIO.WebHandler)
+  fullName: Unosquare.Labs.EmbedIO.EasyRoutes.OnOptions(Unosquare.Labs.EmbedIO.IWebServer, Unosquare.Labs.EmbedIO.WebHandler)
+  nameWithType: EasyRoutes.OnOptions(IWebServer, WebHandler)
+- uid: Unosquare.Labs.EmbedIO.EasyRoutes.OnOptions*
+  name: OnOptions
+  href: api/Unosquare.Labs.EmbedIO.EasyRoutes.html#Unosquare_Labs_EmbedIO_EasyRoutes_OnOptions_
+  commentId: Overload:Unosquare.Labs.EmbedIO.EasyRoutes.OnOptions
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.EasyRoutes.OnOptions
+  nameWithType: EasyRoutes.OnOptions
+- uid: Unosquare.Labs.EmbedIO.EasyRoutes.OnPatch(Unosquare.Labs.EmbedIO.IWebServer,Unosquare.Labs.EmbedIO.WebHandler)
+  name: OnPatch(IWebServer, WebHandler)
+  href: api/Unosquare.Labs.EmbedIO.EasyRoutes.html#Unosquare_Labs_EmbedIO_EasyRoutes_OnPatch_Unosquare_Labs_EmbedIO_IWebServer_Unosquare_Labs_EmbedIO_WebHandler_
+  commentId: M:Unosquare.Labs.EmbedIO.EasyRoutes.OnPatch(Unosquare.Labs.EmbedIO.IWebServer,Unosquare.Labs.EmbedIO.WebHandler)
+  fullName: Unosquare.Labs.EmbedIO.EasyRoutes.OnPatch(Unosquare.Labs.EmbedIO.IWebServer, Unosquare.Labs.EmbedIO.WebHandler)
+  nameWithType: EasyRoutes.OnPatch(IWebServer, WebHandler)
+- uid: Unosquare.Labs.EmbedIO.EasyRoutes.OnPatch*
+  name: OnPatch
+  href: api/Unosquare.Labs.EmbedIO.EasyRoutes.html#Unosquare_Labs_EmbedIO_EasyRoutes_OnPatch_
+  commentId: Overload:Unosquare.Labs.EmbedIO.EasyRoutes.OnPatch
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.EasyRoutes.OnPatch
+  nameWithType: EasyRoutes.OnPatch
+- uid: Unosquare.Labs.EmbedIO.EasyRoutes.OnPost(Unosquare.Labs.EmbedIO.IWebServer,Unosquare.Labs.EmbedIO.WebHandler)
+  name: OnPost(IWebServer, WebHandler)
+  href: api/Unosquare.Labs.EmbedIO.EasyRoutes.html#Unosquare_Labs_EmbedIO_EasyRoutes_OnPost_Unosquare_Labs_EmbedIO_IWebServer_Unosquare_Labs_EmbedIO_WebHandler_
+  commentId: M:Unosquare.Labs.EmbedIO.EasyRoutes.OnPost(Unosquare.Labs.EmbedIO.IWebServer,Unosquare.Labs.EmbedIO.WebHandler)
+  fullName: Unosquare.Labs.EmbedIO.EasyRoutes.OnPost(Unosquare.Labs.EmbedIO.IWebServer, Unosquare.Labs.EmbedIO.WebHandler)
+  nameWithType: EasyRoutes.OnPost(IWebServer, WebHandler)
+- uid: Unosquare.Labs.EmbedIO.EasyRoutes.OnPost*
+  name: OnPost
+  href: api/Unosquare.Labs.EmbedIO.EasyRoutes.html#Unosquare_Labs_EmbedIO_EasyRoutes_OnPost_
+  commentId: Overload:Unosquare.Labs.EmbedIO.EasyRoutes.OnPost
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.EasyRoutes.OnPost
+  nameWithType: EasyRoutes.OnPost
+- uid: Unosquare.Labs.EmbedIO.EasyRoutes.OnPut(Unosquare.Labs.EmbedIO.IWebServer,Unosquare.Labs.EmbedIO.WebHandler)
+  name: OnPut(IWebServer, WebHandler)
+  href: api/Unosquare.Labs.EmbedIO.EasyRoutes.html#Unosquare_Labs_EmbedIO_EasyRoutes_OnPut_Unosquare_Labs_EmbedIO_IWebServer_Unosquare_Labs_EmbedIO_WebHandler_
+  commentId: M:Unosquare.Labs.EmbedIO.EasyRoutes.OnPut(Unosquare.Labs.EmbedIO.IWebServer,Unosquare.Labs.EmbedIO.WebHandler)
+  fullName: Unosquare.Labs.EmbedIO.EasyRoutes.OnPut(Unosquare.Labs.EmbedIO.IWebServer, Unosquare.Labs.EmbedIO.WebHandler)
+  nameWithType: EasyRoutes.OnPut(IWebServer, WebHandler)
+- uid: Unosquare.Labs.EmbedIO.EasyRoutes.OnPut*
+  name: OnPut
+  href: api/Unosquare.Labs.EmbedIO.EasyRoutes.html#Unosquare_Labs_EmbedIO_EasyRoutes_OnPut_
+  commentId: Overload:Unosquare.Labs.EmbedIO.EasyRoutes.OnPut
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.EasyRoutes.OnPut
+  nameWithType: EasyRoutes.OnPut
 - uid: Unosquare.Labs.EmbedIO.Extensions
   name: Extensions
   href: api/Unosquare.Labs.EmbedIO.Extensions.html
@@ -634,15 +744,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.ParseJson
   nameWithType: Extensions.ParseJson
-- uid: Unosquare.Labs.EmbedIO.Extensions.ParseJson``1(System.String)
-  name: ParseJson<T>(String)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_ParseJson__1_System_String_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.ParseJson``1(System.String)
-  name.vb: ParseJson(Of T)(String)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.ParseJson<T>(System.String)
-  fullName.vb: Unosquare.Labs.EmbedIO.Extensions.ParseJson(Of T)(System.String)
-  nameWithType: Extensions.ParseJson<T>(String)
-  nameWithType.vb: Extensions.ParseJson(Of T)(String)
 - uid: Unosquare.Labs.EmbedIO.Extensions.ParseJson``1(Unosquare.Labs.EmbedIO.IHttpContext)
   name: ParseJson<T>(IHttpContext)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_ParseJson__1_Unosquare_Labs_EmbedIO_IHttpContext_
@@ -2151,12 +2252,12 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.IWebModule
   fullName: Unosquare.Labs.EmbedIO.IWebModule
   nameWithType: IWebModule
-- uid: Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs,Unosquare.Labs.EmbedIO.WebModuleBase.WebHandler)
-  name: AddHandler(String, HttpVerbs, WebModuleBase.WebHandler)
-  href: api/Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_Unosquare_Labs_EmbedIO_WebModuleBase_WebHandler_
-  commentId: M:Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs,Unosquare.Labs.EmbedIO.WebModuleBase.WebHandler)
-  fullName: Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String, Unosquare.Labs.EmbedIO.Constants.HttpVerbs, Unosquare.Labs.EmbedIO.WebModuleBase.WebHandler)
-  nameWithType: IWebModule.AddHandler(String, HttpVerbs, WebModuleBase.WebHandler)
+- uid: Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs,Unosquare.Labs.EmbedIO.WebHandler)
+  name: AddHandler(String, HttpVerbs, WebHandler)
+  href: api/Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_Unosquare_Labs_EmbedIO_WebHandler_
+  commentId: M:Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs,Unosquare.Labs.EmbedIO.WebHandler)
+  fullName: Unosquare.Labs.EmbedIO.IWebModule.AddHandler(System.String, Unosquare.Labs.EmbedIO.Constants.HttpVerbs, Unosquare.Labs.EmbedIO.WebHandler)
+  nameWithType: IWebModule.AddHandler(String, HttpVerbs, WebHandler)
 - uid: Unosquare.Labs.EmbedIO.IWebModule.AddHandler*
   name: AddHandler
   href: api/Unosquare.Labs.EmbedIO.IWebModule.html#Unosquare_Labs_EmbedIO_IWebModule_AddHandler_
@@ -2697,27 +2798,27 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.Modules.FallbackModule
   fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule
   nameWithType: FallbackModule
-- uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.Func{Unosquare.Labs.EmbedIO.IHttpContext,System.Threading.CancellationToken,System.Boolean})
-  name: FallbackModule(Func<IHttpContext, CancellationToken, Boolean>)
-  href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_Threading_CancellationToken_System_Boolean__
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.Func{Unosquare.Labs.EmbedIO.IHttpContext,System.Threading.CancellationToken,System.Boolean})
-  name.vb: FallbackModule(Func(Of IHttpContext, CancellationToken, Boolean))
-  fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(System.Func<Unosquare.Labs.EmbedIO.IHttpContext, System.Threading.CancellationToken, System.Boolean>)
-  fullName.vb: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(System.Func(Of Unosquare.Labs.EmbedIO.IHttpContext, System.Threading.CancellationToken, System.Boolean))
-  nameWithType: FallbackModule.FallbackModule(Func<IHttpContext, CancellationToken, Boolean>)
-  nameWithType.vb: FallbackModule.FallbackModule(Func(Of IHttpContext, CancellationToken, Boolean))
-- uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.String)
-  name: FallbackModule(String)
-  href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_String_
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.String)
-  fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(System.String)
-  nameWithType: FallbackModule.FallbackModule(String)
-- uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(Unosquare.Labs.EmbedIO.WebModuleBase.WebHandler)
-  name: FallbackModule(WebModuleBase.WebHandler)
-  href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_Unosquare_Labs_EmbedIO_WebModuleBase_WebHandler_
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(Unosquare.Labs.EmbedIO.WebModuleBase.WebHandler)
-  fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(Unosquare.Labs.EmbedIO.WebModuleBase.WebHandler)
-  nameWithType: FallbackModule.FallbackModule(WebModuleBase.WebHandler)
+- uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.Func{Unosquare.Labs.EmbedIO.IHttpContext,System.Threading.CancellationToken,System.Boolean},Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
+  name: FallbackModule(Func<IHttpContext, CancellationToken, Boolean>, HttpVerbs)
+  href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_Threading_CancellationToken_System_Boolean__Unosquare_Labs_EmbedIO_Constants_HttpVerbs_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.Func{Unosquare.Labs.EmbedIO.IHttpContext,System.Threading.CancellationToken,System.Boolean},Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
+  name.vb: FallbackModule(Func(Of IHttpContext, CancellationToken, Boolean), HttpVerbs)
+  fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(System.Func<Unosquare.Labs.EmbedIO.IHttpContext, System.Threading.CancellationToken, System.Boolean>, Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
+  fullName.vb: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(System.Func(Of Unosquare.Labs.EmbedIO.IHttpContext, System.Threading.CancellationToken, System.Boolean), Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
+  nameWithType: FallbackModule.FallbackModule(Func<IHttpContext, CancellationToken, Boolean>, HttpVerbs)
+  nameWithType.vb: FallbackModule.FallbackModule(Func(Of IHttpContext, CancellationToken, Boolean), HttpVerbs)
+- uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
+  name: FallbackModule(String, HttpVerbs)
+  href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
+  fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(System.String, Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
+  nameWithType: FallbackModule.FallbackModule(String, HttpVerbs)
+- uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(Unosquare.Labs.EmbedIO.WebHandler,Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
+  name: FallbackModule(WebHandler, HttpVerbs)
+  href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_Unosquare_Labs_EmbedIO_WebHandler_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(Unosquare.Labs.EmbedIO.WebHandler,Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
+  fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(Unosquare.Labs.EmbedIO.WebHandler, Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
+  nameWithType: FallbackModule.FallbackModule(WebHandler, HttpVerbs)
 - uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor*
   name: FallbackModule
   href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_
@@ -3972,6 +4073,12 @@ references:
   commentId: M:Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.#ctor(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
   fullName: Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.TestHttpRequest(System.String, Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
   nameWithType: TestHttpRequest.TestHttpRequest(String, HttpVerbs)
+- uid: Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.#ctor(Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
+  name: TestHttpRequest(HttpVerbs)
+  href: api/Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.html#Unosquare_Labs_EmbedIO_Tests_TestHttpRequest__ctor_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_
+  commentId: M:Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.#ctor(Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
+  fullName: Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.TestHttpRequest(Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
+  nameWithType: TestHttpRequest.TestHttpRequest(HttpVerbs)
 - uid: Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.#ctor*
   name: TestHttpRequest
   href: api/Unosquare.Labs.EmbedIO.Tests.TestHttpRequest.html#Unosquare_Labs_EmbedIO_Tests_TestHttpRequest__ctor_
@@ -4349,6 +4456,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.Dispose
   nameWithType: TestHttpResponse.Dispose
+- uid: Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.GetBodyAsString(System.Text.Encoding)
+  name: GetBodyAsString(Encoding)
+  href: api/Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.html#Unosquare_Labs_EmbedIO_Tests_TestHttpResponse_GetBodyAsString_System_Text_Encoding_
+  commentId: M:Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.GetBodyAsString(System.Text.Encoding)
+  fullName: Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.GetBodyAsString(System.Text.Encoding)
+  nameWithType: TestHttpResponse.GetBodyAsString(Encoding)
+- uid: Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.GetBodyAsString*
+  name: GetBodyAsString
+  href: api/Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.html#Unosquare_Labs_EmbedIO_Tests_TestHttpResponse_GetBodyAsString_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.GetBodyAsString
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.GetBodyAsString
+  nameWithType: TestHttpResponse.GetBodyAsString
 - uid: Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.Headers
   name: Headers
   href: api/Unosquare.Labs.EmbedIO.Tests.TestHttpResponse.html#Unosquare_Labs_EmbedIO_Tests_TestHttpResponse_Headers
@@ -4501,22 +4621,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Tests.TestWebServer.Modules
   nameWithType: TestWebServer.Modules
-- uid: Unosquare.Labs.EmbedIO.Tests.TestWebServer.OnAny(System.Func{Unosquare.Labs.EmbedIO.IHttpContext,System.Threading.CancellationToken,System.Boolean})
-  name: OnAny(Func<IHttpContext, CancellationToken, Boolean>)
-  href: api/Unosquare.Labs.EmbedIO.Tests.TestWebServer.html#Unosquare_Labs_EmbedIO_Tests_TestWebServer_OnAny_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_Threading_CancellationToken_System_Boolean__
-  commentId: M:Unosquare.Labs.EmbedIO.Tests.TestWebServer.OnAny(System.Func{Unosquare.Labs.EmbedIO.IHttpContext,System.Threading.CancellationToken,System.Boolean})
-  name.vb: OnAny(Func(Of IHttpContext, CancellationToken, Boolean))
-  fullName: Unosquare.Labs.EmbedIO.Tests.TestWebServer.OnAny(System.Func<Unosquare.Labs.EmbedIO.IHttpContext, System.Threading.CancellationToken, System.Boolean>)
-  fullName.vb: Unosquare.Labs.EmbedIO.Tests.TestWebServer.OnAny(System.Func(Of Unosquare.Labs.EmbedIO.IHttpContext, System.Threading.CancellationToken, System.Boolean))
-  nameWithType: TestWebServer.OnAny(Func<IHttpContext, CancellationToken, Boolean>)
-  nameWithType.vb: TestWebServer.OnAny(Func(Of IHttpContext, CancellationToken, Boolean))
-- uid: Unosquare.Labs.EmbedIO.Tests.TestWebServer.OnAny*
-  name: OnAny
-  href: api/Unosquare.Labs.EmbedIO.Tests.TestWebServer.html#Unosquare_Labs_EmbedIO_Tests_TestWebServer_OnAny_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Tests.TestWebServer.OnAny
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Tests.TestWebServer.OnAny
-  nameWithType: TestWebServer.OnAny
 - uid: Unosquare.Labs.EmbedIO.Tests.TestWebServer.OnMethodNotAllowed
   name: OnMethodNotAllowed
   href: api/Unosquare.Labs.EmbedIO.Tests.TestWebServer.html#Unosquare_Labs_EmbedIO_Tests_TestWebServer_OnMethodNotAllowed
@@ -4608,6 +4712,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Tests.TestWebServer.UnregisterModule
   nameWithType: TestWebServer.UnregisterModule
+- uid: Unosquare.Labs.EmbedIO.WebHandler
+  name: WebHandler
+  href: api/Unosquare.Labs.EmbedIO.WebHandler.html
+  commentId: T:Unosquare.Labs.EmbedIO.WebHandler
+  fullName: Unosquare.Labs.EmbedIO.WebHandler
+  nameWithType: WebHandler
 - uid: Unosquare.Labs.EmbedIO.WebModuleBase
   name: WebModuleBase
   href: api/Unosquare.Labs.EmbedIO.WebModuleBase.html
@@ -4627,12 +4737,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.WebModuleBase.WebModuleBase
   nameWithType: WebModuleBase.WebModuleBase
-- uid: Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs,Unosquare.Labs.EmbedIO.WebModuleBase.WebHandler)
-  name: AddHandler(String, HttpVerbs, WebModuleBase.WebHandler)
-  href: api/Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_Unosquare_Labs_EmbedIO_WebModuleBase_WebHandler_
-  commentId: M:Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs,Unosquare.Labs.EmbedIO.WebModuleBase.WebHandler)
-  fullName: Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler(System.String, Unosquare.Labs.EmbedIO.Constants.HttpVerbs, Unosquare.Labs.EmbedIO.WebModuleBase.WebHandler)
-  nameWithType: WebModuleBase.AddHandler(String, HttpVerbs, WebModuleBase.WebHandler)
+- uid: Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs,Unosquare.Labs.EmbedIO.WebHandler)
+  name: AddHandler(String, HttpVerbs, WebHandler)
+  href: api/Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_Unosquare_Labs_EmbedIO_WebHandler_
+  commentId: M:Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs,Unosquare.Labs.EmbedIO.WebHandler)
+  fullName: Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler(System.String, Unosquare.Labs.EmbedIO.Constants.HttpVerbs, Unosquare.Labs.EmbedIO.WebHandler)
+  nameWithType: WebModuleBase.AddHandler(String, HttpVerbs, WebHandler)
 - uid: Unosquare.Labs.EmbedIO.WebModuleBase.AddHandler*
   name: AddHandler
   href: api/Unosquare.Labs.EmbedIO.WebModuleBase.html#Unosquare_Labs_EmbedIO_WebModuleBase_AddHandler_
@@ -4744,12 +4854,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.WebModuleBase.WatchdogInterval
   nameWithType: WebModuleBase.WatchdogInterval
-- uid: Unosquare.Labs.EmbedIO.WebModuleBase.WebHandler
-  name: WebModuleBase.WebHandler
-  href: api/Unosquare.Labs.EmbedIO.WebModuleBase.WebHandler.html
-  commentId: T:Unosquare.Labs.EmbedIO.WebModuleBase.WebHandler
-  fullName: Unosquare.Labs.EmbedIO.WebModuleBase.WebHandler
-  nameWithType: WebModuleBase.WebHandler
 - uid: Unosquare.Labs.EmbedIO.WebServer
   name: WebServer
   href: api/Unosquare.Labs.EmbedIO.WebServer.html
