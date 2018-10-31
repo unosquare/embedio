@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
+    using Core;
     using Constants;
     using EmbedIO;
     using System;
@@ -17,7 +18,6 @@
 #else
     using Net;
 #endif
-    using static VirtualPaths;
 
     /// <summary>
     /// Represents a simple module to server static files from the file system.
@@ -252,12 +252,12 @@
         {
             switch (ValidatePath(context, out var requestFullLocalPath))
             {
-                case VirtualPathStatus.Forbidden:
+                case Core.VirtualPaths.VirtualPathStatus.Forbidden:
                     context.Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
                     return Task.FromResult(true);
-                case VirtualPathStatus.File:
+                case Core.VirtualPaths.VirtualPathStatus.File:
                     return HandleFile(context, requestFullLocalPath, sendBuffer, ct);
-                case VirtualPathStatus.Directory:
+                case Core.VirtualPaths.VirtualPathStatus.Directory:
                     return HandleDirectory(context, requestFullLocalPath, ct);
                 default:
                     return Task.FromResult(false);
@@ -350,7 +350,7 @@
             return true;
         }
 
-        private VirtualPathStatus ValidatePath(IHttpContext context, out string requestFullLocalPath)
+        private VirtualPaths.VirtualPathStatus ValidatePath(IHttpContext context, out string requestFullLocalPath)
         {
             var baseLocalPath = FileSystemPath;
             var requestLocalPath = _virtualPaths.GetUrlPath(context.RequestPathCaseSensitive(), ref baseLocalPath);

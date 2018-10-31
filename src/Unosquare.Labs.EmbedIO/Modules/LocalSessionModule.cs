@@ -198,12 +198,7 @@
                 new System.Net.Cookie(SessionCookieName, sessionId) :
                 new System.Net.Cookie(SessionCookieName, sessionId, CookiePath);
 
-                _sessions[sessionId] = new SessionInfo
-                {
-                    SessionId = sessionId,
-                    DateCreated = DateTime.UtcNow,
-                    LastActivity = DateTime.UtcNow,
-                };
+                _sessions[sessionId] = new SessionInfo(sessionId);
 
                 return sessionCookie;
             }

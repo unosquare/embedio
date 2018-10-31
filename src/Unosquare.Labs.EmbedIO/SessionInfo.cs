@@ -12,11 +12,22 @@
         private readonly Lazy<ConcurrentDictionary<string, object>> _lazyData =
             new Lazy<ConcurrentDictionary<string, object>>(() =>
                 new ConcurrentDictionary<string, object>(Strings.StandardStringComparer));
-        
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SessionInfo"/> class.
+        /// </summary>
+        /// <param name="sessionId">The session identifier.</param>
+        public SessionInfo(string sessionId)
+        {
+            DateCreated = DateTime.UtcNow;
+            LastActivity = DateTime.UtcNow;
+            SessionId = sessionId;
+        }
+
         /// <summary>
         /// Current Session Identifier.
         /// </summary>
-        public string SessionId { get; set; }
+        public string SessionId { get; }
 
         /// <summary>
         /// Gets or sets the date created.
@@ -24,7 +35,7 @@
         /// <value>
         /// The date created.
         /// </value>
-        public DateTime DateCreated { get; set; }
+        public DateTime DateCreated { get; }
 
         /// <summary>
         /// Gets or sets the last activity.

@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using Constants;
+    using Core;
     using Swan;
     using Swan.Formatters;
     using System;
