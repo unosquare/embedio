@@ -45,14 +45,11 @@
         /// <returns>
         /// A task representing the GET call.
         /// </returns>
-        public async Task<string> GetAsync(string url)
+        public async Task<string> GetAsync(string url = "")
         {
             var response = await SendAsync(new TestHttpRequest($"http://test/{url}"));
 
-            var result = Encoding.GetString((response.OutputStream as MemoryStream)?.ToArray());
-
-            // Remove BOM
-            return result.Length > 0 && result[0] == 65279 ? result.Remove(0, 1) : result;
+            return response.GetBodyAsString(Encoding);
         }
 
         /// <summary>

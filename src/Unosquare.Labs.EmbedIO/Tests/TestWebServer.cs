@@ -4,7 +4,6 @@
     using Swan;
     using System;
     using System.Collections.Concurrent;
-    using Modules;
     using System.Collections.ObjectModel;
     using System.Threading;
     using System.Threading.Tasks;
@@ -53,7 +52,7 @@
         /// The HTTP contexts.
         /// </value>
         public ConcurrentQueue<IHttpContext> HttpContexts { get; } = new ConcurrentQueue<IHttpContext>();
-        
+
         /// <inheritdoc />
         public T Module<T>()
             where T : class, IWebModule
@@ -82,14 +81,6 @@
                 await handler.HandleClientRequest(ct);
             }
         }
-
-        /// <summary>
-        /// Called when any unhandled request.
-        ///
-        /// Any verb and any path.
-        /// </summary>
-        /// <param name="action">The action.</param>
-        public void OnAny(Func<IHttpContext, CancellationToken, bool> action) => RegisterModule(new FallbackModule(action));
 
         /// <summary>
         /// Gets the test HTTP Client.
