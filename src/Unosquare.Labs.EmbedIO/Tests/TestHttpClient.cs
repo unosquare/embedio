@@ -1,7 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using System;
-    using System.IO;
     using System.Text;
     using System.Threading.Tasks;
 
@@ -68,7 +67,7 @@
             testServer.HttpContexts.Enqueue(context);
 
             if (!(context.Response is TestHttpResponse response))
-                throw new InvalidOperationException($"The response object is invalid.");
+                throw new InvalidOperationException("The response object is invalid.");
             
             try
             {

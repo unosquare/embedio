@@ -3,7 +3,6 @@
     using Constants;
     using System;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Interface to create web modules.
