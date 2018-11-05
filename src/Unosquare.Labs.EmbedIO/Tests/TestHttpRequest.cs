@@ -97,5 +97,4 @@
         /// <inheritdoc />
         public Uri UrlReferrer { get; }
     }
-
 }
