@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Represents a Test Http Context.
     /// </summary>

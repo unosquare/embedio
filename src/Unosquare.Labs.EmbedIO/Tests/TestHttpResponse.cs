@@ -16,7 +16,7 @@
         public NameValueCollection Headers { get; } = new NameValueCollection();
 
         /// <inheritdoc />
-        public int StatusCode { get; set; } = (int) HttpStatusCode.OK;
+        public int StatusCode { get; set; } = (int)HttpStatusCode.OK;
 
         /// <inheritdoc />
         public long ContentLength64 { get; set; }
@@ -68,6 +68,19 @@
         public void Dispose()
         {
             OutputStream?.Dispose();
+        }
+
+        /// <summary>
+        /// Gets the body as string.
+        /// </summary>
+        /// <param name="encoding">The encoding.</param>
+        /// <returns>A string from the body.</returns>
+        public string GetBodyAsString(Encoding encoding = null)
+        {
+            var result = (encoding ?? Encoding.UTF8).GetString((OutputStream as MemoryStream)?.ToArray());
+
+            // Remove BOM
+            return result.Length > 0 && result[0] == 65279 ? result.Remove(0, 1) : result;
         }
     }
 }

@@ -68,12 +68,7 @@
             }
         }
 
-        /// <summary>
-        /// Process HttpListener Request and returns <c>true</c>  if it was handled.
-        /// </summary>
-        /// <param name="ct">The cancellation token.</param>
-        /// <returns><c>true</c> if it was handled; otherwise, <c>false</c>.</returns>
-        public async Task<bool> ProcessRequest(CancellationToken ct)
+        private async Task<bool> ProcessRequest(CancellationToken ct)
         {
             // Iterate though the loaded modules to match up a request and possibly generate a response.
             foreach (var module in _context.WebServer.Modules)
@@ -149,7 +144,7 @@
                     (x.Verb == HttpVerbs.Any || x.Verb == _context.RequestVerb()));
         }
 
-        private WebModuleBase.WebHandler GetHandler(IWebModule module)
+        private WebHandler GetHandler(IWebModule module)
         {
             Map handler;
 

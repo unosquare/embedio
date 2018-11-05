@@ -1,4 +1,4 @@
-﻿namespace Unosquare.Labs.EmbedIO
+﻿namespace Unosquare.Labs.EmbedIO.Core
 {
     using System;
     using System.Collections.Generic;

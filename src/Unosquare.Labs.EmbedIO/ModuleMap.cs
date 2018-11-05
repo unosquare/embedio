@@ -35,6 +35,6 @@
         /// <summary>
         /// The delegate to call for the given path and verb.
         /// </summary>
-        public WebModuleBase.WebHandler ResponseHandler { get; set; }
+        public WebHandler ResponseHandler { get; set; }
     }
 }

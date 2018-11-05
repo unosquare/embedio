@@ -3,7 +3,6 @@
     using Constants;
     using System;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Interface to create web modules.
@@ -70,7 +69,7 @@
         /// or
         /// handler.
         /// </exception>
-        void AddHandler(string path, HttpVerbs verb, WebModuleBase.WebHandler handler);
+        void AddHandler(string path, HttpVerbs verb, WebHandler handler);
 
         /// <summary>
         /// Starts the Web Module.

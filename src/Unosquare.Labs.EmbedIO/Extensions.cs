@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using Constants;
+    using Core;
     using Swan;
     using Swan.Formatters;
     using System;
@@ -456,20 +457,7 @@
         public static T ParseJson<T>(this IHttpContext context)
             where T : class
         {
-            return ParseJson<T>(context.RequestBody());
-        }
-
-        /// <summary>
-        /// Parses the JSON as a given type from the request body string.
-        /// </summary>
-        /// <typeparam name="T">The type of specified object type.</typeparam>
-        /// <param name="requestBody">The request body.</param>
-        /// <returns>
-        /// A string that represents the json as a given type from the request body string.
-        /// </returns>
-        public static T ParseJson<T>(this string requestBody)
-            where T : class
-        {
+            var requestBody = context.RequestBody();
             return requestBody == null ? null : Json.Deserialize<T>(requestBody);
         }
 

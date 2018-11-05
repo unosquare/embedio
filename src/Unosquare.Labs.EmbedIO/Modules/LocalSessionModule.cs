@@ -12,7 +12,7 @@
     /// <summary>
     /// A simple module to handle in-memory sessions. Do not use for distributed applications.
     /// </summary>
-    public class LocalSessionModule 
+    public class LocalSessionModule
         : WebModuleBase, ISessionWebModule
     {
         /// <summary>
@@ -31,9 +31,8 @@
         /// </summary>
         private readonly object _sessionsSyncLock = new object();
 
-        /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Unosquare.Labs.EmbedIO.Modules.LocalSessionModule" /> class.
+        /// Initializes a new instance of the <see cref="LocalSessionModule"/> class.
         /// </summary>
         public LocalSessionModule()
         {
@@ -41,11 +40,11 @@
 
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (context, ct) =>
             {
+                var requestSessionCookie = context.Request.Cookies[SessionCookieName];
+                var isSessionRegistered = false;
+
                 lock (_sessionsSyncLock)
                 {
-                    var requestSessionCookie = context.Request.Cookies[SessionCookieName];
-                    var isSessionRegistered = false;
-
                     if (requestSessionCookie != null)
                     {
                         FixUpSessionCookie(context);
@@ -75,13 +74,13 @@
                         _sessions[requestSessionId].LastActivity = DateTime.UtcNow;
                         $"Session Identified '{requestSessionId}'".Debug(nameof(LocalSessionModule));
                     }
-
-                    // Always returns false because we need it to handle the rest for the modules
-                    return Task.FromResult(false);
                 }
+
+                // Always returns false because we need it to handle the rest for the modules
+                return Task.FromResult(false);
             });
         }
-        
+
         /// <inheritdoc />
         public IReadOnlyDictionary<string, SessionInfo> Sessions
         {
@@ -179,8 +178,7 @@
         {
             lock (_sessionsSyncLock)
             {
-                if (string.IsNullOrWhiteSpace(session?.SessionId)) return;
-                if (_sessions.ContainsKey(session.SessionId) == false) return;
+                if (string.IsNullOrWhiteSpace(session?.SessionId) || !_sessions.ContainsKey(session.SessionId)) return;
                 _sessions.Remove(session.SessionId);
             }
         }
@@ -200,12 +198,7 @@
                 new System.Net.Cookie(SessionCookieName, sessionId) :
                 new System.Net.Cookie(SessionCookieName, sessionId, CookiePath);
 
-                _sessions[sessionId] = new SessionInfo
-                {
-                    SessionId = sessionId,
-                    DateCreated = DateTime.UtcNow,
-                    LastActivity = DateTime.UtcNow,
-                };
+                _sessions[sessionId] = new SessionInfo(sessionId);
 
                 return sessionCookie;
             }

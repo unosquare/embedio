@@ -1,11 +1,11 @@
-﻿namespace Unosquare.Labs.EmbedIO.Modules
+﻿namespace Unosquare.Labs.EmbedIO.Core
 {
-    using System.Collections.Generic;
-    using System.IO;
     using System;
-    using System.Linq;
-    using System.Collections.ObjectModel;
     using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.IO;
+    using System.Linq;
 
     internal class VirtualPaths : Dictionary<string, string>
     {

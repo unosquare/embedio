@@ -16,31 +16,35 @@
         /// Initializes a new instance of the <see cref="FallbackModule" /> class.
         /// </summary>
         /// <param name="action">The action.</param>
-        public FallbackModule(Func<IHttpContext, CancellationToken, bool> action)
+        /// <param name="verb">The verb.</param>
+        public FallbackModule(Func<IHttpContext, CancellationToken, bool> action, HttpVerbs verb = HttpVerbs.Any)
         {
             AddHandler(
                 ModuleMap.AnyPath, 
-                HttpVerbs.Any, 
+                verb, 
                 (context, ct) => Task.FromResult(action(context, ct)));
         }
-        
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="FallbackModule"/> class.
+        /// Initializes a new instance of the <see cref="FallbackModule" /> class.
         /// </summary>
         /// <param name="action">The action.</param>
-        public FallbackModule(WebHandler action)
+        /// <param name="verb">The verb.</param>
+        public FallbackModule(WebHandler action, HttpVerbs verb = HttpVerbs.Any)
         {
             AddHandler(
                 ModuleMap.AnyPath, 
-                HttpVerbs.Any,
+                verb,
                 action);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FallbackModule"/> class.
+        /// Initializes a new instance of the <see cref="FallbackModule" /> class.
         /// </summary>
         /// <param name="redirectUrl">The redirect URL.</param>
-        public FallbackModule(string redirectUrl)
+        /// <param name="verb">The verb.</param>
+        /// <exception cref="ArgumentNullException">redirectUrl</exception>
+        public FallbackModule(string redirectUrl, HttpVerbs verb = HttpVerbs.Any)
         {
             if (string.IsNullOrWhiteSpace(redirectUrl))
                 throw new ArgumentNullException(nameof(redirectUrl));
@@ -49,7 +53,7 @@
 
             AddHandler(
                 ModuleMap.AnyPath, 
-                HttpVerbs.Any, 
+                verb, 
                 (context, ct) => Task.FromResult(context.Redirect(redirectUrl)));
         }
 

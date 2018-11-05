@@ -13,6 +13,17 @@
     /// <seealso cref="IHttpRequest" />
     public class TestHttpRequest : IHttpRequest
     {
+        private const string DefaultTestUrl = "http://test/";
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestHttpRequest"/> class.
+        /// </summary>
+        /// <param name="httpMethod">The HTTP method.</param>
+        public TestHttpRequest(HttpVerbs httpMethod = HttpVerbs.Get)
+        : this(DefaultTestUrl, httpMethod)
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TestHttpRequest" /> class.
         /// </summary>
@@ -20,9 +31,10 @@
         /// <param name="httpMethod">The HTTP method.</param>
         public TestHttpRequest(string url, HttpVerbs httpMethod = HttpVerbs.Get)
         {
+            RawUrl = url ?? throw new ArgumentNullException(nameof(url));
+
             HttpMethod = httpMethod.ToString();
             Url = new Uri(url);
-            RawUrl = url;
         }
 
         /// <inheritdoc />
@@ -85,5 +97,4 @@
         /// <inheritdoc />
         public Uri UrlReferrer { get; }
     }
-
 }

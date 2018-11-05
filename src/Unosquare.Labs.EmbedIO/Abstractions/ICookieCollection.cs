@@ -11,12 +11,6 @@
     public interface ICookieCollection : ICollection
     {
         /// <summary>
-        /// Adds the specified cookie.
-        /// </summary>
-        /// <param name="cookie">The cookie.</param>
-        void Add(Cookie cookie);
-
-        /// <summary>
         /// Gets the <see cref="Cookie"/> with the specified name.
         /// </summary>
         /// <value>
@@ -25,5 +19,11 @@
         /// <param name="name">The name.</param>
         /// <returns>The cookie matching the specified name.</returns>
         Cookie this[string name] { get; }
+
+        /// <summary>
+        /// Adds the specified cookie.
+        /// </summary>
+        /// <param name="cookie">The cookie.</param>
+        void Add(Cookie cookie);
     }
 }

@@ -56,9 +56,11 @@
         public async Task RunsServerAndRequestData_ReturnsValidData()
         {
             var webserver = new TestWebServer();
-            webserver.OnAny((ctx, ct) => ctx.JsonResponse(new Person { Name = nameof(Person) }));
+            webserver.OnAny((ctx, ct) => ctx.JsonResponseAsync(new Person { Name = nameof(Person) }, ct));
 
+#pragma warning disable 4014
             webserver.RunAsync();
+#pragma warning restore 4014
 
             var client = webserver.GetClient();
 

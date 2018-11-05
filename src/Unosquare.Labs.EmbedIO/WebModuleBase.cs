@@ -12,15 +12,6 @@
     public abstract class WebModuleBase 
         : IWebModule
     {
-        
-        /// <summary>
-        /// Represents a Web Handler.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="ct">The ct.</param>
-        /// <returns>A task representing the success of the web handler.</returns>
-        public delegate Task<bool> WebHandler(IHttpContext context, CancellationToken ct);
-
         /// <summary>
         /// Initializes a new instance of the <see cref="WebModuleBase"/> class.
         /// </summary>
@@ -87,4 +78,12 @@
             // do nothing
         }
     }
+    
+    /// <summary>
+    /// Represents a Web Handler.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="ct">The ct.</param>
+    /// <returns>A task representing the success of the web handler.</returns>
+    public delegate Task<bool> WebHandler(IHttpContext context, CancellationToken ct);
 }

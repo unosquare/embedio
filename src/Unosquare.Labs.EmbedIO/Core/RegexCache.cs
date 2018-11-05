@@ -1,4 +1,4 @@
-﻿namespace Unosquare.Labs.EmbedIO
+﻿namespace Unosquare.Labs.EmbedIO.Core
 {
     using System.Collections.Concurrent;
     using System.Text.RegularExpressions;

@@ -1,9 +1,9 @@
-﻿namespace Unosquare.Labs.EmbedIO.Modules
+﻿namespace Unosquare.Labs.EmbedIO.Core
 {
-    using Swan;
     using System;
     using System.Collections.Concurrent;
     using System.IO;
+    using Swan;
 
     internal class RamCache : ConcurrentDictionary<string, RamCache.RamCacheEntry>
     {

@@ -1,7 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using System;
-    using System.IO;
     using System.Text;
     using System.Threading.Tasks;
 
@@ -45,14 +44,11 @@
         /// <returns>
         /// A task representing the GET call.
         /// </returns>
-        public async Task<string> GetAsync(string url)
+        public async Task<string> GetAsync(string url = "")
         {
             var response = await SendAsync(new TestHttpRequest($"http://test/{url}"));
 
-            var result = Encoding.GetString((response.OutputStream as MemoryStream)?.ToArray());
-
-            // Remove BOM
-            return result.Length > 0 && result[0] == 65279 ? result.Remove(0, 1) : result;
+            return response.GetBodyAsString(Encoding);
         }
 
         /// <summary>
@@ -71,7 +67,7 @@
             testServer.HttpContexts.Enqueue(context);
 
             if (!(context.Response is TestHttpResponse response))
-                throw new InvalidOperationException($"The response object is invalid.");
+                throw new InvalidOperationException("The response object is invalid.");
             
             try
             {
