@@ -56,7 +56,7 @@ Some notes regarding WebSocket and runtimes support:
 ### EmbedIO 2.0 - What's new
 
 #### Breaking changes
-* `WebApiController` is renewed. Reduce the methods overhead removing the WebServer and Context arguments. See example belows.
+* `WebApiController` is renewed. Reduce the methods overhead removing the WebServer and Context arguments. See examples below.
 * `RoutingStrategy.Regex` is the default routing scheme.
 
 #### Additional changes
