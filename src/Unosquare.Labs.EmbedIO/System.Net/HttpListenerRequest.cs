@@ -281,7 +281,7 @@
             if (rawUri != null)
                 host = rawUri.Host;
 
-            var colon = host.IndexOf(':');
+            var colon = host.LastIndexOf(':');
             if (colon >= 0)
                 host = host.Substring(0, colon);
 
