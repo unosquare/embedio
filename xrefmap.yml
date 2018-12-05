@@ -5474,6 +5474,25 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.CookieCollection.SyncRoot
   nameWithType: CookieCollection.SyncRoot
+- uid: Unosquare.Net.EndPointManager
+  name: EndPointManager
+  href: api/Unosquare.Net.EndPointManager.html
+  commentId: T:Unosquare.Net.EndPointManager
+  fullName: Unosquare.Net.EndPointManager
+  nameWithType: EndPointManager
+- uid: Unosquare.Net.EndPointManager.UseIpv6
+  name: UseIpv6
+  href: api/Unosquare.Net.EndPointManager.html#Unosquare_Net_EndPointManager_UseIpv6
+  commentId: P:Unosquare.Net.EndPointManager.UseIpv6
+  fullName: Unosquare.Net.EndPointManager.UseIpv6
+  nameWithType: EndPointManager.UseIpv6
+- uid: Unosquare.Net.EndPointManager.UseIpv6*
+  name: UseIpv6
+  href: api/Unosquare.Net.EndPointManager.html#Unosquare_Net_EndPointManager_UseIpv6_
+  commentId: Overload:Unosquare.Net.EndPointManager.UseIpv6
+  isSpec: "True"
+  fullName: Unosquare.Net.EndPointManager.UseIpv6
+  nameWithType: EndPointManager.UseIpv6
 - uid: Unosquare.Net.HttpListener
   name: HttpListener
   href: api/Unosquare.Net.HttpListener.html

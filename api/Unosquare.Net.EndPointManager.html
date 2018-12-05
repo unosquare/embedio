@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class MessageEventArgs
+    <title>Class EndPointManager
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class MessageEventArgs
+    <meta name="title" content="Class EndPointManager
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.40.4.0">
     
@@ -77,25 +77,21 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Unosquare.Net.MessageEventArgs">
+            <article class="content wrap" id="_content" data-uid="Unosquare.Net.EndPointManager">
   
   
-  <h1 id="Unosquare_Net_MessageEventArgs" data-uid="Unosquare.Net.MessageEventArgs" class="text-break">Class MessageEventArgs
+  <h1 id="Unosquare_Net_EndPointManager" data-uid="Unosquare.Net.EndPointManager" class="text-break">Class EndPointManager
   </h1>
-  <div class="markdown level0 summary"><p>Represents the event data for the <a class="xref" href="Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_OnMessage">OnMessage</a> event.</p>
+  <div class="markdown level0 summary"><p>Represents the EndPoint Manager.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.eventargs">EventArgs</a></div>
-    <div class="level2"><span class="xref">MessageEventArgs</span></div>
+    <div class="level1"><span class="xref">EndPointManager</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.eventargs.empty">EventArgs.Empty</a>
-    </div>
     <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
     </div>
@@ -119,62 +115,22 @@
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Net.html">Unosquare.Net</a></h6>
-  <h5 id="Unosquare_Net_MessageEventArgs_syntax">Syntax</h5>
+  <h5 id="Unosquare_Net_EndPointManager_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MessageEventArgs : EventArgs</code></pre>
+    <pre><code class="lang-csharp hljs">public static class EndPointManager</code></pre>
   </div>
-  <h5 id="Unosquare_Net_MessageEventArgs_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>
-That event occurs when the <a class="xref" href="Unosquare.Net.WebSocket.html">WebSocket</a> receives
-a message or a ping if the <a class="xref" href="Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_EmitOnPing">EmitOnPing</a>
-property is set to <code>true</code>.
-</p>
-<p>
-If you would like to get the message data, you should access
-the <a class="xref" href="Unosquare.Net.MessageEventArgs.html#Unosquare_Net_MessageEventArgs_Data">Data</a> or <a class="xref" href="Unosquare.Net.MessageEventArgs.html#Unosquare_Net_MessageEventArgs_RawData">RawData</a> property.
-</p>
-</div>
   <h3 id="properties">Properties
   </h3>
   
   
-  <a id="Unosquare_Net_MessageEventArgs_Data_" data-uid="Unosquare.Net.MessageEventArgs.Data*"></a>
-  <h4 id="Unosquare_Net_MessageEventArgs_Data" data-uid="Unosquare.Net.MessageEventArgs.Data">Data</h4>
-  <div class="markdown level1 summary"><p>Gets the message data as a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>.</p>
+  <a id="Unosquare_Net_EndPointManager_UseIpv6_" data-uid="Unosquare.Net.EndPointManager.UseIpv6*"></a>
+  <h4 id="Unosquare_Net_EndPointManager_UseIpv6" data-uid="Unosquare.Net.EndPointManager.UseIpv6">UseIpv6</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [use IPv6].</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Data { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> that represents the message data if its type is
-text or ping and if decoding it to a string has successfully done;
-otherwise, <span class="xref">null</span>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Net_MessageEventArgs_IsBinary_" data-uid="Unosquare.Net.MessageEventArgs.IsBinary*"></a>
-  <h4 id="Unosquare_Net_MessageEventArgs_IsBinary" data-uid="Unosquare.Net.MessageEventArgs.IsBinary">IsBinary</h4>
-  <div class="markdown level1 summary"><p>Gets a value indicating whether the message type is binary.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsBinary { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool UseIpv6 { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -187,88 +143,7 @@ otherwise, <span class="xref">null</span>.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><code>true</code> if the message type is binary; otherwise, <code>false</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Net_MessageEventArgs_IsPing_" data-uid="Unosquare.Net.MessageEventArgs.IsPing*"></a>
-  <h4 id="Unosquare_Net_MessageEventArgs_IsPing" data-uid="Unosquare.Net.MessageEventArgs.IsPing">IsPing</h4>
-  <div class="markdown level1 summary"><p>Gets a value indicating whether the message type is ping.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsPing { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><code>true</code> if the message type is ping; otherwise, <code>false</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Net_MessageEventArgs_IsText_" data-uid="Unosquare.Net.MessageEventArgs.IsText*"></a>
-  <h4 id="Unosquare_Net_MessageEventArgs_IsText" data-uid="Unosquare.Net.MessageEventArgs.IsText">IsText</h4>
-  <div class="markdown level1 summary"><p>Gets a value indicating whether the message type is text.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsText { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><code>true</code> if the message type is text; otherwise, <code>false</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Net_MessageEventArgs_RawData_" data-uid="Unosquare.Net.MessageEventArgs.RawData*"></a>
-  <h4 id="Unosquare_Net_MessageEventArgs_RawData" data-uid="Unosquare.Net.MessageEventArgs.RawData">RawData</h4>
-  <div class="markdown level1 summary"><p>Gets the message data as an array of <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public byte[] RawData { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
-        <td><p>An array of <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> that represents the message data.</p>
+        <td><p><code>true</code> if [use IPv6]; otherwise, <code>false</code>.</p>
 </td>
       </tr>
     </tbody>
