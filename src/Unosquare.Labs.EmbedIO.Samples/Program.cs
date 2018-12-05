@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
     using Modules;
+    using Net;
     using Swan;
     using System;
     using System.Threading;
@@ -14,7 +15,8 @@
         /// <param name="args">The arguments.</param>
         private static async Task Main(string[] args)
         {
-            var url = "http://[::]:8787/";
+            var url = "http://*:8787/";
+            EndPointManager.UseIpv6 = true;
 
             if (args.Length > 0)
                 url = args[0];

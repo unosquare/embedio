@@ -133,7 +133,7 @@
             if (IsListening)
                 return;
 
-            EndPointManager.AddListener(this);
+            EndPointManager.AddListener(this).GetAwaiter().GetResult();
             IsListening = true;
         }
 
@@ -191,15 +191,15 @@
 
         private void Close(bool closeExisting)
         {
-            EndPointManager.RemoveListener(this);
+            EndPointManager.RemoveListener(this).GetAwaiter().GetResult();
 
             var list = new List<HttpConnection>();
 
             var keys = _connections.Keys;
-            var connsArray = new HttpConnection[keys.Count];
-            keys.CopyTo(connsArray, 0);
+            var connections = new HttpConnection[keys.Count];
+            keys.CopyTo(connections, 0);
             _connections.Clear();
-            list.AddRange(connsArray);
+            list.AddRange(connections);
 
             for (var i = list.Count - 1; i >= 0; i--)
                 list[i].Close(true);

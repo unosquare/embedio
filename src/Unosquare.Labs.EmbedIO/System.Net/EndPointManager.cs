@@ -1,85 +1,72 @@
 ﻿namespace Unosquare.Net
 {
+    using System.Threading.Tasks;
     using System.Collections.Generic;
+    using System.Collections.Concurrent;
     using System.Net;
     using System.Net.Sockets;
 
-    internal static class EndPointManager
+    /// <summary>
+    /// Represents the EndPoint Manager.
+    /// </summary>
+    public static class EndPointManager
     {
-        private static readonly Dictionary<IPAddress, Dictionary<int, EndPointListener>> IPToEndpoints =
-            new Dictionary<IPAddress, Dictionary<int, EndPointListener>>();
+        private static readonly ConcurrentDictionary<IPAddress, ConcurrentDictionary<int, EndPointListener>> IPToEndpoints =
+            new ConcurrentDictionary<IPAddress, ConcurrentDictionary<int, EndPointListener>>();
 
-        private static readonly object SyncRoot = new object();
+        /// <summary>
+        /// Gets or sets a value indicating whether [use IPv6].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [use IPv6]; otherwise, <c>false</c>.
+        /// </value>
+        public static bool UseIpv6 { get; set; }
 
-        public static void AddListener(HttpListener listener)
+        internal static async Task AddListener(HttpListener listener)
         {
             var added = new List<string>();
 
             try
             {
-                lock (SyncRoot)
+                foreach (var prefix in listener.Prefixes)
                 {
-                    foreach (var prefix in listener.Prefixes)
-                    {
-                        AddPrefixInternal(prefix, listener);
-                        added.Add(prefix);
-                    }
+                    await AddPrefix(prefix, listener);
+                    added.Add(prefix);
                 }
             }
             catch
             {
                 foreach (var prefix in added)
                 {
-                    RemovePrefix(prefix, listener);
+                    await RemovePrefix(prefix, listener);
                 }
 
                 throw;
             }
         }
 
-        public static void AddPrefix(string prefix, HttpListener listener)
+        internal static void RemoveEndPoint(EndPointListener epl, IPEndPoint ep)
         {
-            lock (SyncRoot)
+            if (IPToEndpoints.TryGetValue(ep.Address, out var p))
             {
-                AddPrefixInternal(prefix, listener);
-            }
-        }
-
-        public static void RemoveEndPoint(EndPointListener epl, IPEndPoint ep)
-        {
-            lock (SyncRoot)
-            {
-                var p = IPToEndpoints[ep.Address];
-                p.Remove(ep.Port);
-                if (p.Count == 0)
+                if (p.TryRemove(ep.Port, out _) && p.Count == 0)
                 {
-                    IPToEndpoints.Remove(ep.Address);
+                    IPToEndpoints.TryRemove(ep.Address, out _);
                 }
             }
 
             epl.Close();
         }
 
-        public static void RemoveListener(HttpListener listener)
+        internal static async Task RemoveListener(HttpListener listener)
         {
-            lock (SyncRoot)
+            foreach (var prefix in listener.Prefixes)
             {
-                foreach (var prefix in listener.Prefixes)
-                {
-                    RemovePrefixInternal(prefix, listener);
-                }
+                await RemovePrefix(prefix, listener);
             }
         }
 
-        public static void RemovePrefix(string prefix, HttpListener listener)
-        {
-            lock (SyncRoot)
-            {
-                RemovePrefixInternal(prefix, listener);
-            }
-        }
-
-        private static void AddPrefixInternal(string p, HttpListener listener)
+        internal static async Task AddPrefix(string p, HttpListener listener)
         {
             var lp = new ListenerPrefix(p);
 
@@ -87,62 +74,43 @@
                 throw new HttpListenerException(400, "Invalid path.");
 
             // listens on all the interfaces if host name cannot be parsed by IPAddress.
-            var epl = GetEpListener(lp.Host, lp.Port, listener, lp.Secure);
+            var epl = await GetEpListener(lp.Host, lp.Port, listener, lp.Secure);
             epl.AddPrefix(lp, listener);
         }
 
-        private static EndPointListener GetEpListener(string host, int port, HttpListener listener, bool secure = false)
+        private static async Task<EndPointListener> GetEpListener(string host, int port, HttpListener listener, bool secure = false)
         {
             IPAddress addr;
 
             if (host == "*")
             {
-                addr = IPAddress.Any;
+                addr = UseIpv6 ? IPAddress.IPv6Any : IPAddress.Any;
             }
             else if (IPAddress.TryParse(host, out addr) == false)
             {
                 try
                 {
-                    var iphost = new IPHostEntry
+                    var hostEntry = new IPHostEntry
                     {
                         HostName = host,
-                        AddressList = Dns.GetHostAddressesAsync(host).Result,
+                        AddressList = await Dns.GetHostAddressesAsync(host),
                     };
 
-                    addr = iphost.AddressList[0];
+                    addr = hostEntry.AddressList[0];
                 }
                 catch
                 {
-                    addr = IPAddress.Any;
+                    addr = UseIpv6 ? IPAddress.IPv6Any : IPAddress.Any;
                 }
             }
 
-            Dictionary<int, EndPointListener> p;
-            if (IPToEndpoints.ContainsKey(addr))
-            {
-                p = IPToEndpoints[addr];
-            }
-            else
-            {
-                p = new Dictionary<int, EndPointListener>();
-                IPToEndpoints[addr] = p;
-            }
-
-            EndPointListener epl;
-            if (p.ContainsKey(port))
-            {
-                epl = p[port];
-            }
-            else
-            {
-                epl = new EndPointListener(listener, addr, port, secure);
-                p[port] = epl;
-            }
-
+            var p = IPToEndpoints.GetOrAdd(addr, x => new ConcurrentDictionary<int, EndPointListener>());
+            var epl = p.GetOrAdd(port, x => new EndPointListener(listener, addr, x, secure));
+            
             return epl;
         }
 
-        private static void RemovePrefixInternal(string prefix, HttpListener listener)
+        private static async Task RemovePrefix(string prefix, HttpListener listener)
         {
             try
             {
@@ -151,7 +119,7 @@
                 if (!lp.IsValid())
                     return;
 
-                var epl = GetEpListener(lp.Host, lp.Port, listener, lp.Secure);
+                var epl = await GetEpListener(lp.Host, lp.Port, listener, lp.Secure);
                 epl.RemovePrefix(lp, listener);
             }
             catch (SocketException)

@@ -35,7 +35,7 @@
             if (startHost >= length)
                 throw new ArgumentException("No host specified.");
 
-            var colon = uri.LastIndexOf(':', startHost) + startHost;
+            var colon = uri.LastIndexOf(':');
             if (startHost == colon)
                 throw new ArgumentException("No host specified.");
 
@@ -70,11 +70,6 @@
 
         public bool IsValid() => Path.IndexOf('%') == -1 && Path.IndexOf("//", StringComparison.Ordinal) == -1;
 
-        // Equals and GetHashCode are required to detect duplicates in HttpListenerPrefixCollection.
-        public override bool Equals(object o) => o is ListenerPrefix other && _original == other._original;
-
-        public override int GetHashCode() => _original.GetHashCode();
-
         private void Parse(string uri)
         {
             var defaultPort = 80;
@@ -90,7 +85,7 @@
             if (startHost >= length)
                 throw new ArgumentException("No host specified.");
 
-            var colon = uri.LastIndexOf(':', startHost) + startHost;
+            var colon = uri.LastIndexOf(':');
             int root;
 
             if (colon > 0)
