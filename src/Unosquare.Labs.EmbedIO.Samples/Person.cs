@@ -2,7 +2,6 @@
 {
     using LiteLib;
     using Swan;
-    using System.ComponentModel.DataAnnotations.Schema;
 
     /// <inheritdoc />
     /// <summary>

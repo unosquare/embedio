@@ -35,7 +35,7 @@
             if (startHost >= length)
                 throw new ArgumentException("No host specified.");
 
-            var colon = uri.IndexOf(':', startHost, length - startHost);
+            var colon = uri.LastIndexOf(':', startHost) + startHost;
             if (startHost == colon)
                 throw new ArgumentException("No host specified.");
 
@@ -90,7 +90,7 @@
             if (startHost >= length)
                 throw new ArgumentException("No host specified.");
 
-            var colon = uri.IndexOf(':', startHost, length - startHost);
+            var colon = uri.LastIndexOf(':', startHost) + startHost;
             int root;
 
             if (colon > 0)
@@ -98,15 +98,15 @@
                 Host = uri.Substring(startHost, colon - startHost);
                 root = uri.IndexOf('/', colon, length - colon);
                 Port = int.Parse(uri.Substring(colon + 1, root - colon - 1));
-                Path = uri.Substring(root);
             }
             else
             {
                 root = uri.IndexOf('/', startHost, length - startHost);
                 Host = uri.Substring(startHost, root - startHost);
                 Port = defaultPort;
-                Path = uri.Substring(root);
             }
+
+            Path = uri.Substring(root);
 
             if (Path.Length != 1)
                 Path = Path.Substring(0, Path.Length - 1);

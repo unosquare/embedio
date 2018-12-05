@@ -11,7 +11,7 @@
     <PackageId>EmbedIO</PackageId>
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
     <DebugType>Full</DebugType>
-    <Version>2.0.0-rc1</Version>
+    <Version>2.0.0</Version>
     <Product>EmbedIO</Product>
     <Company>Unosquare</Company>
     <PackageLicenseUrl>https://raw.githubusercontent.com/unosquare/embedio/master/LICENSE</PackageLicenseUrl>
@@ -29,7 +29,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Unosquare.Swan.Lite" Version="0.35.0" />
+    <PackageReference Include="Unosquare.Swan.Lite" Version="0.36.1" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'uap10.0' ">
