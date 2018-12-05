@@ -35,7 +35,7 @@
             if (startHost >= length)
                 throw new ArgumentException("No host specified.");
 
-            var colon = uri.LastIndexOf(':');
+            var colon = uri.Substring(startHost).IndexOf(':') > 0 ? uri.LastIndexOf(':') : -1;
             if (startHost == colon)
                 throw new ArgumentException("No host specified.");
 
