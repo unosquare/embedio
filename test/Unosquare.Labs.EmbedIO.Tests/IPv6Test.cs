@@ -20,9 +20,10 @@
         [TestCase(false)]
         public async Task WithIpv6andAnyIP_ReturnsValid(bool useIPv6)
         {
+            EndPointManager.UseIpv6 = useIPv6;
+
             var instance = new WebServer("http://*:8877");
             instance.OnAny((ctx, ct) => ctx.JsonResponseAsync(DateTime.Now, ct));
-            EndPointManager.UseIpv6 = useIPv6;
 
             instance.RunAsync();
 
