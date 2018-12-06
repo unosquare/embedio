@@ -39,6 +39,9 @@
         [TestCase]
         public async Task WithIpv6Loopback_ReturnsValid()
         {
+            if (Runtime.OS != Swan.OperatingSystem.Windows)
+                Assert.Ignore("Only Windows");
+
             var instance = new WebServer("http://[::1]:8877");
             instance.OnAny((ctx, ct) => ctx.JsonResponseAsync(DateTime.Now, ct));
             
