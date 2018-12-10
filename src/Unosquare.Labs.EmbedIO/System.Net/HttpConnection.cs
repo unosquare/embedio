@@ -83,8 +83,6 @@ using System.Security.Cryptography.X509Certificates;
         internal X509Certificate2 ClientCertificate { get; }
 #endif
 
-        public bool IsClosed => _sock == null;
-
         public int Reuses { get; private set; }
 
         public Stream Stream { get; }
@@ -212,7 +210,7 @@ using System.Security.Cryptography.X509Certificates;
             Unbind();
         }
 
-        private async Task OnReadInternal(int nread)
+        private async Task OnReadInternal(int offset)
         {
             _timer.Change(Timeout.Infinite, Timeout.Infinite);
 
@@ -224,7 +222,7 @@ using System.Security.Cryptography.X509Certificates;
             {
                 try
                 {
-                    await _ms.WriteAsync(_buffer, parsedBytes, nread - parsedBytes).ConfigureAwait(false);
+                    await _ms.WriteAsync(_buffer, parsedBytes, offset - parsedBytes).ConfigureAwait(false);
                     if (_ms.Length > 32768)
                     {
                         Close(true);
@@ -238,7 +236,7 @@ using System.Security.Cryptography.X509Certificates;
                     return;
                 }
 
-                if (nread == 0)
+                if (offset == 0)
                 {
                     CloseSocket();
                     Unbind();
@@ -269,8 +267,8 @@ using System.Security.Cryptography.X509Certificates;
                     return;
                 }
 
-                parsedBytes = nread;
-                nread += await Stream.ReadAsync(_buffer, nread, BufferSize - nread).ConfigureAwait(false);
+                parsedBytes = offset;
+                offset += await Stream.ReadAsync(_buffer, offset, BufferSize - offset).ConfigureAwait(false);
             }
         }
 
