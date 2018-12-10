@@ -26,11 +26,6 @@
         /// </summary>
         private const int ChunkSize = 256 * 1024;
 
-        private readonly Lazy<Dictionary<string, string>> _mimeTypes =
-            new Lazy<Dictionary<string, string>>(
-                () =>
-                    new Dictionary<string, string>(Constants.MimeTypes.DefaultMimeTypes, Strings.StandardStringComparer));
-
         /// <summary>
         /// Gets the collection holding the MIME types.
         /// </summary>
@@ -40,7 +35,7 @@
         public Lazy<ReadOnlyDictionary<string, string>> MimeTypes
             =>
                 new Lazy<ReadOnlyDictionary<string, string>>(
-                    () => new ReadOnlyDictionary<string, string>(_mimeTypes.Value));
+                    () => new ReadOnlyDictionary<string, string>(Constants.MimeTypes.DefaultMimeTypes.Value));
 
         /// <summary>
         /// The default headers.
@@ -132,6 +127,23 @@
                 DefaultHeaders.GetValueOrDefault(Headers.CacheControl, "private"));
             response.AddHeader(Headers.Pragma, DefaultHeaders.GetValueOrDefault(Headers.Pragma, string.Empty));
             response.AddHeader(Headers.Expires, DefaultHeaders.GetValueOrDefault(Headers.Expires, string.Empty));
+        }
+
+        /// <summary>
+        /// Sets the general headers.
+        /// </summary>
+        /// <param name="response">The response.</param>
+        /// <param name="utcFileDateString">The UTC file date string.</param>
+        /// <param name="fileExtension">The file extension.</param>
+        protected void SetGeneralHeaders(IHttpResponse response, string utcFileDateString, string fileExtension)
+        {
+            if (!string.IsNullOrWhiteSpace(fileExtension) && MimeTypes.Value.ContainsKey(fileExtension))
+                response.ContentType = MimeTypes.Value[fileExtension];
+
+            SetDefaultCacheHeaders(response);
+
+            response.AddHeader(Headers.LastModified, utcFileDateString);
+            response.AddHeader(Headers.AcceptRanges, "bytes");
         }
 
         private static async Task WriteToOutputStream(

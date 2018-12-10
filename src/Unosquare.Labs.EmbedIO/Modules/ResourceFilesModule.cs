@@ -82,7 +82,7 @@
                 var utcFileDateString = DateTime.Now.ToUniversalTime()
                     .ToString(Strings.BrowserTimeFormat, Strings.StandardCultureInfo);
 
-                SetHeaders(context.Response, localPath, utcFileDateString);
+                SetGeneralHeaders(context.Response, utcFileDateString, localPath.Contains(".") ? $".{localPath.Split('.').Last()}" : ".html");
 
                 // HEAD (file size only)
                 if (sendBuffer == false)
@@ -103,19 +103,6 @@
             }
 
             return true;
-        }
-
-        private void SetHeaders(IHttpResponse response, string localPath, string utcFileDateString)
-        {
-            var fileExtension = localPath.Contains(".") ? $".{localPath.Split('.').Last()}" : ".html";
-
-            if (MimeTypes.Value.ContainsKey(fileExtension))
-                response.ContentType = MimeTypes.Value[fileExtension];
-
-            SetDefaultCacheHeaders(response);
-
-            response.AddHeader(Headers.LastModified, utcFileDateString);
-            response.AddHeader(Headers.AcceptRanges, "bytes");
         }
     }
 }

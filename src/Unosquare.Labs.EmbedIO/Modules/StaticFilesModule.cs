@@ -320,9 +320,10 @@
                     return true;
                 }
 
-                SetHeaders(context.Response, localPath, utcFileDateString);
+                var fileInfo = new FileInfo(localPath);
+                SetGeneralHeaders(context.Response, utcFileDateString, fileInfo.Extension);
 
-                var fileSize = new FileInfo(localPath).Length;
+                var fileSize = fileInfo.Length;
 
                 if (sendBuffer == false)
                 {
@@ -358,19 +359,6 @@
             requestFullLocalPath = Path.Combine(baseLocalPath, requestLocalPath);
 
             return _virtualPaths.ExistsLocalPath(requestLocalPath, ref requestFullLocalPath);
-        }
-
-        private void SetHeaders(IHttpResponse response, string localPath, string utcFileDateString)
-        {
-            var fileExtension = Path.GetExtension(localPath);
-
-            if (!string.IsNullOrWhiteSpace(fileExtension) && MimeTypes.Value.ContainsKey(fileExtension))
-                response.ContentType = MimeTypes.Value[fileExtension];
-
-            SetDefaultCacheHeaders(response);
-
-            response.AddHeader(Headers.LastModified, utcFileDateString);
-            response.AddHeader(Headers.AcceptRanges, "bytes");
         }
 
         private bool UpdateFileCache(
