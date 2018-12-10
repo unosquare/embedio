@@ -195,33 +195,6 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListener_IsSupported_" data-uid="Unosquare.Net.HttpListener.IsSupported*"></a>
-  <h4 id="Unosquare_Net_HttpListener_IsSupported" data-uid="Unosquare.Net.HttpListener.IsSupported">IsSupported</h4>
-  <div class="markdown level1 summary"><p>Gets a value indicating whether this instance is supported.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool IsSupported { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><code>true</code> if this instance is supported; otherwise, <code>false</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Unosquare_Net_HttpListener_Prefixes_" data-uid="Unosquare.Net.HttpListener.Prefixes*"></a>
   <h4 id="Unosquare_Net_HttpListener_Prefixes" data-uid="Unosquare.Net.HttpListener.Prefixes">Prefixes</h4>
   <div class="markdown level1 summary"><p>Gets the prefixes.</p>
@@ -280,17 +253,6 @@
   </table>
   
   
-  <a id="Unosquare_Net_HttpListener_Close_" data-uid="Unosquare.Net.HttpListener.Close*"></a>
-  <h4 id="Unosquare_Net_HttpListener_Close" data-uid="Unosquare.Net.HttpListener.Close">Close()</h4>
-  <div class="markdown level1 summary"><p>Closes this listener.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Close()</code></pre>
-  </div>
-  
-  
   <a id="Unosquare_Net_HttpListener_Dispose_" data-uid="Unosquare.Net.HttpListener.Dispose*"></a>
   <h4 id="Unosquare_Net_HttpListener_Dispose" data-uid="Unosquare.Net.HttpListener.Dispose">Dispose()</h4>
   <div class="markdown level1 summary"></div>
@@ -302,14 +264,32 @@
   
   
   <a id="Unosquare_Net_HttpListener_GetContextAsync_" data-uid="Unosquare.Net.HttpListener.GetContextAsync*"></a>
-  <h4 id="Unosquare_Net_HttpListener_GetContextAsync" data-uid="Unosquare.Net.HttpListener.GetContextAsync">GetContextAsync()</h4>
+  <h4 id="Unosquare_Net_HttpListener_GetContextAsync_System_Threading_CancellationToken_" data-uid="Unosquare.Net.HttpListener.GetContextAsync(System.Threading.CancellationToken)">GetContextAsync(CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Gets the HTTP context asynchronous.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;IHttpContext&gt; GetContextAsync()</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;IHttpContext&gt; GetContextAsync(CancellationToken ct)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>

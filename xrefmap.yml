@@ -1735,12 +1735,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.IHttpListener.AddPrefix
   nameWithType: IHttpListener.AddPrefix
-- uid: Unosquare.Labs.EmbedIO.IHttpListener.GetContextAsync
-  name: GetContextAsync()
-  href: api/Unosquare.Labs.EmbedIO.IHttpListener.html#Unosquare_Labs_EmbedIO_IHttpListener_GetContextAsync
-  commentId: M:Unosquare.Labs.EmbedIO.IHttpListener.GetContextAsync
-  fullName: Unosquare.Labs.EmbedIO.IHttpListener.GetContextAsync()
-  nameWithType: IHttpListener.GetContextAsync()
+- uid: Unosquare.Labs.EmbedIO.IHttpListener.GetContextAsync(System.Threading.CancellationToken)
+  name: GetContextAsync(CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.IHttpListener.html#Unosquare_Labs_EmbedIO_IHttpListener_GetContextAsync_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.IHttpListener.GetContextAsync(System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.IHttpListener.GetContextAsync(System.Threading.CancellationToken)
+  nameWithType: IHttpListener.GetContextAsync(CancellationToken)
 - uid: Unosquare.Labs.EmbedIO.IHttpListener.GetContextAsync*
   name: GetContextAsync
   href: api/Unosquare.Labs.EmbedIO.IHttpListener.html#Unosquare_Labs_EmbedIO_IHttpListener_GetContextAsync_
@@ -5525,19 +5525,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.HttpListener.AddPrefix
   nameWithType: HttpListener.AddPrefix
-- uid: Unosquare.Net.HttpListener.Close
-  name: Close()
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_Close
-  commentId: M:Unosquare.Net.HttpListener.Close
-  fullName: Unosquare.Net.HttpListener.Close()
-  nameWithType: HttpListener.Close()
-- uid: Unosquare.Net.HttpListener.Close*
-  name: Close
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_Close_
-  commentId: Overload:Unosquare.Net.HttpListener.Close
-  isSpec: "True"
-  fullName: Unosquare.Net.HttpListener.Close
-  nameWithType: HttpListener.Close
 - uid: Unosquare.Net.HttpListener.Dispose
   name: Dispose()
   href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_Dispose
@@ -5551,12 +5538,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.HttpListener.Dispose
   nameWithType: HttpListener.Dispose
-- uid: Unosquare.Net.HttpListener.GetContextAsync
-  name: GetContextAsync()
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_GetContextAsync
-  commentId: M:Unosquare.Net.HttpListener.GetContextAsync
-  fullName: Unosquare.Net.HttpListener.GetContextAsync()
-  nameWithType: HttpListener.GetContextAsync()
+- uid: Unosquare.Net.HttpListener.GetContextAsync(System.Threading.CancellationToken)
+  name: GetContextAsync(CancellationToken)
+  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_GetContextAsync_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Net.HttpListener.GetContextAsync(System.Threading.CancellationToken)
+  fullName: Unosquare.Net.HttpListener.GetContextAsync(System.Threading.CancellationToken)
+  nameWithType: HttpListener.GetContextAsync(CancellationToken)
 - uid: Unosquare.Net.HttpListener.GetContextAsync*
   name: GetContextAsync
   href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_GetContextAsync_
@@ -5590,19 +5577,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.HttpListener.IsListening
   nameWithType: HttpListener.IsListening
-- uid: Unosquare.Net.HttpListener.IsSupported
-  name: IsSupported
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_IsSupported
-  commentId: P:Unosquare.Net.HttpListener.IsSupported
-  fullName: Unosquare.Net.HttpListener.IsSupported
-  nameWithType: HttpListener.IsSupported
-- uid: Unosquare.Net.HttpListener.IsSupported*
-  name: IsSupported
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_IsSupported_
-  commentId: Overload:Unosquare.Net.HttpListener.IsSupported
-  isSpec: "True"
-  fullName: Unosquare.Net.HttpListener.IsSupported
-  nameWithType: HttpListener.IsSupported
 - uid: Unosquare.Net.HttpListener.Prefixes
   name: Prefixes
   href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_Prefixes
