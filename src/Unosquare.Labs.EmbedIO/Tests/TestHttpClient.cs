@@ -46,7 +46,7 @@
         /// </returns>
         public async Task<string> GetAsync(string url = "")
         {
-            var response = await SendAsync(new TestHttpRequest($"http://test/{url}"));
+            var response = await SendAsync(new TestHttpRequest($"http://test/{url}")).ConfigureAwait(false);
 
             return response.GetBodyAsString(Encoding);
         }
@@ -72,7 +72,7 @@
             try
             {
                 while (!response.IsClosed)
-                    await Task.Delay(1);
+                    await Task.Delay(1).ConfigureAwait(false);
             }
             catch
             {

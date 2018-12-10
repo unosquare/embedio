@@ -71,14 +71,14 @@
         {
             while (!ct.IsCancellationRequested)
             {
-                var clientSocket = await GetContextAsync(ct);
+                var clientSocket = await GetContextAsync(ct).ConfigureAwait(false);
 
                 if (ct.IsCancellationRequested || clientSocket == null)
                     return;
 
                 // Usually we don't wait, but for testing let's do it.
                 var handler = new HttpHandler(clientSocket);
-                await handler.HandleClientRequest(ct);
+                await handler.HandleClientRequest(ct).ConfigureAwait(false);
             }
         }
 
@@ -94,7 +94,7 @@
             {
                 if (HttpContexts.TryDequeue(out var entry)) return entry;
 
-                await Task.Delay(100, ct);
+                await Task.Delay(100, ct).ConfigureAwait(false);
             }
 
             return null;

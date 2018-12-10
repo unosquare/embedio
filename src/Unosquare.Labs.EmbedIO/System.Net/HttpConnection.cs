@@ -109,8 +109,8 @@ using System.Security.Cryptography.X509Certificates;
                     _sTimeout = 15000;
                 _timer.Change(_sTimeout, Timeout.Infinite);
 
-                var data = await Stream.ReadAsync(_buffer, 0, BufferSize);
-                await OnReadInternal(data);
+                var data = await Stream.ReadAsync(_buffer, 0, BufferSize).ConfigureAwait(false);
+                await OnReadInternal(data).ConfigureAwait(false);
             }
             catch
             {
@@ -120,7 +120,7 @@ using System.Security.Cryptography.X509Certificates;
             }
         }
 
-        public RequestStream GetRequestStream(long contentlength)
+        public RequestStream GetRequestStream(long contentLength)
         {
             if (_iStream != null) return _iStream;
 
@@ -128,7 +128,7 @@ using System.Security.Cryptography.X509Certificates;
             var length = (int) _ms.Length;
             _ms = null;
 
-            _iStream = new RequestStream(Stream, buffer, _position, length - _position, contentlength);
+            _iStream = new RequestStream(Stream, buffer, _position, length - _position, contentLength);
 
             return _iStream;
         }
@@ -224,7 +224,7 @@ using System.Security.Cryptography.X509Certificates;
             {
                 try
                 {
-                    await _ms.WriteAsync(_buffer, parsedBytes, nread - parsedBytes);
+                    await _ms.WriteAsync(_buffer, parsedBytes, nread - parsedBytes).ConfigureAwait(false);
                     if (_ms.Length > 32768)
                     {
                         Close(true);
@@ -270,7 +270,7 @@ using System.Security.Cryptography.X509Certificates;
                 }
 
                 parsedBytes = nread;
-                nread += await Stream.ReadAsync(_buffer, nread, BufferSize - nread);
+                nread += await Stream.ReadAsync(_buffer, nread, BufferSize - nread).ConfigureAwait(false);
             }
         }
 

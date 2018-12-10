@@ -413,7 +413,7 @@
                 lock (_forState)
                     _readyState = WebSocketState.Connecting;
 
-                await DoHandshakeAsync();
+                await DoHandshakeAsync().ConfigureAwait(false);
 
                 lock (_forState)
                     _readyState = WebSocketState.Open;
@@ -490,7 +490,7 @@
                 stream = new WebSocketStream(data, opcode, _compression, IsClient);
 
                 foreach (var frame in stream.GetFrames())
-                    await Send(frame);
+                    await Send(frame).ConfigureAwait(false);
             }
             finally
             {
@@ -544,7 +544,7 @@
                 if (!IgnoreExtensions)
                     ProcessSecWebSocketExtensionsClientHeader(_context.Headers[Headers.WebSocketExtensions]);
 
-                await SendHandshakeAsync();
+                await SendHandshakeAsync().ConfigureAwait(false);
 
                 _readyState = WebSocketState.Open;
             }
@@ -564,7 +564,7 @@
             if (_readyState != WebSocketState.Open)
                 return false;
 
-            await _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length);
+            await _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length).ConfigureAwait(false);
 
             return _receivePong != null && _receivePong.WaitOne(timeout);
         }
@@ -605,7 +605,7 @@
             "Begin closing the connection.".Info();
 
             var bytes = send ? WebSocketFrame.CreateCloseFrame(payloadData, IsClient).ToArray() : null;
-            await CloseHandshakeAsync(bytes, receive, received, ct);
+            await CloseHandshakeAsync(bytes, receive, received, ct).ConfigureAwait(false);
             ReleaseResources();
 
             "End closing the connection.".Info();
@@ -626,7 +626,7 @@
 
             if (sent)
             {
-                await _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length, ct);
+                await _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length, ct).ConfigureAwait(false);
             }
 
             received = received ||
@@ -638,8 +638,8 @@
         // As client
         private async Task DoHandshakeAsync()
         {
-            await SetClientStream();
-            var res = await SendHandshakeRequestAsync();
+            await SetClientStream().ConfigureAwait(false);
+            var res = await SendHandshakeRequestAsync().ConfigureAwait(false);
 
             _validator.ThrowIfInvalidResponse(res);
 
@@ -727,7 +727,7 @@
         {
             if (frame.IsCompressed)
             {
-                var ms = await frame.PayloadData.ApplicationData.CompressAsync(_compression, System.IO.Compression.CompressionMode.Decompress);
+                var ms = await frame.PayloadData.ApplicationData.CompressAsync(_compression, System.IO.Compression.CompressionMode.Decompress).ConfigureAwait(false);
 
                 _messageEventQueue.Enqueue(new MessageEventArgs(frame.Opcode, ms.ToArray()));
             }
@@ -755,7 +755,7 @@
             {
                 using (_fragmentsBuffer)
                 {
-                    _messageEventQueue.Enqueue(await _fragmentsBuffer.GetMessage(_compression));
+                    _messageEventQueue.Enqueue(await _fragmentsBuffer.GetMessage(_compression).ConfigureAwait(false));
                 }
 
                 _fragmentsBuffer = null;
@@ -781,7 +781,7 @@
         {
             if (frame.IsFragment)
             {
-                await ProcessFragmentFrame(frame);
+                await ProcessFragmentFrame(frame).ConfigureAwait(false);
             }
             else
             {
@@ -789,16 +789,16 @@
                 {
                     case Opcode.Text:
                     case Opcode.Binary:
-                        await ProcessDataFrame(frame);
+                        await ProcessDataFrame(frame).ConfigureAwait(false);
                         break;
                     case Opcode.Ping:
-                        await ProcessPingFrame(frame);
+                        await ProcessPingFrame(frame).ConfigureAwait(false);
                         break;
                     case Opcode.Pong:
                         ProcessPongFrame();
                         break;
                     case Opcode.Close:
-                        await ProcessCloseFrame(frame);
+                        await ProcessCloseFrame(frame).ConfigureAwait(false);
                         break;
                     default:
                         $"An unsupported frame: {frame.PrintToString()}".Error();
@@ -941,7 +941,7 @@
             while (true)
             {
                 var req = HttpRequest.CreateHandshakeRequest(this);
-                var res = await req.GetResponse(_stream);
+                var res = await req.GetResponse(_stream).ConfigureAwait(false);
 
                 if (res.IsUnauthorized)
                 {
@@ -969,7 +969,7 @@
                 IsSecure = uri.Scheme == "wss";
 #endif
 
-                await SetClientStream();
+                await SetClientStream().ConfigureAwait(false);
             }
         }
 
@@ -1000,7 +1000,7 @@
 #else
             _tcpClient = new TcpClient();
 
-            await _tcpClient.ConnectAsync(_uri.DnsSafeHost, _uri.Port);
+            await _tcpClient.ConnectAsync(_uri.DnsSafeHost, _uri.Port).ConfigureAwait(false);
 #endif
             _stream = _tcpClient.GetStream();
 
@@ -1054,12 +1054,12 @@
             {
                 try
                 {
-                    var frame = await frameStream.ReadFrameAsync(this);
+                    var frame = await frameStream.ReadFrameAsync(this).ConfigureAwait(false);
 
                     if (frame == null)
                         return;
 
-                    var result = await ProcessReceivedFrame(frame);
+                    var result = await ProcessReceivedFrame(frame).ConfigureAwait(false);
 
                     if (!result || _readyState == WebSocketState.Closed)
                     {

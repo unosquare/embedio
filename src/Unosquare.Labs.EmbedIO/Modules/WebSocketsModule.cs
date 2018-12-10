@@ -51,7 +51,7 @@
                 }
 
                 // Accept the WebSocket -- this is a blocking method until the WebSocketCloses
-                await _serverMap[path].AcceptWebSocket(context, ct);
+                await _serverMap[path].AcceptWebSocket(context, ct).ConfigureAwait(false);
 
                 return true;
             });

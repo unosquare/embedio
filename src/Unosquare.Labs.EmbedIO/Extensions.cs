@@ -440,7 +440,7 @@
             var buffer = (encoding ?? Encoding.UTF8).GetBytes(content);
 
             context.Response.ContentType = contentType;
-            await context.Response.OutputStream.WriteAsync(buffer, 0, buffer.Length, cancellationToken);
+            await context.Response.OutputStream.WriteAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false);
 
             return true;
         }
@@ -512,8 +512,8 @@
                     {
                         using (var compressor = new DeflateStream(targetStream, CompressionMode.Compress, true))
                         {
-                            await buffer.CopyToAsync(compressor, 1024, cancellationToken);
-                            await buffer.CopyToAsync(compressor);
+                            await buffer.CopyToAsync(compressor, 1024, cancellationToken).ConfigureAwait(false);
+                            await buffer.CopyToAsync(compressor).ConfigureAwait(false);
 
                             // WebSocket use this
                             targetStream.Write(LastByte, 0, 1);
@@ -524,7 +524,7 @@
                     {
                         using (var compressor = new DeflateStream(buffer, CompressionMode.Decompress))
                         {
-                            await compressor.CopyToAsync(targetStream);
+                            await compressor.CopyToAsync(targetStream).ConfigureAwait(false);
                         }
                     }
 
@@ -534,20 +534,20 @@
                     {
                         using (var compressor = new GZipStream(targetStream, CompressionMode.Compress, true))
                         {
-                            await buffer.CopyToAsync(compressor);
+                            await buffer.CopyToAsync(compressor).ConfigureAwait(false);
                         }
                     }
                     else
                     {
                         using (var compressor = new GZipStream(buffer, CompressionMode.Decompress))
                         {
-                            await compressor.CopyToAsync(targetStream);
+                            await compressor.CopyToAsync(targetStream).ConfigureAwait(false);
                         }
                     }
 
                     break;
                 case CompressionMethod.None:
-                    await buffer.CopyToAsync(targetStream);
+                    await buffer.CopyToAsync(targetStream).ConfigureAwait(false);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(method), method, null);

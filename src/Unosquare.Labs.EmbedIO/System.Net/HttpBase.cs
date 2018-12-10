@@ -101,7 +101,7 @@
                 var contentLen = http.Headers["Content-Length"];
 
                 if (!string.IsNullOrEmpty(contentLen))
-                    http._entityBodyData = await ReadEntityBodyAsync(stream, contentLen, ct);
+                    http._entityBodyData = await ReadEntityBodyAsync(stream, contentLen, ct).ConfigureAwait(false);
 
                 return http;
             }
@@ -127,9 +127,9 @@
                 throw new ArgumentOutOfRangeException(nameof(length), "Less than zero.");
 
             return len > 1024
-                ? await stream.ReadBytesAsync(len, 1024, ct)
+                ? await stream.ReadBytesAsync(len, 1024, ct).ConfigureAwait(false)
                 : len > 0
-                    ? await stream.ReadBytesAsync((int) len, ct)
+                    ? await stream.ReadBytesAsync((int) len, ct).ConfigureAwait(false)
                     : null;
         }
         

@@ -55,14 +55,14 @@
         {
             CancellationToken = ct;
 
-            var watchDogTask = Task.Run(async () =>
+            Task.Run(async () =>
             {
                 try
                 {
                     while (!ct.IsCancellationRequested)
                     {
                         RunWatchdog();
-                        await Task.Delay(WatchdogInterval, ct);
+                        await Task.Delay(WatchdogInterval, ct).ConfigureAwait(false);
                     }
                 }
                 catch (TaskCanceledException)

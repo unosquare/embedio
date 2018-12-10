@@ -30,7 +30,7 @@
             {
                 foreach (var prefix in listener.Prefixes)
                 {
-                    await AddPrefix(prefix, listener);
+                    await AddPrefix(prefix, listener).ConfigureAwait(false);
                     added.Add(prefix);
                 }
             }
@@ -38,7 +38,7 @@
             {
                 foreach (var prefix in added)
                 {
-                    await RemovePrefix(prefix, listener);
+                    await RemovePrefix(prefix, listener).ConfigureAwait(false);
                 }
 
                 throw;
@@ -62,7 +62,7 @@
         {
             foreach (var prefix in listener.Prefixes)
             {
-                await RemovePrefix(prefix, listener);
+                await RemovePrefix(prefix, listener).ConfigureAwait(false);
             }
         }
 
@@ -74,7 +74,7 @@
                 throw new HttpListenerException(400, "Invalid path.");
 
             // listens on all the interfaces if host name cannot be parsed by IPAddress.
-            var epl = await GetEpListener(lp.Host, lp.Port, listener, lp.Secure);
+            var epl = await GetEpListener(lp.Host, lp.Port, listener, lp.Secure).ConfigureAwait(false);
             epl.AddPrefix(lp, listener);
         }
 
@@ -93,7 +93,7 @@
                     var hostEntry = new IPHostEntry
                     {
                         HostName = host,
-                        AddressList = await Dns.GetHostAddressesAsync(host),
+                        AddressList = await Dns.GetHostAddressesAsync(host).ConfigureAwait(false),
                     };
 
                     addr = hostEntry.AddressList[0];
@@ -119,7 +119,7 @@
                 if (!lp.IsValid())
                     return;
 
-                var epl = await GetEpListener(lp.Host, lp.Port, listener, lp.Secure);
+                var epl = await GetEpListener(lp.Host, lp.Port, listener, lp.Secure).ConfigureAwait(false);
                 epl.RemovePrefix(lp, listener);
             }
             catch (SocketException)

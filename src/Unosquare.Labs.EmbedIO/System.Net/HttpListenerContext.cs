@@ -50,7 +50,7 @@
                 throw new InvalidOperationException("The accepting is already in progress.");
 
             _websocketContext = new WebSocketContext(this);
-            await ((WebSocket) _websocketContext.WebSocket).InternalAcceptAsync();
+            await ((WebSocket) _websocketContext.WebSocket).InternalAcceptAsync().ConfigureAwait(false);
 
             return _websocketContext;
         }

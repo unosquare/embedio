@@ -111,7 +111,7 @@
                     context.Response.ContentType?.StartsWith("video") == false)
                 {
                     // Perform compression if available
-                    buffer = await buffer.CompressAsync(cancellationToken: ct);
+                    buffer = await buffer.CompressAsync(cancellationToken: ct).ConfigureAwait(false);
                     context.Response.AddHeader(Headers.ContentEncoding, Headers.CompressionGzip);
                     lowerByteIndex = 0;
                 }
@@ -119,7 +119,7 @@
                 context.Response.ContentLength64 = buffer.Length;
             }
 
-            await WriteToOutputStream(context.Response, buffer, lowerByteIndex, ct);
+            await WriteToOutputStream(context.Response, buffer, lowerByteIndex, ct).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -149,12 +149,12 @@
                 if (sendData + ChunkSize > response.ContentLength64) readBufferSize = (int)(response.ContentLength64 - sendData);
 
                 buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
-                var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct);
+                var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct).ConfigureAwait(false);
 
                 if (read == 0) break;
 
                 sendData += read;
-                await response.OutputStream.WriteAsync(streamBuffer, 0, readBufferSize, ct);
+                await response.OutputStream.WriteAsync(streamBuffer, 0, readBufferSize, ct).ConfigureAwait(false);
             }
         }
 

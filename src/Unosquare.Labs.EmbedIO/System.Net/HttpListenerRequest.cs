@@ -382,7 +382,7 @@
             {
                 try
                 {
-                    var data = await InputStream.ReadAsync(bytes, 0, length);
+                    var data = await InputStream.ReadAsync(bytes, 0, length).ConfigureAwait(false);
 
                     if (data <= 0)
                         return true;

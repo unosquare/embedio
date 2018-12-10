@@ -336,7 +336,7 @@
                     return false;
                 }
 
-                await WriteFileAsync(usingPartial, partialHeader, fileSize, context, buffer, ct);
+                await WriteFileAsync(usingPartial, partialHeader, fileSize, context, buffer, ct).ConfigureAwait(false);
             }
             catch (HttpListenerException)
             {

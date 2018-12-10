@@ -91,7 +91,7 @@
                     return true;
                 }
 
-                await WriteFileAsync(partialHeader?.StartsWith("bytes=") == true, partialHeader, buffer.Length, context, buffer, ct);
+                await WriteFileAsync(partialHeader?.StartsWith("bytes=") == true, partialHeader, buffer.Length, context, buffer, ct).ConfigureAwait(false);
             }
             catch (HttpListenerException)
             {

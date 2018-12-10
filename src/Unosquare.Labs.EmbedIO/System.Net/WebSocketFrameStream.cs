@@ -20,11 +20,11 @@
         {
             if (_stream == null) return null;
 
-            var frame = ProcessHeader(await _stream.ReadBytesAsync(2));
+            var frame = ProcessHeader(await _stream.ReadBytesAsync(2).ConfigureAwait(false));
 
-            await ReadExtendedPayloadLengthAsync(frame);
-            await ReadMaskingKeyAsync(frame);
-            await ReadPayloadDataAsync(frame);
+            await ReadExtendedPayloadLengthAsync(frame).ConfigureAwait(false);
+            await ReadMaskingKeyAsync(frame).ConfigureAwait(false);
+            await ReadPayloadDataAsync(frame).ConfigureAwait(false);
 
             if (_unmask)
                 frame.Unmask();
@@ -102,7 +102,7 @@
                 return;
             }
 
-            var bytes = await _stream.ReadBytesAsync(len);
+            var bytes = await _stream.ReadBytesAsync(len).ConfigureAwait(false);
 
             if (bytes.Length != len)
             {
@@ -123,7 +123,7 @@
                 return;
             }
 
-            var bytes = await _stream.ReadBytesAsync(len);
+            var bytes = await _stream.ReadBytesAsync(len).ConfigureAwait(false);
             if (bytes.Length != len)
             {
                 throw new WebSocketException(
@@ -147,8 +147,8 @@
                 throw new WebSocketException(CloseStatusCode.TooBig, "A frame has a long payload length.");
 
             var bytes = frame.PayloadLength < 127
-                ? await _stream.ReadBytesAsync((int)len)
-                : await _stream.ReadBytesAsync((int)len, 1024);
+                ? await _stream.ReadBytesAsync((int)len).ConfigureAwait(false)
+                : await _stream.ReadBytesAsync((int)len, 1024).ConfigureAwait(false);
 
             if (bytes.Length != (int)len)
             {
