@@ -1,7 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
     using Modules;
-    using Net;
     using Swan;
     using System;
     using System.Threading;
@@ -15,7 +14,7 @@
         /// <param name="args">The arguments.</param>
         private static async Task Main(string[] args)
         {
-            var url = args.Length > 0 ? args[0] : "http://+:8787/";
+            var url = args.Length > 0 ? args[0] : "http://*:8787/";
 
             AppDbContext.InitDatabase();
 

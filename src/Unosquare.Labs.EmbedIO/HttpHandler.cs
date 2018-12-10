@@ -119,10 +119,9 @@
             ex.Log(nameof(HttpHandler), priorMessage);
 
             // Send the response over with the corresponding status code.
-            return _context.HtmlResponseAsync(
-                System.Net.WebUtility.HtmlEncode(string.Format(Responses.Response500HtmlFormat,
+            return _context.HtmlResponseAsync(string.Format(Responses.Response500HtmlFormat,
                     errorMessage,
-                    ex.StackTrace)),
+                    ex.StackTrace),
                 System.Net.HttpStatusCode.InternalServerError,
                 ct);
         }

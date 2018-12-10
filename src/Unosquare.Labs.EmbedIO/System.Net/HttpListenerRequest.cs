@@ -174,6 +174,7 @@
                 else
                 {
                     cnc = Headers["keep-alive"];
+
                     if (!string.IsNullOrEmpty(cnc))
                         _keepAlive = string.Compare(cnc, "closed", StringComparison.OrdinalIgnoreCase) != 0;
                 }
@@ -290,7 +291,7 @@
 
             if (!Uri.TryCreate(baseUri + path, UriKind.Absolute, out _url))
             {
-                _context.ErrorMessage = WebUtility.HtmlEncode("Invalid url: " + baseUri + path);
+                _context.ErrorMessage = WebUtility.HtmlEncode($"Invalid url: {baseUri}{path}");
                 return;
             }
 

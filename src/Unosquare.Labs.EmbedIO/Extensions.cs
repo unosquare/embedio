@@ -556,49 +556,6 @@
             return targetStream;
         }
 
-        /// <summary>
-        /// Compresses the specified buffer stream using the G-Zip compression algorithm.
-        /// </summary>
-        /// <param name="buffer">The buffer.</param>
-        /// <param name="method">The method.</param>
-        /// <returns>
-        /// A block of bytes of compressed stream.
-        /// </returns>
-        public static MemoryStream Compress(
-            this Stream buffer,
-            CompressionMethod method = CompressionMethod.Gzip)
-        {
-            buffer.Position = 0;
-            var targetStream = new MemoryStream();
-
-            switch (method)
-            {
-                case CompressionMethod.Deflate:
-                    using (var compressor = new DeflateStream(targetStream, CompressionMode.Compress, true))
-                    {
-                        buffer.CopyTo(compressor, 1024);
-                        buffer.CopyTo(compressor);
-
-                        // WebSocket use this
-                        targetStream.Write(LastByte, 0, 1);
-                        targetStream.Position = 0;
-                    }
-
-                    break;
-                case CompressionMethod.Gzip:
-                    using (var compressor = new GZipStream(targetStream, CompressionMode.Compress, true))
-                    {
-                        buffer.CopyTo(compressor);
-                    }
-
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(method), method, null);
-            }
-
-            return targetStream;
-        }
-
         #endregion
 
         internal static string CleanParamId(this string val) => val.ReplaceAll(string.Empty, '{', '}', '?');
