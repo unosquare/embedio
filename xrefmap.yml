@@ -506,19 +506,6 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.Extensions
   fullName: Unosquare.Labs.EmbedIO.Extensions
   nameWithType: Extensions
-- uid: Unosquare.Labs.EmbedIO.Extensions.Compress(System.IO.Stream,Unosquare.Labs.EmbedIO.Constants.CompressionMethod)
-  name: Compress(Stream, CompressionMethod)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_Compress_System_IO_Stream_Unosquare_Labs_EmbedIO_Constants_CompressionMethod_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.Compress(System.IO.Stream,Unosquare.Labs.EmbedIO.Constants.CompressionMethod)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.Compress(System.IO.Stream, Unosquare.Labs.EmbedIO.Constants.CompressionMethod)
-  nameWithType: Extensions.Compress(Stream, CompressionMethod)
-- uid: Unosquare.Labs.EmbedIO.Extensions.Compress*
-  name: Compress
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_Compress_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.Compress
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Extensions.Compress
-  nameWithType: Extensions.Compress
 - uid: Unosquare.Labs.EmbedIO.Extensions.CompressAsync(System.IO.Stream,Unosquare.Labs.EmbedIO.Constants.CompressionMethod,CompressionMode,System.Threading.CancellationToken)
   name: CompressAsync(Stream, CompressionMethod, CompressionMode, CancellationToken)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_CompressAsync_System_IO_Stream_Unosquare_Labs_EmbedIO_Constants_CompressionMethod_CompressionMode_System_Threading_CancellationToken_
@@ -2903,6 +2890,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.SetDefaultCacheHeaders
   nameWithType: FileModuleBase.SetDefaultCacheHeaders
+- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.SetGeneralHeaders(Unosquare.Labs.EmbedIO.IHttpResponse,System.String,System.String)
+  name: SetGeneralHeaders(IHttpResponse, String, String)
+  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_SetGeneralHeaders_Unosquare_Labs_EmbedIO_IHttpResponse_System_String_System_String_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.SetGeneralHeaders(Unosquare.Labs.EmbedIO.IHttpResponse,System.String,System.String)
+  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.SetGeneralHeaders(Unosquare.Labs.EmbedIO.IHttpResponse, System.String, System.String)
+  nameWithType: FileModuleBase.SetGeneralHeaders(IHttpResponse, String, String)
+- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.SetGeneralHeaders*
+  name: SetGeneralHeaders
+  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_SetGeneralHeaders_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.SetGeneralHeaders
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.SetGeneralHeaders
+  nameWithType: FileModuleBase.SetGeneralHeaders
 - uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.UseGzip
   name: UseGzip
   href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_UseGzip
