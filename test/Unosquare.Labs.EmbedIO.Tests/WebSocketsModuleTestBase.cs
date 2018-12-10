@@ -31,11 +31,11 @@
 
             Assert.AreEqual(WebServerInstance.Module<WebSocketsModule>().Handlers.Count, 1, "WebSocketModule has one handler");
 
+            var ct = new CancellationTokenSource();
+#if NET47
             if (IgnoreWebConnect)
                 Assert.Inconclusive("WebSocket Connect not available");
 
-            var ct = new CancellationTokenSource();
-#if NET47
             var clientSocket = new ClientWebSocket();
             await clientSocket.ConnectAsync(new Uri(wsUrl), ct.Token);
 
