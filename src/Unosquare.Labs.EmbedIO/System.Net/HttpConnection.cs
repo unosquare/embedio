@@ -216,7 +216,7 @@ using System.Security.Cryptography.X509Certificates;
 
             // Continue reading until full header is received.
             // Especially important for multipart requests when the second part of the header arrives after a tiny delay
-            // because the webbrowser has to meassure the content length first.
+            // because the web browser has to measure the content length first.
             var parsedBytes = 0;
             while (true)
             {

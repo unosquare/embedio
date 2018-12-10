@@ -223,7 +223,7 @@
                 {
                     try
                     {
-                        var clientSocket = await Listener.GetContextAsync().ConfigureAwait(false);
+                        var clientSocket = await Listener.GetContextAsync(ct).ConfigureAwait(false);
 
                         if (ct.IsCancellationRequested)
                             return;
@@ -236,22 +236,19 @@
                         handler.HandleClientRequest(ct);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     }
-                    catch (HttpListenerException)
-                    {
-                        if (!ct.IsCancellationRequested)
-                            throw;
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        // Forward cancellations out to the caller.
-                        throw;
-                    }
-                    catch (ObjectDisposedException)
-                    {
-                        // Ignore disposed Listener
-                    }
                     catch (Exception ex)
                     {
+                        Listener?.Dispose();
+
+                        if (ex is OperationCanceledException || ex is ObjectDisposedException ||
+                            ex is HttpListenerException)
+                        {
+                            if (!ct.IsCancellationRequested)
+                                throw;
+
+                            return;
+                        }
+
                         ex.Log(nameof(WebServer));
                     }
                 }

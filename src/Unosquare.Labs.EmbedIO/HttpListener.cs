@@ -4,6 +4,7 @@ namespace Unosquare.Labs.EmbedIO
     using System;
     using System.Linq;
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -41,7 +42,7 @@ namespace Unosquare.Labs.EmbedIO
         public void AddPrefix(string urlPrefix) => _httpListener.Prefixes.Add(urlPrefix);
 
         /// <inheritdoc />
-        public async Task<IHttpContext> GetContextAsync()=> new HttpContext(await _httpListener.GetContextAsync());
+        public async Task<IHttpContext> GetContextAsync(CancellationToken ct)=> new HttpContext(await _httpListener.GetContextAsync());
 
         void IDisposable.Dispose()
         {

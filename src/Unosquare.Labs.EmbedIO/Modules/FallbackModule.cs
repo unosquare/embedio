@@ -43,7 +43,7 @@
         /// </summary>
         /// <param name="redirectUrl">The redirect URL.</param>
         /// <param name="verb">The verb.</param>
-        /// <exception cref="ArgumentNullException">redirectUrl</exception>
+        /// <exception cref="ArgumentNullException">redirectUrl.</exception>
         public FallbackModule(string redirectUrl, HttpVerbs verb = HttpVerbs.Any)
         {
             if (string.IsNullOrWhiteSpace(redirectUrl))

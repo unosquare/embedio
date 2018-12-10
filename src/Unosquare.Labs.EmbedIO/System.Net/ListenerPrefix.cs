@@ -16,6 +16,7 @@
 
             var length = uri.Length;
             var startHost = uri.IndexOf(':') + 3;
+
             if (startHost >= length)
                 throw new ArgumentException("No host specified.");
 
@@ -75,16 +76,8 @@
                 if (root == -1)
                     throw new ArgumentException("No path specified.");
 
-                try
-                {
-                    var p = int.Parse(uri.Substring(colon + 1, root - colon - 1));
-                    if (p <= 0 || p >= 65536)
-                        throw new InvalidOperationException();
-                }
-                catch
-                {
+                if (!int.TryParse(uri.Substring(colon + 1, root - colon - 1), out var p) || p <= 0 || p >= 65536)
                     throw new ArgumentException("Invalid port.");
-                }
             }
             else
             {

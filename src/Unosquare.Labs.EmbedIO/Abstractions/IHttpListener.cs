@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -52,7 +53,10 @@
         /// <summary>
         /// Gets the HTTP context asynchronous.
         /// </summary>
-        /// <returns>A task that represents the time delay for the HTTP Context.</returns>
-        Task<IHttpContext> GetContextAsync();
+        /// <param name="ct">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the time delay for the HTTP Context.
+        /// </returns>
+        Task<IHttpContext> GetContextAsync(CancellationToken ct);
     }
 }

@@ -42,7 +42,7 @@
                 throw new ArgumentNullException(nameof(sourceAssembly));
 
             if (sourceAssembly.GetName() == null)
-                throw new ArgumentException($"Assembly '{sourceAssembly}' not valid.");
+                throw new ArgumentException($"Assembly '{sourceAssembly}' is not valid.");
 
             UseGzip = true;
             _sourceAssembly = sourceAssembly;

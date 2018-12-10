@@ -41,7 +41,6 @@
             server.RegisterModule(new StaticFilesModule(HtmlRootPath));
             // The static files module will cache small files in ram until it detects they have been modified.
             server.Module<StaticFilesModule>().UseRamCache = false;
-            server.Module<StaticFilesModule>().DefaultExtension = ".html";
             server.Module<StaticFilesModule>().UseGzip = useGzip;
         }
     }

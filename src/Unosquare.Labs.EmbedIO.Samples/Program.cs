@@ -83,6 +83,8 @@
                     await server.RunAsync(ctSource.Token);
 
                 "Bye".Info();
+
+                Terminal.Flush();
             }
         }
     }

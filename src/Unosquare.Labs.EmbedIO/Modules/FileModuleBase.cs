@@ -10,7 +10,7 @@
     using Constants;
 
     /// <summary>
-    /// Represents a files module base
+    /// Represents a files module base.
     /// </summary>
     /// <seealso cref="Unosquare.Labs.EmbedIO.WebModuleBase" />
     public abstract class FileModuleBase
@@ -58,7 +58,7 @@
         /// <param name="fileSize">Size of the file.</param>
         /// <param name="context">The context.</param>
         /// <param name="buffer">The buffer.</param>
-        /// <param name="ct">The ct.</param>
+        /// <param name="ct">The cancellation token.</param>
         /// <returns>A task representing the write action.</returns>
         protected async Task WriteFileAsync(
             bool usingPartial,
