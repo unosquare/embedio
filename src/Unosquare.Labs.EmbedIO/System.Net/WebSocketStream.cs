@@ -26,7 +26,7 @@
         {
             var compressed = _compression != CompressionMethod.None;
             Stream stream = _compression != CompressionMethod.None
-                ? this.Compress(_compression)
+                ? this.CompressAsync(_compression).GetAwaiter().GetResult()
                 : this;
 
             var len = stream.Length;

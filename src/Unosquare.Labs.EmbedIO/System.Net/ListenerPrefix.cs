@@ -4,23 +4,53 @@
 
     internal sealed class ListenerPrefix
     {
-        private readonly string _original;
-
-        public ListenerPrefix(string prefix)
+        public ListenerPrefix(string uri)
         {
-            _original = prefix;
-            Parse(prefix);
+            var defaultPort = 80;
+
+            if (uri.StartsWith("https://"))
+            {
+                defaultPort = 443;
+                Secure = true;
+            }
+
+            var length = uri.Length;
+            var startHost = uri.IndexOf(':') + 3;
+
+            if (startHost >= length)
+                throw new ArgumentException("No host specified.");
+
+            var colon = uri.LastIndexOf(':');
+            int root;
+
+            if (colon > 0)
+            {
+                Host = uri.Substring(startHost, colon - startHost);
+                root = uri.IndexOf('/', colon, length - colon);
+                Port = int.Parse(uri.Substring(colon + 1, root - colon - 1));
+            }
+            else
+            {
+                root = uri.IndexOf('/', startHost, length - startHost);
+                Host = uri.Substring(startHost, root - startHost);
+                Port = defaultPort;
+            }
+
+            Path = uri.Substring(root);
+
+            if (Path.Length != 1)
+                Path = Path.Substring(0, Path.Length - 1);
         }
 
         public HttpListener Listener { get; set; }
 
-        public bool Secure { get; private set; }
+        public bool Secure { get; }
 
-        public string Host { get; private set; }
+        public string Host { get; }
 
-        public int Port { get; private set; }
+        public int Port { get; }
 
-        public string Path { get; private set; }
+        public string Path { get; }
 
         public static void CheckUri(string uri)
         {
@@ -35,7 +65,7 @@
             if (startHost >= length)
                 throw new ArgumentException("No host specified.");
 
-            var colon = uri.IndexOf(':', startHost, length - startHost);
+            var colon = uri.Substring(startHost).IndexOf(':') > 0 ? uri.LastIndexOf(':') : -1;
             if (startHost == colon)
                 throw new ArgumentException("No host specified.");
 
@@ -46,16 +76,8 @@
                 if (root == -1)
                     throw new ArgumentException("No path specified.");
 
-                try
-                {
-                    var p = int.Parse(uri.Substring(colon + 1, root - colon - 1));
-                    if (p <= 0 || p >= 65536)
-                        throw new InvalidOperationException();
-                }
-                catch
-                {
+                if (!int.TryParse(uri.Substring(colon + 1, root - colon - 1), out var p) || p <= 0 || p >= 65536)
                     throw new ArgumentException("Invalid port.");
-                }
             }
             else
             {
@@ -69,47 +91,5 @@
         }
 
         public bool IsValid() => Path.IndexOf('%') == -1 && Path.IndexOf("//", StringComparison.Ordinal) == -1;
-
-        // Equals and GetHashCode are required to detect duplicates in HttpListenerPrefixCollection.
-        public override bool Equals(object o) => o is ListenerPrefix other && _original == other._original;
-
-        public override int GetHashCode() => _original.GetHashCode();
-
-        private void Parse(string uri)
-        {
-            var defaultPort = 80;
-
-            if (uri.StartsWith("https://"))
-            {
-                defaultPort = 443;
-                Secure = true;
-            }
-
-            var length = uri.Length;
-            var startHost = uri.IndexOf(':') + 3;
-            if (startHost >= length)
-                throw new ArgumentException("No host specified.");
-
-            var colon = uri.IndexOf(':', startHost, length - startHost);
-            int root;
-
-            if (colon > 0)
-            {
-                Host = uri.Substring(startHost, colon - startHost);
-                root = uri.IndexOf('/', colon, length - colon);
-                Port = int.Parse(uri.Substring(colon + 1, root - colon - 1));
-                Path = uri.Substring(root);
-            }
-            else
-            {
-                root = uri.IndexOf('/', startHost, length - startHost);
-                Host = uri.Substring(startHost, root - startHost);
-                Port = defaultPort;
-                Path = uri.Substring(root);
-            }
-
-            if (Path.Length != 1)
-                Path = Path.Substring(0, Path.Length - 1);
-        }
     }
 }

@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="LiteLib" Version="0.17.2" />
+    <PackageReference Include="LiteLib" Version="0.18.1" />
     <PackageReference Include="Tubular.ServerSide" Version="1.5.1" />
   </ItemGroup>
 
@@ -28,7 +28,6 @@
   </ItemGroup>
    
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 

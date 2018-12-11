@@ -4,6 +4,7 @@ namespace Unosquare.Labs.EmbedIO
     using System;
     using System.Linq;
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -12,7 +13,7 @@ namespace Unosquare.Labs.EmbedIO
     internal class HttpListener : IHttpListener
     {
         private readonly System.Net.HttpListener _httpListener;
-        
+
         public HttpListener(System.Net.HttpListener httpListener)
         {
             _httpListener = httpListener;
@@ -30,7 +31,7 @@ namespace Unosquare.Labs.EmbedIO
 
         /// <inheritdoc />
         public bool IsListening => _httpListener.IsListening;
-        
+
         /// <inheritdoc />
         public void Start() => _httpListener.Start();
 
@@ -38,15 +39,15 @@ namespace Unosquare.Labs.EmbedIO
         public void Stop() => _httpListener.Stop();
 
         /// <inheritdoc />
-        public void AddPrefix(string urlPrefix) => _httpListener.Prefixes.Add(urlPrefix);
+        public void AddPrefix(string urlPrefix) 
+            => _httpListener.Prefixes.Add(urlPrefix);
 
         /// <inheritdoc />
-        public async Task<IHttpContext> GetContextAsync()=> new HttpContext(await _httpListener.GetContextAsync());
+        public async Task<IHttpContext> GetContextAsync(CancellationToken ct)
+            => new HttpContext(await _httpListener.GetContextAsync().ConfigureAwait(false));
 
-        void IDisposable.Dispose()
-        {
-            ((IDisposable) _httpListener)?.Dispose();
-        }
+        void IDisposable.Dispose() 
+            => ((IDisposable)_httpListener)?.Dispose();
     }
 }
 #endif

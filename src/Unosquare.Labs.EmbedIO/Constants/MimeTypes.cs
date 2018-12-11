@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Constants
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -13,8 +14,8 @@
         /// <remarks>
         /// Originally started from: http://stackoverflow.com/questions/1029740/get-mime-type-from-filename-extension.
         /// </remarks>
-        public static readonly Dictionary<string, string> DefaultMimeTypes =
-            new Dictionary<string, string>(Strings.StandardStringComparer)
+        public static readonly Lazy<Dictionary<string, string>> DefaultMimeTypes =
+            new Lazy<Dictionary<string, string>>(() => new Dictionary<string, string>(Strings.StandardStringComparer)
             {
                 #region Big list of MIME types
 
@@ -582,6 +583,6 @@
                 {".zip", "application/x-zip-compressed"},
 
                 #endregion
-            };
+            });
     }
 }

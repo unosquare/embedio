@@ -174,6 +174,7 @@
                 else
                 {
                     cnc = Headers["keep-alive"];
+
                     if (!string.IsNullOrEmpty(cnc))
                         _keepAlive = string.Compare(cnc, "closed", StringComparison.OrdinalIgnoreCase) != 0;
                 }
@@ -281,7 +282,7 @@
             if (rawUri != null)
                 host = rawUri.Host;
 
-            var colon = host.IndexOf(':');
+            var colon = host.LastIndexOf(':');
             if (colon >= 0)
                 host = host.Substring(0, colon);
 
@@ -290,7 +291,7 @@
 
             if (!Uri.TryCreate(baseUri + path, UriKind.Absolute, out _url))
             {
-                _context.ErrorMessage = WebUtility.HtmlEncode("Invalid url: " + baseUri + path);
+                _context.ErrorMessage = WebUtility.HtmlEncode($"Invalid url: {baseUri}{path}");
                 return;
             }
 
@@ -382,7 +383,7 @@
             {
                 try
                 {
-                    var data = await InputStream.ReadAsync(bytes, 0, length);
+                    var data = await InputStream.ReadAsync(bytes, 0, length).ConfigureAwait(false);
 
                     if (data <= 0)
                         return true;
@@ -544,13 +545,11 @@
         /// <summary>
         /// The version 1.0.
         /// </summary>
-        /// <devdoc>[To be supplied.].</devdoc>
         public static readonly Version Version10 = new Version(1, 0);
 
         /// <summary>
         /// The version 1.1.
         /// </summary>
-        /// <devdoc>[To be supplied.].</devdoc>
         public static readonly Version Version11 = new Version(1, 1);
     }
 }

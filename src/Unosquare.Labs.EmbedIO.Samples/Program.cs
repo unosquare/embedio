@@ -14,10 +14,7 @@
         /// <param name="args">The arguments.</param>
         private static async Task Main(string[] args)
         {
-            var url = "http://localhost:8787/";
-
-            if (args.Length > 0)
-                url = args[0];
+            var url = args.Length > 0 ? args[0] : "http://*:8787/";
 
             AppDbContext.InitDatabase();
 
@@ -37,7 +34,7 @@
 
 
             // Our web server is disposable. 
-            using (var server = new WebServer(new[] { url }, Constants.RoutingStrategy.Regex, HttpListenerMode.EmbedIO))
+            using (var server = new WebServer(url))
             {
                 // First, we will configure our web server by adding Modules.
                 // Please note that order DOES matter.
@@ -86,6 +83,8 @@
                     await server.RunAsync(ctSource.Token);
 
                 "Bye".Info();
+
+                Terminal.Flush();
             }
         }
     }

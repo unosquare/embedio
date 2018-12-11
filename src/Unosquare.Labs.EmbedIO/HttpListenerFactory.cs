@@ -30,7 +30,7 @@
         /// </summary>
         /// <param name="mode">The mode.</param>
         /// <returns>A HTTP Listener.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">mode - null</exception>
+        /// <exception cref="ArgumentOutOfRangeException">mode - null.</exception>
         public static IHttpListener Create(HttpListenerMode mode)
         {
             switch (mode)

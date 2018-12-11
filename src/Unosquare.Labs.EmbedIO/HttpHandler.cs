@@ -38,7 +38,7 @@
                 $"Start of Request {_requestId} - Source {requestEndpoint} - {_context.RequestVerb().ToString().ToUpperInvariant()}: {_context.Request.Url.PathAndQuery} - {_context.Request.UserAgent}"
                     .Debug(nameof(HttpHandler));
 
-                var processResult = await ProcessRequest(ct);
+                var processResult = await ProcessRequest(ct).ConfigureAwait(false);
 
                 // Return a 404 (Not Found) response if no module/handler handled the response.
                 if (processResult == false)
@@ -51,7 +51,7 @@
                     }
                     else
                     {
-                        await _context.WebServer.OnNotFound(_context);
+                        await _context.WebServer.OnNotFound(_context).ConfigureAwait(false);
                     }
                 }
             }
@@ -84,7 +84,7 @@
                         .Debug(nameof(HttpHandler));
 
                     // Execute the callback
-                    var handleResult = await callback(_context, ct);
+                    var handleResult = await callback(_context, ct).ConfigureAwait(false);
 
                     $"Result: {handleResult}".Trace(nameof(HttpHandler));
 
@@ -99,7 +99,7 @@
                     // Handle exceptions by returning a 500 (Internal Server Error) 
                     if (_context.Response.StatusCode != (int) System.Net.HttpStatusCode.Unauthorized)
                     {
-                        await ResponseServerError(ct, ex, module.Name);
+                        await ResponseServerError(ct, ex, module.Name).ConfigureAwait(false);
                     }
 
                     // Finally set the handled flag to true and exit.
@@ -119,10 +119,9 @@
             ex.Log(nameof(HttpHandler), priorMessage);
 
             // Send the response over with the corresponding status code.
-            return _context.HtmlResponseAsync(
-                System.Net.WebUtility.HtmlEncode(string.Format(Responses.Response500HtmlFormat,
+            return _context.HtmlResponseAsync(string.Format(Responses.Response500HtmlFormat,
                     errorMessage,
-                    ex.StackTrace)),
+                    ex.StackTrace),
                 System.Net.HttpStatusCode.InternalServerError,
                 ct);
         }

@@ -19,7 +19,7 @@
 
             base.Add(uriPrefix);
             if (_listener.IsListening)
-                EndPointManager.AddPrefix(uriPrefix, _listener);
+                EndPointManager.AddPrefix(uriPrefix, _listener).GetAwaiter().GetResult();
         }
     }
 }

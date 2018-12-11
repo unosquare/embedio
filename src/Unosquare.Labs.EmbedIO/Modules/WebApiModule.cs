@@ -26,7 +26,7 @@
     /// Public instance methods that match the WebServerModule.ResponseHandler signature, and have the WebApi handler attribute
     /// will be used to respond to web server requests.
     /// </summary>
-    public class WebApiModule 
+    public class WebApiModule
         : WebModuleBase
     {
         private readonly List<Type> _controllerTypes = new List<Type>();
@@ -52,7 +52,7 @@
                 // return a non-math if no handler hold the route
                 if (path == null)
                 {
-                    return IsMethodNotAllowed(context) && Server.OnMethodNotAllowed != null && await Server.OnMethodNotAllowed(context);
+                    return IsMethodNotAllowed(context) && Server.OnMethodNotAllowed != null && await Server.OnMethodNotAllowed(context).ConfigureAwait(false);
                 }
 
                 // search the path and verb
@@ -69,16 +69,11 @@
 
                 // Initially, only the server and context objects will be available
                 var args = new object[methodPair.MethodCache.AdditionalParameters.Count];
-                
-                // Select the routing strategy
-                switch (Server.RoutingStrategy)
-                {
-                    case RoutingStrategy.Regex:
-                        methodPair.ParseArguments(regExRouteParams, args);
-                        return await methodPair.Invoke(context, args);
-                    default:
-                        return await methodPair.Invoke(context, args);
-                }
+
+                if (Server.RoutingStrategy == RoutingStrategy.Regex)
+                    methodPair.ParseArguments(regExRouteParams, args);
+
+                return await methodPair.Invoke(context, args).ConfigureAwait(false);
             });
         }
 
@@ -240,7 +235,7 @@
                     path = context.Request.Url.LocalPath;
                     foreach (var route in _delegateMap.Keys)
                     {
-                        if (path.RequestRegexUrlParams(route) != null) 
+                        if (path.RequestRegexUrlParams(route) != null)
                             return true;
                     }
 

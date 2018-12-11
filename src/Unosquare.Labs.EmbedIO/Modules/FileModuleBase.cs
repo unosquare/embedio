@@ -10,9 +10,9 @@
     using Constants;
 
     /// <summary>
-    /// Represents a files module base
+    /// Represents a files module base.
     /// </summary>
-    /// <seealso cref="Unosquare.Labs.EmbedIO.WebModuleBase" />
+    /// <seealso cref="WebModuleBase" />
     public abstract class FileModuleBase
         : WebModuleBase
     {
@@ -26,11 +26,6 @@
         /// </summary>
         private const int ChunkSize = 256 * 1024;
 
-        private readonly Lazy<Dictionary<string, string>> _mimeTypes =
-            new Lazy<Dictionary<string, string>>(
-                () =>
-                    new Dictionary<string, string>(Constants.MimeTypes.DefaultMimeTypes, Strings.StandardStringComparer));
-
         /// <summary>
         /// Gets the collection holding the MIME types.
         /// </summary>
@@ -40,7 +35,7 @@
         public Lazy<ReadOnlyDictionary<string, string>> MimeTypes
             =>
                 new Lazy<ReadOnlyDictionary<string, string>>(
-                    () => new ReadOnlyDictionary<string, string>(_mimeTypes.Value));
+                    () => new ReadOnlyDictionary<string, string>(Constants.MimeTypes.DefaultMimeTypes.Value));
 
         /// <summary>
         /// The default headers.
@@ -63,7 +58,7 @@
         /// <param name="fileSize">Size of the file.</param>
         /// <param name="context">The context.</param>
         /// <param name="buffer">The buffer.</param>
-        /// <param name="ct">The ct.</param>
+        /// <param name="ct">The cancellation token.</param>
         /// <returns>A task representing the write action.</returns>
         protected async Task WriteFileAsync(
             bool usingPartial,
@@ -111,7 +106,7 @@
                     context.Response.ContentType?.StartsWith("video") == false)
                 {
                     // Perform compression if available
-                    buffer = await buffer.CompressAsync(cancellationToken: ct);
+                    buffer = await buffer.CompressAsync(cancellationToken: ct).ConfigureAwait(false);
                     context.Response.AddHeader(Headers.ContentEncoding, Headers.CompressionGzip);
                     lowerByteIndex = 0;
                 }
@@ -119,7 +114,7 @@
                 context.Response.ContentLength64 = buffer.Length;
             }
 
-            await WriteToOutputStream(context.Response, buffer, lowerByteIndex, ct);
+            await WriteToOutputStream(context.Response, buffer, lowerByteIndex, ct).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -132,6 +127,23 @@
                 DefaultHeaders.GetValueOrDefault(Headers.CacheControl, "private"));
             response.AddHeader(Headers.Pragma, DefaultHeaders.GetValueOrDefault(Headers.Pragma, string.Empty));
             response.AddHeader(Headers.Expires, DefaultHeaders.GetValueOrDefault(Headers.Expires, string.Empty));
+        }
+
+        /// <summary>
+        /// Sets the general headers.
+        /// </summary>
+        /// <param name="response">The response.</param>
+        /// <param name="utcFileDateString">The UTC file date string.</param>
+        /// <param name="fileExtension">The file extension.</param>
+        protected void SetGeneralHeaders(IHttpResponse response, string utcFileDateString, string fileExtension)
+        {
+            if (!string.IsNullOrWhiteSpace(fileExtension) && MimeTypes.Value.ContainsKey(fileExtension))
+                response.ContentType = MimeTypes.Value[fileExtension];
+
+            SetDefaultCacheHeaders(response);
+
+            response.AddHeader(Headers.LastModified, utcFileDateString);
+            response.AddHeader(Headers.AcceptRanges, "bytes");
         }
 
         private static async Task WriteToOutputStream(
@@ -149,12 +161,12 @@
                 if (sendData + ChunkSize > response.ContentLength64) readBufferSize = (int)(response.ContentLength64 - sendData);
 
                 buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
-                var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct);
+                var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct).ConfigureAwait(false);
 
                 if (read == 0) break;
 
                 sendData += read;
-                await response.OutputStream.WriteAsync(streamBuffer, 0, readBufferSize, ct);
+                await response.OutputStream.WriteAsync(streamBuffer, 0, readBufferSize, ct).ConfigureAwait(false);
             }
         }
 

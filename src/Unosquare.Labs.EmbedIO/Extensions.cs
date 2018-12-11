@@ -440,7 +440,7 @@
             var buffer = (encoding ?? Encoding.UTF8).GetBytes(content);
 
             context.Response.ContentType = contentType;
-            await context.Response.OutputStream.WriteAsync(buffer, 0, buffer.Length, cancellationToken);
+            await context.Response.OutputStream.WriteAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false);
 
             return true;
         }
@@ -512,8 +512,8 @@
                     {
                         using (var compressor = new DeflateStream(targetStream, CompressionMode.Compress, true))
                         {
-                            await buffer.CopyToAsync(compressor, 1024, cancellationToken);
-                            await buffer.CopyToAsync(compressor);
+                            await buffer.CopyToAsync(compressor, 1024, cancellationToken).ConfigureAwait(false);
+                            await buffer.CopyToAsync(compressor).ConfigureAwait(false);
 
                             // WebSocket use this
                             targetStream.Write(LastByte, 0, 1);
@@ -524,7 +524,7 @@
                     {
                         using (var compressor = new DeflateStream(buffer, CompressionMode.Decompress))
                         {
-                            await compressor.CopyToAsync(targetStream);
+                            await compressor.CopyToAsync(targetStream).ConfigureAwait(false);
                         }
                     }
 
@@ -534,63 +534,20 @@
                     {
                         using (var compressor = new GZipStream(targetStream, CompressionMode.Compress, true))
                         {
-                            await buffer.CopyToAsync(compressor);
+                            await buffer.CopyToAsync(compressor).ConfigureAwait(false);
                         }
                     }
                     else
                     {
                         using (var compressor = new GZipStream(buffer, CompressionMode.Decompress))
                         {
-                            await compressor.CopyToAsync(targetStream);
+                            await compressor.CopyToAsync(targetStream).ConfigureAwait(false);
                         }
                     }
 
                     break;
                 case CompressionMethod.None:
-                    await buffer.CopyToAsync(targetStream);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(method), method, null);
-            }
-
-            return targetStream;
-        }
-
-        /// <summary>
-        /// Compresses the specified buffer stream using the G-Zip compression algorithm.
-        /// </summary>
-        /// <param name="buffer">The buffer.</param>
-        /// <param name="method">The method.</param>
-        /// <returns>
-        /// A block of bytes of compressed stream.
-        /// </returns>
-        public static MemoryStream Compress(
-            this Stream buffer,
-            CompressionMethod method = CompressionMethod.Gzip)
-        {
-            buffer.Position = 0;
-            var targetStream = new MemoryStream();
-
-            switch (method)
-            {
-                case CompressionMethod.Deflate:
-                    using (var compressor = new DeflateStream(targetStream, CompressionMode.Compress, true))
-                    {
-                        buffer.CopyTo(compressor, 1024);
-                        buffer.CopyTo(compressor);
-
-                        // WebSocket use this
-                        targetStream.Write(LastByte, 0, 1);
-                        targetStream.Position = 0;
-                    }
-
-                    break;
-                case CompressionMethod.Gzip:
-                    using (var compressor = new GZipStream(targetStream, CompressionMode.Compress, true))
-                    {
-                        buffer.CopyTo(compressor);
-                    }
-
+                    await buffer.CopyToAsync(targetStream).ConfigureAwait(false);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(method), method, null);

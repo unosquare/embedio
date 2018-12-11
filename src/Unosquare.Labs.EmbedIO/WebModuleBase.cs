@@ -4,6 +4,14 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+    
+    /// <summary>
+    /// Represents a Web Handler.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="ct">The cancellation token.</param>
+    /// <returns>A task representing the success of the web handler.</returns>
+    public delegate Task<bool> WebHandler(IHttpContext context, CancellationToken ct);
 
     /// <summary>
     /// Base class to define custom web modules.
@@ -55,14 +63,14 @@
         {
             CancellationToken = ct;
 
-            var watchDogTask = Task.Run(async () =>
+            Task.Run(async () =>
             {
                 try
                 {
                     while (!ct.IsCancellationRequested)
                     {
                         RunWatchdog();
-                        await Task.Delay(WatchdogInterval, ct);
+                        await Task.Delay(WatchdogInterval, ct).ConfigureAwait(false);
                     }
                 }
                 catch (TaskCanceledException)
@@ -78,12 +86,4 @@
             // do nothing
         }
     }
-    
-    /// <summary>
-    /// Represents a Web Handler.
-    /// </summary>
-    /// <param name="context">The context.</param>
-    /// <param name="ct">The ct.</param>
-    /// <returns>A task representing the success of the web handler.</returns>
-    public delegate Task<bool> WebHandler(IHttpContext context, CancellationToken ct);
 }

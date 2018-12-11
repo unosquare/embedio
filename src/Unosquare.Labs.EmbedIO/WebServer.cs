@@ -82,15 +82,13 @@
         /// <param name="routingStrategy">The routing strategy.</param>
         /// <exception cref="ArgumentException">Argument urlPrefix must be specified.</exception>
         public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy = RoutingStrategy.Regex)
-         : this(urlPrefixes, routingStrategy, HttpListenerFactory.Create())
+         : this(urlPrefixes, routingStrategy, HttpListenerFactory.Create(HttpListenerMode.EmbedIO))
         {
             // placeholder
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer" /> class.
-        /// 
-        /// Default setting is EmbedIO HttpListenerMode.
         /// </summary>
         /// <remarks>
         /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/
@@ -100,7 +98,7 @@
         /// <param name="routingStrategy">The routing strategy.</param>
         /// <param name="mode">The mode.</param>
         /// <exception cref="ArgumentException">Argument urlPrefix must be specified.</exception>
-        public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy, HttpListenerMode mode = HttpListenerMode.EmbedIO)
+        public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy, HttpListenerMode mode)
             : this(urlPrefixes, routingStrategy, HttpListenerFactory.Create(mode))
         {
             // placeholder
@@ -225,7 +223,7 @@
                 {
                     try
                     {
-                        var clientSocket = await Listener.GetContextAsync().ConfigureAwait(false);
+                        var clientSocket = await Listener.GetContextAsync(ct).ConfigureAwait(false);
 
                         if (ct.IsCancellationRequested)
                             return;
@@ -238,22 +236,19 @@
                         handler.HandleClientRequest(ct);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     }
-                    catch (HttpListenerException)
-                    {
-                        if (!ct.IsCancellationRequested)
-                            throw;
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        // Forward cancellations out to the caller.
-                        throw;
-                    }
-                    catch (ObjectDisposedException)
-                    {
-                        // Ignore disposed Listener
-                    }
                     catch (Exception ex)
                     {
+                        Listener?.Dispose();
+
+                        if (ex is OperationCanceledException || ex is ObjectDisposedException ||
+                            ex is HttpListenerException)
+                        {
+                            if (!ct.IsCancellationRequested)
+                                throw;
+
+                            return;
+                        }
+
                         ex.Log(nameof(WebServer));
                     }
                 }

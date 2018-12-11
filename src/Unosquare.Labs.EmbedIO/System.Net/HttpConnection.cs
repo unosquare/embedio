@@ -83,8 +83,6 @@ using System.Security.Cryptography.X509Certificates;
         internal X509Certificate2 ClientCertificate { get; }
 #endif
 
-        public bool IsClosed => _sock == null;
-
         public int Reuses { get; private set; }
 
         public Stream Stream { get; }
@@ -109,8 +107,8 @@ using System.Security.Cryptography.X509Certificates;
                     _sTimeout = 15000;
                 _timer.Change(_sTimeout, Timeout.Infinite);
 
-                var data = await Stream.ReadAsync(_buffer, 0, BufferSize);
-                await OnReadInternal(data);
+                var data = await Stream.ReadAsync(_buffer, 0, BufferSize).ConfigureAwait(false);
+                await OnReadInternal(data).ConfigureAwait(false);
             }
             catch
             {
@@ -120,7 +118,7 @@ using System.Security.Cryptography.X509Certificates;
             }
         }
 
-        public RequestStream GetRequestStream(long contentlength)
+        public RequestStream GetRequestStream(long contentLength)
         {
             if (_iStream != null) return _iStream;
 
@@ -128,7 +126,7 @@ using System.Security.Cryptography.X509Certificates;
             var length = (int) _ms.Length;
             _ms = null;
 
-            _iStream = new RequestStream(Stream, buffer, _position, length - _position, contentlength);
+            _iStream = new RequestStream(Stream, buffer, _position, length - _position, contentLength);
 
             return _iStream;
         }
@@ -212,19 +210,19 @@ using System.Security.Cryptography.X509Certificates;
             Unbind();
         }
 
-        private async Task OnReadInternal(int nread)
+        private async Task OnReadInternal(int offset)
         {
             _timer.Change(Timeout.Infinite, Timeout.Infinite);
 
             // Continue reading until full header is received.
             // Especially important for multipart requests when the second part of the header arrives after a tiny delay
-            // because the webbrowser has to meassure the content length first.
+            // because the web browser has to measure the content length first.
             var parsedBytes = 0;
             while (true)
             {
                 try
                 {
-                    await _ms.WriteAsync(_buffer, parsedBytes, nread - parsedBytes);
+                    await _ms.WriteAsync(_buffer, parsedBytes, offset - parsedBytes).ConfigureAwait(false);
                     if (_ms.Length > 32768)
                     {
                         Close(true);
@@ -238,7 +236,7 @@ using System.Security.Cryptography.X509Certificates;
                     return;
                 }
 
-                if (nread == 0)
+                if (offset == 0)
                 {
                     CloseSocket();
                     Unbind();
@@ -269,8 +267,8 @@ using System.Security.Cryptography.X509Certificates;
                     return;
                 }
 
-                parsedBytes = nread;
-                nread += await Stream.ReadAsync(_buffer, nread, BufferSize - nread);
+                parsedBytes = offset;
+                offset += await Stream.ReadAsync(_buffer, offset, BufferSize - offset).ConfigureAwait(false);
             }
         }
 

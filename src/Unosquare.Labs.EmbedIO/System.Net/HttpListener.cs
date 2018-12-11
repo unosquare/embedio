@@ -4,6 +4,7 @@
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using Labs.EmbedIO;
 
@@ -15,6 +16,7 @@
     /// <seealso cref="IDisposable" />
     public sealed class HttpListener : IHttpListener
     {
+        private readonly System.Threading.SemaphoreSlim _ctxQueueSem = new System.Threading.SemaphoreSlim(0);
         private readonly ConcurrentDictionary<Guid, HttpListenerContext> _ctxQueue;
         private readonly ConcurrentDictionary<HttpConnection, object> _connections;
         private readonly HttpListenerPrefixCollection _prefixes;
@@ -92,14 +94,6 @@
         }
 #endif
 
-        /// <summary>
-        /// Gets a value indicating whether this instance is supported.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is supported; otherwise, <c>false</c>.
-        /// </value>
-        public static bool IsSupported => true;
-
         /// <inheritdoc />
         public bool IgnoreWriteExceptions { get; set; }
 
@@ -108,32 +102,14 @@
 
         /// <inheritdoc />
         public List<string> Prefixes => _prefixes.ToList();
-
-        /// <summary>
-        /// Closes this listener.
-        /// </summary>
-        public void Close()
-        {
-            if (_disposed)
-                return;
-
-            if (!IsListening)
-            {
-                _disposed = true;
-                return;
-            }
-
-            Close(true);
-            _disposed = true;
-        }
-
+        
         /// <inheritdoc />
         public void Start()
         {
             if (IsListening)
                 return;
 
-            EndPointManager.AddListener(this);
+            EndPointManager.AddListener(this).GetAwaiter().GetResult();
             IsListening = true;
         }
 
@@ -158,29 +134,30 @@
         }
 
         /// <inheritdoc />
-        public async Task<IHttpContext> GetContextAsync()
+        public async Task<IHttpContext> GetContextAsync(CancellationToken ct)
         {
             while (true)
             {
+                await _ctxQueueSem.WaitAsync(ct).ConfigureAwait(false);
+
                 foreach (var key in _ctxQueue.Keys)
                 {
                     if (_ctxQueue.TryRemove(key, out var context))
                     {
                         return context;
                     }
+
+                    break;
                 }
-
-                if (!IsListening)
-                    return null;
-
-                await Task.Delay(10);
             }
         }
 
         internal void RegisterContext(HttpListenerContext context)
         {
-            if (_ctxQueue.TryAdd(context.Id, context) == false)
+            if (!_ctxQueue.TryAdd(context.Id, context))
                 throw new InvalidOperationException("Unable to register context");
+
+            _ctxQueueSem.Release();
         }
 
         internal void UnregisterContext(HttpListenerContext context) => _ctxQueue.TryRemove(context.Id, out _);
@@ -191,20 +168,18 @@
 
         private void Close(bool closeExisting)
         {
-            EndPointManager.RemoveListener(this);
-
-            var list = new List<HttpConnection>();
+            EndPointManager.RemoveListener(this).GetAwaiter().GetResult();
 
             var keys = _connections.Keys;
-            var connsArray = new HttpConnection[keys.Count];
-            keys.CopyTo(connsArray, 0);
+            var connections = new HttpConnection[keys.Count];
+            keys.CopyTo(connections, 0);
             _connections.Clear();
-            list.AddRange(connsArray);
+            var list = new List<HttpConnection>(connections);
 
             for (var i = list.Count - 1; i >= 0; i--)
                 list[i].Close(true);
 
-            if (closeExisting == false) return;
+            if (!closeExisting) return;
 
             while (_ctxQueue.IsEmpty == false)
             {

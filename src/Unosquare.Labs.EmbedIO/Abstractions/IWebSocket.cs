@@ -25,7 +25,7 @@
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="isText">if set to <c>true</c> [is text].</param>
-        /// <param name="ct">The ct.</param>
+        /// <param name="ct">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous of send data using websocket.
         /// </returns>
@@ -34,7 +34,7 @@
         /// <summary>
         /// Closes the asynchronous.
         /// </summary>
-        /// <param name="ct">The ct.</param>
+        /// <param name="ct">The cancellation token.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
         Task CloseAsync(CancellationToken ct = default);
     }

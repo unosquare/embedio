@@ -100,7 +100,7 @@
             // first, accept the websocket
             $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
 
-            var webSocketContext = await context.AcceptWebSocketAsync(ReceiveBufferSize);
+            var webSocketContext = await context.AcceptWebSocketAsync(ReceiveBufferSize).ConfigureAwait(false);
 
             // remove the disconnected clients
             CollectDisconnected();
@@ -121,12 +121,12 @@
 #if !NETSTANDARD1_3 && !UWP
                 if (webSocketContext.WebSocket is WebSocket systemWebSocket)
                 {
-                    await ProcessSystemWebsocket(webSocketContext, systemWebSocket.SystemWebSocket, ct);
+                    await ProcessSystemWebsocket(webSocketContext, systemWebSocket.SystemWebSocket, ct).ConfigureAwait(false);
                 }
                 else
 #endif
                 {
-                    await ProcessEmbedIOWebSocket(webSocketContext, ct);
+                    await ProcessEmbedIOWebSocket(webSocketContext, ct).ConfigureAwait(false);
                 }
             }
             catch (TaskCanceledException)
@@ -165,7 +165,7 @@
             {
                 var buffer = Encoding.GetBytes(payload ?? string.Empty);
 
-                await webSocket.WebSocket.SendAsync(buffer, true, CancellationToken);
+                await webSocket.WebSocket.SendAsync(buffer, true, CancellationToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -182,7 +182,7 @@
         {
             try
             {
-                await webSocket.WebSocket.SendAsync(payload ?? new byte[0], false, CancellationToken);
+                await webSocket.WebSocket.SendAsync(payload ?? new byte[0], false, CancellationToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -221,7 +221,7 @@
 
             try
             {
-                await webSocket.WebSocket.CloseAsync(CancellationToken);
+                await webSocket.WebSocket.CloseAsync(CancellationToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -304,7 +304,7 @@
                         CollectDisconnected();
 
                     // TODO: make this sleep configurable.
-                    await Task.Delay(TimeSpan.FromSeconds(30), CancellationToken);
+                    await Task.Delay(TimeSpan.FromSeconds(30), CancellationToken).ConfigureAwait(false);
                 }
             }, CancellationToken);
         }
@@ -355,7 +355,7 @@
            {
                if (e.Opcode == Net.Opcode.Close)
                {
-                   await webSocketContext.WebSocket.CloseAsync(CancellationToken);
+                   await webSocketContext.WebSocket.CloseAsync(CancellationToken).ConfigureAwait(false);
                    return;
                }
 
@@ -367,7 +367,7 @@
             while (webSocketContext.WebSocket.State == Net.WebSocketState.Open ||
                    webSocketContext.WebSocket.State == Net.WebSocketState.Closing)
             {
-                await Task.Delay(500, ct);
+                await Task.Delay(500, ct).ConfigureAwait(false);
             }
         }
 
@@ -389,7 +389,7 @@
                 if (receiveResult.MessageType == (int)System.Net.WebSockets.WebSocketMessageType.Close)
                 {
                     // close the connection if requested by the client
-                    await webSocket.CloseAsync(System.Net.WebSockets.WebSocketCloseStatus.NormalClosure, string.Empty, ct);
+                    await webSocket.CloseAsync(System.Net.WebSockets.WebSocketCloseStatus.NormalClosure, string.Empty, ct).ConfigureAwait(false);
                     return true;
                 }
 
@@ -405,7 +405,7 @@
                     // close the connection if message exceeds max length
                     await webSocket.CloseAsync(System.Net.WebSockets.WebSocketCloseStatus.MessageTooBig,
                         $"Message too big. Maximum is {_maximumMessageSize} bytes.",
-                        ct);
+                        ct).ConfigureAwait(false);
 
                     // exit the loop; we're done
                     return true;
