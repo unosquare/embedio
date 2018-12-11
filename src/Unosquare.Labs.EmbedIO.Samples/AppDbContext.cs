@@ -1,7 +1,7 @@
-﻿using Unosquare.Labs.LiteLib;
-
-namespace Unosquare.Labs.EmbedIO.Samples
+﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
+    using LiteLib;
+
     internal sealed class AppDbContext : LiteDbContext
     {
         public AppDbContext() : base("mydbfile.db", false)

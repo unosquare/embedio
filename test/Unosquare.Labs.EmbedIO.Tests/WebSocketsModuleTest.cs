@@ -1,5 +1,4 @@
-﻿#if !NET47
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using System.Threading.Tasks;
     using Swan.Formatters;
@@ -13,7 +12,9 @@ namespace Unosquare.Labs.EmbedIO.Tests
     public class WebSocketsModuleTest : WebSocketsModuleTestBase
     {
         public WebSocketsModuleTest()
-            : base(RoutingStrategy.Wildcard, ws =>
+            : base(
+                RoutingStrategy.Wildcard, 
+                ws =>
                 {
                     ws.RegisterModule(new WebSocketsModule());
                     ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocket>();
@@ -54,14 +55,17 @@ namespace Unosquare.Labs.EmbedIO.Tests
         }
     }
 
+    [TestFixture]
     public class WebSocketsWildcard : WebSocketsModuleTestBase
     {
         public WebSocketsWildcard()
-            : base(RoutingStrategy.Wildcard, ws =>
-            {
-                ws.RegisterModule(new WebSocketsModule());
-                ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocketWildcard>();
-            }, "test/*")
+            : base(
+                RoutingStrategy.Wildcard, ws =>
+                {
+                    ws.RegisterModule(new WebSocketsModule());
+                    ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocketWildcard>();
+                },
+                "test/*")
         {
             // placeholder
         }
@@ -73,14 +77,18 @@ namespace Unosquare.Labs.EmbedIO.Tests
         }
     }
 
+    [TestFixture]
     public class WebSocketsModuleTestRegex : WebSocketsModuleTestBase
     {
         public WebSocketsModuleTestRegex()
-            : base(RoutingStrategy.Regex, ws =>
-            {
-                ws.RegisterModule(new WebSocketsModule());
-                ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocketRegex>();
-            }, "test/{100}")
+            : base(
+                RoutingStrategy.Regex,
+                ws =>
+                {
+                    ws.RegisterModule(new WebSocketsModule());
+                    ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocketRegex>();
+                },
+                "test/{100}")
         {
             // placeholder
         }
@@ -92,4 +100,3 @@ namespace Unosquare.Labs.EmbedIO.Tests
         }
     }
 }
-#endif

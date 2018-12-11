@@ -995,7 +995,7 @@
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         private async Task SetClientStream()
         {
-#if NET452
+#if !NETSTANDARD1_3 && !UWP
             _tcpClient = new TcpClient(_uri.DnsSafeHost, _uri.Port);
 #else
             _tcpClient = new TcpClient();

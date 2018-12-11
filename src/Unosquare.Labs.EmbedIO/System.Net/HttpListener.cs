@@ -138,7 +138,7 @@
         {
             while (true)
             {
-                await _ctxQueueSem.WaitAsync(ct);
+                await _ctxQueueSem.WaitAsync(ct).ConfigureAwait(false);
 
                 foreach (var key in _ctxQueue.Keys)
                 {
