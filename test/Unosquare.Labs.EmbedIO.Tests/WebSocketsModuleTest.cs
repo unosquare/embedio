@@ -1,12 +1,13 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
-    using System.Threading.Tasks;
-    using Swan.Formatters;
-    using NUnit.Framework;
-    using Modules;
-    using TestObjects;
     using Constants;
+    using Modules;
     using Net;
+    using NUnit.Framework;
+    using Swan.Formatters;
+    using System;
+    using System.Threading.Tasks;
+    using TestObjects;
 
     [TestFixture]
     public class WebSocketsModuleTest : WebSocketsModuleTestBase
@@ -49,7 +50,7 @@
 
             var buffer = System.Text.Encoding.UTF8.GetBytes("HOLA");
             await clientSocket.SendAsync(buffer, Opcode.Text);
-            await Task.Delay(500);
+            await Task.Delay(TimeSpan.FromSeconds(1));
 
             Assert.True(wasSet);
         }
