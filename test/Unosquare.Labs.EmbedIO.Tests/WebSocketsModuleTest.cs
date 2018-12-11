@@ -1,4 +1,5 @@
-﻿namespace Unosquare.Labs.EmbedIO.Tests
+﻿#if !NET47
+namespace Unosquare.Labs.EmbedIO.Tests
 {
     using System.Threading.Tasks;
     using Swan.Formatters;
@@ -91,3 +92,4 @@
         }
     }
 }
+#endif

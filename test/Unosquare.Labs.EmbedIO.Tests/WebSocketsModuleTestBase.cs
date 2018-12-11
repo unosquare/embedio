@@ -1,12 +1,11 @@
-﻿namespace Unosquare.Labs.EmbedIO.Tests
+﻿#if !NET47
+namespace Unosquare.Labs.EmbedIO.Tests
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using NUnit.Framework;
-    using Modules;
     using Constants;
     using Net;
+    using NUnit.Framework;
+    using System;
+    using System.Threading.Tasks;
 
     public abstract class WebSocketsModuleTestBase : FixtureBase
     {
@@ -43,3 +42,4 @@
         }
     }
 }
+#endif
