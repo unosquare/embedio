@@ -12,7 +12,7 @@
     /// <summary>
     /// Represents a files module base.
     /// </summary>
-    /// <seealso cref="Unosquare.Labs.EmbedIO.WebModuleBase" />
+    /// <seealso cref="WebModuleBase" />
     public abstract class FileModuleBase
         : WebModuleBase
     {

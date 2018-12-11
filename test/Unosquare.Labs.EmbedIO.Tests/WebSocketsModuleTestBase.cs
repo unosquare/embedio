@@ -6,11 +6,7 @@
     using NUnit.Framework;
     using Modules;
     using Constants;
-#if NET47
-    using System.Net.WebSockets;
-#else
     using Net;
-#endif
 
     public abstract class WebSocketsModuleTestBase : FixtureBase
     {
@@ -27,37 +23,23 @@
         protected async Task ConnectWebSocket()
         {
             var wsUrl = WebServerUrl.Replace("http", "ws") + _url;
-            Assert.IsNotNull(WebServerInstance.Module<WebSocketsModule>(), "WebServer has WebSocketsModule");
+            var wasSet = false;
 
-            Assert.AreEqual(WebServerInstance.Module<WebSocketsModule>().Handlers.Count, 1, "WebSocketModule has one handler");
-
-            var ct = new CancellationTokenSource();
-#if NET47
-            if (IgnoreWebConnect)
-                Assert.Inconclusive("WebSocket Connect not available");
-
-            var clientSocket = new ClientWebSocket();
-            await clientSocket.ConnectAsync(new Uri(wsUrl), ct.Token);
-
-            Assert.AreEqual(WebSocketState.Open, clientSocket.State, "Connection is open");
-
-            var message = new ArraySegment<byte>(System.Text.Encoding.Default.GetBytes("HOLA"));
-            var buffer = new ArraySegment<byte>(new byte[5]);
-
-            await clientSocket.SendAsync(message, WebSocketMessageType.Text, true, ct.Token);
-            await clientSocket.ReceiveAsync(buffer, ct.Token);
-            Assert.AreEqual("HELLO", System.Text.Encoding.UTF8.GetString(buffer.Array).Trim(), "Final message is HELLO");
-#else
             var clientSocket = new WebSocket(wsUrl);
-            await clientSocket.ConnectAsync(ct.Token);
-            clientSocket.OnMessage += (s, e) => { Assert.AreEqual(e.Data, "HELLO"); };
+            await clientSocket.ConnectAsync();
+            clientSocket.OnMessage += (s, e) =>
+            {
+                Assert.AreEqual(e.Data, "HELLO");
+                wasSet = true;
+            };
 
             Assert.AreEqual(WebSocketState.Open, clientSocket.State, "Connection is open");
 
             var buffer = System.Text.Encoding.UTF8.GetBytes("HOLA");
-            await clientSocket.SendAsync(buffer, Opcode.Text, ct.Token);
-            await Task.Delay(500, ct.Token);
-#endif
+            await clientSocket.SendAsync(buffer, Opcode.Text);
+            await Task.Delay(500);
+
+            Assert.IsTrue(wasSet);
         }
     }
 }
