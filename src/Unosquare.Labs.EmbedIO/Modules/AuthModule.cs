@@ -46,7 +46,7 @@
 
                 if (context.Response.StatusCode != 401) return Task.FromResult(false);
 
-                context.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Realm\"");
+                context.Response.AddHeader("WWW-Authenticate", "Basic realm=\"Realm\"");
 
                 return Task.FromResult(true);
             });
