@@ -278,13 +278,13 @@ Please notice the ending slash. -- It is important.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_WebServer__ctor_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_WebServer__ctor_System_String___Unosquare_Labs_EmbedIO_Constants_RoutingStrategy_Unosquare_Labs_EmbedIO_HttpListenerMode_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor(System.String[],Unosquare.Labs.EmbedIO.Constants.RoutingStrategy,Unosquare.Labs.EmbedIO.HttpListenerMode)">WebServer(String[], RoutingStrategy, HttpListenerMode)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServer__ctor_System_String___Unosquare_Labs_EmbedIO_Constants_RoutingStrategy_Unosquare_Labs_EmbedIO_HttpListenerMode_System_Security_Cryptography_X509Certificates_X509Certificate_" data-uid="Unosquare.Labs.EmbedIO.WebServer.#ctor(System.String[],Unosquare.Labs.EmbedIO.Constants.RoutingStrategy,Unosquare.Labs.EmbedIO.HttpListenerMode,System.Security.Cryptography.X509Certificates.X509Certificate)">WebServer(String[], RoutingStrategy, HttpListenerMode, X509Certificate)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy, HttpListenerMode mode)</code></pre>
+    <pre><code class="lang-csharp hljs">public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy, HttpListenerMode mode, X509Certificate certificate = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -314,9 +314,15 @@ Please notice the ending slash. -- It is important.</p>
         <td><p>The mode.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.x509certificates.x509certificate">X509Certificate</a></td>
+        <td><span class="parametername">certificate</span></td>
+        <td><p>The certificate.</p>
+</td>
+      </tr>
     </tbody>
   </table>
-  <h5 id="Unosquare_Labs_EmbedIO_WebServer__ctor_System_String___Unosquare_Labs_EmbedIO_Constants_RoutingStrategy_Unosquare_Labs_EmbedIO_HttpListenerMode__remarks">Remarks</h5>
+  <h5 id="Unosquare_Labs_EmbedIO_WebServer__ctor_System_String___Unosquare_Labs_EmbedIO_Constants_RoutingStrategy_Unosquare_Labs_EmbedIO_HttpListenerMode_System_Security_Cryptography_X509Certificates_X509Certificate__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p><code>urlPrefixes</code> must be specified as something similar to: <a href="http://localhost:9696/">http://localhost:9696/</a>
 Please notice the ending slash. -- It is important.</p>
 </div>
