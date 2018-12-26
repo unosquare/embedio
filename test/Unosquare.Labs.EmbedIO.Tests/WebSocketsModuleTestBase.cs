@@ -37,7 +37,7 @@
 
             var buffer = System.Text.Encoding.UTF8.GetBytes("HOLA");
             await clientSocket.SendAsync(buffer, Opcode.Text);
-            await Task.Delay(500);
+            await Task.Delay(TimeSpan.FromSeconds(1));
 
             Assert.IsTrue(wasSet);
         }
