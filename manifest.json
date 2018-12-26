@@ -865,7 +865,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.WebSocket.html",
-          "hash": "PgQqo57Rpngtim0lPigXWQ=="
+          "hash": "koBdQkpkIus2ATujYCdCIQ=="
         }
       },
       "is_incremental": false,
@@ -981,11 +981,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "wiki/Self-signed-certified.md",
+      "source_relative_path": "wiki/Self-signed-certified-(Windows).md",
       "output": {
         ".html": {
-          "relative_path": "wiki/Self-signed-certified.html",
-          "hash": "KF3ALI4G2CPhp0KVj/dBSQ=="
+          "relative_path": "wiki/Self-signed-certified-(Windows).html",
+          "hash": "WwHT/L/ep2/qwbS72+QWOw=="
         }
       },
       "is_incremental": false,

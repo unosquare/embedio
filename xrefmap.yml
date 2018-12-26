@@ -5935,6 +5935,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.WebSocket.IsAlive
   nameWithType: WebSocket.IsAlive
+- uid: Unosquare.Net.WebSocket.IsSecure
+  name: IsSecure
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_IsSecure
+  commentId: P:Unosquare.Net.WebSocket.IsSecure
+  fullName: Unosquare.Net.WebSocket.IsSecure
+  nameWithType: WebSocket.IsSecure
+- uid: Unosquare.Net.WebSocket.IsSecure*
+  name: IsSecure
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_IsSecure_
+  commentId: Overload:Unosquare.Net.WebSocket.IsSecure
+  isSpec: "True"
+  fullName: Unosquare.Net.WebSocket.IsSecure
+  nameWithType: WebSocket.IsSecure
 - uid: Unosquare.Net.WebSocket.OnMessage
   name: OnMessage
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_OnMessage
