@@ -1,6 +1,8 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
     using Modules;
+    using System.Security.Cryptography.X509Certificates;
+    using System.Text.RegularExpressions;
     using Swan;
     using System;
     using System.Threading;
@@ -32,9 +34,10 @@
                 ctSource.Cancel();
             }, ctSource.Token);
 
+            var certificate = GetCertificate("767b9a3ad23a0cfc597df8be23d58984503c7ad8");
 
             // Our web server is disposable. 
-            using (var server = new WebServer(url))
+            using (var server = new WebServer(new[] { url }, Constants.RoutingStrategy.Regex, HttpListenerMode.EmbedIO, certificate))
             {
                 // First, we will configure our web server by adding Modules.
                 // Please note that order DOES matter.
@@ -65,7 +68,7 @@
                 // It registers the WebSocketsModule and registers the server for the given paths(s)
                 WebSocketsSample.Setup(server);
 
-                server.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(new {Message = "Error"})));
+                server.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(new { Message = "Error" })));
 
                 // Fire up the browser to show the content!
                 var browser = new System.Diagnostics.Process
@@ -85,6 +88,31 @@
                 "Bye".Info();
 
                 Terminal.Flush();
+            }
+        }
+
+        public static X509Certificate2 GetCertificate(string thumbprint)
+        {
+            // strip any non-hexadecimal values and make uppercase
+            thumbprint = Regex.Replace(thumbprint, @"[^\da-fA-F]", string.Empty).ToUpper();
+            var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+
+            try
+            {
+                store.Open(OpenFlags.ReadOnly);
+
+                var certCollection = store.Certificates;
+                var signingCert = certCollection.Find(X509FindType.FindByThumbprint, thumbprint, false);
+                if (signingCert.Count == 0)
+                {
+                    throw new Exception(string.Format("Cert with thumbprint: '{0}' not found in local machine cert store.", thumbprint));
+                }
+
+                return signingCert[0];
+            }
+            finally
+            {
+                store.Close();
             }
         }
     }
