@@ -16,16 +16,11 @@
     /// <seealso cref="IDisposable" />
     public sealed class HttpListener : IHttpListener
     {
-        private readonly System.Threading.SemaphoreSlim _ctxQueueSem = new System.Threading.SemaphoreSlim(0);
+        private readonly SemaphoreSlim _ctxQueueSem = new SemaphoreSlim(0);
         private readonly ConcurrentDictionary<Guid, HttpListenerContext> _ctxQueue;
         private readonly ConcurrentDictionary<HttpConnection, object> _connections;
         private readonly HttpListenerPrefixCollection _prefixes;
         private bool _disposed;
-#if SSL
-        IMonoTlsProvider tlsProvider;
-        MSI.MonoTlsSettings tlsSettings;
-        X509Certificate certificate;
-#endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpListener"/> class.
@@ -36,64 +31,7 @@
             _connections = new ConcurrentDictionary<HttpConnection, object>();
             _ctxQueue = new ConcurrentDictionary<Guid, HttpListenerContext>();
         }
-
-#if SSL
-        internal HttpListener(X509Certificate certificate, IMonoTlsProvider tlsProvider, MSI.MonoTlsSettings tlsSettings)
-            : this()
-        {
-            this.certificate = certificate;
-            this.tlsProvider = tlsProvider;
-            this.tlsSettings = tlsSettings;
-        }
-
-        internal X509Certificate LoadCertificateAndKey(IPAddress addr, int port)
-        {
-            lock (registry)
-            {
-                if (certificate != null)
-                    return certificate;
-
-                // Actually load the certificate
-                try
-                {
-                    string dirname = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                    string path = Path.Combine(dirname, ".mono");
-                    path = Path.Combine(path, "httplistener");
-                    string cert_file = Path.Combine(path, String.Format("{0}.cer", port));
-                    if (!File.Exists(cert_file))
-                        return null;
-                    string pvk_file = Path.Combine(path, String.Format("{0}.pvk", port));
-                    if (!File.Exists(pvk_file))
-                        return null;
-                    var cert = new X509Certificate2(cert_file);
-                    cert.PrivateKey = PrivateKey.CreateFromFile(pvk_file).RSA;
-                    certificate = cert;
-                    return certificate;
-                }
-                catch
-                {
-                    // ignore errors
-                    certificate = null;
-                    return null;
-                }
-            }
-        }
         
-        internal IMonoSslStream CreateSslStream(Stream innerStream, bool ownsStream, MSI.MonoRemoteCertificateValidationCallback callback)
-        {
-            lock (registry)
-            {
-                if (tlsProvider == null)
-                    tlsProvider = MonoTlsProviderFactory.GetProviderInternal();
-                if (tlsSettings == null)
-                    tlsSettings = MSI.MonoTlsSettings.CopyDefaultSettings();
-                if (tlsSettings.RemoteCertificateValidationCallback == null)
-                    tlsSettings.RemoteCertificateValidationCallback = callback;
-                return tlsProvider.CreateSslStream(innerStream, ownsStream, tlsSettings);
-            }
-        }
-#endif
-
         /// <inheritdoc />
         public bool IgnoreWriteExceptions { get; set; }
 

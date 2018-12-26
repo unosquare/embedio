@@ -14,7 +14,7 @@
         /// <param name="args">The arguments.</param>
         private static async Task Main(string[] args)
         {
-            var url = args.Length > 0 ? args[0] : "http://*:8787/";
+            var url = args.Length > 0 ? args[0] : "https://*:7876/";
 
             AppDbContext.InitDatabase();
 

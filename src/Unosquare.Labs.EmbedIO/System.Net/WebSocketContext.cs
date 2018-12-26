@@ -47,7 +47,7 @@
         /// <c>true</c> if the connection is secured; otherwise, <c>false</c>.
         /// </value>
         public bool IsSecureConnection => 
-#if SSL 
+#if !NETSTANDARD1_3 && !UWP 
             _context.Connection.IsSecure;
 #else
             false;
