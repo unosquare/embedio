@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
+    using System.Security.Cryptography.X509Certificates;
     using Constants;
     using System.Collections.Generic;
     using Swan;
@@ -90,16 +91,17 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer" /> class.
         /// </summary>
+        /// <param name="urlPrefixes">The URL prefix.</param>
+        /// <param name="routingStrategy">The routing strategy.</param>
+        /// <param name="mode">The mode.</param>
+        /// <param name="certificate">The certificate.</param>
+        /// <exception cref="ArgumentException">Argument urlPrefix must be specified.</exception>
         /// <remarks>
         /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/
         /// Please notice the ending slash. -- It is important.
         /// </remarks>
-        /// <param name="urlPrefixes">The URL prefix.</param>
-        /// <param name="routingStrategy">The routing strategy.</param>
-        /// <param name="mode">The mode.</param>
-        /// <exception cref="ArgumentException">Argument urlPrefix must be specified.</exception>
-        public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy, HttpListenerMode mode)
-            : this(urlPrefixes, routingStrategy, HttpListenerFactory.Create(mode))
+        public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy, HttpListenerMode mode, X509Certificate certificate = null)
+            : this(urlPrefixes, routingStrategy, HttpListenerFactory.Create(mode, certificate))
         {
             // placeholder
         }
@@ -107,14 +109,14 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer" /> class.
         /// </summary>
-        /// <remarks>
-        /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/
-        /// Please notice the ending slash. -- It is important.
-        /// </remarks>
         /// <param name="urlPrefixes">The URL prefix.</param>
         /// <param name="routingStrategy">The routing strategy.</param>
         /// <param name="httpListener">The HTTP listener.</param>
         /// <exception cref="ArgumentException">Argument urlPrefix must be specified.</exception>
+        /// <remarks>
+        /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/
+        /// Please notice the ending slash. -- It is important.
+        /// </remarks>
         public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy, IHttpListener httpListener)
         {
             if (urlPrefixes == null || urlPrefixes.Length <= 0)

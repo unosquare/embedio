@@ -80,13 +80,13 @@
 
         private static async Task<EndPointListener> GetEpListener(string host, int port, HttpListener listener, bool secure = false)
         {
-            IPAddress addr;
+            IPAddress address;
 
             if (host == "*")
             {
-                addr = UseIpv6 ? IPAddress.IPv6Any : IPAddress.Any;
+                address = UseIpv6 ? IPAddress.IPv6Any : IPAddress.Any;
             }
-            else if (IPAddress.TryParse(host, out addr) == false)
+            else if (IPAddress.TryParse(host, out address) == false)
             {
                 try
                 {
@@ -96,16 +96,16 @@
                         AddressList = await Dns.GetHostAddressesAsync(host).ConfigureAwait(false),
                     };
 
-                    addr = hostEntry.AddressList[0];
+                    address = hostEntry.AddressList[0];
                 }
                 catch
                 {
-                    addr = UseIpv6 ? IPAddress.IPv6Any : IPAddress.Any;
+                    address = UseIpv6 ? IPAddress.IPv6Any : IPAddress.Any;
                 }
             }
 
-            var p = IPToEndpoints.GetOrAdd(addr, x => new ConcurrentDictionary<int, EndPointListener>());
-            var epl = p.GetOrAdd(port, x => new EndPointListener(listener, addr, x, secure));
+            var p = IPToEndpoints.GetOrAdd(address, x => new ConcurrentDictionary<int, EndPointListener>());
+            var epl = p.GetOrAdd(port, x => new EndPointListener(listener, address, x, secure));
             
             return epl;
         }

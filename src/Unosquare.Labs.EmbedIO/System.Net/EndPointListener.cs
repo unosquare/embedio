@@ -18,9 +18,6 @@
         private Dictionary<ListenerPrefix, HttpListener> _prefixes;
         private List<ListenerPrefix> _unhandled; // unhandled; host = '*'
         private List<ListenerPrefix> _all; //  all;  host = '+       
-#if !NETSTANDARD1_3 && !UWP
-        private X509Certificate _cert;
-#endif
 
         public EndPointListener(HttpListener listener, IPAddress address, int port, bool secure)
         {
@@ -235,13 +232,13 @@
                 return;
 
 #if !NETSTANDARD1_3 && !UWP
-            if (epl.Secure && epl._cert == null)
+            if (epl.Secure && epl.Listener.Certificate == null)
             {
                 accepted.Dispose();
                 return;
             }
 
-            var conn = new HttpConnection(accepted, epl, epl._cert);
+            var conn = new HttpConnection(accepted, epl, epl.Listener.Certificate);
 #else
             var conn = new HttpConnection(accepted, epl);
 #endif

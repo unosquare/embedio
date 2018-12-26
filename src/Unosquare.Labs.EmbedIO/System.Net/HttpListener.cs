@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Net
 {
     using System;
+    using System.Security.Cryptography.X509Certificates;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
@@ -23,10 +24,13 @@
         private bool _disposed;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HttpListener"/> class.
+        /// Initializes a new instance of the <see cref="HttpListener" /> class.
         /// </summary>
-        public HttpListener()
+        /// <param name="certificate">The certificate.</param>
+        public HttpListener(X509Certificate certificate =null)
         {
+            Certificate = certificate;
+
             _prefixes = new HttpListenerPrefixCollection(this);
             _connections = new ConcurrentDictionary<HttpConnection, object>();
             _ctxQueue = new ConcurrentDictionary<Guid, HttpListenerContext>();
@@ -37,6 +41,9 @@
 
         /// <inheritdoc />
         public bool IsListening { get; private set; }
+
+        /// <inheritdoc />
+        public X509Certificate Certificate { get; }
 
         /// <inheritdoc />
         public List<string> Prefixes => _prefixes.ToList();

@@ -2,8 +2,9 @@
 namespace Unosquare.Labs.EmbedIO
 {
     using System;
-    using System.Linq;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Cryptography.X509Certificates;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -31,6 +32,8 @@ namespace Unosquare.Labs.EmbedIO
 
         /// <inheritdoc />
         public bool IsListening => _httpListener.IsListening;
+
+        public X509Certificate Certificate => null;
 
         /// <inheritdoc />
         public void Start() => _httpListener.Start();
