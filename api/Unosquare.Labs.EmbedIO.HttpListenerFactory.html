@@ -123,13 +123,42 @@
   
   
   <a id="Unosquare_Labs_EmbedIO_HttpListenerFactory_Create_" data-uid="Unosquare.Labs.EmbedIO.HttpListenerFactory.Create*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_HttpListenerFactory_Create_Unosquare_Labs_EmbedIO_HttpListenerMode_X509Certificate_" data-uid="Unosquare.Labs.EmbedIO.HttpListenerFactory.Create(Unosquare.Labs.EmbedIO.HttpListenerMode,X509Certificate)">Create(HttpListenerMode, X509Certificate)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpListenerFactory_Create" data-uid="Unosquare.Labs.EmbedIO.HttpListenerFactory.Create">Create()</h4>
+  <div class="markdown level1 summary"><p>Creates this instance with the default mode.</p>
+<p>The default HTTP Listener is Microsoft for net47 and
+netstandard2.0 target frameworks, otherwise EmbedIO.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IHttpListener Create()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpListener.html">IHttpListener</a></td>
+        <td><p>A HTTP Listener.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_HttpListenerFactory_Create_" data-uid="Unosquare.Labs.EmbedIO.HttpListenerFactory.Create*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_HttpListenerFactory_Create_Unosquare_Labs_EmbedIO_HttpListenerMode_" data-uid="Unosquare.Labs.EmbedIO.HttpListenerFactory.Create(Unosquare.Labs.EmbedIO.HttpListenerMode)">Create(HttpListenerMode)</h4>
   <div class="markdown level1 summary"><p>Creates the specified mode.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IHttpListener Create(HttpListenerMode mode, X509Certificate certificate = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IHttpListener Create(HttpListenerMode mode)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -145,12 +174,6 @@
         <td><a class="xref" href="Unosquare.Labs.EmbedIO.HttpListenerMode.html">HttpListenerMode</a></td>
         <td><span class="parametername">mode</span></td>
         <td><p>The mode.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">X509Certificate</span></td>
-        <td><span class="parametername">certificate</span></td>
-        <td><p>The certificate.</p>
 </td>
       </tr>
     </tbody>
@@ -183,53 +206,6 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
         <td><p>mode - null.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_HttpListenerFactory_Create_" data-uid="Unosquare.Labs.EmbedIO.HttpListenerFactory.Create*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_HttpListenerFactory_Create_X509Certificate_" data-uid="Unosquare.Labs.EmbedIO.HttpListenerFactory.Create(X509Certificate)">Create(X509Certificate)</h4>
-  <div class="markdown level1 summary"><p>Creates this instance with the default mode.
-The default HTTP Listener is Microsoft for net47 and
-netstandard2.0 target frameworks, otherwise EmbedIO.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IHttpListener Create(X509Certificate certificate = null)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">X509Certificate</span></td>
-        <td><span class="parametername">certificate</span></td>
-        <td><p>The certificate.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpListener.html">IHttpListener</a></td>
-        <td><p>A HTTP Listener.</p>
 </td>
       </tr>
     </tbody>
