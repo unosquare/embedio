@@ -34,8 +34,7 @@
 
             var webOptions = new WebServerOptions(url)
             {
-                Certificate = new System.Security.Cryptography.X509Certificates.X509Certificate2(@"C:\TEMP\local.pfx", "MyPassword", System.Security.Cryptography.X509Certificates.X509KeyStorageFlags.MachineKeySet), 
-                AutoRegisterCertificate = true,
+                AutoLoadCertificate = true
             };
 
             // Our web server is disposable. 

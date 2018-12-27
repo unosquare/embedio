@@ -1,18 +1,17 @@
-﻿using System.Linq;
-
-namespace Unosquare.Labs.EmbedIO
+﻿namespace Unosquare.Labs.EmbedIO
 {
-    using System;
-    using System.Diagnostics;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Text.RegularExpressions;
     using Constants;
     using Swan;
+    using System;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Security.Cryptography.X509Certificates;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     /// Options for WebServer creation.
     /// </summary>
-    public class WebServerOptions
+    public sealed class WebServerOptions
     {
         private X509Certificate2 _certificate;
 
@@ -74,7 +73,7 @@ namespace Unosquare.Labs.EmbedIO
                     return TryRegisterCertificate() ? _certificate : null;
                 }
 
-                return _certificate == null && AutoLoadCertificate ? GetCertificate() : _certificate;
+                return _certificate == null && AutoLoadCertificate ? LoadCertificate() : _certificate;
             }
 
             set => _certificate = value;
@@ -103,6 +102,48 @@ namespace Unosquare.Labs.EmbedIO
         ///   <c>true</c> if [automatic register certificate]; otherwise, <c>false</c>.
         /// </value>
         public bool AutoRegisterCertificate { get; set; }
+
+        private X509Certificate2 LoadCertificate()
+        {
+            if (!string.IsNullOrWhiteSpace(CertificateThumb)) return GetCertificate();
+
+            var netsh = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "netsh",
+                    Arguments =
+                        $"http show sslcert ipport=0.0.0.0:{GetSslPort()}",
+                    RedirectStandardOutput = true,
+                },
+            };
+
+            var thumbPrint = string.Empty;
+
+            netsh.OutputDataReceived += (sender, eventArgs) =>
+            {
+                if (eventArgs.Data == null)
+                    return;
+
+                var line = eventArgs.Data?.Trim();
+
+                if (line.StartsWith("Certificate Hash") && line.IndexOf(":", StringComparison.Ordinal) > -1)
+                    thumbPrint = line.Split(':')[1].Trim();
+            };
+
+            if (netsh.Start())
+            {
+                netsh.BeginOutputReadLine();
+                netsh.WaitForExit();
+
+                if (netsh.ExitCode == 0 && !string.IsNullOrWhiteSpace(thumbPrint))
+                {
+                    return GetCertificate(thumbPrint);
+                }
+            }
+
+            return null;
+        }
 
         private X509Certificate2 GetCertificate(string thumb = null)
         {
@@ -154,16 +195,6 @@ namespace Unosquare.Labs.EmbedIO
             if (_certificate == null)
                 throw new InvalidOperationException("A certificate is required to AutoRegister");
 
-            var port = 443;
-
-            foreach (var url in UrlPrefixes.Where(x => x.StartsWith("https", StringComparison.InvariantCultureIgnoreCase)))
-            {
-                var match = Regex.Match(url, @":(\d+)");
-
-                if (match.Success && int.TryParse(match.Groups[1].Value, out port))
-                    break;
-            }
-
             if (GetCertificate(_certificate.Thumbprint) == null && !AddCertificateToStore())
                     throw new InvalidOperationException("The provided certificate cannot be added to the default store, add it manually");
 
@@ -173,7 +204,7 @@ namespace Unosquare.Labs.EmbedIO
                 {
                     FileName = "netsh",
                     Arguments =
-                        $"http add sslcert ipport=0.0.0.0:{port} certhash={_certificate.Thumbprint} appid={{adaa04bb-8b63-4073-a12f-d6f8c0b4383f}}",
+                        $"http add sslcert ipport=0.0.0.0:{GetSslPort()} certhash={_certificate.Thumbprint} appid={{adaa04bb-8b63-4073-a12f-d6f8c0b4383f}}",
                 },
             };
 
@@ -185,6 +216,21 @@ namespace Unosquare.Labs.EmbedIO
             }
 
             return false;
+        }
+
+        private int GetSslPort()
+        {
+            var port = 443;
+
+            foreach (var url in UrlPrefixes.Where(x => x.StartsWith("https", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                var match = Regex.Match(url, @":(\d+)");
+
+                if (match.Success && int.TryParse(match.Groups[1].Value, out port))
+                    break;
+            }
+
+            return port;
         }
 #endif
     }
