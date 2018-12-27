@@ -100,7 +100,26 @@
         /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/
         /// Please notice the ending slash. -- It is important.
         /// </remarks>
-        public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy, HttpListenerMode mode, X509Certificate certificate = null)
+        public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy, HttpListenerMode mode)
+            : this(urlPrefixes, routingStrategy, HttpListenerFactory.Create(mode))
+        {
+            // placeholder
+        }
+
+#if !NETSTANDARD1_3 && !UWP
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebServer" /> class.
+        /// </summary>
+        /// <param name="urlPrefixes">The URL prefix.</param>
+        /// <param name="routingStrategy">The routing strategy.</param>
+        /// <param name="mode">The mode.</param>
+        /// <param name="certificate">The certificate.</param>
+        /// <exception cref="ArgumentException">Argument urlPrefix must be specified.</exception>
+        /// <remarks>
+        /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/
+        /// Please notice the ending slash. -- It is important.
+        /// </remarks>
+        public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy, HttpListenerMode mode, X509Certificate certificate)
             : this(urlPrefixes, routingStrategy, HttpListenerFactory.Create(mode, certificate))
         {
             // placeholder
@@ -115,6 +134,7 @@
         {
             // temp placeholder
         }
+#endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer" /> class.

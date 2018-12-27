@@ -1,8 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
     using Modules;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Text.RegularExpressions;
     using Swan;
     using System;
     using System.Threading;
@@ -16,7 +14,7 @@
         /// <param name="args">The arguments.</param>
         private static async Task Main(string[] args)
         {
-            var url = args.Length > 0 ? args[0] : "https://*:7876/";
+            var url = args.Length > 0 ? args[0] : "https://*:7877/";
 
             AppDbContext.InitDatabase();
 
@@ -34,8 +32,11 @@
                 ctSource.Cancel();
             }, ctSource.Token);
 
-            var certificate = GetCertificate("767b9a3ad23a0cfc597df8be23d58984503c7ad8");
-            var webOptions = new WebServerOptions(url) {Certificate = certificate};
+            var webOptions = new WebServerOptions(url)
+            {
+                Certificate = new System.Security.Cryptography.X509Certificates.X509Certificate2(@"C:\TEMP\local.pfx", "MyPassword", System.Security.Cryptography.X509Certificates.X509KeyStorageFlags.MachineKeySet), 
+                AutoRegisterCertificate = true,
+            };
 
             // Our web server is disposable. 
             using (var server = new WebServer(webOptions))
@@ -59,7 +60,7 @@
 
                 // Register the static files server. See the html folder of this project. Also notice that 
                 // the files under the html folder have Copy To Output Folder = Copy if Newer
-                StaticFilesSample.Setup(server, useGzip: Runtime.IsUsingMonoRuntime == false);
+                StaticFilesSample.Setup(server, useGzip: !Runtime.IsUsingMonoRuntime);
 
                 // Register the Web Api Module. See the Setup method to find out how to do it
                 // It registers the WebApiModule and registers the controller(s) -- that's all.
@@ -69,7 +70,7 @@
                 // It registers the WebSocketsModule and registers the server for the given paths(s)
                 WebSocketsSample.Setup(server);
 
-                server.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(new { Message = "Error" })));
+                server.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(new {Message = "Error"})));
 
                 // Fire up the browser to show the content!
                 var browser = new System.Diagnostics.Process
@@ -89,31 +90,6 @@
                 "Bye".Info();
 
                 Terminal.Flush();
-            }
-        }
-
-        public static X509Certificate2 GetCertificate(string thumbprint)
-        {
-            // strip any non-hexadecimal values and make uppercase
-            thumbprint = Regex.Replace(thumbprint, @"[^\da-fA-F]", string.Empty).ToUpper();
-            var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
-
-            try
-            {
-                store.Open(OpenFlags.ReadOnly);
-
-                var certCollection = store.Certificates;
-                var signingCert = certCollection.Find(X509FindType.FindByThumbprint, thumbprint, false);
-                if (signingCert.Count == 0)
-                {
-                    throw new Exception(string.Format("Cert with thumbprint: '{0}' not found in local machine cert store.", thumbprint));
-                }
-
-                return signingCert[0];
-            }
-            finally
-            {
-                store.Close();
             }
         }
     }
