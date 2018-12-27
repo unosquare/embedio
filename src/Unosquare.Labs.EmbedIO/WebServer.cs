@@ -107,6 +107,16 @@
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="WebServer"/> class.
+        /// </summary>
+        /// <param name="options">The WebServer options.</param>
+        public WebServer(WebServerOptions options)
+        : this(options.UrlPrefixes, options.RoutingStrategy, HttpListenerFactory.Create(options.Mode, options.Certificate))
+        {
+            // temp placeholder
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="WebServer" /> class.
         /// </summary>
         /// <param name="urlPrefixes">The URL prefix.</param>

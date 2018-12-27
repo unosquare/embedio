@@ -35,9 +35,10 @@
             }, ctSource.Token);
 
             var certificate = GetCertificate("767b9a3ad23a0cfc597df8be23d58984503c7ad8");
+            var webOptions = new WebServerOptions(url) {Certificate = certificate};
 
             // Our web server is disposable. 
-            using (var server = new WebServer(new[] { url }, Constants.RoutingStrategy.Regex, HttpListenerMode.EmbedIO, certificate))
+            using (var server = new WebServer(webOptions))
             {
                 // First, we will configure our web server by adding Modules.
                 // Please note that order DOES matter.

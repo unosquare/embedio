@@ -41,9 +41,9 @@
         {
             _sock = sock;
             _epl = epl;
+            IsSecure = epl.Secure;
 
 #if !NETSTANDARD1_3 && !UWP
-            IsSecure = epl.Secure;
 
             if (!IsSecure)
             {

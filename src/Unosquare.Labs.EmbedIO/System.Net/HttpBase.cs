@@ -49,10 +49,7 @@
         {
             var idx = nameAndValue.IndexOf('=');
 
-            if (idx < 0 || idx == nameAndValue.Length - 1)
-                return null;
-
-            return nameAndValue.Substring(idx + 1).Trim().Unquote();
+            return idx < 0 || idx == nameAndValue.Length - 1 ? null : nameAndValue.Substring(idx + 1).Trim().Unquote();
         }
 
         internal static Encoding GetEncoding(string contentType) => contentType
@@ -65,6 +62,7 @@
         protected static NameValueCollection ParseHeaders(string[] headerParts)
         {
             var headers = new NameValueCollection();
+
             for (var i = 1; i < headerParts.Length; i++)
             {
                 var parts = headerParts[i].Split(':');
