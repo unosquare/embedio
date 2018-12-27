@@ -22,6 +22,7 @@
     - [REST API Example](#rest-api-example)
     - [WebSockets Example](#websockets-example)
 - [Related Projects and Nugets](#related-projects-and-nugets)
+- [Special Thanks](#special-thanks)
 
 ## Overview
 
@@ -374,3 +375,7 @@ Name | Author | Description
 [EmbedIO.LiteLibWebApi](https://www.nuget.org/packages/EmbedIO.LiteLibWebApi/) | Unosquare | Allow to expose a sqlite database as REST api using EmbedIO WebApi and LiteLib libraries
 [EmbedIO.OWIN](https://www.nuget.org/packages/EmbedIO.OWIN/) | Unosquare | EmbedIO can use the OWIN platform in two different approach: You can use EmbedIO as OWIN server and use all OWIN framework with EmbedIO modules.
 [Microsoft.AspNetCore.Server.EmbedIO](https://www.nuget.org/packages/Microsoft.AspNetCore.Server.EmbedIO/) | Dju  | EmbedIO web server support for ASP.NET Core, as a drop-in replacement for Kestrel
+
+## Special Thanks
+
+To YourKit for providing us open source license to use [YourKit .NET Profiler](https://www.yourkit.com/.net/profiler/), an amazing tool to profile CPU and Memory!
