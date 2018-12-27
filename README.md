@@ -378,6 +378,6 @@ Name | Author | Description
 
 ## Special Thanks
 
-![YourKit](https://www.yourkit.com/images/yklogo.png)
+ [![YourKit](https://www.yourkit.com/images/yklogo.png)](https://www.yourkit.com)
 
-To YourKit for providing us open source license to use [YourKit .NET Profiler](https://www.yourkit.com/.net/profiler/), an amazing tool to profile CPU and Memory!
+ To YourKit for supports open source projects with its full-featured [.NET Profiler](https://www.yourkit.com/.net/profiler/), an amazing tool to profile CPU and Memory!
