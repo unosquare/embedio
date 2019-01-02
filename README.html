@@ -91,7 +91,6 @@
 <li><a href="#fluent-example">Fluent Example</a></li>
 <li><a href="#rest-api-example">REST API Example</a></li>
 <li><a href="#websockets-example">WebSockets Example</a></li>
-<li><a href="#support-for-ssl">Support for SSL</a></li>
 </ul>
 </li>
 <li><a href="#related-projects-and-nugets">Related Projects and Nugets</a></li>
@@ -187,7 +186,7 @@
 </code></pre><h3 id="net-cli">.NET CLI</h3>
 <pre><code>&gt; dotnet add package EmbedIO
 </code></pre><h2 id="examples">Examples</h2>
-<h3 id="basic-example">Basic Example</h3>
+<h2 id="basic-example">Basic Example:</h2>
 <p>Please note the comments are the important part here. More info is available in the samples.</p>
 <pre><code class="lang-csharp">namespace Unosquare
 {
@@ -246,7 +245,7 @@
         }
     }
 }
-</code></pre><h3 id="fluent-example">Fluent Example</h3>
+</code></pre><h2 id="fluent-example">Fluent Example:</h2>
 <p>Many extension methods are available. This allows you to create a web server instance in a fluent style by dotting in configuration options.</p>
 <pre><code class="lang-csharp">namespace Unosquare
 {
@@ -285,7 +284,7 @@
         }
     }
 }
-</code></pre><h3 id="rest-api-example">REST API Example</h3>
+</code></pre><h2 id="rest-api-example">REST API Example:</h2>
 <p>The WebApi module supports two routing strategies: Wildcard and Regex. By default, the WebApi module will use the <strong>Regex Routing Strategy</strong> trying to match and resolve the values from a route template, in a similar fashion to Microsoft&#39;s Web API. </p>
 <p>A method with the following route <code>/api/people/{id}</code> is going to match any request URL with three segments: the first two <code>api</code> and <code>people</code> and the last 
 one is going to be parsed or converted to the type in the <code>id</code> argument of the handling method signature. Please read on if this was confusing as it is 
@@ -366,7 +365,7 @@ server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;()
     }
 }
 </code></pre><p>The <code>SetDefaultHeaders</code> method will add a no-cache policy to all Web API responses. If you plan to handle a differente policy or even custom headers to each different Web API method we recommend you override this method as you need.</p>
-<h3 id="websockets-example">WebSockets Example</h3>
+<h2 id="websockets-example">WebSockets Example:</h2>
 <p><em>During server setup:</em></p>
 <pre><code class="lang-csharp">server.RegisterModule(new WebSocketsModule());
 server.Module&lt;WebSocketsModule&gt;().RegisterWebSocketsServer&lt;WebSocketsChatServer&gt;(&quot;/chat&quot;);
@@ -420,15 +419,7 @@ public class WebSocketsChatServer : WebSocketsServer
         this.Broadcast(&quot;Someone left the chat room.&quot;);
     }
 }
-</code></pre><h3 id="support-for-ssl">Support for SSL</h3>
-<p>Both HTTP listener (Microsoft and Unosquare) can open a web server using SSL. This support is for Windows only (for now) and you need to manually register your certificate or use the <code>WebServerOptions</code> class to initialize a new <code>WebServer</code> instance. This section will provide some examples of how to use SSL but first a brief explanation how SSL works on Windows.</p>
-<p>For Windows Vista or better, Microsoft provides Network Shell (<code>netsh</code>). This command line tool allow to map a IP-port to a certificate, so incoming HTTP request can upgrade the connection to a secure stream using the provided certificate. EmbedIO can read or register certificates to a default store (My/LocalMachine) and use them against a netsh <code>sslcert</code> for binding the first <code>https</code> preffix registered.</p>
-<p>For Windows XP and Mono you can use manually the httpcfg for registering the binding.</p>
-<h4 id="using-a-pfx-file-and-autoregister-option">Using a PFX file and AutoRegister option</h4>
-<p>The more practical case to use EmbedIO with SSL is the <code>AutoRegister</code> option. You need to create a <code>WebServerOptions</code> instance with the path to a PFX file and the <code>AutoRegister</code> flag on. This options will try to get or register the certificate to the default certificate store. Then it will use the certificate thumbprint to register with <code>netsh</code> the FIRST <code>https</code> preffix registered on the options.</p>
-<h4 id="using-autoload-option">Using AutoLoad option</h4>
-<p>If you already have a certificate on the default certificate store and the binding is also registered in <code>netsh</code>, you can use <code>Autoload</code> flag to load the certificate provinding, or not, the certiticate thumbprint. If the certificate thumbprint is not provide, EmbedIO will read the data from <code>netsh</code>. After getting successfully the certificate from the store, the raw data is passed to the WebServer.</p>
-<h2 id="related-projects-and-nugets">Related Projects and Nugets</h2>
+</code></pre><h2 id="related-projects-and-nugets">Related Projects and Nugets</h2>
 <table>
 <thead>
 <tr>
@@ -486,7 +477,7 @@ public class WebSocketsChatServer : WebSocketsServer
               <div class="contribution">
                 <ul class="nav">
                   <li class="top-sep">
-                    <a href="https://github.com/unosquare/embedio/blob/https/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/unosquare/embedio/blob/master/README.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
