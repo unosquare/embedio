@@ -148,7 +148,7 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="3.1.0.697729" />
+    <PackageReference Include="Xamarin.Forms" Version="3.4.0.1008975" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
@@ -157,10 +157,5 @@
       <Name>EmbedIO.Forms.Sample</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\html\" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\html\index.html" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

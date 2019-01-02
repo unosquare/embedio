@@ -10,8 +10,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <wv:FormsWebView x:Name="WebContent" 
-                         ContentType="LocalFile" 
                          Grid.Row="0" Grid.Column="0" 
-                         Source="html/index.html" />
+                         Source="http://127.0.0.1:8080/index.html" />
     </Grid>
 </ContentPage>
