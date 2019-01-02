@@ -5,6 +5,7 @@ using Unosquare.Labs.EmbedIO;
 using Unosquare.Labs.EmbedIO.Modules;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System.Reflection;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace EmbedIO.Forms.Sample
@@ -15,38 +16,20 @@ namespace EmbedIO.Forms.Sample
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
-        }
-
-        protected override void OnStart()
-        {
-            // Handle when your app starts
+            // Server must be started, before WebView is initialized,
+            // because we have no reload implemented in this sample.
             Task.Factory.StartNew(async () =>
             {
-                using (var server = new WebServer("http://" + GetLocalIpAddress() + ":8080"))
+                using (var server = new WebServer("http://*:8080"))
                 {
-                    server.RegisterModule(new LocalSessionModule());
-                    server.Module<StaticFilesModule>().UseRamCache = true;
-                    server.Module<StaticFilesModule>().DefaultExtension = ".html";
-                    server.Module<StaticFilesModule>().DefaultDocument = "index.html";
+                    Assembly assembly = typeof(App).Assembly;
+                    server.RegisterModule(new ResourceFilesModule(assembly, "EmbedIO.Forms.Sample.html"));
+
                     await server.RunAsync();
                 }
             });
-        }
-        
-        private static string GetLocalIpAddress()
-        {
-            var listener = new TcpListener(IPAddress.Loopback, 0);
-            
-            try
-            {
-                listener.Start();
-                return ((IPEndPoint)listener.LocalEndpoint).Address.ToString();
-            }
-            finally
-            {
-                listener.Stop();
-            }
+
+            MainPage = new MainPage();
         }
     }
 }
