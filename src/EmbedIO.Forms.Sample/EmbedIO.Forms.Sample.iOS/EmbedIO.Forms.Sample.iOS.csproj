@@ -158,7 +158,4 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <BundleResource Include="Resources\html\index.html" />
-  </ItemGroup>
 </Project>
