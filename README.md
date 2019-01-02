@@ -21,6 +21,7 @@
     - [Fluent Example](#fluent-example)
     - [REST API Example](#rest-api-example)
     - [WebSockets Example](#websockets-example)
+    - [Support for SSL](#support-for-ssl)
 - [Related Projects and Nugets](#related-projects-and-nugets)
 - [Special Thanks](#special-thanks)
 
@@ -94,7 +95,7 @@ PM> Install-Package EmbedIO
 
 ## Examples
 
-## Basic Example:
+### Basic Example
 
 Please note the comments are the important part here. More info is available in the samples.
 
@@ -158,7 +159,7 @@ namespace Unosquare
 }
 ```
 
-## Fluent Example:
+### Fluent Example
 
 Many extension methods are available. This allows you to create a web server instance in a fluent style by dotting in configuration options.
 
@@ -202,7 +203,7 @@ namespace Unosquare
 }
 ```
 
-## REST API Example:
+### REST API Example
 
 The WebApi module supports two routing strategies: Wildcard and Regex. By default, the WebApi module will use the **Regex Routing Strategy** trying to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API. 
 
@@ -302,7 +303,7 @@ public class PeopleController : WebApiController
 
 The `SetDefaultHeaders` method will add a no-cache policy to all Web API responses. If you plan to handle a differente policy or even custom headers to each different Web API method we recommend you override this method as you need.
 
-## WebSockets Example:
+### WebSockets Example
 
 *During server setup:*
 
@@ -364,6 +365,22 @@ public class WebSocketsChatServer : WebSocketsServer
     }
 }
 ```
+
+### Support for SSL
+
+Both HTTP listener (Microsoft and Unosquare) can open a web server using SSL. This support is for Windows only (for now) and you need to manually register your certificate or use the `WebServerOptions` class to initialize a new `WebServer` instance. This section will provide some examples of how to use SSL but first a brief explanation how SSL works on Windows.
+
+For Windows Vista or better, Microsoft provides Network Shell (`netsh`). This command line tool allow to map a IP-port to a certificate, so incoming HTTP request can upgrade the connection to a secure stream using the provided certificate. EmbedIO can read or register certificates to a default store (My/LocalMachine) and use them against a netsh `sslcert` for binding the first `https` preffix registered.
+
+For Windows XP and Mono you can use manually the httpcfg for registering the binding.
+
+#### Using a PFX file and AutoRegister option
+
+The more practical case to use EmbedIO with SSL is the `AutoRegister` option. You need to create a `WebServerOptions` instance with the path to a PFX file and the `AutoRegister` flag on. This options will try to get or register the certificate to the default certificate store. Then it will use the certificate thumbprint to register with `netsh` the FIRST `https` preffix registered on the options.
+
+#### Using AutoLoad option
+
+If you already have a certificate on the default certificate store and the binding is also registered in `netsh`, you can use `Autoload` flag to load the certificate provinding, or not, the certiticate thumbprint. If the certificate thumbprint is not provide, EmbedIO will read the data from `netsh`. After getting successfully the certificate from the store, the raw data is passed to the WebServer.
 
 ## Related Projects and Nugets
 
