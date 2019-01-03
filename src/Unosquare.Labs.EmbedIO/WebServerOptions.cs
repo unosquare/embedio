@@ -13,7 +13,9 @@
     /// </summary>
     public sealed class WebServerOptions
     {
+#if !NETSTANDARD1_3 && !UWP
         private X509Certificate2 _certificate;
+#endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServerOptions" /> class.
