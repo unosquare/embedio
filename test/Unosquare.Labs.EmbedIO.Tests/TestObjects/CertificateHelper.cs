@@ -107,7 +107,7 @@
             {
                 var certificateFilePath = Path.GetFullPath(pfxFilePath);
 
-                if (File.Exists(certificateFilePath) == false)
+                if (!File.Exists(certificateFilePath))
                 {
                     var certificate = GenerateCertificate(hostname, out var keyPair);
                     certificate.SaveToFile(keyPair, certificateFilePath, hostname, password);
