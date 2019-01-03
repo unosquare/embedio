@@ -1,8 +1,7 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-namespace Unosquare.Labs.EmbedIO
+﻿namespace Unosquare.Labs.EmbedIO
 {
     using System;
+    using System.Security.Cryptography.X509Certificates;
 
     /// <summary>
     /// Represents a Factory to create a HTTP Listener.

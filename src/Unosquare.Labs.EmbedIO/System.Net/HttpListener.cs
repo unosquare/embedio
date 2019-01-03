@@ -42,8 +42,16 @@
         /// <inheritdoc />
         public bool IsListening { get; private set; }
 
+        /// <summary>
+        /// Gets the certificate.
+        /// </summary>
+        /// <value>
+        /// The certificate.
+        /// </value>
+        internal X509Certificate Certificate { get; }
+
         /// <inheritdoc />
-        public X509Certificate Certificate { get; }
+        public string Name { get; } = "Unosquare HTTP Listener";
 
         /// <inheritdoc />
         public List<string> Prefixes => _prefixes.ToList();

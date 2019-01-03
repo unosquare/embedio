@@ -1,6 +1,9 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
     using Modules;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Reflection;
     using Swan;
     using System;
     using System.Threading;
@@ -14,7 +17,7 @@
         /// <param name="args">The arguments.</param>
         private static async Task Main(string[] args)
         {
-            var url = args.Length > 0 ? args[0] : "https://*:7877/";
+            var url = args.Length > 0 ? args[0] : "http://*:7877/";
 
             AppDbContext.InitDatabase();
 
@@ -32,10 +35,7 @@
                 ctSource.Cancel();
             }, ctSource.Token);
 
-            var webOptions = new WebServerOptions(url)
-            {
-                AutoLoadCertificate = true
-            };
+            var webOptions = new WebServerOptions(url);
 
             // Our web server is disposable. 
             using (var server = new WebServer(webOptions))
@@ -59,7 +59,7 @@
 
                 // Register the static files server. See the html folder of this project. Also notice that 
                 // the files under the html folder have Copy To Output Folder = Copy if Newer
-                StaticFilesSample.Setup(server, useGzip: !Runtime.IsUsingMonoRuntime);
+                server.RegisterModule(new StaticFilesModule(HtmlRootPath));
 
                 // Register the Web Api Module. See the Setup method to find out how to do it
                 // It registers the WebApiModule and registers the controller(s) -- that's all.
@@ -69,12 +69,12 @@
                 // It registers the WebSocketsModule and registers the server for the given paths(s)
                 WebSocketsSample.Setup(server);
 
-                server.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(new {Message = "Error"})));
+                server.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(new { Message = "Error" })));
 
                 // Fire up the browser to show the content!
-                var browser = new System.Diagnostics.Process
+                var browser = new Process
                 {
-                    StartInfo = new System.Diagnostics.ProcessStartInfo(url.Replace("*", "localhost"))
+                    StartInfo = new ProcessStartInfo(url.Replace("*", "localhost"))
                     {
                         UseShellExecute = true
                     }
@@ -86,9 +86,31 @@
                 if (!ctSource.IsCancellationRequested)
                     await server.RunAsync(ctSource.Token);
 
+                // Clean up
                 "Bye".Info();
-
                 Terminal.Flush();
+            }
+        }
+
+        /// <summary>
+        /// Gets the HTML root path.
+        /// </summary>
+        /// <value>
+        /// The HTML root path.
+        /// </value>
+        public static string HtmlRootPath
+        {
+            get
+            {
+                var assemblyPath = Path.GetDirectoryName(typeof(Program).GetTypeInfo().Assembly.Location);
+
+                // This lets you edit the files without restarting the server.
+#if DEBUG
+                return Path.Combine(Directory.GetParent(assemblyPath).Parent.Parent.FullName, "html");
+#else
+                // This is when you have deployed the server.
+                return Path.Combine(assemblyPath, "html");
+#endif
             }
         }
     }

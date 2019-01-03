@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Security.Cryptography.X509Certificates;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -36,12 +35,12 @@
         bool IsListening { get; }
 
         /// <summary>
-        /// Gets the certificate.
+        /// Gets or sets the name.
         /// </summary>
         /// <value>
-        /// The certificate.
+        /// The name.
         /// </value>
-        X509Certificate Certificate { get; }
+        string Name { get; }
 
         /// <summary>
         /// Starts this listener.

@@ -152,7 +152,7 @@
             if (urlPrefixes == null || urlPrefixes.Length <= 0)
                 throw new ArgumentException("At least 1 URL prefix in urlPrefixes must be specified");
 
-            $"Running HTTPListener: {httpListener.GetType()}".Info(nameof(WebServer));
+            $"Running HTTPListener: {httpListener.Name}".Info(nameof(WebServer));
 
             RoutingStrategy = routingStrategy;
             Listener = httpListener;
