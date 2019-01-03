@@ -58,6 +58,14 @@
         bool KeepAlive { get; set; }
 
         /// <summary>
+        /// Gets or sets a text description of the HTTP status code.
+        /// </summary>
+        /// <value>
+        /// The status description.
+        /// </value>
+        string StatusDescription { get; }
+
+        /// <summary>
         /// Adds the header.
         /// </summary>
         /// <param name="headerName">Name of the header.</param>

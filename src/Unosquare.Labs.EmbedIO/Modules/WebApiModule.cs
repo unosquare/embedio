@@ -1,12 +1,13 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
-    using Constants;
-    using EmbedIO;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Security.Principal;
     using System.Threading.Tasks;
+    using Constants;
+    using EmbedIO;
     using Swan;
 
     /// <summary>
@@ -264,6 +265,7 @@
         {
             Request = context.Request;
             Response = context.Response;
+            User = context.User;
             WebServer = context.WebServer;
         }
 
@@ -272,6 +274,9 @@
 
         /// <inheritdoc />
         public IHttpResponse Response { get; internal set; }
+
+        /// <inheritdoc />
+        public IPrincipal User { get; }
 
         /// <inheritdoc />
         public IWebServer WebServer { get; set; }

@@ -1,6 +1,7 @@
 ﻿#if !NETSTANDARD1_3 && !UWP
 namespace Unosquare.Labs.EmbedIO
 {
+    using System.Security.Principal;
     using System.Net;
     using System;
     using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace Unosquare.Labs.EmbedIO
         {
             _context = context;
             Request = new HttpRequest(_context);
+            User = _context.User;
             Response = new HttpResponse(_context);
         }
 
@@ -29,6 +31,9 @@ namespace Unosquare.Labs.EmbedIO
 
         /// <inheritdoc />
         public IHttpResponse Response { get; }
+
+        /// <inheritdoc />
+        public IPrincipal User { get; }
 
         /// <inheritdoc />
         public IWebServer WebServer { get; set; }

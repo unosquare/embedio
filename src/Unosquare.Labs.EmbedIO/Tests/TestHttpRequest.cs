@@ -96,5 +96,8 @@
 
         /// <inheritdoc />
         public Uri UrlReferrer { get; }
+
+        /// <inheritdoc />
+        public Guid RequestTraceIdentifier { get; }
     }
 }

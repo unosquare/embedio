@@ -146,5 +146,13 @@
         /// The URL referrer.
         /// </value>
         Uri UrlReferrer { get; }
+
+        /// <summary>
+        /// Gets the request identifier of the incoming HTTP request.
+        /// </summary>
+        /// <value>
+        /// The request trace identifier.
+        /// </value>
+        Guid RequestTraceIdentifier { get; }
     }
 }

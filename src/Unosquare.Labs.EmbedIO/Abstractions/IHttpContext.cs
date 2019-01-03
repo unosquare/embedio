@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using System.Threading.Tasks;
+    using System.Security.Principal;
 
     /// <summary>
     /// Interface to create a HTTP Context.
@@ -22,6 +23,14 @@
         /// The response.
         /// </value>
         IHttpResponse Response { get; }
+
+        /// <summary>
+        /// Gets the user.
+        /// </summary>
+        /// <value>
+        /// The user.
+        /// </value>
+        IPrincipal User { get; }
 
         /// <summary>
         /// Gets or sets the web server.

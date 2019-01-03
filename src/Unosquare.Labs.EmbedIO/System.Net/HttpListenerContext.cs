@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Net
 {
     using System;
+    using System.Security.Principal;
     using System.Threading.Tasks;
     using Labs.EmbedIO;
 
@@ -18,6 +19,7 @@
             Connection = cnc;
             Request = new HttpListenerRequest(this);
             Response = new HttpListenerResponse(this);
+            User = null;
         }
 
         /// <inheritdoc />
@@ -25,6 +27,9 @@
 
         /// <inheritdoc />
         public IHttpResponse Response { get; }
+        
+        /// <inheritdoc />
+        public IPrincipal User { get; }
 
         /// <inheritdoc />
         public IWebServer WebServer { get; set; }

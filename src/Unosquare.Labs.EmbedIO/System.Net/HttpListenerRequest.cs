@@ -183,6 +183,9 @@
         /// <inheritdoc />
         public string UserAgent => Headers["user-agent"];
 
+        /// <inheritdoc />
+        public Guid RequestTraceIdentifier => Guid.NewGuid();
+
         public string UserHostAddress => LocalEndPoint.ToString();
 
         public string UserHostName => Headers["host"];

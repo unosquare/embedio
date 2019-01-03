@@ -84,6 +84,9 @@ namespace Unosquare.Labs.EmbedIO
 
         /// <inheritdoc />
         public Uri UrlReferrer => _request.UrlReferrer;
+
+        /// <inheritdoc />
+        public Guid RequestTraceIdentifier => _request.RequestTraceIdentifier;
     }
 }
 #endif
