@@ -380,7 +380,7 @@ The more practical case to use EmbedIO with SSL is the `AutoRegister` option. Yo
 
 #### Using AutoLoad option
 
-If you already have a certificate on the default certificate store and the binding is also registered in `netsh`, you can use `Autoload` flag to load the certificate provinding, or not, the certiticate thumbprint. If the certificate thumbprint is not provide, EmbedIO will read the data from `netsh`. After getting successfully the certificate from the store, the raw data is passed to the WebServer.
+If you already have a certificate on the default certificate store and the binding is also registered in `netsh`, you can use `Autoload` flaga and optionally provide a certiticate thumbprint. If the certificate thumbprint is not provided, EmbedIO will read the data from `netsh`. After getting successfully the certificate from the store, the raw data is passed to the WebServer.
 
 ## Related Projects and Nugets
 
