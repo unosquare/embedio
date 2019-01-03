@@ -67,7 +67,9 @@
 
                 // Register the WebSockets module. See the Setup method to find out how to do it
                 // It registers the WebSocketsModule and registers the server for the given paths(s)
-                WebSocketsSample.Setup(server);
+                server.RegisterModule(new WebSocketsModule());
+                server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsChatServer>();
+                server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsTerminalServer>();
 
                 server.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(new { Message = "Error" })));
 
