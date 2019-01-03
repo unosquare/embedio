@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "CODE_OF_CONDUCT.html",
-          "hash": "lR9ifcnLnCl0ouVEC/7sTw=="
+          "hash": "w7qdjCRbIPABBBdY8PE0Pg=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "eRMIOI9cSHUgK2C54xQarQ=="
+          "hash": "gWk5vCqMbrfo2mF6+2h0ug=="
         }
       },
       "is_incremental": false,
@@ -217,7 +217,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.HttpListenerFactory.html",
-          "hash": "Kex/2hdjzOlcLphSaVw28A=="
+          "hash": "+UGmOkQyfIl+8rZWeR93TQ=="
         }
       },
       "is_incremental": false,
@@ -301,7 +301,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.IHttpListener.html",
-          "hash": "6hQDZkpcDb1vGVce0gmpPg=="
+          "hash": "Wk13JUOvopAQVpLcr+OWLQ=="
         }
       },
       "is_incremental": false,
@@ -709,7 +709,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.WebServer.html",
-          "hash": "NH6XSXccZYJkYTYRffUWzg=="
+          "hash": "iyvavj6GOa8Pmz8a1kK7UQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.Labs.EmbedIO.WebServerOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.Labs.EmbedIO.WebServerOptions.html",
+          "hash": "/UDTGcHbV9R5Ozj5JGw9qg=="
         }
       },
       "is_incremental": false,
@@ -757,7 +769,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.html",
-          "hash": "QLycm3UKZ7KFpvoTe6Bb2w=="
+          "hash": "f/oaK7EyZ+IIB73WIohkeA=="
         }
       },
       "is_incremental": false,
@@ -805,7 +817,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.HttpListener.html",
-          "hash": "W1fjaNdjVuWunxlXTLnYOw=="
+          "hash": "C0NNyRakVxwhSB4rgfmZKA=="
         }
       },
       "is_incremental": false,
@@ -865,7 +877,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.WebSocket.html",
-          "hash": "PgQqo57Rpngtim0lPigXWQ=="
+          "hash": "koBdQkpkIus2ATujYCdCIQ=="
         }
       },
       "is_incremental": false,
@@ -937,7 +949,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "joph9Q7QJOXnVtPWSZSQzw=="
+          "hash": "38yG5/It8datjssH0UeFPg=="
         }
       },
       "is_incremental": false,
@@ -1012,22 +1024,22 @@
         "incrementalPhase": "build"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build"
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build"
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build"
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         }
       }

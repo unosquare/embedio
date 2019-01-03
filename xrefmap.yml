@@ -1087,18 +1087,18 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.HttpListenerFactory
   fullName: Unosquare.Labs.EmbedIO.HttpListenerFactory
   nameWithType: HttpListenerFactory
-- uid: Unosquare.Labs.EmbedIO.HttpListenerFactory.Create
-  name: Create()
-  href: api/Unosquare.Labs.EmbedIO.HttpListenerFactory.html#Unosquare_Labs_EmbedIO_HttpListenerFactory_Create
-  commentId: M:Unosquare.Labs.EmbedIO.HttpListenerFactory.Create
-  fullName: Unosquare.Labs.EmbedIO.HttpListenerFactory.Create()
-  nameWithType: HttpListenerFactory.Create()
-- uid: Unosquare.Labs.EmbedIO.HttpListenerFactory.Create(Unosquare.Labs.EmbedIO.HttpListenerMode)
-  name: Create(HttpListenerMode)
-  href: api/Unosquare.Labs.EmbedIO.HttpListenerFactory.html#Unosquare_Labs_EmbedIO_HttpListenerFactory_Create_Unosquare_Labs_EmbedIO_HttpListenerMode_
-  commentId: M:Unosquare.Labs.EmbedIO.HttpListenerFactory.Create(Unosquare.Labs.EmbedIO.HttpListenerMode)
-  fullName: Unosquare.Labs.EmbedIO.HttpListenerFactory.Create(Unosquare.Labs.EmbedIO.HttpListenerMode)
-  nameWithType: HttpListenerFactory.Create(HttpListenerMode)
+- uid: Unosquare.Labs.EmbedIO.HttpListenerFactory.Create(Unosquare.Labs.EmbedIO.HttpListenerMode,X509Certificate)
+  name: Create(HttpListenerMode, X509Certificate)
+  href: api/Unosquare.Labs.EmbedIO.HttpListenerFactory.html#Unosquare_Labs_EmbedIO_HttpListenerFactory_Create_Unosquare_Labs_EmbedIO_HttpListenerMode_X509Certificate_
+  commentId: M:Unosquare.Labs.EmbedIO.HttpListenerFactory.Create(Unosquare.Labs.EmbedIO.HttpListenerMode,X509Certificate)
+  fullName: Unosquare.Labs.EmbedIO.HttpListenerFactory.Create(Unosquare.Labs.EmbedIO.HttpListenerMode, X509Certificate)
+  nameWithType: HttpListenerFactory.Create(HttpListenerMode, X509Certificate)
+- uid: Unosquare.Labs.EmbedIO.HttpListenerFactory.Create(X509Certificate)
+  name: Create(X509Certificate)
+  href: api/Unosquare.Labs.EmbedIO.HttpListenerFactory.html#Unosquare_Labs_EmbedIO_HttpListenerFactory_Create_X509Certificate_
+  commentId: M:Unosquare.Labs.EmbedIO.HttpListenerFactory.Create(X509Certificate)
+  fullName: Unosquare.Labs.EmbedIO.HttpListenerFactory.Create(X509Certificate)
+  nameWithType: HttpListenerFactory.Create(X509Certificate)
 - uid: Unosquare.Labs.EmbedIO.HttpListenerFactory.Create*
   name: Create
   href: api/Unosquare.Labs.EmbedIO.HttpListenerFactory.html#Unosquare_Labs_EmbedIO_HttpListenerFactory_Create_
@@ -1735,6 +1735,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.IHttpListener.AddPrefix
   nameWithType: IHttpListener.AddPrefix
+- uid: Unosquare.Labs.EmbedIO.IHttpListener.Certificate
+  name: Certificate
+  href: api/Unosquare.Labs.EmbedIO.IHttpListener.html#Unosquare_Labs_EmbedIO_IHttpListener_Certificate
+  commentId: P:Unosquare.Labs.EmbedIO.IHttpListener.Certificate
+  fullName: Unosquare.Labs.EmbedIO.IHttpListener.Certificate
+  nameWithType: IHttpListener.Certificate
+- uid: Unosquare.Labs.EmbedIO.IHttpListener.Certificate*
+  name: Certificate
+  href: api/Unosquare.Labs.EmbedIO.IHttpListener.html#Unosquare_Labs_EmbedIO_IHttpListener_Certificate_
+  commentId: Overload:Unosquare.Labs.EmbedIO.IHttpListener.Certificate
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.IHttpListener.Certificate
+  nameWithType: IHttpListener.Certificate
 - uid: Unosquare.Labs.EmbedIO.IHttpListener.GetContextAsync(System.Threading.CancellationToken)
   name: GetContextAsync(CancellationToken)
   href: api/Unosquare.Labs.EmbedIO.IHttpListener.html#Unosquare_Labs_EmbedIO_IHttpListener_GetContextAsync_System_Threading_CancellationToken_
@@ -4909,6 +4922,15 @@ references:
   fullName.vb: Unosquare.Labs.EmbedIO.WebServer.WebServer(System.String(), Unosquare.Labs.EmbedIO.Constants.RoutingStrategy, Unosquare.Labs.EmbedIO.HttpListenerMode)
   nameWithType: WebServer.WebServer(String[], RoutingStrategy, HttpListenerMode)
   nameWithType.vb: WebServer.WebServer(String(), RoutingStrategy, HttpListenerMode)
+- uid: Unosquare.Labs.EmbedIO.WebServer.#ctor(System.String[],Unosquare.Labs.EmbedIO.Constants.RoutingStrategy,Unosquare.Labs.EmbedIO.HttpListenerMode,System.Security.Cryptography.X509Certificates.X509Certificate)
+  name: WebServer(String[], RoutingStrategy, HttpListenerMode, X509Certificate)
+  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer__ctor_System_String___Unosquare_Labs_EmbedIO_Constants_RoutingStrategy_Unosquare_Labs_EmbedIO_HttpListenerMode_System_Security_Cryptography_X509Certificates_X509Certificate_
+  commentId: M:Unosquare.Labs.EmbedIO.WebServer.#ctor(System.String[],Unosquare.Labs.EmbedIO.Constants.RoutingStrategy,Unosquare.Labs.EmbedIO.HttpListenerMode,System.Security.Cryptography.X509Certificates.X509Certificate)
+  name.vb: WebServer(String(), RoutingStrategy, HttpListenerMode, X509Certificate)
+  fullName: Unosquare.Labs.EmbedIO.WebServer.WebServer(System.String[], Unosquare.Labs.EmbedIO.Constants.RoutingStrategy, Unosquare.Labs.EmbedIO.HttpListenerMode, System.Security.Cryptography.X509Certificates.X509Certificate)
+  fullName.vb: Unosquare.Labs.EmbedIO.WebServer.WebServer(System.String(), Unosquare.Labs.EmbedIO.Constants.RoutingStrategy, Unosquare.Labs.EmbedIO.HttpListenerMode, System.Security.Cryptography.X509Certificates.X509Certificate)
+  nameWithType: WebServer.WebServer(String[], RoutingStrategy, HttpListenerMode, X509Certificate)
+  nameWithType.vb: WebServer.WebServer(String(), RoutingStrategy, HttpListenerMode, X509Certificate)
 - uid: Unosquare.Labs.EmbedIO.WebServer.#ctor(System.String[],Unosquare.Labs.EmbedIO.Constants.RoutingStrategy,Unosquare.Labs.EmbedIO.IHttpListener)
   name: WebServer(String[], RoutingStrategy, IHttpListener)
   href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer__ctor_System_String___Unosquare_Labs_EmbedIO_Constants_RoutingStrategy_Unosquare_Labs_EmbedIO_IHttpListener_
@@ -4918,6 +4940,12 @@ references:
   fullName.vb: Unosquare.Labs.EmbedIO.WebServer.WebServer(System.String(), Unosquare.Labs.EmbedIO.Constants.RoutingStrategy, Unosquare.Labs.EmbedIO.IHttpListener)
   nameWithType: WebServer.WebServer(String[], RoutingStrategy, IHttpListener)
   nameWithType.vb: WebServer.WebServer(String(), RoutingStrategy, IHttpListener)
+- uid: Unosquare.Labs.EmbedIO.WebServer.#ctor(Unosquare.Labs.EmbedIO.WebServerOptions)
+  name: WebServer(WebServerOptions)
+  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer__ctor_Unosquare_Labs_EmbedIO_WebServerOptions_
+  commentId: M:Unosquare.Labs.EmbedIO.WebServer.#ctor(Unosquare.Labs.EmbedIO.WebServerOptions)
+  fullName: Unosquare.Labs.EmbedIO.WebServer.WebServer(Unosquare.Labs.EmbedIO.WebServerOptions)
+  nameWithType: WebServer.WebServer(WebServerOptions)
 - uid: Unosquare.Labs.EmbedIO.WebServer.#ctor*
   name: WebServer
   href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer__ctor_
@@ -5103,6 +5131,125 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.WebServer.UrlPrefixes
   nameWithType: WebServer.UrlPrefixes
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions
+  name: WebServerOptions
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html
+  commentId: T:Unosquare.Labs.EmbedIO.WebServerOptions
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions
+  nameWithType: WebServerOptions
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.#ctor(System.String)
+  name: WebServerOptions(String)
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions__ctor_System_String_
+  commentId: M:Unosquare.Labs.EmbedIO.WebServerOptions.#ctor(System.String)
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.WebServerOptions(System.String)
+  nameWithType: WebServerOptions.WebServerOptions(String)
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.#ctor(System.String[])
+  name: WebServerOptions(String[])
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions__ctor_System_String___
+  commentId: M:Unosquare.Labs.EmbedIO.WebServerOptions.#ctor(System.String[])
+  name.vb: WebServerOptions(String())
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.WebServerOptions(System.String[])
+  fullName.vb: Unosquare.Labs.EmbedIO.WebServerOptions.WebServerOptions(System.String())
+  nameWithType: WebServerOptions.WebServerOptions(String[])
+  nameWithType.vb: WebServerOptions.WebServerOptions(String())
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.#ctor*
+  name: WebServerOptions
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions__ctor_
+  commentId: Overload:Unosquare.Labs.EmbedIO.WebServerOptions.#ctor
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.WebServerOptions
+  nameWithType: WebServerOptions.WebServerOptions
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.AutoLoadCertificate
+  name: AutoLoadCertificate
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions_AutoLoadCertificate
+  commentId: P:Unosquare.Labs.EmbedIO.WebServerOptions.AutoLoadCertificate
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.AutoLoadCertificate
+  nameWithType: WebServerOptions.AutoLoadCertificate
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.AutoLoadCertificate*
+  name: AutoLoadCertificate
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions_AutoLoadCertificate_
+  commentId: Overload:Unosquare.Labs.EmbedIO.WebServerOptions.AutoLoadCertificate
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.AutoLoadCertificate
+  nameWithType: WebServerOptions.AutoLoadCertificate
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.AutoRegisterCertificate
+  name: AutoRegisterCertificate
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions_AutoRegisterCertificate
+  commentId: P:Unosquare.Labs.EmbedIO.WebServerOptions.AutoRegisterCertificate
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.AutoRegisterCertificate
+  nameWithType: WebServerOptions.AutoRegisterCertificate
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.AutoRegisterCertificate*
+  name: AutoRegisterCertificate
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions_AutoRegisterCertificate_
+  commentId: Overload:Unosquare.Labs.EmbedIO.WebServerOptions.AutoRegisterCertificate
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.AutoRegisterCertificate
+  nameWithType: WebServerOptions.AutoRegisterCertificate
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.Certificate
+  name: Certificate
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions_Certificate
+  commentId: P:Unosquare.Labs.EmbedIO.WebServerOptions.Certificate
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.Certificate
+  nameWithType: WebServerOptions.Certificate
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.Certificate*
+  name: Certificate
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions_Certificate_
+  commentId: Overload:Unosquare.Labs.EmbedIO.WebServerOptions.Certificate
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.Certificate
+  nameWithType: WebServerOptions.Certificate
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.CertificateThumb
+  name: CertificateThumb
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions_CertificateThumb
+  commentId: P:Unosquare.Labs.EmbedIO.WebServerOptions.CertificateThumb
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.CertificateThumb
+  nameWithType: WebServerOptions.CertificateThumb
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.CertificateThumb*
+  name: CertificateThumb
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions_CertificateThumb_
+  commentId: Overload:Unosquare.Labs.EmbedIO.WebServerOptions.CertificateThumb
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.CertificateThumb
+  nameWithType: WebServerOptions.CertificateThumb
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.Mode
+  name: Mode
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions_Mode
+  commentId: P:Unosquare.Labs.EmbedIO.WebServerOptions.Mode
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.Mode
+  nameWithType: WebServerOptions.Mode
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.Mode*
+  name: Mode
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions_Mode_
+  commentId: Overload:Unosquare.Labs.EmbedIO.WebServerOptions.Mode
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.Mode
+  nameWithType: WebServerOptions.Mode
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.RoutingStrategy
+  name: RoutingStrategy
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions_RoutingStrategy
+  commentId: P:Unosquare.Labs.EmbedIO.WebServerOptions.RoutingStrategy
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.RoutingStrategy
+  nameWithType: WebServerOptions.RoutingStrategy
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.RoutingStrategy*
+  name: RoutingStrategy
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions_RoutingStrategy_
+  commentId: Overload:Unosquare.Labs.EmbedIO.WebServerOptions.RoutingStrategy
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.RoutingStrategy
+  nameWithType: WebServerOptions.RoutingStrategy
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.UrlPrefixes
+  name: UrlPrefixes
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions_UrlPrefixes
+  commentId: P:Unosquare.Labs.EmbedIO.WebServerOptions.UrlPrefixes
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.UrlPrefixes
+  nameWithType: WebServerOptions.UrlPrefixes
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.UrlPrefixes*
+  name: UrlPrefixes
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions_UrlPrefixes_
+  commentId: Overload:Unosquare.Labs.EmbedIO.WebServerOptions.UrlPrefixes
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.UrlPrefixes
+  nameWithType: WebServerOptions.UrlPrefixes
 - uid: Unosquare.Labs.EmbedIO.WebSocket
   name: WebSocket
   href: api/Unosquare.Labs.EmbedIO.WebSocket.html
@@ -5499,12 +5646,12 @@ references:
   commentId: T:Unosquare.Net.HttpListener
   fullName: Unosquare.Net.HttpListener
   nameWithType: HttpListener
-- uid: Unosquare.Net.HttpListener.#ctor
-  name: HttpListener()
-  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener__ctor
-  commentId: M:Unosquare.Net.HttpListener.#ctor
-  fullName: Unosquare.Net.HttpListener.HttpListener()
-  nameWithType: HttpListener.HttpListener()
+- uid: Unosquare.Net.HttpListener.#ctor(System.Security.Cryptography.X509Certificates.X509Certificate)
+  name: HttpListener(X509Certificate)
+  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener__ctor_System_Security_Cryptography_X509Certificates_X509Certificate_
+  commentId: M:Unosquare.Net.HttpListener.#ctor(System.Security.Cryptography.X509Certificates.X509Certificate)
+  fullName: Unosquare.Net.HttpListener.HttpListener(System.Security.Cryptography.X509Certificates.X509Certificate)
+  nameWithType: HttpListener.HttpListener(X509Certificate)
 - uid: Unosquare.Net.HttpListener.#ctor*
   name: HttpListener
   href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener__ctor_
@@ -5525,6 +5672,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.HttpListener.AddPrefix
   nameWithType: HttpListener.AddPrefix
+- uid: Unosquare.Net.HttpListener.Certificate
+  name: Certificate
+  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_Certificate
+  commentId: P:Unosquare.Net.HttpListener.Certificate
+  fullName: Unosquare.Net.HttpListener.Certificate
+  nameWithType: HttpListener.Certificate
+- uid: Unosquare.Net.HttpListener.Certificate*
+  name: Certificate
+  href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_Certificate_
+  commentId: Overload:Unosquare.Net.HttpListener.Certificate
+  isSpec: "True"
+  fullName: Unosquare.Net.HttpListener.Certificate
+  nameWithType: HttpListener.Certificate
 - uid: Unosquare.Net.HttpListener.Dispose
   name: Dispose()
   href: api/Unosquare.Net.HttpListener.html#Unosquare_Net_HttpListener_Dispose
@@ -5935,6 +6095,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.WebSocket.IsAlive
   nameWithType: WebSocket.IsAlive
+- uid: Unosquare.Net.WebSocket.IsSecure
+  name: IsSecure
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_IsSecure
+  commentId: P:Unosquare.Net.WebSocket.IsSecure
+  fullName: Unosquare.Net.WebSocket.IsSecure
+  nameWithType: WebSocket.IsSecure
+- uid: Unosquare.Net.WebSocket.IsSecure*
+  name: IsSecure
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_IsSecure_
+  commentId: Overload:Unosquare.Net.WebSocket.IsSecure
+  isSpec: "True"
+  fullName: Unosquare.Net.WebSocket.IsSecure
+  nameWithType: WebSocket.IsSecure
 - uid: Unosquare.Net.WebSocket.OnMessage
   name: OnMessage
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_OnMessage
