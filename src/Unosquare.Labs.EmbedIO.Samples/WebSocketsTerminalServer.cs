@@ -18,7 +18,7 @@
 
         // The SyncRoot is used to send 1 thing at a time and multi-threaded Processes dictionary.
         private readonly object _syncRoot = new object();
-        
+
         /// <inheritdoc />
         protected override void OnMessageReceived(IWebSocketContext context, byte[] rxBuffer,
             IWebSocketReceiveResult rxResult)
@@ -29,7 +29,7 @@
                 _processes[context].StandardInput.WriteLine(arg);
             }
         }
-        
+
         /// <inheritdoc />
         protected override void OnFrameReceived(IWebSocketContext context, byte[] rxBuffer,
             IWebSocketReceiveResult rxResult)
@@ -57,7 +57,7 @@
 
         /// <inheritdoc />
         protected override void OnClientConnected(
-            IWebSocketContext context, 
+            IWebSocketContext context,
             System.Net.IPEndPoint localEndPoint,
             System.Net.IPEndPoint remoteEndPoint)
         {
@@ -77,34 +77,16 @@
                 }
             };
 
-            process.OutputDataReceived += (s, e) =>
-            {
-                lock (_syncRoot)
-                {
-                    if ((s as Process).HasExited) return;
-                    var ws = FindContext(s as Process);
+            process.OutputDataReceived += (s, e) => SendBuffer(s, e.Data);
 
-                    if (ws != null && ws.WebSocket.State == Net.WebSocketState.Open)
-                        Send(ws, e.Data);
-                }
-            };
-
-            process.ErrorDataReceived += (s, e) =>
-            {
-                lock (_syncRoot)
-                {
-                    if ((s as Process).HasExited) return;
-                    var ws = FindContext(s as Process);
-                    if (ws != null && ws.WebSocket.State == Net.WebSocketState.Open)
-                        Send(ws, e.Data);
-                }
-            };
+            process.ErrorDataReceived += (s, e) => SendBuffer(s, e.Data);
 
             process.Exited += (s, e) =>
             {
                 lock (_syncRoot)
                 {
                     var ws = FindContext(s as Process);
+
                     if (ws != null && ws.WebSocket.State == Net.WebSocketState.Open)
                         ws.WebSocket.CloseAsync().GetAwaiter().GetResult();
                 }
@@ -121,18 +103,30 @@
             process.BeginOutputReadLine();
 
         }
-        
+
         /// <inheritdoc />
         protected override void OnClientDisconnected(IWebSocketContext context)
         {
             lock (_syncRoot)
             {
-                if (_processes[context].HasExited == false)
+                if (!_processes[context].HasExited)
                     _processes[context].Kill();
             }
         }
-        
+
         /// <inheritdoc />
         public override string ServerName => nameof(WebSocketsTerminalServer);
+
+        private void SendBuffer(object s, string buffer)
+        {
+            lock (_syncRoot)
+            {
+                if ((s as Process)?.HasExited == true) return;
+                var ws = FindContext(s as Process);
+
+                if (ws != null && ws.WebSocket.State == Net.WebSocketState.Open)
+                    Send(ws, buffer);
+            }
+        }
     }
 }
