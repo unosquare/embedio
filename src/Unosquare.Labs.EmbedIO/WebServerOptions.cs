@@ -139,8 +139,7 @@
 
             netsh.OutputDataReceived += (sender, eventArgs) =>
             {
-                if (eventArgs.Data == null)
-                    return;
+                if (string.IsNullOrWhiteSpace(eventArgs.Data)) return;
 
                 eventArgs.Data.Debug(nameof(netsh));
 

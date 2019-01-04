@@ -72,5 +72,20 @@
 
             Assert.Throws<InvalidOperationException>(() => new WebServer(options));
         }
+
+        [Test]
+        public void OpenWebServerHttpsWithInvalidStore_ThrowsInvalidOperation()
+        {
+            if (Runtime.OS != Swan.OperatingSystem.Windows)
+                Assert.Ignore("Only Windows");
+
+            var options = new WebServerOptions(HttpsUrl)
+            {
+                AutoRegisterCertificate = true,
+                Certificate = _certificate
+            };
+
+            Assert.Throws<InvalidOperationException>(() => new WebServer(options));
+        }
     }
 }
