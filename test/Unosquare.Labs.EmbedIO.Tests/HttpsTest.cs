@@ -1,6 +1,9 @@
-﻿namespace Unosquare.Labs.EmbedIO.Tests
+﻿using System;
+
+namespace Unosquare.Labs.EmbedIO.Tests
 {
-    using Unosquare.Swan;
+    using Swan;
+    using System.Security.Cryptography.X509Certificates;
     using System.Net.Http;
     using TestObjects;
     using NUnit.Framework;
@@ -9,29 +12,66 @@
     [TestFixture]
     public class HttpsTest
     {
+        private const string DefaultMessage = "HOLA";
+        private const string HttpsUrl = "https://localhost:5555";
+
+        private readonly X509Certificate2 _certificate =
+            CertificateHelper.CreateOrLoadCertificate("temp.pfx", "localhost", "MyPassword");
+
         [Test]
         public async Task OpenWebServerHttps_RetrievesIndex()
         {
             if (Runtime.OS != OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
-            var options = new WebServerOptions("https://localhost:5555")
+            var options = new WebServerOptions(HttpsUrl)
             {
                 AutoRegisterCertificate = true,
-                Certificate = CertificateHelper.CreateOrLoadCertificate("temp.pfx", "localhost", "MyPassword"),
+                Certificate = _certificate,
+                StoreLocation = StoreLocation.CurrentUser,
+                StoreName = StoreName.My,
             };
 
             using (var webServer = new WebServer(options))
             {
-                webServer.OnAny((ctx, ct) => ctx.HtmlResponseAsync("HOLA", cancellationToken: ct));
+                webServer.OnAny((ctx, ct) => ctx.HtmlResponseAsync(DefaultMessage, cancellationToken: ct));
 
                 webServer.RunAsync();
 
                 using (var httpClient = new HttpClient())
                 {
-                    Assert.AreEqual("HOLA", await httpClient.GetStringAsync("https://localhost:5555"));
+                    Assert.AreEqual(DefaultMessage, await httpClient.GetStringAsync(HttpsUrl));
                 }
             }
+        }
+
+        [Test]
+        public void OpenWebServerHttpsWithLinuxOrMac_ThrowsInvalidOperation()
+        {
+            if (Runtime.OS == OperatingSystem.Windows)
+                Assert.Ignore("Ignore Windows");
+
+            var options = new WebServerOptions(HttpsUrl)
+            {
+                AutoRegisterCertificate = true,
+                Certificate = _certificate,
+            };
+
+            Assert.Throws<InvalidOperationException>(() => new WebServer(options));
+        }
+
+        [Test]
+        public void OpenWebServerHttpsWithoutCert_ThrowsInvalidOperation()
+        {
+            if (Runtime.OS != OperatingSystem.Windows)
+                Assert.Ignore("Only Windows");
+
+            var options = new WebServerOptions(HttpsUrl)
+            {
+                AutoRegisterCertificate = true,
+            };
+
+            Assert.Throws<InvalidOperationException>(() => new WebServer(options));
         }
     }
 }

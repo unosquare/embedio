@@ -22,7 +22,7 @@
         /// </summary>
         /// <param name="urlPrefix">The URL prefix.</param>
         public WebServerOptions(string urlPrefix)
-            : this(new[] { urlPrefix })
+            : this(new[] {urlPrefix})
         {
         }
 
@@ -105,6 +105,22 @@
         /// </value>
         public bool AutoRegisterCertificate { get; set; }
 
+        /// <summary>
+        /// Gets or sets the name of the store.
+        /// </summary>
+        /// <value>
+        /// The name of the store.
+        /// </value>
+        public StoreName StoreName { get; set; } = StoreName.My;
+
+        /// <summary>
+        /// Gets or sets the store location.
+        /// </summary>
+        /// <value>
+        /// The store location.
+        /// </value>
+        public StoreLocation StoreLocation { get; set; } = StoreLocation.LocalMachine;
+
         private X509Certificate2 LoadCertificate()
         {
             if (!string.IsNullOrWhiteSpace(CertificateThumb)) return GetCertificate();
@@ -117,15 +133,21 @@
                     Arguments =
                         $"http show sslcert ipport=0.0.0.0:{GetSslPort()}",
                     RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute= false,
                 },
             };
 
             var thumbPrint = string.Empty;
 
+            netsh.ErrorDataReceived += (s, e) => e.Data.Error(nameof(netsh));
+
             netsh.OutputDataReceived += (sender, eventArgs) =>
             {
                 if (eventArgs.Data == null)
                     return;
+
+                eventArgs.Data.Debug(nameof(netsh));
 
                 var line = eventArgs.Data?.Trim();
 
@@ -151,7 +173,7 @@
         {
             // strip any non-hexadecimal values and make uppercase
             var thumbprint = Regex.Replace(thumb ?? CertificateThumb, @"[^\da-fA-F]", string.Empty).ToUpper();
-            var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+            var store = new X509Store(StoreName, StoreLocation);
 
             try
             {
@@ -169,7 +191,7 @@
 
         private bool AddCertificateToStore()
         {
-            var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+            var store = new X509Store(StoreName, StoreLocation);
 
             try
             {
@@ -198,17 +220,26 @@
                 throw new InvalidOperationException("A certificate is required to AutoRegister");
 
             if (GetCertificate(_certificate.Thumbprint) == null && !AddCertificateToStore())
-                    throw new InvalidOperationException("The provided certificate cannot be added to the default store, add it manually");
+            {
+                throw new InvalidOperationException(
+                    "The provided certificate cannot be added to the default store, add it manually");
+            }
 
             var netsh = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "netsh",
+                    RedirectStandardError = true,
+                    RedirectStandardInput = true,
+                    UseShellExecute= false,
                     Arguments =
                         $"http add sslcert ipport=0.0.0.0:{GetSslPort()} certhash={_certificate.Thumbprint} appid={{adaa04bb-8b63-4073-a12f-d6f8c0b4383f}}",
                 },
             };
+
+            netsh.OutputDataReceived += (s, e) => e.Data.Debug(nameof(netsh));
+            netsh.ErrorDataReceived += (s, e) => e.Data.Error(nameof(netsh));
 
             if (netsh.Start())
             {
@@ -224,7 +255,8 @@
         {
             var port = 443;
 
-            foreach (var url in UrlPrefixes.Where(x => x.StartsWith("https", StringComparison.InvariantCultureIgnoreCase)))
+            foreach (var url in UrlPrefixes.Where(x =>
+                x.StartsWith("https", StringComparison.InvariantCultureIgnoreCase)))
             {
                 var match = Regex.Match(url, @":(\d+)");
 
