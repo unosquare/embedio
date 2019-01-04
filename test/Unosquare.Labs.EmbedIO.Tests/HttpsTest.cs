@@ -25,8 +25,7 @@
 
             var options = new WebServerOptions(HttpsUrl)
             {
-                AutoRegisterCertificate = true,
-                Certificate = _certificate,
+                AutoLoadCertificate = true,
             };
 
             using (var webServer = new WebServer(options))

@@ -30,6 +30,10 @@ before_build:
 - ps: | 
         $date_now = Get-Date
         $cert = New-SelfSignedCertificate -certstorelocation cert:\localmachine\my -dnsname localhost -notafter $date_now
+        $certThumb = $cert.Thumbprint
+        $guid = [guid]::NewGuid()
+        $command = "http add sslcert ipport=0.0.0.0:5555 certhash=$certThumb appid={$guid}"
+        $command | netsh
 build_script:
 - cmd: msbuild /verbosity:quiet /p:Configuration=Release Unosquare.Labs.EmbedIO.sln
 - cmd: | 
