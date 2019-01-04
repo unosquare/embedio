@@ -82,7 +82,7 @@
             var options = new WebServerOptions(HttpsUrl)
             {
                 AutoRegisterCertificate = true,
-                Certificate = _certificate
+                Certificate = _certificate,
             };
 
             Assert.Throws<InvalidOperationException>(() => new WebServer(options));

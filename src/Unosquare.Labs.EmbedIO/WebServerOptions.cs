@@ -137,13 +137,13 @@
                 e.Data.Error(nameof(netsh));
             };
 
-            netsh.OutputDataReceived += (sender, eventArgs) =>
+            netsh.OutputDataReceived += (s, e) =>
             {
-                if (string.IsNullOrWhiteSpace(eventArgs.Data)) return;
+                if (string.IsNullOrWhiteSpace(e.Data)) return;
 
-                eventArgs.Data.Debug(nameof(netsh));
+                e.Data.Debug(nameof(netsh));
 
-                var line = eventArgs.Data?.Trim();
+                var line = e.Data.Trim();
 
                 if (line.StartsWith("Certificate Hash") && line.IndexOf(":", StringComparison.Ordinal) > -1)
                     thumbPrint = line.Split(':')[1].Trim();
