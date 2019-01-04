@@ -123,15 +123,9 @@
             catch (Exception ex)
             {
                 ex.Log(nameof(CertificateHelper));
-
-                return null;
             }
-        }
 
-        public static System.Security.Cryptography.X509Certificates.X509Certificate2 GetDefaultCertificate()
-            => CreateOrLoadCertificate(
-                Path.Combine(Path.GetTempPath(), "unosquare.io.pfx"),
-                "unosquare.io",
-                "MyPassword");
+            return null;
+        }
     }
 }
