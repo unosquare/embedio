@@ -5367,6 +5367,32 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.WebServerOptions.RoutingStrategy
   nameWithType: WebServerOptions.RoutingStrategy
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.StoreLocation
+  name: StoreLocation
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions_StoreLocation
+  commentId: P:Unosquare.Labs.EmbedIO.WebServerOptions.StoreLocation
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.StoreLocation
+  nameWithType: WebServerOptions.StoreLocation
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.StoreLocation*
+  name: StoreLocation
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions_StoreLocation_
+  commentId: Overload:Unosquare.Labs.EmbedIO.WebServerOptions.StoreLocation
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.StoreLocation
+  nameWithType: WebServerOptions.StoreLocation
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.StoreName
+  name: StoreName
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions_StoreName
+  commentId: P:Unosquare.Labs.EmbedIO.WebServerOptions.StoreName
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.StoreName
+  nameWithType: WebServerOptions.StoreName
+- uid: Unosquare.Labs.EmbedIO.WebServerOptions.StoreName*
+  name: StoreName
+  href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions_StoreName_
+  commentId: Overload:Unosquare.Labs.EmbedIO.WebServerOptions.StoreName
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.WebServerOptions.StoreName
+  nameWithType: WebServerOptions.StoreName
 - uid: Unosquare.Labs.EmbedIO.WebServerOptions.UrlPrefixes
   name: UrlPrefixes
   href: api/Unosquare.Labs.EmbedIO.WebServerOptions.html#Unosquare_Labs_EmbedIO_WebServerOptions_UrlPrefixes
