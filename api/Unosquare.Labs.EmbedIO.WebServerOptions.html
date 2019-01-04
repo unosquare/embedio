@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class WebApiController
+    <title>Class WebServerOptions
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class WebApiController
+    <meta name="title" content="Class WebServerOptions
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.40.6.0">
     
@@ -76,23 +76,18 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController">
+            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions">
   
   
-  <h1 id="Unosquare_Labs_EmbedIO_Modules_WebApiController" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController" class="text-break">Class WebApiController
+  <h1 id="Unosquare_Labs_EmbedIO_WebServerOptions" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions" class="text-break">Class WebServerOptions
   </h1>
-  <div class="markdown level0 summary"><p>Inherit from this class and define your own Web API methods
-You must RegisterController in the Web API Module to make it active.</p>
+  <div class="markdown level0 summary"><p>Options for WebServer creation.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">WebApiController</span></div>
-  </div>
-  <div classs="implements">
-    <h5>Implements</h5>
-    <div><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></div>
+    <div class="level1"><span class="xref">WebServerOptions</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -118,23 +113,23 @@ You must RegisterController in the Web API Module to make it active.</p>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.html">Unosquare.Labs.EmbedIO.Modules</a></h6>
-  <h5 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_syntax">Syntax</h5>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.html">Unosquare.Labs.EmbedIO</a></h6>
+  <h5 id="Unosquare_Labs_EmbedIO_WebServerOptions_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class WebApiController : IHttpContext</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class WebServerOptions</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.#ctor*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController__ctor_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.#ctor(Unosquare.Labs.EmbedIO.IHttpContext)">WebApiController(IHttpContext)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.WebApiController.html">WebApiController</a> class.</p>
+  <a id="Unosquare_Labs_EmbedIO_WebServerOptions__ctor_" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.#ctor*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServerOptions__ctor_System_String_" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.#ctor(System.String)">WebServerOptions(String)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.WebServerOptions.html">WebServerOptions</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected WebApiController(IHttpContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public WebServerOptions(string urlPrefix)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -147,9 +142,38 @@ You must RegisterController in the Web API Module to make it active.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>The context.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">urlPrefix</span></td>
+        <td><p>The URL prefix.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_WebServerOptions__ctor_" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.#ctor*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServerOptions__ctor_System_String___" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.#ctor(System.String[])">WebServerOptions(String[])</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.WebServerOptions.html">WebServerOptions</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WebServerOptions(string[] urlPrefixes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
+        <td><span class="parametername">urlPrefixes</span></td>
+        <td><p>The urls.</p>
 </td>
       </tr>
     </tbody>
@@ -158,14 +182,14 @@ You must RegisterController in the Web API Module to make it active.</p>
   </h3>
   
   
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_Request_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.Request*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_Request" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.Request">Request</h4>
-  <div class="markdown level1 summary"><p>Gets the HTTP Request.</p>
+  <a id="Unosquare_Labs_EmbedIO_WebServerOptions_AutoLoadCertificate_" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.AutoLoadCertificate*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServerOptions_AutoLoadCertificate" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.AutoLoadCertificate">AutoLoadCertificate</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [automatic load certificate].</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IHttpRequest Request { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool AutoLoadCertificate { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -177,22 +201,22 @@ You must RegisterController in the Web API Module to make it active.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpRequest.html">IHttpRequest</a></td>
-        <td><p>The request.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if [automatic load certificate]; otherwise, <code>false</code>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_Response_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.Response*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_Response" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.Response">Response</h4>
-  <div class="markdown level1 summary"><p>Gets the HTTP Response.</p>
+  <a id="Unosquare_Labs_EmbedIO_WebServerOptions_AutoRegisterCertificate_" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.AutoRegisterCertificate*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServerOptions_AutoRegisterCertificate" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.AutoRegisterCertificate">AutoRegisterCertificate</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [automatic register certificate].</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IHttpResponse Response { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool AutoRegisterCertificate { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -204,22 +228,22 @@ You must RegisterController in the Web API Module to make it active.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpResponse.html">IHttpResponse</a></td>
-        <td><p>The response.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if [automatic register certificate]; otherwise, <code>false</code>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_User_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.User*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_User" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.User">User</h4>
-  <div class="markdown level1 summary"><p>Gets the user.</p>
+  <a id="Unosquare_Labs_EmbedIO_WebServerOptions_Certificate_" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.Certificate*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServerOptions_Certificate" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.Certificate">Certificate</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the certificate.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IPrincipal User { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public X509Certificate2 Certificate { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -231,22 +255,22 @@ You must RegisterController in the Web API Module to make it active.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.principal.iprincipal">IPrincipal</a></td>
-        <td><p>The user.</p>
+        <td><span class="xref">X509Certificate2</span></td>
+        <td><p>The certificate.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_WebServer_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.WebServer*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_WebServer" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.WebServer">WebServer</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the web server.</p>
+  <a id="Unosquare_Labs_EmbedIO_WebServerOptions_CertificateThumb_" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.CertificateThumb*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServerOptions_CertificateThumb" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.CertificateThumb">CertificateThumb</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the certificate thumb.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IWebServer WebServer { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string CertificateThumb { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -258,44 +282,24 @@ You must RegisterController in the Web API Module to make it active.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
-        <td><p>The web server.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>The certificate thumb.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h3 id="methods">Methods
-  </h3>
   
   
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_AcceptWebSocketAsync_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.AcceptWebSocketAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_AcceptWebSocketAsync_System_Int32_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.AcceptWebSocketAsync(System.Int32)">AcceptWebSocketAsync(Int32)</h4>
-  <div class="markdown level1 summary"><p>Accepts the web socket asynchronous.</p>
+  <a id="Unosquare_Labs_EmbedIO_WebServerOptions_Mode_" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.Mode*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServerOptions_Mode" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.Mode">Mode</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the mode.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;IWebSocketContext&gt; AcceptWebSocketAsync(int receiveBufferSize)</code></pre>
+    <pre><code class="lang-csharp hljs">public HttpListenerMode Mode { get; set; }</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">receiveBufferSize</span></td>
-        <td><p>Size of the receive buffer.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -305,34 +309,120 @@ You must RegisterController in the Web API Module to make it active.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a>&gt;</td>
-        <td><p>A <a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a> that represents
-the WebSocket handshake request.</p>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.HttpListenerMode.html">HttpListenerMode</a></td>
+        <td><p>The mode.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_SetDefaultHeaders_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_SetDefaultHeaders" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders">SetDefaultHeaders()</h4>
-  <div class="markdown level1 summary"><p>Sets the default headers to the Web API response.
-By default will set:</p>
-<p>Expires - Mon, 26 Jul 1997 05:00:00 GMT
-LastModified - (Current Date)
-CacheControl - no-store, no-cache, must-revalidate
-Pragma - no-cache</p>
-<p>Previous values are defined to avoid caching from client.</p>
+  <a id="Unosquare_Labs_EmbedIO_WebServerOptions_RoutingStrategy_" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.RoutingStrategy*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServerOptions_RoutingStrategy" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.RoutingStrategy">RoutingStrategy</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the routing strategy.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void SetDefaultHeaders()</code></pre>
+    <pre><code class="lang-csharp hljs">public RoutingStrategy RoutingStrategy { get; set; }</code></pre>
   </div>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.html">RoutingStrategy</a></td>
+        <td><p>The routing strategy.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_WebServerOptions_StoreLocation_" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.StoreLocation*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServerOptions_StoreLocation" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.StoreLocation">StoreLocation</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the store location.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public StoreLocation StoreLocation { get; set; }</code></pre>
   </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">StoreLocation</span></td>
+        <td><p>The store location.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_WebServerOptions_StoreName_" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.StoreName*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServerOptions_StoreName" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.StoreName">StoreName</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the name of the store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public StoreName StoreName { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">StoreName</span></td>
+        <td><p>The name of the store.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_WebServerOptions_UrlPrefixes_" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.UrlPrefixes*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebServerOptions_UrlPrefixes" data-uid="Unosquare.Labs.EmbedIO.WebServerOptions.UrlPrefixes">UrlPrefixes</h4>
+  <div class="markdown level1 summary"><p>Gets the URL prefixes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string[] UrlPrefixes { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
+        <td><p>The URL prefixes.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>
