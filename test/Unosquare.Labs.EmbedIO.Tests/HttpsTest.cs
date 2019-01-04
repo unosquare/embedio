@@ -27,8 +27,6 @@
             {
                 AutoRegisterCertificate = true,
                 Certificate = _certificate,
-                StoreLocation = StoreLocation.CurrentUser,
-                StoreName = StoreName.My,
             };
 
             using (var webServer = new WebServer(options))
