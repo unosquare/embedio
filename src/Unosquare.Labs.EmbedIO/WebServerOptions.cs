@@ -126,19 +126,7 @@
         {
             if (!string.IsNullOrWhiteSpace(CertificateThumb)) return GetCertificate();
 
-            var netsh = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "netsh",
-                    CreateNoWindow = true,
-                    Arguments =
-                        $"http show sslcert ipport=0.0.0.0:{GetSslPort()}",
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                },
-            };
+            var netsh = GetNetsh("show");
 
             var thumbPrint = string.Empty;
 
@@ -233,34 +221,21 @@
                     "The provided certificate cannot be added to the default store, add it manually");
             }
 
-            var netsh = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "netsh",
-                    CreateNoWindow = true,
-                    RedirectStandardError = true,
-                    RedirectStandardInput = true,
-                    UseShellExecute = false,
-                    Arguments =
-                        $"http add sslcert ipport=0.0.0.0:{GetSslPort()} certhash={_certificate.Thumbprint} appid={{adaa04bb-8b63-4073-a12f-d6f8c0b4383f}}",
-                },
-            };
-            
+            var netsh = GetNetsh("add", $"certhash={_certificate.Thumbprint} appid={{adaa04bb-8b63-4073-a12f-d6f8c0b4383f}}");
+
             var sb = new StringBuilder();
-            netsh.OutputDataReceived += (s, e) =>
-            {
-                if (string.IsNullOrWhiteSpace(e.Data)) return;
-                e.Data.Debug(nameof(netsh));
-            };
 
-            netsh.ErrorDataReceived += (s, e) =>
+            void PushLine(object sender, DataReceivedEventArgs e)
             {
                 if (string.IsNullOrWhiteSpace(e.Data)) return;
 
-                sb.Append(e.Data);
+                sb.AppendLine(e.Data);
                 e.Data.Error(nameof(netsh));
-            };
+            }
+
+            netsh.OutputDataReceived += PushLine;
+
+            netsh.ErrorDataReceived += PushLine;
 
             if (!netsh.Start()) return false;
 
@@ -286,6 +261,20 @@
 
             return port;
         }
+
+        private Process GetNetsh(string verb, string options = "") => new Process
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = "netsh",
+                CreateNoWindow = true,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                Arguments =
+                    $"http {verb} sslcert ipport=0.0.0.0:{GetSslPort()} {options}",
+            },
+        };
 #endif
     }
 }
