@@ -163,11 +163,7 @@
             [Test]
             public void InvalidFilePath_ThrowsArgumentException()
             {
-                using (var server = new WebServer())
-                {
-                    Assert.Throws<ArgumentException>(() =>
-                        server.RegisterModule(new StaticFilesModule("e:") { UseRamCache = false }));
-                }
+                Assert.Throws<ArgumentException>(() => new StaticFilesModule("e:") { UseRamCache = false });
             }
         }
 
@@ -319,7 +315,7 @@
 
                         var buffer = new byte[remoteSize.Length];
                         const int chunkSize = 100000;
-                        for (var i = 0; i < remoteSize.Length / chunkSize + 1; i++)
+                        for (var i = 0; i < (remoteSize.Length / chunkSize) + 1; i++)
                         {
                             var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
                             var top = (i + 1) * chunkSize;
