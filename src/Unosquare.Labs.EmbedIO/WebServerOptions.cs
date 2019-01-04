@@ -126,6 +126,9 @@
         {
             if (!string.IsNullOrWhiteSpace(CertificateThumb)) return GetCertificate();
 
+            if (Runtime.OS != Swan.OperatingSystem.Windows)
+                throw new InvalidOperationException("AutoLoad functionality is only available in Windows");
+
             var netsh = GetNetsh("show");
 
             var thumbPrint = string.Empty;

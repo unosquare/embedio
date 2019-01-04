@@ -26,6 +26,7 @@
             var options = new WebServerOptions(HttpsUrl)
             {
                 AutoLoadCertificate = true,
+                Mode = HttpListenerMode.EmbedIO,
             };
 
             using (var webServer = new WebServer(options))
@@ -49,8 +50,7 @@
 
             var options = new WebServerOptions(HttpsUrl)
             {
-                AutoRegisterCertificate = true,
-                Certificate = _certificate,
+                AutoLoadCertificate = true,
             };
 
             Assert.Throws<InvalidOperationException>(() => new WebServer(options));
