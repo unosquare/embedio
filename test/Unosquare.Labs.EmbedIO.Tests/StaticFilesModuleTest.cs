@@ -19,12 +19,12 @@
         public StaticFilesModuleTest()
             : base(ws =>
             {
-                ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()) {UseRamCache = true});
+                ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()) { UseRamCache = true });
                 ws.RegisterModule(new FallbackModule("/index.html"));
             }, RoutingStrategy.Wildcard)
         {
         }
-        
+
         private static async Task ValidatePayload(HttpResponseMessage response, int maxLength, int offset = 0)
         {
             Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
@@ -123,7 +123,7 @@
 
                 using (var server = new WebServer(endpoint))
                 {
-                    server.RegisterModule(new StaticFilesModule(root) {UseRamCache = false});
+                    server.RegisterModule(new StaticFilesModule(root) { UseRamCache = false });
                     var runTask = server.RunAsync();
 
                     using (var webClient = new HttpClient())
@@ -152,26 +152,21 @@
                 {
                     Assert.Ignore("File-system is not case sensitive. Ignoring");
                 }
-                else
-                {
-                    var htmlUpperCase = await GetString(TestHelper.UppercaseFile);
 
-                    Assert.AreEqual(nameof(TestHelper.UppercaseFile), htmlUpperCase, "Same content upper case");
+                var htmlUpperCase = await GetString(TestHelper.UppercaseFile);
+                Assert.AreEqual(nameof(TestHelper.UppercaseFile), htmlUpperCase, "Same content upper case");
 
-                    var htmlLowerCase = await GetString(TestHelper.LowercaseFile);
-
-                    Assert.AreEqual(nameof(TestHelper.LowercaseFile), htmlLowerCase, "Same content lower case");
-                }
+                var htmlLowerCase = await GetString(TestHelper.LowercaseFile);
+                Assert.AreEqual(nameof(TestHelper.LowercaseFile), htmlLowerCase, "Same content lower case");
             }
 
             [Test]
             public void InvalidFilePath_ThrowsArgumentException()
             {
-                var endpoint = Resources.GetServerAddress();
-                using (var server = new WebServer(endpoint))
+                using (var server = new WebServer())
                 {
                     Assert.Throws<ArgumentException>(() =>
-                        server.RegisterModule(new StaticFilesModule("e:") {UseRamCache = false}));
+                        server.RegisterModule(new StaticFilesModule("e:") { UseRamCache = false }));
                 }
             }
         }
@@ -316,10 +311,12 @@
                 {
                     var originalSet = TestHelper.GetBigData();
                     var requestHead = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
+
                     using (var res = await client.SendAsync(requestHead))
                     {
                         var remoteSize = await res.Content.ReadAsByteArrayAsync();
                         Assert.AreEqual(remoteSize.Length, originalSet.Length);
+
                         var buffer = new byte[remoteSize.Length];
                         const int chunkSize = 100000;
                         for (var i = 0; i < remoteSize.Length / chunkSize + 1; i++)
@@ -327,8 +324,7 @@
                             var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
                             var top = (i + 1) * chunkSize;
 
-                            request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue
-                                (i * chunkSize, (top > remoteSize.Length ? remoteSize.Length : top) - 1);
+                            request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(i * chunkSize, (top > remoteSize.Length ? remoteSize.Length : top) - 1);
 
                             using (var response = await client.SendAsync(request))
                             {
@@ -410,7 +406,7 @@
                 }
             }
         }
-        
+
         public class Etag : StaticFilesModuleTest
         {
             [Test]

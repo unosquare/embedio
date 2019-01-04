@@ -34,7 +34,7 @@
         /// network interfaces with HTTP protocol and default port (http://*:80/).
         /// </summary>
         public WebServer()
-            : this(new[] { "http://*/" })
+            : this(80)
         {
             // placeholder
         }

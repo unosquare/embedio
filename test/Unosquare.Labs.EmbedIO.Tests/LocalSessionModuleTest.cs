@@ -12,9 +12,6 @@
     [TestFixture]
     public class LocalSessionModuleTest : FixtureBase
     {
-        protected WebServer WebServer;
-        protected TimeSpan WaitTimeSpan = TimeSpan.FromSeconds(1);
-
         public LocalSessionModuleTest()
             : base(ws =>
                 {
@@ -123,7 +120,7 @@
                         var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
                         await ValidateCookie(request, client, handler);
                         var content = handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl));
-                        await Task.Delay(WaitTimeSpan);
+                        await Task.Delay(TimeSpan.FromSeconds(1));
 
                         Task.WaitAll(
                             new[]
