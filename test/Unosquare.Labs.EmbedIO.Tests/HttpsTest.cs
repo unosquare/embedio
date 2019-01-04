@@ -1,8 +1,7 @@
-﻿using System;
-
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using Swan;
+    using System;
     using System.Security.Cryptography.X509Certificates;
     using System.Net.Http;
     using TestObjects;
@@ -21,7 +20,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
         [Test]
         public async Task OpenWebServerHttps_RetrievesIndex()
         {
-            if (Runtime.OS != OperatingSystem.Windows)
+            if (Runtime.OS != Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
             var options = new WebServerOptions(HttpsUrl)
@@ -48,7 +47,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
         [Test]
         public void OpenWebServerHttpsWithLinuxOrMac_ThrowsInvalidOperation()
         {
-            if (Runtime.OS == OperatingSystem.Windows)
+            if (Runtime.OS == Swan.OperatingSystem.Windows)
                 Assert.Ignore("Ignore Windows");
 
             var options = new WebServerOptions(HttpsUrl)
@@ -63,7 +62,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
         [Test]
         public void OpenWebServerHttpsWithoutCert_ThrowsInvalidOperation()
         {
-            if (Runtime.OS != OperatingSystem.Windows)
+            if (Runtime.OS != Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
             var options = new WebServerOptions(HttpsUrl)

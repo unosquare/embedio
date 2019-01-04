@@ -94,7 +94,6 @@
         /// <param name="urlPrefixes">The URL prefix.</param>
         /// <param name="routingStrategy">The routing strategy.</param>
         /// <param name="mode">The mode.</param>
-        /// <param name="certificate">The certificate.</param>
         /// <exception cref="ArgumentException">Argument urlPrefix must be specified.</exception>
         /// <remarks>
         /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/

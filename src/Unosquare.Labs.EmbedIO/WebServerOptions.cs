@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using Constants;
+    using System.Text;
     using Swan;
     using System;
     using System.Diagnostics;
@@ -22,7 +23,7 @@
         /// </summary>
         /// <param name="urlPrefix">The URL prefix.</param>
         public WebServerOptions(string urlPrefix)
-            : this(new[] {urlPrefix})
+            : this(new[] { urlPrefix })
         {
         }
 
@@ -130,17 +131,23 @@
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "netsh",
+                    CreateNoWindow = true,
                     Arguments =
                         $"http show sslcert ipport=0.0.0.0:{GetSslPort()}",
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
-                    UseShellExecute= false,
+                    UseShellExecute = false,
                 },
             };
 
             var thumbPrint = string.Empty;
 
-            netsh.ErrorDataReceived += (s, e) => e.Data.Error(nameof(netsh));
+            netsh.ErrorDataReceived += (s, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(e.Data)) return;
+
+                e.Data.Error(nameof(netsh));
+            };
 
             netsh.OutputDataReceived += (sender, eventArgs) =>
             {
@@ -158,6 +165,8 @@
             if (netsh.Start())
             {
                 netsh.BeginOutputReadLine();
+                netsh.BeginErrorReadLine();
+
                 netsh.WaitForExit();
 
                 if (netsh.ExitCode == 0 && !string.IsNullOrWhiteSpace(thumbPrint))
@@ -196,7 +205,6 @@
             try
             {
                 store.Open(OpenFlags.ReadWrite);
-
                 store.Add(_certificate);
             }
             catch
@@ -230,25 +238,37 @@
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "netsh",
+                    CreateNoWindow = true,
                     RedirectStandardError = true,
                     RedirectStandardInput = true,
-                    UseShellExecute= false,
+                    UseShellExecute = false,
                     Arguments =
                         $"http add sslcert ipport=0.0.0.0:{GetSslPort()} certhash={_certificate.Thumbprint} appid={{adaa04bb-8b63-4073-a12f-d6f8c0b4383f}}",
                 },
             };
-
-            netsh.OutputDataReceived += (s, e) => e.Data.Debug(nameof(netsh));
-            netsh.ErrorDataReceived += (s, e) => e.Data.Error(nameof(netsh));
-
-            if (netsh.Start())
+            
+            var sb = new StringBuilder();
+            netsh.OutputDataReceived += (s, e) =>
             {
-                netsh.WaitForExit();
+                if (string.IsNullOrWhiteSpace(e.Data)) return;
+                e.Data.Debug(nameof(netsh));
+            };
 
-                return netsh.ExitCode == 0;
-            }
+            netsh.ErrorDataReceived += (s, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(e.Data)) return;
 
-            return false;
+                sb.Append(e.Data);
+                e.Data.Error(nameof(netsh));
+            };
+
+            if (!netsh.Start()) return false;
+
+            netsh.BeginOutputReadLine();
+            netsh.BeginErrorReadLine();
+            netsh.WaitForExit();
+
+            return netsh.ExitCode == 0 ? true : throw new InvalidOperationException($"Netsh error: {sb}");
         }
 
         private int GetSslPort()
