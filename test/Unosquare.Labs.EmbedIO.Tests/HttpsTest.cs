@@ -23,6 +23,9 @@
             if (Runtime.OS != Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
+            // bypass certification validation
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = (s, c, cert, x) => true;
+
             var options = new WebServerOptions(HttpsUrl)
             {
                 AutoLoadCertificate = true,
