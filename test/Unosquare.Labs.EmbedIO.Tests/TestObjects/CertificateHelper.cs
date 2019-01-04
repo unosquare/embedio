@@ -90,7 +90,10 @@
 
             using (var outputFileStream = File.Create(outputFilePath))
             {
-                certificateStore.Save(outputFileStream, certificatePassword.ToCharArray(), new SecureRandom(new CryptoApiRandomGenerator()));
+                certificateStore.Save(
+                    outputFileStream, 
+                    certificatePassword == null ? new char[0] : certificatePassword.ToCharArray(), 
+                    new SecureRandom(new CryptoApiRandomGenerator()));
             }
         }
 
@@ -101,7 +104,7 @@
         /// <param name="hostname">The hostname.</param>
         /// <param name="password">The password.</param>
         /// <returns>A valid certificate.</returns>
-        public static System.Security.Cryptography.X509Certificates.X509Certificate2 CreateOrLoadCertificate(string pfxFilePath, string hostname, string password)
+        public static System.Security.Cryptography.X509Certificates.X509Certificate2 CreateOrLoadCertificate(string pfxFilePath, string hostname, string password = null)
         {
             try
             {
@@ -113,7 +116,9 @@
                     certificate.SaveToFile(keyPair, certificateFilePath, hostname, password);
                 }
 
-                return new System.Security.Cryptography.X509Certificates.X509Certificate2(certificateFilePath, password);
+                return password == null 
+                    ? new System.Security.Cryptography.X509Certificates.X509Certificate2(certificateFilePath)
+                    : new System.Security.Cryptography.X509Certificates.X509Certificate2(certificateFilePath, password);
             }
             catch (Exception ex)
             {

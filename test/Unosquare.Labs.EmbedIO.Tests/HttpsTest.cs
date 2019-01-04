@@ -15,7 +15,7 @@
         private const string HttpsUrl = "https://localhost:5555";
 
         private readonly X509Certificate2 _certificate =
-            CertificateHelper.CreateOrLoadCertificate("temp.pfx", "localhost", "MyPassword");
+            CertificateHelper.CreateOrLoadCertificate("temp.pfx", "localhost");
 
         [Test]
         public async Task OpenWebServerHttps_RetrievesIndex()
