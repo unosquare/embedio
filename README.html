@@ -133,7 +133,7 @@
 <td>Support Win7+ OS, Linux and macOS.</td>
 </tr>
 <tr>
-<td>NET47</td>
+<td>NET472</td>
 <td>Unosquare and <em>Microsoft</em></td>
 <td></td>
 <td>Yes</td>
@@ -154,7 +154,7 @@
 <td>UAP</td>
 <td><em>Unosquare</em></td>
 <td>No</td>
-<td>Support Windows Universal Platform.</td>
+<td>Support Windows Universal Platform until version 2.1.1.</td>
 </tr>
 </tbody>
 </table>
@@ -217,15 +217,12 @@
                 // Beware that this is an in-memory session storage mechanism so, avoid storing very large objects.
                 // You can use the server.GetSession() method to get the SessionInfo object and manupulate it.
                 // You could potentially implement a distributed session module using something like Redis
-                server.RegisterModule(new LocalSessionModule());
+                server.WithLocalSession();
 
                 // Here we setup serving of static files
                 server.RegisterModule(new StaticFilesModule(&quot;c:/web&quot;));
                 // The static files module will cache small files in ram until it detects they have been modified.
                 server.Module&lt;StaticFilesModule&gt;().UseRamCache = true;
-                server.Module&lt;StaticFilesModule&gt;().DefaultExtension = &quot;.html&quot;;
-                // We don&#39;t need to add the line below. The default document is always index.html.
-                //server.Module&lt;Modules.StaticFilesWebModule&gt;().DefaultDocument = &quot;index.html&quot;;
 
                 // Once we&#39;ve registered our modules and configured them, we call the RunAsync() method.
                 server.RunAsync();
