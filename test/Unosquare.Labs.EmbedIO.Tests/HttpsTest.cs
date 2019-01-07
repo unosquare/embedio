@@ -24,7 +24,7 @@
                 Assert.Ignore("Only Windows");
 
             // bypass certification validation
-            System.Net.ServicePointManager.ServerCertificateValidationCallback += (s, c, cert, x) => true;
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = (s, c, cert, x) => true;
 
             var options = new WebServerOptions(HttpsUrl)
             {
@@ -38,9 +38,15 @@
 
                 webServer.RunAsync();
 
-                using (var httpClient = new HttpClient())
+                using (var httpClientHandler = new HttpClientHandler())
                 {
-                    Assert.AreEqual(DefaultMessage, await httpClient.GetStringAsync(HttpsUrl));
+#if !NET452
+                    httpClientHandler.ServerCertificateCustomValidationCallback = (s, c, cert, x) => true;
+#endif
+                    using (var httpClient = new HttpClient(httpClientHandler))
+                    {
+                        Assert.AreEqual(DefaultMessage, await httpClient.GetStringAsync(HttpsUrl));
+                    }
                 }
             }
         }

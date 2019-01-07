@@ -8,7 +8,7 @@
     using System.Collections.ObjectModel;
     using System.Threading;
     using System.Threading.Tasks;
-#if NET47
+#if NET472
     using System.Net;
 #else
     using Net;
@@ -105,7 +105,7 @@
             // placeholder
         }
 
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer" /> class.
         /// </summary>

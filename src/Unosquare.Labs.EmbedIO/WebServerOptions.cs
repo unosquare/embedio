@@ -14,7 +14,7 @@
     /// </summary>
     public sealed class WebServerOptions
     {
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
         private X509Certificate2 _certificate;
 #endif
 
@@ -60,7 +60,7 @@
         /// </value>
         public HttpListenerMode Mode { get; set; } = HttpListenerMode.EmbedIO;
 
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
         /// <summary>
         /// Gets or sets the certificate.
         /// </summary>

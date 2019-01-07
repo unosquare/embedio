@@ -8,7 +8,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using Labs.EmbedIO;
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
     using System.Security.Cryptography.X509Certificates;
 #endif
 
@@ -30,7 +30,7 @@
         private bool _kaSet;
         private bool _keepAlive;
 
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
         delegate X509Certificate2 GccDelegate();
         GccDelegate _gccDelegate;
 #endif
@@ -118,7 +118,7 @@
         /// <inheritdoc />
         public bool IsLocal => LocalEndPoint?.Address?.Equals(RemoteEndPoint?.Address) ?? true;
 
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
         /// <summary>
         /// Gets a value indicating whether this request is under a secure connection.
         /// </summary>
@@ -467,7 +467,7 @@
             }
         }
 
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
         /// <summary>
         /// Begins to the get client certificate asynchronously.
         /// </summary>

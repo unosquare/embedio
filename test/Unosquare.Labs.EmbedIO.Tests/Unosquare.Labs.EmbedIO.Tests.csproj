@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <Copyright>Copyright (c) 2016-2017 - Unosquare</Copyright>
-    <TargetFrameworks>net452;net47;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>net452;net472;netcoreapp2.2</TargetFrameworks>
     <TestProjectType>UnitTest</TestProjectType>
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>7.1</LangVersion>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,10 +32,10 @@
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
-    <DefineConstants>$(DefineConstants);NET47</DefineConstants>
+    <DefineConstants>$(DefineConstants);NET472</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
     <Reference Include="System.Net.Http" />
   </ItemGroup>
 

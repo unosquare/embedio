@@ -6,7 +6,7 @@
     using System.Net;
     using System.Net.Sockets;
     using System.Threading;
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
     using System.Security.Cryptography.X509Certificates;
 #endif
 
@@ -231,7 +231,7 @@
             if (accepted == null)
                 return;
 
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
             if (epl.Secure && epl.Listener.Certificate == null)
             {
                 accepted.Dispose();

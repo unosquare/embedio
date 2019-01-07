@@ -13,7 +13,7 @@
     using Labs.EmbedIO;
     using Labs.EmbedIO.Constants;
     using Swan;
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
     using System.Net.Security;
 #endif
 
@@ -76,7 +76,7 @@
             IsClient = true;
 
             _message = Messagec;
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
             IsSecure = _uri.Scheme == "wss";
 #endif
             _waitTime = TimeSpan.FromSeconds(5);
@@ -91,7 +91,7 @@
             _message = Messages;
             WebSocketKey = new WebSocketKey(false);
 
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
             IsSecure = context.IsSecureConnection;
 #endif
             _stream = context.Stream;
@@ -198,7 +198,7 @@
         /// </value>
         public bool IsAlive => PingAsync().Result; // TODO: Change?
 
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
 /// <summary>
 /// Gets a value indicating whether the WebSocket connection is secure.
 /// </summary>
@@ -927,7 +927,7 @@
                 ReleaseClientResources();
 
                 _uri = uri;
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
                 IsSecure = uri.Scheme == "wss";
 #endif
 
@@ -957,7 +957,7 @@
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         private async Task SetClientStream()
         {
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
             _tcpClient = new TcpClient(_uri.DnsSafeHost, _uri.Port);
 #else
             _tcpClient = new TcpClient();
@@ -966,7 +966,7 @@
 #endif
             _stream = _tcpClient.GetStream();
 
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
             if (IsSecure)
             {
                 try

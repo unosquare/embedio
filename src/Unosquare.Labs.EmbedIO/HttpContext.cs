@@ -1,4 +1,4 @@
-﻿#if !NETSTANDARD1_3 && !UWP
+﻿#if !NETSTANDARD1_3
 namespace Unosquare.Labs.EmbedIO
 {
     using System.Security.Principal;

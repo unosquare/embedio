@@ -21,7 +21,7 @@
         {
             var mode = HttpListenerMode.EmbedIO;
 
-#if NET47
+#if NET472
             mode = HttpListenerMode.Microsoft;
 #endif
 
@@ -43,7 +43,7 @@
             {
                 case HttpListenerMode.EmbedIO:
                     return new Net.HttpListener(certificate);
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
                 case HttpListenerMode.Microsoft:
                     if (System.Net.HttpListener.IsSupported)
                         return new HttpListener(new System.Net.HttpListener());

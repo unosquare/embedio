@@ -10,7 +10,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using System.Reflection;
-#if NET47
+#if NET472
     using System.Net;
 #else
     using Net;

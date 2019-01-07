@@ -7,7 +7,7 @@
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
     using System.Net.Security;
     using System.Security.Cryptography.X509Certificates;
 #endif
@@ -33,7 +33,7 @@
         private LineState _lineState = LineState.None;
         private int _position;
 
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
         public HttpConnection(Socket sock, EndPointListener epl, X509Certificate cert)
 #else
         public HttpConnection(Socket sock, EndPointListener epl)
@@ -43,7 +43,7 @@
             _epl = epl;
             IsSecure = epl.Secure;
 
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
 
             if (!IsSecure)
             {
@@ -63,7 +63,7 @@
             Init();
         }
 
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
         internal X509Certificate2 ClientCertificate { get; }
 #endif
 
