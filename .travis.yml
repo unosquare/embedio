@@ -21,7 +21,7 @@ matrix:
       mono: none
       env: DOTNETCORE=1
 install:
-  - if [[ $DOTNETCORE == "1" ]]; then dotnet restore Unosquare.Labs.EmbedIO.sln; else msbuild /t:restore Unosquare.Labs.EmbedIO.sln; fi
+  - if [[ $DOTNETCORE == "1" ]]; then dotnet restore Unosquare.Labs.EmbedIO.sln; else msbuild /t:restore /p:TargetFrameworkVersion=v4.5.2 Unosquare.Labs.EmbedIO.sln; fi
   - if [[ $DOTNETCORE == "" ]]; then nuget install NUnit.ConsoleRunner -OutputDirectory testrunner; fi
 before_script:
   - if [[ $DOTNETCORE == "" ]]; then export LD_LIBRARY_PATH=/usr/local/lib; fi
