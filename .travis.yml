@@ -7,13 +7,13 @@ notifications:
 matrix:
   include:
     - os: linux
+      dist: xenial
       mono: latest
-      sudo: required
     - os: linux
+      dist: xenial
       dotnet: 2.2.101
       mono: none
       env: DOTNETCORE=1
-      dist: trusty
       sudo: false
     - os: osx
       osx_image: xcode9.1
