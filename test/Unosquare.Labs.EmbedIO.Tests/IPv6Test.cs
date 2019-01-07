@@ -16,11 +16,10 @@
             Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public async Task WithIpv6andAnyIP_ReturnsValid(bool useIPv6)
+        [Test]
+        public async Task WithUseIpv6_ReturnsValid()
         {
-            EndPointManager.UseIpv6 = useIPv6;
+            EndPointManager.UseIpv6 = true;
 
             var instance = new WebServer("http://*:8877");
             instance.OnAny((ctx, ct) => ctx.JsonResponseAsync(DateTime.Now, ct));
@@ -44,7 +43,7 @@
             EndPointManager.UseIpv6 = false;
         }
 
-        [TestCase]
+        [Test]
         public async Task WithIpv6Loopback_ReturnsValid()
         {
             if (Runtime.OS != Swan.OperatingSystem.Windows)

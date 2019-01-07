@@ -20,8 +20,7 @@
                     ws.RegisterModule(new WebApiModule());
                     ws.Module<WebApiModule>().RegisterController<TestLocalSessionController>();
                 },
-                Constants.RoutingStrategy.Wildcard,
-                false)
+                Constants.RoutingStrategy.Wildcard)
         {
         }
 
@@ -144,6 +143,7 @@
                 using (var handler = new HttpClientHandler())
                 {
                     handler.CookieContainer = new CookieContainer();
+
                     using (var client = new HttpClient(handler))
                     {
                         var request = new HttpRequestMessage(HttpMethod.Get,
