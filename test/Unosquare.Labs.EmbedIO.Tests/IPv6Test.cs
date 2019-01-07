@@ -21,7 +21,7 @@
         {
             EndPointManager.UseIpv6 = true;
 
-            var instance = new WebServer("http://*:8877");
+            var instance = new WebServer(new[] { "http://*:8877" }, Constants.RoutingStrategy.Regex, HttpListenerMode.EmbedIO);
             instance.OnAny((ctx, ct) => ctx.JsonResponseAsync(DateTime.Now, ct));
 
             instance.RunAsync();
@@ -49,9 +49,9 @@
             if (Runtime.OS != Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
-            var instance = new WebServer("http://[::1]:8877");
+            var instance = new WebServer(new[] { "http://[::1]:8877" }, Constants.RoutingStrategy.Regex, HttpListenerMode.EmbedIO);
             instance.OnAny((ctx, ct) => ctx.JsonResponseAsync(DateTime.Now, ct));
-            
+
             instance.RunAsync();
 
             using (var client = new HttpClient())
