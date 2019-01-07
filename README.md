@@ -50,10 +50,10 @@ Some notes regarding WebSocket and runtimes support:
 | Runtime | HTTP implementation | WebSocket support | Notes |
 | --- | --- | --- | --- |
 | NET452 | *Unosquare* and Microsoft | Yes | Support Win7+ OS, Linux and macOS.  |
-| NET47 | Unosquare and *Microsoft* | | Yes | Support Win8+ OS. |
+| NET472 | Unosquare and *Microsoft* | | Yes | Support Win8+ OS. |
 | NETSTANDARD13 | *Unosquare* | Yes | Support Windows, Linux and macOS using native System.Net library |
 | NETSTANDARD20 | Unosquare and *Microsoft* | Yes | Support Windows, Linux and macOS using native System.Net library |
-| UAP | *Unosquare* | No | Support Windows Universal Platform. |
+| UAP | *Unosquare* | No | Support Windows Universal Platform until version 2.1.1. |
 
 ### EmbedIO 2.0 - What's new
 
@@ -128,15 +128,12 @@ namespace Unosquare
                 // Beware that this is an in-memory session storage mechanism so, avoid storing very large objects.
                 // You can use the server.GetSession() method to get the SessionInfo object and manupulate it.
                 // You could potentially implement a distributed session module using something like Redis
-                server.RegisterModule(new LocalSessionModule());
+                server.WithLocalSession();
 
                 // Here we setup serving of static files
                 server.RegisterModule(new StaticFilesModule("c:/web"));
                 // The static files module will cache small files in ram until it detects they have been modified.
                 server.Module<StaticFilesModule>().UseRamCache = true;
-                server.Module<StaticFilesModule>().DefaultExtension = ".html";
-                // We don't need to add the line below. The default document is always index.html.
-                //server.Module<Modules.StaticFilesWebModule>().DefaultDocument = "index.html";
 
                 // Once we've registered our modules and configured them, we call the RunAsync() method.
                 server.RunAsync();

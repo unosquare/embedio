@@ -4,7 +4,6 @@
     using System;
     using System.Security.Cryptography.X509Certificates;
     using System.Net.Http;
-    using TestObjects;
     using NUnit.Framework;
     using System.Threading.Tasks;
 
@@ -13,9 +12,6 @@
     {
         private const string DefaultMessage = "HOLA";
         private const string HttpsUrl = "https://localhost:5555";
-
-        private readonly X509Certificate2 _certificate =
-            CertificateHelper.CreateOrLoadCertificate("temp.pfx", "localhost");
 
         [Test]
         public async Task OpenWebServerHttps_RetrievesIndex()
@@ -88,7 +84,7 @@
             var options = new WebServerOptions(HttpsUrl)
             {
                 AutoRegisterCertificate = true,
-                Certificate = _certificate,
+                Certificate = new X509Certificate2(),
             };
 
             Assert.Throws<InvalidOperationException>(() => new WebServer(options));
