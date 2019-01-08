@@ -1,26 +1,14 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
-    using Constants;
-    using EmbedIO;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
+    using Constants;
+    using EmbedIO;
     using Swan;
-
-    /// <summary>
-    /// A delegate that handles certain action in a module given a path and a verb.
-    /// </summary>
-    /// <returns><b>true</b> if the response was completed, otherwise. <b>false</b></returns>
-    internal delegate bool ResponseHandler();
-
-    /// <summary>
-    /// An async delegate that handles certain action in a module given a path and a verb.
-    /// </summary>
-    /// <returns>A task with <b>true</b> if the response was completed, otherwise. <b>false</b></returns>
-    internal delegate Task<bool> AsyncResponseHandler();
-
+    
     /// <summary>
     /// A very simple module to register class methods as handlers.
     /// Public instance methods that match the WebServerModule.ResponseHandler signature, and have the WebApi handler attribute
@@ -247,52 +235,5 @@
 
             return _delegateMap.ContainsKey(path);
         }
-    }
-
-    /// <inheritdoc />
-    /// <summary>
-    /// Inherit from this class and define your own Web API methods
-    /// You must RegisterController in the Web API Module to make it active.
-    /// </summary>
-    public abstract class WebApiController : IHttpContext
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiController"/> class.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        protected WebApiController(IHttpContext context)
-        {
-            Request = context.Request;
-            Response = context.Response;
-            WebServer = context.WebServer;
-        }
-
-        /// <inheritdoc />
-        public IHttpRequest Request { get; internal set; }
-
-        /// <inheritdoc />
-        public IHttpResponse Response { get; internal set; }
-
-        /// <inheritdoc />
-        public IWebServer WebServer { get; set; }
-
-        /// <inheritdoc />
-        public Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Sets the default headers to the Web API response.
-        /// By default will set:
-        ///
-        /// Expires - Mon, 26 Jul 1997 05:00:00 GMT
-        /// LastModified - (Current Date)
-        /// CacheControl - no-store, no-cache, must-revalidate
-        /// Pragma - no-cache
-        ///
-        /// Previous values are defined to avoid caching from client.
-        /// </summary>
-        public virtual void SetDefaultHeaders() => this.NoCache();
     }
 }

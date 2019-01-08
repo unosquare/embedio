@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
+    using System.Security.Cryptography.X509Certificates;
     using Constants;
     using System.Collections.Generic;
     using Swan;
@@ -7,7 +8,7 @@
     using System.Collections.ObjectModel;
     using System.Threading;
     using System.Threading.Tasks;
-#if NET47
+#if NET472
     using System.Net;
 #else
     using Net;
@@ -33,7 +34,7 @@
         /// network interfaces with HTTP protocol and default port (http://*:80/).
         /// </summary>
         public WebServer()
-            : this(new[] { "http://*/" })
+            : this(80)
         {
             // placeholder
         }
@@ -90,37 +91,67 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer" /> class.
         /// </summary>
-        /// <remarks>
-        /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/
-        /// Please notice the ending slash. -- It is important.
-        /// </remarks>
         /// <param name="urlPrefixes">The URL prefix.</param>
         /// <param name="routingStrategy">The routing strategy.</param>
         /// <param name="mode">The mode.</param>
         /// <exception cref="ArgumentException">Argument urlPrefix must be specified.</exception>
+        /// <remarks>
+        /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/
+        /// Please notice the ending slash. -- It is important.
+        /// </remarks>
         public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy, HttpListenerMode mode)
             : this(urlPrefixes, routingStrategy, HttpListenerFactory.Create(mode))
         {
             // placeholder
         }
 
+#if !NETSTANDARD1_3
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer" /> class.
         /// </summary>
+        /// <param name="urlPrefixes">The URL prefix.</param>
+        /// <param name="routingStrategy">The routing strategy.</param>
+        /// <param name="mode">The mode.</param>
+        /// <param name="certificate">The certificate.</param>
+        /// <exception cref="ArgumentException">Argument urlPrefix must be specified.</exception>
         /// <remarks>
         /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/
         /// Please notice the ending slash. -- It is important.
         /// </remarks>
+        public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy, HttpListenerMode mode, X509Certificate certificate)
+            : this(urlPrefixes, routingStrategy, HttpListenerFactory.Create(mode, certificate))
+        {
+            // placeholder
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebServer"/> class.
+        /// </summary>
+        /// <param name="options">The WebServer options.</param>
+        public WebServer(WebServerOptions options)
+        : this(options.UrlPrefixes, options.RoutingStrategy, HttpListenerFactory.Create(options.Mode, options.Certificate))
+        {
+            // temp placeholder
+        }
+#endif
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebServer" /> class.
+        /// </summary>
         /// <param name="urlPrefixes">The URL prefix.</param>
         /// <param name="routingStrategy">The routing strategy.</param>
         /// <param name="httpListener">The HTTP listener.</param>
         /// <exception cref="ArgumentException">Argument urlPrefix must be specified.</exception>
+        /// <remarks>
+        /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/
+        /// Please notice the ending slash. -- It is important.
+        /// </remarks>
         public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy, IHttpListener httpListener)
         {
             if (urlPrefixes == null || urlPrefixes.Length <= 0)
                 throw new ArgumentException("At least 1 URL prefix in urlPrefixes must be specified");
 
-            $"Running HTTPListener: {httpListener.GetType()}".Info(nameof(WebServer));
+            $"Running HTTPListener: {httpListener.Name}".Info(nameof(WebServer));
 
             RoutingStrategy = routingStrategy;
             Listener = httpListener;

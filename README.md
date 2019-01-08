@@ -21,6 +21,7 @@
     - [Fluent Example](#fluent-example)
     - [REST API Example](#rest-api-example)
     - [WebSockets Example](#websockets-example)
+    - [Support for SSL](#support-for-ssl)
 - [Related Projects and Nugets](#related-projects-and-nugets)
 - [Special Thanks](#special-thanks)
 
@@ -49,10 +50,10 @@ Some notes regarding WebSocket and runtimes support:
 | Runtime | HTTP implementation | WebSocket support | Notes |
 | --- | --- | --- | --- |
 | NET452 | *Unosquare* and Microsoft | Yes | Support Win7+ OS, Linux and macOS.  |
-| NET47 | Unosquare and *Microsoft* | | Yes | Support Win8+ OS. |
+| NET472 | Unosquare and *Microsoft* | | Yes | Support Win8+ OS. |
 | NETSTANDARD13 | *Unosquare* | Yes | Support Windows, Linux and macOS using native System.Net library |
 | NETSTANDARD20 | Unosquare and *Microsoft* | Yes | Support Windows, Linux and macOS using native System.Net library |
-| UAP | *Unosquare* | No | Support Windows Universal Platform. |
+| UAP | *Unosquare* | No | Support Windows Universal Platform until version 2.1.1. |
 
 ### EmbedIO 2.0 - What's new
 
@@ -94,7 +95,7 @@ PM> Install-Package EmbedIO
 
 ## Examples
 
-## Basic Example:
+### Basic Example
 
 Please note the comments are the important part here. More info is available in the samples.
 
@@ -127,15 +128,12 @@ namespace Unosquare
                 // Beware that this is an in-memory session storage mechanism so, avoid storing very large objects.
                 // You can use the server.GetSession() method to get the SessionInfo object and manupulate it.
                 // You could potentially implement a distributed session module using something like Redis
-                server.RegisterModule(new LocalSessionModule());
+                server.WithLocalSession();
 
                 // Here we setup serving of static files
                 server.RegisterModule(new StaticFilesModule("c:/web"));
                 // The static files module will cache small files in ram until it detects they have been modified.
                 server.Module<StaticFilesModule>().UseRamCache = true;
-                server.Module<StaticFilesModule>().DefaultExtension = ".html";
-                // We don't need to add the line below. The default document is always index.html.
-                //server.Module<Modules.StaticFilesWebModule>().DefaultDocument = "index.html";
 
                 // Once we've registered our modules and configured them, we call the RunAsync() method.
                 server.RunAsync();
@@ -158,7 +156,7 @@ namespace Unosquare
 }
 ```
 
-## Fluent Example:
+### Fluent Example
 
 Many extension methods are available. This allows you to create a web server instance in a fluent style by dotting in configuration options.
 
@@ -202,7 +200,7 @@ namespace Unosquare
 }
 ```
 
-## REST API Example:
+### REST API Example
 
 The WebApi module supports two routing strategies: Wildcard and Regex. By default, the WebApi module will use the **Regex Routing Strategy** trying to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API. 
 
@@ -302,7 +300,7 @@ public class PeopleController : WebApiController
 
 The `SetDefaultHeaders` method will add a no-cache policy to all Web API responses. If you plan to handle a differente policy or even custom headers to each different Web API method we recommend you override this method as you need.
 
-## WebSockets Example:
+### WebSockets Example
 
 *During server setup:*
 
@@ -364,6 +362,22 @@ public class WebSocketsChatServer : WebSocketsServer
     }
 }
 ```
+
+### Support for SSL
+
+Both HTTP listeners (Microsoft and Unosquare) can open a web server using SSL. This support is for Windows only (for now) and you need to manually register your certificate or use the `WebServerOptions` class to initialize a new `WebServer` instance. This section will provide some examples of how to use SSL but first a brief explanation of how SSL works on Windows.
+
+For Windows Vista or better, Microsoft provides Network Shell (`netsh`). This command line tool allows to map an IP-port to a certificate, so incoming HTTP request can upgrade the connection to a secure stream using the provided certificate. EmbedIO can read or register certificates to a default store (My/LocalMachine) and use them against a netsh `sslcert` for binding the first `https` prefix registered.
+
+For Windows XP and Mono, you can use manually the httpcfg for registering the binding.
+
+#### Using a PFX file and AutoRegister option
+
+The more practical case to use EmbedIO with SSL is the `AutoRegister` option. You need to create a `WebServerOptions` instance with the path to a PFX file and the `AutoRegister` flag on. This options will try to get or register the certificate to the default certificate store. Then it will use the certificate thumbprint to register with `netsh` the FIRST `https` prefix registered on the options.
+
+#### Using AutoLoad option
+
+If you already have a certificate on the default certificate store and the binding is also registered in `netsh`, you can use `Autoload` flag and optionally provide a certificate thumbprint. If the certificate thumbprint is not provided, EmbedIO will read the data from `netsh`. After getting successfully the certificate from the store, the raw data is passed to the WebServer.
 
 ## Related Projects and Nugets
 

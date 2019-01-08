@@ -13,6 +13,9 @@
     using Labs.EmbedIO;
     using Labs.EmbedIO.Constants;
     using Swan;
+#if !NETSTANDARD1_3
+    using System.Net.Security;
+#endif
 
     /// <summary>
     /// Implements the WebSocket interface.
@@ -40,9 +43,6 @@
         private volatile bool _inMessage;
         private string _origin;
         private AutoResetEvent _receivePong;
-#if SSL
-        private ClientSslConfiguration _sslConfig;
-#endif
         private Stream _stream;
         private TcpClient _tcpClient;
         private Uri _uri;
@@ -76,7 +76,7 @@
             IsClient = true;
 
             _message = Messagec;
-#if SSL
+#if !NETSTANDARD1_3
             IsSecure = _uri.Scheme == "wss";
 #endif
             _waitTime = TimeSpan.FromSeconds(5);
@@ -91,7 +91,7 @@
             _message = Messages;
             WebSocketKey = new WebSocketKey(false);
 
-#if SSL
+#if !NETSTANDARD1_3
             IsSecure = context.IsSecureConnection;
 #endif
             _stream = context.Stream;
@@ -198,7 +198,7 @@
         /// </value>
         public bool IsAlive => PingAsync().Result; // TODO: Change?
 
-#if SSL
+#if !NETSTANDARD1_3
 /// <summary>
 /// Gets a value indicating whether the WebSocket connection is secure.
 /// </summary>
@@ -257,44 +257,6 @@
 
         /// <inheritdoc />
         public WebSocketState State => _readyState;
-
-#if SSL
-        /// <summary>
-        /// Gets or sets the SSL configuration used to authenticate the server and
-        /// optionally the client for secure connection.
-        /// </summary>
-        /// <value>
-        /// A <see cref="ClientSslConfiguration"/> that represents the configuration used
-        /// to authenticate the server and optionally the client for secure connection,
-        /// or <see langword="null"/> if the <see cref="WebSocket"/> is used in a server.
-        /// </value>
-        public ClientSslConfiguration SslConfiguration
-        {
-            get
-            {
-                return _client
-                       ? (_sslConfig ?? (_sslConfig = new ClientSslConfiguration(_uri.DnsSafeHost)))
-                       : null;
-            }
-
-            set
-            {
-                lock (_forState)
-                {
-                    string msg;
-                    if (!checkIfAvailable(true, false, true, false, false, true, out msg))
-                    {
-                        Log.Error(msg);
-                        error("An error has occurred in setting the ssl configuration.", null);
-
-                        return;
-                    }
-
-                    _sslConfig = value;
-                }
-            }
-        }
-#endif
 
         /// <summary>
         /// Gets the WebSocket URL used to connect, or accepted.
@@ -965,7 +927,7 @@
                 ReleaseClientResources();
 
                 _uri = uri;
-#if SSL
+#if !NETSTANDARD1_3
                 IsSecure = uri.Scheme == "wss";
 #endif
 
@@ -995,7 +957,7 @@
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         private async Task SetClientStream()
         {
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
             _tcpClient = new TcpClient(_uri.DnsSafeHost, _uri.Port);
 #else
             _tcpClient = new TcpClient();
@@ -1004,28 +966,14 @@
 #endif
             _stream = _tcpClient.GetStream();
 
-#if SSL
-            if (_secure)
+#if !NETSTANDARD1_3
+            if (IsSecure)
             {
-                var conf = SslConfiguration;
-                var host = conf.TargetHost;
-                if (host != _uri.DnsSafeHost)
-                    throw new WebSocketException(
-                      CloseStatusCode.TlsHandshakeFailure, "An invalid host name is specified.");
-
                 try
                 {
-                    var sslStream = new SslStream(
-                      _stream,
-                      false,
-                      conf.ServerCertificateValidationCallback,
-                      conf.ClientCertificateSelectionCallback);
+                    var sslStream = new SslStream(_stream, false);
 
-                    sslStream.AuthenticateAsClient(
-                      host,
-                      conf.ClientCertificates,
-                      conf.EnabledSslProtocols,
-                      conf.CheckCertificateRevocation);
+                    sslStream.AuthenticateAsClient(_uri.DnsSafeHost);
 
                     _stream = sslStream;
                 }

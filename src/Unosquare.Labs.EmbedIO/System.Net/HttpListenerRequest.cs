@@ -8,8 +8,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using Labs.EmbedIO;
-#if SSL
-    using System.Security.Authentication.ExtendedProtection;
+#if !NETSTANDARD1_3
     using System.Security.Cryptography.X509Certificates;
 #endif
 
@@ -31,7 +30,7 @@
         private bool _kaSet;
         private bool _keepAlive;
 
-#if SSL
+#if !NETSTANDARD1_3
         delegate X509Certificate2 GccDelegate();
         GccDelegate _gccDelegate;
 #endif
@@ -50,29 +49,6 @@
         /// The accept types.
         /// </value>
         public string[] AcceptTypes { get; private set; }
-
-#if SSL
-        /// <summary>
-        /// Gets the client certificate error code.
-        /// </summary>
-        /// <value>
-        /// The client certificate error.
-        /// </value>
-        /// <exception cref="System.InvalidOperationException">No client certificate</exception>
-        public int ClientCertificateError
-        {
-            get
-            {
-                var cnc = _context.Connection;
-                if (cnc.ClientCertificate == null)
-                    throw new InvalidOperationException("No client certificate");
-                var errors = cnc.ClientCertificateErrors;
-                if (errors != null && errors.Length > 0)
-                    return errors[0];
-                return 0;
-            }
-        }
-#endif
 
         /// <inheritdoc />
         public Encoding ContentEncoding
@@ -142,7 +118,7 @@
         /// <inheritdoc />
         public bool IsLocal => LocalEndPoint?.Address?.Equals(RemoteEndPoint?.Address) ?? true;
 
-#if SSL
+#if !NETSTANDARD1_3
         /// <summary>
         /// Gets a value indicating whether this request is under a secure connection.
         /// </summary>
@@ -206,6 +182,9 @@
 
         /// <inheritdoc />
         public string UserAgent => Headers["user-agent"];
+
+        /// <inheritdoc />
+        public Guid RequestTraceIdentifier => Guid.NewGuid();
 
         public string UserHostAddress => LocalEndPoint.ToString();
 
@@ -488,7 +467,7 @@
             }
         }
 
-#if SSL
+#if !NETSTANDARD1_3
         /// <summary>
         /// Begins to the get client certificate asynchronously.
         /// </summary>
@@ -530,10 +509,7 @@
         /// Gets the client certificate asynchronously.
         /// </summary>
         /// <returns></returns>
-        public Task<X509Certificate2> GetClientCertificateAsync()
-        {
-            return Task<X509Certificate2>.Factory.FromAsync(BeginGetClientCertificate, EndGetClientCertificate, null);
-        }
+        public Task<X509Certificate2> GetClientCertificateAsync() => Task<X509Certificate2>.Factory.FromAsync(BeginGetClientCertificate, EndGetClientCertificate, null);
 #endif
     }
 

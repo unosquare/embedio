@@ -1,4 +1,6 @@
 (function () {
+    var protocolWs = document.location.protocol === 'https:' ? 'wss://' : 'ws://';
+
     angular.module('app.controllers', ['app.services', 'ngRoute'])
         .controller('TitleController', ['$scope', '$route', function ($scope, $route) {
             var me = this;
@@ -11,20 +13,14 @@
         .controller('PeopleController', ['$scope', 'PeopleApiService', function ($scope, peopleApiService) {
             var me = this;
             me.items = [];
-            var promise = peopleApiService.getAllPeopleAsync();
-            promise.then(
-                function (data) {
-                    me.items = data;
-                }, function (error) {
-                    alert(error);
-                });
+            peopleApiService.getAllPeopleAsync().then((data) => { me.items = data; }, alert);
         }])
         
         .controller('ChatController', ['$scope', function ($scope) {
             var me = this;
             me.nickName = 'Bob';
             me.message = '';
-            me.wsUri = 'ws://' + document.location.hostname + ':' + document.location.port + '/chat';
+            me.wsUri = protocolWs + document.location.hostname + ':' + document.location.port + '/chat';
             me.messages = [];
 
             me.websocket = new WebSocket(me.wsUri);
@@ -90,7 +86,7 @@
         .controller('CmdController', ['$scope', function ($scope) {
             var me = this;
             me.command = '';
-            me.wsUri = 'ws://' + document.location.hostname + ':' + document.location.port + '/terminal';
+            me.wsUri = protocolWs + document.location.hostname + ':' + document.location.port + '/terminal';
             me.commands = '';
 
             me.scrollBottom = function () {

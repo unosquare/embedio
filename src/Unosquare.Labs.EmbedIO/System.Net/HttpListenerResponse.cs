@@ -151,13 +151,8 @@
             }
         }
 
-        /// <summary>
-        /// Gets or sets the status description.
-        /// </summary>
-        /// <value>
-        /// The status description.
-        /// </value>
-        public string StatusDescription { get; set; } = "OK";
+        /// <inheritdoc />
+        public string StatusDescription { get; private set; } = "OK";
 
         internal CookieCollection CookieCollection
         {

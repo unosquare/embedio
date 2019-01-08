@@ -1,4 +1,4 @@
-﻿#if !NETSTANDARD1_3 && !UWP
+﻿#if !NETSTANDARD1_3
 namespace Unosquare.Labs.EmbedIO
 {
     using System;
@@ -75,6 +75,9 @@ namespace Unosquare.Labs.EmbedIO
             get => _response.ProtocolVersion;
             set => _response.ProtocolVersion = value;
         }
+
+        /// <inheritdoc />
+        public string StatusDescription => _response.StatusDescription;
 
         /// <inheritdoc />
         public void AddHeader(string headerName, string value) => _response.AddHeader(headerName, value);

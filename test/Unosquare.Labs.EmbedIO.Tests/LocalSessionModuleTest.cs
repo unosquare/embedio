@@ -12,9 +12,6 @@
     [TestFixture]
     public class LocalSessionModuleTest : FixtureBase
     {
-        protected WebServer WebServer;
-        protected TimeSpan WaitTimeSpan = TimeSpan.FromSeconds(1);
-
         public LocalSessionModuleTest()
             : base(ws =>
                 {
@@ -23,8 +20,7 @@
                     ws.RegisterModule(new WebApiModule());
                     ws.Module<WebApiModule>().RegisterController<TestLocalSessionController>();
                 },
-                Constants.RoutingStrategy.Wildcard,
-                false)
+                Constants.RoutingStrategy.Wildcard)
         {
         }
 
@@ -123,7 +119,7 @@
                         var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
                         await ValidateCookie(request, client, handler);
                         var content = handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl));
-                        await Task.Delay(WaitTimeSpan);
+                        await Task.Delay(TimeSpan.FromSeconds(1));
 
                         Task.WaitAll(
                             new[]
@@ -147,6 +143,7 @@
                 using (var handler = new HttpClientHandler())
                 {
                     handler.CookieContainer = new CookieContainer();
+
                     using (var client = new HttpClient(handler))
                     {
                         var request = new HttpRequestMessage(HttpMethod.Get,

@@ -1,33 +1,18 @@
 language: csharp
 solution: Unosquare.Labs.EmbedIO.Lib.sln
-rvm: 2.3
 notifications:
   email: false
   slack: unolabs:cbusXPH6pBwZ35rVDzi4k4ve
+dotnet: 2.2.101
+mono: latest
 matrix:
   include:
     - os: linux
-      mono: latest
-      sudo: required
-    - os: linux
-      dotnet: 2.1.300
-      mono: none
-      env: DOTNETCORE=1
-      dist: trusty
+      dist: xenial
       sudo: false
     - os: osx
       osx_image: xcode9.1
-      dotnet: 2.1.300
-      mono: none
-      env: DOTNETCORE=1
 install:
-  - if [[ $DOTNETCORE == "1" ]]; then dotnet restore Unosquare.Labs.EmbedIO.sln; else msbuild /t:restore Unosquare.Labs.EmbedIO.sln; fi
-  - if [[ $DOTNETCORE == "" ]]; then nuget install NUnit.ConsoleRunner -OutputDirectory testrunner; fi
-before_script:
-  - if [[ $DOTNETCORE == "" ]]; then export LD_LIBRARY_PATH=/usr/local/lib; fi
-  - if [[ $DOTNETCORE == "" && $TRAVIS_OS_NAME = "linux" ]]; then sed -i 's/uap10.0;netstandard1.3;net452;net47;netstandard2.0/net452/g' ./src/Unosquare.Labs.EmbedIO/Unosquare.Labs.EmbedIO.csproj; fi
-  - if [[ $DOTNETCORE == "" && $TRAVIS_OS_NAME = "linux" ]]; then sed -i 's/netcoreapp2.1;net452/net452/g' ./src/Unosquare.Labs.EmbedIO.Samples/Unosquare.Labs.EmbedIO.Samples.csproj; fi
-  - if [[ $DOTNETCORE == "" && $TRAVIS_OS_NAME = "linux" ]]; then sed -i 's/net452;net47;netcoreapp2.1/net452/g' ./test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj; fi
+  - dotnet restore Unosquare.Labs.EmbedIO.sln
 script:
-  - if [[ $DOTNETCORE == "" ]]; then msbuild Unosquare.Labs.EmbedIO.sln /p:Configuration=Release; else dotnet test ./test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f netcoreapp2.1; fi
-  - if [[ $DOTNETCORE == "" ]]; then mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe --process=Single ./test/Unosquare.Labs.EmbedIO.Tests/bin/Release/net452/Unosquare.Labs.EmbedIO.Tests.dll; fi
+  - dotnet test ./test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f netcoreapp2.1

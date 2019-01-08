@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.1;net452</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.2;net452</TargetFrameworks>
     <AssemblyName>Unosquare.Labs.EmbedIO.Samples</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>Unosquare.Labs.EmbedIO.Samples</PackageId>
-    <LangVersion>7.2</LangVersion>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -6,9 +6,8 @@
     using System.Net;
     using System.Net.Sockets;
     using System.Threading;
-#if SSL
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Cryptography;
+#if !NETSTANDARD1_3
+    using System.Security.Cryptography.X509Certificates;
 #endif
 
     internal sealed class EndPointListener
@@ -19,30 +18,16 @@ using System.Security.Cryptography;
         private Dictionary<ListenerPrefix, HttpListener> _prefixes;
         private List<ListenerPrefix> _unhandled; // unhandled; host = '*'
         private List<ListenerPrefix> _all; //  all;  host = '+       
-#if SSL
-        private bool _secure = false;
-        private X509Certificate _cert = null;
-#endif
 
-        public EndPointListener(HttpListener listener, IPAddress addr, int port, bool secure = false)
+        public EndPointListener(HttpListener listener, IPAddress address, int port, bool secure)
         {
             Listener = listener;
-
-            if (secure)
-            {
-#if SSL
-                _secure = secure;
-				_cert = listener.LoadCertificateAndKey (addr, port);
-#else
-                throw new ArgumentException("SSL is not supported");
-#endif
-            }
-
-            _endpoint = new IPEndPoint(addr, port);
-            _sock = new Socket(addr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            Secure = secure;
+            _endpoint = new IPEndPoint(address, port);
+            _sock = new Socket(address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             _sock.Bind(_endpoint);
             _sock.Listen(500);
-            var args = new SocketAsyncEventArgs {UserToken = this};
+            var args = new SocketAsyncEventArgs { UserToken = this };
             args.Completed += OnAccept;
             Socket dummy = null;
             Accept(_sock, args, ref dummy);
@@ -51,6 +36,8 @@ using System.Security.Cryptography;
         }
 
         internal HttpListener Listener { get; }
+
+        internal bool Secure { get; }
 
         public bool BindContext(HttpListenerContext context)
         {
@@ -238,19 +225,20 @@ using System.Security.Cryptography;
             if (args.SocketError == SocketError.Success)
                 accepted = args.AcceptSocket;
 
-            var epl = (EndPointListener) args.UserToken;
+            var epl = (EndPointListener)args.UserToken;
 
             Accept(epl._sock, args, ref accepted);
             if (accepted == null)
                 return;
 
-#if SSL
-            if (epl._secure && epl._cert == null)
+#if !NETSTANDARD1_3
+            if (epl.Secure && epl.Listener.Certificate == null)
             {
                 accepted.Dispose();
                 return;
             }
-            var conn = new HttpConnection(accepted, epl, epl._secure, epl._cert);
+
+            var conn = new HttpConnection(accepted, epl, epl.Listener.Certificate);
 #else
             var conn = new HttpConnection(accepted, epl);
 #endif

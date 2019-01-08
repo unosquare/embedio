@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using System.Threading.Tasks;
+    using System.Security.Principal;
 
     /// <summary>
     /// Represents a Test Http Context.
@@ -24,6 +25,9 @@
         
         /// <inheritdoc />
         public IHttpResponse Response { get; } = new TestHttpResponse();
+
+        /// <inheritdoc />
+        public IPrincipal User { get; }
 
         /// <inheritdoc />
         public IWebServer WebServer { get; set; }

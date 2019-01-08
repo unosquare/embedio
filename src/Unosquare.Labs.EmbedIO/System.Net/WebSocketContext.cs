@@ -9,8 +9,8 @@
     /// Provides the properties used to access the information in
     /// a WebSocket handshake request received by the <see cref="HttpListener" />.
     /// </summary>
-    /// <seealso cref="Unosquare.Labs.EmbedIO.IWebSocketContext" />
-    public class WebSocketContext 
+    /// <seealso cref="IWebSocketContext" />
+    public class WebSocketContext
         : IWebSocketContext
     {
         private readonly HttpListenerContext _context;
@@ -46,12 +46,7 @@
         /// <value>
         /// <c>true</c> if the connection is secured; otherwise, <c>false</c>.
         /// </value>
-        public bool IsSecureConnection => 
-#if SSL 
-            _context.Connection.IsSecure;
-#else
-            false;
-#endif
+        public bool IsSecureConnection => _context.Connection.IsSecure;
 
         /// <summary>
         /// Gets a value indicating whether the request is a WebSocket handshake request.

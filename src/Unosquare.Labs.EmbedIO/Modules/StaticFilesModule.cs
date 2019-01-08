@@ -13,7 +13,7 @@
     using Swan;
     using System.Threading;
     using System.Threading.Tasks;
-#if NET47
+#if NET472
     using System.Net;
 #else
     using Net;

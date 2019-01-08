@@ -4,7 +4,7 @@
     using Modules;
     using System;
     using System.Collections.Generic;
-#if !NETSTANDARD1_3 && !UWP
+#if !NETSTANDARD1_3
     using Swan;
     using System.Linq;
     using System.Reflection;
@@ -75,7 +75,7 @@
             return webserver;
         }
 
-#if !NETSTANDARD1_3 && !UWP 
+#if !NETSTANDARD1_3 
         /// <summary>
         /// Add WebApiModule to WebServer.
         /// </summary>

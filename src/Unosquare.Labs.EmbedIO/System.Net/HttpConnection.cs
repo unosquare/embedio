@@ -7,8 +7,9 @@
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-#if SSL
-using System.Security.Cryptography.X509Certificates;
+#if !NETSTANDARD1_3
+    using System.Net.Security;
+    using System.Security.Cryptography.X509Certificates;
 #endif
 
     internal sealed class HttpConnection
@@ -32,43 +33,28 @@ using System.Security.Cryptography.X509Certificates;
         private LineState _lineState = LineState.None;
         private int _position;
 
-#if SSL
-        private X509Certificate _cert;
-        IMonoSslStream ssl_stream;
-#endif
-
-#if SSL
-        public HttpConnection(Socket sock, EndPointListener epl, bool secure, X509Certificate cert)
+#if !NETSTANDARD1_3
+        public HttpConnection(Socket sock, EndPointListener epl, X509Certificate cert)
 #else
         public HttpConnection(Socket sock, EndPointListener epl)
 #endif
         {
             _sock = sock;
             _epl = epl;
+            IsSecure = epl.Secure;
 
-#if SSL
-            IsSecure = secure;
+#if !NETSTANDARD1_3
 
-            if (!secure)
+            if (!IsSecure)
             {
                 Stream = new NetworkStream(sock, false);
             }
             else
-            {                
-            _cert = cert;
+            {
+                var sslStream = new SslStream(new NetworkStream(sock, false), true);
+                sslStream.AuthenticateAsServerAsync(cert).GetAwaiter().GetResult();
 
-                ssl_stream = epl.Listener.CreateSslStream(new NetworkStream(sock, false), false, (t, c, ch, e) =>
-                {
-                    if (c == null)
-                        return true;
-                    var c2 = c as X509Certificate2;
-                    if (c2 == null)
-                        c2 = new X509Certificate2(c.GetRawCertData());
-                    client_cert = c2;
-                    client_cert_errors = new int[] { (int)e };
-                    return true;
-                });
-                stream = ssl_stream.AuthenticatedStream;
+                Stream = sslStream;
             }
 #else
             Stream = new NetworkStream(sock, false);
@@ -77,9 +63,7 @@ using System.Security.Cryptography.X509Certificates;
             Init();
         }
 
-#if SSL
-        internal int[] ClientCertificateErrors { get; }
-
+#if !NETSTANDARD1_3
         internal X509Certificate2 ClientCertificate { get; }
 #endif
 
@@ -91,9 +75,8 @@ using System.Security.Cryptography.X509Certificates;
 
         public IPEndPoint RemoteEndPoint => (IPEndPoint)_sock?.RemoteEndPoint;
 
-#if SSL
         public bool IsSecure { get; }
-#endif
+
         public ListenerPrefix Prefix { get; set; }
 
         public async Task BeginReadRequest()
@@ -123,7 +106,7 @@ using System.Security.Cryptography.X509Certificates;
             if (_iStream != null) return _iStream;
 
             var buffer = _ms.ToArray();
-            var length = (int) _ms.Length;
+            var length = (int)_ms.Length;
             _ms = null;
 
             _iStream = new RequestStream(Stream, buffer, _position, length - _position, contentLength);
@@ -184,15 +167,9 @@ using System.Security.Cryptography.X509Certificates;
             Unbind();
             RemoveConnection();
         }
-        
+
         private void Init()
         {
-#if SSL
-            if (ssl_stream != null)
-            {
-                ssl_stream.AuthenticateAsServer(cert, true, (SslProtocols)ServicePointManager.SecurityProtocol, false);
-            }
-#endif
             _contextBound = false;
             _iStream = null;
             _oStream = null;
@@ -406,7 +383,7 @@ using System.Security.Cryptography.X509Certificates;
 
             RemoveConnection();
         }
-        
+
         private enum InputState
         {
             RequestLine,

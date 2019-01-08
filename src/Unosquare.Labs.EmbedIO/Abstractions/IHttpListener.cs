@@ -35,6 +35,14 @@
         bool IsListening { get; }
 
         /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        string Name { get; }
+
+        /// <summary>
         /// Starts this listener.
         /// </summary>
         void Start();
