@@ -1,30 +1,18 @@
 language: csharp
 solution: Unosquare.Labs.EmbedIO.Lib.sln
-rvm: 2.3
 notifications:
   email: false
   slack: unolabs:cbusXPH6pBwZ35rVDzi4k4ve
+dotnet: 2.2.101
+mono: latest
 matrix:
   include:
     - os: linux
       dist: xenial
-      mono: latest
-    - os: linux
-      dist: xenial
-      dotnet: 2.2.101
-      mono: none
-      env: DOTNETCORE=1
       sudo: false
     - os: osx
       osx_image: xcode9.1
-      dotnet: 2.2.100
-      mono: none
-      env: DOTNETCORE=1
 install:
-  - if [[ $DOTNETCORE == "1" ]]; then dotnet restore Unosquare.Labs.EmbedIO.sln; else msbuild /t:restore /p:TargetFrameworkVersion=v4.5.2 Unosquare.Labs.EmbedIO.sln; fi
-  - if [[ $DOTNETCORE == "" ]]; then nuget install NUnit.ConsoleRunner -OutputDirectory testrunner; fi
-before_script:
-  - if [[ $DOTNETCORE == "" ]]; then export LD_LIBRARY_PATH=/usr/local/lib; fi
+  - dotnet restore Unosquare.Labs.EmbedIO.sln
 script:
-  - if [[ $DOTNETCORE == "" ]]; then msbuild Unosquare.Labs.EmbedIO.sln /p:TargetFrameworkVersion=v4.5.2;Configuration=Release; else dotnet test ./test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f netcoreapp2.2; fi
-  - if [[ $DOTNETCORE == "" ]]; then mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe --process=Single ./test/Unosquare.Labs.EmbedIO.Tests/bin/Release/net452/Unosquare.Labs.EmbedIO.Tests.dll; fi
+  - dotnet test ./test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f netcoreapp2.2
