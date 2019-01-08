@@ -1,0 +1,516 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Overview | Unosquare EmbedIO </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Overview | Unosquare EmbedIO ">
+    <meta name="generator" content="docfx 2.40.7.0">
+    
+    <link rel="shortcut icon" href="src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/bootstrap.min.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="logo" src="best-practices/resources/images/unosquare_logo.svg" alt="Unosquare">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+
+<p><a href="https://app.codacy.com/app/UnosquareLabs/embedio?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=unosquare/embedio&amp;utm_campaign=Badge_Grade_Settings"><img src="https://api.codacy.com/project/badge/Grade/e24c50205c4e486dbbe2b734a790b751" alt="Codacy Badge"></a>
+ <a href="https://github.com/igrigorik/ga-beacon"><img src="https://ga-beacon.appspot.com/UA-8535255-2/unosquare/embedio/" alt="Analytics"></a>
+ <a href="https://ci.appveyor.com/project/geoperez/embedio"><img src="https://ci.appveyor.com/api/projects/status/w59t7sct3a8ir96t?svg=true" alt="Build status"></a>
+ <a href="https://travis-ci.org/unosquare/embedio"><img src="https://travis-ci.org/unosquare/embedio.svg?branch=master" alt="Build Status"></a>
+ <a href="https://www.nuget.org/packages/Embedio"><img src="https://badge.fury.io/nu/embedio.svg" alt="NuGet version"></a>
+ <a href="https://www.nuget.org/packages/Embedio"><img src="https://img.shields.io/nuget/dt/embedio.svg" alt="NuGet"></a>
+<a href="https://coveralls.io/r/unosquare/embedio?branch=master"><img src="https://coveralls.io/repos/unosquare/embedio/badge.svg?branch=master" alt="Coverage Status"></a></p>
+<p><img src="http://unosquare.github.io/embedio/images/embedio.png" alt="EmbedIO"></p>
+<p><em><span class="emoji" shortcode="star">⭐</span> Please star this project if you find it useful!</em></p>
+<p><strong>This README is for EmbedIO v2.x. Click <a href="https://github.com/unosquare/embedio/tree/v1.X">here</a> if you are using EmbedIO v1.x.</strong></p>
+<ul>
+<li><a href="#overview">Overview</a><ul>
+<li><a href="#embedio-20---whats-new">EmbedIO 2.0 - What&#39;s new</a></li>
+<li><a href="#some-usage-scenarios">Some usage scenarios</a></li>
+</ul>
+</li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#examples">Examples</a><ul>
+<li><a href="#basic-example">Basic Example</a></li>
+<li><a href="#fluent-example">Fluent Example</a></li>
+<li><a href="#rest-api-example">REST API Example</a></li>
+<li><a href="#websockets-example">WebSockets Example</a></li>
+<li><a href="#support-for-ssl">Support for SSL</a></li>
+</ul>
+</li>
+<li><a href="#related-projects-and-nugets">Related Projects and Nugets</a></li>
+<li><a href="#special-thanks">Special Thanks</a></li>
+</ul>
+<h2 id="overview">Overview</h2>
+<p>A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework and .NET Core.</p>
+<ul>
+<li>Written entirely in C#, using our helpful library <a href="https://github.com/unosquare/swan">SWAN</a></li>
+<li>Network operations use the async/await pattern: Responses are handled asynchronously</li>
+<li>Multiple implementations support: EmbedIO can use Microsoft <code>HttpListener</code> or internal Http Listener based on <a href="https://www.mono-project.com/">Mono</a>/<a href="https://github.com/sta/websocket-sharp/">websocket-sharp</a> projects</li>
+<li>Cross-platform: tested on multiple OS and runtimes. From Windows .NET Framework to Linux MONO.</li>
+<li>Extensible: Write your own modules -- For example, video streaming, UPnP, etc. Check out <a href="https://github.com/unosquare/embedio-extras">EmbedIO Extras</a> for additional modules</li>
+<li>Small memory footprint</li>
+<li>Create REST APIs quickly with the out-of-the-box Web API module</li>
+<li>Serve static or embedded files with 1 line of code (also out-of-the-box)</li>
+<li>Handle sessions with the built-in LocalSessionWebModule</li>
+<li>WebSockets support</li>
+<li>CORS support. Origin, Header and Method validation with OPTIONS preflight</li>
+<li>Supports HTTP 206 Partial Content</li>
+<li>Support <a href="https://github.com/unosquare/embedio/tree/master/src/EmbedIO.Forms.Sample">Xamarin Forms</a></li>
+<li>And many more options in the same package</li>
+</ul>
+<p>Some notes regarding WebSocket and runtimes support:</p>
+<table>
+<thead>
+<tr>
+<th>Runtime</th>
+<th>HTTP implementation</th>
+<th>WebSocket support</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NET452</td>
+<td><em>Unosquare</em> and Microsoft</td>
+<td>Yes</td>
+<td>Support Win7+ OS, Linux and macOS.</td>
+</tr>
+<tr>
+<td>NET472</td>
+<td>Unosquare and <em>Microsoft</em></td>
+<td>Yes</td>
+<td>Support Win8+ OS.</td>
+</tr>
+<tr>
+<td>NETSTANDARD13</td>
+<td><em>Unosquare</em></td>
+<td>Yes</td>
+<td>Support Windows, Linux and macOS using native System.Net library</td>
+</tr>
+<tr>
+<td>NETSTANDARD20</td>
+<td>Unosquare and <em>Microsoft</em></td>
+<td>Yes</td>
+<td>Support Windows, Linux and macOS using native System.Net library</td>
+</tr>
+<tr>
+<td>UAP</td>
+<td><em>Unosquare</em></td>
+<td>No</td>
+<td>Support Windows Universal Platform until version 2.1.1.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="embedio-20---whats-new">EmbedIO 2.0 - What&#39;s new</h3>
+<h4 id="breaking-changes">Breaking changes</h4>
+<ul>
+<li><code>WebApiController</code> is renewed. Reduce the methods overhead removing the WebServer and Context arguments. See examples below.</li>
+<li><code>RoutingStrategy.Regex</code> is the default routing scheme.</li>
+</ul>
+<h4 id="additional-changes">Additional changes</h4>
+<ul>
+<li><code>IHttpListener</code> is runtime/platform independent, you can choose Unosquare <code>HttpListener</code> implementation with NET47 or NETSTANDARD20. This separation of implementations brings new access to interfaces from common Http objects like <code>IHttpRequest</code>, <code>IHttpContext</code> and more.</li>
+<li><code>IWebServer</code> is a new interface to create custom web server implementation, like a Test Web Server where all the operations are in-memory to speed up unit testing. Similar to <a href="https://msdn.microsoft.com/en-us/library/microsoft.owin.testing.testserver(v=vs.113).aspx">TestServer from OWIN</a></li>
+<li>General improvements in how the Unosquare <code>HttpListner</code> is working and code clean-up.</li>
+</ul>
+<p><em>Note</em> - We encourage to upgrade to the newest EmbedIO version. Branch version 1.X will no longer be maintained, and issues will be tested against 2.X and resolved just there.</p>
+<h3 id="some-usage-scenarios">Some usage scenarios:</h3>
+<ul>
+<li>Write a cross-platform GUI entirely using React/AngularJS/Vue.js or any Javascript framework</li>
+<li>Write a game using Babylon.js and make EmbedIO your serve your code and assets</li>
+<li>Create GUIs for Windows services or Linux daemons</li>
+<li>Works well with <a href="https://github.com/unosquare/litelib">LiteLib</a> - add SQLite support in minutes!</li>
+<li>Write client applications with real-time communication between them using WebSockets</li>
+<li>Write internal web server for <a href="https://github.com/unosquare/embedio/tree/master/src/EmbedIO.Forms.Sample">Xamarin Forms</a> applications</li>
+</ul>
+<h2 id="installation">Installation:</h2>
+<p>You can start using EmbedIO by just downloading the nuget.</p>
+<h3 id="package-manager">Package Manager</h3>
+<pre><code>PM&gt; Install-Package EmbedIO
+</code></pre><h3 id="net-cli">.NET CLI</h3>
+<pre><code>&gt; dotnet add package EmbedIO
+</code></pre><h2 id="examples">Examples</h2>
+<h3 id="basic-example">Basic Example</h3>
+<p>Please note the comments are the important part here. More info is available in the samples.</p>
+<pre><code class="lang-csharp">namespace Unosquare
+{
+    using System;
+    using Unosquare.Labs.EmbedIO;
+    using Unosquare.Labs.EmbedIO.Modules;
+
+    class Program
+    {
+        /// &lt;summary&gt;
+        /// Defines the entry point of the application.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;args&quot;&gt;The arguments.&lt;/param&gt;
+        static void Main(string[] args)
+        {
+            var url = &quot;http://localhost:9696/&quot;;
+            if (args.Length &gt; 0)
+                url = args[0];
+
+            // Our web server is disposable.
+            using (var server = new WebServer(url))
+            {
+                // First, we will configure our web server by adding Modules.
+                // Please note that order DOES matter.
+                // ================================================================================================
+                // If we want to enable sessions, we simply register the LocalSessionModule
+                // Beware that this is an in-memory session storage mechanism so, avoid storing very large objects.
+                // You can use the server.GetSession() method to get the SessionInfo object and manupulate it.
+                // You could potentially implement a distributed session module using something like Redis
+                server.WithLocalSession();
+
+                // Here we setup serving of static files
+                server.RegisterModule(new StaticFilesModule(&quot;c:/web&quot;));
+                // The static files module will cache small files in ram until it detects they have been modified.
+                server.Module&lt;StaticFilesModule&gt;().UseRamCache = true;
+
+                // Once we&#39;ve registered our modules and configured them, we call the RunAsync() method.
+                server.RunAsync();
+
+                // Fire up the browser to show the content if we are debugging!
+#if DEBUG
+                var browser = new System.Diagnostics.Process()
+                {
+                    StartInfo = new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true }
+                };
+                browser.Start();
+#endif
+                // Wait for any key to be pressed before disposing of our web server.
+                // In a service, we&#39;d manage the lifecycle of our web server using
+                // something like a BackgroundWorker or a ManualResetEvent.
+                Console.ReadKey(true);
+            }
+        }
+    }
+}
+</code></pre><h3 id="fluent-example">Fluent Example</h3>
+<p>Many extension methods are available. This allows you to create a web server instance in a fluent style by dotting in configuration options.</p>
+<pre><code class="lang-csharp">namespace Unosquare
+{
+    using System;
+    using Unosquare.Labs.EmbedIO;
+
+    internal class Program
+    {
+        /// &lt;summary&gt;
+        /// Defines the entry point of the application.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;args&quot;&gt;The arguments.&lt;/param&gt;
+        private static void Main(string[] args)
+        {
+            var url = &quot;http://localhost:9696/&quot;;
+            if (args.Length &gt; 0)
+                url = args[0];
+
+            // Create Webserver and attach LocalSession and Static
+            // files module and CORS enabled
+            var server = WebServer
+                .Create(url)
+                .EnableCors()
+                .WithLocalSession()
+                .WithStaticFolderAt(&quot;c:/web&quot;);
+
+            var cts = new CancellationTokenSource();
+            var task = server.RunAsync(cts.Token);
+
+            Console.ReadKey(true);
+            cts.Cancel();
+
+            // Wait before dispose server
+            task.Wait();
+            server.Dispose();
+        }
+    }
+}
+</code></pre><h3 id="rest-api-example">REST API Example</h3>
+<p>The WebApi module supports two routing strategies: Wildcard and Regex. By default, the WebApi module will use the <strong>Regex Routing Strategy</strong> trying to match and resolve the values from a route template, in a similar fashion to Microsoft&#39;s Web API. </p>
+<p>A method with the following route <code>/api/people/{id}</code> is going to match any request URL with three segments: the first two <code>api</code> and <code>people</code> and the last 
+one is going to be parsed or converted to the type in the <code>id</code> argument of the handling method signature. Please read on if this was confusing as it is 
+much simpler than it sounds. Additionally, you can put multiple values to match, for example <code>/api/people/{mainSkill}/{age}</code>, and receive the 
+parsed values from the URL straight into the arguments of your handler method.</p>
+<p>During server setup:</p>
+<pre><code class="lang-csharp">var server =  new WebServer(&quot;http://localhost:9696/&quot;, RoutingStrategy.Regex);
+
+server.RegisterModule(new WebApiModule());
+server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;();
+</code></pre><p>And our controller class (using default Regex Strategy) looks like:</p>
+<pre><code class="lang-csharp">public class PeopleController : WebApiController
+{
+    public PeopleController(IHttpContext context)
+    : base(context)
+    {
+    }
+
+    [WebApiHandler(HttpVerbs.Get, &quot;/api/people/{id}&quot;)]
+    public bool GetPeople(int id)
+    {
+        try
+        {
+            if (People.Any(p =&gt; p.Key == id))
+            {
+                return this.JsonResponse(People.FirstOrDefault(p =&gt; p.Key == id));
+            }
+        }
+        catch (Exception ex)
+        {
+            return this.JsonExceptionResponse(ex);
+        }
+    }
+
+    // You can override the default headers and add custom headers to each API Response.
+    public override void SetDefaultHeaders() =&gt; this.NoCache();
+}
+</code></pre><p>The previous default strategy (Wildcard) matches routes using the asterisk <code>*</code> character in the route. <strong>For example:</strong> </p>
+<ul>
+<li>The route <code>/api/people/*</code> will match any request with a URL starting with the two first URL segments <code>api</code> and 
+<code>people</code> and ending with anything. The route <code>/api/people/hello</code> will be matched.</li>
+<li>You can also use wildcards in the middle of the route. The route <code>/api/people/*/details</code> will match requests 
+starting with the two first URL segments <code>api</code> and <code>people</code>, and end with a <code>details</code> segment. The route <code>/api/people/hello/details</code> will be matched. </li>
+</ul>
+<p>During server setup:</p>
+<pre><code class="lang-csharp">var server =  new WebServer(&quot;http://localhost:9696/&quot;, RoutingStrategy.Regex);
+
+server.RegisterModule(new WebApiModule());
+server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;();
+</code></pre><pre><code class="lang-csharp">public class PeopleController : WebApiController
+{
+    public PeopleController(IHttpContext context)
+    : base(context)
+    {
+    }
+
+    [WebApiHandler(HttpVerbs.Get, &quot;/api/people/*&quot;)]
+    public bool GetPeople()
+    {
+        try
+        {
+            var lastSegment = this.Request.Url.Segments.Last();
+            if (lastSegment.EndsWith(&quot;/&quot;))
+                return this.JsonResponse(People);
+
+            int key = 0;
+            if (int.TryParse(lastSegment, out key) &amp;&amp; People.Any(p =&gt; p.Key == key))
+            {
+                return this.JsonResponse(People.FirstOrDefault(p =&gt; p.Key == key));
+            }
+
+            throw new KeyNotFoundException(&quot;Key Not Found: &quot; + lastSegment);
+        }
+        catch (Exception ex)
+        {
+            return this.JsonExceptionResponse(ex);
+        }
+    }
+}
+</code></pre><p>The <code>SetDefaultHeaders</code> method will add a no-cache policy to all Web API responses. If you plan to handle a differente policy or even custom headers to each different Web API method we recommend you override this method as you need.</p>
+<h3 id="websockets-example">WebSockets Example</h3>
+<p><em>During server setup:</em></p>
+<pre><code class="lang-csharp">server.RegisterModule(new WebSocketsModule());
+server.Module&lt;WebSocketsModule&gt;().RegisterWebSocketsServer&lt;WebSocketsChatServer&gt;(&quot;/chat&quot;);
+</code></pre><p><em>And our web sockets server class looks like:</em></p>
+<pre><code class="lang-csharp">
+/// &lt;summary&gt;
+/// Defines a very simple chat server
+/// &lt;/summary&gt;
+public class WebSocketsChatServer : WebSocketsServer
+{
+    public WebSocketsChatServer()
+        : base(true)
+    {
+        // placeholder
+    }
+
+    public override string ServerName =&gt; &quot;Chat Server&quot;
+
+    protected override void OnMessageReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
+    {
+        var session = this.WebServer.GetSession(context);
+
+        foreach (var ws in this.WebSockets)
+        {
+            if (ws != context)
+                this.Send(ws, rxBuffer.ToText());
+        }
+    }
+
+    protected override void OnClientConnected(
+            IWebSocketContext context,
+            System.Net.IPEndPoint localEndPoint,
+            System.Net.IPEndPoint remoteEndPoint)
+    {
+        this.Send(context, &quot;Welcome to the chat room!&quot;);
+
+        foreach (var ws in this.WebSockets)
+        {
+            if (ws != context)
+                this.Send(ws, &quot;Someone joined the chat room.&quot;);
+        }
+    }
+
+    protected override void OnFrameReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
+    {
+        // placeholder
+    }
+
+    protected override void OnClientDisconnected(IWebSocketContext context)
+    {
+        this.Broadcast(&quot;Someone left the chat room.&quot;);
+    }
+}
+</code></pre><h3 id="support-for-ssl">Support for SSL</h3>
+<p>Both HTTP listeners (Microsoft and Unosquare) can open a web server using SSL. This support is for Windows only (for now) and you need to manually register your certificate or use the <code>WebServerOptions</code> class to initialize a new <code>WebServer</code> instance. This section will provide some examples of how to use SSL but first a brief explanation of how SSL works on Windows.</p>
+<p>For Windows Vista or better, Microsoft provides Network Shell (<code>netsh</code>). This command line tool allows to map an IP-port to a certificate, so incoming HTTP request can upgrade the connection to a secure stream using the provided certificate. EmbedIO can read or register certificates to a default store (My/LocalMachine) and use them against a netsh <code>sslcert</code> for binding the first <code>https</code> prefix registered.</p>
+<p>For Windows XP and Mono, you can use manually the httpcfg for registering the binding.</p>
+<h4 id="using-a-pfx-file-and-autoregister-option">Using a PFX file and AutoRegister option</h4>
+<p>The more practical case to use EmbedIO with SSL is the <code>AutoRegister</code> option. You need to create a <code>WebServerOptions</code> instance with the path to a PFX file and the <code>AutoRegister</code> flag on. This options will try to get or register the certificate to the default certificate store. Then it will use the certificate thumbprint to register with <code>netsh</code> the FIRST <code>https</code> prefix registered on the options.</p>
+<h4 id="using-autoload-option">Using AutoLoad option</h4>
+<p>If you already have a certificate on the default certificate store and the binding is also registered in <code>netsh</code>, you can use <code>Autoload</code> flag and optionally provide a certificate thumbprint. If the certificate thumbprint is not provided, EmbedIO will read the data from <code>netsh</code>. After getting successfully the certificate from the store, the raw data is passed to the WebServer.</p>
+<h2 id="related-projects-and-nugets">Related Projects and Nugets</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Author</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.nuget.org/packages/Butterfly.EmbedIO/">Butterfly.EmbedIO</a></td>
+<td>Fireshark Studios, LLC</td>
+<td>Implementation of Butterfly.Core.Channel and Butterfly.Core.WebApi using the EmbedIO server</td>
+</tr>
+<tr>
+<td><a href="https://github.com/unosquare/embedio-cli">embedio-cli</a></td>
+<td>Unosquare</td>
+<td>A dotnet global tool that enables start any web folder or EmbedIO assembly (WebAPI or WebSocket) from command line.</td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/EmbedIO.BearerToken/">EmbedIO.BearerToken</a></td>
+<td>Unosquare</td>
+<td>Allow to authenticate with a Bearer Token. It uses a Token endpoint (at /token path) and with a defined validation delegate create a JsonWebToken. The module can check all incoming requests or a paths</td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/EmbedIO.LiteLibWebApi/">EmbedIO.LiteLibWebApi</a></td>
+<td>Unosquare</td>
+<td>Allow to expose a sqlite database as REST api using EmbedIO WebApi and LiteLib libraries</td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/EmbedIO.OWIN/">EmbedIO.OWIN</a></td>
+<td>Unosquare</td>
+<td>EmbedIO can use the OWIN platform in two different approach: You can use EmbedIO as OWIN server and use all OWIN framework with EmbedIO modules.</td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Microsoft.AspNetCore.Server.EmbedIO/">Microsoft.AspNetCore.Server.EmbedIO</a></td>
+<td>Dju</td>
+<td>EmbedIO web server support for ASP.NET Core, as a drop-in replacement for Kestrel</td>
+</tr>
+</tbody>
+</table>
+<h2 id="special-thanks">Special Thanks</h2>
+<p> <a href="https://www.yourkit.com"><img src="https://www.yourkit.com/images/yklogo.png" alt="YourKit"></a></p>
+<p> To YourKit for supports open source projects with its full-featured <a href="https://www.yourkit.com/.net/profiler/">.NET Profiler</a>, an amazing tool to profile CPU and Memory!</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="doc" align="center">
+              <span class="small mobile-hide">
+                <img id="logo" class="doc-logo" src="embedio.png" alt="">
+              </span>
+            </div>
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li class="top-sep">
+                    <a href="https://github.com/unosquare/embedio/blob/master/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2017-2018 <a href="https://www.unosquare.com">Unosquare</a></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>
