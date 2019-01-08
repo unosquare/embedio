@@ -71,9 +71,8 @@ after_build:
             docfx docfx.json --logLevel Error
             git clone https://github.com/unosquare/embedio.git -b gh-pages origin_site -q
             Copy-Item origin_site/.git _site -recurse
-            Copy-Item origin_site/images _site -recurse
-            Copy-Item origin_site/index.html _site
             CD _site
+            Copy-Item README.html index.html -force
             git add -A 2>&1
             git commit -m "Documentation update" -q
             git push origin gh-pages -q
