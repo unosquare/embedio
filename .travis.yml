@@ -15,4 +15,4 @@ matrix:
 install:
   - dotnet restore Unosquare.Labs.EmbedIO.sln
 script:
-  - dotnet test ./test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -c Release
+  - dotnet test ./test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f netcoreapp2.1
