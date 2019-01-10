@@ -25,6 +25,10 @@
             Secure = secure;
             _endpoint = new IPEndPoint(address, port);
             _sock = new Socket(address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            
+            if (address.AddressFamily == AddressFamily.InterNetworkV6 && EndPointManager.UseIpv6)
+                _sock.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, false);
+
             _sock.Bind(_endpoint);
             _sock.Listen(500);
             var args = new SocketAsyncEventArgs { UserToken = this };
