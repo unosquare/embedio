@@ -2962,12 +2962,6 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.Modules.FileModuleBase
   fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase
   nameWithType: FileModuleBase
-- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.ChunkSize
-  name: ChunkSize
-  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_ChunkSize
-  commentId: F:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.ChunkSize
-  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.ChunkSize
-  nameWithType: FileModuleBase.ChunkSize
 - uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.DefaultHeaders
   name: DefaultHeaders
   href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_DefaultHeaders
@@ -2981,12 +2975,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.DefaultHeaders
   nameWithType: FileModuleBase.DefaultHeaders
-- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.MaxGzipInputLength
-  name: MaxGzipInputLength
-  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_MaxGzipInputLength
-  commentId: F:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.MaxGzipInputLength
-  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.MaxGzipInputLength
-  nameWithType: FileModuleBase.MaxGzipInputLength
 - uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.MimeTypes
   name: MimeTypes
   href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_MimeTypes
