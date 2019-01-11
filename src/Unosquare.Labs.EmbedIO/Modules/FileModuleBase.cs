@@ -16,15 +16,9 @@
     public abstract class FileModuleBase
         : WebModuleBase
     {
-        /// <summary>
-        /// The maximum gzip input length.
-        /// </summary>
-        public static int MaxGzipInputLength = 4 * 1024 * 1024;
+        internal static readonly int MaxGzipInputLength = 4 * 1024 * 1024;
 
-        /// <summary>
-        /// The chunk size for sending files.
-        /// </summary>
-        public static int ChunkSize = 256 * 1024;
+        internal static readonly int ChunkSize = 256 * 1024;
 
         /// <summary>
         /// Gets the collection holding the MIME types.
