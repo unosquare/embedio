@@ -122,6 +122,69 @@
   </h3>
   
   
+  <a id="Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)">BinaryResponseAsync(IHttpContext, Stream, CancellationToken, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Binaries the response asynchronous.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; BinaryResponseAsync(this IHttpContext context, Stream buffer, CancellationToken ct = default(CancellationToken), bool useGzip = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.stream">Stream</a></td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The buffer.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td><p>The ct.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">useGzip</span></td>
+        <td><p>if set to <code>true</code> [use gzip].</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><p>A task for writing the output stream.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Unosquare_Labs_EmbedIO_Extensions_CompressAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.CompressAsync*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_Extensions_CompressAsync_System_IO_Stream_Unosquare_Labs_EmbedIO_Constants_CompressionMethod_CompressionMode_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.CompressAsync(System.IO.Stream,Unosquare.Labs.EmbedIO.Constants.CompressionMethod,CompressionMode,System.Threading.CancellationToken)">CompressAsync(Stream, CompressionMethod, CompressionMode, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Compresses the specified buffer stream using the G-Zip compression algorithm.</p>
@@ -2501,6 +2564,69 @@ match.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
         <td><p>webserver.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Extensions_WriteToOutputStream_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WriteToOutputStream*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_WriteToOutputStream_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Int64_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WriteToOutputStream(Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Int64,System.Threading.CancellationToken)">WriteToOutputStream(IHttpResponse, Stream, Int64, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Writes to output stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task WriteToOutputStream(this IHttpResponse response, Stream buffer, long lowerByteIndex = 0L, CancellationToken ct = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpResponse.html">IHttpResponse</a></td>
+        <td><span class="parametername">response</span></td>
+        <td><p>The response.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.stream">Stream</a></td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The buffer.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">lowerByteIndex</span></td>
+        <td><p>Index of the lower byte.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td><p>The ct.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>A task representing the write operation to the stream.</p>
 </td>
       </tr>
     </tbody>

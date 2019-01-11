@@ -506,6 +506,19 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.Extensions
   fullName: Unosquare.Labs.EmbedIO.Extensions
   nameWithType: Extensions
+- uid: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)
+  name: BinaryResponseAsync(IHttpContext, Stream, CancellationToken, Boolean)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.IO.Stream, System.Threading.CancellationToken, System.Boolean)
+  nameWithType: Extensions.BinaryResponseAsync(IHttpContext, Stream, CancellationToken, Boolean)
+- uid: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync*
+  name: BinaryResponseAsync
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync
+  nameWithType: Extensions.BinaryResponseAsync
 - uid: Unosquare.Labs.EmbedIO.Extensions.CompressAsync(System.IO.Stream,Unosquare.Labs.EmbedIO.Constants.CompressionMethod,CompressionMode,System.Threading.CancellationToken)
   name: CompressAsync(Stream, CompressionMethod, CompressionMode, CancellationToken)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_CompressAsync_System_IO_Stream_Unosquare_Labs_EmbedIO_Constants_CompressionMethod_CompressionMode_System_Threading_CancellationToken_
@@ -1010,6 +1023,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.WithWebSocket
   nameWithType: Extensions.WithWebSocket
+- uid: Unosquare.Labs.EmbedIO.Extensions.WriteToOutputStream(Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Int64,System.Threading.CancellationToken)
+  name: WriteToOutputStream(IHttpResponse, Stream, Int64, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WriteToOutputStream_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Int64_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.WriteToOutputStream(Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Int64,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.WriteToOutputStream(Unosquare.Labs.EmbedIO.IHttpResponse, System.IO.Stream, System.Int64, System.Threading.CancellationToken)
+  nameWithType: Extensions.WriteToOutputStream(IHttpResponse, Stream, Int64, CancellationToken)
+- uid: Unosquare.Labs.EmbedIO.Extensions.WriteToOutputStream*
+  name: WriteToOutputStream
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_WriteToOutputStream_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.WriteToOutputStream
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Extensions.WriteToOutputStream
+  nameWithType: Extensions.WriteToOutputStream
 - uid: Unosquare.Labs.EmbedIO.HttpContext
   name: HttpContext
   href: api/Unosquare.Labs.EmbedIO.HttpContext.html
@@ -2936,6 +2962,12 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.Modules.FileModuleBase
   fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase
   nameWithType: FileModuleBase
+- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.ChunkSize
+  name: ChunkSize
+  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_ChunkSize
+  commentId: F:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.ChunkSize
+  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.ChunkSize
+  nameWithType: FileModuleBase.ChunkSize
 - uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.DefaultHeaders
   name: DefaultHeaders
   href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_DefaultHeaders
