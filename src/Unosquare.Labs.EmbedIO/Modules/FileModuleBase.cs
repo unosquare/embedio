@@ -1,7 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
-    using System;
     using Swan;
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
