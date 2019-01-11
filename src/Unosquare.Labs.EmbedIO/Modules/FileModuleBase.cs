@@ -19,12 +19,12 @@
         /// <summary>
         /// The maximum gzip input length.
         /// </summary>
-        protected const int MaxGzipInputLength = 4 * 1024 * 1024;
+        public static int MaxGzipInputLength = 4 * 1024 * 1024;
 
         /// <summary>
         /// The chunk size for sending files.
         /// </summary>
-        private const int ChunkSize = 256 * 1024;
+        public static int ChunkSize = 256 * 1024;
 
         /// <summary>
         /// Gets the collection holding the MIME types.
@@ -60,7 +60,7 @@
         /// <param name="buffer">The buffer.</param>
         /// <param name="ct">The cancellation token.</param>
         /// <returns>A task representing the write action.</returns>
-        protected async Task WriteFileAsync(
+        protected Task WriteFileAsync(
             bool usingPartial,
             string partialHeader,
             long fileSize,
@@ -68,53 +68,35 @@
             Stream buffer,
             CancellationToken ct)
         {
-            long lowerByteIndex = 0;
+            // check if partial
+            if (!usingPartial ||
+                !CalculateRange(partialHeader, fileSize, out var lowerByteIndex, out var upperByteIndex))
+                return context.BinaryResponseAsync(buffer, ct, UseGzip);
 
-            if (usingPartial &&
-                CalculateRange(partialHeader, fileSize, out lowerByteIndex, out var upperByteIndex))
+            if (upperByteIndex > fileSize)
             {
-                if (upperByteIndex > fileSize)
-                {
-                    // invalid partial request
-                    context.Response.StatusCode = 416;
-                    context.Response.AddHeader(Headers.ContentRanges, $"bytes */{fileSize}");
+                // invalid partial request
+                context.Response.StatusCode = 416;
+                context.Response.AddHeader(Headers.ContentRanges, $"bytes */{fileSize}");
 
-                    return;
-                }
+                return Task.Delay(0, ct);
+            }
 
-                if (upperByteIndex == fileSize)
-                {
-                    context.Response.ContentLength64 = buffer.Length;
-                }
-                else
-                {
-                    context.Response.StatusCode = 206;
-                    context.Response.ContentLength64 = upperByteIndex - lowerByteIndex + 1;
-
-                    context.Response.AddHeader(Headers.ContentRanges,
-                        $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
-                }
+            if (upperByteIndex == fileSize)
+            {
+                context.Response.ContentLength64 = buffer.Length;
             }
             else
             {
-                if (UseGzip &&
-                    context.RequestHeader(Headers.AcceptEncoding).Contains(Headers.CompressionGzip) &&
-                    buffer.Length < MaxGzipInputLength &&
+                context.Response.StatusCode = 206;
+                context.Response.ContentLength64 = upperByteIndex - lowerByteIndex + 1;
 
-                    // Ignore audio/video from compression
-                    context.Response.ContentType?.StartsWith("audio") == false &&
-                    context.Response.ContentType?.StartsWith("video") == false)
-                {
-                    // Perform compression if available
-                    buffer = await buffer.CompressAsync(cancellationToken: ct).ConfigureAwait(false);
-                    context.Response.AddHeader(Headers.ContentEncoding, Headers.CompressionGzip);
-                    lowerByteIndex = 0;
-                }
-
-                context.Response.ContentLength64 = buffer.Length;
+                context.Response.AddHeader(Headers.ContentRanges,
+                    $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
             }
 
-            await WriteToOutputStream(context.Response, buffer, lowerByteIndex, ct).ConfigureAwait(false);
+            return context.Response.WriteToOutputStream(buffer, lowerByteIndex, ct);
+
         }
 
         /// <summary>
@@ -144,30 +126,6 @@
 
             response.AddHeader(Headers.LastModified, utcFileDateString);
             response.AddHeader(Headers.AcceptRanges, "bytes");
-        }
-
-        private static async Task WriteToOutputStream(
-            IHttpResponse response,
-            Stream buffer,
-            long lowerByteIndex,
-            CancellationToken ct)
-        {
-            var streamBuffer = new byte[ChunkSize];
-            long sendData = 0;
-            var readBufferSize = ChunkSize;
-
-            while (true)
-            {
-                if (sendData + ChunkSize > response.ContentLength64) readBufferSize = (int)(response.ContentLength64 - sendData);
-
-                buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
-                var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct).ConfigureAwait(false);
-
-                if (read == 0) break;
-
-                sendData += read;
-                await response.OutputStream.WriteAsync(streamBuffer, 0, readBufferSize, ct).ConfigureAwait(false);
-            }
         }
 
         private static bool CalculateRange(

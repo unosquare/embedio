@@ -6,10 +6,6 @@
     using System.Net;
     using System.Net.Sockets;
     using System.Threading;
-#if !NETSTANDARD1_3
-    using System.Security.Cryptography.X509Certificates;
-#endif
-
     internal sealed class EndPointListener
     {
         private readonly Dictionary<HttpConnection, HttpConnection> _unregistered;

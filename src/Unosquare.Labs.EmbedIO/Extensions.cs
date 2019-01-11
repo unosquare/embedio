@@ -446,6 +446,71 @@
         }
 
         /// <summary>
+        /// Binaries the response asynchronous.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="ct">The ct.</param>
+        /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
+        /// <returns>A task for writing the output stream.</returns>
+        public static async Task<bool> BinaryResponseAsync(
+            this IHttpContext context,
+            Stream buffer,
+            CancellationToken ct = default,
+            bool useGzip = true)
+        {
+            if (useGzip &&
+                context.RequestHeader(Headers.AcceptEncoding).Contains(Headers.CompressionGzip) &&
+                buffer.Length < Modules.FileModuleBase.MaxGzipInputLength &&
+
+                // Ignore audio/video from compression
+                context.Response.ContentType?.StartsWith("audio") == false &&
+                context.Response.ContentType?.StartsWith("video") == false)
+            {
+                // Perform compression if available
+                buffer = await buffer.CompressAsync(cancellationToken: ct).ConfigureAwait(false);
+                context.Response.AddHeader(Headers.ContentEncoding, Headers.CompressionGzip);
+            }
+
+            context.Response.ContentLength64 = buffer.Length;
+            await WriteToOutputStream(context.Response, buffer, 0, ct).ConfigureAwait(false);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Writes to output stream.
+        /// </summary>
+        /// <param name="response">The response.</param>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="lowerByteIndex">Index of the lower byte.</param>
+        /// <param name="ct">The ct.</param>
+        /// <returns>A task representing the write operation to the stream.</returns>
+        public static async Task WriteToOutputStream(
+            this IHttpResponse response,
+            Stream buffer,
+            long lowerByteIndex = 0,
+            CancellationToken ct= default)
+        {
+            var streamBuffer = new byte[Modules.FileModuleBase.ChunkSize];
+            long sendData = 0;
+            var readBufferSize = Modules.FileModuleBase.ChunkSize;
+
+            while (true)
+            {
+                if (sendData + Modules.FileModuleBase.ChunkSize > response.ContentLength64) readBufferSize = (int)(response.ContentLength64 - sendData);
+
+                buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
+                var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct).ConfigureAwait(false);
+
+                if (read == 0) break;
+
+                sendData += read;
+                await response.OutputStream.WriteAsync(streamBuffer, 0, readBufferSize, ct).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
         /// Parses the JSON as a given type from the request body.
         /// Please note the underlying input stream is not rewindable.
         /// </summary>

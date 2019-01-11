@@ -276,7 +276,7 @@
                 string line;
                 try
                 {
-                    line = ReadLine(buffer, _position, len - _position, ref used);
+                    line = ReadLine(buffer, _position, len - _position, out used);
                     _position += used;
                 }
                 catch
@@ -325,7 +325,7 @@
             return false;
         }
 
-        private string ReadLine(byte[] buffer, int offset, int len, ref int used)
+        private string ReadLine(byte[] buffer, int offset, int len, out int used)
         {
             if (_currentLine == null)
                 _currentLine = new StringBuilder(128);
