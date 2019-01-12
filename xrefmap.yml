@@ -570,18 +570,18 @@ references:
   commentId: M:Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IHttpContext)
   fullName: Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IHttpContext)
   nameWithType: Extensions.GetSession(IHttpContext)
-- uid: Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IWebSocketContext,Unosquare.Labs.EmbedIO.WebServer)
-  name: GetSession(IWebSocketContext, WebServer)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_IWebSocketContext_Unosquare_Labs_EmbedIO_WebServer_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IWebSocketContext,Unosquare.Labs.EmbedIO.WebServer)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IWebSocketContext, Unosquare.Labs.EmbedIO.WebServer)
-  nameWithType: Extensions.GetSession(IWebSocketContext, WebServer)
-- uid: Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.WebServer,Unosquare.Labs.EmbedIO.IWebSocketContext)
-  name: GetSession(WebServer, IWebSocketContext)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Labs_EmbedIO_IWebSocketContext_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.WebServer,Unosquare.Labs.EmbedIO.IWebSocketContext)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.WebServer, Unosquare.Labs.EmbedIO.IWebSocketContext)
-  nameWithType: Extensions.GetSession(WebServer, IWebSocketContext)
+- uid: Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IWebServer,Unosquare.Labs.EmbedIO.IWebSocketContext)
+  name: GetSession(IWebServer, IWebSocketContext)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_IWebServer_Unosquare_Labs_EmbedIO_IWebSocketContext_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IWebServer,Unosquare.Labs.EmbedIO.IWebSocketContext)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IWebServer, Unosquare.Labs.EmbedIO.IWebSocketContext)
+  nameWithType: Extensions.GetSession(IWebServer, IWebSocketContext)
+- uid: Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IWebSocketContext,Unosquare.Labs.EmbedIO.IWebServer)
+  name: GetSession(IWebSocketContext, IWebServer)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_IWebSocketContext_Unosquare_Labs_EmbedIO_IWebServer_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IWebSocketContext,Unosquare.Labs.EmbedIO.IWebServer)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IWebSocketContext, Unosquare.Labs.EmbedIO.IWebServer)
+  nameWithType: Extensions.GetSession(IWebSocketContext, IWebServer)
 - uid: Unosquare.Labs.EmbedIO.Extensions.GetSession*
   name: GetSession
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_GetSession_

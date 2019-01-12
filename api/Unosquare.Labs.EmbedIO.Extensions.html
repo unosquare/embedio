@@ -438,14 +438,13 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_GetSession_" data-uid="Unosquare.Labs.EmbedIO.Extensions.GetSession*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_IWebSocketContext_Unosquare_Labs_EmbedIO_WebServer_" data-uid="Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IWebSocketContext,Unosquare.Labs.EmbedIO.WebServer)">GetSession(IWebSocketContext, WebServer)</h4>
-  <div class="markdown level1 summary"><p>Gets the session object associated to the current context.
-Returns null if the LocalSessionWebModule has not been loaded.</p>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_IWebServer_Unosquare_Labs_EmbedIO_IWebSocketContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IWebServer,Unosquare.Labs.EmbedIO.IWebSocketContext)">GetSession(IWebServer, IWebSocketContext)</h4>
+  <div class="markdown level1 summary"><p>Gets the session.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static SessionInfo GetSession(this IWebSocketContext context, WebServer server)</code></pre>
+    <pre><code class="lang-csharp hljs">public static SessionInfo GetSession(this IWebServer server, IWebSocketContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -458,15 +457,15 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>The context.</p>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
+        <td><span class="parametername">server</span></td>
+        <td><p>The server.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
-        <td><span class="parametername">server</span></td>
-        <td><p>The server.</p>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
 </td>
       </tr>
     </tbody>
@@ -490,13 +489,14 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_GetSession_" data-uid="Unosquare.Labs.EmbedIO.Extensions.GetSession*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_WebServer_Unosquare_Labs_EmbedIO_IWebSocketContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.WebServer,Unosquare.Labs.EmbedIO.IWebSocketContext)">GetSession(WebServer, IWebSocketContext)</h4>
-  <div class="markdown level1 summary"><p>Gets the session.</p>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_IWebSocketContext_Unosquare_Labs_EmbedIO_IWebServer_" data-uid="Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IWebSocketContext,Unosquare.Labs.EmbedIO.IWebServer)">GetSession(IWebSocketContext, IWebServer)</h4>
+  <div class="markdown level1 summary"><p>Gets the session object associated to the current context.
+Returns null if the LocalSessionWebModule has not been loaded.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static SessionInfo GetSession(this WebServer server, IWebSocketContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public static SessionInfo GetSession(this IWebSocketContext context, IWebServer server)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -509,15 +509,15 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.WebServer.html">WebServer</a></td>
-        <td><span class="parametername">server</span></td>
-        <td><p>The server.</p>
-</td>
-      </tr>
-      <tr>
         <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
+        <td><span class="parametername">server</span></td>
+        <td><p>The server.</p>
 </td>
       </tr>
     </tbody>
@@ -712,7 +712,8 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool JsonExceptionResponse(this IHttpContext context, Exception ex, Net.HttpStatusCode statusCode = null)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Please use the async method.&quot;)]
+public static bool JsonExceptionResponse(this IHttpContext context, Exception ex, Net.HttpStatusCode statusCode = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -826,7 +827,8 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool JsonResponse(this IHttpContext context, object data)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Please use the async method.&quot;)]
+public static bool JsonResponse(this IHttpContext context, object data)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -877,7 +879,8 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool JsonResponse(this IHttpContext context, string json)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Please use the async method.&quot;)]
+public static bool JsonResponse(this IHttpContext context, string json)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
