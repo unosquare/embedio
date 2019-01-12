@@ -17,7 +17,7 @@
         /// <param name="args">The arguments.</param>
         private static async Task Main(string[] args)
         {
-            var url = args.Length > 0 ? args[0] : "http://*:7877/";
+            var url = args.Length > 0 ? args[0] : "http://localhost:8877";
 
             AppDbContext.InitDatabase();
 
@@ -35,7 +35,7 @@
                 ctSource.Cancel();
             }, ctSource.Token);
 
-            var webOptions = new WebServerOptions(url);
+            var webOptions = new WebServerOptions(url) { Mode = HttpListenerMode.EmbedIO };
 
             // Our web server is disposable. 
             using (var server = new WebServer(webOptions))
