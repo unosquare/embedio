@@ -65,7 +65,7 @@
         /// <param name="context">The context.</param>
         /// <param name="server">The server.</param>
         /// <returns>A session info for the given websocket context.</returns>
-        public static SessionInfo GetSession(this IWebSocketContext context, WebServer server) => server.SessionModule?.GetSession(context);
+        public static SessionInfo GetSession(this IWebSocketContext context, IWebServer server) => server.SessionModule?.GetSession(context);
 
         /// <summary>
         /// Gets the session.
@@ -73,7 +73,7 @@
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
         /// <returns>A session info for the given websocket context.</returns>
-        public static SessionInfo GetSession(this WebServer server, IWebSocketContext context) => server.SessionModule?.GetSession(context);
+        public static SessionInfo GetSession(this IWebServer server, IWebSocketContext context) => server.SessionModule?.GetSession(context);
 
         #endregion
 
@@ -331,6 +331,7 @@
         /// <param name="context">The context.</param>
         /// <param name="data">The data.</param>
         /// <returns>A <c>true</c> value of type ref=JsonResponseAsync".</returns>
+        [Obsolete("Please use the async method.")]
         public static bool JsonResponse(this IHttpContext context, object data)
             => context.JsonResponseAsync(data).GetAwaiter().GetResult();
 
@@ -355,6 +356,7 @@
         /// <param name="context">The context.</param>
         /// <param name="json">The JSON.</param>
         /// <returns> A <c>true</c> value of type ref=JsonResponseAsync".</returns>
+        [Obsolete("Please use the async method.")]
         public static bool JsonResponse(this IHttpContext context, string json)
             => context.JsonResponseAsync(json).GetAwaiter().GetResult();
 
@@ -396,6 +398,7 @@
         /// <param name="ex">The ex.</param>
         /// <param name="statusCode">The status code.</param>
         /// <returns>A <c>true</c> value when the exception is written to the HTTP Response.</returns>
+        [Obsolete("Please use the async method.")]
         public static bool JsonExceptionResponse(
             this IHttpContext context,
             Exception ex,
@@ -440,6 +443,7 @@
             var buffer = (encoding ?? Encoding.UTF8).GetBytes(content);
 
             context.Response.ContentType = contentType;
+            context.Response.ContentLength64 = buffer.Length;
             await context.Response.OutputStream.WriteAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false);
 
             return true;

@@ -17,6 +17,7 @@
         /// </summary>
         /// <param name="action">The action.</param>
         /// <param name="verb">The verb.</param>
+        [Obsolete("Use WebHandler constructor")]
         public FallbackModule(Func<IHttpContext, CancellationToken, bool> action, HttpVerbs verb = HttpVerbs.Any)
         {
             AddHandler(

@@ -957,13 +957,9 @@
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         private async Task SetClientStream()
         {
-#if !NETSTANDARD1_3
-            _tcpClient = new TcpClient(_uri.DnsSafeHost, _uri.Port);
-#else
             _tcpClient = new TcpClient();
 
             await _tcpClient.ConnectAsync(_uri.DnsSafeHost, _uri.Port).ConfigureAwait(false);
-#endif
             _stream = _tcpClient.GetStream();
 
 #if !NETSTANDARD1_3
