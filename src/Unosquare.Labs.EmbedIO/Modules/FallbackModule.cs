@@ -74,7 +74,7 @@
             AddHandler(
                 ModuleMap.AnyPath, 
                 verb, 
-                (context, ct) => context.FileResponseAsync(file, ct));
+                (context, ct) => context.FileResponseAsync(file, contentType, ct));
         }
 
         /// <inheritdoc />
