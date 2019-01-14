@@ -211,15 +211,21 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="file">The file.</param>
+        /// <param name="contentType">Type of the content.</param>
         /// <param name="ct">The ct.</param>
         /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
-        /// <returns>A task for writing the output stream.</returns>
-        public static async Task<bool> BinaryResponseAsync(
+        /// <returns>
+        /// A task for writing the output stream.
+        /// </returns>
+        public static async Task<bool> FileResponseAsync(
             this IHttpContext context,
             FileInfo file,
+            string contentType = null,
             CancellationToken ct = default,
             bool useGzip = true)
         {
+            context.Response.ContentType = contentType ?? Responses.HtmlContentType;
+
             using (var stream = file.OpenRead())
                 await context.BinaryResponseAsync(stream, ct, useGzip).ConfigureAwait(false);
 

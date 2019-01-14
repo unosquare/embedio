@@ -60,11 +60,13 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FallbackModule"/> class.
+        /// Initializes a new instance of the <see cref="FallbackModule" /> class.
         /// </summary>
         /// <param name="file">The file.</param>
+        /// <param name="contentType">Type of the content.</param>
         /// <param name="verb">The verb.</param>
-        public FallbackModule(FileInfo file, HttpVerbs verb = HttpVerbs.Any)
+        /// <exception cref="ArgumentNullException">file</exception>
+        public FallbackModule(FileInfo file, string contentType = null, HttpVerbs verb = HttpVerbs.Any)
         {
             if (file == null)
                 throw new ArgumentNullException(nameof(file));
@@ -72,7 +74,7 @@
             AddHandler(
                 ModuleMap.AnyPath, 
                 verb, 
-                (context, ct) => context.BinaryResponseAsync(file, ct));
+                (context, ct) => context.FileResponseAsync(file, ct));
         }
 
         /// <inheritdoc />
