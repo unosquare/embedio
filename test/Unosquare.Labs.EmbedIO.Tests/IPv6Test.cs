@@ -51,7 +51,6 @@
             using (var client = new HttpClient())
             {
                 Assert.IsNotEmpty(await client.GetStringAsync("http://[::1]:8877"));
-                Assert.IsNotEmpty(await client.GetStringAsync("http://localhost:8877"));
             }
         }
 
