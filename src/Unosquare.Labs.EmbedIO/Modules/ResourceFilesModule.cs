@@ -82,16 +82,14 @@
                 var utcFileDateString = DateTime.Now.ToUniversalTime()
                     .ToString(Strings.BrowserTimeFormat, Strings.StandardCultureInfo);
 
+                context.Response.ContentLength64 = buffer.Length;
+
                 SetGeneralHeaders(context.Response, utcFileDateString, localPath.Contains(".") ? $".{localPath.Split('.').Last()}" : ".html");
 
-                // HEAD (file size only)
-                if (sendBuffer == false)
+                if (sendBuffer)
                 {
-                    context.Response.ContentLength64 = buffer.Length;
-                    return true;
+                    await WriteFileAsync(partialHeader?.StartsWith("bytes=") == true, partialHeader, context, buffer, ct).ConfigureAwait(false);
                 }
-
-                await WriteFileAsync(partialHeader?.StartsWith("bytes=") == true, partialHeader, buffer.Length, context, buffer, ct).ConfigureAwait(false);
             }
             catch (HttpListenerException)
             {

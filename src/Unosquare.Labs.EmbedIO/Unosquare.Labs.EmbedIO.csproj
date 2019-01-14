@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>A tiny, cross-platform, module based, MIT-licensed web server. Supporting NET Framework, Net Core, and Mono.</Description>
-    <Copyright>Copyright © Unosquare 2013-2018</Copyright>
+    <Copyright>Copyright © Unosquare 2013-2019</Copyright>
     <AssemblyTitle>EmbedIO Web Server</AssemblyTitle>
     <Authors>Unosquare</Authors>
     <TargetFrameworks>net452;net472;netstandard2.0;netstandard1.3</TargetFrameworks>
@@ -16,7 +16,7 @@
     <Company>Unosquare</Company>
     <PackageLicenseUrl>https://raw.githubusercontent.com/unosquare/embedio/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>http://unosquare.github.io/embedio</PackageProjectUrl>
-    <PackageIconUrl>http://unosquare.github.io/embedio/images/embedio-icon32.png</PackageIconUrl>
+    <PackageIconUrl>https://unosquare.github.io/embedio/embedio.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/unosquare/embedio/</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>webserver websocket webapi http</PackageTags>

@@ -49,7 +49,6 @@
         /// </summary>
         /// <param name="usingPartial">if set to <c>true</c> [using partial].</param>
         /// <param name="partialHeader">The partial header.</param>
-        /// <param name="fileSize">Size of the file.</param>
         /// <param name="context">The context.</param>
         /// <param name="buffer">The buffer.</param>
         /// <param name="ct">The cancellation token.</param>
@@ -57,11 +56,12 @@
         protected Task WriteFileAsync(
             bool usingPartial,
             string partialHeader,
-            long fileSize,
             IHttpContext context,
             Stream buffer,
             CancellationToken ct)
         {
+            var fileSize = buffer.Length;
+
             // check if partial
             if (!usingPartial ||
                 !CalculateRange(partialHeader, fileSize, out var lowerByteIndex, out var upperByteIndex))
@@ -76,11 +76,7 @@
                 return Task.Delay(0, ct);
             }
 
-            if (upperByteIndex == fileSize)
-            {
-                context.Response.ContentLength64 = buffer.Length;
-            }
-            else
+            if (upperByteIndex != fileSize)
             {
                 context.Response.StatusCode = 206;
                 context.Response.ContentLength64 = upperByteIndex - lowerByteIndex + 1;
@@ -90,7 +86,6 @@
             }
 
             return context.Response.WriteToOutputStream(buffer, lowerByteIndex, ct);
-
         }
 
         /// <summary>

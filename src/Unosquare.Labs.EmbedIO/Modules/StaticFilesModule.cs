@@ -273,44 +273,13 @@
                 var isTagValid = false;
                 var partialHeader = context.RequestHeader(Headers.Range);
                 var usingPartial = partialHeader?.StartsWith("bytes=") == true;
-                var fileDate = File.GetLastWriteTime(localPath);
+                var fileInfo = new FileInfo(localPath);
 
-                if (UseRamCache && RamCache.IsValid(localPath, fileDate, out var currentHash))
-                {
-                    $"RAM Cache: {localPath}".Debug();
-
-                    if (context.RequestHeader(Headers.IfNotMatch) != currentHash)
-                    {
-                        buffer = new MemoryStream(RamCache[localPath].Buffer);
-                        context.Response.AddHeader(Headers.ETag, currentHash);
-                    }
-                    else
-                    {
-                        isTagValid = true;
-                    }
-                }
-                else
-                {
-                    $"File System: {localPath}".Debug();
-
-                    if (sendBuffer)
-                    {
-                        buffer = new FileStream(localPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-
-                        if (usingPartial == false)
-                        {
-                            isTagValid = UpdateFileCache(
-                                context.Response,
-                                buffer,
-                                fileDate,
-                                context.RequestHeader(Headers.IfNotMatch),
-                                localPath);
-                        }
-                    }
-                }
+                if (sendBuffer)
+                    buffer = GetFileStream(context, fileInfo, usingPartial, out isTagValid);
 
                 // check to see if the file was modified or e-tag is the same
-                var utcFileDateString = fileDate.ToUniversalTime()
+                var utcFileDateString = fileInfo.LastWriteTimeUtc
                     .ToString(Strings.BrowserTimeFormat, Strings.StandardCultureInfo);
 
                 if (usingPartial == false &&
@@ -319,15 +288,13 @@
                     SetStatusCode304(context.Response);
                     return true;
                 }
+                
+                context.Response.ContentLength64 = fileInfo.Length;
 
-                var fileInfo = new FileInfo(localPath);
                 SetGeneralHeaders(context.Response, utcFileDateString, fileInfo.Extension);
 
-                var fileSize = fileInfo.Length;
-
-                if (sendBuffer == false)
+                if (!sendBuffer)
                 {
-                    context.Response.ContentLength64 = buffer?.Length ?? fileSize;
                     return true;
                 }
 
@@ -337,7 +304,7 @@
                     return false;
                 }
 
-                await WriteFileAsync(usingPartial, partialHeader, fileSize, context, buffer, ct).ConfigureAwait(false);
+                await WriteFileAsync(usingPartial, partialHeader, context, buffer, ct).ConfigureAwait(false);
             }
             catch (HttpListenerException)
             {
@@ -349,6 +316,41 @@
             }
 
             return true;
+        }
+
+        private Stream GetFileStream(IHttpContext context, FileInfo fileInfo, bool usingPartial, out bool isTagValid)
+        {
+            isTagValid = false;
+            var localPath = fileInfo.FullName;
+
+            if (UseRamCache && RamCache.IsValid(localPath, fileInfo.LastWriteTime, out var currentHash))
+            {
+                isTagValid = context.RequestHeader(Headers.IfNotMatch) == currentHash;
+
+                if (isTagValid)
+                {
+                    $"RAM Cache: {localPath}".Debug(nameof(StaticFilesModule));
+
+                    context.Response.AddHeader(Headers.ETag, currentHash);
+                    return new MemoryStream(RamCache[localPath].Buffer);
+                }
+            }
+
+            $"File System: {localPath}".Debug(nameof(StaticFilesModule));
+
+            var buffer = new FileStream(localPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+
+            if (usingPartial == false)
+            {
+                isTagValid = UpdateFileCache(
+                    context.Response,
+                    buffer,
+                    fileInfo.LastWriteTime,
+                    context.RequestHeader(Headers.IfNotMatch),
+                    localPath);
+            }
+
+            return buffer;
         }
 
         private VirtualPaths.VirtualPathStatus ValidatePath(IHttpContext context, out string requestFullLocalPath)
@@ -371,7 +373,7 @@
             var currentHash = _fileHashCache.TryGetValue(localPath, out var currentTuple) && fileDate.Ticks == currentTuple.Item1
                 ? currentTuple.Item2
                 : $"{buffer.ComputeMD5().ToUpperHex()}-{fileDate.Ticks}";
-            
+
             _fileHashCache.TryAdd(localPath, new Tuple<long, string>(fileDate.Ticks, currentHash));
 
             if (!string.IsNullOrWhiteSpace(requestHash) && requestHash == currentHash)
