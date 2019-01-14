@@ -13,13 +13,16 @@
         [SetUp]
         public void Setup()
         {
+            EndPointManager.UseIpv6 = true;
+
             Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
         }
 
         [Test]
         public async Task WithUseIpv6_ReturnsValid()
         {
-            EndPointManager.UseIpv6 = true;
+            if (Runtime.OS != Swan.OperatingSystem.Windows)
+                Assert.Ignore("Only Windows");
 
             var instance = new WebServer(new[] { "http://*:8877" }, Constants.RoutingStrategy.Regex, HttpListenerMode.EmbedIO);
             instance.OnAny((ctx, ct) => ctx.JsonResponseAsync(DateTime.Now, ct));
@@ -28,19 +31,10 @@
 
             using (var client = new HttpClient())
             {
-                try
-                {
-                    var data = await client.GetStringAsync("http://localhost:8877");
-
-                    Assert.IsNotEmpty(data);
-                }
-                catch (HttpRequestException)
-                {
-                    Assert.Ignore("Linux");
-                }
+                Assert.IsNotEmpty(await client.GetStringAsync("http://[::1]:8877"));
+                Assert.IsNotEmpty(await client.GetStringAsync("http://127.0.0.1:8877"));
+                Assert.IsNotEmpty(await client.GetStringAsync("http://localhost:8877"));
             }
-
-            EndPointManager.UseIpv6 = false;
         }
 
         [Test]
@@ -56,10 +50,15 @@
 
             using (var client = new HttpClient())
             {
-                var data = await client.GetStringAsync("http://[::1]:8877");
-
-                Assert.IsNotEmpty(data);
+                Assert.IsNotEmpty(await client.GetStringAsync("http://[::1]:8877"));
+                Assert.IsNotEmpty(await client.GetStringAsync("http://localhost:8877"));
             }
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            EndPointManager.UseIpv6 = false;
         }
     }
 }
