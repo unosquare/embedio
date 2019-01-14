@@ -354,6 +354,7 @@
                 {
                     var originalSet = TestHelper.GetBigData();
                     var requestHead = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
+
                     using (var res = await client.SendAsync(requestHead))
                     {
                         var remoteSize = await res.Content.ReadAsByteArrayAsync();
