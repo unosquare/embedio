@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests.TestObjects
 {
     using Constants;
+    using System.Threading.Tasks;
     using Modules;
 
     public class TestLocalSessionController : WebApiController
@@ -19,42 +20,39 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/getcookie")]
-        public bool GetCookieC()
+        public Task<bool> GetCookieC()
         {
             var cookie = new System.Net.Cookie(CookieName, CookieName);
             Response.Cookies.Add(cookie);
 
-            return this.JsonResponse(Response.Cookies[CookieName]);
+            return this.JsonResponseAsync(Response.Cookies[CookieName]);
         }
 
         [WebApiHandler(HttpVerbs.Get, "/deletesession")]
-        public bool DeleteSessionC()
+        public Task<bool> DeleteSessionC()
         {
             this.DeleteSession();
 
-            return this.JsonResponse("Deleted");
+            return this.JsonResponseAsync("Deleted");
         }
 
         [WebApiHandler(HttpVerbs.Get, "/putdata")]
-        public bool PutDataSession()
+        public Task<bool> PutDataSession()
         {
             this.GetSession()?.Data.TryAdd("sessionData", MyData);
 
-            return this.JsonResponse(this.GetSession().Data["sessionData"].ToString());
+            return this.JsonResponseAsync(this.GetSession().Data["sessionData"].ToString());
         }
 
         [WebApiHandler(HttpVerbs.Get, "/getdata")]
-        public bool GetDataSession()
+        public Task<bool> GetDataSession()
         {
-            return this.JsonResponse(this.GetSession().Data.TryGetValue("sessionData", out var data)
+            return this.JsonResponseAsync(this.GetSession().Data.TryGetValue("sessionData", out var data)
                 ? data.ToString()
                 : string.Empty);
         }
 
         [WebApiHandler(HttpVerbs.Get, "/geterror")]
-        public bool GetError()
-        {
-            return false;
-        }
+        public bool GetError() => false;
     }
 }

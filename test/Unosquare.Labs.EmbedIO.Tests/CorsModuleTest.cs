@@ -24,7 +24,7 @@
 
                     ws.RegisterModule(new WebApiModule());
                     ws.Module<WebApiModule>().RegisterController<TestController>();
-                    ws.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(TestObj)));
+                    ws.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponseAsync(TestObj, ct)));
                 },
                 RoutingStrategy.Wildcard,
                 true)

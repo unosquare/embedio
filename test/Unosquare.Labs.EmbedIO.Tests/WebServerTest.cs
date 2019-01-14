@@ -22,7 +22,7 @@
         private const string Prefix = "http://localhost:9696";
 
         private static string[] GetMultiplePrefixes()
-            => new[] { "http://localhost:9696", "http://localhost:9697", "http://localhost:9698" };
+            => new[] {"http://localhost:9696", "http://localhost:9697", "http://localhost:9698"};
 
         [SetUp]
         public void Setup()
@@ -188,7 +188,8 @@
 
                     using (var instance = new WebServer(url))
                     {
-                        instance.RegisterModule(new FallbackModule(async (ctx, ct) => throw new InvalidOperationException("Error")));
+                        instance.RegisterModule(new FallbackModule(async (ctx, ct) =>
+                            throw new InvalidOperationException("Error")));
 
                         var runTask = instance.RunAsync();
                         var request = new HttpClient();
@@ -244,13 +245,12 @@
                             Assert.Inconclusive("Invalid encoding in system");
                         }
 
-                        ctx.JsonResponse(new EncodeCheck
-                        {
-                            Encoding = encoding.EncodingName,
-                            IsValid = ctx.Request.ContentEncoding.EncodingName == encoding.EncodingName,
-                        });
-
-                        return true;
+                        return ctx.JsonResponseAsync(new EncodeCheck
+                            {
+                                Encoding = encoding.EncodingName,
+                                IsValid = ctx.Request.ContentEncoding.EncodingName == encoding.EncodingName,
+                            },
+                            ct);
                     }));
 
                     var runTask = instance.RunAsync();
@@ -262,7 +262,8 @@
 
                         var request = new HttpRequestMessage(HttpMethod.Post, url + TestWebModule.RedirectUrl)
                         {
-                            Content = new StringContent("POST DATA", Encoding.GetEncoding(encodeName), "application/json"),
+                            Content = new StringContent("POST DATA", Encoding.GetEncoding(encodeName),
+                                "application/json"),
                         };
 
                         using (var response = await client.SendAsync(request))

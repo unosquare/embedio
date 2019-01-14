@@ -18,7 +18,7 @@
         public void RegisterWebModule_ReturnsValidInstance()
         {
             var webserver = new TestWebServer();
-            webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(nameof(TestWebServer))));
+            webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponseAsync(nameof(TestWebServer), ct)));
 
             Assert.AreEqual(1, webserver.Modules.Count);
         }
@@ -27,7 +27,7 @@
         public void UnregisterWebModule_ReturnsValidInstance()
         {
             var webserver = new TestWebServer();
-            webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(nameof(TestWebServer))));
+            webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponseAsync(nameof(TestWebServer), ct)));
             webserver.UnregisterModule(typeof(FallbackModule));
 
             Assert.AreEqual(0, webserver.Modules.Count);
