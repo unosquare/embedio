@@ -87,7 +87,7 @@
                 Certificate = new X509Certificate2(),
             };
 
-            Assert.Throws<InvalidOperationException>(() => new WebServer(options));
+            Assert.Throws<System.Security.Cryptography.CryptographicException>(() => new WebServer(options));
         }
     }
 }
