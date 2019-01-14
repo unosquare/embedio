@@ -309,13 +309,13 @@
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_WriteFileAsync_" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_WriteFileAsync_System_Boolean_System_String_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_Stream_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.Boolean,System.String,Unosquare.Labs.EmbedIO.IHttpContext,System.IO.Stream,System.Threading.CancellationToken)">WriteFileAsync(Boolean, String, IHttpContext, Stream, CancellationToken)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_WriteFileAsync_System_String_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.String,Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)">WriteFileAsync(String, IHttpResponse, Stream, CancellationToken, Boolean)</h4>
   <div class="markdown level1 summary"><p>Writes the file asynchronous.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Task WriteFileAsync(bool usingPartial, string partialHeader, IHttpContext context, Stream buffer, CancellationToken ct)</code></pre>
+    <pre><code class="lang-csharp hljs">protected Task WriteFileAsync(string partialHeader, IHttpResponse response, Stream buffer, CancellationToken ct, bool useGzip = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -328,21 +328,15 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">usingPartial</span></td>
-        <td><p>if set to <code>true</code> [using partial].</p>
-</td>
-      </tr>
-      <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">partialHeader</span></td>
         <td><p>The partial header.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>The context.</p>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpResponse.html">IHttpResponse</a></td>
+        <td><span class="parametername">response</span></td>
+        <td><p>The response.</p>
 </td>
       </tr>
       <tr>
@@ -355,6 +349,12 @@
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
         <td><span class="parametername">ct</span></td>
         <td><p>The cancellation token.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">useGzip</span></td>
+        <td><p>if set to <code>true</code> [use gzip].</p>
 </td>
       </tr>
     </tbody>

@@ -506,12 +506,31 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.Extensions
   fullName: Unosquare.Labs.EmbedIO.Extensions
   nameWithType: Extensions
+- uid: Unosquare.Labs.EmbedIO.Extensions.AcceptGzip(Unosquare.Labs.EmbedIO.IHttpContext,System.Int64)
+  name: AcceptGzip(IHttpContext, Int64)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_AcceptGzip_Unosquare_Labs_EmbedIO_IHttpContext_System_Int64_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.AcceptGzip(Unosquare.Labs.EmbedIO.IHttpContext,System.Int64)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.AcceptGzip(Unosquare.Labs.EmbedIO.IHttpContext, System.Int64)
+  nameWithType: Extensions.AcceptGzip(IHttpContext, Int64)
+- uid: Unosquare.Labs.EmbedIO.Extensions.AcceptGzip*
+  name: AcceptGzip
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_AcceptGzip_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.AcceptGzip
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Extensions.AcceptGzip
+  nameWithType: Extensions.AcceptGzip
 - uid: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)
   name: BinaryResponseAsync(IHttpContext, Stream, CancellationToken, Boolean)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_
   commentId: M:Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)
   fullName: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.IO.Stream, System.Threading.CancellationToken, System.Boolean)
   nameWithType: Extensions.BinaryResponseAsync(IHttpContext, Stream, CancellationToken, Boolean)
+- uid: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)
+  name: BinaryResponseAsync(IHttpResponse, Stream, CancellationToken, Boolean)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse, System.IO.Stream, System.Threading.CancellationToken, System.Boolean)
+  nameWithType: Extensions.BinaryResponseAsync(IHttpResponse, Stream, CancellationToken, Boolean)
 - uid: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync*
   name: BinaryResponseAsync
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_
@@ -3058,12 +3077,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.UseGzip
   nameWithType: FileModuleBase.UseGzip
-- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.Boolean,System.String,Unosquare.Labs.EmbedIO.IHttpContext,System.IO.Stream,System.Threading.CancellationToken)
-  name: WriteFileAsync(Boolean, String, IHttpContext, Stream, CancellationToken)
-  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_WriteFileAsync_System_Boolean_System_String_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_Stream_System_Threading_CancellationToken_
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.Boolean,System.String,Unosquare.Labs.EmbedIO.IHttpContext,System.IO.Stream,System.Threading.CancellationToken)
-  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.Boolean, System.String, Unosquare.Labs.EmbedIO.IHttpContext, System.IO.Stream, System.Threading.CancellationToken)
-  nameWithType: FileModuleBase.WriteFileAsync(Boolean, String, IHttpContext, Stream, CancellationToken)
+- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.String,Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)
+  name: WriteFileAsync(String, IHttpResponse, Stream, CancellationToken, Boolean)
+  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_WriteFileAsync_System_String_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.String,Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)
+  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.String, Unosquare.Labs.EmbedIO.IHttpResponse, System.IO.Stream, System.Threading.CancellationToken, System.Boolean)
+  nameWithType: FileModuleBase.WriteFileAsync(String, IHttpResponse, Stream, CancellationToken, Boolean)
 - uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync*
   name: WriteFileAsync
   href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_WriteFileAsync_

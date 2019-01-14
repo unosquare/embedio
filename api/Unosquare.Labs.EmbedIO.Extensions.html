@@ -122,6 +122,57 @@
   </h3>
   
   
+  <a id="Unosquare_Labs_EmbedIO_Extensions_AcceptGzip_" data-uid="Unosquare.Labs.EmbedIO.Extensions.AcceptGzip*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_AcceptGzip_Unosquare_Labs_EmbedIO_IHttpContext_System_Int64_" data-uid="Unosquare.Labs.EmbedIO.Extensions.AcceptGzip(Unosquare.Labs.EmbedIO.IHttpContext,System.Int64)">AcceptGzip(IHttpContext, Int64)</h4>
+  <div class="markdown level1 summary"><p>Check if the Http Request can be gzipped (ignore audio and video content type).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool AcceptGzip(this IHttpContext context, long length)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">length</span></td>
+        <td><p>The length.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if a request can be gzipped; otherwise, <code>false</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)">BinaryResponseAsync(IHttpContext, Stream, CancellationToken, Boolean)</h4>
   <div class="markdown level1 summary"><p>Writes a binary response asynchronous.</p>
@@ -145,6 +196,69 @@
         <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.stream">Stream</a></td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The buffer.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td><p>The ct.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">useGzip</span></td>
+        <td><p>if set to <code>true</code> [use gzip].</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><p>A task for writing the output stream.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)">BinaryResponseAsync(IHttpResponse, Stream, CancellationToken, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Writes a binary response asynchronous.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; BinaryResponseAsync(this IHttpResponse response, Stream buffer, CancellationToken ct = default(CancellationToken), bool useGzip = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpResponse.html">IHttpResponse</a></td>
+        <td><span class="parametername">response</span></td>
+        <td><p>The response.</p>
 </td>
       </tr>
       <tr>
