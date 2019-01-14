@@ -506,12 +506,6 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.Extensions
   fullName: Unosquare.Labs.EmbedIO.Extensions
   nameWithType: Extensions
-- uid: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.FileInfo,System.Threading.CancellationToken,System.Boolean)
-  name: BinaryResponseAsync(IHttpContext, FileInfo, CancellationToken, Boolean)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_FileInfo_System_Threading_CancellationToken_System_Boolean_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.FileInfo,System.Threading.CancellationToken,System.Boolean)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.IO.FileInfo, System.Threading.CancellationToken, System.Boolean)
-  nameWithType: Extensions.BinaryResponseAsync(IHttpContext, FileInfo, CancellationToken, Boolean)
 - uid: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)
   name: BinaryResponseAsync(IHttpContext, Stream, CancellationToken, Boolean)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_
@@ -570,6 +564,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.EnableCors
   nameWithType: Extensions.EnableCors
+- uid: Unosquare.Labs.EmbedIO.Extensions.FileResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.FileInfo,System.String,System.Threading.CancellationToken,System.Boolean)
+  name: FileResponseAsync(IHttpContext, FileInfo, String, CancellationToken, Boolean)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_FileResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_FileInfo_System_String_System_Threading_CancellationToken_System_Boolean_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.FileResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.FileInfo,System.String,System.Threading.CancellationToken,System.Boolean)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.FileResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.IO.FileInfo, System.String, System.Threading.CancellationToken, System.Boolean)
+  nameWithType: Extensions.FileResponseAsync(IHttpContext, FileInfo, String, CancellationToken, Boolean)
+- uid: Unosquare.Labs.EmbedIO.Extensions.FileResponseAsync*
+  name: FileResponseAsync
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_FileResponseAsync_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.FileResponseAsync
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Extensions.FileResponseAsync
+  nameWithType: Extensions.FileResponseAsync
 - uid: Unosquare.Labs.EmbedIO.Extensions.GetSession(Unosquare.Labs.EmbedIO.IHttpContext)
   name: GetSession(IHttpContext)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_GetSession_Unosquare_Labs_EmbedIO_IHttpContext_
@@ -2929,12 +2936,12 @@ references:
   fullName.vb: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(System.Func(Of Unosquare.Labs.EmbedIO.IHttpContext, System.Threading.CancellationToken, System.Boolean), Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
   nameWithType: FallbackModule.FallbackModule(Func<IHttpContext, CancellationToken, Boolean>, HttpVerbs)
   nameWithType.vb: FallbackModule.FallbackModule(Func(Of IHttpContext, CancellationToken, Boolean), HttpVerbs)
-- uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.IO.FileInfo,Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
-  name: FallbackModule(FileInfo, HttpVerbs)
-  href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_IO_FileInfo_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.IO.FileInfo,Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
-  fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(System.IO.FileInfo, Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
-  nameWithType: FallbackModule.FallbackModule(FileInfo, HttpVerbs)
+- uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.IO.FileInfo,System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
+  name: FallbackModule(FileInfo, String, HttpVerbs)
+  href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_IO_FileInfo_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.IO.FileInfo,System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
+  fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(System.IO.FileInfo, System.String, Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
+  nameWithType: FallbackModule.FallbackModule(FileInfo, String, HttpVerbs)
 - uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
   name: FallbackModule(String, HttpVerbs)
   href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_
