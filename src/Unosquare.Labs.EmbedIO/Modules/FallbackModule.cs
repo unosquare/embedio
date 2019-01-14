@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
     using Constants;
+    using System.IO;
     using System;
     using System.Threading;
     using System.Threading.Tasks;
@@ -56,6 +57,22 @@
                 ModuleMap.AnyPath, 
                 verb, 
                 (context, ct) => Task.FromResult(context.Redirect(redirectUrl)));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FallbackModule"/> class.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <param name="verb">The verb.</param>
+        public FallbackModule(FileInfo file, HttpVerbs verb = HttpVerbs.Any)
+        {
+            if (file == null)
+                throw new ArgumentNullException(nameof(file));
+
+            AddHandler(
+                ModuleMap.AnyPath, 
+                verb, 
+                (context, ct) => context.BinaryResponseAsync(file, ct));
         }
 
         /// <inheritdoc />

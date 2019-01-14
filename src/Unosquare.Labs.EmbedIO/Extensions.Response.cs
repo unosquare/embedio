@@ -207,7 +207,27 @@
         }
 
         /// <summary>
-        /// Binaries the response asynchronous.
+        /// Writes a binary response asynchronous.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="file">The file.</param>
+        /// <param name="ct">The ct.</param>
+        /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
+        /// <returns>A task for writing the output stream.</returns>
+        public static async Task<bool> BinaryResponseAsync(
+            this IHttpContext context,
+            FileInfo file,
+            CancellationToken ct = default,
+            bool useGzip = true)
+        {
+            using (var stream = file.OpenRead())
+                await context.BinaryResponseAsync(stream, ct, useGzip).ConfigureAwait(false);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Writes a binary response asynchronous.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="buffer">The buffer.</param>
