@@ -33,7 +33,7 @@
             Assert.AreEqual(
                 WebSocketState.Open, 
                 clientSocket.State, 
-                $"Connection should be open, but the status is {clientSocket.State}");
+                $"Connection should be open, but the status is {clientSocket.State} - {wsUrl}");
 
             var buffer = System.Text.Encoding.UTF8.GetBytes("HOLA");
             await clientSocket.SendAsync(buffer, Opcode.Text);

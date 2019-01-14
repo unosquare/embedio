@@ -412,6 +412,7 @@
                 {
                     var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
                     string eTag;
+
                     using (var response = await client.SendAsync(request))
                     {
                         Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
