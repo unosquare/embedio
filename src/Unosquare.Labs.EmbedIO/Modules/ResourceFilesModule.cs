@@ -88,7 +88,7 @@
 
                 if (sendBuffer)
                 {
-                    await WriteFileAsync(partialHeader?.StartsWith("bytes=") == true, partialHeader, context, buffer, ct).ConfigureAwait(false);
+                    await WriteFileAsync(partialHeader, context.Response, buffer, ct).ConfigureAwait(false);
                 }
             }
             catch (HttpListenerException)

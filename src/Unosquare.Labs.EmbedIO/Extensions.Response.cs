@@ -233,28 +233,39 @@
         /// <param name="buffer">The buffer.</param>
         /// <param name="ct">The ct.</param>
         /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
+        /// <returns>
+        /// A task for writing the output stream.
+        /// </returns>
+        public static Task<bool> BinaryResponseAsync(
+            this IHttpContext context, 
+            Stream buffer, 
+            CancellationToken ct = default,
+            bool useGzip = true) 
+            => BinaryResponseAsync(context.Response, buffer, ct, useGzip && context.AcceptGzip(buffer.Length));
+
+        /// <summary>
+        /// Writes a binary response asynchronous.
+        /// </summary>
+        /// <param name="response">The response.</param>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="ct">The ct.</param>
+        /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
         /// <returns>A task for writing the output stream.</returns>
         public static async Task<bool> BinaryResponseAsync(
-            this IHttpContext context,
+            this IHttpResponse response,
             Stream buffer,
             CancellationToken ct = default,
             bool useGzip = true)
         {
-            if (useGzip &&
-                context.RequestHeader(Headers.AcceptEncoding).Contains(Headers.CompressionGzip) &&
-                buffer.Length < Modules.FileModuleBase.MaxGzipInputLength &&
-
-                // Ignore audio/video from compression
-                context.Response.ContentType?.StartsWith("audio") == false &&
-                context.Response.ContentType?.StartsWith("video") == false)
+            if (useGzip)
             {
                 // Perform compression if available
                 buffer = await buffer.CompressAsync(cancellationToken: ct).ConfigureAwait(false);
-                context.Response.AddHeader(Headers.ContentEncoding, Headers.CompressionGzip);
+                response.AddHeader(Headers.ContentEncoding, Headers.CompressionGzip);
             }
 
-            context.Response.ContentLength64 = buffer.Length;
-            await WriteToOutputStream(context.Response, buffer, 0, ct).ConfigureAwait(false);
+            response.ContentLength64 = buffer.Length;
+            await response.WriteToOutputStream(buffer, 0, ct).ConfigureAwait(false);
 
             return true;
         }

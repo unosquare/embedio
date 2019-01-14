@@ -47,45 +47,47 @@
         /// <summary>
         /// Writes the file asynchronous.
         /// </summary>
-        /// <param name="usingPartial">if set to <c>true</c> [using partial].</param>
         /// <param name="partialHeader">The partial header.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="response">The response.</param>
         /// <param name="buffer">The buffer.</param>
         /// <param name="ct">The cancellation token.</param>
-        /// <returns>A task representing the write action.</returns>
+        /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
+        /// <returns>
+        /// A task representing the write action.
+        /// </returns>
         protected Task WriteFileAsync(
-            bool usingPartial,
             string partialHeader,
-            IHttpContext context,
+            IHttpResponse response,
             Stream buffer,
-            CancellationToken ct)
+            CancellationToken ct,
+            bool useGzip = true)
         {
             var fileSize = buffer.Length;
 
             // check if partial
-            if (!usingPartial ||
+            if (partialHeader?.StartsWith("bytes=") == true ||
                 !CalculateRange(partialHeader, fileSize, out var lowerByteIndex, out var upperByteIndex))
-                return context.BinaryResponseAsync(buffer, ct, UseGzip);
+                return response.BinaryResponseAsync(buffer, ct, UseGzip && useGzip);
 
             if (upperByteIndex > fileSize)
             {
                 // invalid partial request
-                context.Response.StatusCode = 416;
-                context.Response.AddHeader(Headers.ContentRanges, $"bytes */{fileSize}");
+                response.StatusCode = 416;
+                response.AddHeader(Headers.ContentRanges, $"bytes */{fileSize}");
 
                 return Task.Delay(0, ct);
             }
 
             if (upperByteIndex != fileSize)
             {
-                context.Response.StatusCode = 206;
-                context.Response.ContentLength64 = upperByteIndex - lowerByteIndex + 1;
+                response.StatusCode = 206;
+                response.ContentLength64 = upperByteIndex - lowerByteIndex + 1;
 
-                context.Response.AddHeader(Headers.ContentRanges,
+                response.AddHeader(Headers.ContentRanges,
                     $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
             }
 
-            return context.Response.WriteToOutputStream(buffer, lowerByteIndex, ct);
+            return response.WriteToOutputStream(buffer, lowerByteIndex, ct);
         }
 
         /// <summary>

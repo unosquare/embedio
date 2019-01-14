@@ -13,11 +13,6 @@
     using Swan;
     using System.Threading;
     using System.Threading.Tasks;
-#if NET472
-    using System.Net;
-#else
-    using Net;
-#endif
 
     /// <summary>
     /// Represents a simple module to server static files from the file system.
@@ -83,15 +78,14 @@
 
             _virtualPaths = new VirtualPaths(Path.GetFullPath(fileSystemPath), useDirectoryBrowser);
 
+            DefaultDocument = DefaultDocumentName;
             UseGzip = true;
-#if DEBUG 
+#if DEBUG
             // When debugging, disable RamCache
             UseRamCache = false;
-#else 
-            // Otherwise, enable it by default
+#else
             UseRamCache = true;
 #endif
-            DefaultDocument = DefaultDocumentName;
 
             headers?.ForEach(DefaultHeaders.Add);
             additionalPaths?.Where(path => path.Key != "/")
@@ -264,7 +258,11 @@
             }
         }
 
-        private async Task<bool> HandleFile(IHttpContext context, string localPath, bool sendBuffer, CancellationToken ct)
+        private async Task<bool> HandleFile(
+            IHttpContext context,
+            string localPath,
+            bool sendBuffer,
+            CancellationToken ct)
         {
             Stream buffer = null;
 
@@ -282,13 +280,13 @@
                 var utcFileDateString = fileInfo.LastWriteTimeUtc
                     .ToString(Strings.BrowserTimeFormat, Strings.StandardCultureInfo);
 
-                if (usingPartial == false &&
+                if (!usingPartial &&
                     (isTagValid || context.RequestHeader(Headers.IfModifiedSince).Equals(utcFileDateString)))
                 {
                     SetStatusCode304(context.Response);
                     return true;
                 }
-                
+
                 context.Response.ContentLength64 = fileInfo.Length;
 
                 SetGeneralHeaders(context.Response, utcFileDateString, fileInfo.Extension);
@@ -304,11 +302,25 @@
                     return false;
                 }
 
-                await WriteFileAsync(usingPartial, partialHeader, context, buffer, ct).ConfigureAwait(false);
+                await WriteFileAsync(
+                        partialHeader, 
+                        context.Response, 
+                        buffer, 
+                        ct,
+                        context.AcceptGzip(buffer.Length))
+                    .ConfigureAwait(false);
             }
-            catch (HttpListenerException)
+            catch (Exception ex)
             {
                 // Connection error, nothing else to do
+                var isListenerException =
+#if !NETSTANDARD1_3
+                    (ex is System.Net.HttpListenerException) ||
+#endif
+                    (ex is Net.HttpListenerException);
+
+                if (!isListenerException)
+                    throw;
             }
             finally
             {
@@ -370,7 +382,8 @@
             string requestHash,
             string localPath)
         {
-            var currentHash = _fileHashCache.TryGetValue(localPath, out var currentTuple) && fileDate.Ticks == currentTuple.Item1
+            var currentHash = _fileHashCache.TryGetValue(localPath, out var currentTuple) &&
+                              fileDate.Ticks == currentTuple.Item1
                 ? currentTuple.Item2
                 : $"{buffer.ComputeMD5().ToUpperHex()}-{fileDate.Ticks}";
 

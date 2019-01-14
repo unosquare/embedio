@@ -296,6 +296,18 @@
             return requestBody == null ? null : Json.Deserialize<T>(requestBody);
         }
 
+        /// <summary>
+        /// Check if the Http Request can be gzipped (ignore audio and video content type).
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="length">The length.</param>
+        /// <returns><c>true</c> if a request can be gzipped; otherwise, <c>false</c>.</returns>
+        public static bool AcceptGzip(this IHttpContext context, long length) =>
+            context.RequestHeader(Headers.AcceptEncoding).Contains(Headers.CompressionGzip)
+            && length < Modules.FileModuleBase.MaxGzipInputLength &&
+            context.Response.ContentType?.StartsWith("audio") == false &&
+            context.Response.ContentType?.StartsWith("video") == false;
+
         #endregion
 
         #region Data Parsing Methods
