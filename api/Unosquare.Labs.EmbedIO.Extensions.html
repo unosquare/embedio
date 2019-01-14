@@ -81,7 +81,7 @@
   
   <h1 id="Unosquare_Labs_EmbedIO_Extensions" data-uid="Unosquare.Labs.EmbedIO.Extensions" class="text-break">Class Extensions
   </h1>
-  <div class="markdown level0 summary"><p>Extension methods to help your coding!.</p>
+  <div class="markdown level0 summary"><p>Extension methods to help your coding.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -1268,6 +1268,35 @@ public static bool JsonResponse(this IHttpContext context, string json)</code></
   </table>
   
   
+  <a id="Unosquare_Labs_EmbedIO_Extensions_NoCache_" data-uid="Unosquare.Labs.EmbedIO.Extensions.NoCache*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_NoCache_Unosquare_Labs_EmbedIO_IHttpResponse_" data-uid="Unosquare.Labs.EmbedIO.Extensions.NoCache(Unosquare.Labs.EmbedIO.IHttpResponse)">NoCache(IHttpResponse)</h4>
+  <div class="markdown level1 summary"><p>Sends headers to disable caching on the client side.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void NoCache(this IHttpResponse response)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpResponse.html">IHttpResponse</a></td>
+        <td><span class="parametername">response</span></td>
+        <td><p>The response.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Unosquare_Labs_EmbedIO_Extensions_ParseJson_" data-uid="Unosquare.Labs.EmbedIO.Extensions.ParseJson*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_Extensions_ParseJson__1_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.ParseJson``1(Unosquare.Labs.EmbedIO.IHttpContext)">ParseJson&lt;T&gt;(IHttpContext)</h4>
   <div class="markdown level1 summary"><p>Parses the JSON as a given type from the request body.
@@ -2102,6 +2131,75 @@ match.</p>
         <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">content</span></td>
+        <td><p>The content.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">contentType</span></td>
+        <td><p>Type of the content.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.text.encoding">Encoding</a></td>
+        <td><span class="parametername">encoding</span></td>
+        <td><p>The encoding.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><p>A task for writing the output stream.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Extensions_StringResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_StringResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_String_System_String_System_Threading_CancellationToken_System_Text_Encoding_" data-uid="Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse,System.String,System.String,System.Threading.CancellationToken,System.Text.Encoding)">StringResponseAsync(IHttpResponse, String, String, CancellationToken, Encoding)</h4>
+  <div class="markdown level1 summary"><p>Outputs async a string response given a string.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; StringResponseAsync(this IHttpResponse response, string content, string contentType = &quot;application/json&quot;, CancellationToken cancellationToken = default(CancellationToken), Encoding encoding = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpResponse.html">IHttpResponse</a></td>
+        <td><span class="parametername">response</span></td>
+        <td><p>The response.</p>
 </td>
       </tr>
       <tr>

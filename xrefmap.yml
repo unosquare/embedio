@@ -730,6 +730,12 @@ references:
   commentId: M:Unosquare.Labs.EmbedIO.Extensions.NoCache(Unosquare.Labs.EmbedIO.IHttpContext)
   fullName: Unosquare.Labs.EmbedIO.Extensions.NoCache(Unosquare.Labs.EmbedIO.IHttpContext)
   nameWithType: Extensions.NoCache(IHttpContext)
+- uid: Unosquare.Labs.EmbedIO.Extensions.NoCache(Unosquare.Labs.EmbedIO.IHttpResponse)
+  name: NoCache(IHttpResponse)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_NoCache_Unosquare_Labs_EmbedIO_IHttpResponse_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.NoCache(Unosquare.Labs.EmbedIO.IHttpResponse)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.NoCache(Unosquare.Labs.EmbedIO.IHttpResponse)
+  nameWithType: Extensions.NoCache(IHttpResponse)
 - uid: Unosquare.Labs.EmbedIO.Extensions.NoCache*
   name: NoCache
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_NoCache_
@@ -932,6 +938,12 @@ references:
   commentId: M:Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.String,System.Threading.CancellationToken,System.Text.Encoding)
   fullName: Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.String, System.String, System.Threading.CancellationToken, System.Text.Encoding)
   nameWithType: Extensions.StringResponseAsync(IHttpContext, String, String, CancellationToken, Encoding)
+- uid: Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse,System.String,System.String,System.Threading.CancellationToken,System.Text.Encoding)
+  name: StringResponseAsync(IHttpResponse, String, String, CancellationToken, Encoding)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_StringResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_String_System_String_System_Threading_CancellationToken_System_Text_Encoding_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse,System.String,System.String,System.Threading.CancellationToken,System.Text.Encoding)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse, System.String, System.String, System.Threading.CancellationToken, System.Text.Encoding)
+  nameWithType: Extensions.StringResponseAsync(IHttpResponse, String, String, CancellationToken, Encoding)
 - uid: Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync*
   name: StringResponseAsync
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_StringResponseAsync_
