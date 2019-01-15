@@ -63,10 +63,10 @@
             bool useGzip = true)
         {
             var fileSize = buffer.Length;
+            var isPartial = partialHeader?.StartsWith("bytes=") == true;
 
             // check if partial
-            if (partialHeader?.StartsWith("bytes=") == true ||
-                !CalculateRange(partialHeader, fileSize, out var lowerByteIndex, out var upperByteIndex))
+            if (!isPartial || !CalculateRange(partialHeader, fileSize, out var lowerByteIndex, out var upperByteIndex))
                 return response.BinaryResponseAsync(buffer, ct, UseGzip && useGzip);
 
             if (upperByteIndex > fileSize)

@@ -20,7 +20,7 @@
             : base(ws =>
             {
                 ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()) { UseRamCache = true });
-                ws.RegisterModule(new FallbackModule("/index.html"));
+                ws.RegisterModule(new FallbackModule("/"));
             }, RoutingStrategy.Wildcard)
         {
         }

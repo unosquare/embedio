@@ -20,7 +20,6 @@
 
         [TestCase("http://[::1]:8877")]
         [TestCase("http://127.0.0.1:8877")]
-        [TestCase("http://localhost:8877")]
         public async Task WithUseIpv6_ReturnsValid(string urlTest)
         {
             if (Runtime.OS != Swan.OperatingSystem.Windows)
