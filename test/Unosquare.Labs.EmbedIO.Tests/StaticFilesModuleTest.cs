@@ -75,16 +75,13 @@
                 }
             }
 
-            [Test]
-            public async Task SubFolderIndex()
+            [TestCase("sub/")]
+            [TestCase("sub")]
+            public async Task SubFolderIndex(string url)
             {
-                var html = await GetString("sub/");
+                var html = await GetString(url);
 
-                Assert.AreEqual(Resources.SubIndex, html, "Same content index.html");
-
-                html = await GetString("sub");
-
-                Assert.AreEqual(Resources.SubIndex, html, "Same content index.html without trailing");
+                Assert.AreEqual(Resources.SubIndex, html, $"Same content {url}");
             }
 
             [Test]

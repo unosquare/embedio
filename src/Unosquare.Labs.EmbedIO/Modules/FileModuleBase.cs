@@ -63,16 +63,16 @@
             bool useGzip = true)
         {
             var fileSize = buffer.Length;
-            var isPartial = partialHeader?.StartsWith("bytes=") == true;
-
+            
             // check if partial
-            if (!isPartial || !CalculateRange(partialHeader, fileSize, out var lowerByteIndex, out var upperByteIndex))
+            if (!CalculateRange(partialHeader, fileSize, out var lowerByteIndex, out var upperByteIndex))
                 return response.BinaryResponseAsync(buffer, ct, UseGzip && useGzip);
 
             if (upperByteIndex > fileSize)
             {
                 // invalid partial request
                 response.StatusCode = 416;
+                response.ContentLength64 = 0;
                 response.AddHeader(Headers.ContentRanges, $"bytes */{fileSize}");
 
                 return Task.Delay(0, ct);
@@ -127,6 +127,10 @@
         {
             lowerByteIndex = 0;
             upperByteIndex = 0;
+
+            var isPartial = partialHeader?.StartsWith("bytes=") == true;
+
+            if (!isPartial) return false;
 
             var range = partialHeader.Replace("bytes=", string.Empty).Split('-');
 
