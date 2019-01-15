@@ -199,12 +199,12 @@
         public bool IsAlive => PingAsync().Result; // TODO: Change?
 
 #if !NETSTANDARD1_3
-/// <summary>
-/// Gets a value indicating whether the WebSocket connection is secure.
-/// </summary>
-/// <value>
-/// <c>true</c> if the connection is secure; otherwise, <c>false</c>.
-/// </value>
+        /// <summary>
+        /// Gets a value indicating whether the WebSocket connection is secure.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the connection is secure; otherwise, <c>false</c>.
+        /// </value>
         public bool IsSecure { get; private set; }
 #endif
 
@@ -375,7 +375,15 @@
                 lock (_forState)
                     _readyState = WebSocketState.Connecting;
 
-                await DoHandshakeAsync().ConfigureAwait(false);
+                await SetClientStream().ConfigureAwait(false);
+                var res = await SendHandshakeRequestAsync().ConfigureAwait(false);
+
+                _validator.ThrowIfInvalidResponse(res);
+
+                if (IsExtensionsRequested)
+                    ProcessSecWebSocketExtensionsServerHeader(res.Headers[Headers.WebSocketExtensions]);
+
+                CookieCollection.AddRange(res.Cookies.Where(y => !y.Expired));
 
                 lock (_forState)
                     _readyState = WebSocketState.Open;
@@ -595,20 +603,6 @@
                        (receive && sent && _exitReceiving != null && _exitReceiving.WaitOne(_waitTime));
 
             return sent && received;
-        }
-
-        // As client
-        private async Task DoHandshakeAsync()
-        {
-            await SetClientStream().ConfigureAwait(false);
-            var res = await SendHandshakeRequestAsync().ConfigureAwait(false);
-
-            _validator.ThrowIfInvalidResponse(res);
-
-            if (IsExtensionsRequested)
-                ProcessSecWebSocketExtensionsServerHeader(res.Headers[Headers.WebSocketExtensions]);
-
-            CookieCollection.AddRange(res.Cookies.Where(y => !y.Expired));
         }
 
         private void Fatal(string message, Exception exception = null) => Fatal(message,
@@ -957,26 +951,29 @@
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         private async Task SetClientStream()
         {
+#if !NETSTANDARD1_3
+            _tcpClient = new TcpClient(_uri.DnsSafeHost, _uri.Port);
+#else
             _tcpClient = new TcpClient();
 
             await _tcpClient.ConnectAsync(_uri.DnsSafeHost, _uri.Port).ConfigureAwait(false);
+#endif
             _stream = _tcpClient.GetStream();
 
 #if !NETSTANDARD1_3
-            if (IsSecure)
+            if (!IsSecure) return;
+
+            try
             {
-                try
-                {
-                    var sslStream = new SslStream(_stream, false);
+                var sslStream = new SslStream(_stream, false);
 
-                    sslStream.AuthenticateAsClient(_uri.DnsSafeHost);
+                sslStream.AuthenticateAsClient(_uri.DnsSafeHost);
 
-                    _stream = sslStream;
-                }
-                catch (Exception ex)
-                {
-                    throw new WebSocketException(CloseStatusCode.TlsHandshakeFailure, ex);
-                }
+                _stream = sslStream;
+            }
+            catch (Exception ex)
+            {
+                throw new WebSocketException(CloseStatusCode.TlsHandshakeFailure, ex);
             }
 #endif
         }
