@@ -504,12 +504,6 @@
         /// </summary>
         /// <returns></returns>
         public X509Certificate2 GetClientCertificate() => _context.Connection.ClientCertificate;
-
-        /// <summary>
-        /// Gets the client certificate asynchronously.
-        /// </summary>
-        /// <returns></returns>
-        public Task<X509Certificate2> GetClientCertificateAsync() => Task<X509Certificate2>.Factory.FromAsync(BeginGetClientCertificate, EndGetClientCertificate, null);
 #endif
     }
 

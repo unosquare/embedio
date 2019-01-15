@@ -76,54 +76,6 @@
             }
         }
 
-        public class HttpGet : WebApiModuleTest
-        {
-            [Test]
-            public async Task JsonData_ReturnsOk()
-            {
-                using (var client = new HttpClient())
-                {
-                    List<Person> remoteList;
-                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestController.GetPath);
-
-                    using (var response = await client.SendAsync(request))
-                    {
-                        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-
-                        var jsonBody = await response.Content.ReadAsStringAsync();
-
-                        Assert.IsNotNull(jsonBody, "Json Body is not null");
-                        Assert.IsNotEmpty(jsonBody, "Json Body is empty");
-
-                        remoteList = Json.Deserialize<List<Person>>(jsonBody);
-
-                        Assert.IsNotNull(remoteList, "Json Object is not null");
-                        Assert.AreEqual(
-                            remoteList.Count,
-                            PeopleRepository.Database.Count,
-                            "Remote list count equals local list");
-                    }
-
-                    await ValidatePerson(WebServerUrl + TestController.GetPath + remoteList.First().Key);
-                }
-            }
-
-            [Test]
-            public async Task JsonDataWithMiddleUrl_ReturnsOk()
-            {
-                var person = PeopleRepository.Database.First();
-                await ValidatePerson(WebServerUrl +
-                                                TestController.GetMiddlePath.Replace("*", person.Key.ToString()));
-            }
-
-            [Test]
-            public async Task JsonAsyncData_ReturnsOk()
-            {
-                var person = PeopleRepository.Database.First();
-                await ValidatePerson(WebServerUrl + TestController.GetAsyncPath + person.Key);
-            }
-        }
-
         public class HttpPost : WebApiModuleTest
         {
             [Test]
@@ -219,6 +171,44 @@
         {
             public string test { get; set; }
             public List<string> id { get; set; }
+        }
+    }
+
+    public class HttpGet : PersonFixtureBase
+    {
+        public HttpGet()
+            : base(ws => ws.WithWebApiController<TestController>(), Constants.RoutingStrategy.Wildcard, true)
+        {
+        }
+
+        [Test]
+        public async Task GetJsonData_ReturnsOk()
+        {
+            var jsonBody = await GetString(TestController.GetPath);
+
+            Assert.IsNotNull(jsonBody, "Json Body is not null");
+            Assert.IsNotEmpty(jsonBody, "Json Body is empty");
+
+            var remoteList = Json.Deserialize<List<Person>>(jsonBody);
+
+            Assert.IsNotNull(remoteList, "Json Object is not null");
+            Assert.AreEqual(
+                remoteList.Count,
+                PeopleRepository.Database.Count,
+                "Remote list count equals local list");
+        }
+
+        [Test]
+        public async Task JsonDataWithSelector_ReturnsOk()
+        {
+            await ValidatePerson(TestController.GetPath + PeopleRepository.Database.First().Key);
+        }
+
+        [Test]
+        public async Task JsonDataWithMiddleUrl_ReturnsOk()
+        {
+            var person = PeopleRepository.Database.First();
+            await ValidatePerson(TestController.GetMiddlePath.Replace("*", person.Key.ToString()));
         }
     }
 }

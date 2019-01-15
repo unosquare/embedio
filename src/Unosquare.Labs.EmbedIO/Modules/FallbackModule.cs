@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
     using Constants;
+    using System.IO;
     using System;
     using System.Threading;
     using System.Threading.Tasks;
@@ -17,6 +18,7 @@
         /// </summary>
         /// <param name="action">The action.</param>
         /// <param name="verb">The verb.</param>
+        [Obsolete("Use WebHandler constructor")]
         public FallbackModule(Func<IHttpContext, CancellationToken, bool> action, HttpVerbs verb = HttpVerbs.Any)
         {
             AddHandler(
@@ -55,6 +57,24 @@
                 ModuleMap.AnyPath, 
                 verb, 
                 (context, ct) => Task.FromResult(context.Redirect(redirectUrl)));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FallbackModule" /> class.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <param name="contentType">Type of the content.</param>
+        /// <param name="verb">The verb.</param>
+        /// <exception cref="ArgumentNullException">file</exception>
+        public FallbackModule(FileInfo file, string contentType = null, HttpVerbs verb = HttpVerbs.Any)
+        {
+            if (file == null)
+                throw new ArgumentNullException(nameof(file));
+
+            AddHandler(
+                ModuleMap.AnyPath, 
+                verb, 
+                (context, ct) => context.FileResponseAsync(file, contentType, ct));
         }
 
         /// <inheritdoc />

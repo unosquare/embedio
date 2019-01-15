@@ -77,7 +77,11 @@ namespace Unosquare.Labs.EmbedIO
         }
 
         /// <inheritdoc />
-        public string StatusDescription => _response.StatusDescription;
+        public string StatusDescription 
+        {
+            get => _response.StatusDescription;
+            set => _response.StatusDescription = value;
+        }
 
         /// <inheritdoc />
         public void AddHeader(string headerName, string value) => _response.AddHeader(headerName, value);

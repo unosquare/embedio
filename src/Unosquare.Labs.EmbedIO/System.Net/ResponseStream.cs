@@ -42,7 +42,7 @@
             set => throw new NotSupportedException();
         }
 
-#if NET452 || NET47
+#if NET452 || NET472
         public override void Close()
 #else
         public void Close()

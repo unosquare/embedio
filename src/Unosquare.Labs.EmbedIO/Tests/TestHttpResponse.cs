@@ -50,7 +50,7 @@
         internal bool IsClosed { get; private set; }
 
         /// <inheritdoc />
-        public string StatusDescription { get; private set; }
+        public string StatusDescription { get; set; }
 
         /// <inheritdoc />
         public void AddHeader(string headerName, string value) => Headers.Add(headerName, value);

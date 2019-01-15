@@ -1,7 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
-    using System;
     using Swan;
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
@@ -16,15 +16,9 @@
     public abstract class FileModuleBase
         : WebModuleBase
     {
-        /// <summary>
-        /// The maximum gzip input length.
-        /// </summary>
-        protected const int MaxGzipInputLength = 4 * 1024 * 1024;
+        internal static readonly int MaxGzipInputLength = 4 * 1024 * 1024;
 
-        /// <summary>
-        /// The chunk size for sending files.
-        /// </summary>
-        private const int ChunkSize = 256 * 1024;
+        internal static readonly int ChunkSize = 256 * 1024;
 
         /// <summary>
         /// Gets the collection holding the MIME types.
@@ -53,68 +47,47 @@
         /// <summary>
         /// Writes the file asynchronous.
         /// </summary>
-        /// <param name="usingPartial">if set to <c>true</c> [using partial].</param>
         /// <param name="partialHeader">The partial header.</param>
-        /// <param name="fileSize">Size of the file.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="response">The response.</param>
         /// <param name="buffer">The buffer.</param>
         /// <param name="ct">The cancellation token.</param>
-        /// <returns>A task representing the write action.</returns>
-        protected async Task WriteFileAsync(
-            bool usingPartial,
+        /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
+        /// <returns>
+        /// A task representing the write action.
+        /// </returns>
+        protected Task WriteFileAsync(
             string partialHeader,
-            long fileSize,
-            IHttpContext context,
+            IHttpResponse response,
             Stream buffer,
-            CancellationToken ct)
+            CancellationToken ct,
+            bool useGzip = true)
         {
-            long lowerByteIndex = 0;
+            var fileSize = buffer.Length;
+            
+            // check if partial
+            if (!CalculateRange(partialHeader, fileSize, out var lowerByteIndex, out var upperByteIndex))
+                return response.BinaryResponseAsync(buffer, ct, UseGzip && useGzip);
 
-            if (usingPartial &&
-                CalculateRange(partialHeader, fileSize, out lowerByteIndex, out var upperByteIndex))
+            if (upperByteIndex > fileSize)
             {
-                if (upperByteIndex > fileSize)
-                {
-                    // invalid partial request
-                    context.Response.StatusCode = 416;
-                    context.Response.AddHeader(Headers.ContentRanges, $"bytes */{fileSize}");
+                // invalid partial request
+                response.StatusCode = 416;
+                response.ContentLength64 = 0;
+                response.AddHeader(Headers.ContentRanges, $"bytes */{fileSize}");
 
-                    return;
-                }
-
-                if (upperByteIndex == fileSize)
-                {
-                    context.Response.ContentLength64 = buffer.Length;
-                }
-                else
-                {
-                    context.Response.StatusCode = 206;
-                    context.Response.ContentLength64 = upperByteIndex - lowerByteIndex + 1;
-
-                    context.Response.AddHeader(Headers.ContentRanges,
-                        $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
-                }
-            }
-            else
-            {
-                if (UseGzip &&
-                    context.RequestHeader(Headers.AcceptEncoding).Contains(Headers.CompressionGzip) &&
-                    buffer.Length < MaxGzipInputLength &&
-
-                    // Ignore audio/video from compression
-                    context.Response.ContentType?.StartsWith("audio") == false &&
-                    context.Response.ContentType?.StartsWith("video") == false)
-                {
-                    // Perform compression if available
-                    buffer = await buffer.CompressAsync(cancellationToken: ct).ConfigureAwait(false);
-                    context.Response.AddHeader(Headers.ContentEncoding, Headers.CompressionGzip);
-                    lowerByteIndex = 0;
-                }
-
-                context.Response.ContentLength64 = buffer.Length;
+                return Task.Delay(0, ct);
             }
 
-            await WriteToOutputStream(context.Response, buffer, lowerByteIndex, ct).ConfigureAwait(false);
+            if (upperByteIndex != fileSize)
+            {
+                response.StatusCode = 206;
+                response.ContentLength64 = upperByteIndex - lowerByteIndex + 1;
+
+                response.AddHeader(Headers.ContentRanges,
+                    $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
+            }
+
+            return response.WriteToOutputStream(buffer, lowerByteIndex, ct);
         }
 
         /// <summary>
@@ -146,30 +119,6 @@
             response.AddHeader(Headers.AcceptRanges, "bytes");
         }
 
-        private static async Task WriteToOutputStream(
-            IHttpResponse response,
-            Stream buffer,
-            long lowerByteIndex,
-            CancellationToken ct)
-        {
-            var streamBuffer = new byte[ChunkSize];
-            long sendData = 0;
-            var readBufferSize = ChunkSize;
-
-            while (true)
-            {
-                if (sendData + ChunkSize > response.ContentLength64) readBufferSize = (int)(response.ContentLength64 - sendData);
-
-                buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
-                var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct).ConfigureAwait(false);
-
-                if (read == 0) break;
-
-                sendData += read;
-                await response.OutputStream.WriteAsync(streamBuffer, 0, readBufferSize, ct).ConfigureAwait(false);
-            }
-        }
-
         private static bool CalculateRange(
             string partialHeader,
             long fileSize,
@@ -178,6 +127,10 @@
         {
             lowerByteIndex = 0;
             upperByteIndex = 0;
+
+            var isPartial = partialHeader?.StartsWith("bytes=") == true;
+
+            if (!isPartial) return false;
 
             var range = partialHeader.Replace("bytes=", string.Empty).Split('-');
 

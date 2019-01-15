@@ -12,7 +12,6 @@
         public const string RelativePath = "api/";
         public const string EchoPath = RelativePath + "echo/";
         public const string GetPath = RelativePath + "people/";
-        public const string GetAsyncPath = RelativePath + "asyncPeople/";
         public const string GetMiddlePath = RelativePath + "person/*/select";
 
         public TestController(IHttpContext context)
@@ -21,23 +20,25 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + GetMiddlePath)]
-        public bool GetPerson()
+        public Task<bool> GetPerson()
         {
             try
             {
                 // read the middle segment
-                var segment = Request.Url.Segments.Reverse().Skip(1).First().Replace("/", string.Empty);
-                
+                var segment = Request.Url.Segments.Reverse().Skip(1)
+                    .First()
+                    .Replace("/", string.Empty);
+
                 return CheckPerson(segment);
             }
             catch (Exception ex)
             {
-                return this.JsonExceptionResponse(ex);
+                return this.JsonExceptionResponseAsync(ex);
             }
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + GetPath + "*")]
-        public bool GetPeople()
+        public Task<bool> GetPeople()
         {
             try
             {
@@ -45,60 +46,39 @@
                 var lastSegment = Request.Url.Segments.Last();
 
                 // if it ends with a / means we need to list people
-                if (lastSegment.EndsWith("/"))
-                    return this.JsonResponse(PeopleRepository.Database);
-
-                return CheckPerson(lastSegment);
+                return lastSegment.EndsWith("/")
+                    ? this.JsonResponseAsync(PeopleRepository.Database)
+                    : CheckPerson(lastSegment);
             }
             catch (Exception ex)
             {
-                return this.JsonExceptionResponse(ex);
+                return this.JsonExceptionResponseAsync(ex);
             }
         }
 
         [WebApiHandler(HttpVerbs.Post, "/" + GetPath + "*")]
-        public bool PostPeople()
+        public Task<bool> PostPeople()
         {
             try
             {
                 var content = this.ParseJson<Person>();
 
-                return this.JsonResponse(content);
+                return this.JsonResponseAsync(content);
             }
             catch (Exception ex)
             {
-                return this.JsonExceptionResponse(ex);
+                return this.JsonExceptionResponseAsync(ex);
             }
         }
 
         [WebApiHandler(HttpVerbs.Post, "/" + EchoPath + "*")]
-        public bool PostEcho()
+        public Task<bool> PostEcho()
         {
             try
             {
                 var content = this.RequestFormDataDictionary();
 
-                return this.JsonResponse(content);
-            }
-            catch (Exception ex)
-            {
-                return this.JsonExceptionResponse(ex);
-            }
-        }
-
-        [WebApiHandler(HttpVerbs.Get, "/" + GetAsyncPath + "*")]
-        public Task<bool> GetPeopleAsync()
-        {
-            try
-            {
-                // read the last segment
-                var lastSegment = Request.Url.Segments.Last();
-
-                // if it ends with a / means we need to list people
-                if (lastSegment.EndsWith("/"))
-                    return this.JsonResponseAsync(PeopleRepository.Database);
-
-                return Task.FromResult(CheckPerson(lastSegment));
+                return this.JsonResponseAsync(content);
             }
             catch (Exception ex)
             {
@@ -106,11 +86,11 @@
             }
         }
         
-        private bool CheckPerson(string personKey)
+        private Task<bool> CheckPerson(string personKey)
         {
             if (int.TryParse(personKey, out var key) && PeopleRepository.Database.Any(p => p.Key == key))
             {
-                return this.JsonResponse(PeopleRepository.Database.FirstOrDefault(p => p.Key == key));
+                return this.JsonResponseAsync(PeopleRepository.Database.FirstOrDefault(p => p.Key == key));
             }
 
             throw new KeyNotFoundException($"Key Not Found: {personKey}");
@@ -130,17 +110,17 @@
         public string WebName { get; set; }
 
         [WebApiHandler(HttpVerbs.Get, "/name")]
-        public bool GetName()
+        public Task<bool> GetName()
         {
             this.NoCache();
-            return this.JsonResponse(WebName);
+            return this.JsonResponseAsync(WebName);
         }
 
         [WebApiHandler(HttpVerbs.Get, "/namePublic")]
-        public bool GetNamePublic()
+        public Task<bool> GetNamePublic()
         {
             Response.AddHeader("Cache-Control", "public");
-            return this.JsonResponse(WebName);
+            return this.JsonResponseAsync(WebName);
         }
 
         public override void SetDefaultHeaders()

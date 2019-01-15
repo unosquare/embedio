@@ -102,12 +102,12 @@
             }
             else if (len < 0x010000)
             {
-                PayloadLength = (byte)126;
+                PayloadLength = 126;
                 ExtendedPayloadLength = ((ushort)len).ToByteArray(Endianness.Big);
             }
             else
             {
-                PayloadLength = (byte)127;
+                PayloadLength = 127;
                 ExtendedPayloadLength = len.ToByteArray(Endianness.Big);
             }
 

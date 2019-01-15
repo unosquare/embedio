@@ -19,16 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="LiteLib" Version="0.18.1" />
+    <PackageReference Include="LiteLib" Version="0.19.0" />
     <PackageReference Include="Tubular.ServerSide" Version="1.5.1" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2' ">
     <PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.11" />
-  </ItemGroup>
-   
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
 </Project>

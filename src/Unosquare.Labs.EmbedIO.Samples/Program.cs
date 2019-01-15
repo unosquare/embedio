@@ -17,7 +17,7 @@
         /// <param name="args">The arguments.</param>
         private static async Task Main(string[] args)
         {
-            var url = args.Length > 0 ? args[0] : "http://*:7877/";
+            var url = args.Length > 0 ? args[0] : "http://*:8877";
 
             AppDbContext.InitDatabase();
 
@@ -35,7 +35,7 @@
                 ctSource.Cancel();
             }, ctSource.Token);
 
-            var webOptions = new WebServerOptions(url);
+            var webOptions = new WebServerOptions(url) { Mode = HttpListenerMode.EmbedIO };
 
             // Our web server is disposable. 
             using (var server = new WebServer(webOptions))
@@ -71,7 +71,7 @@
                 server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsChatServer>();
                 server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsTerminalServer>();
 
-                server.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse(new { Message = "Error" })));
+                server.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponseAsync(new { Message = "Error" }, ct)));
 
                 // Fire up the browser to show the content!
                 var browser = new Process

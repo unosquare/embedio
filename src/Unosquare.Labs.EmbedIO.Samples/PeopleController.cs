@@ -37,7 +37,7 @@
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException">Key Not Found:  + lastSegment</exception>
         [WebApiHandler(HttpVerbs.Get, RelativePath + "people/*")]
-        public bool GetPeople()
+        public Task<bool> GetPeople()
         {
             try
             {
@@ -46,11 +46,11 @@
 
                 // if it ends with a / means we need to list people
                 if (lastSegment.EndsWith("/"))
-                    return this.JsonResponse(_dbContext.People.SelectAll());
+                    return this.JsonResponseAsync(_dbContext.People.SelectAll());
 
                 // if it ends with "first" means we need to show first record of people
                 if (lastSegment.EndsWith("first"))
-                    return this.JsonResponse(_dbContext.People.SelectAll().First());
+                    return this.JsonResponseAsync(_dbContext.People.SelectAll().First());
 
                 // otherwise, we need to parse the key and respond with the entity accordingly
                 if (!int.TryParse(lastSegment, out var key))
@@ -59,13 +59,13 @@
                 var single = _dbContext.People.Single(key);
 
                 if (single != null)
-                    return this.JsonResponse(single);
+                    return this.JsonResponseAsync(single);
 
                 throw new KeyNotFoundException("Key Not Found: " + lastSegment);
             }
             catch (Exception ex)
             {
-                return this.JsonExceptionResponse(ex);
+                return this.JsonExceptionResponseAsync(ex);
             }
         }
 
@@ -82,11 +82,11 @@
                 var model = this.ParseJson<GridDataRequest>();
                 var data = await _dbContext.People.SelectAllAsync();
 
-                return this.JsonResponse(model.CreateGridDataResponse(data.AsQueryable()));
+                return await this.JsonResponseAsync(model.CreateGridDataResponse(data.AsQueryable()));
             }
             catch (Exception ex)
             {
-                return this.JsonExceptionResponse(ex);
+                return await this.JsonExceptionResponseAsync(ex);
             }
         }
 
@@ -95,17 +95,17 @@
         /// </summary>
         /// <returns></returns>
         [WebApiHandler(HttpVerbs.Post, RelativePath + "echo/*")]
-        public bool Echo()
+        public Task<bool> Echo()
         {
             try
             {
                 var content = this.RequestFormDataDictionary();
 
-                return this.JsonResponse(content);
+                return this.JsonResponseAsync(content);
             }
             catch (Exception ex)
             {
-                return this.JsonExceptionResponse(ex);
+                return this.JsonExceptionResponseAsync(ex);
             }
         }
     }

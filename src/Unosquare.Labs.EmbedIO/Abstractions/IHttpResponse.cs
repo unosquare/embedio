@@ -63,7 +63,7 @@
         /// <value>
         /// The status description.
         /// </value>
-        string StatusDescription { get; }
+        string StatusDescription { get; set; }
 
         /// <summary>
         /// Adds the header.

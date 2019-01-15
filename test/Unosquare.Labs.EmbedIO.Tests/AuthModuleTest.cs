@@ -15,7 +15,7 @@
             : base(ws =>
                 {
                     ws.RegisterModule(new AuthModule("root", "password1234"));
-                    ws.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponse("OK")));
+                    ws.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponseAsync("OK", ct)));
                 },
                 RoutingStrategy.Wildcard,
                 true)

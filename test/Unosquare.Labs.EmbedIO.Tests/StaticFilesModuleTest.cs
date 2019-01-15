@@ -20,7 +20,7 @@
             : base(ws =>
             {
                 ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()) { UseRamCache = true });
-                ws.RegisterModule(new FallbackModule("/index.html"));
+                ws.RegisterModule(new FallbackModule("/"));
             }, RoutingStrategy.Wildcard)
         {
         }
@@ -75,16 +75,13 @@
                 }
             }
 
-            [Test]
-            public async Task SubFolderIndex()
+            [TestCase("sub/")]
+            [TestCase("sub")]
+            public async Task SubFolderIndex(string url)
             {
-                var html = await GetString("sub/");
+                var html = await GetString(url);
 
-                Assert.AreEqual(Resources.SubIndex, html, "Same content index.html");
-
-                html = await GetString("sub");
-
-                Assert.AreEqual(Resources.SubIndex, html, "Same content index.html without trailing");
+                Assert.AreEqual(Resources.SubIndex, html, $"Same content {url}");
             }
 
             [Test]
@@ -354,6 +351,7 @@
                 {
                     var originalSet = TestHelper.GetBigData();
                     var requestHead = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
+
                     using (var res = await client.SendAsync(requestHead))
                     {
                         var remoteSize = await res.Content.ReadAsByteArrayAsync();
@@ -412,6 +410,7 @@
                 {
                     var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
                     string eTag;
+
                     using (var response = await client.SendAsync(request))
                     {
                         Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");

@@ -17,23 +17,23 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "empty")]
-        public bool GetEmpty() => this.JsonResponse(new {Ok = true});
+        public Task<bool> GetEmpty() => this.JsonResponseAsync(new {Ok = true});
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regex")]
-        public bool GetPeople()
+        public Task<bool> GetPeople()
         {
             try
             {
-                return this.JsonResponse(PeopleRepository.Database);
+                return this.JsonResponseAsync(PeopleRepository.Database);
             }
             catch (Exception ex)
             {
-                return this.JsonExceptionResponse(ex);
+                return this.JsonExceptionResponseAsync(ex);
             }
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regex/{id}")]
-        public bool GetPerson(int id)
+        public Task<bool> GetPerson(int id)
         {
             try
             {
@@ -41,25 +41,25 @@
             }
             catch (Exception ex)
             {
-                return this.JsonExceptionResponse(ex);
+                return this.JsonExceptionResponseAsync(ex);
             }
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexopt/{id?}")]
-        public bool GetPerson(int? id)
+        public Task<bool> GetPerson(int? id)
         {
             try
             {
-                return id.HasValue ? CheckPerson(id.Value) : this.JsonResponse(PeopleRepository.Database);
+                return id.HasValue ? CheckPerson(id.Value) : this.JsonResponseAsync(PeopleRepository.Database);
             }
             catch (Exception ex)
             {
-                return this.JsonExceptionResponse(ex);
+                return this.JsonExceptionResponseAsync(ex);
             }
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexAsync/{id}")]
-        public async Task<bool> GetPersonAsync(int id)
+        public Task<bool> GetPersonAsync(int id)
         {
             try
             {
@@ -67,12 +67,12 @@
             }
             catch (Exception ex)
             {
-                return await this.JsonExceptionResponseAsync(ex);
+                return this.JsonExceptionResponseAsync(ex);
             }
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexdate/{date}")]
-        public bool GetPerson(DateTime date)
+        public Task<bool> GetPerson(DateTime date)
         {
             try
             {
@@ -80,19 +80,19 @@
 
                 if (item != null)
                 {
-                    return this.JsonResponse(item);
+                    return this.JsonResponseAsync(item);
                 }
 
                 throw new KeyNotFoundException($"Key Not Found: {date}");
             }
             catch (Exception ex)
             {
-                return this.JsonExceptionResponse(ex);
+                return this.JsonExceptionResponseAsync(ex);
             }
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regextwo/{skill}/{age}")]
-        public bool GetPerson(string skill, int age)
+        public Task<bool> GetPerson(string skill, int age)
         {
             try
             {
@@ -101,23 +101,23 @@
 
                 if (item != null)
                 {
-                    return this.JsonResponse(item);
+                    return this.JsonResponseAsync(item);
                 }
 
                 throw new KeyNotFoundException($"Key Not Found: {skill}-{age}");
             }
             catch (Exception ex)
             {
-                return this.JsonExceptionResponse(ex);
+                return this.JsonExceptionResponseAsync(ex);
             }
         }
         
-        private bool CheckPerson(int id)
+        private Task<bool> CheckPerson(int id)
         {
             var item = PeopleRepository.Database.FirstOrDefault(p => p.Key == id);
 
             if (item == null) throw new KeyNotFoundException($"Key Not Found: {id}");
-            return this.JsonResponse(item);
+            return this.JsonResponseAsync(item);
         }
     }
 }

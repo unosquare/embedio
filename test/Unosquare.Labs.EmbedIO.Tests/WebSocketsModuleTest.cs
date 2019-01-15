@@ -14,7 +14,7 @@
     {
         public WebSocketsModuleTest()
             : base(
-                RoutingStrategy.Wildcard, 
+                RoutingStrategy.Wildcard,
                 ws =>
                 {
                     ws.RegisterModule(new WebSocketsModule());
@@ -61,7 +61,8 @@
     {
         public WebSocketsWildcard()
             : base(
-                RoutingStrategy.Wildcard, ws =>
+                RoutingStrategy.Wildcard,
+                ws =>
                 {
                     ws.RegisterModule(new WebSocketsModule());
                     ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocketWildcard>();

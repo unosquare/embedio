@@ -110,11 +110,11 @@
         /// <value>
         ///   <c>true</c> if [send chunked]; otherwise, <c>false</c>.
         /// </value>
-        /// <exception cref="System.ObjectDisposedException">
+        /// <exception cref="ObjectDisposedException">
         /// Is thrown when you try to access a member of an object that implements the 
         /// IDisposable interface, and that object has been disposed.
         /// </exception>
-        /// <exception cref="System.InvalidOperationException">Cannot be changed after headers are sent.</exception>
+        /// <exception cref="InvalidOperationException">Cannot be changed after headers are sent.</exception>
         public bool SendChunked
         {
             get => _chunked;
@@ -146,13 +146,14 @@
 
                 if (value < 100 || value > 999)
                     throw new ProtocolViolationException("StatusCode must be between 100 and 999.");
+
                 _statusCode = value;
                 StatusDescription = HttpListenerResponseHelper.GetStatusDescription(value);
             }
         }
 
         /// <inheritdoc />
-        public string StatusDescription { get; private set; } = "OK";
+        public string StatusDescription { get; set; } = "OK";
 
         internal CookieCollection CookieCollection
         {
@@ -325,7 +326,7 @@
 
             _context.Connection.Close(force);
         }
-        
+
         private string GetHeaderData()
         {
             var sb = new StringBuilder()
