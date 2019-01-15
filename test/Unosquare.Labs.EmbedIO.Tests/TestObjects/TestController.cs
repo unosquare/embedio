@@ -12,7 +12,6 @@
         public const string RelativePath = "api/";
         public const string EchoPath = RelativePath + "echo/";
         public const string GetPath = RelativePath + "people/";
-        public const string GetAsyncPath = RelativePath + "asyncPeople/";
         public const string GetMiddlePath = RelativePath + "person/*/select";
 
         public TestController(IHttpContext context)
@@ -26,7 +25,9 @@
             try
             {
                 // read the middle segment
-                var segment = Request.Url.Segments.Reverse().Skip(1).First().Replace("/", string.Empty);
+                var segment = Request.Url.Segments.Reverse().Skip(1)
+                    .First()
+                    .Replace("/", string.Empty);
 
                 return CheckPerson(segment);
             }
@@ -84,26 +85,7 @@
                 return this.JsonExceptionResponseAsync(ex);
             }
         }
-
-        [WebApiHandler(HttpVerbs.Get, "/" + GetAsyncPath + "*")]
-        public Task<bool> GetPeopleAsync()
-        {
-            try
-            {
-                // read the last segment
-                var lastSegment = Request.Url.Segments.Last();
-
-                // if it ends with a / means we need to list people
-                return lastSegment.EndsWith("/")
-                    ? this.JsonResponseAsync(PeopleRepository.Database)
-                    : CheckPerson(lastSegment);
-            }
-            catch (Exception ex)
-            {
-                return this.JsonExceptionResponseAsync(ex);
-            }
-        }
-
+        
         private Task<bool> CheckPerson(string personKey)
         {
             if (int.TryParse(personKey, out var key) && PeopleRepository.Database.Any(p => p.Key == key))
