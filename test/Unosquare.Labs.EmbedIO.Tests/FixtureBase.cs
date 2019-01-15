@@ -45,16 +45,16 @@
             (WebServerInstance as IDisposable)?.Dispose();
         }
 
-        public async Task<string> GetString(string partialUrl = "")
+        public Task<string> GetString(string partialUrl = "")
         {
             if (WebServerInstance is TestWebServer testWebServer)
-                return await testWebServer.GetClient().GetAsync(partialUrl);
+                return testWebServer.GetClient().GetAsync(partialUrl);
 
             using (var client = new HttpClient())
             {
                 var uri = new Uri(new Uri(WebServerUrl), partialUrl);
 
-                return await client.GetStringAsync(uri);
+                return client.GetStringAsync(uri);
             }
         }
 

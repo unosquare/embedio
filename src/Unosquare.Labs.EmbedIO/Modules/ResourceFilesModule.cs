@@ -10,11 +10,6 @@
     using System.Threading;
     using System.Threading.Tasks;
     using System.Reflection;
-#if NET472
-    using System.Net;
-#else
-    using Net;
-#endif
 
     /// <summary>
     /// Represents a simple module to server resource files from the .NET assembly.
@@ -68,7 +63,7 @@
                 var localPath = FixPath(context.RequestPathCaseSensitive());
                 var partialHeader = context.RequestHeader(Headers.Range);
 
-                $"Resource System: {localPath}".Debug();
+                $"Resource System: {localPath}".Debug(nameof(ResourceFilesModule));
 
                 buffer = _sourceAssembly.GetManifestResourceStream($"{_resourcePathRoot}.{localPath}");
 
@@ -88,12 +83,26 @@
 
                 if (sendBuffer)
                 {
-                    await WriteFileAsync(partialHeader, context.Response, buffer, ct).ConfigureAwait(false);
+                    await WriteFileAsync(
+                        partialHeader, 
+                        context.Response, 
+                        buffer, 
+                        ct,
+                        context.AcceptGzip(buffer.Length))
+                        .ConfigureAwait(false);
                 }
             }
-            catch (HttpListenerException)
+            catch (Exception ex)
             {
                 // Connection error, nothing else to do
+                var isListenerException =
+#if !NETSTANDARD1_3
+                    (ex is System.Net.HttpListenerException) ||
+#endif
+                    (ex is Net.HttpListenerException);
+
+                if (!isListenerException)
+                    throw;
             }
             finally
             {

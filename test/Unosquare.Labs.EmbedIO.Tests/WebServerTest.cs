@@ -262,7 +262,9 @@
 
                         var request = new HttpRequestMessage(HttpMethod.Post, url + TestWebModule.RedirectUrl)
                         {
-                            Content = new StringContent("POST DATA", Encoding.GetEncoding(encodeName),
+                            Content = new StringContent(
+                                "POST DATA", 
+                                Encoding.GetEncoding(encodeName),
                                 "application/json"),
                         };
 

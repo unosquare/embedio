@@ -259,7 +259,6 @@
         {
             if (useGzip)
             {
-                // Perform compression if available
                 buffer = await buffer.CompressAsync(cancellationToken: ct).ConfigureAwait(false);
                 response.AddHeader(Headers.ContentEncoding, Headers.CompressionGzip);
             }
