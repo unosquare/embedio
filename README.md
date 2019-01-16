@@ -17,12 +17,16 @@
     - [EmbedIO 2.0 - What's new](#embedio-20---whats-new)
     - [Some usage scenarios](#some-usage-scenarios)
 - [Installation](#installation)
+- [Usage](#usage)
+    - [WebServer Setup](#webserver-setup)
+    - [IHttpContext Extension Methods](#ihttpcontext-extension-methods)
+    - [Easy Routes](#easy-routes)
+- [Support for SSL](#support-for-ssl)
 - [Examples](#examples)
     - [Basic Example](#basic-example)
     - [Fluent Example](#fluent-example)
     - [REST API Example](#rest-api-example)
     - [WebSockets Example](#websockets-example)
-    - [Support for SSL](#support-for-ssl)
 - [Related Projects and Nugets](#related-projects-and-nugets)
 - [Special Thanks](#special-thanks)
 
@@ -93,6 +97,30 @@ PM> Install-Package EmbedIO
 ```
 > dotnet add package EmbedIO
 ```
+
+## Usage
+
+### WebServer Setup
+
+### IHttpContext Extension Methods
+
+### Easy Routes
+
+## Support for SSL
+
+Both HTTP listeners (Microsoft and Unosquare) can open a web server using SSL. This support is for Windows only (for now) and you need to manually register your certificate or use the `WebServerOptions` class to initialize a new `WebServer` instance. This section will provide some examples of how to use SSL but first a brief explanation of how SSL works on Windows.
+
+For Windows Vista or better, Microsoft provides Network Shell (`netsh`). This command line tool allows to map an IP-port to a certificate, so incoming HTTP request can upgrade the connection to a secure stream using the provided certificate. EmbedIO can read or register certificates to a default store (My/LocalMachine) and use them against a netsh `sslcert` for binding the first `https` prefix registered.
+
+For Windows XP and Mono, you can use manually the httpcfg for registering the binding.
+
+### Using a PFX file and AutoRegister option
+
+The more practical case to use EmbedIO with SSL is the `AutoRegister` option. You need to create a `WebServerOptions` instance with the path to a PFX file and the `AutoRegister` flag on. This options will try to get or register the certificate to the default certificate store. Then it will use the certificate thumbprint to register with `netsh` the FIRST `https` prefix registered on the options.
+
+### Using AutoLoad option
+
+If you already have a certificate on the default certificate store and the binding is also registered in `netsh`, you can use `Autoload` flag and optionally provide a certificate thumbprint. If the certificate thumbprint is not provided, EmbedIO will read the data from `netsh`. After getting successfully the certificate from the store, the raw data is passed to the WebServer.
 
 ## Examples
 
@@ -363,22 +391,6 @@ public class WebSocketsChatServer : WebSocketsServer
     }
 }
 ```
-
-### Support for SSL
-
-Both HTTP listeners (Microsoft and Unosquare) can open a web server using SSL. This support is for Windows only (for now) and you need to manually register your certificate or use the `WebServerOptions` class to initialize a new `WebServer` instance. This section will provide some examples of how to use SSL but first a brief explanation of how SSL works on Windows.
-
-For Windows Vista or better, Microsoft provides Network Shell (`netsh`). This command line tool allows to map an IP-port to a certificate, so incoming HTTP request can upgrade the connection to a secure stream using the provided certificate. EmbedIO can read or register certificates to a default store (My/LocalMachine) and use them against a netsh `sslcert` for binding the first `https` prefix registered.
-
-For Windows XP and Mono, you can use manually the httpcfg for registering the binding.
-
-#### Using a PFX file and AutoRegister option
-
-The more practical case to use EmbedIO with SSL is the `AutoRegister` option. You need to create a `WebServerOptions` instance with the path to a PFX file and the `AutoRegister` flag on. This options will try to get or register the certificate to the default certificate store. Then it will use the certificate thumbprint to register with `netsh` the FIRST `https` prefix registered on the options.
-
-#### Using AutoLoad option
-
-If you already have a certificate on the default certificate store and the binding is also registered in `netsh`, you can use `Autoload` flag and optionally provide a certificate thumbprint. If the certificate thumbprint is not provided, EmbedIO will read the data from `netsh`. After getting successfully the certificate from the store, the raw data is passed to the WebServer.
 
 ## Related Projects and Nugets
 
