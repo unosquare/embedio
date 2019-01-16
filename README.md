@@ -104,6 +104,27 @@ PM> Install-Package EmbedIO
 
 ### IHttpContext Extension Methods
 
+By adding the namespace `Unosquare.Labs.EmbedIO` to your class, you can use some helpful extension methods for `IHttpContext`, `IHttpResponse` and `IHttpRequest`. Those can be used in any Web module (like [Fallback Module](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html)) or inside a [WebAPI Controller](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html) method.
+
+Below, some common scenarios using a WebAPI Controller method as body function:
+
+#### Writing a binary stream
+
+For writing a binary stream directly to the Response Output Stream you can use [BinaryResponseAsync](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_). This method has an overload to use `IHttpContext` and you need to set the Content-Type beforehand.
+
+```csharp
+    [WebApiHandler(HttpVerbs.Get, "/api/binary")]
+    public async Task<bool> GetBinary() 
+    {
+        var stream = new MemoryStream();
+	
+	// Call a fictional external source
+	await GetExternalStream(stream);
+	
+	return await this.BinaryResponseAsync(stream);
+    }
+```
+
 ### Easy Routes
 
 ## Support for SSL
@@ -112,7 +133,7 @@ Both HTTP listeners (Microsoft and Unosquare) can open a web server using SSL. T
 
 For Windows Vista or better, Microsoft provides Network Shell (`netsh`). This command line tool allows to map an IP-port to a certificate, so incoming HTTP request can upgrade the connection to a secure stream using the provided certificate. EmbedIO can read or register certificates to a default store (My/LocalMachine) and use them against a netsh `sslcert` for binding the first `https` prefix registered.
 
-For Windows XP and Mono, you can use manually the httpcfg for registering the binding.
+For Windows XP and Mono, you can use manually the `httpcfg` for registering the binding.
 
 ### Using a PFX file and AutoRegister option
 
