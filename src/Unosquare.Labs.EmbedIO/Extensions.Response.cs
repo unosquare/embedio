@@ -79,7 +79,7 @@
             this IHttpContext context,
             object data,
             CancellationToken cancellationToken = default,
-            bool useGzip = true)
+            bool useGzip = false)
             => context.JsonResponseAsync(Json.Serialize(data), cancellationToken, useGzip);
 
         /// <summary>
@@ -104,7 +104,7 @@
             this IHttpContext context,
             string json,
             CancellationToken cancellationToken = default,
-            bool useGzip = true)
+            bool useGzip = false)
             => context.StringResponseAsync(json, cancellationToken: cancellationToken, useGzip: useGzip);
 
         /// <summary>
@@ -121,7 +121,7 @@
             string htmlContent,
             System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.OK,
             CancellationToken cancellationToken = default,
-            bool useGzip = true)
+            bool useGzip = false)
         {
             context.Response.StatusCode = (int)statusCode;
             return context.StringResponseAsync(htmlContent, Responses.HtmlContentType, cancellationToken, useGzip: useGzip);
@@ -156,7 +156,7 @@
             this IHttpContext context,
             Exception ex,
             System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.InternalServerError,
-            bool useGzip = true)
+            bool useGzip = false)
         {
             context.Response.StatusCode = (int)statusCode;
             return context.JsonResponseAsync(ex, useGzip: useGzip);
@@ -180,7 +180,7 @@
             string contentType = "application/json",
             CancellationToken cancellationToken = default,
             Encoding encoding = null,
-            bool useGzip = true) =>
+            bool useGzip = false) =>
             context.Response.StringResponseAsync(content, contentType, cancellationToken, encoding, useGzip);
 
         /// <summary>
@@ -201,7 +201,7 @@
             string contentType = "application/json",
             CancellationToken cancellationToken = default,
             Encoding encoding = null,
-            bool useGzip = true)
+            bool useGzip = false)
         {
             response.ContentType = contentType;
 
