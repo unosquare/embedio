@@ -180,8 +180,13 @@
             string contentType = "application/json",
             CancellationToken cancellationToken = default,
             Encoding encoding = null,
-            bool useGzip = false) =>
-            context.Response.StringResponseAsync(content, contentType, cancellationToken, encoding, useGzip);
+            bool useGzip = false)
+        {
+            var bytes = (encoding ?? Encoding.UTF8).GetBytes(content ?? string.Empty);
+
+            using (MemoryStream buffer = new MemoryStream(bytes))
+                return context.Response.StringResponseAsync(content, contentType, cancellationToken, encoding, useGzip && context.AcceptGzip(bytes.Length));
+        }
 
         /// <summary>
         /// Outputs async a string response given a string.
