@@ -54,7 +54,7 @@
 
             return true;
         }
-        
+
         /// <summary>
         /// Outputs a Json Response given a data object.
         /// </summary>
@@ -71,14 +71,16 @@
         /// <param name="context">The context.</param>
         /// <param name="data">The data.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
         /// <returns>
         /// A <c>true</c> value of type ref=JsonResponseAsync".
         /// </returns>
         public static Task<bool> JsonResponseAsync(
             this IHttpContext context,
             object data,
-            CancellationToken cancellationToken = default)
-            => context.JsonResponseAsync(Json.Serialize(data), cancellationToken);
+            CancellationToken cancellationToken = default,
+            bool useGzip = true)
+            => context.JsonResponseAsync(Json.Serialize(data), cancellationToken, useGzip);
 
         /// <summary>
         /// Outputs a Json Response given a Json string.
@@ -96,12 +98,14 @@
         /// <param name="context">The context.</param>
         /// <param name="json">The JSON.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
         /// <returns>A task for writing the output stream.</returns>
         public static Task<bool> JsonResponseAsync(
             this IHttpContext context,
             string json,
-            CancellationToken cancellationToken = default)
-            => context.StringResponseAsync(json, cancellationToken: cancellationToken);
+            CancellationToken cancellationToken = default,
+            bool useGzip = true)
+            => context.StringResponseAsync(json, cancellationToken: cancellationToken, useGzip: useGzip);
 
         /// <summary>
         /// Outputs a HTML Response given a HTML content.
@@ -110,15 +114,17 @@
         /// <param name="htmlContent">Content of the HTML.</param>
         /// <param name="statusCode">The status code.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
         /// <returns>A task for writing the output stream.</returns>
         public static Task<bool> HtmlResponseAsync(
             this IHttpContext context,
             string htmlContent,
             System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.OK,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken = default,
+            bool useGzip = true)
         {
             context.Response.StatusCode = (int)statusCode;
-            return context.StringResponseAsync(htmlContent, Responses.HtmlContentType, cancellationToken);
+            return context.StringResponseAsync(htmlContent, Responses.HtmlContentType, cancellationToken, useGzip: useGzip);
         }
 
         /// <summary>
@@ -144,14 +150,16 @@
         /// <param name="context">The context.</param>
         /// <param name="ex">The ex.</param>
         /// <param name="statusCode">The status code.</param>
+        /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
         /// <returns>A task for writing the output stream.</returns>
         public static Task<bool> JsonExceptionResponseAsync(
             this IHttpContext context,
             Exception ex,
-            System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.InternalServerError)
+            System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.InternalServerError,
+            bool useGzip = true)
         {
             context.Response.StatusCode = (int)statusCode;
-            return context.JsonResponseAsync(ex);
+            return context.JsonResponseAsync(ex, useGzip: useGzip);
         }
 
         /// <summary>
@@ -162,6 +170,7 @@
         /// <param name="contentType">Type of the content.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <param name="encoding">The encoding.</param>
+        /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
         /// <returns>
         /// A task for writing the output stream.
         /// </returns>
@@ -170,8 +179,9 @@
             string content,
             string contentType = "application/json",
             CancellationToken cancellationToken = default,
-            Encoding encoding = null) =>
-            context.Response.StringResponseAsync(content, contentType, cancellationToken, encoding);
+            Encoding encoding = null,
+            bool useGzip = true) =>
+            context.Response.StringResponseAsync(content, contentType, cancellationToken, encoding, useGzip);
 
         /// <summary>
         /// Outputs async a string response given a string.
@@ -181,23 +191,22 @@
         /// <param name="contentType">Type of the content.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <param name="encoding">The encoding.</param>
+        /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
         /// <returns>
         /// A task for writing the output stream.
         /// </returns>
-        public static async Task<bool> StringResponseAsync(
+        public static Task<bool> StringResponseAsync(
             this IHttpResponse response,
             string content,
             string contentType = "application/json",
             CancellationToken cancellationToken = default,
-            Encoding encoding = null)
+            Encoding encoding = null,
+            bool useGzip = true)
         {
-            var buffer = (encoding ?? Encoding.UTF8).GetBytes(content);
-
             response.ContentType = contentType;
-            response.ContentLength64 = buffer.Length;
-            await response.OutputStream.WriteAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false);
 
-            return true;
+            using (MemoryStream buffer = new MemoryStream((encoding ?? Encoding.UTF8).GetBytes(content)))
+                return BinaryResponseAsync(response, buffer, cancellationToken, useGzip);
         }
 
         /// <summary>
@@ -237,10 +246,10 @@
         /// A task for writing the output stream.
         /// </returns>
         public static Task<bool> BinaryResponseAsync(
-            this IHttpContext context, 
-            Stream buffer, 
+            this IHttpContext context,
+            Stream buffer,
             CancellationToken ct = default,
-            bool useGzip = true) 
+            bool useGzip = true)
             => BinaryResponseAsync(context.Response, buffer, ct, useGzip && context.AcceptGzip(buffer.Length));
 
         /// <summary>
@@ -281,7 +290,7 @@
             this IHttpResponse response,
             Stream buffer,
             long lowerByteIndex = 0,
-            CancellationToken ct= default)
+            CancellationToken ct = default)
         {
             var streamBuffer = new byte[Modules.FileModuleBase.ChunkSize];
             long sendData = 0;
