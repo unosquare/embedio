@@ -79,7 +79,7 @@
             this IHttpContext context,
             object data,
             CancellationToken cancellationToken = default,
-            bool useGzip = false)
+            bool useGzip = true)
             => context.JsonResponseAsync(Json.Serialize(data), cancellationToken, useGzip);
 
         /// <summary>
@@ -104,7 +104,7 @@
             this IHttpContext context,
             string json,
             CancellationToken cancellationToken = default,
-            bool useGzip = false)
+            bool useGzip = true)
             => context.StringResponseAsync(json, cancellationToken: cancellationToken, useGzip: useGzip);
 
         /// <summary>
@@ -121,7 +121,7 @@
             string htmlContent,
             System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.OK,
             CancellationToken cancellationToken = default,
-            bool useGzip = false)
+            bool useGzip = true)
         {
             context.Response.StatusCode = (int)statusCode;
             return context.StringResponseAsync(htmlContent, Responses.HtmlContentType, cancellationToken, useGzip: useGzip);
@@ -156,7 +156,7 @@
             this IHttpContext context,
             Exception ex,
             System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.InternalServerError,
-            bool useGzip = false)
+            bool useGzip = true)
         {
             context.Response.StatusCode = (int)statusCode;
             return context.JsonResponseAsync(ex, useGzip: useGzip);
@@ -180,12 +180,9 @@
             string contentType = "application/json",
             CancellationToken cancellationToken = default,
             Encoding encoding = null,
-            bool useGzip = false)
+            bool useGzip = true)
         {
-            var bytes = (encoding ?? Encoding.UTF8).GetBytes(content ?? string.Empty);
-
-            using (MemoryStream buffer = new MemoryStream(bytes))
-                return context.Response.StringResponseAsync(content, contentType, cancellationToken, encoding, useGzip && context.AcceptGzip(bytes.Length));
+            return context.Response.StringResponseAsync(content, contentType, cancellationToken, encoding, useGzip && context.AcceptGzip(content.Length));
         }
 
         /// <summary>
@@ -210,7 +207,7 @@
         {
             response.ContentType = contentType;
 
-            using (MemoryStream buffer = new MemoryStream((encoding ?? Encoding.UTF8).GetBytes(content)))
+            using (var buffer = new MemoryStream((encoding ?? Encoding.UTF8).GetBytes(content)))
                 return BinaryResponseAsync(response, buffer, cancellationToken, useGzip);
         }
 
