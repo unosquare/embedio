@@ -781,7 +781,7 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; HtmlResponseAsync(this IHttpContext context, string htmlContent, Net.HttpStatusCode statusCode = null, CancellationToken cancellationToken = default(CancellationToken), bool useGzip = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; HtmlResponseAsync(this IHttpContext context, string htmlContent, Net.HttpStatusCode statusCode = null, CancellationToken cancellationToken = default(CancellationToken), bool useGzip = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -959,7 +959,7 @@ public static bool JsonExceptionResponse(this IHttpContext context, Exception ex
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonExceptionResponseAsync(this IHttpContext context, Exception ex, Net.HttpStatusCode statusCode = null, bool useGzip = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonExceptionResponseAsync(this IHttpContext context, Exception ex, Net.HttpStatusCode statusCode = null, bool useGzip = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1126,7 +1126,7 @@ public static bool JsonResponse(this IHttpContext context, string json)</code></
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonResponseAsync(this IHttpContext context, object data, CancellationToken cancellationToken = default(CancellationToken), bool useGzip = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonResponseAsync(this IHttpContext context, object data, CancellationToken cancellationToken = default(CancellationToken), bool useGzip = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1189,7 +1189,7 @@ public static bool JsonResponse(this IHttpContext context, string json)</code></
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonResponseAsync(this IHttpContext context, string json, CancellationToken cancellationToken = default(CancellationToken), bool useGzip = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonResponseAsync(this IHttpContext context, string json, CancellationToken cancellationToken = default(CancellationToken), bool useGzip = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2322,7 +2322,7 @@ match.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; StringResponseAsync(this IHttpContext context, string content, string contentType = &quot;application/json&quot;, CancellationToken cancellationToken = default(CancellationToken), Encoding encoding = null, bool useGzip = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; StringResponseAsync(this IHttpContext context, string content, string contentType = &quot;application/json&quot;, CancellationToken cancellationToken = default(CancellationToken), Encoding encoding = null, bool useGzip = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
