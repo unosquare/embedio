@@ -87,12 +87,18 @@
 </ul>
 </li>
 <li><a href="#installation">Installation</a></li>
+<li><a href="#usage">Usage</a><ul>
+<li><a href="#webserver-setup">WebServer Setup</a></li>
+<li><a href="#ihttpcontext-extension-methods">IHttpContext Extension Methods</a></li>
+<li><a href="#easy-routes">Easy Routes</a></li>
+</ul>
+</li>
+<li><a href="#support-for-ssl">Support for SSL</a></li>
 <li><a href="#examples">Examples</a><ul>
 <li><a href="#basic-example">Basic Example</a></li>
 <li><a href="#fluent-example">Fluent Example</a></li>
 <li><a href="#rest-api-example">REST API Example</a></li>
 <li><a href="#websockets-example">WebSockets Example</a></li>
-<li><a href="#support-for-ssl">Support for SSL</a></li>
 </ul>
 </li>
 <li><a href="#related-projects-and-nugets">Related Projects and Nugets</a></li>
@@ -187,7 +193,33 @@
 <pre><code>PM&gt; Install-Package EmbedIO
 </code></pre><h3 id="net-cli">.NET CLI</h3>
 <pre><code>&gt; dotnet add package EmbedIO
-</code></pre><h2 id="examples">Examples</h2>
+</code></pre><h2 id="usage">Usage</h2>
+<h3 id="webserver-setup">WebServer Setup</h3>
+<h3 id="ihttpcontext-extension-methods">IHttpContext Extension Methods</h3>
+<p>By adding the namespace <code>Unosquare.Labs.EmbedIO</code> to your class, you can use some helpful extension methods for <code>IHttpContext</code>, <code>IHttpResponse</code> and <code>IHttpRequest</code>. Those can be used in any Web module (like <a href="https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html">Fallback Module</a>) or inside a <a href="https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html">WebAPI Controller</a> method.</p>
+<p>Below, some common scenarios using a WebAPI Controller method as body function:</p>
+<h4 id="writing-a-binary-stream">Writing a binary stream</h4>
+<p>For writing a binary stream directly to the Response Output Stream you can use <a href="https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_">BinaryResponseAsync</a>. This method has an overload to use <code>IHttpContext</code> and you need to set the Content-Type beforehand.</p>
+<pre><code class="lang-csharp">    [WebApiHandler(HttpVerbs.Get, &quot;/api/binary&quot;)]
+    public async Task&lt;bool&gt; GetBinary() 
+    {
+        var stream = new MemoryStream();
+
+    // Call a fictional external source
+    await GetExternalStream(stream);
+
+    return await this.BinaryResponseAsync(stream);
+    }
+</code></pre><h3 id="easy-routes">Easy Routes</h3>
+<h2 id="support-for-ssl">Support for SSL</h2>
+<p>Both HTTP listeners (Microsoft and Unosquare) can open a web server using SSL. This support is for Windows only (for now) and you need to manually register your certificate or use the <code>WebServerOptions</code> class to initialize a new <code>WebServer</code> instance. This section will provide some examples of how to use SSL but first a brief explanation of how SSL works on Windows.</p>
+<p>For Windows Vista or better, Microsoft provides Network Shell (<code>netsh</code>). This command line tool allows to map an IP-port to a certificate, so incoming HTTP request can upgrade the connection to a secure stream using the provided certificate. EmbedIO can read or register certificates to a default store (My/LocalMachine) and use them against a netsh <code>sslcert</code> for binding the first <code>https</code> prefix registered.</p>
+<p>For Windows XP and Mono, you can use manually the <code>httpcfg</code> for registering the binding.</p>
+<h3 id="using-a-pfx-file-and-autoregister-option">Using a PFX file and AutoRegister option</h3>
+<p>The more practical case to use EmbedIO with SSL is the <code>AutoRegister</code> option. You need to create a <code>WebServerOptions</code> instance with the path to a PFX file and the <code>AutoRegister</code> flag on. This options will try to get or register the certificate to the default certificate store. Then it will use the certificate thumbprint to register with <code>netsh</code> the FIRST <code>https</code> prefix registered on the options.</p>
+<h3 id="using-autoload-option">Using AutoLoad option</h3>
+<p>If you already have a certificate on the default certificate store and the binding is also registered in <code>netsh</code>, you can use <code>Autoload</code> flag and optionally provide a certificate thumbprint. If the certificate thumbprint is not provided, EmbedIO will read the data from <code>netsh</code>. After getting successfully the certificate from the store, the raw data is passed to the WebServer.</p>
+<h2 id="examples">Examples</h2>
 <h3 id="basic-example">Basic Example</h3>
 <p>Please note the comments are the important part here. More info is available in the samples.</p>
 <pre><code class="lang-csharp">namespace Unosquare
@@ -418,15 +450,7 @@ public class WebSocketsChatServer : WebSocketsServer
         this.Broadcast(&quot;Someone left the chat room.&quot;);
     }
 }
-</code></pre><h3 id="support-for-ssl">Support for SSL</h3>
-<p>Both HTTP listeners (Microsoft and Unosquare) can open a web server using SSL. This support is for Windows only (for now) and you need to manually register your certificate or use the <code>WebServerOptions</code> class to initialize a new <code>WebServer</code> instance. This section will provide some examples of how to use SSL but first a brief explanation of how SSL works on Windows.</p>
-<p>For Windows Vista or better, Microsoft provides Network Shell (<code>netsh</code>). This command line tool allows to map an IP-port to a certificate, so incoming HTTP request can upgrade the connection to a secure stream using the provided certificate. EmbedIO can read or register certificates to a default store (My/LocalMachine) and use them against a netsh <code>sslcert</code> for binding the first <code>https</code> prefix registered.</p>
-<p>For Windows XP and Mono, you can use manually the httpcfg for registering the binding.</p>
-<h4 id="using-a-pfx-file-and-autoregister-option">Using a PFX file and AutoRegister option</h4>
-<p>The more practical case to use EmbedIO with SSL is the <code>AutoRegister</code> option. You need to create a <code>WebServerOptions</code> instance with the path to a PFX file and the <code>AutoRegister</code> flag on. This options will try to get or register the certificate to the default certificate store. Then it will use the certificate thumbprint to register with <code>netsh</code> the FIRST <code>https</code> prefix registered on the options.</p>
-<h4 id="using-autoload-option">Using AutoLoad option</h4>
-<p>If you already have a certificate on the default certificate store and the binding is also registered in <code>netsh</code>, you can use <code>Autoload</code> flag and optionally provide a certificate thumbprint. If the certificate thumbprint is not provided, EmbedIO will read the data from <code>netsh</code>. After getting successfully the certificate from the store, the raw data is passed to the WebServer.</p>
-<h2 id="related-projects-and-nugets">Related Projects and Nugets</h2>
+</code></pre><h2 id="related-projects-and-nugets">Related Projects and Nugets</h2>
 <table>
 <thead>
 <tr>
