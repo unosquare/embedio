@@ -72,6 +72,15 @@
                 await ValidatePerson(TestRegexController.RelativePath + "regextwo/" +
                                                 person.MainSkill + "/" + person.Age);
             }
+            
+            [Test]
+            public async Task WithRegexWithOptionalParams_ReturnsOk()
+            {
+                var person = PeopleRepository.Database.First();
+
+                await ValidatePerson(TestRegexController.RelativePath + "regexthree/" +
+                                     person.MainSkill);
+            }
         }
 
         public class Http405 : RegexWebApiModuleTest
