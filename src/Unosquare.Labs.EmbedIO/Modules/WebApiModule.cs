@@ -119,8 +119,8 @@
 
             foreach (var method in methods)
             {
-                var attribute = method.GetCustomAttributes(typeof(WebApiHandlerAttribute), true).FirstOrDefault() as WebApiHandlerAttribute;
-                if (attribute == null) continue;
+                if (!(method.GetCustomAttributes(typeof(WebApiHandlerAttribute), true).FirstOrDefault() is WebApiHandlerAttribute attribute)) 
+                    continue;
 
                 foreach (var path in attribute.Paths)
                 {
@@ -152,7 +152,7 @@
         private string NormalizeRegexPath(
             HttpVerbs verb,
             IHttpContext context,
-            Dictionary<string, object> routeParams)
+            IDictionary<string, object> routeParams)
         {
             var path = context.Request.Url.LocalPath;
 

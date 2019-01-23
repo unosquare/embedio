@@ -247,6 +247,7 @@
             if (validateFunc == null) validateFunc = () => false;
             if (requestPath == basePath && !validateFunc()) return new Dictionary<string, object>();
 
+            var i = 1; // match group index
             var match = RegexCache.MatchRegexStrategy(basePath, requestPath);
 
             var pathParts = basePath.Split('/');
@@ -261,17 +262,29 @@
                     tempPath += "/";
                 }
 
-                if (optionalPath == tempPath)
+                var subMatch = RegexCache.MatchRegexStrategy(optionalPath, tempPath);
+
+                if (subMatch.Success)
                 {
-                    return pathParts
+                    var valuesPaths = optionalPath.Split('/')
                         .Where(x => x.StartsWith("{"))
-                        .ToDictionary(CleanParamId, x => (object)null);
+                        .ToDictionary(CleanParamId, x => (object)subMatch.Groups[i++].Value);
+
+                    var nullPaths = pathParts
+                        .Where(x => x.StartsWith("{"))
+                        .Select(CleanParamId);
+
+                    foreach (var nullKey in nullPaths)
+                    {
+                        if (!valuesPaths.ContainsKey(nullKey))
+                            valuesPaths.Add(nullKey, (object) null);
+                    }
+
+                    return valuesPaths;
                 }
             }
             else
             {
-                var i = 1; // match group index
-
                 return pathParts
                     .Where(x => x.StartsWith("{"))
                     .ToDictionary(CleanParamId, x => (object)match.Groups[i++].Value);

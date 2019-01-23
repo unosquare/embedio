@@ -17,7 +17,7 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "empty")]
-        public Task<bool> GetEmpty() => this.JsonResponseAsync(new {Ok = true});
+        public Task<bool> GetEmpty() => this.JsonResponseAsync(new { Ok = true });
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regex")]
         public Task<bool> GetPeople()
@@ -111,7 +111,29 @@
                 return this.JsonExceptionResponseAsync(ex);
             }
         }
-        
+
+        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexthree/{skill}/{age?}")]
+        public Task<bool> GetOptionalPerson(string skill, int? age = null)
+        {
+            try
+            {
+                var item = age == null
+                    ? PeopleRepository.Database.FirstOrDefault(p => string.Equals(p.MainSkill, skill, StringComparison.CurrentCultureIgnoreCase))
+                    : PeopleRepository.Database.FirstOrDefault(p => string.Equals(p.MainSkill, skill, StringComparison.CurrentCultureIgnoreCase) && p.Age == age);
+
+                if (item != null)
+                {
+                    return this.JsonResponseAsync(item);
+                }
+
+                throw new KeyNotFoundException($"Key Not Found: {skill}-{age}");
+            }
+            catch (Exception ex)
+            {
+                return this.JsonExceptionResponseAsync(ex);
+            }
+        }
+
         private Task<bool> CheckPerson(int id)
         {
             var item = PeopleRepository.Database.FirstOrDefault(p => p.Key == id);

@@ -11,7 +11,7 @@
     <PackageId>EmbedIO</PackageId>
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
     <DebugType>Full</DebugType>
-    <Version>2.2.1</Version>
+    <Version>2.2.2</Version>
     <Product>EmbedIO</Product>
     <Company>Unosquare</Company>
     <PackageLicenseUrl>https://raw.githubusercontent.com/unosquare/embedio/master/LICENSE</PackageLicenseUrl>
