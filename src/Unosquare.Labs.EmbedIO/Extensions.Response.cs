@@ -300,6 +300,8 @@
 
             while (true)
             {
+                if (!buffer.CanRead) break;
+
                 if (sendData + Modules.FileModuleBase.ChunkSize > response.ContentLength64) readBufferSize = (int)(response.ContentLength64 - sendData);
 
                 buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
