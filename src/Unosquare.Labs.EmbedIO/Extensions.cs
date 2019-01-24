@@ -18,14 +18,10 @@
     /// </summary>
     public static partial class Extensions
     {
-        #region Constants
-
         private static readonly byte[] LastByte = { 0x00 };
 
         private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        #endregion
 
         #region Session Management Methods
 
@@ -249,48 +245,42 @@
 
             var i = 1; // match group index
             var match = RegexCache.MatchRegexStrategy(basePath, requestPath);
-
             var pathParts = basePath.Split('/');
 
-            if (!match.Success || validateFunc())
-            {
-                var optionalPath = RouteOptionalParamRegex.Replace(basePath, string.Empty);
-                var tempPath = requestPath;
-
-                if (optionalPath.Last() == '/' && requestPath.Last() != '/')
-                {
-                    tempPath += "/";
-                }
-
-                var subMatch = RegexCache.MatchRegexStrategy(optionalPath, tempPath);
-
-                if (subMatch.Success)
-                {
-                    var valuesPaths = optionalPath.Split('/')
-                        .Where(x => x.StartsWith("{"))
-                        .ToDictionary(CleanParamId, x => (object)subMatch.Groups[i++].Value);
-
-                    var nullPaths = pathParts
-                        .Where(x => x.StartsWith("{"))
-                        .Select(CleanParamId);
-
-                    foreach (var nullKey in nullPaths)
-                    {
-                        if (!valuesPaths.ContainsKey(nullKey))
-                            valuesPaths.Add(nullKey, (object) null);
-                    }
-
-                    return valuesPaths;
-                }
-            }
-            else
+            if (match.Success && !validateFunc())
             {
                 return pathParts
                     .Where(x => x.StartsWith("{"))
-                    .ToDictionary(CleanParamId, x => (object)match.Groups[i++].Value);
+                    .ToDictionary(CleanParamId, x => (object) match.Groups[i++].Value);
             }
 
-            return null;
+            var optionalPath = RouteOptionalParamRegex.Replace(basePath, string.Empty);
+            var tempPath = requestPath;
+
+            if (optionalPath.Last() == '/' && requestPath.Last() != '/')
+            {
+                tempPath += "/";
+            }
+
+            var subMatch = RegexCache.MatchRegexStrategy(optionalPath, tempPath);
+
+            if (!subMatch.Success || validateFunc()) return null;
+            
+            var valuesPaths = optionalPath.Split('/')
+                .Where(x => x.StartsWith("{"))
+                .ToDictionary(CleanParamId, x => (object) subMatch.Groups[i++].Value);
+
+            var nullPaths = pathParts
+                .Where(x => x.StartsWith("{"))
+                .Select(CleanParamId);
+
+            foreach (var nullKey in nullPaths)
+            {
+                if (!valuesPaths.ContainsKey(nullKey))
+                    valuesPaths.Add(nullKey, null);
+            }
+
+            return valuesPaths;
         }
 
         /// <summary>

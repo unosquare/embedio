@@ -86,7 +86,7 @@
         public class Http405 : RegexWebApiModuleTest
         {
             [Test]
-            public async Task ValidPathInvalidMethod_Returns405()
+            public async Task ValidWebApiPathInvalidMethod_Returns405()
             {
                 var request = new TestHttpRequest(WebServerUrl + TestRegexController.RelativePath + "regex/1", HttpVerbs.Delete);
 
