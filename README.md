@@ -108,6 +108,40 @@ By adding the namespace `Unosquare.Labs.EmbedIO` to your class, you can use some
 
 Below, some common scenarios using a WebAPI Controller method as body function:
 
+### Reading from a POST body as a dictionary (application/x-www-form-urlencoded)
+
+For reading a dictionary from a HTTP Request body you can use [RequestFormDataDictionary](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionary_Unosquare_Labs_EmbedIO_IHttpContext_). This method works directly from `IHttpContext` and returns the key-value pairs sent by using the Contet-Type 'application/x-www-form-urlencoded'.
+
+```csharp
+    [WebApiHandler(HttpVerbs.Post, "/api/data")]
+    public async Task<bool> PostData() 
+    {
+        var data = this.RequestFormDataDictionary();
+	
+	// Perform an operation with the data
+	await SaveData(data);
+	
+	return true;
+    }
+```
+
+### Reading from a POST body as a JSON payload (application/json)
+
+For reading a JSON payload and deserialize it to an object from a HTTP Request body you can use [ParseJson<T>](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_ParseJson__1_Unosquare_Labs_EmbedIO_IHttpContext_). This method works directly from `IHttpContext` and returns an object of the type specified in the generic type.
+
+```csharp
+    [WebApiHandler(HttpVerbs.Post, "/api/data")]
+    public async Task<bool> PostJsonData() 
+    {
+        var data = this.ParseJson<MyData>();
+	
+	// Perform an operation with the data
+	await SaveData(data);
+	
+	return true;
+    }
+```
+
 #### Writing a binary stream
 
 For writing a binary stream directly to the Response Output Stream you can use [BinaryResponseAsync](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_). This method has an overload to use `IHttpContext` and you need to set the Content-Type beforehand.
