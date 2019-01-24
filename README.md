@@ -104,7 +104,7 @@ PM> Install-Package EmbedIO
 
 ### IHttpContext Extension Methods
 
-By adding the namespace `Unosquare.Labs.EmbedIO` to your class, you can use some helpful extension methods for `IHttpContext`, `IHttpResponse` and `IHttpRequest`. Those can be used in any Web module (like [Fallback Module](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html)) or inside a [WebAPI Controller](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html) method.
+By adding the namespace `Unosquare.Labs.EmbedIO` to your class, you can use some helpful extension methods for `IHttpContext`, `IHttpResponse` and `IHttpRequest`. These methods can be used in any Web module (like [Fallback Module](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html)) or inside a [WebAPI Controller](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html) method.
 
 Below, some common scenarios using a WebAPI Controller method as body function:
 
