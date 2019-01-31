@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Extensions
    | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 2.40.7.0">
+    <meta name="generator" content="docfx 2.40.9.0">
     
     <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -1512,7 +1512,8 @@ Please note the underlying input stream is not rewindable.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static T ParseJson&lt;T&gt;(this IHttpContext context)
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Please use the async method.&quot;)]
+public static T ParseJson&lt;T&gt;(this IHttpContext context)
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1545,6 +1546,69 @@ Please note the underlying input stream is not rewindable.</p>
       <tr>
         <td><span class="xref">T</span></td>
         <td><p>Parses the JSON as a given type from the request body.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type of specified object type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Extensions_ParseJsonAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.ParseJsonAsync*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_ParseJsonAsync__1_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.ParseJsonAsync``1(Unosquare.Labs.EmbedIO.IHttpContext)">ParseJsonAsync&lt;T&gt;(IHttpContext)</h4>
+  <div class="markdown level1 summary"><p>Parses the JSON as a given type from the request body.
+Please note the underlying input stream is not rewindable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;T&gt; ParseJsonAsync&lt;T&gt;(this IHttpContext context)
+    where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;T&gt;</td>
+        <td><p>A task with the JSON as a given type from the request body.</p>
 </td>
       </tr>
     </tbody>
@@ -1686,7 +1750,8 @@ it is not rewindable for obvious reasons. This functionality is by design.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string RequestBody(this IHttpContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Please use the async method.&quot;)]
+public static string RequestBody(this IHttpContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1718,6 +1783,54 @@ it is not rewindable for obvious reasons. This functionality is by design.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><p>The rest of the stream as a string, from the current position to the end.
+If the current position is at the end of the stream, returns an empty string.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Extensions_RequestBodyAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestBodyAsync*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestBodyAsync_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestBodyAsync(Unosquare.Labs.EmbedIO.IHttpContext)">RequestBodyAsync(IHttpContext)</h4>
+  <div class="markdown level1 summary"><p>Retrieves the request body as a string.
+Note that once this method returns, the underlying input stream cannot be read again as 
+it is not rewindable for obvious reasons. This functionality is by design.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;string&gt; RequestBodyAsync(this IHttpContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><p>A task with the rest of the stream as a string, from the current position to the end.
 If the current position is at the end of the stream, returns an empty string.</p>
 </td>
       </tr>
@@ -1778,7 +1891,8 @@ Please note the underlying input stream is not rewindable.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Dictionary&lt;string, object&gt; RequestFormDataDictionary(this IHttpContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Please use the async method.&quot;)]
+public static Dictionary&lt;string, object&gt; RequestFormDataDictionary(this IHttpContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1810,6 +1924,52 @@ Please note the underlying input stream is not rewindable.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
         <td><p>A collection that represents KVPs from request data.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionaryAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionaryAsync*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionaryAsync_Unosquare_Labs_EmbedIO_IHttpContext_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionaryAsync(Unosquare.Labs.EmbedIO.IHttpContext)">RequestFormDataDictionaryAsync(IHttpContext)</h4>
+  <div class="markdown level1 summary"><p>Returns dictionary from Request POST data
+Please note the underlying input stream is not rewindable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;Dictionary&lt;string, object&gt;&gt; RequestFormDataDictionaryAsync(this IHttpContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context to request body as string.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;&gt;</td>
+        <td><p>A task with a collection that represents KVPs from request data.</p>
 </td>
       </tr>
     </tbody>
@@ -3001,7 +3161,7 @@ s.setAttribute('data-timestamp', +new Date());
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2017-2018 <a href="https://www.unosquare.com">Unosquare</a></span>
+            <span>Copyright © 2017-2019 <a href="https://www.unosquare.com">Unosquare</a></span>
           </div>
         </div>
       </footer>
@@ -3010,5 +3170,21 @@ s.setAttribute('data-timestamp', +new Date());
     <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-8535255-2', 'auto');
+        ga('send', 'pageview');
+    </script>
   </body>
 </html>

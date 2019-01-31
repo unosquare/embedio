@@ -791,6 +791,22 @@ references:
   fullName.vb: Unosquare.Labs.EmbedIO.Extensions.ParseJson(Of T)(Unosquare.Labs.EmbedIO.IHttpContext)
   nameWithType: Extensions.ParseJson<T>(IHttpContext)
   nameWithType.vb: Extensions.ParseJson(Of T)(IHttpContext)
+- uid: Unosquare.Labs.EmbedIO.Extensions.ParseJsonAsync*
+  name: ParseJsonAsync
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_ParseJsonAsync_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.ParseJsonAsync
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Extensions.ParseJsonAsync
+  nameWithType: Extensions.ParseJsonAsync
+- uid: Unosquare.Labs.EmbedIO.Extensions.ParseJsonAsync``1(Unosquare.Labs.EmbedIO.IHttpContext)
+  name: ParseJsonAsync<T>(IHttpContext)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_ParseJsonAsync__1_Unosquare_Labs_EmbedIO_IHttpContext_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.ParseJsonAsync``1(Unosquare.Labs.EmbedIO.IHttpContext)
+  name.vb: ParseJsonAsync(Of T)(IHttpContext)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.ParseJsonAsync<T>(Unosquare.Labs.EmbedIO.IHttpContext)
+  fullName.vb: Unosquare.Labs.EmbedIO.Extensions.ParseJsonAsync(Of T)(Unosquare.Labs.EmbedIO.IHttpContext)
+  nameWithType: Extensions.ParseJsonAsync<T>(IHttpContext)
+  nameWithType.vb: Extensions.ParseJsonAsync(Of T)(IHttpContext)
 - uid: Unosquare.Labs.EmbedIO.Extensions.QueryString(Unosquare.Labs.EmbedIO.IHttpContext,System.String)
   name: QueryString(IHttpContext, String)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_QueryString_Unosquare_Labs_EmbedIO_IHttpContext_System_String_
@@ -830,6 +846,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.RequestBody
   nameWithType: Extensions.RequestBody
+- uid: Unosquare.Labs.EmbedIO.Extensions.RequestBodyAsync(Unosquare.Labs.EmbedIO.IHttpContext)
+  name: RequestBodyAsync(IHttpContext)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestBodyAsync_Unosquare_Labs_EmbedIO_IHttpContext_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.RequestBodyAsync(Unosquare.Labs.EmbedIO.IHttpContext)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.RequestBodyAsync(Unosquare.Labs.EmbedIO.IHttpContext)
+  nameWithType: Extensions.RequestBodyAsync(IHttpContext)
+- uid: Unosquare.Labs.EmbedIO.Extensions.RequestBodyAsync*
+  name: RequestBodyAsync
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestBodyAsync_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.RequestBodyAsync
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Extensions.RequestBodyAsync
+  nameWithType: Extensions.RequestBodyAsync
 - uid: Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionary(System.String)
   name: RequestFormDataDictionary(String)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionary_System_String_
@@ -849,6 +878,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionary
   nameWithType: Extensions.RequestFormDataDictionary
+- uid: Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionaryAsync(Unosquare.Labs.EmbedIO.IHttpContext)
+  name: RequestFormDataDictionaryAsync(IHttpContext)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionaryAsync_Unosquare_Labs_EmbedIO_IHttpContext_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionaryAsync(Unosquare.Labs.EmbedIO.IHttpContext)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionaryAsync(Unosquare.Labs.EmbedIO.IHttpContext)
+  nameWithType: Extensions.RequestFormDataDictionaryAsync(IHttpContext)
+- uid: Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionaryAsync*
+  name: RequestFormDataDictionaryAsync
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionaryAsync_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionaryAsync
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionaryAsync
+  nameWithType: Extensions.RequestFormDataDictionaryAsync
 - uid: Unosquare.Labs.EmbedIO.Extensions.RequestHeader(Unosquare.Labs.EmbedIO.IHttpContext,System.String)
   name: RequestHeader(IHttpContext, String)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestHeader_Unosquare_Labs_EmbedIO_IHttpContext_System_String_
