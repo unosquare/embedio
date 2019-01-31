@@ -28,6 +28,16 @@
             }
 
             [Test]
+            public async Task BigData_ReturnsOk()
+            {
+                var jsonString = await GetString($"{TestRegexController.RelativePath}big");
+
+                Assert.IsNotEmpty(jsonString);
+                Assert.IsTrue(jsonString.StartsWith("["));
+                Assert.IsTrue(jsonString.EndsWith("]"));
+            }
+
+            [Test]
             public async Task WithRegexId_ReturnsOk()
             {
                 await ValidatePerson($"{TestRegexController.RelativePath}regex/1");

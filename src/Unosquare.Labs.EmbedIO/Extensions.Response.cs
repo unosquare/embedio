@@ -222,7 +222,7 @@
         /// <returns>
         /// A task for writing the output stream.
         /// </returns>
-        public static async Task<bool> FileResponseAsync(
+        public static Task<bool> FileResponseAsync(
             this IHttpContext context,
             FileInfo file,
             string contentType = null,
@@ -232,9 +232,7 @@
             context.Response.ContentType = contentType ?? Responses.HtmlContentType;
 
             using (var stream = file.OpenRead())
-                await context.BinaryResponseAsync(stream, ct, useGzip).ConfigureAwait(false);
-
-            return true;
+                return context.BinaryResponseAsync(stream, ct, useGzip);
         }
 
         /// <summary>

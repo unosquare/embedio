@@ -15,6 +15,9 @@
             : base(context)
         {
         }
+        
+        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "big")]
+        public Task<bool> GetBigJson() => this.JsonResponseAsync(TimeZoneInfo.GetSystemTimeZones());
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "empty")]
         public Task<bool> GetEmpty() => this.JsonResponseAsync(new { Ok = true });

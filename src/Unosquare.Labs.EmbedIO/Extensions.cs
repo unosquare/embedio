@@ -183,7 +183,7 @@
                 }
             }
         }
-        
+
         /// <summary>
         /// Retrieves the request body as a string.
         /// Note that once this method returns, the underlying input stream cannot be read again as 
@@ -276,7 +276,7 @@
             {
                 return pathParts
                     .Where(x => x.StartsWith("{"))
-                    .ToDictionary(CleanParamId, x => (object) match.Groups[i++].Value);
+                    .ToDictionary(CleanParamId, x => (object)match.Groups[i++].Value);
             }
 
             var optionalPath = RouteOptionalParamRegex.Replace(basePath, string.Empty);
@@ -290,10 +290,10 @@
             var subMatch = RegexCache.MatchRegexStrategy(optionalPath, tempPath);
 
             if (!subMatch.Success || validateFunc()) return null;
-            
+
             var valuesPaths = optionalPath.Split('/')
                 .Where(x => x.StartsWith("{"))
-                .ToDictionary(CleanParamId, x => (object) subMatch.Groups[i++].Value);
+                .ToDictionary(CleanParamId, x => (object)subMatch.Groups[i++].Value);
 
             var nullPaths = pathParts
                 .Where(x => x.StartsWith("{"))
@@ -348,10 +348,10 @@
         /// <param name="length">The length.</param>
         /// <returns><c>true</c> if a request can be gzipped; otherwise, <c>false</c>.</returns>
         public static bool AcceptGzip(this IHttpContext context, long length) =>
-            context.RequestHeader(Headers.AcceptEncoding).Contains(Headers.CompressionGzip)
-            && length < Modules.FileModuleBase.MaxGzipInputLength &&
-            context.Response.ContentType?.StartsWith("audio") == false &&
-            context.Response.ContentType?.StartsWith("video") == false;
+            context.RequestHeader(Headers.AcceptEncoding).Contains(Headers.CompressionGzip) &&
+            length < Modules.FileModuleBase.MaxGzipInputLength &&
+            context.Response.ContentType?.StartsWith("audio") != true &&
+            context.Response.ContentType?.StartsWith("video") != true;
 
         #endregion
 

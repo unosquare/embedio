@@ -26,6 +26,18 @@
         }
 
         /// <summary>
+        /// Gets the big json.
+        /// </summary>
+        /// <returns></returns>
+        [WebApiHandler(HttpVerbs.Get, RelativePath + "big")]
+        public Task<bool> GetBigJson() => this.JsonResponseAsync(Enumerable.Range(1, 20).Select(x => new
+        {
+            x,
+            y = TimeZoneInfo.GetSystemTimeZones()
+                    .Select(z => new { z.StandardName, z.DisplayName })
+        }));
+
+        /// <summary>
         /// Gets the people.
         /// This will respond to 
         ///     GET http://localhost:9696/api/people/
