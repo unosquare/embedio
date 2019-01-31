@@ -79,7 +79,7 @@
         {
             try
             {
-                var model = this.ParseJson<GridDataRequest>();
+                var model = await this.ParseJsonAsync<GridDataRequest>();
                 var data = await _dbContext.People.SelectAllAsync();
 
                 return await this.JsonResponseAsync(model.CreateGridDataResponse(data.AsQueryable()));
@@ -95,17 +95,17 @@
         /// </summary>
         /// <returns></returns>
         [WebApiHandler(HttpVerbs.Post, RelativePath + "echo/*")]
-        public Task<bool> Echo()
+        public async Task<bool> Echo()
         {
             try
             {
-                var content = this.RequestFormDataDictionary();
+                var content = await this.RequestFormDataDictionaryAsync();
 
-                return this.JsonResponseAsync(content);
+                return await this.JsonResponseAsync(content);
             }
             catch (Exception ex)
             {
-                return this.JsonExceptionResponseAsync(ex);
+                return await this.JsonExceptionResponseAsync(ex);
             }
         }
     }

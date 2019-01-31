@@ -36,7 +36,8 @@
         
         /// <inheritdoc/>
         public IWebServer Server { get; set; }
-                /// <inheritdoc/>
+
+        /// <inheritdoc/>
         public bool IsWatchdogEnabled { get; set; }
         
         /// <inheritdoc/>

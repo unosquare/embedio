@@ -57,32 +57,32 @@
         }
 
         [WebApiHandler(HttpVerbs.Post, "/" + GetPath + "*")]
-        public Task<bool> PostPeople()
+        public async Task<bool> PostPeople()
         {
             try
             {
-                var content = this.ParseJson<Person>();
+                var content = await this.ParseJsonAsync<Person>();
 
-                return this.JsonResponseAsync(content);
+                return await this.JsonResponseAsync(content);
             }
             catch (Exception ex)
             {
-                return this.JsonExceptionResponseAsync(ex);
+                return await this.JsonExceptionResponseAsync(ex);
             }
         }
 
         [WebApiHandler(HttpVerbs.Post, "/" + EchoPath + "*")]
-        public Task<bool> PostEcho()
+        public async Task<bool> PostEcho()
         {
             try
             {
-                var content = this.RequestFormDataDictionary();
+                var content = await this.RequestFormDataDictionaryAsync();
 
-                return this.JsonResponseAsync(content);
+                return await this.JsonResponseAsync(content);
             }
             catch (Exception ex)
             {
-                return this.JsonExceptionResponseAsync(ex);
+                return await this.JsonExceptionResponseAsync(ex);
             }
         }
         
