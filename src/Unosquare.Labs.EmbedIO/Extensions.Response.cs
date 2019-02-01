@@ -207,8 +207,8 @@
         {
             response.ContentType = contentType;
 
-            using (var buffer = new MemoryStream((encoding ?? Encoding.UTF8).GetBytes(content)))
-                return BinaryResponseAsync(response, buffer, cancellationToken, useGzip);
+            var buffer = new MemoryStream((encoding ?? Encoding.UTF8).GetBytes(content));
+            return BinaryResponseAsync(response, buffer, cancellationToken, useGzip);
         }
 
         /// <summary>
@@ -294,21 +294,14 @@
         {
             var streamBuffer = new byte[Modules.FileModuleBase.ChunkSize];
             long sendData = 0;
-            var readBufferSize = Modules.FileModuleBase.ChunkSize;
 
-            while (true)
+            buffer.Position = lowerByteIndex;
+            while (sendData < response.ContentLength64)
             {
-                if (!buffer.CanRead) break;
-
-                if (sendData + Modules.FileModuleBase.ChunkSize > response.ContentLength64) readBufferSize = (int)(response.ContentLength64 - sendData);
-
-                buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
-                var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct).ConfigureAwait(false);
-
+                var read = await buffer.ReadAsync(streamBuffer, 0, Modules.FileModuleBase.ChunkSize, ct).ConfigureAwait(false);
                 if (read == 0) break;
-
                 sendData += read;
-                await response.OutputStream.WriteAsync(streamBuffer, 0, readBufferSize, ct).ConfigureAwait(false);
+                await response.OutputStream.WriteAsync(streamBuffer, 0, read, ct).ConfigureAwait(false);
             }
         }
     }
