@@ -231,8 +231,8 @@
         {
             context.Response.ContentType = contentType ?? Responses.HtmlContentType;
 
-            using (var stream = file.OpenRead())
-                return context.BinaryResponseAsync(stream, ct, useGzip);
+            var stream = file.OpenRead();
+            return context.BinaryResponseAsync(stream, ct, useGzip);
         }
 
         /// <summary>
@@ -303,6 +303,8 @@
                 sendData += read;
                 await response.OutputStream.WriteAsync(streamBuffer, 0, read, ct).ConfigureAwait(false);
             }
+
+            buffer.Dispose();
         }
     }
 }
