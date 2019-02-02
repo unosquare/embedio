@@ -6,6 +6,7 @@
     <OutputType>Exe</OutputType>
     <PackageId>Unosquare.Labs.EmbedIO.Samples</PackageId>
     <LangVersion>7.3</LangVersion>
+    <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>

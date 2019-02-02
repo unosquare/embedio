@@ -17,7 +17,12 @@
         }
         
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "big")]
-        public Task<bool> GetBigJson() => this.JsonResponseAsync(TimeZoneInfo.GetSystemTimeZones());
+        public Task<bool> GetBigJson() => this.JsonResponseAsync(Enumerable.Range(1, 100).Select(x => new
+        {
+            x,
+            y = TimeZoneInfo.GetSystemTimeZones()
+                .Select(z => new { z.StandardName, z.DisplayName }),
+        }));
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "empty")]
         public Task<bool> GetEmpty() => this.JsonResponseAsync(new { Ok = true });

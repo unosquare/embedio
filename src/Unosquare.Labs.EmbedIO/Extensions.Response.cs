@@ -60,7 +60,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="data">The data.</param>
-        /// <returns>A <c>true</c> value of type ref=JsonResponseAsync".</returns>
+        /// <returns>A <c>true</c> value if the response output was set.</returns>
         [Obsolete("Please use the async method.")]
         public static bool JsonResponse(this IHttpContext context, object data)
             => context.JsonResponseAsync(data).GetAwaiter().GetResult();
@@ -72,9 +72,7 @@
         /// <param name="data">The data.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
-        /// <returns>
-        /// A <c>true</c> value of type ref=JsonResponseAsync".
-        /// </returns>
+        /// <returns>A <c>true</c> value if the response output was set.</returns>
         public static Task<bool> JsonResponseAsync(
             this IHttpContext context,
             object data,
@@ -87,7 +85,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="json">The JSON.</param>
-        /// <returns> A <c>true</c> value of type ref=JsonResponseAsync".</returns>
+        /// <returns>A <c>true</c> value if the response output was set.</returns>
         [Obsolete("Please use the async method.")]
         public static bool JsonResponse(this IHttpContext context, string json)
             => context.JsonResponseAsync(json).GetAwaiter().GetResult();
