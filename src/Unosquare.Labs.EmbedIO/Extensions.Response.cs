@@ -60,7 +60,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="data">The data.</param>
-        /// <returns>A <c>true</c> value of type ref=JsonResponseAsync".</returns>
+        /// <returns>A <c>true</c> value if the response output was set.</returns>
         [Obsolete("Please use the async method.")]
         public static bool JsonResponse(this IHttpContext context, object data)
             => context.JsonResponseAsync(data).GetAwaiter().GetResult();
@@ -72,9 +72,7 @@
         /// <param name="data">The data.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
-        /// <returns>
-        /// A <c>true</c> value of type ref=JsonResponseAsync".
-        /// </returns>
+        /// <returns>A <c>true</c> value if the response output was set.</returns>
         public static Task<bool> JsonResponseAsync(
             this IHttpContext context,
             object data,
@@ -87,7 +85,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="json">The JSON.</param>
-        /// <returns> A <c>true</c> value of type ref=JsonResponseAsync".</returns>
+        /// <returns>A <c>true</c> value if the response output was set.</returns>
         [Obsolete("Please use the async method.")]
         public static bool JsonResponse(this IHttpContext context, string json)
             => context.JsonResponseAsync(json).GetAwaiter().GetResult();
@@ -207,8 +205,8 @@
         {
             response.ContentType = contentType;
 
-            using (var buffer = new MemoryStream((encoding ?? Encoding.UTF8).GetBytes(content)))
-                return BinaryResponseAsync(response, buffer, cancellationToken, useGzip);
+            var buffer = new MemoryStream((encoding ?? Encoding.UTF8).GetBytes(content));
+            return BinaryResponseAsync(response, buffer, cancellationToken, useGzip);
         }
 
         /// <summary>
@@ -231,8 +229,8 @@
         {
             context.Response.ContentType = contentType ?? Responses.HtmlContentType;
 
-            using (var stream = file.OpenRead())
-                return context.BinaryResponseAsync(stream, ct, useGzip);
+            var stream = file.OpenRead();
+            return context.BinaryResponseAsync(stream, ct, useGzip);
         }
 
         /// <summary>
@@ -294,22 +292,17 @@
         {
             var streamBuffer = new byte[Modules.FileModuleBase.ChunkSize];
             long sendData = 0;
-            var readBufferSize = Modules.FileModuleBase.ChunkSize;
 
-            while (true)
+            buffer.Position = lowerByteIndex;
+            while (sendData < response.ContentLength64)
             {
-                if (!buffer.CanRead) break;
-
-                if (sendData + Modules.FileModuleBase.ChunkSize > response.ContentLength64) readBufferSize = (int)(response.ContentLength64 - sendData);
-
-                buffer.Seek(lowerByteIndex + sendData, SeekOrigin.Begin);
-                var read = await buffer.ReadAsync(streamBuffer, 0, readBufferSize, ct).ConfigureAwait(false);
-
+                var read = await buffer.ReadAsync(streamBuffer, 0, Modules.FileModuleBase.ChunkSize, ct).ConfigureAwait(false);
                 if (read == 0) break;
-
                 sendData += read;
-                await response.OutputStream.WriteAsync(streamBuffer, 0, readBufferSize, ct).ConfigureAwait(false);
+                await response.OutputStream.WriteAsync(streamBuffer, 0, read, ct).ConfigureAwait(false);
             }
+
+            buffer.Dispose();
         }
     }
 }

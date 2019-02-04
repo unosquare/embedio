@@ -58,7 +58,7 @@ Some notes regarding WebSocket and runtimes support:
 | NET472 | Unosquare and *Microsoft* | Yes | Support Win8+ OS. |
 | NETSTANDARD13 | *Unosquare* | Yes | Support Windows, Linux and macOS using native System.Net library |
 | NETSTANDARD20 | Unosquare and *Microsoft* | Yes | Support Windows, Linux and macOS using native System.Net library |
-| UAP | *Unosquare* | No | Support Windows Universal Platform until version 2.1.1. |
+| UAP | *Unosquare* | No | Support Windows Universal Platform until EmbedIO version 2.1.1. |
 
 ### EmbedIO 2.0 - What's new
 

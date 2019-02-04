@@ -30,11 +30,12 @@
         /// </summary>
         /// <returns></returns>
         [WebApiHandler(HttpVerbs.Get, RelativePath + "big")]
-        public Task<bool> GetBigJson() => this.JsonResponseAsync(Enumerable.Range(1, 20).Select(x => new
+        public Task<bool> GetBigJson() => this.JsonResponseAsync(Enumerable.Range(1, 200)
+            .Select(x => new
         {
             x,
             y = TimeZoneInfo.GetSystemTimeZones()
-                    .Select(z => new { z.StandardName, z.DisplayName })
+                    .Select(z => new { z.StandardName, z.DisplayName, z.DaylightName, z.BaseUtcOffset })
         }));
 
         /// <summary>
