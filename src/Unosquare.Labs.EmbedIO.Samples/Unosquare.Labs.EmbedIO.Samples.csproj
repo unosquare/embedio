@@ -22,9 +22,6 @@
   <ItemGroup>
     <PackageReference Include="LiteLib" Version="0.19.0" />
     <PackageReference Include="Tubular.ServerSide" Version="1.5.1" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2' ">
     <PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.13" />
   </ItemGroup>
 
