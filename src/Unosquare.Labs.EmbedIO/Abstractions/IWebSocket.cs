@@ -7,7 +7,7 @@
 
     /// <inheritdoc />
     /// <summary>
-    /// Interface to create a WebSocket.
+    /// Interface to create a WebSocket implementation.
     /// </summary>
     /// <seealso cref="T:System.IDisposable" />
     public interface IWebSocket : IDisposable

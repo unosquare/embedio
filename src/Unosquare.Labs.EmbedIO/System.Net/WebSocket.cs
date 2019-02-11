@@ -300,17 +300,6 @@
         // As server
         internal bool IgnoreExtensions { get; set; } = true;
 
-        internal bool IsConnected
-        {
-            get
-            {
-                lock (_forState)
-                {
-                    return _readyState == WebSocketState.Open || _readyState == WebSocketState.Closing;
-                }
-            }
-        }
-
         internal WebSocketKey WebSocketKey { get; }
 
         /// <inheritdoc />
@@ -991,39 +980,34 @@
 
             var frameStream = new WebSocketFrameStream(_stream);
 
-            async void Receive()
+            Task.Run(async () =>
             {
-                try
+                while (_readyState == WebSocketState.Open)
                 {
-                    var frame = await frameStream.ReadFrameAsync(this).ConfigureAwait(false);
-
-                    if (frame == null)
-                        return;
-
-                    var result = await ProcessReceivedFrame(frame).ConfigureAwait(false);
-
-                    if (!result || _readyState == WebSocketState.Closed)
+                    try
                     {
-                        _exitReceiving?.Set();
+                        var frame = await frameStream.ReadFrameAsync(this).ConfigureAwait(false);
 
-                        return;
+                        if (frame == null)
+                            return;
+
+                        var result = await ProcessReceivedFrame(frame).ConfigureAwait(false);
+
+                        if (!result || _readyState == WebSocketState.Closed)
+                        {
+                            _exitReceiving?.Set();
+
+                            return;
+                        }
+
+                        var _ = Task.Run(Message);
                     }
-
-                    // Receive next asap because the Ping or Close needs a response to it.
-                    Receive();
-
-                    if (_inMessage || _messageEventQueue.IsEmpty || _readyState != WebSocketState.Open)
-                        return;
-
-                    Message();
+                    catch (Exception ex)
+                    {
+                        Fatal("An exception has occurred while receiving.", ex);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Fatal("An exception has occurred while receiving.", ex);
-                }
-            }
-
-            Receive();
+            });
         }
     }
 }
