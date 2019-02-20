@@ -78,7 +78,7 @@
                 return Task.Delay(0, ct);
             }
 
-            if (upperByteIndex != fileSize)
+            if (lowerByteIndex != 0 || upperByteIndex != fileSize)
             {
                 response.StatusCode = 206;
                 response.ContentLength64 = upperByteIndex - lowerByteIndex + 1;
