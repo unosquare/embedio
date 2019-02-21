@@ -1,13 +1,14 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
+    using Constants;
     using Swan;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Constants;
 
     /// <summary>
     /// Represents a files module base.
@@ -119,44 +120,21 @@
             response.AddHeader(Headers.AcceptRanges, "bytes");
         }
 
-        private static bool CalculateRange(
-            string partialHeader,
-            long fileSize,
-            out long lowerByteIndex,
-            out long upperByteIndex)
+        private static bool CalculateRange(string partialHeader, long fileSize, out long lowerByteIndex, out long upperByteIndex)
         {
-            lowerByteIndex = 0;
-            upperByteIndex = 0;
-
-            var isPartial = partialHeader?.StartsWith("bytes=") == true;
-
-            if (!isPartial) return false;
-
-            var range = partialHeader.Replace("bytes=", string.Empty).Split('-');
-
-            if (range.Length == 2 && long.TryParse(range[0], out lowerByteIndex) &&
-                long.TryParse(range[1], out upperByteIndex))
+            try
             {
+                var range = System.Net.Http.Headers.RangeHeaderValue.Parse(partialHeader).Ranges.First();
+                lowerByteIndex = range.From ?? 0;
+                upperByteIndex = range.To ?? fileSize - 1;
                 return true;
             }
-
-            if ((range.Length == 2 && long.TryParse(range[0], out lowerByteIndex) &&
-                 string.IsNullOrWhiteSpace(range[1])) ||
-                (range.Length == 1 && long.TryParse(range[0], out lowerByteIndex)))
+            catch
             {
-                upperByteIndex = (int)fileSize;
-                return true;
+                lowerByteIndex = 0;
+                upperByteIndex = fileSize - 1;
+                return false;
             }
-
-            if (range.Length == 2 && string.IsNullOrWhiteSpace(range[0]) &&
-                long.TryParse(range[1], out upperByteIndex))
-            {
-                lowerByteIndex = (int)fileSize - upperByteIndex;
-                upperByteIndex = (int)fileSize;
-                return true;
-            }
-
-            return false;
         }
     }
 }
