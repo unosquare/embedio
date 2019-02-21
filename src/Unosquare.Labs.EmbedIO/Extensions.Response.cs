@@ -290,18 +290,8 @@
             long lowerByteIndex = 0,
             CancellationToken ct = default)
         {
-            var streamBuffer = new byte[Modules.FileModuleBase.ChunkSize];
-            long sendData = 0;
-
             buffer.Position = lowerByteIndex;
-            while (sendData < response.ContentLength64)
-            {
-                var read = await buffer.ReadAsync(streamBuffer, 0, Modules.FileModuleBase.ChunkSize, ct).ConfigureAwait(false);
-                if (read == 0) break;
-                sendData += read;
-                await response.OutputStream.WriteAsync(streamBuffer, 0, read, ct).ConfigureAwait(false);
-            }
-
+            await buffer.CopyToAsync(response.OutputStream, Modules.FileModuleBase.ChunkSize, ct).ConfigureAwait(false);
             buffer.Dispose();
         }
     }
