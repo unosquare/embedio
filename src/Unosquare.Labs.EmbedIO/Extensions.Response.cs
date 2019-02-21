@@ -195,7 +195,7 @@
         /// <returns>
         /// A task for writing the output stream.
         /// </returns>
-        public static Task<bool> StringResponseAsync(
+        public static async Task<bool> StringResponseAsync(
             this IHttpResponse response,
             string content,
             string contentType = "application/json",
@@ -205,8 +205,8 @@
         {
             response.ContentType = contentType;
 
-            var buffer = new MemoryStream((encoding ?? Encoding.UTF8).GetBytes(content));
-            return BinaryResponseAsync(response, buffer, cancellationToken, useGzip);
+            using (var buffer = new MemoryStream((encoding ?? Encoding.UTF8).GetBytes(content)))
+                return await BinaryResponseAsync(response, buffer, cancellationToken, useGzip).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -292,7 +292,6 @@
         {
             buffer.Position = lowerByteIndex;
             await buffer.CopyToAsync(response.OutputStream, Modules.FileModuleBase.ChunkSize, ct).ConfigureAwait(false);
-            buffer.Dispose();
         }
     }
 }
