@@ -22,7 +22,7 @@
             AppDbContext.InitDatabase();
 
             var ctSource = new CancellationTokenSource();
-            ctSource.Token.Register(() => "Shutting down".Info());
+            ctSource.Token.Register(() => "Shutting down".Info(nameof(Main)));
 
             // Set a task waiting for press key to exit
 #pragma warning disable 4014
@@ -89,7 +89,7 @@
                     await server.RunAsync(ctSource.Token);
 
                 // Clean up
-                "Bye".Info();
+                "Bye".Info(nameof(Program));
                 Terminal.Flush();
             }
         }

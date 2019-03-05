@@ -18,25 +18,25 @@
         {
             if (code == CloseStatusCode.NoStatus && !string.IsNullOrEmpty(reason))
             {
-                "'code' cannot have a reason.".Error();
+                "'code' cannot have a reason.".Trace(nameof(CheckParametersForClose));
                 return false;
             }
 
             if (code == CloseStatusCode.MandatoryExtension && !client)
             {
-                "'code' cannot be used by a server.".Error();
+                "'code' cannot be used by a server.".Trace(nameof(CheckParametersForClose));
                 return false;
             }
 
             if (code == CloseStatusCode.ServerError && client)
             {
-                "'code' cannot be used by a client.".Error();
+                "'code' cannot be used by a client.".Trace(nameof(CheckParametersForClose));
                 return false;
             }
 
             if (!string.IsNullOrEmpty(reason) && Encoding.UTF8.GetBytes(reason).Length > 123)
             {
-                "The size of 'reason' is greater than the allowable max size.".Error();
+                "The size of 'reason' is greater than the allowable max size.".Trace(nameof(CheckParametersForClose));
                 return false;
             }
 
@@ -81,25 +81,25 @@
         {
             if (!connecting && _webSocket.State == WebSocketState.Connecting)
             {
-                "This operation isn't available in: connecting".Error();
+                "This operation isn't available in: connecting".Trace(nameof(CheckIfAvailable));
                 return false;
             }
 
             if (!open && _webSocket.State == WebSocketState.Open)
             {
-                "This operation isn't available in: open".Error();
+                "This operation isn't available in: open".Trace(nameof(CheckIfAvailable));
                 return false;
             }
 
             if (!closing && _webSocket.State == WebSocketState.Closing)
             {
-                "This operation isn't available in: closing".Error();
+                "This operation isn't available in: closing".Trace(nameof(CheckIfAvailable));
                 return false;
             }
 
             if (!closed && _webSocket.State == WebSocketState.Closed)
             {
-                "This operation isn't available in: closed".Error();
+                "This operation isn't available in: closed".Trace(nameof(CheckIfAvailable));
                 return false;
             }
 
@@ -116,13 +116,13 @@
         {
             if (!client && _webSocket.IsClient)
             {
-                "This operation isn't available in: client".Error();
+                "This operation isn't available in: client".Trace(nameof(CheckIfAvailable));
                 return false;
             }
 
             if (!server && !_webSocket.IsClient)
             {
-                "This operation isn't available in: server".Error();
+                "This operation isn't available in: server".Trace(nameof(CheckIfAvailable));
                 return false;
             }
 
@@ -184,12 +184,12 @@
 
                 if (!ext.Contains("server_no_context_takeover"))
                 {
-                    "The server hasn't sent back 'server_no_context_takeover'.".Error();
+                    "The server hasn't sent back 'server_no_context_takeover'.".Trace(nameof(ValidateSecWebSocketExtensionsServerHeader));
                     return false;
                 }
 
                 if (!ext.Contains("client_no_context_takeover"))
-                    "The server hasn't sent back 'client_no_context_takeover'.".Info();
+                    "The server hasn't sent back 'client_no_context_takeover'.".Trace(nameof(ValidateSecWebSocketExtensionsServerHeader));
 
                 var method = _webSocket.Compression.ToExtensionString();
                 var invalid =

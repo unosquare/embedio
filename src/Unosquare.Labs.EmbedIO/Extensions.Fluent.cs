@@ -132,7 +132,7 @@
                 if (webserver.Module<WebApiModule>() == null) webserver = webserver.WithWebApi();
 
                 webserver.Module<WebApiModule>().RegisterController(apiController);
-                $"Registering WebAPI Controller '{apiController.Name}'".Debug();
+                $"Registering WebAPI Controller '{apiController.Name}'".Debug(nameof(LoadApiControllers));
             }
 
             return webserver;
@@ -184,7 +184,7 @@
                 if (webserver.Module<WebSocketsModule>() == null) webserver = webserver.WithWebSocket();
 
                 webserver.Module<WebSocketsModule>().RegisterWebSocketsServer(socketServer);
-                $"Registering WebSocket Server '{socketServer.Name}'".Info();
+                $"Registering WebSocket Server '{socketServer.Name}'".Debug(nameof(LoadWebSockets));
             }
 
             return webserver;

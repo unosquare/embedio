@@ -245,7 +245,7 @@
 
                     if (!Uri.TryCreate(value, UriKind.Absolute, out var origin) || origin.Segments.Length > 1)
                     {
-                        "The syntax of an origin must be '<scheme>://<host>[:<port>]'.".Error();
+                        "The syntax of an origin must be '<scheme>://<host>[:<port>]'.".Error(nameof(Origin));
 
                         return;
                     }
@@ -422,7 +422,7 @@
             if (data.Length <= 125)
                 return PingAsync(WebSocketFrame.CreatePingFrame(data, IsClient).ToArray(), _waitTime);
 
-            "A message has greater than the allowable max size.".Error();
+            "A message has greater than the allowable max size.".Error(nameof(PingAsync));
 
             return Task.FromResult(false);
         }
@@ -545,13 +545,13 @@
             {
                 if (_readyState == WebSocketState.Closing)
                 {
-                    "The closing is already in progress.".Info();
+                    "The closing is already in progress.".Trace(nameof(InternalCloseAsync));
                     return;
                 }
 
                 if (_readyState == WebSocketState.Closed)
                 {
-                    "The connection has been closed.".Info();
+                    "The connection has been closed.".Trace(nameof(InternalCloseAsync));
                     return;
                 }
 
@@ -561,13 +561,13 @@
                 _readyState = WebSocketState.Closing;
             }
 
-            "Begin closing the connection.".Info();
+            "Begin closing the connection.".Trace(nameof(InternalCloseAsync));
 
             var bytes = send ? WebSocketFrame.CreateCloseFrame(payloadData, IsClient).ToArray() : null;
             await CloseHandshakeAsync(bytes, receive, received, ct).ConfigureAwait(false);
             ReleaseResources();
 
-            "End closing the connection.".Info();
+            "End closing the connection.".Trace(nameof(InternalCloseAsync));
 
             lock (_forState)
             {
@@ -719,7 +719,7 @@
         private void ProcessPongFrame()
         {
             _receivePong.Set();
-            "Received a pong.".Info();
+            "Received a pong.".Trace(nameof(ProcessPongFrame));
         }
 
         private async Task<bool> ProcessReceivedFrame(WebSocketFrame frame)
@@ -746,7 +746,7 @@
                         await ProcessCloseFrame(frame).ConfigureAwait(false);
                         break;
                     default:
-                        $"An unsupported frame: {frame.PrintToString()}".Error();
+                        $"An unsupported frame: {frame.PrintToString()}".Error(nameof(ProcessReceivedFrame));
                         Fatal("There is no way to handle it.", CloseStatusCode.PolicyViolation);
                         return false;
                 }
@@ -871,7 +871,7 @@
             {
                 if (_readyState != WebSocketState.Open)
                 {
-                    "The sending has been interrupted.".Error();
+                    "The sending has been interrupted.".Error(nameof(Send));
                     return Task.Delay(0);
                 }
             }
@@ -896,13 +896,13 @@
                 if (!res.IsRedirect) return res;
 
                 var url = res.Headers["Location"];
-                $"Received a redirection to '{url}'.".Warn();
+                $"Received a redirection to '{url}'.".Trace(nameof(SendHandshakeRequestAsync));
 
                 if (!_enableRedirection) return res;
 
                 if (string.IsNullOrEmpty(url))
                 {
-                    "No url to redirect is located.".Error();
+                    "No url to redirect is located.".Trace(nameof(SendHandshakeRequestAsync));
                     return res;
                 }
 
