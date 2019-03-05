@@ -660,19 +660,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.InQueryString
   nameWithType: Extensions.InQueryString
-- uid: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponse(Unosquare.Labs.EmbedIO.IHttpContext,System.Exception,System.Net.HttpStatusCode)
-  name: JsonExceptionResponse(IHttpContext, Exception, Net.HttpStatusCode)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponse_Unosquare_Labs_EmbedIO_IHttpContext_System_Exception_System_Net_HttpStatusCode_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponse(Unosquare.Labs.EmbedIO.IHttpContext,System.Exception,System.Net.HttpStatusCode)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponse(Unosquare.Labs.EmbedIO.IHttpContext, System.Exception, System.Net.HttpStatusCode)
-  nameWithType: Extensions.JsonExceptionResponse(IHttpContext, Exception, Net.HttpStatusCode)
-- uid: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponse*
-  name: JsonExceptionResponse
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponse_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponse
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponse
-  nameWithType: Extensions.JsonExceptionResponse
 - uid: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Exception,System.Net.HttpStatusCode,System.Boolean)
   name: JsonExceptionResponseAsync(IHttpContext, Exception, Net.HttpStatusCode, Boolean)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Exception_System_Net_HttpStatusCode_System_Boolean_
@@ -686,25 +673,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync
   nameWithType: Extensions.JsonExceptionResponseAsync
-- uid: Unosquare.Labs.EmbedIO.Extensions.JsonResponse(Unosquare.Labs.EmbedIO.IHttpContext,System.Object)
-  name: JsonResponse(IHttpContext, Object)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonResponse_Unosquare_Labs_EmbedIO_IHttpContext_System_Object_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.JsonResponse(Unosquare.Labs.EmbedIO.IHttpContext,System.Object)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonResponse(Unosquare.Labs.EmbedIO.IHttpContext, System.Object)
-  nameWithType: Extensions.JsonResponse(IHttpContext, Object)
-- uid: Unosquare.Labs.EmbedIO.Extensions.JsonResponse(Unosquare.Labs.EmbedIO.IHttpContext,System.String)
-  name: JsonResponse(IHttpContext, String)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonResponse_Unosquare_Labs_EmbedIO_IHttpContext_System_String_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.JsonResponse(Unosquare.Labs.EmbedIO.IHttpContext,System.String)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonResponse(Unosquare.Labs.EmbedIO.IHttpContext, System.String)
-  nameWithType: Extensions.JsonResponse(IHttpContext, String)
-- uid: Unosquare.Labs.EmbedIO.Extensions.JsonResponse*
-  name: JsonResponse
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonResponse_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.JsonResponse
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonResponse
-  nameWithType: Extensions.JsonResponse
 - uid: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Object,System.Threading.CancellationToken,System.Boolean)
   name: JsonResponseAsync(IHttpContext, Object, CancellationToken, Boolean)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Object_System_Threading_CancellationToken_System_Boolean_
@@ -775,22 +743,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.NoCache
   nameWithType: Extensions.NoCache
-- uid: Unosquare.Labs.EmbedIO.Extensions.ParseJson*
-  name: ParseJson
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_ParseJson_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.ParseJson
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Extensions.ParseJson
-  nameWithType: Extensions.ParseJson
-- uid: Unosquare.Labs.EmbedIO.Extensions.ParseJson``1(Unosquare.Labs.EmbedIO.IHttpContext)
-  name: ParseJson<T>(IHttpContext)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_ParseJson__1_Unosquare_Labs_EmbedIO_IHttpContext_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.ParseJson``1(Unosquare.Labs.EmbedIO.IHttpContext)
-  name.vb: ParseJson(Of T)(IHttpContext)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.ParseJson<T>(Unosquare.Labs.EmbedIO.IHttpContext)
-  fullName.vb: Unosquare.Labs.EmbedIO.Extensions.ParseJson(Of T)(Unosquare.Labs.EmbedIO.IHttpContext)
-  nameWithType: Extensions.ParseJson<T>(IHttpContext)
-  nameWithType.vb: Extensions.ParseJson(Of T)(IHttpContext)
 - uid: Unosquare.Labs.EmbedIO.Extensions.ParseJsonAsync*
   name: ParseJsonAsync
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_ParseJsonAsync_
@@ -833,19 +785,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.Redirect
   nameWithType: Extensions.Redirect
-- uid: Unosquare.Labs.EmbedIO.Extensions.RequestBody(Unosquare.Labs.EmbedIO.IHttpContext)
-  name: RequestBody(IHttpContext)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestBody_Unosquare_Labs_EmbedIO_IHttpContext_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.RequestBody(Unosquare.Labs.EmbedIO.IHttpContext)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.RequestBody(Unosquare.Labs.EmbedIO.IHttpContext)
-  nameWithType: Extensions.RequestBody(IHttpContext)
-- uid: Unosquare.Labs.EmbedIO.Extensions.RequestBody*
-  name: RequestBody
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestBody_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Extensions.RequestBody
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Extensions.RequestBody
-  nameWithType: Extensions.RequestBody
 - uid: Unosquare.Labs.EmbedIO.Extensions.RequestBodyAsync(Unosquare.Labs.EmbedIO.IHttpContext)
   name: RequestBodyAsync(IHttpContext)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestBodyAsync_Unosquare_Labs_EmbedIO_IHttpContext_
@@ -865,12 +804,6 @@ references:
   commentId: M:Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionary(System.String)
   fullName: Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionary(System.String)
   nameWithType: Extensions.RequestFormDataDictionary(String)
-- uid: Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionary(Unosquare.Labs.EmbedIO.IHttpContext)
-  name: RequestFormDataDictionary(IHttpContext)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionary_Unosquare_Labs_EmbedIO_IHttpContext_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionary(Unosquare.Labs.EmbedIO.IHttpContext)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionary(Unosquare.Labs.EmbedIO.IHttpContext)
-  nameWithType: Extensions.RequestFormDataDictionary(IHttpContext)
 - uid: Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionary*
   name: RequestFormDataDictionary
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionary_
@@ -2988,15 +2921,6 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.Modules.FallbackModule
   fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule
   nameWithType: FallbackModule
-- uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.Func{Unosquare.Labs.EmbedIO.IHttpContext,System.Threading.CancellationToken,System.Boolean},Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
-  name: FallbackModule(Func<IHttpContext, CancellationToken, Boolean>, HttpVerbs)
-  href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_Threading_CancellationToken_System_Boolean__Unosquare_Labs_EmbedIO_Constants_HttpVerbs_
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.Func{Unosquare.Labs.EmbedIO.IHttpContext,System.Threading.CancellationToken,System.Boolean},Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
-  name.vb: FallbackModule(Func(Of IHttpContext, CancellationToken, Boolean), HttpVerbs)
-  fullName: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(System.Func<Unosquare.Labs.EmbedIO.IHttpContext, System.Threading.CancellationToken, System.Boolean>, Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
-  fullName.vb: Unosquare.Labs.EmbedIO.Modules.FallbackModule.FallbackModule(System.Func(Of Unosquare.Labs.EmbedIO.IHttpContext, System.Threading.CancellationToken, System.Boolean), Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
-  nameWithType: FallbackModule.FallbackModule(Func<IHttpContext, CancellationToken, Boolean>, HttpVerbs)
-  nameWithType.vb: FallbackModule.FallbackModule(Func(Of IHttpContext, CancellationToken, Boolean), HttpVerbs)
 - uid: Unosquare.Labs.EmbedIO.Modules.FallbackModule.#ctor(System.IO.FileInfo,System.String,Unosquare.Labs.EmbedIO.Constants.HttpVerbs)
   name: FallbackModule(FileInfo, String, HttpVerbs)
   href: api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html#Unosquare_Labs_EmbedIO_Modules_FallbackModule__ctor_System_IO_FileInfo_System_String_Unosquare_Labs_EmbedIO_Constants_HttpVerbs_
@@ -3276,15 +3200,15 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule
   fullName: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule
   nameWithType: ResourceFilesModule
-- uid: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.#ctor(System.Reflection.Assembly,System.String,System.Collections.Generic.Dictionary{System.String,System.String})
-  name: ResourceFilesModule(Assembly, String, Dictionary<String, String>)
-  href: api/Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.html#Unosquare_Labs_EmbedIO_Modules_ResourceFilesModule__ctor_System_Reflection_Assembly_System_String_System_Collections_Generic_Dictionary_System_String_System_String__
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.#ctor(System.Reflection.Assembly,System.String,System.Collections.Generic.Dictionary{System.String,System.String})
-  name.vb: ResourceFilesModule(Assembly, String, Dictionary(Of String, String))
-  fullName: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.ResourceFilesModule(System.Reflection.Assembly, System.String, System.Collections.Generic.Dictionary<System.String, System.String>)
-  fullName.vb: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.ResourceFilesModule(System.Reflection.Assembly, System.String, System.Collections.Generic.Dictionary(Of System.String, System.String))
-  nameWithType: ResourceFilesModule.ResourceFilesModule(Assembly, String, Dictionary<String, String>)
-  nameWithType.vb: ResourceFilesModule.ResourceFilesModule(Assembly, String, Dictionary(Of String, String))
+- uid: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.#ctor(System.Reflection.Assembly,System.String,System.Collections.Generic.IDictionary{System.String,System.String})
+  name: ResourceFilesModule(Assembly, String, IDictionary<String, String>)
+  href: api/Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.html#Unosquare_Labs_EmbedIO_Modules_ResourceFilesModule__ctor_System_Reflection_Assembly_System_String_System_Collections_Generic_IDictionary_System_String_System_String__
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.#ctor(System.Reflection.Assembly,System.String,System.Collections.Generic.IDictionary{System.String,System.String})
+  name.vb: ResourceFilesModule(Assembly, String, IDictionary(Of String, String))
+  fullName: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.ResourceFilesModule(System.Reflection.Assembly, System.String, System.Collections.Generic.IDictionary<System.String, System.String>)
+  fullName.vb: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.ResourceFilesModule(System.Reflection.Assembly, System.String, System.Collections.Generic.IDictionary(Of System.String, System.String))
+  nameWithType: ResourceFilesModule.ResourceFilesModule(Assembly, String, IDictionary<String, String>)
+  nameWithType.vb: ResourceFilesModule.ResourceFilesModule(Assembly, String, IDictionary(Of String, String))
 - uid: Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.#ctor*
   name: ResourceFilesModule
   href: api/Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.html#Unosquare_Labs_EmbedIO_Modules_ResourceFilesModule__ctor_
