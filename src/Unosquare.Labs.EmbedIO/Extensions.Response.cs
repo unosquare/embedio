@@ -54,17 +54,7 @@
 
             return true;
         }
-
-        /// <summary>
-        /// Outputs a Json Response given a data object.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="data">The data.</param>
-        /// <returns>A <c>true</c> value if the response output was set.</returns>
-        [Obsolete("Please use the async method.")]
-        public static bool JsonResponse(this IHttpContext context, object data)
-            => context.JsonResponseAsync(data).GetAwaiter().GetResult();
-
+        
         /// <summary>
         /// Outputs async a Json Response given a data object.
         /// </summary>
@@ -79,17 +69,7 @@
             CancellationToken cancellationToken = default,
             bool useGzip = true)
             => context.JsonResponseAsync(Json.Serialize(data), cancellationToken, useGzip);
-
-        /// <summary>
-        /// Outputs a Json Response given a Json string.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="json">The JSON.</param>
-        /// <returns>A <c>true</c> value if the response output was set.</returns>
-        [Obsolete("Please use the async method.")]
-        public static bool JsonResponse(this IHttpContext context, string json)
-            => context.JsonResponseAsync(json).GetAwaiter().GetResult();
-
+        
         /// <summary>
         /// Outputs async a JSON Response given a JSON string.
         /// </summary>
@@ -124,24 +104,7 @@
             context.Response.StatusCode = (int)statusCode;
             return context.StringResponseAsync(htmlContent, Responses.HtmlContentType, cancellationToken, useGzip: useGzip);
         }
-
-        /// <summary>
-        /// Outputs async a JSON Response given an exception.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="ex">The ex.</param>
-        /// <param name="statusCode">The status code.</param>
-        /// <returns>A <c>true</c> value when the exception is written to the HTTP Response.</returns>
-        [Obsolete("Please use the async method.")]
-        public static bool JsonExceptionResponse(
-            this IHttpContext context,
-            Exception ex,
-            System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.InternalServerError)
-        {
-            context.Response.StatusCode = (int)statusCode;
-            return context.JsonResponse(ex);
-        }
-
+        
         /// <summary>
         /// Outputs a JSON Response given an exception.
         /// </summary>
@@ -178,10 +141,8 @@
             string contentType = "application/json",
             CancellationToken cancellationToken = default,
             Encoding encoding = null,
-            bool useGzip = true)
-        {
-            return context.Response.StringResponseAsync(content, contentType, cancellationToken, encoding, useGzip && context.AcceptGzip(content.Length));
-        }
+            bool useGzip = true) =>
+            context.Response.StringResponseAsync(content, contentType, cancellationToken, encoding, useGzip && context.AcceptGzip(content.Length));
 
         /// <summary>
         /// Outputs async a string response given a string.

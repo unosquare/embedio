@@ -31,7 +31,7 @@
         public ResourceFilesModule(
             Assembly sourceAssembly,
             string resourcePath,
-            Dictionary<string, string> headers = null)
+            IDictionary<string, string> headers = null)
         {
             if (sourceAssembly == null)
                 throw new ArgumentNullException(nameof(sourceAssembly));
@@ -97,9 +97,9 @@
                 // Connection error, nothing else to do
                 var isListenerException =
 #if !NETSTANDARD1_3
-                    (ex is System.Net.HttpListenerException) ||
+                    ex is System.Net.HttpListenerException ||
 #endif
-                    (ex is Net.HttpListenerException);
+                    ex is Net.HttpListenerException;
 
                 if (!isListenerException)
                     throw;

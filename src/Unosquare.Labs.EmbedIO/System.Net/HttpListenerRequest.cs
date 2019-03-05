@@ -473,7 +473,7 @@
         /// </summary>
         /// <param name="requestCallback">The request callback.</param>
         /// <param name="state">The state.</param>
-        /// <returns></returns>
+        /// <returns>An async result.</returns>
         public IAsyncResult BeginGetClientCertificate(AsyncCallback requestCallback, object state)
         {
             if (_gccDelegate == null)
@@ -485,8 +485,8 @@
         /// Finishes the get client certificate asynchronous operation.
         /// </summary>
         /// <param name="asyncResult">The asynchronous result.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException">asyncResult</exception>
+        /// <returns>The certificate from the client.</returns>
+        /// <exception cref="System.ArgumentNullException">asyncResult.</exception>
         /// <exception cref="System.InvalidOperationException"></exception>
         public X509Certificate2 EndGetClientCertificate(IAsyncResult asyncResult)
         {

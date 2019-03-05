@@ -18,20 +18,6 @@
         /// </summary>
         /// <param name="action">The action.</param>
         /// <param name="verb">The verb.</param>
-        [Obsolete("Use WebHandler constructor")]
-        public FallbackModule(Func<IHttpContext, CancellationToken, bool> action, HttpVerbs verb = HttpVerbs.Any)
-        {
-            AddHandler(
-                ModuleMap.AnyPath, 
-                verb, 
-                (context, ct) => Task.FromResult(action(context, ct)));
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FallbackModule" /> class.
-        /// </summary>
-        /// <param name="action">The action.</param>
-        /// <param name="verb">The verb.</param>
         public FallbackModule(WebHandler action, HttpVerbs verb = HttpVerbs.Any)
         {
             AddHandler(
@@ -65,7 +51,7 @@
         /// <param name="file">The file.</param>
         /// <param name="contentType">Type of the content.</param>
         /// <param name="verb">The verb.</param>
-        /// <exception cref="ArgumentNullException">file</exception>
+        /// <exception cref="ArgumentNullException">file.</exception>
         public FallbackModule(FileInfo file, string contentType = null, HttpVerbs verb = HttpVerbs.Any)
         {
             if (file == null)

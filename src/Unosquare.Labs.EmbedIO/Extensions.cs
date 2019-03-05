@@ -158,32 +158,7 @@
         /// <returns><c>true</c> if request headers is not a null; otherwise, false.</returns>
         public static bool HasRequestHeader(this IHttpContext context, string headerName)
             => context.Request.Headers[headerName] != null;
-
-        /// <summary>
-        /// Retrieves the request body as a string.
-        /// Note that once this method returns, the underlying input stream cannot be read again as 
-        /// it is not rewindable for obvious reasons. This functionality is by design.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>
-        /// The rest of the stream as a string, from the current position to the end.
-        /// If the current position is at the end of the stream, returns an empty string.
-        /// </returns>
-        [Obsolete("Please use the async method.")]
-        public static string RequestBody(this IHttpContext context)
-        {
-            if (!context.Request.HasEntityBody)
-                return null;
-
-            using (var body = context.Request.InputStream) // here we have data
-            {
-                using (var reader = new StreamReader(body, context.Request.ContentEncoding))
-                {
-                    return reader.ReadToEnd();
-                }
-            }
-        }
-
+        
         /// <summary>
         /// Retrieves the request body as a string.
         /// Note that once this method returns, the underlying input stream cannot be read again as 
@@ -307,24 +282,7 @@
 
             return valuesPaths;
         }
-
-        /// <summary>
-        /// Parses the JSON as a given type from the request body.
-        /// Please note the underlying input stream is not rewindable.
-        /// </summary>
-        /// <typeparam name="T">The type of specified object type.</typeparam>
-        /// <param name="context">The context.</param>
-        /// <returns>
-        /// Parses the JSON as a given type from the request body.
-        /// </returns>
-        [Obsolete("Please use the async method.")]
-        public static T ParseJson<T>(this IHttpContext context)
-            where T : class
-        {
-            var requestBody = context.RequestBody();
-            return requestBody == null ? null : Json.Deserialize<T>(requestBody);
-        }
-
+        
         /// <summary>
         /// Parses the JSON as a given type from the request body.
         /// Please note the underlying input stream is not rewindable.
@@ -364,17 +322,7 @@
         /// <returns>A collection that represents KVPs from request data.</returns>
         public static Dictionary<string, object> RequestFormDataDictionary(this string requestBody)
             => FormDataParser.ParseAsDictionary(requestBody);
-
-        /// <summary>
-        /// Returns dictionary from Request POST data
-        /// Please note the underlying input stream is not rewindable.
-        /// </summary>
-        /// <param name="context">The context to request body as string.</param>
-        /// <returns>A collection that represents KVPs from request data.</returns>
-        [Obsolete("Please use the async method.")]
-        public static Dictionary<string, object> RequestFormDataDictionary(this IHttpContext context)
-            => RequestFormDataDictionary(context.RequestBody());
-
+        
         /// <summary>
         /// Returns dictionary from Request POST data
         /// Please note the underlying input stream is not rewindable.

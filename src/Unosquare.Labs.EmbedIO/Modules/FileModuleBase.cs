@@ -122,6 +122,11 @@
 
         private static bool CalculateRange(string partialHeader, long fileSize, out long lowerByteIndex, out long upperByteIndex)
         {
+            lowerByteIndex = 0;
+            upperByteIndex = fileSize - 1;
+
+            if (string.IsNullOrWhiteSpace(partialHeader)) return false;
+
             try
             {
                 var range = System.Net.Http.Headers.RangeHeaderValue.Parse(partialHeader).Ranges.First();
@@ -131,8 +136,6 @@
             }
             catch
             {
-                lowerByteIndex = 0;
-                upperByteIndex = fileSize - 1;
                 return false;
             }
         }
