@@ -101,7 +101,7 @@
         /// </summary>
         /// <param name="controllerType">Type of the controller.</param>
         public void RegisterController(Type controllerType)
-            => RegisterController(controllerType, (ctx) => Activator.CreateInstance(controllerType, ctx));
+            => RegisterController(controllerType, ctx => Activator.CreateInstance(controllerType, ctx));
 
         /// <summary>
         /// Registers the controller.
