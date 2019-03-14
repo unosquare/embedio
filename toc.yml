@@ -1,6 +1,6 @@
 - name: API Documentation
   href: obj/api/
-- name: Wiki
-  href: wiki/Home.md
 - name: Cookbook
   href: wiki/Cookbook.md
+- name: Self signed certified
+  href: wiki/Self-signed-certified-(Windows).md
