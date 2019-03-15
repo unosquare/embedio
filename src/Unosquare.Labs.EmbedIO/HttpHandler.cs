@@ -97,9 +97,9 @@
                 catch (Exception ex)
                 {
                     // Handle exceptions by returning a 500 (Internal Server Error) 
-                    if (_context.Response.StatusCode != (int) System.Net.HttpStatusCode.Unauthorized)
+                    if (_context.Response.StatusCode != (int)System.Net.HttpStatusCode.Unauthorized)
                     {
-                        await ResponseServerError(ct, ex, module.Name).ConfigureAwait(false);
+                        await ResponseServerError(ex, module.Name, ct).ConfigureAwait(false);
                     }
 
                     // Finally set the handled flag to true and exit.
@@ -110,20 +110,18 @@
             return false;
         }
 
-        private Task ResponseServerError(CancellationToken ct, Exception ex, string module)
+        private Task ResponseServerError(Exception ex, string module, CancellationToken ct)
         {
             var priorMessage = $"Failing module name: {module}";
-            var errorMessage = ex.ExceptionMessage(priorMessage);
+            var errorMessage = string.Format(Responses.Response500HtmlFormat, ex.ExceptionMessage(priorMessage), ex.StackTrace);
 
             // Log the exception message.
             ex.Log(nameof(HttpHandler), priorMessage);
 
             // Send the response over with the corresponding status code.
-            return _context.HtmlResponseAsync(string.Format(Responses.Response500HtmlFormat,
-                    errorMessage,
-                    ex.StackTrace),
+            return _context.HtmlResponseAsync(errorMessage,
                 System.Net.HttpStatusCode.InternalServerError,
-                ct);
+                cancellationToken: ct);
         }
 
         private Map GetHandlerFromRegexPath(IWebModule module)

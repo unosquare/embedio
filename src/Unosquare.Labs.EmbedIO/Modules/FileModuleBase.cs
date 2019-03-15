@@ -51,23 +51,21 @@
         /// <param name="partialHeader">The partial header.</param>
         /// <param name="response">The response.</param>
         /// <param name="buffer">The buffer.</param>
-        /// <param name="ct">The cancellation token.</param>
         /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
-        /// <returns>
-        /// A task representing the write action.
-        /// </returns>
+        /// <param name="ct">The ct.</param>
+        /// <returns></returns>
         protected Task WriteFileAsync(
             string partialHeader,
             IHttpResponse response,
             Stream buffer,
-            CancellationToken ct,
-            bool useGzip = true)
+            bool useGzip = true,
+            CancellationToken ct = default)
         {
             var fileSize = buffer.Length;
             
             // check if partial
             if (!CalculateRange(partialHeader, fileSize, out var lowerByteIndex, out var upperByteIndex))
-                return response.BinaryResponseAsync(buffer, ct, UseGzip && useGzip);
+                return response.BinaryResponseAsync(buffer, UseGzip && useGzip, ct);
 
             if (upperByteIndex > fileSize)
             {
