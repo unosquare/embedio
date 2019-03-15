@@ -21,7 +21,7 @@
         {
             var mode = HttpListenerMode.EmbedIO;
 
-#if NET472
+#if NETSTANDARD2_0
             mode = HttpListenerMode.Microsoft;
 #endif
 

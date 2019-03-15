@@ -1,6 +1,5 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
-    using System.Security.Cryptography.X509Certificates;
     using Constants;
     using System.Collections.Generic;
     using Swan;
@@ -8,7 +7,10 @@
     using System.Collections.ObjectModel;
     using System.Threading;
     using System.Threading.Tasks;
-#if NET472
+#if !NETSTANDARD1_3
+    using System.Security.Cryptography.X509Certificates;
+#endif
+#if NET452
     using System.Net;
 #else
     using Net;

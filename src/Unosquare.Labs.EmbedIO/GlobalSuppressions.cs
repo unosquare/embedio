@@ -1,0 +1,1 @@
+﻿[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "Temporal", Scope = "member", Target = "~M:Unosquare.Net.WebSocketFrame.PrintToString~System.String")]
