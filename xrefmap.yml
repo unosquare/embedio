@@ -519,18 +519,18 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.AcceptGzip
   nameWithType: Extensions.AcceptGzip
-- uid: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)
-  name: BinaryResponseAsync(IHttpContext, Stream, CancellationToken, Boolean)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.IO.Stream, System.Threading.CancellationToken, System.Boolean)
-  nameWithType: Extensions.BinaryResponseAsync(IHttpContext, Stream, CancellationToken, Boolean)
-- uid: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)
-  name: BinaryResponseAsync(IHttpResponse, Stream, CancellationToken, Boolean)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse, System.IO.Stream, System.Threading.CancellationToken, System.Boolean)
-  nameWithType: Extensions.BinaryResponseAsync(IHttpResponse, Stream, CancellationToken, Boolean)
+- uid: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.Stream,System.Boolean,System.Threading.CancellationToken)
+  name: BinaryResponseAsync(IHttpContext, Stream, Boolean, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_Stream_System_Boolean_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.Stream,System.Boolean,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.IO.Stream, System.Boolean, System.Threading.CancellationToken)
+  nameWithType: Extensions.BinaryResponseAsync(IHttpContext, Stream, Boolean, CancellationToken)
+- uid: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Boolean,System.Threading.CancellationToken)
+  name: BinaryResponseAsync(IHttpResponse, Stream, Boolean, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Boolean_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Boolean,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse, System.IO.Stream, System.Boolean, System.Threading.CancellationToken)
+  nameWithType: Extensions.BinaryResponseAsync(IHttpResponse, Stream, Boolean, CancellationToken)
 - uid: Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync*
   name: BinaryResponseAsync
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_
@@ -583,12 +583,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.EnableCors
   nameWithType: Extensions.EnableCors
-- uid: Unosquare.Labs.EmbedIO.Extensions.FileResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.FileInfo,System.String,System.Threading.CancellationToken,System.Boolean)
-  name: FileResponseAsync(IHttpContext, FileInfo, String, CancellationToken, Boolean)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_FileResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_FileInfo_System_String_System_Threading_CancellationToken_System_Boolean_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.FileResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.FileInfo,System.String,System.Threading.CancellationToken,System.Boolean)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.FileResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.IO.FileInfo, System.String, System.Threading.CancellationToken, System.Boolean)
-  nameWithType: Extensions.FileResponseAsync(IHttpContext, FileInfo, String, CancellationToken, Boolean)
+- uid: Unosquare.Labs.EmbedIO.Extensions.FileResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.FileInfo,System.String,System.Boolean,System.Threading.CancellationToken)
+  name: FileResponseAsync(IHttpContext, FileInfo, String, Boolean, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_FileResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_FileInfo_System_String_System_Boolean_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.FileResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.FileInfo,System.String,System.Boolean,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.FileResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.IO.FileInfo, System.String, System.Boolean, System.Threading.CancellationToken)
+  nameWithType: Extensions.FileResponseAsync(IHttpContext, FileInfo, String, Boolean, CancellationToken)
 - uid: Unosquare.Labs.EmbedIO.Extensions.FileResponseAsync*
   name: FileResponseAsync
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_FileResponseAsync_
@@ -634,12 +634,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.HasRequestHeader
   nameWithType: Extensions.HasRequestHeader
-- uid: Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Net.HttpStatusCode,System.Threading.CancellationToken,System.Boolean)
-  name: HtmlResponseAsync(IHttpContext, String, Net.HttpStatusCode, CancellationToken, Boolean)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_HtmlResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_Net_HttpStatusCode_System_Threading_CancellationToken_System_Boolean_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Net.HttpStatusCode,System.Threading.CancellationToken,System.Boolean)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.String, System.Net.HttpStatusCode, System.Threading.CancellationToken, System.Boolean)
-  nameWithType: Extensions.HtmlResponseAsync(IHttpContext, String, Net.HttpStatusCode, CancellationToken, Boolean)
+- uid: Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Net.HttpStatusCode,System.Boolean,System.Threading.CancellationToken)
+  name: HtmlResponseAsync(IHttpContext, String, Net.HttpStatusCode, Boolean, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_HtmlResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_Net_HttpStatusCode_System_Boolean_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Net.HttpStatusCode,System.Boolean,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.String, System.Net.HttpStatusCode, System.Boolean, System.Threading.CancellationToken)
+  nameWithType: Extensions.HtmlResponseAsync(IHttpContext, String, Net.HttpStatusCode, Boolean, CancellationToken)
 - uid: Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync*
   name: HtmlResponseAsync
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_HtmlResponseAsync_
@@ -660,12 +660,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.InQueryString
   nameWithType: Extensions.InQueryString
-- uid: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Exception,System.Net.HttpStatusCode,System.Boolean)
-  name: JsonExceptionResponseAsync(IHttpContext, Exception, Net.HttpStatusCode, Boolean)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Exception_System_Net_HttpStatusCode_System_Boolean_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Exception,System.Net.HttpStatusCode,System.Boolean)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.Exception, System.Net.HttpStatusCode, System.Boolean)
-  nameWithType: Extensions.JsonExceptionResponseAsync(IHttpContext, Exception, Net.HttpStatusCode, Boolean)
+- uid: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Exception,System.Net.HttpStatusCode,System.Boolean,System.Threading.CancellationToken)
+  name: JsonExceptionResponseAsync(IHttpContext, Exception, Net.HttpStatusCode, Boolean, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Exception_System_Net_HttpStatusCode_System_Boolean_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Exception,System.Net.HttpStatusCode,System.Boolean,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.Exception, System.Net.HttpStatusCode, System.Boolean, System.Threading.CancellationToken)
+  nameWithType: Extensions.JsonExceptionResponseAsync(IHttpContext, Exception, Net.HttpStatusCode, Boolean, CancellationToken)
 - uid: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync*
   name: JsonExceptionResponseAsync
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponseAsync_
@@ -673,18 +673,30 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync
   nameWithType: Extensions.JsonExceptionResponseAsync
-- uid: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Object,System.Threading.CancellationToken,System.Boolean)
-  name: JsonResponseAsync(IHttpContext, Object, CancellationToken, Boolean)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Object_System_Threading_CancellationToken_System_Boolean_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Object,System.Threading.CancellationToken,System.Boolean)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.Object, System.Threading.CancellationToken, System.Boolean)
-  nameWithType: Extensions.JsonResponseAsync(IHttpContext, Object, CancellationToken, Boolean)
-- uid: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Threading.CancellationToken,System.Boolean)
-  name: JsonResponseAsync(IHttpContext, String, CancellationToken, Boolean)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_Threading_CancellationToken_System_Boolean_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Threading.CancellationToken,System.Boolean)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.String, System.Threading.CancellationToken, System.Boolean)
-  nameWithType: Extensions.JsonResponseAsync(IHttpContext, String, CancellationToken, Boolean)
+- uid: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Object,System.Boolean,System.Threading.CancellationToken)
+  name: JsonResponseAsync(IHttpContext, Object, Boolean, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Object_System_Boolean_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Object,System.Boolean,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.Object, System.Boolean, System.Threading.CancellationToken)
+  nameWithType: Extensions.JsonResponseAsync(IHttpContext, Object, Boolean, CancellationToken)
+- uid: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Object,System.Threading.CancellationToken)
+  name: JsonResponseAsync(IHttpContext, Object, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Object_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Object,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.Object, System.Threading.CancellationToken)
+  nameWithType: Extensions.JsonResponseAsync(IHttpContext, Object, CancellationToken)
+- uid: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Boolean,System.Threading.CancellationToken)
+  name: JsonResponseAsync(IHttpContext, String, Boolean, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_Boolean_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Boolean,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.String, System.Boolean, System.Threading.CancellationToken)
+  nameWithType: Extensions.JsonResponseAsync(IHttpContext, String, Boolean, CancellationToken)
+- uid: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Threading.CancellationToken)
+  name: JsonResponseAsync(IHttpContext, String, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.String, System.Threading.CancellationToken)
+  nameWithType: Extensions.JsonResponseAsync(IHttpContext, String, CancellationToken)
 - uid: Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync*
   name: JsonResponseAsync
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_
@@ -939,18 +951,18 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.RequestWildcardUrlParams
   nameWithType: Extensions.RequestWildcardUrlParams
-- uid: Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.String,System.Threading.CancellationToken,System.Text.Encoding,System.Boolean)
-  name: StringResponseAsync(IHttpContext, String, String, CancellationToken, Encoding, Boolean)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_StringResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_String_System_Threading_CancellationToken_System_Text_Encoding_System_Boolean_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.String,System.Threading.CancellationToken,System.Text.Encoding,System.Boolean)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.String, System.String, System.Threading.CancellationToken, System.Text.Encoding, System.Boolean)
-  nameWithType: Extensions.StringResponseAsync(IHttpContext, String, String, CancellationToken, Encoding, Boolean)
-- uid: Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse,System.String,System.String,System.Threading.CancellationToken,System.Text.Encoding,System.Boolean)
-  name: StringResponseAsync(IHttpResponse, String, String, CancellationToken, Encoding, Boolean)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_StringResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_String_System_String_System_Threading_CancellationToken_System_Text_Encoding_System_Boolean_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse,System.String,System.String,System.Threading.CancellationToken,System.Text.Encoding,System.Boolean)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse, System.String, System.String, System.Threading.CancellationToken, System.Text.Encoding, System.Boolean)
-  nameWithType: Extensions.StringResponseAsync(IHttpResponse, String, String, CancellationToken, Encoding, Boolean)
+- uid: Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.String,System.Text.Encoding,System.Boolean,System.Threading.CancellationToken)
+  name: StringResponseAsync(IHttpContext, String, String, Encoding, Boolean, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_StringResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_String_System_Text_Encoding_System_Boolean_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.String,System.Text.Encoding,System.Boolean,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.String, System.String, System.Text.Encoding, System.Boolean, System.Threading.CancellationToken)
+  nameWithType: Extensions.StringResponseAsync(IHttpContext, String, String, Encoding, Boolean, CancellationToken)
+- uid: Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse,System.String,System.String,System.Text.Encoding,System.Boolean,System.Threading.CancellationToken)
+  name: StringResponseAsync(IHttpResponse, String, String, Encoding, Boolean, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_StringResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_String_System_String_System_Text_Encoding_System_Boolean_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse,System.String,System.String,System.Text.Encoding,System.Boolean,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse, System.String, System.String, System.Text.Encoding, System.Boolean, System.Threading.CancellationToken)
+  nameWithType: Extensions.StringResponseAsync(IHttpResponse, String, String, Encoding, Boolean, CancellationToken)
 - uid: Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync*
   name: StringResponseAsync
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_StringResponseAsync_
@@ -3043,12 +3055,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.UseGzip
   nameWithType: FileModuleBase.UseGzip
-- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.String,Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)
-  name: WriteFileAsync(String, IHttpResponse, Stream, CancellationToken, Boolean)
-  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_WriteFileAsync_System_String_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.String,Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)
-  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.String, Unosquare.Labs.EmbedIO.IHttpResponse, System.IO.Stream, System.Threading.CancellationToken, System.Boolean)
-  nameWithType: FileModuleBase.WriteFileAsync(String, IHttpResponse, Stream, CancellationToken, Boolean)
+- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.String,Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Boolean,System.Threading.CancellationToken)
+  name: WriteFileAsync(String, IHttpResponse, Stream, Boolean, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_WriteFileAsync_System_String_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Boolean_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.String,Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Boolean,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.String, Unosquare.Labs.EmbedIO.IHttpResponse, System.IO.Stream, System.Boolean, System.Threading.CancellationToken)
+  nameWithType: FileModuleBase.WriteFileAsync(String, IHttpResponse, Stream, Boolean, CancellationToken)
 - uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync*
   name: WriteFileAsync
   href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_WriteFileAsync_
