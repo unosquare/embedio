@@ -188,7 +188,7 @@
 
                     using (var instance = new WebServer(url))
                     {
-                        instance.RegisterModule(new FallbackModule(async (ctx, ct) =>
+                        instance.RegisterModule(new FallbackModule((ctx, ct) =>
                             throw new InvalidOperationException("Error")));
 
                         var runTask = instance.RunAsync();

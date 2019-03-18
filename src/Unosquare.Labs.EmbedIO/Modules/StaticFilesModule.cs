@@ -269,7 +269,7 @@
             try
             {
                 var isTagValid = false;
-                var partialHeader = context.RequestHeader(Headers.Range);
+                var partialHeader = context.RequestHeader(HttpHeaders.Range);
                 var usingPartial = partialHeader?.StartsWith("bytes=") == true;
                 var fileInfo = new FileInfo(localPath);
 
@@ -281,7 +281,7 @@
                     .ToString(Strings.BrowserTimeFormat, Strings.StandardCultureInfo);
 
                 if (!usingPartial &&
-                    (isTagValid || context.RequestHeader(Headers.IfModifiedSince).Equals(utcFileDateString)))
+                    (isTagValid || context.RequestHeader(HttpHeaders.IfModifiedSince).Equals(utcFileDateString)))
                 {
                     SetStatusCode304(context.Response);
                     return true;
@@ -337,13 +337,13 @@
 
             if (UseRamCache && RamCache.IsValid(localPath, fileInfo.LastWriteTime, out var currentHash))
             {
-                isTagValid = context.RequestHeader(Headers.IfNotMatch) == currentHash;
+                isTagValid = context.RequestHeader(HttpHeaders.IfNotMatch) == currentHash;
 
                 if (isTagValid)
                 {
                     $"RAM Cache: {localPath}".Debug(nameof(StaticFilesModule));
 
-                    context.Response.AddHeader(Headers.ETag, currentHash);
+                    context.Response.AddHeader(HttpHeaders.ETag, currentHash);
                     return new MemoryStream(RamCache[localPath].Buffer);
                 }
             }
@@ -358,7 +358,7 @@
                     context.Response,
                     buffer,
                     fileInfo.LastWriteTime,
-                    context.RequestHeader(Headers.IfNotMatch),
+                    context.RequestHeader(HttpHeaders.IfNotMatch),
                     localPath);
             }
 
@@ -399,7 +399,7 @@
                 RamCache.Add(buffer, localPath, fileDate);
             }
 
-            response.AddHeader(Headers.ETag, currentHash);
+            response.AddHeader(HttpHeaders.ETag, currentHash);
 
             return false;
         }

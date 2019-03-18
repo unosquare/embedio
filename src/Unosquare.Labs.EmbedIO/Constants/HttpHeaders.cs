@@ -3,7 +3,7 @@
     /// <summary>
     /// HTTP Header Constants.
     /// </summary>
-    public static class Headers
+    public static class HttpHeaders
     {
         /// <summary>
         /// Access-Control-Allow-Origin HTTP Header.

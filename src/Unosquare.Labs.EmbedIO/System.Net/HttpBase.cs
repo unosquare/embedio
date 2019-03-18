@@ -83,7 +83,7 @@
                 state =>
                 {
                     timeout = true;
-#if NET452
+#if NET462
                     stream.Close();
 #else
                     stream.Dispose();

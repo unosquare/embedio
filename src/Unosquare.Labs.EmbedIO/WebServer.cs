@@ -10,7 +10,7 @@
 #if !NETSTANDARD1_3
     using System.Security.Cryptography.X509Certificates;
 #endif
-#if NET452
+#if NET462
     using System.Net;
 #else
     using Net;

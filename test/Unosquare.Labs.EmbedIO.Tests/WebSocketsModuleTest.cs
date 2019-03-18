@@ -52,7 +52,7 @@
             await clientSocket.SendAsync(buffer, Opcode.Text);
             await Task.Delay(TimeSpan.FromSeconds(1));
 
-            if (wasSet)
+            if (!wasSet)
                 Assert.Ignore("Timeout");
 
             Assert.True(wasSet);
