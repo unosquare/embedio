@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "CODE_OF_CONDUCT.html",
-          "hash": "Or38QmG/3oIWRQrmt5NP2w=="
+          "hash": "SWQYf6Esy0oeI6aKXIJnDg=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "CvQIbFJdIBs1j/yikAAXvA=="
+          "hash": "2YTaOphFLVoPZD1+qpndYQ=="
         }
       },
       "is_incremental": false,
@@ -469,7 +469,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html",
-          "hash": "xhG6Q2dnRtaULexm9qDrOA=="
+          "hash": "KjPpiFsJTWenNqlmVBTW2Q=="
         }
       },
       "is_incremental": false,
@@ -493,7 +493,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.ResourceFilesModule.html",
-          "hash": "mIyGeVI0C4GHQsBzngQ3Mg=="
+          "hash": "Oi0XG1M8Y9+1kR+L0+X/HA=="
         }
       },
       "is_incremental": false,
@@ -505,7 +505,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html",
-          "hash": "xs0l87l0l3xnU/DW/6QPxA=="
+          "hash": "kN2fG1wwbOQHCvgbGBgjMA=="
         }
       },
       "is_incremental": false,

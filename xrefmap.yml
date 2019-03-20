@@ -3055,12 +3055,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.UseGzip
   nameWithType: FileModuleBase.UseGzip
-- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.String,Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)
-  name: WriteFileAsync(String, IHttpResponse, Stream, CancellationToken, Boolean)
-  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_WriteFileAsync_System_String_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.String,Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)
-  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.String, Unosquare.Labs.EmbedIO.IHttpResponse, System.IO.Stream, System.Threading.CancellationToken, System.Boolean)
-  nameWithType: FileModuleBase.WriteFileAsync(String, IHttpResponse, Stream, CancellationToken, Boolean)
+- uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.String,Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Boolean,System.Threading.CancellationToken)
+  name: WriteFileAsync(String, IHttpResponse, Stream, Boolean, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_WriteFileAsync_System_String_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Boolean_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.String,Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Boolean,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync(System.String, Unosquare.Labs.EmbedIO.IHttpResponse, System.IO.Stream, System.Boolean, System.Threading.CancellationToken)
+  nameWithType: FileModuleBase.WriteFileAsync(String, IHttpResponse, Stream, Boolean, CancellationToken)
 - uid: Unosquare.Labs.EmbedIO.Modules.FileModuleBase.WriteFileAsync*
   name: WriteFileAsync
   href: api/Unosquare.Labs.EmbedIO.Modules.FileModuleBase.html#Unosquare_Labs_EmbedIO_Modules_FileModuleBase_WriteFileAsync_
