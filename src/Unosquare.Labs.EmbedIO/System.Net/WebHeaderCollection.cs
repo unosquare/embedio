@@ -1,4 +1,6 @@
-﻿namespace Unosquare.Net
+﻿using Unosquare.Labs.EmbedIO.Constants;
+
+namespace Unosquare.Net
 {
     using System;
     using System.Collections.Generic;

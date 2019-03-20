@@ -59,7 +59,7 @@
             AddHandler(
                 ModuleMap.AnyPath, 
                 verb, 
-                (context, ct) => context.FileResponseAsync(file, contentType, cancellationToken: ct));
+                (context, ct) => context.FileResponseAsync(file, contentType, true, ct));
         }
 
         /// <inheritdoc />
