@@ -110,7 +110,7 @@
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
     </div>
     <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.html">Unosquare.Labs.EmbedIO</a></h6>
@@ -174,13 +174,13 @@
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)">BinaryResponseAsync(IHttpContext, Stream, CancellationToken, Boolean)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_Stream_System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.Stream,System.Boolean,System.Threading.CancellationToken)">BinaryResponseAsync(IHttpContext, Stream, Boolean, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Writes a binary response asynchronous.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; BinaryResponseAsync(this IHttpContext context, Stream buffer, CancellationToken ct = default(CancellationToken), bool useGzip = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; BinaryResponseAsync(this IHttpContext context, Stream buffer, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -205,15 +205,15 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
-        <td><span class="parametername">ct</span></td>
-        <td><p>The ct.</p>
-</td>
-      </tr>
-      <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">useGzip</span></td>
         <td><p>if set to <code>true</code> [use gzip].</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
 </td>
       </tr>
     </tbody>
@@ -237,13 +237,13 @@
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Threading.CancellationToken,System.Boolean)">BinaryResponseAsync(IHttpResponse, Stream, CancellationToken, Boolean)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.BinaryResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse,System.IO.Stream,System.Boolean,System.Threading.CancellationToken)">BinaryResponseAsync(IHttpResponse, Stream, Boolean, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Writes a binary response asynchronous.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; BinaryResponseAsync(this IHttpResponse response, Stream buffer, CancellationToken ct = default(CancellationToken), bool useGzip = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; BinaryResponseAsync(this IHttpResponse response, Stream buffer, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -268,15 +268,15 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
-        <td><span class="parametername">ct</span></td>
-        <td><p>The ct.</p>
-</td>
-      </tr>
-      <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">useGzip</span></td>
         <td><p>if set to <code>true</code> [use gzip].</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
 </td>
       </tr>
     </tbody>
@@ -506,13 +506,13 @@
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_FileResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.FileResponseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_FileResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_FileInfo_System_String_System_Threading_CancellationToken_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Extensions.FileResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.FileInfo,System.String,System.Threading.CancellationToken,System.Boolean)">FileResponseAsync(IHttpContext, FileInfo, String, CancellationToken, Boolean)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_FileResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_FileInfo_System_String_System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.FileResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.IO.FileInfo,System.String,System.Boolean,System.Threading.CancellationToken)">FileResponseAsync(IHttpContext, FileInfo, String, Boolean, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Writes a binary response asynchronous.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; FileResponseAsync(this IHttpContext context, FileInfo file, string contentType = null, CancellationToken ct = default(CancellationToken), bool useGzip = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; FileResponseAsync(this IHttpContext context, FileInfo file, string contentType = null, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -543,15 +543,15 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
-        <td><span class="parametername">ct</span></td>
-        <td><p>The ct.</p>
-</td>
-      </tr>
-      <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">useGzip</span></td>
         <td><p>if set to <code>true</code> [use gzip].</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
 </td>
       </tr>
     </tbody>
@@ -775,13 +775,13 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_HtmlResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_HtmlResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_Net_HttpStatusCode_System_Threading_CancellationToken_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Net.HttpStatusCode,System.Threading.CancellationToken,System.Boolean)">HtmlResponseAsync(IHttpContext, String, Net.HttpStatusCode, CancellationToken, Boolean)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_HtmlResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_Net_HttpStatusCode_System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Net.HttpStatusCode,System.Boolean,System.Threading.CancellationToken)">HtmlResponseAsync(IHttpContext, String, Net.HttpStatusCode, Boolean, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Outputs a HTML Response given a HTML content.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; HtmlResponseAsync(this IHttpContext context, string htmlContent, Net.HttpStatusCode statusCode = null, CancellationToken cancellationToken = default(CancellationToken), bool useGzip = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; HtmlResponseAsync(this IHttpContext context, string htmlContent, Net.HttpStatusCode statusCode = null, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -812,15 +812,15 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token.</p>
-</td>
-      </tr>
-      <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">useGzip</span></td>
         <td><p>if set to <code>true</code> [use gzip].</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
 </td>
       </tr>
     </tbody>
@@ -895,13 +895,13 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Exception_System_Net_HttpStatusCode_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Exception,System.Net.HttpStatusCode,System.Boolean)">JsonExceptionResponseAsync(IHttpContext, Exception, Net.HttpStatusCode, Boolean)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Exception_System_Net_HttpStatusCode_System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Exception,System.Net.HttpStatusCode,System.Boolean,System.Threading.CancellationToken)">JsonExceptionResponseAsync(IHttpContext, Exception, Net.HttpStatusCode, Boolean, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Outputs a JSON Response given an exception.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonExceptionResponseAsync(this IHttpContext context, Exception ex, Net.HttpStatusCode statusCode = null, bool useGzip = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonExceptionResponseAsync(this IHttpContext context, Exception ex, Net.HttpStatusCode statusCode = null, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -937,6 +937,12 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
         <td><p>if set to <code>true</code> [use gzip].</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -958,13 +964,76 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Object_System_Threading_CancellationToken_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Object,System.Threading.CancellationToken,System.Boolean)">JsonResponseAsync(IHttpContext, Object, CancellationToken, Boolean)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Object_System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Object,System.Boolean,System.Threading.CancellationToken)">JsonResponseAsync(IHttpContext, Object, Boolean, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Outputs async a Json Response given a data object.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonResponseAsync(this IHttpContext context, object data, CancellationToken cancellationToken = default(CancellationToken), bool useGzip = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonResponseAsync(this IHttpContext context, object data, bool useGzip, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">data</span></td>
+        <td><p>The data.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">useGzip</span></td>
+        <td><p>if set to <code>true</code> [use gzip].</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><p>A <code>true</code> value if the response output was set.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Object_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Object,System.Threading.CancellationToken)">JsonResponseAsync(IHttpContext, Object, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Outputs async a Json Response given a data object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonResponseAsync(this IHttpContext context, object data, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -994,12 +1063,6 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
         <td><p>The cancellation token.</p>
 </td>
       </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">useGzip</span></td>
-        <td><p>if set to <code>true</code> [use gzip].</p>
-</td>
-      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -1021,13 +1084,76 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_Threading_CancellationToken_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Threading.CancellationToken,System.Boolean)">JsonResponseAsync(IHttpContext, String, CancellationToken, Boolean)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Boolean,System.Threading.CancellationToken)">JsonResponseAsync(IHttpContext, String, Boolean, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Outputs async a JSON Response given a JSON string.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonResponseAsync(this IHttpContext context, string json, CancellationToken cancellationToken = default(CancellationToken), bool useGzip = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonResponseAsync(this IHttpContext context, string json, bool useGzip, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">json</span></td>
+        <td><p>The JSON.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">useGzip</span></td>
+        <td><p>if set to <code>true</code> [use gzip].</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><p>A task for writing the output stream.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Threading.CancellationToken)">JsonResponseAsync(IHttpContext, String, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Outputs async a JSON Response given a JSON string.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonResponseAsync(this IHttpContext context, string json, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1055,12 +1181,6 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td><p>The cancellation token.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">useGzip</span></td>
-        <td><p>if set to <code>true</code> [use gzip].</p>
 </td>
       </tr>
     </tbody>
@@ -2026,7 +2146,7 @@ match.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">wildcardPaths</span></td>
         <td><p>The wildcard paths.</p>
 </td>
@@ -2154,13 +2274,13 @@ match.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_StringResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_StringResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_String_System_Threading_CancellationToken_System_Text_Encoding_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.String,System.Threading.CancellationToken,System.Text.Encoding,System.Boolean)">StringResponseAsync(IHttpContext, String, String, CancellationToken, Encoding, Boolean)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_StringResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_String_System_Text_Encoding_System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.String,System.Text.Encoding,System.Boolean,System.Threading.CancellationToken)">StringResponseAsync(IHttpContext, String, String, Encoding, Boolean, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Outputs async a string response given a string.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; StringResponseAsync(this IHttpContext context, string content, string contentType = &quot;application/json&quot;, CancellationToken cancellationToken = default(CancellationToken), Encoding encoding = null, bool useGzip = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; StringResponseAsync(this IHttpContext context, string content, string contentType = &quot;application/json&quot;, Encoding encoding = null, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2191,13 +2311,7 @@ match.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Text.Encoding</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.text.encoding">Encoding</a></td>
         <td><span class="parametername">encoding</span></td>
         <td><p>The encoding.</p>
 </td>
@@ -2206,6 +2320,12 @@ match.</p>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">useGzip</span></td>
         <td><p>if set to <code>true</code> [use gzip].</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
 </td>
       </tr>
     </tbody>
@@ -2229,13 +2349,13 @@ match.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_StringResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_StringResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_String_System_String_System_Threading_CancellationToken_System_Text_Encoding_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse,System.String,System.String,System.Threading.CancellationToken,System.Text.Encoding,System.Boolean)">StringResponseAsync(IHttpResponse, String, String, CancellationToken, Encoding, Boolean)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_StringResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_String_System_String_System_Text_Encoding_System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.StringResponseAsync(Unosquare.Labs.EmbedIO.IHttpResponse,System.String,System.String,System.Text.Encoding,System.Boolean,System.Threading.CancellationToken)">StringResponseAsync(IHttpResponse, String, String, Encoding, Boolean, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Outputs async a string response given a string.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; StringResponseAsync(this IHttpResponse response, string content, string contentType = &quot;application/json&quot;, CancellationToken cancellationToken = default(CancellationToken), Encoding encoding = null, bool useGzip = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; StringResponseAsync(this IHttpResponse response, string content, string contentType = &quot;application/json&quot;, Encoding encoding = null, bool useGzip = false, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2266,13 +2386,7 @@ match.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Text.Encoding</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.text.encoding">Encoding</a></td>
         <td><span class="parametername">encoding</span></td>
         <td><p>The encoding.</p>
 </td>
@@ -2281,6 +2395,12 @@ match.</p>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">useGzip</span></td>
         <td><p>if set to <code>true</code> [use gzip].</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
 </td>
       </tr>
     </tbody>
@@ -2735,7 +2855,7 @@ match.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task WriteToOutputStream(this IHttpResponse response, Stream buffer, long lowerByteIndex = 0L, CancellationToken ct = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task WriteToOutputStream(this IHttpResponse response, Stream buffer, long lowerByteIndex = 0L, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2767,8 +2887,8 @@ match.</p>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
-        <td><span class="parametername">ct</span></td>
-        <td><p>The ct.</p>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
 </td>
       </tr>
     </tbody>
