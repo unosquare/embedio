@@ -74,7 +74,7 @@
                 // invalid partial request
                 response.StatusCode = 416;
                 response.ContentLength64 = 0;
-                response.AddHeader(Headers.ContentRanges, $"bytes */{fileSize}");
+                response.AddHeader(HttpHeaders.ContentRanges, $"bytes */{fileSize}");
 
                 return Task.Delay(0, ct);
             }
@@ -84,7 +84,7 @@
                 response.StatusCode = 206;
                 response.ContentLength64 = upperByteIndex - lowerByteIndex + 1;
 
-                response.AddHeader(Headers.ContentRanges,
+                response.AddHeader(HttpHeaders.ContentRanges,
                     $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
             }
 
@@ -97,10 +97,10 @@
         /// <param name="response">The response.</param>
         protected void SetDefaultCacheHeaders(IHttpResponse response)
         {
-            response.AddHeader(Headers.CacheControl,
-                DefaultHeaders.GetValueOrDefault(Headers.CacheControl, "private"));
-            response.AddHeader(Headers.Pragma, DefaultHeaders.GetValueOrDefault(Headers.Pragma, string.Empty));
-            response.AddHeader(Headers.Expires, DefaultHeaders.GetValueOrDefault(Headers.Expires, string.Empty));
+            response.AddHeader(HttpHeaders.CacheControl,
+                DefaultHeaders.GetValueOrDefault(HttpHeaders.CacheControl, "private"));
+            response.AddHeader(HttpHeaders.Pragma, DefaultHeaders.GetValueOrDefault(HttpHeaders.Pragma, string.Empty));
+            response.AddHeader(HttpHeaders.Expires, DefaultHeaders.GetValueOrDefault(HttpHeaders.Expires, string.Empty));
         }
 
         /// <summary>
@@ -116,8 +116,8 @@
 
             SetDefaultCacheHeaders(response);
 
-            response.AddHeader(Headers.LastModified, utcFileDateString);
-            response.AddHeader(Headers.AcceptRanges, "bytes");
+            response.AddHeader(HttpHeaders.LastModified, utcFileDateString);
+            response.AddHeader(HttpHeaders.AcceptRanges, "bytes");
         }
 
         private static bool CalculateRange(string partialHeader, long fileSize, out long lowerByteIndex, out long upperByteIndex)

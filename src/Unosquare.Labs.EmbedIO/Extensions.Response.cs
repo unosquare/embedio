@@ -25,11 +25,11 @@
         /// <param name="response">The response.</param>
         public static void NoCache(this IHttpResponse response)
         {
-            response.AddHeader(Headers.Expires, "Mon, 26 Jul 1997 05:00:00 GMT");
-            response.AddHeader(Headers.LastModified,
+            response.AddHeader(HttpHeaders.Expires, "Mon, 26 Jul 1997 05:00:00 GMT");
+            response.AddHeader(HttpHeaders.LastModified,
                 DateTime.UtcNow.ToString(Strings.BrowserTimeFormat, Strings.StandardCultureInfo));
-            response.AddHeader(Headers.CacheControl, "no-store, no-cache, must-revalidate");
-            response.AddHeader(Headers.Pragma, "no-cache");
+            response.AddHeader(HttpHeaders.CacheControl, "no-store, no-cache, must-revalidate");
+            response.AddHeader(HttpHeaders.Pragma, "no-cache");
         }
 
         /// <summary>
@@ -228,7 +228,7 @@
             if (useGzip)
             {
                 buffer = await buffer.CompressAsync(cancellationToken: ct).ConfigureAwait(false);
-                response.AddHeader(Headers.ContentEncoding, Headers.CompressionGzip);
+                response.AddHeader(HttpHeaders.ContentEncoding, HttpHeaders.CompressionGzip);
             }
 
             response.ContentLength64 = buffer.Length;

@@ -62,7 +62,7 @@
         /// <value>
         /// A <see cref="string"/> that represents the value of the Origin header.
         /// </value>
-        public string Origin => _context.Request.Headers[Labs.EmbedIO.Constants.Headers.Origin];
+        public string Origin => _context.Request.Headers[Labs.EmbedIO.Constants.HttpHeaders.Origin];
 
         /// <summary>
         /// Gets the URI requested by the client.
@@ -82,7 +82,7 @@
         /// <value>
         /// A <see cref="string"/> that represents the value of the Sec-WebSocket-Key header.
         /// </value>
-        public string SecWebSocketKey => _context.Request.Headers[Labs.EmbedIO.Constants.Headers.WebSocketKey];
+        public string SecWebSocketKey => _context.Request.Headers[Labs.EmbedIO.Constants.HttpHeaders.WebSocketKey];
 
         /// <summary>
         /// Gets the value of the Sec-WebSocket-Version header included in the request.
@@ -93,7 +93,7 @@
         /// <value>
         /// A <see cref="string"/> that represents the value of the Sec-WebSocket-Version header.
         /// </value>
-        public string SecWebSocketVersion => _context.Request.Headers[Labs.EmbedIO.Constants.Headers.WebSocketVersion];
+        public string SecWebSocketVersion => _context.Request.Headers[Labs.EmbedIO.Constants.HttpHeaders.WebSocketVersion];
 
         /// <inheritdoc />
         public IWebSocket WebSocket { get; }

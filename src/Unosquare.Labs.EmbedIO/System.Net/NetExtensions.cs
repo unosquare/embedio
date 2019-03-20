@@ -132,7 +132,7 @@
         
         internal static CookieCollection GetCookies(this NameValueCollection headers, bool response)
         {
-            var name = response ? "Set-Cookie" : Headers.Cookie;
+            var name = response ? "Set-Cookie" : HttpHeaders.Cookie;
             return headers != null && headers.AllKeys.Contains(name)
                 ? CookieCollection.Parse(headers[name], response)
                 : new CookieCollection();

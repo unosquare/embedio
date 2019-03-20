@@ -6,7 +6,6 @@
     using System.IO;
     using System.Text;
     using System.Threading.Tasks;
-    using HttpHeaders = Labs.EmbedIO.Constants.Headers;
 
     internal class HttpRequest : HttpBase
     {
