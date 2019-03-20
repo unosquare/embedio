@@ -44,9 +44,9 @@
         public async Task RequestOptionsVerb_ReturnsOK()
         {
             var request = new TestHttpRequest(WebServerUrl + TestController.GetPath, HttpVerbs.Options);
-            request.Headers.Add(Headers.Origin, "http://unosquare.github.io");
-            request.Headers.Add(Headers.AccessControlRequestMethod, "post");
-            request.Headers.Add(Headers.AccessControlRequestHeaders, "content-type");
+            request.Headers.Add(HttpHeaders.Origin, "http://unosquare.github.io");
+            request.Headers.Add(HttpHeaders.AccessControlRequestMethod, "post");
+            request.Headers.Add(HttpHeaders.AccessControlRequestHeaders, "content-type");
 
             using (var response = await SendAsync(request))
             {

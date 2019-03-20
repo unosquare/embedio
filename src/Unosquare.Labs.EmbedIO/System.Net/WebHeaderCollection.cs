@@ -1,11 +1,12 @@
-﻿namespace Unosquare.Net
+﻿using Unosquare.Labs.EmbedIO.Constants;
+
+namespace Unosquare.Net
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
     using System.Text;
-    using HttpHeaders = Labs.EmbedIO.Constants.Headers;
 
     internal class WebHeaderCollection
         : NameValueCollection

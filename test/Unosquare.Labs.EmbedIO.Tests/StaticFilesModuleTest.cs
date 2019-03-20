@@ -63,7 +63,7 @@
                         Assert.IsTrue(string.IsNullOrWhiteSpace(response.Headers.Pragma.ToString()), "Pragma empty");
                     }
 
-                    WebServerInstance.Module<StaticFilesModule>().DefaultHeaders.Add(Headers.Pragma, HeaderPragmaValue);
+                    WebServerInstance.Module<StaticFilesModule>().DefaultHeaders.Add(HttpHeaders.Pragma, HeaderPragmaValue);
 
                     request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
 
@@ -421,7 +421,7 @@
                     }
 
                     var secondRequest = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
-                    secondRequest.Headers.TryAddWithoutValidation(Headers.IfNotMatch, eTag);
+                    secondRequest.Headers.TryAddWithoutValidation(HttpHeaders.IfNotMatch, eTag);
 
                     using (var response = await client.SendAsync(secondRequest))
                     {

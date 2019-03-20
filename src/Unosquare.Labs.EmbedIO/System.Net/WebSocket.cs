@@ -370,7 +370,7 @@
                 _validator.ThrowIfInvalidResponse(res);
 
                 if (IsExtensionsRequested)
-                    ProcessSecWebSocketExtensionsServerHeader(res.Headers[Headers.WebSocketExtensions]);
+                    ProcessSecWebSocketExtensionsServerHeader(res.Headers[HttpHeaders.WebSocketExtensions]);
 
                 CookieCollection.AddRange(res.Cookies.Where(y => !y.Expired));
 
@@ -498,10 +498,10 @@
             {
                 _validator.ThrowIfInvalid(_context);
 
-                WebSocketKey.KeyValue = _context.Headers[Headers.WebSocketKey];
+                WebSocketKey.KeyValue = _context.Headers[HttpHeaders.WebSocketKey];
 
                 if (!IgnoreExtensions)
-                    ProcessSecWebSocketExtensionsClientHeader(_context.Headers[Headers.WebSocketExtensions]);
+                    ProcessSecWebSocketExtensionsClientHeader(_context.Headers[HttpHeaders.WebSocketExtensions]);
 
                 await SendHandshakeAsync().ConfigureAwait(false);
 
@@ -924,10 +924,10 @@
             var ret = HttpResponse.CreateWebSocketResponse();
 
             var headers = ret.Headers;
-            headers[Headers.WebSocketAccept] = WebSocketKey.CreateResponseKey();
+            headers[HttpHeaders.WebSocketAccept] = WebSocketKey.CreateResponseKey();
 
             if (_extensions != null)
-                headers[Headers.WebSocketExtensions] = _extensions;
+                headers[HttpHeaders.WebSocketExtensions] = _extensions;
 
             ret.SetCookies(CookieCollection);
 

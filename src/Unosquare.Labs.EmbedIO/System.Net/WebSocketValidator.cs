@@ -61,19 +61,19 @@
             }
 
             var headers = response.Headers;
-            if (headers[Headers.WebSocketAccept]?.TrimStart() != _webSocket.WebSocketKey.CreateResponseKey())
+            if (headers[HttpHeaders.WebSocketAccept]?.TrimStart() != _webSocket.WebSocketKey.CreateResponseKey())
             {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {Headers.WebSocketAccept} header, or it has an invalid value.");
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {HttpHeaders.WebSocketAccept} header, or it has an invalid value.");
             }
 
-            if (!ValidateSecWebSocketExtensionsServerHeader(headers[Headers.WebSocketExtensions]))
+            if (!ValidateSecWebSocketExtensionsServerHeader(headers[HttpHeaders.WebSocketExtensions]))
             {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {Headers.WebSocketExtensions} header.");
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {HttpHeaders.WebSocketExtensions} header.");
             }
 
-            if (!ValidateSecWebSocketVersionServerHeader(headers[Headers.WebSocketVersion]))
+            if (!ValidateSecWebSocketVersionServerHeader(headers[HttpHeaders.WebSocketVersion]))
             {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {Headers.WebSocketVersion} header.");
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {HttpHeaders.WebSocketVersion} header.");
             }
         }
 
@@ -143,25 +143,25 @@
             }
 
             var headers = context.Headers;
-            if (string.IsNullOrEmpty(headers[Headers.WebSocketKey]))
+            if (string.IsNullOrEmpty(headers[HttpHeaders.WebSocketKey]))
             {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {Headers.WebSocketKey} header, or it has an invalid value.");
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {HttpHeaders.WebSocketKey} header, or it has an invalid value.");
             }
 
-            if (!ValidateSecWebSocketVersionClientHeader(headers[Headers.WebSocketVersion]))
+            if (!ValidateSecWebSocketVersionClientHeader(headers[HttpHeaders.WebSocketVersion]))
             {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {Headers.WebSocketVersion} header, or it has an invalid value.");
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {HttpHeaders.WebSocketVersion} header, or it has an invalid value.");
             }
 
-            if (!ValidateSecWebSocketProtocolClientHeader(headers[Headers.WebSocketProtocol]))
+            if (!ValidateSecWebSocketProtocolClientHeader(headers[HttpHeaders.WebSocketProtocol]))
             {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {Headers.WebSocketProtocol} header.");
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {HttpHeaders.WebSocketProtocol} header.");
             }
 
             if (!_webSocket.IgnoreExtensions
-                && !string.IsNullOrWhiteSpace(headers[Headers.WebSocketExtensions]))
+                && !string.IsNullOrWhiteSpace(headers[HttpHeaders.WebSocketExtensions]))
             {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {Headers.WebSocketExtensions} header.");
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {HttpHeaders.WebSocketExtensions} header.");
             }
         }
 

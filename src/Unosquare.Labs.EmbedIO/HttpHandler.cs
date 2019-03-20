@@ -123,6 +123,7 @@
                     errorMessage,
                     ex.StackTrace),
                 System.Net.HttpStatusCode.InternalServerError,
+                true,
                 ct);
         }
 

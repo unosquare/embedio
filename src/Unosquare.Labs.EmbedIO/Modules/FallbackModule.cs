@@ -3,7 +3,6 @@
     using Constants;
     using System.IO;
     using System;
-    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -60,7 +59,7 @@
             AddHandler(
                 ModuleMap.AnyPath, 
                 verb, 
-                (context, ct) => context.FileResponseAsync(file, contentType, ct));
+                (context, ct) => context.FileResponseAsync(file, contentType, true, ct));
         }
 
         /// <inheritdoc />
