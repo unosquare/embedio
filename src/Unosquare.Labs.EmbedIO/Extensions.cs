@@ -158,7 +158,7 @@
         /// <returns><c>true</c> if request headers is not a null; otherwise, false.</returns>
         public static bool HasRequestHeader(this IHttpContext context, string headerName)
             => context.Request.Headers[headerName] != null;
-        
+
         /// <summary>
         /// Retrieves the request body as a string.
         /// Note that once this method returns, the underlying input stream cannot be read again as 
@@ -282,7 +282,7 @@
 
             return valuesPaths;
         }
-        
+
         /// <summary>
         /// Parses the JSON as a given type from the request body.
         /// Please note the underlying input stream is not rewindable.
@@ -297,6 +297,32 @@
         {
             var requestBody = await context.RequestBodyAsync().ConfigureAwait(false);
             return requestBody == null ? null : Json.Deserialize<T>(requestBody);
+        }
+
+        /// <summary>
+        /// Transforms the response body as JSON and write a new JSON to the request.
+        /// </summary>
+        /// <typeparam name="TIn">The type of the in.</typeparam>
+        /// <typeparam name="TOut">The type of the out.</typeparam>
+        /// <param name="context">The context.</param>
+        /// <param name="transformFunc">The transform function.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A task for writing the output stream.
+        /// </returns>
+        public static async Task<bool> TransformJson<TIn, TOut>(
+            this IHttpContext context,
+            Func<TIn, CancellationToken, Task<TOut>> transformFunc,
+            CancellationToken cancellationToken = default)
+            where TIn : class
+        {
+            var requestJson = await context.ParseJsonAsync<TIn>()
+                .ConfigureAwait(false);
+            var responseJson = await transformFunc(requestJson, cancellationToken)
+                .ConfigureAwait(false);
+
+            return await context.JsonResponseAsync(responseJson, cancellationToken)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -322,7 +348,7 @@
         /// <returns>A collection that represents KVPs from request data.</returns>
         public static Dictionary<string, object> RequestFormDataDictionary(this string requestBody)
             => FormDataParser.ParseAsDictionary(requestBody);
-        
+
         /// <summary>
         /// Returns dictionary from Request POST data
         /// Please note the underlying input stream is not rewindable.
