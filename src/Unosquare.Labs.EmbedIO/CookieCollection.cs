@@ -8,7 +8,7 @@ namespace Unosquare.Labs.EmbedIO
     /// <summary>
     /// Represents a wrapper for <c>System.Net.CookieCollection</c>.
     /// </summary>
-    /// <seealso cref="Unosquare.Labs.EmbedIO.ICookieCollection" />
+    /// <seealso cref="ICookieCollection" />
     public class CookieCollection
         : ICookieCollection
     {

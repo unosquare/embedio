@@ -87,8 +87,8 @@
                         partialHeader, 
                         context.Response, 
                         buffer, 
-                        ct,
-                        context.AcceptGzip(buffer.Length))
+                        context.AcceptGzip(buffer.Length),
+                        ct)
                         .ConfigureAwait(false);
                 }
             }

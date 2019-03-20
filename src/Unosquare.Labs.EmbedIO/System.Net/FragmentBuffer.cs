@@ -21,7 +21,7 @@
         public async Task<MessageEventArgs> GetMessage(CompressionMethod compression)
         {
             var data = _fragmentsCompressed
-                ? await this.CompressAsync(compression, System.IO.Compression.CompressionMode.Decompress)
+                ? await this.CompressAsync(compression, System.IO.Compression.CompressionMode.Decompress).ConfigureAwait(false)
                 : this;
 
             return new MessageEventArgs(_fragmentsOpcode, data.ToArray());

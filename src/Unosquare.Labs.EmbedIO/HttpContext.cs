@@ -42,7 +42,8 @@ namespace Unosquare.Labs.EmbedIO
         public async Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize)
             => new WebSocketContext(await _context.AcceptWebSocketAsync(subProtocol: null,
                 receiveBufferSize: receiveBufferSize,
-                keepAliveInterval: TimeSpan.FromSeconds(30)));
+                keepAliveInterval: TimeSpan.FromSeconds(30))
+                .ConfigureAwait(false));
     }
 }
 #endif

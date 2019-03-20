@@ -18,10 +18,10 @@
         
         protected async Task ConnectWebSocket()
         {
-            var wsUrl = WebServerUrl.Replace("http", "ws") + _url;
+            var websocketUrl = WebServerUrl.Replace("http", "ws") + _url;
             var wasSet = false;
 
-            var clientSocket = new WebSocket(wsUrl);
+            var clientSocket = new WebSocket(websocketUrl);
             await clientSocket.ConnectAsync();
             
             clientSocket.OnMessage += (s, e) =>
@@ -33,11 +33,14 @@
             Assert.AreEqual(
                 WebSocketState.Open, 
                 clientSocket.State, 
-                $"Connection should be open, but the status is {clientSocket.State} - {wsUrl}");
+                $"Connection should be open, but the status is {clientSocket.State} - {websocketUrl}");
 
             var buffer = System.Text.Encoding.UTF8.GetBytes("HOLA");
             await clientSocket.SendAsync(buffer, Opcode.Text);
             await Task.Delay(TimeSpan.FromSeconds(1));
+
+            if (!wasSet)
+                Assert.Inconclusive("Timeout");
 
             Assert.IsTrue(wasSet);
         }

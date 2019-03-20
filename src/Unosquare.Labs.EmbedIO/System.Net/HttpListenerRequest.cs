@@ -385,7 +385,7 @@
                 _cookies = new CookieCollection();
 
             var cookieStrings = val.Split(Labs.EmbedIO.Constants.Strings.CookieSplitChars)
-                .Where(x => string.IsNullOrEmpty(x) == false);
+                .Where(x => !string.IsNullOrEmpty(x));
             Cookie current = null;
             var version = 0;
 

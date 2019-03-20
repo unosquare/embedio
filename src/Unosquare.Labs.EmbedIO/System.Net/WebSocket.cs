@@ -806,7 +806,7 @@
             _stream?.Dispose();
             _stream = null;
 
-#if NET452
+#if NET462
             _tcpClient?.Close();
 #else
             _tcpClient?.Dispose();
@@ -825,7 +825,7 @@
 
             if (_receivePong != null)
             {
-#if NET452
+#if NET462
                 _receivePong.Close();
 #else
                 _receivePong.Dispose();
@@ -835,7 +835,7 @@
 
             if (_exitReceiving != null)
             {
-#if NET452
+#if NET462
                 _exitReceiving.Close();
 #else
                 _exitReceiving.Dispose();

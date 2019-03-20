@@ -7,7 +7,13 @@
     /// </summary>
     public class WebSocketException : Exception
     {
-        internal WebSocketException(string message, Exception innerException = null)
+        internal WebSocketException(string message = null) 
+            : this(CloseStatusCode.Abnormal, message)
+        {
+            // Ignore
+        }
+
+        internal WebSocketException(string message, Exception innerException)
             : this(CloseStatusCode.Abnormal, message, innerException)
         {
         }

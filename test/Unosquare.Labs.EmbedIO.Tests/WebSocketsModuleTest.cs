@@ -35,7 +35,7 @@
         [Test]
         public async Task TestSendBigDataWebSocket()
         {
-            var webSocketUrl = WebServerUrl.Replace("http", "ws") + "bigdata";
+            var webSocketUrl = $"{WebServerUrl.Replace("http", "ws")}bigdata";
             var wasSet = false;
 
             var clientSocket = new WebSocket(webSocketUrl);

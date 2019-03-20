@@ -57,17 +57,20 @@
         }
 
         [WebApiHandler(HttpVerbs.Post, "/" + GetPath + "*")]
-        public async Task<bool> PostPeople()
+        public Task<bool> PostPeople()
         {
             try
             {
-                var content = await this.ParseJsonAsync<Person>();
+                return this.TransformJson<Person, Person>(async (x, ct) =>
+                {
+                    await Task.Delay(0, ct);
 
-                return await this.JsonResponseAsync(content);
+                    return x;
+                });
             }
             catch (Exception ex)
             {
-                return await this.JsonExceptionResponseAsync(ex);
+                return this.JsonExceptionResponseAsync(ex);
             }
         }
 

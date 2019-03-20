@@ -288,7 +288,7 @@
                 if (line == null)
                     break;
 
-                if (line == string.Empty)
+                if (string.IsNullOrEmpty(line))
                 {
                     if (_inputState == InputState.RequestLine)
                         continue;

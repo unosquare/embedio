@@ -5,13 +5,13 @@
     <Copyright>Copyright © Unosquare 2013-2019</Copyright>
     <AssemblyTitle>EmbedIO Web Server</AssemblyTitle>
     <Authors>Unosquare</Authors>
-    <TargetFrameworks>net452;net472;netstandard2.0;netstandard1.3</TargetFrameworks>
+    <TargetFrameworks>net462;netstandard2.0;netstandard1.3</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Unosquare.Labs.EmbedIO</AssemblyName>
     <PackageId>EmbedIO</PackageId>
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
     <DebugType>Full</DebugType>
-    <Version>2.2.9</Version>
+    <Version>2.3.0</Version>
     <Product>EmbedIO</Product>
     <Company>Unosquare</Company>
     <PackageLicenseUrl>https://raw.githubusercontent.com/unosquare/embedio/master/LICENSE</PackageLicenseUrl>
@@ -45,16 +45,8 @@
     <PackageReference Include="System.Security.Principal" Version="4.3.0" />
     <PackageReference Include="System.Net.NameResolution" Version="4.3.0" />
   </ItemGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <DefineConstants>$(DefineConstants);NET472</DefineConstants>
-  </PropertyGroup>
   
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
-    <Reference Include="System.Net.Http" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
     <Reference Include="System.Net.Http" />
   </ItemGroup>
 </Project>
