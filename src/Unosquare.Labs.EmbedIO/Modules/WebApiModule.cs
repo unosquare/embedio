@@ -8,7 +8,7 @@
     using Constants;
     using EmbedIO;
     using Swan;
-    
+
     /// <summary>
     /// A very simple module to register class methods as handlers.
     /// Public instance methods that match the WebServerModule.ResponseHandler signature, and have the WebApi handler attribute
@@ -28,45 +28,21 @@
         /// Initializes a new instance of the <see cref="WebApiModule"/> class.
         /// </summary>
         public WebApiModule()
+        : this(false)
         {
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, async (context, ct) =>
-            {
-                var verb = context.RequestVerb();
-                var regExRouteParams = new Dictionary<string, object>();
-                var path = Server.RoutingStrategy == RoutingStrategy.Wildcard
-                    ? NormalizeWildcardPath(verb, context)
-                    : NormalizeRegexPath(verb, context, regExRouteParams);
+        }
 
-                // return a non-math if no handler hold the route
-                if (path == null)
-                {
-                    return IsMethodNotAllowed(context) && Server.OnMethodNotAllowed != null && await Server.OnMethodNotAllowed(context).ConfigureAwait(false);
-                }
-
-                // search the path and verb
-                if (!_delegateMap.TryGetValue(path, out var methods) ||
-                    !methods.TryGetValue(verb, out var methodPair))
-                    throw new InvalidOperationException($"No method found for path {path} and verb {verb}.");
-
-                // ensure module does not return cached responses by default or the custom headers
-                methodPair.SetDefaultHeaders(context);
-
-                // Log the handler to be use
-                $"Handler: {methodPair.MethodCache.ControllerName}.{methodPair.MethodCache.MethodInfo.Name}"
-                    .Debug(nameof(WebApiModule));
-
-                // Initially, only the server and context objects will be available
-                var args = new object[methodPair.MethodCache.AdditionalParameters.Count];
-
-                if (Server.RoutingStrategy == RoutingStrategy.Regex)
-                    methodPair.ParseArguments(regExRouteParams, args);
-
-                return await methodPair.Invoke(context, args).ConfigureAwait(false);
-            });
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebApiModule"/> class.
+        /// </summary>
+        /// <param name="responseJsonException">if set to <c>true</c> [response json exception].</param>
+        public WebApiModule(bool responseJsonException)
+        {
+            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, (context, ct) => TryHandleWebApi(context, responseJsonException));
         }
 
         /// <inheritdoc />
-        public override string Name => "Web API Module";
+        public override string Name { get; } = "Web API Module";
 
         /// <summary>
         /// Gets the number of controller objects registered in this API.
@@ -119,7 +95,7 @@
 
             foreach (var method in methods)
             {
-                if (!(method.GetCustomAttributes(typeof(WebApiHandlerAttribute), true).FirstOrDefault() is WebApiHandlerAttribute attribute)) 
+                if (!(method.GetCustomAttributes(typeof(WebApiHandlerAttribute), true).FirstOrDefault() is WebApiHandlerAttribute attribute))
                     continue;
 
                 foreach (var path in attribute.Paths)
@@ -234,6 +210,53 @@
             }
 
             return _delegateMap.ContainsKey(path);
+        }
+
+        private async Task<bool> TryHandleWebApi(IHttpContext context, bool responseJsonException)
+        {
+            var verb = context.RequestVerb();
+            var regExRouteParams = new Dictionary<string, object>();
+            var path = Server.RoutingStrategy == RoutingStrategy.Wildcard
+                ? NormalizeWildcardPath(verb, context)
+                : NormalizeRegexPath(verb, context, regExRouteParams);
+
+            // return a non-math if no handler hold the route
+            if (path == null)
+            {
+                return IsMethodNotAllowed(context) && Server.OnMethodNotAllowed != null &&
+                       await Server.OnMethodNotAllowed(context).ConfigureAwait(false);
+            }
+
+            // search the path and verb
+            if (!_delegateMap.TryGetValue(path, out var methods) ||
+                !methods.TryGetValue(verb, out var methodPair))
+                throw new InvalidOperationException($"No method found for path {path} and verb {verb}.");
+
+            // ensure module does not return cached responses by default or the custom headers
+            methodPair.SetDefaultHeaders(context);
+
+            // Log the handler to be use
+            $"Handler: {methodPair.MethodCache.ControllerName}.{methodPair.MethodCache.MethodInfo.Name}"
+                .Debug(nameof(WebApiModule));
+
+            // Initially, only the server and context objects will be available
+            var args = new object[methodPair.MethodCache.AdditionalParameters.Count];
+
+            if (Server.RoutingStrategy == RoutingStrategy.Regex)
+                methodPair.ParseArguments(regExRouteParams, args);
+
+            if (!responseJsonException)
+                return await methodPair.Invoke(context, args).ConfigureAwait(false);
+
+            try
+            {
+                return await methodPair.Invoke(context, args).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                ex.Log(Name);
+                return await context.JsonExceptionResponseAsync(ex).ConfigureAwait(false);
+            }
         }
     }
 }

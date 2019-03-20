@@ -63,7 +63,7 @@
 
                 // Register the Web Api Module. See the Setup method to find out how to do it
                 // It registers the WebApiModule and registers the controller(s) -- that's all.
-                server.WithWebApiController<PeopleController>();
+                server.WithWebApiController<PeopleController>(true);
 
                 // Register the WebSockets module. See the Setup method to find out how to do it
                 // It registers the WebSocketsModule and registers the server for the given paths(s)

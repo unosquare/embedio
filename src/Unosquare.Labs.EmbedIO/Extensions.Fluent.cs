@@ -81,15 +81,19 @@
         /// </summary>
         /// <param name="webserver">The webserver instance.</param>
         /// <param name="assembly">The assembly to load WebApi Controllers from. Leave null to avoid autoloading.</param>
-        /// <returns>An instance of webserver.</returns>
+        /// <param name="responseJsonException">if set to <c>true</c> [response json exception].</param>
+        /// <returns>
+        /// An instance of webserver.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">webserver</exception>
         /// <exception cref="System.ArgumentNullException">webserver.</exception>
-        public static IWebServer WithWebApi(this IWebServer webserver, Assembly assembly = null)
+        public static IWebServer WithWebApi(this IWebServer webserver, Assembly assembly = null, bool responseJsonException = false)
         {
             if (webserver == null)
                 throw new ArgumentNullException(nameof(webserver));
 
             webserver.RegisterModule(new WebApiModule());
-            return assembly != null ? webserver.LoadApiControllers(assembly) : webserver;
+            return assembly != null ? webserver.LoadApiControllers(assembly, responseJsonException) : webserver;
         }
 
         /// <summary>
@@ -113,9 +117,13 @@
         /// </summary>
         /// <param name="webserver">The webserver instance.</param>
         /// <param name="assembly">The assembly to load WebApi Controllers from. Leave null to load from the currently executing assembly.</param>
-        /// <returns>An instance of webserver.</returns>
+        /// <param name="responseJsonException">if set to <c>true</c> [response json exception].</param>
+        /// <returns>
+        /// An instance of webserver.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">webserver</exception>
         /// <exception cref="System.ArgumentNullException">webserver.</exception>
-        public static IWebServer LoadApiControllers(this IWebServer webserver, Assembly assembly = null)
+        public static IWebServer LoadApiControllers(this IWebServer webserver, Assembly assembly = null, bool responseJsonException = false)
         {
             if (webserver == null)
                 throw new ArgumentNullException(nameof(webserver));
@@ -129,7 +137,8 @@
             
             foreach (var apiController in apiControllers)
             {
-                if (webserver.Module<WebApiModule>() == null) webserver = webserver.WithWebApi();
+                if (webserver.Module<WebApiModule>() == null) 
+                    webserver = webserver.WithWebApi(responseJsonException: responseJsonException);
 
                 webserver.Module<WebApiModule>().RegisterController(apiController);
                 $"Registering WebAPI Controller '{apiController.Name}'".Debug(nameof(LoadApiControllers));
@@ -219,9 +228,12 @@
         /// </summary>
         /// <typeparam name="T">The type of Web API Controller.</typeparam>
         /// <param name="webserver">The webserver instance.</param>
-        /// <returns>An instance of webserver.</returns>
+        /// <param name="responseJsonException">if set to <c>true</c> [response json exception].</param>
+        /// <returns>
+        /// An instance of webserver.
+        /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
-        public static IWebServer WithWebApiController<T>(this IWebServer webserver)
+        public static IWebServer WithWebApiController<T>(this IWebServer webserver, bool responseJsonException = false)
             where T : WebApiController
         {
             if (webserver == null)
@@ -229,7 +241,7 @@
 
             if (webserver.Module<WebApiModule>() == null)
             {
-                webserver.RegisterModule(new WebApiModule());
+                webserver.RegisterModule(new WebApiModule(responseJsonException));
             }
 
             webserver.Module<WebApiModule>().RegisterController<T>();

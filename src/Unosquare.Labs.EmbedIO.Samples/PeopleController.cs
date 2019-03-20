@@ -1,7 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
     using Constants;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Modules;
@@ -24,84 +23,47 @@
             : base(context)
         {
         }
-
-        /// <summary>
-        /// Gets the big json.
-        /// </summary>
-        /// <returns></returns>
-        [WebApiHandler(HttpVerbs.Get, RelativePath + "big")]
-        public Task<bool> GetBigJson() => this.JsonResponseAsync(Enumerable.Range(1, 200)
-            .Select(x => new
-        {
-            x,
-            y = TimeZoneInfo.GetSystemTimeZones()
-                    .Select(z => new { z.StandardName, z.DisplayName, z.DaylightName, z.BaseUtcOffset })
-        }));
-
+        
         /// <summary>
         /// Gets the people.
         /// This will respond to 
         ///     GET http://localhost:9696/api/people/
         ///     GET http://localhost:9696/api/people/1
         ///     GET http://localhost:9696/api/people/{n}
-        /// 
-        /// Notice the wildcard is important
         /// </summary>
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException">Key Not Found:  + lastSegment</exception>
-        [WebApiHandler(HttpVerbs.Get, RelativePath + "people/*")]
-        public Task<bool> GetPeople()
+        [WebApiHandler(HttpVerbs.Get, RelativePath + "people/{id?}")]
+        public async Task<bool> GetPeople(string id = null)
         {
-            try
+            // if it ends with a / means we need to list people
+            if (string.IsNullOrWhiteSpace(id))
+                return await this.JsonResponseAsync(_dbContext.People.SelectAll());
+
+            // if it ends with "first" means we need to show first record of people
+            if (id == "first")
+                return await this.JsonResponseAsync(_dbContext.People.SelectAll().First());
+
+            // otherwise, we need to parse the key and respond with the entity accordingly
+            if (int.TryParse(id, out var key))
             {
-                // read the last segment
-                var lastSegment = Request.Url.Segments.Last();
-
-                // if it ends with a / means we need to list people
-                if (lastSegment.EndsWith("/"))
-                    return this.JsonResponseAsync(_dbContext.People.SelectAll());
-
-                // if it ends with "first" means we need to show first record of people
-                if (lastSegment.EndsWith("first"))
-                    return this.JsonResponseAsync(_dbContext.People.SelectAll().First());
-
-                // otherwise, we need to parse the key and respond with the entity accordingly
-                if (!int.TryParse(lastSegment, out var key))
-                    throw new KeyNotFoundException("Key Not Found: " + lastSegment);
-
-                var single = _dbContext.People.Single(key);
+                var single = await _dbContext.People.SingleAsync(key);
 
                 if (single != null)
-                    return this.JsonResponseAsync(single);
+                    return await this.JsonResponseAsync(single);
+            }
 
-                throw new KeyNotFoundException("Key Not Found: " + lastSegment);
-            }
-            catch (Exception ex)
-            {
-                return this.JsonExceptionResponseAsync(ex);
-            }
+            throw new KeyNotFoundException($"Key Not Found: {id}");
         }
 
         /// <summary>
         /// Posts the people Tubular model.
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="KeyNotFoundException">Key Not Found:  + lastSegment</exception>
-        [WebApiHandler(HttpVerbs.Post, RelativePath + "people/*")]
-        public async Task<bool> PostPeople()
-        {
-            try
-            {
-                var model = await this.ParseJsonAsync<GridDataRequest>();
-                var data = await _dbContext.People.SelectAllAsync();
-
-                return await this.JsonResponseAsync(model.CreateGridDataResponse(data.AsQueryable()));
-            }
-            catch (Exception ex)
-            {
-                return await this.JsonExceptionResponseAsync(ex);
-            }
-        }
+        [WebApiHandler(HttpVerbs.Post, RelativePath + "people")]
+        public Task<bool> PostPeople() =>
+            this.TransformJson<GridDataRequest, GridDataResponse>(async (model, ct) =>
+                model.CreateGridDataResponse((await _dbContext.People.SelectAllAsync()).AsQueryable()));
 
         /// <summary>
         /// Echoes the request form data in JSON format
@@ -110,16 +72,9 @@
         [WebApiHandler(HttpVerbs.Post, RelativePath + "echo/*")]
         public async Task<bool> Echo()
         {
-            try
-            {
-                var content = await this.RequestFormDataDictionaryAsync();
+            var content = await this.RequestFormDataDictionaryAsync();
 
-                return await this.JsonResponseAsync(content);
-            }
-            catch (Exception ex)
-            {
-                return await this.JsonExceptionResponseAsync(ex);
-            }
+            return await this.JsonResponseAsync(content);
         }
     }
 }
