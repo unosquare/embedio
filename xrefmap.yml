@@ -977,6 +977,15 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.TransformJson
   nameWithType: Extensions.TransformJson
+- uid: Unosquare.Labs.EmbedIO.Extensions.TransformJson``2(Unosquare.Labs.EmbedIO.IHttpContext,System.Func{``0,``1},System.Threading.CancellationToken)
+  name: TransformJson<TIn, TOut>(IHttpContext, Func<TIn, TOut>, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_TransformJson__2_Unosquare_Labs_EmbedIO_IHttpContext_System_Func___0___1__System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.TransformJson``2(Unosquare.Labs.EmbedIO.IHttpContext,System.Func{``0,``1},System.Threading.CancellationToken)
+  name.vb: TransformJson(Of TIn, TOut)(IHttpContext, Func(Of TIn, TOut), CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.TransformJson<TIn, TOut>(Unosquare.Labs.EmbedIO.IHttpContext, System.Func<TIn, TOut>, System.Threading.CancellationToken)
+  fullName.vb: Unosquare.Labs.EmbedIO.Extensions.TransformJson(Of TIn, TOut)(Unosquare.Labs.EmbedIO.IHttpContext, System.Func(Of TIn, TOut), System.Threading.CancellationToken)
+  nameWithType: Extensions.TransformJson<TIn, TOut>(IHttpContext, Func<TIn, TOut>, CancellationToken)
+  nameWithType.vb: Extensions.TransformJson(Of TIn, TOut)(IHttpContext, Func(Of TIn, TOut), CancellationToken)
 - uid: Unosquare.Labs.EmbedIO.Extensions.TransformJson``2(Unosquare.Labs.EmbedIO.IHttpContext,System.Func{``0,System.Threading.CancellationToken,System.Threading.Tasks.Task{``1}},System.Threading.CancellationToken)
   name: TransformJson<TIn, TOut>(IHttpContext, Func<TIn, CancellationToken, Task<TOut>>, CancellationToken)
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_TransformJson__2_Unosquare_Labs_EmbedIO_IHttpContext_System_Func___0_System_Threading_CancellationToken_System_Threading_Tasks_Task___1___System_Threading_CancellationToken_

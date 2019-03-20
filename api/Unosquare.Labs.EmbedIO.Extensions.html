@@ -2424,6 +2424,85 @@ match.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_TransformJson_" data-uid="Unosquare.Labs.EmbedIO.Extensions.TransformJson*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_TransformJson__2_Unosquare_Labs_EmbedIO_IHttpContext_System_Func___0___1__System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.TransformJson``2(Unosquare.Labs.EmbedIO.IHttpContext,System.Func{``0,``1},System.Threading.CancellationToken)">TransformJson&lt;TIn, TOut&gt;(IHttpContext, Func&lt;TIn, TOut&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Transforms the response body as JSON and write a new JSON to the request.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; TransformJson&lt;TIn, TOut&gt;(this IHttpContext context, Func&lt;TIn, TOut&gt; transformFunc, CancellationToken cancellationToken = default(CancellationToken))
+    where TIn : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TIn, TOut&gt;</td>
+        <td><span class="parametername">transformFunc</span></td>
+        <td><p>The transform function.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><p>A task for writing the output stream.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TIn</span></td>
+        <td><p>The type of the input.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TOut</span></td>
+        <td><p>The type of the output.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Extensions_TransformJson_" data-uid="Unosquare.Labs.EmbedIO.Extensions.TransformJson*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_Extensions_TransformJson__2_Unosquare_Labs_EmbedIO_IHttpContext_System_Func___0_System_Threading_CancellationToken_System_Threading_Tasks_Task___1___System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.TransformJson``2(Unosquare.Labs.EmbedIO.IHttpContext,System.Func{``0,System.Threading.CancellationToken,System.Threading.Tasks.Task{``1}},System.Threading.CancellationToken)">TransformJson&lt;TIn, TOut&gt;(IHttpContext, Func&lt;TIn, CancellationToken, Task&lt;TOut&gt;&gt;, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Transforms the response body as JSON and write a new JSON to the request.</p>
 </div>
@@ -2490,12 +2569,12 @@ match.</p>
     <tbody>
       <tr>
         <td><span class="parametername">TIn</span></td>
-        <td><p>The type of the in.</p>
+        <td><p>The type of the input.</p>
 </td>
       </tr>
       <tr>
         <td><span class="parametername">TOut</span></td>
-        <td><p>The type of the out.</p>
+        <td><p>The type of the output.</p>
 </td>
       </tr>
     </tbody>
