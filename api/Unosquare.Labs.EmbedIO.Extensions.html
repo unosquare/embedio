@@ -1204,13 +1204,13 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_LoadApiControllers_" data-uid="Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_LoadApiControllers_Unosquare_Labs_EmbedIO_IWebServer_System_Reflection_Assembly_" data-uid="Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers(Unosquare.Labs.EmbedIO.IWebServer,System.Reflection.Assembly)">LoadApiControllers(IWebServer, Assembly)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_LoadApiControllers_Unosquare_Labs_EmbedIO_IWebServer_System_Reflection_Assembly_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Extensions.LoadApiControllers(Unosquare.Labs.EmbedIO.IWebServer,System.Reflection.Assembly,System.Boolean)">LoadApiControllers(IWebServer, Assembly, Boolean)</h4>
   <div class="markdown level1 summary"><p>Load all the WebApi Controllers in an assembly.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IWebServer LoadApiControllers(this IWebServer webserver, Assembly assembly = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IWebServer LoadApiControllers(this IWebServer webserver, Assembly assembly = null, bool responseJsonException = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1232,6 +1232,12 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.assembly">Assembly</a></td>
         <td><span class="parametername">assembly</span></td>
         <td><p>The assembly to load WebApi Controllers from. Leave null to load from the currently executing assembly.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">responseJsonException</span></td>
+        <td><p>if set to <code>true</code> [response json exception].</p>
 </td>
       </tr>
     </tbody>
@@ -1261,6 +1267,11 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>webserver</p>
+</td>
+      </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
         <td><p>webserver.</p>
@@ -2795,13 +2806,13 @@ match.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_WithWebApi_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithWebApi*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_WithWebApi_Unosquare_Labs_EmbedIO_IWebServer_System_Reflection_Assembly_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithWebApi(Unosquare.Labs.EmbedIO.IWebServer,System.Reflection.Assembly)">WithWebApi(IWebServer, Assembly)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_WithWebApi_Unosquare_Labs_EmbedIO_IWebServer_System_Reflection_Assembly_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithWebApi(Unosquare.Labs.EmbedIO.IWebServer,System.Reflection.Assembly,System.Boolean)">WithWebApi(IWebServer, Assembly, Boolean)</h4>
   <div class="markdown level1 summary"><p>Add WebApiModule to WebServer.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IWebServer WithWebApi(this IWebServer webserver, Assembly assembly = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IWebServer WithWebApi(this IWebServer webserver, Assembly assembly = null, bool responseJsonException = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2823,6 +2834,12 @@ match.</p>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.assembly">Assembly</a></td>
         <td><span class="parametername">assembly</span></td>
         <td><p>The assembly to load WebApi Controllers from. Leave null to avoid autoloading.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">responseJsonException</span></td>
+        <td><p>if set to <code>true</code> [response json exception].</p>
 </td>
       </tr>
     </tbody>
@@ -2854,6 +2871,11 @@ match.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>webserver</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
         <td><p>webserver.</p>
 </td>
       </tr>
@@ -2862,13 +2884,13 @@ match.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_WithWebApiController_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithWebApiController*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_WithWebApiController__1_Unosquare_Labs_EmbedIO_IWebServer_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithWebApiController``1(Unosquare.Labs.EmbedIO.IWebServer)">WithWebApiController&lt;T&gt;(IWebServer)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_WithWebApiController__1_Unosquare_Labs_EmbedIO_IWebServer_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Extensions.WithWebApiController``1(Unosquare.Labs.EmbedIO.IWebServer,System.Boolean)">WithWebApiController&lt;T&gt;(IWebServer, Boolean)</h4>
   <div class="markdown level1 summary"><p>Add WebApi Controller to WebServer.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IWebServer WithWebApiController&lt;T&gt;(this IWebServer webserver)
+    <pre><code class="lang-csharp hljs">public static IWebServer WithWebApiController&lt;T&gt;(this IWebServer webserver, bool responseJsonException = false)
     where T : WebApiController</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -2885,6 +2907,12 @@ match.</p>
         <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></td>
         <td><span class="parametername">webserver</span></td>
         <td><p>The webserver instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">responseJsonException</span></td>
+        <td><p>if set to <code>true</code> [response json exception].</p>
 </td>
       </tr>
     </tbody>
