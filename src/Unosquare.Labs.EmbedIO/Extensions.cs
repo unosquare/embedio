@@ -302,8 +302,8 @@
         /// <summary>
         /// Transforms the response body as JSON and write a new JSON to the request.
         /// </summary>
-        /// <typeparam name="TIn">The type of the in.</typeparam>
-        /// <typeparam name="TOut">The type of the out.</typeparam>
+        /// <typeparam name="TIn">The type of the input.</typeparam>
+        /// <typeparam name="TOut">The type of the output.</typeparam>
         /// <param name="context">The context.</param>
         /// <param name="transformFunc">The transform function.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
@@ -320,6 +320,31 @@
                 .ConfigureAwait(false);
             var responseJson = await transformFunc(requestJson, cancellationToken)
                 .ConfigureAwait(false);
+
+            return await context.JsonResponseAsync(responseJson, cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Transforms the response body as JSON and write a new JSON to the request.
+        /// </summary>
+        /// <typeparam name="TIn">The type of the input.</typeparam>
+        /// <typeparam name="TOut">The type of the output.</typeparam>
+        /// <param name="context">The context.</param>
+        /// <param name="transformFunc">The transform function.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A task for writing the output stream.
+        /// </returns>
+        public static async Task<bool> TransformJson<TIn, TOut>(
+            this IHttpContext context,
+            Func<TIn, TOut> transformFunc,
+            CancellationToken cancellationToken = default)
+            where TIn : class
+        {
+            var requestJson = await context.ParseJsonAsync<TIn>()
+                .ConfigureAwait(false);
+            var responseJson = transformFunc(requestJson);
 
             return await context.JsonResponseAsync(responseJson, cancellationToken)
                 .ConfigureAwait(false);
