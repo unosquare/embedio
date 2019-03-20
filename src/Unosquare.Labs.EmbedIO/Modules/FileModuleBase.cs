@@ -67,7 +67,7 @@
             
             // check if partial
             if (!CalculateRange(partialHeader, fileSize, out var lowerByteIndex, out var upperByteIndex))
-                return response.BinaryResponseAsync(buffer, ct, UseGzip && useGzip);
+                return response.BinaryResponseAsync(buffer, UseGzip && useGzip, ct);
 
             if (upperByteIndex > fileSize)
             {
