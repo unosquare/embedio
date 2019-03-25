@@ -96,7 +96,6 @@
 <li><a href="#support-for-ssl">Support for SSL</a></li>
 <li><a href="#examples">Examples</a><ul>
 <li><a href="#basic-example">Basic Example</a></li>
-<li><a href="#fluent-example">Fluent Example</a></li>
 <li><a href="#rest-api-example">REST API Example</a></li>
 <li><a href="#websockets-example">WebSockets Example</a></li>
 </ul>
@@ -291,45 +290,6 @@
         }
     }
 }
-</code></pre><h3 id="fluent-example">Fluent Example</h3>
-<p>Many extension methods are available. This allows you to create a web server instance in a fluent style by dotting in configuration options.</p>
-<pre><code class="lang-csharp">namespace Unosquare
-{
-    using System;
-    using Unosquare.Labs.EmbedIO;
-
-    internal class Program
-    {
-        /// &lt;summary&gt;
-        /// Defines the entry point of the application.
-        /// &lt;/summary&gt;
-        /// &lt;param name=&quot;args&quot;&gt;The arguments.&lt;/param&gt;
-        private static void Main(string[] args)
-        {
-            var url = &quot;http://localhost:9696/&quot;;
-            if (args.Length &gt; 0)
-                url = args[0];
-
-            // Create Webserver and attach LocalSession and Static
-            // files module and CORS enabled
-            var server = WebServer
-                .Create(url)
-                .EnableCors()
-                .WithLocalSession()
-                .WithStaticFolderAt(&quot;c:/web&quot;);
-
-            var cts = new CancellationTokenSource();
-            var task = server.RunAsync(cts.Token);
-
-            Console.ReadKey(true);
-            cts.Cancel();
-
-            // Wait before dispose server
-            task.Wait();
-            server.Dispose();
-        }
-    }
-}
 </code></pre><h3 id="rest-api-example">REST API Example</h3>
 <p>The WebApi module supports two routing strategies: Wildcard and Regex. By default, the WebApi module will use the <strong>Regex Routing Strategy</strong> trying to match and resolve the values from a route template, in a similar fashion to Microsoft&#39;s Web API. </p>
 <p>A method with the following route <code>/api/people/{id}</code> is going to match any request URL with three segments: the first two <code>api</code> and <code>people</code> and the last 
@@ -342,26 +302,32 @@ parsed values from the URL straight into the arguments of your handler method.</
 server.RegisterModule(new WebApiModule());
 server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;();
 </code></pre><p>And our controller class (using default Regex Strategy) looks like:</p>
-<pre><code class="lang-csharp">public class PeopleController : WebApiController
+<pre><code class="lang-csharp">// A controller is a class where the WebApi module will find available
+// endpoints. The class must extend WebApiController.
+public class PeopleController : WebApiController
 {
+    // You need to add a default constructor where the first argument
+    // is an IHttpContext
     public PeopleController(IHttpContext context)
-    : base(context)
+        : base(context)
     {
     }
 
+    // You need to include the WebApiHandler attribute to each method
+    // where you want to export an endpoint. The method should return
+    // bool or Task&lt;bool&gt;.
     [WebApiHandler(HttpVerbs.Get, &quot;/api/people/{id}&quot;)]
-    public bool GetPeople(int id)
+    public async Task&lt;bool&gt; GetPersonById(int id)
     {
         try
         {
-            if (People.Any(p =&gt; p.Key == id))
-            {
-                return this.JsonResponse(People.FirstOrDefault(p =&gt; p.Key == id));
-            }
+            // This is fake call to a Repository
+            var person = await PeopleRepository.GetById(id);
+            return await this.JsonResponseAsync(person);
         }
         catch (Exception ex)
         {
-            return this.JsonExceptionResponse(ex);
+            return await this.JsonExceptionResponseAsync(ex);
         }
     }
 
@@ -388,25 +354,27 @@ server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;()
     }
 
     [WebApiHandler(HttpVerbs.Get, &quot;/api/people/*&quot;)]
-    public bool GetPeople()
+    public async Task&lt;bool&gt; GetPeopleOrPersonById()
     {
         try
         {
-            var lastSegment = this.Request.Url.Segments.Last();
-            if (lastSegment.EndsWith(&quot;/&quot;))
-                return this.JsonResponse(People);
+            var lastSegment = Request.Url.Segments.Last();
 
-            int key = 0;
-            if (int.TryParse(lastSegment, out key) &amp;&amp; People.Any(p =&gt; p.Key == key))
+            // If the last segment is a backslash, return all
+            // the collection. This endpoint call a fake Repository.
+            if (lastSegment.EndsWith(&quot;/&quot;))
+                return await this.JsonResponseAsync(await PeopleRepository.GetAll());
+
+            if (int.TryParse(lastSegment, out var id))
             {
-                return this.JsonResponse(People.FirstOrDefault(p =&gt; p.Key == key));
+                return await this.JsonResponseAsync(await PeopleRepository.GetById(id));
             }
 
             throw new KeyNotFoundException(&quot;Key Not Found: &quot; + lastSegment);
         }
         catch (Exception ex)
         {
-            return this.JsonExceptionResponse(ex);
+            return await this.JsonExceptionResponseAsync(ex);
         }
     }
 }
@@ -428,30 +396,28 @@ public class WebSocketsChatServer : WebSocketsServer
         // placeholder
     }
 
-    public override string ServerName =&gt; &quot;Chat Server&quot;
+    public override string ServerName =&gt; &quot;Chat Server&quot;;
 
     protected override void OnMessageReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
     {
-        var session = this.WebServer.GetSession(context);
-
-        foreach (var ws in this.WebSockets)
+        foreach (var ws in WebSockets)
         {
             if (ws != context)
-                this.Send(ws, rxBuffer.ToText());
+                Send(ws, rxBuffer.ToText());
         }
     }
 
     protected override void OnClientConnected(
-            IWebSocketContext context,
-            System.Net.IPEndPoint localEndPoint,
-            System.Net.IPEndPoint remoteEndPoint)
+        IWebSocketContext context,
+        System.Net.IPEndPoint localEndPoint,
+        System.Net.IPEndPoint remoteEndPoint)
     {
-        this.Send(context, &quot;Welcome to the chat room!&quot;);
+        Send(context, &quot;Welcome to the chat room!&quot;);
 
-        foreach (var ws in this.WebSockets)
+        foreach (var ws in WebSockets)
         {
             if (ws != context)
-                this.Send(ws, &quot;Someone joined the chat room.&quot;);
+                Send(ws, &quot;Someone joined the chat room.&quot;);
         }
     }
 
@@ -462,7 +428,7 @@ public class WebSocketsChatServer : WebSocketsServer
 
     protected override void OnClientDisconnected(IWebSocketContext context)
     {
-        this.Broadcast(&quot;Someone left the chat room.&quot;);
+        Broadcast(&quot;Someone left the chat room.&quot;);
     }
 }
 </code></pre><h2 id="related-projects-and-nugets">Related Projects and Nugets</h2>
