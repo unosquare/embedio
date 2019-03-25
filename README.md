@@ -24,7 +24,6 @@
 - [Support for SSL](#support-for-ssl)
 - [Examples](#examples)
     - [Basic Example](#basic-example)
-    - [Fluent Example](#fluent-example)
     - [REST API Example](#rest-api-example)
     - [WebSockets Example](#websockets-example)
 - [Related Projects and Nugets](#related-projects-and-nugets)
@@ -244,50 +243,6 @@ namespace Unosquare
 }
 ```
 
-### Fluent Example
-
-Many extension methods are available. This allows you to create a web server instance in a fluent style by dotting in configuration options.
-
-```csharp
-namespace Unosquare
-{
-    using System;
-    using Unosquare.Labs.EmbedIO;
-
-    internal class Program
-    {
-        /// <summary>
-        /// Defines the entry point of the application.
-        /// </summary>
-        /// <param name="args">The arguments.</param>
-        private static void Main(string[] args)
-        {
-            var url = "http://localhost:9696/";
-            if (args.Length > 0)
-                url = args[0];
-
-            // Create Webserver and attach LocalSession and Static
-            // files module and CORS enabled
-            var server = WebServer
-                .Create(url)
-                .EnableCors()
-                .WithLocalSession()
-                .WithStaticFolderAt("c:/web");
-
-            var cts = new CancellationTokenSource();
-            var task = server.RunAsync(cts.Token);
-
-            Console.ReadKey(true);
-            cts.Cancel();
-
-			// Wait before dispose server
-            task.Wait();
-            server.Dispose();
-        }
-    }
-}
-```
-
 ### REST API Example
 
 The WebApi module supports two routing strategies: Wildcard and Regex. By default, the WebApi module will use the **Regex Routing Strategy** trying to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API. 
@@ -309,26 +264,32 @@ server.Module<WebApiModule>().RegisterController<PeopleController>();
 And our controller class (using default Regex Strategy) looks like:
 
 ```csharp
+// A controller is a class where the WebApi module will find available
+// endpoints. The class must extend WebApiController.
 public class PeopleController : WebApiController
 {
+    // You need to add a default constructor where the first argument
+    // is an IHttpContext
     public PeopleController(IHttpContext context)
-    : base(context)
+        : base(context)
     {
     }
 
+    // You need to include the WebApiHandler attribute to each method
+    // where you want to export an endpoint. The method should return
+    // bool or Task<bool>.
     [WebApiHandler(HttpVerbs.Get, "/api/people/{id}")]
-    public bool GetPeople(int id)
+    public async Task<bool> GetPersonById(int id)
     {
         try
         {
-            if (People.Any(p => p.Key == id))
-            {
-                return this.JsonResponse(People.FirstOrDefault(p => p.Key == id));
-            }
+            // This is fake call to a Repository
+            var person = await PeopleRepository.GetById(id);
+            return await this.JsonResponseAsync(person);
         }
         catch (Exception ex)
         {
-            return this.JsonExceptionResponse(ex);
+            return await this.JsonExceptionResponseAsync(ex);
         }
     }
     
@@ -362,25 +323,27 @@ public class PeopleController : WebApiController
     }
 
     [WebApiHandler(HttpVerbs.Get, "/api/people/*")]
-    public bool GetPeople()
+    public async Task<bool> GetPeopleOrPersonById()
     {
         try
         {
-            var lastSegment = this.Request.Url.Segments.Last();
-            if (lastSegment.EndsWith("/"))
-                return this.JsonResponse(People);
+            var lastSegment = Request.Url.Segments.Last();
 
-            int key = 0;
-            if (int.TryParse(lastSegment, out key) && People.Any(p => p.Key == key))
+            // If the last segment is a backslash, return all
+            // the collection. This endpoint call a fake Repository.
+            if (lastSegment.EndsWith("/"))
+                return await this.JsonResponseAsync(await PeopleRepository.GetAll());
+                
+            if (int.TryParse(lastSegment, out var id))
             {
-                return this.JsonResponse(People.FirstOrDefault(p => p.Key == key));
+                return await this.JsonResponseAsync(await PeopleRepository.GetById(id));
             }
 
             throw new KeyNotFoundException("Key Not Found: " + lastSegment);
         }
         catch (Exception ex)
         {
-            return this.JsonExceptionResponse(ex);
+            return await this.JsonExceptionResponseAsync(ex);
         }
     }
 }
@@ -412,30 +375,28 @@ public class WebSocketsChatServer : WebSocketsServer
         // placeholder
     }
 
-    public override string ServerName => "Chat Server"
+    public override string ServerName => "Chat Server";
 
     protected override void OnMessageReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
     {
-        var session = this.WebServer.GetSession(context);
-
-        foreach (var ws in this.WebSockets)
+        foreach (var ws in WebSockets)
         {
             if (ws != context)
-                this.Send(ws, rxBuffer.ToText());
+                Send(ws, rxBuffer.ToText());
         }
     }
 
     protected override void OnClientConnected(
-            IWebSocketContext context,
-            System.Net.IPEndPoint localEndPoint,
-            System.Net.IPEndPoint remoteEndPoint)
+        IWebSocketContext context,
+        System.Net.IPEndPoint localEndPoint,
+        System.Net.IPEndPoint remoteEndPoint)
     {
-        this.Send(context, "Welcome to the chat room!");
+        Send(context, "Welcome to the chat room!");
         
-        foreach (var ws in this.WebSockets)
+        foreach (var ws in WebSockets)
         {
             if (ws != context)
-                this.Send(ws, "Someone joined the chat room.");
+                Send(ws, "Someone joined the chat room.");
         }
     }
 
@@ -446,7 +407,7 @@ public class WebSocketsChatServer : WebSocketsServer
 
     protected override void OnClientDisconnected(IWebSocketContext context)
     {
-        this.Broadcast("Someone left the chat room.");
+        Broadcast("Someone left the chat room.");
     }
 }
 ```
