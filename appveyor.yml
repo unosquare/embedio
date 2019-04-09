@@ -51,8 +51,8 @@ build_script:
 test_script:
 - dotnet test test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f netcoreapp2.2
 - cmd: dotnet test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f net472
-- cmd: dotnet test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f net452
-- cmd: tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f net452" -output:coverage.xml -filter:"+[Unosquare.Labs.EmbedIO*]* -[Unosquare.Labs.EmbedIO.Test*]*" -register:userdotnet
+- cmd: dotnet test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f net462
+- cmd: tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f net462" -output:coverage.xml -filter:"+[Unosquare.Labs.EmbedIO*]* -[Unosquare.Labs.EmbedIO.Test*]*" -register:userdotnet
 - ps: |
         if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
         {
