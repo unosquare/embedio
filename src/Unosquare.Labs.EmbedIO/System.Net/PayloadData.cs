@@ -6,22 +6,22 @@
     using System.Text;
     using Swan;
 
-    internal class PayloadData 
+    internal class PayloadData
     {
         public static readonly ulong MaxLength = long.MaxValue;
 
         private readonly byte[] _data;
         private ushort? _code;
-        
+
         internal PayloadData(byte[] data)
         {
             _data = data;
         }
-        
+
         internal PayloadData(ushort code = 1005, string reason = null)
         {
             _code = code;
-            _data = code == 1005 ? WebSocket.EmptyBytes : Append(code, reason);
+            _data = code == 1005 ? Array.Empty<byte>() : Append(code, reason);
         }
 
         internal MemoryStream ApplicationData => new MemoryStream(_data);
@@ -42,7 +42,7 @@
                 return _code.Value;
             }
         }
-        
+
         internal bool HasReservedCode => _data.Length > 1 && (Code == (ushort)CloseStatusCode.Undefined ||
                    Code == (ushort)CloseStatusCode.NoStatus ||
                    Code == (ushort)CloseStatusCode.Abnormal ||

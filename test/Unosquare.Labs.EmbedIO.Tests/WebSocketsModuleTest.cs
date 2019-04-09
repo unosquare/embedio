@@ -1,8 +1,8 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using Constants;
+    using System.Text;
     using Modules;
-    using Net;
     using NUnit.Framework;
     using Swan.Formatters;
     using System;
@@ -35,27 +35,16 @@
         [Test]
         public async Task TestSendBigDataWebSocket()
         {
-            var webSocketUrl = $"{WebServerUrl.Replace("http", "ws")}bigdata";
-            var wasSet = false;
+            var webSocketUrl = new Uri($"{WebServerUrl.Replace("http", "ws")}bigdata");
 
-            var clientSocket = new WebSocket(webSocketUrl);
-            await clientSocket.ConnectAsync();
-            clientSocket.OnMessage += (s, e) =>
-            {
-                Assert.AreEqual(Json.Serialize(BigDataWebSocket.BigDataObject), e.Data);
-                wasSet = true;
-            };
+            var clientSocket = new System.Net.WebSockets.ClientWebSocket();
+            await clientSocket.ConnectAsync(webSocketUrl, default);
+            
+            var buffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes("HOLA"));
+            await clientSocket.SendAsync(buffer, System.Net.WebSockets.WebSocketMessageType.Text, true, default);
 
-            Assert.AreEqual(WebSocketState.Open, clientSocket.State, "Connection is open");
-
-            var buffer = System.Text.Encoding.UTF8.GetBytes("HOLA");
-            await clientSocket.SendAsync(buffer, Opcode.Text);
-            await Task.Delay(TimeSpan.FromSeconds(1));
-
-            if (!wasSet)
-                Assert.Ignore("Timeout");
-
-            Assert.True(wasSet);
+            var json = await ReadString(clientSocket);
+            Assert.AreEqual(Json.Serialize(BigDataWebSocket.BigDataObject), json);
         }
     }
 

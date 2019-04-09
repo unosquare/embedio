@@ -60,7 +60,7 @@
         /// Posts the people Tubular model.
         /// </summary>
         /// <returns></returns>
-        [WebApiHandler(HttpVerbs.Post, RelativePath + "people")]
+        [WebApiHandler(HttpVerbs.Post, RelativePath + "people/")]
         public Task<bool> PostPeople() =>
             this.TransformJson<GridDataRequest, GridDataResponse>(async (model, ct) =>
                 model.CreateGridDataResponse((await _dbContext.People.SelectAllAsync()).AsQueryable()));

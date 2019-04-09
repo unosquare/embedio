@@ -97,8 +97,7 @@
 
             if (len == 0)
             {
-                frame.ExtendedPayloadLength = WebSocket.EmptyBytes;
-
+                frame.ExtendedPayloadLength = Array.Empty<byte>();
                 return;
             }
 
@@ -116,10 +115,10 @@
         private async Task ReadMaskingKeyAsync(WebSocketFrame frame)
         {
             var len = frame.IsMasked ? 4 : 0;
+
             if (len == 0)
             {
-                frame.MaskingKey = WebSocket.EmptyBytes;
-
+                frame.MaskingKey = Array.Empty<byte>();
                 return;
             }
 

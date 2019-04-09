@@ -14,7 +14,7 @@
             _webSocket = webSocket;
         }
 
-        internal static bool CheckParametersForClose(CloseStatusCode code, string reason, bool client)
+        internal static bool CheckParametersForClose(CloseStatusCode code, string reason)
         {
             if (code == CloseStatusCode.NoStatus && !string.IsNullOrEmpty(reason))
             {
@@ -22,15 +22,9 @@
                 return false;
             }
 
-            if (code == CloseStatusCode.MandatoryExtension && !client)
+            if (code == CloseStatusCode.MandatoryExtension)
             {
                 "'code' cannot be used by a server.".Trace(nameof(CheckParametersForClose));
-                return false;
-            }
-
-            if (code == CloseStatusCode.ServerError && client)
-            {
-                "'code' cannot be used by a client.".Trace(nameof(CheckParametersForClose));
                 return false;
             }
 
@@ -104,29 +98,6 @@
             }
 
             return true;
-        }
-
-        internal bool CheckIfAvailable(
-            bool client,
-            bool server,
-            bool connecting,
-            bool open,
-            bool closing,
-            bool closed = true)
-        {
-            if (!client && _webSocket.IsClient)
-            {
-                "This operation isn't available in: client".Trace(nameof(CheckIfAvailable));
-                return false;
-            }
-
-            if (!server && !_webSocket.IsClient)
-            {
-                "This operation isn't available in: server".Trace(nameof(CheckIfAvailable));
-                return false;
-            }
-
-            return CheckIfAvailable(connecting, open, closing, closed);
         }
 
         // As server
