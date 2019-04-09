@@ -145,7 +145,7 @@
                     throw new InvalidOperationException(CannotChangeHeaderWarning);
 
                 if (value < 100 || value > 999)
-                    throw new ProtocolViolationException("StatusCode must be between 100 and 999.");
+                    throw new ArgumentOutOfRangeException(nameof(StatusCode), "StatusCode must be between 100 and 999.");
 
                 _statusCode = value;
                 StatusDescription = HttpListenerResponseHelper.GetStatusDescription(value);
