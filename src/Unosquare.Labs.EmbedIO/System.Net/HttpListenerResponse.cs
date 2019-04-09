@@ -330,12 +330,13 @@
         private string GetHeaderData()
         {
             var sb = new StringBuilder()
-                .AppendFormat("HTTP/{0} {1} ", ProtocolVersion, _statusCode)
-                .Append(StatusDescription)
-                .Append("\r\n");
+                .AppendFormat("HTTP/{0} {1} {2}\r\n", ProtocolVersion, _statusCode, StatusDescription);
 
-            foreach (var key in HeaderCollection.AllKeys)
-                sb.Append(key).Append(": ").Append(HeaderCollection[key]).Append("\r\n");
+            foreach (var key in HeaderCollection.AllKeys.Where(x => x != "Set-Cookie"))
+                sb.AppendFormat("{0}: {1}\r\n", key, HeaderCollection[key]);
+
+            foreach (var cookie in HeaderCollection.GetCookies(true))
+                sb.AppendFormat("Set-Cookie: {0}\r\n", cookie);
 
             return sb.Append("\r\n").ToString();
         }

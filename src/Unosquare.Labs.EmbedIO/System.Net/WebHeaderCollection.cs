@@ -1,6 +1,4 @@
-﻿using Unosquare.Labs.EmbedIO.Constants;
-
-namespace Unosquare.Net
+﻿namespace Unosquare.Net
 {
     using System;
     using System.Collections.Generic;
@@ -387,6 +385,24 @@ namespace Unosquare.Net
 
             return buff.Append("\r\n").ToString();
         }
+        
+        public override void Add(string name, string value)
+        {
+            var type = CheckHeaderType(name);
+
+            if (type == HttpHeaderType.Unspecified)
+            {
+                base.Add(name, CheckValue(value));
+            }
+            else
+            {
+                CheckState(type == HttpHeaderType.Response);
+
+                base.Add(name, CheckValue(value));
+
+                State = type == HttpHeaderType.Response ? HttpHeaderType.Response : HttpHeaderType.Request;
+            }
+        }
 
         internal static bool IsHeaderValue(string value)
         {
@@ -441,24 +457,6 @@ namespace Unosquare.Net
 
         private static HttpHeaderInfo GetHeaderInfo(string name)
             => Headers.Values.FirstOrDefault(info => info.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-
-        public override void Add(string name, string value)
-        {
-            var type = CheckHeaderType(name);
-
-            if (type == HttpHeaderType.Unspecified)
-            {
-                base.Add(name, CheckValue(value));
-            }
-            else
-            {
-                CheckState(type == HttpHeaderType.Response);
-
-                base.Add(name, CheckValue(value));
-
-                State = type == HttpHeaderType.Response ? HttpHeaderType.Response : HttpHeaderType.Request;
-            }
-        }
 
         private void CheckState(bool response)
         {
