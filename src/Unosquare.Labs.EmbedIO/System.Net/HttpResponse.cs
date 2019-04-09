@@ -24,10 +24,6 @@
         
         public CookieCollection Cookies => Headers.GetCookies(true);
 
-        public bool HasConnectionClose => Headers.Contains("Connection", "close");
-
-        public bool IsProxyAuthenticationRequired => StatusCode == 407;
-
         public bool IsRedirect => StatusCode == 301 || StatusCode == 302;
 
         public bool IsUnauthorized => StatusCode == 401;
@@ -50,16 +46,13 @@
         public override string ToString()
         {
             var output = new StringBuilder(64)
-                .AppendFormat("HTTP/{0} {1} {2}{3}", ProtocolVersion, StatusCode, Reason, CrLf);
+                .AppendFormat("HTTP/{0} {1} {2}{3}\r\n", ProtocolVersion, StatusCode, Reason);
 
             foreach (var key in Headers.AllKeys)
-                output.AppendFormat("{0}: {1}{2}", key, Headers[key], CrLf);
+                output.AppendFormat("{0}: {1}{2}\r\n", key, Headers[key]);
 
-            output.Append(CrLf);
+            output.Append("\r\n");
             
-            if (EntityBody.Length > 0)
-                output.Append(EntityBody);
-
             return output.ToString();
         }
 

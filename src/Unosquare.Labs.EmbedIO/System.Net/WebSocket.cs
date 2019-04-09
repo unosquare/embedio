@@ -11,9 +11,6 @@
     using Labs.EmbedIO;
     using Labs.EmbedIO.Constants;
     using Swan;
-#if !NETSTANDARD1_3
-    using System.Net.Security;
-#endif
 
     /// <summary>
     /// Implements the WebSocket interface.
