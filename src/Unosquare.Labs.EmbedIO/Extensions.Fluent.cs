@@ -85,7 +85,7 @@
         /// <returns>
         /// An instance of webserver.
         /// </returns>
-        /// <exception cref="ArgumentNullException">webserver</exception>
+        /// <exception cref="ArgumentNullException">webserver.</exception>
         /// <exception cref="System.ArgumentNullException">webserver.</exception>
         public static IWebServer WithWebApi(this IWebServer webserver, Assembly assembly = null, bool responseJsonException = false)
         {
@@ -121,7 +121,7 @@
         /// <returns>
         /// An instance of webserver.
         /// </returns>
-        /// <exception cref="ArgumentNullException">webserver</exception>
+        /// <exception cref="ArgumentNullException">webserver.</exception>
         /// <exception cref="System.ArgumentNullException">webserver.</exception>
         public static IWebServer LoadApiControllers(this IWebServer webserver, Assembly assembly = null, bool responseJsonException = false)
         {

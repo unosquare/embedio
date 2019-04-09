@@ -1,21 +1,16 @@
 ﻿namespace Unosquare.Net
 {
     using System;
-    using System.Linq;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
     using System.Net;
-    using System.Net.Sockets;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     using Labs.EmbedIO;
     using Labs.EmbedIO.Constants;
     using Swan;
-#if !NETSTANDARD1_3
-    using System.Net.Security;
-#endif
 
     /// <summary>
     /// Implements the WebSocket interface.
@@ -26,8 +21,6 @@
     /// </remarks>
     public class WebSocket : IWebSocket
     {
-        internal static readonly byte[] EmptyBytes = new byte[0];
-
         private readonly Action<MessageEventArgs> _message;
         private readonly object _forState = new object();
         private readonly ConcurrentQueue<MessageEventArgs> _messageEventQueue = new ConcurrentQueue<MessageEventArgs>();
@@ -44,44 +37,7 @@
         private string _origin;
         private AutoResetEvent _receivePong;
         private Stream _stream;
-        private TcpClient _tcpClient;
-        private Uri _uri;
         private TimeSpan _waitTime;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebSocket" /> class with
-        /// the specified WebSocket URL.
-        /// </summary>
-        /// <param name="url">A <see cref="string" /> that represents the WebSocket URL to connect.</param>
-        /// <exception cref="System.ArgumentNullException">url.</exception>
-        /// <exception cref="System.ArgumentException">
-        /// An empty string. - url
-        /// or
-        /// url
-        /// or
-        /// protocols.
-        /// </exception>
-        /// <exception cref="ArgumentNullException"><paramref name="url" /> is <see langword="null" />.</exception>
-        /// <exception cref="ArgumentException"><para>
-        ///   <paramref name="url" /> is invalid.
-        /// </para>
-        /// <para>
-        /// -or-
-        /// </para></exception>
-        public WebSocket(string url)
-        {
-            _uri = url.CreateWebSocketUri();
-
-            WebSocketKey = new WebSocketKey(true);
-            IsClient = true;
-
-            _message = Messagec;
-#if !NETSTANDARD1_3
-            IsSecure = _uri.Scheme == "wss";
-#endif
-            _waitTime = TimeSpan.FromSeconds(5);
-            _validator = new WebSocketValidator(this);
-        }
 
         // As server
         internal WebSocket(WebSocketContext context)
@@ -89,7 +45,7 @@
             _context = context;
 
             _message = Messages;
-            WebSocketKey = new WebSocketKey(false);
+            WebSocketKey = new WebSocketKey();
 
 #if !NETSTANDARD1_3
             IsSecure = context.IsSecureConnection;
@@ -119,7 +75,7 @@
             {
                 lock (_forState)
                 {
-                    if (!_validator.CheckIfAvailable(true, false, true, false, false))
+                    if (!_validator.CheckIfAvailable(false))
                         return;
 
                     _compression = value;
@@ -128,12 +84,10 @@
         }
 
         /// <summary>
-        /// Gets the HTTP cookies included in the WebSocket handshake request and response.
+        /// Gets the cookies.
         /// </summary>
         /// <value>
-        /// An <see cref="T:System.Collections.Generic.IEnumerable{WebSocketSharp.Net.Cookie}"/>
-        /// instance that provides an enumerator which supports the iteration over the collection of
-        /// the cookies.
+        /// The cookies.
         /// </value>
         public IEnumerable<Cookie> Cookies
         {
@@ -173,7 +127,7 @@
             {
                 lock (_forState)
                 {
-                    if (!_validator.CheckIfAvailable(true, false, true, false, false))
+                    if (!_validator.CheckIfAvailable(false))
                         return;
 
                     _enableRedirection = value;
@@ -205,7 +159,7 @@
         /// <value>
         /// <c>true</c> if the connection is secure; otherwise, <c>false</c>.
         /// </value>
-        public bool IsSecure { get; private set; }
+        public bool IsSecure { get; }
 #endif
 
         /// <summary>
@@ -234,7 +188,7 @@
             {
                 lock (_forState)
                 {
-                    if (!_validator.CheckIfAvailable(true, false, true, false, false))
+                    if (!_validator.CheckIfAvailable(false))
                         return;
 
                     if (string.IsNullOrEmpty(value))
@@ -264,7 +218,7 @@
         /// <value>
         /// A <see cref="Uri"/> that represents the URL used to connect, or accepted.
         /// </value>
-        public Uri Url => IsClient ? _uri : _context.RequestUri;
+        public Uri Url => _context.RequestUri;
 
         /// <summary>
         /// Gets or sets the wait time for the response to the Ping or Close.
@@ -281,7 +235,7 @@
             {
                 lock (_forState)
                 {
-                    if (value == TimeSpan.Zero || !_validator.CheckIfAvailable(true, true, true, false, false))
+                    if (value == TimeSpan.Zero || !_validator.CheckIfAvailable())
                         return;
 
                     _waitTime = value;
@@ -290,8 +244,6 @@
         }
 
         internal bool InContinuation { get; private set; }
-
-        internal bool IsClient { get; }
 
         internal bool IsExtensionsRequested { get; set; }
 
@@ -327,7 +279,7 @@
                 return Task.Delay(0, ct);
 
             if (code != CloseStatusCode.Undefined &&
-                !WebSocketValidator.CheckParametersForClose(code, reason, IsClient))
+                !WebSocketValidator.CheckParametersForClose(code, reason))
             {
                 return Task.Delay(0, ct);
             }
@@ -340,67 +292,13 @@
         }
 
         /// <summary>
-        /// Establishes a WebSocket connection asynchronously.
-        /// </summary>
-        /// <param name="ct">The cancellation token.</param>
-        /// <returns>
-        /// If CheckIfAvailable statement terminates execution of the method; otherwise, 
-        /// establishes a WebSocket connection.
-        /// </returns>
-        /// <remarks>
-        /// <para>
-        /// This method doesn't wait for the connect to be complete.
-        /// </para>
-        /// <para>
-        /// This method isn't available in a server.
-        /// </para></remarks>
-        public async Task ConnectAsync(CancellationToken ct = default)
-        {
-            if (!_validator.CheckIfAvailable(true, false, true, false, false))
-                return;
-
-            try
-            {
-                lock (_forState)
-                    _readyState = WebSocketState.Connecting;
-
-                await SetClientStream().ConfigureAwait(false);
-                var res = await SendHandshakeRequestAsync().ConfigureAwait(false);
-
-                _validator.ThrowIfInvalidResponse(res);
-
-                if (IsExtensionsRequested)
-                    ProcessSecWebSocketExtensionsServerHeader(res.Headers[HttpHeaders.WebSocketExtensions]);
-
-                CookieCollection.AddRange(res.Cookies.Where(y => !y.Expired));
-
-                lock (_forState)
-                    _readyState = WebSocketState.Open;
-
-                Open();
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-                Fatal("An exception has occurred while connecting.", ex);
-            }
-        }
-
-        /// <summary>
         /// Sends a ping using the WebSocket connection.
         /// </summary>
         /// <returns>
         /// <c>true</c> if the <see cref="WebSocket"/> receives a pong to this ping in a time;
         /// otherwise, <c>false</c>.
         /// </returns>
-        public Task<bool> PingAsync()
-        {
-            var bytes = IsClient
-                ? WebSocketFrame.CreatePingFrame(true).ToArray()
-                : WebSocketFrame.EmptyPingBytes;
-
-            return PingAsync(bytes, _waitTime);
-        }
+        public Task<bool> PingAsync() => PingAsync(WebSocketFrame.EmptyPingBytes, _waitTime);
 
         /// <summary>
         /// Sends a ping with the specified <paramref name="message"/> using the WebSocket connection.
@@ -420,7 +318,7 @@
             var data = Encoding.UTF8.GetBytes(message);
 
             if (data.Length <= 125)
-                return PingAsync(WebSocketFrame.CreatePingFrame(data, IsClient).ToArray(), _waitTime);
+                return PingAsync(WebSocketFrame.CreatePingFrame(data).ToArray(), _waitTime);
 
             "A message has greater than the allowable max size.".Error(nameof(PingAsync));
 
@@ -446,7 +344,7 @@
 
             try
             {
-                stream = new WebSocketStream(data, opcode, _compression, IsClient);
+                stream = new WebSocketStream(data, opcode, _compression);
 
                 foreach (var frame in stream.GetFrames())
                     await Send(frame).ConfigureAwait(false);
@@ -491,7 +389,6 @@
             }
         }
 
-        // As server
         internal async Task InternalAcceptAsync()
         {
             try
@@ -533,7 +430,6 @@
                                                                       code == CloseStatusCode.Abnormal ||
                                                                       code == CloseStatusCode.TlsHandshakeFailure;
 
-        // As client
         private async Task InternalCloseAsync(
             PayloadData payloadData = null,
             bool send = true,
@@ -563,7 +459,7 @@
 
             "Begin closing the connection.".Trace(nameof(InternalCloseAsync));
 
-            var bytes = send ? WebSocketFrame.CreateCloseFrame(payloadData, IsClient).ToArray() : null;
+            var bytes = send ? WebSocketFrame.CreateCloseFrame(payloadData).ToArray() : null;
             await CloseHandshakeAsync(bytes, receive, received, ct).ConfigureAwait(false);
             ReleaseResources();
 
@@ -609,27 +505,6 @@
 
             if (_messageEventQueue.TryDequeue(out var e))
                 _message(e);
-        }
-
-        private void Messagec(MessageEventArgs e)
-        {
-            do
-            {
-                try
-                {
-                    OnMessage?.Invoke(this, e);
-                }
-                catch (Exception ex)
-                {
-                    ex.Log(nameof(WebSocket));
-                }
-
-                if (_messageEventQueue.TryDequeue(out e) && _readyState == WebSocketState.Open) continue;
-
-                _inMessage = false;
-                break;
-            }
-            while (true);
         }
 
         private void Messages(MessageEventArgs e)
@@ -713,7 +588,7 @@
             if (EmitOnPing)
                 _messageEventQueue.Enqueue(new MessageEventArgs(frame));
 
-            return Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData, IsClient));
+            return Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData));
         }
 
         private void ProcessPongFrame()
@@ -788,34 +663,12 @@
             }
         }
 
-        // As client
-        private void ProcessSecWebSocketExtensionsServerHeader(string value)
+        private void ReleaseResources()
         {
-            if (value == null)
-            {
-                _compression = CompressionMethod.None;
-                return;
-            }
-
-            _extensions = value;
-        }
-
-        // As client
-        private void ReleaseClientResources()
-        {
-            _stream?.Dispose();
+            _context.CloseAsync();
             _stream = null;
+            _context = null;
 
-#if NET462
-            _tcpClient?.Close();
-#else
-            _tcpClient?.Dispose();
-#endif
-            _tcpClient = null;
-        }
-
-        private void ReleaseCommonResources()
-        {
             if (_fragmentsBuffer != null)
             {
                 _fragmentsBuffer.Dispose();
@@ -833,38 +686,16 @@
                 _receivePong = null;
             }
 
-            if (_exitReceiving != null)
-            {
+            if (_exitReceiving == null) return;
+
 #if NET462
-                _exitReceiving.Close();
+            _exitReceiving.Close();
 #else
                 _exitReceiving.Dispose();
 #endif
-                _exitReceiving = null;
-            }
+            _exitReceiving = null;
         }
-
-        private void ReleaseResources()
-        {
-            if (IsClient)
-                ReleaseClientResources();
-            else
-                ReleaseServerResources();
-
-            ReleaseCommonResources();
-        }
-
-        // As server
-        private void ReleaseServerResources()
-        {
-            if (IsClient)
-                return;
-
-            _context.CloseAsync();
-            _stream = null;
-            _context = null;
-        }
-
+        
         private Task Send(WebSocketFrame frame)
         {
             lock (_forState)
@@ -880,44 +711,6 @@
             return _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length);
         }
 
-        // As client
-        private async Task<HttpResponse> SendHandshakeRequestAsync()
-        {
-            while (true)
-            {
-                var req = HttpRequest.CreateHandshakeRequest(this);
-                var res = await req.GetResponse(_stream).ConfigureAwait(false);
-
-                if (res.IsUnauthorized)
-                {
-                    throw new InvalidOperationException("Authentication is not supported");
-                }
-
-                if (!res.IsRedirect) return res;
-
-                var url = res.Headers["Location"];
-                $"Received a redirection to '{url}'.".Trace(nameof(SendHandshakeRequestAsync));
-
-                if (!_enableRedirection) return res;
-
-                if (string.IsNullOrEmpty(url))
-                {
-                    "No url to redirect is located.".Trace(nameof(SendHandshakeRequestAsync));
-                    return res;
-                }
-
-                var uri = url.CreateWebSocketUri();
-                ReleaseClientResources();
-
-                _uri = uri;
-#if !NETSTANDARD1_3
-                IsSecure = uri.Scheme == "wss";
-#endif
-
-                await SetClientStream().ConfigureAwait(false);
-            }
-        }
-
         // As server
         private Task SendHandshakeAsync()
         {
@@ -931,42 +724,10 @@
 
             ret.SetCookies(CookieCollection);
 
-            var bytes = ret.ToByteArray();
+            var bytes = Encoding.UTF8.GetBytes(ret.ToString());
 
             return _stream.WriteAsync(bytes, 0, bytes.Length);
         }
-
-        // As client
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        private async Task SetClientStream()
-        {
-#if !NETSTANDARD1_3
-            _tcpClient = new TcpClient(_uri.DnsSafeHost, _uri.Port);
-#else
-            _tcpClient = new TcpClient();
-
-            await _tcpClient.ConnectAsync(_uri.DnsSafeHost, _uri.Port).ConfigureAwait(false);
-#endif
-            _stream = _tcpClient.GetStream();
-
-#if !NETSTANDARD1_3
-            if (!IsSecure) return;
-
-            try
-            {
-                var sslStream = new SslStream(_stream, false);
-
-                sslStream.AuthenticateAsClient(_uri.DnsSafeHost);
-
-                _stream = sslStream;
-            }
-            catch (Exception ex)
-            {
-                throw new WebSocketException(CloseStatusCode.TlsHandshakeFailure, ex);
-            }
-#endif
-        }
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
         private void StartReceiving()
         {

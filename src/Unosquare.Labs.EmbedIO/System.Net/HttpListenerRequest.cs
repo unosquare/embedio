@@ -62,7 +62,7 @@
 
                 if (!string.IsNullOrEmpty(contentType))
                 {
-                    _contentEncoding = HttpBase.GetEncoding(contentType);
+                    _contentEncoding = HttpResponse.GetEncoding(contentType);
 
                     if (_contentEncoding != null)
                         return _contentEncoding;

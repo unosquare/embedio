@@ -1,9 +1,10 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using Constants;
-    using Net;
     using NUnit.Framework;
     using System;
+    using System.IO;
+    using System.Text;
     using System.Threading.Tasks;
 
     public abstract class WebSocketsModuleTestBase : FixtureBase
@@ -15,34 +16,42 @@
         {
             _url = url;
         }
+
+        protected static async Task<string> ReadString(System.Net.WebSockets.ClientWebSocket ws)
+        {
+            var buffer = new ArraySegment<byte>(new byte[8192]);
+
+            using (var ms = new MemoryStream())
+            {
+                System.Net.WebSockets.WebSocketReceiveResult result;
+
+                do
+                {
+                    result = await ws.ReceiveAsync(buffer, default);
+                    ms.Write(buffer.Array, buffer.Offset, result.Count);
+                }
+                while (!result.EndOfMessage);
+
+                return Encoding.UTF8.GetString(ms.ToArray());
+            }
+        }
         
         protected async Task ConnectWebSocket()
         {
-            var websocketUrl = WebServerUrl.Replace("http", "ws") + _url;
-            var wasSet = false;
-
-            var clientSocket = new WebSocket(websocketUrl);
-            await clientSocket.ConnectAsync();
+            var websocketUrl = new Uri(WebServerUrl.Replace("http", "ws") + _url);
             
-            clientSocket.OnMessage += (s, e) =>
-            {
-                Assert.AreEqual(e.Data, "HELLO");
-                wasSet = true;
-            };
-
+            var clientSocket = new System.Net.WebSockets.ClientWebSocket();
+            await clientSocket.ConnectAsync(websocketUrl, default);
+            
             Assert.AreEqual(
-                WebSocketState.Open, 
+                System.Net.WebSockets.WebSocketState.Open, 
                 clientSocket.State, 
                 $"Connection should be open, but the status is {clientSocket.State} - {websocketUrl}");
 
-            var buffer = System.Text.Encoding.UTF8.GetBytes("HOLA");
-            await clientSocket.SendAsync(buffer, Opcode.Text);
-            await Task.Delay(TimeSpan.FromSeconds(1));
+            var buffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes("HOLA"));
+            await clientSocket.SendAsync(buffer, System.Net.WebSockets.WebSocketMessageType.Text, true, default);
 
-            if (!wasSet)
-                Assert.Inconclusive("Timeout");
-
-            Assert.IsTrue(wasSet);
+            Assert.AreEqual(await ReadString(clientSocket), "HELLO");
         }
     }
 }

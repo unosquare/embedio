@@ -69,24 +69,24 @@
     internal class WebSocketFrame
     {
         internal static readonly byte[] EmptyPingBytes;
-        
+
         static WebSocketFrame()
         {
-            EmptyPingBytes = CreatePingFrame(false).ToArray();
+            EmptyPingBytes = CreatePingFrame().ToArray();
         }
 
-        internal WebSocketFrame(Opcode opcode, PayloadData payloadData, bool mask = true)
-            : this(Fin.Final, opcode, payloadData, false, mask)
+        internal WebSocketFrame(Opcode opcode, PayloadData payloadData)
+            : this(Fin.Final, opcode, payloadData)
         {
         }
 
-        internal WebSocketFrame(Fin fin, Opcode opcode, byte[] data, bool compressed, bool mask = true)
-            : this(fin, opcode, new PayloadData(data), compressed, mask)
+        internal WebSocketFrame(Fin fin, Opcode opcode, byte[] data, bool compressed)
+            : this(fin, opcode, new PayloadData(data), compressed)
         {
         }
 
         internal WebSocketFrame(
-            Fin fin, Opcode opcode, PayloadData payloadData, bool compressed = false, bool mask = true)
+            Fin fin, Opcode opcode, PayloadData payloadData, bool compressed = false)
         {
             Fin = fin;
             Rsv1 = IsOpcodeData(opcode) && compressed ? Rsv.On : Rsv.Off;
@@ -98,7 +98,7 @@
             if (len < 126)
             {
                 PayloadLength = (byte)len;
-                ExtendedPayloadLength = WebSocket.EmptyBytes;
+                ExtendedPayloadLength = Array.Empty<byte>();
             }
             else if (len < 0x010000)
             {
@@ -111,18 +111,8 @@
                 ExtendedPayloadLength = len.ToByteArray(Endianness.Big);
             }
 
-            if (mask)
-            {
-                Mask = Mask.On;
-                MaskingKey = CreateMaskingKey();
-                payloadData.Mask(MaskingKey);
-            }
-            else
-            {
-                Mask = Mask.Off;
-                MaskingKey = WebSocket.EmptyBytes;
-            }
-
+            Mask = Mask.Off;
+            MaskingKey = Array.Empty<byte>();
             PayloadData = payloadData;
         }
 
@@ -135,7 +125,7 @@
         public Fin Fin { get; internal set; }
 
         public bool IsCompressed => Rsv1 == Rsv.On;
-        
+
         public bool IsFragment => Fin == Fin.More || Opcode == Opcode.Cont;
 
         public bool IsMasked => Mask == Mask.On;
@@ -239,22 +229,15 @@ Extended Payload Length: {extPayloadLen}
 
         public override string ToString() => BitConverter.ToString(ToArray());
 
-        internal static WebSocketFrame CreateCloseFrame(PayloadData payloadData, bool mask) => new WebSocketFrame(Fin.Final, Opcode.Close, payloadData ?? new PayloadData(), false, mask);
+        internal static WebSocketFrame CreateCloseFrame(PayloadData payloadData) => new WebSocketFrame(Fin.Final, Opcode.Close, payloadData ?? new PayloadData());
 
-        internal static WebSocketFrame CreatePingFrame(bool mask) => new WebSocketFrame(Fin.Final, Opcode.Ping, new PayloadData(), false, mask);
+        internal static WebSocketFrame CreatePingFrame() => new WebSocketFrame(Fin.Final, Opcode.Ping, new PayloadData());
 
-        internal static WebSocketFrame CreatePingFrame(byte[] data, bool mask) => new WebSocketFrame(Fin.Final, Opcode.Ping, new PayloadData(data), false, mask);
-        
+        internal static WebSocketFrame CreatePingFrame(byte[] data) => new WebSocketFrame(Fin.Final, Opcode.Ping, new PayloadData(data));
+
         internal void Validate(WebSocket webSocket)
         {
-            var masked = IsMasked;
-
-            if (webSocket.IsClient && masked)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, "A frame from the server is masked.");
-            }
-
-            if (!webSocket.IsClient && !masked)
+            if (!IsMasked)
             {
                 throw new WebSocketException(CloseStatusCode.ProtocolError, "A frame from a client isn't masked.");
             }
@@ -291,15 +274,7 @@ Extended Payload Length: {extPayloadLen}
 
             Mask = Mask.Off;
             PayloadData.Mask(MaskingKey);
-            MaskingKey = WebSocket.EmptyBytes;
-        }
-
-        private static byte[] CreateMaskingKey()
-        {
-            var key = new byte[4];
-            WebSocketKey.RandomNumber.GetBytes(key);
-
-            return key;
+            MaskingKey = Array.Empty<byte>();
         }
 
         private static bool IsOpcodeData(Opcode opcode) => opcode == Opcode.Text || opcode == Opcode.Binary;
