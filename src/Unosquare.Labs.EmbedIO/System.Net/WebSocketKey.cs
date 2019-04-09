@@ -6,7 +6,6 @@
 
     internal class WebSocketKey
     {
-        internal static readonly RandomNumberGenerator RandomNumber = RandomNumberGenerator.Create();
         private const string Guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 
         public string KeyValue { get; set; }

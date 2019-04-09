@@ -1,9 +1,8 @@
 ﻿namespace Unosquare.Net
 {
-    using System.Linq;
-    using System.Text;
     using Labs.EmbedIO.Constants;
     using Swan;
+    using System.Text;
 
     internal class WebSocketValidator
     {
@@ -35,40 +34,6 @@
             }
 
             return true;
-        }
-
-        internal void ThrowIfInvalidResponse(HttpResponse response)
-        {
-            if (response.IsRedirect)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, "Indicates the redirection.");
-            }
-
-            if (response.IsUnauthorized)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, "Requires the authentication.");
-            }
-
-            if (!response.IsWebSocketResponse)
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, "Not a WebSocket handshake response.");
-            }
-
-            var headers = response.Headers;
-            if (headers[HttpHeaders.WebSocketAccept]?.TrimStart() != _webSocket.WebSocketKey.CreateResponseKey())
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {HttpHeaders.WebSocketAccept} header, or it has an invalid value.");
-            }
-
-            if (!ValidateSecWebSocketExtensionsServerHeader(headers[HttpHeaders.WebSocketExtensions]))
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {HttpHeaders.WebSocketExtensions} header.");
-            }
-
-            if (!ValidateSecWebSocketVersionServerHeader(headers[HttpHeaders.WebSocketVersion]))
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {HttpHeaders.WebSocketVersion} header.");
-            }
         }
 
         internal bool CheckIfAvailable(bool connecting = true, bool open = true, bool closing = false, bool closed = false)
@@ -136,56 +101,9 @@
             }
         }
 
-        // As client
-        internal bool ValidateSecWebSocketExtensionsServerHeader(string value)
-        {
-            if (value == null)
-                return true;
-
-            if (value.Length == 0 || !_webSocket.IsExtensionsRequested)
-                return false;
-
-            var comp = _webSocket.Compression != CompressionMethod.None;
-
-            foreach (var e in value.SplitHeaderValue(Strings.CommaSplitChar))
-            {
-                var ext = e.Trim();
-                if (!comp || !ext.StartsWith(_webSocket.Compression.ToExtensionString()))
-                    return false;
-
-                if (!ext.Contains("server_no_context_takeover"))
-                {
-                    "The server hasn't sent back 'server_no_context_takeover'.".Trace(nameof(ValidateSecWebSocketExtensionsServerHeader));
-                    return false;
-                }
-
-                if (!ext.Contains("client_no_context_takeover"))
-                    "The server hasn't sent back 'client_no_context_takeover'.".Trace(nameof(ValidateSecWebSocketExtensionsServerHeader));
-
-                var method = _webSocket.Compression.ToExtensionString();
-                var invalid =
-                    ext.SplitHeaderValue(';').Any(
-                        t =>
-                        {
-                            t = t.Trim();
-                            return t != method
-                                   && t != "server_no_context_takeover"
-                                   && t != "client_no_context_takeover";
-                        });
-
-                if (invalid)
-                    return false;
-            }
-
-            return true;
-        }
-
         private static bool ValidateSecWebSocketProtocolClientHeader(string value) => value == null || value.Length > 0;
 
         // As server
         private static bool ValidateSecWebSocketVersionClientHeader(string value) => value != null && value == Strings.WebSocketVersion;
-
-        // As client
-        private static bool ValidateSecWebSocketVersionServerHeader(string value) => value == null || value == Strings.WebSocketVersion;
     }
 }

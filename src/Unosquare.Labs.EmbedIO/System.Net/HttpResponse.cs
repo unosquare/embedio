@@ -25,16 +25,7 @@
         }
         
         public CookieCollection Cookies => Headers.GetCookies(true);
-
-        public bool IsRedirect => StatusCode == 301 || StatusCode == 302;
-
-        public bool IsUnauthorized => StatusCode == 401;
-
-        public bool IsWebSocketResponse => ProtocolVersion > HttpVersion.Version10 &&
-                                           StatusCode == 101 &&
-                                           Headers.Contains("Upgrade", "websocket") &&
-                                           Headers.Contains("Connection", "Upgrade");
-
+        
         public string Reason { get; }
 
         public int StatusCode { get; }

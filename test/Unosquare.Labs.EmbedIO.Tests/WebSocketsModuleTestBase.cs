@@ -16,24 +16,6 @@
         {
             _url = url;
         }
-        
-        protected async Task ConnectWebSocket()
-        {
-            var websocketUrl = new Uri(WebServerUrl.Replace("http", "ws") + _url);
-            
-            var clientSocket = new System.Net.WebSockets.ClientWebSocket();
-            await clientSocket.ConnectAsync(websocketUrl, default);
-            
-            Assert.AreEqual(
-                System.Net.WebSockets.WebSocketState.Open, 
-                clientSocket.State, 
-                $"Connection should be open, but the status is {clientSocket.State} - {websocketUrl}");
-
-            var buffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes("HOLA"));
-            await clientSocket.SendAsync(buffer, System.Net.WebSockets.WebSocketMessageType.Text, true, default);
-
-            Assert.AreEqual(await ReadString(clientSocket), "HELLO");
-        }
 
         protected static async Task<string> ReadString(System.Net.WebSockets.ClientWebSocket ws)
         {
@@ -52,6 +34,24 @@
 
                 return Encoding.UTF8.GetString(ms.ToArray());
             }
+        }
+        
+        protected async Task ConnectWebSocket()
+        {
+            var websocketUrl = new Uri(WebServerUrl.Replace("http", "ws") + _url);
+            
+            var clientSocket = new System.Net.WebSockets.ClientWebSocket();
+            await clientSocket.ConnectAsync(websocketUrl, default);
+            
+            Assert.AreEqual(
+                System.Net.WebSockets.WebSocketState.Open, 
+                clientSocket.State, 
+                $"Connection should be open, but the status is {clientSocket.State} - {websocketUrl}");
+
+            var buffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes("HOLA"));
+            await clientSocket.SendAsync(buffer, System.Net.WebSockets.WebSocketMessageType.Text, true, default);
+
+            Assert.AreEqual(await ReadString(clientSocket), "HELLO");
         }
     }
 }

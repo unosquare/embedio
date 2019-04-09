@@ -237,9 +237,7 @@ Extended Payload Length: {extPayloadLen}
 
         internal void Validate(WebSocket webSocket)
         {
-            var masked = IsMasked;
-
-            if (!masked)
+            if (!IsMasked)
             {
                 throw new WebSocketException(CloseStatusCode.ProtocolError, "A frame from a client isn't masked.");
             }

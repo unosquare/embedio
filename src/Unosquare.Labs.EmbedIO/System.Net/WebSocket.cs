@@ -389,7 +389,6 @@
             }
         }
 
-        // As server
         internal async Task InternalAcceptAsync()
         {
             try
@@ -431,7 +430,6 @@
                                                                       code == CloseStatusCode.Abnormal ||
                                                                       code == CloseStatusCode.TlsHandshakeFailure;
 
-        // As client
         private async Task InternalCloseAsync(
             PayloadData payloadData = null,
             bool send = true,

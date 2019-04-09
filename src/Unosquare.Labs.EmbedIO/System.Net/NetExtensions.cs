@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Text;
     using System;
-    using Labs.EmbedIO;
     using Labs.EmbedIO.Constants;
     using Swan;
 
@@ -103,30 +102,6 @@
             return !(BitConverter.IsLittleEndian ^ (order == Endianness.Little));
         }
         
-        internal static Uri CreateWebSocketUri(this string uriString)
-        {
-            if (uriString == null)
-                throw new ArgumentNullException(nameof(uriString));
-
-            var uri = uriString.ToUri();
-
-            if (uri == null)
-                throw new ArgumentNullException(nameof(uriString));
-
-            if (!uri.IsAbsoluteUri)
-                throw new ArgumentException($"Not an absolute URI: {uriString}");
-
-            if (!(uri.Scheme == "ws" || uri.Scheme == "wss"))
-                throw new ArgumentException($"The scheme part isn\'t \'ws\' or \'wss\': {uriString}");
-
-            if (uri.Fragment.Length > 0)
-                throw new ArgumentException($"Includes the fragment component: {uriString}");
-
-            return uri.Port != -1
-                ? uri
-                : new Uri($"{uri.Scheme}://{uri.Host}:{(uri.Scheme == "ws" ? 80 : 443)}{uri.PathAndQuery}");
-        }
-
         internal static bool IsToken(this string value) =>
             value.All(c => c >= 0x20 && c < 0x7f && !Tspecials.Contains(c));
         
