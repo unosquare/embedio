@@ -1,7 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
     using Constants;
-    using Net;
     using NUnit.Framework;
     using System;
     using System.IO;
@@ -51,10 +50,7 @@
                 }
                 while (!result.EndOfMessage);
 
-                ms.Seek(0, SeekOrigin.Begin);
-
-                using (var reader = new StreamReader(ms, Encoding.UTF8))
-                    return reader.ReadToEnd();
+                return Encoding.UTF8.GetString(ms.ToArray());
             }
         }
     }

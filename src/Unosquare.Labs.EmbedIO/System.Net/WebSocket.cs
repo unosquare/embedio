@@ -726,7 +726,7 @@
 
             ret.SetCookies(CookieCollection);
 
-            var bytes = ret.ToByteArray();
+            var bytes = Encoding.UTF8.GetBytes(ret.ToString());
 
             return _stream.WriteAsync(bytes, 0, bytes.Length);
         }

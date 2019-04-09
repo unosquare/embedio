@@ -2,10 +2,11 @@
 {
     using System;
     using System.Collections.Specialized;
+    using System.Linq;
     using System.Net;
     using System.Text;
 
-    internal class HttpResponse : HttpBase
+    internal class HttpResponse
     {
         internal const string ServerVersion = "embedio/2.0";
 
@@ -15,8 +16,9 @@
         }
         
         private HttpResponse(int code, string reason, Version version, NameValueCollection headers)
-          : base(version, headers)
         {
+            ProtocolVersion = version;
+            Headers = headers;
             StatusCode = code;
             Reason = reason;
             Headers["Server"] = ServerVersion;
@@ -37,6 +39,10 @@
 
         public int StatusCode { get; }
         
+        public NameValueCollection Headers { get; }
+
+        public Version ProtocolVersion { get; }
+
         public void SetCookies(CookieCollection cookies)
         {
             foreach (var cookie in cookies)
@@ -46,14 +52,42 @@
         public override string ToString()
         {
             var output = new StringBuilder(64)
-                .AppendFormat("HTTP/{0} {1} {2}{3}\r\n", ProtocolVersion, StatusCode, Reason);
+                .AppendFormat("HTTP/{0} {1} {2}\r\n", ProtocolVersion, StatusCode, Reason);
 
             foreach (var key in Headers.AllKeys)
-                output.AppendFormat("{0}: {1}{2}\r\n", key, Headers[key]);
+                output.AppendFormat("{0}: {1}\r\n", key, Headers[key]);
 
             output.Append("\r\n");
             
             return output.ToString();
+        }
+        
+        internal static string GetValue(string nameAndValue)
+        {
+            var idx = nameAndValue.IndexOf('=');
+
+            return idx < 0 || idx == nameAndValue.Length - 1 ? null : nameAndValue.Substring(idx + 1).Trim().Unquote();
+        }
+
+        internal static Encoding GetEncoding(string contentType) => contentType
+            .Split(';')
+            .Select(p => p.Trim())
+            .Where(part => part.StartsWith("charset", StringComparison.OrdinalIgnoreCase))
+            .Select(part => Encoding.GetEncoding(GetValue(part)))
+            .FirstOrDefault();
+
+        protected static NameValueCollection ParseHeaders(string[] headerParts)
+        {
+            var headers = new NameValueCollection();
+
+            for (var i = 1; i < headerParts.Length; i++)
+            {
+                var parts = headerParts[i].Split(':');
+
+                headers[parts[0]] = parts[1];
+            }
+
+            return headers;
         }
 
         internal static HttpResponse CreateWebSocketResponse()
