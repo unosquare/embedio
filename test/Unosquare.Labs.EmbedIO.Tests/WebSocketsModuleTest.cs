@@ -20,6 +20,7 @@
                     ws.RegisterModule(new WebSocketsModule());
                     ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocket>();
                     ws.Module<WebSocketsModule>().RegisterWebSocketsServer<BigDataWebSocket>();
+                    ws.Module<WebSocketsModule>().RegisterWebSocketsServer<CloseWebSocket>();
                 },
                 "test/")
         {
@@ -45,6 +46,21 @@
 
             var json = await ReadString(clientSocket);
             Assert.AreEqual(Json.Serialize(BigDataWebSocket.BigDataObject), json);
+        }
+
+        [Test]
+        public async Task TestWithDifferentCloseResponse()
+        {
+            var webSocketUrl = new Uri($"{WebServerUrl.Replace("http", "ws")}close");
+
+            var clientSocket = new System.Net.WebSockets.ClientWebSocket();
+            await clientSocket.ConnectAsync(webSocketUrl, default);
+
+            var buffer = new ArraySegment<byte>(new byte[8192]);
+            var result = await clientSocket.ReceiveAsync(buffer, default);
+
+            Assert.IsTrue(result.CloseStatus.HasValue);
+            Assert.IsTrue(result.CloseStatus.Value == System.Net.WebSockets.WebSocketCloseStatus.InvalidPayloadData);
         }
     }
 

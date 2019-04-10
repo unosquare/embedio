@@ -245,8 +245,6 @@
 
         internal bool InContinuation { get; private set; }
 
-        internal bool IsExtensionsRequested { get; set; }
-
         internal CookieCollection CookieCollection { get; } = new CookieCollection();
 
         // As server
@@ -258,37 +256,28 @@
         public Task SendAsync(byte[] buffer, bool isText, CancellationToken ct) => SendAsync(buffer, isText ? Opcode.Text : Opcode.Binary, ct);
 
         /// <inheritdoc />
-        public Task CloseAsync(CancellationToken ct) => CloseAsync(CloseStatusCode.Normal, ct: ct);
+        public Task CloseAsync(CancellationToken cancellationToken) => CloseAsync(CloseStatusCode.Normal, cancellationToken: cancellationToken);
 
-        /// <summary>
-        /// Closes the WebSocket connection asynchronously, and releases
-        /// all associated resources.
-        /// </summary>
-        /// <param name="code">The code.</param>
-        /// <param name="reason">The reason.</param>
-        /// <param name="ct">The cancellation token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous closes websocket connection.
-        /// </returns>
+        /// <inheritdoc />
         public Task CloseAsync(
             CloseStatusCode code = CloseStatusCode.Undefined,
             string reason = null,
-            CancellationToken ct = default)
+            CancellationToken cancellationToken = default)
         {
             if (!_validator.CheckIfAvailable())
-                return Task.Delay(0, ct);
+                return Task.Delay(0, cancellationToken);
 
             if (code != CloseStatusCode.Undefined &&
                 !WebSocketValidator.CheckParametersForClose(code, reason))
             {
-                return Task.Delay(0, ct);
+                return Task.Delay(0, cancellationToken);
             }
 
             if (code == CloseStatusCode.NoStatus)
-                return InternalCloseAsync(ct: ct);
+                return InternalCloseAsync(ct: cancellationToken);
 
             var send = !IsOpcodeReserved(code);
-            return InternalCloseAsync(new PayloadData((ushort)code, reason), send, send, ct: ct);
+            return InternalCloseAsync(new PayloadData((ushort)code, reason), send, send, ct: cancellationToken);
         }
 
         /// <summary>
