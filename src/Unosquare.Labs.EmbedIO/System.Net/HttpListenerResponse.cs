@@ -319,7 +319,7 @@
 
         private static string QuotedString(Cookie cookie, string value)
             => cookie.Version == 0 || value.IsToken() ? value : "\"" + value.Replace("\"", "\\\"") + "\"";
-
+        
         private void Close(bool force)
         {
             _disposed = true;
@@ -336,7 +336,7 @@
                 sb.AppendFormat("{0}: {1}\r\n", key, HeaderCollection[key]);
 
             foreach (var cookie in HeaderCollection.GetCookies(true))
-                sb.AppendFormat("Set-Cookie: {0}\r\n", cookie);
+                sb.AppendFormat("Set-Cookie: {0}\r\n", CookieToClientString(cookie));
 
             return sb.Append("\r\n").ToString();
         }
