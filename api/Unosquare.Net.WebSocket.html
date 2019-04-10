@@ -127,77 +127,6 @@
   <div class="markdown level0 remarks"><p>The WebSocket class provides a set of methods and properties for two-way communication using
 the WebSocket protocol (<a href="http://tools.ietf.org/html/rfc6455">RFC 6455</a>).</p>
 </div>
-  <h3 id="constructors">Constructors
-  </h3>
-  
-  
-  <a id="Unosquare_Net_WebSocket__ctor_" data-uid="Unosquare.Net.WebSocket.#ctor*"></a>
-  <h4 id="Unosquare_Net_WebSocket__ctor_System_String_" data-uid="Unosquare.Net.WebSocket.#ctor(System.String)">WebSocket(String)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Net.WebSocket.html">WebSocket</a> class with
-the specified WebSocket URL.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public WebSocket(string url)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">url</span></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> that represents the WebSocket URL to connect.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>url.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>An empty string. - url
-or
-url
-or
-protocols.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">url</code> is <span class="xref">null</span>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>
-<code data-dev-comment-type="paramref" class="paramref">url</code> is invalid.
-</p>
-<p>
--or-
-</p></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="properties">Properties
   </h3>
   
@@ -232,7 +161,7 @@ used to compress a message. The default value is <a class="xref" href="Unosquare
   
   <a id="Unosquare_Net_WebSocket_Cookies_" data-uid="Unosquare.Net.WebSocket.Cookies*"></a>
   <h4 id="Unosquare_Net_WebSocket_Cookies" data-uid="Unosquare.Net.WebSocket.Cookies">Cookies</h4>
-  <div class="markdown level1 summary"><p>Gets the HTTP cookies included in the WebSocket handshake request and response.</p>
+  <div class="markdown level1 summary"><p>Gets the cookies.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -250,9 +179,7 @@ used to compress a message. The default value is <a class="xref" href="Unosquare
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">Cookie</span>&gt;</td>
-        <td><p>An <span class="xref">System.Collections.Generic.IEnumerable{WebSocketSharp.Net.Cookie}</span>
-instance that provides an enumerator which supports the iteration over the collection of
-the cookies.</p>
+        <td><p>The cookies.</p>
 </td>
       </tr>
     </tbody>
@@ -623,59 +550,6 @@ all associated resources.</p>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Unosquare_Net_WebSocket_ConnectAsync_" data-uid="Unosquare.Net.WebSocket.ConnectAsync*"></a>
-  <h4 id="Unosquare_Net_WebSocket_ConnectAsync_System_Threading_CancellationToken_" data-uid="Unosquare.Net.WebSocket.ConnectAsync(System.Threading.CancellationToken)">ConnectAsync(CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Establishes a WebSocket connection asynchronously.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task ConnectAsync(CancellationToken ct = default(CancellationToken))</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
-        <td><span class="parametername">ct</span></td>
-        <td><p>The cancellation token.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
-        <td><p>If CheckIfAvailable statement terminates execution of the method; otherwise, 
-establishes a WebSocket connection.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Unosquare_Net_WebSocket_ConnectAsync_System_Threading_CancellationToken__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>
-This method doesn&apos;t wait for the connect to be complete.
-</p>
-<p>
-This method isn&apos;t available in a server.
-</p></div>
   
   
   <a id="Unosquare_Net_WebSocket_PingAsync_" data-uid="Unosquare.Net.WebSocket.PingAsync*"></a>

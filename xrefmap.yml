@@ -277,36 +277,6 @@ references:
   commentId: F:Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.Wildcard
   fullName: Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.Wildcard
   nameWithType: RoutingStrategy.Wildcard
-- uid: Unosquare.Labs.EmbedIO.Constants.WebServerState
-  name: WebServerState
-  href: api/Unosquare.Labs.EmbedIO.Constants.WebServerState.html
-  commentId: T:Unosquare.Labs.EmbedIO.Constants.WebServerState
-  fullName: Unosquare.Labs.EmbedIO.Constants.WebServerState
-  nameWithType: WebServerState
-- uid: Unosquare.Labs.EmbedIO.Constants.WebServerState.Created
-  name: Created
-  href: api/Unosquare.Labs.EmbedIO.Constants.WebServerState.html#Unosquare_Labs_EmbedIO_Constants_WebServerState_Created
-  commentId: F:Unosquare.Labs.EmbedIO.Constants.WebServerState.Created
-  fullName: Unosquare.Labs.EmbedIO.Constants.WebServerState.Created
-  nameWithType: WebServerState.Created
-- uid: Unosquare.Labs.EmbedIO.Constants.WebServerState.Loading
-  name: Loading
-  href: api/Unosquare.Labs.EmbedIO.Constants.WebServerState.html#Unosquare_Labs_EmbedIO_Constants_WebServerState_Loading
-  commentId: F:Unosquare.Labs.EmbedIO.Constants.WebServerState.Loading
-  fullName: Unosquare.Labs.EmbedIO.Constants.WebServerState.Loading
-  nameWithType: WebServerState.Loading
-- uid: Unosquare.Labs.EmbedIO.Constants.WebServerState.Running
-  name: Running
-  href: api/Unosquare.Labs.EmbedIO.Constants.WebServerState.html#Unosquare_Labs_EmbedIO_Constants_WebServerState_Running
-  commentId: F:Unosquare.Labs.EmbedIO.Constants.WebServerState.Running
-  fullName: Unosquare.Labs.EmbedIO.Constants.WebServerState.Running
-  nameWithType: WebServerState.Running
-- uid: Unosquare.Labs.EmbedIO.Constants.WebServerState.Stopped
-  name: Stopped
-  href: api/Unosquare.Labs.EmbedIO.Constants.WebServerState.html#Unosquare_Labs_EmbedIO_Constants_WebServerState_Stopped
-  commentId: F:Unosquare.Labs.EmbedIO.Constants.WebServerState.Stopped
-  fullName: Unosquare.Labs.EmbedIO.Constants.WebServerState.Stopped
-  nameWithType: WebServerState.Stopped
 - uid: Unosquare.Labs.EmbedIO.CookieCollection
   name: CookieCollection
   href: api/Unosquare.Labs.EmbedIO.CookieCollection.html
@@ -420,63 +390,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.CookieCollection.SyncRoot
   nameWithType: CookieCollection.SyncRoot
-- uid: Unosquare.Labs.EmbedIO.Core
-  name: Unosquare.Labs.EmbedIO.Core
-  href: api/Unosquare.Labs.EmbedIO.Core.html
-  commentId: N:Unosquare.Labs.EmbedIO.Core
-  fullName: Unosquare.Labs.EmbedIO.Core
-  nameWithType: Unosquare.Labs.EmbedIO.Core
-- uid: Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs
-  name: WebServerStateChangedEventArgs
-  href: api/Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.html
-  commentId: T:Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs
-  fullName: Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs
-  nameWithType: WebServerStateChangedEventArgs
-- uid: Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.#ctor(Unosquare.Labs.EmbedIO.Constants.WebServerState,Unosquare.Labs.EmbedIO.Constants.WebServerState)
-  name: WebServerStateChangedEventArgs(WebServerState, WebServerState)
-  href: api/Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.html#Unosquare_Labs_EmbedIO_Core_WebServerStateChangedEventArgs__ctor_Unosquare_Labs_EmbedIO_Constants_WebServerState_Unosquare_Labs_EmbedIO_Constants_WebServerState_
-  commentId: M:Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.#ctor(Unosquare.Labs.EmbedIO.Constants.WebServerState,Unosquare.Labs.EmbedIO.Constants.WebServerState)
-  fullName: Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.WebServerStateChangedEventArgs(Unosquare.Labs.EmbedIO.Constants.WebServerState, Unosquare.Labs.EmbedIO.Constants.WebServerState)
-  nameWithType: WebServerStateChangedEventArgs.WebServerStateChangedEventArgs(WebServerState, WebServerState)
-- uid: Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.#ctor*
-  name: WebServerStateChangedEventArgs
-  href: api/Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.html#Unosquare_Labs_EmbedIO_Core_WebServerStateChangedEventArgs__ctor_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.#ctor
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.WebServerStateChangedEventArgs
-  nameWithType: WebServerStateChangedEventArgs.WebServerStateChangedEventArgs
-- uid: Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.NewState
-  name: NewState
-  href: api/Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.html#Unosquare_Labs_EmbedIO_Core_WebServerStateChangedEventArgs_NewState
-  commentId: P:Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.NewState
-  fullName: Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.NewState
-  nameWithType: WebServerStateChangedEventArgs.NewState
-- uid: Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.NewState*
-  name: NewState
-  href: api/Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.html#Unosquare_Labs_EmbedIO_Core_WebServerStateChangedEventArgs_NewState_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.NewState
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.NewState
-  nameWithType: WebServerStateChangedEventArgs.NewState
-- uid: Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.OldState
-  name: OldState
-  href: api/Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.html#Unosquare_Labs_EmbedIO_Core_WebServerStateChangedEventArgs_OldState
-  commentId: P:Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.OldState
-  fullName: Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.OldState
-  nameWithType: WebServerStateChangedEventArgs.OldState
-- uid: Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.OldState*
-  name: OldState
-  href: api/Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.html#Unosquare_Labs_EmbedIO_Core_WebServerStateChangedEventArgs_OldState_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.OldState
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.OldState
-  nameWithType: WebServerStateChangedEventArgs.OldState
-- uid: Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventHandler
-  name: WebServerStateChangedEventHandler
-  href: api/Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventHandler.html
-  commentId: T:Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventHandler
-  fullName: Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventHandler
-  nameWithType: WebServerStateChangedEventHandler
 - uid: Unosquare.Labs.EmbedIO.EasyRoutes
   name: EasyRoutes
   href: api/Unosquare.Labs.EmbedIO.EasyRoutes.html
@@ -2729,25 +2642,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.IWebServer.SessionModule
   nameWithType: IWebServer.SessionModule
-- uid: Unosquare.Labs.EmbedIO.IWebServer.State
-  name: State
-  href: api/Unosquare.Labs.EmbedIO.IWebServer.html#Unosquare_Labs_EmbedIO_IWebServer_State
-  commentId: P:Unosquare.Labs.EmbedIO.IWebServer.State
-  fullName: Unosquare.Labs.EmbedIO.IWebServer.State
-  nameWithType: IWebServer.State
-- uid: Unosquare.Labs.EmbedIO.IWebServer.State*
-  name: State
-  href: api/Unosquare.Labs.EmbedIO.IWebServer.html#Unosquare_Labs_EmbedIO_IWebServer_State_
-  commentId: Overload:Unosquare.Labs.EmbedIO.IWebServer.State
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.IWebServer.State
-  nameWithType: IWebServer.State
-- uid: Unosquare.Labs.EmbedIO.IWebServer.StateChanged
-  name: StateChanged
-  href: api/Unosquare.Labs.EmbedIO.IWebServer.html#Unosquare_Labs_EmbedIO_IWebServer_StateChanged
-  commentId: E:Unosquare.Labs.EmbedIO.IWebServer.StateChanged
-  fullName: Unosquare.Labs.EmbedIO.IWebServer.StateChanged
-  nameWithType: IWebServer.StateChanged
 - uid: Unosquare.Labs.EmbedIO.IWebServer.UnregisterModule(System.Type)
   name: UnregisterModule(Type)
   href: api/Unosquare.Labs.EmbedIO.IWebServer.html#Unosquare_Labs_EmbedIO_IWebServer_UnregisterModule_System_Type_
@@ -5040,25 +4934,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Tests.TestWebServer.SessionModule
   nameWithType: TestWebServer.SessionModule
-- uid: Unosquare.Labs.EmbedIO.Tests.TestWebServer.State
-  name: State
-  href: api/Unosquare.Labs.EmbedIO.Tests.TestWebServer.html#Unosquare_Labs_EmbedIO_Tests_TestWebServer_State
-  commentId: P:Unosquare.Labs.EmbedIO.Tests.TestWebServer.State
-  fullName: Unosquare.Labs.EmbedIO.Tests.TestWebServer.State
-  nameWithType: TestWebServer.State
-- uid: Unosquare.Labs.EmbedIO.Tests.TestWebServer.State*
-  name: State
-  href: api/Unosquare.Labs.EmbedIO.Tests.TestWebServer.html#Unosquare_Labs_EmbedIO_Tests_TestWebServer_State_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Tests.TestWebServer.State
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Tests.TestWebServer.State
-  nameWithType: TestWebServer.State
-- uid: Unosquare.Labs.EmbedIO.Tests.TestWebServer.StateChanged
-  name: StateChanged
-  href: api/Unosquare.Labs.EmbedIO.Tests.TestWebServer.html#Unosquare_Labs_EmbedIO_Tests_TestWebServer_StateChanged
-  commentId: E:Unosquare.Labs.EmbedIO.Tests.TestWebServer.StateChanged
-  fullName: Unosquare.Labs.EmbedIO.Tests.TestWebServer.StateChanged
-  nameWithType: TestWebServer.StateChanged
 - uid: Unosquare.Labs.EmbedIO.Tests.TestWebServer.UnregisterModule(System.Type)
   name: UnregisterModule(Type)
   href: api/Unosquare.Labs.EmbedIO.Tests.TestWebServer.html#Unosquare_Labs_EmbedIO_Tests_TestWebServer_UnregisterModule_System_Type_
@@ -5439,25 +5314,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.WebServer.SessionModule
   nameWithType: WebServer.SessionModule
-- uid: Unosquare.Labs.EmbedIO.WebServer.State
-  name: State
-  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_State
-  commentId: P:Unosquare.Labs.EmbedIO.WebServer.State
-  fullName: Unosquare.Labs.EmbedIO.WebServer.State
-  nameWithType: WebServer.State
-- uid: Unosquare.Labs.EmbedIO.WebServer.State*
-  name: State
-  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_State_
-  commentId: Overload:Unosquare.Labs.EmbedIO.WebServer.State
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.WebServer.State
-  nameWithType: WebServer.State
-- uid: Unosquare.Labs.EmbedIO.WebServer.StateChanged
-  name: StateChanged
-  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_StateChanged
-  commentId: E:Unosquare.Labs.EmbedIO.WebServer.StateChanged
-  fullName: Unosquare.Labs.EmbedIO.WebServer.StateChanged
-  nameWithType: WebServer.StateChanged
 - uid: Unosquare.Labs.EmbedIO.WebServer.UnregisterModule(System.Type)
   name: UnregisterModule(Type)
   href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_UnregisterModule_System_Type_
@@ -6364,19 +6220,6 @@ references:
   commentId: T:Unosquare.Net.WebSocket
   fullName: Unosquare.Net.WebSocket
   nameWithType: WebSocket
-- uid: Unosquare.Net.WebSocket.#ctor(System.String)
-  name: WebSocket(String)
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket__ctor_System_String_
-  commentId: M:Unosquare.Net.WebSocket.#ctor(System.String)
-  fullName: Unosquare.Net.WebSocket.WebSocket(System.String)
-  nameWithType: WebSocket.WebSocket(String)
-- uid: Unosquare.Net.WebSocket.#ctor*
-  name: WebSocket
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket__ctor_
-  commentId: Overload:Unosquare.Net.WebSocket.#ctor
-  isSpec: "True"
-  fullName: Unosquare.Net.WebSocket.WebSocket
-  nameWithType: WebSocket.WebSocket
 - uid: Unosquare.Net.WebSocket.CloseAsync(System.Threading.CancellationToken)
   name: CloseAsync(CancellationToken)
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_CloseAsync_System_Threading_CancellationToken_
@@ -6409,19 +6252,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.WebSocket.Compression
   nameWithType: WebSocket.Compression
-- uid: Unosquare.Net.WebSocket.ConnectAsync(System.Threading.CancellationToken)
-  name: ConnectAsync(CancellationToken)
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_ConnectAsync_System_Threading_CancellationToken_
-  commentId: M:Unosquare.Net.WebSocket.ConnectAsync(System.Threading.CancellationToken)
-  fullName: Unosquare.Net.WebSocket.ConnectAsync(System.Threading.CancellationToken)
-  nameWithType: WebSocket.ConnectAsync(CancellationToken)
-- uid: Unosquare.Net.WebSocket.ConnectAsync*
-  name: ConnectAsync
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_ConnectAsync_
-  commentId: Overload:Unosquare.Net.WebSocket.ConnectAsync
-  isSpec: "True"
-  fullName: Unosquare.Net.WebSocket.ConnectAsync
-  nameWithType: WebSocket.ConnectAsync
 - uid: Unosquare.Net.WebSocket.Cookies
   name: Cookies
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Cookies
