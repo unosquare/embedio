@@ -69,7 +69,7 @@
         /// Echoes the request form data in JSON format
         /// </summary>
         /// <returns></returns>
-        [WebApiHandler(HttpVerbs.Post, RelativePath + "echo/*")]
+        [WebApiHandler(HttpVerbs.Post, RelativePath + "echo/")]
         public async Task<bool> Echo()
         {
             var content = await this.RequestFormDataDictionaryAsync();

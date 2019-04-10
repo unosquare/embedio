@@ -1,4 +1,6 @@
-﻿namespace Unosquare.Labs.EmbedIO.Tests
+﻿using Unosquare.Labs.EmbedIO.Core;
+
+namespace Unosquare.Labs.EmbedIO.Tests
 {
     using Constants;
     using Swan;
@@ -26,7 +28,11 @@
             Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
 
             RoutingStrategy = routingStrategy;
+            State = WebServerState.Running;
         }
+
+        /// <inheritdoc />
+        public event WebServerStateChangedEventHandler StateChanged;
 
         /// <inheritdoc />
         public ISessionWebModule SessionModule => _modules.SessionModule;
@@ -54,6 +60,9 @@
         public ConcurrentQueue<IHttpContext> HttpContexts { get; } = new ConcurrentQueue<IHttpContext>();
 
         /// <inheritdoc />
+        public WebServerState State { get; }
+
+        /// <inheritdoc />
         public T Module<T>()
             where T : class, IWebModule
         {
@@ -61,7 +70,7 @@
         }
 
         /// <inheritdoc />
-        public void RegisterModule(IWebModule module) => _modules.RegisterModule(module, this);
+        public void RegisterModule(IWebModule webModule) => _modules.RegisterModule(webModule, this);
 
         /// <inheritdoc />
         public void UnregisterModule(Type moduleType) => _modules.UnregisterModule(moduleType);

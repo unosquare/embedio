@@ -40,6 +40,9 @@
             // Our web server is disposable. 
             using (var server = new WebServer(webOptions))
             {
+                // Listen for state changes.
+                server.StateChanged += (s, e) => $"WebServer New State - {e.NewState}".Info();
+
                 // First, we will configure our web server by adding Modules.
                 // Please note that order DOES matter.
                 // ================================================================================================
