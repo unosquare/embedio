@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "CODE_OF_CONDUCT.html",
-          "hash": "v4M8nKRRvBoSWdceAqCFzA=="
+          "hash": "dctsbHA6o1odyw4cGocHUQ=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "RZShA6QaFv2RaNbRMX0fuQ=="
+          "hash": "uKI//TZ+YMGUkgZttD9MAA=="
         }
       },
       "is_incremental": false,
@@ -193,7 +193,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Extensions.html",
-          "hash": "5vxEF1pUjlyWgwJgLFQ6aQ=="
+          "hash": "+ujfwC36egvgTas/MUGx3g=="
         }
       },
       "is_incremental": false,
@@ -877,7 +877,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.WebSocket.html",
-          "hash": "HhilH+yxjv9vit0H8Y9CoA=="
+          "hash": "4V3N6Y2LuxDoRbB5BR5V4g=="
         }
       },
       "is_incremental": false,
@@ -1034,11 +1034,10 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ResourceDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 71,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -1047,10 +1046,11 @@
           "total_file_count": 6,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 71,
+          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }

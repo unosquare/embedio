@@ -6220,6 +6220,19 @@ references:
   commentId: T:Unosquare.Net.WebSocket
   fullName: Unosquare.Net.WebSocket
   nameWithType: WebSocket
+- uid: Unosquare.Net.WebSocket.#ctor(System.String)
+  name: WebSocket(String)
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket__ctor_System_String_
+  commentId: M:Unosquare.Net.WebSocket.#ctor(System.String)
+  fullName: Unosquare.Net.WebSocket.WebSocket(System.String)
+  nameWithType: WebSocket.WebSocket(String)
+- uid: Unosquare.Net.WebSocket.#ctor*
+  name: WebSocket
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket__ctor_
+  commentId: Overload:Unosquare.Net.WebSocket.#ctor
+  isSpec: "True"
+  fullName: Unosquare.Net.WebSocket.WebSocket
+  nameWithType: WebSocket.WebSocket
 - uid: Unosquare.Net.WebSocket.CloseAsync(System.Threading.CancellationToken)
   name: CloseAsync(CancellationToken)
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_CloseAsync_System_Threading_CancellationToken_
@@ -6252,6 +6265,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.WebSocket.Compression
   nameWithType: WebSocket.Compression
+- uid: Unosquare.Net.WebSocket.ConnectAsync(System.Threading.CancellationToken)
+  name: ConnectAsync(CancellationToken)
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_ConnectAsync_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Net.WebSocket.ConnectAsync(System.Threading.CancellationToken)
+  fullName: Unosquare.Net.WebSocket.ConnectAsync(System.Threading.CancellationToken)
+  nameWithType: WebSocket.ConnectAsync(CancellationToken)
+- uid: Unosquare.Net.WebSocket.ConnectAsync*
+  name: ConnectAsync
+  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_ConnectAsync_
+  commentId: Overload:Unosquare.Net.WebSocket.ConnectAsync
+  isSpec: "True"
+  fullName: Unosquare.Net.WebSocket.ConnectAsync
+  nameWithType: WebSocket.ConnectAsync
 - uid: Unosquare.Net.WebSocket.Cookies
   name: Cookies
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Cookies
