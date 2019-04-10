@@ -9,6 +9,7 @@
     internal class HttpResponse
     {
         internal const string ServerVersion = "embedio/2.0";
+        internal const string SetCookie = "Set-Cookie";
 
         internal HttpResponse(HttpStatusCode code)
           : this((int) code, HttpListenerResponseHelper.GetStatusDescription((int)code), HttpVersion.Version11, new NameValueCollection())
@@ -23,9 +24,12 @@
             Reason = reason;
             Headers["Server"] = ServerVersion;
         }
-        
-        public CookieCollection Cookies => Headers.GetCookies(true);
-        
+
+        public CookieCollection Cookies =>
+            Headers?.AllKeys.Contains(SetCookie) == true
+                ? CookieCollection.ParseResponse(Headers[SetCookie])
+                : new CookieCollection();
+
         public string Reason { get; }
 
         public int StatusCode { get; }
@@ -67,20 +71,6 @@
             .Select(part => Encoding.GetEncoding(GetValue(part)))
             .FirstOrDefault();
 
-        protected static NameValueCollection ParseHeaders(string[] headerParts)
-        {
-            var headers = new NameValueCollection();
-
-            for (var i = 1; i < headerParts.Length; i++)
-            {
-                var parts = headerParts[i].Split(':');
-
-                headers[parts[0]] = parts[1];
-            }
-
-            return headers;
-        }
-
         internal static HttpResponse CreateWebSocketResponse()
         {
             var res = new HttpResponse(HttpStatusCode.SwitchingProtocols);
@@ -100,6 +90,20 @@
                 throw new ArgumentException($"Invalid status line: {headerParts[0]}");
 
             return new HttpResponse(int.Parse(statusLine[1]), statusLine[2], new Version(statusLine[0].Substring(5)), ParseHeaders(headerParts));
+        }
+        
+        protected static NameValueCollection ParseHeaders(string[] headerParts)
+        {
+            var headers = new NameValueCollection();
+
+            for (var i = 1; i < headerParts.Length; i++)
+            {
+                var parts = headerParts[i].Split(':');
+
+                headers[parts[0]] = parts[1];
+            }
+
+            return headers;
         }
     }
 }

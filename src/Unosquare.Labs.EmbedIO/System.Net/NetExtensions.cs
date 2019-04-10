@@ -105,14 +105,6 @@
         internal static bool IsToken(this string value) =>
             value.All(c => c >= 0x20 && c < 0x7f && !Tspecials.Contains(c));
         
-        internal static CookieCollection GetCookies(this NameValueCollection headers, bool response)
-        {
-            var name = response ? "Set-Cookie" : HttpHeaders.Cookie;
-            return headers != null && headers.AllKeys.Contains(name)
-                ? CookieCollection.Parse(headers[name], response)
-                : new CookieCollection();
-        }
-
         internal static string ToExtensionString(this CompressionMethod method, params string[] parameters)
         {
             if (method == CompressionMethod.None)

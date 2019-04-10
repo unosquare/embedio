@@ -94,97 +94,7 @@
             var val = nameAndValue.Substring(idx + 1).Trim();
             return unquote ? val.Unquote() : val;
         }
-
-        internal static CookieCollection Parse(string value, bool response) => response
-            ? ParseResponse(value)
-            : ParseRequest(value);
-
-        private static string[] SplitCookieHeaderValue(string value)
-            => new List<string>(value.SplitHeaderValue(Labs.EmbedIO.Constants.Strings.CookieSplitChars)).ToArray();
-        
-        private static int CompareCookieWithinSorted(Cookie x, Cookie y)
-        {
-            var ret = x.Version - y.Version;
-            return ret != 0
-                ? ret
-                : (ret = string.Compare(x.Name, y.Name, StringComparison.Ordinal)) != 0
-                    ? ret
-                    : y.Path.Length - x.Path.Length;
-        }
-
-        private static CookieCollection ParseRequest(string value)
-        {
-            var cookies = new CookieCollection();
-
-            Cookie cookie = null;
-            var ver = 0;
-            var pairs = SplitCookieHeaderValue(value);
-
-            foreach (var t in pairs)
-            {
-                var pair = t.Trim();
-                if (pair.Length == 0)
-                    continue;
-
-                if (pair.StartsWith("$version", StringComparison.OrdinalIgnoreCase))
-                {
-                    ver = int.Parse(GetValue(pair, true));
-                }
-                else if (pair.StartsWith("$path", StringComparison.OrdinalIgnoreCase) && cookie != null)
-                {
-                    cookie.Path = GetValue(pair);
-                }
-                else if (pair.StartsWith("$domain", StringComparison.OrdinalIgnoreCase) && cookie != null)
-                {
-                    cookie.Domain = GetValue(pair);
-                }
-                else if (pair.StartsWith("$port", StringComparison.OrdinalIgnoreCase) && cookie != null)
-                {
-                    cookie.Port = pair.Equals("$port", StringComparison.OrdinalIgnoreCase)
-                        ? "\"\""
-                        : GetValue(pair);
-                }
-                else
-                {
-                    if (cookie != null)
-                        cookies.Add(cookie);
-
-                    cookie = ParseCookie(pair);
-                    if (ver != 0)
-                        cookie.Version = ver;
-                }
-            }
-
-            if (cookie != null)
-                cookies.Add(cookie);
-
-            return cookies;
-        }
-
-        private static Cookie ParseCookie(string pair)
-        {
-            string name;
-            var val = string.Empty;
-
-            var pos = pair.IndexOf('=');
-            if (pos == -1)
-            {
-                name = pair;
-            }
-            else if (pos == pair.Length - 1)
-            {
-                name = pair.Substring(0, pos).TrimEnd(' ');
-            }
-            else
-            {
-                name = pair.Substring(0, pos).TrimEnd(' ');
-                val = pair.Substring(pos + 1).TrimStart(' ');
-            }
-
-            return new Cookie(name, val);
-        }
-
-        private static CookieCollection ParseResponse(string value)
+        internal static CookieCollection ParseResponse(string value)
         {
             var cookies = new CookieCollection();
 
@@ -271,6 +181,42 @@
                 cookies.Add(cookie);
 
             return cookies;
+        }
+
+        private static string[] SplitCookieHeaderValue(string value)
+            => new List<string>(value.SplitHeaderValue(Labs.EmbedIO.Constants.Strings.CookieSplitChars)).ToArray();
+        
+        private static int CompareCookieWithinSorted(Cookie x, Cookie y)
+        {
+            var ret = x.Version - y.Version;
+            return ret != 0
+                ? ret
+                : (ret = string.Compare(x.Name, y.Name, StringComparison.Ordinal)) != 0
+                    ? ret
+                    : y.Path.Length - x.Path.Length;
+        }
+
+        private static Cookie ParseCookie(string pair)
+        {
+            string name;
+            var val = string.Empty;
+
+            var pos = pair.IndexOf('=');
+            if (pos == -1)
+            {
+                name = pair;
+            }
+            else if (pos == pair.Length - 1)
+            {
+                name = pair.Substring(0, pos).TrimEnd(' ');
+            }
+            else
+            {
+                name = pair.Substring(0, pos).TrimEnd(' ');
+                val = pair.Substring(pos + 1).TrimStart(' ');
+            }
+
+            return new Cookie(name, val);
         }
 
         private int SearchCookie(Cookie cookie)
