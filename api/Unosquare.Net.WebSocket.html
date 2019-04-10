@@ -451,12 +451,12 @@ The Origin header has the following syntax:
   
   <a id="Unosquare_Net_WebSocket_CloseAsync_" data-uid="Unosquare.Net.WebSocket.CloseAsync*"></a>
   <h4 id="Unosquare_Net_WebSocket_CloseAsync_System_Threading_CancellationToken_" data-uid="Unosquare.Net.WebSocket.CloseAsync(System.Threading.CancellationToken)">CloseAsync(CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Closes the web socket asynchronously.</p>
+  <div class="markdown level1 summary"><p>Closes the asynchronous.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task CloseAsync(CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task CloseAsync(CancellationToken ct)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -470,7 +470,7 @@ The Origin header has the following syntax:
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
-        <td><span class="parametername">cancellationToken</span></td>
+        <td><span class="parametername">ct</span></td>
         <td><p>The cancellation token.</p>
 </td>
       </tr>
@@ -496,12 +496,13 @@ The Origin header has the following syntax:
   
   <a id="Unosquare_Net_WebSocket_CloseAsync_" data-uid="Unosquare.Net.WebSocket.CloseAsync*"></a>
   <h4 id="Unosquare_Net_WebSocket_CloseAsync_Unosquare_Net_CloseStatusCode_System_String_System_Threading_CancellationToken_" data-uid="Unosquare.Net.WebSocket.CloseAsync(Unosquare.Net.CloseStatusCode,System.String,System.Threading.CancellationToken)">CloseAsync(CloseStatusCode, String, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Closes the web socket asynchronously.</p>
+  <div class="markdown level1 summary"><p>Closes the WebSocket connection asynchronously, and releases
+all associated resources.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task CloseAsync(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public Task CloseAsync(CloseStatusCode code = CloseStatusCode.Undefined, string reason = null, CancellationToken ct = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -522,11 +523,12 @@ The Origin header has the following syntax:
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">reason</span></td>
-        <td></td>
+        <td><p>The reason.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
-        <td><span class="parametername">cancellationToken</span></td>
+        <td><span class="parametername">ct</span></td>
         <td><p>The cancellation token.</p>
 </td>
       </tr>
@@ -543,7 +545,7 @@ The Origin header has the following syntax:
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
-        <td><p>The task object representing the asynchronous operation.</p>
+        <td><p>A task that represents the asynchronous closes websocket connection.</p>
 </td>
       </tr>
     </tbody>
@@ -626,7 +628,7 @@ otherwise, <code>false</code>.</p>
   
   <a id="Unosquare_Net_WebSocket_SendAsync_" data-uid="Unosquare.Net.WebSocket.SendAsync*"></a>
   <h4 id="Unosquare_Net_WebSocket_SendAsync_System_Byte___System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Net.WebSocket.SendAsync(System.Byte[],System.Boolean,System.Threading.CancellationToken)">SendAsync(Byte[], Boolean, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Sends the buffer to the web socket asynchronously.</p>
+  <div class="markdown level1 summary"><p>Sends the asynchronous.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -658,7 +660,8 @@ otherwise, <code>false</code>.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
         <td><span class="parametername">ct</span></td>
-        <td></td>
+        <td><p>The cancellation token.</p>
+</td>
       </tr>
     </tbody>
   </table>

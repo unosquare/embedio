@@ -2667,12 +2667,6 @@ references:
   commentId: M:Unosquare.Labs.EmbedIO.IWebSocket.CloseAsync(System.Threading.CancellationToken)
   fullName: Unosquare.Labs.EmbedIO.IWebSocket.CloseAsync(System.Threading.CancellationToken)
   nameWithType: IWebSocket.CloseAsync(CancellationToken)
-- uid: Unosquare.Labs.EmbedIO.IWebSocket.CloseAsync(Unosquare.Net.CloseStatusCode,System.String,System.Threading.CancellationToken)
-  name: CloseAsync(CloseStatusCode, String, CancellationToken)
-  href: api/Unosquare.Labs.EmbedIO.IWebSocket.html#Unosquare_Labs_EmbedIO_IWebSocket_CloseAsync_Unosquare_Net_CloseStatusCode_System_String_System_Threading_CancellationToken_
-  commentId: M:Unosquare.Labs.EmbedIO.IWebSocket.CloseAsync(Unosquare.Net.CloseStatusCode,System.String,System.Threading.CancellationToken)
-  fullName: Unosquare.Labs.EmbedIO.IWebSocket.CloseAsync(Unosquare.Net.CloseStatusCode, System.String, System.Threading.CancellationToken)
-  nameWithType: IWebSocket.CloseAsync(CloseStatusCode, String, CancellationToken)
 - uid: Unosquare.Labs.EmbedIO.IWebSocket.CloseAsync*
   name: CloseAsync
   href: api/Unosquare.Labs.EmbedIO.IWebSocket.html#Unosquare_Labs_EmbedIO_IWebSocket_CloseAsync_
@@ -5516,12 +5510,6 @@ references:
   commentId: M:Unosquare.Labs.EmbedIO.WebSocket.CloseAsync(System.Threading.CancellationToken)
   fullName: Unosquare.Labs.EmbedIO.WebSocket.CloseAsync(System.Threading.CancellationToken)
   nameWithType: WebSocket.CloseAsync(CancellationToken)
-- uid: Unosquare.Labs.EmbedIO.WebSocket.CloseAsync(Unosquare.Net.CloseStatusCode,System.String,System.Threading.CancellationToken)
-  name: CloseAsync(CloseStatusCode, String, CancellationToken)
-  href: api/Unosquare.Labs.EmbedIO.WebSocket.html#Unosquare_Labs_EmbedIO_WebSocket_CloseAsync_Unosquare_Net_CloseStatusCode_System_String_System_Threading_CancellationToken_
-  commentId: M:Unosquare.Labs.EmbedIO.WebSocket.CloseAsync(Unosquare.Net.CloseStatusCode,System.String,System.Threading.CancellationToken)
-  fullName: Unosquare.Labs.EmbedIO.WebSocket.CloseAsync(Unosquare.Net.CloseStatusCode, System.String, System.Threading.CancellationToken)
-  nameWithType: WebSocket.CloseAsync(CloseStatusCode, String, CancellationToken)
 - uid: Unosquare.Labs.EmbedIO.WebSocket.CloseAsync*
   name: CloseAsync
   href: api/Unosquare.Labs.EmbedIO.WebSocket.html#Unosquare_Labs_EmbedIO_WebSocket_CloseAsync_
