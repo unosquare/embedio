@@ -1,14 +1,13 @@
-﻿using Unosquare.Labs.EmbedIO.Core;
-
-namespace Unosquare.Labs.EmbedIO.Tests
+﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
-    using Constants;
-    using Swan;
     using System;
     using System.Collections.Concurrent;
     using System.Collections.ObjectModel;
     using System.Threading;
     using System.Threading.Tasks;
+    using Constants;
+    using Swan;
+    using Core;
 
     /// <summary>
     /// Represents our tiny web server used to handle requests for testing.
@@ -28,7 +27,7 @@ namespace Unosquare.Labs.EmbedIO.Tests
             Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
 
             RoutingStrategy = routingStrategy;
-            State = WebServerState.Running;
+            State = WebServerState.Listening;
         }
 
         /// <inheritdoc />

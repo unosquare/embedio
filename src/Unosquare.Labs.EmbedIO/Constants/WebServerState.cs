@@ -16,9 +16,9 @@
         Loading,
 
         /// <summary>
-        /// The running state.
+        /// The listening state.
         /// </summary>
-        Running,
+        Listening,
 
         /// <summary>
         /// The stopped state.

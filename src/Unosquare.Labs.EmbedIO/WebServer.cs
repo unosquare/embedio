@@ -274,7 +274,7 @@
                     module.Start(ct);
                 }
 
-                State = WebServerState.Running;
+                State = WebServerState.Listening;
 
                 // Disposing the web server will close the listener.           
                 while (Listener != null && Listener.IsListening && !ct.IsCancellationRequested)
