@@ -325,10 +325,10 @@
             if (!string.IsNullOrEmpty(cookie.Port))
                 result.Append("; Port=").Append(cookie.Port);
             
-            if (cookie.HttpOnly)
+            if (cookie.Secure)
                 result.Append("; Secure");
             
-            if (cookie.Secure)
+            if (cookie.HttpOnly)
                 result.Append("; HttpOnly");
 
             return result.ToString();
