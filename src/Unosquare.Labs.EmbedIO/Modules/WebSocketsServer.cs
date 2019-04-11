@@ -182,7 +182,7 @@
         {
             try
             {
-                await webSocket.WebSocket.SendAsync(payload ?? new byte[0], false, CancellationToken).ConfigureAwait(false);
+                await webSocket.WebSocket.SendAsync(payload ?? Array.Empty<byte>(), false, CancellationToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -384,7 +384,7 @@
             while (webSocket.State == System.Net.WebSockets.WebSocketState.Open)
             {
                 // retrieve the result (blocking)
-                var receiveResult = new WebSocketReceiveResult(await webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), ct));
+                var receiveResult = new WebSocketReceiveResult(await webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), ct).ConfigureAwait(false));
 
                 if (receiveResult.MessageType == (int)System.Net.WebSockets.WebSocketMessageType.Close)
                 {

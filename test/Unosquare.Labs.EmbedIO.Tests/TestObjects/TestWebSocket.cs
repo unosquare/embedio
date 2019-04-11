@@ -19,7 +19,7 @@
         }
 
         protected override void OnClientConnected(
-            IWebSocketContext context, 
+            IWebSocketContext context,
             System.Net.IPEndPoint localEndPoint,
             System.Net.IPEndPoint remoteEndPoint)
         {
@@ -2911,11 +2911,40 @@ cygSR/MggDhTGBrfglUEKIXXbcbfwgukfyVEJJPOIP0xTtdAhAKBTNyWZuTIcRmIjIcgEEau",
         }
 
         protected override void OnClientConnected(
-            IWebSocketContext context, 
+            IWebSocketContext context,
             System.Net.IPEndPoint localEndPoint,
             System.Net.IPEndPoint remoteEndPoint)
         {
             // Do nothing
+        }
+
+        protected override void OnClientDisconnected(IWebSocketContext context)
+        {
+            // Do nothing
+        }
+    }
+
+    [WebSocketHandler("/close")]
+    public class CloseWebSocket : WebSocketsServer
+    {
+        public override string ServerName => nameof(BigDataWebSocket);
+
+        protected override void OnMessageReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
+        {
+            // Do nothing
+        }
+
+        protected override void OnFrameReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
+        {
+            // Do nothing
+        }
+
+        protected override void OnClientConnected(
+            IWebSocketContext context,
+            System.Net.IPEndPoint localEndPoint,
+            System.Net.IPEndPoint remoteEndPoint)
+        {
+            context.WebSocket.CloseAsync(Net.CloseStatusCode.InvalidData, "Your data is invalid");
         }
 
         protected override void OnClientDisconnected(IWebSocketContext context)
