@@ -35,7 +35,12 @@
                 : new WebServer(WebServerUrl, _routeStrategy);
 
             _builder(WebServerInstance);
+            OnAfterInit();
             WebServerInstance.RunAsync();
+        }
+
+        protected virtual void OnAfterInit()
+        {
         }
 
         [TearDown]

@@ -40,7 +40,9 @@
             }
 
             // Check if the requested local path is part of the root File System Path
-            if (IsPartOfPath(localPath, FileSystemPath) == false)
+            // or of any of the virtualized paths (this latter test fixes issue #263)
+            string testLocalPath = localPath;
+            if (!IsPartOfPath(localPath, FileSystemPath) && !Values.Any(vfsPath => IsPartOfPath(testLocalPath, vfsPath)))
             {
                 return VirtualPathStatus.Forbidden;
             }
