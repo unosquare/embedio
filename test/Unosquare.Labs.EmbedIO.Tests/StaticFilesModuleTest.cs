@@ -4,6 +4,7 @@
     using Modules;
     using NUnit.Framework;
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Net;
@@ -16,12 +17,16 @@
     {
         private const string HeaderPragmaValue = "no-cache";
 
-        public StaticFilesModuleTest()
-            : base(ws =>
-            {
-                ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()) { UseRamCache = true });
+        protected StaticFilesModuleTest(Func<StaticFilesModule> buildStaticFilesModule)
+            : base(ws => {
+                ws.RegisterModule(buildStaticFilesModule());
                 ws.RegisterModule(new FallbackModule("/"));
             }, RoutingStrategy.Wildcard)
+        {
+        }
+
+        public StaticFilesModuleTest()
+            : this(() => new StaticFilesModule(TestHelper.SetupStaticFolder()) { UseRamCache = true })
         {
         }
 
@@ -40,6 +45,57 @@
                 var originalSet = TestHelper.GetBigData();
                 Buffer.BlockCopy(originalSet, offset, subset, 0, maxLength);
                 Assert.IsTrue(subset.SequenceEqual(data));
+            }
+        }
+
+        public class UseVirtualPaths : StaticFilesModuleTest
+        {
+            private const string VirtualFolderName = "virtual";
+            private const string VirtualizedFolderName = "html-virtualized";
+
+            public UseVirtualPaths()
+                : base(() => new StaticFilesModule(new Dictionary<string, string> {
+                        { "/", TestHelper.SetupStaticFolder() },
+                        { "/" + VirtualFolderName, TestHelper.SetupStaticFolder(VirtualizedFolderName) },
+                    }) { UseRamCache = true })
+            {
+            }
+
+            string VirtualPathUrl { get; set; }
+
+            protected override void OnAfterInit()
+            {
+                VirtualPathUrl = WebServerUrl + VirtualFolderName + "/";
+            }
+
+            [Test]
+            public async Task VirtualPathIndex()
+            {
+                using (var client = new HttpClient())
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Get, VirtualPathUrl);
+
+                    using (var response = await client.SendAsync(request))
+                    {
+                        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK on virtual path");
+
+                        var html = await response.Content.ReadAsStringAsync();
+
+                        Assert.AreEqual(Resources.Index, html, "Same content index.html on virtual path");
+
+                        Assert.IsTrue(string.IsNullOrWhiteSpace(response.Headers.Pragma.ToString()), "Pragma empty");
+                    }
+
+                    WebServerInstance.Module<StaticFilesModule>().DefaultHeaders.Add(HttpHeaders.Pragma, HeaderPragmaValue);
+
+                    request = new HttpRequestMessage(HttpMethod.Get, VirtualPathUrl);
+
+                    using (var response = await client.SendAsync(request))
+                    {
+                        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK on virtual path");
+                        Assert.AreEqual(HeaderPragmaValue, response.Headers.Pragma.ToString());
+                    }
+                }
             }
         }
 

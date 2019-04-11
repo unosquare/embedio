@@ -20,20 +20,20 @@
 
         private const string Placeholder = "This is a placeholder";
 
-        public static string RootPath()
+        public static string RootPath(string folderName)
         {
             var assemblyPath = Path.GetDirectoryName(typeof(StaticFilesModuleTest).GetTypeInfo().Assembly.Location);
-            return Path.Combine(assemblyPath ?? throw new InvalidOperationException(), "html");
+            return Path.Combine(assemblyPath ?? throw new InvalidOperationException(), folderName);
         }
+
+        public static string RootPath() => RootPath("html");
 
         public static byte[] GetBigData() => File.Exists(Path.Combine(RootPath(), BigDataFile))
             ? File.ReadAllBytes(Path.Combine(RootPath(), BigDataFile))
             : null;
 
-        public static string SetupStaticFolder(bool onlyIndex = true)
+        private static string SetupStaticFolderCore(string rootPath, bool onlyIndex = true)
         {
-            var rootPath = RootPath();
-
             if (Directory.Exists(rootPath) == false)
                 Directory.CreateDirectory(rootPath);
 
@@ -69,6 +69,10 @@
 
             return rootPath;
         }
+
+        public static string SetupStaticFolder(bool onlyIndex = true) => SetupStaticFolderCore(RootPath(), onlyIndex);
+
+        public static string SetupStaticFolder(string folderName, bool onlyIndex = true) => SetupStaticFolderCore(RootPath(folderName), onlyIndex);
 
         public static string GetStaticFolderInstanceIndexFileContents(string instanceName) =>
             string.IsNullOrWhiteSpace(instanceName)
