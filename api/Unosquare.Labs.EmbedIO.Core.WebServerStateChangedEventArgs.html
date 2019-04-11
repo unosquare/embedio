@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Interface IWebSocket
+    <title>Class WebServerStateChangedEventArgs
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Interface IWebSocket
+    <meta name="title" content="Class WebServerStateChangedEventArgs
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.41.0.0">
     
@@ -76,37 +76,101 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.IWebSocket">
+            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs">
   
   
-  <h1 id="Unosquare_Labs_EmbedIO_IWebSocket" data-uid="Unosquare.Labs.EmbedIO.IWebSocket" class="text-break">Interface IWebSocket
+  <h1 id="Unosquare_Labs_EmbedIO_Core_WebServerStateChangedEventArgs" data-uid="Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs" class="text-break">Class WebServerStateChangedEventArgs
   </h1>
-  <div class="markdown level0 summary"><p>Interface to create a WebSocket implementation.</p>
+  <div class="markdown level0 summary"><p>Represents event arguments whenever the state of a web server changes.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.eventargs">EventArgs</a></div>
+    <div class="level2"><span class="xref">WebServerStateChangedEventArgs</span></div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable.dispose#System_IDisposable_Dispose">IDisposable.Dispose()</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.eventargs.empty">EventArgs.Empty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.html">Unosquare.Labs.EmbedIO</a></h6>
-  <h5 id="Unosquare_Labs_EmbedIO_IWebSocket_syntax">Syntax</h5>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.Core.html">Unosquare.Labs.EmbedIO.Core</a></h6>
+  <h5 id="Unosquare_Labs_EmbedIO_Core_WebServerStateChangedEventArgs_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IWebSocket : IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public class WebServerStateChangedEventArgs : EventArgs</code></pre>
   </div>
-  <h3 id="properties">Properties
+  <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="Unosquare_Labs_EmbedIO_IWebSocket_State_" data-uid="Unosquare.Labs.EmbedIO.IWebSocket.State*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebSocket_State" data-uid="Unosquare.Labs.EmbedIO.IWebSocket.State">State</h4>
-  <div class="markdown level1 summary"><p>Gets the state.</p>
+  <a id="Unosquare_Labs_EmbedIO_Core_WebServerStateChangedEventArgs__ctor_" data-uid="Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.#ctor*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Core_WebServerStateChangedEventArgs__ctor_Unosquare_Labs_EmbedIO_Constants_WebServerState_Unosquare_Labs_EmbedIO_Constants_WebServerState_" data-uid="Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.#ctor(Unosquare.Labs.EmbedIO.Constants.WebServerState,Unosquare.Labs.EmbedIO.Constants.WebServerState)">WebServerStateChangedEventArgs(WebServerState, WebServerState)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.html">WebServerStateChangedEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">WebSocketState State { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public WebServerStateChangedEventArgs(WebServerState oldState, WebServerState newState)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.WebServerState.html">WebServerState</a></td>
+        <td><span class="parametername">oldState</span></td>
+        <td><p>The old state.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.WebServerState.html">WebServerState</a></td>
+        <td><span class="parametername">newState</span></td>
+        <td><p>The new state.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Core_WebServerStateChangedEventArgs_NewState_" data-uid="Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.NewState*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Core_WebServerStateChangedEventArgs_NewState" data-uid="Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.NewState">NewState</h4>
+  <div class="markdown level1 summary"><p>Gets the state to which the application service changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WebServerState NewState { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -118,44 +182,23 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Unosquare.Net.WebSocketState.html">WebSocketState</a></td>
-        <td><p>The state.</p>
-</td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.WebServerState.html">WebServerState</a></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
-  <h3 id="methods">Methods
-  </h3>
   
   
-  <a id="Unosquare_Labs_EmbedIO_IWebSocket_CloseAsync_" data-uid="Unosquare.Labs.EmbedIO.IWebSocket.CloseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebSocket_CloseAsync_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.IWebSocket.CloseAsync(System.Threading.CancellationToken)">CloseAsync(CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Closes the asynchronous.</p>
+  <a id="Unosquare_Labs_EmbedIO_Core_WebServerStateChangedEventArgs_OldState_" data-uid="Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.OldState*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Core_WebServerStateChangedEventArgs_OldState" data-uid="Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventArgs.OldState">OldState</h4>
+  <div class="markdown level1 summary"><p>Gets the old state.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task CloseAsync(CancellationToken ct = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public WebServerState OldState { get; }</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
-        <td><span class="parametername">ct</span></td>
-        <td><p>The cancellation token.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -165,73 +208,11 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
-        <td><p>The task object representing the asynchronous operation.</p>
-</td>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.WebServerState.html">WebServerState</a></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_IWebSocket_SendAsync_" data-uid="Unosquare.Labs.EmbedIO.IWebSocket.SendAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IWebSocket_SendAsync_System_Byte___System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.IWebSocket.SendAsync(System.Byte[],System.Boolean,System.Threading.CancellationToken)">SendAsync(Byte[], Boolean, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Sends the asynchronous.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task SendAsync(byte[] buffer, bool isText, CancellationToken ct = default(CancellationToken))</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
-        <td><span class="parametername">buffer</span></td>
-        <td><p>The buffer.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">isText</span></td>
-        <td><p>if set to <code>true</code> [is text].</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
-        <td><span class="parametername">ct</span></td>
-        <td><p>The cancellation token.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
-        <td><p>A task that represents the asynchronous of send data using websocket.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="seealso">See Also</h3>
-  <div class="seealso">
-      <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
-  </div>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>
