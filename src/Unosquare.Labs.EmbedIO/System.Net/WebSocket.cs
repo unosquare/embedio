@@ -256,7 +256,7 @@
         public Task SendAsync(byte[] buffer, bool isText, CancellationToken ct) => SendAsync(buffer, isText ? Opcode.Text : Opcode.Binary, ct);
 
         /// <inheritdoc />
-        public Task CloseAsync(CancellationToken cancellationToken) => CloseAsync(CloseStatusCode.Normal, cancellationToken: cancellationToken);
+        public Task CloseAsync(CancellationToken cancellationToken = default) => CloseAsync(CloseStatusCode.Normal, cancellationToken: cancellationToken);
 
         /// <inheritdoc />
         public Task CloseAsync(
