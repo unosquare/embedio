@@ -18,7 +18,8 @@
         private const string HeaderPragmaValue = "no-cache";
 
         protected StaticFilesModuleTest(Func<StaticFilesModule> buildStaticFilesModule)
-            : base(ws => {
+            : base(ws =>
+            {
                 ws.RegisterModule(buildStaticFilesModule());
                 ws.RegisterModule(new FallbackModule("/"));
             }, RoutingStrategy.Wildcard)
@@ -26,7 +27,7 @@
         }
 
         public StaticFilesModuleTest()
-            : this(() => new StaticFilesModule(TestHelper.SetupStaticFolder()) { UseRamCache = true })
+            : this(() => new StaticFilesModule(TestHelper.SetupStaticFolder()) {UseRamCache = true})
         {
         }
 
@@ -54,14 +55,16 @@
             private const string VirtualizedFolderName = "html-virtualized";
 
             public UseVirtualPaths()
-                : base(() => new StaticFilesModule(new Dictionary<string, string> {
-                        { "/", TestHelper.SetupStaticFolder() },
-                        { "/" + VirtualFolderName, TestHelper.SetupStaticFolder(VirtualizedFolderName) },
-                    }) { UseRamCache = true })
+                : base(() => new StaticFilesModule(new Dictionary<string, string>
+                    {
+                        {"/", TestHelper.SetupStaticFolder()},
+                        {"/" + VirtualFolderName, TestHelper.SetupStaticFolder(VirtualizedFolderName)},
+                    })
+                    {UseRamCache = true})
             {
             }
 
-            string VirtualPathUrl { get; set; }
+            private string VirtualPathUrl { get; set; }
 
             protected override void OnAfterInit()
             {
@@ -86,7 +89,8 @@
                         Assert.IsTrue(string.IsNullOrWhiteSpace(response.Headers.Pragma.ToString()), "Pragma empty");
                     }
 
-                    WebServerInstance.Module<StaticFilesModule>().DefaultHeaders.Add(HttpHeaders.Pragma, HeaderPragmaValue);
+                    WebServerInstance.Module<StaticFilesModule>().DefaultHeaders
+                        .Add(HttpHeaders.Pragma, HeaderPragmaValue);
 
                     request = new HttpRequestMessage(HttpMethod.Get, VirtualPathUrl);
 
@@ -119,7 +123,8 @@
                         Assert.IsTrue(string.IsNullOrWhiteSpace(response.Headers.Pragma.ToString()), "Pragma empty");
                     }
 
-                    WebServerInstance.Module<StaticFilesModule>().DefaultHeaders.Add(HttpHeaders.Pragma, HeaderPragmaValue);
+                    WebServerInstance.Module<StaticFilesModule>().DefaultHeaders
+                        .Add(HttpHeaders.Pragma, HeaderPragmaValue);
 
                     request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
 
@@ -176,7 +181,7 @@
 
                 using (var server = new WebServer(endpoint))
                 {
-                    server.RegisterModule(new StaticFilesModule(root) { UseRamCache = false });
+                    server.RegisterModule(new StaticFilesModule(root) {UseRamCache = false});
                     var runTask = server.RunAsync();
 
                     using (var webClient = new HttpClient())
@@ -216,7 +221,7 @@
             [Test]
             public void InvalidFilePath_ThrowsArgumentException()
             {
-                Assert.Throws<ArgumentException>(() => new StaticFilesModule("e:") { UseRamCache = false });
+                Assert.Throws<ArgumentException>(() => new StaticFilesModule("e:") {UseRamCache = false});
             }
         }
 
@@ -373,7 +378,8 @@
                             var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
                             var top = (i + 1) * chunkSize;
 
-                            request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(i * chunkSize, (top > remoteSize.Length ? remoteSize.Length : top) - 1);
+                            request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(i * chunkSize,
+                                (top > remoteSize.Length ? remoteSize.Length : top) - 1);
 
                             using (var response = await client.SendAsync(request))
                             {
@@ -438,6 +444,7 @@
                 using (var handler = new HttpClientHandler())
                 {
                     handler.AutomaticDecompression = DecompressionMethods.GZip;
+
                     using (var client = new HttpClient())
                     {
                         var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
