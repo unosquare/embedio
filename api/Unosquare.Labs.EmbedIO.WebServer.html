@@ -662,33 +662,6 @@ to handle session data.</p>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_WebServer_State_" data-uid="Unosquare.Labs.EmbedIO.WebServer.State*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_WebServer_State" data-uid="Unosquare.Labs.EmbedIO.WebServer.State">State</h4>
-  <div class="markdown level1 summary"><p>Gets the state.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public WebServerState State { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.WebServerState.html">WebServerState</a></td>
-        <td><p>The state.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Unosquare_Labs_EmbedIO_WebServer_UrlPrefixes_" data-uid="Unosquare.Labs.EmbedIO.WebServer.UrlPrefixes*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_WebServer_UrlPrefixes" data-uid="Unosquare.Labs.EmbedIO.WebServer.UrlPrefixes">UrlPrefixes</h4>
   <div class="markdown level1 summary"><p>Gets the URL Prefix for which the server is serving requests.</p>
@@ -854,7 +827,7 @@ Returns null if no module matches the given type.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void RegisterModule(IWebModule webModule)</code></pre>
+    <pre><code class="lang-csharp hljs">public void RegisterModule(IWebModule module)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -868,7 +841,7 @@ Returns null if no module matches the given type.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html">IWebModule</a></td>
-        <td><span class="parametername">webModule</span></td>
+        <td><span class="parametername">module</span></td>
         <td><p>The module.</p>
 </td>
       </tr>
@@ -970,33 +943,6 @@ so it is safe to call <a class="xref" href="https://docs.microsoft.com/dotnet/ap
         <td><span class="parametername">moduleType</span></td>
         <td><p>Type of the module.</p>
 </td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="events">Events
-  </h3>
-  
-  
-  <h4 id="Unosquare_Labs_EmbedIO_WebServer_StateChanged" data-uid="Unosquare.Labs.EmbedIO.WebServer.StateChanged">StateChanged</h4>
-  <div class="markdown level1 summary"><p>Occurs when [state changed].</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public event WebServerStateChangedEventHandler StateChanged</code></pre>
-  </div>
-  <h5 class="eventType">Event Type</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventHandler.html">WebServerStateChangedEventHandler</a></td>
-        <td></td>
       </tr>
     </tbody>
   </table>
