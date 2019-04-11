@@ -216,12 +216,12 @@
   
   <a id="Unosquare_Labs_EmbedIO_WebSocket_CloseAsync_" data-uid="Unosquare.Labs.EmbedIO.WebSocket.CloseAsync*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_WebSocket_CloseAsync_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.WebSocket.CloseAsync(System.Threading.CancellationToken)">CloseAsync(CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Closes the asynchronous.</p>
+  <div class="markdown level1 summary"><p>Closes the web socket asynchronously.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task CloseAsync(CancellationToken ct)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task CloseAsync(CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -235,7 +235,64 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
-        <td><span class="parametername">ct</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>The task object representing the asynchronous operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_WebSocket_CloseAsync_" data-uid="Unosquare.Labs.EmbedIO.WebSocket.CloseAsync*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_WebSocket_CloseAsync_Unosquare_Net_CloseStatusCode_System_String_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.WebSocket.CloseAsync(Unosquare.Net.CloseStatusCode,System.String,System.Threading.CancellationToken)">CloseAsync(CloseStatusCode, String, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Closes the web socket asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task CloseAsync(CloseStatusCode code, string comment = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Net.CloseStatusCode.html">CloseStatusCode</a></td>
+        <td><span class="parametername">code</span></td>
+        <td><p>The code.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">comment</span></td>
+        <td><p>The comment.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
         <td><p>The cancellation token.</p>
 </td>
       </tr>
@@ -261,12 +318,12 @@
   
   <a id="Unosquare_Labs_EmbedIO_WebSocket_SendAsync_" data-uid="Unosquare.Labs.EmbedIO.WebSocket.SendAsync*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_WebSocket_SendAsync_System_Byte___System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.WebSocket.SendAsync(System.Byte[],System.Boolean,System.Threading.CancellationToken)">SendAsync(Byte[], Boolean, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Sends the asynchronous.</p>
+  <div class="markdown level1 summary"><p>Sends the buffer to the web socket asynchronously.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task SendAsync(byte[] buffer, bool isText, CancellationToken ct)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task SendAsync(byte[] buffer, bool isText, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -292,7 +349,7 @@
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
-        <td><span class="parametername">ct</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
         <td><p>The cancellation token.</p>
 </td>
       </tr>
