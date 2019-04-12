@@ -6405,19 +6405,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.WebSocket.SendAsync
   nameWithType: WebSocket.SendAsync
-- uid: Unosquare.Net.WebSocket.SetCookie(Cookie)
-  name: SetCookie(Cookie)
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SetCookie_Cookie_
-  commentId: M:Unosquare.Net.WebSocket.SetCookie(Cookie)
-  fullName: Unosquare.Net.WebSocket.SetCookie(Cookie)
-  nameWithType: WebSocket.SetCookie(Cookie)
-- uid: Unosquare.Net.WebSocket.SetCookie*
-  name: SetCookie
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_SetCookie_
-  commentId: Overload:Unosquare.Net.WebSocket.SetCookie
-  isSpec: "True"
-  fullName: Unosquare.Net.WebSocket.SetCookie
-  nameWithType: WebSocket.SetCookie
 - uid: Unosquare.Net.WebSocket.State
   name: State
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_State
