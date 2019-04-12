@@ -80,7 +80,9 @@
         /// <returns>A string from the body.</returns>
         public string GetBodyAsString(Encoding encoding = null)
         {
-            var result = (encoding ?? Encoding.UTF8).GetString((OutputStream as MemoryStream)?.ToArray());
+            if (!(OutputStream is MemoryStream ms)) return null;
+
+            var result = (encoding ?? Encoding.UTF8).GetString(ms.ToArray());
 
             // Remove BOM
             return result.Length > 0 && result[0] == 65279 ? result.Remove(0, 1) : result;

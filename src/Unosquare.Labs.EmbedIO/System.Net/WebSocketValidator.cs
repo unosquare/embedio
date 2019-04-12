@@ -36,33 +36,12 @@
             return true;
         }
 
-        internal bool CheckIfAvailable(bool connecting = true, bool open = true, bool closing = false, bool closed = false)
+        internal bool CheckIfAvailable(bool connecting = true)
         {
-            if (!connecting && _webSocket.State == WebSocketState.Connecting)
-            {
-                "This operation isn't available in: connecting".Trace(nameof(CheckIfAvailable));
-                return false;
-            }
+            if (connecting || _webSocket.State != WebSocketState.Connecting) return true;
 
-            if (!open && _webSocket.State == WebSocketState.Open)
-            {
-                "This operation isn't available in: open".Trace(nameof(CheckIfAvailable));
-                return false;
-            }
-
-            if (!closing && _webSocket.State == WebSocketState.Closing)
-            {
-                "This operation isn't available in: closing".Trace(nameof(CheckIfAvailable));
-                return false;
-            }
-
-            if (!closed && _webSocket.State == WebSocketState.Closed)
-            {
-                "This operation isn't available in: closed".Trace(nameof(CheckIfAvailable));
-                return false;
-            }
-
-            return true;
+            "This operation isn't available in: connecting".Trace(nameof(CheckIfAvailable));
+            return false;
         }
 
         // As server

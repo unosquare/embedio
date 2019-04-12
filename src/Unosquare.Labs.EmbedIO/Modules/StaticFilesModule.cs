@@ -330,7 +330,7 @@
             return true;
         }
 
-        private Stream GetFileStream(IHttpContext context, FileInfo fileInfo, bool usingPartial, out bool isTagValid)
+        private Stream GetFileStream(IHttpContext context, FileSystemInfo fileInfo, bool usingPartial, out bool isTagValid)
         {
             isTagValid = false;
             var localPath = fileInfo.FullName;

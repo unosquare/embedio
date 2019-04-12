@@ -10,8 +10,7 @@
     {
         /// <summary>
         /// Creates this instance with the default mode.
-        /// The default HTTP Listener is Microsoft for net47 and
-        /// netstandard2.0 target frameworks, otherwise EmbedIO.
+        /// The default HTTP Listener is Microsoft for netstandard2.0 target frameworks, otherwise EmbedIO.
         /// </summary>
         /// <param name="certificate">The certificate.</param>
         /// <returns>

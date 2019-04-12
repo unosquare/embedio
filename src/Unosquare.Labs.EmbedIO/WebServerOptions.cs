@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using Constants;
+#if !NETSTANDARD1_3
     using System.Text;
     using Swan;
     using System;
@@ -8,6 +9,7 @@
     using System.Linq;
     using System.Security.Cryptography.X509Certificates;
     using System.Text.RegularExpressions;
+#endif
 
     /// <summary>
     /// Options for WebServer creation.

@@ -6,6 +6,7 @@
     using System.Net;
     using System.Net.Sockets;
     using System.Threading;
+
     internal sealed class EndPointListener
     {
         private readonly Dictionary<HttpConnection, HttpConnection> _unregistered;
@@ -273,7 +274,7 @@
             return bestMatch;
         }
 
-        private static void AddSpecial(List<ListenerPrefix> coll, ListenerPrefix prefix)
+        private static void AddSpecial(ICollection<ListenerPrefix> coll, ListenerPrefix prefix)
         {
             if (coll == null)
                 return;
@@ -286,7 +287,7 @@
             coll.Add(prefix);
         }
 
-        private static bool RemoveSpecial(List<ListenerPrefix> coll, ListenerPrefix prefix)
+        private static bool RemoveSpecial(IList<ListenerPrefix> coll, ListenerPrefix prefix)
         {
             if (coll == null)
                 return false;

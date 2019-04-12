@@ -7,20 +7,22 @@
     using System.Linq;
     using System.Net;
     using System.Text;
-    using System.Reflection;
     using Labs.EmbedIO;
+#if NETSTANDARD1_3
+    using System.Reflection;
+#endif
 
     /// <summary>
     /// Represents Cookie collection.
     /// </summary>
-    public class CookieCollection 
+    public class CookieCollection
         : List<Cookie>, ICookieCollection
     {
         /// <inheritdoc />
         public bool IsSynchronized => false;
-        
+
         /// <inheritdoc />
-        public object SyncRoot => ((ICollection)this).SyncRoot;
+        public object SyncRoot => ((ICollection) this).SyncRoot;
 
         /// <inheritdoc />
         public Cookie this[string name]
@@ -72,7 +74,7 @@
             if (array.Length - index < Count)
             {
                 throw new ArgumentException(
-                      "The number of elements in this collection is greater than the available space of the destination array.");
+                    "The number of elements in this collection is greater than the available space of the destination array.");
             }
 
             if (array.GetType().GetElementType()?.IsAssignableFrom(typeof(Cookie)) != true)
@@ -81,7 +83,7 @@
                     "The elements in this collection cannot be cast automatically to the type of the destination array.");
             }
 
-            ((IList)this).CopyTo(array, index);
+            ((IList) this).CopyTo(array, index);
         }
 
         internal static string GetValue(string nameAndValue, bool unquote = false)
@@ -94,6 +96,7 @@
             var val = nameAndValue.Substring(idx + 1).Trim();
             return unquote ? val.Unquote() : val;
         }
+
         internal static CookieCollection ParseResponse(string value)
         {
             var cookies = new CookieCollection();
@@ -109,7 +112,7 @@
 
                 if (pair.StartsWith("version", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
-                        cookie.Version = int.Parse(GetValue(pair, true));
+                    cookie.Version = int.Parse(GetValue(pair, true));
                 }
                 else if (pair.StartsWith("expires", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
@@ -119,7 +122,7 @@
 
                     if (!DateTime.TryParseExact(
                         buff.ToString(),
-                        new[] { "ddd, dd'-'MMM'-'yyyy HH':'mm':'ss 'GMT'", "r" },
+                        new[] {"ddd, dd'-'MMM'-'yyyy HH':'mm':'ss 'GMT'", "r"},
                         new CultureInfo("en-US"),
                         DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal,
                         out var expires))
@@ -145,8 +148,8 @@
                 else if (pair.StartsWith("port", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
                     cookie.Port = pair.Equals("port", StringComparison.OrdinalIgnoreCase)
-                    ? "\"\""
-                    : GetValue(pair);
+                        ? "\"\""
+                        : GetValue(pair);
                 }
                 else if (pair.StartsWith("comment", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
@@ -172,7 +175,7 @@
                 {
                     if (cookie != null)
                         cookies.Add(cookie);
-                    
+
                     cookie = ParseCookie(pair);
                 }
             }
@@ -185,7 +188,7 @@
 
         private static string[] SplitCookieHeaderValue(string value)
             => new List<string>(value.SplitHeaderValue(Labs.EmbedIO.Constants.Strings.CookieSplitChars)).ToArray();
-        
+
         private static int CompareCookieWithinSorted(Cookie x, Cookie y)
         {
             var ret = x.Version - y.Version;

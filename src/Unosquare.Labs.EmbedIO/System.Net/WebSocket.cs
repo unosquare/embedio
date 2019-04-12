@@ -344,27 +344,6 @@
             }
         }
 
-        /// <summary>
-        /// Sets an HTTP <paramref name="cookie"/> to send with
-        /// the WebSocket handshake request to the server.
-        /// </summary>
-        /// <param name="cookie">
-        /// A <see cref="Cookie"/> that represents a cookie to send.
-        /// </param>
-        public void SetCookie(Cookie cookie)
-        {
-            if (cookie == null) return;
-
-            lock (_forState)
-            {
-                if (!_validator.CheckIfAvailable(true, false, false, true))
-                    return;
-            }
-
-            lock (CookieCollection.SyncRoot)
-                CookieCollection.Add(cookie);
-        }
-
         /// <inheritdoc />
         void IDisposable.Dispose()
         {
@@ -680,7 +659,7 @@
 #if NET462
             _exitReceiving.Close();
 #else
-                _exitReceiving.Dispose();
+            _exitReceiving.Dispose();
 #endif
             _exitReceiving = null;
         }
