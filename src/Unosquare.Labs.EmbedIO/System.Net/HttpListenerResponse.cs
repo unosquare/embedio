@@ -284,12 +284,6 @@
                     HeaderCollection.Add("Connection", "keep-alive");
             }
 
-            if (_cookies != null)
-            {
-                foreach (var cookie in _cookies)
-                    HeaderCollection.Add("Set-Cookie", CookieToClientString(cookie));
-            }
-
             return WriteHeaders();
         }
 
@@ -307,7 +301,7 @@
                 .Append(cookie.Name)
                 .Append("=")
                 .Append(cookie.Value);
-            
+
             if (cookie.Expires != DateTime.MinValue)
             {
                 result
@@ -324,10 +318,10 @@
 
             if (!string.IsNullOrEmpty(cookie.Port))
                 result.Append("; Port=").Append(cookie.Port);
-            
+
             if (cookie.Secure)
                 result.Append("; Secure");
-            
+
             if (cookie.HttpOnly)
                 result.Append("; HttpOnly");
 
@@ -336,7 +330,7 @@
 
         private static string QuotedString(Cookie cookie, string value)
             => cookie.Version == 0 || value.IsToken() ? value : "\"" + value.Replace("\"", "\\\"") + "\"";
-        
+
         private void Close(bool force)
         {
             _disposed = true;
@@ -351,9 +345,18 @@
 
             foreach (var key in HeaderCollection.AllKeys.Where(x => x != "Set-Cookie"))
                 sb.AppendFormat("{0}: {1}\r\n", key, HeaderCollection[key]);
+            
+            if (_cookies != null)
+            {
+                foreach (var cookie in _cookies)
+                    sb.AppendFormat("Set-Cookie: {0}\r\n", CookieToClientString(cookie));
+            }
 
-            foreach (var cookie in HeaderCollection.GetCookies(true))
-                sb.AppendFormat("Set-Cookie: {0}\r\n", CookieToClientString(cookie));
+            if (HeaderCollection.AllKeys.Contains("Set-Cookie"))
+            {
+                foreach (var cookie in CookieCollection.ParseResponse(HeaderCollection["Set-Cookie"]))
+                    sb.AppendFormat("Set-Cookie: {0}\r\n", CookieToClientString(cookie));
+            }
 
             return sb.Append("\r\n").ToString();
         }
