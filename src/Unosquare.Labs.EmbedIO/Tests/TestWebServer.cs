@@ -1,12 +1,13 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
-    using Constants;
-    using Swan;
     using System;
     using System.Collections.Concurrent;
     using System.Collections.ObjectModel;
     using System.Threading;
     using System.Threading.Tasks;
+    using Constants;
+    using Swan;
+    using Core;
 
     /// <summary>
     /// Represents our tiny web server used to handle requests for testing.
@@ -26,7 +27,11 @@
             Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
 
             RoutingStrategy = routingStrategy;
+            State = WebServerState.Listening;
         }
+
+        /// <inheritdoc />
+        public event WebServerStateChangedEventHandler StateChanged;
 
         /// <inheritdoc />
         public ISessionWebModule SessionModule => _modules.SessionModule;
@@ -54,6 +59,9 @@
         public ConcurrentQueue<IHttpContext> HttpContexts { get; } = new ConcurrentQueue<IHttpContext>();
 
         /// <inheritdoc />
+        public WebServerState State { get; }
+
+        /// <inheritdoc />
         public T Module<T>()
             where T : class, IWebModule
         {
@@ -61,7 +69,7 @@
         }
 
         /// <inheritdoc />
-        public void RegisterModule(IWebModule module) => _modules.RegisterModule(module, this);
+        public void RegisterModule(IWebModule webModule) => _modules.RegisterModule(webModule, this);
 
         /// <inheritdoc />
         public void UnregisterModule(Type moduleType) => _modules.UnregisterModule(moduleType);

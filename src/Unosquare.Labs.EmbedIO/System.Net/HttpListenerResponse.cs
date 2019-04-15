@@ -301,25 +301,42 @@
             var result = new StringBuilder(64);
 
             if (cookie.Version > 0)
-                result.Append("Version=").Append(cookie.Version).Append(";");
+                result.Append("Version=").Append(cookie.Version).Append("; ");
 
-            result.Append(cookie.Name).Append("=").Append(cookie.Value);
+            result
+                .Append(cookie.Name)
+                .Append("=")
+                .Append(cookie.Value);
+            
+            if (cookie.Expires != DateTime.MinValue)
+            {
+                result
+                    .Append("; Expires=")
+                    .Append(cookie.Expires.ToUniversalTime().ToString("ddd, dd-MMM-yyyy HH:mm:ss", DateTimeFormatInfo.InvariantInfo))
+                    .Append(" GMT");
+            }
 
             if (!string.IsNullOrEmpty(cookie.Path))
-                result.Append(";Path=").Append(QuotedString(cookie, cookie.Path));
+                result.Append("; Path=").Append(QuotedString(cookie, cookie.Path));
 
             if (!string.IsNullOrEmpty(cookie.Domain))
-                result.Append(";Domain=").Append(QuotedString(cookie, cookie.Domain));
+                result.Append("; Domain=").Append(QuotedString(cookie, cookie.Domain));
 
             if (!string.IsNullOrEmpty(cookie.Port))
-                result.Append(";Port=").Append(cookie.Port);
+                result.Append("; Port=").Append(cookie.Port);
+            
+            if (cookie.Secure)
+                result.Append("; Secure");
+            
+            if (cookie.HttpOnly)
+                result.Append("; HttpOnly");
 
             return result.ToString();
         }
 
         private static string QuotedString(Cookie cookie, string value)
             => cookie.Version == 0 || value.IsToken() ? value : "\"" + value.Replace("\"", "\\\"") + "\"";
-
+        
         private void Close(bool force)
         {
             _disposed = true;
@@ -330,12 +347,13 @@
         private string GetHeaderData()
         {
             var sb = new StringBuilder()
-                .AppendFormat("HTTP/{0} {1} ", ProtocolVersion, _statusCode)
-                .Append(StatusDescription)
-                .Append("\r\n");
+                .AppendFormat("HTTP/{0} {1} {2}\r\n", ProtocolVersion, _statusCode, StatusDescription);
 
-            foreach (var key in HeaderCollection.AllKeys)
-                sb.Append(key).Append(": ").Append(HeaderCollection[key]).Append("\r\n");
+            foreach (var key in HeaderCollection.AllKeys.Where(x => x != "Set-Cookie"))
+                sb.AppendFormat("{0}: {1}\r\n", key, HeaderCollection[key]);
+
+            foreach (var cookie in HeaderCollection.GetCookies(true))
+                sb.AppendFormat("Set-Cookie: {0}\r\n", CookieToClientString(cookie));
 
             return sb.Append("\r\n").ToString();
         }

@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using System;
+    using Core;
     using Constants;
     using System.Threading;
     using System.Collections.ObjectModel;
@@ -14,6 +15,11 @@
     /// </summary>
     public interface IWebServer
     {
+        /// <summary>
+        /// Occurs when [state changed].
+        /// </summary>
+        event WebServerStateChangedEventHandler StateChanged;
+
         /// <summary>
         /// Gets registered SessionModule (if any).
         ///
@@ -60,6 +66,14 @@
         Func<IHttpContext, Task<bool>> OnNotFound { get; set; }
 
         /// <summary>
+        /// Gets the state.
+        /// </summary>
+        /// <value>
+        /// The state.
+        /// </value>
+        WebServerState State { get; }
+
+        /// <summary>
         /// Gets the module registered for the given type.
         /// Returns null if no module matches the given type.
         /// </summary>
@@ -71,8 +85,8 @@
         /// <summary>
         /// Registers an instance of a web module. Only 1 instance per type is allowed.
         /// </summary>
-        /// <param name="module">The module.</param>
-        void RegisterModule(IWebModule module);
+        /// <param name="webModule">The module.</param>
+        void RegisterModule(IWebModule webModule);
 
         /// <summary>
         /// Unregisters the module identified by its type.

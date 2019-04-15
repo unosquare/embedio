@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using Constants;
+    using Core;
     using System.Collections.Generic;
     using Swan;
     using System;
@@ -28,6 +29,8 @@
     public class WebServer : IWebServer, IDisposable
     {
         private readonly WebModules _modules = new WebModules();
+
+        private WebServerState _state = WebServerState.Created;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
@@ -173,6 +176,9 @@
         }
 
         /// <inheritdoc />
+        public event WebServerStateChangedEventHandler StateChanged;
+
+        /// <inheritdoc />
         public Func<IHttpContext, Task<bool>> OnMethodNotAllowed { get; set; } = ctx =>
              ctx.HtmlResponseAsync(Responses.Response405Html, System.Net.HttpStatusCode.MethodNotAllowed);
 
@@ -204,6 +210,22 @@
 
         /// <inheritdoc />
         public RoutingStrategy RoutingStrategy { get; protected set; }
+        
+        /// <inheritdoc />
+        public WebServerState State
+        {
+            get => _state;
+            private set
+            {
+                if (value == _state) return;
+
+                var newState = value;
+                var oldState = _state;
+                _state = value;
+
+                StateChanged?.Invoke(this, new WebServerStateChangedEventArgs(oldState, newState));
+            }
+        }
 
         /// <summary>
         /// Static method to create webserver instance using a single URL prefix.
@@ -220,7 +242,7 @@
         }
 
         /// <inheritdoc />
-        public void RegisterModule(IWebModule module) => _modules.RegisterModule(module, this);
+        public void RegisterModule(IWebModule webModule) => _modules.RegisterModule(webModule, this);
 
         /// <inheritdoc/>
         public void UnregisterModule(Type moduleType) => _modules.UnregisterModule(moduleType);
@@ -234,6 +256,7 @@
         /// </remarks>
         public async Task RunAsync(CancellationToken ct = default)
         {
+            State = WebServerState.Loading;
             Listener.IgnoreWriteExceptions = true;
             Listener.Start();
 
@@ -250,6 +273,8 @@
                     module.Server = this;
                     module.Start(ct);
                 }
+
+                State = WebServerState.Listening;
 
                 // Disposing the web server will close the listener.           
                 while (Listener != null && Listener.IsListening && !ct.IsCancellationRequested)
@@ -293,6 +318,7 @@
             finally
             {
                 "Cleaning up".Info(nameof(WebServer));
+                State = WebServerState.Stopped;
             }
         }
 
