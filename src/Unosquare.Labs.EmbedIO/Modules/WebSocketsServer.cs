@@ -280,11 +280,12 @@
         {
             // We only have managed resources here.
             // if called with false, return.
-            if (disposeAll == false) return;
+            if (!disposeAll) return;
 
             lock (_syncRoot)
             {
-                _mWebSockets.ForEach(Close);
+                foreach (var socket in _mWebSockets.ToArray())
+                    Close(socket);
             }
 
             CollectDisconnected();
