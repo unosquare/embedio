@@ -14,7 +14,7 @@
     ///
     /// Use this <c>IWebServer</c> implementation to run your unit tests.
     /// </summary>
-    public class TestWebServer : IWebServer
+    public class TestWebServer : IWebServer, IDisposable
     {
         private readonly WebModules _modules = new WebModules();
 
@@ -30,6 +30,14 @@
             State = WebServerState.Listening;
         }
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="TestWebServer"/> class.
+        /// </summary>
+        ~TestWebServer()
+        {
+            Dispose(false);
+        }
+
         /// <inheritdoc />
         public event WebServerStateChangedEventHandler StateChanged;
 
@@ -40,7 +48,7 @@
         public RoutingStrategy RoutingStrategy { get; }
 
         /// <inheritdoc />
-        public ReadOnlyCollection<IWebModule> Modules => _modules.AsReadOnly();
+        public ReadOnlyCollection<IWebModule> Modules => _modules.Modules;
         
         /// <inheritdoc />
         public Func<IHttpContext, Task<bool>> OnMethodNotAllowed { get; set; } = ctx =>
@@ -60,6 +68,23 @@
 
         /// <inheritdoc />
         public WebServerState State { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="TestWebServer"/> has been disposed.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if disposed; otherwise, <c>false</c>.
+        /// </value>
+        protected bool Disposed { get; private set; }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         /// <inheritdoc />
         public T Module<T>()
@@ -95,6 +120,24 @@
         /// </summary>
         /// <returns>A new instance of the TestHttpClient.</returns>
         public TestHttpClient GetClient() => new TestHttpClient(this);
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing || Disposed) return;
+
+            try
+            {
+                _modules.Dispose();
+            }
+            finally
+            {
+                Disposed = true;
+            }
+        }
 
         private async Task<IHttpContext> GetContextAsync(CancellationToken ct)
         {

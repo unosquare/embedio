@@ -2,19 +2,29 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Threading;
     using Swan;
 
-    internal class WebModules 
-        : List<IWebModule>
+    internal sealed class WebModules : IDisposable
     {
-        public WebModules() 
-            : base(4)
+        private readonly List<IWebModule> _modules = new List<IWebModule>(4);
+
+        ~WebModules()
         {
-            // Empty
+            Dispose(false);
         }
-        
-        public ISessionWebModule SessionModule { get; protected set; }
+
+        public ISessionWebModule SessionModule { get; private set; }
+
+        public ReadOnlyCollection<IWebModule> Modules => _modules.AsReadOnly();
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         public T Module<T>()
             where T : class, IWebModule
@@ -30,7 +40,7 @@
             if (existingModule == null)
             {
                 module.Server = webServer;
-                Add(module);
+                _modules.Add(module);
 
                 if (module is ISessionWebModule webModule)
                     SessionModule = webModule;
@@ -55,12 +65,35 @@
             }
 
             var module = Module(moduleType);
-            Remove(module);
+            _modules.Remove(module);
+
+            if (module is IDisposable disposable)
+                disposable.Dispose();
 
             if (module == SessionModule)
                 SessionModule = null;
         }
 
-        private IWebModule Module(Type moduleType) => this.FirstOrDefault(m => m.GetType() == moduleType);
+        public void StartModules(IWebServer webServer, CancellationToken ct)
+        {
+            foreach (var module in _modules)
+            {
+                module.Server = webServer;
+                module.Start(ct);
+            }
+        }
+
+        private IWebModule Module(Type moduleType) => _modules.FirstOrDefault(m => m.GetType() == moduleType);
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                foreach (var disposable in _modules.OfType<IDisposable>())
+                    disposable.Dispose();
+
+                _modules.Clear();
+            }
+        }
     }
 }
