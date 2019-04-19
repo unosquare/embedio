@@ -4913,6 +4913,51 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Tests.TestWebServer.TestWebServer
   nameWithType: TestWebServer.TestWebServer
+- uid: Unosquare.Labs.EmbedIO.Tests.TestWebServer.Dispose
+  name: Dispose()
+  href: api/Unosquare.Labs.EmbedIO.Tests.TestWebServer.html#Unosquare_Labs_EmbedIO_Tests_TestWebServer_Dispose
+  commentId: M:Unosquare.Labs.EmbedIO.Tests.TestWebServer.Dispose
+  fullName: Unosquare.Labs.EmbedIO.Tests.TestWebServer.Dispose()
+  nameWithType: TestWebServer.Dispose()
+- uid: Unosquare.Labs.EmbedIO.Tests.TestWebServer.Dispose(System.Boolean)
+  name: Dispose(Boolean)
+  href: api/Unosquare.Labs.EmbedIO.Tests.TestWebServer.html#Unosquare_Labs_EmbedIO_Tests_TestWebServer_Dispose_System_Boolean_
+  commentId: M:Unosquare.Labs.EmbedIO.Tests.TestWebServer.Dispose(System.Boolean)
+  fullName: Unosquare.Labs.EmbedIO.Tests.TestWebServer.Dispose(System.Boolean)
+  nameWithType: TestWebServer.Dispose(Boolean)
+- uid: Unosquare.Labs.EmbedIO.Tests.TestWebServer.Dispose*
+  name: Dispose
+  href: api/Unosquare.Labs.EmbedIO.Tests.TestWebServer.html#Unosquare_Labs_EmbedIO_Tests_TestWebServer_Dispose_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Tests.TestWebServer.Dispose
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Tests.TestWebServer.Dispose
+  nameWithType: TestWebServer.Dispose
+- uid: Unosquare.Labs.EmbedIO.Tests.TestWebServer.Disposed
+  name: Disposed
+  href: api/Unosquare.Labs.EmbedIO.Tests.TestWebServer.html#Unosquare_Labs_EmbedIO_Tests_TestWebServer_Disposed
+  commentId: P:Unosquare.Labs.EmbedIO.Tests.TestWebServer.Disposed
+  fullName: Unosquare.Labs.EmbedIO.Tests.TestWebServer.Disposed
+  nameWithType: TestWebServer.Disposed
+- uid: Unosquare.Labs.EmbedIO.Tests.TestWebServer.Disposed*
+  name: Disposed
+  href: api/Unosquare.Labs.EmbedIO.Tests.TestWebServer.html#Unosquare_Labs_EmbedIO_Tests_TestWebServer_Disposed_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Tests.TestWebServer.Disposed
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Tests.TestWebServer.Disposed
+  nameWithType: TestWebServer.Disposed
+- uid: Unosquare.Labs.EmbedIO.Tests.TestWebServer.Finalize
+  name: Finalize()
+  href: api/Unosquare.Labs.EmbedIO.Tests.TestWebServer.html#Unosquare_Labs_EmbedIO_Tests_TestWebServer_Finalize
+  commentId: M:Unosquare.Labs.EmbedIO.Tests.TestWebServer.Finalize
+  fullName: Unosquare.Labs.EmbedIO.Tests.TestWebServer.Finalize()
+  nameWithType: TestWebServer.Finalize()
+- uid: Unosquare.Labs.EmbedIO.Tests.TestWebServer.Finalize*
+  name: Finalize
+  href: api/Unosquare.Labs.EmbedIO.Tests.TestWebServer.html#Unosquare_Labs_EmbedIO_Tests_TestWebServer_Finalize_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Tests.TestWebServer.Finalize
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Tests.TestWebServer.Finalize
+  nameWithType: TestWebServer.Finalize
 - uid: Unosquare.Labs.EmbedIO.Tests.TestWebServer.GetClient
   name: GetClient()
   href: api/Unosquare.Labs.EmbedIO.Tests.TestWebServer.html#Unosquare_Labs_EmbedIO_Tests_TestWebServer_GetClient
