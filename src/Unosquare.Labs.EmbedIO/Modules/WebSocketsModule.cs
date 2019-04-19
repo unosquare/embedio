@@ -9,7 +9,7 @@
     /// <summary>
     /// A WebSockets module conforming to RFC 6455.
     /// </summary>
-    public class WebSocketsModule : WebModuleBase
+    public class WebSocketsModule : WebModuleBase, IDisposable
     {
         /// <summary>
         /// Holds the collection of paths and WebSockets Servers registered.
@@ -133,6 +133,13 @@
         {
             foreach (var instance in _serverMap)
                 instance.Value.CancellationToken = CancellationToken;
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            foreach (var kvp in _serverMap)
+                kvp.Value?.Dispose();
         }
 
         /// <summary>

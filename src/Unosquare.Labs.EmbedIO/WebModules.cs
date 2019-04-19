@@ -87,13 +87,12 @@
 
         private void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                foreach (var disposable in _modules.OfType<IDisposable>())
-                    disposable.Dispose();
+            if (!disposing) return;
 
-                _modules.Clear();
-            }
+            foreach (var disposable in _modules.OfType<IDisposable>())
+                disposable.Dispose();
+
+            _modules.Clear();
         }
     }
 }
