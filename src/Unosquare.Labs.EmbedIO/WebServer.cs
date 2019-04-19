@@ -203,7 +203,7 @@
         public List<string> UrlPrefixes => Listener.Prefixes;
 
         /// <inheritdoc />
-        public ReadOnlyCollection<IWebModule> Modules => _modules.AsReadOnly();
+        public ReadOnlyCollection<IWebModule> Modules => _modules.Modules;
 
         /// <inheritdoc />
         public ISessionWebModule SessionModule => _modules.SessionModule;
@@ -268,11 +268,7 @@
             try
             {
                 // Init modules
-                foreach (var module in _modules)
-                {
-                    module.Server = this;
-                    module.Start(ct);
-                }
+                _modules.StartModules(this, ct);
 
                 State = WebServerState.Listening;
 
@@ -349,6 +345,8 @@
             }
 
             "Listener Closed.".Info(nameof(WebServer));
+
+            _modules.Dispose();
         }
     }
 }

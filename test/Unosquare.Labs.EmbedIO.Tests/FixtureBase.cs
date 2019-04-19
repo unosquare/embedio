@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
     using TestObjects;
 
-    public abstract class FixtureBase
+    public abstract class FixtureBase : IDisposable
     {
         private readonly Action<IWebServer> _builder;
         private readonly bool _useTestWebServer;
@@ -22,9 +22,20 @@
             _useTestWebServer = useTestWebServer;
         }
 
+        ~FixtureBase()
+        {
+            Dispose(false);
+        }
+
         public string WebServerUrl { get; private set; }
 
         public IWebServer WebServerInstance { get; private set; }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         [SetUp]
         public void Init()
@@ -37,6 +48,13 @@
             _builder(WebServerInstance);
             OnAfterInit();
             WebServerInstance.RunAsync();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing) return;
+
+            (WebServerInstance as IDisposable)?.Dispose();
         }
 
         protected virtual void OnAfterInit()
