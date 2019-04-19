@@ -3844,6 +3844,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.WebSocketsModule
   nameWithType: WebSocketsModule.WebSocketsModule
+- uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.Dispose
+  name: Dispose()
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.html#Unosquare_Labs_EmbedIO_Modules_WebSocketsModule_Dispose
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.Dispose
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.Dispose()
+  nameWithType: WebSocketsModule.Dispose()
+- uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.Dispose*
+  name: Dispose
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.html#Unosquare_Labs_EmbedIO_Modules_WebSocketsModule_Dispose_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.Dispose
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.Dispose
+  nameWithType: WebSocketsModule.Dispose
 - uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.Name
   name: Name
   href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsModule.html#Unosquare_Labs_EmbedIO_Modules_WebSocketsModule_Name
