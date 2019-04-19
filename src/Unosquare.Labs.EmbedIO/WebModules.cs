@@ -1,11 +1,11 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
+    using Swan;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading;
-    using Swan;
 
     internal sealed class WebModules : IDisposable
     {

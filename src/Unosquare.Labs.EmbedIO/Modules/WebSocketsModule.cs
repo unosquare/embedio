@@ -138,8 +138,8 @@
         /// <inheritdoc />
         public void Dispose()
         {
-            foreach (var kvp in _serverMap)
-                kvp.Value?.Dispose();
+            foreach (var server in _serverMap.Select(y => y.Value).ToArray())
+                server?.Dispose();
         }
 
         /// <summary>
