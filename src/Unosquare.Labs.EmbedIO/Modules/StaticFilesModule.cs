@@ -88,9 +88,10 @@
 #endif
 
             headers?.ForEach(DefaultHeaders.Add);
-            additionalPaths?.Where(path => path.Key != "/")
-                .ToDictionary(x => x.Key, x => x.Value)
-                .ForEach(RegisterVirtualPath);
+            additionalPaths?.ForEach((virtualPath, physicalPath) => {
+                if (virtualPath != "/")
+                    RegisterVirtualPath(virtualPath, physicalPath);
+            });
 
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Head, (context, ct) => HandleGet(context, ct, false));
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (context, ct) => HandleGet(context, ct));
