@@ -3399,6 +3399,12 @@ references:
   commentId: M:Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor(System.String,System.Boolean)
   fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.StaticFilesModule(System.String, System.Boolean)
   nameWithType: StaticFilesModule.StaticFilesModule(String, Boolean)
+- uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor(System.String,System.Boolean,System.Boolean)
+  name: StaticFilesModule(String, Boolean, Boolean)
+  href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule__ctor_System_String_System_Boolean_System_Boolean_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor(System.String,System.Boolean,System.Boolean)
+  fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.StaticFilesModule(System.String, System.Boolean, System.Boolean)
+  nameWithType: StaticFilesModule.StaticFilesModule(String, Boolean, Boolean)
 - uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,System.String},System.Boolean)
   name: StaticFilesModule(String, Dictionary<String, String>, Dictionary<String, String>, Boolean)
   href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule__ctor_System_String_System_Collections_Generic_Dictionary_System_String_System_String__System_Collections_Generic_Dictionary_System_String_System_String__System_Boolean_
@@ -3408,6 +3414,15 @@ references:
   fullName.vb: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.StaticFilesModule(System.String, System.Collections.Generic.Dictionary(Of System.String, System.String), System.Collections.Generic.Dictionary(Of System.String, System.String), System.Boolean)
   nameWithType: StaticFilesModule.StaticFilesModule(String, Dictionary<String, String>, Dictionary<String, String>, Boolean)
   nameWithType.vb: StaticFilesModule.StaticFilesModule(String, Dictionary(Of String, String), Dictionary(Of String, String), Boolean)
+- uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,System.String},System.Boolean,System.Boolean)
+  name: StaticFilesModule(String, Dictionary<String, String>, Dictionary<String, String>, Boolean, Boolean)
+  href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule__ctor_System_String_System_Collections_Generic_Dictionary_System_String_System_String__System_Collections_Generic_Dictionary_System_String_System_String__System_Boolean_System_Boolean_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,System.String},System.Boolean,System.Boolean)
+  name.vb: StaticFilesModule(String, Dictionary(Of String, String), Dictionary(Of String, String), Boolean, Boolean)
+  fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.StaticFilesModule(System.String, System.Collections.Generic.Dictionary<System.String, System.String>, System.Collections.Generic.Dictionary<System.String, System.String>, System.Boolean, System.Boolean)
+  fullName.vb: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.StaticFilesModule(System.String, System.Collections.Generic.Dictionary(Of System.String, System.String), System.Collections.Generic.Dictionary(Of System.String, System.String), System.Boolean, System.Boolean)
+  nameWithType: StaticFilesModule.StaticFilesModule(String, Dictionary<String, String>, Dictionary<String, String>, Boolean, Boolean)
+  nameWithType.vb: StaticFilesModule.StaticFilesModule(String, Dictionary(Of String, String), Dictionary(Of String, String), Boolean, Boolean)
 - uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor*
   name: StaticFilesModule
   href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule__ctor_
@@ -3460,6 +3475,25 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.DefaultExtension
   nameWithType: StaticFilesModule.DefaultExtension
+- uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Dispose
+  name: Dispose()
+  href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_Dispose
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Dispose
+  fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Dispose()
+  nameWithType: StaticFilesModule.Dispose()
+- uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Dispose(System.Boolean)
+  name: Dispose(Boolean)
+  href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_Dispose_System_Boolean_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Dispose(System.Boolean)
+  fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Dispose(System.Boolean)
+  nameWithType: StaticFilesModule.Dispose(Boolean)
+- uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Dispose*
+  name: Dispose
+  href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_Dispose_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Dispose
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Dispose
+  nameWithType: StaticFilesModule.Dispose
 - uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.FileSystemPath
   name: FileSystemPath
   href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_FileSystemPath
@@ -3473,6 +3507,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.FileSystemPath
   nameWithType: StaticFilesModule.FileSystemPath
+- uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Finalize
+  name: Finalize()
+  href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_Finalize
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Finalize
+  fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Finalize()
+  nameWithType: StaticFilesModule.Finalize()
+- uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Finalize*
+  name: Finalize
+  href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_Finalize_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Finalize
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Finalize
+  nameWithType: StaticFilesModule.Finalize
 - uid: Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.MaxRamCacheFileSize
   name: MaxRamCacheFileSize
   href: api/Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html#Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_MaxRamCacheFileSize

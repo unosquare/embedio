@@ -94,6 +94,7 @@
   <div classs="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html">IWebModule</a></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -164,7 +165,7 @@
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.html">Unosquare.Labs.EmbedIO.Modules</a></h6>
   <h5 id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class StaticFilesModule : FileModuleBase, IWebModule</code></pre>
+    <pre><code class="lang-csharp hljs">public class StaticFilesModule : FileModuleBase, IWebModule, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -235,13 +236,54 @@
   
   
   <a id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule__ctor_System_String_System_Boolean_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor(System.String,System.Boolean,System.Boolean)">StaticFilesModule(String, Boolean, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html">StaticFilesModule</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public StaticFilesModule(string fileSystemPath, bool useDirectoryBrowser, bool cacheMappedPaths)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">fileSystemPath</span></td>
+        <td><p>The file system path.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">useDirectoryBrowser</span></td>
+        <td><p>if set to <code>true</code> [use directory browser].</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">cacheMappedPaths</span></td>
+        <td><p>if set to <code>true</code>, [cache mapped paths].</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule__ctor_System_String_System_Collections_Generic_Dictionary_System_String_System_String__System_Collections_Generic_Dictionary_System_String_System_String__System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,System.String},System.Boolean)">StaticFilesModule(String, Dictionary&lt;String, String&gt;, Dictionary&lt;String, String&gt;, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html">StaticFilesModule</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public StaticFilesModule(string fileSystemPath, Dictionary&lt;string, string&gt; headers = null, Dictionary&lt;string, string&gt; additionalPaths = null, bool useDirectoryBrowser = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public StaticFilesModule(string fileSystemPath, Dictionary&lt;string, string&gt; headers, Dictionary&lt;string, string&gt; additionalPaths, bool useDirectoryBrowser)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -275,6 +317,75 @@
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">useDirectoryBrowser</span></td>
         <td><p>if set to <code>true</code> [use directory browser].</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Path &apos; + fileSystemPath + &apos; does not exist.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule__ctor_" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule__ctor_System_String_System_Collections_Generic_Dictionary_System_String_System_String__System_Collections_Generic_Dictionary_System_String_System_String__System_Boolean_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,System.String},System.Boolean,System.Boolean)">StaticFilesModule(String, Dictionary&lt;String, String&gt;, Dictionary&lt;String, String&gt;, Boolean, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html">StaticFilesModule</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public StaticFilesModule(string fileSystemPath, Dictionary&lt;string, string&gt; headers = null, Dictionary&lt;string, string&gt; additionalPaths = null, bool useDirectoryBrowser = false, bool cacheMappedPaths = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">fileSystemPath</span></td>
+        <td><p>The file system path.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">headers</span></td>
+        <td><p>The headers to set in every request.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">additionalPaths</span></td>
+        <td><p>The additional paths.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">useDirectoryBrowser</span></td>
+        <td><p>if set to <code>true</code> [use directory browser].</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">cacheMappedPaths</span></td>
+        <td><p>if set to <code>true</code>, [cache mapped paths].</p>
 </td>
       </tr>
     </tbody>
@@ -535,6 +646,57 @@ RAM Cache will only cache files that are MaxRamCacheSize in bytes or less.</p>
   </div>
   
   
+  <a id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_Dispose_" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Dispose*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_Dispose" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"><p>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_Dispose_" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Dispose*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_Dispose_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Releases unmanaged and - optionally - managed resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Dispose(bool disposing)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">disposing</span></td>
+        <td><p><code>true</code> to release both managed and unmanaged resources; <code>false</code> to release only unmanaged resources.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_Finalize_" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Finalize*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_Finalize" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.Finalize">Finalize()</h4>
+  <div class="markdown level1 summary"><p>Finalizes an instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.html">StaticFilesModule</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void Finalize()</code></pre>
+  </div>
+  
+  
   <a id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_RegisterVirtualPath_" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.RegisterVirtualPath*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_Modules_StaticFilesModule_RegisterVirtualPath_System_String_System_String_" data-uid="Unosquare.Labs.EmbedIO.Modules.StaticFilesModule.RegisterVirtualPath(System.String,System.String)">RegisterVirtualPath(String, String)</h4>
   <div class="markdown level1 summary"><p>Registers the virtual path.</p>
@@ -632,6 +794,9 @@ RAM Cache will only cache files that are MaxRamCacheSize in bytes or less.</p>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html">IWebModule</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
   </div>
 
 <h3 id="disqus_thread">Comments</h3>
