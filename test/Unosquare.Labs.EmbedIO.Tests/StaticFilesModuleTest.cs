@@ -272,7 +272,7 @@
                 Assert.Throws<InvalidOperationException>(() =>
                 {
                     var instance = new StaticFilesModule(Directory.GetCurrentDirectory());
-                    instance.RegisterVirtualPath("/tmp", "e:");
+                    instance.RegisterVirtualPath("/tmp", @"e:*.dll");
                 });
             }
         }
