@@ -17,13 +17,12 @@
     /// <summary>
     /// Represents a simple module to server static files from the file system.
     /// </summary>
-    public class StaticFilesModule
-        : FileModuleBase
+    public class StaticFilesModule : FileModuleBase, IDisposable
     {
         /// <summary>
         /// Default document constant to "index.html".
         /// </summary>
-        public const string DefaultDocumentName = "index.html";
+        public const string DefaultDocumentName = VirtualPathManager.DefaultDocumentName;
 
         /// <summary>
         /// Maximal length of entry in DirectoryBrowser.
@@ -35,7 +34,7 @@
         /// </summary>
         private const int SizeIndent = 20;
 
-        private readonly VirtualPaths _virtualPaths;
+        private readonly VirtualPathManager _virtualPathManager;
 
         private readonly ConcurrentDictionary<string, Tuple<long, string>> _fileHashCache =
             new ConcurrentDictionary<string, Tuple<long, string>>();
@@ -45,7 +44,7 @@
         /// </summary>
         /// <param name="paths">The paths.</param>
         public StaticFilesModule(Dictionary<string, string> paths)
-            : this(paths.First().Value, null, paths)
+            : this(paths.First().Value, null, paths, false, true)
         {
         }
 
@@ -55,7 +54,18 @@
         /// <param name="fileSystemPath">The file system path.</param>
         /// <param name="useDirectoryBrowser">if set to <c>true</c> [use directory browser].</param>
         public StaticFilesModule(string fileSystemPath, bool useDirectoryBrowser)
-            : this(fileSystemPath, null, null, useDirectoryBrowser)
+            : this(fileSystemPath, null, null, useDirectoryBrowser, true)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StaticFilesModule" /> class.
+        /// </summary>
+        /// <param name="fileSystemPath">The file system path.</param>
+        /// <param name="useDirectoryBrowser">if set to <c>true</c> [use directory browser].</param>
+        /// <param name="cacheMappedPaths">if set to <c>true</c>, [cache mapped paths].</param>
+        public StaticFilesModule(string fileSystemPath, bool useDirectoryBrowser, bool cacheMappedPaths)
+            : this(fileSystemPath, null, null, useDirectoryBrowser, cacheMappedPaths)
         {
         }
 
@@ -69,14 +79,33 @@
         /// <exception cref="ArgumentException">Path ' + fileSystemPath + ' does not exist.</exception>
         public StaticFilesModule(
             string fileSystemPath,
+            Dictionary<string, string> headers,
+            Dictionary<string, string> additionalPaths,
+            bool useDirectoryBrowser)
+            : this(fileSystemPath, headers, additionalPaths, useDirectoryBrowser, true)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StaticFilesModule" /> class.
+        /// </summary>
+        /// <param name="fileSystemPath">The file system path.</param>
+        /// <param name="headers">The headers to set in every request.</param>
+        /// <param name="additionalPaths">The additional paths.</param>
+        /// <param name="useDirectoryBrowser">if set to <c>true</c> [use directory browser].</param>
+        /// <param name="cacheMappedPaths">if set to <c>true</c>, [cache mapped paths].</param>
+        /// <exception cref="ArgumentException">Path ' + fileSystemPath + ' does not exist.</exception>
+        public StaticFilesModule(
+            string fileSystemPath,
             Dictionary<string, string> headers = null,
             Dictionary<string, string> additionalPaths = null,
-            bool useDirectoryBrowser = false)
+            bool useDirectoryBrowser = false,
+            bool cacheMappedPaths = true)
         {
             if (!Directory.Exists(fileSystemPath))
                 throw new ArgumentException($"Path '{fileSystemPath}' does not exist.");
 
-            _virtualPaths = new VirtualPaths(Path.GetFullPath(fileSystemPath), useDirectoryBrowser);
+            _virtualPathManager = new VirtualPathManager(Path.GetFullPath(fileSystemPath), useDirectoryBrowser, cacheMappedPaths);
 
             DefaultDocument = DefaultDocumentName;
             UseGzip = true;
@@ -98,6 +127,14 @@
         }
 
         /// <summary>
+        /// Finalizes an instance of the <see cref="StaticFilesModule"/> class.
+        /// </summary>
+        ~StaticFilesModule()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
         /// Gets or sets the maximum size of the ram cache file. The default value is 250kb.
         /// </summary>
         /// <value>
@@ -115,8 +152,8 @@
         /// </value>
         public string DefaultDocument
         {
-            get => _virtualPaths.DefaultDocument;
-            set => _virtualPaths.DefaultDocument = value;
+            get => _virtualPathManager.DefaultDocument;
+            set => _virtualPathManager.DefaultDocument = value;
         }
 
         /// <summary>
@@ -129,8 +166,8 @@
         /// </value>
         public string DefaultExtension
         {
-            get => _virtualPaths.DefaultExtension;
-            set => _virtualPaths.DefaultExtension = value;
+            get => _virtualPathManager.DefaultExtension;
+            set => _virtualPathManager.DefaultExtension = value;
         }
 
         /// <summary>
@@ -139,7 +176,7 @@
         /// <value>
         /// The file system path.
         /// </value>
-        public string FileSystemPath => _virtualPaths.FileSystemPath;
+        public string FileSystemPath => _virtualPathManager.RootLocalPath;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not to use the RAM Cache feature
@@ -156,7 +193,7 @@
         /// <value>
         /// The virtual paths.
         /// </value>
-        public ReadOnlyDictionary<string, string> VirtualPaths => _virtualPaths.Collection;
+        public ReadOnlyDictionary<string, string> VirtualPaths => _virtualPathManager.VirtualPaths;
 
         /// <inheritdoc />
         public override string Name => nameof(StaticFilesModule);
@@ -170,6 +207,15 @@
         private RamCache RamCache { get; } = new RamCache();
 
         /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
         /// Registers the virtual path.
         /// </summary>
         /// <param name="virtualPath">The virtual path.</param>
@@ -178,7 +224,7 @@
         /// Is thrown when a method call is invalid for the object's current state.
         /// </exception>
         public void RegisterVirtualPath(string virtualPath, string physicalPath)
-            => _virtualPaths.RegisterVirtualPath(virtualPath, physicalPath);
+            => _virtualPathManager.RegisterVirtualPath(virtualPath, physicalPath);
 
         /// <summary>
         /// Unregisters the virtual path.
@@ -187,12 +233,23 @@
         /// <exception cref="InvalidOperationException">
         /// Is thrown when a method call is invalid for the object's current state.
         /// </exception>
-        public void UnregisterVirtualPath(string virtualPath) => _virtualPaths.UnregisterVirtualPath(virtualPath);
+        public void UnregisterVirtualPath(string virtualPath) => _virtualPathManager.UnregisterVirtualPath(virtualPath);
 
         /// <summary>
         /// Clears the RAM cache.
         /// </summary>
         public void ClearRamCache() => RamCache.Clear();
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing) return;
+
+            _virtualPathManager.Dispose();
+        }
 
         private static Task<bool> HandleDirectory(IHttpContext context, string localPath, CancellationToken ct)
         {
@@ -245,15 +302,12 @@
 
         private Task<bool> HandleGet(IHttpContext context, CancellationToken ct, bool sendBuffer = true)
         {
-            switch (ValidatePath(context, out var requestFullLocalPath))
+            switch (_virtualPathManager.MapUrlPath(context.RequestPathCaseSensitive(), out var localPath) & PathMappingResult.MappingMask)
             {
-                case Core.VirtualPaths.VirtualPathStatus.Forbidden:
-                    context.Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
-                    return Task.FromResult(true);
-                case Core.VirtualPaths.VirtualPathStatus.File:
-                    return HandleFile(context, requestFullLocalPath, sendBuffer, ct);
-                case Core.VirtualPaths.VirtualPathStatus.Directory:
-                    return HandleDirectory(context, requestFullLocalPath, ct);
+                case PathMappingResult.IsFile:
+                    return HandleFile(context, localPath, sendBuffer, ct);
+                case PathMappingResult.IsDirectory:
+                    return HandleDirectory(context, localPath, ct);
                 default:
                     return Task.FromResult(false);
             }
@@ -364,16 +418,6 @@
             }
 
             return buffer;
-        }
-
-        private VirtualPaths.VirtualPathStatus ValidatePath(IHttpContext context, out string requestFullLocalPath)
-        {
-            var baseLocalPath = FileSystemPath;
-            var requestLocalPath = _virtualPaths.GetUrlPath(context.RequestPathCaseSensitive(), ref baseLocalPath);
-
-            requestFullLocalPath = Path.Combine(baseLocalPath, requestLocalPath);
-
-            return _virtualPaths.ExistsLocalPath(requestLocalPath, ref requestFullLocalPath);
         }
 
         private bool UpdateFileCache(
