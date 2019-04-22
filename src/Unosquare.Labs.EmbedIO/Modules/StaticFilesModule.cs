@@ -44,7 +44,7 @@
         /// </summary>
         /// <param name="paths">The paths.</param>
         public StaticFilesModule(Dictionary<string, string> paths)
-            : this(paths.First().Value, null, paths, false, true)
+            : this(paths.First().Value, null, paths)
         {
         }
 
