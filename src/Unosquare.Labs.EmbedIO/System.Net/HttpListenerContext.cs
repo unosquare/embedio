@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Net
 {
     using System;
+    using System.Collections.Generic;
     using System.Security.Principal;
     using System.Threading.Tasks;
     using Labs.EmbedIO;
@@ -12,6 +13,8 @@
     public sealed class HttpListenerContext : IHttpContext
     {
         private WebSocketContext _websocketContext;
+        private Lazy<IDictionary<object, object>> _items =
+            new Lazy<IDictionary<object, object>>(() => new Dictionary<object, object>(), true);
 
         internal HttpListenerContext(HttpConnection cnc)
         {
@@ -33,6 +36,13 @@
 
         /// <inheritdoc />
         public IWebServer WebServer { get; set; }
+        
+        /// <inheritdoc />
+        public IDictionary<object, object> Items
+        {
+            get => _items.Value;
+            set => _items = new Lazy<IDictionary<object, object>>(() => value, true);
+        }
 
         internal HttpListenerRequest HttpListenerRequest => Request as HttpListenerRequest;
 

@@ -1,9 +1,10 @@
 ﻿#if !NETSTANDARD1_3
 namespace Unosquare.Labs.EmbedIO
 {
-    using System.Security.Principal;
-    using System.Net;
     using System;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Security.Principal;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -13,6 +14,8 @@ namespace Unosquare.Labs.EmbedIO
     public class HttpContext : IHttpContext
     {
         private readonly HttpListenerContext _context;
+        private Lazy<IDictionary<object, object>> _items =
+            new Lazy<IDictionary<object, object>>(() => new Dictionary<object, object>(), true);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpContext" /> class.
@@ -37,6 +40,13 @@ namespace Unosquare.Labs.EmbedIO
 
         /// <inheritdoc />
         public IWebServer WebServer { get; set; }
+
+        /// <inheritdoc />
+        public IDictionary<object, object> Items
+        {
+            get => _items.Value;
+            set => _items = new Lazy<IDictionary<object, object>>(() => value, true);
+        }
 
         /// <inheritdoc />
         public async Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize)
