@@ -90,10 +90,6 @@ You must RegisterController in the Web API Module to make it active.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">WebApiController</span></div>
   </div>
-  <div classs="implements">
-    <h5>Implements</h5>
-    <div><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a></div>
-  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
@@ -121,7 +117,7 @@ You must RegisterController in the Web API Module to make it active.</p>
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.Modules.html">Unosquare.Labs.EmbedIO.Modules</a></h6>
   <h5 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class WebApiController : IHttpContext</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class WebApiController</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -246,7 +242,7 @@ You must RegisterController in the Web API Module to make it active.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IWebServer WebServer { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IWebServer WebServer { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -268,14 +264,53 @@ You must RegisterController in the Web API Module to make it active.</p>
   </h3>
   
   
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_AcceptWebSocketAsync_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.AcceptWebSocketAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_AcceptWebSocketAsync_System_Int32_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.AcceptWebSocketAsync(System.Int32)">AcceptWebSocketAsync(Int32)</h4>
-  <div class="markdown level1 summary"><p>Accepts the web socket asynchronous.</p>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_DeleteSession_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.DeleteSession*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_DeleteSession" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.DeleteSession">DeleteSession()</h4>
+  <div class="markdown level1 summary"><p>Deletes the session object associated to the current context.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;IWebSocketContext&gt; AcceptWebSocketAsync(int receiveBufferSize)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual void DeleteSession()</code></pre>
+  </div>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_GetSession_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.GetSession*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_GetSession" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.GetSession">GetSession()</h4>
+  <div class="markdown level1 summary"><p>Gets the session object associated to the current context.
+Returns null if the LocalSessionWebModule has not been loaded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual SessionInfo GetSession()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.SessionInfo.html">SessionInfo</a></td>
+        <td><p>A session object for the given server context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_JsonExceptionResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonExceptionResponseAsync*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_JsonExceptionResponseAsync_System_Exception_System_Net_HttpStatusCode_System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonExceptionResponseAsync(System.Exception,System.Net.HttpStatusCode,System.Boolean,System.Threading.CancellationToken)">JsonExceptionResponseAsync(Exception, Net.HttpStatusCode, Boolean, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Outputs a JSON Response given an exception.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task&lt;bool&gt; JsonExceptionResponseAsync(Exception ex, Net.HttpStatusCode statusCode = null, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -288,9 +323,27 @@ You must RegisterController in the Web API Module to make it active.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">receiveBufferSize</span></td>
-        <td><p>Size of the receive buffer.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception">Exception</a></td>
+        <td><span class="parametername">ex</span></td>
+        <td><p>The ex.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.net.httpstatuscode">Net.HttpStatusCode</a></td>
+        <td><span class="parametername">statusCode</span></td>
+        <td><p>The status code.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">useGzip</span></td>
+        <td><p>if set to <code>true</code> [use gzip].</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
 </td>
       </tr>
     </tbody>
@@ -305,9 +358,87 @@ You must RegisterController in the Web API Module to make it active.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a>&gt;</td>
-        <td><p>A <a class="xref" href="Unosquare.Labs.EmbedIO.IWebSocketContext.html">IWebSocketContext</a> that represents
-the WebSocket handshake request.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><p>A task for writing the output stream.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_JsonResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonResponseAsync*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_JsonResponseAsync_System_Object_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonResponseAsync(System.Object,System.Threading.CancellationToken)">JsonResponseAsync(Object, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Outputs async a Json Response given a data object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task&lt;bool&gt; JsonResponseAsync(object data, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">data</span></td>
+        <td><p>The data.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><p>A <code>true</code> value if the response output was set.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_RequestFormDataDictionaryAsync_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.RequestFormDataDictionaryAsync*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_RequestFormDataDictionaryAsync" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.RequestFormDataDictionaryAsync">RequestFormDataDictionaryAsync()</h4>
+  <div class="markdown level1 summary"><p>Returns dictionary from Request POST data
+Please note the underlying input stream is not rewindable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task&lt;Dictionary&lt;string, object&gt;&gt; RequestFormDataDictionaryAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;&gt;</td>
+        <td><p>A task with a collection that represents KVPs from request data.</p>
 </td>
       </tr>
     </tbody>
@@ -329,10 +460,148 @@ Pragma - no-cache</p>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public virtual void SetDefaultHeaders()</code></pre>
   </div>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_StringResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.StringResponseAsync*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_StringResponseAsync_System_String_System_String_System_Text_Encoding_System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.StringResponseAsync(System.String,System.String,System.Text.Encoding,System.Boolean,System.Threading.CancellationToken)">StringResponseAsync(String, String, Encoding, Boolean, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Outputs async a string response given a string.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task&lt;bool&gt; StringResponseAsync(string content, string contentType = &quot;application/json&quot;, Encoding encoding = null, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">content</span></td>
+        <td><p>The content.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">contentType</span></td>
+        <td><p>Type of the content.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.text.encoding">Encoding</a></td>
+        <td><span class="parametername">encoding</span></td>
+        <td><p>The encoding.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">useGzip</span></td>
+        <td><p>if set to <code>true</code> [use gzip].</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><p>A task for writing the output stream.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_TransformJson_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.TransformJson*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_TransformJson__2_System_Func___0_System_Threading_CancellationToken_System_Threading_Tasks_Task___1___System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.TransformJson``2(System.Func{``0,System.Threading.CancellationToken,System.Threading.Tasks.Task{``1}},System.Threading.CancellationToken)">TransformJson&lt;TIn, TOut&gt;(Func&lt;TIn, CancellationToken, Task&lt;TOut&gt;&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Transforms the response body as JSON and write a new JSON to the request.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task&lt;bool&gt; TransformJson&lt;TIn, TOut&gt;(Func&lt;TIn, CancellationToken, Task&lt;TOut&gt;&gt; transformFunc, CancellationToken cancellationToken = default(CancellationToken))
+    where TIn : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;TIn, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;TOut&gt;&gt;</td>
+        <td><span class="parametername">transformFunc</span></td>
+        <td><p>The transform function.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><p>A task for writing the output stream.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TIn</span></td>
+        <td><p>The type of the input.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TOut</span></td>
+        <td><p>The type of the output.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>
