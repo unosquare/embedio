@@ -1694,6 +1694,54 @@ If the current position is at the end of the stream, returns an empty string.</p
   </table>
   
   
+  <a id="Unosquare_Labs_EmbedIO_Extensions_RequestBodyAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestBodyAsync*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestBodyAsync_Unosquare_Labs_EmbedIO_IHttpRequest_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestBodyAsync(Unosquare.Labs.EmbedIO.IHttpRequest)">RequestBodyAsync(IHttpRequest)</h4>
+  <div class="markdown level1 summary"><p>Retrieves the request body as a string.
+Note that once this method returns, the underlying input stream cannot be read again as
+it is not rewindable for obvious reasons. This functionality is by design.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;string&gt; RequestBodyAsync(this IHttpRequest request)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IHttpRequest.html">IHttpRequest</a></td>
+        <td><span class="parametername">request</span></td>
+        <td><p>The request.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><p>A task with the rest of the stream as a string, from the current position to the end.
+If the current position is at the end of the stream, returns an empty string.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionary_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionary*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionary_System_String_" data-uid="Unosquare.Labs.EmbedIO.Extensions.RequestFormDataDictionary(System.String)">RequestFormDataDictionary(String)</h4>
   <div class="markdown level1 summary"><p>Returns a dictionary of KVPs from Request data.</p>

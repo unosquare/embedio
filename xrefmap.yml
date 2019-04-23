@@ -890,6 +890,12 @@ references:
   commentId: M:Unosquare.Labs.EmbedIO.Extensions.RequestBodyAsync(Unosquare.Labs.EmbedIO.IHttpContext)
   fullName: Unosquare.Labs.EmbedIO.Extensions.RequestBodyAsync(Unosquare.Labs.EmbedIO.IHttpContext)
   nameWithType: Extensions.RequestBodyAsync(IHttpContext)
+- uid: Unosquare.Labs.EmbedIO.Extensions.RequestBodyAsync(Unosquare.Labs.EmbedIO.IHttpRequest)
+  name: RequestBodyAsync(IHttpRequest)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestBodyAsync_Unosquare_Labs_EmbedIO_IHttpRequest_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.RequestBodyAsync(Unosquare.Labs.EmbedIO.IHttpRequest)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.RequestBodyAsync(Unosquare.Labs.EmbedIO.IHttpRequest)
+  nameWithType: Extensions.RequestBodyAsync(IHttpRequest)
 - uid: Unosquare.Labs.EmbedIO.Extensions.RequestBodyAsync*
   name: RequestBodyAsync
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestBodyAsync_
@@ -3669,6 +3675,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.GetSession
   nameWithType: WebApiController.GetSession
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.HttpContext
+  name: HttpContext
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_HttpContext
+  commentId: P:Unosquare.Labs.EmbedIO.Modules.WebApiController.HttpContext
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.HttpContext
+  nameWithType: WebApiController.HttpContext
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.HttpContext*
+  name: HttpContext
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_HttpContext_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebApiController.HttpContext
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.HttpContext
+  nameWithType: WebApiController.HttpContext
 - uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonExceptionResponseAsync(System.Exception,System.Net.HttpStatusCode,System.Boolean,System.Threading.CancellationToken)
   name: JsonExceptionResponseAsync(Exception, Net.HttpStatusCode, Boolean, CancellationToken)
   href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_JsonExceptionResponseAsync_System_Exception_System_Net_HttpStatusCode_System_Boolean_System_Threading_CancellationToken_
