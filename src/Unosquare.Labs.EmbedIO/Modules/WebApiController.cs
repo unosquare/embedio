@@ -13,16 +13,22 @@
     /// </summary>
     public abstract class WebApiController
     {
-        private readonly IHttpContext _context;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="WebApiController"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
         protected WebApiController(IHttpContext context)
         {
-            _context = context;
+            HttpContext = context;
         }
+
+        /// <summary>
+        /// Gets the HTTP context.
+        /// </summary>
+        /// <value>
+        /// The HTTP context.
+        /// </value>
+        public IHttpContext HttpContext { get; }
 
         /// <summary>
         /// Gets the HTTP Request.
@@ -30,7 +36,7 @@
         /// <value>
         /// The request.
         /// </value>
-        public IHttpRequest Request => _context.Request;
+        public IHttpRequest Request => HttpContext.Request;
 
         /// <summary>
         /// Gets the HTTP Response.
@@ -38,7 +44,7 @@
         /// <value>
         /// The response.
         /// </value>
-        public IHttpResponse Response => _context.Response;
+        public IHttpResponse Response => HttpContext.Response;
 
         /// <summary>
         /// Gets the user.
@@ -46,7 +52,7 @@
         /// <value>
         /// The user.
         /// </value>
-        public IPrincipal User => _context.User;
+        public IPrincipal User => HttpContext.User;
 
         /// <summary>
         /// Gets or sets the web server.
@@ -54,7 +60,7 @@
         /// <value>
         /// The web server.
         /// </value>
-        public IWebServer WebServer => _context.WebServer;
+        public IWebServer WebServer => HttpContext.WebServer;
 
         /// <summary>
         /// Sets the default headers to the Web API response.
@@ -67,7 +73,7 @@
         ///
         /// Previous values are defined to avoid caching from client.
         /// </summary>
-        public virtual void SetDefaultHeaders() => _context.NoCache();
+        public virtual void SetDefaultHeaders() => HttpContext.NoCache();
 
         /// <summary>
         /// Outputs async a Json Response given a data object.
@@ -78,7 +84,7 @@
         /// A <c>true</c> value if the response output was set.
         /// </returns>
         public virtual Task<bool> JsonResponseAsync(object data, CancellationToken cancellationToken = default) =>
-            _context.JsonResponseAsync(data, cancellationToken);
+            HttpContext.JsonResponseAsync(data, cancellationToken);
 
         /// <summary>
         /// Transforms the response body as JSON and write a new JSON to the request.
@@ -93,7 +99,7 @@
         public virtual Task<bool> TransformJson<TIn, TOut>(Func<TIn, CancellationToken, Task<TOut>> transformFunc,
             CancellationToken cancellationToken = default)
             where TIn : class
-            => _context.TransformJson(transformFunc, cancellationToken);
+            => HttpContext.TransformJson(transformFunc, cancellationToken);
 
         /// <summary>
         /// Outputs a JSON Response given an exception.
@@ -110,7 +116,7 @@
             System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.InternalServerError,
             bool useGzip = true,
             CancellationToken cancellationToken = default)
-            => _context.JsonExceptionResponseAsync(ex, statusCode, useGzip, cancellationToken);
+            => HttpContext.JsonExceptionResponseAsync(ex, statusCode, useGzip, cancellationToken);
 
         /// <summary>
         /// Outputs async a string response given a string.
@@ -129,7 +135,7 @@
             Encoding encoding = null,
             bool useGzip = true,
             CancellationToken cancellationToken = default) =>
-            _context.StringResponseAsync(content, contentType, encoding, useGzip, cancellationToken);
+            Response.StringResponseAsync(content, contentType, encoding, useGzip, cancellationToken);
 
         /// <summary>
         /// Returns dictionary from Request POST data
@@ -137,18 +143,18 @@
         /// </summary>
         /// <returns>A task with a collection that represents KVPs from request data.</returns>
         public virtual Task<Dictionary<string, object>> RequestFormDataDictionaryAsync() =>
-            _context.RequestFormDataDictionaryAsync();
+            HttpContext.RequestFormDataDictionaryAsync();
 
         /// <summary>
         /// Deletes the session object associated to the current context.
         /// </summary>
-        public virtual void DeleteSession() => _context.DeleteSession();
+        public virtual void DeleteSession() => HttpContext.DeleteSession();
         
         /// <summary>
         /// Gets the session object associated to the current context.
         /// Returns null if the LocalSessionWebModule has not been loaded.
         /// </summary>
         /// <returns>A session object for the given server context.</returns>
-        public virtual SessionInfo GetSession() => _context.GetSession();
+        public virtual SessionInfo GetSession() => HttpContext.GetSession();
     }
 }

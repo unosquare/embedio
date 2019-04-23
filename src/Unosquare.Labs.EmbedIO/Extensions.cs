@@ -169,14 +169,27 @@
         /// A task with the rest of the stream as a string, from the current position to the end.
         /// If the current position is at the end of the stream, returns an empty string.
         /// </returns>
-        public static async Task<string> RequestBodyAsync(this IHttpContext context)
+        public static Task<string> RequestBodyAsync(this IHttpContext context) =>
+            context.Request.RequestBodyAsync();
+
+        /// <summary>
+        /// Retrieves the request body as a string.
+        /// Note that once this method returns, the underlying input stream cannot be read again as
+        /// it is not rewindable for obvious reasons. This functionality is by design.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>
+        /// A task with the rest of the stream as a string, from the current position to the end.
+        /// If the current position is at the end of the stream, returns an empty string.
+        /// </returns>
+        public static async Task<string> RequestBodyAsync(this IHttpRequest request)
         {
-            if (!context.Request.HasEntityBody)
+            if (!request.HasEntityBody)
                 return null;
 
-            using (var body = context.Request.InputStream) // here we have data
+            using (var body = request.InputStream) // here we have data
             {
-                using (var reader = new StreamReader(body, context.Request.ContentEncoding))
+                using (var reader = new StreamReader(body, request.ContentEncoding))
                 {
                     return await reader.ReadToEndAsync().ConfigureAwait(false);
                 }
