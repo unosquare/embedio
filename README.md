@@ -113,7 +113,7 @@ For reading a dictionary from a HTTP Request body you can use [RequestFormDataDi
     [WebApiHandler(HttpVerbs.Post, "/api/data")]
     public async Task<bool> PostData() 
     {
-        var data = this.RequestFormDataDictionary();
+        var data = RequestFormDataDictionary();
 	
 	// Perform an operation with the data
 	await SaveData(data);
@@ -130,7 +130,7 @@ For reading a JSON payload and deserialize it to an object from a HTTP Request b
     [WebApiHandler(HttpVerbs.Post, "/api/data")]
     public async Task<bool> PostJsonData() 
     {
-        var data = this.ParseJson<MyData>();
+        var data = HttpContext.ParseJson<MyData>();
 	
 	// Perform an operation with the data
 	await SaveData(data);
@@ -158,7 +158,7 @@ For writing a binary stream directly to the Response Output Stream you can use [
 	// Call a fictional external source
 	await GetExternalStream(stream);
 	
-	return await this.BinaryResponseAsync(stream);
+	return await HttpContext.BinaryResponseAsync(stream);
     }
 ```
 
@@ -285,18 +285,20 @@ public class PeopleController : WebApiController
         {
             // This is fake call to a Repository
             var person = await PeopleRepository.GetById(id);
-            return await this.JsonResponseAsync(person);
+            return await JsonResponseAsync(person);
         }
         catch (Exception ex)
         {
-            return await this.JsonExceptionResponseAsync(ex);
+            return await JsonExceptionResponseAsync(ex);
         }
     }
     
     // You can override the default headers and add custom headers to each API Response.
-    public override void SetDefaultHeaders() => this.NoCache();
+    public override void SetDefaultHeaders() => HttpContext.NoCache();
 }
 ```
+
+The `SetDefaultHeaders` method will add a no-cache policy to all Web API responses. If you plan to handle a differente policy or even custom headers to each different Web API method we recommend you override this method as you need.
 
 The previous default strategy (Wildcard) matches routes using the asterisk `*` character in the route. **For example:** 
 
@@ -332,24 +334,22 @@ public class PeopleController : WebApiController
             // If the last segment is a backslash, return all
             // the collection. This endpoint call a fake Repository.
             if (lastSegment.EndsWith("/"))
-                return await this.JsonResponseAsync(await PeopleRepository.GetAll());
+                return await JsonResponseAsync(await PeopleRepository.GetAll());
                 
             if (int.TryParse(lastSegment, out var id))
             {
-                return await this.JsonResponseAsync(await PeopleRepository.GetById(id));
+                return await JsonResponseAsync(await PeopleRepository.GetById(id));
             }
 
             throw new KeyNotFoundException("Key Not Found: " + lastSegment);
         }
         catch (Exception ex)
         {
-            return await this.JsonExceptionResponseAsync(ex);
+            return await JsonExceptionResponseAsync(ex);
         }
     }
 }
 ```
-
-The `SetDefaultHeaders` method will add a no-cache policy to all Web API responses. If you plan to handle a differente policy or even custom headers to each different Web API method we recommend you override this method as you need.
 
 ### WebSockets Example
 
