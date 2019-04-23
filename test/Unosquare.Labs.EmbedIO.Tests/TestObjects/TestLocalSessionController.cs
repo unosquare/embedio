@@ -45,12 +45,10 @@
         }
 
         [WebApiHandler(HttpVerbs.Get, "/getdata")]
-        public Task<bool> GetDataSession()
-        {
-            return JsonResponseAsync(GetSession().Data.TryGetValue("sessionData", out var data)
+        public Task<bool> GetDataSession() =>
+            JsonResponseAsync(GetSession().Data.TryGetValue("sessionData", out var data)
                 ? data.ToString()
                 : string.Empty);
-        }
 
         [WebApiHandler(HttpVerbs.Get, "/geterror")]
         public bool GetError() => false;

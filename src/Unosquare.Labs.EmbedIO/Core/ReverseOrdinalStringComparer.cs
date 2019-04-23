@@ -6,7 +6,7 @@
     // Sorts strings in reverse order to obtain the evaluation order of virtual paths
     internal sealed class ReverseOrdinalStringComparer : IComparer<string>
     {
-        private static readonly IComparer<string> _directComparer = StringComparer.Ordinal;
+        private static readonly IComparer<string> DirectComparer = StringComparer.Ordinal;
 
         private ReverseOrdinalStringComparer()
         {
@@ -14,6 +14,6 @@
 
         public static IComparer<string> Instance { get; } = new ReverseOrdinalStringComparer();
 
-        public int Compare(string x, string y) => _directComparer.Compare(y, x);
+        public int Compare(string x, string y) => DirectComparer.Compare(y, x);
     }
 }

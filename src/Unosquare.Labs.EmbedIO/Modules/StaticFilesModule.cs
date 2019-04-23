@@ -117,7 +117,8 @@
 #endif
 
             headers?.ForEach(DefaultHeaders.Add);
-            additionalPaths?.ForEach((virtualPath, physicalPath) => {
+            additionalPaths?.ForEach((virtualPath, physicalPath) =>
+            {
                 if (virtualPath != "/")
                     RegisterVirtualPath(virtualPath, physicalPath);
             });
@@ -196,7 +197,7 @@
         public ReadOnlyDictionary<string, string> VirtualPaths => _virtualPathManager.VirtualPaths;
 
         /// <inheritdoc />
-        public override string Name => nameof(StaticFilesModule);
+        public override string Name { get; } = nameof(StaticFilesModule);
 
         /// <summary>
         /// Private collection holding the contents of the RAM Cache.
@@ -358,9 +359,9 @@
                 }
 
                 await WriteFileAsync(
-                        partialHeader, 
-                        context.Response, 
-                        buffer, 
+                        partialHeader,
+                        context.Response,
+                        buffer,
                         context.AcceptGzip(buffer.Length),
                         ct)
                     .ConfigureAwait(false);
