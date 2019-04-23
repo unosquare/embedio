@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
     using System.Security.Principal;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Interface to create a HTTP Context.
@@ -39,6 +40,14 @@
         /// The web server.
         /// </value>
         IWebServer WebServer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the dictionary of data to pass trough the EmbedIO pipeline.
+        /// </summary>
+        /// <value>
+        /// The items.
+        /// </value>
+        IDictionary<object,object> Items { get; set; }
 
         /// <summary>
         /// Accepts the web socket asynchronous.

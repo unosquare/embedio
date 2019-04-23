@@ -1,14 +1,19 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Tests
 {
+    using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using System.Security.Principal;
 
     /// <summary>
     /// Represents a Test Http Context.
     /// </summary>
-    /// <seealso cref="Unosquare.Labs.EmbedIO.IHttpContext" />
+    /// <seealso cref="IHttpContext" />
     public class TestHttpContext : IHttpContext
     {
+        private Lazy<IDictionary<object, object>> _items =
+            new Lazy<IDictionary<object, object>>(() => new Dictionary<object, object>(), true);
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TestHttpContext"/> class.
         /// </summary>
@@ -22,7 +27,7 @@
 
         /// <inheritdoc />
         public IHttpRequest Request { get; }
-        
+
         /// <inheritdoc />
         public IHttpResponse Response { get; } = new TestHttpResponse();
 
@@ -33,9 +38,14 @@
         public IWebServer WebServer { get; set; }
 
         /// <inheritdoc />
-        public Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize)
+        public IDictionary<object, object> Items
         {
-            throw new System.NotImplementedException();
+            get => _items.Value;
+            set => _items = new Lazy<IDictionary<object, object>>(() => value, true);
         }
+
+        /// <exception cref="NotImplementedException"></exception>
+        /// <inheritdoc />
+        public Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize) => throw new NotImplementedException();
     }
 }

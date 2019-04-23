@@ -2,14 +2,14 @@
 {
     using Constants;
     using EmbedIO;
+    using Swan;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using Swan;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Reflection;
 
     /// <summary>
     /// Represents a simple module to server resource files from the .NET assembly.

@@ -33,7 +33,7 @@
             }
             catch (Exception ex)
             {
-                return this.JsonExceptionResponseAsync(ex);
+                return JsonExceptionResponseAsync(ex);
             }
         }
 
@@ -47,12 +47,12 @@
 
                 // if it ends with a / means we need to list people
                 return lastSegment.EndsWith("/")
-                    ? this.JsonResponseAsync(PeopleRepository.Database)
+                    ? JsonResponseAsync(PeopleRepository.Database)
                     : CheckPerson(lastSegment);
             }
             catch (Exception ex)
             {
-                return this.JsonExceptionResponseAsync(ex);
+                return JsonExceptionResponseAsync(ex);
             }
         }
 
@@ -61,7 +61,7 @@
         {
             try
             {
-                return this.TransformJson<Person, Person>(async (x, ct) =>
+                return TransformJson<Person, Person>(async (x, ct) =>
                 {
                     await Task.Delay(0, ct);
 
@@ -70,7 +70,7 @@
             }
             catch (Exception ex)
             {
-                return this.JsonExceptionResponseAsync(ex);
+                return JsonExceptionResponseAsync(ex);
             }
         }
 
@@ -79,13 +79,13 @@
         {
             try
             {
-                var content = await this.RequestFormDataDictionaryAsync();
+                var content = await RequestFormDataDictionaryAsync();
 
-                return await this.JsonResponseAsync(content);
+                return await JsonResponseAsync(content);
             }
             catch (Exception ex)
             {
-                return await this.JsonExceptionResponseAsync(ex);
+                return await JsonExceptionResponseAsync(ex);
             }
         }
         
@@ -93,7 +93,7 @@
         {
             if (int.TryParse(personKey, out var key) && PeopleRepository.Database.Any(p => p.Key == key))
             {
-                return this.JsonResponseAsync(PeopleRepository.Database.FirstOrDefault(p => p.Key == key));
+                return JsonResponseAsync(PeopleRepository.Database.FirstOrDefault(p => p.Key == key));
             }
 
             throw new KeyNotFoundException($"Key Not Found: {personKey}");
@@ -115,15 +115,15 @@
         [WebApiHandler(HttpVerbs.Get, "/name")]
         public Task<bool> GetName()
         {
-            this.NoCache();
-            return this.JsonResponseAsync(WebName);
+            Response.NoCache();
+            return JsonResponseAsync(WebName);
         }
 
         [WebApiHandler(HttpVerbs.Get, "/namePublic")]
         public Task<bool> GetNamePublic()
         {
             Response.AddHeader("Cache-Control", "public");
-            return this.JsonResponseAsync(WebName);
+            return JsonResponseAsync(WebName);
         }
 
         public override void SetDefaultHeaders()

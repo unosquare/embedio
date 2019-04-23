@@ -1,13 +1,13 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
+    using Constants;
+    using EmbedIO;
+    using Swan;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
-    using Constants;
-    using EmbedIO;
-    using Swan;
 
     /// <summary>
     /// A very simple module to register class methods as handlers.
