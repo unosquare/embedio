@@ -78,7 +78,7 @@
 
                             var body = await response.Content.ReadAsStringAsync();
 
-                            Assert.AreEqual(body, TestLocalSessionController.MyData);
+                            Assert.AreEqual(TestLocalSessionController.MyData, body);
                         }
 
                         request = new HttpRequestMessage(HttpMethod.Get,

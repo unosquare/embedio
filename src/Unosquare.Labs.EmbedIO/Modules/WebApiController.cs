@@ -134,6 +134,6 @@
             Encoding encoding = null,
             bool useGzip = true,
             CancellationToken cancellationToken = default) =>
-            Response.StringResponseAsync(content, contentType, encoding, useGzip, cancellationToken);
+            Response.StringResponseAsync(content, contentType, encoding, useGzip && HttpContext.AcceptGzip(content.Length), cancellationToken);
     }
 }

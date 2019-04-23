@@ -12,7 +12,7 @@
     using System.Security.Cryptography.X509Certificates;
 #endif
 
-    internal sealed class HttpConnection
+    internal sealed class HttpConnection : IDisposable
     {
         internal const int BufferSize = 8192;
 
@@ -395,6 +395,22 @@
             None,
             Cr,
             Lf,
+        }
+
+        public void Dispose()
+        {
+            Close(true);
+
+            _timer?.Dispose();
+            _sock?.Dispose();
+            _ms?.Dispose();
+            _iStream?.Dispose();
+            _oStream?.Dispose();
+            Stream?.Dispose();
+            _lastListener?.Dispose();
+#if !NETSTANDARD1_3
+            ClientCertificate?.Dispose();
+#endif
         }
     }
 }

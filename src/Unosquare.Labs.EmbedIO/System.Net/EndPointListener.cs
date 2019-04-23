@@ -74,7 +74,7 @@
             }
 
             foreach (var c in connections)
-                c.Close(true);
+                c.Dispose();
         }
 
         public void AddPrefix(ListenerPrefix prefix, HttpListener listener)
