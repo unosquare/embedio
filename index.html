@@ -79,7 +79,7 @@
 <a href="https://builtwithdot.net/project/105/embedio"><img src="https://builtwithdot.net/project/105/embedio/badge" alt="BuiltWithDotnet"></a></p>
 <p><img src="https://raw.githubusercontent.com/unosquare/embedio/master/images/embedio.png" alt="EmbedIO"></p>
 <p><em><span class="emoji" shortcode="star">⭐</span> Please star this project if you find it useful!</em></p>
-<p><strong>This README is for EmbedIO v2.x. Click <a href="https://github.com/unosquare/embedio/tree/v1.X">here</a> if you are using EmbedIO v1.x.</strong></p>
+<p><strong>This README is for EmbedIO v2.x. Click <a href="https://github.com/unosquare/embedio/tree/v1.X">here</a> if you are still sing EmbedIO v1.x.</strong></p>
 <ul>
 <li><a href="#overview">Overview</a><ul>
 <li><a href="#embedio-20---whats-new">EmbedIO 2.0 - What&#39;s new</a></li>
@@ -190,24 +190,24 @@
 <pre><code class="lang-csharp">    [WebApiHandler(HttpVerbs.Post, &quot;/api/data&quot;)]
     public async Task&lt;bool&gt; PostData() 
     {
-        var data = this.RequestFormDataDictionary();
+        var data = HttpContext.RequestFormDataDictionary();
 
-    // Perform an operation with the data
-    await SaveData(data);
+        // Perform an operation with the data
+        await SaveData(data);
 
-    return true;
+        return true;
     }
 </code></pre><h4 id="reading-from-a-post-body-as-a-json-payload-applicationjson">Reading from a POST body as a JSON payload (application/json)</h4>
 <p>For reading a JSON payload and deserialize it to an object from a HTTP Request body you can use <a href="https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_ParseJson__1_Unosquare_Labs_EmbedIO_IHttpContext_">ParseJson<t></t></a>. This method works directly from <code>IHttpContext</code> and returns an object of the type specified in the generic type.</p>
 <pre><code class="lang-csharp">    [WebApiHandler(HttpVerbs.Post, &quot;/api/data&quot;)]
     public async Task&lt;bool&gt; PostJsonData() 
     {
-        var data = this.ParseJson&lt;MyData&gt;();
+        var data = HttpContext.ParseJson&lt;MyData&gt;();
 
-    // Perform an operation with the data
-    await SaveData(data);
+        // Perform an operation with the data
+        await SaveData(data);
 
-    return true;
+        return true;
     }
 </code></pre><h4 id="reading-from-a-post-body-as-a-formdata-multipartform-data">Reading from a POST body as a FormData (multipart/form-data)</h4>
 <p>EmbedIO doesn&#39;t provide the functionality to read from a Multipart FormData stream. But you can check the <a href="https://www.nuget.org/packages/HttpMultipartParser/">HttpMultipartParser Nuget</a> and connect the Request input directly to the HttpMultipartParser, very helpful and small library.</p>
@@ -222,7 +222,7 @@
     // Call a fictional external source
     await GetExternalStream(stream);
 
-    return await this.BinaryResponseAsync(stream);
+    return await HttpContext.BinaryResponseAsync(stream);
     }
 </code></pre><h3 id="easy-routes">Easy Routes</h3>
 <h2 id="support-for-ssl">Support for SSL</h2>
@@ -323,18 +323,19 @@ public class PeopleController : WebApiController
         {
             // This is fake call to a Repository
             var person = await PeopleRepository.GetById(id);
-            return await this.JsonResponseAsync(person);
+            return await Ok(person);
         }
         catch (Exception ex)
         {
-            return await this.JsonExceptionResponseAsync(ex);
+            return await InternalServerError(ex);
         }
     }
 
     // You can override the default headers and add custom headers to each API Response.
-    public override void SetDefaultHeaders() =&gt; this.NoCache();
+    public override void SetDefaultHeaders() =&gt; HttpContext.NoCache();
 }
-</code></pre><p>The previous default strategy (Wildcard) matches routes using the asterisk <code>*</code> character in the route. <strong>For example:</strong> </p>
+</code></pre><p>The <code>SetDefaultHeaders</code> method will add a no-cache policy to all Web API responses. If you plan to handle a differente policy or even custom headers to each different Web API method we recommend you override this method as you need.</p>
+<p>The previous default strategy (Wildcard) matches routes using the asterisk <code>*</code> character in the route. <strong>For example:</strong> </p>
 <ul>
 <li>The route <code>/api/people/*</code> will match any request with a URL starting with the two first URL segments <code>api</code> and 
 <code>people</code> and ending with anything. The route <code>/api/people/hello</code> will be matched.</li>
@@ -356,30 +357,22 @@ server.Module&lt;WebApiModule&gt;().RegisterController&lt;PeopleController&gt;()
     [WebApiHandler(HttpVerbs.Get, &quot;/api/people/*&quot;)]
     public async Task&lt;bool&gt; GetPeopleOrPersonById()
     {
-        try
+        var lastSegment = Request.Url.Segments.Last();
+
+        // If the last segment is a backslash, return all
+        // the collection. This endpoint call a fake Repository.
+        if (lastSegment.EndsWith(&quot;/&quot;))
+            return await Ok(await PeopleRepository.GetAll());
+
+        if (int.TryParse(lastSegment, out var id))
         {
-            var lastSegment = Request.Url.Segments.Last();
-
-            // If the last segment is a backslash, return all
-            // the collection. This endpoint call a fake Repository.
-            if (lastSegment.EndsWith(&quot;/&quot;))
-                return await this.JsonResponseAsync(await PeopleRepository.GetAll());
-
-            if (int.TryParse(lastSegment, out var id))
-            {
-                return await this.JsonResponseAsync(await PeopleRepository.GetById(id));
-            }
-
-            throw new KeyNotFoundException(&quot;Key Not Found: &quot; + lastSegment);
+            return await Ok(await PeopleRepository.GetById(id));
         }
-        catch (Exception ex)
-        {
-            return await this.JsonExceptionResponseAsync(ex);
-        }
+
+        throw new KeyNotFoundException(&quot;Key Not Found: &quot; + lastSegment);
     }
 }
-</code></pre><p>The <code>SetDefaultHeaders</code> method will add a no-cache policy to all Web API responses. If you plan to handle a differente policy or even custom headers to each different Web API method we recommend you override this method as you need.</p>
-<h3 id="websockets-example">WebSockets Example</h3>
+</code></pre><h3 id="websockets-example">WebSockets Example</h3>
 <p><em>During server setup:</em></p>
 <pre><code class="lang-csharp">server.RegisterModule(new WebSocketsModule());
 server.Module&lt;WebSocketsModule&gt;().RegisterWebSocketsServer&lt;WebSocketsChatServer&gt;(&quot;/chat&quot;);

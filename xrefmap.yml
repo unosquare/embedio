@@ -3649,32 +3649,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.WebApiController
   nameWithType: WebApiController.WebApiController
-- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.DeleteSession
-  name: DeleteSession()
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_DeleteSession
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiController.DeleteSession
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.DeleteSession()
-  nameWithType: WebApiController.DeleteSession()
-- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.DeleteSession*
-  name: DeleteSession
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_DeleteSession_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebApiController.DeleteSession
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.DeleteSession
-  nameWithType: WebApiController.DeleteSession
-- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.GetSession
-  name: GetSession()
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_GetSession
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiController.GetSession
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.GetSession()
-  nameWithType: WebApiController.GetSession()
-- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.GetSession*
-  name: GetSession
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_GetSession_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebApiController.GetSession
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.GetSession
-  nameWithType: WebApiController.GetSession
 - uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.HttpContext
   name: HttpContext
   href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_HttpContext
@@ -3688,32 +3662,47 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.HttpContext
   nameWithType: WebApiController.HttpContext
-- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonExceptionResponseAsync(System.Exception,System.Net.HttpStatusCode,System.Boolean,System.Threading.CancellationToken)
-  name: JsonExceptionResponseAsync(Exception, Net.HttpStatusCode, Boolean, CancellationToken)
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_JsonExceptionResponseAsync_System_Exception_System_Net_HttpStatusCode_System_Boolean_System_Threading_CancellationToken_
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonExceptionResponseAsync(System.Exception,System.Net.HttpStatusCode,System.Boolean,System.Threading.CancellationToken)
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonExceptionResponseAsync(System.Exception, System.Net.HttpStatusCode, System.Boolean, System.Threading.CancellationToken)
-  nameWithType: WebApiController.JsonExceptionResponseAsync(Exception, Net.HttpStatusCode, Boolean, CancellationToken)
-- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonExceptionResponseAsync*
-  name: JsonExceptionResponseAsync
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_JsonExceptionResponseAsync_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonExceptionResponseAsync
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.InternalServerError(System.Exception,System.Net.HttpStatusCode,System.Boolean,System.Threading.CancellationToken)
+  name: InternalServerError(Exception, Net.HttpStatusCode, Boolean, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_InternalServerError_System_Exception_System_Net_HttpStatusCode_System_Boolean_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiController.InternalServerError(System.Exception,System.Net.HttpStatusCode,System.Boolean,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.InternalServerError(System.Exception, System.Net.HttpStatusCode, System.Boolean, System.Threading.CancellationToken)
+  nameWithType: WebApiController.InternalServerError(Exception, Net.HttpStatusCode, Boolean, CancellationToken)
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.InternalServerError*
+  name: InternalServerError
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_InternalServerError_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebApiController.InternalServerError
   isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonExceptionResponseAsync
-  nameWithType: WebApiController.JsonExceptionResponseAsync
-- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonResponseAsync(System.Object,System.Threading.CancellationToken)
-  name: JsonResponseAsync(Object, CancellationToken)
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_JsonResponseAsync_System_Object_System_Threading_CancellationToken_
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonResponseAsync(System.Object,System.Threading.CancellationToken)
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonResponseAsync(System.Object, System.Threading.CancellationToken)
-  nameWithType: WebApiController.JsonResponseAsync(Object, CancellationToken)
-- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonResponseAsync*
-  name: JsonResponseAsync
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_JsonResponseAsync_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonResponseAsync
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.InternalServerError
+  nameWithType: WebApiController.InternalServerError
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.Ok(System.Object,System.Threading.CancellationToken)
+  name: Ok(Object, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_Ok_System_Object_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiController.Ok(System.Object,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.Ok(System.Object, System.Threading.CancellationToken)
+  nameWithType: WebApiController.Ok(Object, CancellationToken)
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.Ok(System.String,System.String,System.Text.Encoding,System.Boolean,System.Threading.CancellationToken)
+  name: Ok(String, String, Encoding, Boolean, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_Ok_System_String_System_String_System_Text_Encoding_System_Boolean_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiController.Ok(System.String,System.String,System.Text.Encoding,System.Boolean,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.Ok(System.String, System.String, System.Text.Encoding, System.Boolean, System.Threading.CancellationToken)
+  nameWithType: WebApiController.Ok(String, String, Encoding, Boolean, CancellationToken)
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.Ok*
+  name: Ok
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_Ok_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebApiController.Ok
   isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonResponseAsync
-  nameWithType: WebApiController.JsonResponseAsync
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.Ok
+  nameWithType: WebApiController.Ok
+- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.Ok``2(System.Func{``0,System.Threading.CancellationToken,System.Threading.Tasks.Task{``1}},System.Threading.CancellationToken)
+  name: Ok<TIn, TOut>(Func<TIn, CancellationToken, Task<TOut>>, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_Ok__2_System_Func___0_System_Threading_CancellationToken_System_Threading_Tasks_Task___1___System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiController.Ok``2(System.Func{``0,System.Threading.CancellationToken,System.Threading.Tasks.Task{``1}},System.Threading.CancellationToken)
+  name.vb: Ok(Of TIn, TOut)(Func(Of TIn, CancellationToken, Task(Of TOut)), CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.Ok<TIn, TOut>(System.Func<TIn, System.Threading.CancellationToken, System.Threading.Tasks.Task<TOut>>, System.Threading.CancellationToken)
+  fullName.vb: Unosquare.Labs.EmbedIO.Modules.WebApiController.Ok(Of TIn, TOut)(System.Func(Of TIn, System.Threading.CancellationToken, System.Threading.Tasks.Task(Of TOut)), System.Threading.CancellationToken)
+  nameWithType: WebApiController.Ok<TIn, TOut>(Func<TIn, CancellationToken, Task<TOut>>, CancellationToken)
+  nameWithType.vb: WebApiController.Ok(Of TIn, TOut)(Func(Of TIn, CancellationToken, Task(Of TOut)), CancellationToken)
 - uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.Request
   name: Request
   href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_Request
@@ -3727,19 +3716,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.Request
   nameWithType: WebApiController.Request
-- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.RequestFormDataDictionaryAsync
-  name: RequestFormDataDictionaryAsync()
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_RequestFormDataDictionaryAsync
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiController.RequestFormDataDictionaryAsync
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.RequestFormDataDictionaryAsync()
-  nameWithType: WebApiController.RequestFormDataDictionaryAsync()
-- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.RequestFormDataDictionaryAsync*
-  name: RequestFormDataDictionaryAsync
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_RequestFormDataDictionaryAsync_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebApiController.RequestFormDataDictionaryAsync
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.RequestFormDataDictionaryAsync
-  nameWithType: WebApiController.RequestFormDataDictionaryAsync
 - uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.Response
   name: Response
   href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_Response
@@ -3766,35 +3742,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders
   nameWithType: WebApiController.SetDefaultHeaders
-- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.StringResponseAsync(System.String,System.String,System.Text.Encoding,System.Boolean,System.Threading.CancellationToken)
-  name: StringResponseAsync(String, String, Encoding, Boolean, CancellationToken)
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_StringResponseAsync_System_String_System_String_System_Text_Encoding_System_Boolean_System_Threading_CancellationToken_
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiController.StringResponseAsync(System.String,System.String,System.Text.Encoding,System.Boolean,System.Threading.CancellationToken)
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.StringResponseAsync(System.String, System.String, System.Text.Encoding, System.Boolean, System.Threading.CancellationToken)
-  nameWithType: WebApiController.StringResponseAsync(String, String, Encoding, Boolean, CancellationToken)
-- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.StringResponseAsync*
-  name: StringResponseAsync
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_StringResponseAsync_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebApiController.StringResponseAsync
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.StringResponseAsync
-  nameWithType: WebApiController.StringResponseAsync
-- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.TransformJson*
-  name: TransformJson
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_TransformJson_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebApiController.TransformJson
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.TransformJson
-  nameWithType: WebApiController.TransformJson
-- uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.TransformJson``2(System.Func{``0,System.Threading.CancellationToken,System.Threading.Tasks.Task{``1}},System.Threading.CancellationToken)
-  name: TransformJson<TIn, TOut>(Func<TIn, CancellationToken, Task<TOut>>, CancellationToken)
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_TransformJson__2_System_Func___0_System_Threading_CancellationToken_System_Threading_Tasks_Task___1___System_Threading_CancellationToken_
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebApiController.TransformJson``2(System.Func{``0,System.Threading.CancellationToken,System.Threading.Tasks.Task{``1}},System.Threading.CancellationToken)
-  name.vb: TransformJson(Of TIn, TOut)(Func(Of TIn, CancellationToken, Task(Of TOut)), CancellationToken)
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebApiController.TransformJson<TIn, TOut>(System.Func<TIn, System.Threading.CancellationToken, System.Threading.Tasks.Task<TOut>>, System.Threading.CancellationToken)
-  fullName.vb: Unosquare.Labs.EmbedIO.Modules.WebApiController.TransformJson(Of TIn, TOut)(System.Func(Of TIn, System.Threading.CancellationToken, System.Threading.Tasks.Task(Of TOut)), System.Threading.CancellationToken)
-  nameWithType: WebApiController.TransformJson<TIn, TOut>(Func<TIn, CancellationToken, Task<TOut>>, CancellationToken)
-  nameWithType.vb: WebApiController.TransformJson(Of TIn, TOut)(Func(Of TIn, CancellationToken, Task(Of TOut)), CancellationToken)
 - uid: Unosquare.Labs.EmbedIO.Modules.WebApiController.User
   name: User
   href: api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html#Unosquare_Labs_EmbedIO_Modules_WebApiController_User

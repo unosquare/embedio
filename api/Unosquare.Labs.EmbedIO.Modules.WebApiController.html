@@ -291,53 +291,14 @@ You must RegisterController in the Web API Module to make it active.</p>
   </h3>
   
   
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_DeleteSession_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.DeleteSession*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_DeleteSession" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.DeleteSession">DeleteSession()</h4>
-  <div class="markdown level1 summary"><p>Deletes the session object associated to the current context.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void DeleteSession()</code></pre>
-  </div>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_GetSession_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.GetSession*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_GetSession" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.GetSession">GetSession()</h4>
-  <div class="markdown level1 summary"><p>Gets the session object associated to the current context.
-Returns null if the LocalSessionWebModule has not been loaded.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual SessionInfo GetSession()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Unosquare.Labs.EmbedIO.SessionInfo.html">SessionInfo</a></td>
-        <td><p>A session object for the given server context.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_JsonExceptionResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonExceptionResponseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_JsonExceptionResponseAsync_System_Exception_System_Net_HttpStatusCode_System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonExceptionResponseAsync(System.Exception,System.Net.HttpStatusCode,System.Boolean,System.Threading.CancellationToken)">JsonExceptionResponseAsync(Exception, Net.HttpStatusCode, Boolean, CancellationToken)</h4>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_InternalServerError_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.InternalServerError*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_InternalServerError_System_Exception_System_Net_HttpStatusCode_System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.InternalServerError(System.Exception,System.Net.HttpStatusCode,System.Boolean,System.Threading.CancellationToken)">InternalServerError(Exception, Net.HttpStatusCode, Boolean, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Outputs a JSON Response given an exception.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Task&lt;bool&gt; JsonExceptionResponseAsync(Exception ex, Net.HttpStatusCode statusCode = null, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual Task&lt;bool&gt; InternalServerError(Exception ex, Net.HttpStatusCode statusCode = null, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -393,14 +354,14 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_JsonResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonResponseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_JsonResponseAsync_System_Object_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.JsonResponseAsync(System.Object,System.Threading.CancellationToken)">JsonResponseAsync(Object, CancellationToken)</h4>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_Ok_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.Ok*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_Ok_System_Object_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.Ok(System.Object,System.Threading.CancellationToken)">Ok(Object, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Outputs async a Json Response given a data object.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Task&lt;bool&gt; JsonResponseAsync(object data, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual Task&lt;bool&gt; Ok(object data, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -444,59 +405,14 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_RequestFormDataDictionaryAsync_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.RequestFormDataDictionaryAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_RequestFormDataDictionaryAsync" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.RequestFormDataDictionaryAsync">RequestFormDataDictionaryAsync()</h4>
-  <div class="markdown level1 summary"><p>Returns dictionary from Request POST data
-Please note the underlying input stream is not rewindable.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Task&lt;Dictionary&lt;string, object&gt;&gt; RequestFormDataDictionaryAsync()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;&gt;</td>
-        <td><p>A task with a collection that represents KVPs from request data.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_SetDefaultHeaders_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_SetDefaultHeaders" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders">SetDefaultHeaders()</h4>
-  <div class="markdown level1 summary"><p>Sets the default headers to the Web API response.
-By default will set:</p>
-<p>Expires - Mon, 26 Jul 1997 05:00:00 GMT
-LastModified - (Current Date)
-CacheControl - no-store, no-cache, must-revalidate
-Pragma - no-cache</p>
-<p>Previous values are defined to avoid caching from client.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void SetDefaultHeaders()</code></pre>
-  </div>
-  
-  
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_StringResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.StringResponseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_StringResponseAsync_System_String_System_String_System_Text_Encoding_System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.StringResponseAsync(System.String,System.String,System.Text.Encoding,System.Boolean,System.Threading.CancellationToken)">StringResponseAsync(String, String, Encoding, Boolean, CancellationToken)</h4>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_Ok_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.Ok*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_Ok_System_String_System_String_System_Text_Encoding_System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.Ok(System.String,System.String,System.Text.Encoding,System.Boolean,System.Threading.CancellationToken)">Ok(String, String, Encoding, Boolean, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Outputs async a string response given a string.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Task&lt;bool&gt; StringResponseAsync(string content, string contentType = &quot;application/json&quot;, Encoding encoding = null, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual Task&lt;bool&gt; Ok(string content, string contentType = &quot;application/json&quot;, Encoding encoding = null, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -558,14 +474,14 @@ Pragma - no-cache</p>
   </table>
   
   
-  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_TransformJson_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.TransformJson*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_TransformJson__2_System_Func___0_System_Threading_CancellationToken_System_Threading_Tasks_Task___1___System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.TransformJson``2(System.Func{``0,System.Threading.CancellationToken,System.Threading.Tasks.Task{``1}},System.Threading.CancellationToken)">TransformJson&lt;TIn, TOut&gt;(Func&lt;TIn, CancellationToken, Task&lt;TOut&gt;&gt;, CancellationToken)</h4>
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_Ok_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.Ok*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_Ok__2_System_Func___0_System_Threading_CancellationToken_System_Threading_Tasks_Task___1___System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.Ok``2(System.Func{``0,System.Threading.CancellationToken,System.Threading.Tasks.Task{``1}},System.Threading.CancellationToken)">Ok&lt;TIn, TOut&gt;(Func&lt;TIn, CancellationToken, Task&lt;TOut&gt;&gt;, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Transforms the response body as JSON and write a new JSON to the request.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Task&lt;bool&gt; TransformJson&lt;TIn, TOut&gt;(Func&lt;TIn, CancellationToken, Task&lt;TOut&gt;&gt; transformFunc, CancellationToken cancellationToken = default(CancellationToken))
+    <pre><code class="lang-csharp hljs">protected virtual Task&lt;bool&gt; Ok&lt;TIn, TOut&gt;(Func&lt;TIn, CancellationToken, Task&lt;TOut&gt;&gt; transformFunc, CancellationToken cancellationToken = default(CancellationToken))
     where TIn : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -629,6 +545,23 @@ Pragma - no-cache</p>
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Modules_WebApiController_SetDefaultHeaders_" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Modules_WebApiController_SetDefaultHeaders" data-uid="Unosquare.Labs.EmbedIO.Modules.WebApiController.SetDefaultHeaders">SetDefaultHeaders()</h4>
+  <div class="markdown level1 summary"><p>Sets the default headers to the Web API response.
+By default will set:</p>
+<p>Expires - Mon, 26 Jul 1997 05:00:00 GMT
+LastModified - (Current Date)
+CacheControl - no-store, no-cache, must-revalidate
+Pragma - no-cache</p>
+<p>Previous values are defined to avoid caching from client.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void SetDefaultHeaders()</code></pre>
+  </div>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>
