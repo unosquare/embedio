@@ -11,7 +11,7 @@
 
 *:star: Please star this project if you find it useful!*
 
-**This README is for EmbedIO v2.x. Click [here](https://github.com/unosquare/embedio/tree/v1.X) if you are using EmbedIO v1.x.**
+**This README is for EmbedIO v2.x. Click [here](https://github.com/unosquare/embedio/tree/v1.X) if you are still sing EmbedIO v1.x.**
 
 - [Overview](#overview)
     - [EmbedIO 2.0 - What's new](#embedio-20---whats-new)
@@ -113,12 +113,12 @@ For reading a dictionary from a HTTP Request body you can use [RequestFormDataDi
     [WebApiHandler(HttpVerbs.Post, "/api/data")]
     public async Task<bool> PostData() 
     {
-        var data = RequestFormDataDictionary();
+        var data = HttpContext.RequestFormDataDictionary();
 	
-	// Perform an operation with the data
-	await SaveData(data);
+		// Perform an operation with the data
+		await SaveData(data);
 	
-	return true;
+		return true;
     }
 ```
 
@@ -132,10 +132,10 @@ For reading a JSON payload and deserialize it to an object from a HTTP Request b
     {
         var data = HttpContext.ParseJson<MyData>();
 	
-	// Perform an operation with the data
-	await SaveData(data);
+		// Perform an operation with the data
+		await SaveData(data);
 	
-	return true;
+		return true;
     }
 ```
 
@@ -285,11 +285,11 @@ public class PeopleController : WebApiController
         {
             // This is fake call to a Repository
             var person = await PeopleRepository.GetById(id);
-            return await JsonResponseAsync(person);
+            return await Ok(person);
         }
         catch (Exception ex)
         {
-            return await JsonExceptionResponseAsync(ex);
+            return await InternalServerError(ex);
         }
     }
     
@@ -327,26 +327,19 @@ public class PeopleController : WebApiController
     [WebApiHandler(HttpVerbs.Get, "/api/people/*")]
     public async Task<bool> GetPeopleOrPersonById()
     {
-        try
-        {
-            var lastSegment = Request.Url.Segments.Last();
+        var lastSegment = Request.Url.Segments.Last();
 
-            // If the last segment is a backslash, return all
-            // the collection. This endpoint call a fake Repository.
-            if (lastSegment.EndsWith("/"))
-                return await JsonResponseAsync(await PeopleRepository.GetAll());
+        // If the last segment is a backslash, return all
+        // the collection. This endpoint call a fake Repository.
+        if (lastSegment.EndsWith("/"))
+            return await Ok(await PeopleRepository.GetAll());
                 
-            if (int.TryParse(lastSegment, out var id))
-            {
-                return await JsonResponseAsync(await PeopleRepository.GetById(id));
-            }
-
-            throw new KeyNotFoundException("Key Not Found: " + lastSegment);
-        }
-        catch (Exception ex)
+        if (int.TryParse(lastSegment, out var id))
         {
-            return await JsonExceptionResponseAsync(ex);
+            return await Ok(await PeopleRepository.GetById(id));
         }
+
+        throw new KeyNotFoundException("Key Not Found: " + lastSegment);
     }
 }
 ```

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Text;
-    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Security.Principal;
@@ -83,7 +82,7 @@
         /// <returns>
         /// A <c>true</c> value if the response output was set.
         /// </returns>
-        public virtual Task<bool> JsonResponseAsync(object data, CancellationToken cancellationToken = default) =>
+        protected virtual Task<bool> Ok(object data, CancellationToken cancellationToken = default) =>
             HttpContext.JsonResponseAsync(data, cancellationToken);
 
         /// <summary>
@@ -96,7 +95,7 @@
         /// <returns>
         /// A task for writing the output stream.
         /// </returns>
-        public virtual Task<bool> TransformJson<TIn, TOut>(Func<TIn, CancellationToken, Task<TOut>> transformFunc,
+        protected virtual Task<bool> Ok<TIn, TOut>(Func<TIn, CancellationToken, Task<TOut>> transformFunc,
             CancellationToken cancellationToken = default)
             where TIn : class
             => HttpContext.TransformJson(transformFunc, cancellationToken);
@@ -111,7 +110,7 @@
         /// <returns>
         /// A task for writing the output stream.
         /// </returns>
-        public virtual Task<bool> JsonExceptionResponseAsync(
+        protected virtual Task<bool> InternalServerError(
             Exception ex,
             System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.InternalServerError,
             bool useGzip = true,
@@ -129,32 +128,12 @@
         /// <returns>
         /// A task for writing the output stream.
         /// </returns>
-        public virtual Task<bool> StringResponseAsync(
+        protected virtual Task<bool> Ok(
             string content,
             string contentType = "application/json",
             Encoding encoding = null,
             bool useGzip = true,
             CancellationToken cancellationToken = default) =>
             Response.StringResponseAsync(content, contentType, encoding, useGzip, cancellationToken);
-
-        /// <summary>
-        /// Returns dictionary from Request POST data
-        /// Please note the underlying input stream is not rewindable.
-        /// </summary>
-        /// <returns>A task with a collection that represents KVPs from request data.</returns>
-        public virtual Task<Dictionary<string, object>> RequestFormDataDictionaryAsync() =>
-            HttpContext.RequestFormDataDictionaryAsync();
-
-        /// <summary>
-        /// Deletes the session object associated to the current context.
-        /// </summary>
-        public virtual void DeleteSession() => HttpContext.DeleteSession();
-        
-        /// <summary>
-        /// Gets the session object associated to the current context.
-        /// Returns null if the LocalSessionWebModule has not been loaded.
-        /// </summary>
-        /// <returns>A session object for the given server context.</returns>
-        public virtual SessionInfo GetSession() => HttpContext.GetSession();
     }
 }

@@ -17,7 +17,7 @@
         }
         
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "big")]
-        public Task<bool> GetBigJson() => JsonResponseAsync(Enumerable.Range(1, 100).Select(x => new
+        public Task<bool> GetBigJson() => Ok(Enumerable.Range(1, 100).Select(x => new
         {
             x,
             y = TimeZoneInfo.GetSystemTimeZones()
@@ -25,18 +25,18 @@
         }));
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "empty")]
-        public Task<bool> GetEmpty() => JsonResponseAsync(new { Ok = true });
+        public Task<bool> GetEmpty() => Ok(new { Ok = true });
 
         [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regex")]
         public Task<bool> GetPeople()
         {
             try
             {
-                return JsonResponseAsync(PeopleRepository.Database);
+                return Ok(PeopleRepository.Database);
             }
             catch (Exception ex)
             {
-                return JsonExceptionResponseAsync(ex);
+                return InternalServerError(ex);
             }
         }
 
@@ -49,7 +49,7 @@
             }
             catch (Exception ex)
             {
-                return JsonExceptionResponseAsync(ex);
+                return InternalServerError(ex);
             }
         }
 
@@ -58,11 +58,11 @@
         {
             try
             {
-                return id.HasValue ? CheckPerson(id.Value) : JsonResponseAsync(PeopleRepository.Database);
+                return id.HasValue ? CheckPerson(id.Value) : Ok(PeopleRepository.Database);
             }
             catch (Exception ex)
             {
-                return JsonExceptionResponseAsync(ex);
+                return InternalServerError(ex);
             }
         }
 
@@ -75,7 +75,7 @@
             }
             catch (Exception ex)
             {
-                return JsonExceptionResponseAsync(ex);
+                return InternalServerError(ex);
             }
         }
 
@@ -88,14 +88,14 @@
 
                 if (item != null)
                 {
-                    return JsonResponseAsync(item);
+                    return Ok(item);
                 }
 
                 throw new KeyNotFoundException($"Key Not Found: {date}");
             }
             catch (Exception ex)
             {
-                return JsonExceptionResponseAsync(ex);
+                return InternalServerError(ex);
             }
         }
 
@@ -109,14 +109,14 @@
 
                 if (item != null)
                 {
-                    return JsonResponseAsync(item);
+                    return Ok(item);
                 }
 
                 throw new KeyNotFoundException($"Key Not Found: {skill}-{age}");
             }
             catch (Exception ex)
             {
-                return JsonExceptionResponseAsync(ex);
+                return InternalServerError(ex);
             }
         }
 
@@ -131,14 +131,14 @@
 
                 if (item != null)
                 {
-                    return JsonResponseAsync(item);
+                    return Ok(item);
                 }
 
                 throw new KeyNotFoundException($"Key Not Found: {skill}-{age}");
             }
             catch (Exception ex)
             {
-                return JsonExceptionResponseAsync(ex);
+                return InternalServerError(ex);
             }
         }
 
@@ -147,7 +147,7 @@
             var item = PeopleRepository.Database.FirstOrDefault(p => p.Key == id);
 
             if (item == null) throw new KeyNotFoundException($"Key Not Found: {id}");
-            return JsonResponseAsync(item);
+            return Ok(item);
         }
     }
 }

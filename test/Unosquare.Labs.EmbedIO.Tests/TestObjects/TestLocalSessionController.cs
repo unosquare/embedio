@@ -25,28 +25,28 @@
             var cookie = new System.Net.Cookie(CookieName, CookieName);
             Response.Cookies.Add(cookie);
 
-            return JsonResponseAsync(Response.Cookies[CookieName]);
+            return Ok(Response.Cookies[CookieName]);
         }
 
         [WebApiHandler(HttpVerbs.Get, "/deletesession")]
         public Task<bool> DeleteSessionC()
         {
-            DeleteSession();
+            HttpContext.DeleteSession();
 
-            return JsonResponseAsync("Deleted");
+            return Ok("Deleted");
         }
 
         [WebApiHandler(HttpVerbs.Get, "/putdata")]
         public Task<bool> PutDataSession()
         {
-            GetSession()?.Data.TryAdd("sessionData", MyData);
+            HttpContext.GetSession()?.Data.TryAdd("sessionData", MyData);
 
-            return JsonResponseAsync(GetSession().Data["sessionData"].ToString());
+            return Ok(HttpContext.GetSession().Data["sessionData"].ToString());
         }
 
         [WebApiHandler(HttpVerbs.Get, "/getdata")]
         public Task<bool> GetDataSession() =>
-            JsonResponseAsync(GetSession().Data.TryGetValue("sessionData", out var data)
+            Ok(HttpContext.GetSession().Data.TryGetValue("sessionData", out var data)
                 ? data.ToString()
                 : string.Empty);
 

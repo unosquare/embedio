@@ -1,9 +1,9 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
     using Constants;
+    using Modules;
     using System.Collections.Generic;
     using System.Linq;
-    using Modules;
     using System.Threading.Tasks;
     using Tubular;
     using Tubular.ObjectModel;
@@ -38,11 +38,11 @@
         {
             // if it ends with a / means we need to list people
             if (string.IsNullOrWhiteSpace(id))
-                return await JsonResponseAsync(_dbContext.People.SelectAll());
+                return await Ok(_dbContext.People.SelectAll());
 
             // if it ends with "first" means we need to show first record of people
             if (id == "first")
-                return await JsonResponseAsync(_dbContext.People.SelectAll().First());
+                return await Ok(_dbContext.People.SelectAll().First());
 
             // otherwise, we need to parse the key and respond with the entity accordingly
             if (int.TryParse(id, out var key))
@@ -50,7 +50,7 @@
                 var single = await _dbContext.People.SingleAsync(key);
 
                 if (single != null)
-                    return await JsonResponseAsync(single);
+                    return await Ok(single);
             }
 
             throw new KeyNotFoundException($"Key Not Found: {id}");
@@ -62,7 +62,7 @@
         /// <returns></returns>
         [WebApiHandler(HttpVerbs.Post, RelativePath + "people/")]
         public Task<bool> PostPeople() =>
-            TransformJson<GridDataRequest, GridDataResponse>(async (model, ct) =>
+            Ok<GridDataRequest, GridDataResponse>(async (model, ct) =>
                 model.CreateGridDataResponse((await _dbContext.People.SelectAllAsync()).AsQueryable()));
 
         /// <summary>
@@ -72,9 +72,9 @@
         [WebApiHandler(HttpVerbs.Post, RelativePath + "echo/")]
         public async Task<bool> Echo()
         {
-            var content = await this.RequestFormDataDictionaryAsync();
+            var content = await HttpContext.RequestFormDataDictionaryAsync();
 
-            return await JsonResponseAsync(content);
+            return await Ok(content);
         }
     }
 }

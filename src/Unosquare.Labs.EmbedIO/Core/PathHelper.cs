@@ -6,18 +6,15 @@
 
     internal static class PathHelper
     {
-        private static readonly Regex _multipleSlashRegex = new Regex("//+", RegexOptions.Compiled | RegexOptions.CultureInvariant);
-
-        static readonly char[] _invalidLocalPathChars = GetInvalidLocalPathChars();
-
-        public static bool IsValidUrlPath(string urlPath) => !string.IsNullOrEmpty(urlPath) && urlPath[0] == '/';
+        private static readonly Regex MultipleSlashRegex = new Regex("//+", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+        private static readonly char[] InvalidLocalPathChars = GetInvalidLocalPathChars();
 
         // urlPath must be a valid URL path
         // (not null, not empty, starting with a slash.)
         public static string NormalizeUrlPath(string urlPath, bool isBasePath)
         {
             // Replace each run of multiple slashes with a single slash
-            urlPath = _multipleSlashRegex.Replace(urlPath, "/");
+            urlPath = MultipleSlashRegex.Replace(urlPath, "/");
 
             // The root path needs no further checking.
             var length = urlPath.Length;
@@ -39,19 +36,13 @@
         public static string EnsureValidUrlPath(string urlPath, bool isBasePath)
         {
             if (urlPath == null)
-            {
                 throw new InvalidOperationException("URL path is null,");
-            }
 
             if (urlPath.Length == 0)
-            {
                 throw new InvalidOperationException("URL path is empty.");
-            }
 
             if (urlPath[0] != '/')
-            {
                 throw new InvalidOperationException($"URL path \"{urlPath}\"does not start with a slash.");
-            }
 
             return NormalizeUrlPath(urlPath, isBasePath);
         }
@@ -59,24 +50,16 @@
         public static string EnsureValidLocalPath(string localPath)
         {
             if (localPath == null)
-            {
                 throw new InvalidOperationException("Local path is null.");
-            }
 
             if (localPath.Length == 0)
-            {
                 throw new InvalidOperationException("Local path is empty.");
-            }
 
             if (string.IsNullOrWhiteSpace(localPath))
-            {
                 throw new InvalidOperationException("Local path contains only white space.");
-            }
 
-            if (localPath.IndexOfAny(_invalidLocalPathChars) >= 0)
-            {
+            if (localPath.IndexOfAny(InvalidLocalPathChars) >= 0)
                 throw new InvalidOperationException($"Local path \"{localPath}\"contains one or more invalid characters.");
-            }
 
             return localPath;
         }
