@@ -102,6 +102,26 @@
                     }
                 }
             }
+
+            [Test]
+            public async Task Issue68_MaliciousPath_GivesError404()
+            {
+                // Take the full path to a file that certainly exists, but is outside the virtualized folder
+                // (in this case, index.html in the "/" web folder)
+                var path = Path.Combine(TestHelper.RootPath(), StaticFilesModule.DefaultDocumentName);
+                // Add said path to a valid virtual path, resulting in "/virtual/C:\some\path"
+                var url = VirtualPathUrl + WebUtility.UrlEncode(path);
+
+                using (var client = new HttpClient())
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+                    using (var response = await client.SendAsync(request))
+                    {
+                        Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode, "Status Code 404 requesting malicious path");
+                    }
+                }
+            }
         }
 
         public class UseFallback : StaticFilesModuleTest
