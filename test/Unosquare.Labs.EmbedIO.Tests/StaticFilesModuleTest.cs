@@ -17,17 +17,18 @@
     {
         private const string HeaderPragmaValue = "no-cache";
 
-        protected StaticFilesModuleTest(Func<StaticFilesModule> buildStaticFilesModule)
+        protected StaticFilesModuleTest(Func<StaticFilesModule> buildStaticFilesModule, string fallbackUrl = null)
             : base(ws =>
             {
                 ws.RegisterModule(buildStaticFilesModule());
-                ws.RegisterModule(new FallbackModule("/"));
+                if (fallbackUrl != null)
+                    ws.RegisterModule(new FallbackModule(fallbackUrl));
             }, RoutingStrategy.Wildcard)
         {
         }
 
-        public StaticFilesModuleTest()
-            : this(() => new StaticFilesModule(TestHelper.SetupStaticFolder()) {UseRamCache = true})
+        public StaticFilesModuleTest(string fallbackUrl = null)
+            : this(() => new StaticFilesModule(TestHelper.SetupStaticFolder()) {UseRamCache = true}, fallbackUrl)
         {
         }
 
@@ -103,6 +104,22 @@
             }
         }
 
+        public class UseFallback : StaticFilesModuleTest
+        {
+            public UseFallback()
+                : base("/")
+            {
+            }
+
+            [Test]
+            public async Task FallbackIndex()
+            {
+                var html = await GetString("invalidpath");
+
+                Assert.AreEqual(Resources.Index, html, "Same content index.html");
+            }
+        }
+
         public class GetFiles : StaticFilesModuleTest
         {
             [Test]
@@ -143,14 +160,6 @@
                 var html = await GetString(url);
 
                 Assert.AreEqual(Resources.SubIndex, html, $"Same content {url}");
-            }
-
-            [Test]
-            public async Task FallbackIndex()
-            {
-                var html = await GetString("invalidpath");
-
-                Assert.AreEqual(Resources.Index, html, "Same content index.html");
             }
 
             [Test]
