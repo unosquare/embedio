@@ -80,7 +80,7 @@
 
                     using (var response = await client.SendAsync(request))
                     {
-                        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK on virtual path");
+                        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status Code OK on virtual path");
 
                         var html = await response.Content.ReadAsStringAsync();
 
@@ -96,7 +96,7 @@
 
                     using (var response = await client.SendAsync(request))
                     {
-                        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK on virtual path");
+                        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status Code OK on virtual path");
                         Assert.AreEqual(HeaderPragmaValue, response.Headers.Pragma.ToString());
                     }
                 }
