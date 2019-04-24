@@ -17,17 +17,18 @@
     {
         private const string HeaderPragmaValue = "no-cache";
 
-        protected StaticFilesModuleTest(Func<StaticFilesModule> buildStaticFilesModule)
+        protected StaticFilesModuleTest(Func<StaticFilesModule> buildStaticFilesModule, string fallbackUrl = null)
             : base(ws =>
             {
                 ws.RegisterModule(buildStaticFilesModule());
-                ws.RegisterModule(new FallbackModule("/"));
+                if (fallbackUrl != null)
+                    ws.RegisterModule(new FallbackModule(fallbackUrl));
             }, RoutingStrategy.Wildcard)
         {
         }
 
-        public StaticFilesModuleTest()
-            : this(() => new StaticFilesModule(TestHelper.SetupStaticFolder()) {UseRamCache = true})
+        public StaticFilesModuleTest(string fallbackUrl = null)
+            : this(() => new StaticFilesModule(TestHelper.SetupStaticFolder()) {UseRamCache = true}, fallbackUrl)
         {
         }
 
@@ -80,7 +81,7 @@
 
                     using (var response = await client.SendAsync(request))
                     {
-                        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK on virtual path");
+                        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status Code OK on virtual path");
 
                         var html = await response.Content.ReadAsStringAsync();
 
@@ -96,10 +97,46 @@
 
                     using (var response = await client.SendAsync(request))
                     {
-                        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK on virtual path");
+                        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status Code OK on virtual path");
                         Assert.AreEqual(HeaderPragmaValue, response.Headers.Pragma.ToString());
                     }
                 }
+            }
+
+            [Test]
+            public async Task Issue68_MaliciousPath_GivesError404()
+            {
+                // Take the full path to a file that certainly exists, but is outside the virtualized folder
+                // (in this case, index.html in the "/" web folder)
+                var path = Path.Combine(TestHelper.RootPath(), StaticFilesModule.DefaultDocumentName);
+                // Add said path to a valid virtual path, resulting in "/virtual/C:\some\path"
+                var url = VirtualPathUrl + WebUtility.UrlEncode(path);
+
+                using (var client = new HttpClient())
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+                    using (var response = await client.SendAsync(request))
+                    {
+                        Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode, "Status Code 404 requesting malicious path");
+                    }
+                }
+            }
+        }
+
+        public class UseFallback : StaticFilesModuleTest
+        {
+            public UseFallback()
+                : base("/")
+            {
+            }
+
+            [Test]
+            public async Task FallbackIndex()
+            {
+                var html = await GetString("invalidpath");
+
+                Assert.AreEqual(Resources.Index, html, "Same content index.html");
             }
         }
 
@@ -143,14 +180,6 @@
                 var html = await GetString(url);
 
                 Assert.AreEqual(Resources.SubIndex, html, $"Same content {url}");
-            }
-
-            [Test]
-            public async Task FallbackIndex()
-            {
-                var html = await GetString("invalidpath");
-
-                Assert.AreEqual(Resources.Index, html, "Same content index.html");
             }
 
             [Test]
