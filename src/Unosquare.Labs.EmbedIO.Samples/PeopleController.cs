@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Samples
 {
+    using System;
     using Constants;
     using Modules;
     using System.Collections.Generic;
@@ -8,13 +9,12 @@
     using Tubular;
     using Tubular.ObjectModel;
 
-    /// <inheritdoc />
     /// <summary>
     /// A very simple controller to handle People CRUD.
     /// Notice how it Inherits from WebApiController and the methods have WebApiHandler attributes 
     /// This is for sampling purposes only.
     /// </summary>
-    public class PeopleController : WebApiController
+    public class PeopleController : WebApiController, IDisposable
     {
         private readonly AppDbContext _dbContext = new AppDbContext();
         private const string RelativePath = "/api/";
@@ -76,5 +76,8 @@
 
             return await Ok(content);
         }
+
+        /// <inheritdoc />
+        public void Dispose() => _dbContext?.Dispose();
     }
 }

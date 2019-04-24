@@ -104,20 +104,17 @@
             }
         }
 
-        public Task<bool> Invoke(IHttpContext context, object[] arguments)
-        {
-            var controller = _controllerFactory(context);
-
-            // Now, check if the call is handled asynchronously.
-            return MethodCache.IsTask
+        public Task<bool> Invoke(WebApiController controller, object[] arguments) =>
+            MethodCache.IsTask
                 ? MethodCache.AsyncInvoke(controller, arguments)
                 : Task.FromResult(MethodCache.SyncInvoke(controller, arguments));
-        }
 
-        public void SetDefaultHeaders(IHttpContext context)
+        public WebApiController SetDefaultHeaders(IHttpContext context)
         {
             var controller = _controllerFactory(context) as WebApiController;
             MethodCache.SetHeadersInvoke(controller);
+
+            return controller;
         }
     }
 

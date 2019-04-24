@@ -19,9 +19,6 @@
             string requestBody,
             string contentTypeHeader = Constants.Strings.UrlEncodedContentType)
         {
-            // TODO: implement multipart/form-data parsing
-            //// example available here: http://stackoverflow.com/questions/5483851/manually-parse-raw-http-data-with-php
-
             if (contentTypeHeader.ToLowerInvariant().StartsWith("multipart/form-data"))
                 throw new NotImplementedException("multipart/form-data Content Type parsing is not yet implemented");
 
@@ -59,8 +56,7 @@
                 if (resultDictionary.ContainsKey(key))
                 {
                     // Check if this key has a List value already
-                    var listValue = resultDictionary[key] as List<string>;
-                    if (listValue == null)
+                    if (!(resultDictionary[key] is List<string> listValue))
                     {
                         // if we don't have a list value for this key, then create one and add the existing item
                         var existingValue = resultDictionary[key] as string;

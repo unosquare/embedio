@@ -233,7 +233,7 @@
                 throw new InvalidOperationException($"No method found for path {path} and verb {verb}.");
 
             // ensure module does not return cached responses by default or the custom headers
-            methodPair.SetDefaultHeaders(context);
+            var controller = methodPair.SetDefaultHeaders(context);
 
             // Log the handler to be use
             $"Handler: {methodPair.MethodCache.ControllerName}.{methodPair.MethodCache.MethodInfo.Name}"
@@ -246,16 +246,26 @@
                 methodPair.ParseArguments(regExRouteParams, args);
 
             if (!responseJsonException)
-                return await methodPair.Invoke(context, args).ConfigureAwait(false);
+            {
+                var result = await methodPair.Invoke(controller, args).ConfigureAwait(false);
+
+                (controller as IDisposable)?.Dispose();
+
+                return result;
+            }
 
             try
             {
-                return await methodPair.Invoke(context, args).ConfigureAwait(false);
+                return await methodPair.Invoke(controller, args).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 ex.Log(Name);
                 return await context.JsonExceptionResponseAsync(ex).ConfigureAwait(false);
+            }
+            finally
+            {
+                (controller as IDisposable)?.Dispose();
             }
         }
     }

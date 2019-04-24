@@ -611,16 +611,15 @@
             {
                 var ext = e.Trim();
 
-                if (!comp && ext.StartsWith(CompressionMethod.Deflate.ToExtensionString()))
-                {
-                    _compression = CompressionMethod.Deflate;
-                    buff.AppendFormat(
-                        "{0}, ",
-                        _compression.ToExtensionString(
-                            "client_no_context_takeover", "server_no_context_takeover"));
+                if (comp || !ext.StartsWith(CompressionMethod.Deflate.ToExtensionString())) continue;
 
-                    comp = true;
-                }
+                _compression = CompressionMethod.Deflate;
+                buff.AppendFormat(
+                    "{0}, ",
+                    _compression.ToExtensionString(
+                        "client_no_context_takeover", "server_no_context_takeover"));
+
+                comp = true;
             }
 
             var len = buff.Length;

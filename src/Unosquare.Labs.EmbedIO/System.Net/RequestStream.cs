@@ -11,7 +11,7 @@
         private int _offset;
         private int _length;
         private long _remainingBody;
-        
+
         internal RequestStream(Stream stream, byte[] buffer, int offset, int length, long contentLength = -1)
         {
             _stream = stream;
@@ -34,18 +34,18 @@
             get => throw new NotSupportedException();
             set => throw new NotSupportedException();
         }
-        
+
         public override void Flush()
         {
         }
-        
+
         public override int Read([In, Out] byte[] buffer, int offset, int count)
         {
             // Call FillFromBuffer to check for buffer boundaries even when remaining_body is 0
             var nread = FillFromBuffer(buffer, offset, count);
 
             if (nread == -1)
-            { 
+            {
                 // No more bytes available (Content-Length)
                 return 0;
             }
@@ -56,13 +56,13 @@
             }
 
             nread = _stream.Read(buffer, offset, count);
-            
+
             if (nread > 0 && _remainingBody > 0)
                 _remainingBody -= nread;
 
             return nread;
         }
-        
+
         public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
 
         public override void SetLength(long value) => throw new NotSupportedException();
@@ -80,7 +80,9 @@
                 throw new ArgumentOutOfRangeException(nameof(off), "< 0");
             if (count < 0)
                 throw new ArgumentOutOfRangeException(nameof(count), "< 0");
+
             var len = buffer.Length;
+
             if (off > len)
                 throw new ArgumentException("destination offset is beyond array size");
             if (off > len - count)
@@ -94,7 +96,7 @@
 
             var size = Math.Min(_length, count);
             if (_remainingBody > 0)
-                size = (int)Math.Min(size, _remainingBody);
+                size = (int) Math.Min(size, _remainingBody);
 
             if (_offset > _buffer.Length - size)
             {

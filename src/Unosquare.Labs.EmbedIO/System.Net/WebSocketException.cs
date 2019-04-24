@@ -12,12 +12,7 @@
         {
             // Ignore
         }
-
-        internal WebSocketException(string message, Exception innerException)
-            : this(CloseStatusCode.Abnormal, message, innerException)
-        {
-        }
-
+        
         internal WebSocketException(CloseStatusCode code, Exception innerException = null)
             : this(code, null, innerException)
         {
