@@ -261,7 +261,10 @@
             try
             {
                 var localPath = MapUrlPathToLocalPath(urlPath, out var baseUrlPath);
-                var validationResult = ValidateLocalPath(ref localPath);
+                // Error 404 on failed mapping.
+                var validationResult = localPath == null
+                    ? PathMappingResult.NotFound
+                    : ValidateLocalPath(ref localPath);
                 return new PathCacheItem(baseUrlPath, localPath, validationResult);
             }
             finally
@@ -311,10 +314,15 @@
             }
 
             // If no virtual path can map our URL path, use the root path.
-            // This will always succeed.
-            _rootPath.TryMapUrlPathLoLocalPath(urlPath, out localPath);
+            // This will fail only for invalid paths.
+            if (_rootPath.TryMapUrlPathLoLocalPath(urlPath, out localPath))
+            {
+                baseUrlPath = RootUrlPath;
+                return localPath;
+            }
+
             baseUrlPath = RootUrlPath;
-            return localPath;
+            return null;
         }
 
         private PathMappingResult ValidateLocalPath(ref string localPath)
