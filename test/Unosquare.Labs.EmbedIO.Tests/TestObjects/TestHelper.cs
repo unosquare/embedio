@@ -34,10 +34,10 @@
 
         private static string SetupStaticFolderCore(string rootPath, bool onlyIndex = true)
         {
-            if (Directory.Exists(rootPath) == false)
+            if (!Directory.Exists(rootPath))
                 Directory.CreateDirectory(rootPath);
 
-            if (Directory.Exists(Path.Combine(rootPath, "sub")) == false)
+            if (!Directory.Exists(Path.Combine(rootPath, "sub")))
                 Directory.CreateDirectory(Path.Combine(rootPath, "sub"));
 
             var files = onlyIndex ? new[] {StaticFilesModule.DefaultDocumentName} : RandomHtmls;
@@ -55,16 +55,16 @@
             // write only random htmls when onlyIndex is false
             if (!onlyIndex) return rootPath;
 
-            if (File.Exists(Path.Combine(rootPath, BigDataFile)) == false)
+            if (!File.Exists(Path.Combine(rootPath, BigDataFile)))
                 CreateTempBinaryFile(Path.Combine(rootPath, BigDataFile), 10);
 
-            if (File.Exists(Path.Combine(rootPath, SmallDataFile)) == false)
+            if (!File.Exists(Path.Combine(rootPath, SmallDataFile)))
                 CreateTempBinaryFile(Path.Combine(rootPath, SmallDataFile), 1);
 
-            if (File.Exists(Path.Combine(rootPath, LowercaseFile)) == false)
+            if (!File.Exists(Path.Combine(rootPath, LowercaseFile)))
                 File.WriteAllText(Path.Combine(rootPath, LowercaseFile), nameof(LowercaseFile));
 
-            if (File.Exists(Path.Combine(rootPath, UppercaseFile)) == false)
+            if (!File.Exists(Path.Combine(rootPath, UppercaseFile)))
                 File.WriteAllText(Path.Combine(rootPath, UppercaseFile), nameof(UppercaseFile));
 
             return rootPath;
@@ -86,7 +86,7 @@
                            throw new InvalidOperationException();
             var folder = Path.Combine(location, folderName);
 
-            if (Directory.Exists(folder) == false)
+            if (!Directory.Exists(folder))
                 Directory.CreateDirectory(folder);
 
             var fileName = Path.Combine(folder, StaticFilesModule.DefaultDocumentName);
