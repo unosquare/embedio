@@ -42,10 +42,6 @@
             set => throw new NotSupportedException();
         }
 
-#if !NETSTANDARD1_3
-        public override void Close() => Dispose();
-#endif
-
         protected override void Dispose(bool disposing)
         {
             if (_disposed) return;
@@ -53,6 +49,7 @@
             _disposed = true;
 
             if (!disposing) return;
+
             var ms = GetHeaders();
             var chunked = _response.SendChunked;
 

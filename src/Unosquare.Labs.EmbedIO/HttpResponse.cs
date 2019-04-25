@@ -90,11 +90,7 @@ namespace Unosquare.Labs.EmbedIO
         public void SetCookie(Cookie sessionCookie) => _response.SetCookie(sessionCookie);
 
         /// <inheritdoc />
-        public void Close()
-        {
-            _response.OutputStream?.Close();
-            _response.OutputStream?.Dispose();
-        }
+        public void Close() => _response.OutputStream?.Dispose();
     }
 }
 #endif
