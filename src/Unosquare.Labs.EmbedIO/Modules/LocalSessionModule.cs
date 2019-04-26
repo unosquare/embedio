@@ -6,7 +6,6 @@
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -75,8 +74,7 @@
         }
 
         /// <inheritdoc />
-        public IReadOnlyDictionary<string, SessionInfo> Sessions =>
-            new ReadOnlyDictionary<string, SessionInfo>(_sessions);
+        public IReadOnlyDictionary<string, SessionInfo> Sessions => new Dictionary<string, SessionInfo>(_sessions);
 
         /// <summary>
         /// Gets or sets the expiration.
