@@ -42,12 +42,6 @@ build_script:
       msbuild /verbosity:quiet /p:Configuration=Release EmbedIO.Forms.Sample.sln
       cd ..
       cd ..
-- sh: |
-        cd src/Unosquare.Labs.EmbedIO
-        msbuild /verbosity:quiet /p:Configuration=Release;TargetFrameworks="netstandard2.0" 
-        cd ..
-        cd ..
-        pwd
 test_script:
 - dotnet test test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f netcoreapp2.2
 - cmd: tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f net472" -output:coverage.xml -filter:"+[Unosquare.Labs.EmbedIO*]* -[Unosquare.Labs.EmbedIO.Test*]*" -register:userdotnet
