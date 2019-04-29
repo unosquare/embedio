@@ -35,21 +35,11 @@
         /// <summary>
         /// The format culture used for header outputs.
         /// </summary>
-        internal static CultureInfo StandardCultureInfo { get; } =
-#if !NETSTANDARD1_3
-            CultureInfo.CreateSpecificCulture("en-US");
-#else
-            new CultureInfo("en-US");
-#endif
+        internal static CultureInfo StandardCultureInfo { get; } = new CultureInfo("en-US");
 
         /// <summary>
         /// The standard string comparer.
         /// </summary>
-        internal static StringComparer StandardStringComparer { get; } =
-#if !NETSTANDARD1_3
-            StringComparer.InvariantCultureIgnoreCase;
-#else
-           StringComparer.OrdinalIgnoreCase;
-#endif
+        internal static StringComparer StandardStringComparer { get; } = StringComparer.InvariantCultureIgnoreCase;
     }
 }

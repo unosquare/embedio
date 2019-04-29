@@ -1,5 +1,4 @@
-﻿#if !NETSTANDARD1_3
-namespace Unosquare.Labs.EmbedIO
+﻿namespace Unosquare.Labs.EmbedIO
 {
     using System;
 
@@ -31,4 +30,3 @@ namespace Unosquare.Labs.EmbedIO
         public Uri RequestUri => _webSocketContext.RequestUri;
     }
 }
-#endif

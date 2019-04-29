@@ -7,10 +7,8 @@
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-#if !NETSTANDARD1_3
     using System.Net.Security;
     using System.Security.Cryptography.X509Certificates;
-#endif
 
     internal sealed class HttpConnection : IDisposable
     {
@@ -33,17 +31,11 @@
         private LineState _lineState = LineState.None;
         private int _position;
 
-#if !NETSTANDARD1_3
         public HttpConnection(Socket sock, EndPointListener epl, X509Certificate cert)
-#else
-        public HttpConnection(Socket sock, EndPointListener epl)
-#endif
         {
             _sock = sock;
             _epl = epl;
             IsSecure = epl.Secure;
-
-#if !NETSTANDARD1_3
 
             if (!IsSecure)
             {
@@ -56,9 +48,7 @@
 
                 Stream = sslStream;
             }
-#else
-            Stream = new NetworkStream(sock, false);
-#endif
+
             _timer = new Timer(OnTimeout, null, Timeout.Infinite, Timeout.Infinite);
             Init();
         }
@@ -408,9 +398,7 @@
             _oStream?.Dispose();
             Stream?.Dispose();
             _lastListener?.Dispose();
-#if !NETSTANDARD1_3
             ClientCertificate?.Dispose();
-#endif
         }
     }
 }

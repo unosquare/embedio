@@ -92,17 +92,13 @@
                         .ConfigureAwait(false);
                 }
             }
-            catch (Exception ex)
+            catch (System.Net.HttpListenerException)
             {
                 // Connection error, nothing else to do
-                var isListenerException =
-#if !NETSTANDARD1_3
-                    ex is System.Net.HttpListenerException ||
-#endif
-                    ex is Net.HttpListenerException;
-
-                if (!isListenerException)
-                    throw;
+            }
+            catch (Net.HttpListenerException)
+            {
+                // Connection error, nothing else to do
             }
             finally
             {

@@ -8,9 +8,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using Labs.EmbedIO;
-#if !NETSTANDARD1_3
     using System.Security.Cryptography.X509Certificates;
-#endif
 
     /// <summary>
     /// Represents an HTTP Listener Request.
@@ -30,10 +28,8 @@
         private bool _kaSet;
         private bool _keepAlive;
 
-#if !NETSTANDARD1_3
-        delegate X509Certificate2 GccDelegate();
-        GccDelegate _gccDelegate;
-#endif
+        private delegate X509Certificate2 GccDelegate();
+        private GccDelegate _gccDelegate;
 
         internal HttpListenerRequest(HttpListenerContext context)
         {
@@ -118,12 +114,10 @@
         /// <inheritdoc />
         public bool IsLocal => LocalEndPoint?.Address?.Equals(RemoteEndPoint?.Address) ?? true;
 
-#if !NETSTANDARD1_3
         /// <summary>
         /// Gets a value indicating whether this request is under a secure connection.
         /// </summary>
         public bool IsSecureConnection => _context.Connection.IsSecure;
-#endif
 
         /// <inheritdoc />
         public bool KeepAlive
@@ -467,7 +461,6 @@
             }
         }
 
-#if !NETSTANDARD1_3
         /// <summary>
         /// Begins to the get client certificate asynchronously.
         /// </summary>
@@ -504,6 +497,5 @@
         /// </summary>
         /// <returns></returns>
         public X509Certificate2 GetClientCertificate() => _context.Connection.ClientCertificate;
-#endif
     }
 }

@@ -36,9 +36,7 @@
 
                 using (var httpClientHandler = new HttpClientHandler())
                 {
-#if !NET462
                     httpClientHandler.ServerCertificateCustomValidationCallback = (s, c, cert, x) => true;
-#endif
                     using (var httpClient = new HttpClient(httpClientHandler))
                     {
                         Assert.AreEqual(DefaultMessage, await httpClient.GetStringAsync(HttpsUrl));

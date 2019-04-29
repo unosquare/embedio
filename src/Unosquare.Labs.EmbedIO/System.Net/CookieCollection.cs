@@ -8,9 +8,6 @@
     using System.Net;
     using System.Text;
     using Labs.EmbedIO;
-#if NETSTANDARD1_3
-    using System.Reflection;
-#endif
 
     /// <summary>
     /// Represents Cookie collection.
