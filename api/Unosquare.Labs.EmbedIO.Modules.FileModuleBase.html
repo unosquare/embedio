@@ -184,12 +184,12 @@
   
   <a id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_MimeTypes_" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.MimeTypes*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_Modules_FileModuleBase_MimeTypes" data-uid="Unosquare.Labs.EmbedIO.Modules.FileModuleBase.MimeTypes">MimeTypes</h4>
-  <div class="markdown level1 summary"><p>Gets the collection holding the MIME types.</p>
+  <div class="markdown level1 summary"><p>Gets a dictionary binding file extensions to MIME types.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Lazy&lt;ReadOnlyDictionary&lt;string, string&gt;&gt; MimeTypes { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IReadOnlyDictionary&lt;string, string&gt; MimeTypes { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -201,8 +201,8 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.lazy-1">Lazy</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.objectmodel.readonlydictionary-2">ReadOnlyDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;&gt;</td>
-        <td><p>The MIME types.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2">IReadOnlyDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><p>The MIME type dictionary.</p>
 </td>
       </tr>
     </tbody>

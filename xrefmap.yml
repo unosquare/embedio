@@ -256,7 +256,14 @@ references:
 - uid: Unosquare.Labs.EmbedIO.Constants.MimeTypes.DefaultMimeTypes
   name: DefaultMimeTypes
   href: api/Unosquare.Labs.EmbedIO.Constants.MimeTypes.html#Unosquare_Labs_EmbedIO_Constants_MimeTypes_DefaultMimeTypes
-  commentId: F:Unosquare.Labs.EmbedIO.Constants.MimeTypes.DefaultMimeTypes
+  commentId: P:Unosquare.Labs.EmbedIO.Constants.MimeTypes.DefaultMimeTypes
+  fullName: Unosquare.Labs.EmbedIO.Constants.MimeTypes.DefaultMimeTypes
+  nameWithType: MimeTypes.DefaultMimeTypes
+- uid: Unosquare.Labs.EmbedIO.Constants.MimeTypes.DefaultMimeTypes*
+  name: DefaultMimeTypes
+  href: api/Unosquare.Labs.EmbedIO.Constants.MimeTypes.html#Unosquare_Labs_EmbedIO_Constants_MimeTypes_DefaultMimeTypes_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Constants.MimeTypes.DefaultMimeTypes
+  isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Constants.MimeTypes.DefaultMimeTypes
   nameWithType: MimeTypes.DefaultMimeTypes
 - uid: Unosquare.Labs.EmbedIO.Constants.RoutingStrategy

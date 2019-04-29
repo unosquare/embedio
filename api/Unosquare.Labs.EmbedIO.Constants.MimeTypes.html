@@ -118,19 +118,20 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static class MimeTypes</code></pre>
   </div>
-  <h3 id="fields">Fields
+  <h3 id="properties">Properties
   </h3>
   
   
+  <a id="Unosquare_Labs_EmbedIO_Constants_MimeTypes_DefaultMimeTypes_" data-uid="Unosquare.Labs.EmbedIO.Constants.MimeTypes.DefaultMimeTypes*"></a>
   <h4 id="Unosquare_Labs_EmbedIO_Constants_MimeTypes_DefaultMimeTypes" data-uid="Unosquare.Labs.EmbedIO.Constants.MimeTypes.DefaultMimeTypes">DefaultMimeTypes</h4>
   <div class="markdown level1 summary"><p>A big list of default MIME types.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly Lazy&lt;Dictionary&lt;string, string&gt;&gt; DefaultMimeTypes</code></pre>
+    <pre><code class="lang-csharp hljs">public static IReadOnlyDictionary&lt;string, string&gt; DefaultMimeTypes { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -140,13 +141,15 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.lazy-1">Lazy</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2">IReadOnlyDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 id="Unosquare_Labs_EmbedIO_Constants_MimeTypes_DefaultMimeTypes_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Originally started from: <a href="http://stackoverflow.com/questions/1029740/get-mime-type-from-filename-extension">http://stackoverflow.com/questions/1029740/get-mime-type-from-filename-extension</a>.</p>
+  <div class="markdown level1 remarks"><p>The list below has been copied from <a href="https://raw.githubusercontent.com/samuelneff/MimeTypeMap/master/src/MimeTypes/MimeTypeMap.cs">https://raw.githubusercontent.com/samuelneff/MimeTypeMap/master/src/MimeTypes/MimeTypeMap.cs</a>
+on 2019-04-26.
+Licensed under MIT license as per <a href="https://github.com/samuelneff/MimeTypeMap/blob/master/LICENSE">https://github.com/samuelneff/MimeTypeMap/blob/master/LICENSE</a></p>
 </div>
 
 <h3 id="disqus_thread">Comments</h3>
