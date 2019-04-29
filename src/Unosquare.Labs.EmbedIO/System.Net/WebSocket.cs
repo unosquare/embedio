@@ -47,9 +47,7 @@
             _message = Messages;
             WebSocketKey = new WebSocketKey();
 
-#if !NETSTANDARD1_3
             IsSecure = context.IsSecureConnection;
-#endif
             _stream = context.Stream;
             _waitTime = TimeSpan.FromSeconds(1);
             _validator = new WebSocketValidator(this);
@@ -152,7 +150,6 @@
         /// </value>
         public bool IsAlive => PingAsync().Result; // TODO: Change?
 
-#if !NETSTANDARD1_3
         /// <summary>
         /// Gets a value indicating whether the WebSocket connection is secure.
         /// </summary>
@@ -160,7 +157,6 @@
         /// <c>true</c> if the connection is secure; otherwise, <c>false</c>.
         /// </value>
         public bool IsSecure { get; }
-#endif
 
         /// <summary>
         /// Gets or sets the value of the HTTP Origin header to send with
@@ -645,21 +641,13 @@
 
             if (_receivePong != null)
             {
-#if NET462
-                _receivePong.Close();
-#else
                 _receivePong.Dispose();
-#endif
                 _receivePong = null;
             }
 
             if (_exitReceiving == null) return;
 
-#if NET462
-            _exitReceiving.Close();
-#else
             _exitReceiving.Dispose();
-#endif
             _exitReceiving = null;
         }
         

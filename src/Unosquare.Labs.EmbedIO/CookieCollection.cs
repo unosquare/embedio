@@ -1,5 +1,4 @@
-﻿#if !NETSTANDARD1_3
-namespace Unosquare.Labs.EmbedIO
+﻿namespace Unosquare.Labs.EmbedIO
 {
     using System;
     using System.Collections;
@@ -45,4 +44,3 @@ namespace Unosquare.Labs.EmbedIO
         public void Add(Cookie cookie) => _cookieCollection.Add(cookie);
     }
 }
-#endif

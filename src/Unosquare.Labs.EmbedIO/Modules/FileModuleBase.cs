@@ -2,9 +2,7 @@
 {
     using Constants;
     using Swan;
-    using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
     using System.Threading;
@@ -22,15 +20,12 @@
         internal static readonly int ChunkSize = 256 * 1024;
 
         /// <summary>
-        /// Gets the collection holding the MIME types.
+        /// Gets a dictionary binding file extensions to MIME types.
         /// </summary>
         /// <value>
-        /// The MIME types.
+        /// The MIME type dictionary.
         /// </value>
-        public Lazy<ReadOnlyDictionary<string, string>> MimeTypes
-            =>
-                new Lazy<ReadOnlyDictionary<string, string>>(
-                    () => new ReadOnlyDictionary<string, string>(Constants.MimeTypes.DefaultMimeTypes.Value));
+        public IReadOnlyDictionary<string, string> MimeTypes { get; } = Constants.MimeTypes.DefaultMimeTypes;
 
         /// <summary>
         /// The default headers.
@@ -109,8 +104,8 @@
         /// <param name="fileExtension">The file extension.</param>
         protected void SetGeneralHeaders(IHttpResponse response, string utcFileDateString, string fileExtension)
         {
-            if (!string.IsNullOrWhiteSpace(fileExtension) && MimeTypes.Value.ContainsKey(fileExtension))
-                response.ContentType = MimeTypes.Value[fileExtension];
+            if (!string.IsNullOrWhiteSpace(fileExtension) && MimeTypes.TryGetValue(fileExtension, out var mimeType))
+                response.ContentType = mimeType;
 
             SetDefaultCacheHeaders(response);
 

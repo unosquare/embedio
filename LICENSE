@@ -19,3 +19,17 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+-------------------------------------------------------------------------
+ Portions of this software are distributed under the following licenses:
+-------------------------------------------------------------------------
+
+Component name  : MimeTypeMap
+Copyright holder: Samuel Neff
+License type    : MIT
+License URL     : https://github.com/samuelneff/MimeTypeMap/blob/master/LICENSE
+
+Component name  : System.Net classes
+Copyright holder: The .NET Foundation
+License type    : MIT X11
+License URL     : https://github.com/mono/mono/blob/master/LICENSE

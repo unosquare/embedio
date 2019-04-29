@@ -16,16 +16,7 @@
         /// <returns>
         /// A HTTP Listener.
         /// </returns>
-        public static IHttpListener Create(X509Certificate certificate = null)
-        {
-            var mode = HttpListenerMode.EmbedIO;
-
-#if NETSTANDARD2_0
-            mode = HttpListenerMode.Microsoft;
-#endif
-
-            return Create(mode, certificate);
-        }
+        public static IHttpListener Create(X509Certificate certificate = null) => Create(HttpListenerMode.Microsoft, certificate);
 
         /// <summary>
         /// Creates the specified mode.
@@ -42,13 +33,11 @@
             {
                 case HttpListenerMode.EmbedIO:
                     return new Net.HttpListener(certificate);
-#if !NETSTANDARD1_3
                 case HttpListenerMode.Microsoft:
                     if (System.Net.HttpListener.IsSupported)
                         return new HttpListener(new System.Net.HttpListener());
 
                     return new Net.HttpListener(certificate);
-#endif
                 default:
                     throw new ArgumentOutOfRangeException(nameof(mode), mode, "Invalid HTTP Listener mode.");
             }

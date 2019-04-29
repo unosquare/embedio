@@ -1,5 +1,4 @@
-﻿#if !NETSTANDARD1_3
-namespace Unosquare.Labs.EmbedIO
+﻿namespace Unosquare.Labs.EmbedIO
 {
     using System.Threading;
     using System;
@@ -90,4 +89,3 @@ namespace Unosquare.Labs.EmbedIO
         }
     }
 }
-#endif

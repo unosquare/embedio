@@ -10,11 +10,9 @@
         /// </summary>
         EmbedIO,
 
-#if !NETSTANDARD1_3
         /// <summary>
         /// The Microsoft mode
         /// </summary>
         Microsoft,
-#endif
     }
 }

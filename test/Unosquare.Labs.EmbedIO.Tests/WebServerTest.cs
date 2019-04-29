@@ -109,6 +109,7 @@
                 Assert.AreEqual(webModule.Handlers.Last().Verb, HttpVerbs.Any, "Default Verb is correct");
             }
 
+            // TODO: Verify whether we need these tests, as now they aren't even compiled.
 #if NETCOREAPP2_1
             [Test]
             public async Task Redirect()

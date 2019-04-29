@@ -232,7 +232,6 @@
             if (accepted == null)
                 return;
 
-#if !NETSTANDARD1_3
             if (epl.Secure && epl.Listener.Certificate == null)
             {
                 accepted.Dispose();
@@ -240,9 +239,6 @@
             }
 
             var conn = new HttpConnection(accepted, epl, epl.Listener.Certificate);
-#else
-            var conn = new HttpConnection(accepted, epl);
-#endif
             lock (epl._unregistered)
             {
                 epl._unregistered[conn] = conn;

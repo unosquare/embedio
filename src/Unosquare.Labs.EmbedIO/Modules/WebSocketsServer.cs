@@ -19,9 +19,7 @@
 
         private readonly object _syncRoot = new object();
         private readonly List<IWebSocketContext> _mWebSockets = new List<IWebSocketContext>(10);
-#if !NETSTANDARD1_3
         private readonly int _maximumMessageSize;
-#endif
         private bool _isDisposing;
 
         /// <summary>
@@ -31,9 +29,7 @@
         /// <param name="maxMessageSize">Maximum size of the message in bytes. Enter 0 or negative number to prevent checks.</param>
         protected WebSocketsServer(bool enableConnectionWatchdog, int maxMessageSize = 0)
         {
-#if !NETSTANDARD1_3
             _maximumMessageSize = maxMessageSize;
-#endif
             if (enableConnectionWatchdog)
                 RunConnectionWatchdog();
         }
@@ -118,13 +114,11 @@
 
             try
             {
-#if !NETSTANDARD1_3
                 if (webSocketContext.WebSocket is WebSocket systemWebSocket)
                 {
                     await ProcessSystemWebsocket(webSocketContext, systemWebSocket.SystemWebSocket, ct).ConfigureAwait(false);
                 }
                 else
-#endif
                 {
                     await ProcessEmbedIOWebSocket(webSocketContext, ct).ConfigureAwait(false);
                 }
@@ -372,7 +366,6 @@
             }
         }
 
-#if !NETSTANDARD1_3
         private async Task<bool> ProcessSystemWebsocket(IWebSocketContext context, System.Net.WebSockets.WebSocket webSocket, CancellationToken ct)
         {
             // define a receive buffer
@@ -421,6 +414,5 @@
 
             return false;
         }
-#endif
     }
 }

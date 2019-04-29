@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Copyright>Copyright (c) 2016-2019 - Unosquare</Copyright>
-    <TargetFrameworks>net462;net472;netcoreapp2.2</TargetFrameworks>
+    <TargetFrameworks>net472;netcoreapp2.2</TargetFrameworks>
     <TestProjectType>UnitTest</TestProjectType>
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
     <LangVersion>7.3</LangVersion>

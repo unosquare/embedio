@@ -1,5 +1,4 @@
-﻿#if !NETSTANDARD1_3
-namespace Unosquare.Labs.EmbedIO
+﻿namespace Unosquare.Labs.EmbedIO
 {
     using System;
     using System.Collections.Generic;
@@ -53,4 +52,3 @@ namespace Unosquare.Labs.EmbedIO
             => ((IDisposable)_httpListener)?.Dispose();
     }
 }
-#endif

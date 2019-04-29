@@ -4,11 +4,9 @@
     using Modules;
     using System;
     using System.Collections.Generic;
-#if !NETSTANDARD1_3
     using Swan;
     using System.Linq;
     using System.Reflection;
-#endif
 
     /// <summary>
     /// Extensions methods to EmbedIO's Fluent Interface.
@@ -75,7 +73,6 @@
             return webserver;
         }
 
-#if !NETSTANDARD1_3 
         /// <summary>
         /// Add WebApiModule to WebServer.
         /// </summary>
@@ -198,7 +195,6 @@
 
             return webserver;
         }
-#endif
 
         /// <summary>
         /// Enables CORS in the WebServer.

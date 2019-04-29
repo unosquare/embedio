@@ -36,8 +36,7 @@
 
         private readonly VirtualPathManager _virtualPathManager;
 
-        private readonly ConcurrentDictionary<string, Tuple<long, string>> _fileHashCache =
-            new ConcurrentDictionary<string, Tuple<long, string>>();
+        private readonly ConcurrentDictionary<string, (long DateTicks, string HashCode)> _fileHashCache = new ConcurrentDictionary<string, (long, string)>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StaticFilesModule"/> class.
@@ -366,17 +365,13 @@
                         ct)
                     .ConfigureAwait(false);
             }
-            catch (Exception ex)
+            catch (System.Net.HttpListenerException)
             {
                 // Connection error, nothing else to do
-                var isListenerException =
-#if !NETSTANDARD1_3
-                    ex is System.Net.HttpListenerException ||
-#endif
-                    ex is Net.HttpListenerException;
-
-                if (!isListenerException)
-                    throw;
+            }
+            catch (Net.HttpListenerException)
+            {
+                // Connection error, nothing else to do
             }
             finally
             {
@@ -429,11 +424,11 @@
             string localPath)
         {
             var currentHash = _fileHashCache.TryGetValue(localPath, out var currentTuple) &&
-                              fileDate.Ticks == currentTuple.Item1
-                ? currentTuple.Item2
+                              fileDate.Ticks == currentTuple.DateTicks
+                ? currentTuple.HashCode
                 : $"{buffer.ComputeMD5().ToUpperHex()}-{fileDate.Ticks}";
 
-            _fileHashCache.TryAdd(localPath, new Tuple<long, string>(fileDate.Ticks, currentHash));
+            _fileHashCache.TryAdd(localPath, (fileDate.Ticks, currentHash));
 
             if (!string.IsNullOrWhiteSpace(requestHash) && requestHash == currentHash)
             {

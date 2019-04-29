@@ -8,14 +8,8 @@
     using System.Collections.ObjectModel;
     using System.Threading;
     using System.Threading.Tasks;
-#if !NETSTANDARD1_3
     using System.Security.Cryptography.X509Certificates;
-#endif
-#if NET462
-    using System.Net;
-#else
     using Net;
-#endif
 
     /// <summary>
     /// Represents our tiny web server used to handle requests.
@@ -110,7 +104,6 @@
             // placeholder
         }
 
-#if !NETSTANDARD1_3
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer" /> class.
         /// </summary>
@@ -138,7 +131,6 @@
         {
             // temp placeholder
         }
-#endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer" /> class.

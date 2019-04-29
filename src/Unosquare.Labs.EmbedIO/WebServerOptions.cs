@@ -1,7 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using Constants;
-#if !NETSTANDARD1_3
     using System.Text;
     using Swan;
     using System;
@@ -9,16 +8,13 @@
     using System.Linq;
     using System.Security.Cryptography.X509Certificates;
     using System.Text.RegularExpressions;
-#endif
 
     /// <summary>
     /// Options for WebServer creation.
     /// </summary>
     public sealed class WebServerOptions
     {
-#if !NETSTANDARD1_3
         private X509Certificate2 _certificate;
-#endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServerOptions" /> class.
@@ -62,7 +58,6 @@
         /// </value>
         public HttpListenerMode Mode { get; set; } = HttpListenerMode.EmbedIO;
 
-#if !NETSTANDARD1_3
         /// <summary>
         /// Gets or sets the certificate.
         /// </summary>
@@ -279,6 +274,5 @@
                     $"http {verb} sslcert ipport=0.0.0.0:{GetSslPort()} {options}",
             },
         };
-#endif
     }
 }

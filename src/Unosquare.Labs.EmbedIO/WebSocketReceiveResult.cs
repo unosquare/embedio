@@ -1,5 +1,4 @@
-﻿#if !NETSTANDARD1_3
-namespace Unosquare.Labs.EmbedIO
+﻿namespace Unosquare.Labs.EmbedIO
 {
     /// <summary>
     /// Represents a wrapper around a regular WebSocketContext.
@@ -28,4 +27,3 @@ namespace Unosquare.Labs.EmbedIO
         public int MessageType => (int) _results.MessageType;
     }
 }
-#endif
