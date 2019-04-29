@@ -53,9 +53,7 @@
             Init();
         }
 
-#if !NETSTANDARD1_3
         internal X509Certificate2 ClientCertificate { get; }
-#endif
 
         public int Reuses { get; private set; }
 

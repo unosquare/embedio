@@ -83,7 +83,6 @@
         /// An instance of webserver.
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
-        /// <exception cref="System.ArgumentNullException">webserver.</exception>
         public static IWebServer WithWebApi(this IWebServer webserver, Assembly assembly = null, bool responseJsonException = false)
         {
             if (webserver == null)
