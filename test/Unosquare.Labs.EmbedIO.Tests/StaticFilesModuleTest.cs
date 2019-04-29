@@ -27,8 +27,13 @@
         {
         }
 
-        public StaticFilesModuleTest(string fallbackUrl = null)
-            : this(() => new StaticFilesModule(TestHelper.SetupStaticFolder()) {UseRamCache = true}, fallbackUrl)
+        protected StaticFilesModuleTest(string fallbackUrl)
+            : this(() => new StaticFilesModule(TestHelper.SetupStaticFolder()) { UseRamCache = true }, fallbackUrl)
+        {
+        }
+
+        public StaticFilesModuleTest()
+            : this(null)
         {
         }
 
