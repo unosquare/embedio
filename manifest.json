@@ -109,7 +109,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Constants.HttpHeaders.html",
-          "hash": "AxzSY3Z5zSuzqiIngvZbUw=="
+          "hash": "awQLNAnbOyCF9i+BTIIQZA=="
         }
       },
       "is_incremental": false,
@@ -253,7 +253,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.HttpContext.html",
-          "hash": "4uX9r8ceK6+1TUSOLWj1Gg=="
+          "hash": "PdiLITR6tGTfW8sW3OOkRg=="
         }
       },
       "is_incremental": false,
@@ -337,7 +337,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.IHttpContext.html",
-          "hash": "tyumY5uWUsCLxpnhf0aHKg=="
+          "hash": "Q3GaAJ6+jroBlWFKPC8xxg=="
         }
       },
       "is_incremental": false,
@@ -625,7 +625,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html",
-          "hash": "HKFdX5Fqxikry/0YQ98EZg=="
+          "hash": "5pb7F2OQeUhLq0R1ZxCjQg=="
         }
       },
       "is_incremental": false,
@@ -673,7 +673,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Tests.TestHttpContext.html",
-          "hash": "bRrbrnJScGsdRUVx79ZV/A=="
+          "hash": "+WhctsIjJsmRtZUaRe18vQ=="
         }
       },
       "is_incremental": false,
@@ -877,7 +877,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.HttpListenerContext.html",
-          "hash": "QcYUOkUFMIk7+LaMCl814w=="
+          "hash": "kZW7BvVcCX8m5MFUbY5k4Q=="
         }
       },
       "is_incremental": false,
@@ -1082,16 +1082,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 75,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 6,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 75,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
