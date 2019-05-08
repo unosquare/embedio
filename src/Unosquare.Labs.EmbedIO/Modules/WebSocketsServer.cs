@@ -77,6 +77,14 @@
         public abstract string ServerName { get; }
 
         /// <summary>
+        /// Gets the sub-protocol.
+        /// </summary>
+        /// <value>
+        /// The sub-protocol.
+        /// </value>
+        public virtual string SubProtocol { get; }
+
+        /// <summary>
         /// Gets the Encoding used to use the Send method to send a string. The default is UTF8 per the WebSocket specification.
         /// </summary>
         /// <value>
@@ -96,7 +104,7 @@
             // first, accept the websocket
             $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
 
-            var webSocketContext = await context.AcceptWebSocketAsync(ReceiveBufferSize).ConfigureAwait(false);
+            var webSocketContext = await context.AcceptWebSocketAsync(ReceiveBufferSize, SubProtocol).ConfigureAwait(false);
 
             // remove the disconnected clients
             CollectDisconnected();

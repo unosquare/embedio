@@ -46,6 +46,6 @@
 
         /// <exception cref="NotImplementedException"></exception>
         /// <inheritdoc />
-        public Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize) => throw new NotImplementedException();
+        public Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize, string subProtocol = null) => throw new NotImplementedException();
     }
 }

@@ -116,11 +116,6 @@
         public const string WebSocketVersion = "Sec-WebSocket-Version";
 
         /// <summary>
-        /// The web socket protocol.
-        /// </summary>
-        public const string WebSocketProtocol = "Sec-WebSocket-Protocol";
-
-        /// <summary>
         /// The web socket extensions.
         /// </summary>
         public const string WebSocketExtensions = "Sec-WebSocket-Extensions";

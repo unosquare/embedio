@@ -68,11 +68,6 @@
                 throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {HttpHeaders.WebSocketVersion} header, or it has an invalid value.");
             }
 
-            if (!ValidateSecWebSocketProtocolClientHeader(headers[HttpHeaders.WebSocketProtocol]))
-            {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {HttpHeaders.WebSocketProtocol} header.");
-            }
-
             if (!_webSocket.IgnoreExtensions
                 && !string.IsNullOrWhiteSpace(headers[HttpHeaders.WebSocketExtensions]))
             {
@@ -80,9 +75,6 @@
             }
         }
 
-        private static bool ValidateSecWebSocketProtocolClientHeader(string value) => value == null || value.Length > 0;
-
-        // As server
         private static bool ValidateSecWebSocketVersionClientHeader(string value) => value != null && value == Strings.WebSocketVersion;
     }
 }

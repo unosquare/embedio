@@ -53,10 +53,11 @@
         /// Accepts the web socket asynchronous.
         /// </summary>
         /// <param name="receiveBufferSize">Size of the receive buffer.</param>
+        /// <param name="subProtocol">The sub protocol.</param>
         /// <returns>
         /// A <see cref="IWebSocketContext" /> that represents
         /// the WebSocket handshake request.
         /// </returns>
-        Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize);
+        Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize, string subProtocol);
     }
 }
