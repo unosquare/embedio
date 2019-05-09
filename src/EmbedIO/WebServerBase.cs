@@ -164,7 +164,7 @@ namespace EmbedIO
                 $"[{context.Id}] Start: Source {requestEndpoint} - {context.RequestVerb().ToString().ToUpperInvariant()}: {context.Request.Url.PathAndQuery} - {context.Request.UserAgent}"
                     .Debug(nameof(WebServerBase));
 
-                var processResult = _modules.DispatchRequestAsync(context, ct).ConfigureAwait(false);
+                var processResult = await _modules.DispatchRequestAsync(context, ct).ConfigureAwait(false);
 
                 // Return a 404 (Not Found) response if no module/handler handled the response.
                 if (processResult == false)

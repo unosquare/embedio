@@ -34,14 +34,8 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Threading.Tasks" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Unosquare.Labs.EmbedIO\EmbedIO.csproj" />
+    <ProjectReference Include="..\..\src\EmbedIO\EmbedIO.csproj" />
   </ItemGroup>
 
 </Project>

@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Unosquare.Labs.EmbedIO\EmbedIO.csproj" />
+    <ProjectReference Include="..\EmbedIO\EmbedIO.csproj" />
   </ItemGroup>
 
 </Project>
