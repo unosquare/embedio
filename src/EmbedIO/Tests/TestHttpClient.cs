@@ -61,7 +61,7 @@ namespace EmbedIO.Tests
         /// <exception cref="InvalidOperationException">The IWebServer implementation should be TestWebServer.</exception>
         public async Task<IHttpResponse> SendAsync(TestHttpRequest request)
         {
-            if (Validate.NotNull(nameof(request), request) == null)
+            if (!(Validate.NotNull(nameof(request), request) is TestHttpRequest))
                 throw new ArgumentException($"Request should be a {nameof(TestHttpRequest)}");
 
             var context = new TestHttpContext(request);
