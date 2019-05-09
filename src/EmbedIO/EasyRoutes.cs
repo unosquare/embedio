@@ -110,7 +110,7 @@ namespace EmbedIO
             if (webserver == null)
                 throw new ArgumentNullException(nameof(webserver));
 
-            webserver.Add(new FallbackModule(action, verb));
+            webserver.Add(new ActionModule(action, verb));
 
             return webserver;
         }
