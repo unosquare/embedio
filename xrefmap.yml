@@ -181,6 +181,12 @@ references:
   commentId: F:Unosquare.Labs.EmbedIO.Constants.HttpHeaders.WebSocketKey
   fullName: Unosquare.Labs.EmbedIO.Constants.HttpHeaders.WebSocketKey
   nameWithType: HttpHeaders.WebSocketKey
+- uid: Unosquare.Labs.EmbedIO.Constants.HttpHeaders.WebSocketProtocol
+  name: WebSocketProtocol
+  href: api/Unosquare.Labs.EmbedIO.Constants.HttpHeaders.html#Unosquare_Labs_EmbedIO_Constants_HttpHeaders_WebSocketProtocol
+  commentId: F:Unosquare.Labs.EmbedIO.Constants.HttpHeaders.WebSocketProtocol
+  fullName: Unosquare.Labs.EmbedIO.Constants.HttpHeaders.WebSocketProtocol
+  nameWithType: HttpHeaders.WebSocketProtocol
 - uid: Unosquare.Labs.EmbedIO.Constants.HttpHeaders.WebSocketVersion
   name: WebSocketVersion
   href: api/Unosquare.Labs.EmbedIO.Constants.HttpHeaders.html#Unosquare_Labs_EmbedIO_Constants_HttpHeaders_WebSocketVersion
@@ -4255,19 +4261,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.ServerName
   nameWithType: WebSocketsServer.ServerName
-- uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.SubProtocol
-  name: SubProtocol
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html#Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_SubProtocol
-  commentId: P:Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.SubProtocol
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.SubProtocol
-  nameWithType: WebSocketsServer.SubProtocol
-- uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.SubProtocol*
-  name: SubProtocol
-  href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html#Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_SubProtocol_
-  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.SubProtocol
-  isSpec: "True"
-  fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.SubProtocol
-  nameWithType: WebSocketsServer.SubProtocol
 - uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.WebSockets
   name: WebSockets
   href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html#Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_WebSockets
