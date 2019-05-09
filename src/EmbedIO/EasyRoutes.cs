@@ -1,5 +1,6 @@
 ﻿using System;
 using EmbedIO.Modules;
+using EmbedIO.Utilities;
 
 namespace EmbedIO
 {
@@ -32,7 +33,7 @@ namespace EmbedIO
         /// <exception cref="ArgumentNullException">webserver.</exception>
         public static IWebServer OnPost(this IWebServer webserver, WebHandler action)
             => AddFallbackModule(webserver, action, Constants.HttpVerbs.Post);
-        
+
         /// <summary>
         /// Called when any GET unhandled request (any path).
         /// </summary>
@@ -44,7 +45,7 @@ namespace EmbedIO
         /// <exception cref="ArgumentNullException">webserver.</exception>
         public static IWebServer OnGet(this IWebServer webserver, WebHandler action)
             => AddFallbackModule(webserver, action, Constants.HttpVerbs.Get);
-        
+
         /// <summary>
         /// Called when any PUT unhandled request (any path).
         /// </summary>
@@ -56,7 +57,7 @@ namespace EmbedIO
         /// <exception cref="ArgumentNullException">webserver.</exception>
         public static IWebServer OnPut(this IWebServer webserver, WebHandler action)
             => AddFallbackModule(webserver, action, Constants.HttpVerbs.Put);
-        
+
         /// <summary>
         /// Called when any DELETE unhandled request (any path).
         /// </summary>
@@ -68,7 +69,7 @@ namespace EmbedIO
         /// <exception cref="ArgumentNullException">webserver.</exception>
         public static IWebServer OnDelete(this IWebServer webserver, WebHandler action)
             => AddFallbackModule(webserver, action, Constants.HttpVerbs.Delete);
-        
+
         /// <summary>
         /// Called when any HEAD unhandled request (any path).
         /// </summary>
@@ -80,7 +81,7 @@ namespace EmbedIO
         /// <exception cref="ArgumentNullException">webserver.</exception>
         public static IWebServer OnHead(this IWebServer webserver, WebHandler action)
             => AddFallbackModule(webserver, action, Constants.HttpVerbs.Head);
-        
+
         /// <summary>
         /// Called when any OPTIONS unhandled request (any path).
         /// </summary>
@@ -92,7 +93,7 @@ namespace EmbedIO
         /// <exception cref="ArgumentNullException">webserver.</exception>
         public static IWebServer OnOptions(this IWebServer webserver, WebHandler action)
             => AddFallbackModule(webserver, action, Constants.HttpVerbs.Options);
-        
+
         /// <summary>
         /// Called when any PATCH unhandled request (any path).
         /// </summary>
@@ -110,7 +111,7 @@ namespace EmbedIO
             if (webserver == null)
                 throw new ArgumentNullException(nameof(webserver));
 
-            webserver.Add(new ActionModule(action, verb));
+            webserver.Modules.Add(new ActionModule(UrlPath.Root, verb, action));
 
             return webserver;
         }

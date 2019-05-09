@@ -8,6 +8,11 @@ namespace EmbedIO.Utilities
     /// </summary>
     public static class UrlPath
     {
+        /// <summary>
+        /// The root URL path value.
+        /// </summary>
+        public const string Root = "/";
+
         private static readonly Regex MultipleSlashRegex = new Regex("//+", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
         /// <summary>
