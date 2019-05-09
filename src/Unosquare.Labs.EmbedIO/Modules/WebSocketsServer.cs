@@ -6,6 +6,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Swan;
+    using EmbedIO.Constants;
 
     /// <inheritdoc />
     /// <summary>
@@ -77,14 +78,6 @@
         public abstract string ServerName { get; }
 
         /// <summary>
-        /// Gets the sub-protocol.
-        /// </summary>
-        /// <value>
-        /// The sub-protocol.
-        /// </value>
-        public virtual string SubProtocol { get; }
-
-        /// <summary>
         /// Gets the Encoding used to use the Send method to send a string. The default is UTF8 per the WebSocket specification.
         /// </summary>
         /// <value>
@@ -98,13 +91,16 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="ct">The cancellation token.</param>
-        /// <returns>A task that represents the asynchronous of websocket connection operation.</returns>
+        /// <returns>
+        /// A task that represents the asynchronous of websocket connection operation.
+        /// </returns>
         public async Task AcceptWebSocket(IHttpContext context, CancellationToken ct)
         {
             // first, accept the websocket
             $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
 
-            var webSocketContext = await context.AcceptWebSocketAsync(ReceiveBufferSize, SubProtocol).ConfigureAwait(false);
+            var subProtocol = context.RequestHeader(HttpHeaders.WebSocketProtocol);
+            var webSocketContext = await context.AcceptWebSocketAsync(ReceiveBufferSize, subProtocol).ConfigureAwait(false);
 
             // remove the disconnected clients
             CollectDisconnected();

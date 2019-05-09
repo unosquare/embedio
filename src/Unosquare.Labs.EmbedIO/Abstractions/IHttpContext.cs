@@ -58,6 +58,6 @@
         /// A <see cref="IWebSocketContext" /> that represents
         /// the WebSocket handshake request.
         /// </returns>
-        Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize, string subProtocol);
+        Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize, string subProtocol = null);
     }
 }
