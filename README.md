@@ -2,8 +2,8 @@
  [![Analytics](https://ga-beacon.appspot.com/UA-8535255-2/unosquare/embedio/)](https://github.com/igrigorik/ga-beacon)
  [![Build status](https://ci.appveyor.com/api/projects/status/w59t7sct3a8ir96t?svg=true)](https://ci.appveyor.com/project/geoperez/embedio)
  [![Build Status](https://travis-ci.org/unosquare/embedio.svg?branch=master)](https://travis-ci.org/unosquare/embedio)
- [![NuGet version](https://badge.fury.io/nu/embedio.svg)](https://www.nuget.org/packages/Embedio)
- [![NuGet](https://img.shields.io/nuget/dt/embedio.svg)](https://www.nuget.org/packages/Embedio)
+ [![NuGet version](https://badge.fury.io/nu/embedio.svg)](https://www.nuget.org/packages/EmbedIO)
+ [![NuGet](https://img.shields.io/nuget/dt/embedio.svg)](https://www.nuget.org/packages/EmbedIO)
 [![Coverage Status](https://coveralls.io/repos/unosquare/embedio/badge.svg?branch=master)](https://coveralls.io/r/unosquare/embedio?branch=master)
 [![BuiltWithDotnet](https://builtwithdot.net/project/105/embedio/badge)](https://builtwithdot.net/project/105/embedio)
 
@@ -101,13 +101,13 @@ PM> Install-Package EmbedIO
 
 ### IHttpContext Extension Methods
 
-By adding the namespace `Unosquare.Labs.EmbedIO` to your class, you can use some helpful extension methods for `IHttpContext`, `IHttpResponse` and `IHttpRequest`. These methods can be used in any Web module (like [Fallback Module](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html)) or inside a [WebAPI Controller](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html) method.
+By adding the namespace `EmbedIO` to your class, you can use some helpful extension methods for `IHttpContext`, `IHttpResponse` and `IHttpRequest`. These methods can be used in any Web module (like [Fallback Module](https://unosquare.github.io/embedio/api/EmbedIO.Modules.FallbackModule.html)) or inside a [WebAPI Controller](https://unosquare.github.io/embedio/api/EmbedIO.Modules.WebApiController.html) method.
 
 Below, some common scenarios using a WebAPI Controller method as body function:
 
 #### Reading from a POST body as a dictionary (application/x-www-form-urlencoded)
 
-For reading a dictionary from a HTTP Request body you can use [RequestFormDataDictionary](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionary_Unosquare_Labs_EmbedIO_IHttpContext_). This method works directly from `IHttpContext` and returns the key-value pairs sent by using the Contet-Type 'application/x-www-form-urlencoded'.
+For reading a dictionary from a HTTP Request body you can use [RequestFormDataDictionary](https://unosquare.github.io/embedio/api/EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionary_Unosquare_Labs_EmbedIO_IHttpContext_). This method works directly from `IHttpContext` and returns the key-value pairs sent by using the Contet-Type 'application/x-www-form-urlencoded'.
 
 ```csharp
     [WebApiHandler(HttpVerbs.Post, "/api/data")]
@@ -124,7 +124,7 @@ For reading a dictionary from a HTTP Request body you can use [RequestFormDataDi
 
 #### Reading from a POST body as a JSON payload (application/json)
 
-For reading a JSON payload and deserialize it to an object from a HTTP Request body you can use [ParseJson<T>](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_ParseJson__1_Unosquare_Labs_EmbedIO_IHttpContext_). This method works directly from `IHttpContext` and returns an object of the type specified in the generic type.
+For reading a JSON payload and deserialize it to an object from a HTTP Request body you can use [ParseJson<T>](https://unosquare.github.io/embedio/api/EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_ParseJson__1_Unosquare_Labs_EmbedIO_IHttpContext_). This method works directly from `IHttpContext` and returns an object of the type specified in the generic type.
 
 ```csharp
     [WebApiHandler(HttpVerbs.Post, "/api/data")]
@@ -147,7 +147,7 @@ There is [another solution](http://stackoverflow.com/questions/7460088/reading-f
 
 #### Writing a binary stream
 
-For writing a binary stream directly to the Response Output Stream you can use [BinaryResponseAsync](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_). This method has an overload to use `IHttpContext` and you need to set the Content-Type beforehand.
+For writing a binary stream directly to the Response Output Stream you can use [BinaryResponseAsync](https://unosquare.github.io/embedio/api/EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_). This method has an overload to use `IHttpContext` and you need to set the Content-Type beforehand.
 
 ```csharp
     [WebApiHandler(HttpVerbs.Get, "/api/binary")]
@@ -190,8 +190,8 @@ Please note the comments are the important part here. More info is available in 
 namespace Unosquare
 {
     using System;
-    using Unosquare.Labs.EmbedIO;
-    using Unosquare.Labs.EmbedIO.Modules;
+    using EmbedIO;
+    using EmbedIO.Modules;
 
     class Program
     {

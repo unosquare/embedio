@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp2.2;net472</TargetFrameworks>
+    <AssemblyName>Unosquare.Labs.EmbedIO.Samples</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <PackageId>Unosquare.Labs.EmbedIO.Samples</PackageId>
+    <LangVersion>7.3</LangVersion>
+    <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="html\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LiteLib" Version="0.19.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Tubular.ServerSide" Version="1.5.1" />
+    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Unosquare.Labs.EmbedIO\EmbedIO.csproj" />
+  </ItemGroup>
+
+</Project>
