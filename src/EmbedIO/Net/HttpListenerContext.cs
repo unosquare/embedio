@@ -18,7 +18,6 @@ namespace EmbedIO.Net
 
         internal HttpListenerContext(HttpConnection cnc)
         {
-            Id = Guid.NewGuid();
             Connection = cnc;
             Request = new HttpListenerRequest(this);
             Response = new HttpListenerResponse(this);
@@ -30,13 +29,13 @@ namespace EmbedIO.Net
 
         /// <inheritdoc />
         public IHttpResponse Response { get; }
-        
+
         /// <inheritdoc />
         public IPrincipal User { get; }
 
         /// <inheritdoc />
-        public IWebServer WebServer { get; set; }
-        
+        public string Id { get; }
+
         /// <inheritdoc />
         public IDictionary<object, object> Items
         {
@@ -47,7 +46,7 @@ namespace EmbedIO.Net
         internal HttpListenerRequest HttpListenerRequest => Request as HttpListenerRequest;
 
         internal HttpListenerResponse HttpListenerResponse => Response as HttpListenerResponse;
-        
+
         internal HttpListener Listener { get; set; }
 
         internal string ErrorMessage { get; set; }
@@ -56,16 +55,15 @@ namespace EmbedIO.Net
 
         internal HttpConnection Connection { get; }
 
-        internal Guid Id { get; }
 
         /// <inheritdoc />
-        public async Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize)
+        public async Task<IWebSocketContext> AcceptWebSocketAsync(string subProtocol, int receiveBufferSize, TimeSpan keepAliveInterval)
         {
             if (_websocketContext != null)
                 throw new InvalidOperationException("The accepting is already in progress.");
 
             _websocketContext = new WebSocketContext(this);
-            await ((WebSocket) _websocketContext.WebSocket).InternalAcceptAsync().ConfigureAwait(false);
+            await ((WebSocket)_websocketContext.WebSocket).InternalAcceptAsync().ConfigureAwait(false);
 
             return _websocketContext;
         }

@@ -49,6 +49,6 @@ namespace EmbedIO.Internal
 
         /// <inheritdoc />
         public async Task<IWebSocketContext> AcceptWebSocketAsync(string subProtocol, int receiveBufferSize, TimeSpan keepAliveInterval)
-            => new WebSocketContext(await _context.AcceptWebSocketAsync(subProtocol: subProtocol, receiveBufferSize,keepAliveInterval).ConfigureAwait(false));
+            => new WebSocketContext(await _context.AcceptWebSocketAsync(subProtocol, receiveBufferSize,keepAliveInterval).ConfigureAwait(false));
     }
 }

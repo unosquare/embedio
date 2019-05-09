@@ -4,6 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Constants;
+using EmbedIO.Internal;
 using EmbedIO.Net;
 using Unosquare.Swan;
 
@@ -39,9 +40,8 @@ namespace EmbedIO
         /// network interfaces with HTTP protocol with the selected port (http://*:{port}/).
         /// </summary>
         /// <param name="port">The port.</param>
-        /// <param name="strategy">The strategy.</param>
-        public WebServer(int port, RoutingStrategy strategy = RoutingStrategy.Regex)
-            : this(new[] { $"http://*:{port}/" }, strategy)
+        public WebServer(int port)
+            : this(new[] { $"http://*:{port}/" })
         {
             // placeholder
         }
@@ -56,9 +56,8 @@ namespace EmbedIO
         /// Please notice the ending slash. -- It is important.
         /// </remarks>
         /// <param name="urlPrefix">The URL prefix.</param>
-        /// <param name="strategy">The strategy.</param>
-        public WebServer(string urlPrefix, RoutingStrategy strategy = RoutingStrategy.Regex)
-            : this(new[] { urlPrefix }, strategy)
+        public WebServer(string urlPrefix)
+            : this(new[] { urlPrefix })
         {
             // placeholder
         }
@@ -73,10 +72,9 @@ namespace EmbedIO
         /// Please notice the ending slash. -- It is important.
         /// </remarks>
         /// <param name="urlPrefixes">The URL prefix.</param>
-        /// <param name="routingStrategy">The routing strategy.</param>
         /// <exception cref="ArgumentException">Validate urlPrefix must be specified.</exception>
-        public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy = RoutingStrategy.Regex)
-         : this(urlPrefixes, routingStrategy, HttpListenerFactory.Create(HttpListenerMode.EmbedIO))
+        public WebServer(string[] urlPrefixes)
+         : this(urlPrefixes, HttpListenerFactory.Create(HttpListenerMode.EmbedIO))
         {
             // placeholder
         }
@@ -85,15 +83,14 @@ namespace EmbedIO
         /// Initializes a new instance of the <see cref="WebServer" /> class.
         /// </summary>
         /// <param name="urlPrefixes">The URL prefix.</param>
-        /// <param name="routingStrategy">The routing strategy.</param>
         /// <param name="mode">The mode.</param>
         /// <exception cref="ArgumentException">Validate urlPrefix must be specified.</exception>
         /// <remarks>
         /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/
         /// Please notice the ending slash. -- It is important.
         /// </remarks>
-        public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy, HttpListenerMode mode)
-            : this(urlPrefixes, routingStrategy, HttpListenerFactory.Create(mode))
+        public WebServer(string[] urlPrefixes, HttpListenerMode mode)
+            : this(urlPrefixes, HttpListenerFactory.Create(mode))
         {
             // placeholder
         }
@@ -102,7 +99,6 @@ namespace EmbedIO
         /// Initializes a new instance of the <see cref="WebServer" /> class.
         /// </summary>
         /// <param name="urlPrefixes">The URL prefix.</param>
-        /// <param name="routingStrategy">The routing strategy.</param>
         /// <param name="mode">The mode.</param>
         /// <param name="certificate">The certificate.</param>
         /// <exception cref="ArgumentException">Validate urlPrefix must be specified.</exception>
@@ -110,8 +106,8 @@ namespace EmbedIO
         /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/
         /// Please notice the ending slash. -- It is important.
         /// </remarks>
-        public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy, HttpListenerMode mode, X509Certificate certificate)
-            : this(urlPrefixes, routingStrategy, HttpListenerFactory.Create(mode, certificate))
+        public WebServer(string[] urlPrefixes, HttpListenerMode mode, X509Certificate certificate)
+            : this(urlPrefixes, HttpListenerFactory.Create(mode, certificate))
         {
             // placeholder
         }
@@ -121,7 +117,7 @@ namespace EmbedIO
         /// </summary>
         /// <param name="options">The WebServer options.</param>
         public WebServer(WebServerOptions options)
-        : this(options.UrlPrefixes, options.RoutingStrategy, HttpListenerFactory.Create(options.Mode, options.Certificate))
+        : this(options.UrlPrefixes, HttpListenerFactory.Create(options.Mode, options.Certificate))
         {
             // temp placeholder
         }
@@ -130,15 +126,13 @@ namespace EmbedIO
         /// Initializes a new instance of the <see cref="WebServer" /> class.
         /// </summary>
         /// <param name="urlPrefixes">The URL prefix.</param>
-        /// <param name="routingStrategy">The routing strategy.</param>
         /// <param name="httpListener">The HTTP listener.</param>
         /// <exception cref="ArgumentException">Validate urlPrefix must be specified.</exception>
         /// <remarks>
         /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/
         /// Please notice the ending slash. -- It is important.
         /// </remarks>
-        public WebServer(string[] urlPrefixes, RoutingStrategy routingStrategy, IHttpListener httpListener)
-            : base(routingStrategy)
+        public WebServer(string[] urlPrefixes, IHttpListener httpListener)
         {
             if (urlPrefixes == null || urlPrefixes.Length <= 0)
                 throw new ArgumentException("At least 1 URL prefix in urlPrefixes must be specified");
@@ -222,7 +216,6 @@ namespace EmbedIO
                     if (ct.IsCancellationRequested)
                         return;
 
-                    context.WebServer = this;
 #pragma warning disable CS4014
                     HandleClientRequest(context, ct);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed

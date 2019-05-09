@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.IO;
-using System.Net.Http.Headers;
 using EmbedIO.Constants;
 
 namespace EmbedIO.Net
@@ -62,7 +61,7 @@ namespace EmbedIO.Net
         /// <value>
         /// A <see cref="string"/> that represents the value of the Origin header.
         /// </value>
-        public string Origin => _context.Request.Headers[HttpRequestHeaders.];
+        public string Origin => _context.Request.Headers[HttpHeaders.Origin];
 
         /// <summary>
         /// Gets the URI requested by the client.
@@ -82,7 +81,7 @@ namespace EmbedIO.Net
         /// <value>
         /// A <see cref="string"/> that represents the value of the Sec-WebSocket-Key header.
         /// </value>
-        public string SecWebSocketKey => _context.Request.Headers[HttpRequestHeaders.WebSocketKey];
+        public string SecWebSocketKey => _context.Request.Headers[HttpHeaders.WebSocketKey];
 
         /// <summary>
         /// Gets the value of the Sec-WebSocket-Version header included in the request.

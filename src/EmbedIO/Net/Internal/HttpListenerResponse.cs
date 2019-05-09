@@ -76,7 +76,7 @@ namespace EmbedIO.Net.Internal
         public ICookieCollection Cookies => CookieCollection;
 
         /// <inheritdoc />
-        public NameValueCollection Headers => HeaderCollection;
+        public WebHeaderCollection Headers => HeaderCollection;
 
         /// <inheritdoc />
         public bool KeepAlive

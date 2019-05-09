@@ -106,7 +106,7 @@ namespace EmbedIO
             if (@this == null)
                 throw new ArgumentNullException(nameof(@this));
 
-            @this.Modules.Add(new StaticFilesModule(fileSystemPath, fileCachingMode, defaultDocument, defaultExtension, useDirectoryBrowser));
+            @this.Modules.Add(new StaticFilesModule(UrlPath.Root, fileSystemPath, fileCachingMode, defaultDocument, defaultExtension, useDirectoryBrowser));
             return @this;
         }
     }

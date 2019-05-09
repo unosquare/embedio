@@ -49,9 +49,6 @@ namespace EmbedIO.Modules
             AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (context, ct) => HandleGet(context, ct));
         }
 
-        /// <inheritdoc />
-        public override string Name => nameof(ResourceFilesModule);
-
         private static string FixPath(string s) => s == "/" ? "index.html" : s.Substring(1, s.Length - 1).Replace('/', '.');
 
         private async Task<bool> HandleGet(IHttpContext context, CancellationToken ct, bool sendBuffer = true)

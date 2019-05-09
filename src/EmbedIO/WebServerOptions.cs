@@ -43,14 +43,6 @@ namespace EmbedIO
         public string[] UrlPrefixes { get; }
 
         /// <summary>
-        /// Gets or sets the routing strategy.
-        /// </summary>
-        /// <value>
-        /// The routing strategy.
-        /// </value>
-        public RoutingStrategy RoutingStrategy { get; set; } = RoutingStrategy.Regex;
-
-        /// <summary>
         /// Gets or sets the mode.
         /// </summary>
         /// <value>
@@ -123,7 +115,7 @@ namespace EmbedIO
         {
             if (!string.IsNullOrWhiteSpace(CertificateThumb)) return GetCertificate();
 
-            if (Runtime.OS != Swan.OperatingSystem.Windows)
+            if (Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
                 throw new InvalidOperationException("AutoLoad functionality is only available in Windows");
 
             var netsh = GetNetsh("show");
@@ -208,7 +200,7 @@ namespace EmbedIO
 
         private bool TryRegisterCertificate()
         {
-            if (Runtime.OS != Swan.OperatingSystem.Windows)
+            if (Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
                 throw new InvalidOperationException("AutoRegister functionality is only available in Windows");
 
             if (_certificate == null)

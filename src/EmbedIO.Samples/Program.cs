@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Modules;
+using EmbedIO.Utilities;
 using Unosquare.Swan;
 
 namespace EmbedIO.Samples
@@ -123,7 +124,7 @@ namespace EmbedIO.Samples
                         .WithServer<WebSocketsChatServer>()
                         .WithServer<WebSocketsTerminalServer>(),
 
-                    new FallbackModule((ctx, ct) => ctx.JsonResponseAsync(new { Message = "Error" }, ct))
+                    new ActionModule(UrlPath.Root, Constants.HttpVerbs.Any, (ctx, ct) => ctx.JsonResponseAsync(new { Message = "Error" }, ct))
                 };
 
             // Listen for state changes.
