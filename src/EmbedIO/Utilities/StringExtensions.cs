@@ -7,7 +7,7 @@ namespace EmbedIO.Utilities
     /// </summary>
     public static class StringExtensions
     {
-        private static readonly char[] CommaSplitChars = { ',' };
+        private static readonly char[] CommaSplitChars = {','};
 
         /// <summary>Splits a string into substrings based on the specified <paramref name="delimiters"/>.
         /// The returned array includes empty array elements if two or more consecutive delimiters are found
@@ -57,6 +57,7 @@ namespace EmbedIO.Utilities
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="options">options</paramref> is not one of the <see cref="StringSplitOptions"/> values.</exception>
         /// <seealso cref="SplitByComma(string)"/>
-        public static string[] SplitByComma(this string @this, StringSplitOptions options) => @this.Split(CommaSplitChars, options);
+        public static string[] SplitByComma(this string @this, StringSplitOptions options) =>
+            @this.Split(CommaSplitChars, options);
     }
 }

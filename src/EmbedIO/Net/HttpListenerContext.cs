@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using EmbedIO.Net.Internal;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Net
 {
@@ -13,7 +14,7 @@ namespace EmbedIO.Net
     public sealed class HttpListenerContext : IHttpContext
     {
         private WebSocketContext _websocketContext;
-        private Lazy<IDictionary<object, object>> _items =
+        private readonly Lazy<IDictionary<object, object>> _items =
             new Lazy<IDictionary<object, object>>(() => new Dictionary<object, object>(), true);
 
         internal HttpListenerContext(HttpConnection cnc)
@@ -22,6 +23,7 @@ namespace EmbedIO.Net
             Request = new HttpListenerRequest(this);
             Response = new HttpListenerResponse(this);
             User = null;
+            Id = UniqueIdGenerator.GetNext();
         }
 
         /// <inheritdoc />
@@ -37,11 +39,7 @@ namespace EmbedIO.Net
         public string Id { get; }
 
         /// <inheritdoc />
-        public IDictionary<object, object> Items
-        {
-            get => _items.Value;
-            set => _items = new Lazy<IDictionary<object, object>>(() => value, true);
-        }
+        public IDictionary<object, object> Items => _items.Value;
 
         internal HttpListenerRequest HttpListenerRequest => Request as HttpListenerRequest;
 
@@ -54,7 +52,6 @@ namespace EmbedIO.Net
         internal bool HaveError => ErrorMessage != null;
 
         internal HttpConnection Connection { get; }
-
 
         /// <inheritdoc />
         public async Task<IWebSocketContext> AcceptWebSocketAsync(string subProtocol, int receiveBufferSize, TimeSpan keepAliveInterval)

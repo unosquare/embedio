@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Constants;
 using Unosquare.Swan;
 
 namespace EmbedIO.Modules
@@ -27,9 +28,14 @@ namespace EmbedIO.Modules
         /// </summary>
         /// <param name="enableConnectionWatchdog">if set to <c>true</c> [enable connection watchdog].</param>
         /// <param name="maxMessageSize">Maximum size of the message in bytes. Enter 0 or negative number to prevent checks.</param>
-        protected WebSocketsServer(bool enableConnectionWatchdog, int maxMessageSize = 0)
+        /// <param name="keepAliveInterval">The keep alive interval.</param>
+        protected WebSocketsServer(
+            bool enableConnectionWatchdog, 
+            int maxMessageSize = 0,
+            TimeSpan? keepAliveInterval = null)
         {
             _maximumMessageSize = maxMessageSize;
+            KeepAliveInterval = keepAliveInterval ?? TimeSpan.FromSeconds(30);
             if (enableConnectionWatchdog)
                 RunConnectionWatchdog();
         }
@@ -69,6 +75,14 @@ namespace EmbedIO.Modules
         public CancellationToken CancellationToken { get; internal set; }
 
         /// <summary>
+        /// Gets or sets the keep alive interval.
+        /// </summary>
+        /// <value>
+        /// The keep alive interval.
+        /// </value>
+        public TimeSpan KeepAliveInterval { get; set; }
+
+        /// <summary>
         /// Gets the name of the server.
         /// </summary>
         /// <value>
@@ -96,7 +110,9 @@ namespace EmbedIO.Modules
             // first, accept the websocket
             $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
 
-            var webSocketContext = await context.AcceptWebSocketAsync(ReceiveBufferSize).ConfigureAwait(false);
+            var subProtocol = context.RequestHeader(HttpHeaders.SecWebSocketProtocol);
+            var webSocketContext = await context.AcceptWebSocketAsync(subProtocol, ReceiveBufferSize, KeepAliveInterval)
+                .ConfigureAwait(false);
 
             // remove the disconnected clients
             CollectDisconnected();
@@ -116,7 +132,8 @@ namespace EmbedIO.Modules
             {
                 if (webSocketContext.WebSocket is WebSocket systemWebSocket)
                 {
-                    await ProcessSystemWebsocket(webSocketContext, systemWebSocket.SystemWebSocket, ct).ConfigureAwait(false);
+                    await ProcessSystemWebsocket(webSocketContext, systemWebSocket.SystemWebSocket, ct)
+                        .ConfigureAwait(false);
                 }
                 else
                 {
@@ -176,7 +193,8 @@ namespace EmbedIO.Modules
         {
             try
             {
-                await webSocket.WebSocket.SendAsync(payload ?? Array.Empty<byte>(), false, CancellationToken).ConfigureAwait(false);
+                await webSocket.WebSocket.SendAsync(payload ?? Array.Empty<byte>(), false, CancellationToken)
+                    .ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -346,18 +364,18 @@ namespace EmbedIO.Modules
 
         private async Task ProcessEmbedIOWebSocket(IWebSocketContext webSocketContext, CancellationToken ct)
         {
-            ((Net.WebSocket)webSocketContext.WebSocket).OnMessage += async (s, e) =>
-           {
-               if (e.Opcode == Net.Opcode.Close)
-               {
-                   await webSocketContext.WebSocket.CloseAsync(CancellationToken).ConfigureAwait(false);
-                   return;
-               }
+            ((Net.WebSocket) webSocketContext.WebSocket).OnMessage += async (s, e) =>
+            {
+                if (e.Opcode == Net.Opcode.Close)
+                {
+                    await webSocketContext.WebSocket.CloseAsync(CancellationToken).ConfigureAwait(false);
+                    return;
+                }
 
-               OnMessageReceived(webSocketContext,
-                   e.RawData,
-                   new Net.WebSocketReceiveResult(e.RawData.Length, e.Opcode));
-           };
+                OnMessageReceived(webSocketContext,
+                    e.RawData,
+                    new Net.WebSocketReceiveResult(e.RawData.Length, e.Opcode));
+            };
 
             while (webSocketContext.WebSocket.State == Net.WebSocketState.Open ||
                    webSocketContext.WebSocket.State == Net.WebSocketState.Closing)
@@ -366,7 +384,8 @@ namespace EmbedIO.Modules
             }
         }
 
-        private async Task<bool> ProcessSystemWebsocket(IWebSocketContext context, System.Net.WebSockets.WebSocket webSocket, CancellationToken ct)
+        private async Task<bool> ProcessSystemWebsocket(IWebSocketContext context,
+            System.Net.WebSockets.WebSocket webSocket, CancellationToken ct)
         {
             // define a receive buffer
             var receiveBuffer = new byte[ReceiveBufferSize];
@@ -378,12 +397,15 @@ namespace EmbedIO.Modules
             while (webSocket.State == System.Net.WebSockets.WebSocketState.Open)
             {
                 // retrieve the result (blocking)
-                var receiveResult = new WebSocketReceiveResult(await webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), ct).ConfigureAwait(false));
+                var receiveResult = new WebSocketReceiveResult(await webSocket
+                    .ReceiveAsync(new ArraySegment<byte>(receiveBuffer), ct).ConfigureAwait(false));
 
-                if (receiveResult.MessageType == (int)System.Net.WebSockets.WebSocketMessageType.Close)
+                if (receiveResult.MessageType == (int) System.Net.WebSockets.WebSocketMessageType.Close)
                 {
                     // close the connection if requested by the client
-                    await webSocket.CloseAsync(System.Net.WebSockets.WebSocketCloseStatus.NormalClosure, string.Empty, ct).ConfigureAwait(false);
+                    await webSocket
+                        .CloseAsync(System.Net.WebSockets.WebSocketCloseStatus.NormalClosure, string.Empty, ct)
+                        .ConfigureAwait(false);
                     return true;
                 }
 

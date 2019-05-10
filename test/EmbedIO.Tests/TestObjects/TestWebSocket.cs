@@ -1,7 +1,7 @@
 ﻿namespace EmbedIO.Tests.TestObjects
 {
     using Modules;
-    using Swan.Formatters;
+    using Unosquare.Swan.Formatters;
 
     [WebSocketHandler("/test/")]
     public class TestWebSocketBase : WebSocketsServer

@@ -28,22 +28,6 @@ namespace EmbedIO
         private ISessionManager _sessionManager;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebServerBase"/> class.
-        /// </summary>
-        protected WebServerBase()
-        {
-            switch (routingStrategy)
-            {
-                case RoutingStrategy.Wildcard:
-                case RoutingStrategy.Regex:
-                    RoutingStrategy = routingStrategy;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(routingStrategy));
-            }
-        }
-
-        /// <summary>
         /// Finalizes an instance of the <see cref="WebServerBase"/> class.
         /// </summary>
         ~WebServerBase()

@@ -34,7 +34,7 @@ namespace EmbedIO.Internal
 
             requestedPath = "/" + requestedPath;
 
-            foreach (var (name, module) in this.WithSafeNames)
+            foreach (var (name, module) in WithSafeNames)
             {
                 var path = UrlPath.UnsafeStripPrefix(requestedPath, module.BaseUrlPath);
                 if (path == null)

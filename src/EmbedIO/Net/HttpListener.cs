@@ -18,7 +18,7 @@ namespace EmbedIO.Net
     public sealed class HttpListener : IHttpListener
     {
         private readonly SemaphoreSlim _ctxQueueSem = new SemaphoreSlim(0);
-        private readonly ConcurrentDictionary<Guid, HttpListenerContext> _ctxQueue;
+        private readonly ConcurrentDictionary<string, HttpListenerContext> _ctxQueue;
         private readonly ConcurrentDictionary<HttpConnection, object> _connections;
         private readonly HttpListenerPrefixCollection _prefixes;
         private bool _disposed;
@@ -33,7 +33,7 @@ namespace EmbedIO.Net
 
             _prefixes = new HttpListenerPrefixCollection(this);
             _connections = new ConcurrentDictionary<HttpConnection, object>();
-            _ctxQueue = new ConcurrentDictionary<Guid, HttpListenerContext>();
+            _ctxQueue = new ConcurrentDictionary<string, HttpListenerContext>();
         }
         
         /// <inheritdoc />
@@ -42,6 +42,12 @@ namespace EmbedIO.Net
         /// <inheritdoc />
         public bool IsListening { get; private set; }
 
+        /// <inheritdoc />
+        public string Name { get; } = "Unosquare HTTP Listener";
+
+        /// <inheritdoc />
+        public List<string> Prefixes => _prefixes.ToList();
+        
         /// <summary>
         /// Gets the certificate.
         /// </summary>
@@ -50,12 +56,6 @@ namespace EmbedIO.Net
         /// </value>
         internal X509Certificate Certificate { get; }
 
-        /// <inheritdoc />
-        public string Name { get; } = "Unosquare HTTP Listener";
-
-        /// <inheritdoc />
-        public List<string> Prefixes => _prefixes.ToList();
-        
         /// <inheritdoc />
         public void Start()
         {

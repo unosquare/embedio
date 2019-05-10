@@ -40,7 +40,7 @@
         public bool KeepAlive { get; set; }
 
         /// <inheritdoc />
-        public Version ProtocolVersion { get; } = Net.HttpVersion.Version11;
+        public Version ProtocolVersion { get; } = HttpVersion.Version11;
 
         /// <summary>
         /// Gets the body.

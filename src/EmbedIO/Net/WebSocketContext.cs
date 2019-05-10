@@ -63,12 +63,7 @@ namespace EmbedIO.Net
         /// </value>
         public string Origin => _context.Request.Headers[HttpHeaders.Origin];
 
-        /// <summary>
-        /// Gets the URI requested by the client.
-        /// </summary>
-        /// <value>
-        /// A <see cref="Uri"/> that represents the requested URI.
-        /// </value>
+        /// <inheritdoc />
         public Uri RequestUri => _context.Request.Url;
 
         /// <summary>

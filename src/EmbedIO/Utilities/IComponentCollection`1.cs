@@ -45,7 +45,7 @@ namespace EmbedIO.Utilities
 
         /// <summary>
         /// Adds a component to the collection,
-        /// giving it the specified <paramref name="name"/> if it is not <see langword="null"/>.</param>
+        /// giving it the specified <paramref name="name"/> if it is not <see langword="null"/>.
         /// </summary>
         /// <param name="name">The name given to the module, or <see langword="null"/>.</param>
         /// <param name="component">The component.</param>

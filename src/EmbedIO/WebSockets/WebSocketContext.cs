@@ -1,5 +1,4 @@
 ﻿using System;
-using EmbedIO.Net;
 
 namespace EmbedIO
 {
@@ -18,7 +17,7 @@ namespace EmbedIO
         {
             _webSocketContext = webSocketContext;
             WebSocket = new WebSocket(_webSocketContext.WebSocket);
-            CookieCollection = new CookieCollection(_webSocketContext.CookieCollection);
+            CookieCollection = new Internal.CookieCollection(_webSocketContext.CookieCollection);
         }
 
         /// <inheritdoc />

@@ -269,7 +269,7 @@ namespace EmbedIO.Modules
             if (RoutingStrategy == RoutingStrategy.Regex)
                 methodPair.ParseArguments(regExRouteParams, args);
 
-            if (!responseJsonException)
+            if (!_responseJsonException)
             {
                 var result = await methodPair.Invoke(controller, args).ConfigureAwait(false);
 

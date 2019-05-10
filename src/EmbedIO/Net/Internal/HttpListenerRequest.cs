@@ -302,10 +302,10 @@ namespace EmbedIO.Net.Internal
             switch (name.ToLowerInvariant())
             {
                 case "accept-language":
-                    UserLanguages = val.Split(Labs.EmbedIO.Constants.Strings.CommaSplitChar); // yes, only split with a ','
+                    UserLanguages = val.SplitByComma(); // yes, only split with a ','
                     break;
                 case "accept":
-                    AcceptTypes = val.Split(Labs.EmbedIO.Constants.Strings.CommaSplitChar); // yes, only split with a ','
+                    AcceptTypes = val.SplitByComma(); // yes, only split with a ','
                     break;
                 case "content-length":
                     try
@@ -378,7 +378,7 @@ namespace EmbedIO.Net.Internal
             if (_cookies == null)
                 _cookies = new CookieCollection();
 
-            var cookieStrings = val.Split(Labs.EmbedIO.Constants.Strings.CookieSplitChars)
+            var cookieStrings = val.SplitByAny(';', ',')
                 .Where(x => !string.IsNullOrEmpty(x));
             Cookie current = null;
             var version = 0;
