@@ -81,7 +81,7 @@ namespace EmbedIO.Net
         /// <value>
         /// A <see cref="string"/> that represents the value of the Sec-WebSocket-Key header.
         /// </value>
-        public string SecWebSocketKey => _context.Request.Headers[HttpHeaders.WebSocketKey];
+        public string SecWebSocketKey => _context.Request.Headers[HttpHeaders.SecWebSocketKey];
 
         /// <summary>
         /// Gets the value of the Sec-WebSocket-Version header included in the request.
@@ -92,7 +92,7 @@ namespace EmbedIO.Net
         /// <value>
         /// A <see cref="string"/> that represents the value of the Sec-WebSocket-Version header.
         /// </value>
-        public string SecWebSocketVersion => _context.Request.Headers[HttpHeaders.WebSocketVersion];
+        public string SecWebSocketVersion => _context.Request.Headers[HttpHeaders.SecWebSocketVersion];
 
         /// <inheritdoc />
         public IWebSocket WebSocket { get; }

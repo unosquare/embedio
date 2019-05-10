@@ -58,25 +58,25 @@ namespace EmbedIO.Net.Internal
             }
 
             var headers = context.Headers;
-            if (string.IsNullOrEmpty(headers[HttpHeaders.WebSocketKey]))
+            if (string.IsNullOrEmpty(headers[HttpHeaders.SecWebSocketKey]))
             {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {HttpHeaders.WebSocketKey} header, or it has an invalid value.");
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {HttpHeaders.SecWebSocketKey} header, or it has an invalid value.");
             }
 
-            if (!ValidateSecWebSocketVersionClientHeader(headers[HttpHeaders.WebSocketVersion]))
+            if (!ValidateSecWebSocketVersionClientHeader(headers[HttpHeaders.SecWebSocketVersion]))
             {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {HttpHeaders.WebSocketVersion} header, or it has an invalid value.");
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {HttpHeaders.SecWebSocketVersion} header, or it has an invalid value.");
             }
 
-            if (!ValidateSecWebSocketProtocolClientHeader(headers[HttpHeaders.WebSocketProtocol]))
+            if (!ValidateSecWebSocketProtocolClientHeader(headers[HttpHeaders.SecWebSocketProtocol]))
             {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {HttpHeaders.WebSocketProtocol} header.");
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {HttpHeaders.SecWebSocketProtocol} header.");
             }
 
             if (!_webSocket.IgnoreExtensions
-                && !string.IsNullOrWhiteSpace(headers[HttpHeaders.WebSocketExtensions]))
+                && !string.IsNullOrWhiteSpace(headers[HttpHeaders.SecWebSocketExtensions]))
             {
-                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {HttpHeaders.WebSocketExtensions} header.");
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {HttpHeaders.SecWebSocketExtensions} header.");
             }
         }
 

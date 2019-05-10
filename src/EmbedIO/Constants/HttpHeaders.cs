@@ -405,31 +405,6 @@
         /// The <c>Warning</c> HTTP header.
         /// </summary>
         public const string Warning = "Warning";
-        
-        /// <summary>
-        /// The web socket key.
-        /// </summary>
-        public const string WebSocketKey = "Sec-WebSocket-Key";
-
-        /// <summary>
-        /// The web socket version.
-        /// </summary>
-        public const string WebSocketVersion = "Sec-WebSocket-Version";
-
-        /// <summary>
-        /// The web socket protocol.
-        /// </summary>
-        public const string WebSocketProtocol = "Sec-WebSocket-Protocol";
-
-        /// <summary>
-        /// The web socket extensions.
-        /// </summary>
-        public const string WebSocketExtensions = "Sec-WebSocket-Extensions";
-
-        /// <summary>
-        /// The web socket accept.
-        /// </summary>
-        public const string WebSocketAccept = "Sec-WebSocket-Accept";
 
         /// <summary>
         /// The <c>X-AspNet-Version</c> HTTP header.
