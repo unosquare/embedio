@@ -27,8 +27,7 @@ namespace EmbedIO
         public static void NoCache(this IHttpResponse response)
         {
             response.AddHeader(HttpHeaders.Expires, "Mon, 26 Jul 1997 05:00:00 GMT");
-            response.AddHeader(HttpHeaders.LastModified,
-                DateTime.UtcNow.ToString(Strings.BrowserTimeFormat, CultureInfo.InvariantCulture));
+            response.AddHeader(HttpHeaders.LastModified, DateTime.UtcNow.ToRfc1123String());
             response.AddHeader(HttpHeaders.CacheControl, "no-store, no-cache, must-revalidate");
             response.AddHeader(HttpHeaders.Pragma, "no-cache");
         }

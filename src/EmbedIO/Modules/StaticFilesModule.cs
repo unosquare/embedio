@@ -314,8 +314,7 @@ namespace EmbedIO.Modules
                     buffer = GetFileStream(context, fileInfo, usingPartial, out isTagValid);
 
                 // check to see if the file was modified or e-tag is the same
-                var utcFileDateString = fileInfo.LastWriteTimeUtc
-                    .ToString(Strings.BrowserTimeFormat, CultureInfo.InvariantCulture);
+                var utcFileDateString = fileInfo.LastWriteTimeUtc.ToRfc1123String();
 
                 if (!usingPartial &&
                     (isTagValid || context.RequestHeader(HttpHeaders.IfModifiedSince).Equals(utcFileDateString)))
@@ -399,8 +398,7 @@ namespace EmbedIO.Modules
                             .OrderBy(x => x.Name))
                         .Select(y => $"<a href='{y.Url}'>{WebUtility.HtmlEncode(y.Name)}</a>" +
                                      new string(' ', MaxEntryLength - y.Name.Length + 1) +
-                                     y.ModificationTime.ToString(Strings.BrowserTimeFormat,
-                                         CultureInfo.InvariantCulture) +
+                                     y.ModificationTime.ToRfc1123String() +
                                      new string(' ', SizeIndent - y.Size.Length) +
                                      y.Size))
                 .Where(x => !string.IsNullOrWhiteSpace(x));

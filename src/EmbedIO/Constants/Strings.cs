@@ -10,11 +10,6 @@
         internal const string UrlEncodedContentType = "application/x-www-form-urlencoded";
 
         /// <summary>
-        ///  Default Browser time format.
-        /// </summary>
-        internal const string BrowserTimeFormat = "ddd, dd MMM yyyy HH:mm:ss 'GMT'";
-
-        /// <summary>
         /// Default CORS rule.
         /// </summary>
         internal const string CorsWildcard = "*";

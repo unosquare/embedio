@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Constants;
+using EmbedIO.Utilities;
 using Unosquare.Swan;
 
 namespace EmbedIO.Modules
@@ -71,8 +72,7 @@ namespace EmbedIO.Modules
                 }
 
                 // check to see if the file was modified or e-tag is the same
-                var utcFileDateString = DateTime.Now.ToUniversalTime()
-                    .ToString(Strings.BrowserTimeFormat, CultureInfo.InvariantCulture);
+                var utcFileDateString = DateTime.Now.ToRfc1123String();
 
                 context.Response.ContentLength64 = buffer.Length;
 
