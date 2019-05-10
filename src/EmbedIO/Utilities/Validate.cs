@@ -36,6 +36,25 @@ namespace EmbedIO.Utilities
             => value ?? throw new ArgumentNullException(argumentName);
 
         /// <summary>
+        /// Ensures that a <see langword="string"/> argument is neither <see langword="null"/> nor the empty string.
+        /// </summary>
+        /// <param name="argumentName">The name of the argument to validate.</param>
+        /// <param name="value">The value to validate.</param>
+        /// <returns><paramref name="value"/> if neither <see langword="null"/> nor the empty string.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="value"/> is the empty string.</exception>
+        public static string NotNullOrEmpty(string argumentName, string value)
+        {
+            if (value == null)
+                throw new ArgumentNullException(argumentName);
+
+            if (value.Length == 0)
+                throw new ArgumentException("String is empty.", argumentName);
+
+            return value;
+        }
+
+        /// <summary>
         /// Ensures that the value of an argument is a valid enumeration constant.
         /// </summary>
         /// <typeparam name="T">The type of the argument to validate.</typeparam>
