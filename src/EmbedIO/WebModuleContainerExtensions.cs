@@ -7,7 +7,7 @@ namespace EmbedIO
     /// <summary>
     /// Contains extension methods for types implementing <see cref="IWebModuleContainer"/>.
     /// </summary>
-    public static class ModuleContainerExtensions
+    public static class WebModuleContainerExtensions
     {
         /// <summary>
         /// Adds the specified <paramref name="module"/> to a module container, without giving it a name.

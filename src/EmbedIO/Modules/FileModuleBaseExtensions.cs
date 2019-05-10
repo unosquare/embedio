@@ -2,6 +2,9 @@
 
 namespace EmbedIO.Modules
 {
+    /// <summary>
+    /// Provides extension methods for classes derived from <see cref="FileModuleBase"/>.
+    /// </summary>
     public static class FileModuleBaseExtensions
     {
         /// <summary>

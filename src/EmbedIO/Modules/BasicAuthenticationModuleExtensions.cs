@@ -4,7 +4,7 @@ using EmbedIO.Utilities;
 namespace EmbedIO.Modules
 {
     /// <summary>
-    /// Provides extension methods for instances of <see cref="BasicAuthenticationModule"/>.
+    /// Provides extension methods for <see cref="BasicAuthenticationModule"/>.
     /// </summary>
     public static class BasicAuthenticationModuleExtensions
     {
