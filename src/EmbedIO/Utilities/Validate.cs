@@ -126,6 +126,86 @@ namespace EmbedIO.Utilities
             return value;
         }
 
+        /// <summary>
+        /// Ensures that a valid URL can be constructed from a <see langword="string"/> argument.
+        /// </summary>
+        /// <param name="argumentName">Name of the argument.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="uriKind">Specifies whether <paramref name="value"/> is a relative URL, absolute URL, or is indeterminate.</param>
+        /// <param name="enforceHttp">Ensure that, if <paramref name="value"/> is an absolute URL, its scheme is either <c>http</c> or <c>https</c>.</param>
+        /// <returns>The string representation of the constructed URL.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">
+        /// <para><paramref name="value"/> is not a valid URL.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="enforceHttp"/> is <see langword="true"/>, <paramref name="value"/> is an absolute URL,
+        /// and <paramref name="value"/>'s scheme is neither <c>http</c> nor <c>https</c>.</para>
+        /// </exception>
+        /// <seealso cref="Url(string,string,Uri,bool)"/>
+        public static string Url(string argumentName, string value, UriKind uriKind = UriKind.RelativeOrAbsolute, bool enforceHttp = false)
+        {
+            Uri uri;
+            try
+            {
+                uri = new Uri(NotNull(argumentName, value), uriKind);
+            }
+            catch (UriFormatException e)
+            {
+                throw new ArgumentException("URL is not valid.", argumentName, e);
+            }
+
+            if (enforceHttp && uri.IsAbsoluteUri && uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps)
+                throw new ArgumentException("URL scheme is neither HTTP nor HTTPS.", argumentName);
+
+            return uri.ToString();
+        }
+
+        /// <summary>
+        /// Ensures that a valid URL, either absolute or relative to the given <paramref name="baseUri"/>,
+        /// can be constructed from a <see langword="string"/> argument and returns the absolute URL
+        /// obtained by combining <paramref name="baseUri"/> and <paramref name="value"/>.
+        /// </summary>
+        /// <param name="argumentName">Name of the argument.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="baseUri">The base URI for relative URLs.</param>
+        /// <param name="enforceHttp">Ensure that the resulting URL's scheme is either <c>http</c> or <c>https</c>.</param>
+        /// <returns>The string representation of the constructed URL.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="baseUri"/> is <see langword="null"/>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="value"/> is <see langword="null"/>.</para>
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <para><paramref name="baseUri"/> is not an absolute URI.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="value"/> is not a valid URL.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="enforceHttp"/> is <see langword="true"/>, 
+        /// and the combination of <paramref name="baseUri"/> and <paramref name="value"/> has a scheme
+        /// that is neither <c>http</c> nor <c>https</c>.</para>
+        /// </exception>
+        /// <seealso cref="Url(string,string,UriKind,bool)"/>
+        public static string Url(string argumentName, string value, Uri baseUri, bool enforceHttp = false)
+        {
+            if (!NotNull(nameof(baseUri), baseUri).IsAbsoluteUri)
+                throw new ArgumentException("Base URI is not an absolute URI.", nameof(baseUri));
+
+            Uri uri;
+            try
+            {
+                uri = new Uri(baseUri,new Uri(NotNull(argumentName, value), UriKind.RelativeOrAbsolute));
+            }
+            catch (UriFormatException e)
+            {
+                throw new ArgumentException("URL is not valid.", argumentName, e);
+            }
+
+            if (enforceHttp && uri.IsAbsoluteUri && uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps)
+                throw new ArgumentException("URL scheme is neither HTTP nor HTTPS.", argumentName);
+
+            return uri.ToString();
+        }
+
         private static char[] GetInvalidLocalPathChars()
         {
             var systemChars = Path.GetInvalidPathChars();
