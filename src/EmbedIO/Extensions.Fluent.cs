@@ -204,33 +204,6 @@ namespace EmbedIO
         }
 
         /// <summary>
-        /// Enables CORS in the WebServer.
-        /// </summary>
-        /// <param name="webserver">The webserver instance.</param>
-        /// <param name="origins">The valid origins, default all.</param>
-        /// <param name="headers">The valid headers, default all.</param>
-        /// <param name="methods">The valid method, default all.</param>
-        /// <param name="baseUrlPath">The base URL path.</param>
-        /// <returns>
-        /// An instance of the tiny web server used to handle request.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">webserver.</exception>
-        public static IWebServer EnableCors(
-            this IWebServer webserver,
-            string origins = Strings.CorsWildcard,
-            string headers = Strings.CorsWildcard,
-            string methods = Strings.CorsWildcard,
-            string baseUrlPath = UrlPath.Root)
-        {
-            if (webserver == null)
-                throw new ArgumentNullException(nameof(webserver));
-
-            webserver.Modules.Add(new CorsModule(baseUrlPath, origins, headers, methods));
-
-            return webserver;
-        }
-
-        /// <summary>
         /// Add WebApi Controller to WebServer.
         /// </summary>
         /// <typeparam name="T">The type of Web API Controller.</typeparam>
