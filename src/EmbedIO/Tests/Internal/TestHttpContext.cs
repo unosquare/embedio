@@ -39,6 +39,7 @@ namespace EmbedIO.Tests.Internal
         public IDictionary<object, object> Items { get; } = new Dictionary<object, object>();
 
         /// <inheritdoc />
-        public Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize) => throw new NotImplementedException();
+        public Task<IWebSocketContext> AcceptWebSocketAsync(string subProtocol, int receiveBufferSize, TimeSpan keepAliveInterval) 
+            => throw new NotImplementedException();
     }
 }

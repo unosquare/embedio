@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -76,7 +75,7 @@ namespace EmbedIO.Net.Internal
         public ICookieCollection Cookies => CookieCollection;
 
         /// <inheritdoc />
-        public WebHeaderCollection Headers => HeaderCollection;
+        public System.Net.WebHeaderCollection Headers => HeaderCollection;
 
         /// <inheritdoc />
         public bool KeepAlive
@@ -159,7 +158,7 @@ namespace EmbedIO.Net.Internal
             set => _cookies = value;
         }
 
-        internal WebHeaderCollection HeaderCollection { get; set; } = new WebHeaderCollection();
+        internal System.Net.WebHeaderCollection HeaderCollection { get; set; } = new System.Net.WebHeaderCollection();
 
         internal bool HeadersSent { get; private set; }
         internal object HeadersLock { get; } = new object();

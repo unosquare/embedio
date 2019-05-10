@@ -1,13 +1,12 @@
-﻿using System;
+﻿using EmbedIO.Constants;
+using EmbedIO.Utilities;
+using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbedIO.Constants;
-using EmbedIO.Utilities;
 using Unosquare.Swan;
 
 namespace EmbedIO.Modules
@@ -24,15 +23,18 @@ namespace EmbedIO.Modules
         /// <summary>
         /// Initializes a new instance of the <see cref="ResourceFilesModule" /> class.
         /// </summary>
+        /// <param name="baseUrlPath">The base URL path.</param>
         /// <param name="sourceAssembly">The source assembly.</param>
         /// <param name="resourcePath">The resource path.</param>
         /// <param name="headers">The headers.</param>
         /// <exception cref="ArgumentNullException">sourceAssembly.</exception>
         /// <exception cref="ArgumentException">Path ' + fileSystemPath + ' does not exist.</exception>
         public ResourceFilesModule(
+            string baseUrlPath,
             Assembly sourceAssembly,
             string resourcePath,
             IDictionary<string, string> headers = null)
+        : base(baseUrlPath, true)
         {
             if (sourceAssembly == null)
                 throw new ArgumentNullException(nameof(sourceAssembly));
@@ -40,15 +42,14 @@ namespace EmbedIO.Modules
             if (sourceAssembly.GetName() == null)
                 throw new ArgumentException($"Assembly '{sourceAssembly}' is not valid.");
 
-            UseGzip = true;
             _sourceAssembly = sourceAssembly;
             _resourcePathRoot = resourcePath;
 
             headers?.ForEach(DefaultHeaders.Add);
-
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Head, (context, ct) => HandleGet(context, ct, false));
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (context, ct) => HandleGet(context, ct));
         }
+
+        /// <inheritdoc />
+        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct) => HandleGet(context, ct, context.RequestVerb() == HttpVerbs.Get);
 
         private static string FixPath(string s) => s == "/" ? "index.html" : s.Substring(1, s.Length - 1).Replace('/', '.');
 

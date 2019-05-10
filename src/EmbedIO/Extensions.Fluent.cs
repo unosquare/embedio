@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using EmbedIO.Constants;
 using EmbedIO.Modules;
 using EmbedIO.Utilities;
 using Unosquare.Swan;
@@ -27,7 +26,7 @@ namespace EmbedIO
             webserver.Modules.Add(new LocalSessionManager());
             return webserver;
         }
-
+        
         /// <summary>
         /// Add WebApiModule to WebServer.
         /// </summary>
@@ -77,7 +76,7 @@ namespace EmbedIO
             if (webserver == null)
                 throw new ArgumentNullException(nameof(webserver));
 
-            webserver.Modules.Add(new WebSocketsModule());
+            webserver.Modules.Add(new WebSocketsModule(baseUrlPath));
             return assembly != null ? webserver.LoadWebSockets(assembly) : webserver;
         }
 
@@ -176,9 +175,13 @@ namespace EmbedIO
         /// </summary>
         /// <param name="webserver">The webserver instance.</param>
         /// <param name="assembly">The assembly to load WebSocketsServer types from. Leave null to load from the currently executing assembly.</param>
-        /// <returns>An instance of webserver.</returns>
+        /// <param name="baseUrlPath">The base URL path.</param>
+        /// <returns>
+        /// An instance of webserver.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">webserver</exception>
         /// <exception cref="System.ArgumentNullException">webserver.</exception>
-        public static IWebServer LoadWebSockets(this IWebServer webserver, Assembly assembly = null)
+        public static IWebServer LoadWebSockets(this IWebServer webserver, Assembly assembly = null, string baseUrlPath = UrlPath.Root)
         {
             if (webserver == null)
                 throw new ArgumentNullException(nameof(webserver));
@@ -186,7 +189,7 @@ namespace EmbedIO
             var webSocketsModule = webserver.Modules.FirstOrDefault<WebSocketsModule>();
             if (webSocketsModule == null)
             {
-                webSocketsModule = new WebSocketsModule();
+                webSocketsModule = new WebSocketsModule(baseUrlPath);
                 webserver.Modules.Add(webSocketsModule);
             }
 

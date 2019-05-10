@@ -20,8 +20,9 @@ namespace EmbedIO.Modules
         internal const int ChunkSize = 256 * 1024;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileModuleBase"/> class.
+        /// Initializes a new instance of the <see cref="FileModuleBase" /> class.
         /// </summary>
+        /// <param name="baseUrlPath">The base URL path.</param>
         /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
         protected FileModuleBase(string baseUrlPath, bool useGzip)
             : base(baseUrlPath)

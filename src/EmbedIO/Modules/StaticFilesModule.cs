@@ -71,9 +71,8 @@ namespace EmbedIO.Modules
             string defaultExtension = null,
             bool useDirectoryBrowser = false,
             bool useGzip = true)
-        : base(useGzip)
+        : base(baseUrlPath, useGzip)
         {
-            BaseUrlPath = Validate.UrlPath(nameof(baseUrlPath), baseUrlPath, true);
             FileSystemPath = Validate.LocalPath(nameof(fileSystemPath), fileSystemPath, true);
             FileCachingMode = Validate.EnumValue<FileCachingMode>(nameof(fileCachingMode), fileCachingMode);
             DefaultDocument = ValidateDefaultDocument(nameof(defaultDocument), defaultDocument);
@@ -85,18 +84,11 @@ namespace EmbedIO.Modules
             if (FileCachingMode == FileCachingMode.Complete)
                 FileCachingMode = FileCachingMode.MappingOnly;
 #endif
-
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Head, (context, ct) => HandleGet(context, false, ct));
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Get, (context, ct) => HandleGet(context, true, ct));
         }
 
-        /// <summary>
-        /// Gets the URL path under which files are mapped.
-        /// </summary>
-        /// <value>
-        /// The base URL path.
-        /// </value>
-        public string BaseUrlPath { get; }
+        /// <inheritdoc />
+        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct)
+            => HandleGet(context, context.RequestVerb() == HttpVerbs.Get, ct);
 
         /// <summary>
         /// Gets the file system path from which files are retrieved.
@@ -205,7 +197,7 @@ namespace EmbedIO.Modules
         private (PathMappingResult, string) MapUrlPathCore(string urlPath)
         {
             var localPath = MapUrlPathToLoLocalPath(urlPath);
-            
+
             // Error 404 on failed mapping.
             var validationResult = localPath == null
                 ? PathMappingResult.NotFound

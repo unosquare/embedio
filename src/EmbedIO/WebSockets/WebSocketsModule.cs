@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using EmbedIO.Constants;
 
 namespace EmbedIO.Modules
@@ -16,47 +17,18 @@ namespace EmbedIO.Modules
         /// <summary>
         /// Holds the collection of paths and WebSockets Servers registered.
         /// </summary>
-        private readonly Dictionary<string, WebSocketsServer> _serverMap =
-            new Dictionary<string, WebSocketsServer>(StringComparer.OrdinalIgnoreCase);
+        private readonly ConcurrentDictionary<string, WebSocketsServer> _serverMap =
+            new ConcurrentDictionary<string, WebSocketsServer>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebSocketsModule"/> class.
+        /// Initializes a new instance of the <see cref="WebSocketsModule" /> class.
         /// </summary>
-        public WebSocketsModule()
+        /// <param name="baseUrlPath">The base URL path.</param>
+        /// <param name="routingStrategy">The routing strategy.</param>
+        public WebSocketsModule(string baseUrlPath, RoutingStrategy routingStrategy = RoutingStrategy.Regex)
+            : base(baseUrlPath)
         {
-            AddHandler(ModuleMap.AnyPath, HttpVerbs.Any, async (context, ct) =>
-            {
-                if (!context.Request.IsWebSocketRequest)
-                    return false;
-
-                string path;
-
-                // retrieve the request path
-                switch (Server.RoutingStrategy)
-                {
-                    case RoutingStrategy.Wildcard:
-                        path = context.RequestWilcardPath(_serverMap.Keys
-                        .Where(k => k.Contains(ModuleMap.AnyPathRoute))
-                        .Select(s => s.ToLowerInvariant()));
-                        break;
-                    case RoutingStrategy.Regex:
-                        path = NormalizeRegexPath(context);
-                        break;
-                    default:
-                        path = context.RequestPath();
-                        break;
-                }
-
-                if (string.IsNullOrEmpty(path) || !_serverMap.ContainsKey(path))
-                {
-                    return false;
-                }
-
-                // Accept the WebSocket -- this is a blocking method until the WebSocketCloses
-                await _serverMap[path].AcceptWebSocket(context, ct).ConfigureAwait(false);
-
-                return true;
-            });
+            RoutingStrategy = routingStrategy;
         }
 
         /// <summary>
@@ -68,8 +40,14 @@ namespace EmbedIO.Modules
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// Gets or sets the routing strategy.
         /// </summary>
+        /// <value>
+        /// The routing strategy.
+        /// </value>
+        public RoutingStrategy RoutingStrategy { get; set; }
+
+        /// <inheritdoc />
         public void Dispose()
         {
             Dispose(true);
@@ -106,7 +84,7 @@ namespace EmbedIO.Modules
                     nameof(socketType));
             }
 
-            _serverMap[attribute.Path] = (WebSocketsServer)Activator.CreateInstance(socketType);
+            _serverMap[attribute.Path] = (WebSocketsServer) Activator.CreateInstance(socketType);
         }
 
         /// <summary>
@@ -149,6 +127,41 @@ namespace EmbedIO.Modules
         {
             foreach (var instance in _serverMap)
                 instance.Value.CancellationToken = ct;
+        }
+
+        /// <inheritdoc />
+        public override async Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct)
+        {
+            if (!context.Request.IsWebSocketRequest)
+                return false;
+
+            string finalPath;
+
+            // retrieve the request path
+            switch (RoutingStrategy)
+            {
+                case RoutingStrategy.Wildcard:
+                    finalPath = context.RequestWilcardPath(_serverMap.Keys
+                        .Where(k => k.Contains(ModuleMap.AnyPathRoute))
+                        .Select(s => s.ToLowerInvariant()));
+                    break;
+                case RoutingStrategy.Regex:
+                    finalPath = NormalizeRegexPath(context);
+                    break;
+                default:
+                    finalPath = path;
+                    break;
+            }
+
+            if (string.IsNullOrEmpty(finalPath) || !_serverMap.ContainsKey(finalPath))
+            {
+                return false;
+            }
+
+            // Accept the WebSocket -- this is a blocking method until the WebSocketCloses
+            await _serverMap[finalPath].AcceptWebSocket(context, ct).ConfigureAwait(false);
+
+            return true;
         }
 
         /// <summary>
