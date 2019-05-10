@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Net;
 
-namespace EmbedIO.Utilities
+namespace EmbedIO
 {
     /// <summary>
     /// Provides extension methods for types implementing <see cref="IHttpRequest"/>.
