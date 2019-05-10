@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Constants;
+using EmbedIO.Utilities;
 using Unosquare.Swan.Formatters;
 
 namespace EmbedIO
@@ -30,29 +31,6 @@ namespace EmbedIO
             response.AddHeader(HttpHeaders.LastModified, DateTime.UtcNow.ToRfc1123String());
             response.AddHeader(HttpHeaders.CacheControl, "no-store, no-cache, must-revalidate");
             response.AddHeader(HttpHeaders.Pragma, "no-cache");
-        }
-
-        /// <summary>
-        /// Sets a response static code of 302 and adds a Location header to the response
-        /// in order to direct the client to a different URL.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="location">The location.</param>
-        /// <param name="useAbsoluteUrl">if set to <c>true</c> [use absolute URL].</param>
-        /// <returns><b>true</b> if the headers were set, otherwise <b>false</b>.</returns>
-        public static bool Redirect(this IHttpContext context, string location, bool useAbsoluteUrl = true)
-        {
-            if (useAbsoluteUrl)
-            {
-                var hostPath = context.Request.Url.GetComponents(UriComponents.Scheme | UriComponents.StrongAuthority,
-                    UriFormat.Unescaped);
-                location = hostPath + location;
-            }
-
-            context.Response.StatusCode = 302;
-            context.Response.AddHeader("Location", location);
-
-            return true;
         }
 
         /// <summary>
@@ -133,7 +111,7 @@ namespace EmbedIO
         public static Task<bool> HtmlResponseAsync(
             this IHttpContext context,
             string htmlContent,
-            System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.OK,
+            HttpStatusCode statusCode = HttpStatusCode.OK,
             bool useGzip = true,
             CancellationToken cancellationToken = default)
         {
@@ -155,7 +133,7 @@ namespace EmbedIO
         public static Task<bool> JsonExceptionResponseAsync(
             this IHttpContext context,
             Exception ex,
-            System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.InternalServerError,
+            HttpStatusCode statusCode = HttpStatusCode.InternalServerError,
             bool useGzip = true,
             CancellationToken cancellationToken = default)
         {
