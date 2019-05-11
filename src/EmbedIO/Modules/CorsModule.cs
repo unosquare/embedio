@@ -38,9 +38,9 @@ namespace EmbedIO.Modules
         /// </exception>
         public CorsModule(
             string baseUrlPath,
-            string origins = Strings.CorsWildcard, 
-            string headers = Strings.CorsWildcard,
-            string methods = Strings.CorsWildcard)
+            string origins = Cors.All,
+            string headers = Cors.All,
+            string methods = Cors.All)
          : base(baseUrlPath)
         {
             _origins = origins ?? throw new ArgumentNullException(nameof(origins));
@@ -65,8 +65,7 @@ namespace EmbedIO.Modules
             var isOptions = context.RequestVerb() == HttpVerbs.Options;
 
             // If we allow all we don't need to filter
-            if (_origins == Strings.CorsWildcard && _headers == Strings.CorsWildcard &&
-                _methods == Strings.CorsWildcard)
+            if (_origins == Cors.All && _headers == Cors.All && _methods == Cors.All)
             {
                 context.Response.AddHeader(HttpHeaders.AccessControlAllowOrigin, Wildcard);
                 var result = isOptions && ValidateHttpOptions(_methods, context, _validMethods);
@@ -81,7 +80,7 @@ namespace EmbedIO.Modules
                 return Task.FromResult(false);
             }
 
-            if (_origins == Strings.CorsWildcard)
+            if (_origins == Cors.All)
             {
                 return Task.FromResult(false);
             }
@@ -120,7 +119,7 @@ namespace EmbedIO.Modules
                 .SplitByComma(StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim());
 
-            if (option == Strings.CorsWildcard || currentMethods.All(options.Contains))
+            if (option == Cors.All || currentMethods.All(options.Contains))
             {
                 context.Response.AddHeader(HttpHeaders.AccessControlAllowMethods, currentMethod);
 

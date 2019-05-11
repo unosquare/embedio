@@ -49,20 +49,18 @@ namespace EmbedIO
         /// <typeparam name="TContainer">The type of the module container.</typeparam>
         /// <param name="this">The <typeparamref name="TContainer"/> on which this method is called.</param>
         /// <param name="baseUrlPath">The base URL path of the module.</param>
-        /// <param name="origins">The valid origins, default all.</param>
-        /// <param name="headers">The valid headers, default all.</param>
-        /// <param name="methods">The valid method, default all.</param>
-        /// <returns>
-        /// An instance of the tiny web server used to handle request.
-        /// </returns>
+        /// <param name="origins">The valid origins. Default is <c>"*"</c>, meaning all.</param>
+        /// <param name="headers">The valid headers. Default is <c>"*"</c>, meaning all.</param>
+        /// <param name="methods">The valid method. Default is <c>"*"</c>, meaning all.</param>
+        /// <returns><paramref name="this"/> with a <see cref="CorsModule"/> added.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <seealso cref="CorsModule"/>
         public static TContainer WithCors<TContainer>(
             this TContainer @this,
             string baseUrlPath,
-            string origins = Strings.CorsWildcard,
-            string headers = Strings.CorsWildcard,
-            string methods = Strings.CorsWildcard)
+            string origins = Cors.All,
+            string headers = Cors.All,
+            string methods = Cors.All)
             where TContainer : class, IWebModuleContainer
         {
             @this.Modules.Add(new CorsModule(baseUrlPath, origins, headers, methods));
