@@ -178,7 +178,7 @@ namespace EmbedIO.Net.Internal
         public string UserAgent => Headers["user-agent"];
 
         /// <inheritdoc />
-        public Guid RequestTraceIdentifier => Guid.NewGuid();
+        public Guid RequestTraceIdentifier { get; } = Guid.NewGuid();
 
         public string UserHostAddress => LocalEndPoint.ToString();
 
