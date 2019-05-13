@@ -67,7 +67,7 @@ namespace EmbedIO.Modules
         }
 
         /// <summary>
-        /// Gets or sets the cancellation token.
+        /// Gets the cancellation token.
         /// </summary>
         /// <value>
         /// The cancellation token.

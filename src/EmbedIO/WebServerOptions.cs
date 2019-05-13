@@ -4,7 +4,6 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
-using EmbedIO.Constants;
 using Unosquare.Swan;
 
 namespace EmbedIO

@@ -68,6 +68,7 @@ namespace EmbedIO.Modules
             if (status < 300 || status > 399)
                 throw new ArgumentException("Status code does not imply a redirection.", nameof(statusCode));
 
+            StatusCode = statusCode;
             _shouldRedirect = useCallback ? Validate.NotNull(nameof(shouldRedirect), shouldRedirect) : null;
         }
 
@@ -83,6 +84,6 @@ namespace EmbedIO.Modules
 
         /// <inheritdoc />
         public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct)
-            => Task.FromResult(_shouldRedirect?.Invoke(context, path) ?? true && context.Redirect(RedirectUrl, StatusCode));
+            => Task.FromResult(_shouldRedirect?.Invoke(context, path) ?? context.Redirect(RedirectUrl, StatusCode));
     }
 }

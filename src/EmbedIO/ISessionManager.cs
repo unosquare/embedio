@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-
-namespace EmbedIO
+﻿namespace EmbedIO
 {
     /// <summary>
     /// Represents the session manager for a web server.

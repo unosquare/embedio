@@ -30,6 +30,14 @@ namespace EmbedIO.Modules
 
             _wwwAuthenticateHeaderValue = $"Basic realm=\"{Realm}\" charset=UTF-8";
         }
+        
+        /// <summary>
+        /// Gets the authentication realm.
+        /// </summary>
+        /// <value>
+        /// The authentication realm.
+        /// </value>
+        public string Realm { get; }
 
         /// <inheritdoc />
         public override async Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct)
@@ -55,14 +63,6 @@ namespace EmbedIO.Modules
         }
 
         /// <summary>
-        /// Gets the authentication realm.
-        /// </summary>
-        /// <value>
-        /// The authentication realm.
-        /// </value>
-        public string Realm { get; }
-
-        /// <summary>
         /// Verifies the credentials given in the <c>Authentication</c> request header.
         /// </summary>
         /// <param name="userName">The user name.</param>
@@ -73,6 +73,7 @@ namespace EmbedIO.Modules
         private static (string UserName, string Password) GetCredentials(IHttpRequest request)
         {
             var authHeader = request.Headers["Authorization"];
+
             if (authHeader == null)
                 return default;
 

@@ -42,10 +42,7 @@ namespace EmbedIO.Modules
             if (userName == null)
                 return false;
 
-            if (!Accounts.TryGetValue(userName, out var storedPassword))
-                return false;
-
-            return string.Equals(password, storedPassword, StringComparison.Ordinal);
+            return Accounts.TryGetValue(userName, out var storedPassword) && string.Equals(password, storedPassword, StringComparison.Ordinal);
         }
     }
 }

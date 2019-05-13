@@ -42,9 +42,6 @@ namespace EmbedIO.Internal
         public IPrincipal User { get; }
 
         /// <inheritdoc />
-        public IWebServer WebServer { get; set; }
-
-        /// <inheritdoc />
         public IDictionary<object, object> Items { get; } = new Dictionary<object, object>();
 
         /// <inheritdoc />
