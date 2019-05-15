@@ -99,7 +99,7 @@
             // first, accept the websocket
             $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
 
-            var subProtocol = context.RequestHeader(HttpHeaders.WebSocketProtocol);
+            var subProtocol = ResolveSubProtocol(context);
             var webSocketContext = await context.AcceptWebSocketAsync(ReceiveBufferSize, subProtocol).ConfigureAwait(false);
 
             // remove the disconnected clients
@@ -229,6 +229,18 @@
             {
                 RemoveWebSocket(webSocket);
             }
+        }
+
+        /// <summary>
+        /// Resolves the sub-protocol to use with the incoming WebSocket connection.
+        ///
+        /// When no using a sub-protocol return null.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>The sub-protocol to be used, or null if it does not.</returns>
+        protected virtual string ResolveSubProtocol(IHttpContext context)
+        {
+            return null;
         }
 
         /// <summary>
