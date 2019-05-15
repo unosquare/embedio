@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "CODE_OF_CONDUCT.html",
-          "hash": "783YOp/YO/23A65uvl2Wig=="
+          "hash": "3nJly8Z1crWJwbZhSm8yBA=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "tEdYPdnUiuqiMxmfR4rgXA=="
+          "hash": "4o/mIzet0SO45eIjcRqDbg=="
         }
       },
       "is_incremental": false,
@@ -253,7 +253,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.HttpContext.html",
-          "hash": "LiI/dhDZv9qcl4gszZgzeA=="
+          "hash": "Owg96Pmf/b7c2az4Wf+gOg=="
         }
       },
       "is_incremental": false,
@@ -337,7 +337,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.IHttpContext.html",
-          "hash": "RH3L/PWW9hrezLmg9mCnAw=="
+          "hash": "gUpT99jH59MjK7u5er6uTw=="
         }
       },
       "is_incremental": false,
@@ -625,7 +625,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html",
-          "hash": "eWrFgg8Or+rt8z+IXGiBkA=="
+          "hash": "0wtSuVNIIesOePurGxqwQg=="
         }
       },
       "is_incremental": false,
@@ -673,7 +673,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Labs.EmbedIO.Tests.TestHttpContext.html",
-          "hash": "s06As8eyLJ8vFk6rLdxPOA=="
+          "hash": "RUguVwzVm4h9VFFljWtkAw=="
         }
       },
       "is_incremental": false,
@@ -877,7 +877,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.HttpListenerContext.html",
-          "hash": "P0Yr5oaIcmbNOs9UBiDNiA=="
+          "hash": "6bLtsbqBGfbUqH8XVtbZzA=="
         }
       },
       "is_incremental": false,
@@ -1082,10 +1082,11 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 75,
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -1094,11 +1095,10 @@
           "total_file_count": 6,
           "skipped_file_count": 0
         },
-        "ResourceDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 75,
           "skipped_file_count": 0
         }
       }
