@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IHttpContext
    | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 2.42.1.0">
+    <meta name="generator" content="docfx 2.42.3.0">
     
     <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -231,13 +231,13 @@
   
   
   <a id="Unosquare_Labs_EmbedIO_IHttpContext_AcceptWebSocketAsync_" data-uid="Unosquare.Labs.EmbedIO.IHttpContext.AcceptWebSocketAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_IHttpContext_AcceptWebSocketAsync_System_Int32_System_String_" data-uid="Unosquare.Labs.EmbedIO.IHttpContext.AcceptWebSocketAsync(System.Int32,System.String)">AcceptWebSocketAsync(Int32, String)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_IHttpContext_AcceptWebSocketAsync_System_Int32_" data-uid="Unosquare.Labs.EmbedIO.IHttpContext.AcceptWebSocketAsync(System.Int32)">AcceptWebSocketAsync(Int32)</h4>
   <div class="markdown level1 summary"><p>Accepts the web socket asynchronous.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;IWebSocketContext&gt; AcceptWebSocketAsync(int receiveBufferSize, string subProtocol = null)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;IWebSocketContext&gt; AcceptWebSocketAsync(int receiveBufferSize)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -253,12 +253,6 @@
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">receiveBufferSize</span></td>
         <td><p>Size of the receive buffer.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">subProtocol</span></td>
-        <td><p>The sub protocol.</p>
 </td>
       </tr>
     </tbody>
