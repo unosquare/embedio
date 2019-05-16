@@ -611,10 +611,9 @@ namespace EmbedIO.Net
                 if (comp || !ext.StartsWith(CompressionMethod.Deflate.ToExtensionString())) continue;
 
                 _compression = CompressionMethod.Deflate;
-                buff.AppendFormat(
-                    "{0}, ",
-                    _compression.ToExtensionString(
-                        "client_no_context_takeover", "server_no_context_takeover"));
+                buff
+                    .Append(_compression.ToExtensionString("client_no_context_takeover", "server_no_context_takeover"))
+                    .Append(", ");
 
                 comp = true;
             }
