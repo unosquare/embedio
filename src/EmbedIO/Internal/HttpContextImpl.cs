@@ -32,6 +32,8 @@ namespace EmbedIO.Internal
             _context = context;
 
             Id = _context.Request.RequestTraceIdentifier.ToString("D", CultureInfo.InvariantCulture);
+            LocalEndPoint = _context.Request.LocalEndPoint;
+            RemoteEndPoint = _context.Request.RemoteEndPoint;
             Request = new HttpRequest(_context);
             User = _context.User;
             Response = new HttpResponse(_context);
@@ -42,6 +44,8 @@ namespace EmbedIO.Internal
             _context = null;
 
             Id = request.RequestTraceIdentifier.ToString("D", CultureInfo.InvariantCulture);
+            LocalEndPoint = request.LocalEndPoint;
+            RemoteEndPoint = request.RemoteEndPoint;
             Request = request;
             User = null;
             Response = new TestHttpResponse();
@@ -49,6 +53,12 @@ namespace EmbedIO.Internal
 
         /// <inheritdoc />
         public string Id { get; }
+
+        /// <inheritdoc />
+        public IPEndPoint LocalEndPoint { get; }
+
+        /// <inheritdoc />
+        public IPEndPoint RemoteEndPoint { get; }
 
         /// <inheritdoc />
         public IHttpRequest Request { get; }

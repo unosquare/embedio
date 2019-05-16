@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Security.Principal;
 
 namespace EmbedIO
@@ -16,6 +17,16 @@ namespace EmbedIO
         /// The identifier.
         /// </value>
         string Id { get; }
+
+        /// <summary>
+        /// Gets the server IP address and port number to which the request is directed.
+        /// </summary>
+        IPEndPoint LocalEndPoint { get; }
+
+        /// <summary>
+        /// Gets the client IP address and port number from which the request originated.
+        /// </summary>
+        IPEndPoint RemoteEndPoint { get; }
 
         /// <summary>
         /// Gets the HTTP Request.
