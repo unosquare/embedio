@@ -213,7 +213,13 @@ namespace EmbedIO
 
         private void PurgeExpiredAndEmptySessions()
         {
-            _sessions.Keys.ToList().ForEach(id => 
+            string[] ids;
+            lock (_sessions)
+            {
+                ids = _sessions.Keys.ToArray();
+            }
+
+            foreach (var id in ids)
             {
                 lock (_sessions)
                 {
@@ -222,7 +228,7 @@ namespace EmbedIO
 
                     session.UnregisterIfNeeded(() => _sessions.TryRemove(id, out _));
                 }
-            });
+            }
         }
     }
 }
