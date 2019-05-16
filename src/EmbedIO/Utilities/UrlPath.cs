@@ -9,7 +9,7 @@ namespace EmbedIO.Utilities
     public static class UrlPath
     {
         /// <summary>
-        /// The root URL path value.
+        /// The root URL path value, i.e. <c>"/"</c>.
         /// </summary>
         public const string Root = "/";
 
