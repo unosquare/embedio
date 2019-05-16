@@ -7,8 +7,7 @@ namespace EmbedIO.Modules
     /// Method Must match the WebServerModule.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public sealed class WebSocketHandlerAttribute 
-        : Attribute
+    public sealed class WebSocketHandlerAttribute : Attribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WebSocketHandlerAttribute"/> class.
