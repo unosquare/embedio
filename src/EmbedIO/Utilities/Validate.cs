@@ -225,6 +225,32 @@ namespace EmbedIO.Utilities
             return uri.ToString();
         }
 
+        /// <summary>
+        /// Ensures that a <see langword="string"/> argument is valid as a cookie name.
+        /// </summary>
+        /// <param name="argumentName">Name of the argument.</param>
+        /// <param name="value">The value.</param>
+        /// <returns><paramref name="value"/>, if it is a valid cookie name.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">
+        /// <para><paramref name="value"/> is the empty string.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="value"/> contains one or more characters that are not valid in a cookie name.
+        /// Only printable ASCII characters, excluding space (<c>' '</c>), are considered valid.</para>
+        /// </exception>
+        public static string CookieName(string argumentName, string value)
+        {
+            value = NotNullOrEmpty(argumentName, value);
+
+            foreach (var c in value)
+            {
+                if (c < '\x21' || c > '\x7E')
+                    throw new ArgumentException("Cookie name contains one or more invalid characters.", argumentName);
+            }
+
+            return value;
+        }
+
         private static char[] GetInvalidLocalPathChars()
         {
             var systemChars = Path.GetInvalidPathChars();
