@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EmbedIO
+﻿namespace EmbedIO
 {
     /// <summary>
     /// Interface to create a WebSocket Context.
@@ -8,27 +6,16 @@ namespace EmbedIO
     public interface IWebSocketContext
     {
         /// <summary>
-        /// Gets or sets the web socket.
+        /// Gets the HTTP context of the WebSocket opening handshake.
+        /// </summary>
+        IHttpContext HttpContext { get; }
+
+        /// <summary>
+        /// Gets the web socket.
         /// </summary>
         /// <value>
         /// The web socket.
         /// </value>
         IWebSocket WebSocket { get; }
-
-        /// <summary>
-        /// Gets the cookie collection.
-        /// </summary>
-        /// <value>
-        /// The cookie collection.
-        /// </value>
-        ICookieCollection CookieCollection { get; }
-
-        /// <summary>
-        /// Gets the request URI.
-        /// </summary>
-        /// <value>
-        /// The request URI.
-        /// </value>
-        Uri RequestUri { get; }
     }
 }

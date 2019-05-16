@@ -7,11 +7,11 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    public abstract class WebSocketsModuleTestBase : FixtureBase
+    public abstract class WebSocketModuleTestBase : FixtureBase
     {
         private readonly string _url;
 
-        protected WebSocketsModuleTestBase(RoutingStrategy strategy, Action<IWebServer> builder, string url)
+        protected WebSocketModuleTestBase(RoutingStrategy strategy, Action<IWebServer> builder, string url)
             : base(builder, strategy)
         {
             _url = url;

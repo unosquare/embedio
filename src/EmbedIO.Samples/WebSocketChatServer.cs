@@ -9,9 +9,9 @@ namespace EmbedIO.Samples
     /// Defines a very simple chat server
     /// </summary>
     [WebSocketHandler("/chat")]
-    public class WebSocketsChatServer : WebSocketsServer
+    public class WebSocketChatServer : WebSocketServer
     {
-        public WebSocketsChatServer()
+        public WebSocketChatServer()
             : base(true)
         {
             // placeholder
@@ -29,7 +29,7 @@ namespace EmbedIO.Samples
 
         
         /// <inheritdoc />
-        public override string ServerName => nameof(WebSocketsChatServer);
+        public override string ServerName => nameof(WebSocketChatServer);
 
         /// <inheritdoc />
         protected override void OnClientConnected(

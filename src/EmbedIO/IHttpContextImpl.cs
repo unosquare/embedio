@@ -25,10 +25,10 @@ namespace EmbedIO
         void Close();
 
         /// <summary>
-        /// Asynchronously handles the HTTP part of a WebSockets request
+        /// Asynchronously handles the HTTP part of a WebSocket request
         /// and returns a newly-created <seealso cref="IWebSocketContext"/> interface.
         /// </summary>
-        /// <param name="subProtocol">The WebSockets sub-protocol.</param>
+        /// <param name="subProtocol">The WebSocket sub-protocol.</param>
         /// <param name="receiveBufferSize">Size of the receive buffer.</param>
         /// <param name="keepAliveInterval">The keep-alive interval.</param>
         /// <returns>

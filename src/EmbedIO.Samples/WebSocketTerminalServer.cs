@@ -12,7 +12,7 @@ namespace EmbedIO.Samples
     /// Define a command-line interface terminal
     /// </summary>
     [WebSocketHandler("/terminal")]
-    public class WebSocketsTerminalServer : WebSocketsServer
+    public class WebSocketTerminalServer : WebSocketServer
     {
         // we'll keep track of the processes here
         private readonly Dictionary<IWebSocketContext, Process> _processes = new Dictionary<IWebSocketContext, Process>();
@@ -116,7 +116,7 @@ namespace EmbedIO.Samples
         }
 
         /// <inheritdoc />
-        public override string ServerName => nameof(WebSocketsTerminalServer);
+        public override string ServerName => nameof(WebSocketTerminalServer);
 
         private void SendBuffer(object s, string buffer)
         {

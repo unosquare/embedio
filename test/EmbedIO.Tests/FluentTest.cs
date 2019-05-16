@@ -68,7 +68,7 @@ namespace EmbedIO.Tests
                 .WithWebSocket(typeof(FluentTest).Assembly);
 
             Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
-            Assert.IsNotNull(webServer.Module<WebSocketsModule>(), "It has WebSocketsModule");
+            Assert.IsNotNull(webServer.Module<WebSocketModule>(), "It has WebSocketModule");
 
             (webServer as IDisposable)?.Dispose();
         }

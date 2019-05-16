@@ -10,31 +10,31 @@ namespace EmbedIO.Modules
 {
 
     /// <summary>
-    /// A WebSockets module conforming to RFC 6455.
+    /// A WebSocket module conforming to RFC 6455.
     /// </summary>
-    public class WebSocketsModule : WebModuleBase, IDisposable
+    public class WebSocketModule : WebModuleBase, IDisposable
     {
         /// <summary>
-        /// Holds the collection of paths and WebSockets Servers registered.
+        /// Holds the collection of paths and WebSocket Servers registered.
         /// </summary>
-        private readonly ConcurrentDictionary<string, WebSocketsServer> _serverMap =
-            new ConcurrentDictionary<string, WebSocketsServer>(StringComparer.OrdinalIgnoreCase);
+        private readonly ConcurrentDictionary<string, WebSocketServer> _serverMap =
+            new ConcurrentDictionary<string, WebSocketServer>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebSocketsModule" /> class.
+        /// Initializes a new instance of the <see cref="WebSocketModule" /> class.
         /// </summary>
         /// <param name="baseUrlPath">The base URL path.</param>
         /// <param name="routingStrategy">The routing strategy.</param>
-        public WebSocketsModule(string baseUrlPath, RoutingStrategy routingStrategy = RoutingStrategy.Regex)
+        public WebSocketModule(string baseUrlPath, RoutingStrategy routingStrategy = RoutingStrategy.Regex)
             : base(baseUrlPath)
         {
             RoutingStrategy = routingStrategy;
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="WebSocketsModule"/> class.
+        /// Finalizes an instance of the <see cref="WebSocketModule"/> class.
         /// </summary>
-        ~WebSocketsModule()
+        ~WebSocketModule()
         {
             Dispose(false);
         }
@@ -55,23 +55,23 @@ namespace EmbedIO.Modules
         }
 
         /// <summary>
-        /// Registers the web sockets server given a WebSocketsServer Type.
+        /// Registers the web sockets server given a WebSocketServer Type.
         /// </summary>
         /// <typeparam name="T">The type of WebSocket server.</typeparam>
         /// <exception cref="ArgumentException">Validate 'path' cannot be null;path.</exception>
-        public void RegisterWebSocketsServer<T>()
-            where T : WebSocketsServer, new()
+        public void RegisterWebSocketServer<T>()
+            where T : WebSocketServer, new()
         {
-            RegisterWebSocketsServer(typeof(T));
+            RegisterWebSocketServer(typeof(T));
         }
 
         /// <summary>
-        /// Registers the web sockets server given a WebSocketsServer Type.
+        /// Registers the web sockets server given a WebSocketServer Type.
         /// </summary>
         /// <param name="socketType">Type of the socket.</param>
         /// <exception cref="System.ArgumentNullException">socketType.</exception>
         /// <exception cref="System.ArgumentException">Validate 'socketType' needs a WebSocketHandlerAttribute - socketType.</exception>
-        public void RegisterWebSocketsServer(Type socketType)
+        public void RegisterWebSocketServer(Type socketType)
         {
             if (socketType == null)
                 throw new ArgumentNullException(nameof(socketType));
@@ -84,17 +84,17 @@ namespace EmbedIO.Modules
                     nameof(socketType));
             }
 
-            _serverMap[attribute.Path] = (WebSocketsServer) Activator.CreateInstance(socketType);
+            _serverMap[attribute.Path] = (WebSocketServer) Activator.CreateInstance(socketType);
         }
 
         /// <summary>
-        /// Registers the web sockets server given a WebSocketsServer Type.
+        /// Registers the web sockets server given a WebSocketServer Type.
         /// </summary>
         /// <typeparam name="T">The type of WebSocket server.</typeparam>
         /// <param name="path">The path. For example: '/echo'.</param>
         /// <exception cref="ArgumentException">Validate 'path' cannot be null;path.</exception>
-        public void RegisterWebSocketsServer<T>(string path)
-            where T : WebSocketsServer, new()
+        public void RegisterWebSocketServer<T>(string path)
+            where T : WebSocketServer, new()
         {
             if (string.IsNullOrWhiteSpace(path))
                 throw new ArgumentException("Validate 'path' cannot be null", nameof(path));
@@ -113,8 +113,8 @@ namespace EmbedIO.Modules
         /// or
         /// server.
         /// </exception>
-        public void RegisterWebSocketsServer<T>(string path, T server)
-            where T : WebSocketsServer
+        public void RegisterWebSocketServer<T>(string path, T server)
+            where T : WebSocketServer
         {
             if (string.IsNullOrWhiteSpace(path))
                 throw new ArgumentNullException(nameof(path));

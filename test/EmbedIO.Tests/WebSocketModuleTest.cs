@@ -1,26 +1,26 @@
-﻿namespace EmbedIO.Tests
-{
-    using Constants;
-    using System.Text;
-    using Modules;
-    using NUnit.Framework;
-    using Swan.Formatters;
-    using System;
-    using System.Threading.Tasks;
-    using TestObjects;
+﻿using System;
+using System.Text;
+using System.Threading.Tasks;
+using EmbedIO.Constants;
+using EmbedIO.Modules;
+using EmbedIO.Tests.TestObjects;
+using NUnit.Framework;
+using Unosquare.Swan.Formatters;
 
+namespace EmbedIO.Tests
+{
     [TestFixture]
-    public class WebSocketsModuleTest : WebSocketsModuleTestBase
+    public class WebSocketModuleTest : WebSocketModuleTestBase
     {
-        public WebSocketsModuleTest()
+        public WebSocketModuleTest()
             : base(
                 RoutingStrategy.Wildcard,
                 ws =>
                 {
-                    ws.RegisterModule(new WebSocketsModule());
-                    ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocket>();
-                    ws.Module<WebSocketsModule>().RegisterWebSocketsServer<BigDataWebSocket>();
-                    ws.Module<WebSocketsModule>().RegisterWebSocketsServer<CloseWebSocket>();
+                    ws.RegisterModule(new WebSocketModule());
+                    ws.Module<WebSocketModule>().RegisterWebSocketServer<TestWebSocket>();
+                    ws.Module<WebSocketModule>().RegisterWebSocketServer<BigDataWebSocket>();
+                    ws.Module<WebSocketModule>().RegisterWebSocketServer<CloseWebSocket>();
                 },
                 "test/")
         {
@@ -65,15 +65,15 @@
     }
 
     [TestFixture]
-    public class WebSocketsWildcard : WebSocketsModuleTestBase
+    public class WebSocketWildcard : WebSocketModuleTestBase
     {
-        public WebSocketsWildcard()
+        public WebSocketWildcard()
             : base(
                 RoutingStrategy.Wildcard,
                 ws =>
                 {
-                    ws.RegisterModule(new WebSocketsModule());
-                    ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocketWildcard>();
+                    ws.RegisterModule(new WebSocketModule());
+                    ws.Module<WebSocketModule>().RegisterWebSocketsServer<TestWebSocketWildcard>();
                 },
                 "test/*")
         {
@@ -88,15 +88,15 @@
     }
 
     [TestFixture]
-    public class WebSocketsModuleTestRegex : WebSocketsModuleTestBase
+    public class WebSocketModuleTestRegex : WebSocketModuleTestBase
     {
-        public WebSocketsModuleTestRegex()
+        public WebSocketModuleTestRegex()
             : base(
                 RoutingStrategy.Regex,
                 ws =>
                 {
-                    ws.RegisterModule(new WebSocketsModule());
-                    ws.Module<WebSocketsModule>().RegisterWebSocketsServer<TestWebSocketRegex>();
+                    ws.RegisterModule(new WebSocketModule());
+                    ws.Module<WebSocketModule>().RegisterWebSocketsServer<TestWebSocketRegex>();
                 },
                 "test/{100}")
         {

@@ -4,7 +4,7 @@
     using Unosquare.Swan.Formatters;
 
     [WebSocketHandler("/test/")]
-    public class TestWebSocketBase : WebSocketsServer
+    public class TestWebSocketBase : WebSocketServer
     {
         public override string ServerName => nameof(TestWebSocketBase);
 
@@ -51,7 +51,7 @@
     }
 
     [WebSocketHandler("/bigdata")]
-    public class BigDataWebSocket : WebSocketsServer
+    public class BigDataWebSocket : WebSocketServer
     {
         public static object BigDataObject => new
         {
@@ -2925,7 +2925,7 @@ cygSR/MggDhTGBrfglUEKIXXbcbfwgukfyVEJJPOIP0xTtdAhAKBTNyWZuTIcRmIjIcgEEau",
     }
 
     [WebSocketHandler("/close")]
-    public class CloseWebSocket : WebSocketsServer
+    public class CloseWebSocket : WebSocketServer
     {
         public override string ServerName => nameof(BigDataWebSocket);
 

@@ -101,9 +101,9 @@ namespace EmbedIO.Samples
                 .WithStaticFolderAt("/", HtmlRootPath)
                 .WithModule(new WebApiModule("/", true)
                     .WithApiController<PeopleController>())
-                .WithModule(new WebSocketsModule("/")
-                        .WithServer<WebSocketsChatServer>()
-                        .WithServer<WebSocketsTerminalServer>())
+                .WithModule(new WebSocketModule("/")
+                        .WithServer<WebSocketChatServer>()
+                        .WithServer<WebSocketTerminalServer>())
                 .WithModule(new ActionModule("/", Constants.HttpVerbs.Any, (ctx, path, ct) => ctx.JsonResponseAsync(new { Message = "Error" }, ct)));
 
             // Listen for state changes.

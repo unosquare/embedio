@@ -11,26 +11,26 @@ namespace EmbedIO.Modules
 {
     /// <inheritdoc />
     /// <summary>
-    /// A base class that defines how to handle WebSockets connections.
+    /// A base class that defines how to handle WebSocket connections.
     /// It keeps a list of connected WebSockets and has the basic logic to handle connections
     /// and data transmission.
     /// </summary>
-    public abstract class WebSocketsServer : IDisposable
+    public abstract class WebSocketServer : IDisposable
     {
         private const int ReceiveBufferSize = 2048;
 
         private readonly object _syncRoot = new object();
-        private readonly List<IWebSocketContext> _mWebSockets = new List<IWebSocketContext>(10);
+        private readonly List<IWebSocketContext> _contexts = new List<IWebSocketContext>(10);
         private readonly int _maximumMessageSize;
         private bool _isDisposing;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebSocketsServer" /> class.
+        /// Initializes a new instance of the <see cref="WebSocketServer" /> class.
         /// </summary>
         /// <param name="enableConnectionWatchdog">if set to <c>true</c> [enable connection watchdog].</param>
         /// <param name="maxMessageSize">Maximum size of the message in bytes. Enter 0 or negative number to prevent checks.</param>
         /// <param name="keepAliveInterval">The keep alive interval.</param>
-        protected WebSocketsServer(
+        protected WebSocketServer(
             bool enableConnectionWatchdog, 
             int maxMessageSize = 0,
             TimeSpan? keepAliveInterval = null)
@@ -42,9 +42,9 @@ namespace EmbedIO.Modules
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebSocketsServer"/> class. With dead connection watchdog and no message size checks.
+        /// Initializes a new instance of the <see cref="WebSocketServer"/> class. With dead connection watchdog and no message size checks.
         /// </summary>
-        protected WebSocketsServer()
+        protected WebSocketServer()
             : this(true)
         {
             // placeholder
@@ -62,7 +62,7 @@ namespace EmbedIO.Modules
             {
                 lock (_syncRoot)
                 {
-                    return new ReadOnlyCollection<IWebSocketContext>(_mWebSockets);
+                    return new ReadOnlyCollection<IWebSocketContext>(_contexts);
                 }
             }
         }
@@ -102,7 +102,7 @@ namespace EmbedIO.Modules
         internal async Task HandleWebSocket(IHttpContextImpl context, CancellationToken ct)
         {
             // first, accept the websocket
-            $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
+            $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketServer));
 
             var subProtocol = context.RequestHeader(HttpHeaders.SecWebSocketProtocol);
             var webSocketContext = await context.AcceptWebSocketAsync(subProtocol, ReceiveBufferSize, KeepAliveInterval)
@@ -114,11 +114,11 @@ namespace EmbedIO.Modules
             lock (_syncRoot)
             {
                 // add the newly-connected client
-                _mWebSockets.Add(webSocketContext);
+                _contexts.Add(webSocketContext);
             }
 
             $"{ServerName} - WebSocket Accepted - There are {WebSockets.Count} sockets connected.".Debug(
-                nameof(WebSocketsServer));
+                nameof(WebSocketServer));
 
             OnClientConnected(webSocketContext, context.Request.LocalEndPoint, context.Request.RemoteEndPoint);
 
@@ -140,7 +140,7 @@ namespace EmbedIO.Modules
             }
             catch (Exception ex)
             {
-                ex.Log(nameof(WebSocketsServer));
+                ex.Log(nameof(WebSocketServer));
             }
             finally
             {
@@ -174,7 +174,7 @@ namespace EmbedIO.Modules
             }
             catch (Exception ex)
             {
-                ex.Log(nameof(WebSocketsServer));
+                ex.Log(nameof(WebSocketServer));
             }
         }
 
@@ -192,12 +192,12 @@ namespace EmbedIO.Modules
             }
             catch (Exception ex)
             {
-                ex.Log(nameof(WebSocketsServer));
+                ex.Log(nameof(WebSocketServer));
             }
         }
 
         /// <summary>
-        /// Broadcasts the specified payload to all connected WebSockets clients.
+        /// Broadcasts the specified payload to all connected WebSocket clients.
         /// </summary>
         /// <param name="payload">The payload.</param>
         protected virtual void Broadcast(byte[] payload)
@@ -207,7 +207,7 @@ namespace EmbedIO.Modules
         }
 
         /// <summary>
-        /// Broadcasts the specified payload to all connected WebSockets clients.
+        /// Broadcasts the specified payload to all connected WebSocket clients.
         /// </summary>
         /// <param name="payload">The payload.</param>
         protected virtual void Broadcast(string payload)
@@ -231,7 +231,7 @@ namespace EmbedIO.Modules
             }
             catch (Exception ex)
             {
-                ex.Log(nameof(WebSocketsServer));
+                ex.Log(nameof(WebSocketServer));
             }
             finally
             {
@@ -240,7 +240,7 @@ namespace EmbedIO.Modules
         }
 
         /// <summary>
-        /// Called when this WebSockets Server receives a full message (EndOfMessage) form a WebSockets client.
+        /// Called when this WebSocket Server receives a full message (EndOfMessage) from a client.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="buffer">The buffer.</param>
@@ -251,7 +251,7 @@ namespace EmbedIO.Modules
             IWebSocketReceiveResult result);
 
         /// <summary>
-        /// Called when this WebSockets Server receives a message frame regardless if the frame represents the EndOfMessage.
+        /// Called when this WebSocket Server receives a message frame regardless if the frame represents the EndOfMessage.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="buffer">The buffer.</param>
@@ -262,7 +262,7 @@ namespace EmbedIO.Modules
             IWebSocketReceiveResult result);
 
         /// <summary>
-        /// Called when this WebSockets Server accepts a new WebSockets client.
+        /// Called when this WebSocket Server accepts a new client.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="localEndPoint">The local endpoint.</param>
@@ -273,7 +273,7 @@ namespace EmbedIO.Modules
             System.Net.IPEndPoint remoteEndPoint);
 
         /// <summary>
-        /// Called when the server has removed a WebSockets connected client for any reason.
+        /// Called when the server has removed a connected client for any reason.
         /// </summary>
         /// <param name="context">The context.</param>
         protected abstract void OnClientDisconnected(IWebSocketContext context);
@@ -290,7 +290,7 @@ namespace EmbedIO.Modules
 
             lock (_syncRoot)
             {
-                foreach (var socket in _mWebSockets.ToArray())
+                foreach (var socket in _contexts.ToArray())
                     Close(socket);
             }
 
@@ -299,7 +299,7 @@ namespace EmbedIO.Modules
 
         /// <summary>
         /// Runs the connection watchdog.
-        /// Removes and disposes stale WebSockets connections every 10 minutes.
+        /// Removes and disposes stale WebSocket connections every 10 minutes.
         /// </summary>
         private void RunConnectionWatchdog()
         {
@@ -326,7 +326,7 @@ namespace EmbedIO.Modules
 
             lock (_syncRoot)
             {
-                _mWebSockets.Remove(webSocketContext);
+                _contexts.Remove(webSocketContext);
             }
 
             OnClientDisconnected(webSocketContext);
@@ -340,9 +340,9 @@ namespace EmbedIO.Modules
             var collectedCount = 0;
             lock (_syncRoot)
             {
-                for (var i = _mWebSockets.Count - 1; i >= 0; i--)
+                for (var i = _contexts.Count - 1; i >= 0; i--)
                 {
-                    var currentSocket = _mWebSockets[i];
+                    var currentSocket = _contexts[i];
 
                     if (currentSocket.WebSocket == null || currentSocket.WebSocket.State == WebSocketState.Open)
                         continue;
@@ -353,7 +353,7 @@ namespace EmbedIO.Modules
             }
 
             $"{ServerName} - Collected {collectedCount} sockets. WebSocket Count: {WebSockets.Count}".Debug(
-                nameof(WebSocketsServer));
+                nameof(WebSocketServer));
         }
 
         private async Task ProcessEmbedIOWebSocket(IWebSocketContext webSocketContext, CancellationToken ct)
@@ -388,18 +388,18 @@ namespace EmbedIO.Modules
             // define a dynamic buffer that holds multi-part receptions
             var receivedMessage = new List<byte>(receiveBuffer.Length * 2);
 
-            // poll the WebSockets connections for reception
-            while (webSocket.State == System.Net.WebSockets.WebSocketState.Open)
+            // poll the WebSocket connections for reception
+            while (webSocket.State == WebSocketState.Open)
             {
                 // retrieve the result (blocking)
                 var receiveResult = new WebSocketReceiveResult(await webSocket
                     .ReceiveAsync(new ArraySegment<byte>(receiveBuffer), ct).ConfigureAwait(false));
 
-                if (receiveResult.MessageType == (int) System.Net.WebSockets.WebSocketMessageType.Close)
+                if (receiveResult.MessageType == (int)WebSocketMessageType.Close)
                 {
                     // close the connection if requested by the client
                     await webSocket
-                        .CloseAsync(System.Net.WebSockets.WebSocketCloseStatus.NormalClosure, string.Empty, ct)
+                        .CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, ct)
                         .ConfigureAwait(false);
                     return true;
                 }
@@ -414,7 +414,7 @@ namespace EmbedIO.Modules
                 if (receivedMessage.Count > _maximumMessageSize && _maximumMessageSize > 0)
                 {
                     // close the connection if message exceeds max length
-                    await webSocket.CloseAsync(System.Net.WebSockets.WebSocketCloseStatus.MessageTooBig,
+                    await webSocket.CloseAsync(WebSocketCloseStatus.MessageTooBig,
                         $"Message too big. Maximum is {_maximumMessageSize} bytes.",
                         ct).ConfigureAwait(false);
 

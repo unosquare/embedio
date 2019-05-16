@@ -90,7 +90,7 @@ namespace EmbedIO.Internal
             if (_context == null)
                 throw new NotImplementedException();
 
-            return new WebSocketContext(await _context.AcceptWebSocketAsync(subProtocol, receiveBufferSize, keepAliveInterval).ConfigureAwait(false));
+            return new WebSocketContext(this, await _context.AcceptWebSocketAsync(subProtocol, receiveBufferSize, keepAliveInterval).ConfigureAwait(false));
         }
 
         public void Close()
