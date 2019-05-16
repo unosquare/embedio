@@ -1,4 +1,6 @@
-﻿namespace EmbedIO.Tests
+﻿using EmbedIO.Utilities;
+
+namespace EmbedIO.Tests
 {
     using Modules;
     using NUnit.Framework;
@@ -10,15 +12,17 @@
     using TestObjects;
 
     [TestFixture]
-    public class LocalSessionModuleTest : FixtureBase
+    public class LocalSessionManagerTest : FixtureBase
     {
-        public LocalSessionModuleTest()
+        public LocalSessionManagerTest()
             : base(ws =>
                 {
-                    ws.RegisterModule(new LocalSessionManager { Expiration = TimeSpan.FromSeconds(1) });
-                    ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder()));
-                    ws.RegisterModule(new WebApiModule());
-                    ws.Module<WebApiModule>().RegisterController<TestLocalSessionController>();
+                    ws.SessionManager = new LocalSessionManager("__session", UrlPath.Root, TimeSpan.Zero) {
+                        SessionDuration = TimeSpan.FromSeconds(1)
+                    };
+                    ws.Modules.Add(new StaticFilesModule(TestHelper.SetupStaticFolder()));
+                    ws.Modules.Add("api", new WebApiModule());
+                    ((WebApiModule)ws.Modules["api"]).RegisterController<TestLocalSessionController>();
                 },
                 Constants.RoutingStrategy.Wildcard)
         {
@@ -52,7 +56,7 @@
             }
         }
 
-        public class Sessions : LocalSessionModuleTest
+        public class Sessions : LocalSessionManagerTest
         {
             [Test]
             public void HasSessionModule()
@@ -135,7 +139,7 @@
             }
         }
 
-        public class Cookies : LocalSessionModuleTest
+        public class Cookies : LocalSessionManagerTest
         {
             [Test]
             public async Task RetrieveCookie()

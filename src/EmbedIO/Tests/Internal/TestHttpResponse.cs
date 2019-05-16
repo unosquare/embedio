@@ -59,7 +59,7 @@
         public void AddHeader(string headerName, string value) => Headers.Add(headerName, value);
 
         /// <inheritdoc />
-        public void SetCookie(Cookie sessionCookie) => Cookies.Add(sessionCookie);
+        public void SetCookie(Cookie cookie) => Cookies.Add(cookie);
 
         /// <inheritdoc />
         public void Close()

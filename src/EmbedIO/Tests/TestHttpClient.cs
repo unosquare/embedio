@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
+using EmbedIO.Internal;
 using EmbedIO.Tests.Internal;
 using EmbedIO.Utilities;
 
@@ -12,24 +13,18 @@ namespace EmbedIO.Tests
     /// <seealso cref="IHttpContext" />
     public class TestHttpClient
     {
+        private readonly TestWebServer _webServer;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TestHttpClient" /> class.
         /// </summary>
         /// <param name="server">The server.</param>
         /// <param name="encoding">The encoding.</param>
-        public TestHttpClient(IWebServer server, Encoding encoding = null)
+        public TestHttpClient(TestWebServer server, Encoding encoding = null)
         {
-            WebServer = server;
+            _webServer = server;
             Encoding = encoding ?? Encoding.UTF8;
         }
-
-        /// <summary>
-        /// Gets or sets the web server.
-        /// </summary>
-        /// <value>
-        /// The web server.
-        /// </value>
-        public IWebServer WebServer { get; set; }
 
         /// <summary>
         /// Gets or sets the encoding.
@@ -37,7 +32,7 @@ namespace EmbedIO.Tests
         /// <value>
         /// The encoding.
         /// </value>
-        public Encoding Encoding { get; set; }
+        public Encoding Encoding { get; }
 
         /// <summary>
         /// Gets the asynchronous.
@@ -61,15 +56,9 @@ namespace EmbedIO.Tests
         /// <exception cref="InvalidOperationException">The IWebServer implementation should be TestWebServer.</exception>
         public async Task<IHttpResponse> SendAsync(TestHttpRequest request)
         {
-            if (!(Validate.NotNull(nameof(request), request) is TestHttpRequest))
-                throw new ArgumentException($"Request should be a {nameof(TestHttpRequest)}");
+            var context = new HttpContextImpl(Validate.NotNull(nameof(request), request));
 
-            var context = new TestHttpContext(request);
-
-            if (!(WebServer is TestWebServer testServer))
-                throw new InvalidOperationException($"The {nameof(IWebServer)} implementation should be {nameof(TestWebServer)}.");
-
-            testServer.HttpContexts.Enqueue(context);
+            _webServer.EnqueueContext(context);
 
             if (!(context.Response is TestHttpResponse response))
                 throw new InvalidOperationException("The response object is invalid.");

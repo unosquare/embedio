@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using System.Reflection;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Constants;
@@ -11,13 +11,7 @@ using Unosquare.Swan;
 namespace EmbedIO
 {
     /// <summary>
-    /// Represents our tiny web server used to handle requests.
-    ///
-    /// This is the default implementation of <c>IWebServer</c> and it's ready to select
-    /// the <c>IHttpListener</c> implementation via the proper constructor.
-    ///
-    /// By default, the WebServer will use the Regex RoutingStrategy for
-    /// all registered modules (<c>IWebModule</c>) and EmbedIO Listener (<c>HttpListenerMode</c>).
+    /// Base class for <see cref="IWebServer"/> implementations.
     /// </summary>
     public abstract class WebServerBase : IWebServer, IDisposable
     {
@@ -26,6 +20,15 @@ namespace EmbedIO
         private WebServerState _state = WebServerState.Created;
 
         private ISessionManager _sessionManager;
+
+        private bool _configurationLocked;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebServerBase"/> class.
+        /// </summary>
+        protected WebServerBase()
+        {
+        }
 
         /// <summary>
         /// Finalizes an instance of the <see cref="WebServerBase"/> class.
@@ -44,9 +47,16 @@ namespace EmbedIO
         /// <inheritdoc />
         public ISessionManager SessionManager
         {
-            get; private set;
+            get => _sessionManager;
+            set
+            {
+                if (_configurationLocked)
+                    throw new InvalidOperationException($"Cannot set {nameof(SessionManager)} after starting a web server.");
+
+                _sessionManager = value;
+            }
         }
-        
+
         /// <inheritdoc />
         public WebServerState State
         {
@@ -59,7 +69,10 @@ namespace EmbedIO
                 _state = value;
 
                 if (_state != WebServerState.Created)
+                {
                     _modules.Lock();
+                    _configurationLocked = true;
+                }
 
                 StateChanged?.Invoke(this, new WebServerStateChangedEventArgs(oldState, value));
             }
@@ -68,10 +81,6 @@ namespace EmbedIO
         /// <inheritdoc />
         /// <exception cref="InvalidOperationException">The method was already called.</exception>
         /// <exception cref="OperationCanceledException">Cancellation was requested.</exception>
-        /// <remarks>
-        /// Both the server and client requests are queued separately on the thread pool,
-        /// so it is safe to call <see cref="Task.Wait()" /> in a synchronous method.
-        /// </remarks>
         public async Task RunAsync(CancellationToken ct = default)
         {
             State = WebServerState.Loading;
@@ -79,11 +88,70 @@ namespace EmbedIO
 
             try
             {
-                // Init modules
+                _sessionManager?.Start(ct);
                 _modules.StartAll(ct);
 
                 State = WebServerState.Listening;
-                await RunInternalAsync(ct).ConfigureAwait(false);
+                while (!ct.IsCancellationRequested && ShouldProcessMoreRequests())
+                {
+                    try
+                    {
+                        var context = await GetContextAsync(ct).ConfigureAwait(false);
+                        context.Session = new SessionProxy(context, SessionManager);
+                        try
+                        {
+                            if (ct.IsCancellationRequested)
+                                break;
+
+                            // Create a request endpoint string
+                            var requestEndpoint = context.Request.SafeGetRemoteEndpointStr();
+
+                            // Log the request and its ID
+                            $"[{context.Id}] Start: Source {requestEndpoint} - {context.RequestVerb().ToString().ToUpperInvariant()}: {context.Request.Url.PathAndQuery} - {context.Request.UserAgent}"
+                                .Debug(nameof(WebServerBase));
+
+                            try
+                            {
+                                // Return a 404 (Not Found) response if no module/handler handled the response.
+                                if (!await _modules.DispatchRequestAsync(context, ct).ConfigureAwait(false))
+                                {
+                                    $"[{context.Id}] No module generated a response. Sending 404 - Not Found".Error(nameof(WebServerBase));
+                                    context.Response.StatusCode = 404;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                ex.Log(nameof(WebServerBase), $"[{context.Id}] Error handling request.");
+                                if (context.Response.StatusCode != (int)HttpStatusCode.Unauthorized)
+                                {
+                                    await context.HtmlResponseAsync(string.Format(CultureInfo.InvariantCulture, Responses.Response500HtmlFormat, ex.ExceptionMessage(), ex.StackTrace),
+                                        HttpStatusCode.InternalServerError,
+                                        true,
+                                        ct).ConfigureAwait(false);
+                                }
+                            }
+                        }
+                        finally
+                        {
+                            context.Close();
+                            $"[{context.Id}] End".Debug(nameof(WebServerBase));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        OnException();
+
+                        if (ex is OperationCanceledException || ex is ObjectDisposedException || ex is HttpListenerException)
+                        {
+                            if (!ct.IsCancellationRequested)
+                                throw;
+
+                            return;
+                        }
+
+                        ex.Log(nameof(WebServerBase));
+                    }
+                }
             }
             catch (TaskCanceledException)
             {
@@ -125,154 +193,24 @@ namespace EmbedIO
         }
 
         /// <summary>
-        /// Runs the internal request management loop.
+        /// <para>Tells whether a web server should continue processing requests.</para>
+        /// <para>This method is call each time before trying to accept a request.</para>
         /// </summary>
-        /// <param name="ct">A <see cref="CancellationToken"/> used to stop the web server.</param>
-        /// <returns>A <see cref="Task"/> that is awaited by <see cref="RunAsync"/>.</returns>
-        protected abstract Task RunInternalAsync(CancellationToken ct);
+        /// <returns><see langword="true"/> if the web server should continue processing requests;
+        /// otherwise, <see langword="false"/>.</returns>
+        protected abstract bool ShouldProcessMoreRequests();
 
         /// <summary>
-        /// Handles a client request.
+        /// Asynchronously waits for a request, accepts it, and returns a newly-constructed HTTP context.
         /// </summary>
-        /// <param name="context">The HTTP context.</param>
-        /// <param name="ct">The cancellation token.</param>
-        /// <returns>A task that represents the asynchronous of client request.</returns>
-        protected async Task HandleClientRequest(IHttpContext context, CancellationToken ct)
-        {
-            try
-            {
-                // Create a request endpoint string
-                var requestEndpoint = context.Request.SafeGetRemoteEndpointStr();
+        /// <param name="ct">A <see cref="CancellationToken"/> used to stop the web server.</param>
+        /// <returns>An awaitable <see cref="Task"/> that returns a HTTP context.</returns>
+        protected abstract Task<IHttpContextImpl> GetContextAsync(CancellationToken ct);
 
-                // Log the request and its ID
-                $"[{context.Id}] Start: Source {requestEndpoint} - {context.RequestVerb().ToString().ToUpperInvariant()}: {context.Request.Url.PathAndQuery} - {context.Request.UserAgent}"
-                    .Debug(nameof(WebServerBase));
-
-                var processResult = await _modules.DispatchRequestAsync(context, ct).ConfigureAwait(false);
-
-                // Return a 404 (Not Found) response if no module/handler handled the response.
-                if (processResult == false)
-                {
-                    $"[{context.Id}] No module generated a response. Sending 404 - Not Found".Error(nameof(WebServerBase));
-
-                    if (OnNotFound == null)
-                    {
-                        context.Response.StatusCode = 404;
-                    }
-                    else
-                    {
-                        await OnNotFound(context).ConfigureAwait(false);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebServerBase), $"[{context.Id}] Error handling request.");
-            }
-            finally
-            {
-                // Always close the response stream no matter what.
-                context?.Response.Close();
-
-                $"[{context.Id}] End".Debug(nameof(WebServerBase));
-            }
-        }
-
-        private async Task<bool> ProcessRequest(IHttpContext context, CancellationToken ct)
-        {
-            // Iterate though the loaded modules to match up a request and possibly generate a response.
-            foreach (var (safeName, module) in _modules.WithSafeNames)
-            {
-                var callback = GetHandler(context, module);
-                if (callback == null) continue;
-
-                try
-                {
-                    // Log the module and handler to be called and invoke as a callback.
-                    $"[{context.Id}] {safeName}::{callback.GetMethodInfo().DeclaringType?.Name}.{callback.GetMethodInfo().Name}"
-                        .Debug(nameof(WebServerBase));
-
-                    // Execute the callback
-                    var handleResult = await callback(context, ct).ConfigureAwait(false);
-
-                    $"[{context.Id}] Result: {handleResult}".Trace(nameof(WebServerBase));
-
-                    // callbacks can instruct the server to stop bubbling the request through the rest of the modules by returning true;
-                    if (handleResult)
-                    {
-                        return true;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Handle exceptions by returning a 500 (Internal Server Error) 
-                    if (context.Response.StatusCode != (int)System.Net.HttpStatusCode.Unauthorized)
-                    {
-                        await ResponseServerError(context, ex, safeName, ct).ConfigureAwait(false);
-                    }
-
-                    // Finally set the handled flag to true and exit.
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private Task ResponseServerError(IHttpContext context, Exception ex, string module, CancellationToken ct)
-        {
-            var priorMessage = $"Failing module name: {module}";
-            var errorMessage = ex.ExceptionMessage(priorMessage);
-
-            // Log the exception message.
-            ex.Log(nameof(WebServerBase), priorMessage);
-
-            // Send the response over with the corresponding status code.
-            return context.HtmlResponseAsync(string.Format(CultureInfo.InvariantCulture, Responses.Response500HtmlFormat, errorMessage, ex.StackTrace),
-                System.Net.HttpStatusCode.InternalServerError,
-                true,
-                ct);
-        }
-
-        private WebHandler GetHandler(IHttpContext context, IWebModule module)
-        {
-            Map handler = null;
-
-            void SetHandlerFromRegexPath()
-            {
-                handler = module.Handlers.FirstOrDefault(x =>
-                    (x.Path == ModuleMap.AnyPath || context.RequestRegexUrlParams(x.Path) != null) &&
-                    (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
-            }
-
-            void SetHandlerFromWildcardPath()
-            {
-                var path = context.RequestWilcardPath(module.Handlers
-                    .Where(k => k.Path.Contains(ModuleMap.AnyPathRoute))
-                    .Select(s => s.Path.ToLowerInvariant()));
-
-                handler = module.Handlers
-                    .FirstOrDefault(x =>
-                        (x.Path == ModuleMap.AnyPath || x.Path == path) &&
-                        (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
-            }
-
-            switch (context.WebServer.RoutingStrategy)
-            {
-                case RoutingStrategy.Wildcard:
-                    SetHandlerFromWildcardPath();
-                    break;
-                case RoutingStrategy.Regex:
-                    SetHandlerFromRegexPath();
-                    break;
-            }
-
-            return handler?.ResponseHandler;
-        }
-
-        private void LockConfiguration()
-        {
-            _modules.Lock();
-        }
-    }
+        /// <summary>
+        /// <para>Called when an exception is caught in the web server's request processing loop.</para>
+        /// <para>This method should tell the server socket to stop accepting further requests.</para>
+        /// </summary>
+        protected abstract void OnException();
+   }
 }

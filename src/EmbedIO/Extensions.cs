@@ -24,55 +24,6 @@ namespace EmbedIO
         private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        #region Session Management Methods
-
-        /// <summary>
-        /// Gets the session object associated to the current context.
-        /// Returns null if the LocalSessionWebModule has not been loaded.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>A session object for the given server context.</returns>
-        public static SessionInfo GetSession(this IHttpContext context)
-            => context.WebServer.SessionManager?.GetSession(context);
-
-        /// <summary>
-        /// Deletes the session object associated to the current context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        public static void DeleteSession(this IHttpContext context)
-        {
-            context.WebServer.SessionManager?.DeleteSession(context);
-        }
-
-        /// <summary>
-        /// Deletes the given session object.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="session">The session info.</param>
-        public static void DeleteSession(this IHttpContext context, SessionInfo session)
-        {
-            context.WebServer.SessionManager?.DeleteSession(session);
-        }
-
-        /// <summary>
-        /// Gets the session object associated to the current context.
-        /// Returns null if the LocalSessionWebModule has not been loaded.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="server">The server.</param>
-        /// <returns>A session info for the given websocket context.</returns>
-        public static SessionInfo GetSession(this IWebSocketContext context, IWebServer server) => server.SessionManager?.GetSession(context);
-
-        /// <summary>
-        /// Gets the session.
-        /// </summary>
-        /// <param name="server">The server.</param>
-        /// <param name="context">The context.</param>
-        /// <returns>A session info for the given websocket context.</returns>
-        public static SessionInfo GetSession(this IWebServer server, IWebSocketContext context) => server.SessionManager?.GetSession(context);
-
-        #endregion
-
         #region HTTP Request Helpers
 
         /// <summary>

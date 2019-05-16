@@ -84,8 +84,8 @@ namespace EmbedIO
         /// <summary>
         /// Sets the cookie.
         /// </summary>
-        /// <param name="sessionCookie">The session cookie.</param>
-        void SetCookie(System.Net.Cookie sessionCookie);
+        /// <param name="cookie">The session cookie.</param>
+        void SetCookie(Cookie cookie);
 
         /// <summary>
         /// Closes this instance and dispose the resources.

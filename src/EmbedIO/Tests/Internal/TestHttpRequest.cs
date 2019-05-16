@@ -44,7 +44,7 @@ namespace EmbedIO.Tests
         public Version ProtocolVersion { get; } = HttpVersion.Version11;
 
         /// <inheritdoc />
-        public bool KeepAlive { get; }
+        public bool KeepAlive { get; } = false;
 
         /// <inheritdoc />
         public ICookieCollection Cookies { get; }
@@ -71,13 +71,13 @@ namespace EmbedIO.Tests
         public Encoding ContentEncoding { get; }
 
         /// <inheritdoc />
-        public IPEndPoint RemoteEndPoint { get; }
+        public IPEndPoint RemoteEndPoint { get; } = new IPEndPoint(IPAddress.Loopback, 12345);
 
         /// <inheritdoc />
         public bool IsLocal { get; } = true;
 
         /// <inheritdoc />
-        public string UserAgent { get; }
+        public string UserAgent { get; } = "EmbedIOTest/1.0";
 
         /// <inheritdoc />
         public bool IsWebSocketRequest { get; }
@@ -89,15 +89,15 @@ namespace EmbedIO.Tests
         public string ContentType { get; }
 
         /// <inheritdoc />
-        public long ContentLength64 { get; }
+        public long ContentLength64 { get; } = 0;
 
         /// <inheritdoc />
-        public bool IsAuthenticated { get; }
+        public bool IsAuthenticated { get; } = false;
 
         /// <inheritdoc />
         public Uri UrlReferrer { get; }
 
         /// <inheritdoc />
-        public Guid RequestTraceIdentifier { get; }
+        public Guid RequestTraceIdentifier { get; } = Guid.NewGuid();
     }
 }

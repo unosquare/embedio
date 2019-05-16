@@ -13,21 +13,6 @@ namespace EmbedIO
     public static partial class Extensions
     {
         /// <summary>
-        /// Add StaticFilesModule to WebServer.
-        /// </summary>
-        /// <param name="webserver">The webserver instance.</param>
-        /// <returns>An instance of a web module.</returns>
-        /// <exception cref="System.ArgumentNullException">webserver.</exception>
-        public static IWebServer WithLocalSession(this IWebServer webserver)
-        {
-            if (webserver == null)
-                throw new ArgumentNullException(nameof(webserver));
-
-            webserver.Modules.Add(new LocalSessionManager());
-            return webserver;
-        }
-        
-        /// <summary>
         /// Add WebApiModule to WebServer.
         /// </summary>
         /// <param name="webserver">The webserver instance.</param>

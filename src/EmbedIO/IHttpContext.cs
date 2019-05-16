@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
-using System.Security.Principal;
 using System.Collections.Generic;
+using System.Security.Principal;
 
 namespace EmbedIO
 {
@@ -43,6 +42,14 @@ namespace EmbedIO
         IPrincipal User { get; }
 
         /// <summary>
+        /// Gets the session proxy associated with this context.
+        /// </summary>
+        /// <value>
+        /// A <see cref="ISessionProxy"/> interface.
+        /// </value>
+        ISessionProxy Session { get; }
+
+        /// <summary>
         /// Gets or sets the dictionary of data to pass trough the EmbedIO pipeline.
         /// </summary>
         /// <value>
@@ -51,15 +58,9 @@ namespace EmbedIO
         IDictionary<object, object> Items { get; }
 
         /// <summary>
-        /// Accepts the web socket asynchronous.
+        /// Registers a callback to be called when processing is finished on a context.
         /// </summary>
-        /// <param name="subProtocol">The sub-protocol.</param>
-        /// <param name="receiveBufferSize">Size of the receive buffer.</param>
-        /// <param name="keepAliveInterval">The keep alive interval.</param>
-        /// <returns>
-        /// A <see cref="IWebSocketContext" /> that represents
-        /// the WebSocket handshake request.
-        /// </returns>
-        Task<IWebSocketContext> AcceptWebSocketAsync(string subProtocol, int receiveBufferSize, TimeSpan keepAliveInterval);
+        /// <param name="callback">The callback.</param>
+        void OnClose(Action<IHttpContext> callback);
     }
 }

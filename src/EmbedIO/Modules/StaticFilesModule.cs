@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -339,10 +338,6 @@ namespace EmbedIO.Modules
                     .ConfigureAwait(false);
             }
             catch (HttpListenerException)
-            {
-                // Connection error, nothing else to do
-            }
-            catch (Net.HttpListenerException)
             {
                 // Connection error, nothing else to do
             }

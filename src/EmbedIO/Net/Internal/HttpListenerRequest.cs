@@ -187,7 +187,11 @@ namespace EmbedIO.Net.Internal
         public string[] UserLanguages { get; private set; }
         
         /// <inheritdoc />
-        public bool IsWebSocketRequest => HttpMethod == "GET" && ProtocolVersion > HttpVersion.Version10 && Headers.Contains("Upgrade", "websocket") && Headers.Contains("Connection", "Upgrade");
+        public bool IsWebSocketRequest 
+            => HttpMethod == "GET" 
+            && ProtocolVersion >= HttpVersion.Version11 
+            && Headers.Contains("Upgrade", "websocket") 
+            && Headers.Contains("Connection", "Upgrade");
 
         internal void SetRequestLine(string req)
         {

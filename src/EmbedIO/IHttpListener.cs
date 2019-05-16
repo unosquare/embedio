@@ -65,6 +65,6 @@ namespace EmbedIO
         /// <returns>
         /// A task that represents the time delay for the HTTP Context.
         /// </returns>
-        Task<IHttpContext> GetContextAsync(CancellationToken ct);
+        Task<IHttpContextImpl> GetContextAsync(CancellationToken ct);
     }
 }

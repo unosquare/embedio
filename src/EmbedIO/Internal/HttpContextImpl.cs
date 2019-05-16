@@ -4,6 +4,10 @@ using System.Globalization;
 using System.Net;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using EmbedIO.Tests;
+using EmbedIO.Tests.Internal;
+using EmbedIO.Utilities;
+using Unosquare.Swan;
 
 namespace EmbedIO.Internal
 {
@@ -11,14 +15,18 @@ namespace EmbedIO.Internal
     /// Represents a wrapper around a regular HttpListenerContext.
     /// </summary>
     /// <seealso cref="IHttpContext" />
-    internal class HttpContextImpl : IHttpContext
+    internal sealed class HttpContextImpl : IHttpContextImpl
     {
         private readonly HttpListenerContext _context;
+
+        private readonly Stack<Action<IHttpContext>> _closeCallbacks;
+
+        private bool _closed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpContextImpl" /> class.
         /// </summary>
-        /// <param name="context">The context.</param>
+        /// <param name="context">The HTTP listener context.</param>
         public HttpContextImpl(HttpListenerContext context)
         {
             _context = context;
@@ -27,6 +35,16 @@ namespace EmbedIO.Internal
             Request = new HttpRequest(_context);
             User = _context.User;
             Response = new HttpResponse(_context);
+        }
+
+        public HttpContextImpl(TestHttpRequest request)
+        {
+            _context = null;
+
+            Id = request.RequestTraceIdentifier.ToString("D", CultureInfo.InvariantCulture);
+            Request = request;
+            User = null;
+            Response = new TestHttpResponse();
         }
 
         /// <inheritdoc />
@@ -42,10 +60,47 @@ namespace EmbedIO.Internal
         public IPrincipal User { get; }
 
         /// <inheritdoc />
+        public ISessionProxy Session { get; set; }
+
+        /// <inheritdoc />
         public IDictionary<object, object> Items { get; } = new Dictionary<object, object>();
 
         /// <inheritdoc />
+        public void OnClose(Action<IHttpContext> callback)
+        {
+            if (_closed)
+                throw new InvalidOperationException("HTTP context has already been closed.");
+
+            _closeCallbacks.Push(Validate.NotNull(nameof(callback), callback));
+        }
+
+        /// <inheritdoc />
         public async Task<IWebSocketContext> AcceptWebSocketAsync(string subProtocol, int receiveBufferSize, TimeSpan keepAliveInterval)
-            => new WebSocketContext(await _context.AcceptWebSocketAsync(subProtocol, receiveBufferSize,keepAliveInterval).ConfigureAwait(false));
+        {
+            if (_context == null)
+                throw new NotImplementedException();
+
+            return new WebSocketContext(await _context.AcceptWebSocketAsync(subProtocol, receiveBufferSize, keepAliveInterval).ConfigureAwait(false));
+        }
+
+        public void Close()
+        {
+            _closed = true;
+
+            // Always close the response stream no matter what.
+            Response.Close();
+
+            foreach (var callback in _closeCallbacks)
+            {
+                try
+                {
+                    callback(this);
+                }
+                catch (Exception e)
+                {
+                    e.Log($"HTTP context", $"[Id] Exception thrown by a HTTP context close callback.");
+                }
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,8 +15,7 @@ namespace EmbedIO.Modules
     /// <summary>
     /// Represents a simple module to server resource files from the .NET assembly.
     /// </summary>
-    public class ResourceFilesModule
-        : FileModuleBase
+    public class ResourceFilesModule : FileModuleBase
     {
         private readonly Assembly _sourceAssembly;
         private readonly string _resourcePathRoot;
@@ -90,11 +90,7 @@ namespace EmbedIO.Modules
                         .ConfigureAwait(false);
                 }
             }
-            catch (System.Net.HttpListenerException)
-            {
-                // Connection error, nothing else to do
-            }
-            catch (Net.HttpListenerException)
+            catch (HttpListenerException)
             {
                 // Connection error, nothing else to do
             }

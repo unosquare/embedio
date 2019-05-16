@@ -204,38 +204,12 @@ namespace EmbedIO
         }
 
         /// <inheritdoc />
-        protected override async Task RunInternalAsync(CancellationToken ct)
-        {
-            // Disposing the web server will close the listener.           
-            while (Listener != null && Listener.IsListening && !ct.IsCancellationRequested)
-            {
-                try
-                {
-                    var context = await Listener.GetContextAsync(ct).ConfigureAwait(false);
+        protected override bool ShouldProcessMoreRequests() => Listener?.IsListening ?? false;
 
-                    if (ct.IsCancellationRequested)
-                        return;
+        /// <inheritdoc />
+        protected override Task<IHttpContextImpl> GetContextAsync(CancellationToken ct) => Listener.GetContextAsync(ct);
 
-#pragma warning disable CS4014
-                    HandleClientRequest(context, ct);
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                }
-                catch (Exception ex)
-                {
-                    Listener?.Dispose();
-
-                    if (ex is OperationCanceledException || ex is ObjectDisposedException ||
-                        ex is HttpListenerException)
-                    {
-                        if (!ct.IsCancellationRequested)
-                            throw;
-
-                        return;
-                    }
-
-                    ex.Log(nameof(WebServer));
-                }
-            }
-        }
+        /// <inheritdoc />
+        protected override void OnException() => Listener?.Dispose();
     }
 }

@@ -1,38 +1,46 @@
-﻿namespace EmbedIO
+﻿using System.Threading;
+
+namespace EmbedIO
 {
     /// <summary>
-    /// Represents the session manager for a web server.
+    /// Represents a session manager, which is in charge of managing session objects
+    /// and their association to HTTP contexts.
     /// </summary>
     public interface ISessionManager
     {
         /// <summary>
-        /// Gets a session object for the given server context.
-        /// If no session exists for the context, <see langword="null"/> is returned.
+        /// Signals a session manager that the web server is starting.
         /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>A <see cref="SessionInfo"/> object for the given server context.</returns>
-        SessionInfo GetSession(IHttpContext context);
+        /// <param name="ct">The cancellation token used to stop the web server.</param>
+        void Start(CancellationToken ct);
 
         /// <summary>
-        /// Gets a session object for the given WebSocket context.
-        /// If no session exists for the context, <see langword="null"/> is returned.
+        /// Returns the session associated with a <see cref="IHttpContext"/>.
+        /// If a session ID can be retrieved for the context and stored session data
+        /// are available, the returned <see cref="ISession"/> will contain those data;
+        /// otherwise, a new session is created and its ID is stored in the response
+        /// to be retrieved by subsequent requests.
         /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>A <see cref="SessionInfo"/> object for the given server context.</returns>
-        SessionInfo GetSession(IWebSocketContext context);
+        /// <param name="context">The HTTP context.</param>
+        /// <returns>A <see cref="ISession"/> interface.</returns>
+        ISession Create(IHttpContext context);
 
         /// <summary>
-        /// Delete the session object for the given context
-        /// If no session exists for the context, then null is returned.
+        /// Deletes the session (if any) associated with the specified context
+        /// and removes the session's ID from the context.
         /// </summary>
-        /// <param name="context">The context.</param>
-        void DeleteSession(IHttpContext context);
+        /// <param name="context">The HTTP context.</param>
+        /// <param name="id">The unique ID of the session.</param>
+        /// <seealso cref="ISession.Id"/>
+        void Delete(IHttpContext context, string id);
 
         /// <summary>
-        /// Delete a session for the given session info
-        /// No exceptions are thrown if the session is not found.
+        /// <para>Called by a session proxy when a session has been obtained
+        /// for a <see cref="IHttpContext"/> and the context is closed,
+        /// even if the session was subsequently deleted.</para>
+        /// <para>This method can be used to save session data to a storage medium.</para>
         /// </summary>
-        /// <param name="session">The session info.</param>
-        void DeleteSession(SessionInfo session);
+        /// <param name="context">The <see cref="IHttpContext"/> for which a session was obtained.</param>
+        void OnContextClose(IHttpContext context);
     }
 }

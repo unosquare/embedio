@@ -1,4 +1,5 @@
-﻿using EmbedIO.Constants;
+﻿using System;
+using EmbedIO.Constants;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,14 +22,15 @@ namespace EmbedIO
         event WebServerStateChangedEventHandler StateChanged;
 
         /// <summary>
-        /// <para>Gets the registered session manager, if any.</para>
-        /// <para>A session manager is an implementation of <see cref="ISessionManager"/>
-        /// to handle session data.</para>
+        /// <para>Gets or sets the registered session ID manager, if any.</para>
+        /// <para>A session ID manager is an implementation of <see cref="ISessionManager"/>.</para>
+        /// <para>Note that this property can only be set before starting the web server.</para>
         /// </summary>  
         /// <value>
         /// The session manager, or <see langword="null"/> if no session manager is present.
         /// </value>
-        ISessionManager SessionManager { get; }
+        /// <exception cref="InvalidOperationException">This property is being set and the web server has already been started.</exception>
+        ISessionManager SessionManager { get; set; }
 
         /// <summary>
         /// Gets the state of the web server.

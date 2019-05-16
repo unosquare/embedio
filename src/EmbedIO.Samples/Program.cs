@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Modules;
-using EmbedIO.Utilities;
 using Unosquare.Swan;
 
 namespace EmbedIO.Samples
@@ -90,42 +89,22 @@ namespace EmbedIO.Samples
                 Mode = HttpListenerMode.EmbedIO
             };
 
-            var server = new WebServer(options) {
-
-                    // First, we will configure our web server by adding Modules.
-                    // Please note that order DOES matter.
-                    // ================================================================================================
-                    // If we want to enable sessions, we simply register the LocalSessionModule
-                    // Beware that this is an in-memory session storage mechanism so, avoid storing very large objects.
-                    // You can use the server.GetSession() method to get the SessionInfo object and manipulate it.
-                    new LocalSessionManager(),
-
-                    // Set the CORS Rules
-                    new CorsModule(
-                        // Origins, separated by comma without last slash
-                        "http://unosquare.github.io,http://run.plnkr.co",
-                        // Allowed headers
-                        "content-type, accept",
-                        // Allowed methods
-                        "post"),
-
-                    // Register the static files server. See the html folder of this project. Also notice that 
-                    // the files under the html folder have Copy To Output Folder = Copy if Newer
-                    new StaticFilesModule(HtmlRootPath),
-
-                    // Register the Web Api Module. See the Setup method to find out how to do it
-                    // It registers the WebApiModule and registers the controller(s) -- that's all.
-                    new WebApiModule(true)
-                        .WithApiController<PeopleController>(),
-
-                    // Register the WebSockets module. See the Setup method to find out how to do it
-                    // It registers the WebSocketsModule and registers the server for the given paths(s)
-                    new WebSocketsModule()
+            var server = new WebServer(options)
+                .WithLocalSessionManager()
+                .WithCors(
+                    // Origins, separated by comma without last slash
+                    "http://unosquare.github.io,http://run.plnkr.co",
+                    // Allowed headers
+                    "content-type, accept",
+                    // Allowed methods
+                    "post")
+                .WithStaticFolderAt("/", HtmlRootPath)
+                .WithModule(new WebApiModule("/", true)
+                    .WithApiController<PeopleController>())
+                .WithModule(new WebSocketsModule("/")
                         .WithServer<WebSocketsChatServer>()
-                        .WithServer<WebSocketsTerminalServer>(),
-
-                    new ActionModule(UrlPath.Root, Constants.HttpVerbs.Any, (ctx, ct) => ctx.JsonResponseAsync(new { Message = "Error" }, ct))
-                };
+                        .WithServer<WebSocketsTerminalServer>())
+                .WithModule(new ActionModule("/", Constants.HttpVerbs.Any, (ctx, path, ct) => ctx.JsonResponseAsync(new { Message = "Error" }, ct)));
 
             // Listen for state changes.
             server.StateChanged += (s, e) => $"WebServer New State - {e.NewState}".Info();

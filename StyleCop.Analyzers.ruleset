@@ -7,6 +7,7 @@
     <Rule Id="CA1001" Action="Warning" />
     <Rule Id="CA1009" Action="Warning" />
     <Rule Id="CA1016" Action="Warning" />
+    <Rule Id="CA1031" Action="None" />
     <Rule Id="CA1033" Action="Warning" />
     <Rule Id="CA1049" Action="Warning" />
     <Rule Id="CA1054" Action="None" />
@@ -109,5 +110,6 @@
       <Rule Id="SA1609" Action="None" />
       <Rule Id="SA1623" Action="None" />
       <Rule Id="SA1629" Action="None" />
+      <Rule Id="SA1649" Action="None" />
   </Rules>
 </RuleSet>

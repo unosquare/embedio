@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Constants;
 using Unosquare.Swan;
-using EmbedIO.Net;
 
 namespace EmbedIO.Tests
 {
@@ -15,22 +14,21 @@ namespace EmbedIO.Tests
     /// </summary>
     public class TestWebServer : WebServerBase
     {
+        private readonly Queue<IHttpContextImpl> _contexts = new Queue<IHttpContextImpl>();
+
+        private bool _listening;
+
+        private TaskCompletionSource<IHttpContextImpl> _pendingDequeue;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TestWebServer"/> class.
         /// </summary>
         public TestWebServer()
         {
             Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
+            _listening = true;
             State = WebServerState.Listening;
         }
-
-        /// <summary>
-        /// Gets the HTTP contexts.
-        /// </summary>
-        /// <value>
-        /// The HTTP contexts.
-        /// </value>
-        public ConcurrentQueue<IHttpContext> HttpContexts { get; } = new ConcurrentQueue<IHttpContext>();
 
         /// <summary>
         /// Gets the test HTTP Client.
@@ -38,45 +36,83 @@ namespace EmbedIO.Tests
         /// <returns>A new instance of the TestHttpClient.</returns>
         public TestHttpClient GetClient() => new TestHttpClient(this);
 
-        /// <inheritdoc />
-        protected override async Task RunInternalAsync(CancellationToken ct)
+        internal void EnqueueContext(IHttpContextImpl context)
         {
-            try
-            {
-                var context = await GetContextAsync(ct).ConfigureAwait(false);
+            if (!_listening)
+                throw new InvalidOperationException("Web server is not listening any longer.");
 
-                if (ct.IsCancellationRequested)
-                    return;
-
-#pragma warning disable CS4014
-                HandleClientRequest(context, ct);
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            }
-            catch (Exception ex)
+            TaskCompletionSource<IHttpContextImpl> currentDequeue = null;
+            lock (_contexts)
             {
-                if (ex is OperationCanceledException || ex is ObjectDisposedException ||
-                    ex is HttpListenerException)
+                if (_pendingDequeue != null)
                 {
-                    if (!ct.IsCancellationRequested)
-                        throw;
+                    currentDequeue = _pendingDequeue;
+                    _pendingDequeue = null;
+                }
+                else
+                {
+                    _contexts.Enqueue(context);
+                }
+            }
 
-                    return;
+            currentDequeue?.SetResult(context);
+        }
+
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                TaskCompletionSource<IHttpContextImpl> currentDequeue = null;
+                lock (_contexts)
+                {
+                    if (_pendingDequeue != null)
+                    {
+                        currentDequeue = _pendingDequeue;
+                        _pendingDequeue = null;
+                    }
                 }
 
-                ex.Log(nameof(WebServer));
+                currentDequeue?.SetException(new ObjectDisposedException(nameof(TestWebServer)));
             }
+
+            base.Dispose(disposing);
         }
 
-        private async Task<IHttpContext> GetContextAsync(CancellationToken ct)
+        /// <inheritdoc />
+        protected override bool ShouldProcessMoreRequests()
         {
-            while (!ct.IsCancellationRequested)
+            lock (_contexts)
             {
-                if (HttpContexts.TryDequeue(out var entry)) return entry;
-
-                await Task.Delay(100, ct).ConfigureAwait(false);
+                return _listening;
             }
-
-            return null;
         }
+
+        /// <inheritdoc />
+        protected override Task<IHttpContextImpl> GetContextAsync(CancellationToken ct)
+        {
+            lock (_contexts)
+            {
+                if (_contexts.Count > 0)
+                {
+                    return Task.FromResult(_contexts.Dequeue());
+                }
+
+                if (_pendingDequeue != null)
+                    throw new InvalidOperationException("Trying to dequeue two contexts at the same time.");
+
+                _pendingDequeue = new TaskCompletionSource<IHttpContextImpl>();
+                return _pendingDequeue.Task;
+            }
+        }
+
+        /// <inheritdoc />
+        protected override void OnException()
+        {
+            lock (_contexts)
+            {
+                _listening = false;
+            }
+        } 
     }
 }

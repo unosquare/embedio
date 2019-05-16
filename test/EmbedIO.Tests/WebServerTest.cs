@@ -89,11 +89,11 @@
             public void RegisterAndUnregister()
             {
                 var instance = new WebServer();
-                instance.RegisterModule(new LocalSessionManager());
+                instance.RegisterModule(new LocalSessionModule());
 
                 Assert.AreEqual(instance.Modules.Count, 1, "It has one module");
 
-                instance.UnregisterModule(typeof(LocalSessionManager));
+                instance.UnregisterModule(typeof(LocalSessionModule));
 
                 Assert.AreEqual(instance.Modules.Count, 0, "It has not modules");
             }

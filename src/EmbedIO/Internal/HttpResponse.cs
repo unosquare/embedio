@@ -85,7 +85,7 @@ namespace EmbedIO.Internal
         public void AddHeader(string headerName, string value) => _response.AddHeader(headerName, value);
 
         /// <inheritdoc />
-        public void SetCookie(Cookie sessionCookie) => _response.SetCookie(sessionCookie);
+        public void SetCookie(Cookie cookie) => _response.SetCookie(cookie);
 
         /// <inheritdoc />
         public void Close() => _response.OutputStream?.Dispose();

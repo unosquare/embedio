@@ -1,11 +1,14 @@
-﻿namespace EmbedIO.Tests
-{
-    using NUnit.Framework;
-    using Swan.Formatters;
-    using TestObjects;
-    using System.Threading.Tasks;
-    using Modules;
+﻿using System;
+using System.Threading.Tasks;
+using EmbedIO.Constants;
+using EmbedIO.Modules;
+using EmbedIO.Utilities;
+using EmbedIO.Tests.TestObjects;
+using NUnit.Framework;
+using Unosquare.Swan.Formatters;
 
+namespace EmbedIO.Tests
+{
     public class IWebServerTest
     {
         [Test]
@@ -18,46 +21,34 @@
         }
 
         [Test]
-        public void RegisterWebModule_ReturnsValidInstance()
+        public void AddModule_ReturnsValidInstance()
         {
             using (var webserver = new TestWebServer())
             {
-                webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponseAsync(nameof(TestWebServer), ct)));
+                webserver.Modules.Add(new ActionModule("/", HttpVerbs.Any, (ctx, path, ct) => ctx.JsonResponseAsync(nameof(TestWebServer), ct)));
 
                 Assert.AreEqual(1, webserver.Modules.Count);
             }
         }
 
         [Test]
-        public void UnregisterWebModule_ReturnsValidInstance()
+        public void SetSessionManager_ReturnsValidInstance()
         {
             using (var webserver = new TestWebServer())
             {
-                webserver.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponseAsync(nameof(TestWebServer), ct)));
-                webserver.UnregisterModule(typeof(FallbackModule));
-
-                Assert.AreEqual(0, webserver.Modules.Count);
-            }
-        }
-
-        [Test]
-        public void RegisterSessionModule_ReturnsValidInstance()
-        {
-            using (var webserver = new TestWebServer())
-            {
-                webserver.RegisterModule(new LocalSessionManager());
+                webserver.SessionManager = new LocalSessionManager("__session", UrlPath.Root, TimeSpan.FromHours(1));
 
                 Assert.NotNull(webserver.SessionManager);
             }
         }
 
         [Test]
-        public void UnregisterSessionModule_ReturnsValidInstance()
+        public void SetSessionManagerToNull_ReturnsValidInstance()
         {
             using (var webserver = new TestWebServer())
             {
-                webserver.RegisterModule(new LocalSessionManager());
-                webserver.UnregisterModule(typeof(LocalSessionManager));
+                webserver.SessionManager = new LocalSessionManager("__session", UrlPath.Root, TimeSpan.FromHours(1));
+                webserver.SessionManager = null;
 
                 Assert.IsNull(webserver.SessionManager);
             }
@@ -68,7 +59,7 @@
         {
             using (var webserver = new TestWebServer())
             {
-                webserver.OnAny((ctx, ct) => ctx.JsonResponseAsync(new Person {Name = nameof(Person)}, ct));
+                webserver.OnAny((ctx, path, ct) => ctx.JsonResponseAsync(new Person {Name = nameof(Person)}, ct));
 
 #pragma warning disable 4014
                 webserver.RunAsync();

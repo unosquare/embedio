@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Internal
 {
@@ -10,36 +13,45 @@ namespace EmbedIO.Internal
     /// <seealso cref="ICookieCollection" />
     public class CookieCollection : ICookieCollection
     {
-        private readonly System.Net.CookieCollection _cookieCollection;
+        private readonly System.Net.CookieCollection _collection;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CookieCollection"/> class.
         /// </summary>
-        /// <param name="cookieCollection">The cookie collection.</param>
-        public CookieCollection(System.Net.CookieCollection cookieCollection)
+        /// <param name="collection">The cookie collection.</param>
+        public CookieCollection(System.Net.CookieCollection collection)
         {
-            _cookieCollection = cookieCollection;
+            _collection = collection;
         }
-        
-        /// <inheritdoc />
-        public int Count => _cookieCollection.Count;
 
         /// <inheritdoc />
-        public bool IsSynchronized => _cookieCollection.IsSynchronized;
+        public int Count => _collection.Count;
 
         /// <inheritdoc />
-        public object SyncRoot => _cookieCollection.SyncRoot;
+        public bool IsSynchronized => _collection.IsSynchronized;
 
         /// <inheritdoc />
-        public Cookie this[string name] => _cookieCollection[name];
+        public object SyncRoot => _collection.SyncRoot;
 
         /// <inheritdoc />
-        public IEnumerator GetEnumerator() => _cookieCollection.GetEnumerator();
+        public Cookie this[string name] => _collection[name];
 
         /// <inheritdoc />
-        public void CopyTo(Array array, int index) => _cookieCollection.CopyTo(array, index);
+        IEnumerator<Cookie> IEnumerable<Cookie>.GetEnumerator() => _collection.OfType<Cookie>().GetEnumerator();
 
         /// <inheritdoc />
-        public void Add(Cookie cookie) => _cookieCollection.Add(cookie);
+        public IEnumerator GetEnumerator() => _collection.GetEnumerator();
+
+        /// <inheritdoc />
+        public void CopyTo(Array array, int index) => _collection.CopyTo(array, index);
+
+        /// <inheritdoc />
+        public void CopyTo(Cookie[] array, int index) => _collection.CopyTo(array, index);
+
+        /// <inheritdoc />
+        public void Add(Cookie cookie) => _collection.Add(cookie);
+
+        /// <inheritdoc />
+        public bool Contains(Cookie cookie) => _collection.OfType<Cookie>().Contains(cookie);
     }
 }
