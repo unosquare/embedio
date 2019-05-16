@@ -15,109 +15,174 @@ namespace EmbedIO
     /// </summary>
     public partial class LocalSessionManager : ISessionManager
     {
+        /// <summary>
+        /// The default name for session cookies, i.e. <c>"__session"</c>.
+        /// </summary>
+        public const string DefaultCookieName = "__session";
+
+        /// <summary>
+        /// The default path for session cookies, i.e. <c>"/"</c>.
+        /// </summary>
+        public const string DefaultCookiePath = UrlPath.Root;
+
+        /// <summary>
+        /// The default HTTP-only flag for session cookies, i.e. <see langword="true"/>.
+        /// </summary>
+        public const bool DefaultCookieHttpOnly = true;
+
+        /// <summary>
+        /// The default duration for session cookies, i.e. <see cref="TimeSpan.Zero"/>.
+        /// </summary>
+        public static readonly TimeSpan DefaultCookieDuration = TimeSpan.Zero;
+
+        /// <summary>
+        /// The default duration for sessions, i.e. 30 minutes.
+        /// </summary>
+        public static readonly TimeSpan DefaultSessionDuration = TimeSpan.FromMinutes(30);
+
+        /// <summary>
+        /// The default interval between automatic purges of expired and empty sessions, i.e. 30 seconds.
+        /// </summary>
+        public static readonly TimeSpan DefaultPurgeInterval = TimeSpan.FromSeconds(30);
+
         private readonly ConcurrentDictionary<string, SessionImpl> _sessions =
             new ConcurrentDictionary<string, SessionImpl>(Session.KeyComparer);
 
-        private string _cookieName;
-        private string _cookiePath;
+        private string _cookieName = DefaultCookieName;
+
+        private string _cookiePath = DefaultCookiePath;
+
+        private TimeSpan _cookieDuration = DefaultCookieDuration;
+
+        private bool _cookieHttpOnly = DefaultCookieHttpOnly;
+
+        private TimeSpan _sessionDuration = DefaultSessionDuration;
+
+        private TimeSpan _purgeInterval = DefaultPurgeInterval;
+
+        private bool _configurationLocked;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LocalSessionManager"/> class.
+        /// Initializes a new instance of the <see cref="LocalSessionManager"/> class
+        /// with default values for all properties.
         /// </summary>
-        /// <param name="cookieName">The name of the session cookie.</param>
-        /// <param name="cookiePath">The path of the session cookie.</param>
-        /// <param name="cookieDuration">The duration of the session cookie.</param>
-        /// <param name="cookieHttpOnly"><see langword="true"/> to hide the session cookie from Javascript running on a user agent.</param>
-        /// <seealso cref="CookieName"/>
-        /// <seealso cref="CookiePath"/>
-        /// <seealso cref="CookieDuration"/>
-        /// <seealso cref="CookieHttpOnly"/>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="cookieName"/> is <see langword="null"/>.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="cookiePath"/> is <see langword="null"/>.</para>
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// <para><paramref name="cookieName"/> is empty or contains one or more invalid characters.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="cookiePath"/> is not a valid base URL path.</para>
-        /// </exception>
-        public LocalSessionManager(string cookieName, string cookiePath, TimeSpan cookieDuration, bool cookieHttpOnly = true)
+        /// <seealso cref="DefaultSessionDuration"/>
+        /// <seealso cref="DefaultPurgeInterval"/>
+        /// <seealso cref="DefaultCookieName"/>
+        /// <seealso cref="DefaultCookiePath"/>
+        /// <seealso cref="DefaultCookieDuration"/>
+        /// <seealso cref="DefaultCookieHttpOnly"/>
+        public LocalSessionManager()
         {
-            _cookieName = Validate.CookieName(nameof(cookieName), cookieName);
-            _cookiePath = Validate.UrlPath(nameof(cookiePath), cookiePath, true);
-            CookieDuration = cookieDuration;
-            CookieHttpOnly = cookieHttpOnly;
         }
 
         /// <summary>
         /// Gets or sets the duration of newly-created sessions.
         /// </summary>
-        /// <value>
-        /// The duration of a session.
-        /// </value>
-        /// <remarks>
-        /// By default, the duration for <see cref="LocalSessionManager"/> sessions is 30 minutes.
-        /// </remarks>
-        public TimeSpan SessionDuration { get; set; } = TimeSpan.FromMinutes(30);
+        /// <exception cref="InvalidOperationException">This property is being set after calling
+        /// the <see cref="Start"/> method.</exception>
+        /// <seealso cref="DefaultSessionDuration"/>
+        public TimeSpan SessionDuration
+        {
+            get => _sessionDuration;
+            set
+            {
+                EnsureConfigurationNotLocked();
+                _sessionDuration = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the interval between purges of expired sessions.
         /// </summary>
-        /// <remarks>
-        /// <para>By default, the purge interval for <see cref="LocalSessionManager"/> is 30 seconds.</para>
-        /// </remarks>
-        public TimeSpan PurgeInterval { get; set; } = TimeSpan.FromSeconds(30);
-
-        /// <summary>
-        /// <para>Gets or sets the name for session cookies. The default value is <c>"__session"</c>.</para>
-        /// </summary>
-        /// <value>
-        /// The cookie path.
-        /// </value>
-        /// <exception cref="ArgumentNullException">This property is being set to <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException">This property is being set and the provided value
-        /// is not a valid URL path.</exception>
-        public string CookieName
+        /// <exception cref="InvalidOperationException">This property is being set after calling
+        /// the <see cref="Start"/> method.</exception>
+        /// <seealso cref="DefaultPurgeInterval"/>
+        public TimeSpan PurgeInterval
         {
-            get => _cookieName;
-            set => _cookieName = Validate.CookieName(nameof(value), value);
+            get => _purgeInterval;
+            set
+            {
+                EnsureConfigurationNotLocked();
+                _purgeInterval = value;
+            }
         }
 
         /// <summary>
-        /// <para>Gets or sets the path for session cookies. The default value is <c>"/"</c>.</para>
+        /// <para>Gets or sets the name for session cookies.</para>
         /// </summary>
-        /// <value>
-        /// The cookie path.
-        /// </value>
+        /// <exception cref="InvalidOperationException">This property is being set after calling
+        /// the <see cref="Start"/> method.</exception>
         /// <exception cref="ArgumentNullException">This property is being set to <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">This property is being set and the provided value
         /// is not a valid URL path.</exception>
+        /// <seealso cref="DefaultCookieName"/>
+        public string CookieName
+        {
+            get => _cookieName;
+            set
+            {
+                EnsureConfigurationNotLocked();
+                _cookieName = Validate.CookieName(nameof(value), value);
+            }
+        }
+
+        /// <summary>
+        /// <para>Gets or sets the path for session cookies.</para>
+        /// </summary>
+        /// <exception cref="InvalidOperationException">This property is being set after calling
+        /// the <see cref="Start"/> method.</exception>
+        /// <exception cref="ArgumentNullException">This property is being set to <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">This property is being set and the provided value
+        /// is not a valid URL path.</exception>
+        /// <seealso cref="DefaultCookiePath"/>
         public string CookiePath
         {
             get => _cookiePath;
-            set => _cookiePath = Validate.UrlPath(nameof(value), value, true);
+            set
+            {
+                EnsureConfigurationNotLocked();
+                _cookiePath = Validate.UrlPath(nameof(value), value, true);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the duration of session cookies.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">This property is being set after calling
+        /// the <see cref="Start"/> method.</exception>
+        /// <seealso cref="DefaultCookieDuration"/>
+        public TimeSpan CookieDuration
+        {
+            get => _cookieDuration;
+            set
+            {
+                EnsureConfigurationNotLocked();
+                _cookieDuration = value;
+            }
         }
 
         /// <summary>
         /// Gets or sets a value indicating whether session cookies are hidden from Javascript code running on a user agent.
         /// </summary>
-        /// <value>
-        /// <see langword="true"/> if session cookies are flagged as HTTP-only; otherwise, <see langword="false"/>.
-        /// </value>
-        public bool CookieHttpOnly { get; set; }
-
-        /// <summary>
-        /// Gets or sets the duration of the session cookie.
-        /// </summary>
-        /// <value>
-        /// The duration of the session cookie.
-        /// </value>
-        public TimeSpan CookieDuration { get; set; }
+        /// <exception cref="InvalidOperationException">This property is being set after calling
+        /// the <see cref="Start"/> method.</exception>
+        /// <seealso cref="DefaultCookieHttpOnly"/>
+        public bool CookieHttpOnly
+        {
+            get => _cookieHttpOnly;
+            set
+            {
+                EnsureConfigurationNotLocked();
+                _cookieHttpOnly = value;
+            }
+        }
 
         /// <inheritdoc />
         public void Start(CancellationToken ct)
         {
+            _configurationLocked = true;
+
             Task.Run(async () =>
             {
                 try
@@ -188,6 +253,12 @@ namespace EmbedIO
                     session.EndUse(() => _sessions.TryRemove(id, out _));
                 }
             }
+        }
+
+        private void EnsureConfigurationNotLocked()
+        {
+            if (_configurationLocked)
+                throw new InvalidOperationException($"Cannot configure a {nameof(LocalSessionManager)} once it has been started.");
         }
 
         private bool IsSessionCookie(Cookie cookie)
