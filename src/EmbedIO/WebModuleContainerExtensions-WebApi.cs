@@ -7,10 +7,7 @@ using Unosquare.Swan;
 
 namespace EmbedIO
 {
-    /// <summary>
-    /// Extensions methods to EmbedIO's Fluent Interface.
-    /// </summary>
-    public static partial class Extensions
+    partial class WebModuleContainerExtensions
     {
         /// <summary>
         /// Add WebApiModule to WebServer.
@@ -24,7 +21,7 @@ namespace EmbedIO
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
         public static IWebServer WithWebApi(
-            this IWebServer webserver, 
+            this IWebServer webserver,
             Assembly assembly = null,
             bool responseJsonException = false,
             string baseUrlPath = UrlPath.Root)
@@ -33,36 +30,13 @@ namespace EmbedIO
                 throw new ArgumentNullException(nameof(webserver));
 
             var webApiModule = new WebApiModule(baseUrlPath, responseJsonException);
-            
+
             if (assembly != null)
                 webApiModule.LoadApiControllers(assembly);
-            
+
             webserver.Modules.Add(webApiModule);
 
             return webserver;
-        }
-
-        /// <summary>
-        /// Add WebSocketsModule to WebServer.
-        /// </summary>
-        /// <param name="webserver">The webserver instance.</param>
-        /// <param name="assembly">The assembly to load Web Sockets from. Leave null to avoid auto-loading.</param>
-        /// <param name="baseUrlPath">The base URL path.</param>
-        /// <returns>
-        /// An instance of webserver.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">webserver</exception>
-        /// <exception cref="System.ArgumentNullException">webserver.</exception>
-        public static IWebServer WithWebSocket(
-            this IWebServer webserver, 
-            Assembly assembly = null,
-            string baseUrlPath = UrlPath.Root)
-        {
-            if (webserver == null)
-                throw new ArgumentNullException(nameof(webserver));
-
-            webserver.Modules.Add(new WebSocketsModule(baseUrlPath));
-            return assembly != null ? webserver.LoadWebSockets(assembly) : webserver;
         }
 
         /// <summary>
@@ -77,7 +51,7 @@ namespace EmbedIO
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
         public static IWebServer LoadApiControllers(
-            this IWebServer webserver, 
+            this IWebServer webserver,
             Assembly assembly = null,
             bool responseJsonException = false,
             string baseUrlPath = UrlPath.Root)
@@ -139,59 +113,6 @@ namespace EmbedIO
         }
 
         /// <summary>
-        /// Register a <see cref="WebSocketsServer"/> in a <see cref="WebSocketsModule"/>.
-        /// </summary>
-        /// <typeparam name="TWebSocketsServer">The type of the web sockets server.</typeparam>
-        /// <param name="webSocketsModule">The web sockets module.</param>
-        /// <returns><paramref name="webSocketsModule"/> with the new server added.</returns>
-        /// <exception cref="ArgumentNullException">webSocketsModule</exception>
-        public static WebSocketsModule WithServer<TWebSocketsServer>(this WebSocketsModule webSocketsModule)
-            where TWebSocketsServer : WebSocketsServer, new()
-        {
-            if (webSocketsModule == null)
-                throw new ArgumentNullException(nameof(webSocketsModule));
-
-            webSocketsModule.RegisterWebSocketsServer<TWebSocketsServer>();
-            return webSocketsModule;
-        }
-
-        /// <summary>
-        /// Load all the WebSockets in an assembly.
-        /// </summary>
-        /// <param name="webserver">The webserver instance.</param>
-        /// <param name="assembly">The assembly to load WebSocketsServer types from. Leave null to load from the currently executing assembly.</param>
-        /// <param name="baseUrlPath">The base URL path.</param>
-        /// <returns>
-        /// An instance of webserver.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">webserver</exception>
-        /// <exception cref="System.ArgumentNullException">webserver.</exception>
-        public static IWebServer LoadWebSockets(this IWebServer webserver, Assembly assembly = null, string baseUrlPath = UrlPath.Root)
-        {
-            if (webserver == null)
-                throw new ArgumentNullException(nameof(webserver));
-
-            var webSocketsModule = webserver.Modules.FirstOrDefault<WebSocketsModule>();
-            if (webSocketsModule == null)
-            {
-                webSocketsModule = new WebSocketsModule(baseUrlPath);
-                webserver.Modules.Add(webSocketsModule);
-            }
-
-            var socketServers = (assembly ?? Assembly.GetEntryAssembly()).GetTypes()
-                .Where(x => x.IsClass && !x.IsAbstract && !x.IsGenericTypeDefinition &&
-                            x.IsSubclassOf(typeof(WebSocketsServer)));
-
-            foreach (var socketServer in socketServers)
-            {
-                $"Registering WebSocket Server '{socketServer.Name}'".Debug(nameof(LoadWebSockets));
-                webSocketsModule.RegisterWebSocketsServer(socketServer);
-            }
-
-            return webserver;
-        }
-
-        /// <summary>
         /// Add WebApi Controller to WebServer.
         /// </summary>
         /// <typeparam name="T">The type of Web API Controller.</typeparam>
@@ -203,7 +124,7 @@ namespace EmbedIO
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
         public static IWebServer WithWebApiController<T>(
-            this IWebServer webserver, 
+            this IWebServer webserver,
             bool responseJsonException = false,
             string baseUrlPath = UrlPath.Root)
             where T : WebApiController
