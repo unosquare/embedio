@@ -29,18 +29,18 @@ namespace EmbedIO
         public System.Net.WebSockets.WebSocket SystemWebSocket { get; }
 
         /// <inheritdoc />
-        public Net.WebSocketState State
+        public WebSocketState State
         {
             get
             {
                 switch (SystemWebSocket.State)
                 {
                     case WebSocketState.Connecting:
-                        return Net.WebSocketState.Connecting;
+                        return WebSocketState.Connecting;
                     case WebSocketState.Open:
-                        return Net.WebSocketState.Open;
+                        return WebSocketState.Open;
                     default:
-                        return Net.WebSocketState.Closed;
+                        return WebSocketState.Closed;
                 }
             }
         }

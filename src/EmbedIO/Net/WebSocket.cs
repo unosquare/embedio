@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -403,7 +404,7 @@ namespace EmbedIO.Net
         {
             lock (_forState)
             {
-                if (_readyState == WebSocketState.Closing)
+                if (_readyState == WebSocketState.CloseReceived || _readyState == WebSocketState.CloseSent)
                 {
                     "The closing is already in progress.".Trace(nameof(InternalCloseAsync));
                     return;
@@ -418,7 +419,7 @@ namespace EmbedIO.Net
                 send = send && _readyState == WebSocketState.Open;
                 receive = receive && send;
 
-                _readyState = WebSocketState.Closing;
+                _readyState = WebSocketState.CloseSent;
             }
 
             "Begin closing the connection.".Trace(nameof(InternalCloseAsync));

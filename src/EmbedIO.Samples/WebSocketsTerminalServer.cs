@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.WebSockets;
 using EmbedIO.Modules;
 using Unosquare.Swan;
 
@@ -87,7 +88,7 @@ namespace EmbedIO.Samples
                 {
                     var ws = FindContext(s as Process);
 
-                    if (ws != null && ws.WebSocket.State == Net.WebSocketState.Open)
+                    if (ws != null && ws.WebSocket.State == WebSocketState.Open)
                         ws.WebSocket.CloseAsync().GetAwaiter().GetResult();
                 }
             };
@@ -124,7 +125,7 @@ namespace EmbedIO.Samples
                 if ((s as Process)?.HasExited == true) return;
                 var ws = FindContext(s as Process);
 
-                if (ws != null && ws.WebSocket.State == Net.WebSocketState.Open)
+                if (ws != null && ws.WebSocket.State == WebSocketState.Open)
                     Send(ws, buffer);
             }
         }

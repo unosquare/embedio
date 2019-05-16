@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Constants;
@@ -343,7 +344,7 @@ namespace EmbedIO.Modules
                 {
                     var currentSocket = _mWebSockets[i];
 
-                    if (currentSocket.WebSocket == null || currentSocket.WebSocket.State == Net.WebSocketState.Open)
+                    if (currentSocket.WebSocket == null || currentSocket.WebSocket.State == WebSocketState.Open)
                         continue;
 
                     RemoveWebSocket(currentSocket);
@@ -370,8 +371,9 @@ namespace EmbedIO.Modules
                     new Net.WebSocketReceiveResult(e.RawData.Length, e.Opcode));
             };
 
-            while (webSocketContext.WebSocket.State == Net.WebSocketState.Open ||
-                   webSocketContext.WebSocket.State == Net.WebSocketState.Closing)
+            while (webSocketContext.WebSocket.State == WebSocketState.Open
+                || webSocketContext.WebSocket.State == WebSocketState.CloseReceived
+                || webSocketContext.WebSocket.State == WebSocketState.CloseSent)
             {
                 await Task.Delay(500, ct).ConfigureAwait(false);
             }
