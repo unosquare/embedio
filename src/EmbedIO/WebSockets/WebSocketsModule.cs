@@ -159,7 +159,7 @@ namespace EmbedIO.Modules
             }
 
             // Accept the WebSocket -- this is a blocking method until the WebSocketCloses
-            await _serverMap[finalPath].AcceptWebSocket(context, ct).ConfigureAwait(false);
+            await _serverMap[finalPath].HandleWebSocket(context as IHttpContextImpl, ct).ConfigureAwait(false);
 
             return true;
         }

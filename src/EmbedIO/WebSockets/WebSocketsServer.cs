@@ -98,14 +98,7 @@ namespace EmbedIO.Modules
         /// </value>
         protected System.Text.Encoding Encoding { get; set; } = System.Text.Encoding.UTF8;
 
-        /// <summary>
-        /// Accepts the WebSocket connection.
-        /// This is a blocking call so it must be called within an independent thread.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="ct">The cancellation token.</param>
-        /// <returns>A task that represents the asynchronous of websocket connection operation.</returns>
-        public async Task AcceptWebSocket(IHttpContext context, CancellationToken ct)
+        internal async Task HandleWebSocket(IHttpContextImpl context, CancellationToken ct)
         {
             // first, accept the websocket
             $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
