@@ -182,12 +182,11 @@ namespace EmbedIO.Net.Internal
             // Continue reading until full header is received.
             // Especially important for multipart requests when the second part of the header arrives after a tiny delay
             // because the web browser has to measure the content length first.
-            var parsedBytes = 0;
             while (true)
             {
                 try
                 {
-                    await _ms.WriteAsync(_buffer, parsedBytes, offset - parsedBytes).ConfigureAwait(false);
+                    await _ms.WriteAsync(_buffer, 0, offset).ConfigureAwait(false);
                     if (_ms.Length > 32768)
                     {
                         Close(true);
@@ -232,8 +231,7 @@ namespace EmbedIO.Net.Internal
                     return;
                 }
 
-                parsedBytes = offset;
-                offset += await Stream.ReadAsync(_buffer, offset, BufferSize - offset).ConfigureAwait(false);
+                offset = await Stream.ReadAsync(_buffer, 0, BufferSize).ConfigureAwait(false);
             }
         }
 
