@@ -200,9 +200,14 @@ namespace EmbedIO
         {
             var cookie = new Cookie(CookieName, id, CookiePath)
             {
-                Expires = DateTime.UtcNow.Add(CookieDuration),
                 HttpOnly = CookieHttpOnly,
             };
+
+            if (CookieDuration > TimeSpan.Zero)
+            {
+                cookie.Expires = DateTime.UtcNow.Add(CookieDuration);
+            }
+
             return cookie;
         }
 
