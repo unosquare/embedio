@@ -123,7 +123,7 @@ namespace EmbedIO
             set
             {
                 EnsureConfigurationNotLocked();
-                _cookieName = Validate.CookieName(nameof(value), value);
+                _cookieName = Validate.Rfc2616Token(nameof(value), value);
             }
         }
 

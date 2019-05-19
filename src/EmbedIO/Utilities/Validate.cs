@@ -1,16 +1,12 @@
 ﻿using System;
-using System.IO;
-using System.Security;
 
 namespace EmbedIO.Utilities
 {
     /// <summary>
     /// Provides validation methods for method arguments.
     /// </summary>
-    public static class Validate
+    public static partial class Validate
     {
-        private static readonly char[] InvalidLocalPathChars = GetInvalidLocalPathChars();
-
         /// <summary>
         /// Ensures that an argument is not <see langword="null"/>.
         /// </summary>
@@ -76,76 +72,6 @@ namespace EmbedIO.Utilities
         }
 
         /// <summary>
-        /// Ensures that the value of an argument is a valid URL path
-        /// and normalizes it.
-        /// </summary>
-        /// <param name="argumentName">The name of the argument to validate.</param>
-        /// <param name="value">The value to validate.</param>
-        /// <param name="isBasePath">If set to <see langword="true"/><c>true</c> [is base path].</param>
-        /// <returns>The normalized URL path.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException">
-        /// <para><paramref name="value"/> is empty.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="value"/> does not start with a slash (<c>/</c>) character.</para>
-        /// </exception>
-        public static string UrlPath(string argumentName, string value, bool isBasePath)
-        {
-            var exception = Utilities.UrlPath.ValidateInternal(argumentName, value);
-            if (exception != null)
-                throw exception;
-
-            return Utilities.UrlPath.Normalize(value, isBasePath);
-        }
-
-        /// <summary>
-        /// Ensures that the value of an argument is a valid local path
-        /// and, optionally, gets the corresponding full path.
-        /// </summary>
-        /// <param name="argumentName">The name of the argument to validate.</param>
-        /// <param name="value">The value to validate.</param>
-        /// <param name="getFullPath"><see langword="true"/> to get the full path, <see langword="false"/> to leave the path as is..</param>
-        /// <returns>The local path, or the full path if <paramref name="getFullPath"/> is <see langword="true"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException">
-        /// <para><paramref name="value"/> is empty.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="value"/> contains only white space.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="value"/> contains one or more invalid characters.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="getFullPath"/> is <see langword="true"/> and the full path could not be obtained.</para>
-        /// </exception>
-        public static string LocalPath(string argumentName, string value, bool getFullPath)
-        {
-            if (value == null)
-                throw new ArgumentNullException(argumentName);
-
-            if (value.Length == 0)
-                throw new ArgumentException("Local path is empty.", argumentName);
-
-            if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentException("Local path contains only white space.", argumentName);
-
-            if (value.IndexOfAny(InvalidLocalPathChars) >= 0)
-                throw new ArgumentException("Local path contains one or more invalid characters.", argumentName);
-
-            if (getFullPath)
-            {
-                try
-                {
-                    value = Path.GetFullPath(value);
-                }
-                catch (Exception e) when (e is ArgumentException || e is SecurityException || e is NotSupportedException || e is PathTooLongException)
-                {
-                    throw new ArgumentException("Could not get the full local path.", argumentName, e);
-                }
-            }
-
-            return value;
-        }
-
-        /// <summary>
         /// Ensures that a valid URL can be constructed from a <see langword="string"/> argument.
         /// </summary>
         /// <param name="argumentName">Name of the argument.</param>
@@ -161,7 +87,11 @@ namespace EmbedIO.Utilities
         /// and <paramref name="value"/>'s scheme is neither <c>http</c> nor <c>https</c>.</para>
         /// </exception>
         /// <seealso cref="Url(string,string,Uri,bool)"/>
-        public static string Url(string argumentName, string value, UriKind uriKind = UriKind.RelativeOrAbsolute, bool enforceHttp = false)
+        public static string Url(
+            string argumentName, 
+            string value, 
+            UriKind uriKind = UriKind.RelativeOrAbsolute,
+            bool enforceHttp = false)
         {
             Uri uri;
             try
@@ -212,7 +142,7 @@ namespace EmbedIO.Utilities
             Uri uri;
             try
             {
-                uri = new Uri(baseUri,new Uri(NotNull(argumentName, value), UriKind.RelativeOrAbsolute));
+                uri = new Uri(baseUri, new Uri(NotNull(argumentName, value), UriKind.RelativeOrAbsolute));
             }
             catch (UriFormatException e)
             {
@@ -223,43 +153,6 @@ namespace EmbedIO.Utilities
                 throw new ArgumentException("URL scheme is neither HTTP nor HTTPS.", argumentName);
 
             return uri.ToString();
-        }
-
-        /// <summary>
-        /// Ensures that a <see langword="string"/> argument is valid as a cookie name.
-        /// </summary>
-        /// <param name="argumentName">Name of the argument.</param>
-        /// <param name="value">The value.</param>
-        /// <returns><paramref name="value"/>, if it is a valid cookie name.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException">
-        /// <para><paramref name="value"/> is the empty string.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="value"/> contains one or more characters that are not valid in a cookie name.
-        /// Only printable ASCII characters, excluding space (<c>' '</c>), are considered valid.</para>
-        /// </exception>
-        public static string CookieName(string argumentName, string value)
-        {
-            value = NotNullOrEmpty(argumentName, value);
-
-            foreach (var c in value)
-            {
-                if (c < '\x21' || c > '\x7E')
-                    throw new ArgumentException("Cookie name contains one or more invalid characters.", argumentName);
-            }
-
-            return value;
-        }
-
-        private static char[] GetInvalidLocalPathChars()
-        {
-            var systemChars = Path.GetInvalidPathChars();
-            var p = systemChars.Length;
-            var result = new char[p + 2];
-            Array.Copy(systemChars, result, p);
-            result[p++] = '*';
-            result[p] = '?';
-            return result;
         }
     }
 }
