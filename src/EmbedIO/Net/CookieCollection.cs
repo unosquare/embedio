@@ -183,8 +183,7 @@ namespace EmbedIO.Net
             return cookies;
         }
 
-        private static string[] SplitCookieHeaderValue(string value)
-            => new List<string>(value.SplitHeaderValue(true)).ToArray();
+        private static string[] SplitCookieHeaderValue(string value) => value.SplitHeaderValue(true).ToArray();
 
         private static int CompareCookieWithinSorted(Cookie x, Cookie y)
         {
