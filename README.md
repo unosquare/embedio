@@ -167,7 +167,7 @@ For writing a binary stream directly to the Response Output Stream you can use [
 
 You can use files from Assembly Resources directly with EmbedIO. They will be served as local files. This is a good practice when you want to provide a web server solution in a single file. 
 
-The first step is include the `ResourceFilesModule` module to your `IWebServer`. The `ResourceFilesModule` constructor take two arguments, the Assembly reference where the Resources are located and the path to the Resources (Usually this path is the Assembly name plus the word "Resources").
+First, you need to add the `ResourceFilesModule` module to your `IWebServer`. The `ResourceFilesModule` constructor takes two arguments, the Assembly reference where the Resources are located and the path to the Resources (Usually this path is the Assembly name plus the word "Resources").
 
 ```csharp
 using (var server = new WebServer(url)) 
@@ -179,7 +179,7 @@ using (var server = new WebServer(url))
 }
 ```
 
-And that's all. The module will read the files in the Assembly using the second argument as base path. For example, if you have a folder containing an image, the resource path can be `Unosquare.MyProgram.Resources.MyFolder.Image.jpg` and the relative URL is `/MyFolder/Image.jpg`.
+And that's all. The module will read the files in the Assembly using the second argument as the base path. For example, if you have a folder containing an image, the resource path can be `Unosquare.MyProgram.Resources.MyFolder.Image.jpg` and the relative URL is `/MyFolder/Image.jpg`.
 
 ## Support for SSL
 
