@@ -101,15 +101,17 @@
       <Rule Id="SA1308" Action="None" />
       <Rule Id="SA1309" Action="None" />
       <Rule Id="SA1402" Action="None" />
+      <Rule Id="SA1405" Action="None" />
       <Rule Id="SA1501" Action="None" />
       <Rule Id="SA1503" Action="None" />
       <Rule Id="SA1507" Action="Error" />
       <Rule Id="SA1516" Action="None" />
       <Rule Id="SA1601" Action="None" />
-      <Rule Id="SA1633" Action="None" />
+      <Rule Id="SA1602" Action="None" />
       <Rule Id="SA1609" Action="None" />
       <Rule Id="SA1623" Action="None" />
       <Rule Id="SA1629" Action="None" />
+      <Rule Id="SA1633" Action="None" />
       <Rule Id="SA1649" Action="None" />
   </Rules>
 </RuleSet>
