@@ -91,6 +91,7 @@
 <li><a href="#webserver-setup">WebServer Setup</a></li>
 <li><a href="#ihttpcontext-extension-methods">IHttpContext Extension Methods</a></li>
 <li><a href="#easy-routes">Easy Routes</a></li>
+<li><a href="#serving-files-from-assembly">Serving Files from Assembly</a></li>
 </ul>
 </li>
 <li><a href="#support-for-ssl">Support for SSL</a></li>
@@ -186,34 +187,32 @@
 <p>By adding the namespace <code>Unosquare.Labs.EmbedIO</code> to your class, you can use some helpful extension methods for <code>IHttpContext</code>, <code>IHttpResponse</code> and <code>IHttpRequest</code>. These methods can be used in any Web module (like <a href="https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html">Fallback Module</a>) or inside a <a href="https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html">WebAPI Controller</a> method.</p>
 <p>Below, some common scenarios using a WebAPI Controller method as body function:</p>
 <h4 id="reading-from-a-post-body-as-a-dictionary-applicationx-www-form-urlencoded">Reading from a POST body as a dictionary (application/x-www-form-urlencoded)</h4>
-<p>For reading a dictionary from a HTTP Request body you can use <a href="https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionary_Unosquare_Labs_EmbedIO_IHttpContext_">RequestFormDataDictionary</a>. This method works directly from <code>IHttpContext</code> and returns the key-value pairs sent by using the Contet-Type &#39;application/x-www-form-urlencoded&#39;.</p>
+<p>For reading a dictionary from a HTTP Request body you can use <a href="https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionaryAsync_Unosquare_Labs_EmbedIO_IHttpContext_">RequestFormDataDictionaryAsync</a>. This method works directly from <code>IHttpContext</code> and returns the key-value pairs sent by using the Contet-Type &#39;application/x-www-form-urlencoded&#39;.</p>
 <pre><code class="lang-csharp">    [WebApiHandler(HttpVerbs.Post, &quot;/api/data&quot;)]
     public async Task&lt;bool&gt; PostData() 
     {
-        var data = HttpContext.RequestFormDataDictionary();
+        var data = await HttpContext.RequestFormDataDictionaryAsync();
+    // Perform an operation with the data
+    await SaveData(data);
 
-        // Perform an operation with the data
-        await SaveData(data);
-
-        return true;
+    return true;
     }
 </code></pre><h4 id="reading-from-a-post-body-as-a-json-payload-applicationjson">Reading from a POST body as a JSON payload (application/json)</h4>
-<p>For reading a JSON payload and deserialize it to an object from a HTTP Request body you can use <a href="https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_ParseJson__1_Unosquare_Labs_EmbedIO_IHttpContext_">ParseJson<t></t></a>. This method works directly from <code>IHttpContext</code> and returns an object of the type specified in the generic type.</p>
+<p>For reading a JSON payload and deserialize it to an object from a HTTP Request body you can use <a href="https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_ParseJsonAsync__1_Unosquare_Labs_EmbedIO_IHttpContext_">ParseJson<t></t></a>. This method works directly from <code>IHttpContext</code> and returns an object of the type specified in the generic type.</p>
 <pre><code class="lang-csharp">    [WebApiHandler(HttpVerbs.Post, &quot;/api/data&quot;)]
     public async Task&lt;bool&gt; PostJsonData() 
     {
         var data = HttpContext.ParseJson&lt;MyData&gt;();
+    // Perform an operation with the data
+    await SaveData(data);
 
-        // Perform an operation with the data
-        await SaveData(data);
-
-        return true;
+    return true;
     }
 </code></pre><h4 id="reading-from-a-post-body-as-a-formdata-multipartform-data">Reading from a POST body as a FormData (multipart/form-data)</h4>
 <p>EmbedIO doesn&#39;t provide the functionality to read from a Multipart FormData stream. But you can check the <a href="https://www.nuget.org/packages/HttpMultipartParser/">HttpMultipartParser Nuget</a> and connect the Request input directly to the HttpMultipartParser, very helpful and small library.</p>
 <p>There is <a href="http://stackoverflow.com/questions/7460088/reading-file-input-from-a-multipart-form-data-post">another solution</a> but it requires this <a href="https://www.nuget.org/packages/Microsoft.AspNet.WebApi.Client">Microsoft Nuget</a>.</p>
 <h4 id="writing-a-binary-stream">Writing a binary stream</h4>
-<p>For writing a binary stream directly to the Response Output Stream you can use <a href="https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_">BinaryResponseAsync</a>. This method has an overload to use <code>IHttpContext</code> and you need to set the Content-Type beforehand.</p>
+<p>For writing a binary stream directly to the Response Output Stream you can use <a href="https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_Stream_System_Boolean_System_Threading_CancellationToken_">BinaryResponseAsync</a>. This method has an overload to use <code>IHttpContext</code> and you need to set the Content-Type beforehand.</p>
 <pre><code class="lang-csharp">    [WebApiHandler(HttpVerbs.Get, &quot;/api/binary&quot;)]
     public async Task&lt;bool&gt; GetBinary() 
     {
@@ -225,6 +224,17 @@
     return await HttpContext.BinaryResponseAsync(stream);
     }
 </code></pre><h3 id="easy-routes">Easy Routes</h3>
+<h3 id="serving-files-from-assembly">Serving Files from Assembly</h3>
+<p>You can use files from Assembly Resources directly with EmbedIO. They will be served as local files. This is a good practice when you want to provide a web server solution in a single file. </p>
+<p>The first step is include the <code>ResourceFilesModule</code> module to your <code>IWebServer</code>. The <code>ResourceFilesModule</code> constructor take two arguments, the Assembly reference where the Resources are located and the path to the Resources (Usually this path is the Assembly name plus the word &quot;Resources&quot;).</p>
+<pre><code class="lang-csharp">using (var server = new WebServer(url)) 
+{
+    server.RegisterModule(new ResourceFilesModule(typeof(MyProgram).Assembly,
+                        &quot;Unosquare.MyProgram.Resources&quot;));
+
+    // Continue with the server set up and initialization
+}
+</code></pre><p>And that&#39;s all. The module will read the files in the Assembly using the second argument as base path. For example, if you have a folder containing an image, the resource path can be <code>Unosquare.MyProgram.Resources.MyFolder.Image.jpg</code> and the relative URL is <code>/MyFolder/Image.jpg</code>.</p>
 <h2 id="support-for-ssl">Support for SSL</h2>
 <p>Both HTTP listeners (Microsoft and Unosquare) can open a web server using SSL. This support is for Windows only (for now) and you need to manually register your certificate or use the <code>WebServerOptions</code> class to initialize a new <code>WebServer</code> instance. This section will provide some examples of how to use SSL but first a brief explanation of how SSL works on Windows.</p>
 <p>For Windows Vista or better, Microsoft provides Network Shell (<code>netsh</code>). This command line tool allows to map an IP-port to a certificate, so incoming HTTP request can upgrade the connection to a secure stream using the provided certificate. EmbedIO can read or register certificates to a default store (My/LocalMachine) and use them against a netsh <code>sslcert</code> for binding the first <code>https</code> prefix registered.</p>
