@@ -48,7 +48,7 @@ build_script:
       [xml]$xml = Get-Content inspectcode.xml
       if ($xml.Report.Issues.HasChildNodes)
       {
-            throw "inspectcode.exe found issues with severity level $severity; see $outputFile for details"
+            throw "inspectcode.exe found issues with severity level Error; see inspectcode.xml for details"
       }
 test_script:
 - dotnet test test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f netcoreapp2.2
