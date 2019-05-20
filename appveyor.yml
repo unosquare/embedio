@@ -45,7 +45,7 @@ build_script:
       cd ..
 - cmd: InspectCode --swea -o=inspectcode.xml -s=Error --verbosity=ERROR Unosquare.Labs.EmbedIO.sln
 - ps: |
-      [xml]$xml = Get-Content $outputFile
+      [xml]$xml = Get-Content inspectcode.xml
       if ($xml.Report.Issues.HasChildNodes)
       {
             throw "inspectcode.exe found issues with severity level $severity; see $outputFile for details"
