@@ -79,7 +79,7 @@
 <a href="https://builtwithdot.net/project/105/embedio"><img src="https://builtwithdot.net/project/105/embedio/badge" alt="BuiltWithDotnet"></a></p>
 <p><img src="https://raw.githubusercontent.com/unosquare/embedio/master/images/embedio.png" alt="EmbedIO"></p>
 <p><em><span class="emoji" shortcode="star">⭐</span> Please star this project if you find it useful!</em></p>
-<p><strong>This README is for EmbedIO v2.x. Click <a href="https://github.com/unosquare/embedio/tree/v1.X">here</a> if you are still sing EmbedIO v1.x.</strong></p>
+<p><strong>This README is for EmbedIO v2.x. Click <a href="https://github.com/unosquare/embedio/tree/v1.X">here</a> if you are still using EmbedIO v1.x.</strong></p>
 <ul>
 <li><a href="#overview">Overview</a><ul>
 <li><a href="#embedio-20---whats-new">EmbedIO 2.0 - What&#39;s new</a></li>
@@ -226,7 +226,7 @@
 </code></pre><h3 id="easy-routes">Easy Routes</h3>
 <h3 id="serving-files-from-assembly">Serving Files from Assembly</h3>
 <p>You can use files from Assembly Resources directly with EmbedIO. They will be served as local files. This is a good practice when you want to provide a web server solution in a single file. </p>
-<p>The first step is include the <code>ResourceFilesModule</code> module to your <code>IWebServer</code>. The <code>ResourceFilesModule</code> constructor take two arguments, the Assembly reference where the Resources are located and the path to the Resources (Usually this path is the Assembly name plus the word &quot;Resources&quot;).</p>
+<p>First, you need to add the <code>ResourceFilesModule</code> module to your <code>IWebServer</code>. The <code>ResourceFilesModule</code> constructor takes two arguments, the Assembly reference where the Resources are located and the path to the Resources (Usually this path is the Assembly name plus the word &quot;Resources&quot;).</p>
 <pre><code class="lang-csharp">using (var server = new WebServer(url)) 
 {
     server.RegisterModule(new ResourceFilesModule(typeof(MyProgram).Assembly,
@@ -234,7 +234,7 @@
 
     // Continue with the server set up and initialization
 }
-</code></pre><p>And that&#39;s all. The module will read the files in the Assembly using the second argument as base path. For example, if you have a folder containing an image, the resource path can be <code>Unosquare.MyProgram.Resources.MyFolder.Image.jpg</code> and the relative URL is <code>/MyFolder/Image.jpg</code>.</p>
+</code></pre><p>And that&#39;s all. The module will read the files in the Assembly using the second argument as the base path. For example, if you have a folder containing an image, the resource path can be <code>Unosquare.MyProgram.Resources.MyFolder.Image.jpg</code> and the relative URL is <code>/MyFolder/Image.jpg</code>.</p>
 <h2 id="support-for-ssl">Support for SSL</h2>
 <p>Both HTTP listeners (Microsoft and Unosquare) can open a web server using SSL. This support is for Windows only (for now) and you need to manually register your certificate or use the <code>WebServerOptions</code> class to initialize a new <code>WebServer</code> instance. This section will provide some examples of how to use SSL but first a brief explanation of how SSL works on Windows.</p>
 <p>For Windows Vista or better, Microsoft provides Network Shell (<code>netsh</code>). This command line tool allows to map an IP-port to a certificate, so incoming HTTP request can upgrade the connection to a secure stream using the provided certificate. EmbedIO can read or register certificates to a default store (My/LocalMachine) and use them against a netsh <code>sslcert</code> for binding the first <code>https</code> prefix registered.</p>
