@@ -43,7 +43,13 @@ build_script:
       msbuild /verbosity:quiet /p:Configuration=Release EmbedIO.Forms.Sample.sln
       cd ..
       cd ..
-- cmd: InspectCode.exe Unosquare.Labs.EmbedIO.sln
+- cmd: InspectCode --swea -o=inspectcode.xml -s=Error --verbosity=ERROR Unosquare.Labs.EmbedIO.sln
+- ps: |
+      [xml]$xml = Get-Content $outputFile
+      if ($xml.Report.Issues.HasChildNodes)
+      {
+            throw "inspectcode.exe found issues with severity level $severity; see $outputFile for details"
+      }
 test_script:
 - dotnet test test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f netcoreapp2.2
 - cmd: tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f net472" -output:coverage.xml -filter:"+[Unosquare.Labs.EmbedIO*]* -[Unosquare.Labs.EmbedIO.Test*]*" -register:userdotnet
