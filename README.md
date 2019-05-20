@@ -21,6 +21,7 @@
     - [WebServer Setup](#webserver-setup)
     - [IHttpContext Extension Methods](#ihttpcontext-extension-methods)
     - [Easy Routes](#easy-routes)
+    - [Serving Files from Assembly](#serving-files-from-assembly)
 - [Support for SSL](#support-for-ssl)
 - [Examples](#examples)
     - [Basic Example](#basic-example)
@@ -107,35 +108,33 @@ Below, some common scenarios using a WebAPI Controller method as body function:
 
 #### Reading from a POST body as a dictionary (application/x-www-form-urlencoded)
 
-For reading a dictionary from a HTTP Request body you can use [RequestFormDataDictionary](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionary_Unosquare_Labs_EmbedIO_IHttpContext_). This method works directly from `IHttpContext` and returns the key-value pairs sent by using the Contet-Type 'application/x-www-form-urlencoded'.
+For reading a dictionary from a HTTP Request body you can use [RequestFormDataDictionaryAsync](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionaryAsync_Unosquare_Labs_EmbedIO_IHttpContext_). This method works directly from `IHttpContext` and returns the key-value pairs sent by using the Contet-Type 'application/x-www-form-urlencoded'.
 
 ```csharp
     [WebApiHandler(HttpVerbs.Post, "/api/data")]
     public async Task<bool> PostData() 
     {
-        var data = HttpContext.RequestFormDataDictionary();
+        var data = await HttpContext.RequestFormDataDictionaryAsync();
+	// Perform an operation with the data
+	await SaveData(data);
 	
-		// Perform an operation with the data
-		await SaveData(data);
-	
-		return true;
+	return true;
     }
 ```
 
 #### Reading from a POST body as a JSON payload (application/json)
 
-For reading a JSON payload and deserialize it to an object from a HTTP Request body you can use [ParseJson<T>](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_ParseJson__1_Unosquare_Labs_EmbedIO_IHttpContext_). This method works directly from `IHttpContext` and returns an object of the type specified in the generic type.
+For reading a JSON payload and deserialize it to an object from a HTTP Request body you can use [ParseJson<T>](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_ParseJsonAsync__1_Unosquare_Labs_EmbedIO_IHttpContext_). This method works directly from `IHttpContext` and returns an object of the type specified in the generic type.
 
 ```csharp
     [WebApiHandler(HttpVerbs.Post, "/api/data")]
     public async Task<bool> PostJsonData() 
     {
         var data = HttpContext.ParseJson<MyData>();
+	// Perform an operation with the data
+	await SaveData(data);
 	
-		// Perform an operation with the data
-		await SaveData(data);
-	
-		return true;
+	return true;
     }
 ```
 
@@ -147,7 +146,7 @@ There is [another solution](http://stackoverflow.com/questions/7460088/reading-f
 
 #### Writing a binary stream
 
-For writing a binary stream directly to the Response Output Stream you can use [BinaryResponseAsync](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_). This method has an overload to use `IHttpContext` and you need to set the Content-Type beforehand.
+For writing a binary stream directly to the Response Output Stream you can use [BinaryResponseAsync](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_Stream_System_Boolean_System_Threading_CancellationToken_). This method has an overload to use `IHttpContext` and you need to set the Content-Type beforehand.
 
 ```csharp
     [WebApiHandler(HttpVerbs.Get, "/api/binary")]
@@ -163,6 +162,24 @@ For writing a binary stream directly to the Response Output Stream you can use [
 ```
 
 ### Easy Routes
+
+### Serving Files from Assembly
+
+You can use files from Assembly Resources directly with EmbedIO. They will be served as local files. This is a good practice when you want to provide a web server solution in a single file. 
+
+The first step is include the `ResourceFilesModule` module to your `IWebServer`. The `ResourceFilesModule` constructor take two arguments, the Assembly reference where the Resources are located and the path to the Resources (Usually this path is the Assembly name plus the word "Resources").
+
+```csharp
+using (var server = new WebServer(url)) 
+{
+	server.RegisterModule(new ResourceFilesModule(typeof(MyProgram).Assembly,
+                        "Unosquare.MyProgram.Resources"));
+	
+	// Continue with the server set up and initialization
+}
+```
+
+And that's all. The module will read the files in the Assembly using the second argument as base path. For example, if you have a folder containing an image, the resource path can be `Unosquare.MyProgram.Resources.MyFolder.Image.jpg` and the relative URL is `/MyFolder/Image.jpg`.
 
 ## Support for SSL
 
