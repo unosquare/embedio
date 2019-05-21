@@ -1,8 +1,9 @@
-﻿#pragma warning disable 4014
+﻿using System.Threading.Tasks;
+using NUnit.Framework;
+
 namespace EmbedIO.Tests
 {
-    using System.Threading.Tasks;
-    using NUnit.Framework;
+#pragma warning disable 4014
 
     [TestFixture]
     public class EasyRoutesTest
@@ -133,5 +134,5 @@ namespace EmbedIO.Tests
             }
         }
     }
-}
 #pragma warning restore 4014
+}

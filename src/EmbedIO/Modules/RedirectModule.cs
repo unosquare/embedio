@@ -84,6 +84,12 @@ namespace EmbedIO.Modules
 
         /// <inheritdoc />
         public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct)
-            => Task.FromResult((_shouldRedirect?.Invoke(context, path) ?? true) && context.Redirect(RedirectUrl, StatusCode));
+        {
+            if (_shouldRedirect != null && !_shouldRedirect(context, path))
+                return Task.FromResult(false);
+
+            context.Redirect(RedirectUrl, (int)StatusCode);
+            return Task.FromResult(true);
+        }
     }
 }

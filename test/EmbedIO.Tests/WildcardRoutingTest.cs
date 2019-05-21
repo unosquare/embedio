@@ -1,14 +1,15 @@
-﻿namespace EmbedIO.Tests
-{
-    using NUnit.Framework;
-    using System.Threading.Tasks;
-    using TestObjects;
+﻿using EmbedIO.Modules;
+using NUnit.Framework;
+using System.Threading.Tasks;
+using EmbedIO.Tests.TestObjects;
 
+namespace EmbedIO.Tests
+{
     [TestFixture]
     public class WildcardRoutingTest : FixtureBase
     {
         public WildcardRoutingTest()
-            : base(ws => ws.RegisterModule(new TestRoutingModule()), Constants.RoutingStrategy.Wildcard, true)
+            : base(ws => ws.RegisterModule(new TestRoutingModule()), WebApiRoutingStrategy.Wildcard, true)
         {
             // placeholder    
         }

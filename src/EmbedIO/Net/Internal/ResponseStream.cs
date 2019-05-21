@@ -88,6 +88,7 @@ namespace EmbedIO.Net.Internal
             }
 
             _response.Close();
+            _stream.Dispose();
         }
 
         /// <inheritdoc />

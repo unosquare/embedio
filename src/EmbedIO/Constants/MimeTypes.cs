@@ -4,11 +4,26 @@ using System.Collections.Generic;
 namespace EmbedIO.Constants
 {
     /// <summary>
-    /// Associates file extensions to MIME types.
+    /// Provides constants for commonly-used MIME types and association between file extensions and MIME types.
     /// </summary>
-    /// <seealso cref="Types"/>
-    public static class Mime
+    /// <seealso cref="Associations"/>
+    public static class MimeTypes
     {
+        /// <summary>
+        /// The MIME type for HTML.
+        /// </summary>
+        public const string HtmlType = "text/html";
+
+        /// <summary>
+        /// The MIME type for JSON.
+        /// </summary>
+        public const string JsonType = "application/json";
+
+        /// <summary>
+        /// The MIME type for URL-encoded HTML form contents.
+        /// </summary>
+        internal const string UrlEncodedContentType = "application/x-www-form-urlencoded";
+
         // -------------------------------------------------------------------------------------------------
         //
         //  IMPORTANT NOTE TO CONTRIBUTORS
@@ -33,7 +48,7 @@ namespace EmbedIO.Constants
         /// on April 26th, 2019.</para>
         /// <para>Copyright (c) 2014 Samuel Neff. Redistributed under <see href="https://github.com/samuelneff/MimeTypeMap/blob/master/LICENSE">MIT license</see>.</para>
         /// </remarks>
-        public static IReadOnlyDictionary<string, string> Types { get; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        public static IReadOnlyDictionary<string, string> Associations { get; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             {".323", "text/h323"},
             {".3g2", "video/3gpp2"},

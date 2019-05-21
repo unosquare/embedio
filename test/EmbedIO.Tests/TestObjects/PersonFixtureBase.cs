@@ -1,15 +1,15 @@
-﻿namespace EmbedIO.Tests.TestObjects
-{
-    using Constants;
-    using NUnit.Framework;
-    using Swan.Formatters;
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using EmbedIO.Modules;
+using NUnit.Framework;
+using Unosquare.Swan.Formatters;
 
+namespace EmbedIO.Tests.TestObjects
+{
     public abstract class PersonFixtureBase : FixtureBase
     {
-        protected PersonFixtureBase(Action<IWebServer> builder, RoutingStrategy routeStrategy = RoutingStrategy.Regex, bool useTestWebServer = false)
+        protected PersonFixtureBase(Action<IWebServer> builder, WebApiRoutingStrategy routeStrategy = WebApiRoutingStrategy.Regex, bool useTestWebServer = false)
             : base(builder, routeStrategy, useTestWebServer)
         {
         }

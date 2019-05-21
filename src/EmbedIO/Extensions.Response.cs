@@ -22,18 +22,6 @@ namespace EmbedIO
         public static void NoCache(this IHttpContext context) => context.Response.NoCache();
 
         /// <summary>
-        /// Sends headers to disable caching on the client side.
-        /// </summary>
-        /// <param name="response">The response.</param>
-        public static void NoCache(this IHttpResponse response)
-        {
-            response.AddHeader(HttpHeaders.Expires, "Mon, 26 Jul 1997 05:00:00 GMT");
-            response.AddHeader(HttpHeaders.LastModified, DateTime.UtcNow.ToRfc1123String());
-            response.AddHeader(HttpHeaders.CacheControl, "no-store, no-cache, must-revalidate");
-            response.AddHeader(HttpHeaders.Pragma, "no-cache");
-        }
-
-        /// <summary>
         /// Outputs async a Json Response given a data object.
         /// </summary>
         /// <param name="context">The context.</param>
@@ -116,7 +104,7 @@ namespace EmbedIO
             CancellationToken cancellationToken = default)
         {
             context.Response.StatusCode = (int)statusCode;
-            return context.StringResponseAsync(htmlContent, Responses.HtmlContentType, null, useGzip, cancellationToken);
+            return context.StringResponseAsync(htmlContent, MimeTypes.HtmlType, null, useGzip, cancellationToken);
         }
 
         /// <summary>
@@ -156,37 +144,11 @@ namespace EmbedIO
         public static Task<bool> StringResponseAsync(
             this IHttpContext context,
             string content,
-            string contentType = "application/json",
+            string contentType = MimeTypes.JsonType,
             Encoding encoding = null,
             bool useGzip = true,
             CancellationToken cancellationToken = default) =>
             context.Response.StringResponseAsync(content, contentType, encoding, useGzip && context.AcceptGzip(content.Length), cancellationToken);
-
-        /// <summary>
-        /// Outputs async a string response given a string.
-        /// </summary>
-        /// <param name="response">The response.</param>
-        /// <param name="content">The content.</param>
-        /// <param name="contentType">Type of the content.</param>
-        /// <param name="encoding">The encoding.</param>
-        /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A task for writing the output stream.
-        /// </returns>
-        public static async Task<bool> StringResponseAsync(
-            this IHttpResponse response,
-            string content,
-            string contentType = "application/json",
-            Encoding encoding = null,
-            bool useGzip = false,
-            CancellationToken cancellationToken = default)
-        {
-            response.ContentType = contentType;
-
-            using (var buffer = new MemoryStream((encoding ?? Encoding.UTF8).GetBytes(content)))
-                return await BinaryResponseAsync(response, buffer, useGzip, cancellationToken).ConfigureAwait(false);
-        }
 
         /// <summary>
         /// Writes a binary response asynchronous.
@@ -206,7 +168,7 @@ namespace EmbedIO
             bool useGzip = true,
             CancellationToken cancellationToken = default)
         {
-            context.Response.ContentType = contentType ?? Responses.HtmlContentType;
+            context.Response.ContentType = contentType ?? MimeTypes.HtmlType;
 
             var stream = file.OpenRead();
             return context.BinaryResponseAsync(stream, useGzip, cancellationToken: cancellationToken);
@@ -227,55 +189,6 @@ namespace EmbedIO
             Stream buffer,
             bool useGzip = true,
             CancellationToken cancellationToken = default)
-            => BinaryResponseAsync(context.Response, buffer, useGzip && context.AcceptGzip(buffer.Length), cancellationToken);
-
-        /// <summary>
-        /// Writes a binary response asynchronous.
-        /// </summary>
-        /// <param name="response">The response.</param>
-        /// <param name="buffer">The buffer.</param>
-        /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A task for writing the output stream.
-        /// </returns>
-        public static async Task<bool> BinaryResponseAsync(
-            this IHttpResponse response,
-            Stream buffer,
-            bool useGzip = true,
-            CancellationToken cancellationToken = default)
-        {
-            if (useGzip)
-            {
-                buffer = await buffer.CompressAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
-                response.AddHeader(HttpHeaders.ContentEncoding, HttpHeaders.CompressionMethods.Gzip);
-            }
-
-            response.ContentLength64 = buffer.Length;
-            await response.WriteToOutputStream(buffer, 0, cancellationToken).ConfigureAwait(false);
-
-            return true;
-        }
-
-        /// <summary>
-        /// Writes to output stream.
-        /// </summary>
-        /// <param name="response">The response.</param>
-        /// <param name="buffer">The buffer.</param>
-        /// <param name="lowerByteIndex">Index of the lower byte.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A task representing the write operation to the stream.
-        /// </returns>
-        public static async Task WriteToOutputStream(
-            this IHttpResponse response,
-            Stream buffer,
-            long lowerByteIndex = 0,
-            CancellationToken cancellationToken = default)
-        {
-            buffer.Position = lowerByteIndex;
-            await buffer.CopyToAsync(response.OutputStream, Modules.FileModuleBase.ChunkSize, cancellationToken)
-                .ConfigureAwait(false);
-        }
+            => context.Response.BinaryResponseAsync(buffer, useGzip && context.AcceptGzip(buffer.Length), cancellationToken);
     }
 }

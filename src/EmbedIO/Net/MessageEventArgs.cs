@@ -5,12 +5,12 @@ using Unosquare.Swan;
 namespace EmbedIO.Net
 {
     /// <summary>
-    /// Represents the event data for the <see cref="WebSocket.OnMessage"/> event.
+    /// Represents the event data for the <see cref="Internal.WebSocket.OnMessage"/> event.
     /// </summary>
     /// <remarks>
     ///   <para>
-    ///   That event occurs when the <see cref="WebSocket"/> receives
-    ///   a message or a ping if the <see cref="WebSocket.EmitOnPing"/>
+    ///   That event occurs when the <see cref="Internal.WebSocket"/> receives
+    ///   a message or a ping if the <see cref="Internal.WebSocket.EmitOnPing"/>
     ///   property is set to <c>true</c>.
     ///   </para>
     ///   <para>

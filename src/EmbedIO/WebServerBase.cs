@@ -113,20 +113,25 @@ namespace EmbedIO
                             try
                             {
                                 // Return a 404 (Not Found) response if no module/handler handled the response.
-                                if (!await _modules.DispatchRequestAsync(context, ct).ConfigureAwait(false))
-                                {
-                                    $"[{context.Id}] No module generated a response. Sending 404 - Not Found".Error(nameof(WebServerBase));
-                                    context.Response.StatusCode = 404;
-                                }
+                                if (await _modules.DispatchRequestAsync(context, ct).ConfigureAwait(false))
+                                    continue;
+
+                                $"[{context.Id}] No module generated a response. Sending 404 - Not Found".Error(nameof(WebServerBase));
+                                context.Response.StandardResponseWithoutBody((int)HttpStatusCode.NotFound);
                             }
                             catch (Exception ex)
                             {
                                 ex.Log(nameof(WebServerBase), $"[{context.Id}] Error handling request.");
                                 if (context.Response.StatusCode != (int)HttpStatusCode.Unauthorized)
                                 {
-                                    await context.HtmlResponseAsync(string.Format(CultureInfo.InvariantCulture, Responses.Response500HtmlFormat, ex.ExceptionMessage(), ex.StackTrace),
-                                        HttpStatusCode.InternalServerError,
-                                        true,
+                                    await context.Response.StandardHtmlResponseAsync(
+                                        (int)HttpStatusCode.InternalServerError,
+                                        sb => sb
+                                            .Append("<h2>Message</h2><pre>")
+                                            .Append(ex.ExceptionMessage())
+                                            .Append("</pre><h2>Stack Trace</h2><pre>\r\n")
+                                            .Append(ex.StackTrace)
+                                            .Append("</pre>"),
                                         ct).ConfigureAwait(false);
                                 }
                             }

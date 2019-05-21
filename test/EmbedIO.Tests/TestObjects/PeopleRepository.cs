@@ -1,8 +1,8 @@
-﻿namespace EmbedIO.Tests.TestObjects
-{
-    using System;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+namespace EmbedIO.Tests.TestObjects
+{
     public class Person
     {
         public int Key { get; set; }

@@ -70,7 +70,7 @@ namespace EmbedIO.Modules
                 // invalid partial request
                 response.StatusCode = 416;
                 response.ContentLength64 = 0;
-                response.AddHeader(HttpHeaders.ContentRange, $"bytes */{fileSize}");
+                response.AddHeader(HttpHeaderNames.ContentRange, $"bytes */{fileSize}");
 
                 return Task.Delay(0, ct);
             }
@@ -80,7 +80,7 @@ namespace EmbedIO.Modules
                 response.StatusCode = 206;
                 response.ContentLength64 = upperByteIndex - lowerByteIndex + 1;
 
-                response.AddHeader(HttpHeaders.ContentRange,
+                response.AddHeader(HttpHeaderNames.ContentRange,
                     $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
             }
 
@@ -93,10 +93,10 @@ namespace EmbedIO.Modules
         /// <param name="response">The response.</param>
         protected void SetDefaultCacheHeaders(IHttpResponse response)
         {
-            response.AddHeader(HttpHeaders.CacheControl,
-                DefaultHeaders.GetValueOrDefault(HttpHeaders.CacheControl, "private"));
-            response.AddHeader(HttpHeaders.Pragma, DefaultHeaders.GetValueOrDefault(HttpHeaders.Pragma, string.Empty));
-            response.AddHeader(HttpHeaders.Expires, DefaultHeaders.GetValueOrDefault(HttpHeaders.Expires, string.Empty));
+            response.AddHeader(HttpHeaderNames.CacheControl,
+                DefaultHeaders.GetValueOrDefault(HttpHeaderNames.CacheControl, "private"));
+            response.AddHeader(HttpHeaderNames.Pragma, DefaultHeaders.GetValueOrDefault(HttpHeaderNames.Pragma, string.Empty));
+            response.AddHeader(HttpHeaderNames.Expires, DefaultHeaders.GetValueOrDefault(HttpHeaderNames.Expires, string.Empty));
         }
 
         /// <summary>
@@ -107,13 +107,13 @@ namespace EmbedIO.Modules
         /// <param name="fileExtension">The file extension.</param>
         protected void SetGeneralHeaders(IHttpResponse response, string utcFileDateString, string fileExtension)
         {
-            if (!string.IsNullOrWhiteSpace(fileExtension) && Mime.Types.TryGetValue(fileExtension, out var mimeType))
+            if (!string.IsNullOrWhiteSpace(fileExtension) && MimeTypes.Associations.TryGetValue(fileExtension, out var mimeType))
                 response.ContentType = mimeType;
 
             SetDefaultCacheHeaders(response);
 
-            response.AddHeader(HttpHeaders.LastModified, utcFileDateString);
-            response.AddHeader(HttpHeaders.AcceptRanges, "bytes");
+            response.AddHeader(HttpHeaderNames.LastModified, utcFileDateString);
+            response.AddHeader(HttpHeaderNames.AcceptRanges, "bytes");
         }
 
         private static bool CalculateRange(string partialHeader, long fileSize, out long lowerByteIndex, out long upperByteIndex)

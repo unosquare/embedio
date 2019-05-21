@@ -1,19 +1,19 @@
-﻿namespace EmbedIO.Tests
-{
-    using Constants;
-    using Modules;
-    using NUnit.Framework;
-    using Swan;
-    using Swan.Formatters;
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Net.Http;
-    using System.Text;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using TestObjects;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using EmbedIO.Constants;
+using EmbedIO.Modules;
+using EmbedIO.Tests.TestObjects;
+using NUnit.Framework;
+using Unosquare.Swan;
+using Unosquare.Swan.Formatters;
 
+namespace EmbedIO.Tests
+{
     [TestFixture]
     public class WebServerTest
     {
@@ -139,7 +139,7 @@
             {
                 var url = Resources.GetServerAddress();
 
-                using (var instance = new WebServer(url, RoutingStrategy.Wildcard))
+                using (var instance = new WebServer(url, WebApiRoutingStrategy.Wildcard))
                 {
                     instance.RegisterModule(new TestWebModule());
                     var runTask = instance.RunAsync();
@@ -258,14 +258,14 @@
                     using (var client = new HttpClient())
                     {
                         client.DefaultRequestHeaders.Accept
-                            .Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                            .Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MimeTypes.JsonType));
 
                         var request = new HttpRequestMessage(HttpMethod.Post, url + TestWebModule.RedirectUrl)
                         {
                             Content = new StringContent(
                                 "POST DATA", 
                                 Encoding.GetEncoding(encodeName),
-                                "application/json"),
+                                MimeTypes.JsonType),
                         };
 
                         using (var response = await client.SendAsync(request))

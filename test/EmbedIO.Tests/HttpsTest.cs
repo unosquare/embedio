@@ -1,12 +1,12 @@
-﻿namespace EmbedIO.Tests
-{
-    using Swan;
-    using System;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Net.Http;
-    using NUnit.Framework;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Security.Cryptography.X509Certificates;
+using System.Net.Http;
+using NUnit.Framework;
+using System.Threading.Tasks;
+using Unosquare.Swan;
 
+namespace EmbedIO.Tests
+{
     [TestFixture]
     public class HttpsTest
     {
@@ -16,7 +16,7 @@
         [Test]
         public async Task OpenWebServerHttps_RetrievesIndex()
         {
-            if (Runtime.OS != Swan.OperatingSystem.Windows)
+            if (Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
             // bypass certification validation
@@ -48,7 +48,7 @@
         [Test]
         public void OpenWebServerHttpsWithLinuxOrMac_ThrowsInvalidOperation()
         {
-            if (Runtime.OS == Swan.OperatingSystem.Windows)
+            if (Runtime.OS == Unosquare.Swan.OperatingSystem.Windows)
                 Assert.Ignore("Ignore Windows");
 
             var options = new WebServerOptions(HttpsUrl)
@@ -62,7 +62,7 @@
         [Test]
         public void OpenWebServerHttpsWithoutCert_ThrowsInvalidOperation()
         {
-            if (Runtime.OS != Swan.OperatingSystem.Windows)
+            if (Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
             var options = new WebServerOptions(HttpsUrl)
@@ -76,7 +76,7 @@
         [Test]
         public void OpenWebServerHttpsWithInvalidStore_ThrowsInvalidOperation()
         {
-            if (Runtime.OS != Swan.OperatingSystem.Windows)
+            if (Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
             var options = new WebServerOptions(HttpsUrl)

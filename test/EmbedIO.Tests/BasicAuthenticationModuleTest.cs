@@ -1,14 +1,13 @@
-﻿namespace EmbedIO.Tests
-{
-    using Constants;
-    using Modules;
-    using NUnit.Framework;
-    using System;
-    using System.Net;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Utilities;
+﻿using System;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+using EmbedIO.Modules;
+using EmbedIO.Utilities;
+using NUnit.Framework;
 
+namespace EmbedIO.Tests
+{
     [TestFixture]
     public class BasicAuthenticationModuleTest : FixtureBase
     {
@@ -21,7 +20,7 @@
                 {
                     ws.Modules.Add(new BasicAuthenticationModule("/").WithAccount(UserName, Password));
                 },
-                RoutingStrategy.Wildcard,
+                WebApiRoutingStrategy.Wildcard,
                 true)
         {
             // placeholder

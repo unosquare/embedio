@@ -13,9 +13,6 @@ namespace EmbedIO
         /// <summary>
         /// Gets a unique identifier for a HTTP context.
         /// </summary>
-        /// <value>
-        /// The identifier.
-        /// </value>
         string Id { get; }
 
         /// <summary>
@@ -31,41 +28,26 @@ namespace EmbedIO
         /// <summary>
         /// Gets the HTTP Request.
         /// </summary>
-        /// <value>
-        /// The request.
-        /// </value>
         IHttpRequest Request { get; }
 
         /// <summary>
         /// Gets the HTTP Response.
         /// </summary>
-        /// <value>
-        /// The response.
-        /// </value>
         IHttpResponse Response { get; }
 
         /// <summary>
         /// Gets the user.
         /// </summary>
-        /// <value>
-        /// The user.
-        /// </value>
         IPrincipal User { get; }
 
         /// <summary>
         /// Gets the session proxy associated with this context.
         /// </summary>
-        /// <value>
-        /// A <see cref="ISessionProxy"/> interface.
-        /// </value>
         ISessionProxy Session { get; }
 
         /// <summary>
-        /// Gets or sets the dictionary of data to pass trough the EmbedIO pipeline.
+        /// Gets the dictionary of data to pass trough the EmbedIO pipeline.
         /// </summary>
-        /// <value>
-        /// The items.
-        /// </value>
         IDictionary<object, object> Items { get; }
 
         /// <summary>

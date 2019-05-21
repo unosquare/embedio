@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
-using EmbedIO.Constants;
 using EmbedIO.Modules;
 using EmbedIO.Tests.TestObjects;
 using NUnit.Framework;
@@ -14,24 +13,17 @@ namespace EmbedIO.Tests
     {
         public WebSocketModuleTest()
             : base(
-                RoutingStrategy.Wildcard,
-                ws =>
-                {
-                    ws.RegisterModule(new WebSocketModule());
-                    ws.Module<WebSocketModule>().RegisterWebSocketServer<TestWebSocket>();
-                    ws.Module<WebSocketModule>().RegisterWebSocketServer<BigDataWebSocket>();
-                    ws.Module<WebSocketModule>().RegisterWebSocketServer<CloseWebSocket>();
-                },
+                WebApiRoutingStrategy.Wildcard,
+                ws => ws
+                    .WithModule(new TestWebSocket("/test"))
+                    .WithModule(new BigDataWebSocket("/bigdata"))
+                    .WithModule(new CloseWebSocket("/close")),
                 "test/")
         {
-            // placeholder
         }
 
         [Test]
-        public async Task TestConnectWebSocket()
-        {
-            await ConnectWebSocket();
-        }
+        public Task TestConnectWebSocket() => ConnectWebSocket();
 
         [Test]
         public async Task TestSendBigDataWebSocket()
@@ -39,12 +31,12 @@ namespace EmbedIO.Tests
             var webSocketUrl = new Uri($"{WebServerUrl.Replace("http", "ws")}bigdata");
 
             var clientSocket = new System.Net.WebSockets.ClientWebSocket();
-            await clientSocket.ConnectAsync(webSocketUrl, default);
+            await clientSocket.ConnectAsync(webSocketUrl, default).ConfigureAwait(false);
             
             var buffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes("HOLA"));
-            await clientSocket.SendAsync(buffer, System.Net.WebSockets.WebSocketMessageType.Text, true, default);
+            await clientSocket.SendAsync(buffer, System.Net.WebSockets.WebSocketMessageType.Text, true, default).ConfigureAwait(false);
 
-            var json = await ReadString(clientSocket);
+            var json = await ReadString(clientSocket).ConfigureAwait(false);
             Assert.AreEqual(Json.Serialize(BigDataWebSocket.BigDataObject), json);
         }
 
@@ -54,59 +46,13 @@ namespace EmbedIO.Tests
             var webSocketUrl = new Uri($"{WebServerUrl.Replace("http", "ws")}close");
 
             var clientSocket = new System.Net.WebSockets.ClientWebSocket();
-            await clientSocket.ConnectAsync(webSocketUrl, default);
+            await clientSocket.ConnectAsync(webSocketUrl, default).ConfigureAwait(false);
 
             var buffer = new ArraySegment<byte>(new byte[8192]);
-            var result = await clientSocket.ReceiveAsync(buffer, default);
+            var result = await clientSocket.ReceiveAsync(buffer, default).ConfigureAwait(false);
 
             Assert.IsTrue(result.CloseStatus.HasValue);
             Assert.IsTrue(result.CloseStatus.Value == System.Net.WebSockets.WebSocketCloseStatus.InvalidPayloadData);
-        }
-    }
-
-    [TestFixture]
-    public class WebSocketWildcard : WebSocketModuleTestBase
-    {
-        public WebSocketWildcard()
-            : base(
-                RoutingStrategy.Wildcard,
-                ws =>
-                {
-                    ws.RegisterModule(new WebSocketModule());
-                    ws.Module<WebSocketModule>().RegisterWebSocketsServer<TestWebSocketWildcard>();
-                },
-                "test/*")
-        {
-            // placeholder
-        }
-
-        [Test]
-        public async Task TestConnectWebSocket()
-        {
-            await ConnectWebSocket();
-        }
-    }
-
-    [TestFixture]
-    public class WebSocketModuleTestRegex : WebSocketModuleTestBase
-    {
-        public WebSocketModuleTestRegex()
-            : base(
-                RoutingStrategy.Regex,
-                ws =>
-                {
-                    ws.RegisterModule(new WebSocketModule());
-                    ws.Module<WebSocketModule>().RegisterWebSocketsServer<TestWebSocketRegex>();
-                },
-                "test/{100}")
-        {
-            // placeholder
-        }
-
-        [Test]
-        public async Task TestConnectWebSocket()
-        {
-            await ConnectWebSocket();
         }
     }
 }

@@ -1,11 +1,10 @@
-﻿namespace EmbedIO.Tests
-{
-    using Constants;
-    using Modules;
-    using NUnit.Framework;
-    using System.Threading.Tasks;
-    using TestObjects;
+﻿using System.Threading.Tasks;
+using EmbedIO.Modules;
+using EmbedIO.Tests.TestObjects;
+using NUnit.Framework;
 
+namespace EmbedIO.Tests
+{
     [TestFixture]
     public class ResourceFilesModuleTest : FixtureBase
     {
@@ -16,7 +15,7 @@
                     ws.RegisterModule(new ResourceFilesModule(typeof(ResourceFilesModuleTest).Assembly,
                         "EmbedIO.Tests.Resources"));
                 },
-                RoutingStrategy.Wildcard,
+                WebApiRoutingStrategy.Wildcard,
                 true)
         {
         }

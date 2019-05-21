@@ -61,6 +61,9 @@ namespace EmbedIO.Internal
         public IPEndPoint RemoteEndPoint => _request.RemoteEndPoint;
 
         /// <inheritdoc />
+        public bool IsSecureConnection => _request.IsSecureConnection;
+
+        /// <inheritdoc />
         public bool IsLocal => _request.IsLocal;
 
         /// <inheritdoc />

@@ -1,11 +1,11 @@
-﻿namespace EmbedIO.Tests
-{
-    using Modules;
-    using NUnit.Framework;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using TestObjects;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using EmbedIO.Modules;
+using EmbedIO.Tests.TestObjects;
+using NUnit.Framework;
 
+namespace EmbedIO.Tests
+{
     [TestFixture]
     public class MultipleStaticRootsFixture : FixtureBase
     {
@@ -18,7 +18,7 @@
                         {
                             UseRamCache = true,
                         }),
-                Constants.RoutingStrategy.Wildcard,
+                WebApiRoutingStrategy.Wildcard,
                 true)
         {
         }

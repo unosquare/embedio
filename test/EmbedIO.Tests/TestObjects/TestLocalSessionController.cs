@@ -1,9 +1,9 @@
-﻿namespace EmbedIO.Tests.TestObjects
-{
-    using Constants;
-    using System.Threading.Tasks;
-    using Modules;
+﻿using EmbedIO.Constants;
+using System.Threading.Tasks;
+using EmbedIO.Modules;
 
+namespace EmbedIO.Tests.TestObjects
+{
     public class TestLocalSessionController : WebApiController
     {
         public const string DeleteSession = "deletesession";
@@ -31,7 +31,7 @@
         [WebApiHandler(HttpVerbs.Get, "/deletesession")]
         public Task<bool> DeleteSessionC()
         {
-            HttpContext.DeleteSession();
+            HttpContext.Session.Delete();
 
             return Ok("Deleted");
         }
@@ -39,16 +39,14 @@
         [WebApiHandler(HttpVerbs.Get, "/putdata")]
         public Task<bool> PutDataSession()
         {
-            HttpContext.GetSession()?.Data.TryAdd("sessionData", MyData);
+            HttpContext.Session["sessionData"] = MyData;
 
-            return Ok(HttpContext.GetSession().Data["sessionData"].ToString());
+            return Ok(HttpContext.Session["sessionData"].ToString());
         }
 
         [WebApiHandler(HttpVerbs.Get, "/getdata")]
         public Task<bool> GetDataSession() =>
-            Ok(HttpContext.GetSession().Data.TryGetValue("sessionData", out var data)
-                ? data.ToString()
-                : string.Empty);
+            Ok(HttpContext.Session["sessionData"]?.ToString() ?? string.Empty);
 
         [WebApiHandler(HttpVerbs.Get, "/geterror")]
         public bool GetError() => false;

@@ -8,7 +8,7 @@ namespace EmbedIO.Net.Internal
 {
     internal class PayloadData
     {
-        public static readonly ulong MaxLength = long.MaxValue;
+        public const ulong MaxLength = long.MaxValue;
 
         private readonly byte[] _data;
         private ushort? _code;

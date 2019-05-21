@@ -1,14 +1,15 @@
-﻿namespace EmbedIO.Tests
-{
-    using NUnit.Framework;
-    using System.Threading.Tasks;
-    using TestObjects;
+﻿using EmbedIO.Modules;
+using NUnit.Framework;
+using System.Threading.Tasks;
+using EmbedIO.Tests.TestObjects;
 
+namespace EmbedIO.Tests
+{
     [TestFixture]
     public class RegexRoutingTest : FixtureBase
     {
         public RegexRoutingTest()
-            : base(ws => ws.RegisterModule(new TestRegexModule()), Constants.RoutingStrategy.Regex, true)
+            : base(ws => ws.RegisterModule(new TestRegexModule()), WebApiRoutingStrategy.Regex, true)
         {
         }
 

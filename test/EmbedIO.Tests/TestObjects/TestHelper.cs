@@ -1,11 +1,10 @@
-﻿namespace EmbedIO.Tests.TestObjects
-{
-    using Modules;
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
+﻿using System;
+using System.IO;
+using System.Linq;
+using EmbedIO.Modules;
 
+namespace EmbedIO.Tests.TestObjects
+{
     public static class TestHelper
     {
         public const string BigDataFile = "bigdata.bin";

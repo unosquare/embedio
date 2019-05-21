@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using EmbedIO.Constants;
 
@@ -6,8 +7,7 @@ namespace EmbedIO.Net.Internal
 {
     internal class WebSocketStream : MemoryStream
     {
-        internal static readonly byte[] EmptyBytes = new byte[0];
-        internal static readonly int FragmentLength = 1016;
+        internal const int FragmentLength = 1016;
 
         private readonly CompressionMethod _compression;
         private readonly Opcode _opcode;
@@ -32,7 +32,7 @@ namespace EmbedIO.Net.Internal
 
             if (len == 0)
             {
-                yield return new WebSocketFrame(Fin.Final, _opcode, EmptyBytes, compressed);
+                yield return new WebSocketFrame(Fin.Final, _opcode, Array.Empty<byte>(), compressed);
                 yield break;
             }
 

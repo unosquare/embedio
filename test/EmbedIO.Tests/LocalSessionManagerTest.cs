@@ -1,16 +1,15 @@
-﻿using EmbedIO.Utilities;
+﻿using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using EmbedIO.Modules;
+using EmbedIO.Tests.TestObjects;
+using EmbedIO.Utilities;
+using NUnit.Framework;
 
 namespace EmbedIO.Tests
 {
-    using Modules;
-    using NUnit.Framework;
-    using System;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-    using System.Threading.Tasks;
-    using TestObjects;
-
     [TestFixture]
     public class LocalSessionManagerTest : FixtureBase
     {
@@ -24,7 +23,7 @@ namespace EmbedIO.Tests
                     ws.Modules.Add("api", new WebApiModule());
                     ((WebApiModule)ws.Modules["api"]).RegisterController<TestLocalSessionController>();
                 },
-                Constants.RoutingStrategy.Wildcard)
+                WebApiRoutingStrategy.Wildcard)
         {
         }
 

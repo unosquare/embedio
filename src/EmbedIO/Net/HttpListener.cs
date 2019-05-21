@@ -87,7 +87,7 @@ namespace EmbedIO.Net
         }
 
         /// <inheritdoc />
-        public async Task<IHttpContext> GetContextAsync(CancellationToken ct)
+        public async Task<IHttpContextImpl> GetContextAsync(CancellationToken ct)
         {
             while (true)
             {

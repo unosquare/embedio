@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Security.Principal;
+using EmbedIO.Constants;
 
 namespace EmbedIO.Modules
 {
@@ -122,7 +123,7 @@ namespace EmbedIO.Modules
         /// </returns>
         protected virtual Task<bool> Ok(
             string content,
-            string contentType = "application/json",
+            string contentType = MimeTypes.JsonType,
             Encoding encoding = null,
             bool useGzip = true,
             CancellationToken cancellationToken = default) =>

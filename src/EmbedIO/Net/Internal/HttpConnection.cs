@@ -53,6 +53,11 @@ namespace EmbedIO.Net.Internal
             Init();
         }
 
+        ~HttpConnection()
+        {
+            Dispose(false);
+        }
+
         internal X509Certificate2 ClientCertificate { get; }
 
         public int Reuses { get; private set; }
@@ -105,6 +110,8 @@ namespace EmbedIO.Net.Internal
         public ResponseStream GetResponseStream() => _oStream ??
                                                      (_oStream =
                                                          new ResponseStream(Stream, _context.HttpListenerResponse, _context.Listener?.IgnoreWriteExceptions ?? true));
+
+        internal void ForceClose() => Close(true);
 
         internal void Close(bool forceClose = false)
         {
@@ -385,7 +392,16 @@ namespace EmbedIO.Net.Internal
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
             Close(true);
+
+            if (!disposing)
+                return;
 
             _timer?.Dispose();
             _sock?.Dispose();

@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Net.WebSockets;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Constants;
-using EmbedIO.Net.Internal;
 using Unosquare.Swan;
 
-namespace EmbedIO.Net
+namespace EmbedIO.Net.Internal
 {
     /// <summary>
     /// Implements the WebSocket interface.
@@ -20,38 +18,36 @@ namespace EmbedIO.Net
     /// The WebSocket class provides a set of methods and properties for two-way communication using
     /// the WebSocket protocol (<see href="http://tools.ietf.org/html/rfc6455">RFC 6455</see>).
     /// </remarks>
-    public class WebSocket : IWebSocket
+    internal sealed class WebSocket : IWebSocket
     {
-        private readonly Action<MessageEventArgs> _message;
-        private readonly object _forState = new object();
-        private readonly ConcurrentQueue<MessageEventArgs> _messageEventQueue = new ConcurrentQueue<MessageEventArgs>();
-        private readonly WebSocketValidator _validator;
+        public const string SupportedVersion = "13";
 
+        private readonly Action<MessageEventArgs> _message;
+        private readonly object _stateSyncRoot = new object();
+        private readonly ConcurrentQueue<MessageEventArgs> _messageEventQueue = new ConcurrentQueue<MessageEventArgs>();
+        private readonly Action _closeConnection;
         private CompressionMethod _compression = CompressionMethod.None;
-        private volatile WebSocketState _readyState = WebSocketState.Connecting;
+        private volatile WebSocketState _readyState;
         private WebSocketContext _context;
-        private bool _enableRedirection;
         private AutoResetEvent _exitReceiving;
-        private string _extensions;
         private FragmentBuffer _fragmentsBuffer;
         private volatile bool _inMessage;
-        private string _origin;
         private AutoResetEvent _receivePong;
         private Stream _stream;
         private TimeSpan _waitTime;
 
-        // As server
-        internal WebSocket(WebSocketContext context)
+        private WebSocket(HttpListenerContext httpContext)
         {
-            _context = context;
-
             _message = Messages;
-            WebSocketKey = new WebSocketKey();
-
-            IsSecure = context.IsSecureConnection;
-            _stream = context.Stream;
+            _closeConnection = httpContext.Connection.ForceClose;
+            _stream = httpContext.Connection.Stream;
             _waitTime = TimeSpan.FromSeconds(1);
-            _validator = new WebSocketValidator(this);
+            _readyState = WebSocketState.Open;
+        }
+
+        ~WebSocket()
+        {
+            Dispose(false);
         }
 
         /// <summary>
@@ -59,89 +55,9 @@ namespace EmbedIO.Net
         /// </summary>
         public event EventHandler<MessageEventArgs> OnMessage;
 
-        /// <summary>
-        /// Gets or sets the compression method used to compress a message on the WebSocket connection.
-        /// </summary>
-        /// <value>
-        /// One of the <see cref="CompressionMethod"/> enum values, specifies the compression method
-        /// used to compress a message. The default value is <see cref="CompressionMethod.None"/>.
-        /// </value>
-        public CompressionMethod Compression
-        {
-            get => _compression;
+        internal CompressionMethod Compression => _compression;
 
-            set
-            {
-                lock (_forState)
-                {
-                    if (!_validator.CheckIfAvailable(false))
-                        return;
-
-                    _compression = value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the cookies.
-        /// </summary>
-        /// <value>
-        /// The cookies.
-        /// </value>
-        public IEnumerable<Cookie> Cookies
-        {
-            get
-            {
-                lock (CookieCollection.SyncRoot)
-                {
-                    foreach (var cookie in CookieCollection)
-                        yield return cookie;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the <see cref="WebSocket"/> emits
-        /// a <see cref="OnMessage"/> event when receives a ping.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the <see cref="WebSocket"/> emits a <see cref="OnMessage"/> event
-        /// when receives a ping; otherwise, <c>false</c>. The default value is <c>false</c>.
-        /// </value>
-        public bool EmitOnPing { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the <see cref="WebSocket"/> redirects
-        /// the handshake request to the new URL located in the handshake response.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the <see cref="WebSocket"/> redirects the handshake request to
-        /// the new URL; otherwise, <c>false</c>. The default value is <c>false</c>.
-        /// </value>
-        public bool EnableRedirection
-        {
-            get => _enableRedirection;
-
-            set
-            {
-                lock (_forState)
-                {
-                    if (!_validator.CheckIfAvailable(false))
-                        return;
-
-                    _enableRedirection = value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the WebSocket extensions selected by the server.
-        /// </summary>
-        /// <value>
-        /// A <see cref="string"/> that represents the extensions if any.
-        /// The default value is <see cref="String.Empty"/>.
-        /// </value>
-        public string Extensions => _extensions ?? string.Empty;
+        internal bool EmitOnPing { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the WebSocket connection is alive.
@@ -149,105 +65,12 @@ namespace EmbedIO.Net
         /// <value>
         /// <c>true</c> if the connection is alive; otherwise, <c>false</c>.
         /// </value>
-        public bool IsAlive => PingAsync().Result; // TODO: Change?
-
-        /// <summary>
-        /// Gets a value indicating whether the WebSocket connection is secure.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the connection is secure; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsSecure { get; }
-
-        /// <summary>
-        /// Gets or sets the value of the HTTP Origin header to send with
-        /// the WebSocket handshake request to the server.
-        /// </summary>
-        /// <remarks>
-        /// The <see cref="WebSocket"/> sends the Origin header if this property has any.
-        /// </remarks>
-        /// <value>
-        ///   <para>
-        ///   A <see cref="string"/> that represents the value of
-        ///   the <see href="http://tools.ietf.org/html/rfc6454#section-7">Origin</see> header to send.
-        ///   The default value is <see langword="null"/>.
-        ///   </para>
-        ///   <para>
-        ///   The Origin header has the following syntax:
-        ///   <c>&lt;scheme&gt;://&lt;host&gt;[:&lt;port&gt;]</c>.
-        ///   </para>
-        /// </value>
-        public string Origin
-        {
-            get => _origin;
-
-            set
-            {
-                lock (_forState)
-                {
-                    if (!_validator.CheckIfAvailable(false))
-                        return;
-
-                    if (string.IsNullOrEmpty(value))
-                    {
-                        _origin = value;
-                        return;
-                    }
-
-                    if (!Uri.TryCreate(value, UriKind.Absolute, out var origin) || origin.Segments.Length > 1)
-                    {
-                        "The syntax of an origin must be '<scheme>://<host>[:<port>]'.".Error(nameof(Origin));
-
-                        return;
-                    }
-
-                    _origin = value.TrimEnd('/');
-                }
-            }
-        }
+        internal bool IsAlive => PingAsync().Result; // TODO: Change?
 
         /// <inheritdoc />
         public WebSocketState State => _readyState;
 
-        /// <summary>
-        /// Gets the WebSocket URL used to connect, or accepted.
-        /// </summary>
-        /// <value>
-        /// A <see cref="Uri"/> that represents the URL used to connect, or accepted.
-        /// </value>
-        public Uri Url => _context.RequestUri;
-
-        /// <summary>
-        /// Gets or sets the wait time for the response to the Ping or Close.
-        /// </summary>
-        /// <value>
-        /// A <see cref="TimeSpan"/> that represents the wait time. The default value is the same as
-        /// 5 seconds, or 1 second if the <see cref="WebSocket"/> is used in a server.
-        /// </value>
-        public TimeSpan WaitTime
-        {
-            get => _waitTime;
-
-            set
-            {
-                lock (_forState)
-                {
-                    if (value == TimeSpan.Zero || !_validator.CheckIfAvailable())
-                        return;
-
-                    _waitTime = value;
-                }
-            }
-        }
-
         internal bool InContinuation { get; private set; }
-
-        internal CookieCollection CookieCollection { get; } = new CookieCollection();
-
-        // As server
-        internal bool IgnoreExtensions { get; set; } = true;
-
-        internal WebSocketKey WebSocketKey { get; }
 
         /// <inheritdoc />
         public Task SendAsync(byte[] buffer, bool isText, CancellationToken ct) => SendAsync(buffer, isText ? Opcode.Text : Opcode.Binary, ct);
@@ -261,14 +84,34 @@ namespace EmbedIO.Net
             string reason = null,
             CancellationToken cancellationToken = default)
         {
-            if (!_validator.CheckIfAvailable())
+            bool CheckParametersForClose()
+            {
+                if (code == CloseStatusCode.NoStatus && !string.IsNullOrEmpty(reason))
+                {
+                    "'code' cannot have a reason.".Trace(nameof(WebSocket));
+                    return false;
+                }
+
+                if (code == CloseStatusCode.MandatoryExtension)
+                {
+                    "'code' cannot be used by a server.".Trace(nameof(WebSocket));
+                    return false;
+                }
+
+                if (!string.IsNullOrEmpty(reason) && Encoding.UTF8.GetBytes(reason).Length > 123)
+                {
+                    "The size of 'reason' is greater than the allowable max size.".Trace(nameof(WebSocket));
+                    return false;
+                }
+
+                return true;
+            }
+
+            if (_readyState != WebSocketState.Open)
                 return Task.Delay(0, cancellationToken);
 
-            if (code != CloseStatusCode.Undefined &&
-                !WebSocketValidator.CheckParametersForClose(code, reason))
-            {
+            if (code != CloseStatusCode.Undefined && !CheckParametersForClose())
                 return Task.Delay(0, cancellationToken);
-            }
 
             if (code == CloseStatusCode.NoStatus)
                 return InternalCloseAsync(ct: cancellationToken);
@@ -342,42 +185,56 @@ namespace EmbedIO.Net
         }
 
         /// <inheritdoc />
-        void IDisposable.Dispose()
+        public void Dispose()
         {
-            try
-            {
-                InternalCloseAsync(new PayloadData((ushort)CloseStatusCode.Away)).Wait();
-            }
-            catch
-            {
-                // Ignored
-            }
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        internal async Task InternalAcceptAsync()
+        internal static async Task<WebSocket> AcceptAsync(HttpListenerContext httpContext, string acceptedProtocol)
         {
-            try
+            string CreateResponseKey(string clientKey)
             {
-                _validator.ThrowIfInvalid(_context);
+                const string Guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 
-                WebSocketKey.KeyValue = _context.Headers[HttpHeaders.SecWebSocketKey];
-
-                if (!IgnoreExtensions)
-                    ProcessSecWebSocketExtensionsClientHeader(_context.Headers[HttpHeaders.SecWebSocketExtensions]);
-
-                await SendHandshakeAsync().ConfigureAwait(false);
-
-                _readyState = WebSocketState.Open;
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocket));
-                Fatal("An exception has occurred while accepting.", ex);
-
-                return;
+                var buff = new StringBuilder(clientKey, 64).Append(Guid);
+#pragma warning disable CA5350 // Do Not Use Weak Cryptographic Algorithms
+                using (var sha1 = SHA1.Create())
+                {
+                    return Convert.ToBase64String(sha1.ComputeHash(Encoding.UTF8.GetBytes(buff.ToString())));
+                }
+#pragma warning restore CA5350 // Do Not Use Weak Cryptographic Algorithms
             }
 
-            Open();
+            var requestHeaders = httpContext.Request.Headers;
+
+            var webSocketKey = requestHeaders[HttpHeaderNames.SecWebSocketKey];
+            if (string.IsNullOrEmpty(webSocketKey))
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {HttpHeaderNames.SecWebSocketKey} header, or it has an invalid value.");
+
+            var webSocketVersion = requestHeaders[HttpHeaderNames.SecWebSocketVersion];
+            if (webSocketVersion == null || webSocketVersion != SupportedVersion)
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {HttpHeaderNames.SecWebSocketVersion} header, or it has an invalid value.");
+
+            if (string.IsNullOrWhiteSpace(requestHeaders[HttpHeaderNames.SecWebSocketExtensions]))
+                throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {HttpHeaderNames.SecWebSocketExtensions} header.");
+
+            var ret = HttpResponse.CreateWebSocketResponse();
+
+            ret.Headers[HttpHeaderNames.SecWebSocketAccept] = CreateResponseKey(webSocketKey);
+
+            if (acceptedProtocol != null)
+                ret.Headers[HttpHeaderNames.SecWebSocketProtocol] = acceptedProtocol;
+
+            ret.SetCookies(httpContext.Request.Cookies);
+
+            var bytes = Encoding.UTF8.GetBytes(ret.ToString());
+
+            await httpContext.HttpListenerResponse.OutputStream.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
+
+            var socket = new WebSocket(httpContext);
+            socket.Open();
+            return socket;
         }
 
         internal async Task<bool> PingAsync(byte[] frameAsBytes, TimeSpan timeout)
@@ -390,10 +247,23 @@ namespace EmbedIO.Net
             return _receivePong != null && _receivePong.WaitOne(timeout);
         }
 
-        private static bool IsOpcodeReserved(CloseStatusCode code) => code == CloseStatusCode.Undefined ||
-                                                                      code == CloseStatusCode.NoStatus ||
-                                                                      code == CloseStatusCode.Abnormal ||
-                                                                      code == CloseStatusCode.TlsHandshakeFailure;
+        private void Dispose(bool disposing)
+        {
+            try
+            {
+                InternalCloseAsync(new PayloadData((ushort)CloseStatusCode.Away)).Wait();
+            }
+            catch
+            {
+                // Ignored
+            }
+        }
+
+        private static bool IsOpcodeReserved(CloseStatusCode code)
+            => code == CloseStatusCode.Undefined
+            || code == CloseStatusCode.NoStatus
+            || code == CloseStatusCode.Abnormal
+            || code == CloseStatusCode.TlsHandshakeFailure;
 
         private async Task InternalCloseAsync(
             PayloadData payloadData = null,
@@ -402,7 +272,7 @@ namespace EmbedIO.Net
             bool received = false,
             CancellationToken ct = default)
         {
-            lock (_forState)
+            lock (_stateSyncRoot)
             {
                 if (_readyState == WebSocketState.CloseReceived || _readyState == WebSocketState.CloseSent)
                 {
@@ -430,7 +300,7 @@ namespace EmbedIO.Net
 
             "End closing the connection.".Trace(nameof(InternalCloseAsync));
 
-            lock (_forState)
+            lock (_stateSyncRoot)
             {
                 _readyState = WebSocketState.Closed;
             }
@@ -449,17 +319,16 @@ namespace EmbedIO.Net
                 await _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length, ct).ConfigureAwait(false);
             }
 
-            received = received ||
-                       (receive && sent && _exitReceiving != null && _exitReceiving.WaitOne(_waitTime));
+            received = received || (receive && sent && _exitReceiving != null && _exitReceiving.WaitOne(_waitTime));
 
             return sent && received;
         }
 
-        private void Fatal(string message, Exception exception = null) => Fatal(message,
-            (exception as WebSocketException)?.Code ?? CloseStatusCode.Abnormal);
+        private void Fatal(string message, Exception exception = null)
+            => Fatal(message, (exception as WebSocketException)?.Code ?? CloseStatusCode.Abnormal);
 
-        private void Fatal(string message, CloseStatusCode code) =>
-            InternalCloseAsync(new PayloadData((ushort)code, message), !IsOpcodeReserved(code), false).Wait();
+        private void Fatal(string message, CloseStatusCode code)
+            => InternalCloseAsync(new PayloadData((ushort)code, message), !IsOpcodeReserved(code), false).Wait();
 
         private void Message()
         {
@@ -586,8 +455,7 @@ namespace EmbedIO.Net
                         await ProcessCloseFrame(frame).ConfigureAwait(false);
                         break;
                     default:
-                        $"An unsupported frame: {frame.PrintToString()}".Error(nameof(ProcessReceivedFrame));
-                        Fatal("There is no way to handle it.", CloseStatusCode.PolicyViolation);
+                        Fatal($"Unsupported frame received: {frame.PrintToString()}", CloseStatusCode.PolicyViolation);
                         return false;
                 }
             }
@@ -595,42 +463,10 @@ namespace EmbedIO.Net
             return true;
         }
 
-        // As server
-        private void ProcessSecWebSocketExtensionsClientHeader(string value)
-        {
-            if (value == null)
-                return;
-
-            var buff = new StringBuilder(80);
-
-            var comp = false;
-            foreach (var e in value.SplitHeaderValue(false))
-            {
-                var ext = e.Trim();
-
-                if (comp || !ext.StartsWith(CompressionMethod.Deflate.ToExtensionString())) continue;
-
-                _compression = CompressionMethod.Deflate;
-                buff
-                    .Append(_compression.ToExtensionString("client_no_context_takeover", "server_no_context_takeover"))
-                    .Append(", ");
-
-                comp = true;
-            }
-
-            var len = buff.Length;
-            if (len > 2)
-            {
-                buff.Length = len - 2;
-                _extensions = buff.ToString();
-            }
-        }
-
         private void ReleaseResources()
         {
-            _context.CloseAsync();
+            _closeConnection();
             _stream = null;
-            _context = null;
 
             if (_fragmentsBuffer != null)
             {
@@ -653,7 +489,7 @@ namespace EmbedIO.Net
         
         private Task Send(WebSocketFrame frame)
         {
-            lock (_forState)
+            lock (_stateSyncRoot)
             {
                 if (_readyState != WebSocketState.Open)
                 {
@@ -664,24 +500,6 @@ namespace EmbedIO.Net
 
             var frameAsBytes = frame.ToArray();
             return _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length);
-        }
-
-        // As server
-        private Task SendHandshakeAsync()
-        {
-            var ret = HttpResponse.CreateWebSocketResponse();
-
-            var headers = ret.Headers;
-            headers[HttpHeaders.SecWebSocketAccept] = WebSocketKey.CreateResponseKey();
-
-            if (_extensions != null)
-                headers[HttpHeaders.SecWebSocketExtensions] = _extensions;
-
-            ret.SetCookies(CookieCollection);
-
-            var bytes = Encoding.UTF8.GetBytes(ret.ToString());
-
-            return _stream.WriteAsync(bytes, 0, bytes.Length);
         }
 
         private void StartReceiving()

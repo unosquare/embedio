@@ -1,11 +1,11 @@
-﻿namespace EmbedIO.Tests
-{
-    using System.Collections.Generic;
-    using System.IO;
-    using NUnit.Framework;
-    using System.Threading.Tasks;
-    using Constants;
+﻿using System.Collections.Generic;
+using System.IO;
+using NUnit.Framework;
+using System.Threading.Tasks;
+using EmbedIO.Constants;
 
+namespace EmbedIO.Tests
+{
     [TestFixture]
     public class GzipTest
     {

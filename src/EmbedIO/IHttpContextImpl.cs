@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EmbedIO
@@ -28,12 +30,19 @@ namespace EmbedIO
         /// Asynchronously handles the HTTP part of a WebSocket request
         /// and returns a newly-created <seealso cref="IWebSocketContext"/> interface.
         /// </summary>
-        /// <param name="subProtocol">The WebSocket sub-protocol.</param>
+        /// <param name="requestedProtocols">The requested WebSocket sub-protocols.</param>
+        /// <param name="acceptedProtocol">The accepted WebSocket sub-protocol.</param>
         /// <param name="receiveBufferSize">Size of the receive buffer.</param>
         /// <param name="keepAliveInterval">The keep-alive interval.</param>
+        /// <param name="ct">A <see cref="CancellationToken"/> used to stop the server.</param>
         /// <returns>
         /// A <see cref="IWebSocketContext"/> interface.
         /// </returns>
-        Task<IWebSocketContext> AcceptWebSocketAsync(string subProtocol, int receiveBufferSize, TimeSpan keepAliveInterval);
+        Task<IWebSocketContext> AcceptWebSocketAsync(
+            IEnumerable<string> requestedProtocols, 
+            string acceptedProtocol, 
+            int receiveBufferSize, 
+            TimeSpan keepAliveInterval,
+            CancellationToken ct);
     }
 }

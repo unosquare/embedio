@@ -1,8 +1,8 @@
-﻿namespace EmbedIO.Tests.TestObjects
-{
-    using System.Threading.Tasks;
-    using Constants;
+﻿using System.Threading.Tasks;
+using EmbedIO.Constants;
 
+namespace EmbedIO.Tests.TestObjects
+{
     public class TestWebModule : WebModuleBase
     {
         public const string RedirectUrl = "redirect";

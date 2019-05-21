@@ -1,21 +1,24 @@
-﻿namespace EmbedIO.Tests
-{
-    using Constants;
-    using NUnit.Framework;
-    using System;
-    using System.Net.Http;
-    using System.Threading.Tasks;
-    using TestObjects;
+﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using EmbedIO.Modules;
+using EmbedIO.Tests.Internal;
+using EmbedIO.Tests.TestObjects;
+using NUnit.Framework;
+using Unosquare.Swan;
 
+
+namespace EmbedIO.Tests
+{
     public abstract class FixtureBase : IDisposable
     {
         private readonly Action<IWebServer> _builder;
         private readonly bool _useTestWebServer;
-        private readonly RoutingStrategy _routeStrategy;
+        private readonly WebApiRoutingStrategy _routeStrategy;
 
-        protected FixtureBase(Action<IWebServer> builder, RoutingStrategy routeStrategy = RoutingStrategy.Regex, bool useTestWebServer = false)
+        protected FixtureBase(Action<IWebServer> builder, WebApiRoutingStrategy routeStrategy = WebApiRoutingStrategy.Regex, bool useTestWebServer = false)
         {
-            Swan.Terminal.Settings.GlobalLoggingMessageType = Swan.LogMessageType.None;
+            Terminal.Settings.GlobalLoggingMessageType = LogMessageType.None;
 
             _builder = builder;
             _routeStrategy = routeStrategy;

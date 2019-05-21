@@ -1,12 +1,13 @@
-﻿namespace EmbedIO.Tests
-{
-    using Net;
-    using NUnit.Framework;
-    using Swan;
-    using System;
-    using System.Net.Http;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using EmbedIO.Modules;
+using EmbedIO.Net;
+using NUnit.Framework;
+using Unosquare.Swan;
 
+namespace EmbedIO.Tests
+{
     [TestFixture]
     public class IPv6Test
     {
@@ -22,10 +23,10 @@
         [TestCase("http://127.0.0.1:8877")]
         public async Task WithUseIpv6_ReturnsValid(string urlTest)
         {
-            if (Runtime.OS != Swan.OperatingSystem.Windows)
+            if (Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
-            var instance = new WebServer(new[] { "http://*:8877" }, Constants.RoutingStrategy.Regex, HttpListenerMode.EmbedIO);
+            var instance = new WebServer(new[] { "http://*:8877" }, WebApiRoutingStrategy.Regex, HttpListenerMode.EmbedIO);
             instance.OnAny((ctx, ct) => ctx.JsonResponseAsync(DateTime.Now, ct));
 
             instance.RunAsync();
@@ -39,10 +40,10 @@
         [Test]
         public async Task WithIpv6Loopback_ReturnsValid()
         {
-            if (Runtime.OS != Swan.OperatingSystem.Windows)
+            if (Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
-            var instance = new WebServer(new[] { "http://[::1]:8877" }, Constants.RoutingStrategy.Regex, HttpListenerMode.EmbedIO);
+            var instance = new WebServer(new[] { "http://[::1]:8877" }, WebApiRoutingStrategy.Regex, HttpListenerMode.EmbedIO);
             instance.OnAny((ctx, ct) => ctx.JsonResponseAsync(DateTime.Now, ct));
 
             instance.RunAsync();

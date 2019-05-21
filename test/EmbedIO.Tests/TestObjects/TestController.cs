@@ -1,12 +1,12 @@
-﻿namespace EmbedIO.Tests.TestObjects
-{
-    using Constants;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using Modules;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using EmbedIO.Constants;
+using EmbedIO.Modules;
 
+namespace EmbedIO.Tests.TestObjects
+{
     public class TestController : WebApiController
     {
         public const string RelativePath = "api/";

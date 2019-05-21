@@ -1,7 +1,7 @@
-﻿namespace EmbedIO.Tests.TestObjects
-{
-    using System.Threading;
+﻿using System.Threading;
 
+namespace EmbedIO.Tests.TestObjects
+{
     public static class Resources
     {
         public static int Counter = 9699;

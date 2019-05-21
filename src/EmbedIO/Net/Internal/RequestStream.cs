@@ -35,6 +35,16 @@ namespace EmbedIO.Net.Internal
             set => throw new NotSupportedException();
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _stream.Dispose();
+            }
+
+            base.Dispose(disposing);
+        }
+
         public override void Flush()
         {
         }

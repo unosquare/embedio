@@ -60,7 +60,7 @@ namespace EmbedIO.Modules
             try
             {
                 var localPath = FixPath(context.RequestPath());
-                var partialHeader = context.RequestHeader(HttpHeaders.Range);
+                var partialHeader = context.RequestHeader(HttpHeaderNames.Range);
 
                 $"Resource System: {localPath}".Debug(nameof(ResourceFilesModule));
 

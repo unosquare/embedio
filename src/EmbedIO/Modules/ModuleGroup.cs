@@ -66,7 +66,7 @@ namespace EmbedIO.Modules
         }
 
         /// <inheritdoc />
-        public override void Start(CancellationToken ct)
+        protected override void OnStart(CancellationToken ct)
         {
             _modules.StartAll(ct);
         }

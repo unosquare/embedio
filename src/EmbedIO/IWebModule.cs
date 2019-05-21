@@ -23,7 +23,7 @@ namespace EmbedIO
         /// <summary>
         /// Signals a module that the web server is starting.
         /// </summary>
-        /// <param name="ct">The cancellation token.</param>
+        /// <param name="ct">A <see cref="CancellationToken"/> used to stop the web server.</param>
         void Start(CancellationToken ct);
 
         /// <summary>

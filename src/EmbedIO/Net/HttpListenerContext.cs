@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Security.Principal;
+using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Internal;
 using EmbedIO.Net.Internal;
 using EmbedIO.Utilities;
 using Unosquare.Swan;
 using HttpListenerRequest = EmbedIO.Net.Internal.HttpListenerRequest;
 using HttpListenerResponse = EmbedIO.Net.Internal.HttpListenerResponse;
+using WebSocket = EmbedIO.Net.Internal.WebSocket;
 
 namespace EmbedIO.Net
 {
@@ -18,8 +21,6 @@ namespace EmbedIO.Net
     /// </summary>
     internal sealed class HttpListenerContext : IHttpContextImpl
     {
-        private WebSocketContext _websocketContext;
-
         private readonly Lazy<IDictionary<object, object>> _items =
             new Lazy<IDictionary<object, object>>(() => new Dictionary<object, object>(), true);
 
@@ -105,15 +106,15 @@ namespace EmbedIO.Net
         }
 
         /// <inheritdoc />
-        public async Task<IWebSocketContext> AcceptWebSocketAsync(string subProtocol, int receiveBufferSize, TimeSpan keepAliveInterval)
+        public async Task<IWebSocketContext> AcceptWebSocketAsync(
+            IEnumerable<string> requestedProtocols,
+            string acceptedProtocol,
+            int receiveBufferSize,
+            TimeSpan keepAliveInterval,
+            CancellationToken ct)
         {
-            if (_websocketContext != null)
-                throw new InvalidOperationException("The accepting is already in progress.");
-
-            _websocketContext = new WebSocketContext(this);
-            await ((WebSocket)_websocketContext.WebSocket).InternalAcceptAsync().ConfigureAwait(false);
-
-            return _websocketContext;
+            var webSocket = await WebSocket.AcceptAsync(this, acceptedProtocol).ConfigureAwait(false);
+            return new WebSocketContext(this, WebSocket.SupportedVersion, requestedProtocols, acceptedProtocol, webSocket, ct);
         }
     }
 }

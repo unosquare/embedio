@@ -12,8 +12,11 @@ namespace EmbedIO
     /// <list type="bullet">
     /// <item><description>validation and immutability of the <see cref="BaseUrlPath"/> property,
     /// which are of paramount importance for the correct functioning of a web server;</description></item>
-    /// <item><description>an empty <see cref="Start"/> method for modules that do not need
-    /// to do anything upon web server startup.</description></item>
+    /// <item><description>support for configuration locking upon web server startup
+    /// (see the <see cref="ConfigurationLocked"/> property
+    /// and the <see cref="EnsureConfigurationNotLocked"/> method);</description></item>
+    /// <item><description>a basic implementation of the <see cref="IWebModule.Start"/> method
+    /// for modules that do not need to do anything upon web server startup.</description></item>
     /// </list>
     /// </summary>
     public abstract class WebModuleBase : IWebModule
@@ -35,11 +38,43 @@ namespace EmbedIO
         public string BaseUrlPath { get; }
 
         /// <inheritdoc />
-        public virtual void Start(CancellationToken ct)
+        public void Start(CancellationToken ct)
         {
+            OnStart(ct);
+            ConfigurationLocked = true;
         }
 
         /// <inheritdoc />
         public abstract Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct);
+
+        /// <summary>
+        /// Called when a module is started, immediately before locking the module's configuration.
+        /// </summary>
+        /// <param name="ct">A <see cref="CancellationToken"/> used to stop the web server.</param>
+        protected virtual void OnStart(CancellationToken ct)
+        {
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether a module has already been started
+        /// and its configuration has therefore become read-only.
+        /// </summary>
+        /// <value>
+        /// <see langword="true"/> if the configuration is locked; otherwise, <see langword="false"/>.
+        /// </value>
+        /// <seealso cref="EnsureConfigurationNotLocked"/>
+        protected bool ConfigurationLocked { get; private set; }
+
+        /// <summary>
+        /// Checks whether a module's configuration has become read-only
+        /// and, if so, throws an <see cref="InvalidOperationException"/>.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">The configuration is locked.</exception>
+        /// <seealso cref="ConfigurationLocked"/>
+        protected void EnsureConfigurationNotLocked()
+        {
+            if (ConfigurationLocked)
+                throw new InvalidOperationException("Cannot configure a module once it has been started.");
+        }
     }
 }

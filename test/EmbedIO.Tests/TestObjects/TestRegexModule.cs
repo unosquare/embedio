@@ -1,8 +1,8 @@
-﻿namespace EmbedIO.Tests.TestObjects
-{
-    using System.Text;
-    using System.Threading.Tasks;
+﻿using System.Text;
+using System.Threading.Tasks;
 
+namespace EmbedIO.Tests.TestObjects
+{
     public class TestRegexModule : WebModuleBase
     {
         public TestRegexModule()

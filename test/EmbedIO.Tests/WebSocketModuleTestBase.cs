@@ -1,17 +1,17 @@
-﻿namespace EmbedIO.Tests
-{
-    using Constants;
-    using NUnit.Framework;
-    using System;
-    using System.IO;
-    using System.Text;
-    using System.Threading.Tasks;
+﻿using System;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
+using EmbedIO.Modules;
+using NUnit.Framework;
 
+namespace EmbedIO.Tests
+{
     public abstract class WebSocketModuleTestBase : FixtureBase
     {
         private readonly string _url;
 
-        protected WebSocketModuleTestBase(RoutingStrategy strategy, Action<IWebServer> builder, string url)
+        protected WebSocketModuleTestBase(WebApiRoutingStrategy strategy, Action<IWebServer> builder, string url)
             : base(builder, strategy)
         {
             _url = url;

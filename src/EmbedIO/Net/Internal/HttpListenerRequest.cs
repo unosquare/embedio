@@ -13,8 +13,7 @@ namespace EmbedIO.Net.Internal
     /// <summary>
     /// Represents an HTTP Listener Request.
     /// </summary>
-    internal sealed class HttpListenerRequest 
-        : IHttpRequest
+    internal sealed class HttpListenerRequest : IHttpRequest
     {
         private static readonly byte[] HttpStatus100 = Encoding.UTF8.GetBytes("HTTP/1.1 100 Continue\r\n\r\n");
         private static readonly char[] Separators = { ' ' };
@@ -114,9 +113,7 @@ namespace EmbedIO.Net.Internal
         /// <inheritdoc />
         public bool IsLocal => LocalEndPoint?.Address?.Equals(RemoteEndPoint?.Address) ?? true;
 
-        /// <summary>
-        /// Gets a value indicating whether this request is under a secure connection.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsSecureConnection => _context.Connection.IsSecure;
 
         /// <inheritdoc />

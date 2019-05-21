@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Security.Principal;
+using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Tests;
 using EmbedIO.Tests.Internal;
@@ -11,10 +12,6 @@ using Unosquare.Swan;
 
 namespace EmbedIO.Internal
 {
-    /// <summary>
-    /// Represents a wrapper around a regular HttpListenerContext.
-    /// </summary>
-    /// <seealso cref="IHttpContext" />
     internal sealed class HttpContextImpl : IHttpContextImpl
     {
         private readonly HttpListenerContext _context;
@@ -23,10 +20,6 @@ namespace EmbedIO.Internal
 
         private bool _closed;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HttpContextImpl" /> class.
-        /// </summary>
-        /// <param name="context">The HTTP listener context.</param>
         public HttpContextImpl(HttpListenerContext context)
         {
             _context = context;
@@ -51,31 +44,22 @@ namespace EmbedIO.Internal
             Response = new TestHttpResponse();
         }
 
-        /// <inheritdoc />
         public string Id { get; }
 
-        /// <inheritdoc />
         public IPEndPoint LocalEndPoint { get; }
 
-        /// <inheritdoc />
         public IPEndPoint RemoteEndPoint { get; }
 
-        /// <inheritdoc />
         public IHttpRequest Request { get; }
 
-        /// <inheritdoc />
         public IHttpResponse Response { get; }
 
-        /// <inheritdoc />
         public IPrincipal User { get; }
 
-        /// <inheritdoc />
         public ISessionProxy Session { get; set; }
 
-        /// <inheritdoc />
         public IDictionary<object, object> Items { get; } = new Dictionary<object, object>();
 
-        /// <inheritdoc />
         public void OnClose(Action<IHttpContext> callback)
         {
             if (_closed)
@@ -84,13 +68,22 @@ namespace EmbedIO.Internal
             _closeCallbacks.Push(Validate.NotNull(nameof(callback), callback));
         }
 
-        /// <inheritdoc />
-        public async Task<IWebSocketContext> AcceptWebSocketAsync(string subProtocol, int receiveBufferSize, TimeSpan keepAliveInterval)
+        public async Task<IWebSocketContext> AcceptWebSocketAsync(
+            IEnumerable<string> requestedProtocols,
+            string acceptedProtocol,
+            int receiveBufferSize,
+            TimeSpan keepAliveInterval,
+            CancellationToken ct)
         {
             if (_context == null)
-                throw new NotImplementedException();
+                throw new NotImplementedException("This HTTP context does not support the WebSocket protocol.");
 
-            return new WebSocketContext(this, await _context.AcceptWebSocketAsync(subProtocol, receiveBufferSize, keepAliveInterval).ConfigureAwait(false));
+            var context = await _context.AcceptWebSocketAsync(
+                acceptedProtocol,
+                receiveBufferSize,
+                keepAliveInterval)
+                .ConfigureAwait(false);
+            return new WebSocketContext(this, context.SecWebSocketVersion, requestedProtocols, acceptedProtocol, new WebSocket(context.WebSocket), ct);
         }
 
         public void Close()

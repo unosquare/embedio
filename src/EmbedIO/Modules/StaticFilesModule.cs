@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Constants;
@@ -39,7 +40,7 @@ namespace EmbedIO.Modules
         /// <summary>
         /// Initializes a new instance of the <see cref="StaticFilesModule" /> class.
         /// </summary>
-        /// <param name="baseUrlPath">The URL path under which file are mapped.</param>
+        /// <param name="baseUrlPath">The URL path under which files are mapped.</param>
         /// <param name="fileSystemPath">The file system path from which files are retrieved.</param>
         /// <param name="fileCachingMode">The file caching mode.</param>
         /// <param name="defaultDocument">The default document name.</param>
@@ -297,7 +298,7 @@ namespace EmbedIO.Modules
             try
             {
                 var isTagValid = false;
-                var partialHeader = context.RequestHeader(HttpHeaders.Range);
+                var partialHeader = context.RequestHeader(HttpHeaderNames.Range);
                 var usingPartial = partialHeader?.StartsWith("bytes=") == true;
                 var fileInfo = new FileInfo(localPath);
 
@@ -308,9 +309,10 @@ namespace EmbedIO.Modules
                 var utcFileDateString = fileInfo.LastWriteTimeUtc.ToRfc1123String();
 
                 if (!usingPartial &&
-                    (isTagValid || context.RequestHeader(HttpHeaders.IfModifiedSince).Equals(utcFileDateString)))
+                    (isTagValid || context.RequestHeader(HttpHeaderNames.IfModifiedSince).Equals(utcFileDateString)))
                 {
-                    SetStatusCode304(context.Response);
+                    SetDefaultCacheHeaders(context.Response);
+                    context.Response.StandardResponseWithoutBody((int)HttpStatusCode.NotModified);
                     return true;
                 }
 
@@ -390,11 +392,21 @@ namespace EmbedIO.Modules
                                      y.Size))
                 .Where(x => !string.IsNullOrWhiteSpace(x));
 
-            var content = Responses.ResponseBaseHtml.Replace(
-                "{0}",
-                $"<h1>Index of {WebUtility.HtmlEncode(context.RequestPath())}</h1><hr/><pre>{string.Join("\n", entries)}</pre><hr/>");
+            var encodedPath = WebUtility.HtmlEncode(context.RequestPath());
+            var sb = new StringBuilder()
+                .Append("<html><head><title>Index of ")
+                .Append(encodedPath)
+                .Append("</title></head><body><h1>Index of ")
+                .Append(encodedPath)
+                .Append("</h1><hr/><pre>");
+            foreach (var entry in entries)
+            {
+                sb.Append(entry).Append('\n');
+            }
 
-            return context.HtmlResponseAsync(content, cancellationToken: ct);
+            sb.Append("</pre><hr/></body></html>");
+
+            return context.HtmlResponseAsync(sb.ToString(), cancellationToken: ct);
         }
 
         private Stream GetFileStream(IHttpContext context, FileSystemInfo fileInfo, bool usingPartial, out bool isTagValid)
@@ -404,13 +416,13 @@ namespace EmbedIO.Modules
 
             if (FileCachingMode == FileCachingMode.Complete && RamCache.IsValid(localPath, fileInfo.LastWriteTime, out var currentHash))
             {
-                isTagValid = context.RequestHeader(HttpHeaders.IfNoneMatch) == currentHash;
+                isTagValid = context.RequestHeader(HttpHeaderNames.IfNoneMatch) == currentHash;
 
                 if (isTagValid)
                 {
                     $"RAM Cache: {localPath}".Debug(nameof(StaticFilesModule));
 
-                    context.Response.AddHeader(HttpHeaders.ETag, currentHash);
+                    context.Response.AddHeader(HttpHeaderNames.ETag, currentHash);
                     return new MemoryStream(RamCache[localPath].Buffer);
                 }
             }
@@ -425,7 +437,7 @@ namespace EmbedIO.Modules
                     context.Response,
                     buffer,
                     fileInfo.LastWriteTime,
-                    context.RequestHeader(HttpHeaders.IfNoneMatch),
+                    context.RequestHeader(HttpHeaderNames.IfNoneMatch),
                     localPath);
             }
 
@@ -456,17 +468,9 @@ namespace EmbedIO.Modules
                 RamCache.Add(buffer, localPath, fileDate);
             }
 
-            response.AddHeader(HttpHeaders.ETag, currentHash);
+            response.AddHeader(HttpHeaderNames.ETag, currentHash);
 
             return false;
-        }
-
-        private void SetStatusCode304(IHttpResponse response)
-        {
-            SetDefaultCacheHeaders(response);
-
-            response.ContentType = string.Empty;
-            response.StatusCode = 304;
         }
     }
 }

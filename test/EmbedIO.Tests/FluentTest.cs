@@ -1,14 +1,14 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using EmbedIO.Modules;
+using EmbedIO.Tests.TestObjects;
+using EmbedIO.Utilities;
+using NUnit.Framework;
+using Unosquare.Swan;
 
 namespace EmbedIO.Tests
 {
-    using Modules;
-    using NUnit.Framework;
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
-    using TestObjects;
-
     [TestFixture]
     public class FluentTest
     {
@@ -26,7 +26,7 @@ namespace EmbedIO.Tests
         [SetUp]
         public void Init()
         {
-            Swan.Terminal.Settings.DisplayLoggingMessageType = Swan.LogMessageType.None;
+            Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
 
             _webServerUrl = Resources.GetServerAddress();
             _rootPath = TestHelper.SetupStaticFolder();
@@ -36,14 +36,14 @@ namespace EmbedIO.Tests
         public void FluentWithStaticFolder()
         {
             var webServer = new WebServer(_webServerUrl)
-                .WithLocalSession()
+                .WithLocalSessionManager()
                 .WithStaticFolderAt(_rootPath);
 
             Assert.AreEqual(webServer.Count, 2, "It has 2 modules loaded");
             Assert.IsNotNull(webServer.OfType<StaticFilesModule>().FirstOrDefault(), "It has StaticFilesModule");
 
             Assert.AreEqual(
-                webServer.OfType<StaticFilesModule>().First().FileSystemPath,
+                webServer.Modules.FirstOrDefault<StaticFilesModule>().FileSystemPath,
                 _rootPath,
                 "StaticFilesModule root path is equal to RootPath");
         }

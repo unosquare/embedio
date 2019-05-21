@@ -1,17 +1,17 @@
-﻿namespace EmbedIO.Tests
-{
-    using Constants;
-    using Modules;
-    using NUnit.Framework;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-    using System.Threading.Tasks;
-    using TestObjects;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using EmbedIO.Constants;
+using EmbedIO.Modules;
+using EmbedIO.Tests.TestObjects;
+using NUnit.Framework;
 
+namespace EmbedIO.Tests
+{
     [TestFixture]
     public class StaticFilesModuleTest : FixtureBase
     {
@@ -23,7 +23,7 @@
                 ws.RegisterModule(buildStaticFilesModule());
                 if (fallbackUrl != null)
                     ws.RegisterModule(new FallbackModule(fallbackUrl));
-            }, RoutingStrategy.Wildcard)
+            }, WebApiRoutingStrategy.Wildcard)
         {
         }
 
@@ -96,7 +96,7 @@
                     }
 
                     WebServerInstance.Module<StaticFilesModule>().DefaultHeaders
-                        .Add(HttpHeaders.Pragma, HeaderPragmaValue);
+                        .Add(HttpHeaderNames.Pragma, HeaderPragmaValue);
 
                     request = new HttpRequestMessage(HttpMethod.Get, VirtualPathUrl);
 
@@ -166,7 +166,7 @@
                     }
 
                     WebServerInstance.Module<StaticFilesModule>().DefaultHeaders
-                        .Add(HttpHeaders.Pragma, HeaderPragmaValue);
+                        .Add(HttpHeaderNames.Pragma, HeaderPragmaValue);
 
                     request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
 
@@ -518,7 +518,7 @@
                     }
 
                     var secondRequest = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
-                    secondRequest.Headers.TryAddWithoutValidation(HttpHeaders.IfNotMatch, eTag);
+                    secondRequest.Headers.TryAddWithoutValidation(HttpHeaderNames.IfNotMatch, eTag);
 
                     using (var response = await client.SendAsync(secondRequest))
                     {

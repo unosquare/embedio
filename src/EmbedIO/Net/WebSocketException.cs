@@ -1,9 +1,10 @@
 ﻿using System;
+using EmbedIO.Net.Internal;
 
 namespace EmbedIO.Net
 {
     /// <summary>
-    /// The exception that is thrown when a <see cref="WebSocket"/> gets a fatal error.
+    /// The exception that is thrown when a <see cref="Internal.WebSocket"/> gets a fatal error.
     /// </summary>
     public class WebSocketException : Exception
     {

@@ -67,13 +67,13 @@ namespace EmbedIO.Modules
             // If we allow all we don't need to filter
             if (_origins == Cors.All && _headers == Cors.All && _methods == Cors.All)
             {
-                context.Response.AddHeader(HttpHeaders.AccessControlAllowOrigin, Wildcard);
+                context.Response.AddHeader(HttpHeaderNames.AccessControlAllowOrigin, Wildcard);
                 var result = isOptions && ValidateHttpOptions(_methods, context, _validMethods);
 
                 return Task.FromResult(result);
             }
 
-            var currentOrigin = context.RequestHeader(HttpHeaders.Origin);
+            var currentOrigin = context.RequestHeader(HttpHeaderNames.Origin);
                 
             if (string.IsNullOrWhiteSpace(currentOrigin) && context.Request.IsLocal)
             {
@@ -87,7 +87,7 @@ namespace EmbedIO.Modules
 
             if (_validOrigins.Contains(currentOrigin))
             {
-                context.Response.AddHeader(HttpHeaders.AccessControlAllowOrigin,  currentOrigin);
+                context.Response.AddHeader(HttpHeaderNames.AccessControlAllowOrigin,  currentOrigin);
 
                 if (isOptions)
                 {
@@ -103,13 +103,13 @@ namespace EmbedIO.Modules
             IHttpContext context,
             IEnumerable<string> options)
         {
-            var currentMethod = context.RequestHeader(HttpHeaders.AccessControlRequestMethod);
-            var currentHeader = context.RequestHeader(HttpHeaders.AccessControlRequestHeaders);
+            var currentMethod = context.RequestHeader(HttpHeaderNames.AccessControlRequestMethod);
+            var currentHeader = context.RequestHeader(HttpHeaderNames.AccessControlRequestHeaders);
 
             if (!string.IsNullOrWhiteSpace(currentHeader))
             {
                 // TODO: I need to remove headers out from AllowHeaders
-                context.Response.AddHeader(HttpHeaders.AccessControlAllowHeaders, currentHeader);
+                context.Response.AddHeader(HttpHeaderNames.AccessControlAllowHeaders, currentHeader);
             }
 
             if (string.IsNullOrWhiteSpace(currentMethod)) 
@@ -121,7 +121,7 @@ namespace EmbedIO.Modules
 
             if (option == Cors.All || currentMethods.All(options.Contains))
             {
-                context.Response.AddHeader(HttpHeaders.AccessControlAllowMethods, currentMethod);
+                context.Response.AddHeader(HttpHeaderNames.AccessControlAllowMethods, currentMethod);
 
                 return true;
             }

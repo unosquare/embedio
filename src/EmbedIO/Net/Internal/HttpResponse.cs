@@ -38,7 +38,7 @@ namespace EmbedIO.Net.Internal
 
         public Version ProtocolVersion { get; }
 
-        public void SetCookies(CookieCollection cookies)
+        public void SetCookies(ICookieCollection cookies)
         {
             foreach (var cookie in cookies)
                 Headers.Add("Set-Cookie", cookie.ToString());

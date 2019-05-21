@@ -1,20 +1,21 @@
-﻿namespace EmbedIO.Tests
-{
-    using Modules;
-    using NUnit.Framework;
-    using Swan.Formatters;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-    using System.Threading.Tasks;
-    using TestObjects;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using EmbedIO.Constants;
+using EmbedIO.Modules;
+using EmbedIO.Tests.TestObjects;
+using NUnit.Framework;
+using Unosquare.Swan.Formatters;
 
+namespace EmbedIO.Tests
+{
     [TestFixture]
     public class WebApiModuleTest : PersonFixtureBase
     {
         public WebApiModuleTest()
-            : base(ws => ws.WithWebApiController<TestController>(), Constants.RoutingStrategy.Wildcard)
+            : base(ws => ws.WithWebApiController<TestController>(), WebApiRoutingStrategy.Wildcard)
         {
         }
 
@@ -87,7 +88,7 @@
                     var payloadJson = new StringContent(
                         Json.Serialize(model),
                         System.Text.Encoding.UTF8,
-                        "application/json");
+                        MimeTypes.JsonType);
 
                     var response = await client.PostAsync(WebServerUrl + TestController.GetPath, payloadJson);
 
@@ -177,7 +178,7 @@
     public class HttpGet : PersonFixtureBase
     {
         public HttpGet()
-            : base(ws => ws.WithWebApiController<TestController>(), Constants.RoutingStrategy.Wildcard, true)
+            : base(ws => ws.WithWebApiController<TestController>(), WebApiRoutingStrategy.Wildcard, true)
         {
         }
 

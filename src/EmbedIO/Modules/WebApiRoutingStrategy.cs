@@ -1,11 +1,10 @@
-﻿namespace EmbedIO.Constants
+﻿namespace EmbedIO.Modules
 {
     /// <summary>
-    /// Defines the routing strategy for URL matching
-    /// This is especially useful for REST service implementations
-    /// in the WebApi module.
+    /// Defines the routing strategies used by <see cref="WebApiModule"/>
+    /// for matching URLs to controllers.
     /// </summary>
-    public enum RoutingStrategy
+    public enum WebApiRoutingStrategy
     {
         /// <summary>
         /// The Regex strategy (default)

@@ -33,14 +33,14 @@ namespace EmbedIO.Modules
         /// with the default routing strategy, and .
         /// </summary>
         public WebApiModule(string baseUrlPath)
-            : this(baseUrlPath, RoutingStrategy.Regex, false)
+            : this(baseUrlPath, WebApiRoutingStrategy.Regex, false)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebApiModule"/> class.
         /// </summary>
-        public WebApiModule(string baseUrlPath, RoutingStrategy routingStrategy)
+        public WebApiModule(string baseUrlPath, WebApiRoutingStrategy routingStrategy)
             : this(baseUrlPath, routingStrategy, false)
         {
         }
@@ -49,7 +49,7 @@ namespace EmbedIO.Modules
         /// Initializes a new instance of the <see cref="WebApiModule"/> class.
         /// </summary>
         public WebApiModule(string baseUrlPath, bool responseJsonException)
-            : this(baseUrlPath, RoutingStrategy.Regex, responseJsonException)
+            : this(baseUrlPath, WebApiRoutingStrategy.Regex, responseJsonException)
         {
         }
 
@@ -57,10 +57,10 @@ namespace EmbedIO.Modules
         /// Initializes a new instance of the <see cref="WebApiModule"/> class.
         /// </summary>
         /// <param name="responseJsonException">if set to <c>true</c> [response json exception].</param>
-        public WebApiModule(string baseUrlPath, RoutingStrategy routingStrategy, bool responseJsonException)
+        public WebApiModule(string baseUrlPath, WebApiRoutingStrategy routingStrategy, bool responseJsonException)
             : base(baseUrlPath)
         {
-            RoutingStrategy = Validate.EnumValue<RoutingStrategy>(nameof(routingStrategy), routingStrategy);
+            RoutingStrategy = Validate.EnumValue<WebApiRoutingStrategy>(nameof(routingStrategy), routingStrategy);
             _responseJsonException = responseJsonException;
         }
 
@@ -70,7 +70,7 @@ namespace EmbedIO.Modules
         /// <value>
         /// The routing strategy.
         /// </value>
-        public RoutingStrategy RoutingStrategy { get; }
+        public WebApiRoutingStrategy RoutingStrategy { get; }
 
         /// <summary>
         /// Gets the number of controller objects registered in this API.
@@ -214,12 +214,12 @@ namespace EmbedIO.Modules
 
             switch (RoutingStrategy)
             {
-                case RoutingStrategy.Wildcard:
+                case WebApiRoutingStrategy.Wildcard:
                     path = context.RequestWilcardPath(_delegateMap.Keys
                         .Where(k => k.Contains(ModuleMap.AnyPathRoute))
                         .Select(s => s.ToLowerInvariant()));
                     break;
-                case RoutingStrategy.Regex:
+                case WebApiRoutingStrategy.Regex:
                     path = context.Request.Url.AbsolutePath;
                     foreach (var route in _delegateMap.Keys)
                     {
@@ -261,10 +261,10 @@ namespace EmbedIO.Modules
 
             switch (RoutingStrategy)
             {
-                case RoutingStrategy.Wildcard:
+                case WebApiRoutingStrategy.Wildcard:
                     SetHandlerFromWildcardPath();
                     break;
-                case RoutingStrategy.Regex:
+                case WebApiRoutingStrategy.Regex:
                     SetHandlerFromRegexPath();
                     break;
             }
@@ -276,7 +276,7 @@ namespace EmbedIO.Modules
         {
             var verb = context.RequestVerb();
             var regExRouteParams = new Dictionary<string, object>();
-            path = RoutingStrategy == RoutingStrategy.Wildcard
+            path = RoutingStrategy == WebApiRoutingStrategy.Wildcard
                 ? NormalizeWildcardPath(verb, path)
                 : NormalizeRegexPath(verb, path, regExRouteParams);
 
@@ -302,7 +302,7 @@ namespace EmbedIO.Modules
             // Initially, only the server and context objects will be available
             var args = new object[methodPair.MethodCache.AdditionalParameters.Count];
 
-            if (RoutingStrategy == RoutingStrategy.Regex)
+            if (RoutingStrategy == WebApiRoutingStrategy.Regex)
                 methodPair.ParseArguments(regExRouteParams, args);
 
             if (!_responseJsonException)

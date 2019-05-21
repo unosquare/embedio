@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EmbedIO.Constants;
 
 namespace EmbedIO.Internal
 {
@@ -17,7 +18,7 @@ namespace EmbedIO.Internal
         /// <exception cref="System.NotImplementedException">multipart/form-data Content Type parsing is not yet implemented.</exception>
         internal static Dictionary<string, object> ParseAsDictionary(
             string requestBody,
-            string contentTypeHeader = Constants.Strings.UrlEncodedContentType)
+            string contentTypeHeader = MimeTypes.UrlEncodedContentType)
         {
             if (contentTypeHeader.ToLowerInvariant().StartsWith("multipart/form-data"))
                 throw new NotImplementedException("multipart/form-data Content Type parsing is not yet implemented");

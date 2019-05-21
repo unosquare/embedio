@@ -74,7 +74,10 @@ namespace EmbedIO.Tests
         public IPEndPoint RemoteEndPoint { get; } = new IPEndPoint(IPAddress.Loopback, 12345);
 
         /// <inheritdoc />
-        public bool IsLocal { get; } = true;
+        public bool IsLocal => true;
+
+        /// <inheritdoc />
+        public bool IsSecureConnection => false;
 
         /// <inheritdoc />
         public string UserAgent { get; } = "EmbedIOTest/1.0";

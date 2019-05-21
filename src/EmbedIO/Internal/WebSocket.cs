@@ -1,52 +1,39 @@
-﻿using System.Threading;
-using System;
+﻿using System;
 using System.Net.WebSockets;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace EmbedIO
+namespace EmbedIO.Internal
 {
-    /// <summary>
-    /// Represents a wrapper around a regular WebSocketContext.
-    /// </summary>
-    /// <inheritdoc />
-    public class WebSocket : IWebSocket
+    internal sealed class WebSocket : IWebSocket
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebSocket"/> class.
-        /// </summary>
-        /// <param name="webSocket">The web socket.</param>
         public WebSocket(System.Net.WebSockets.WebSocket webSocket)
         {
             SystemWebSocket = webSocket;
         }
 
-        /// <summary>
-        /// Gets the real WebSocket object from System.Net.
-        /// </summary>
-        /// <value>
-        /// The system web socket.
-        /// </value>
-        public System.Net.WebSockets.WebSocket SystemWebSocket { get; }
-
-        /// <inheritdoc />
-        public WebSocketState State
+        ~WebSocket()
         {
-            get
-            {
-                switch (SystemWebSocket.State)
-                {
-                    case WebSocketState.Connecting:
-                        return WebSocketState.Connecting;
-                    case WebSocketState.Open:
-                        return WebSocketState.Open;
-                    default:
-                        return WebSocketState.Closed;
-                }
-            }
+            Dispose(false);
         }
 
-        /// <inheritdoc />
-        void IDisposable.Dispose() => SystemWebSocket?.Dispose();
+        public System.Net.WebSockets.WebSocket SystemWebSocket { get; }
+
+        public WebSocketState State => SystemWebSocket.State;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!disposing)
+                return;
+
+            SystemWebSocket.Dispose();
+        }
 
         /// <inheritdoc />
         public Task SendAsync(byte[] buffer, bool isText, CancellationToken cancellationToken = default)

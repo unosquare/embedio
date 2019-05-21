@@ -1,6 +1,6 @@
 ﻿namespace EmbedIO.Constants
 {
-    partial class HttpHeaders
+    partial class HttpHeaderNames
     {
 #pragma warning disable CA1034 // Do not nest publicly accessible types
         /// <summary>

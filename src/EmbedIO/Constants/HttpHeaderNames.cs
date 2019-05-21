@@ -9,7 +9,7 @@
     /// or even recognizes, it. Refer to the documentation for each module for information about supported
     /// headers.</para>
     /// </remarks>
-    public static partial class HttpHeaders
+    public static partial class HttpHeaderNames
     {
         // The .NET Core sources were taken as reference for this list of constants.
         // See https://github.com/dotnet/corefx/blob/master/src/Common/src/System/Net/HttpKnownHeaderNames.cs

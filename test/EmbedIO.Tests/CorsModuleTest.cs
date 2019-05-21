@@ -1,13 +1,13 @@
-﻿namespace EmbedIO.Tests
-{
-    using Constants;
-    using Modules;
-    using NUnit.Framework;
-    using Swan.Formatters;
-    using System.Net;
-    using System.Threading.Tasks;
-    using TestObjects;
+﻿using System.Net;
+using System.Threading.Tasks;
+using EmbedIO.Constants;
+using EmbedIO.Modules;
+using EmbedIO.Tests.TestObjects;
+using NUnit.Framework;
+using Unosquare.Swan.Formatters;
 
+namespace EmbedIO.Tests
+{
     [TestFixture]
     public class CorsModuleTest : FixtureBase
     {
@@ -26,7 +26,7 @@
                     ws.Module<WebApiModule>().RegisterController<TestController>();
                     ws.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponseAsync(TestObj, ct)));
                 },
-                RoutingStrategy.Wildcard,
+                WebApiRoutingStrategy.Wildcard,
                 true)
         {
             // placeholder
@@ -44,9 +44,9 @@
         public async Task RequestOptionsVerb_ReturnsOK()
         {
             var request = new TestHttpRequest(WebServerUrl + TestController.GetPath, HttpVerbs.Options);
-            request.Headers.Add(HttpHeaders.Origin, "http://unosquare.github.io");
-            request.Headers.Add(HttpHeaders.AccessControlRequestMethod, "post");
-            request.Headers.Add(HttpHeaders.AccessControlRequestHeaders, "content-type");
+            request.Headers.Add(HttpHeaderNames.Origin, "http://unosquare.github.io");
+            request.Headers.Add(HttpHeaderNames.AccessControlRequestMethod, "post");
+            request.Headers.Add(HttpHeaderNames.AccessControlRequestHeaders, "content-type");
 
             using (var response = await SendAsync(request))
             {

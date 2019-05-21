@@ -7,7 +7,7 @@
 
     internal class TestHttpMessageHandler : HttpMessageHandler
     {
-        readonly TestWebServer _server;
+        private readonly TestWebServer _server;
 
         public TestHttpMessageHandler(TestWebServer server)
         {

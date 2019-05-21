@@ -60,8 +60,6 @@ namespace EmbedIO
 
         private TimeSpan _purgeInterval = DefaultPurgeInterval;
 
-        private bool _configurationLocked;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalSessionManager"/> class
         /// with default values for all properties.
@@ -178,10 +176,12 @@ namespace EmbedIO
             }
         }
 
+        private bool ConfigurationLocked { get; set; }
+
         /// <inheritdoc />
         public void Start(CancellationToken ct)
         {
-            _configurationLocked = true;
+            ConfigurationLocked = true;
 
             Task.Run(async () =>
             {
@@ -257,7 +257,7 @@ namespace EmbedIO
 
         private void EnsureConfigurationNotLocked()
         {
-            if (_configurationLocked)
+            if (ConfigurationLocked)
                 throw new InvalidOperationException($"Cannot configure a {nameof(LocalSessionManager)} once it has been started.");
         }
 

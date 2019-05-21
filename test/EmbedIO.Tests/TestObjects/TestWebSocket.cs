@@ -1,59 +1,23 @@
-﻿namespace EmbedIO.Tests.TestObjects
+﻿using System.Threading.Tasks;
+using EmbedIO.Modules;
+using Unosquare.Swan.Formatters;
+
+namespace EmbedIO.Tests.TestObjects
 {
-    using Modules;
-    using Unosquare.Swan.Formatters;
-
-    [WebSocketHandler("/test/")]
-    public class TestWebSocketBase : WebSocketServer
+    public class TestWebSocket : WebSocketModule
     {
-        public override string ServerName => nameof(TestWebSocketBase);
-
-        protected override void OnMessageReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
+        public TestWebSocket(string urlPath)
+            : base(urlPath, true)
         {
-            Send(context, "HELLO");
         }
 
-        protected override void OnFrameReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
-        {
-            // Do nothing
-        }
-
-        protected override void OnClientConnected(
-            IWebSocketContext context,
-            System.Net.IPEndPoint localEndPoint,
-            System.Net.IPEndPoint remoteEndPoint)
-        {
-            // Do nothing
-        }
-
-        protected override void OnClientDisconnected(IWebSocketContext context)
-        {
-            // Do nothing
-        }
+        protected override Task OnMessageReceivedAsync(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
+            => SendAsync(context, "HELLO");
     }
 
-    [WebSocketHandler("/test/")]
-    public class TestWebSocket : TestWebSocketBase
+    public class BigDataWebSocket : WebSocketModule
     {
-        public override string ServerName => nameof(TestWebSocket);
-    }
-
-    [WebSocketHandler("/test/*")]
-    public class TestWebSocketWildcard : TestWebSocketBase
-    {
-        public override string ServerName => nameof(TestWebSocketWildcard);
-    }
-
-    [WebSocketHandler("/test/{id}")]
-    public class TestWebSocketRegex : TestWebSocketBase
-    {
-        public override string ServerName => nameof(TestWebSocketRegex);
-    }
-
-    [WebSocketHandler("/bigdata")]
-    public class BigDataWebSocket : WebSocketServer
-    {
-        public static object BigDataObject => new
+        public static readonly object BigDataObject = new
         {
             Id = 1,
             Name = "Name",
@@ -2898,58 +2862,29 @@ i01jQpAUwrKkbVu2EzqXmNMgrAdDISXyvKBRr9frjUbDN8eG0uB5gWdshYxag9Ymu4MthcVMpvwB
 cygSR/MggDhTGBrfglUEKIXXbcbfwgukfyVEJJPOIP0xTtdAhAKBTNyWZuTIcRmIjIcgEEau",
         };
 
-        public override string ServerName => nameof(BigDataWebSocket);
-
-        protected override void OnMessageReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
+        public BigDataWebSocket(string urlPath)
+            : base(urlPath, true)
         {
-            Send(context, Json.Serialize(BigDataObject));
         }
 
-        protected override void OnFrameReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
-        {
-            // Do Nothing
-        }
-
-        protected override void OnClientConnected(
-            IWebSocketContext context,
-            System.Net.IPEndPoint localEndPoint,
-            System.Net.IPEndPoint remoteEndPoint)
-        {
-            // Do nothing
-        }
-
-        protected override void OnClientDisconnected(IWebSocketContext context)
-        {
-            // Do nothing
-        }
+        protected override Task OnMessageReceivedAsync(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
+            => SendAsync(context, Json.Serialize(BigDataObject));
     }
 
-    [WebSocketHandler("/close")]
-    public class CloseWebSocket : WebSocketServer
+    public class CloseWebSocket : WebSocketModule
     {
-        public override string ServerName => nameof(BigDataWebSocket);
-
-        protected override void OnMessageReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
+        public CloseWebSocket(string urlPath)
+            : base(urlPath, true)
         {
-            // Do nothing
         }
 
-        protected override void OnFrameReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
-        {
-            // Do nothing
-        }
+        protected override Task OnMessageReceivedAsync(
+            IWebSocketContext context, 
+            byte[] rxBuffer,
+            IWebSocketReceiveResult rxResult)
+            => Task.CompletedTask;
 
-        protected override void OnClientConnected(
-            IWebSocketContext context,
-            System.Net.IPEndPoint localEndPoint,
-            System.Net.IPEndPoint remoteEndPoint)
-        {
-            context.WebSocket.CloseAsync(Net.CloseStatusCode.InvalidData, "Your data is invalid");
-        }
-
-        protected override void OnClientDisconnected(IWebSocketContext context)
-        {
-            // Do nothing
-        }
+        protected override Task OnClientConnectedAsync(IWebSocketContext context)
+            => context.WebSocket.CloseAsync(Net.CloseStatusCode.InvalidData, "Your data is invalid");
     }
 }
