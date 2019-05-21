@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Modules;
 
@@ -80,9 +81,9 @@ namespace EmbedIO.Internal
 
     internal class MethodCacheInstance
     {
-        private readonly Func<IHttpContext, object> _controllerFactory;
+        private readonly Func<IHttpContext, CancellationToken, object> _controllerFactory;
 
-        public MethodCacheInstance(Func<IHttpContext, object> controllerFactory, MethodCache cache)
+        public MethodCacheInstance(Func<IHttpContext, CancellationToken, object> controllerFactory, MethodCache cache)
         {
             _controllerFactory = controllerFactory;
             MethodCache = cache;
@@ -109,9 +110,9 @@ namespace EmbedIO.Internal
                 ? MethodCache.AsyncInvoke(controller, arguments)
                 : Task.FromResult(MethodCache.SyncInvoke(controller, arguments));
 
-        public WebApiController SetDefaultHeaders(IHttpContext context)
+        public WebApiController SetDefaultHeaders(IHttpContext context, CancellationToken cancellationToken)
         {
-            var controller = _controllerFactory(context) as WebApiController;
+            var controller = _controllerFactory(context, cancellationToken) as WebApiController;
             MethodCache.SetHeadersInvoke(controller);
 
             return controller;

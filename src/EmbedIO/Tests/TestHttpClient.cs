@@ -45,7 +45,7 @@ namespace EmbedIO.Tests
         {
             var response = await SendAsync(new TestHttpRequest($"http://test/{url}")).ConfigureAwait(false);
 
-            return (response as TestHttpResponse).GetBodyAsString(Encoding);
+            return ((TestHttpResponse) response).GetBodyAsString(Encoding);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace EmbedIO.Tests
         /// <param name="request">The request.</param>
         /// <returns>A task representing the HTTP response.</returns>
         /// <exception cref="InvalidOperationException">The IWebServer implementation should be TestWebServer.</exception>
-        public async Task<IHttpResponse> SendAsync(TestHttpRequest request)
+        public async Task<TestHttpResponse> SendAsync(TestHttpRequest request)
         {
             var context = new HttpContextImpl(Validate.NotNull(nameof(request), request));
 

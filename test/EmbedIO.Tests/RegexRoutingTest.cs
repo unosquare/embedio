@@ -1,5 +1,4 @@
-﻿using EmbedIO.Modules;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System.Threading.Tasks;
 using EmbedIO.Tests.TestObjects;
 
@@ -9,7 +8,7 @@ namespace EmbedIO.Tests
     public class RegexRoutingTest : FixtureBase
     {
         public RegexRoutingTest()
-            : base(ws => ws.RegisterModule(new TestRegexModule()), WebApiRoutingStrategy.Regex, true)
+            : base(ws => ws.Modules.Add(nameof(TestRegexModule), new TestRegexModule()), true)
         {
         }
 

@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using EmbedIO.Modules;
 using EmbedIO.Tests.TestObjects;
-using EmbedIO.Utilities;
 using NUnit.Framework;
 
 namespace EmbedIO.Tests
@@ -16,14 +15,14 @@ namespace EmbedIO.Tests
         public LocalSessionManagerTest()
             : base(ws =>
                 {
-                    ws.SessionManager = new LocalSessionManager("__session", UrlPath.Root, TimeSpan.Zero) {
-                        SessionDuration = TimeSpan.FromSeconds(1)
+                    ws.SessionManager = new LocalSessionManager
+                    {
+                        SessionDuration = TimeSpan.FromSeconds(1),
                     };
-                    ws.Modules.Add(new StaticFilesModule(TestHelper.SetupStaticFolder()));
-                    ws.Modules.Add("api", new WebApiModule());
+                    ws.Modules.Add(nameof(StaticFilesModule), new StaticFilesModule("/",TestHelper.SetupStaticFolder()));
+                    ws.Modules.Add("api", new WebApiModule("/"));
                     ((WebApiModule)ws.Modules["api"]).RegisterController<TestLocalSessionController>();
-                },
-                WebApiRoutingStrategy.Wildcard)
+                })
         {
         }
 
@@ -57,13 +56,6 @@ namespace EmbedIO.Tests
 
         public class Sessions : LocalSessionManagerTest
         {
-            [Test]
-            public void HasSessionModule()
-            {
-                Assert.IsNotNull(WebServerInstance.SessionManager, "Session module is not null");
-                Assert.AreEqual(WebServerInstance.SessionManager.Handlers.Count, 1, "Session module has one handler");
-            }
-
             [Test]
             public async Task DeleteSession()
             {

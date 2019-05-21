@@ -15,7 +15,7 @@ namespace EmbedIO.Tests
     public class WebApiModuleTest : PersonFixtureBase
     {
         public WebApiModuleTest()
-            : base(ws => ws.WithWebApiController<TestController>(), WebApiRoutingStrategy.Wildcard)
+            : base(ws => ws.WithWebApiController<TestController>(routingStrategy: WebApiRoutingStrategy.Wildcard))
         {
         }
 
@@ -26,7 +26,7 @@ namespace EmbedIO.Tests
             {
                 const string name = nameof(TestControllerWithConstructor);
 
-                WebServerInstance.Module<WebApiModule>().RegisterController((ctx) => new TestControllerWithConstructor(ctx, name));
+                WebServerInstance.Modules.OfType<WebApiModule>().First().RegisterController((ctx, ct) => new TestControllerWithConstructor(ctx, name));
                 using (var client = new HttpClient())
                 {
                     var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "name");
@@ -41,7 +41,7 @@ namespace EmbedIO.Tests
             [Test]
             public async Task GetWebApiWithCacheControlPublic_ReturnsValidResponse()
             {
-                WebServerInstance.Module<WebApiModule>().RegisterController((ctx) => new TestControllerWithConstructor(ctx));
+                WebServerInstance.Modules.OfType<WebApiModule>().First().RegisterController((ctx, ct) => new TestControllerWithConstructor(ctx));
                 using (var client = new HttpClient())
                 {
                     var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "namePublic");
@@ -60,7 +60,7 @@ namespace EmbedIO.Tests
             [Test]
             public async Task GetWebApiWithCacheControlDefault_ReturnsValidResponse()
             {
-                WebServerInstance.Module<WebApiModule>().RegisterController((ctx) => new TestControllerWithConstructor(ctx));
+                WebServerInstance.Modules.OfType<WebApiModule>().First().RegisterController((ctx, ct) => new TestControllerWithConstructor(ctx));
                 using (var client = new HttpClient())
                 {
                     var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "name");
@@ -178,7 +178,7 @@ namespace EmbedIO.Tests
     public class HttpGet : PersonFixtureBase
     {
         public HttpGet()
-            : base(ws => ws.WithWebApiController<TestController>(), WebApiRoutingStrategy.Wildcard, true)
+            : base(ws => ws.WithWebApiController<TestController>(routingStrategy: WebApiRoutingStrategy.Wildcard), true)
         {
         }
 

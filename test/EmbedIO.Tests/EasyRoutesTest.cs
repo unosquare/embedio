@@ -16,7 +16,7 @@ namespace EmbedIO.Tests
             using (var server = new TestWebServer())
             {
                 server
-                    .OnAny((ctx, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
+                    .OnAny((ctx, path, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
 
                 server.RunAsync();
 
@@ -30,7 +30,7 @@ namespace EmbedIO.Tests
             using (var server = new TestWebServer())
             {
                 server
-                    .OnGet((ctx, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
+                    .OnGet((ctx, path, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
 
                 server.RunAsync();
 
@@ -44,7 +44,7 @@ namespace EmbedIO.Tests
             using (var server = new TestWebServer())
             {
                 server
-                    .OnPost((ctx, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
+                    .OnPost((ctx, path, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
 
                 server.RunAsync();
 
@@ -60,7 +60,7 @@ namespace EmbedIO.Tests
             using (var server = new TestWebServer())
             {
                 server
-                    .OnPut((ctx, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
+                    .OnPut((ctx, path, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
 
                 server.RunAsync();
 
@@ -76,7 +76,7 @@ namespace EmbedIO.Tests
             using (var server = new TestWebServer())
             {
                 server
-                    .OnHead((ctx, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
+                    .OnHead((ctx, path, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
 
                 server.RunAsync();
 
@@ -85,14 +85,14 @@ namespace EmbedIO.Tests
                 Assert.AreEqual(Ok, response.GetBodyAsString());
             }
         }
-        
+
         [Test]
         public async Task AddOnDelete_ResponseOK()
         {
             using (var server = new TestWebServer())
             {
                 server
-                    .OnDelete((ctx, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
+                    .OnDelete((ctx, path, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
 
                 server.RunAsync();
 
@@ -108,7 +108,7 @@ namespace EmbedIO.Tests
             using (var server = new TestWebServer())
             {
                 server
-                    .OnOptions((ctx, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
+                    .OnOptions((ctx, path, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
 
                 server.RunAsync();
 
@@ -124,7 +124,7 @@ namespace EmbedIO.Tests
             using (var server = new TestWebServer())
             {
                 server
-                    .OnPatch((ctx, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
+                    .OnPatch((ctx, path, ct) => ctx.StringResponseAsync(Ok, cancellationToken: ct));
 
                 server.RunAsync();
 

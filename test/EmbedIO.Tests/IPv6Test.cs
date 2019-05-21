@@ -26,8 +26,8 @@ namespace EmbedIO.Tests
             if (Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
-            var instance = new WebServer(new[] { "http://*:8877" }, WebApiRoutingStrategy.Regex, HttpListenerMode.EmbedIO);
-            instance.OnAny((ctx, ct) => ctx.JsonResponseAsync(DateTime.Now, ct));
+            var instance = new WebServer(new[] { "http://*:8877" }, HttpListenerMode.EmbedIO);
+            instance.OnAny((ctx, path, ct) => ctx.JsonResponseAsync(DateTime.Now, ct));
 
             instance.RunAsync();
 
@@ -43,8 +43,8 @@ namespace EmbedIO.Tests
             if (Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
-            var instance = new WebServer(new[] { "http://[::1]:8877" }, WebApiRoutingStrategy.Regex, HttpListenerMode.EmbedIO);
-            instance.OnAny((ctx, ct) => ctx.JsonResponseAsync(DateTime.Now, ct));
+            var instance = new WebServer(new[] { "http://[::1]:8877" }, HttpListenerMode.EmbedIO);
+            instance.OnAny((ctx, path, ct) => ctx.JsonResponseAsync(DateTime.Now, ct));
 
             instance.RunAsync();
 

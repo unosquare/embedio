@@ -36,7 +36,7 @@ namespace EmbedIO.Tests
         {
             using (var webserver = new TestWebServer())
             {
-                webserver.SessionManager = new LocalSessionManager("__session", UrlPath.Root, TimeSpan.FromHours(1));
+                webserver.SessionManager = new LocalSessionManager();
 
                 Assert.NotNull(webserver.SessionManager);
             }
@@ -47,7 +47,7 @@ namespace EmbedIO.Tests
         {
             using (var webserver = new TestWebServer())
             {
-                webserver.SessionManager = new LocalSessionManager("__session", UrlPath.Root, TimeSpan.FromHours(1));
+                webserver.SessionManager = new LocalSessionManager();
                 webserver.SessionManager = null;
 
                 Assert.IsNull(webserver.SessionManager);

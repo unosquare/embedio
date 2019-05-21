@@ -119,6 +119,7 @@ namespace EmbedIO
         /// <param name="webserver">The webserver instance.</param>
         /// <param name="responseJsonException">if set to <c>true</c> [response json exception].</param>
         /// <param name="baseUrlPath">The base URL path.</param>
+        /// <param name="routingStrategy">The web API routing strategy.</param>
         /// <returns>
         /// An instance of webserver.
         /// </returns>
@@ -126,7 +127,8 @@ namespace EmbedIO
         public static IWebServer WithWebApiController<T>(
             this IWebServer webserver,
             bool responseJsonException = false,
-            string baseUrlPath = UrlPath.Root)
+            string baseUrlPath = UrlPath.Root,
+            WebApiRoutingStrategy routingStrategy = WebApiRoutingStrategy.Regex)
             where T : WebApiController
         {
             if (webserver == null)
@@ -136,7 +138,7 @@ namespace EmbedIO
 
             if (webApiModule == null)
             {
-                webApiModule = new WebApiModule(baseUrlPath, responseJsonException);
+                webApiModule = new WebApiModule(baseUrlPath, routingStrategy, responseJsonException);
                 webserver.Modules.Add(webApiModule);
             }
 

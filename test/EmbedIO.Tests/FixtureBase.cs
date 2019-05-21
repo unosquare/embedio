@@ -7,21 +7,18 @@ using EmbedIO.Tests.TestObjects;
 using NUnit.Framework;
 using Unosquare.Swan;
 
-
 namespace EmbedIO.Tests
 {
     public abstract class FixtureBase : IDisposable
     {
         private readonly Action<IWebServer> _builder;
         private readonly bool _useTestWebServer;
-        private readonly WebApiRoutingStrategy _routeStrategy;
 
-        protected FixtureBase(Action<IWebServer> builder, WebApiRoutingStrategy routeStrategy = WebApiRoutingStrategy.Regex, bool useTestWebServer = false)
+        protected FixtureBase(Action<IWebServer> builder, bool useTestWebServer = false)
         {
             Terminal.Settings.GlobalLoggingMessageType = LogMessageType.None;
 
             _builder = builder;
-            _routeStrategy = routeStrategy;
             _useTestWebServer = useTestWebServer;
         }
 
@@ -45,8 +42,8 @@ namespace EmbedIO.Tests
         {
             WebServerUrl = Resources.GetServerAddress();
             WebServerInstance = _useTestWebServer
-                ? (IWebServer)new TestWebServer(_routeStrategy)
-                : new WebServer(WebServerUrl, _routeStrategy);
+                ? new TestWebServer() as IWebServer
+                : new WebServer(WebServerUrl);
 
             _builder(WebServerInstance);
             OnAfterInit();
@@ -57,7 +54,7 @@ namespace EmbedIO.Tests
         {
             if (!disposing) return;
 
-            (WebServerInstance as IDisposable)?.Dispose();
+            WebServerInstance?.Dispose();
         }
 
         protected virtual void OnAfterInit()
@@ -68,7 +65,7 @@ namespace EmbedIO.Tests
         public void Kill()
         {
             Task.Delay(500).Wait();
-            (WebServerInstance as IDisposable)?.Dispose();
+            WebServerInstance?.Dispose();
         }
 
         public async Task<string> GetString(string partialUrl = "")

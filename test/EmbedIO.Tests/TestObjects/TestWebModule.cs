@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using EmbedIO.Constants;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace EmbedIO.Tests.TestObjects
 {
@@ -10,18 +10,25 @@ namespace EmbedIO.Tests.TestObjects
         public const string AnotherUrl = "anotherUrl";
 
         public TestWebModule()
+            : base("/")
         {
-            AddHandler("/" + RedirectUrl, 
-                HttpVerbs.Get,
-                (context, ct) => Task.FromResult(context.Redirect("/" + AnotherUrl, false)));
-
-            AddHandler("/" + RedirectAbsoluteUrl, 
-                HttpVerbs.Get,
-                (context, ct) => Task.FromResult(context.Redirect("/" + AnotherUrl)));
-
-            AddHandler("/" + AnotherUrl, HttpVerbs.Get, (server, context) => Task.FromResult(true));
         }
 
-        public override string Name => nameof(TestWebModule);
+        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct)
+        {
+            switch (path)
+            {
+                case RedirectUrl:
+                    context.Redirect("/" + AnotherUrl);
+                    return Task.FromResult(true);
+                case RedirectAbsoluteUrl:
+                    context.Redirect("/" + AnotherUrl);
+                    return Task.FromResult(true);
+                case AnotherUrl:
+                    return Task.FromResult(true);
+            }
+
+            return Task.FromResult(false);
+        }
     }
 }

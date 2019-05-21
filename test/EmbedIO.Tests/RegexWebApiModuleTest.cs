@@ -1,5 +1,4 @@
-﻿using EmbedIO.Modules;
-using EmbedIO.Constants;
+﻿using EmbedIO.Constants;
 using System.Collections.Generic;
 using NUnit.Framework;
 using System.Linq;
@@ -8,14 +7,13 @@ using System.Threading.Tasks;
 using EmbedIO.Tests.TestObjects;
 using Unosquare.Swan.Formatters;
 
-
 namespace EmbedIO.Tests
 {
     [TestFixture]
     public class RegexWebApiModuleTest : PersonFixtureBase
     {
         public RegexWebApiModuleTest()
-            : base(ws => ws.WithWebApiController<TestRegexController>(), WebApiRoutingStrategy.Regex, true)
+            : base(ws => ws.WithWebApiController<TestRegexController>(), true)
         {
         }
 
@@ -84,7 +82,7 @@ namespace EmbedIO.Tests
                 await ValidatePerson(TestRegexController.RelativePath + "regextwo/" +
                                                 person.MainSkill + "/" + person.Age);
             }
-            
+
             [Test]
             public async Task WithRegexWithOptionalParams_ReturnsOk()
             {

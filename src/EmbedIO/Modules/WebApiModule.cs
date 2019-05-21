@@ -29,33 +29,42 @@ namespace EmbedIO.Modules
         private readonly bool _responseJsonException;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiModule"/> class
-        /// with the default routing strategy, and .
+        /// Initializes a new instance of the <see cref="WebApiModule" /> class
+        /// with the default routing strategy, and no JSON exception handler.
         /// </summary>
+        /// <param name="baseUrlPath">The base URL path served by this module.</param>
+        /// <seealso cref="IWebModule.BaseUrlPath" />
+        /// <seealso cref="Validate.UrlPath" />
         public WebApiModule(string baseUrlPath)
             : this(baseUrlPath, WebApiRoutingStrategy.Regex, false)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiModule"/> class.
+        /// Initializes a new instance of the <see cref="WebApiModule" /> class.
         /// </summary>
+        /// <param name="baseUrlPath">The base URL path.</param>
+        /// <param name="routingStrategy">The routing strategy.</param>
         public WebApiModule(string baseUrlPath, WebApiRoutingStrategy routingStrategy)
             : this(baseUrlPath, routingStrategy, false)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiModule"/> class.
+        /// Initializes a new instance of the <see cref="WebApiModule" /> class.
         /// </summary>
+        /// <param name="baseUrlPath">The base URL path.</param>
+        /// <param name="responseJsonException">if set to <c>true</c> [response json exception].</param>
         public WebApiModule(string baseUrlPath, bool responseJsonException)
             : this(baseUrlPath, WebApiRoutingStrategy.Regex, responseJsonException)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiModule"/> class.
+        /// Initializes a new instance of the <see cref="WebApiModule" /> class.
         /// </summary>
+        /// <param name="baseUrlPath">The base URL path.</param>
+        /// <param name="routingStrategy">The routing strategy.</param>
         /// <param name="responseJsonException">if set to <c>true</c> [response json exception].</param>
         public WebApiModule(string baseUrlPath, WebApiRoutingStrategy routingStrategy, bool responseJsonException)
             : base(baseUrlPath)
@@ -101,14 +110,15 @@ namespace EmbedIO.Modules
         /// </summary>
         /// <param name="controllerType">Tht type of the controller.</param>
         public void RegisterController(Type controllerType)
-            => RegisterController(controllerType, ctx => Activator.CreateInstance(controllerType, ctx));
+            => RegisterController(controllerType, (ctx, ct) => Activator.CreateInstance(controllerType, ctx) as WebApiController);
 
         /// <summary>
         /// Registers the controller.
         /// </summary>
-        /// <param name="controllerType">Type of the controller.</param>
-        /// <param name="factory">The controller factory method.</param>
-        public void RegisterController(Func<IHttpContext, WebApiController> factory)
+        /// <typeparam name="TController">The type of the controller.</typeparam>
+        /// <param name="factory">The factory.</param>
+        /// <exception cref="ArgumentException">Controller types must be unique within the module</exception>
+        public void RegisterController(Type controllerType, Func<IHttpContext, CancellationToken, WebApiController> factory)
         {
             if (_controllerTypes.Contains(controllerType))
                 throw new ArgumentException("Controller types must be unique within the module");
@@ -182,10 +192,6 @@ namespace EmbedIO.Modules
         /// <returns>A string that represents the registered path.</returns>
         private string NormalizeWildcardPath(HttpVerbs verb, IHttpContext context, string path)
         {
-            var path = context.RequestWilcardPath(_delegateMap.Keys
-                .Where(k => k.Contains(ModuleMap.AnyPathRoute))
-                .Select(s => s.ToLowerInvariant()));
-
             if (_delegateMap.ContainsKey(path) == false)
                 return null;
 
@@ -236,55 +242,58 @@ namespace EmbedIO.Modules
             return _delegateMap.ContainsKey(path);
         }
 
-        private WebHandler GetHandler(IHttpContext context)
-        {
-            Map handler = null;
+        // TODO: Riccardo, I commented this because I'm not pretty sure what was the idea
+        //private WebHandler GetHandler(IHttpContext context)
+        //{
+        //    Map handler = null;
 
-            void SetHandlerFromRegexPath()
-            {
-                handler = Handlers.FirstOrDefault(x =>
-                    (x.Path == ModuleMap.AnyPath || context.RequestRegexUrlParams(x.Path) != null) &&
-                    (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
-            }
+        //    void SetHandlerFromRegexPath()
+        //    {
+        //        handler = Handlers.FirstOrDefault(x =>
+        //            (x.Path == ModuleMap.AnyPath || context.RequestRegexUrlParams(x.Path) != null) &&
+        //            (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
+        //    }
 
-            void SetHandlerFromWildcardPath()
-            {
-                var path = context.RequestWilcardPath(module.Handlers
-                    .Where(k => k.Path.Contains(ModuleMap.AnyPathRoute))
-                    .Select(s => s.Path.ToLowerInvariant()));
+        //    void SetHandlerFromWildcardPath()
+        //    {
+        //        var path = context.RequestWilcardPath(module.Handlers
+        //            .Where(k => k.Path.Contains(ModuleMap.AnyPathRoute))
+        //            .Select(s => s.Path.ToLowerInvariant()));
 
-                handler = Handlers
-                    .FirstOrDefault(x =>
-                        (x.Path == ModuleMap.AnyPath || x.Path == path) &&
-                        (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
-            }
+        //        handler = Handlers
+        //            .FirstOrDefault(x =>
+        //                (x.Path == ModuleMap.AnyPath || x.Path == path) &&
+        //                (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
+        //    }
 
-            switch (RoutingStrategy)
-            {
-                case WebApiRoutingStrategy.Wildcard:
-                    SetHandlerFromWildcardPath();
-                    break;
-                case WebApiRoutingStrategy.Regex:
-                    SetHandlerFromRegexPath();
-                    break;
-            }
+        //    switch (RoutingStrategy)
+        //    {
+        //        case WebApiRoutingStrategy.Wildcard:
+        //            SetHandlerFromWildcardPath();
+        //            break;
+        //        case WebApiRoutingStrategy.Regex:
+        //            SetHandlerFromRegexPath();
+        //            break;
+        //    }
 
-            return handler?.ResponseHandler;
-        }
+        //    return handler?.ResponseHandler;
+        //}
 
+        /// <inheritdoc />
         public override async Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct)
         {
             var verb = context.RequestVerb();
             var regExRouteParams = new Dictionary<string, object>();
             path = RoutingStrategy == WebApiRoutingStrategy.Wildcard
-                ? NormalizeWildcardPath(verb, path)
-                : NormalizeRegexPath(verb, path, regExRouteParams);
+                ? NormalizeWildcardPath(verb, context, path)
+                : NormalizeRegexPath(verb, context, regExRouteParams);
 
             // return a non-math if no handler hold the route
             if (path == null)
             {
-                return IsMethodNotAllowed(context) && OnMethodNotAllowed != null &&
-                       await OnMethodNotAllowed(context).ConfigureAwait(false);
+                /// TODO: Ricardo, what is your idea to add the OnMethodNotAllowed?
+                //return IsMethodNotAllowed(context) && OnMethodNotAllowed != null &&
+                //       await OnMethodNotAllowed(context).ConfigureAwait(false);
             }
 
             // search the path and verb
@@ -293,7 +302,7 @@ namespace EmbedIO.Modules
                 throw new InvalidOperationException($"No method found for path {path} and verb {verb}.");
 
             // ensure module does not return cached responses by default or the custom headers
-            var controller = methodPair.SetDefaultHeaders(context);
+            var controller = methodPair.SetDefaultHeaders(context, ct);
 
             // Log the handler to be use
             $"Handler: {methodPair.MethodCache.ControllerName}.{methodPair.MethodCache.MethodInfo.Name}"
@@ -321,7 +330,7 @@ namespace EmbedIO.Modules
             catch (Exception ex)
             {
                 ex.Log(GetType().Name);
-                return await context.JsonExceptionResponseAsync(ex).ConfigureAwait(false);
+                return await context.JsonExceptionResponseAsync(ex, cancellationToken: ct).ConfigureAwait(false);
             }
             finally
             {

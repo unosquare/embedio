@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using EmbedIO.Modules;
 using NUnit.Framework;
 using Unosquare.Swan.Formatters;
 
@@ -9,8 +8,8 @@ namespace EmbedIO.Tests.TestObjects
 {
     public abstract class PersonFixtureBase : FixtureBase
     {
-        protected PersonFixtureBase(Action<IWebServer> builder, WebApiRoutingStrategy routeStrategy = WebApiRoutingStrategy.Regex, bool useTestWebServer = false)
-            : base(builder, routeStrategy, useTestWebServer)
+        protected PersonFixtureBase(Action<IWebServer> builder, bool useTestWebServer = false)
+            : base(builder, useTestWebServer)
         {
         }
 

@@ -31,9 +31,16 @@ namespace EmbedIO.Modules
             _handler = Validate.NotNull(nameof(handler), handler);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ActionModule"/> class.
+        /// </summary>
+        /// <param name="handler">The handler.</param>
+        public ActionModule(WebHandler handler)
+            : this("/", HttpVerbs.Any, handler) { }
+
         /// <inheritdoc />
         public override async Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct) =>
             (_verb == HttpVerbs.Any || context.RequestVerb() == _verb)
-            && await _handler(context, path, ct).ConfigureAwait(false);
+         && await _handler(context, path, ct).ConfigureAwait(false);
     }
 }

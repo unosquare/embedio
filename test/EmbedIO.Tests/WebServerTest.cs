@@ -37,7 +37,7 @@ namespace EmbedIO.Tests
             {
                 var instance = new WebServer();
                 Assert.IsNotNull(instance.Listener, "It has a HttpListener");
-                Assert.IsNotNull(MimeTypes.DefaultMimeTypes, "It has MimeTypes");
+                Assert.IsNotNull(MimeTypes.Associations, "It has MimeTypes");
             }
 
             [Test]
@@ -45,7 +45,6 @@ namespace EmbedIO.Tests
             {
                 var instance = new WebServer(Port);
                 Assert.IsNotNull(instance.Listener, "It has a HttpListener");
-                Assert.IsNotNull(MimeTypes.DefaultMimeTypes, "It has MimeTypes");
             }
 
             [Test]
@@ -53,7 +52,6 @@ namespace EmbedIO.Tests
             {
                 var instance = new WebServer(Prefix);
                 Assert.IsNotNull(instance.Listener, "It has a HttpListener");
-                Assert.IsNotNull(MimeTypes.DefaultMimeTypes, "It has MimeTypes");
             }
 
             [Test]
@@ -89,24 +87,14 @@ namespace EmbedIO.Tests
             public void RegisterAndUnregister()
             {
                 var instance = new WebServer();
-                instance.RegisterModule(new LocalSessionModule());
+                instance.Modules.Add(nameof(WebApiModule), new WebApiModule("/"));
 
                 Assert.AreEqual(instance.Modules.Count, 1, "It has one module");
 
-                instance.UnregisterModule(typeof(LocalSessionModule));
+                // TODO: Riccardo, There is no way to remove a module. Is this expected?
+                //instance.Modules.Remove(typeof(LocalSessionModule));
 
                 Assert.AreEqual(instance.Modules.Count, 0, "It has not modules");
-            }
-
-            [Test]
-            public void AddHandler()
-            {
-                var webModule = new TestWebModule();
-                webModule.AddHandler(DefaultPath, HttpVerbs.Any, (ctx, ws) => Task.FromResult(false));
-
-                Assert.AreEqual(webModule.Handlers.Count, 4, "WebModule has four handlers");
-                Assert.AreEqual(webModule.Handlers.Last().Path, DefaultPath, "Default Path is correct");
-                Assert.AreEqual(webModule.Handlers.Last().Verb, HttpVerbs.Any, "Default Verb is correct");
             }
 
 #if NETCOREAPP2_2
@@ -117,7 +105,7 @@ namespace EmbedIO.Tests
 
                 using (var instance = new WebServer(url))
                 {
-                    instance.RegisterModule(new TestWebModule());
+                    instance.Modules.Add(nameof(TestWebModule), new TestWebModule());
                     var runTask = instance.RunAsync();
                     using (var handler = new HttpClientHandler())
                     {
@@ -139,9 +127,9 @@ namespace EmbedIO.Tests
             {
                 var url = Resources.GetServerAddress();
 
-                using (var instance = new WebServer(url, WebApiRoutingStrategy.Wildcard))
+                using (var instance = new WebServer(url))
                 {
-                    instance.RegisterModule(new TestWebModule());
+                    instance.Modules.Add(nameof(TestWebModule), new TestWebModule());
                     var runTask = instance.RunAsync();
 
                     using (var handler = new HttpClientHandler())
@@ -171,7 +159,7 @@ namespace EmbedIO.Tests
                 var map = new Map
                 {
                     Path = DefaultPath,
-                    ResponseHandler = (ctx, ws) => Task.FromResult(false),
+                    ResponseHandler = (ctx, path, ws) => Task.FromResult(false),
                     Verb = HttpVerbs.Any,
                 };
 
@@ -188,7 +176,7 @@ namespace EmbedIO.Tests
 
                     using (var instance = new WebServer(url))
                     {
-                        instance.RegisterModule(new FallbackModule((ctx, ct) =>
+                        instance.Modules.Add(nameof(ActionModule), new ActionModule((ctx, path, ct) => 
                             throw new InvalidOperationException("Error")));
 
                         var runTask = instance.RunAsync();
@@ -223,7 +211,7 @@ namespace EmbedIO.Tests
 
                 using (var instance = new WebServer(url))
                 {
-                    instance.RegisterModule(new FallbackModule((ctx, ct) =>
+                    instance.Modules.Add(nameof(ActionModule), new ActionModule((ctx, path, ct) =>
                     {
                         var encoding = Encoding.GetEncoding("UTF-8");
 

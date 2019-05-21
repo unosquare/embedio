@@ -12,10 +12,11 @@ namespace EmbedIO.Tests
             : base(
                 ws =>
                 {
-                    ws.RegisterModule(new ResourceFilesModule(typeof(ResourceFilesModuleTest).Assembly,
+                    ws.Modules.Add(nameof(ResourceFilesModule),
+                        new ResourceFilesModule("/",
+                        typeof(ResourceFilesModuleTest).Assembly,
                         "EmbedIO.Tests.Resources"));
                 },
-                WebApiRoutingStrategy.Wildcard,
                 true)
         {
         }

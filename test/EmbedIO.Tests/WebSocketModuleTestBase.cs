@@ -12,7 +12,7 @@ namespace EmbedIO.Tests
         private readonly string _url;
 
         protected WebSocketModuleTestBase(WebApiRoutingStrategy strategy, Action<IWebServer> builder, string url)
-            : base(builder, strategy)
+            : base(builder)
         {
             _url = url;
         }

@@ -17,16 +17,17 @@ namespace EmbedIO.Tests
             : base(
                 ws =>
                 {
-                    ws.EnableCors(
+                    ws.WithCors(
                         "http://client.cors-api.appspot.com,http://unosquare.github.io,http://run.plnkr.co",
                         "content-type",
                         "post,get");
 
-                    ws.RegisterModule(new WebApiModule());
-                    ws.Module<WebApiModule>().RegisterController<TestController>();
-                    ws.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponseAsync(TestObj, ct)));
+                    var webModule = new WebApiModule("/");
+                    webModule.RegisterController<TestController>();
+
+                    ws.Modules.Add(nameof(WebApiModule), webModule);
+                    ws.Modules.Add(nameof(ActionModule), new ActionModule((ctx, path, ct) => ctx.JsonResponseAsync(TestObj, ct)));
                 },
-                WebApiRoutingStrategy.Wildcard,
                 true)
         {
             // placeholder
@@ -48,10 +49,8 @@ namespace EmbedIO.Tests
             request.Headers.Add(HttpHeaderNames.AccessControlRequestMethod, "post");
             request.Headers.Add(HttpHeaderNames.AccessControlRequestHeaders, "content-type");
 
-            using (var response = await SendAsync(request))
-            {
-                Assert.AreEqual((int) HttpStatusCode.OK, response.StatusCode, "Status Code OK");
-            }
+            var response = await SendAsync(request);
+            Assert.AreEqual((int)HttpStatusCode.OK, response.StatusCode, "Status Code OK");
         }
     }
 }

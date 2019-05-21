@@ -9,8 +9,7 @@ namespace EmbedIO.Tests
     public class DirectoryBrowserTest : FixtureBase
     {
         public DirectoryBrowserTest()
-            : base(ws => ws.RegisterModule(new StaticFilesModule(TestHelper.SetupStaticFolder(false), true)),
-                WebApiRoutingStrategy.Wildcard,
+            : base(ws => ws.Modules.Add(nameof(StaticFilesModule), new StaticFilesModule("/", TestHelper.SetupStaticFolder(false))),
                 true)
         {
         }

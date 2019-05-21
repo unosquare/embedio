@@ -9,7 +9,7 @@
     /// Represents an <c>IHttpResponse</c> implementation for unit testing.
     /// </summary>
     /// <seealso cref="IHttpResponse" />
-    internal class TestHttpResponse : IHttpResponse, IDisposable
+    public class TestHttpResponse : IHttpResponse, IDisposable
     {
         /// <inheritdoc />
         /// <remarks>

@@ -30,7 +30,7 @@ namespace EmbedIO.Tests
 
             using (var webServer = new WebServer(options))
             {
-                webServer.OnAny((ctx, ct) => ctx.HtmlResponseAsync(DefaultMessage, cancellationToken: ct));
+                webServer.OnAny((ctx, path, ct) => ctx.HtmlResponseAsync(DefaultMessage, cancellationToken: ct));
 
                 webServer.RunAsync();
 

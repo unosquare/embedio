@@ -13,12 +13,8 @@ namespace EmbedIO.Tests
 
         public MultipleStaticRootsFixture()
             : base(ws =>
-                    ws.RegisterModule(
-                        new StaticFilesModule(InstancesNames.ToDictionary(x => "/" + x, TestHelper.SetupStaticFolderInstance))
-                        {
-                            UseRamCache = true,
-                        }),
-                WebApiRoutingStrategy.Wildcard,
+                    ws.Modules.Add(nameof(StaticFilesModule),
+                        new StaticFilesModule("/", InstancesNames.ToDictionary(x => "/" + x, TestHelper.SetupStaticFolderInstance), FileCachingMode.Complete)),
                 true)
         {
         }

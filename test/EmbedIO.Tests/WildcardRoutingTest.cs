@@ -9,7 +9,7 @@ namespace EmbedIO.Tests
     public class WildcardRoutingTest : FixtureBase
     {
         public WildcardRoutingTest()
-            : base(ws => ws.RegisterModule(new TestRoutingModule()), WebApiRoutingStrategy.Wildcard, true)
+            : base(ws => ws.Modules.Add(nameof(TestRoutingModule), new TestRoutingModule()), true)
         {
             // placeholder    
         }

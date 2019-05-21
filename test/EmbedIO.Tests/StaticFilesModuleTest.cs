@@ -20,15 +20,15 @@ namespace EmbedIO.Tests
         protected StaticFilesModuleTest(Func<StaticFilesModule> buildStaticFilesModule, string fallbackUrl = null)
             : base(ws =>
             {
-                ws.RegisterModule(buildStaticFilesModule());
+                ws.Modules.Add("fs", buildStaticFilesModule());
                 if (fallbackUrl != null)
-                    ws.RegisterModule(new FallbackModule(fallbackUrl));
-            }, WebApiRoutingStrategy.Wildcard)
+                    ws.Modules.Add(nameof(RedirectModule), new RedirectModule("/", fallbackUrl));
+            })
         {
         }
 
         protected StaticFilesModuleTest(string fallbackUrl)
-            : this(() => new StaticFilesModule(TestHelper.SetupStaticFolder()) { UseRamCache = true }, fallbackUrl)
+            : this(() => new StaticFilesModule("/", TestHelper.SetupStaticFolder(), FileCachingMode.Complete), fallbackUrl)
         {
         }
 
@@ -61,12 +61,13 @@ namespace EmbedIO.Tests
             private const string VirtualizedFolderName = "html-virtualized";
 
             public UseVirtualPaths()
-                : base(() => new StaticFilesModule(new Dictionary<string, string>
+                : base(() => new StaticFilesModule(
+                        "/",
+                        new Dictionary<string, string>
                     {
                         {"/", TestHelper.SetupStaticFolder()},
                         {"/" + VirtualFolderName, TestHelper.SetupStaticFolder(VirtualizedFolderName)},
-                    })
-                    {UseRamCache = true})
+                    }, FileCachingMode.Complete))
             {
             }
 
@@ -95,7 +96,7 @@ namespace EmbedIO.Tests
                         Assert.IsTrue(string.IsNullOrWhiteSpace(response.Headers.Pragma.ToString()), "Pragma empty");
                     }
 
-                    WebServerInstance.Module<StaticFilesModule>().DefaultHeaders
+                    WebServerInstance.Modules.OfType<StaticFilesModule>().First().DefaultHeaders
                         .Add(HttpHeaderNames.Pragma, HeaderPragmaValue);
 
                     request = new HttpRequestMessage(HttpMethod.Get, VirtualPathUrl);
@@ -165,7 +166,7 @@ namespace EmbedIO.Tests
                         Assert.IsTrue(string.IsNullOrWhiteSpace(response.Headers.Pragma.ToString()), "Pragma empty");
                     }
 
-                    WebServerInstance.Module<StaticFilesModule>().DefaultHeaders
+                    WebServerInstance.Modules.OfType<StaticFilesModule>().First().DefaultHeaders
                         .Add(HttpHeaderNames.Pragma, HeaderPragmaValue);
 
                     request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
@@ -215,7 +216,7 @@ namespace EmbedIO.Tests
 
                 using (var server = new WebServer(endpoint))
                 {
-                    server.RegisterModule(new StaticFilesModule(root) {UseRamCache = false});
+                    server.Modules.Add(nameof(StaticFilesModule), new StaticFilesModule("/", root));
                     var runTask = server.RunAsync();
 
                     using (var webClient = new HttpClient())
@@ -255,59 +256,7 @@ namespace EmbedIO.Tests
             [Test]
             public void InvalidFilePath_ThrowsArgumentException()
             {
-                Assert.Throws<ArgumentException>(() => new StaticFilesModule("e:") {UseRamCache = false});
-            }
-        }
-
-        public class RegisterVirtualPath
-        {
-            [Test]
-            public void RegisterVirtualPaths()
-            {
-                var instance = new StaticFilesModule(Directory.GetCurrentDirectory());
-                instance.RegisterVirtualPath("/tmp", Path.GetTempPath());
-                Assert.AreNotEqual(instance.VirtualPaths.Count, 0);
-            }
-
-            [Test]
-            public void UnregisterVirtualPaths()
-            {
-                var instance = new StaticFilesModule(Directory.GetCurrentDirectory());
-                instance.RegisterVirtualPath("/tmp", Path.GetTempPath());
-                Assert.AreNotEqual(instance.VirtualPaths.Count, 0);
-                instance.UnregisterVirtualPath("/tmp");
-                Assert.AreEqual(instance.VirtualPaths.Count, 0);
-            }
-
-            [Test]
-            public void RegisterExistingVirtualPath_ThrowsInvalidOperationException()
-            {
-                var instance = new StaticFilesModule(Directory.GetCurrentDirectory());
-                instance.RegisterVirtualPath("/tmp", Path.GetTempPath());
-                Assert.AreNotEqual(instance.VirtualPaths.Count, 0);
-
-                Assert.Throws<InvalidOperationException>(() =>
-                    instance.RegisterVirtualPath("/tmp", Path.GetTempPath()));
-            }
-
-            [Test]
-            public void RegisterInvalidVirtualPath_ThrowsInvalidOperationException()
-            {
-                Assert.Throws<InvalidOperationException>(() =>
-                {
-                    var instance = new StaticFilesModule(Directory.GetCurrentDirectory());
-                    instance.RegisterVirtualPath("tmp", Path.GetTempPath());
-                });
-            }
-
-            [Test]
-            public void RegisterInvalidPhysicalPath_ThrowsInvalidOperationException()
-            {
-                Assert.Throws<InvalidOperationException>(() =>
-                {
-                    var instance = new StaticFilesModule(Directory.GetCurrentDirectory());
-                    instance.RegisterVirtualPath("/tmp", @"e:*.dll");
-                });
+                Assert.Throws<ArgumentException>(() => new StaticFilesModule("/", "e:"));
             }
         }
 
@@ -518,36 +467,12 @@ namespace EmbedIO.Tests
                     }
 
                     var secondRequest = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
-                    secondRequest.Headers.TryAddWithoutValidation(HttpHeaderNames.IfNotMatch, eTag);
+                    secondRequest.Headers.TryAddWithoutValidation(HttpHeaderNames.IfNoneMatch, eTag);
 
                     using (var response = await client.SendAsync(secondRequest))
                     {
                         Assert.AreEqual(response.StatusCode, HttpStatusCode.NotModified, "Status Code NotModified");
                     }
-                }
-            }
-
-            public class DefaultExtension
-            {
-                [Test]
-                public void SetAndGetExtension()
-                {
-                    var instance = new StaticFilesModule(Directory.GetCurrentDirectory());
-                    Assert.IsNull(instance.DefaultExtension);
-                    instance.DefaultExtension = ".xml";
-                    Assert.AreEqual(instance.DefaultExtension, ".xml");
-                }
-            }
-
-            public class RamCache
-            {
-                [Test]
-                public void UseRamCache()
-                {
-                    var instance = new StaticFilesModule(Directory.GetCurrentDirectory());
-                    Assert.IsTrue(instance.UseRamCache);
-                    instance.UseRamCache = false;
-                    Assert.IsFalse(instance.UseRamCache);
                 }
             }
         }

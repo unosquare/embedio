@@ -19,7 +19,7 @@ namespace EmbedIO.Tests
             {"/Server/api", TestHelper.SetupStaticFolder()},
             {"/Server/database", TestHelper.SetupStaticFolder()},
         };
-        
+
         private string _rootPath;
         private string _webServerUrl;
 
@@ -37,10 +37,10 @@ namespace EmbedIO.Tests
         {
             var webServer = new WebServer(_webServerUrl)
                 .WithLocalSessionManager()
-                .WithStaticFolderAt(_rootPath);
+                .WithStaticFolderAt("/", _rootPath);
 
-            Assert.AreEqual(webServer.Count, 2, "It has 2 modules loaded");
-            Assert.IsNotNull(webServer.OfType<StaticFilesModule>().FirstOrDefault(), "It has StaticFilesModule");
+            Assert.AreEqual(webServer.Modules.Count, 2, "It has 2 modules loaded");
+            Assert.IsNotNull(webServer.Modules.OfType<StaticFilesModule>().FirstOrDefault(), "It has StaticFilesModule");
 
             Assert.AreEqual(
                 webServer.Modules.FirstOrDefault<StaticFilesModule>().FileSystemPath,
@@ -51,20 +51,20 @@ namespace EmbedIO.Tests
         [Test]
         public void FluentWithWebApi()
         {
-            var webServer = WebServer.Create(_webServerUrl)
+            var webServer = new WebServer(_webServerUrl)
                 .WithWebApi(typeof(FluentTest).Assembly);
 
-            Assert.AreEqual(webServer.Count, 1, "It has 1 modules loaded");
-            Assert.IsNotNull(webServer.Module<WebApiModule>(), "It has WebApiModule");
-            Assert.AreEqual(webServer.Module<WebApiModule>().ControllersCount, 4, "It has four controllers");
+            Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
+            Assert.IsNotNull(webServer.Modules.OfType<WebApiModule>().FirstOrDefault(), "It has WebApiModule");
+            Assert.AreEqual(webServer.Modules.OfType<WebApiModule>().First().ControllersCount, 4, "It has four controllers");
 
-            (webServer as IDisposable)?.Dispose();
+            webServer.Dispose();
         }
 
         [Test]
         public void FluentWithWebSockets()
         {
-            var webServer = WebServer.Create(_webServerUrl)
+            var webServer = new WebServer(_webServerUrl)
                 .WithWebSocket(typeof(FluentTest).Assembly);
 
             Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
@@ -76,47 +76,30 @@ namespace EmbedIO.Tests
         [Test]
         public void FluentLoadWebApiControllers()
         {
-            var webServer = WebServer.Create(_webServerUrl)
+            var webServer = new WebServer(_webServerUrl)
                 .WithWebApi();
-            webServer.Module<WebApiModule>().LoadApiControllers(typeof(FluentTest).Assembly);
 
-            Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
-            Assert.IsNotNull(webServer.Module<WebApiModule>(), "It has WebApiModule");
-            Assert.AreEqual(webServer.Module<WebApiModule>().ControllersCount, 4, "It has four controllers");
+            var webApiModule = webServer.Modules.OfType<WebApiModule>().First();
+            Assert.IsNotNull(webApiModule);
 
-            (webServer as IDisposable)?.Dispose();
+            webServer.Modules.OfType<WebApiModule>().First().LoadApiControllers(typeof(FluentTest).Assembly);
+
+            Assert.AreEqual(webApiModule.ControllersCount, 4, "It has four controllers");
+
+            webServer.Dispose();
         }
 
         [Test]
         public void FluentWithStaticFolderArgumentException()
         {
             Assert.Throws<ArgumentNullException>(() =>
-                _nullWebServer.WithStaticFolderAt(TestHelper.SetupStaticFolder()));
+                _nullWebServer.WithStaticFolderAt("/", TestHelper.SetupStaticFolder()));
         }
 
         [Test]
-        public void FluentWithVirtualPaths()
+        public void FluentWithLocalSessionManagerWebServerNull_ThrowsArgumentException()
         {
-            var webServer = WebServer.Create(_webServerUrl)
-                .WithVirtualPaths(_commonPaths);
-
-            Assert.IsNotNull(webServer);
-            Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
-            Assert.IsNotNull(webServer.Module<StaticFilesModule>(), "It has StaticFilesModule");
-            Assert.AreEqual(webServer.Module<StaticFilesModule>().VirtualPaths.Count, 3, "It has 3 Virtual Paths");
-        }
-
-        [Test]
-        public void FluentWithVirtualPathsWebServerNull_ThrowsArgumentException()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-                _nullWebServer.WithVirtualPaths(_commonPaths));
-        }
-
-        [Test]
-        public void FluentWithLocalSessionWebServerNull_ThrowsArgumentException()
-        {
-            Assert.Throws<ArgumentNullException>(() => _nullWebServer.WithLocalSession());
+            Assert.Throws<ArgumentNullException>(() => _nullWebServer.WithLocalSessionManager());
         }
 
         [Test]
@@ -152,9 +135,9 @@ namespace EmbedIO.Tests
         }
 
         [Test]
-        public void FluentEnableCorsArgumentException()
+        public void FluentWithCorsArgumentException()
         {
-            Assert.Throws<ArgumentNullException>(() => _nullWebServer.EnableCors());
+            Assert.Throws<ArgumentNullException>(() => _nullWebServer.WithCors());
         }
 
         [Test]
