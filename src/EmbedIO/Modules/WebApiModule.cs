@@ -27,60 +27,42 @@ namespace EmbedIO.Modules
         private readonly Dictionary<string, Dictionary<HttpVerbs, MethodCacheInstance>> _delegateMap
             = new Dictionary<string, Dictionary<HttpVerbs, MethodCacheInstance>>(StringComparer.InvariantCultureIgnoreCase);
 
-        private readonly bool _responseJsonException;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiModule" /> class
-        /// with the default routing strategy, and no JSON exception handler.
+        /// Initializes a new instance of the <see cref="WebApiModule"/> class.
         /// </summary>
         /// <param name="baseUrlPath">The base URL path served by this module.</param>
+        /// <param name="routingStrategy">The routing strategy employed to select a controller.</param>
+        /// <param name="sendJsonOnException"><see langword="true"/> to include a JSON description
+        /// of exceptions thrown by controllers in <c>500 Internal Server Error</c> responses.</param>
         /// <seealso cref="IWebModule.BaseUrlPath" />
         /// <seealso cref="Validate.UrlPath" />
-        public WebApiModule(string baseUrlPath)
-            : this(baseUrlPath, WebApiRoutingStrategy.Regex, false)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiModule" /> class.
-        /// </summary>
-        /// <param name="baseUrlPath">The base URL path.</param>
-        /// <param name="routingStrategy">The routing strategy.</param>
-        public WebApiModule(string baseUrlPath, WebApiRoutingStrategy routingStrategy)
-            : this(baseUrlPath, routingStrategy, false)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiModule" /> class.
-        /// </summary>
-        /// <param name="baseUrlPath">The base URL path.</param>
-        /// <param name="responseJsonException">if set to <c>true</c> [response json exception].</param>
-        public WebApiModule(string baseUrlPath, bool responseJsonException)
-            : this(baseUrlPath, WebApiRoutingStrategy.Regex, responseJsonException)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiModule" /> class.
-        /// </summary>
-        /// <param name="baseUrlPath">The base URL path.</param>
-        /// <param name="routingStrategy">The routing strategy.</param>
-        /// <param name="responseJsonException">if set to <c>true</c> [response json exception].</param>
-        public WebApiModule(string baseUrlPath, WebApiRoutingStrategy routingStrategy, bool responseJsonException)
+        /// <seealso cref="RoutingStrategy"/>
+        /// <seealso cref="SendJsonOnException"/>
+        public WebApiModule(
+            string baseUrlPath,
+            WebApiRoutingStrategy routingStrategy = WebApiRoutingStrategy.Regex,
+            bool sendJsonOnException = false)
             : base(baseUrlPath)
         {
             RoutingStrategy = Validate.EnumValue<WebApiRoutingStrategy>(nameof(routingStrategy), routingStrategy);
-            _responseJsonException = responseJsonException;
+            SendJsonOnException = sendJsonOnException;
         }
 
         /// <summary>
-        /// Gets the routing strategy used by this module.
+        /// Gets the routing strategy used by this module
+        /// to select a controller based on the requested URL path.
         /// </summary>
-        /// <value>
-        /// The routing strategy.
-        /// </value>
-        public WebApiRoutingStrategy RoutingStrategy { get; }
+        protected WebApiRoutingStrategy RoutingStrategy { get; }
+
+        /// <summary>
+        /// <para>Gets a value indicating whether a JSON description
+        /// of exceptions thrown by controllers is included in
+        /// <c>500 Internal Server Error</c> responses.</para>
+        /// <para>Note that derived classes overriding the
+        /// <see cref="OnExceptionAsync"/> method may choose to ignore
+        /// the value of this property.</para>
+        /// </summary>
+        protected bool SendJsonOnException { get; }
 
         /// <summary>
         /// Gets the number of controller objects registered in this API.
@@ -312,15 +294,6 @@ namespace EmbedIO.Modules
             if (RoutingStrategy == WebApiRoutingStrategy.Regex)
                 methodPair.ParseArguments(regExRouteParams, args);
 
-            if (!_responseJsonException)
-            {
-                var result = await methodPair.Invoke(controller, args).ConfigureAwait(false);
-
-                (controller as IDisposable)?.Dispose();
-
-                return result;
-            }
-
             try
             {
                 return await methodPair.Invoke(controller, args).ConfigureAwait(false);
@@ -328,7 +301,7 @@ namespace EmbedIO.Modules
             catch (Exception ex)
             {
                 ex.Log(GetType().Name);
-                return await context.JsonExceptionResponseAsync(ex, cancellationToken: ct).ConfigureAwait(false);
+                return await OnExceptionAsync(context, path, ex, ct).ConfigureAwait(false);
             }
             finally
             {
@@ -336,15 +309,55 @@ namespace EmbedIO.Modules
             }
         }
 
+        /// <summary>
+        /// <para>Called when no controller is found for the requested URL path.</para>
+        /// <para>The default behavior is to send an empty <c>404 Not Found</c> response.</para>
+        /// </summary>
+        /// <param name="context">The context of the request being handled.</param>
+        /// <param name="path">The requested path, relative to <see cref="BaseUrlPath"/>.</param>
+        /// <param name="ct">A <see cref="CancellationToken"/> used to cancel the operation.</param>
+        /// <returns><see langword="true"/> if the request has been handled;
+        /// <see langword="false"/> if the request should be passed down the module chain.</returns>
         protected virtual Task<bool> OnPathNotFoundAsync(IHttpContext context, string path, CancellationToken ct)
         {
             context.Response.StandardResponseWithoutBody((int)HttpStatusCode.NotFound);
             return Task.FromResult(true);
         }
 
+        /// <summary>
+        /// <para>Called when a controller is found for the requested URL path,
+        /// but it does not handle the HTTP method of the request.</para>
+        /// <para>The default behavior is to send an empty <c>405 Method Not Allowed</c> response.</para>
+        /// </summary>
+        /// <param name="context">The context of the request being handled.</param>
+        /// <param name="path">The requested path, relative to <see cref="BaseUrlPath"/>.</param>
+        /// <param name="ct">A <see cref="CancellationToken"/> used to cancel the operation.</param>
+        /// <returns><see langword="true"/> if the request has been handled;
+        /// <see langword="false"/> if the request should be passed down the module chain.</returns>
         protected virtual Task<bool> OnMethodNotAllowedAsync(IHttpContext context, string path, CancellationToken ct)
         {
             context.Response.StandardResponseWithoutBody((int)HttpStatusCode.MethodNotAllowed);
+            return Task.FromResult(true);
+        }
+
+        /// <summary>
+        /// <para>Called when a controller throws an exception while handling a request.</para>
+        /// <para>The default behavior is to send a <c>500 Internal Server Error</c> response,
+        /// optionally containing a JSON description of the exception, according to the value of
+        /// the <see cref="SendJsonOnException"/> property.</para>
+        /// </summary>
+        /// <param name="context">The context of the request being handled.</param>
+        /// <param name="path">The requested path, relative to <see cref="BaseUrlPath"/>.</param>
+        /// <param name="exception">The exception thrown by the controller.</param>
+        /// <param name="ct">A <see cref="CancellationToken"/> used to cancel the operation.</param>
+        /// <returns><see langword="true"/> if the request has been handled;
+        /// <see langword="false"/> if the request should be passed down the module chain.</returns>
+        protected virtual Task<bool> OnExceptionAsync(IHttpContext context, string path, Exception exception, CancellationToken ct)
+        {
+            if (SendJsonOnException)
+                return context.JsonExceptionResponseAsync(exception, cancellationToken: ct);
+
+            context.Response.StandardResponseWithoutBody((int)HttpStatusCode.InternalServerError);
             return Task.FromResult(true);
         }
     }
