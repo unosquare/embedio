@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Constants;
@@ -13,16 +12,12 @@ using Unosquare.Swan.Formatters;
 
 namespace EmbedIO
 {
-
     /// <summary>
     /// Extension methods to help your coding.
     /// </summary>
     public static partial class Extensions
     {
         private static readonly byte[] LastByte = { 0x00 };
-
-        private static readonly Regex RouteOptionalParamRegex = new Regex(@"\{[^\/]*\?\}",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         #region HTTP Request Helpers
 
@@ -32,27 +27,6 @@ namespace EmbedIO
         /// <param name="context">The context.</param>
         /// <returns>Path for the specified context.</returns>
         public static string RequestPath(this IHttpContext context) => context.Request.Url.AbsolutePath;
-
-        /// <summary>
-        /// Gets the request path for the specified context using a wildcard paths to 
-        /// match.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="wildcardPaths">The wildcard paths.</param>
-        /// <returns>Path for the specified context.</returns>
-        public static string RequestWilcardPath(this IHttpContext context, IEnumerable<string> wildcardPaths)
-        {
-            var path = context.Request.Url.AbsolutePath;
-
-            var wildcardMatch = wildcardPaths.FirstOrDefault(p => // wildcard at the end
-                path.StartsWith(p.Substring(0, p.Length - ModuleMap.AnyPath.Length))
-
-                // wildcard in the middle so check both start/end
-                || (path.StartsWith(p.Substring(0, p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal)))
-                    && path.EndsWith(p.Substring(p.IndexOf(ModuleMap.AnyPath, StringComparison.Ordinal) + 1))));
-
-            return string.IsNullOrWhiteSpace(wildcardMatch) ? path : wildcardMatch;
-        }
 
         /// <summary>
         /// Retrieves the Request HTTP Verb (also called Method) of this context.
@@ -132,82 +106,6 @@ namespace EmbedIO
                     return await reader.ReadToEndAsync().ConfigureAwait(false);
                 }
             }
-        }
-
-        /// <summary>
-        /// Requests the regex URL parameters.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="urlPattern">The url pattern. </param>
-        /// <returns>The params from the request.</returns>
-        public static Dictionary<string, object> RequestRegexUrlParams(this IWebSocketContext context, string urlPattern)
-          => RequestRegexUrlParams(context.RequestUri.AbsolutePath, urlPattern);
-
-        /// <summary>
-        /// Requests the regex URL parameters.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="basePath">The base path.</param>
-        /// <returns>The params from the request.</returns>
-        public static Dictionary<string, object> RequestRegexUrlParams(this IHttpContext context,
-            string basePath)
-            => RequestRegexUrlParams(context.RequestPath(), basePath);
-
-        /// <summary>
-        /// Requests the regex URL parameters.
-        /// </summary>
-        /// <param name="requestPath">The request path.</param>
-        /// <param name="basePath">The base path.</param>
-        /// <param name="validateFunc">The validate function.</param>
-        /// <returns>
-        /// The params from the request.
-        /// </returns>
-        public static Dictionary<string, object> RequestRegexUrlParams(
-            this string requestPath,
-            string basePath,
-            Func<bool> validateFunc = null)
-        {
-            if (validateFunc == null) validateFunc = () => false;
-            if (requestPath == basePath && !validateFunc()) return new Dictionary<string, object>();
-
-            var i = 1; // match group index
-            var match = RegexCache.MatchRegexStrategy(basePath, requestPath);
-            var pathParts = basePath.Split('/');
-
-            if (match.Success && !validateFunc())
-            {
-                return pathParts
-                    .Where(x => x.StartsWith("{"))
-                    .ToDictionary(CleanParamId, x => (object)match.Groups[i++].Value);
-            }
-
-            var optionalPath = RouteOptionalParamRegex.Replace(basePath, string.Empty);
-            var tempPath = requestPath;
-
-            if (optionalPath.Last() == '/' && requestPath.Last() != '/')
-            {
-                tempPath += "/";
-            }
-
-            var subMatch = RegexCache.MatchRegexStrategy(optionalPath, tempPath);
-
-            if (!subMatch.Success || validateFunc()) return null;
-
-            var valuesPaths = optionalPath.Split('/')
-                .Where(x => x.StartsWith("{"))
-                .ToDictionary(CleanParamId, x => (object)subMatch.Groups[i++].Value);
-
-            var nullPaths = pathParts
-                .Where(x => x.StartsWith("{"))
-                .Select(CleanParamId);
-
-            foreach (var nullKey in nullPaths)
-            {
-                if (!valuesPaths.ContainsKey(nullKey))
-                    valuesPaths.Add(nullKey, null);
-            }
-
-            return valuesPaths;
         }
 
         /// <summary>
@@ -385,8 +283,6 @@ namespace EmbedIO
         }
 
         #endregion
-
-        internal static string CleanParamId(string val) => val.ReplaceAll(string.Empty, '{', '}', '?');
 
         internal static Uri ToUri(this string uriString)
         {
