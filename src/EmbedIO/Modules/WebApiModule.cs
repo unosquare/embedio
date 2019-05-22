@@ -65,9 +65,9 @@ namespace EmbedIO.Modules
         protected bool SendJsonOnException { get; }
 
         /// <summary>
-        /// Gets the number of controller objects registered in this API.
+        /// Gets the number of controllers registered in this module.
         /// </summary>
-        public int ControllersCount => _controllerTypes.Count;
+        public int ControllerCount => _controllerTypes.Count;
 
         /// <summary>
         /// Registers the controller.

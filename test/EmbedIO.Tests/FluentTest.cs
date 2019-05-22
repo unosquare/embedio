@@ -56,7 +56,7 @@ namespace EmbedIO.Tests
 
             Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
             Assert.IsNotNull(webServer.Modules.OfType<WebApiModule>().FirstOrDefault(), "It has WebApiModule");
-            Assert.AreEqual(webServer.Modules.OfType<WebApiModule>().First().ControllersCount, 4, "It has four controllers");
+            Assert.AreEqual(webServer.Modules.OfType<WebApiModule>().First().ControllerCount, 4, "It has four controllers");
 
             webServer.Dispose();
         }
@@ -84,7 +84,7 @@ namespace EmbedIO.Tests
 
             webServer.Modules.OfType<WebApiModule>().First().LoadApiControllers(typeof(FluentTest).Assembly);
 
-            Assert.AreEqual(webApiModule.ControllersCount, 4, "It has four controllers");
+            Assert.AreEqual(webApiModule.ControllerCount, 4, "It has four controllers");
 
             webServer.Dispose();
         }
