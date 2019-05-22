@@ -361,7 +361,7 @@ namespace EmbedIO.Modules
             path = NormalizeRegexPath(verb, context, regExRouteParams);
 
             // Return a non-path if no handler handled the route
-            /// TODO: Distinguish between method not allowed and path not found
+            // TODO: Distinguish between method not allowed and path not found
             if (path == null)
                 return await OnMethodNotAllowedAsync(context, path, ct).ConfigureAwait(false);
 
@@ -402,7 +402,7 @@ namespace EmbedIO.Modules
         /// <para>The default behavior is to send an empty <c>404 Not Found</c> response.</para>
         /// </summary>
         /// <param name="context">The context of the request being handled.</param>
-        /// <param name="path">The requested path, relative to <see cref="BaseUrlPath"/>.</param>
+        /// <param name="path">The requested path, relative to <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
         /// <param name="ct">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns><see langword="true"/> if the request has been handled;
         /// <see langword="false"/> if the request should be passed down the module chain.</returns>
@@ -418,7 +418,7 @@ namespace EmbedIO.Modules
         /// <para>The default behavior is to send an empty <c>405 Method Not Allowed</c> response.</para>
         /// </summary>
         /// <param name="context">The context of the request being handled.</param>
-        /// <param name="path">The requested path, relative to <see cref="BaseUrlPath"/>.</param>
+        /// <param name="path">The requested path, relative to <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
         /// <param name="ct">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns><see langword="true"/> if the request has been handled;
         /// <see langword="false"/> if the request should be passed down the module chain.</returns>
@@ -435,7 +435,7 @@ namespace EmbedIO.Modules
         /// the <see cref="SendJsonOnException"/> property.</para>
         /// </summary>
         /// <param name="context">The context of the request being handled.</param>
-        /// <param name="path">The requested path, relative to <see cref="BaseUrlPath"/>.</param>
+        /// <param name="path">The requested path, relative to <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
         /// <param name="exception">The exception thrown by the controller.</param>
         /// <param name="ct">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns><see langword="true"/> if the request has been handled;
