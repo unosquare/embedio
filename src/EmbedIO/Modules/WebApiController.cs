@@ -94,23 +94,6 @@ namespace EmbedIO.Modules
             => HttpContext.TransformJson(transformFunc, cancellationToken);
 
         /// <summary>
-        /// Outputs a JSON Response given an exception.
-        /// </summary>
-        /// <param name="ex">The ex.</param>
-        /// <param name="statusCode">The status code.</param>
-        /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A task for writing the output stream.
-        /// </returns>
-        protected virtual Task<bool> InternalServerError(
-            Exception ex,
-            System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.InternalServerError,
-            bool useGzip = true,
-            CancellationToken cancellationToken = default)
-            => HttpContext.JsonExceptionResponseAsync(ex, statusCode, useGzip, cancellationToken);
-
-        /// <summary>
         /// Outputs async a string response given a string.
         /// </summary>
         /// <param name="content">The content.</param>
