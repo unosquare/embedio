@@ -1,4 +1,6 @@
-﻿namespace EmbedIO.Tests.Internal
+﻿using EmbedIO.Internal;
+
+namespace EmbedIO.Tests.Internal
 {
     using System;
     using System.IO;
@@ -9,8 +11,16 @@
     /// Represents an <c>IHttpResponse</c> implementation for unit testing.
     /// </summary>
     /// <seealso cref="IHttpResponse" />
-    public class TestHttpResponse : IHttpResponse, IDisposable
+    public sealed class TestHttpResponse : IHttpResponse, IDisposable
     {
+        /// <summary>
+        /// Finalizes an instance of the <see cref="TestHttpResponse"/> class.
+        /// </summary>
+        ~TestHttpResponse()
+        {
+            Dispose(false);
+        }
+
         /// <inheritdoc />
         /// <remarks>
         /// <para>The <see cref="WebHeaderCollection"/> used by this class is not exactly
@@ -73,7 +83,8 @@
         /// <inheritdoc />
         public void Dispose()
         {
-            OutputStream?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -89,6 +100,14 @@
 
             // Remove BOM
             return result.Length > 0 && result[0] == 65279 ? result.Remove(0, 1) : result;
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!disposing)
+                return;
+
+            OutputStream?.Dispose();
         }
     }
 }
