@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -288,13 +289,10 @@ namespace EmbedIO.Modules
                 ? NormalizeWildcardPath(verb, context, path)
                 : NormalizeRegexPath(verb, context, regExRouteParams);
 
-            // return a non-math if no handler hold the route
+            // Return a non-path if no handler handled the route
+            /// TODO: Distinguish between method not allowed and path not found
             if (path == null)
-            {
-                /// TODO: Ricardo, what is your idea to add the OnMethodNotAllowed?
-                //return IsMethodNotAllowed(context) && OnMethodNotAllowed != null &&
-                //       await OnMethodNotAllowed(context).ConfigureAwait(false);
-            }
+                return await OnMethodNotAllowedAsync( context, path, ct).ConfigureAwait(false);
 
             // search the path and verb
             if (!_delegateMap.TryGetValue(path, out var methods) ||
@@ -336,6 +334,18 @@ namespace EmbedIO.Modules
             {
                 (controller as IDisposable)?.Dispose();
             }
+        }
+
+        protected virtual Task<bool> OnPathNotFoundAsync(IHttpContext context, string path, CancellationToken ct)
+        {
+            context.Response.StandardResponseWithoutBody((int)HttpStatusCode.NotFound);
+            return Task.FromResult(true);
+        }
+
+        protected virtual Task<bool> OnMethodNotAllowedAsync(IHttpContext context, string path, CancellationToken ct)
+        {
+            context.Response.StandardResponseWithoutBody((int)HttpStatusCode.MethodNotAllowed);
+            return Task.FromResult(true);
         }
     }
 }
