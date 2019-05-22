@@ -1,5 +1,6 @@
 ﻿using System;
 using EmbedIO.Constants;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Modules
 {
@@ -7,57 +8,34 @@ namespace EmbedIO.Modules
     /// Decorate methods within controllers with this attribute in order to make them callable from the Web API Module
     /// Method Must match the WebServerModule.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public class WebApiHandlerAttribute : Attribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WebApiHandlerAttribute"/> class.
         /// </summary>
         /// <param name="verb">The verb.</param>
-        /// <param name="paths">The paths.</param>
-        /// <exception cref="ArgumentException">The argument 'paths' must be specified.</exception>
-        public WebApiHandlerAttribute(HttpVerbs verb, string[] paths)
+        /// <param name="route">The route.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="route"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">
+        /// <para><paramref name="route"/> is empty.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="route"/> does not start with a slash (<c>/</c>) character.</para>
+        /// </exception>
+        public WebApiHandlerAttribute(HttpVerbs verb, string route)
         {
-            if (paths == null || paths.Length == 0)
-            {
-                throw new ArgumentException("The argument 'paths' must be specified.");
-            }
-
             Verb = verb;
-            Paths = paths;
+            Route = Validate.UrlPath(nameof(route), route, false);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiHandlerAttribute"/> class.
+        /// Gets the HTTP verb handled by a method with this attribute.
         /// </summary>
-        /// <param name="verb">The verb.</param>
-        /// <param name="path">The path.</param>
-        /// <exception cref="ArgumentException">The argument 'path' must be specified.</exception>
-        public WebApiHandlerAttribute(HttpVerbs verb, string path)
-        {
-            if (string.IsNullOrWhiteSpace(path))
-            {
-                throw new ArgumentException("The argument 'path' must be specified.");
-            }
-
-            Verb = verb;
-            Paths = new[] { path };
-        }
+        public HttpVerbs Verb { get; }
 
         /// <summary>
-        /// Gets or sets the verb.
+        /// Gets the route handled by a method with this attribute.
         /// </summary>
-        /// <value>
-        /// The verb.
-        /// </value>
-        public HttpVerbs Verb { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the paths.
-        /// </summary>
-        /// <value>
-        /// The paths.
-        /// </value>
-        public string[] Paths { get; protected set; }
+        public string Route { get; }
     }
 }

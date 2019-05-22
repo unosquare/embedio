@@ -295,22 +295,19 @@ namespace EmbedIO.Modules
 
             foreach (var method in methods)
             {
-                if (!(method.GetCustomAttributes(typeof(WebApiHandlerAttribute), true).FirstOrDefault() is WebApiHandlerAttribute attribute))
-                    continue;
-
-                foreach (var path in attribute.Paths)
+                foreach (var attribute in method.GetCustomAttributes(typeof(WebApiHandlerAttribute)).OfType<WebApiHandlerAttribute>())
                 {
-                    if (_delegateMap.ContainsKey(path) == false)
+                    if (_delegateMap.ContainsKey(attribute.Route) == false)
                     {
-                        _delegateMap.Add(path, new Dictionary<HttpVerbs, MethodCacheInstance>()); // add
+                        _delegateMap.Add(attribute.Route, new Dictionary<HttpVerbs, MethodCacheInstance>()); // add
                     }
 
                     var delegatePair = new MethodCacheInstance(factory, new MethodCache(method));
 
-                    if (_delegateMap[path].ContainsKey(attribute.Verb))
-                        _delegateMap[path][attribute.Verb] = delegatePair; // update
+                    if (_delegateMap[attribute.Route].ContainsKey(attribute.Verb))
+                        _delegateMap[attribute.Route][attribute.Verb] = delegatePair; // update
                     else
-                        _delegateMap[path].Add(attribute.Verb, delegatePair); // add
+                        _delegateMap[attribute.Route].Add(attribute.Verb, delegatePair); // add
                 }
             }
 
