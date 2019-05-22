@@ -13,7 +13,7 @@ namespace EmbedIO.Tests
     public class RegexWebApiModuleTest : PersonFixtureBase
     {
         public RegexWebApiModuleTest()
-            : base(ws => ws.WithWebApiController<TestRegexController>(), true)
+            : base(ws => ws.WithWebApiController<TestController>(), true)
         {
         }
 
@@ -22,7 +22,7 @@ namespace EmbedIO.Tests
             [Test]
             public async Task WithoutRegex_ReturnsOk()
             {
-                var jsonString = await GetString($"{TestRegexController.RelativePath}empty");
+                var jsonString = await GetString($"{TestController.RelativePath}empty");
 
                 Assert.IsNotEmpty(jsonString);
             }
@@ -30,7 +30,7 @@ namespace EmbedIO.Tests
             [Test]
             public async Task BigData_ReturnsOk()
             {
-                var jsonString = await GetString($"{TestRegexController.RelativePath}big");
+                var jsonString = await GetString($"{TestController.RelativePath}big");
 
                 Assert.IsNotEmpty(jsonString);
                 Assert.IsTrue(jsonString.StartsWith("["));
@@ -40,19 +40,19 @@ namespace EmbedIO.Tests
             [Test]
             public async Task WithRegexId_ReturnsOk()
             {
-                await ValidatePerson($"{TestRegexController.RelativePath}regex/1");
+                await ValidatePerson($"{TestController.RelativePath}regex/1");
             }
 
             [Test]
             public async Task WithOptRegexIdAndValue_ReturnsOk()
             {
-                await ValidatePerson(TestRegexController.RelativePath + "regexopt/1");
+                await ValidatePerson(TestController.RelativePath + "regexopt/1");
             }
 
             [Test]
             public async Task WithOptRegexIdAndNonValue_ReturnsOk()
             {
-                var jsonBody = await GetString(TestRegexController.RelativePath + "regexopt");
+                var jsonBody = await GetString(TestController.RelativePath + "regexopt");
                 var remoteList = Json.Deserialize<List<Person>>(jsonBody);
 
                 Assert.AreEqual(
@@ -64,14 +64,14 @@ namespace EmbedIO.Tests
             [Test]
             public async Task AsyncWithRegexId_ReturnsOk()
             {
-                await ValidatePerson(TestRegexController.RelativePath + "regexAsync/1");
+                await ValidatePerson(TestController.RelativePath + "regexAsync/1");
             }
 
             [Test]
             public async Task WithRegexDate_ReturnsOk()
             {
                 var person = PeopleRepository.Database.First();
-                await ValidatePerson(TestRegexController.RelativePath + "regexdate/" +
+                await ValidatePerson(TestController.RelativePath + "regexdate/" +
                                                 person.DoB.ToString("yyyy-MM-dd"));
             }
 
@@ -79,7 +79,7 @@ namespace EmbedIO.Tests
             public async Task WithRegexWithTwoParams_ReturnsOk()
             {
                 var person = PeopleRepository.Database.First();
-                await ValidatePerson(TestRegexController.RelativePath + "regextwo/" +
+                await ValidatePerson(TestController.RelativePath + "regextwo/" +
                                                 person.MainSkill + "/" + person.Age);
             }
 
@@ -88,7 +88,7 @@ namespace EmbedIO.Tests
             {
                 var person = PeopleRepository.Database.First();
 
-                await ValidatePerson(TestRegexController.RelativePath + "regexthree/" +
+                await ValidatePerson(TestController.RelativePath + "regexthree/" +
                                      person.MainSkill);
             }
         }
@@ -98,7 +98,7 @@ namespace EmbedIO.Tests
             [Test]
             public async Task ValidWebApiPathInvalidMethod_Returns405()
             {
-                var request = new TestHttpRequest(WebServerUrl + TestRegexController.RelativePath + "regex/1", HttpVerbs.Delete);
+                var request = new TestHttpRequest(WebServerUrl + TestController.RelativePath + "regex/1", HttpVerbs.Delete);
 
                 var response = await SendAsync(request);
 

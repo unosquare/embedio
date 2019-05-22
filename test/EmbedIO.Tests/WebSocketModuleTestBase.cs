@@ -2,7 +2,6 @@
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using EmbedIO.Modules;
 using NUnit.Framework;
 
 namespace EmbedIO.Tests
@@ -11,7 +10,7 @@ namespace EmbedIO.Tests
     {
         private readonly string _url;
 
-        protected WebSocketModuleTestBase(WebApiRoutingStrategy strategy, Action<IWebServer> builder, string url)
+        protected WebSocketModuleTestBase(Action<IWebServer> builder, string url)
             : base(builder)
         {
             _url = url;

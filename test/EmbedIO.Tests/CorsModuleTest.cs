@@ -44,7 +44,8 @@ namespace EmbedIO.Tests
         [Test]
         public async Task RequestOptionsVerb_ReturnsOK()
         {
-            var request = new TestHttpRequest(WebServerUrl + TestController.GetPath, HttpVerbs.Options);
+            var request = new TestHttpRequest($"{WebServerUrl}/api/empty", HttpVerbs.Options);
+
             request.Headers.Add(HttpHeaderNames.Origin, "http://unosquare.github.io");
             request.Headers.Add(HttpHeaderNames.AccessControlRequestMethod, "post");
             request.Headers.Add(HttpHeaderNames.AccessControlRequestHeaders, "content-type");

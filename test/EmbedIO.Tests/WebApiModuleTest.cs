@@ -15,7 +15,7 @@ namespace EmbedIO.Tests
     public class WebApiModuleTest : PersonFixtureBase
     {
         public WebApiModuleTest()
-            : base(ws => ws.WithWebApiController<TestController>(routingStrategy: WebApiRoutingStrategy.Wildcard))
+            : base(ws => ws.WithWebApiController<TestController>())
         {
         }
 
@@ -178,7 +178,7 @@ namespace EmbedIO.Tests
     public class HttpGet : PersonFixtureBase
     {
         public HttpGet()
-            : base(ws => ws.WithWebApiController<TestController>(routingStrategy: WebApiRoutingStrategy.Wildcard), true)
+            : base(ws => ws.WithWebApiController<TestController>(), true)
         {
         }
 
@@ -203,13 +203,6 @@ namespace EmbedIO.Tests
         public async Task JsonDataWithSelector_ReturnsOk()
         {
             await ValidatePerson(TestController.GetPath + PeopleRepository.Database.First().Key);
-        }
-
-        [Test]
-        public async Task JsonDataWithMiddleUrl_ReturnsOk()
-        {
-            var person = PeopleRepository.Database.First();
-            await ValidatePerson(TestController.GetMiddlePath.Replace("*", person.Key.ToString()));
         }
     }
 }

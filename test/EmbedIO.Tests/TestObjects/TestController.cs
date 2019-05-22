@@ -12,124 +12,78 @@ namespace EmbedIO.Tests.TestObjects
         public const string RelativePath = "api/";
         public const string EchoPath = RelativePath + "echo/";
         public const string GetPath = RelativePath + "people/";
-        public const string GetMiddlePath = RelativePath + "person/*/select";
 
         public TestController(IHttpContext context)
             : base(context)
         {
         }
 
-        [WebApiHandler(HttpVerbs.Get, "/" + GetMiddlePath)]
-        public Task<bool> GetPerson()
+        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "big")]
+        public Task<bool> GetBigJson() => Ok(Enumerable.Range(1, 100).Select(x => new
         {
-            try
-            {
-                // read the middle segment
-                var segment = Request.Url.Segments.Reverse().Skip(1)
-                    .First()
-                    .Replace("/", string.Empty);
+            x,
+            y = TimeZoneInfo.GetSystemTimeZones()
+                .Select(z => new { z.StandardName, z.DisplayName }),
+        }));
 
-                return CheckPerson(segment);
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
+        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "empty")]
+        public Task<bool> GetEmpty() => Ok(new { Ok = true });
+
+        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regex")]
+        public Task<bool> GetPeople() => Ok(PeopleRepository.Database);
+        
+        [WebApiHandler(HttpVerbs.Get, "/" + GetPath)]
+        public Task<bool> GetAllPeople() => Ok(PeopleRepository.Database);
+
+        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regex/{id}")]
+        public Task<bool> GetPerson(int id) => CheckPerson(id);
+
+        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexopt/{id?}")]
+        public Task<bool> GetPerson(int? id) => id.HasValue ? CheckPerson(id.Value) : Ok(PeopleRepository.Database);
+
+        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexAsync/{id}")]
+        public Task<bool> GetPersonAsync(int id) => CheckPerson(id);
+
+        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexdate/{date}")]
+        public Task<bool> GetPerson(DateTime date)
+        {
+            var item = PeopleRepository.Database.FirstOrDefault(p => p.DoB == date);
+
+            return item != null ? Ok(item) : throw new KeyNotFoundException($"Key Not Found: {date}");
         }
 
-        [WebApiHandler(HttpVerbs.Get, "/" + GetPath + "*")]
-        public Task<bool> GetPeople()
+        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regextwo/{skill}/{age}")]
+        public Task<bool> GetPerson(string skill, int age)
         {
-            try
-            {
-                // read the last segment
-                var lastSegment = Request.Url.Segments.Last();
+            var item = PeopleRepository.Database.FirstOrDefault(p =>
+                string.Equals(p.MainSkill, skill, StringComparison.CurrentCultureIgnoreCase) && p.Age == age);
 
-                // if it ends with a / means we need to list people
-                return lastSegment.EndsWith("/")
-                    ? Ok(PeopleRepository.Database)
-                    : CheckPerson(lastSegment);
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
+            return item != null ? Ok(item) : throw new KeyNotFoundException($"Key Not Found: {skill}-{age}");
         }
 
-        [WebApiHandler(HttpVerbs.Post, "/" + GetPath + "*")]
-        public Task<bool> PostPeople()
+        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexthree/{skill}/{age?}")]
+        public Task<bool> GetOptionalPerson(string skill, int? age = null)
         {
-            try
-            {
-                return Ok<Person, Person>(async (x, ct) =>
-                {
-                    await Task.Delay(0, ct);
+            var item = age == null
+                ? PeopleRepository.Database.FirstOrDefault(p => string.Equals(p.MainSkill, skill, StringComparison.CurrentCultureIgnoreCase))
+                : PeopleRepository.Database.FirstOrDefault(p => string.Equals(p.MainSkill, skill, StringComparison.CurrentCultureIgnoreCase) && p.Age == age);
 
-                    return x;
-                });
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
+            return item != null ? Ok(item) : throw new KeyNotFoundException($"Key Not Found: {skill}-{age}");
         }
 
-        [WebApiHandler(HttpVerbs.Post, "/" + EchoPath + "*")]
+        [WebApiHandler(HttpVerbs.Post, "/" + EchoPath)]
         public async Task<bool> PostEcho()
         {
-            try
-            {
-                var content = await HttpContext.RequestFormDataDictionaryAsync();
+            var content = await HttpContext.RequestFormDataDictionaryAsync();
 
-                return await Ok(content);
-            }
-            catch (Exception ex)
-            {
-                return await InternalServerError(ex);
-            }
-        }
-        
-        private Task<bool> CheckPerson(string personKey)
-        {
-            if (int.TryParse(personKey, out var key) && PeopleRepository.Database.Any(p => p.Key == key))
-            {
-                return Ok(PeopleRepository.Database.FirstOrDefault(p => p.Key == key));
-            }
-
-            throw new KeyNotFoundException($"Key Not Found: {personKey}");
-        }
-    }
-
-    public class TestControllerWithConstructor : WebApiController
-    {
-        public const string CustomHeader = "X-Custom";
-
-        public TestControllerWithConstructor(IHttpContext context, string name = "Test")
-            : base(context)
-        {
-            WebName = name;
+            return await Ok(content);
         }
 
-        public string WebName { get; set; }
-
-        [WebApiHandler(HttpVerbs.Get, "/name")]
-        public Task<bool> GetName()
+        private Task<bool> CheckPerson(int id)
         {
-            Response.NoCache();
-            return Ok(WebName);
-        }
+            var item = PeopleRepository.Database.FirstOrDefault(p => p.Key == id);
 
-        [WebApiHandler(HttpVerbs.Get, "/namePublic")]
-        public Task<bool> GetNamePublic()
-        {
-            Response.AddHeader("Cache-Control", "public");
-            return Ok(WebName);
-        }
-
-        public override void SetDefaultHeaders()
-        {
-            // do nothing with cache
-            Response.AddHeader(CustomHeader, WebName);
+            return item != null ? Ok(item) : throw new KeyNotFoundException($"Key Not Found: {id}");
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
-using EmbedIO.Modules;
 using EmbedIO.Tests.TestObjects;
 using NUnit.Framework;
 using Unosquare.Swan.Formatters;
@@ -13,7 +12,6 @@ namespace EmbedIO.Tests
     {
         public WebSocketModuleTest()
             : base(
-                WebApiRoutingStrategy.Wildcard,
                 ws => ws
                     .WithModule(new TestWebSocket("/test"))
                     .WithModule(new BigDataWebSocket("/bigdata"))

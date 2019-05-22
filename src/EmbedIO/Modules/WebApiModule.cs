@@ -29,31 +29,22 @@ namespace EmbedIO.Modules
             = new Dictionary<string, Dictionary<HttpVerbs, MethodCacheInstance>>(StringComparer.InvariantCultureIgnoreCase);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiModule"/> class.
+        /// Initializes a new instance of the <see cref="WebApiModule" /> class.
         /// </summary>
         /// <param name="baseUrlPath">The base URL path served by this module.</param>
-        /// <param name="routingStrategy">The routing strategy employed to select a controller.</param>
-        /// <param name="sendJsonOnException"><see langword="true"/> to include a JSON description
+        /// <param name="sendJsonOnException"><see langword="true" /> to include a JSON description
         /// of exceptions thrown by controllers in <c>500 Internal Server Error</c> responses.</param>
         /// <seealso cref="IWebModule.BaseUrlPath" />
         /// <seealso cref="Validate.UrlPath" />
-        /// <seealso cref="RoutingStrategy"/>
-        /// <seealso cref="SendJsonOnException"/>
+        /// <seealso cref="RoutingStrategy" />
+        /// <seealso cref="SendJsonOnException" />
         public WebApiModule(
             string baseUrlPath,
-            WebApiRoutingStrategy routingStrategy = WebApiRoutingStrategy.Regex,
             bool sendJsonOnException = false)
             : base(baseUrlPath)
         {
-            RoutingStrategy = Validate.EnumValue<WebApiRoutingStrategy>(nameof(routingStrategy), routingStrategy);
             SendJsonOnException = sendJsonOnException;
         }
-
-        /// <summary>
-        /// Gets the routing strategy used by this module
-        /// to select a controller based on the requested URL path.
-        /// </summary>
-        protected WebApiRoutingStrategy RoutingStrategy { get; }
 
         /// <summary>
         /// <para>Gets a value indicating whether a JSON description
@@ -192,7 +183,8 @@ namespace EmbedIO.Modules
 
             controllerType = ValidateControllerType(nameof(controllerType), controllerType);
 
-            var constructor = controllerType.GetConstructors().FirstOrDefault(c => {
+            var constructor = controllerType.GetConstructors().FirstOrDefault(c =>
+            {
                 var constructorParameters = c.GetParameters();
                 return constructorParameters.Length == 2
                     && constructorParameters[0].ParameterType.IsAssignableFrom(typeof(IHttpContext))
@@ -347,59 +339,18 @@ namespace EmbedIO.Modules
         }
 
         /// <summary>
-        /// Normalizes a URL request path meant for Wildcard matching and returns the registered
-        /// path in the internal delegate map.
-        /// </summary>
-        /// <param name="verb">The verb.</param>
-        /// <param name="context">The context.</param>
-        /// <returns>A string that represents the registered path.</returns>
-        private string NormalizeWildcardPath(HttpVerbs verb, IHttpContext context, string path)
-        {
-            if (_delegateMap.ContainsKey(path) == false)
-                return null;
-
-            if (_delegateMap[path].ContainsKey(verb))
-                return path;
-
-            var originalPath = context.RequestPath();
-
-            if (_delegateMap.ContainsKey(originalPath) &&
-                _delegateMap[originalPath].ContainsKey(verb))
-            {
-                return originalPath;
-            }
-
-            return null;
-        }
-
-        /// <summary>
         /// Looks for a path that matches the one provided by the context.
         /// </summary>
         /// <param name="context"> The HttpListener context.</param>
         /// <returns><c>true</c> if the path is found, otherwise <c>false</c>.</returns>
         private bool IsMethodNotAllowed(IHttpContext context)
         {
-            string path;
+            var path = context.Request.Url.AbsolutePath;
 
-            switch (RoutingStrategy)
+            foreach (var route in _delegateMap.Keys)
             {
-                case WebApiRoutingStrategy.Wildcard:
-                    path = context.RequestWilcardPath(_delegateMap.Keys
-                        .Where(k => k.Contains(ModuleMap.AnyPathRoute))
-                        .Select(s => s.ToLowerInvariant()));
-                    break;
-                case WebApiRoutingStrategy.Regex:
-                    path = context.Request.Url.AbsolutePath;
-                    foreach (var route in _delegateMap.Keys)
-                    {
-                        if (path.RequestRegexUrlParams(route) != null)
-                            return true;
-                    }
-
-                    return false;
-                default:
-                    path = context.RequestPath();
-                    break;
+                if (path.RequestRegexUrlParams(route) != null)
+                    return true;
             }
 
             return _delegateMap.ContainsKey(path);
@@ -410,14 +361,12 @@ namespace EmbedIO.Modules
         {
             var verb = context.RequestVerb();
             var regExRouteParams = new Dictionary<string, object>();
-            path = RoutingStrategy == WebApiRoutingStrategy.Wildcard
-                ? NormalizeWildcardPath(verb, context, path)
-                : NormalizeRegexPath(verb, context, regExRouteParams);
+            path = NormalizeRegexPath(verb, context, regExRouteParams);
 
             // Return a non-path if no handler handled the route
             /// TODO: Distinguish between method not allowed and path not found
             if (path == null)
-                return await OnMethodNotAllowedAsync( context, path, ct).ConfigureAwait(false);
+                return await OnMethodNotAllowedAsync(context, path, ct).ConfigureAwait(false);
 
             // search the path and verb
             if (!_delegateMap.TryGetValue(path, out var methods) ||
@@ -434,8 +383,7 @@ namespace EmbedIO.Modules
             // Initially, only the server and context objects will be available
             var args = new object[methodPair.MethodCache.AdditionalParameters.Count];
 
-            if (RoutingStrategy == WebApiRoutingStrategy.Regex)
-                methodPair.ParseArguments(regExRouteParams, args);
+            methodPair.ParseArguments(regExRouteParams, args);
 
             try
             {
