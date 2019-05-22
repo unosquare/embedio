@@ -15,7 +15,6 @@ namespace EmbedIO.Modules
     /// </summary>
     public class CorsModule : WebModuleBase
     {
-        private const string Wildcard = "*";
         private readonly string _origins;
         private readonly string _headers;
         private readonly string _methods;
@@ -67,7 +66,7 @@ namespace EmbedIO.Modules
             // If we allow all we don't need to filter
             if (_origins == Cors.All && _headers == Cors.All && _methods == Cors.All)
             {
-                context.Response.AddHeader(HttpHeaderNames.AccessControlAllowOrigin, Wildcard);
+                context.Response.AddHeader(HttpHeaderNames.AccessControlAllowOrigin, Cors.All);
                 var result = isOptions && ValidateHttpOptions(_methods, context, _validMethods);
 
                 return Task.FromResult(result);
