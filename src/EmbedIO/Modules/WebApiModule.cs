@@ -36,11 +36,8 @@ namespace EmbedIO.Modules
         /// of exceptions thrown by controllers in <c>500 Internal Server Error</c> responses.</param>
         /// <seealso cref="IWebModule.BaseUrlPath" />
         /// <seealso cref="Validate.UrlPath" />
-        /// <seealso cref="RoutingStrategy" />
         /// <seealso cref="SendJsonOnException" />
-        public WebApiModule(
-            string baseUrlPath,
-            bool sendJsonOnException = false)
+        public WebApiModule(string baseUrlPath, bool sendJsonOnException = false)
             : base(baseUrlPath)
         {
             SendJsonOnException = sendJsonOnException;
