@@ -84,17 +84,12 @@ namespace EmbedIO.Tests
         public class Modules : WebServerTest
         {
             [Test]
-            public void RegisterAndUnregister()
+            public void RegisterModule()
             {
                 var instance = new WebServer();
                 instance.Modules.Add(nameof(WebApiModule), new WebApiModule("/"));
 
                 Assert.AreEqual(instance.Modules.Count, 1, "It has one module");
-
-                // TODO: Riccardo, There is no way to remove a module. Is this expected?
-                //instance.Modules.Remove(typeof(LocalSessionModule));
-
-                Assert.AreEqual(instance.Modules.Count, 0, "It has not modules");
             }
 
 #if NETCOREAPP2_2
