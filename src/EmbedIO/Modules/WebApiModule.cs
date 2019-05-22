@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Reflection;
 using System.Threading;
@@ -70,42 +71,224 @@ namespace EmbedIO.Modules
         public int ControllerCount => _controllerTypes.Count;
 
         /// <summary>
-        /// Registers the controller.
+        /// <para>Registers a controller type using a constructor.</para>
+        /// <para>In order for registration to be successful, the specified controller type:</para>
+        /// <list type="bullet">
+        /// <item><description>must be a subclass of <see cref="WebApiController"/>;</description></item>
+        /// <item><description>must not be an abstract class;</description></item>
+        /// <item><description>must not be a generic type definition;</description></item>
+        /// <item><description>must have a public constructor with two parameters of type <see cref="IHttpContext"/>
+        /// and <see cref="CancellationToken"/>, in this order.</description></item>
+        /// </list>
         /// </summary>
         /// <typeparam name="TController">The type of the controller.</typeparam>
-        /// <exception cref="ArgumentException">Controller types must be unique within the module.</exception>
+        /// <exception cref="InvalidOperationException">The module has already been started.</exception>
+        /// <exception cref="ArgumentException">
+        /// <para><typeparamref name="TController"/> is already registered in this module.</para>
+        /// <para><typeparamref name="TController"/> does not satisfy the prerequisites
+        /// listed in the Summary section.</para>
+        /// </exception>
+        /// <remarks>
+        /// <para>A new instance of <typeparamref name="TController"/> will be created
+        /// for each request to handle, and dereferenced immediately afterwards,
+        /// to be collected during next garbage collection cycle.</para>
+        /// <para><typeparamref name="TController"/> is not required to be thread-safe,
+        /// as it will be constructed and used in the same synchronization context.
+        /// However, since request handling is asynchronous, the actual execution thread
+        /// may vary during execution. Care must be exercised when using thread-sensitive
+        /// resources or thread-static data.</para>
+        /// <para>If <typeparamref name="TController"/> implements <see cref="IDisposable"/>,
+        /// its <see cref="IDisposable.Dispose">Dispose</see> method will be called when it has
+        /// finished handling a request.</para>
+        /// </remarks>
+        /// <seealso cref="RegisterController(Type)"/>
         public void RegisterController<TController>()
             where TController : WebApiController
             => RegisterController(typeof(TController));
 
         /// <summary>
-        /// Registers the controller.
+        /// <para>Registers a controller type using a factory method.</para>
+        /// <para>In order for registration to be successful:</para>
+        /// <list type="bullet">
+        /// <item><description><typeparamref name="TController"/> must be a subclass of <see cref="WebApiController"/>;</description></item>
+        /// <item><description><typeparamref name="TController"/> must not be an abstract class;</description></item>
+        /// <item><description><typeparamref name="TController"/> must not be a generic type definition;</description></item>
+        /// <item><description><paramref name="factory"/>'s return type must be either <typeparamref name="TController"/>
+        /// or a subclass of <typeparamref name="TController"/>.</description></item>
+        /// </list>
         /// </summary>
         /// <typeparam name="TController">The type of the controller.</typeparam>
-        /// <param name="factory">The controller factory method.</param>
-        /// <exception cref="System.ArgumentException">Controller types must be unique within the module.</exception>
+        /// <param name="factory">The factory method used to construct instances of <typeparamref name="TController"/>.</param>
+        /// <exception cref="InvalidOperationException">The module has already been started.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="factory"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">
+        /// <para><typeparamref name="TController"/> is already registered in this module.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="factory"/> does not satisfy the prerequisites listed in the Summary section.</para>
+        /// </exception>
+        /// <remarks>
+        /// <para><paramref name="factory"/>will be called once for each request to handle
+        /// in order to obtain an instance of <typeparamref name="TController"/>.
+        /// The returned instance will be dereferenced immediately after handling the request.</para>
+        /// <para><typeparamref name="TController"/> is not required to be thread-safe,
+        /// as it will be constructed and used in the same synchronization context.
+        /// However, since request handling is asynchronous, the actual execution thread
+        /// may vary during execution. Care must be exercised when using thread-sensitive
+        /// resources or thread-static data.</para>
+        /// <para>If <typeparamref name="TController"/> implements <see cref="IDisposable"/>,
+        /// its <see cref="IDisposable.Dispose">Dispose</see> method will be called when it has
+        /// finished handling a request. In this case it is recommended that
+        /// <paramref name="factory"/> return a newly-constructed instance of <typeparamref name="TController"/>
+        /// at each invocation.</para>
+        /// <para>If <typeparamref name="TController"/> does not implement <see cref="IDisposable"/>,
+        /// <paramref name="factory"/> may employ techniques such as instance pooling to avoid
+        /// the overhead of constructing a new instance of <typeparamref name="TController"/>
+        /// at each invocation. If so, resources such as file handles, database connections, etc.
+        /// should be freed before returning from each handler method to avoid
+        /// <see href="https://en.wikipedia.org/wiki/Starvation_(computer_science)">starvation</see>.</para>
+        /// </remarks>
+        /// <seealso cref="RegisterController(Type,Func{IHttpContext,CancellationToken,WebApiController})"/>
         public void RegisterController<TController>(Func<IHttpContext, CancellationToken, TController> factory)
             where TController : WebApiController
             => RegisterController(typeof(TController), factory);
 
         /// <summary>
-        /// Registers the controller.
+        /// <para>Registers a controller type using a constructor.</para>
+        /// <para>In order for registration to be successful, the specified <paramref name="controllerType"/>: </para>
+        /// <list type="bullet">
+        /// <item><description>must be a subclass of <see cref="WebApiController"/>;</description></item>
+        /// <item><description>must not be an abstract class;</description></item>
+        /// <item><description>must not be a generic type definition;</description></item>
+        /// <item><description>must have a public constructor with two parameters of type <see cref="IHttpContext"/>
+        /// and <see cref="CancellationToken"/>, in this order.</description></item>
+        /// </list>
         /// </summary>
-        /// <param name="controllerType">Tht type of the controller.</param>
+        /// <param name="controllerType">The type of the controller.</param>
+        /// <exception cref="InvalidOperationException">The module has already been started.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="controllerType"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">
+        /// <para><paramref name="controllerType"/> is already registered in this module.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="controllerType"/> does not satisfy the prerequisites
+        /// listed in the Summary section.</para>
+        /// </exception>
+        /// <remarks>
+        /// <para>A new instance of <paramref name="controllerType"/> will be created
+        /// for each request to handle, and dereferenced immediately afterwards,
+        /// to be collected during next garbage collection cycle.</para>
+        /// <para><paramref name="controllerType"/> is not required to be thread-safe,
+        /// as it will be constructed and used in the same synchronization context.
+        /// However, since request handling is asynchronous, the actual execution thread
+        /// may vary during execution. Care must be exercised when using thread-sensitive
+        /// resources or thread-static data.</para>
+        /// <para>If <paramref name="controllerType"/> implements <see cref="IDisposable"/>,
+        /// its <see cref="IDisposable.Dispose">Dispose</see> method will be called when it has
+        /// finished handling a request.</para>
+        /// </remarks>
+        /// <seealso cref="RegisterController{TController}()"/>
         public void RegisterController(Type controllerType)
-            => RegisterController(controllerType, (ctx, ct) => Activator.CreateInstance(controllerType, ctx) as WebApiController);
+        {
+            EnsureConfigurationNotLocked();
+
+            controllerType = ValidateControllerType(nameof(controllerType), controllerType);
+
+            var constructor = controllerType.GetConstructors().FirstOrDefault(c => {
+                var constructorParameters = c.GetParameters();
+                return constructorParameters.Length == 2
+                    && constructorParameters[0].ParameterType.IsAssignableFrom(typeof(IHttpContext))
+                    && constructorParameters[1].ParameterType.IsAssignableFrom(typeof(CancellationToken));
+            });
+            if (constructor == null)
+            {
+                throw new ArgumentException(
+                    $"Controller type must have a public constructor taking a {nameof(IHttpContext)} and a {nameof(CancellationToken)} as parameters.",
+                    nameof(controllerType));
+            }
+
+            var parameters = new ParameterExpression[] {
+                Expression.Parameter(typeof(IHttpContext), "context"),
+                Expression.Parameter(typeof(CancellationToken), "ct"),
+            } as IEnumerable<ParameterExpression>;
+            var factory = Expression.Lambda<Func<IHttpContext, CancellationToken, WebApiController>>(Expression.New(constructor, parameters), parameters)
+                .Compile();
+
+            RegisterControllerInternal(controllerType, factory);
+        }
 
         /// <summary>
-        /// Registers the controller.
+        /// <para>Registers a controller type using a factory method.</para>
+        /// <para>In order for registration to be successful:</para>
+        /// <list type="bullet">
+        /// <item><description><paramref name="controllerType"/> must be a subclass of <see cref="WebApiController"/>;</description></item>
+        /// <item><description><paramref name="controllerType"/> must not be an abstract class;</description></item>
+        /// <item><description><paramref name="controllerType"/> must not be a generic type definition;</description></item>
+        /// <item><description><paramref name="factory"/>'s return type must be either <paramref name="controllerType"/>
+        /// or a subclass of <paramref name="controllerType"/>.</description></item>
+        /// </list>
         /// </summary>
-        /// <typeparam name="TController">The type of the controller.</typeparam>
-        /// <param name="factory">The factory.</param>
-        /// <exception cref="ArgumentException">Controller types must be unique within the module</exception>
+        /// <param name="controllerType">The type of the controller.</param>
+        /// <param name="factory">The factory method used to construct instances of <paramref name="controllerType"/>.</param>
+        /// <exception cref="InvalidOperationException">The module has already been started.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="controllerType"/> is <see langword="null"/>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="factory"/> is <see langword="null"/>.</para>
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <para><paramref name="controllerType"/> is already registered in this module.</para>
+        /// <para>- or -</para>
+        /// <para>One or more parameters do not satisfy the prerequisites listed in the Summary section.</para>
+        /// </exception>
+        /// <remarks>
+        /// <para><paramref name="factory"/>will be called once for each request to handle
+        /// in order to obtain an instance of <paramref name="controllerType"/>.
+        /// The returned instance will be dereferenced immediately after handling the request.</para>
+        /// <para><paramref name="controllerType"/> is not required to be thread-safe,
+        /// as it will be constructed and used in the same synchronization context.
+        /// However, since request handling is asynchronous, the actual execution thread
+        /// may vary during execution. Care must be exercised when using thread-sensitive
+        /// resources or thread-static data.</para>
+        /// <para>If <paramref name="controllerType"/> implements <see cref="IDisposable"/>,
+        /// its <see cref="IDisposable.Dispose">Dispose</see> method will be called when it has
+        /// finished handling a request. In this case it is recommended that
+        /// <paramref name="factory"/> return a newly-constructed instance of <paramref name="controllerType"/>
+        /// at each invocation.</para>
+        /// <para>If <paramref name="controllerType"/> does not implement <see cref="IDisposable"/>,
+        /// <paramref name="factory"/> may employ techniques such as instance pooling to avoid
+        /// the overhead of constructing a new instance of <paramref name="controllerType"/>
+        /// at each invocation. If so, resources such as file handles, database connections, etc.
+        /// should be freed before returning from each handler method to avoid
+        /// <see href="https://en.wikipedia.org/wiki/Starvation_(computer_science)">starvation</see>.</para>
+        /// </remarks>
+        /// <seealso cref="RegisterController{TController}(Func{IHttpContext,CancellationToken,TController})"/>
         public void RegisterController(Type controllerType, Func<IHttpContext, CancellationToken, WebApiController> factory)
         {
-            if (_controllerTypes.Contains(controllerType))
-                throw new ArgumentException("Controller types must be unique within the module");
+            EnsureConfigurationNotLocked();
 
+            controllerType = ValidateControllerType(nameof(controllerType), controllerType);
+            factory = Validate.NotNull(nameof(factory), factory);
+            if (!controllerType.IsAssignableFrom(factory.Method.ReturnType))
+                throw new ArgumentException("Factory method has an incorrect return type.", nameof(factory));
+
+            RegisterControllerInternal(controllerType, factory);
+        }
+
+        private Type ValidateControllerType(string argumentName, Type value)
+        {
+            value = Validate.NotNull(argumentName, value);
+            if (value.IsAbstract
+             || value.IsGenericTypeDefinition
+             || !value.IsSubclassOf(typeof(WebApiController)))
+                throw new ArgumentException($"Controller type must be a non-abstract subclass of {nameof(WebApiController)}.", argumentName);
+
+            if (_controllerTypes.Contains(value))
+                throw new ArgumentException("Controller type is already registered in this module.", argumentName);
+
+            return value;
+        }
+
+        private void RegisterControllerInternal(Type controllerType, Func<IHttpContext, CancellationToken, WebApiController> factory)
+        {
             var methods = controllerType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .Where(m => m.ReturnType == typeof(bool)
                           || m.ReturnType == typeof(Task<bool>));
