@@ -408,43 +408,6 @@ namespace EmbedIO.Modules
             return _delegateMap.ContainsKey(path);
         }
 
-        // TODO: Riccardo, I commented this because I'm not pretty sure what was the idea
-        //private WebHandler GetHandler(IHttpContext context)
-        //{
-        //    Map handler = null;
-
-        //    void SetHandlerFromRegexPath()
-        //    {
-        //        handler = Handlers.FirstOrDefault(x =>
-        //            (x.Path == ModuleMap.AnyPath || context.RequestRegexUrlParams(x.Path) != null) &&
-        //            (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
-        //    }
-
-        //    void SetHandlerFromWildcardPath()
-        //    {
-        //        var path = context.RequestWilcardPath(module.Handlers
-        //            .Where(k => k.Path.Contains(ModuleMap.AnyPathRoute))
-        //            .Select(s => s.Path.ToLowerInvariant()));
-
-        //        handler = Handlers
-        //            .FirstOrDefault(x =>
-        //                (x.Path == ModuleMap.AnyPath || x.Path == path) &&
-        //                (x.Verb == HttpVerbs.Any || x.Verb == context.RequestVerb()));
-        //    }
-
-        //    switch (RoutingStrategy)
-        //    {
-        //        case WebApiRoutingStrategy.Wildcard:
-        //            SetHandlerFromWildcardPath();
-        //            break;
-        //        case WebApiRoutingStrategy.Regex:
-        //            SetHandlerFromRegexPath();
-        //            break;
-        //    }
-
-        //    return handler?.ResponseHandler;
-        //}
-
         /// <inheritdoc />
         public override async Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct)
         {
