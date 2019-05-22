@@ -135,30 +135,6 @@ namespace EmbedIO
         }
 
         /// <summary>
-        /// Requests the wildcard URL parameters.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="basePath">The base path.</param>
-        /// <returns>The params from the request.</returns>
-        public static string[] RequestWildcardUrlParams(this IHttpContext context, string basePath)
-            => RequestWildcardUrlParams(context.RequestPath(), basePath);
-
-        /// <summary>
-        /// Requests the wildcard URL parameters.
-        /// </summary>
-        /// <param name="requestPath">The request path.</param>
-        /// <param name="basePath">The base path.</param>
-        /// <returns>The params from the request.</returns>
-        public static string[] RequestWildcardUrlParams(this string requestPath, string basePath)
-        {
-            var match = RegexCache.MatchWildcardStrategy(basePath, requestPath);
-
-            return match.Success
-                ? match.Groups[1].Value.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries)
-                : null;
-        }
-
-        /// <summary>
         /// Requests the regex URL parameters.
         /// </summary>
         /// <param name="context">The context.</param>

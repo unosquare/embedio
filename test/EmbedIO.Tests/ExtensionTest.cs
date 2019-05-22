@@ -30,37 +30,6 @@ namespace EmbedIO.Tests
     }
 
     [TestFixture]
-    public class RequestWildcard
-    {
-        [TestCase("/data/1", new[] {"1"})]
-        [TestCase("/data/1/2", new[] {"1", "2"})]
-        public void UrlParamsWithLastParams(string urlMatch, string[] expected)
-        {
-            var result = urlMatch.RequestWildcardUrlParams("/data/*");
-            Assert.AreEqual(expected.Length, result.Length);
-            Assert.AreEqual(expected[0], result[0]);
-        }
-
-        [TestCase("/1/data", new[] {"1"})]
-        [TestCase("/1/2/data", new[] {"1", "2"})]
-        public void UrlParamsWithInitialParams(string urlMatch, string[] expected)
-        {
-            var result = urlMatch.RequestWildcardUrlParams("/*/data");
-            Assert.AreEqual(expected.Length, result.Length);
-            Assert.AreEqual(expected[0], result[0]);
-        }
-
-        [TestCase("/api/1/data", new[] {"1"})]
-        [TestCase("/api/1/2/data", new[] {"1", "2"})]
-        public void UrlParamsWithMiddleParams(string urlMatch, string[] expected)
-        {
-            var result = urlMatch.RequestWildcardUrlParams("/api/*/data");
-            Assert.AreEqual(expected.Length, result.Length);
-            Assert.AreEqual(expected[0], result[0]);
-        }
-    }
-
-    [TestFixture]
     public class RequestRegex
     {
         private const string DefaultId = "id";
