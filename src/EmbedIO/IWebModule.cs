@@ -29,10 +29,11 @@ namespace EmbedIO
         /// <summary>
         /// Handles a request from a client.
         /// </summary>
-        /// <param name="context">The context.</param>
+        /// <param name="context">The context of the request being handled.</param>
         /// <param name="path">The requested path, relative to <see cref="BaseUrlPath"/>. See the Remarks section for more information.</param>
-        /// <param name="ct">The cancellation token.</param>
-        /// <returns><see langword="true"/> if the request has been handled; otherwise, <see langword="false"/>.</returns>
+        /// <param name="ct">A <see cref="CancellationToken"/> used to cancel the operation.</param>
+        /// <returns><see langword="true"/> if the request has been handled;
+        /// <see langword="false"/> if the request should be passed down the module chain.</returns>
         /// <remarks>
         /// <para>The path specified in the requested URL is stripped of the <see cref="BaseUrlPath"/>
         /// and passed in the <paramref name="path"/> parameter.</para>

@@ -6,7 +6,7 @@ using System.Security.Principal;
 namespace EmbedIO
 {
     /// <summary>
-    /// Interface to create a HTTP Context.
+    /// Represents the context of a HTTP(s) request being handled by a web server.
     /// </summary>
     public interface IHttpContext
     {
