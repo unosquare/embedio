@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Modules;
 using EmbedIO.Utilities;
 
 namespace EmbedIO
@@ -41,7 +42,7 @@ namespace EmbedIO
         public void Start(CancellationToken ct)
         {
             OnStart(ct);
-            ConfigurationLocked = true;
+            LockConfiguration();
         }
 
         /// <inheritdoc />
@@ -56,14 +57,29 @@ namespace EmbedIO
         }
 
         /// <summary>
-        /// Gets a value indicating whether a module has already been started
-        /// and its configuration has therefore become read-only.
+        /// Gets a value indicating whether a module's configuration has already been locked
+        /// and has therefore become read-only.
         /// </summary>
         /// <value>
         /// <see langword="true"/> if the configuration is locked; otherwise, <see langword="false"/>.
         /// </value>
         /// <seealso cref="EnsureConfigurationNotLocked"/>
         protected bool ConfigurationLocked { get; private set; }
+
+        /// <summary>
+        /// <para>Locks the module's configuration, preventing further modifications.</para>
+        /// </summary>
+        /// <remarks>
+        /// <para>Configuration locking must be enforced by derived classes
+        /// by calling <see cref="EnsureConfigurationNotLocked"/> at the start
+        /// of methods and property setters that could change the module's
+        /// configuration.</para>
+        /// <para>This method may be called at any time, for example to prevent adding further controllers
+        /// to a <see cref="WebApiModule"/>-derived class; however, it is not
+        /// necessary to call it in all cases, because <see cref="WebModuleBase"/> calls it automatically
+        /// immediately after the <see cref="OnStart"/> method returns.</para>
+        /// </remarks>
+        protected void LockConfiguration() => ConfigurationLocked = true;
 
         /// <summary>
         /// Checks whether a module's configuration has become read-only
