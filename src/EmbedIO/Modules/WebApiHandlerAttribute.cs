@@ -25,7 +25,7 @@ namespace EmbedIO.Modules
         public WebApiHandlerAttribute(HttpVerbs verb, string route)
         {
             Verb = verb;
-            Route = Validate.UrlPath(nameof(route), route, false);
+            Route = Validate.Route(nameof(route), route);
         }
 
         /// <summary>
