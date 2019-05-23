@@ -284,7 +284,7 @@ namespace EmbedIO.Modules
 
             foreach (var method in methods)
             {
-                foreach (var attribute in method.GetCustomAttributes(typeof(WebApiHandlerAttribute)).OfType<WebApiHandlerAttribute>())
+                foreach (var attribute in method.GetCustomAttributes(typeof(RouteHandlerAttribute)).OfType<RouteHandlerAttribute>())
                 {
                     if (_delegateMap.ContainsKey(attribute.Route) == false)
                     {

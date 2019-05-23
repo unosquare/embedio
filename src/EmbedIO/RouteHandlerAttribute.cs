@@ -2,17 +2,17 @@
 using EmbedIO.Constants;
 using EmbedIO.Utilities;
 
-namespace EmbedIO.Modules
+namespace EmbedIO
 {
     /// <summary>
     /// Decorate methods within controllers with this attribute in order to make them callable from the Web API Module
     /// Method Must match the WebServerModule.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-    public class WebApiHandlerAttribute : Attribute
+    public class RouteHandlerAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiHandlerAttribute"/> class.
+        /// Initializes a new instance of the <see cref="RouteHandlerAttribute"/> class.
         /// </summary>
         /// <param name="verb">The verb.</param>
         /// <param name="route">The route.</param>
@@ -22,7 +22,7 @@ namespace EmbedIO.Modules
         /// <para>- or -</para>
         /// <para><paramref name="route"/> does not start with a slash (<c>/</c>) character.</para>
         /// </exception>
-        public WebApiHandlerAttribute(HttpVerbs verb, string route)
+        public RouteHandlerAttribute(HttpVerbs verb, string route)
         {
             Verb = verb;
             Route = Validate.Route(nameof(route), route);

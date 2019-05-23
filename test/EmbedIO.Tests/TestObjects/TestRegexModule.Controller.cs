@@ -16,15 +16,15 @@ namespace EmbedIO.Tests.TestObjects
             {
             }
 
-            [WebApiHandler(HttpVerbs.Any, "/data/{id!}")]
+            [RouteHandler(HttpVerbs.Any, "/data/{id!}")]
             public Task<bool> Id(string id)
                 => HttpContext.Response.StringResponseAsync(id, "text/plain", Encoding.UTF8, false, CancellationToken);
 
-            [WebApiHandler(HttpVerbs.Any, "/data/{id!}/{time}")]
+            [RouteHandler(HttpVerbs.Any, "/data/{id!}/{time}")]
             public Task<bool> Time(string id, string time)
                 => HttpContext.Response.StringResponseAsync(time, "text/plain", Encoding.UTF8, false, CancellationToken);
 
-            [WebApiHandler(HttpVerbs.Any, "/empty")]
+            [RouteHandler(HttpVerbs.Any, "/empty")]
             public bool Empty()
             {
                 HttpContext.Response.StandardResponseWithoutBody((int) HttpStatusCode.OK);

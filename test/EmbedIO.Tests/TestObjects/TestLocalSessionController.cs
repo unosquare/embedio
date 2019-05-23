@@ -19,7 +19,7 @@ namespace EmbedIO.Tests.TestObjects
         {
         }
 
-        [WebApiHandler(HttpVerbs.Get, "/getcookie")]
+        [RouteHandler(HttpVerbs.Get, "/getcookie")]
         public Task<bool> GetCookieC()
         {
             var cookie = new System.Net.Cookie(CookieName, CookieName);
@@ -28,7 +28,7 @@ namespace EmbedIO.Tests.TestObjects
             return Ok(Response.Cookies[CookieName]);
         }
 
-        [WebApiHandler(HttpVerbs.Get, "/deletesession")]
+        [RouteHandler(HttpVerbs.Get, "/deletesession")]
         public Task<bool> DeleteSessionC()
         {
             HttpContext.Session.Delete();
@@ -36,7 +36,7 @@ namespace EmbedIO.Tests.TestObjects
             return Ok("Deleted");
         }
 
-        [WebApiHandler(HttpVerbs.Get, "/putdata")]
+        [RouteHandler(HttpVerbs.Get, "/putdata")]
         public Task<bool> PutDataSession()
         {
             HttpContext.Session["sessionData"] = MyData;
@@ -44,11 +44,11 @@ namespace EmbedIO.Tests.TestObjects
             return Ok(HttpContext.Session["sessionData"].ToString());
         }
 
-        [WebApiHandler(HttpVerbs.Get, "/getdata")]
+        [RouteHandler(HttpVerbs.Get, "/getdata")]
         public Task<bool> GetDataSession() =>
             Ok(HttpContext.Session["sessionData"]?.ToString() ?? string.Empty);
 
-        [WebApiHandler(HttpVerbs.Get, "/geterror")]
+        [RouteHandler(HttpVerbs.Get, "/geterror")]
         public bool GetError() => false;
     }
 }

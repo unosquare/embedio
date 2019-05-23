@@ -18,7 +18,7 @@ namespace EmbedIO.Tests.TestObjects
         {
         }
 
-        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "big")]
+        [RouteHandler(HttpVerbs.Get, "/" + RelativePath + "big")]
         public Task<bool> GetBigJson() => Ok(Enumerable.Range(1, 100).Select(x => new
         {
             x,
@@ -26,25 +26,25 @@ namespace EmbedIO.Tests.TestObjects
                 .Select(z => new { z.StandardName, z.DisplayName }),
         }));
 
-        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "empty")]
+        [RouteHandler(HttpVerbs.Get, "/" + RelativePath + "empty")]
         public Task<bool> GetEmpty() => Ok(new { Ok = true });
 
-        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regex")]
+        [RouteHandler(HttpVerbs.Get, "/" + RelativePath + "regex")]
         public Task<bool> GetPeople() => Ok(PeopleRepository.Database);
         
-        [WebApiHandler(HttpVerbs.Get, "/" + GetPath)]
+        [RouteHandler(HttpVerbs.Get, "/" + GetPath)]
         public Task<bool> GetAllPeople() => Ok(PeopleRepository.Database);
 
-        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regex/{id}")]
+        [RouteHandler(HttpVerbs.Get, "/" + RelativePath + "regex/{id}")]
         public Task<bool> GetPerson(int id) => CheckPerson(id);
 
-        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexopt/{id?}")]
+        [RouteHandler(HttpVerbs.Get, "/" + RelativePath + "regexopt/{id?}")]
         public Task<bool> GetPerson(int? id) => id.HasValue ? CheckPerson(id.Value) : Ok(PeopleRepository.Database);
 
-        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexAsync/{id}")]
+        [RouteHandler(HttpVerbs.Get, "/" + RelativePath + "regexAsync/{id}")]
         public Task<bool> GetPersonAsync(int id) => CheckPerson(id);
 
-        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexdate/{date}")]
+        [RouteHandler(HttpVerbs.Get, "/" + RelativePath + "regexdate/{date}")]
         public Task<bool> GetPerson(DateTime date)
         {
             var item = PeopleRepository.Database.FirstOrDefault(p => p.DoB == date);
@@ -52,7 +52,7 @@ namespace EmbedIO.Tests.TestObjects
             return item != null ? Ok(item) : throw new KeyNotFoundException($"Key Not Found: {date}");
         }
 
-        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regextwo/{skill}/{age}")]
+        [RouteHandler(HttpVerbs.Get, "/" + RelativePath + "regextwo/{skill}/{age}")]
         public Task<bool> GetPerson(string skill, int age)
         {
             var item = PeopleRepository.Database.FirstOrDefault(p =>
@@ -61,7 +61,7 @@ namespace EmbedIO.Tests.TestObjects
             return item != null ? Ok(item) : throw new KeyNotFoundException($"Key Not Found: {skill}-{age}");
         }
 
-        [WebApiHandler(HttpVerbs.Get, "/" + RelativePath + "regexthree/{skill}/{age?}")]
+        [RouteHandler(HttpVerbs.Get, "/" + RelativePath + "regexthree/{skill}/{age?}")]
         public Task<bool> GetOptionalPerson(string skill, int? age = null)
         {
             var item = age == null
@@ -71,7 +71,7 @@ namespace EmbedIO.Tests.TestObjects
             return item != null ? Ok(item) : throw new KeyNotFoundException($"Key Not Found: {skill}-{age}");
         }
 
-        [WebApiHandler(HttpVerbs.Post, "/" + EchoPath)]
+        [RouteHandler(HttpVerbs.Post, "/" + EchoPath)]
         public async Task<bool> PostEcho()
         {
             var content = await HttpContext.RequestFormDataDictionaryAsync();

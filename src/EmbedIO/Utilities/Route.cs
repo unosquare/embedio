@@ -11,7 +11,7 @@ namespace EmbedIO.Utilities
     /// </summary>
     /// <seealso cref="WebApiModule"/>
     /// <seealso cref="WebApiController"/>
-    /// <seealso cref="WebApiHandlerAttribute"/>
+    /// <seealso cref="RouteHandlerAttribute"/>
     public static class Route
     {
         // Characters in ValidParameterNameChars MUST be in ascending ordinal order!

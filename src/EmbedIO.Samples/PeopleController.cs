@@ -33,7 +33,7 @@ namespace EmbedIO.Samples
         /// </summary>
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException">Key Not Found:  + lastSegment</exception>
-        [WebApiHandler(HttpVerbs.Get, RelativePath + "people/{id?}")]
+        [RouteHandler(HttpVerbs.Get, RelativePath + "people/{id?}")]
         public async Task<bool> GetPeople(string id = null)
         {
             // if it ends with a / means we need to list people
@@ -60,7 +60,7 @@ namespace EmbedIO.Samples
         /// Posts the people Tubular model.
         /// </summary>
         /// <returns></returns>
-        [WebApiHandler(HttpVerbs.Post, RelativePath + "people/")]
+        [RouteHandler(HttpVerbs.Post, RelativePath + "people/")]
         public Task<bool> PostPeople() =>
             Ok<GridDataRequest, GridDataResponse>(async (model, ct) =>
                 model.CreateGridDataResponse((await _dbContext.People.SelectAllAsync().ConfigureAwait(false)).AsQueryable()));
@@ -69,7 +69,7 @@ namespace EmbedIO.Samples
         /// Echoes the request form data in JSON format
         /// </summary>
         /// <returns></returns>
-        [WebApiHandler(HttpVerbs.Post, RelativePath + "echo/")]
+        [RouteHandler(HttpVerbs.Post, RelativePath + "echo/")]
         public async Task<bool> Echo()
         {
             var content = await HttpContext.RequestFormDataDictionaryAsync().ConfigureAwait(false);

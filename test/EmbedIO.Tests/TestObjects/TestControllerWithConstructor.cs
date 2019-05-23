@@ -16,14 +16,14 @@ namespace EmbedIO.Tests.TestObjects
 
         public string WebName { get; set; }
 
-        [WebApiHandler(HttpVerbs.Get, "/name")]
+        [RouteHandler(HttpVerbs.Get, "/name")]
         public Task<bool> GetName()
         {
             Response.NoCache();
             return Ok(WebName);
         }
 
-        [WebApiHandler(HttpVerbs.Get, "/namePublic")]
+        [RouteHandler(HttpVerbs.Get, "/namePublic")]
         public Task<bool> GetNamePublic()
         {
             Response.AddHeader("Cache-Control", "public");
