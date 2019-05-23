@@ -87,7 +87,8 @@
   <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.html">Unosquare.Labs.EmbedIO</a></h6>
   <h5 id="Unosquare_Labs_EmbedIO_WebHandler_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public delegate Task&lt;bool&gt; WebHandler(IHttpContext context, CancellationToken ct);</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;WebHandler will be dropped in future versions&quot;)]
+public delegate Task&lt;bool&gt; WebHandler(IHttpContext context, CancellationToken ct);</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

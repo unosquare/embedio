@@ -76,7 +76,8 @@
  <a href="https://www.nuget.org/packages/Embedio"><img src="https://badge.fury.io/nu/embedio.svg" alt="NuGet version"></a>
  <a href="https://www.nuget.org/packages/Embedio"><img src="https://img.shields.io/nuget/dt/embedio.svg" alt="NuGet"></a>
 <a href="https://coveralls.io/r/unosquare/embedio?branch=master"><img src="https://coveralls.io/repos/unosquare/embedio/badge.svg?branch=master" alt="Coverage Status"></a>
-<a href="https://builtwithdot.net/project/105/embedio"><img src="https://builtwithdot.net/project/105/embedio/badge" alt="BuiltWithDotnet"></a></p>
+<a href="https://builtwithdot.net/project/105/embedio"><img src="https://builtwithdot.net/project/105/embedio/badge" alt="BuiltWithDotnet"></a>
+<a href="https://join.slack.com/t/embedio/shared_invite/enQtNjI5NDQwMjI2ODA0LTk5YzMwZjMwNjIzY2ZlYTZkYmI2MzUxNzIwYjAyMWZjZGI3ZTMxZDcxYWMyNzVjZDQ0ZTBiZGFmYWVlZjZiMmU"><img src="https://img.shields.io/badge/chat-slack-blue.svg" alt="Slack"></a></p>
 <p><img src="https://raw.githubusercontent.com/unosquare/embedio/master/images/embedio.png" alt="EmbedIO"></p>
 <p><em><span class="emoji" shortcode="star">⭐</span> Please star this project if you find it useful!</em></p>
 <p><strong>This README is for EmbedIO v2.x. Click <a href="https://github.com/unosquare/embedio/tree/v1.X">here</a> if you are still using EmbedIO v1.x.</strong></p>
@@ -302,6 +303,7 @@
 }
 </code></pre><h3 id="rest-api-example">REST API Example</h3>
 <p>The WebApi module supports two routing strategies: Wildcard and Regex. By default, the WebApi module will use the <strong>Regex Routing Strategy</strong> trying to match and resolve the values from a route template, in a similar fashion to Microsoft&#39;s Web API. </p>
+<p><strong>Note</strong> - Wilcard routing will be dropped in the next major version of EmbedIO. We advise to use Regex only.</p>
 <p>A method with the following route <code>/api/people/{id}</code> is going to match any request URL with three segments: the first two <code>api</code> and <code>people</code> and the last 
 one is going to be parsed or converted to the type in the <code>id</code> argument of the handling method signature. Please read on if this was confusing as it is 
 much simpler than it sounds. Additionally, you can put multiple values to match, for example <code>/api/people/{mainSkill}/{age}</code>, and receive the 

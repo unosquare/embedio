@@ -178,7 +178,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public StaticFilesModule(Dictionary&lt;string, string&gt; paths)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Virtual Paths will be dropped in future versions&quot;)]
+public StaticFilesModule(Dictionary&lt;string, string&gt; paths)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -586,7 +587,8 @@ RAM Cache will only cache files that are MaxRamCacheSize in bytes or less.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool UseRamCache { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Explicit RamCache will be dropped in future versions&quot;)]
+public bool UseRamCache { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -613,7 +615,8 @@ RAM Cache will only cache files that are MaxRamCacheSize in bytes or less.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ReadOnlyDictionary&lt;string, string&gt; VirtualPaths { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Virtual Paths will be dropped in future versions&quot;)]
+public ReadOnlyDictionary&lt;string, string&gt; VirtualPaths { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
