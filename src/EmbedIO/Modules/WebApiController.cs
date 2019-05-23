@@ -14,45 +14,40 @@ namespace EmbedIO.Modules
     public abstract class WebApiController
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiController"/> class.
+        /// Initializes a new instance of the <see cref="WebApiController" /> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        protected WebApiController(IHttpContext context)
+        /// <param name="ct">The cancellation token.</param>
+        protected WebApiController(IHttpContext context, CancellationToken ct)
         {
             HttpContext = context;
+            CancellationToken = ct;
         }
 
         /// <summary>
         /// Gets the HTTP context.
         /// </summary>
-        /// <value>
-        /// The HTTP context.
-        /// </value>
-        public IHttpContext HttpContext { get; }
+        protected IHttpContext HttpContext { get; }
+
+        /// <summary>
+        /// Gets the cancellation token.
+        /// </summary>
+        protected CancellationToken CancellationToken { get; }
 
         /// <summary>
         /// Gets the HTTP Request.
         /// </summary>
-        /// <value>
-        /// The request.
-        /// </value>
-        public IHttpRequest Request => HttpContext.Request;
+        protected IHttpRequest Request => HttpContext.Request;
 
         /// <summary>
         /// Gets the HTTP Response.
         /// </summary>
-        /// <value>
-        /// The response.
-        /// </value>
-        public IHttpResponse Response => HttpContext.Response;
+        protected IHttpResponse Response => HttpContext.Response;
 
         /// <summary>
         /// Gets the user.
         /// </summary>
-        /// <value>
-        /// The user.
-        /// </value>
-        public IPrincipal User => HttpContext.User;
+        protected IPrincipal User => HttpContext.User;
 
         /// <summary>
         /// Sets the default headers to the Web API response.
@@ -65,7 +60,7 @@ namespace EmbedIO.Modules
         ///
         /// Previous values are defined to avoid caching from client.
         /// </summary>
-        public virtual void SetDefaultHeaders() => HttpContext.NoCache();
+        protected virtual void SetDefaultHeaders() => HttpContext.NoCache();
 
         /// <summary>
         /// Outputs async a Json Response given a data object.
