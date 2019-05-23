@@ -65,26 +65,43 @@ namespace EmbedIO.Utilities
         public static bool IsValid(string route) => ValidateInternal(nameof(route), route) == null;
 
         // Check the validity of a route by parsing it without storing the results.
+        // Returns: ArgumentNullException, ArgumentException, null if OK
         internal static Exception ValidateInternal(string argumentName, string value)
-            => ParseInternal(argumentName, value, null, null);
+        {
+            switch (ParseInternal(value, null, null))
+            {
+                case ArgumentNullException _:
+                    return new ArgumentNullException(argumentName);
+
+                case FormatException formatException:
+                    return new ArgumentException(formatException.Message, argumentName);
+
+                case Exception exception:
+                    return exception;
+
+                default:
+                    return null; // Unreachable, but the compiler doesn't know.
+            }
+        }
 
         // Validate and parse a route, constructing a Regex pattern.
         // addParameter will be called for each parameter found.
         // setPattern will be called at the end with the constructed pattern.
         // Either callback can be null; is setPattern is null, no pattern is built.
-        internal static Exception ParseInternal(string argumentName, string value, Action<string> addParameter, Action<string> setPattern)
+        // Returns: ArgumentNullException, FormatException, null if OK
+        internal static Exception ParseInternal(string route, Action<string> addParameter, Action<string> setPattern)
         {
-            if (value == null)
-                return new ArgumentNullException(argumentName);
+            if (route == null)
+                return new ArgumentNullException(nameof(route));
 
-            if (value.Length == 0)
-                return new ArgumentException("Route is empty.", argumentName);
+            if (route.Length == 0)
+                return new FormatException("Route is empty.");
 
-            if (value[0] != '/')
-                return new ArgumentException("Route does not start with a slash.", argumentName);
+            if (route[0] != '/')
+                return new FormatException("Route does not start with a slash.");
 
-            if (value.Length > 1 && value[value.Length - 1] == '/')
-                return new ArgumentException("Route must not end with a slash unless it is \"/\".", argumentName);
+            if (route.Length > 1 && route[route.Length - 1] == '/')
+                return new FormatException("Route must not end with a slash unless it is \"/\".");
 
             /*
              * Regex options set at start of pattern:
@@ -111,13 +128,13 @@ namespace EmbedIO.Utilities
                 if (inParameterSpec)
                 {
                     // Look for end of spec, bail out if not found.
-                    var closePosition = value.IndexOf('}', position);
+                    var closePosition = route.IndexOf('}', position);
                     if (closePosition < 0)
-                        return new ArgumentException("Route syntax error: unclosed parameter specification.", argumentName);
+                        return new FormatException("Route syntax error: unclosed parameter specification.");
 
                     // Parameter spec cannot be empty.
                     if (closePosition == position)
-                        return new ArgumentException("Route syntax error: empty parameter specification.", argumentName);
+                        return new FormatException("Route syntax error: empty parameter specification.");
 
                     // Check the last character:
                     // {name} or {name?} means empty parameter matches
@@ -125,7 +142,7 @@ namespace EmbedIO.Utilities
                     // If '?' or '!' is found, the parameter name ends before it
                     var nameEndPosition = closePosition;
                     bool allowEmpty;
-                    switch (value[closePosition - 1])
+                    switch (route[closePosition - 1])
                     {
                         case '!':
                             allowEmpty = false;
@@ -142,12 +159,12 @@ namespace EmbedIO.Utilities
 
                     // Bail out if only '?' or '!' is found inside the spec.
                     if (nameEndPosition == position)
-                        return new ArgumentException("Route syntax error: missing parameter name.", argumentName);
+                        return new FormatException("Route syntax error: missing parameter name.");
 
                     // Extract and check the parameter name.
-                    var parameterName = value.Substring(position, nameEndPosition - position);
+                    var parameterName = route.Substring(position, nameEndPosition - position);
                     if (!IsValidParameterName(parameterName))
-                        return new ArgumentException("Route syntax error: parameter name contains one or more invalid characters.", argumentName);
+                        return new FormatException("Route syntax error: parameter name contains one or more invalid characters.");
 
                     // The spec is valid, so add the parameter (if requested),
                     // append a capturing group with the same name to the pattern,
@@ -160,18 +177,18 @@ namespace EmbedIO.Utilities
                 else
                 {
                     // Look for start of parameter spec.
-                    var openPosition = value.IndexOf('{', position);
+                    var openPosition = route.IndexOf('{', position);
                     if (openPosition < 0)
                     {
                         // No more parameter specs: escape the remainder of the string
                         // and add it to the pattern.
-                        sb?.Append(Regex.Escape(value.Substring(position)));
+                        sb?.Append(Regex.Escape(route.Substring(position)));
                         break;
                     }
 
                     // If another identical char follows, treat the two as a single literal char.
                     var nextPosition = openPosition + 1;
-                    if (nextPosition < value.Length && value[nextPosition] == '{')
+                    if (nextPosition < route.Length && route[nextPosition] == '{')
                     {
                         sb?.Append(@"\\{");
                     }
@@ -179,7 +196,7 @@ namespace EmbedIO.Utilities
                     {
                         // Escape the part of the pattern outside the parameter spec
                         // and add it to the pattern, then go on parsing.
-                        sb?.Append(Regex.Escape(value.Substring(position, openPosition - position)));
+                        sb?.Append(Regex.Escape(route.Substring(position, openPosition - position)));
                         inParameterSpec = true;
                         position = nextPosition;
                     }
