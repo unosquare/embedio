@@ -6,6 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Net.Internal;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Net
 {
@@ -62,7 +63,7 @@ namespace EmbedIO.Net
             if (IsListening)
                 return;
 
-            EndPointManager.AddListener(this).GetAwaiter().GetResult();
+            EndPointManager.AddListener(this).Await();
             IsListening = true;
         }
 
@@ -121,7 +122,7 @@ namespace EmbedIO.Net
 
         private void Close(bool closeExisting)
         {
-            EndPointManager.RemoveListener(this).GetAwaiter().GetResult();
+            EndPointManager.RemoveListener(this).Await();
 
             var keys = _connections.Keys;
             var connections = new HttpConnection[keys.Count];

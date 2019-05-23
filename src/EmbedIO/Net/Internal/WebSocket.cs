@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Constants;
+using EmbedIO.Utilities;
 using Unosquare.Swan;
 
 namespace EmbedIO.Net.Internal
@@ -251,7 +252,7 @@ namespace EmbedIO.Net.Internal
         {
             try
             {
-                InternalCloseAsync(new PayloadData((ushort)CloseStatusCode.Away)).Wait();
+                InternalCloseAsync(new PayloadData((ushort)CloseStatusCode.Away)).Await();
             }
             catch
             {
@@ -328,7 +329,7 @@ namespace EmbedIO.Net.Internal
             => Fatal(message, (exception as WebSocketException)?.Code ?? CloseStatusCode.Abnormal);
 
         private void Fatal(string message, CloseStatusCode code)
-            => InternalCloseAsync(new PayloadData((ushort)code, message), !IsOpcodeReserved(code), false).Wait();
+            => InternalCloseAsync(new PayloadData((ushort)code, message), !IsOpcodeReserved(code), false).Await();
 
         private void Message()
         {

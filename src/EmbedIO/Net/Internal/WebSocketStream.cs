@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using EmbedIO.Constants;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Net.Internal
 {
@@ -23,7 +24,7 @@ namespace EmbedIO.Net.Internal
         {
             var compressed = _compression != CompressionMethod.None;
             Stream stream = _compression != CompressionMethod.None
-                ? this.CompressAsync(_compression).GetAwaiter().GetResult()
+                ? this.CompressAsync(_compression).Await()
                 : this;
 
             var len = stream.Length;

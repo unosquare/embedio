@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using EmbedIO.Constants;
 using EmbedIO.Modules;
 using EmbedIO.Tests.TestObjects;
+using EmbedIO.Utilities;
 using NUnit.Framework;
 using Unosquare.Swan;
 using Unosquare.Swan.Formatters;
@@ -74,7 +75,7 @@ namespace EmbedIO.Tests
                 var task = instance.RunAsync(cts.Token);
                 cts.Cancel();
 
-                task.Wait();
+                task.Await();
                 instance.Dispose();
 
                 Assert.IsTrue(task.IsCompleted);

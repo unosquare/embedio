@@ -484,7 +484,7 @@ namespace EmbedIO.Modules
 
             if (disposing)
             {
-                Task.WhenAll(ActiveContexts.Select(CloseAsync)).Wait();
+                Task.WhenAll(ActiveContexts.Select(CloseAsync)).Await(false);
                 PurgeDisconnectedContexts();
             }
 
@@ -527,7 +527,7 @@ namespace EmbedIO.Modules
                 }
             }
 
-            OnClientDisconnectedAsync(context).Wait(context.CancellationToken);
+            OnClientDisconnectedAsync(context).Await();
         }
 
         private void PurgeDisconnectedContexts(bool lockAlreadyHeld = false)

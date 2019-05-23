@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Net.Internal
 {
@@ -19,7 +20,7 @@ namespace EmbedIO.Net.Internal
 
             base.Add(uriPrefix);
             if (_listener.IsListening)
-                EndPointManager.AddPrefix(uriPrefix, _listener).GetAwaiter().GetResult();
+                EndPointManager.AddPrefix(uriPrefix, _listener).Await();
         }
     }
 }

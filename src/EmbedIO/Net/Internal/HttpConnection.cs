@@ -7,6 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Net.Internal
 {
@@ -44,7 +45,7 @@ namespace EmbedIO.Net.Internal
             else
             {
                 var sslStream = new SslStream(new NetworkStream(sock, false), true);
-                sslStream.AuthenticateAsServerAsync(cert).GetAwaiter().GetResult();
+                sslStream.AuthenticateAsServerAsync(cert).Await();
 
                 Stream = sslStream;
             }
@@ -131,7 +132,7 @@ namespace EmbedIO.Net.Internal
 
             if (!forceClose)
             {
-                if (_context.HttpListenerRequest.FlushInput().GetAwaiter().GetResult())
+                if (_context.HttpListenerRequest.FlushInput().Await())
                 {
                     Reuses++;
                     Unbind();

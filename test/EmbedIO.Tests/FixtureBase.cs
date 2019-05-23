@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using EmbedIO.Modules;
 using EmbedIO.Tests.Internal;
 using EmbedIO.Tests.TestObjects;
+using EmbedIO.Utilities;
 using NUnit.Framework;
 using Unosquare.Swan;
 
@@ -64,7 +65,7 @@ namespace EmbedIO.Tests
         [TearDown]
         public void Kill()
         {
-            Task.Delay(500).Wait();
+            Task.Delay(500).Await();
             WebServerInstance?.Dispose();
         }
 
