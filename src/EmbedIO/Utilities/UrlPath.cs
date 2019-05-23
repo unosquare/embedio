@@ -16,7 +16,7 @@ namespace EmbedIO.Utilities
         private static readonly Regex MultipleSlashRegex = new Regex("//+", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
         /// <summary>
-        /// Returns true if a string is a valid URL path.
+        /// Determines whether a string is a valid URL path.
         /// </summary>
         /// <param name="urlPath">The URL path.</param>
         /// <returns>
