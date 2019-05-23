@@ -5,7 +5,7 @@ using Unosquare.Swan;
 
 namespace EmbedIO.Internal
 {
-    internal class WebModuleCollection : DisposableComponentCollection<IWebModule>
+    internal sealed class WebModuleCollection : DisposableComponentCollection<IWebModule>
     {
         private readonly string _logSource;
 
