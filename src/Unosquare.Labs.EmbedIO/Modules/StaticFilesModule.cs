@@ -186,7 +186,6 @@
         /// <value>
         ///   <c>true</c> if [use ram cache]; otherwise, <c>false</c>.
         /// </value>
-        [Obsolete("Explicit RamCache will be dropped in future versions")]
         public bool UseRamCache { get; set; }
 
         /// <summary>
