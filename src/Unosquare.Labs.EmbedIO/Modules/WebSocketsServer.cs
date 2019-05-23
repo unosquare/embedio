@@ -6,6 +6,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Swan;
+    using EmbedIO.Constants;
 
     /// <inheritdoc />
     /// <summary>
@@ -90,13 +91,16 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="ct">The cancellation token.</param>
-        /// <returns>A task that represents the asynchronous of websocket connection operation.</returns>
+        /// <returns>
+        /// A task that represents the asynchronous of websocket connection operation.
+        /// </returns>
         public async Task AcceptWebSocket(IHttpContext context, CancellationToken ct)
         {
             // first, accept the websocket
             $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
 
-            var webSocketContext = await context.AcceptWebSocketAsync(ReceiveBufferSize).ConfigureAwait(false);
+            var subProtocol = ResolveSubProtocol(context);
+            var webSocketContext = await context.AcceptWebSocketAsync(ReceiveBufferSize, subProtocol).ConfigureAwait(false);
 
             // remove the disconnected clients
             CollectDisconnected();
@@ -225,6 +229,18 @@
             {
                 RemoveWebSocket(webSocket);
             }
+        }
+
+        /// <summary>
+        /// Resolves the sub-protocol to use with the incoming WebSocket connection.
+        ///
+        /// When no using a sub-protocol return null.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>The sub-protocol to be used, or null if it does not.</returns>
+        protected virtual string ResolveSubProtocol(IHttpContext context)
+        {
+            return null;
         }
 
         /// <summary>

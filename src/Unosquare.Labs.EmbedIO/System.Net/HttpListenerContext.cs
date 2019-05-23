@@ -59,7 +59,7 @@
         internal Guid Id { get; }
 
         /// <inheritdoc />
-        public async Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize)
+        public async Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize, string subProtocol = null)
         {
             if (_websocketContext != null)
                 throw new InvalidOperationException("The accepting is already in progress.");
