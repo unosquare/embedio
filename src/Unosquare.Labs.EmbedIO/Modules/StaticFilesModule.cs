@@ -42,6 +42,7 @@
         /// Initializes a new instance of the <see cref="StaticFilesModule"/> class.
         /// </summary>
         /// <param name="paths">The paths.</param>
+        [Obsolete("Virtual Paths will be dropped in future versions")]
         public StaticFilesModule(Dictionary<string, string> paths)
             : this(paths.First().Value, null, paths)
         {
@@ -185,6 +186,7 @@
         /// <value>
         ///   <c>true</c> if [use ram cache]; otherwise, <c>false</c>.
         /// </value>
+        [Obsolete("Explicit RamCache will be dropped in future versions")]
         public bool UseRamCache { get; set; }
 
         /// <summary>
@@ -193,6 +195,7 @@
         /// <value>
         /// The virtual paths.
         /// </value>
+        [Obsolete("Virtual Paths will be dropped in future versions")]
         public ReadOnlyDictionary<string, string> VirtualPaths => _virtualPathManager.VirtualPaths;
 
         /// <inheritdoc />

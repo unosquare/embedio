@@ -151,6 +151,10 @@
             $"Running HTTPListener: {httpListener.Name}".Info(nameof(WebServer));
 
             RoutingStrategy = routingStrategy;
+
+            if (RoutingStrategy == RoutingStrategy.Wildcard)
+                "Wilcard routing will be dropped in the next major version of EmbedIO. We advise to use Regex only".Debug(nameof(WebServer));
+
             Listener = httpListener;
 
             foreach (var prefix in urlPrefixes)
@@ -248,6 +252,9 @@
         /// </remarks>
         public async Task RunAsync(CancellationToken ct = default)
         {
+            if (State == WebServerState.Loading || State == WebServerState.Listening)
+                throw new InvalidOperationException("The method was already called.");
+
             State = WebServerState.Loading;
             Listener.IgnoreWriteExceptions = true;
             Listener.Start();

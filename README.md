@@ -6,6 +6,7 @@
  [![NuGet](https://img.shields.io/nuget/dt/embedio.svg)](https://www.nuget.org/packages/Embedio)
 [![Coverage Status](https://coveralls.io/repos/unosquare/embedio/badge.svg?branch=master)](https://coveralls.io/r/unosquare/embedio?branch=master)
 [![BuiltWithDotnet](https://builtwithdot.net/project/105/embedio/badge)](https://builtwithdot.net/project/105/embedio)
+[![Slack](https://img.shields.io/badge/chat-slack-blue.svg)](https://join.slack.com/t/embedio/shared_invite/enQtNjI5NDQwMjI2ODA0LTk5YzMwZjMwNjIzY2ZlYTZkYmI2MzUxNzIwYjAyMWZjZGI3ZTMxZDcxYWMyNzVjZDQ0ZTBiZGFmYWVlZjZiMmU)
 
 ![EmbedIO](https://raw.githubusercontent.com/unosquare/embedio/master/images/embedio.png)
 
@@ -263,6 +264,8 @@ namespace Unosquare
 ### REST API Example
 
 The WebApi module supports two routing strategies: Wildcard and Regex. By default, the WebApi module will use the **Regex Routing Strategy** trying to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API. 
+
+**Note** - Wilcard routing will be dropped in the next major version of EmbedIO. We advise to use Regex only.
 
 A method with the following route `/api/people/{id}` is going to match any request URL with three segments: the first two `api` and `people` and the last 
 one is going to be parsed or converted to the type in the `id` argument of the handling method signature. Please read on if this was confusing as it is 

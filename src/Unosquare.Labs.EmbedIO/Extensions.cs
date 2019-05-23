@@ -89,6 +89,7 @@
         /// <param name="context">The context.</param>
         /// <param name="wildcardPaths">The wildcard paths.</param>
         /// <returns>Path for the specified context.</returns>
+        [Obsolete("Wilcard routing will be dropped in future versions")]
         public static string RequestWilcardPath(this IHttpContext context, IEnumerable<string> wildcardPaths)
         {
             var path = context.Request.Url.LocalPath.ToLowerInvariant();
@@ -202,6 +203,7 @@
         /// <param name="context">The context.</param>
         /// <param name="basePath">The base path.</param>
         /// <returns>The params from the request.</returns>
+        [Obsolete("Wilcard routing will be dropped in future versions")]
         public static string[] RequestWildcardUrlParams(this IHttpContext context, string basePath)
             => RequestWildcardUrlParams(context.RequestPath(), basePath);
 
@@ -211,6 +213,7 @@
         /// <param name="requestPath">The request path.</param>
         /// <param name="basePath">The base path.</param>
         /// <returns>The params from the request.</returns>
+        [Obsolete("Wilcard routing will be dropped in future versions")]
         public static string[] RequestWildcardUrlParams(this string requestPath, string basePath)
         {
             var match = RegexCache.MatchWildcardStrategy(basePath, requestPath);
