@@ -225,6 +225,7 @@
         /// <exception cref="InvalidOperationException">
         /// Is thrown when a method call is invalid for the object's current state.
         /// </exception>
+        [Obsolete("Virtual Paths will be dropped in future versions")]
         public void RegisterVirtualPath(string virtualPath, string physicalPath)
             => _virtualPathManager.RegisterVirtualPath(virtualPath, physicalPath);
 
@@ -235,6 +236,7 @@
         /// <exception cref="InvalidOperationException">
         /// Is thrown when a method call is invalid for the object's current state.
         /// </exception>
+        [Obsolete("Virtual Paths will be dropped in future versions")]
         public void UnregisterVirtualPath(string virtualPath) => _virtualPathManager.UnregisterVirtualPath(virtualPath);
 
         /// <summary>
