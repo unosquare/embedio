@@ -55,6 +55,7 @@
         /// <value>
         /// The on method not allowed.
         /// </value>
+        [Obsolete("OnMethodNotAllowed will be dropped in future versions")]
         Func<IHttpContext, Task<bool>> OnMethodNotAllowed { get; set; }
         
         /// <summary>
@@ -63,6 +64,7 @@
         /// <value>
         /// The on not found.
         /// </value>
+        [Obsolete("OnNotFound will be dropped in future versions")]
         Func<IHttpContext, Task<bool>> OnNotFound { get; set; }
 
         /// <summary>

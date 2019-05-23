@@ -15,6 +15,7 @@
         /// <value>
         /// The name.
         /// </value>
+        [Obsolete("Name will be dropped in future versions")]
         string Name { get; }
 
         /// <summary>
@@ -40,6 +41,7 @@
         /// <value>
         ///   <c>true</c> if this instance is watchdog enabled; otherwise, <c>false</c>.
         /// </value>
+        [Obsolete("Watchdog will be dropped in future versions")]
         bool IsWatchdogEnabled { get; set; }
 
         /// <summary>
@@ -48,6 +50,7 @@
         /// <value>
         /// The watchdog interval.
         /// </value>
+        [Obsolete("Watchdog will be dropped in future versions")]
         TimeSpan WatchdogInterval { get; set; }
 
         /// <summary>
@@ -69,6 +72,7 @@
         /// or
         /// handler.
         /// </exception>
+        [Obsolete("WebHandler will be dropped in future versions")]
         void AddHandler(string path, HttpVerbs verb, WebHandler handler);
 
         /// <summary>
@@ -80,6 +84,7 @@
         /// <summary>
         /// Runs the watchdog.
         /// </summary>
+        [Obsolete("Watchdog will be dropped in future versions")]
         void RunWatchdog();
     }
 }

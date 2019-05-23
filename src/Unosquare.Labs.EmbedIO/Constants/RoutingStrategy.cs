@@ -1,5 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Constants
 {
+    using System;
+
     /// <summary>
     /// Defines the routing strategy for URL matching
     /// This is especially useful for REST service implementations
@@ -10,6 +12,7 @@
         /// <summary>
         /// The wildcard strategy
         /// </summary>
+        [Obsolete("Wilcard routing will be dropped in future versions")]
         Wildcard,
 
         /// <summary>

@@ -42,6 +42,7 @@
         /// Initializes a new instance of the <see cref="StaticFilesModule"/> class.
         /// </summary>
         /// <param name="paths">The paths.</param>
+        [Obsolete("Virtual Paths will be dropped in future versions")]
         public StaticFilesModule(Dictionary<string, string> paths)
             : this(paths.First().Value, null, paths)
         {
@@ -193,6 +194,7 @@
         /// <value>
         /// The virtual paths.
         /// </value>
+        [Obsolete("Virtual Paths will be dropped in future versions")]
         public ReadOnlyDictionary<string, string> VirtualPaths => _virtualPathManager.VirtualPaths;
 
         /// <inheritdoc />
@@ -223,6 +225,7 @@
         /// <exception cref="InvalidOperationException">
         /// Is thrown when a method call is invalid for the object's current state.
         /// </exception>
+        [Obsolete("Virtual Paths will be dropped in future versions")]
         public void RegisterVirtualPath(string virtualPath, string physicalPath)
             => _virtualPathManager.RegisterVirtualPath(virtualPath, physicalPath);
 
@@ -233,6 +236,7 @@
         /// <exception cref="InvalidOperationException">
         /// Is thrown when a method call is invalid for the object's current state.
         /// </exception>
+        [Obsolete("Virtual Paths will be dropped in future versions")]
         public void UnregisterVirtualPath(string virtualPath) => _virtualPathManager.UnregisterVirtualPath(virtualPath);
 
         /// <summary>

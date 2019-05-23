@@ -11,6 +11,7 @@
     /// <param name="context">The context.</param>
     /// <param name="ct">The cancellation token.</param>
     /// <returns>A task representing the success of the web handler.</returns>
+    [Obsolete("WebHandler will be dropped in future versions")]
     public delegate Task<bool> WebHandler(IHttpContext context, CancellationToken ct);
 
     /// <summary>
