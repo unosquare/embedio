@@ -1,13 +1,12 @@
-﻿using EmbedIO.Constants;
-using EmbedIO.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Constants;
+using EmbedIO.Utilities;
 using Unosquare.Swan;
 
 namespace EmbedIO.Modules
@@ -50,54 +49,47 @@ namespace EmbedIO.Modules
 
         /// <inheritdoc />
         public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct)
-            => HandleGet(context, ct, context.Request.HttpVerb == HttpVerbs.Get);
+            => HandleGet(context, path, ct, context.Request.HttpVerb == HttpVerbs.Get);
 
         private static string FixPath(string s) => s == "/" ? "index.html" : s.Substring(1, s.Length - 1).Replace('/', '.');
 
-        private async Task<bool> HandleGet(IHttpContext context, CancellationToken ct, bool sendBuffer = true)
+        private async Task<bool> HandleGet(IHttpContext context, string path, CancellationToken ct, bool sendBuffer = true)
         {
-            Stream buffer = null;
-
             try
             {
-                var localPath = FixPath(context.RequestPath());
+                var localPath = FixPath(path);
                 var partialHeader = context.RequestHeader(HttpHeaderNames.Range);
 
                 $"Resource System: {localPath}".Debug(nameof(ResourceFilesModule));
 
-                buffer = _sourceAssembly.GetManifestResourceStream($"{_resourcePathRoot}.{localPath}");
-
-                // If buffer is null something is really wrong
-                if (buffer == null)
+                using (var buffer = _sourceAssembly.GetManifestResourceStream($"{_resourcePathRoot}.{localPath}"))
                 {
-                    return false;
-                }
+                    // If buffer is null something is really wrong
+                    if (buffer == null)
+                        return false;
 
-                // check to see if the file was modified or e-tag is the same
-                var utcFileDateString = DateTime.Now.ToRfc1123String();
+                    // check to see if the file was modified or e-tag is the same
+                    var utcFileDateString = DateTime.Now.ToRfc1123String();
 
-                context.Response.ContentLength64 = buffer.Length;
+                    context.Response.ContentLength64 = buffer.Length;
 
-                SetGeneralHeaders(context.Response, utcFileDateString, localPath.Contains(".") ? $".{localPath.Split('.').Last()}" : ".html");
+                    SetGeneralHeaders(context.Response, utcFileDateString, localPath.Contains(".") ? $".{localPath.Split('.').Last()}" : ".html");
 
-                if (sendBuffer)
-                {
-                    await WriteFileAsync(
-                        partialHeader, 
-                        context.Response, 
-                        buffer, 
-                        context.AcceptGzip(buffer.Length),
-                        ct)
-                        .ConfigureAwait(false);
+                    if (sendBuffer)
+                    {
+                        await WriteFileAsync(
+                                partialHeader,
+                                context.Response,
+                                buffer,
+                                context.AcceptGzip(buffer.Length),
+                                ct)
+                            .ConfigureAwait(false);
+                    }
                 }
             }
             catch (HttpListenerException)
             {
                 // Connection error, nothing else to do
-            }
-            finally
-            {
-                buffer?.Dispose();
             }
 
             return true;

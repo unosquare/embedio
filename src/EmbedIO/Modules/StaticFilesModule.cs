@@ -173,9 +173,9 @@ namespace EmbedIO.Modules
             return value;
         }
 
-        private Task<bool> HandleGet(IHttpContext context, bool sendBuffer, CancellationToken ct)
+        private Task<bool> HandleGet(IHttpContext context, string path, bool sendBuffer, CancellationToken ct)
         {
-            switch (MapUrlPath(context.RequestPath(), out var localPath))
+            switch (MapUrlPath(path, out var localPath))
             {
                 case PathMappingResult.IsFile:
                     return HandleFile(context, localPath, sendBuffer, ct);
@@ -186,17 +186,18 @@ namespace EmbedIO.Modules
             }
         }
 
-        private PathMappingResult MapUrlPath(string urlPath, out string localPath)
+        private PathMappingResult MapUrlPath(string relativeUrlPath, out string localPath)
         {
-            urlPath = UrlPath.Normalize(urlPath, false);
             PathMappingResult result;
-            (result, localPath) = FileCachingMode >= FileCachingMode.MappingOnly ? _pathCache.GetOrAdd(urlPath, MapUrlPathCore) : MapUrlPathCore(urlPath);
+            (result, localPath) = FileCachingMode >= FileCachingMode.MappingOnly
+                ? _pathCache.GetOrAdd(relativeUrlPath, MapUrlPathCore)
+                : MapUrlPathCore(relativeUrlPath);
             return result;
         }
 
-        private (PathMappingResult, string) MapUrlPathCore(string urlPath)
+        private (PathMappingResult, string) MapUrlPathCore(string relativeUrlPath)
         {
-            var localPath = MapUrlPathToLoLocalPath(urlPath);
+            var localPath = MapRelativeUrlPathToLoLocalPath(relativeUrlPath);
 
             // Error 404 on failed mapping.
             var validationResult = localPath == null
@@ -206,12 +207,8 @@ namespace EmbedIO.Modules
             return (validationResult, localPath);
         }
 
-        private string MapUrlPathToLoLocalPath(string urlPath)
+        private string MapRelativeUrlPathToLoLocalPath(string relativeUrlPath)
         {
-            var relativeUrlPath = UrlPath.UnsafeStripPrefix(urlPath, BaseUrlPath);
-            if (relativeUrlPath == null)
-                return null;
-
             string localPath;
 
             // Disable CA1031 as there's little we can do if IsPathRooted or GetFullPath fails.
@@ -392,7 +389,7 @@ namespace EmbedIO.Modules
                                      y.Size))
                 .Where(x => !string.IsNullOrWhiteSpace(x));
 
-            var encodedPath = WebUtility.HtmlEncode(context.RequestPath());
+            var encodedPath = WebUtility.HtmlEncode(context.Request.Url.AbsolutePath);
             var sb = new StringBuilder()
                 .Append("<html><head><title>Index of ")
                 .Append(encodedPath)
