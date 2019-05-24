@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using EmbedIO.Modules;
 
 namespace EmbedIO.Utilities
@@ -9,6 +10,8 @@ namespace EmbedIO.Utilities
     /// </summary>
     public abstract class ConfiguredObject
     {
+        int _configurationLockedFlag;
+
         /// <summary>
         /// Gets a value indicating whether s configuration has already been locked
         /// and has therefore become read-only.
@@ -17,7 +20,7 @@ namespace EmbedIO.Utilities
         /// <see langword="true"/> if the configuration is locked; otherwise, <see langword="false"/>.
         /// </value>
         /// <seealso cref="EnsureConfigurationNotLocked"/>
-        protected bool ConfigurationLocked { get; private set; }
+        protected bool ConfigurationLocked => Interlocked.CompareExchange(ref _configurationLockedFlag, 0, 0) != 0;
 
         /// <summary>
         /// <para>Locks this instance's configuration, preventing further modifications.</para>
@@ -30,7 +33,7 @@ namespace EmbedIO.Utilities
         /// <para>This method may be called at any time, for example to prevent adding further controllers
         /// to a <see cref="WebApiModule"/>-derived class.</para>
         /// </remarks>
-        protected void LockConfiguration() => ConfigurationLocked = true;
+        protected void LockConfiguration() => Interlocked.Exchange(ref _configurationLockedFlag, 1);
 
         /// <summary>
         /// Checks whether a module's configuration has become read-only
