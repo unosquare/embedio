@@ -132,7 +132,7 @@ namespace EmbedIO
             if (webserver == null)
                 throw new ArgumentNullException(nameof(webserver));
 
-            var webApiModule = webserver.Modules.FirstOrDefault<WebApiModule>();
+            var webApiModule = webserver.Modules.FirstOrDefaultOfType<WebApiModule>();
 
             if (webApiModule == null)
             {

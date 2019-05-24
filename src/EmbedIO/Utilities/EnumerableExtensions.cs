@@ -21,7 +21,7 @@ namespace EmbedIO.Utilities
         /// <typeparam name="T">The type of the element to return.</typeparam>
         /// <param name="this">The <see cref="IEnumerable"/> on which this method is called.</param>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
-        public static T FirstOrDefault<T>(this IEnumerable @this) => @this.OfType<T>().FirstOrDefault();
+        public static T FirstOrDefaultOfType<T>(this IEnumerable @this) => @this.OfType<T>().FirstOrDefault();
 
         /// <summary>
         /// Returns the first element of a sequence that is of a given type and satisfies a condition,
@@ -37,7 +37,7 @@ namespace EmbedIO.Utilities
         /// <param name="this">The <see cref="IEnumerable"/> on which this method is called.</param>
         /// <param name="predicate">A function to test each element of type <typeparamref name="T"/> for a condition.</param>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
-        public static T FirstOrDefault<T>(this IEnumerable @this, Func<T, bool> predicate)
-            => @this.OfType<T>().FirstOrDefault(predicate);
+        public static T FirstOrDefaultOfType<T>(this IEnumerable @this, Func<T, bool> predicate)
+            => @this.OfType<T>().FirstOrDefaultOfType(predicate);
     }
 }

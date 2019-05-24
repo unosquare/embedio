@@ -43,7 +43,7 @@ namespace EmbedIO.Tests
             Assert.IsNotNull(webServer.Modules.OfType<StaticFilesModule>().FirstOrDefault(), "It has StaticFilesModule");
 
             Assert.AreEqual(
-                webServer.Modules.FirstOrDefault<StaticFilesModule>().FileSystemPath,
+                webServer.Modules.FirstOrDefaultOfType<StaticFilesModule>().FileSystemPath,
                 _rootPath,
                 "StaticFilesModule root path is equal to RootPath");
         }
