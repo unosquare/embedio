@@ -355,7 +355,7 @@ namespace EmbedIO.Modules
         }
 
         /// <inheritdoc />
-        public override async Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct)
+        public override async Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             var verb = context.Request.HttpVerb;
             var regExRouteParams = new Dictionary<string, object>();
@@ -364,7 +364,7 @@ namespace EmbedIO.Modules
             // Return a non-path if no handler handled the route
             // TODO: Distinguish between method not allowed and path not found
             if (path == null)
-                return await OnMethodNotAllowedAsync(context, path, ct).ConfigureAwait(false);
+                return await OnMethodNotAllowedAsync(context, path, cancellationToken).ConfigureAwait(false);
 
             // search the path and verb
             if (!_delegateMap.TryGetValue(path, out var methods) ||
@@ -372,7 +372,7 @@ namespace EmbedIO.Modules
                 throw new InvalidOperationException($"No method found for path {path} and verb {verb}.");
 
             // ensure module does not return cached responses by default or the custom headers
-            var controller = methodPair.SetDefaultHeaders(context, ct);
+            var controller = methodPair.SetDefaultHeaders(context, cancellationToken);
 
             // Log the handler to be use
             $"Handler: {methodPair.MethodCache.ControllerName}.{methodPair.MethodCache.MethodInfo.Name}"
@@ -390,7 +390,7 @@ namespace EmbedIO.Modules
             catch (Exception ex)
             {
                 ex.Log(GetType().Name);
-                return await OnExceptionAsync(context, path, ex, ct).ConfigureAwait(false);
+                return await OnExceptionAsync(context, path, ex, cancellationToken).ConfigureAwait(false);
             }
             finally
             {
@@ -404,10 +404,10 @@ namespace EmbedIO.Modules
         /// </summary>
         /// <param name="context">The context of the request being handled.</param>
         /// <param name="path">The requested path, relative to <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
-        /// <param name="ct">A <see cref="CancellationToken"/> used to cancel the operation.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns><see langword="true"/> if the request has been handled;
         /// <see langword="false"/> if the request should be passed down the module chain.</returns>
-        protected virtual Task<bool> OnPathNotFoundAsync(IHttpContext context, string path, CancellationToken ct)
+        protected virtual Task<bool> OnPathNotFoundAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             context.Response.StandardResponseWithoutBody((int)HttpStatusCode.NotFound);
             return Task.FromResult(true);
@@ -420,10 +420,12 @@ namespace EmbedIO.Modules
         /// </summary>
         /// <param name="context">The context of the request being handled.</param>
         /// <param name="path">The requested path, relative to <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
-        /// <param name="ct">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-        /// <returns><see langword="true"/> if the request has been handled;
-        /// <see langword="false"/> if the request should be passed down the module chain.</returns>
-        protected virtual Task<bool> OnMethodNotAllowedAsync(IHttpContext context, string path, CancellationToken ct)
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// <see langword="true" /> if the request has been handled;
+        /// <see langword="false" /> if the request should be passed down the module chain.
+        /// </returns>
+        protected virtual Task<bool> OnMethodNotAllowedAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             context.Response.StandardResponseWithoutBody((int)HttpStatusCode.MethodNotAllowed);
             return Task.FromResult(true);
@@ -438,13 +440,13 @@ namespace EmbedIO.Modules
         /// <param name="context">The context of the request being handled.</param>
         /// <param name="path">The requested path, relative to <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
         /// <param name="exception">The exception thrown by the controller.</param>
-        /// <param name="ct">A <see cref="CancellationToken"/> used to cancel the operation.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns><see langword="true"/> if the request has been handled;
         /// <see langword="false"/> if the request should be passed down the module chain.</returns>
-        protected virtual Task<bool> OnExceptionAsync(IHttpContext context, string path, Exception exception, CancellationToken ct)
+        protected virtual Task<bool> OnExceptionAsync(IHttpContext context, string path, Exception exception, CancellationToken cancellationToken)
         {
             if (SendJsonOnException)
-                return context.JsonExceptionResponseAsync(exception, cancellationToken: ct);
+                return context.JsonExceptionResponseAsync(exception, cancellationToken: cancellationToken);
 
             context.Response.StandardResponseWithoutBody((int)HttpStatusCode.InternalServerError);
             return Task.FromResult(true);

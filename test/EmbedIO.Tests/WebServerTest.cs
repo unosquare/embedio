@@ -150,20 +150,6 @@ namespace EmbedIO.Tests
         public class General : WebServerTest
         {
             [Test]
-            public void WebMap()
-            {
-                var map = new Map
-                {
-                    Path = DefaultPath,
-                    ResponseHandler = (ctx, path, ws) => Task.FromResult(false),
-                    Verb = HttpVerbs.Any,
-                };
-
-                Assert.AreEqual(map.Path, DefaultPath, "Default Path is correct");
-                Assert.AreEqual(map.Verb, HttpVerbs.Any, "Default Verb is correct");
-            }
-
-            [Test]
             public void ExceptionText()
             {
                 Assert.ThrowsAsync<HttpRequestException>(async () =>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Constants;
 using EmbedIO.Modules;
@@ -20,8 +21,8 @@ namespace EmbedIO.Samples
         private readonly AppDbContext _dbContext = new AppDbContext();
         private const string RelativePath = "/api/";
 
-        public PeopleController(IHttpContext context)
-            : base(context)
+        public PeopleController(IHttpContext context, CancellationToken cancellationToken)
+            : base(context, cancellationToken)
         {
         }
         

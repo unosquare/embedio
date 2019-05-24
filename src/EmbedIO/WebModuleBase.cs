@@ -53,8 +53,8 @@ namespace EmbedIO
         /// <summary>
         /// Called when a module is started, immediately before locking the module's configuration.
         /// </summary>
-        /// <param name="ct">A <see cref="CancellationToken"/> used to stop the web server.</param>
-        protected virtual void OnStart(CancellationToken ct)
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to stop the web server.</param>
+        protected virtual void OnStart(CancellationToken cancellationToken)
         {
         }
     }

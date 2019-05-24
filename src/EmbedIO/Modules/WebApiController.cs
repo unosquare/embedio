@@ -17,11 +17,11 @@ namespace EmbedIO.Modules
         /// Initializes a new instance of the <see cref="WebApiController" /> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="ct">The cancellation token.</param>
-        protected WebApiController(IHttpContext context, CancellationToken ct)
+        /// <param name="cancellationToken">The cancellation token.</param>
+        protected WebApiController(IHttpContext context, CancellationToken cancellationToken)
         {
             HttpContext = context;
-            CancellationToken = ct;
+            CancellationToken = cancellationToken;
         }
 
         /// <summary>

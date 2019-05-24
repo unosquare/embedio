@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Constants;
 using EmbedIO.Internal;
-using Unosquare.Swan;
 using Unosquare.Swan.Formatters;
 
 namespace EmbedIO
