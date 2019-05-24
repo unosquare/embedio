@@ -117,6 +117,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>HTTP verb result of the conversion of this context.</returns>
+        [Obsolete("RequestVerb() will be replaced by Request.HttpVerb in future versions")]
         public static HttpVerbs RequestVerb(this IHttpContext context)
         {
             Enum.TryParse(context.Request.HttpMethod.Trim(), true, out HttpVerbs verb);
