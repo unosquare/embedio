@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Text;
+using EmbedIO.Constants;
 
 namespace EmbedIO.Internal
 {
@@ -21,6 +22,8 @@ namespace EmbedIO.Internal
         public HttpRequest(HttpListenerContext context)
         {
             _request = context.Request;
+            Enum.TryParse<HttpVerbs>(_request.HttpMethod.Trim(), true, out var verb);
+            HttpVerb = verb;
             Cookies = new CookieCollection(_request.Cookies);
         }
 
@@ -44,6 +47,9 @@ namespace EmbedIO.Internal
 
         /// <inheritdoc />
         public string HttpMethod => _request.HttpMethod;
+
+        /// <inheritdoc />
+        public HttpVerbs HttpVerb { get; }
 
         /// <inheritdoc />
         public Uri Url => _request.Url;

@@ -356,7 +356,7 @@ namespace EmbedIO.Modules
         /// <inheritdoc />
         public override async Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct)
         {
-            var verb = context.RequestVerb();
+            var verb = context.Request.HttpVerb;
             var regExRouteParams = new Dictionary<string, object>();
             path = NormalizeRegexPath(verb, context, regExRouteParams);
 

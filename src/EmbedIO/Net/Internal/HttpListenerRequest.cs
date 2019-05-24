@@ -6,6 +6,7 @@ using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using EmbedIO.Constants;
 using EmbedIO.Utilities;
 
 namespace EmbedIO.Net.Internal
@@ -103,6 +104,9 @@ namespace EmbedIO.Net.Internal
         public string HttpMethod { get; private set; }
 
         /// <inheritdoc />
+        public HttpVerbs HttpVerb { get; private set; }
+
+        /// <inheritdoc />
         public Stream InputStream => _inputStream ??
                                      (_inputStream =
                                          ContentLength64 > 0 ? _context.Connection.GetRequestStream(ContentLength64) : Stream.Null);
@@ -185,7 +189,7 @@ namespace EmbedIO.Net.Internal
         
         /// <inheritdoc />
         public bool IsWebSocketRequest 
-            => HttpMethod == "GET" 
+            => HttpVerb == HttpVerbs.Get
             && ProtocolVersion >= HttpVersion.Version11 
             && Headers.Contains("Upgrade", "websocket") 
             && Headers.Contains("Connection", "Upgrade");
@@ -200,6 +204,8 @@ namespace EmbedIO.Net.Internal
             }
 
             HttpMethod = parts[0];
+            Enum.TryParse<HttpVerbs>(HttpMethod, true, out var verb);
+            HttpVerb = verb;
 
             foreach (var c in HttpMethod)
             {
@@ -271,14 +277,8 @@ namespace EmbedIO.Net.Internal
 
             CreateQueryString(_url.Query);
 
-            if (!_clSet)
-            {
-                if (string.Compare(HttpMethod, "POST", StringComparison.OrdinalIgnoreCase) == 0 ||
-                    string.Compare(HttpMethod, "PUT", StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    return;
-                }
-            }
+            if (!_clSet && (HttpVerb == HttpVerbs.Post || HttpVerb == HttpVerbs.Put))
+                return;
 
             if (string.Compare(Headers["Expect"], "100-continue", StringComparison.OrdinalIgnoreCase) == 0)
             {

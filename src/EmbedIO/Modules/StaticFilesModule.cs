@@ -88,7 +88,7 @@ namespace EmbedIO.Modules
 
         /// <inheritdoc />
         public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct)
-            => HandleGet(context, context.RequestVerb() == HttpVerbs.Get, ct);
+            => HandleGet(context, path, context.Request.HttpVerb == HttpVerbs.Get, ct);
 
         /// <summary>
         /// Gets the file system path from which files are retrieved.

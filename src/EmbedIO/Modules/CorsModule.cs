@@ -61,7 +61,7 @@ namespace EmbedIO.Modules
         /// <inheritdoc />
         public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct)
         {
-            var isOptions = context.RequestVerb() == HttpVerbs.Options;
+            var isOptions = context.Request.HttpVerb == HttpVerbs.Options;
 
             // If we allow all we don't need to filter
             if (_origins == Cors.All && _headers == Cors.All && _methods == Cors.All)

@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Text;
+using EmbedIO.Constants;
 
 namespace EmbedIO
 {
@@ -36,6 +37,11 @@ namespace EmbedIO
         /// Gets the HTTP method.
         /// </summary>
         string HttpMethod { get; }
+
+        /// <summary>
+        /// Gets a <see cref="HttpVerbs"/> constant representing the HTTP method of the request.
+        /// </summary>
+        HttpVerbs HttpVerb { get; }
 
         /// <summary>
         /// Gets the URL.

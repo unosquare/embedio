@@ -107,7 +107,7 @@ namespace EmbedIO
                             var requestEndpoint = context.Request.SafeGetRemoteEndpointStr();
 
                             // Log the request and its ID
-                            $"[{context.Id}] Start: Source {requestEndpoint} - {context.RequestVerb().ToString().ToUpperInvariant()}: {context.Request.Url.PathAndQuery} - {context.Request.UserAgent}"
+                            $"[{context.Id}] Start: Source {requestEndpoint} - {context.Request.HttpMethod}: {context.Request.Url.PathAndQuery} - {context.Request.UserAgent}"
                                 .Debug(nameof(WebServerBase));
 
                             try

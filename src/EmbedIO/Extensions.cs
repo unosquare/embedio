@@ -29,17 +29,6 @@ namespace EmbedIO
         public static string RequestPath(this IHttpContext context) => context.Request.Url.AbsolutePath;
 
         /// <summary>
-        /// Retrieves the Request HTTP Verb (also called Method) of this context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>HTTP verb result of the conversion of this context.</returns>
-        public static HttpVerbs RequestVerb(this IHttpContext context)
-        {
-            Enum.TryParse(context.Request.HttpMethod.Trim(), true, out HttpVerbs verb);
-            return verb;
-        }
-
-        /// <summary>
         /// Gets the value for the specified query string key.
         /// If the value does not exist it returns null.
         /// </summary>

@@ -18,9 +18,9 @@ namespace EmbedIO.Tests
         /// <summary>
         /// Initializes a new instance of the <see cref="TestHttpRequest"/> class.
         /// </summary>
-        /// <param name="httpMethod">The HTTP method.</param>
-        public TestHttpRequest(HttpVerbs httpMethod = HttpVerbs.Get)
-            : this(DefaultTestUrl, httpMethod)
+        /// <param name="httpVerb">The HTTP method.</param>
+        public TestHttpRequest(HttpVerbs httpVerb = HttpVerbs.Get)
+            : this(DefaultTestUrl, httpVerb)
         {
         }
 
@@ -28,12 +28,13 @@ namespace EmbedIO.Tests
         /// Initializes a new instance of the <see cref="TestHttpRequest" /> class.
         /// </summary>
         /// <param name="url">The URL.</param>
-        /// <param name="httpMethod">The HTTP method.</param>
-        public TestHttpRequest(string url, HttpVerbs httpMethod = HttpVerbs.Get)
+        /// <param name="httpVerb">The HTTP method.</param>
+        public TestHttpRequest(string url, HttpVerbs httpVerb = HttpVerbs.Get)
         {
             RawUrl = url ?? throw new ArgumentNullException(nameof(url));
 
-            HttpMethod = httpMethod.ToString();
+            HttpVerb = httpVerb;
+            HttpMethod = httpVerb.ToString();
             Url = new Uri(url);
         }
 
@@ -57,6 +58,9 @@ namespace EmbedIO.Tests
 
         /// <inheritdoc />
         public string HttpMethod { get; }
+
+        /// <inheritdoc />
+        public HttpVerbs HttpVerb { get; }
 
         /// <inheritdoc />
         public Uri Url { get; }
