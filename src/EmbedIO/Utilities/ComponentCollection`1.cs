@@ -88,6 +88,20 @@ namespace EmbedIO.Utilities
         /// Locks the collection, preventing further additions.
         /// </summary>
         /// <seealso cref="Locked"/>
-        public void Lock() => Locked = true;
+        public void Lock()
+        {
+            if (Locked)
+                return;
+
+            OnBeforeLock();
+            Locked = true;
+        }
+
+        /// <summary>
+        /// Called immediately before locking the collection.
+        /// </summary>
+        protected virtual void OnBeforeLock()
+        {
+        }
     }
 }
