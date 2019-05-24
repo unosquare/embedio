@@ -13,7 +13,7 @@ namespace EmbedIO
     /// <summary>
     /// Base class for <see cref="IWebServer"/> implementations.
     /// </summary>
-    public abstract class WebServerBase : IWebServer, IDisposable
+    public abstract class WebServerBase : ConfiguredObject, IWebServer, IDisposable
     {
         private readonly WebModuleCollection _modules = new WebModuleCollection(nameof(WebServerBase), "/");
 
@@ -50,8 +50,7 @@ namespace EmbedIO
             get => _sessionManager;
             set
             {
-                if (_configurationLocked)
-                    throw new InvalidOperationException($"Cannot set {nameof(SessionManager)} after starting a web server.");
+                EnsureConfigurationNotLocked();
 
                 _sessionManager = value;
             }
@@ -70,8 +69,7 @@ namespace EmbedIO
 
                 if (_state != WebServerState.Created)
                 {
-                    _modules.Lock();
-                    _configurationLocked = true;
+                    LockConfiguration();
                 }
 
                 StateChanged?.Invoke(this, new WebServerStateChangedEventArgs(oldState, value));
@@ -174,6 +172,14 @@ namespace EmbedIO
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        /// <inheritdoc />
+        protected override void OnBeforeLockConfiguration()
+        {
+            base.OnBeforeLockConfiguration();
+
+            _modules.LockConfiguration();
         }
 
         /// <summary>

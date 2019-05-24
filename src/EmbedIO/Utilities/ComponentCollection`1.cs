@@ -10,7 +10,7 @@ namespace EmbedIO.Utilities
     /// </summary>
     /// <typeparam name="T">The type of components in the collection.</typeparam>
     /// <seealso cref="IComponentCollection{T}" />
-    public class ComponentCollection<T> : IComponentCollection<T>
+    public class ComponentCollection<T> : ConfiguredObject, IComponentCollection<T>
     {
         private List<T> _components = new List<T>();
         
@@ -34,16 +34,6 @@ namespace EmbedIO.Utilities
         /// <inheritdoc />
         public IReadOnlyList<(string SafeName, T Component)> WithSafeNames => _componentsWithSafeNames;
 
-        /// <summary>
-        /// Gets a value indicating whether this collection is locked,
-        /// preventing further additions.
-        /// </summary>
-        /// <value>
-        /// <see langword="true"/> if locked; otherwise, <see langword="false"/>.
-        /// </value>
-        /// <seealso cref="Locked"/>
-        public bool Locked { get; private set; }
-
         /// <inheritdoc />
         public T this[int index] => _components[index];
 
@@ -60,8 +50,7 @@ namespace EmbedIO.Utilities
         /// <exception cref="InvalidOperationException">The collection is <see cref="Locked"/>.</exception>
         public void Add(string name, T component)
         {
-            if (Locked)
-                throw new InvalidOperationException("Cannot add a component to a locked collection.");
+            EnsureConfigurationNotLocked();
 
             if (name != null)
             {
@@ -87,21 +76,6 @@ namespace EmbedIO.Utilities
         /// <summary>
         /// Locks the collection, preventing further additions.
         /// </summary>
-        /// <seealso cref="Locked"/>
-        public void Lock()
-        {
-            if (Locked)
-                return;
-
-            OnBeforeLock();
-            Locked = true;
-        }
-
-        /// <summary>
-        /// Called immediately before locking the collection.
-        /// </summary>
-        protected virtual void OnBeforeLock()
-        {
-        }
+        public void Lock() => LockConfiguration();
     }
 }
