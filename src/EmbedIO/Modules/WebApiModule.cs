@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Constants;
 using EmbedIO.Internal;
+using EmbedIO.Routing;
 using EmbedIO.Utilities;
 using Unosquare.Swan;
 

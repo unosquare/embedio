@@ -2,7 +2,7 @@
 using EmbedIO.Constants;
 using EmbedIO.Utilities;
 
-namespace EmbedIO
+namespace EmbedIO.Routing
 {
     /// <summary>
     /// Decorate methods within controllers with this attribute in order to make them callable from the Web API Module

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmbedIO.Constants;
 using EmbedIO.Modules;
+using EmbedIO.Routing;
 using Unosquare.Tubular;
 using Unosquare.Tubular.ObjectModel;
 

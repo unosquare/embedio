@@ -1,6 +1,7 @@
 ﻿using EmbedIO.Constants;
 using System.Threading.Tasks;
 using EmbedIO.Modules;
+using EmbedIO.Routing;
 
 namespace EmbedIO.Tests.TestObjects
 {
