@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using EmbedIO.Modules;
 
-namespace EmbedIO.Utilities
+namespace EmbedIO.Routing
 {
     /// <summary>
     /// Provides utility methods to work with routes.

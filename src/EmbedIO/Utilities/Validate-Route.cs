@@ -20,7 +20,7 @@ namespace EmbedIO.Utilities
         /// </exception>
         public static string Route(string argumentName, string value)
         {
-            var exception = Utilities.Route.ValidateInternal(argumentName, value);
+            var exception = Routing.Route.ValidateInternal(argumentName, value);
             if (exception != null)
                 throw exception;
 

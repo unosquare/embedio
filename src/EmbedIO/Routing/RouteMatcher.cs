@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using EmbedIO.Utilities;
 
-namespace EmbedIO.Utilities
+namespace EmbedIO.Routing
 {
     /// <summary>
     /// Matches URL paths against a route.
@@ -41,7 +42,7 @@ namespace EmbedIO.Utilities
         {
             string pattern = null;
             var parameterNames = new List<string>();
-            var exception = Utilities.Route.ParseInternal(route, parameterNames.Add, p => pattern = p);
+            var exception = Routing.Route.ParseInternal(route, parameterNames.Add, p => pattern = p);
             if (exception != null)
                 throw exception;
 
@@ -60,7 +61,7 @@ namespace EmbedIO.Utilities
         {
             string pattern = null;
             var parameterNames = new List<string>();
-            var exception = Utilities.Route.ParseInternal(route, parameterNames.Add, p => pattern = p);
+            var exception = Routing.Route.ParseInternal(route, parameterNames.Add, p => pattern = p);
             if (exception != null)
             {
                 result = null;
