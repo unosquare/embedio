@@ -21,7 +21,7 @@ namespace EmbedIO.Routing
         private readonly List<TResolver> _resolvers = new List<TResolver>();
 
         /// <summary>
-        /// Associates some data and a route to an handler.
+        /// Associates some data and a route to a handler.
         /// </summary>
         /// <param name="data">Data used to determine which contexts are
         /// suitable to be handled by <paramref name="handler"/>.</param>

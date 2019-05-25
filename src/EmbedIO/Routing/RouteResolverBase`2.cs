@@ -34,7 +34,7 @@ namespace EmbedIO.Routing
         public string Route => _matcher.Route;
 
         /// <summary>
-        /// <para>Associates some data with a handler.</para>
+        /// <para>Associates some data to a handler.</para>
         /// <para>The <see cref="ResolveAsync"/> method calls <see cref="GetContextData"/>
         /// to extract data from the context; then, for each registered data / handler pair,
         /// <see cref="MatchContextData"/> is called to determine whether <paramref name="handler"/>
