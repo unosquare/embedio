@@ -355,6 +355,8 @@ namespace EmbedIO.WebSockets
             }
         }
 
+// Disable warning - this is an instance method for API consistency.
+#pragma warning disable CA1822 // Member does not use any instance data and can be declared as static.
         /// <summary>
         /// Sends a binary payload.
         /// </summary>
@@ -373,6 +375,7 @@ namespace EmbedIO.WebSockets
                 ex.Log(nameof(WebSocketModule));
             }
         }
+#pragma warning restore CA1822
 
         /// <summary>
         /// Broadcasts the specified payload to all connected SystemWebSocket clients.
