@@ -5,7 +5,7 @@ namespace EmbedIO.Net
     /// <summary>
     /// Represents a WS Receive result.
     /// </summary>
-    public class WebSocketReceiveResult : IWebSocketReceiveResult
+    internal sealed class WebSocketReceiveResult : IWebSocketReceiveResult
     {
         internal WebSocketReceiveResult(int count, Opcode code)
         {

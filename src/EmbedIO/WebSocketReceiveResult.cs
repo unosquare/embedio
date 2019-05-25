@@ -4,7 +4,7 @@
     /// Represents a wrapper around a regular WebSocketContext.
     /// </summary>
     /// <inheritdoc />
-    public class WebSocketReceiveResult : IWebSocketReceiveResult
+    internal sealed class WebSocketReceiveResult : IWebSocketReceiveResult
     {
         private readonly System.Net.WebSockets.WebSocketReceiveResult _results;
 
