@@ -81,7 +81,10 @@ namespace EmbedIO.Routing
         /// otherwise, <see langword="null"/>.</returns>
         public IReadOnlyDictionary<string, string> Match(string path)
         {
-            var match = _regex.Match(Validate.NotNull(nameof(path), path));
+            if (path == null)
+                return null;
+
+            var match = _regex.Match(path);
             if (!match.Success)
                 return null;
 
