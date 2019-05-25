@@ -28,8 +28,8 @@ namespace EmbedIO.Routing
         /// <param name="route">The route to match URL paths against.</param>
         /// <param name="handler">A callback used to handle matching contexts.</param>
         /// <seealso cref="ResolveAsync"/>
-        /// <seealso cref="RouteResolverBase{TContext,TData}.AddHandler"/>
-        public void AddHandler(TData data, string route, RoutedHandler<TContext> handler)
+        /// <seealso cref="RouteResolverBase{TContext,TData}.Add"/>
+        public void Add(TData data, string route, RoutedHandler<TContext> handler)
         {
             var resolver = _resolvers.FirstOrDefault(r => r.Route == route);
             if (resolver == null)
@@ -38,7 +38,7 @@ namespace EmbedIO.Routing
                 _resolvers.Add(resolver);
             }
 
-            resolver.AddHandler(data, handler);
+            resolver.Add(data, handler);
         }
 
         /// <summary>

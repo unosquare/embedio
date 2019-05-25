@@ -47,7 +47,7 @@ namespace EmbedIO.Routing
         /// <seealso cref="ResolveAsync"/>
         /// <seealso cref="GetContextData"/>
         /// <seealso cref="MatchContextData"/>
-        public void AddHandler(TData data, RoutedHandler<TContext> handler)
+        public void Add(TData data, RoutedHandler<TContext> handler)
         {
             EnsureConfigurationNotLocked();
 
@@ -65,14 +65,14 @@ namespace EmbedIO.Routing
         /// if the match is successful, tries to handle the specified <paramref name="context"/>
         /// using handlers selected according to data extracted from the context.
         /// <para>Registered data / handler pairs are tried in the same order they were added by calling
-        /// <see cref="AddHandler"/>.</para>
+        /// <see cref="Add"/>.</para>
         /// </summary>
         /// <param name="context">The context to handle.</param>
         /// <param name="path">The URL path to match against <see cref="Route"/>.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> use to cancel the operation.</param>
         /// <returns>A <see cref="Task"/>, representing the ongoing operation,
         /// that will return a result in the form of one of the <see cref="RouteResolutionResult"/> constants.</returns>
-        /// <seealso cref="AddHandler"/>
+        /// <seealso cref="Add"/>
         /// <seealso cref="GetContextData"/>
         /// <seealso cref="MatchContextData"/>
         public async Task<RouteResolutionResult> ResolveAsync(TContext context, string path, CancellationToken cancellationToken)
