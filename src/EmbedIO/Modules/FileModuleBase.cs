@@ -50,20 +50,20 @@ namespace EmbedIO.Modules
         /// <param name="response">The response.</param>
         /// <param name="buffer">The buffer.</param>
         /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
-        /// <param name="ct">The ct.</param>
+        /// <param name="cancellationToken">The cancellationToken.</param>
         /// <returns></returns>
         protected Task WriteFileAsync(
             string partialHeader,
             IHttpResponse response,
             Stream buffer,
             bool useGzip = true,
-            CancellationToken ct = default)
+            CancellationToken cancellationToken = default)
         {
             var fileSize = buffer.Length;
             
             // check if partial
             if (!CalculateRange(partialHeader, fileSize, out var lowerByteIndex, out var upperByteIndex))
-                return response.BinaryResponseAsync(buffer, UseGzip && useGzip, ct);
+                return response.BinaryResponseAsync(buffer, UseGzip && useGzip, cancellationToken);
 
             if (upperByteIndex > fileSize)
             {
@@ -72,7 +72,7 @@ namespace EmbedIO.Modules
                 response.ContentLength64 = 0;
                 response.AddHeader(HttpHeaderNames.ContentRange, $"bytes */{fileSize}");
 
-                return Task.Delay(0, ct);
+                return Task.Delay(0, cancellationToken);
             }
 
             if (lowerByteIndex != 0 || upperByteIndex != fileSize)
@@ -84,7 +84,7 @@ namespace EmbedIO.Modules
                     $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
             }
 
-            return response.WriteToOutputStream(buffer, lowerByteIndex, ct);
+            return response.WriteToOutputStream(buffer, lowerByteIndex, cancellationToken);
         }
 
         /// <summary>

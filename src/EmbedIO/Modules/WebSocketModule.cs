@@ -142,7 +142,7 @@ namespace EmbedIO.Modules
         }
 
         /// <inheritdoc />
-        public sealed override async Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct)
+        public sealed override async Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             // The WebSocket endpoint must match exactly, giving a path of "/".
             // In all other cases the path is longer, so there's no need to compare strings here.
@@ -169,7 +169,7 @@ namespace EmbedIO.Modules
                 throw new InvalidOperationException($"HTTP context must implement {nameof(IHttpContextImpl)}.");
 
             $"{BaseUrlPath} - Accepting WebSocket with subprotocol {acceptedProtocol ?? "<null>"}".Debug(nameof(WebSocketModule));
-            var webSocketContext = await contextImpl.AcceptWebSocketAsync(requestedProtocols, acceptedProtocol, ReceiveBufferSize, KeepAliveInterval, ct)
+            var webSocketContext = await contextImpl.AcceptWebSocketAsync(requestedProtocols, acceptedProtocol, ReceiveBufferSize, KeepAliveInterval, cancellationToken)
                 .ConfigureAwait(false);
 
             int contextCount;
@@ -194,12 +194,12 @@ namespace EmbedIO.Modules
             {
                 if (webSocketContext.WebSocket is WebSocket systemWebSocket)
                 {
-                    await ProcessSystemContext(webSocketContext, systemWebSocket.SystemWebSocket, ct)
+                    await ProcessSystemContext(webSocketContext, systemWebSocket.SystemWebSocket, cancellationToken)
                         .ConfigureAwait(false);
                 }
                 else
                 {
-                    await ProcessEmbedIOContext(webSocketContext, ct).ConfigureAwait(false);
+                    await ProcessEmbedIOContext(webSocketContext, cancellationToken).ConfigureAwait(false);
                 }
             }
             catch (TaskCanceledException)
@@ -220,10 +220,10 @@ namespace EmbedIO.Modules
         }
 
         /// <inheritdoc />
-        protected override void OnStart(CancellationToken ct)
+        protected override void OnStart(CancellationToken cancellationToken)
         {
             if (_enableConnectionWatchdog)
-                RunConnectionWatchdog(ct);
+                RunConnectionWatchdog(cancellationToken);
         }
 
         /// <summary>
@@ -491,7 +491,7 @@ namespace EmbedIO.Modules
             _contextsAccess.Dispose();
         }
 
-        private void RunConnectionWatchdog(CancellationToken ct)
+        private void RunConnectionWatchdog(CancellationToken cancellationToken)
         {
             Task.Run(async () =>
             {
@@ -501,9 +501,9 @@ namespace EmbedIO.Modules
                         PurgeDisconnectedContexts();
 
                     // TODO: make this sleep configurable.
-                    await Task.Delay(TimeSpan.FromSeconds(30), ct).ConfigureAwait(false);
+                    await Task.Delay(TimeSpan.FromSeconds(30), cancellationToken).ConfigureAwait(false);
                 }
-            }, ct);
+            }, cancellationToken);
         }
 
         private void RemoveWebSocket(IWebSocketContext context, bool lockAlreadyHeld = false)
@@ -571,7 +571,7 @@ namespace EmbedIO.Modules
                 .Debug(nameof(WebSocketModule));
         }
 
-        private async Task ProcessEmbedIOContext(IWebSocketContext context, CancellationToken ct)
+        private async Task ProcessEmbedIOContext(IWebSocketContext context, CancellationToken cancellationToken)
         {
             ((Net.Internal.WebSocket)context.WebSocket).OnMessage += async (s, e) =>
             {
@@ -593,11 +593,11 @@ namespace EmbedIO.Modules
                 || context.WebSocket.State == WebSocketState.CloseReceived
                 || context.WebSocket.State == WebSocketState.CloseSent)
             {
-                await Task.Delay(500, ct).ConfigureAwait(false);
+                await Task.Delay(500, cancellationToken).ConfigureAwait(false);
             }
         }
 
-        private async Task ProcessSystemContext(IWebSocketContext context, System.Net.WebSockets.WebSocket webSocket, CancellationToken ct)
+        private async Task ProcessSystemContext(IWebSocketContext context, System.Net.WebSockets.WebSocket webSocket, CancellationToken cancellationToken)
         {
             // define a receive buffer
             var receiveBuffer = new byte[ReceiveBufferSize];
@@ -610,14 +610,14 @@ namespace EmbedIO.Modules
             {
                 // retrieve the result (blocking)
                 var receiveResult = new WebSocketReceiveResult(
-                    await webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), ct)
+                    await webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), cancellationToken)
                         .ConfigureAwait(false));
 
                 if (receiveResult.MessageType == (int)WebSocketMessageType.Close)
                 {
                     // close the connection if requested by the client
                     await webSocket
-                        .CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, ct)
+                        .CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, cancellationToken)
                         .ConfigureAwait(false);
                     return;
                 }
@@ -635,7 +635,7 @@ namespace EmbedIO.Modules
                     await webSocket.CloseAsync(
                         WebSocketCloseStatus.MessageTooBig,
                         $"Message too big. Maximum is {_maxMessageSize} bytes.",
-                        ct).ConfigureAwait(false);
+                        cancellationToken).ConfigureAwait(false);
 
                     // exit the loop; we're done
                     return;

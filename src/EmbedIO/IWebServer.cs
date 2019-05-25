@@ -42,10 +42,10 @@ namespace EmbedIO
         /// <summary>
         /// Starts the listener and the registered modules.
         /// </summary>
-        /// <param name="ct">The cancellation token; when cancelled, the server cancels all pending requests and stops.</param>
+        /// <param name="cancellationToken">The cancellation token; when cancelled, the server cancels all pending requests and stops.</param>
         /// <returns>
         /// Returns the task that the HTTP listener is running inside of, so that it can be waited upon after it's been canceled.
         /// </returns>
-        Task RunAsync(CancellationToken ct = default);
+        Task RunAsync(CancellationToken cancellationToken = default);
     }
 }

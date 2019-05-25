@@ -41,14 +41,14 @@ namespace EmbedIO
         /// <remarks>
         /// <para>The module's configuration is locked before returning from this method.</para>
         /// </remarks>
-        public void Start(CancellationToken ct)
+        public void Start(CancellationToken cancellationToken)
         {
-            OnStart(ct);
+            OnStart(cancellationToken);
             LockConfiguration();
         }
 
         /// <inheritdoc />
-        public abstract Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct);
+        public abstract Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken);
 
         /// <summary>
         /// Called when a module is started, immediately before locking the module's configuration.

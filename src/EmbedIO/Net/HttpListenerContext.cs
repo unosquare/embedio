@@ -111,10 +111,10 @@ namespace EmbedIO.Net
             string acceptedProtocol,
             int receiveBufferSize,
             TimeSpan keepAliveInterval,
-            CancellationToken ct)
+            CancellationToken cancellationToken)
         {
             var webSocket = await WebSocket.AcceptAsync(this, acceptedProtocol).ConfigureAwait(false);
-            return new WebSocketContext(this, WebSocket.SupportedVersion, requestedProtocols, acceptedProtocol, webSocket, ct);
+            return new WebSocketContext(this, WebSocket.SupportedVersion, requestedProtocols, acceptedProtocol, webSocket, cancellationToken);
         }
     }
 }

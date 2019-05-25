@@ -74,7 +74,7 @@ namespace EmbedIO.Net.Internal
         internal bool InContinuation { get; private set; }
 
         /// <inheritdoc />
-        public Task SendAsync(byte[] buffer, bool isText, CancellationToken ct) => SendAsync(buffer, isText ? Opcode.Text : Opcode.Binary, ct);
+        public Task SendAsync(byte[] buffer, bool isText, CancellationToken cancellationToken) => SendAsync(buffer, isText ? Opcode.Text : Opcode.Binary, cancellationToken);
 
         /// <inheritdoc />
         public Task CloseAsync(CancellationToken cancellationToken = default) => CloseAsync(CloseStatusCode.Normal, cancellationToken: cancellationToken);
@@ -115,10 +115,10 @@ namespace EmbedIO.Net.Internal
                 return Task.Delay(0, cancellationToken);
 
             if (code == CloseStatusCode.NoStatus)
-                return InternalCloseAsync(ct: cancellationToken);
+                return InternalCloseAsync(cancellationToken: cancellationToken);
 
             var send = !IsOpcodeReserved(code);
-            return InternalCloseAsync(new PayloadData((ushort)code, reason), send, send, ct: cancellationToken);
+            return InternalCloseAsync(new PayloadData((ushort)code, reason), send, send, cancellationToken: cancellationToken);
         }
 
         /// <summary>
@@ -160,12 +160,12 @@ namespace EmbedIO.Net.Internal
         /// </summary>
         /// <param name="data">An array of <see cref="byte" /> that represents the binary data to send.</param>
         /// <param name="opcode">The opcode.</param>
-        /// <param name="ct">The cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous of send 
         /// binary data using websocket.
         /// </returns>
-        public async Task SendAsync(byte[] data, Opcode opcode, CancellationToken ct = default)
+        public async Task SendAsync(byte[] data, Opcode opcode, CancellationToken cancellationToken = default)
         {
             if (_readyState != WebSocketState.Open)
                 throw new WebSocketException(CloseStatusCode.Normal, $"This operation isn\'t available in: {_readyState.ToString()}");
@@ -271,7 +271,7 @@ namespace EmbedIO.Net.Internal
             bool send = true,
             bool receive = true,
             bool received = false,
-            CancellationToken ct = default)
+            CancellationToken cancellationToken = default)
         {
             lock (_stateSyncRoot)
             {
@@ -296,7 +296,7 @@ namespace EmbedIO.Net.Internal
             "Begin closing the connection.".Trace(nameof(InternalCloseAsync));
 
             var bytes = send ? WebSocketFrame.CreateCloseFrame(payloadData).ToArray() : null;
-            await CloseHandshakeAsync(bytes, receive, received, ct).ConfigureAwait(false);
+            await CloseHandshakeAsync(bytes, receive, received, cancellationToken).ConfigureAwait(false);
             ReleaseResources();
 
             "End closing the connection.".Trace(nameof(InternalCloseAsync));
@@ -311,13 +311,13 @@ namespace EmbedIO.Net.Internal
             byte[] frameAsBytes,
             bool receive,
             bool received,
-            CancellationToken ct)
+            CancellationToken cancellationToken)
         {
             var sent = frameAsBytes != null;
 
             if (sent)
             {
-                await _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length, ct).ConfigureAwait(false);
+                await _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length, cancellationToken).ConfigureAwait(false);
             }
 
             received = received || (receive && sent && _exitReceiving != null && _exitReceiving.WaitOne(_waitTime));

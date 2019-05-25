@@ -44,7 +44,7 @@ namespace EmbedIO.Internal
         public void AddPrefix(string urlPrefix) => _httpListener.Prefixes.Add(urlPrefix);
 
         /// <inheritdoc />
-        public async Task<IHttpContextImpl> GetContextAsync(CancellationToken ct)
+        public async Task<IHttpContextImpl> GetContextAsync(CancellationToken cancellationToken)
             => new HttpContextImpl(await _httpListener.GetContextAsync().ConfigureAwait(false));
 
         void IDisposable.Dispose() => ((IDisposable)_httpListener)?.Dispose();

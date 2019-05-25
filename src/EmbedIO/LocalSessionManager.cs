@@ -179,7 +179,7 @@ namespace EmbedIO
         private bool ConfigurationLocked { get; set; }
 
         /// <inheritdoc />
-        public void Start(CancellationToken ct)
+        public void Start(CancellationToken cancellationToken)
         {
             ConfigurationLocked = true;
 
@@ -187,17 +187,17 @@ namespace EmbedIO
             {
                 try
                 {
-                    while (!ct.IsCancellationRequested)
+                    while (!cancellationToken.IsCancellationRequested)
                     {
                         PurgeExpiredAndEmptySessions();
-                        await Task.Delay(PurgeInterval, ct).ConfigureAwait(false);
+                        await Task.Delay(PurgeInterval, cancellationToken).ConfigureAwait(false);
                     }
                 }
                 catch (TaskCanceledException)
                 {
                     // ignore
                 }
-            }, ct);
+            }, cancellationToken);
         }
 
         /// <inheritdoc />

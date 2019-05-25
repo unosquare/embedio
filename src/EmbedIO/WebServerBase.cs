@@ -79,26 +79,26 @@ namespace EmbedIO
         /// <inheritdoc />
         /// <exception cref="InvalidOperationException">The method was already called.</exception>
         /// <exception cref="OperationCanceledException">Cancellation was requested.</exception>
-        public async Task RunAsync(CancellationToken ct = default)
+        public async Task RunAsync(CancellationToken cancellationToken = default)
         {
             State = WebServerState.Loading;
-            Prepare(ct);
+            Prepare(cancellationToken);
 
             try
             {
-                _sessionManager?.Start(ct);
-                _modules.StartAll(ct);
+                _sessionManager?.Start(cancellationToken);
+                _modules.StartAll(cancellationToken);
 
                 State = WebServerState.Listening;
-                while (!ct.IsCancellationRequested && ShouldProcessMoreRequests())
+                while (!cancellationToken.IsCancellationRequested && ShouldProcessMoreRequests())
                 {
                     try
                     {
-                        var context = await GetContextAsync(ct).ConfigureAwait(false);
+                        var context = await GetContextAsync(cancellationToken).ConfigureAwait(false);
                         context.Session = new SessionProxy(context, SessionManager);
                         try
                         {
-                            if (ct.IsCancellationRequested)
+                            if (cancellationToken.IsCancellationRequested)
                                 break;
 
                             // Create a request endpoint string
@@ -111,7 +111,7 @@ namespace EmbedIO
                             try
                             {
                                 // Return a 404 (Not Found) response if no module/handler handled the response.
-                                if (await _modules.DispatchRequestAsync(context, ct).ConfigureAwait(false))
+                                if (await _modules.DispatchRequestAsync(context, cancellationToken).ConfigureAwait(false))
                                     continue;
 
                                 $"[{context.Id}] No module generated a response. Sending 404 - Not Found".Error(nameof(WebServerBase));
@@ -130,7 +130,7 @@ namespace EmbedIO
                                             .Append("</pre><h2>Stack Trace</h2><pre>\r\n")
                                             .Append(ex.StackTrace)
                                             .Append("</pre>"),
-                                        ct).ConfigureAwait(false);
+                                        cancellationToken).ConfigureAwait(false);
                                 }
                             }
                         }
@@ -146,7 +146,7 @@ namespace EmbedIO
 
                         if (ex is OperationCanceledException || ex is ObjectDisposedException || ex is HttpListenerException)
                         {
-                            if (!ct.IsCancellationRequested)
+                            if (!cancellationToken.IsCancellationRequested)
                                 throw;
 
                             return;
@@ -198,8 +198,8 @@ namespace EmbedIO
         /// <summary>
         /// Prepares a web server for running.
         /// </summary>
-        /// <param name="ct">A <see cref="CancellationToken"/> used to stop the web server.</param>
-        protected virtual void Prepare(CancellationToken ct)
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to stop the web server.</param>
+        protected virtual void Prepare(CancellationToken cancellationToken)
         {
         }
 
@@ -214,9 +214,9 @@ namespace EmbedIO
         /// <summary>
         /// Asynchronously waits for a request, accepts it, and returns a newly-constructed HTTP context.
         /// </summary>
-        /// <param name="ct">A <see cref="CancellationToken"/> used to stop the web server.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to stop the web server.</param>
         /// <returns>An awaitable <see cref="Task"/> that returns a HTTP context.</returns>
-        protected abstract Task<IHttpContextImpl> GetContextAsync(CancellationToken ct);
+        protected abstract Task<IHttpContextImpl> GetContextAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// <para>Called when an exception is caught in the web server's request processing loop.</para>

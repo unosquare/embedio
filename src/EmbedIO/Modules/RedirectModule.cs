@@ -83,7 +83,7 @@ namespace EmbedIO.Modules
         public HttpStatusCode StatusCode { get; }
 
         /// <inheritdoc />
-        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct)
+        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             if (_shouldRedirect != null && !_shouldRedirect(context, path))
                 return Task.FromResult(false);

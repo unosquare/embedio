@@ -48,12 +48,12 @@ namespace EmbedIO.Modules
         }
 
         /// <inheritdoc />
-        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct)
-            => HandleGet(context, path, ct, context.Request.HttpVerb == HttpVerbs.Get);
+        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+            => HandleGet(context, path, cancellationToken, context.Request.HttpVerb == HttpVerbs.Get);
 
         private static string FixPath(string s) => s == "/" ? "index.html" : s.Substring(1, s.Length - 1).Replace('/', '.');
 
-        private async Task<bool> HandleGet(IHttpContext context, string path, CancellationToken ct, bool sendBuffer = true)
+        private async Task<bool> HandleGet(IHttpContext context, string path, CancellationToken cancellationToken, bool sendBuffer = true)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace EmbedIO.Modules
                                 context.Response,
                                 buffer,
                                 context.AcceptGzip(buffer.Length),
-                                ct)
+                                cancellationToken)
                             .ConfigureAwait(false);
                     }
                 }

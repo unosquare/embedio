@@ -88,11 +88,11 @@ namespace EmbedIO.Net
         }
 
         /// <inheritdoc />
-        public async Task<IHttpContextImpl> GetContextAsync(CancellationToken ct)
+        public async Task<IHttpContextImpl> GetContextAsync(CancellationToken cancellationToken)
         {
             while (true)
             {
-                await _ctxQueueSem.WaitAsync(ct).ConfigureAwait(false);
+                await _ctxQueueSem.WaitAsync(cancellationToken).ConfigureAwait(false);
 
                 foreach (var key in _ctxQueue.Keys)
                 {

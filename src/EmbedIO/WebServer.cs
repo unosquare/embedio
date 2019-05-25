@@ -192,7 +192,7 @@ namespace EmbedIO
         }
 
         /// <inheritdoc />
-        protected override void Prepare(CancellationToken ct)
+        protected override void Prepare(CancellationToken cancellationToken)
         {
             Listener.IgnoreWriteExceptions = true;
             Listener.Start();
@@ -200,14 +200,14 @@ namespace EmbedIO
             "Started HTTP Listener".Info(nameof(WebServer));
 
             // close port when the cancellation token is cancelled
-            ct.Register(() => Listener?.Stop());
+            cancellationToken.Register(() => Listener?.Stop());
         }
 
         /// <inheritdoc />
         protected override bool ShouldProcessMoreRequests() => Listener?.IsListening ?? false;
 
         /// <inheritdoc />
-        protected override Task<IHttpContextImpl> GetContextAsync(CancellationToken ct) => Listener.GetContextAsync(ct);
+        protected override Task<IHttpContextImpl> GetContextAsync(CancellationToken cancellationToken) => Listener.GetContextAsync(cancellationToken);
 
         /// <inheritdoc />
         protected override void OnException() => Listener?.Dispose();

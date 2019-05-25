@@ -73,7 +73,7 @@ namespace EmbedIO.Internal
             string acceptedProtocol,
             int receiveBufferSize,
             TimeSpan keepAliveInterval,
-            CancellationToken ct)
+            CancellationToken cancellationToken)
         {
             if (_context == null)
                 throw new NotImplementedException("This HTTP context does not support the WebSocket protocol.");
@@ -83,7 +83,7 @@ namespace EmbedIO.Internal
                 receiveBufferSize,
                 keepAliveInterval)
                 .ConfigureAwait(false);
-            return new WebSocketContext(this, context.SecWebSocketVersion, requestedProtocols, acceptedProtocol, new WebSocket(context.WebSocket), ct);
+            return new WebSocketContext(this, context.SecWebSocketVersion, requestedProtocols, acceptedProtocol, new WebSocket(context.WebSocket), cancellationToken);
         }
 
         public void Close()

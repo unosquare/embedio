@@ -12,8 +12,8 @@ namespace EmbedIO.Tests.TestObjects
     {
         public class Controller : WebApiController
         {
-            public Controller(IHttpContext context, CancellationToken ct)
-                : base(context, ct)
+            public Controller(IHttpContext context, CancellationToken cancellationToken)
+                : base(context, cancellationToken)
             {
             }
 

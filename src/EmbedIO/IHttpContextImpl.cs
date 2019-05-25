@@ -34,7 +34,7 @@ namespace EmbedIO
         /// <param name="acceptedProtocol">The accepted WebSocket sub-protocol.</param>
         /// <param name="receiveBufferSize">Size of the receive buffer.</param>
         /// <param name="keepAliveInterval">The keep-alive interval.</param>
-        /// <param name="ct">A <see cref="CancellationToken"/> used to stop the server.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to stop the server.</param>
         /// <returns>
         /// A <see cref="IWebSocketContext"/> interface.
         /// </returns>
@@ -43,6 +43,6 @@ namespace EmbedIO
             string acceptedProtocol, 
             int receiveBufferSize, 
             TimeSpan keepAliveInterval,
-            CancellationToken ct);
+            CancellationToken cancellationToken);
     }
 }

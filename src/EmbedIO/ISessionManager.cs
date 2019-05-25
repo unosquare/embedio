@@ -11,8 +11,8 @@ namespace EmbedIO
         /// <summary>
         /// Signals a session manager that the web server is starting.
         /// </summary>
-        /// <param name="ct">The cancellation token used to stop the web server.</param>
-        void Start(CancellationToken ct);
+        /// <param name="cancellationToken">The cancellation token used to stop the web server.</param>
+        void Start(CancellationToken cancellationToken);
 
         /// <summary>
         /// Returns the session associated with a <see cref="IHttpContext"/>.

@@ -61,10 +61,10 @@ namespace EmbedIO
         /// <summary>
         /// Gets the HTTP context asynchronous.
         /// </summary>
-        /// <param name="ct">The cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A task that represents the time delay for the HTTP Context.
         /// </returns>
-        Task<IHttpContextImpl> GetContextAsync(CancellationToken ct);
+        Task<IHttpContextImpl> GetContextAsync(CancellationToken cancellationToken);
     }
 }

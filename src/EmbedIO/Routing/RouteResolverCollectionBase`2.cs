@@ -50,16 +50,16 @@ namespace EmbedIO.Routing
         /// </summary>
         /// <param name="context">The context to handle.</param>
         /// <param name="path">The URL path to match against <see cref="Route"/>.</param>
-        /// <param name="ct">A <see cref="CancellationToken"/> use to cancel the operation.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> use to cancel the operation.</param>
         /// <returns>A <see cref="Task"/>, representing the ongoing operation,
         /// that will return a result in the form of one of the <see cref="RouteResolutionResult"/> constants.</returns>
         /// <seealso cref="RouteResolverBase{TContext,TData}.ResolveAsync"/>
-        public async Task<RouteResolutionResult> ResolveAsync(TContext context, string path, CancellationToken ct)
+        public async Task<RouteResolutionResult> ResolveAsync(TContext context, string path, CancellationToken cancellationToken)
         {
             var result = RouteResolutionResult.RouteNotMatched;
             foreach (var resolver in _resolvers)
             {
-                var resolverResult = await resolver.ResolveAsync(context, path, ct).ConfigureAwait(false);
+                var resolverResult = await resolver.ResolveAsync(context, path, cancellationToken).ConfigureAwait(false);
                 OnResolverCalled(context, resolver, result);
                 if (resolverResult == RouteResolutionResult.Success)
                     return RouteResolutionResult.Success;

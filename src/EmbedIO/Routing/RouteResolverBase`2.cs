@@ -69,13 +69,13 @@ namespace EmbedIO.Routing
         /// </summary>
         /// <param name="context">The context to handle.</param>
         /// <param name="path">The URL path to match against <see cref="Route"/>.</param>
-        /// <param name="ct">A <see cref="CancellationToken"/> use to cancel the operation.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> use to cancel the operation.</param>
         /// <returns>A <see cref="Task"/>, representing the ongoing operation,
         /// that will return a result in the form of one of the <see cref="RouteResolutionResult"/> constants.</returns>
         /// <seealso cref="AddHandler"/>
         /// <seealso cref="GetContextData"/>
         /// <seealso cref="MatchContextData"/>
-        public async Task<RouteResolutionResult> ResolveAsync(TContext context, string path, CancellationToken ct)
+        public async Task<RouteResolutionResult> ResolveAsync(TContext context, string path, CancellationToken cancellationToken)
         {
             LockConfiguration();
 
@@ -90,7 +90,7 @@ namespace EmbedIO.Routing
                 if (!MatchContextData(contextData, data))
                     continue;
 
-                if (await handler(context, path, parameters, ct).ConfigureAwait(false))
+                if (await handler(context, path, parameters, cancellationToken).ConfigureAwait(false))
                     return RouteResolutionResult.Success;
 
                 result = RouteResolutionResult.NoHandlerSuccessful;

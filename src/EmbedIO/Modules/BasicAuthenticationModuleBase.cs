@@ -40,7 +40,7 @@ namespace EmbedIO.Modules
         public string Realm { get; }
 
         /// <inheritdoc />
-        public override async Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct)
+        public override async Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             try
             {

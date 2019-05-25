@@ -89,7 +89,7 @@ namespace EmbedIO.Tests
         }
 
         /// <inheritdoc />
-        protected override Task<IHttpContextImpl> GetContextAsync(CancellationToken ct)
+        protected override Task<IHttpContextImpl> GetContextAsync(CancellationToken cancellationToken)
         {
             lock (_contexts)
             {

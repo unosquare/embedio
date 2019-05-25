@@ -17,16 +17,16 @@ namespace EmbedIO.Internal
             _baseUrlPath = baseUrlPath;
         }
 
-        internal void StartAll(CancellationToken ct)
+        internal void StartAll(CancellationToken cancellationToken)
         {
             foreach (var (name, module) in this.WithSafeNames)
             {
                 $"Starting module {name}...".Debug(_logSource);
-                module.Start(ct);
+                module.Start(cancellationToken);
             }
         }
 
-        internal async Task<bool> DispatchRequestAsync(IHttpContext context, CancellationToken ct)
+        internal async Task<bool> DispatchRequestAsync(IHttpContext context, CancellationToken cancellationToken)
         {
             var requestedPath = UrlPath.UnsafeStripPrefix(context.Request.Url.AbsolutePath, _baseUrlPath);
             if (requestedPath == null)
@@ -43,7 +43,7 @@ namespace EmbedIO.Internal
                     continue;
                 }
 
-                if (await module.HandleRequestAsync(context, path, ct).ConfigureAwait(false))
+                if (await module.HandleRequestAsync(context, path, cancellationToken).ConfigureAwait(false))
                 {
                     $"[{context.Id}] Module {name} handled the request.".Info(_logSource);
                     return true;

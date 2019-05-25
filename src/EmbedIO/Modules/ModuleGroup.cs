@@ -66,13 +66,13 @@ namespace EmbedIO.Modules
         }
 
         /// <inheritdoc />
-        protected override void OnStart(CancellationToken ct)
+        protected override void OnStart(CancellationToken cancellationToken)
         {
-            _modules.StartAll(ct);
+            _modules.StartAll(cancellationToken);
         }
 
         /// <inheritdoc />
-        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct)
-            => _modules.DispatchRequestAsync(context, ct);
+        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+            => _modules.DispatchRequestAsync(context, cancellationToken);
     }
 }

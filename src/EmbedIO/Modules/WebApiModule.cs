@@ -197,7 +197,7 @@ namespace EmbedIO.Modules
 
             var parameters = new ParameterExpression[] {
                 Expression.Parameter(typeof(IHttpContext), "context"),
-                Expression.Parameter(typeof(CancellationToken), "ct"),
+                Expression.Parameter(typeof(CancellationToken), "cancellationToken"),
             } as IEnumerable<ParameterExpression>;
             var factory = Expression.Lambda<Func<IHttpContext, CancellationToken, WebApiController>>(Expression.New(constructor, parameters), parameters)
                 .Compile();

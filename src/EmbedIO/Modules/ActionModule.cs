@@ -39,8 +39,8 @@ namespace EmbedIO.Modules
             : this("/", HttpVerbs.Any, handler) { }
 
         /// <inheritdoc />
-        public override async Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct) =>
+        public override async Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken) =>
             (_verb == HttpVerbs.Any || context.Request.HttpVerb == _verb)
-         && await _handler(context, path, ct).ConfigureAwait(false);
+         && await _handler(context, path, cancellationToken).ConfigureAwait(false);
     }
 }

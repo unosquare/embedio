@@ -26,13 +26,13 @@ namespace EmbedIO
         /// </summary>
         /// <param name="this">The <see cref="IHttpContext"/> interface on which this method is called.</param>
         /// <param name="statusCode">The HTTP status code of the response.</param>
-        /// <param name="ct">A <see cref="CancellationToken"/> used to cancel the operation.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">There is no standard status description for <paramref name="statusCode"/>.</exception>
         /// <seealso cref="HttpResponseExtensions.StandardHtmlResponseAsync(IHttpResponse,int,CancellationToken)"/>
-        public static Task StandardHtmlResponseAsync(this IHttpContext @this, int statusCode, CancellationToken ct)
-            => StandardHtmlResponseAsync(@this, statusCode, null, ct);
+        public static Task StandardHtmlResponseAsync(this IHttpContext @this, int statusCode, CancellationToken cancellationToken)
+            => StandardHtmlResponseAsync(@this, statusCode, null, cancellationToken);
 
         /// <summary>
         /// Asynchronously sends a standard HTML response for the specified status code.
@@ -42,7 +42,7 @@ namespace EmbedIO
         /// <param name="appendAdditionalHtml">A callback function that may append additional HTML code
         /// to the response. If not <see langword="null"/>, the callback is called immediately before
         /// closing the HTML <c>body</c> tag.</param>
-        /// <param name="ct">A <see cref="CancellationToken"/> used to cancel the operation.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">There is no standard status description for <paramref name="statusCode"/>.</exception>
@@ -51,8 +51,8 @@ namespace EmbedIO
             this IHttpContext @this, 
             int statusCode,
             Func<StringBuilder, StringBuilder> appendAdditionalHtml,
-            CancellationToken ct)
-            => @this.Response.StandardHtmlResponseAsync(statusCode, appendAdditionalHtml, ct);
+            CancellationToken cancellationToken)
+            => @this.Response.StandardHtmlResponseAsync(statusCode, appendAdditionalHtml, cancellationToken);
 
         /// <summary>
         /// Sets a redirection status code and adds a <c>Location</c> header to the response.

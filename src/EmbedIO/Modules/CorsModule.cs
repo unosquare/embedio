@@ -59,7 +59,7 @@ namespace EmbedIO.Modules
         }
 
         /// <inheritdoc />
-        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct)
+        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             var isOptions = context.Request.HttpVerb == HttpVerbs.Options;
 

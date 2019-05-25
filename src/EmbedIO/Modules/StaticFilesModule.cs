@@ -87,8 +87,8 @@ namespace EmbedIO.Modules
         }
 
         /// <inheritdoc />
-        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken ct)
-            => HandleGet(context, path, context.Request.HttpVerb == HttpVerbs.Get, ct);
+        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+            => HandleGet(context, path, context.Request.HttpVerb == HttpVerbs.Get, cancellationToken);
 
         /// <summary>
         /// Gets the file system path from which files are retrieved.
@@ -173,14 +173,14 @@ namespace EmbedIO.Modules
             return value;
         }
 
-        private Task<bool> HandleGet(IHttpContext context, string path, bool sendBuffer, CancellationToken ct)
+        private Task<bool> HandleGet(IHttpContext context, string path, bool sendBuffer, CancellationToken cancellationToken)
         {
             switch (MapUrlPath(path, out var localPath))
             {
                 case PathMappingResult.IsFile:
-                    return HandleFile(context, localPath, sendBuffer, ct);
+                    return HandleFile(context, localPath, sendBuffer, cancellationToken);
                 case PathMappingResult.IsDirectory:
-                    return HandleDirectory(context, localPath, ct);
+                    return HandleDirectory(context, localPath, cancellationToken);
                 default:
                     return Task.FromResult(false);
             }
@@ -288,7 +288,7 @@ namespace EmbedIO.Modules
             IHttpContext context,
             string localPath,
             bool sendBuffer,
-            CancellationToken ct)
+            CancellationToken cancellationToken)
         {
             Stream buffer = null;
 
@@ -333,7 +333,7 @@ namespace EmbedIO.Modules
                         context.Response,
                         buffer,
                         context.AcceptGzip(buffer.Length),
-                        ct)
+                        cancellationToken)
                     .ConfigureAwait(false);
             }
             catch (HttpListenerException)
@@ -348,7 +348,7 @@ namespace EmbedIO.Modules
             return true;
         }
 
-        private Task<bool> HandleDirectory(IHttpContext context, string localPath, CancellationToken ct)
+        private Task<bool> HandleDirectory(IHttpContext context, string localPath, CancellationToken cancellationToken)
         {
             var entries = new[] { context.Request.RawUrl == "/" ? string.Empty : "<a href='../'>../</a>" }
                 .Concat(
@@ -403,7 +403,7 @@ namespace EmbedIO.Modules
 
             sb.Append("</pre><hr/></body></html>");
 
-            return context.HtmlResponseAsync(sb.ToString(), cancellationToken: ct);
+            return context.HtmlResponseAsync(sb.ToString(), cancellationToken: cancellationToken);
         }
 
         private Stream GetFileStream(IHttpContext context, FileSystemInfo fileInfo, bool usingPartial, out bool isTagValid)
