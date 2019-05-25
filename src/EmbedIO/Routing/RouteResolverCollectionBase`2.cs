@@ -27,6 +27,12 @@ namespace EmbedIO.Routing
         /// suitable to be handled by <paramref name="handler"/>.</param>
         /// <param name="route">The route to match URL paths against.</param>
         /// <param name="handler">A callback used to handle matching contexts.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="route"/> is <see langword="null"/>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
+        /// </exception>
+        /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
         /// <seealso cref="ResolveAsync"/>
         /// <seealso cref="Add(TData,string,SyncRoutedHandler{TContext})"/>
         /// <seealso cref="RouteResolverBase{TContext,TData}.Add(TData,RoutedHandler{TContext})"/>
@@ -50,6 +56,12 @@ namespace EmbedIO.Routing
         /// suitable to be handled by <paramref name="handler"/>.</param>
         /// <param name="route">The route to match URL paths against.</param>
         /// <param name="handler">A callback used to handle matching contexts.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="route"/> is <see langword="null"/>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
+        /// </exception>
+        /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
         /// <seealso cref="ResolveAsync"/>
         /// <seealso cref="Add(TData,string,RoutedHandler{TContext})"/>
         /// <seealso cref="RouteResolverBase{TContext,TData}.Add(TData,SyncRoutedHandler{TContext})"/>
@@ -110,8 +122,9 @@ namespace EmbedIO.Routing
         }
 
         /// <summary>
-        /// Creates an instance of <typeparamref name="TResolver"/> that can resolve
-        /// the specified route.
+        /// <para>Called by <see cref="Add(TData,string,RoutedHandler{TContext})"/>
+        /// and <see cref="Add(TData,string,SyncRoutedHandler{TContext})"/> to create an instance
+        /// of <typeparamref name="TResolver"/> that can resolve the specified route.</para>
         /// </summary>
         /// <param name="route">The route to resolve.</param>
         /// <returns>A newly-constructed instance of <typeparamref name="TResolver"/>.</returns>

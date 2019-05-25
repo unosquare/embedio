@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
@@ -43,6 +44,7 @@ namespace EmbedIO.Routing
         /// <param name="data">Data used to determine which contexts are
         /// suitable to be handled by <paramref name="handler"/>.</param>
         /// <param name="handler">A callback used to handle matching contexts.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="handler"/> is <see langword="null"/>.</exception>
         /// <seealso cref="RoutedHandler{TContext}"/>
         /// <seealso cref="ResolveAsync"/>
         /// <seealso cref="GetContextData"/>
@@ -65,6 +67,7 @@ namespace EmbedIO.Routing
         /// <param name="data">Data used to determine which contexts are
         /// suitable to be handled by <paramref name="handler"/>.</param>
         /// <param name="handler">A callback used to handle matching contexts.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="handler"/> is <see langword="null"/>.</exception>
         /// <seealso cref="RoutedHandler{TContext}"/>
         /// <seealso cref="ResolveAsync"/>
         /// <seealso cref="GetContextData"/>
