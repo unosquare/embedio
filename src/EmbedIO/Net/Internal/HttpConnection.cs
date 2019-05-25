@@ -11,7 +11,7 @@ using EmbedIO.Utilities;
 
 namespace EmbedIO.Net.Internal
 {
-    internal sealed class HttpConnection : IDisposable
+    internal sealed partial class HttpConnection : IDisposable
     {
         internal const int BufferSize = 8192;
 
@@ -59,8 +59,6 @@ namespace EmbedIO.Net.Internal
             Dispose(false);
         }
 
-        internal X509Certificate2 ClientCertificate { get; }
-
         public int Reuses { get; private set; }
 
         public Stream Stream { get; }
@@ -72,6 +70,14 @@ namespace EmbedIO.Net.Internal
         public bool IsSecure { get; }
 
         public ListenerPrefix Prefix { get; set; }
+
+        internal X509Certificate2 ClientCertificate { get; }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         public async Task BeginReadRequest()
         {
@@ -376,25 +382,6 @@ namespace EmbedIO.Net.Internal
             }
 
             RemoveConnection();
-        }
-
-        private enum InputState
-        {
-            RequestLine,
-            Headers,
-        }
-
-        private enum LineState
-        {
-            None,
-            Cr,
-            Lf,
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         private void Dispose(bool disposing)

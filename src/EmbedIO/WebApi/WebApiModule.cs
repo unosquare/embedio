@@ -44,6 +44,11 @@ namespace EmbedIO.WebApi
         }
 
         /// <summary>
+        /// Gets the number of controllers registered in this module.
+        /// </summary>
+        public int ControllerCount => _controllerTypes.Count;
+
+        /// <summary>
         /// <para>Gets a value indicating whether a JSON description
         /// of exceptions thrown by controllers is included in
         /// <c>500 Internal Server Error</c> responses.</para>
@@ -52,11 +57,6 @@ namespace EmbedIO.WebApi
         /// the value of this property.</para>
         /// </summary>
         protected bool SendJsonOnException { get; }
-
-        /// <summary>
-        /// Gets the number of controllers registered in this module.
-        /// </summary>
-        public int ControllerCount => _controllerTypes.Count;
 
         /// <summary>
         /// <para>Registers a controller type using a constructor.</para>
@@ -262,97 +262,6 @@ namespace EmbedIO.WebApi
             RegisterControllerInternal(controllerType, factory);
         }
 
-        private Type ValidateControllerType(string argumentName, Type value)
-        {
-            value = Validate.NotNull(argumentName, value);
-            if (value.IsAbstract
-             || value.IsGenericTypeDefinition
-             || !value.IsSubclassOf(typeof(WebApiController)))
-                throw new ArgumentException($"Controller type must be a non-abstract subclass of {nameof(WebApiController)}.", argumentName);
-
-            if (_controllerTypes.Contains(value))
-                throw new ArgumentException("Controller type is already registered in this module.", argumentName);
-
-            return value;
-        }
-
-        private void RegisterControllerInternal(Type controllerType, Func<IHttpContext, CancellationToken, WebApiController> factory)
-        {
-            var methods = controllerType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                .Where(m => m.ReturnType == typeof(bool)
-                          || m.ReturnType == typeof(Task<bool>));
-
-            foreach (var method in methods)
-            {
-                foreach (var attribute in method.GetCustomAttributes(typeof(RouteHandlerAttribute)).OfType<RouteHandlerAttribute>())
-                {
-                    if (_delegateMap.ContainsKey(attribute.Route) == false)
-                    {
-                        _delegateMap.Add(attribute.Route, new Dictionary<HttpVerbs, MethodCacheInstance>()); // add
-                    }
-
-                    var delegatePair = new MethodCacheInstance(factory, new MethodCache(method));
-
-                    if (_delegateMap[attribute.Route].ContainsKey(attribute.Verb))
-                        _delegateMap[attribute.Route][attribute.Verb] = delegatePair; // update
-                    else
-                        _delegateMap[attribute.Route].Add(attribute.Verb, delegatePair); // add
-                }
-            }
-
-            _controllerTypes.Add(controllerType);
-        }
-
-        /// <summary>
-        /// Normalizes a path meant for Regex matching, extracts the route parameters, and returns the registered
-        /// path in the internal delegate map.
-        /// </summary>
-        /// <param name="verb">The verb.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="routeParams">The route parameters.</param>
-        /// <returns>A string that represents the registered path in the internal delegate map.</returns>
-        private string NormalizeRegexPath(
-            HttpVerbs verb,
-            IHttpContext context,
-            IDictionary<string, object> routeParams)
-        {
-            var path = context.Request.Url.AbsolutePath;
-
-            foreach (var route in _delegateMap.Keys)
-            {
-                var urlParam = path.RequestRegexUrlParams(route, () => !_delegateMap[route].Keys.Contains(verb));
-
-                if (urlParam == null) continue;
-
-                foreach (var kvp in urlParam)
-                {
-                    routeParams.Add(kvp.Key, kvp.Value);
-                }
-
-                return route;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Looks for a path that matches the one provided by the context.
-        /// </summary>
-        /// <param name="context"> The HTTP context.</param>
-        /// <returns><c>true</c> if the path is found, otherwise <c>false</c>.</returns>
-        private bool IsMethodNotAllowed(IHttpContext context)
-        {
-            var path = context.Request.Url.AbsolutePath;
-
-            foreach (var route in _delegateMap.Keys)
-            {
-                if (path.RequestRegexUrlParams(route) != null)
-                    return true;
-            }
-
-            return _delegateMap.ContainsKey(path);
-        }
-
         /// <inheritdoc />
         public override async Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
@@ -449,6 +358,97 @@ namespace EmbedIO.WebApi
 
             context.Response.StandardResponseWithoutBody((int)HttpStatusCode.InternalServerError);
             return Task.FromResult(true);
+        }
+
+        private Type ValidateControllerType(string argumentName, Type value)
+        {
+            value = Validate.NotNull(argumentName, value);
+            if (value.IsAbstract
+             || value.IsGenericTypeDefinition
+             || !value.IsSubclassOf(typeof(WebApiController)))
+                throw new ArgumentException($"Controller type must be a non-abstract subclass of {nameof(WebApiController)}.", argumentName);
+
+            if (_controllerTypes.Contains(value))
+                throw new ArgumentException("Controller type is already registered in this module.", argumentName);
+
+            return value;
+        }
+
+        private void RegisterControllerInternal(Type controllerType, Func<IHttpContext, CancellationToken, WebApiController> factory)
+        {
+            var methods = controllerType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                .Where(m => m.ReturnType == typeof(bool)
+                          || m.ReturnType == typeof(Task<bool>));
+
+            foreach (var method in methods)
+            {
+                foreach (var attribute in method.GetCustomAttributes(typeof(RouteHandlerAttribute)).OfType<RouteHandlerAttribute>())
+                {
+                    if (_delegateMap.ContainsKey(attribute.Route) == false)
+                    {
+                        _delegateMap.Add(attribute.Route, new Dictionary<HttpVerbs, MethodCacheInstance>()); // add
+                    }
+
+                    var delegatePair = new MethodCacheInstance(factory, new MethodCache(method));
+
+                    if (_delegateMap[attribute.Route].ContainsKey(attribute.Verb))
+                        _delegateMap[attribute.Route][attribute.Verb] = delegatePair; // update
+                    else
+                        _delegateMap[attribute.Route].Add(attribute.Verb, delegatePair); // add
+                }
+            }
+
+            _controllerTypes.Add(controllerType);
+        }
+
+        /// <summary>
+        /// Normalizes a path meant for Regex matching, extracts the route parameters, and returns the registered
+        /// path in the internal delegate map.
+        /// </summary>
+        /// <param name="verb">The verb.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="routeParams">The route parameters.</param>
+        /// <returns>A string that represents the registered path in the internal delegate map.</returns>
+        private string NormalizeRegexPath(
+            HttpVerbs verb,
+            IHttpContext context,
+            IDictionary<string, object> routeParams)
+        {
+            var path = context.Request.Url.AbsolutePath;
+
+            foreach (var route in _delegateMap.Keys)
+            {
+                var urlParam = path.RequestRegexUrlParams(route, () => !_delegateMap[route].Keys.Contains(verb));
+
+                if (urlParam == null) continue;
+
+                foreach (var kvp in urlParam)
+                {
+                    routeParams.Add(kvp.Key, kvp.Value);
+                }
+
+                return route;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Looks for a path that matches the one provided by the context.
+        /// </summary>
+        /// <param name="context"> The HTTP context.</param>
+        /// <returns><c>true</c> if the path is found, otherwise <c>false</c>.</returns>
+        private bool IsMethodNotAllowed(IHttpContext context)
+        {
+            var path = context.Request.Url.AbsolutePath;
+
+            foreach (var route in _delegateMap.Keys)
+            {
+                if (path.RequestRegexUrlParams(route) != null)
+                    return true;
+            }
+
+            return _delegateMap.ContainsKey(path);
         }
     }
 }

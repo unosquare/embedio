@@ -41,56 +41,6 @@ namespace EmbedIO.Net.Internal
             set => throw new NotSupportedException();
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (_disposed) return;
-
-            _disposed = true;
-
-            if (!disposing) return;
-
-            var ms = GetHeaders();
-            var chunked = _response.SendChunked;
-
-            if (_stream.CanWrite)
-            {
-                try
-                {
-                    byte[] bytes;
-                    if (ms != null)
-                    {
-                        var start = ms.Position;
-                        if (chunked && !_trailerSent)
-                        {
-                            bytes = GetChunkSizeBytes(0, true);
-                            ms.Position = ms.Length;
-                            ms.Write(bytes, 0, bytes.Length);
-                        }
-
-                        InternalWrite(ms.ToArray(), (int)start, (int)(ms.Length - start));
-                        _trailerSent = true;
-                    }
-                    else if (chunked && !_trailerSent)
-                    {
-                        bytes = GetChunkSizeBytes(0, true);
-                        InternalWrite(bytes, 0, bytes.Length);
-                        _trailerSent = true;
-                    }
-                }
-                catch (ObjectDisposedException)
-                {
-                    // Ignored
-                }
-                catch (IOException)
-                {
-                    // Ignore error due to connection reset by peer
-                }
-            }
-
-            _response.Close();
-            _stream.Dispose();
-        }
-
         /// <inheritdoc />
         public override void Flush()
         {
@@ -163,6 +113,56 @@ namespace EmbedIO.Net.Internal
             {
                 _stream.Write(buffer, offset, count);
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+
+            _disposed = true;
+
+            if (!disposing) return;
+
+            var ms = GetHeaders();
+            var chunked = _response.SendChunked;
+
+            if (_stream.CanWrite)
+            {
+                try
+                {
+                    byte[] bytes;
+                    if (ms != null)
+                    {
+                        var start = ms.Position;
+                        if (chunked && !_trailerSent)
+                        {
+                            bytes = GetChunkSizeBytes(0, true);
+                            ms.Position = ms.Length;
+                            ms.Write(bytes, 0, bytes.Length);
+                        }
+
+                        InternalWrite(ms.ToArray(), (int)start, (int)(ms.Length - start));
+                        _trailerSent = true;
+                    }
+                    else if (chunked && !_trailerSent)
+                    {
+                        bytes = GetChunkSizeBytes(0, true);
+                        InternalWrite(bytes, 0, bytes.Length);
+                        _trailerSent = true;
+                    }
+                }
+                catch (ObjectDisposedException)
+                {
+                    // Ignored
+                }
+                catch (IOException)
+                {
+                    // Ignore error due to connection reset by peer
+                }
+            }
+
+            _response.Close();
+            _stream.Dispose();
         }
 
         private static byte[] GetChunkSizeBytes(int size, bool final) => Encoding.UTF8.GetBytes($"{size:x}\r\n{(final ? "\r\n" : string.Empty)}");

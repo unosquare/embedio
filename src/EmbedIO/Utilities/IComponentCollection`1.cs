@@ -11,18 +11,6 @@ namespace EmbedIO.Utilities
     public interface IComponentCollection<T> : IReadOnlyList<T>
     {
         /// <summary>
-        /// Gets the component with the specified name.
-        /// </summary>
-        /// <value>
-        /// The component.
-        /// </value>
-        /// <param name="name">The name.</param>
-        /// <returns>The component with the specified <paramref name="name"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="name"/> is null.</exception>
-        /// <exception cref="KeyNotFoundException">The property is retrieved and <paramref name="name"/> is not found.</exception>
-        T this[string name] { get; }
-
-        /// <summary>
         /// Gets an <see cref="IReadOnlyDictionary{TKey,TValue}"/> interface representing the named components.
         /// </summary>
         /// <value>
@@ -42,6 +30,18 @@ namespace EmbedIO.Utilities
         /// A list of <see cref="ValueTuple{T1,T2}"/>s, each containing a safe name and a component.
         /// </value>
         IReadOnlyList<(string SafeName, T Component)> WithSafeNames { get; }
+
+        /// <summary>
+        /// Gets the component with the specified name.
+        /// </summary>
+        /// <value>
+        /// The component.
+        /// </value>
+        /// <param name="name">The name.</param>
+        /// <returns>The component with the specified <paramref name="name"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="name"/> is null.</exception>
+        /// <exception cref="KeyNotFoundException">The property is retrieved and <paramref name="name"/> is not found.</exception>
+        T this[string name] { get; }
 
         /// <summary>
         /// Adds a component to the collection,

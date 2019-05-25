@@ -85,10 +85,6 @@ namespace EmbedIO.Files
 #endif
         }
 
-        /// <inheritdoc />
-        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
-            => HandleGet(context, path, context.Request.HttpVerb == HttpVerbs.Get, cancellationToken);
-
         /// <summary>
         /// Gets the file system path from which files are retrieved.
         /// </summary>
@@ -141,6 +137,10 @@ namespace EmbedIO.Files
         public int MaxRamCacheFileSize { get; set; } = 250 * 1024;
 
         private RamCache RamCache { get; } = new RamCache();
+
+        /// <inheritdoc />
+        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+            => HandleGet(context, path, context.Request.HttpVerb == HttpVerbs.Get, cancellationToken);
 
         /// <summary>
         /// Clears the RAM cache.

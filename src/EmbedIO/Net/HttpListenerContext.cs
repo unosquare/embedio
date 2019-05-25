@@ -64,15 +64,6 @@ namespace EmbedIO.Net
         /// <inheritdoc />
         public IDictionary<object, object> Items => _items.Value;
 
-        /// <inheritdoc />
-        public void OnClose(Action<IHttpContext> callback)
-        {
-            if (_closed)
-                throw new InvalidOperationException("HTTP context has already been closed.");
-
-            _closeCallbacks.Push(Validate.NotNull(nameof(callback), callback));
-        }
-
         internal HttpListenerRequest HttpListenerRequest => Request as HttpListenerRequest;
 
         internal HttpListenerResponse HttpListenerResponse => Response as HttpListenerResponse;
@@ -84,6 +75,15 @@ namespace EmbedIO.Net
         internal bool HaveError => ErrorMessage != null;
 
         internal HttpConnection Connection { get; }
+
+        /// <inheritdoc />
+        public void OnClose(Action<IHttpContext> callback)
+        {
+            if (_closed)
+                throw new InvalidOperationException("HTTP context has already been closed.");
+
+            _closeCallbacks.Push(Validate.NotNull(nameof(callback), callback));
+        }
 
         /// <inheritdoc />
         public void Close()

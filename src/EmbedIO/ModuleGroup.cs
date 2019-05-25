@@ -53,6 +53,10 @@ namespace EmbedIO
             GC.SuppressFinalize(this);
         }
 
+        /// <inheritdoc />
+        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+            => _modules.DispatchRequestAsync(context, cancellationToken);
+
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
@@ -70,9 +74,5 @@ namespace EmbedIO
         {
             _modules.StartAll(cancellationToken);
         }
-
-        /// <inheritdoc />
-        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
-            => _modules.DispatchRequestAsync(context, cancellationToken);
     }
 }

@@ -13,7 +13,7 @@ namespace EmbedIO.Net.Internal
     /// <summary>
     /// Represents an HTTP Listener Request.
     /// </summary>
-    internal sealed class HttpListenerRequest : IHttpRequest
+    internal sealed partial class HttpListenerRequest : IHttpRequest
     {
         private static readonly byte[] HttpStatus100 = Encoding.UTF8.GetBytes("HTTP/1.1 100 Continue\r\n\r\n");
         private static readonly char[] Separators = { ' ' };
@@ -27,7 +27,6 @@ namespace EmbedIO.Net.Internal
         private bool _kaSet;
         private bool _keepAlive;
 
-        private delegate X509Certificate2 GccDelegate();
         private GccDelegate _gccDelegate;
 
         internal HttpListenerRequest(HttpListenerContext context)
@@ -192,6 +191,43 @@ namespace EmbedIO.Net.Internal
             && ProtocolVersion >= HttpVersion.Version11 
             && Headers.Contains("Upgrade", "websocket") 
             && Headers.Contains("Connection", "Upgrade");
+
+        /// <summary>
+        /// Begins to the get client certificate asynchronously.
+        /// </summary>
+        /// <param name="requestCallback">The request callback.</param>
+        /// <param name="state">The state.</param>
+        /// <returns>An async result.</returns>
+        public IAsyncResult BeginGetClientCertificate(AsyncCallback requestCallback, object state)
+        {
+            if (_gccDelegate == null)
+                _gccDelegate = GetClientCertificate;
+            return _gccDelegate.BeginInvoke(requestCallback, state);
+        }
+
+        /// <summary>
+        /// Finishes the get client certificate asynchronous operation.
+        /// </summary>
+        /// <param name="asyncResult">The asynchronous result.</param>
+        /// <returns>The certificate from the client.</returns>
+        /// <exception cref="System.ArgumentNullException">asyncResult.</exception>
+        /// <exception cref="System.InvalidOperationException"></exception>
+        public X509Certificate2 EndGetClientCertificate(IAsyncResult asyncResult)
+        {
+            if (asyncResult == null)
+                throw new ArgumentNullException(nameof(asyncResult));
+
+            if (_gccDelegate == null)
+                throw new InvalidOperationException();
+
+            return _gccDelegate.EndInvoke(asyncResult);
+        }
+
+        /// <summary>
+        /// Gets the client certificate.
+        /// </summary>
+        /// <returns></returns>
+        public X509Certificate2 GetClientCertificate() => _context.Connection.ClientCertificate;
 
         internal void SetRequestLine(string req)
         {
@@ -460,42 +496,5 @@ namespace EmbedIO.Net.Internal
                 }
             }
         }
-
-        /// <summary>
-        /// Begins to the get client certificate asynchronously.
-        /// </summary>
-        /// <param name="requestCallback">The request callback.</param>
-        /// <param name="state">The state.</param>
-        /// <returns>An async result.</returns>
-        public IAsyncResult BeginGetClientCertificate(AsyncCallback requestCallback, object state)
-        {
-            if (_gccDelegate == null)
-                _gccDelegate = GetClientCertificate;
-            return _gccDelegate.BeginInvoke(requestCallback, state);
-        }
-        
-        /// <summary>
-        /// Finishes the get client certificate asynchronous operation.
-        /// </summary>
-        /// <param name="asyncResult">The asynchronous result.</param>
-        /// <returns>The certificate from the client.</returns>
-        /// <exception cref="System.ArgumentNullException">asyncResult.</exception>
-        /// <exception cref="System.InvalidOperationException"></exception>
-        public X509Certificate2 EndGetClientCertificate(IAsyncResult asyncResult)
-        {
-            if (asyncResult == null)
-                throw new ArgumentNullException(nameof(asyncResult));
-
-            if (_gccDelegate == null)
-                throw new InvalidOperationException();
-
-            return _gccDelegate.EndInvoke(asyncResult);
-        }
-        
-        /// <summary>
-        /// Gets the client certificate.
-        /// </summary>
-        /// <returns></returns>
-        public X509Certificate2 GetClientCertificate() => _context.Connection.ClientCertificate;
     }
 }

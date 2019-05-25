@@ -27,14 +27,6 @@ namespace EmbedIO.WebSockets.Internal
             GC.SuppressFinalize(this);
         }
 
-        private void Dispose(bool disposing)
-        {
-            if (!disposing)
-                return;
-
-            UnderlyingWebSocket.Dispose();
-        }
-
         /// <inheritdoc />
         public Task SendAsync(byte[] buffer, bool isText, CancellationToken cancellationToken = default)
             => UnderlyingWebSocket.SendAsync(
@@ -50,6 +42,14 @@ namespace EmbedIO.WebSockets.Internal
         /// <inheritdoc />
         public Task CloseAsync(CloseStatusCode code, string comment = null, CancellationToken cancellationToken = default)=>
             UnderlyingWebSocket.CloseAsync(MapCloseStatus(code), comment ?? string.Empty, cancellationToken);
+
+        private void Dispose(bool disposing)
+        {
+            if (!disposing)
+                return;
+
+            UnderlyingWebSocket.Dispose();
+        }
 
         private WebSocketCloseStatus MapCloseStatus(CloseStatusCode code)
         {

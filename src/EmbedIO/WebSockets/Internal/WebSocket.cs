@@ -56,6 +56,9 @@ namespace EmbedIO.WebSockets.Internal
         /// </summary>
         public event EventHandler<MessageEventArgs> OnMessage;
 
+        /// <inheritdoc />
+        public WebSocketState State => _readyState;
+
         internal CompressionMethod Compression => _compression;
 
         internal bool EmitOnPing { get; set; }
@@ -67,9 +70,6 @@ namespace EmbedIO.WebSockets.Internal
         /// <c>true</c> if the connection is alive; otherwise, <c>false</c>.
         /// </value>
         internal bool IsAlive => PingAsync().Result; // TODO: Change?
-
-        /// <inheritdoc />
-        public WebSocketState State => _readyState;
 
         internal bool InContinuation { get; private set; }
 
@@ -248,6 +248,12 @@ namespace EmbedIO.WebSockets.Internal
             return _receivePong != null && _receivePong.WaitOne(timeout);
         }
 
+        private static bool IsOpcodeReserved(CloseStatusCode code)
+            => code == CloseStatusCode.Undefined
+            || code == CloseStatusCode.NoStatus
+            || code == CloseStatusCode.Abnormal
+            || code == CloseStatusCode.TlsHandshakeFailure;
+
         private void Dispose(bool disposing)
         {
             try
@@ -259,12 +265,6 @@ namespace EmbedIO.WebSockets.Internal
                 // Ignored
             }
         }
-
-        private static bool IsOpcodeReserved(CloseStatusCode code)
-            => code == CloseStatusCode.Undefined
-            || code == CloseStatusCode.NoStatus
-            || code == CloseStatusCode.Abnormal
-            || code == CloseStatusCode.TlsHandshakeFailure;
 
         private async Task InternalCloseAsync(
             PayloadData payloadData = null,
