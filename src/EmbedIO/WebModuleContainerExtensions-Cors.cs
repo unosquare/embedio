@@ -1,6 +1,5 @@
 ﻿using System;
-using EmbedIO.Constants;
-using EmbedIO.Modules;
+using EmbedIO.Cors;
 using EmbedIO.Utilities;
 
 namespace EmbedIO
@@ -44,9 +43,9 @@ namespace EmbedIO
         /// <seealso cref="CorsModule"/>
         public static TContainer WithCors<TContainer>(
             this TContainer @this,
-            string origins = Cors.All,
-            string headers = Cors.All,
-            string methods = Cors.All)
+            string origins = CorsModule.All,
+            string headers = CorsModule.All,
+            string methods = CorsModule.All)
             where TContainer : class, IWebModuleContainer
             => WithCors(@this, UrlPath.Root, origins, headers, methods);
     }

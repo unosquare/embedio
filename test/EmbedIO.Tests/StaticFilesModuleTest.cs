@@ -5,8 +5,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using EmbedIO.Constants;
-using EmbedIO.Modules;
+using EmbedIO.Actions;
+using EmbedIO.Files;
 using EmbedIO.Tests.TestObjects;
 using NUnit.Framework;
 

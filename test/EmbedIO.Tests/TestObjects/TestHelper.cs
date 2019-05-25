@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using EmbedIO.Modules;
+using EmbedIO.Files;
 
 namespace EmbedIO.Tests.TestObjects
 {

@@ -1,7 +1,7 @@
 ﻿using System;
-using EmbedIO.Constants;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Sessions;
 
 namespace EmbedIO
 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using EmbedIO.Constants;
 using EmbedIO.Utilities;
 
 namespace EmbedIO.Routing

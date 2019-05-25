@@ -2,7 +2,7 @@
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using EmbedIO.Modules;
+using EmbedIO.Authentication;
 using EmbedIO.Tests.Internal;
 using EmbedIO.Utilities;
 using NUnit.Framework;

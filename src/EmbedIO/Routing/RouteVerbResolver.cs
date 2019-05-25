@@ -1,6 +1,4 @@
-﻿using EmbedIO.Constants;
-
-namespace EmbedIO.Routing
+﻿namespace EmbedIO.Routing
 {
     /// <summary>
     /// Handles a HTTP request by matching it against a route,

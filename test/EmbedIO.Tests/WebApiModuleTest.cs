@@ -3,9 +3,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using EmbedIO.Constants;
-using EmbedIO.Modules;
+using EmbedIO.Net;
 using EmbedIO.Tests.TestObjects;
+using EmbedIO.WebApi;
 using NUnit.Framework;
 using Unosquare.Swan.Formatters;
 

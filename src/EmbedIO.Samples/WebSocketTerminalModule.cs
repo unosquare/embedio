@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Threading.Tasks;
-using EmbedIO.Modules;
+using EmbedIO.WebSockets;
 
 namespace EmbedIO.Samples
 {

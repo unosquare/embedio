@@ -16,7 +16,7 @@ namespace EmbedIO.Utilities
         /// <para>RFC2616 tokens are used, for example, as:</para>
         /// <list type="bullet">
         /// <item><description>cookie names, as stated in <see href="https://tools.ietf.org/html/rfc6265#section-4.1.1">RFC6265, Section 4.1.1</see>;</description></item>
-        /// <item><description>WebSocket protocol names, as stated in <see href="https://tools.ietf.org/html/rfc6455#section-4.3">RFC6455, Section 4.3</see>.</description></item>
+        /// <item><description>SystemWebSocket protocol names, as stated in <see href="https://tools.ietf.org/html/rfc6455#section-4.3">RFC6455, Section 4.3</see>.</description></item>
         /// </list>
         /// <para>Only a restricted set of characters are allowed in tokens, including:</para>
         /// <list type="bullet">

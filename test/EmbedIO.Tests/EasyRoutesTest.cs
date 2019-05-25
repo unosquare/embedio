@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using EmbedIO.Net;
+using EmbedIO.Tests.Internal;
 using NUnit.Framework;
 
 namespace EmbedIO.Tests
@@ -48,7 +50,7 @@ namespace EmbedIO.Tests
 
                 server.RunAsync();
 
-                var response = await server.GetClient().SendAsync(new TestHttpRequest(Constants.HttpVerbs.Post));
+                var response = await server.GetClient().SendAsync(new TestHttpRequest(HttpVerbs.Post));
 
                 Assert.AreEqual(Ok, response.GetBodyAsString());
             }
@@ -64,7 +66,7 @@ namespace EmbedIO.Tests
 
                 server.RunAsync();
 
-                var response = await server.GetClient().SendAsync(new TestHttpRequest(Constants.HttpVerbs.Put));
+                var response = await server.GetClient().SendAsync(new TestHttpRequest(HttpVerbs.Put));
 
                 Assert.AreEqual(Ok, response.GetBodyAsString());
             }
@@ -80,7 +82,7 @@ namespace EmbedIO.Tests
 
                 server.RunAsync();
 
-                var response = await server.GetClient().SendAsync(new TestHttpRequest(Constants.HttpVerbs.Head));
+                var response = await server.GetClient().SendAsync(new TestHttpRequest(HttpVerbs.Head));
 
                 Assert.AreEqual(Ok, response.GetBodyAsString());
             }
@@ -96,7 +98,7 @@ namespace EmbedIO.Tests
 
                 server.RunAsync();
 
-                var response = await server.GetClient().SendAsync(new TestHttpRequest(Constants.HttpVerbs.Delete));
+                var response = await server.GetClient().SendAsync(new TestHttpRequest(HttpVerbs.Delete));
 
                 Assert.AreEqual(Ok, response.GetBodyAsString());
             }
@@ -112,7 +114,7 @@ namespace EmbedIO.Tests
 
                 server.RunAsync();
 
-                var response = await server.GetClient().SendAsync(new TestHttpRequest(Constants.HttpVerbs.Options));
+                var response = await server.GetClient().SendAsync(new TestHttpRequest(HttpVerbs.Options));
 
                 Assert.AreEqual(Ok, response.GetBodyAsString());
             }
@@ -128,7 +130,7 @@ namespace EmbedIO.Tests
 
                 server.RunAsync();
 
-                var response = await server.GetClient().SendAsync(new TestHttpRequest(Constants.HttpVerbs.Patch));
+                var response = await server.GetClient().SendAsync(new TestHttpRequest(HttpVerbs.Patch));
 
                 Assert.AreEqual(Ok, response.GetBodyAsString());
             }

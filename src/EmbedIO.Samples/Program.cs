@@ -3,7 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbedIO.Modules;
+using EmbedIO.Actions;
+using EmbedIO.WebApi;
 using Unosquare.Swan;
 
 namespace EmbedIO.Samples
@@ -103,7 +104,7 @@ namespace EmbedIO.Samples
                     .WithApiController<PeopleController>())
                 .WithModule(new WebSocketChatModule("/chat"))
                 .WithModule(new WebSocketTerminalModule("/terminal"))
-                .WithModule(new ActionModule("/", Constants.HttpVerbs.Any, (ctx, path, ct) => ctx.JsonResponseAsync(new { Message = "Error" }, ct)));
+                .WithModule(new ActionModule("/", HttpVerbs.Any, (ctx, path, ct) => ctx.JsonResponseAsync(new { Message = "Error" }, ct)));
 
             // Listen for state changes.
             server.StateChanged += (s, e) => $"WebServer New State - {e.NewState}".Info();

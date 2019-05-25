@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbedIO.Constants;
+using EmbedIO.Files;
 using EmbedIO.Utilities;
 
 namespace EmbedIO
@@ -119,7 +119,7 @@ namespace EmbedIO
             if (useGzip)
             {
                 buffer = await buffer.CompressAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
-                response.AddHeader(HttpHeaderNames.ContentEncoding, HttpHeaderNames.CompressionMethods.Gzip);
+                response.AddHeader(HttpHeaderNames.ContentEncoding, CompressionMethods.Gzip);
             }
 
             response.ContentLength64 = buffer.Length;
@@ -145,7 +145,7 @@ namespace EmbedIO
             CancellationToken cancellationToken = default)
         {
             buffer.Position = lowerByteIndex;
-            return buffer.CopyToAsync(response.OutputStream, Modules.FileModuleBase.ChunkSize, cancellationToken);
+            return buffer.CopyToAsync(response.OutputStream, FileModuleBase.ChunkSize, cancellationToken);
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Security.Principal;
+using EmbedIO.Sessions;
 
 namespace EmbedIO
 {

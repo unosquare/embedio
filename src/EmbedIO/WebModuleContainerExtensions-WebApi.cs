@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using EmbedIO.Modules;
 using EmbedIO.Utilities;
+using EmbedIO.WebApi;
 using Unosquare.Swan;
 
 namespace EmbedIO

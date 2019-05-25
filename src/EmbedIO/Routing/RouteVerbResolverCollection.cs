@@ -1,5 +1,4 @@
-﻿using EmbedIO.Constants;
-using Unosquare.Swan;
+﻿using Unosquare.Swan;
 
 namespace EmbedIO.Routing
 {

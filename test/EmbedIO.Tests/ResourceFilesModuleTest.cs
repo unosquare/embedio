@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using EmbedIO.Modules;
+using EmbedIO.Files;
 using EmbedIO.Tests.TestObjects;
 using NUnit.Framework;
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using EmbedIO.Modules;
 using EmbedIO.Net;
 using NUnit.Framework;
 using Unosquare.Swan;

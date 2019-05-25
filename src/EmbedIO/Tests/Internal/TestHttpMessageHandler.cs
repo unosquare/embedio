@@ -1,11 +1,11 @@
-﻿namespace EmbedIO.Tests.Internal
-{
-    using System.Net.Http;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Utilities;
+﻿using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using EmbedIO.Utilities;
 
-    internal class TestHttpMessageHandler : HttpMessageHandler
+namespace EmbedIO.Tests.Internal
+{
+    internal sealed class TestHttpMessageHandler : HttpMessageHandler
     {
         private readonly TestWebServer _server;
 

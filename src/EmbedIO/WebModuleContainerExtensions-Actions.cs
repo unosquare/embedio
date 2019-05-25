@@ -1,6 +1,5 @@
 ﻿using System;
-using EmbedIO.Constants;
-using EmbedIO.Modules;
+using EmbedIO.Actions;
 using EmbedIO.Utilities;
 
 namespace EmbedIO

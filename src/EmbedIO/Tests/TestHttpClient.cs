@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
-using EmbedIO.Internal;
-using EmbedIO.Tests.Internal;
+using EmbedIO.Net.Internal;
 using EmbedIO.Utilities;
 
 namespace EmbedIO.Tests
@@ -56,7 +55,7 @@ namespace EmbedIO.Tests
         /// <exception cref="InvalidOperationException">The IWebServer implementation should be TestWebServer.</exception>
         public async Task<TestHttpResponse> SendAsync(TestHttpRequest request)
         {
-            var context = new HttpContextImpl(Validate.NotNull(nameof(request), request));
+            var context = new SystemHttpContext(Validate.NotNull(nameof(request), request));
 
             _webServer.EnqueueContext(context);
 

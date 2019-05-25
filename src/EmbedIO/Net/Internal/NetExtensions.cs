@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using EmbedIO.Constants;
 using Unosquare.Swan;
 
 namespace EmbedIO.Net.Internal

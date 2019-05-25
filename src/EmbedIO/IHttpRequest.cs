@@ -3,7 +3,6 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Text;
-using EmbedIO.Constants;
 
 namespace EmbedIO
 {
@@ -11,7 +10,7 @@ namespace EmbedIO
     /// <summary>
     /// Interface to create a HTTP Request.
     /// </summary>
-    public interface IHttpRequest : IHttpBase
+    public interface IHttpRequest : IHttpMessage
     {
         /// <summary>
         /// Gets the request headers.

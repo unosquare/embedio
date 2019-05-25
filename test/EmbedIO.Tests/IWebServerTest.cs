@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using EmbedIO.Constants;
-using EmbedIO.Modules;
+using EmbedIO.Actions;
+using EmbedIO.Net;
+using EmbedIO.Sessions;
 using EmbedIO.Utilities;
 using EmbedIO.Tests.TestObjects;
 using NUnit.Framework;

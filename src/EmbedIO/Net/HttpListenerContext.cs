@@ -5,13 +5,14 @@ using System.Net;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbedIO.Internal;
 using EmbedIO.Net.Internal;
+using EmbedIO.Sessions;
 using EmbedIO.Utilities;
+using EmbedIO.WebSockets;
+using EmbedIO.WebSockets.Internal;
 using Unosquare.Swan;
 using HttpListenerRequest = EmbedIO.Net.Internal.HttpListenerRequest;
 using HttpListenerResponse = EmbedIO.Net.Internal.HttpListenerResponse;
-using WebSocket = EmbedIO.Net.Internal.WebSocket;
 
 namespace EmbedIO.Net
 {

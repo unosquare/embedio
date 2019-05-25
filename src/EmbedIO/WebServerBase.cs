@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Globalization;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbedIO.Constants;
 using EmbedIO.Internal;
+using EmbedIO.Sessions;
 using EmbedIO.Utilities;
 using Unosquare.Swan;
 

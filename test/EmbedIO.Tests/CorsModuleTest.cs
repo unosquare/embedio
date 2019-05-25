@@ -1,8 +1,9 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
-using EmbedIO.Constants;
-using EmbedIO.Modules;
+using EmbedIO.Actions;
+using EmbedIO.Tests.Internal;
 using EmbedIO.Tests.TestObjects;
+using EmbedIO.WebApi;
 using NUnit.Framework;
 using Unosquare.Swan.Formatters;
 

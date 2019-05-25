@@ -3,8 +3,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using EmbedIO.Modules;
+using EmbedIO.Files;
+using EmbedIO.Sessions;
 using EmbedIO.Tests.TestObjects;
+using EmbedIO.WebApi;
 using NUnit.Framework;
 
 namespace EmbedIO.Tests

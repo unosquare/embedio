@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using EmbedIO.Modules;
+using EmbedIO.WebSockets;
 using Unosquare.Swan.Formatters;
 
 namespace EmbedIO.Tests.TestObjects
@@ -2885,6 +2885,6 @@ cygSR/MggDhTGBrfglUEKIXXbcbfwgukfyVEJJPOIP0xTtdAhAKBTNyWZuTIcRmIjIcgEEau",
             => Task.CompletedTask;
 
         protected override Task OnClientConnectedAsync(IWebSocketContext context)
-            => context.WebSocket.CloseAsync(Net.CloseStatusCode.InvalidData, "Your data is invalid");
+            => context.WebSocket.CloseAsync(CloseStatusCode.InvalidData, "Your data is invalid");
     }
 }

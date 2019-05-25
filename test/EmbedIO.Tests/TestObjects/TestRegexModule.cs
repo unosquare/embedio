@@ -1,4 +1,4 @@
-﻿using EmbedIO.Modules;
+﻿using EmbedIO.WebApi;
 
 namespace EmbedIO.Tests.TestObjects
 {

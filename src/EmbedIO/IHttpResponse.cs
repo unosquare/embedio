@@ -8,7 +8,7 @@ namespace EmbedIO
     /// <summary>
     /// Interface to create a HTTP Response.
     /// </summary>
-    public interface IHttpResponse : IHttpBase
+    public interface IHttpResponse : IHttpMessage
     {
         /// <summary>
         /// Gets the response headers.

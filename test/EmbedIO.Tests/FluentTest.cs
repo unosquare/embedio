@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EmbedIO.Modules;
+using EmbedIO.Files;
 using EmbedIO.Tests.TestObjects;
 using EmbedIO.Utilities;
+using EmbedIO.WebApi;
+using EmbedIO.WebSockets;
 using NUnit.Framework;
 using Unosquare.Swan;
 

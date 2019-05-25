@@ -5,7 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbedIO.Constants;
+using EmbedIO.Files;
 using EmbedIO.Internal;
 using Unosquare.Swan.Formatters;
 
@@ -170,8 +170,8 @@ namespace EmbedIO
         /// <param name="length">The length.</param>
         /// <returns><c>true</c> if a request can be gzipped; otherwise, <c>false</c>.</returns>
         public static bool AcceptGzip(this IHttpContext context, long length) =>
-            context.RequestHeader(HttpHeaderNames.AcceptEncoding).Contains(HttpHeaderNames.CompressionMethods.Gzip) &&
-            length < Modules.FileModuleBase.MaxGzipInputLength &&
+            context.RequestHeader(HttpHeaderNames.AcceptEncoding).Contains(CompressionMethods.Gzip) &&
+            length < FileModuleBase.MaxGzipInputLength &&
             context.Response.ContentType?.StartsWith("audio") != true &&
             context.Response.ContentType?.StartsWith("video") != true;
 
@@ -229,7 +229,7 @@ namespace EmbedIO
                             await buffer.CopyToAsync(compressor, 1024, cancellationToken).ConfigureAwait(false);
                             await buffer.CopyToAsync(compressor).ConfigureAwait(false);
 
-                            // WebSocket use this
+                            // SystemWebSocket use this
                             targetStream.Write(LastByte, 0, 1);
                             targetStream.Position = 0;
                         }

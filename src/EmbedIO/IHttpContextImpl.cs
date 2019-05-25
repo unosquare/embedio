@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Sessions;
+using EmbedIO.WebSockets;
 
 namespace EmbedIO
 {
@@ -27,11 +29,11 @@ namespace EmbedIO
         void Close();
 
         /// <summary>
-        /// Asynchronously handles the HTTP part of a WebSocket request
+        /// Asynchronously handles the HTTP part of a SystemWebSocket request
         /// and returns a newly-created <seealso cref="IWebSocketContext"/> interface.
         /// </summary>
-        /// <param name="requestedProtocols">The requested WebSocket sub-protocols.</param>
-        /// <param name="acceptedProtocol">The accepted WebSocket sub-protocol.</param>
+        /// <param name="requestedProtocols">The requested SystemWebSocket sub-protocols.</param>
+        /// <param name="acceptedProtocol">The accepted SystemWebSocket sub-protocol.</param>
         /// <param name="receiveBufferSize">Size of the receive buffer.</param>
         /// <param name="keepAliveInterval">The keep-alive interval.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to stop the server.</param>

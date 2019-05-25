@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using EmbedIO.Modules;
+using EmbedIO.WebApi;
 
 namespace EmbedIO.Routing
 {

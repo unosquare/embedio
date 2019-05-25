@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbedIO.Constants;
-using EmbedIO.Internal;
-using EmbedIO.Net;
+using EmbedIO.Net.Internal;
 using Unosquare.Swan;
 
 namespace EmbedIO

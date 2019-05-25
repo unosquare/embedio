@@ -1,5 +1,4 @@
 ﻿using System;
-using EmbedIO.Constants;
 
 namespace EmbedIO
 {

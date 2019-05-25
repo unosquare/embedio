@@ -1,7 +1,7 @@
-﻿using EmbedIO.Constants;
-using System.Threading.Tasks;
-using EmbedIO.Modules;
+﻿using System.Threading.Tasks;
+using EmbedIO.Net;
 using EmbedIO.Routing;
+using EmbedIO.WebApi;
 
 namespace EmbedIO.Tests.TestObjects
 {
