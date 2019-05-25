@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -159,7 +160,7 @@ namespace EmbedIO
         private X509Certificate2 GetCertificate(string thumb = null)
         {
             // strip any non-hexadecimal values and make uppercase
-            var thumbprint = Regex.Replace(thumb ?? CertificateThumb, @"[^\da-fA-F]", string.Empty).ToUpper();
+            var thumbprint = Regex.Replace(thumb ?? CertificateThumb, @"[^\da-fA-F]", string.Empty).ToUpper(CultureInfo.InvariantCulture);
             var store = new X509Store(StoreName, StoreLocation);
 
             try

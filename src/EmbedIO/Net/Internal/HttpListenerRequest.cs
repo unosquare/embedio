@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -68,7 +69,7 @@ namespace EmbedIO.Net.Internal
                     .Select(x => new
                     {
                         Charset = x[0],
-                        Q = x.Length == 1 ? 1m : decimal.Parse(x[1].Trim().Replace("q=", string.Empty)),
+                        Q = x.Length == 1 ? 1m : decimal.Parse(x[1].Trim().Replace("q=", string.Empty), CultureInfo.InvariantCulture),
                     })
                     .OrderBy(x => x.Q)
                     .Select(x => x.Charset)
@@ -347,7 +348,7 @@ namespace EmbedIO.Net.Internal
                     try
                     {
                         // TODO: max. content_length?
-                        ContentLength64 = long.Parse(val.Trim());
+                        ContentLength64 = long.Parse(val.Trim(), CultureInfo.InvariantCulture);
                         if (ContentLength64 < 0)
                             _context.ErrorMessage = "Invalid Content-Length.";
                         _clSet = true;
@@ -423,7 +424,7 @@ namespace EmbedIO.Net.Internal
             {
                 if (str.StartsWith("$Version"))
                 {
-                    version = int.Parse(str.Substring(str.IndexOf('=') + 1).Unquote());
+                    version = int.Parse(str.Substring(str.IndexOf('=') + 1).Unquote(), CultureInfo.InvariantCulture);
                 }
                 else if (str.StartsWith("$Path") && current != null)
                 {

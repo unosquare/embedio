@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using EmbedIO.Net.Internal;
 using Unosquare.Swan;
@@ -102,7 +103,7 @@ namespace EmbedIO.WebSockets.Internal
             var payloadLen = PayloadLength;
 
             // Extended Payload Length
-            var extPayloadLen = payloadLen > 125 ? FullPayloadLength.ToString() : string.Empty;
+            var extPayloadLen = payloadLen > 125 ? FullPayloadLength.ToString(CultureInfo.InvariantCulture) : string.Empty;
 
             // Masking Key
             var maskingKey = BitConverter.ToString(MaskingKey);

@@ -338,21 +338,21 @@ namespace EmbedIO.Net.Internal
         private string GetHeaderData()
         {
             var sb = new StringBuilder()
-                .AppendFormat("HTTP/{0} {1} {2}\r\n", ProtocolVersion, _statusCode, StatusDescription);
+                .AppendFormat(CultureInfo.InvariantCulture, "HTTP/{0} {1} {2}\r\n", ProtocolVersion, _statusCode, StatusDescription);
 
             foreach (var key in HeaderCollection.AllKeys.Where(x => x != "Set-Cookie"))
-                sb.AppendFormat("{0}: {1}\r\n", key, HeaderCollection[key]);
+                sb.AppendFormat(CultureInfo.InvariantCulture, "{0}: {1}\r\n", key, HeaderCollection[key]);
             
             if (_cookies != null)
             {
                 foreach (var cookie in _cookies)
-                    sb.AppendFormat("Set-Cookie: {0}\r\n", CookieToClientString(cookie));
+                    sb.AppendFormat(CultureInfo.InvariantCulture, "Set-Cookie: {0}\r\n", CookieToClientString(cookie));
             }
 
             if (HeaderCollection.AllKeys.Contains("Set-Cookie"))
             {
                 foreach (var cookie in CookieCollection.ParseResponse(HeaderCollection["Set-Cookie"]))
-                    sb.AppendFormat("Set-Cookie: {0}\r\n", CookieToClientString(cookie));
+                    sb.AppendFormat(CultureInfo.InvariantCulture, "Set-Cookie: {0}\r\n", CookieToClientString(cookie));
             }
 
             return sb.Append("\r\n").ToString();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace EmbedIO.Net.Internal
 {
@@ -27,7 +28,7 @@ namespace EmbedIO.Net.Internal
             {
                 Host = uri.Substring(startHost, colon - startHost);
                 root = uri.IndexOf('/', colon, length - colon);
-                Port = int.Parse(uri.Substring(colon + 1, root - colon - 1));
+                Port = int.Parse(uri.Substring(colon + 1, root - colon - 1), CultureInfo.InvariantCulture);
             }
             else
             {

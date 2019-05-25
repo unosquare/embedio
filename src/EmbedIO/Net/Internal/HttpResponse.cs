@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -47,10 +48,10 @@ namespace EmbedIO.Net.Internal
         public override string ToString()
         {
             var output = new StringBuilder(64)
-                .AppendFormat("HTTP/{0} {1} {2}\r\n", ProtocolVersion, StatusCode, Reason);
+                .AppendFormat(CultureInfo.InvariantCulture, "HTTP/{0} {1} {2}\r\n", ProtocolVersion, StatusCode, Reason);
 
             foreach (var key in Headers.AllKeys)
-                output.AppendFormat("{0}: {1}\r\n", key, Headers[key]);
+                output.AppendFormat(CultureInfo.InvariantCulture, "{0}: {1}\r\n", key, Headers[key]);
 
             output.Append("\r\n");
             
@@ -89,7 +90,11 @@ namespace EmbedIO.Net.Internal
             if (statusLine.Length != 3)
                 throw new ArgumentException($"Invalid status line: {headerParts[0]}");
 
-            return new HttpResponse(int.Parse(statusLine[1]), statusLine[2], new Version(statusLine[0].Substring(5)), ParseHeaders(headerParts));
+            return new HttpResponse(
+                int.Parse(statusLine[1], CultureInfo.InvariantCulture),
+                statusLine[2],
+                new Version(statusLine[0].Substring(5)),
+                ParseHeaders(headerParts));
         }
         
         protected static NameValueCollection ParseHeaders(string[] headerParts)

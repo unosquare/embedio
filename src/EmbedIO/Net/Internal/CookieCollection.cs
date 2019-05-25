@@ -107,13 +107,13 @@ namespace EmbedIO.Net.Internal
 
                 if (pair.StartsWith("version", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
-                    cookie.Version = int.Parse(GetValue(pair, true));
+                    cookie.Version = int.Parse(GetValue(pair, true), CultureInfo.InvariantCulture);
                 }
                 else if (pair.StartsWith("expires", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
                     var buff = new StringBuilder(GetValue(pair), 32);
                     if (i < pairs.Length - 1)
-                        buff.AppendFormat(", {0}", pairs[++i].Trim());
+                        buff.AppendFormat(CultureInfo.InvariantCulture, ", {0}", pairs[++i].Trim());
 
                     if (!DateTime.TryParseExact(
                         buff.ToString(),
@@ -128,7 +128,7 @@ namespace EmbedIO.Net.Internal
                 }
                 else if (pair.StartsWith("max-age", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
-                    var max = int.Parse(GetValue(pair, true));
+                    var max = int.Parse(GetValue(pair, true), CultureInfo.InvariantCulture);
 
                     cookie.Expires = DateTime.Now.AddSeconds(max);
                 }
