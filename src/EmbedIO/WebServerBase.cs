@@ -179,7 +179,7 @@ namespace EmbedIO
         {
             base.OnBeforeLockConfiguration();
 
-            _modules.LockConfiguration();
+            _modules.Lock();
         }
 
         /// <summary>
