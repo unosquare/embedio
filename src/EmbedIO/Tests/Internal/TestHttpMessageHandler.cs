@@ -14,7 +14,7 @@ namespace EmbedIO.Tests.Internal
             _server = Validate.NotNull(nameof(server), server);
         }
 
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }
