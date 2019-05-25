@@ -22,7 +22,7 @@ namespace EmbedIO
     /// <seealso cref="IWebModuleContainer" />
     public class ModuleGroup : WebModuleBase, IDisposable, IWebModuleContainer
     {
-        readonly WebModuleCollection _modules;
+        private readonly WebModuleCollection _modules;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModuleGroup"/> class.
