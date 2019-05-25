@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,20 +34,15 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
+        /// <exception cref="InvalidOperationException">The <see cref="CreateResolver"/> method
+        /// returned <see langword="null"/>.</exception>
         /// <seealso cref="ResolveAsync"/>
         /// <seealso cref="Add(TData,string,SyncRoutedHandler{TContext})"/>
         /// <seealso cref="RouteResolverBase{TContext,TData}.Add(TData,RoutedHandler{TContext})"/>
         public void Add(TData data, string route, RoutedHandler<TContext> handler)
         {
             handler = Validate.NotNull(nameof(handler), handler);
-            var resolver = _resolvers.FirstOrDefault(r => r.Route == route);
-            if (resolver == null)
-            {
-                resolver = CreateResolver(route);
-                _resolvers.Add(resolver);
-            }
-
-            resolver.Add(data, handler);
+            GetResolver(route).Add(data, handler);
         }
 
         /// <summary>
@@ -62,20 +58,15 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
+        /// <exception cref="InvalidOperationException">The <see cref="CreateResolver"/> method
+        /// returned <see langword="null"/>.</exception>
         /// <seealso cref="ResolveAsync"/>
         /// <seealso cref="Add(TData,string,RoutedHandler{TContext})"/>
         /// <seealso cref="RouteResolverBase{TContext,TData}.Add(TData,SyncRoutedHandler{TContext})"/>
         public void Add(TData data, string route, SyncRoutedHandler<TContext> handler)
         {
             handler = Validate.NotNull(nameof(handler), handler);
-            var resolver = _resolvers.FirstOrDefault(r => r.Route == route);
-            if (resolver == null)
-            {
-                resolver = CreateResolver(route);
-                _resolvers.Add(resolver);
-            }
-
-            resolver.Add(data, handler);
+            GetResolver(route).Add(data, handler);
         }
 
         /// <summary>
@@ -125,6 +116,8 @@ namespace EmbedIO.Routing
         /// <para>Called by <see cref="Add(TData,string,RoutedHandler{TContext})"/>
         /// and <see cref="Add(TData,string,SyncRoutedHandler{TContext})"/> to create an instance
         /// of <typeparamref name="TResolver"/> that can resolve the specified route.</para>
+        /// <para>If this method returns <see langword="null"/>, an <see cref="InvalidOperationException"/>
+        /// is thrown by the calling method.</para>
         /// </summary>
         /// <param name="route">The route to resolve.</param>
         /// <returns>A newly-constructed instance of <typeparamref name="TResolver"/>.</returns>
@@ -141,6 +134,19 @@ namespace EmbedIO.Routing
         /// <param name="result">The result returned by <paramref name="resolver"/>.<see cref="RouteResolverBase{TContext,TData}.ResolveAsync">ResolveAsync</see>.</param>
         protected virtual void OnResolverCalled(TContext context, TResolver resolver, RouteResolutionResult result)
         {
+        }
+
+        private TResolver GetResolver(string route)
+        {
+            var resolver = _resolvers.FirstOrDefault(r => r.Route == route);
+            if (resolver == null)
+            {
+                resolver = CreateResolver(route);
+                if (resolver == null)
+                    throw new InvalidOperationException($"Internal error: {nameof(CreateResolver)} returned null.");
+            }
+
+            return resolver;
         }
     }
 }
