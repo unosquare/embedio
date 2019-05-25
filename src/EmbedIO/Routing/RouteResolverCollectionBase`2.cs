@@ -28,9 +28,34 @@ namespace EmbedIO.Routing
         /// <param name="route">The route to match URL paths against.</param>
         /// <param name="handler">A callback used to handle matching contexts.</param>
         /// <seealso cref="ResolveAsync"/>
-        /// <seealso cref="RouteResolverBase{TContext,TData}.Add"/>
+        /// <seealso cref="Add(TData,string,SyncRoutedHandler{TContext})"/>
+        /// <seealso cref="RouteResolverBase{TContext,TData}.Add(TData,RoutedHandler{TContext})"/>
         public void Add(TData data, string route, RoutedHandler<TContext> handler)
         {
+            handler = Validate.NotNull(nameof(handler), handler);
+            var resolver = _resolvers.FirstOrDefault(r => r.Route == route);
+            if (resolver == null)
+            {
+                resolver = CreateResolver(route);
+                _resolvers.Add(resolver);
+            }
+
+            resolver.Add(data, handler);
+        }
+
+        /// <summary>
+        /// Associates some data and a route to a synchronous handler.
+        /// </summary>
+        /// <param name="data">Data used to determine which contexts are
+        /// suitable to be handled by <paramref name="handler"/>.</param>
+        /// <param name="route">The route to match URL paths against.</param>
+        /// <param name="handler">A callback used to handle matching contexts.</param>
+        /// <seealso cref="ResolveAsync"/>
+        /// <seealso cref="Add(TData,string,RoutedHandler{TContext})"/>
+        /// <seealso cref="RouteResolverBase{TContext,TData}.Add(TData,SyncRoutedHandler{TContext})"/>
+        public void Add(TData data, string route, SyncRoutedHandler<TContext> handler)
+        {
+            handler = Validate.NotNull(nameof(handler), handler);
             var resolver = _resolvers.FirstOrDefault(r => r.Route == route);
             if (resolver == null)
             {

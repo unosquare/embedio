@@ -56,6 +56,28 @@ namespace EmbedIO.Routing
         }
 
         /// <summary>
+        /// <para>Associates some data to a synchronous handler.</para>
+        /// <para>The <see cref="ResolveAsync"/> method calls <see cref="GetContextData"/>
+        /// to extract data from the context; then, for each registered data / handler pair,
+        /// <see cref="MatchContextData"/> is called to determine whether <paramref name="handler"/>
+        /// should be called.</para>
+        /// </summary>
+        /// <param name="data">Data used to determine which contexts are
+        /// suitable to be handled by <paramref name="handler"/>.</param>
+        /// <param name="handler">A callback used to handle matching contexts.</param>
+        /// <seealso cref="RoutedHandler{TContext}"/>
+        /// <seealso cref="ResolveAsync"/>
+        /// <seealso cref="GetContextData"/>
+        /// <seealso cref="MatchContextData"/>
+        public void Add(TData data, SyncRoutedHandler<TContext> handler)
+        {
+            EnsureConfigurationNotLocked();
+
+            handler = Validate.NotNull(nameof(handler), handler);
+            _dataHandlerPairs.Add((data, (ctx, path, pars, ct) => Task.FromResult(handler(ctx, path, pars, ct))));
+        }
+
+        /// <summary>
         /// Locks this instance, preventing further handler additions.
         /// </summary>
         public void Lock() => LockConfiguration();
@@ -64,15 +86,15 @@ namespace EmbedIO.Routing
         /// Asynchronously matches a URL path against <see cref="Route"/>;
         /// if the match is successful, tries to handle the specified <paramref name="context"/>
         /// using handlers selected according to data extracted from the context.
-        /// <para>Registered data / handler pairs are tried in the same order they were added by calling
-        /// <see cref="Add"/>.</para>
+        /// <para>Registered data / handler pairs are tried in the same order they were added.</para>
         /// </summary>
         /// <param name="context">The context to handle.</param>
         /// <param name="path">The URL path to match against <see cref="Route"/>.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> use to cancel the operation.</param>
         /// <returns>A <see cref="Task"/>, representing the ongoing operation,
         /// that will return a result in the form of one of the <see cref="RouteResolutionResult"/> constants.</returns>
-        /// <seealso cref="Add"/>
+        /// <seealso cref="Add(TData,RoutedHandler{TContext})"/>
+        /// <seealso cref="Add(TData,SyncRoutedHandler{TContext})"/>
         /// <seealso cref="GetContextData"/>
         /// <seealso cref="MatchContextData"/>
         public async Task<RouteResolutionResult> ResolveAsync(TContext context, string path, CancellationToken cancellationToken)
