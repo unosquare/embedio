@@ -20,8 +20,6 @@ namespace EmbedIO
 
         private ISessionManager _sessionManager;
 
-        private bool _configurationLocked;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServerBase"/> class.
         /// </summary>

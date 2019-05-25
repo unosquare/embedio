@@ -30,7 +30,6 @@ namespace EmbedIO.WebSockets.Internal
         private readonly Action _closeConnection;
         private CompressionMethod _compression = CompressionMethod.None;
         private volatile WebSocketState _readyState;
-        private WebSocketContext _context;
         private AutoResetEvent _exitReceiving;
         private FragmentBuffer _fragmentsBuffer;
         private volatile bool _inMessage;
