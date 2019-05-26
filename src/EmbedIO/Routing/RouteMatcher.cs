@@ -10,6 +10,9 @@ namespace EmbedIO.Routing
     /// </summary>
     public sealed class RouteMatcher
     {
+        private static readonly object _syncRoot = new object();
+        private static readonly Dictionary<string, RouteMatcher> _cache = new Dictionary<string, RouteMatcher>(StringComparer.Ordinal);
+
         private readonly Regex _regex;
 
         private RouteMatcher(string route, string pattern, IReadOnlyList<string> parameterNames)
@@ -31,44 +34,51 @@ namespace EmbedIO.Routing
 
         /// <summary>
         /// Constructs an instance of <see cref="RouteMatcher"/> by parsing the specified route.
+        /// <para>If the same route was previously parsed and the <see cref="ClearCache"/> method has not been called since,
+        /// this method obtains an instance from a static cache.</para>
         /// </summary>
         /// <param name="route">The route to parse.</param>
         /// <returns>A newly-constructed instance of <see cref="RouteMatcher"/>
         /// that will match URL paths against <paramref name="route"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="route"/> is <see langword="null"/>.</exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
+        /// <seealso cref="TryParse"/>
+        /// <seealso cref="ClearCache"/>
         public static RouteMatcher Parse(string route)
         {
-            string pattern = null;
-            var parameterNames = new List<string>();
-            var exception = Routing.Route.ParseInternal(route, parameterNames.Add, p => pattern = p);
+            var exception = TryParseInternal(route, out var result);
             if (exception != null)
                 throw exception;
 
-            return new RouteMatcher(route, pattern, parameterNames);
+            return result;
         }
 
         /// <summary>
-        /// Attempts to constructs an instance of <see cref="RouteMatcher" /> by parsing the specified route.
+        /// <para>Attempts to obtain an instance of <see cref="RouteMatcher" /> by parsing the specified route.</para>
+        /// <para>If the same route was previously parsed and the <see cref="ClearCache"/> method has not been called since,
+        /// this method obtains an instance from a static cache.</para>
         /// </summary>
         /// <param name="route">The route to parse.</param>
         /// <param name="result">When this method returns <see langword="true"/>, a newly-constructed instance of <see cref="RouteMatcher" />
         /// that will match URL paths against <paramref name="route"/>; otherwise, <see langword="null"/>.
         /// This parameter is passed uninitialized.</param>
         /// <returns><see langword="true"/> if parsing was successful; otherwise, <see langword="false"/>.</returns>
+        /// <seealso cref="Parse"/>
+        /// <seealso cref="ClearCache"/>
         public static bool TryParse(string route, out RouteMatcher result)
-        {
-            string pattern = null;
-            var parameterNames = new List<string>();
-            var exception = Routing.Route.ParseInternal(route, parameterNames.Add, p => pattern = p);
-            if (exception != null)
-            {
-                result = null;
-                return false;
-            }
+            => TryParseInternal(route, out result) == null;
 
-            result = new RouteMatcher(route, pattern, parameterNames);
-            return true;
+        /// <summary>
+        /// Clears <see cref="RouteMatcher"/>'s internal instance cache.
+        /// </summary>
+        /// <seealso cref="Parse"/>
+        /// <seealso cref="TryParse"/>
+        public static void ClearCache()
+        {
+            lock (_syncRoot)
+            {
+                _cache.Clear();
+            }
         }
 
         /// <summary>
@@ -92,6 +102,28 @@ namespace EmbedIO.Routing
                     ParameterNames,
                     match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).ToArray())
                 : null;
+        }
+
+        private static Exception TryParseInternal(string route, out RouteMatcher result)
+        {
+            lock (_syncRoot)
+            {
+                if (_cache.TryGetValue(route, out result))
+                    return null;
+
+                string pattern = null;
+                var parameterNames = new List<string>();
+                var exception = Routing.Route.ParseInternal(route, parameterNames.Add, p => pattern = p);
+                if (exception != null)
+                {
+                    result = null;
+                    return exception;
+                }
+
+                result = new RouteMatcher(route, pattern, parameterNames);
+                _cache.Add(route, result);
+                return null;
+            }
         }
     }
 }
