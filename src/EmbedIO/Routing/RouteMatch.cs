@@ -1,0 +1,106 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace EmbedIO.Routing
+{
+    /// <summary>
+    /// <para>Represents a route resolved by a <see cref="RouteResolverBase{TContext,TData}"/>.</para>
+    /// <para>This class may be used both as a dictionary of route parameter names and values,
+    /// and a list of the values.</para>
+    /// <para>Because of its double nature, this class cannot be enumerated directly. However,
+    /// you may use the <see cref="Pairs"/> property to iterate over name / value pairs, and the
+    /// <see cref="Values"/> property to iterate over values.</para>
+    /// <para>When enumerated in a non-generic fashion via the <see cref="IEnumerable"/> interface,
+    /// this class iterates over name / value pairs.</para>
+    /// </summary>
+#pragma warning disable CA1710 // Rename class to end in "Collection"
+    public sealed class RouteMatch : IReadOnlyList<string>, IReadOnlyDictionary<string, string>
+#pragma warning restore CA1710
+    {
+        private readonly IReadOnlyList<string> _values;
+
+        internal RouteMatch(string path, IReadOnlyList<string> names, IReadOnlyList<string> values)
+        {
+            Path = path;
+            Names = names;
+            _values = values;
+        }
+
+        /// <summary>
+        /// Gets the URL path that was successfully matched against the route.
+        /// </summary>
+        public string Path { get; }
+
+        /// <summary>
+        /// Gets a list of the names of the route's parameters.
+        /// </summary>
+        public IReadOnlyList<string> Names { get; }
+
+        /// <inheritdoc />
+        public int Count => _values.Count;
+
+        /// <inheritdoc />
+        public IEnumerable<string> Keys => Names;
+
+        /// <inheritdoc />
+        public IEnumerable<string> Values => _values;
+
+        /// <summary>
+        /// Gets an <see cref="IEnumerable{T}"/> interface that can be used
+        /// to iterate over name / value pairs.
+        /// </summary>
+        public IEnumerable<KeyValuePair<string, string>> Pairs => this;
+
+        /// <inheritdoc />
+        public string this[int index] => _values[index];
+
+        /// <inheritdoc />
+        public string this[string key]
+        {
+            get
+            {
+                var count = Names.Count;
+                for (var i = 0; i < count; i++)
+                {
+                    if (Names[i] == key)
+                    {
+                        return _values[i];
+                    }
+                }
+
+                throw new KeyNotFoundException("The parameter name was not found.");
+            }
+        }
+
+        /// <inheritdoc />
+        IEnumerator<KeyValuePair<string, string>> IEnumerable<KeyValuePair<string, string>>.GetEnumerator()
+            => Names.Zip(_values, (n, v) => new KeyValuePair<string, string>(n, v)).GetEnumerator();
+
+        /// <inheritdoc />
+        IEnumerator<string> IEnumerable<string>.GetEnumerator() => _values.GetEnumerator();
+
+        /// <inheritdoc />
+        IEnumerator IEnumerable.GetEnumerator() => Pairs.GetEnumerator();
+
+        /// <inheritdoc />
+        public bool ContainsKey(string key) => Names.Any(n => n == key);
+
+        /// <inheritdoc />
+        public bool TryGetValue(string key, out string value)
+        {
+            var count = Names.Count;
+            for (var i = 0; i < count; i++)
+            {
+                if (Names[i] == key)
+                {
+                    value = _values[i];
+                    return true;
+                }
+            }
+
+            value = null;
+            return false;
+        }
+    }
+}

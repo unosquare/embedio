@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -30,12 +29,11 @@ namespace EmbedIO.Routing
         /// <summary>
         /// <para>Adds handlers, associating them with HTTP method / route pairs by means
         /// of <see cref="RouteHandlerAttribute">RouteHandler</see> attributes.</para>
-        /// <para>A compatible handler is a static or instance method that takes four
+        /// <para>A compatible handler is a static or instance method that takes 3
         /// parameters having the following types, in order:</para>
         /// <list type="number">
         /// <item><description><see cref="IHttpContext"/></description></item>
-        /// <item><description><see cref="string"/></description></item>
-        /// <item><description><see cref="IReadOnlyDictionary{TKey,TValue}">IReadOnlyDictionary&lt;string,string&gt;</see></description></item>
+        /// <item><description><see cref="RouteMatch"/></description></item>
         /// <item><description><see cref="CancellationToken"/></description></item>
         /// </list>
         /// <para>The return type of a compatible handler may be either <see langword="bool"/>
@@ -107,13 +105,12 @@ namespace EmbedIO.Routing
             }
 
             var parameters = method.GetParameters();
-            if (parameters.Length != 4)
+            if (parameters.Length != 3)
                 return false;
 
             return parameters[0].ParameterType.IsAssignableFrom(typeof(IHttpContext))
-                && parameters[1].ParameterType.IsAssignableFrom(typeof(string))
-                && parameters[2].ParameterType.IsAssignableFrom(typeof(IReadOnlyDictionary<string, string>))
-                && parameters[3].ParameterType.IsAssignableFrom(typeof(CancellationToken));
+                && parameters[1].ParameterType.IsAssignableFrom(typeof(RouteMatch))
+                && parameters[2].ParameterType.IsAssignableFrom(typeof(CancellationToken));
         }
 
         // Call Add with all suitable methods of a Type, return sum of results.
@@ -137,8 +134,7 @@ namespace EmbedIO.Routing
 
             var parameters = new[] {
                 Expression.Parameter(typeof(IHttpContext), "context"),
-                Expression.Parameter(typeof(string), "path"),
-                Expression.Parameter(typeof(IReadOnlyDictionary<string, string>), "parameters"),
+                Expression.Parameter(typeof(RouteMatch), "route"),
                 Expression.Parameter(typeof(CancellationToken), "cancellationToken"),
             };
 

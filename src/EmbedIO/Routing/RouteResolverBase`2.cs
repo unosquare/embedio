@@ -77,7 +77,7 @@ namespace EmbedIO.Routing
             EnsureConfigurationNotLocked();
 
             handler = Validate.NotNull(nameof(handler), handler);
-            _dataHandlerPairs.Add((data, (ctx, path, pars, ct) => Task.FromResult(handler(ctx, path, pars, ct))));
+            _dataHandlerPairs.Add((data, (ctx, route, ct) => Task.FromResult(handler(ctx, route, ct))));
         }
 
         /// <summary>
@@ -104,8 +104,8 @@ namespace EmbedIO.Routing
         {
             LockConfiguration();
 
-            var parameters = _matcher.Match(path);
-            if (parameters == null)
+            var match = _matcher.Match(path);
+            if (match == null)
                 return RouteResolutionResult.RouteNotMatched;
 
             var contextData = GetContextData(context);
@@ -115,7 +115,7 @@ namespace EmbedIO.Routing
                 if (!MatchContextData(contextData, data))
                     continue;
 
-                if (await handler(context, path, parameters, cancellationToken).ConfigureAwait(false))
+                if (await handler(context, match, cancellationToken).ConfigureAwait(false))
                     return RouteResolutionResult.Success;
 
                 result = RouteResolutionResult.NoHandlerSuccessful;

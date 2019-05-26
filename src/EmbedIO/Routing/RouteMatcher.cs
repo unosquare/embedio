@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using EmbedIO.Utilities;
 
 namespace EmbedIO.Routing
 {
@@ -73,24 +72,26 @@ namespace EmbedIO.Routing
         }
 
         /// <summary>
-        /// Tries to match the specified URL path against <see cref="Route"/>
-        /// and extract the route's parameters.
+        /// Matches the specified URL path against <see cref="Route"/>
+        /// and extracts values for the route's parameters.
         /// </summary>
         /// <param name="path">The URL path to match.</param>
-        /// <returns>If <paramref name="path"/> matches <see cref="Route"/>, a dictionary of parameter names and values;
+        /// <returns>If the match is successful, a <see cref="RouteMatch"/> object;
         /// otherwise, <see langword="null"/>.</returns>
-        public IReadOnlyDictionary<string, string> Match(string path)
+        public RouteMatch Match(string path)
         {
             if (path == null)
                 return null;
 
             var match = _regex.Match(path);
-            if (!match.Success)
-                return null;
 
-            var groups = match.Groups;
-            var i = 1; // Skip the first match group, representing the whole string.
-            return ParameterNames.ToDictionary(n => n, _ => groups[i++].Value);
+            // Skip the first match group, representing the whole string.
+            return match.Success 
+                ? new RouteMatch(
+                    path,
+                    ParameterNames,
+                    match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).ToArray())
+                : null;
         }
     }
 }
