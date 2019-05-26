@@ -54,7 +54,7 @@ namespace EmbedIO
         }
 
         /// <inheritdoc />
-        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected override Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
             => _modules.DispatchRequestAsync(context, cancellationToken);
 
         /// <summary>

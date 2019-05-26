@@ -14,7 +14,7 @@ namespace EmbedIO.Tests.TestObjects
         {
         }
 
-        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected override Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             switch (path)
             {

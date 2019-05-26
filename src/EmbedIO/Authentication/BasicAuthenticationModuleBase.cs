@@ -40,7 +40,7 @@ namespace EmbedIO.Authentication
         public string Realm { get; }
 
         /// <inheritdoc />
-        public override async Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected override async Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             try
             {

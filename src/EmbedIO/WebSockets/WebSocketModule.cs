@@ -141,7 +141,7 @@ namespace EmbedIO.WebSockets
         }
 
         /// <inheritdoc />
-        public sealed override async Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected sealed override async Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             // The SystemWebSocket endpoint must match exactly, giving a path of "/".
             // In all other cases the path is longer, so there's no need to compare strings here.

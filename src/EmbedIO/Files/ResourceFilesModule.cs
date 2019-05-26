@@ -47,7 +47,7 @@ namespace EmbedIO.Files
         }
 
         /// <inheritdoc />
-        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected override Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
             => HandleGet(context, path, cancellationToken, context.Request.HttpVerb == HttpVerbs.Get);
 
         private static string FixPath(string s) => s == "/" ? "index.html" : s.Substring(1, s.Length - 1).Replace('/', '.');

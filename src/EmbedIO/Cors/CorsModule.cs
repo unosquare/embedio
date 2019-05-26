@@ -64,7 +64,7 @@ namespace EmbedIO.Cors
         }
 
         /// <inheritdoc />
-        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected override Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             var isOptions = context.Request.HttpVerb == HttpVerbs.Options;
 

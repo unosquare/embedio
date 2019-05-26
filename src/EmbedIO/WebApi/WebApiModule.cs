@@ -263,7 +263,7 @@ namespace EmbedIO.WebApi
         }
 
         /// <inheritdoc />
-        public override async Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected override async Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             var verb = context.Request.HttpVerb;
             var regExRouteParams = new Dictionary<string, object>();
@@ -339,19 +339,14 @@ namespace EmbedIO.WebApi
             return Task.FromResult(true);
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// <para>Called when a controller throws an exception while handling a request.</para>
         /// <para>The default behavior is to send a <c>500 Internal Server Error</c> response,
         /// optionally containing a JSON description of the exception, according to the value of
         /// the <see cref="SendJsonOnException"/> property.</para>
         /// </summary>
-        /// <param name="context">The context of the request being handled.</param>
-        /// <param name="path">The requested path, relative to <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
-        /// <param name="exception">The exception thrown by the controller.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-        /// <returns><see langword="true"/> if the request has been handled;
-        /// <see langword="false"/> if the request should be passed down the module chain.</returns>
-        protected virtual Task<bool> OnExceptionAsync(IHttpContext context, string path, Exception exception, CancellationToken cancellationToken)
+        protected override Task<bool> OnExceptionAsync(IHttpContext context, string path, Exception exception, CancellationToken cancellationToken)
         {
             if (SendJsonOnException)
                 return context.JsonExceptionResponseAsync(exception, cancellationToken: cancellationToken);

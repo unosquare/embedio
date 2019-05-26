@@ -23,7 +23,7 @@ namespace EmbedIO.Routing
         }
 
         /// <inheritdoc />
-        public override async Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected override async Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             var result = await _resolvers.ResolveAsync(context, path, cancellationToken).ConfigureAwait(false);
             switch (result)

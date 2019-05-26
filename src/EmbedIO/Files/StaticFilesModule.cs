@@ -138,14 +138,14 @@ namespace EmbedIO.Files
 
         private RamCache RamCache { get; } = new RamCache();
 
-        /// <inheritdoc />
-        public override Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
-            => HandleGet(context, path, context.Request.HttpVerb == HttpVerbs.Get, cancellationToken);
-
         /// <summary>
         /// Clears the RAM cache.
         /// </summary>
         public void ClearRamCache() => RamCache.Clear();
+
+        /// <inheritdoc />
+        protected override Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+            => HandleGet(context, path, context.Request.HttpVerb == HttpVerbs.Get, cancellationToken);
 
         private static string ValidateDefaultDocument(string argumentName, string value)
         {
