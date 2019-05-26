@@ -74,16 +74,6 @@ namespace EmbedIO.Routing
         }
 
         /// <inheritdoc />
-        IEnumerator<KeyValuePair<string, string>> IEnumerable<KeyValuePair<string, string>>.GetEnumerator()
-            => Names.Zip(_values, (n, v) => new KeyValuePair<string, string>(n, v)).GetEnumerator();
-
-        /// <inheritdoc />
-        IEnumerator<string> IEnumerable<string>.GetEnumerator() => _values.GetEnumerator();
-
-        /// <inheritdoc />
-        IEnumerator IEnumerable.GetEnumerator() => Pairs.GetEnumerator();
-
-        /// <inheritdoc />
         public bool ContainsKey(string key) => Names.Any(n => n == key);
 
         /// <inheritdoc />
@@ -102,5 +92,35 @@ namespace EmbedIO.Routing
             value = null;
             return false;
         }
+
+        /// <summary>
+        /// Returns the index of the parameter with the specified name.
+        /// </summary>
+        /// <param name="name">The parameter name.</param>
+        /// <returns>The index of the parameter, or -1 if none of the
+        /// route parameters have the specified name.</returns>
+        public int IndexOf(string name)
+        {
+            var count = Names.Count;
+            for (var i = 0; i < count; i++)
+            {
+                if (Names[i] == name)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        /// <inheritdoc />
+        IEnumerator<KeyValuePair<string, string>> IEnumerable<KeyValuePair<string, string>>.GetEnumerator()
+            => Names.Zip(_values, (n, v) => new KeyValuePair<string, string>(n, v)).GetEnumerator();
+
+        /// <inheritdoc />
+        IEnumerator<string> IEnumerable<string>.GetEnumerator() => _values.GetEnumerator();
+
+        /// <inheritdoc />
+        IEnumerator IEnumerable.GetEnumerator() => Pairs.GetEnumerator();
     }
 }
