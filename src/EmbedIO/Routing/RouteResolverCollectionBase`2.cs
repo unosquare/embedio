@@ -37,9 +37,9 @@ namespace EmbedIO.Routing
         /// <exception cref="InvalidOperationException">The <see cref="CreateResolver"/> method
         /// returned <see langword="null"/>.</exception>
         /// <seealso cref="ResolveAsync"/>
-        /// <seealso cref="Add(TData,string,SyncRoutedHandler{TContext})"/>
-        /// <seealso cref="RouteResolverBase{TContext,TData}.Add(TData,RoutedHandler{TContext})"/>
-        public void Add(TData data, string route, RoutedHandler<TContext> handler)
+        /// <seealso cref="Add(TData,string,SyncRouteHandler{TContext})"/>
+        /// <seealso cref="RouteResolverBase{TContext,TData}.Add(TData,RouteHandler{TContext})"/>
+        public void Add(TData data, string route, RouteHandler<TContext> handler)
         {
             handler = Validate.NotNull(nameof(handler), handler);
             GetResolver(route).Add(data, handler);
@@ -61,9 +61,9 @@ namespace EmbedIO.Routing
         /// <exception cref="InvalidOperationException">The <see cref="CreateResolver"/> method
         /// returned <see langword="null"/>.</exception>
         /// <seealso cref="ResolveAsync"/>
-        /// <seealso cref="Add(TData,string,RoutedHandler{TContext})"/>
-        /// <seealso cref="RouteResolverBase{TContext,TData}.Add(TData,SyncRoutedHandler{TContext})"/>
-        public void Add(TData data, string route, SyncRoutedHandler<TContext> handler)
+        /// <seealso cref="Add(TData,string,RouteHandler{TContext})"/>
+        /// <seealso cref="RouteResolverBase{TContext,TData}.Add(TData,SyncRouteHandler{TContext})"/>
+        public void Add(TData data, string route, SyncRouteHandler<TContext> handler)
         {
             handler = Validate.NotNull(nameof(handler), handler);
             GetResolver(route).Add(data, handler);
@@ -113,8 +113,8 @@ namespace EmbedIO.Routing
         }
 
         /// <summary>
-        /// <para>Called by <see cref="Add(TData,string,RoutedHandler{TContext})"/>
-        /// and <see cref="Add(TData,string,SyncRoutedHandler{TContext})"/> to create an instance
+        /// <para>Called by <see cref="Add(TData,string,RouteHandler{TContext})"/>
+        /// and <see cref="Add(TData,string,SyncRouteHandler{TContext})"/> to create an instance
         /// of <typeparamref name="TResolver"/> that can resolve the specified route.</para>
         /// <para>If this method returns <see langword="null"/>, an <see cref="InvalidOperationException"/>
         /// is thrown by the calling method.</para>

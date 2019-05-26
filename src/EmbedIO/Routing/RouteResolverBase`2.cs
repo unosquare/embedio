@@ -17,8 +17,8 @@ namespace EmbedIO.Routing
     public abstract class RouteResolverBase<TContext, TData> : ConfiguredObject
     {
         private readonly RouteMatcher _matcher;
-        private readonly List<(TData data, RoutedHandler<TContext> handler)> _dataHandlerPairs
-            = new List<(TData data, RoutedHandler<TContext> handler)>();
+        private readonly List<(TData data, RouteHandler<TContext> handler)> _dataHandlerPairs
+            = new List<(TData data, RouteHandler<TContext> handler)>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteResolverBase{TContext,TData}"/> class.
@@ -45,11 +45,11 @@ namespace EmbedIO.Routing
         /// suitable to be handled by <paramref name="handler"/>.</param>
         /// <param name="handler">A callback used to handle matching contexts.</param>
         /// <exception cref="ArgumentNullException"><paramref name="handler"/> is <see langword="null"/>.</exception>
-        /// <seealso cref="RoutedHandler{TContext}"/>
+        /// <seealso cref="RouteHandler{TContext}"/>
         /// <seealso cref="ResolveAsync"/>
         /// <seealso cref="GetContextData"/>
         /// <seealso cref="MatchContextData"/>
-        public void Add(TData data, RoutedHandler<TContext> handler)
+        public void Add(TData data, RouteHandler<TContext> handler)
         {
             EnsureConfigurationNotLocked();
 
@@ -68,11 +68,11 @@ namespace EmbedIO.Routing
         /// suitable to be handled by <paramref name="handler"/>.</param>
         /// <param name="handler">A callback used to handle matching contexts.</param>
         /// <exception cref="ArgumentNullException"><paramref name="handler"/> is <see langword="null"/>.</exception>
-        /// <seealso cref="RoutedHandler{TContext}"/>
+        /// <seealso cref="RouteHandler{TContext}"/>
         /// <seealso cref="ResolveAsync"/>
         /// <seealso cref="GetContextData"/>
         /// <seealso cref="MatchContextData"/>
-        public void Add(TData data, SyncRoutedHandler<TContext> handler)
+        public void Add(TData data, SyncRouteHandler<TContext> handler)
         {
             EnsureConfigurationNotLocked();
 
@@ -96,8 +96,8 @@ namespace EmbedIO.Routing
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> use to cancel the operation.</param>
         /// <returns>A <see cref="Task"/>, representing the ongoing operation,
         /// that will return a result in the form of one of the <see cref="RouteResolutionResult"/> constants.</returns>
-        /// <seealso cref="Add(TData,RoutedHandler{TContext})"/>
-        /// <seealso cref="Add(TData,SyncRoutedHandler{TContext})"/>
+        /// <seealso cref="Add(TData,RouteHandler{TContext})"/>
+        /// <seealso cref="Add(TData,SyncRouteHandler{TContext})"/>
         /// <seealso cref="GetContextData"/>
         /// <seealso cref="MatchContextData"/>
         public async Task<RouteResolutionResult> ResolveAsync(TContext context, string path, CancellationToken cancellationToken)

@@ -145,7 +145,7 @@ namespace EmbedIO.Routing
                 body = Expression.Call(TaskFromResult, body);
             }
 
-            var handler = Expression.Lambda<RoutedHandler<IHttpContext>>(body, parameters).Compile();
+            var handler = Expression.Lambda<RouteHandler<IHttpContext>>(body, parameters).Compile();
             foreach (var attribute in attributes)
             {
                 Add(attribute.Verb, attribute.Route, handler);

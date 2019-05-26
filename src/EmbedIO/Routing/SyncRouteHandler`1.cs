@@ -11,5 +11,5 @@ namespace EmbedIO.Routing
     /// <param name="cancellationToken">A <see cref="CancellationToken" /> used to cancel the operation.</param>
     /// <returns><see langword="true"/>if the request has been handled; otherwise, <see langword="false"/>.</returns>
     /// <seealso cref="RouteMatch"/>
-    public delegate bool SyncRoutedHandler<in TContext>(TContext context, RouteMatch route, CancellationToken cancellationToken);
+    public delegate bool SyncRouteHandler<in TContext>(TContext context, RouteMatch route, CancellationToken cancellationToken);
 }

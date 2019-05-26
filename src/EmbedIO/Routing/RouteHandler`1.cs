@@ -14,5 +14,5 @@ namespace EmbedIO.Routing
     /// A <see cref="Task" /> representing the ongoing operation, whose result will tell whether the request has been handled.
     /// </returns>
     /// <seealso cref="RouteMatch"/>
-    public delegate Task<bool> RoutedHandler<in TContext>(TContext context, RouteMatch route, CancellationToken cancellationToken);
+    public delegate Task<bool> RouteHandler<in TContext>(TContext context, RouteMatch route, CancellationToken cancellationToken);
 }
