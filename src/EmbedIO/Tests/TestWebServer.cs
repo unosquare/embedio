@@ -106,7 +106,7 @@ namespace EmbedIO.Tests
         }
 
         /// <inheritdoc />
-        protected override void OnException()
+        protected override void OnFatalException()
         {
             lock (_contexts)
             {

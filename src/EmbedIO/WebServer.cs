@@ -208,6 +208,6 @@ namespace EmbedIO
         protected override Task<IHttpContextImpl> GetContextAsync(CancellationToken cancellationToken) => Listener.GetContextAsync(cancellationToken);
 
         /// <inheritdoc />
-        protected override void OnException() => Listener?.Dispose();
+        protected override void OnFatalException() => Listener?.Dispose();
     }
 }

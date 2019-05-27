@@ -162,7 +162,7 @@ namespace EmbedIO
         /// <para>Called when an exception is caught in the web server's request processing loop.</para>
         /// <para>This method should tell the server socket to stop accepting further requests.</para>
         /// </summary>
-        protected abstract void OnException();
+        protected abstract void OnFatalException();
 
         private async Task HandleContextAsync(IHttpContextImpl context, CancellationToken cancellationToken)
         {
@@ -224,7 +224,7 @@ namespace EmbedIO
             }
             catch (Exception ex)
             {
-                OnException();
+                OnFatalException();
                 ex.Log(nameof(WebServerBase));
             }
         }
