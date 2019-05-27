@@ -144,6 +144,8 @@ namespace EmbedIO.Routing
                 resolver = CreateResolver(route);
                 if (resolver == null)
                     throw new InvalidOperationException($"Internal error: {nameof(CreateResolver)} returned null.");
+
+                _resolvers.Add(resolver);
             }
 
             return resolver;
