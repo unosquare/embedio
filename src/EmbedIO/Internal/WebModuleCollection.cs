@@ -28,12 +28,13 @@ namespace EmbedIO.Internal
 
         internal async Task<bool> DispatchRequestAsync(IHttpContext context, CancellationToken cancellationToken)
         {
-            var requestedPath = UrlPath.UnsafeStripPrefix(context.Request.Url.AbsolutePath, _baseUrlPath);
+            var requestedPath = UrlPath.UnsafeStripPrefix(UrlPath.UnsafeNormalize(context.Request.Url.AbsolutePath, false), _baseUrlPath);
             if (requestedPath == null)
                 return false;
 
             requestedPath = "/" + requestedPath;
 
+            $"[{context.Id}] Requested path = {requestedPath}".Debug(_logSource);
             foreach (var (name, module) in WithSafeNames)
             {
                 var path = UrlPath.UnsafeStripPrefix(requestedPath, module.BaseUrlPath);
