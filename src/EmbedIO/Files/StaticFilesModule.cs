@@ -47,14 +47,14 @@ namespace EmbedIO.Files
         /// <param name="useDirectoryBrowser">If set to <see langword="true"/>, enable directory browsing.</param>
         /// <param name="useGzip">If set to <see langword="true"/>, enable GZip compression.</param>
         /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="fileSystemPath"/> is <see langword="null"/>.</para>
-        /// <para>- or -</para>
         /// <para><paramref name="baseUrlPath"/> is <see langword="null"/>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="fileSystemPath"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="ArgumentException">
-        /// <para><paramref name="fileSystemPath"/> is not a valid local path.</para>
-        /// <para>- or -</para>
         /// <para><paramref name="baseUrlPath"/> is not a valid base URL path.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="fileSystemPath"/> is not a valid local path.</para>
         /// <para>- or -</para>
         /// <para><paramref name="fileCachingMode"/> has an invalid value.</para>
         /// <para>- or -</para>
@@ -88,52 +88,36 @@ namespace EmbedIO.Files
         /// <summary>
         /// Gets the file system path from which files are retrieved.
         /// </summary>
-        /// <value>
-        /// The file system path.
-        /// </value>
         public string FileSystemPath { get; }
 
         /// <summary>
         /// Gets the file caching mode used by this module.
         /// </summary>
-        /// <value>
-        /// The file caching mode.
-        /// </value>
-        /// <seealso cref="FileCachingMode"/>
+        /// <seealso cref="Files.FileCachingMode"/>
         public FileCachingMode FileCachingMode { get; }
 
         /// <summary>
         /// <para>Gets or sets the default document. Defaults to <c>"index.html"</c>.</para>
         /// <para>Example: <c>"root.xml"</c>.</para>
         /// </summary>
-        /// <value>
-        /// The default document.
-        /// </value>
         public string DefaultDocument { get; }
 
         /// <summary>
         /// <para>Gets or sets the default extension. Defaults to <see langword="null"/>.</para>
         /// <para>Example: <c>".html"</c>.</para>
         /// </summary>
-        /// <value>
-        /// The default extension.
-        /// </value>
         public string DefaultExtension { get; }
 
         /// <summary>
-        /// Gets a value indicating whether [use directory browser].
+        /// Gets a value indicating whether directory browsing is enabled.
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if [use directory browser]; otherwise, <c>false</c>.
-        /// </value>
         public bool UseDirectoryBrowser { get; }
 
         /// <summary>
-        /// Gets or sets the maximum size of the ram cache file. The default value is 250kb.
+        /// <para>Gets or sets the maximum size, in bytes, of files
+        /// stored in the RAM cache.</para>
+        /// <para>The default value is 250kb.</para>
         /// </summary>
-        /// <value>
-        /// The maximum size of the ram cache file.
-        /// </value>
         public int MaxRamCacheFileSize { get; set; } = 250 * 1024;
 
         private RamCache RamCache { get; } = new RamCache();
