@@ -44,7 +44,7 @@ namespace EmbedIO.Internal
                     continue;
                 }
 
-                if (await module.HandleRequestAsync(context, path, cancellationToken).ConfigureAwait(false))
+                if (await module.HandleRequestAsync(context, "/" + path, cancellationToken).ConfigureAwait(false))
                 {
                     $"[{context.Id}] Module {name} handled the request.".Info(_logSource);
                     return true;
