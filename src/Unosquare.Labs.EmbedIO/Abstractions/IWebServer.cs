@@ -74,7 +74,7 @@
         /// The unhandled exception.
         /// </value>
         [Obsolete("UnhandledException will be dropped in future versions")]
-        Func<IHttpContext, Exception, Task<bool>> UnhandledException { get; set; }
+        Func<IHttpContext, Exception, CancellationToken, Task<bool>> UnhandledException { get; set; }
 
         /// <summary>
         /// Gets the state.

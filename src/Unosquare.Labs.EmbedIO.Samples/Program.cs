@@ -41,7 +41,7 @@
             using (var server = new WebServer(webOptions))
             {
                 // Report to console the error only
-                server.UnhandledException = (ctx, ex) => {
+                server.UnhandledException = (ctx, ex, ct) => {
                     ex.Message.Error(nameof(WebServer));
                     ctx.Response.StatusCode = 500;
 

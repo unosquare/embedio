@@ -112,7 +112,7 @@
 
         private async Task ResponseServerError(CancellationToken ct, Exception ex, string module)
         {
-            if (_context.WebServer.UnhandledException != null && await _context.WebServer.UnhandledException.Invoke(_context, ex))
+            if (_context.WebServer.UnhandledException != null && await _context.WebServer.UnhandledException.Invoke(_context, ex, ct))
                 return;
 
             var priorMessage = $"Failing module name: {module}";
