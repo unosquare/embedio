@@ -11,11 +11,7 @@ namespace EmbedIO.Samples
 {
     internal class Program
     {
-        /// <summary>
-        /// Defines the entry point of the application.
-        /// </summary>
-        /// <param name="args">The arguments.</param>
-        private static async Task Main(string[] args)
+        private static void Main(string[] args)
         {
             var url = args.Length > 0 ? args[0] : "http://*:8877";
 
@@ -23,70 +19,41 @@ namespace EmbedIO.Samples
 
             using (var ctSource = new CancellationTokenSource())
             {
-                ctSource.Token.Register(() => "Shutting down".Info(nameof(Main)));
-
-                // Set a task waiting for press key to exit
-#pragma warning disable 4014
-                Task.Run(() =>
-#pragma warning restore 4014
-                {
-                    // Wait for any key to be pressed before disposing of our web server.
-                    Console.ReadLine();
-
-                    ctSource.Cancel();
-                }, ctSource.Token);
-
-                // Our web server is disposable. 
-                using (var server = CreateWebServer(url))
-                {
-                    // Fire up the browser to show the content!
-                    var browser = new Process
-                    {
-                        StartInfo = new ProcessStartInfo(url.Replace("*", "localhost"))
-                        {
-                            UseShellExecute = true
-                        }
-                    };
-
-                    browser.Start();
-
-                    // Call the RunAsync() method to fire up the web server.
-                    if (!ctSource.IsCancellationRequested)
-                        await server.RunAsync(ctSource.Token).ConfigureAwait(false);
-
-                    // Clean up
-                    "Bye".Info(nameof(Program));
-                    Terminal.Flush();
-                }
+                Task.WaitAll(
+                    RunWebServerAsync(url, ctSource.Token),
+                    ShowBrowserAsync(url.Replace("*", "localhost"), ctSource.Token),
+                    WaitForUserBreakAsync(ctSource.Cancel));
             }
+
+            // Clean up
+            "Bye".Info(nameof(Program));
+            Terminal.Flush();
+
+            Console.WriteLine("Press any key to exit.");
+            WaitForKeypress();
         }
 
-        /// <summary>
-        /// Gets the HTML root path.
-        /// </summary>
-        /// <value>
-        /// The HTML root path.
-        /// </value>
+        // Gets the local path of shared files.
+        // When debugging, take them directly from source so we can edit and reload.
+        // Otherwise, take them from the deployment directory.
         public static string HtmlRootPath
         {
             get
             {
                 var assemblyPath = Path.GetDirectoryName(typeof(Program).Assembly.Location);
 
-                // This lets you edit the files without restarting the server.
 #if DEBUG
                 return Path.Combine(Directory.GetParent(assemblyPath).Parent.Parent.FullName, "html");
 #else
-                // This is when you have deployed the server.
                 return Path.Combine(assemblyPath, "html");
 #endif
             }
         }
 
+        // Create and configure our web server.
         private static WebServer CreateWebServer(string url)
         {
-            var options = new WebServerOptions(url)
-            {
+            var options = new WebServerOptions(url) {
                 Mode = HttpListenerMode.EmbedIO
             };
 
@@ -110,6 +77,51 @@ namespace EmbedIO.Samples
             server.StateChanged += (s, e) => $"WebServer New State - {e.NewState}".Info();
 
             return server;
+        }
+
+        // Create and run a web server.
+        private static async Task RunWebServerAsync(string url, CancellationToken cancellationToken)
+        {
+            using (var server = CreateWebServer(url))
+            {
+                await server.RunAsync(cancellationToken).ConfigureAwait(false);
+            }
+        }
+
+        // Open the default browser on the web server's home page.
+        private static async Task ShowBrowserAsync(string url, CancellationToken cancellationToken)
+        {
+            // Be sure to run in parallel.
+            await Task.Yield();
+
+            // Fire up the browser to show the content!
+            new Process {
+                StartInfo = new ProcessStartInfo(url) {
+                    UseShellExecute = true
+                }
+            }.Start();
+        }
+
+        // Prompt the user to press any key; when a key is next pressed,
+        // call the specified action to cancel operations.
+        private static async Task WaitForUserBreakAsync(Action cancel)
+        {
+            // Be sure to run in parallel.
+            await Task.Yield();
+
+            "Press any key to stop the web server.".Info(nameof(Program));
+            WaitForKeypress();
+            "Stopping...".Info(nameof(Program));
+            cancel();
+        }
+
+        // Clear the console input buffer and wait for a keypress
+        private static void WaitForKeypress()
+        {
+            while (Console.KeyAvailable)
+                Console.ReadKey(true);
+
+            Console.ReadKey(true);
         }
     }
 }
