@@ -48,7 +48,7 @@ build_script:
       [xml]$xml = Get-Content inspectcode.xml
       if ($xml.Report.Issues.HasChildNodes)
       {
-            $xml.Report.Issues.ChildNodes | foreach { $_ } 
+            $xml.Report.Issues.ChildNodes  | foreach { Write-Output $_.InnerXml }
             throw "inspectcode.exe found issues with severity level Error; see inspectcode.xml for details"
       }
 test_script:
