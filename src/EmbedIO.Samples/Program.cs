@@ -99,11 +99,11 @@ namespace EmbedIO.Samples
                     "content-type, accept",
                     // Allowed methods
                     "post")
-                .WithStaticFolderAt("/", HtmlRootPath)
-                .WithModule(new WebApiModule("/", true)
-                    .WithApiController<PeopleController>())
+                .WithWebApi("/api", m => m
+                    .WithController<PeopleController>())
                 .WithModule(new WebSocketChatModule("/chat"))
                 .WithModule(new WebSocketTerminalModule("/terminal"))
+                .WithStaticFolderAt("/", HtmlRootPath) // Add static files after other modules to avoid conflicts
                 .WithModule(new ActionModule("/", HttpVerbs.Any, (ctx, path, ct) => ctx.JsonResponseAsync(new { Message = "Error" }, ct)));
 
             // Listen for state changes.

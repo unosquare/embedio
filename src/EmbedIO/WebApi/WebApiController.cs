@@ -3,6 +3,8 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Routing;
+using EmbedIO.Sessions;
 
 namespace EmbedIO.WebApi
 {
@@ -29,17 +31,17 @@ namespace EmbedIO.WebApi
         protected IHttpContext HttpContext { get; }
 
         /// <summary>
-        /// Gets the cancellation token.
+        /// Gets the cancellation token used to cancel processing of the request.
         /// </summary>
         protected CancellationToken CancellationToken { get; }
 
         /// <summary>
-        /// Gets the HTTP Request.
+        /// Gets the HTTP request.
         /// </summary>
         protected IHttpRequest Request => HttpContext.Request;
 
         /// <summary>
-        /// Gets the HTTP Response.
+        /// Gets the HTTP response object.
         /// </summary>
         protected IHttpResponse Response => HttpContext.Response;
 
@@ -49,17 +51,24 @@ namespace EmbedIO.WebApi
         protected IPrincipal User => HttpContext.User;
 
         /// <summary>
-        /// Sets the default headers to the Web API response.
-        /// By default will set:
-        ///
-        /// Expires - Mon, 26 Jul 1997 05:00:00 GMT
-        /// LastModified - (Current Date)
-        /// CacheControl - no-store, no-cache, must-revalidate
-        /// Pragma - no-cache
-        ///
-        /// Previous values are defined to avoid caching from client.
+        /// Gets the session proxy associated with the HTTP context.
         /// </summary>
-        protected virtual void SetDefaultHeaders() => HttpContext.NoCache();
+        protected ISessionProxy Session => HttpContext.Session;
+
+        /// <summary>
+        /// <para>This method is meant to be called internally by EmbedIO.</para>
+        /// <para>Derived classes can override the <see cref="OnBeforeHandler"/> method
+        /// to perform common operations before any handler gets called.</para>
+        /// </summary>
+        /// <seealso cref="OnBeforeHandler"/>
+        public void PreProcessRequest() => OnBeforeHandler();
+
+        /// <summary>
+        /// <para>Called before a handler to perform common operations.</para>
+        /// <para>The default behavior is to set response headers
+        /// in order to prevent caching of the response.</para>
+        /// </summary>
+        protected virtual void OnBeforeHandler() => HttpContext.NoCache();
 
         /// <summary>
         /// Outputs async a Json Response given a data object.

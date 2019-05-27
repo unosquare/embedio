@@ -8,7 +8,7 @@ namespace EmbedIO.Tests
     public class RegexRoutingTest : FixtureBase
     {
         public RegexRoutingTest()
-            : base(ws => ws.Modules.Add(nameof(TestRegexModule), new TestRegexModule()), true)
+            : base(ws => ws.WithModule(new TestRegexModule("/")), true)
         {
         }
 

@@ -2,12 +2,13 @@
 
 namespace EmbedIO.Tests.TestObjects
 {
-    public partial class TestRegexModule : WebApiModule
+    public sealed partial class TestRegexModule : WebApiModuleBase
     {
-        public TestRegexModule()
-        : base("/")
+        public TestRegexModule(string baseUrlPath)
+            : base(baseUrlPath)
         {
-            RegisterController<Controller>();
+            RegisterControllerType<Controller>();
+            LockConfiguration();
         }
     }
 }
