@@ -18,7 +18,7 @@ namespace EmbedIO.Net.Internal
     {
         private readonly System.Net.HttpListenerContext _context;
 
-        private readonly Stack<Action<IHttpContext>> _closeCallbacks;
+        private readonly Stack<Action<IHttpContext>> _closeCallbacks = new Stack<Action<IHttpContext>>();
 
         private bool _closed;
 

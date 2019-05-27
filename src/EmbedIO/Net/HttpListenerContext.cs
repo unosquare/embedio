@@ -25,7 +25,7 @@ namespace EmbedIO.Net
         private readonly Lazy<IDictionary<object, object>> _items =
             new Lazy<IDictionary<object, object>>(() => new Dictionary<object, object>(), true);
 
-        private readonly Stack<Action<IHttpContext>> _closeCallbacks;
+        private readonly Stack<Action<IHttpContext>> _closeCallbacks = new Stack<Action<IHttpContext>>();
 
         private bool _closed;
 
