@@ -27,12 +27,12 @@ namespace EmbedIO
         IPEndPoint RemoteEndPoint { get; }
 
         /// <summary>
-        /// Gets the HTTP Request.
+        /// Gets the HTTP request.
         /// </summary>
         IHttpRequest Request { get; }
 
         /// <summary>
-        /// Gets the HTTP Response.
+        /// Gets the HTTP response object.
         /// </summary>
         IHttpResponse Response { get; }
 
