@@ -17,7 +17,7 @@ namespace EmbedIO.Routing
     /// <seealso cref="RouteVerbResolver"/>
     public sealed class RouteVerbResolverCollection : RouteResolverCollectionBase<IHttpContext, HttpVerbs, RouteVerbResolver>
     {
-        private static readonly MethodInfo TaskFromResult = new Func<bool, Task<bool>>(Task.FromResult).Method;
+        private static readonly MethodInfo TaskFromResultMethod = typeof(Task).GetMethod(nameof(Task.FromResult));
 
         private readonly string _logSource;
 
@@ -142,7 +142,7 @@ namespace EmbedIO.Routing
             if (isSynchronous)
             {
                 // Convert a bool return type to Task<bool> by passing it to Task.FromResult
-                body = Expression.Call(TaskFromResult, body);
+                body = Expression.Call(TaskFromResultMethod, body);
             }
 
             var handler = Expression.Lambda<RouteHandler<IHttpContext>>(body, parameters).Compile();
