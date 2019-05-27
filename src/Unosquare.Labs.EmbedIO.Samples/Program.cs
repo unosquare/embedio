@@ -40,6 +40,14 @@
             // Our web server is disposable. 
             using (var server = new WebServer(webOptions))
             {
+                // Report to console the error only
+                server.UnhandledException = (ctx, ex) => {
+                    ex.Message.Error(nameof(WebServer));
+                    ctx.Response.StatusCode = 500;
+
+                    return Task.FromResult(true);
+                };
+
                 // Listen for state changes.
                 server.StateChanged += (s, e) => $"WebServer New State - {e.NewState}".Info();
 
@@ -73,9 +81,7 @@
                 server.RegisterModule(new WebSocketsModule());
                 server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsChatServer>();
                 server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsTerminalServer>();
-
-                server.RegisterModule(new FallbackModule((ctx, ct) => ctx.JsonResponseAsync(new { Message = "Error" }, ct)));
-
+                
                 // Fire up the browser to show the content!
                 var browser = new Process
                 {

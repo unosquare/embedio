@@ -30,7 +30,7 @@
         /// The session module.
         /// </value>
         ISessionWebModule SessionModule { get; }
-        
+
         /// <summary>
         /// Gets the URL RoutingStrategy used in this instance.
         /// 
@@ -40,7 +40,7 @@
         /// The routing strategy.
         /// </value>
         RoutingStrategy RoutingStrategy { get; }
-        
+
         /// <summary>
         /// Gets a list of registered modules.
         /// </summary>
@@ -48,7 +48,7 @@
         /// The modules.
         /// </value>
         ReadOnlyCollection<IWebModule> Modules { get; }
-        
+
         /// <summary>
         /// Gets or sets the on method not allowed.
         /// </summary>
@@ -57,7 +57,7 @@
         /// </value>
         [Obsolete("OnMethodNotAllowed will be dropped in future versions")]
         Func<IHttpContext, Task<bool>> OnMethodNotAllowed { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the on not found.
         /// </summary>
@@ -66,6 +66,15 @@
         /// </value>
         [Obsolete("OnNotFound will be dropped in future versions")]
         Func<IHttpContext, Task<bool>> OnNotFound { get; set; }
+
+        /// <summary>
+        /// Gets or sets the unhandled exception.
+        /// </summary>
+        /// <value>
+        /// The unhandled exception.
+        /// </value>
+        [Obsolete("UnhandledException will be dropped in future versions")]
+        Func<IHttpContext, Exception, Task<bool>> UnhandledException { get; set; }
 
         /// <summary>
         /// Gets the state.

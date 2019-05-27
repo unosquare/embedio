@@ -182,6 +182,9 @@
         public Func<IHttpContext, Task<bool>> OnNotFound { get; set; } = ctx =>
             ctx.HtmlResponseAsync(Responses.Response404Html, System.Net.HttpStatusCode.NotFound);
 
+        /// <inheritdoc />
+        public Func<IHttpContext, Exception, Task<bool>> UnhandledException { get; set; }
+
         /// <summary>
         /// Gets the underlying HTTP listener.
         /// </summary>

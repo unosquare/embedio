@@ -58,6 +58,9 @@
         public Func<IHttpContext, Task<bool>> OnNotFound { get; set; } = ctx =>
             ctx.HtmlResponseAsync(Responses.Response404Html, System.Net.HttpStatusCode.NotFound);
 
+        /// <inheritdoc />
+        public Func<IHttpContext, Exception, Task<bool>> UnhandledException { get; set; }
+
         /// <summary>
         /// Gets the HTTP contexts.
         /// </summary>
@@ -77,9 +80,7 @@
         /// </value>
         protected bool Disposed { get; private set; }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        /// <inheritdoc />
         public void Dispose()
         {
             Dispose(true);

@@ -110,8 +110,11 @@
             return false;
         }
 
-        private Task ResponseServerError(CancellationToken ct, Exception ex, string module)
+        private async Task ResponseServerError(CancellationToken ct, Exception ex, string module)
         {
+            if (_context.WebServer.UnhandledException != null && await _context.WebServer.UnhandledException.Invoke(_context, ex))
+                return;
+
             var priorMessage = $"Failing module name: {module}";
             var errorMessage = ex.ExceptionMessage(priorMessage);
 
@@ -119,7 +122,7 @@
             ex.Log(nameof(HttpHandler), priorMessage);
 
             // Send the response over with the corresponding status code.
-            return _context.HtmlResponseAsync(string.Format(Responses.Response500HtmlFormat,
+            await _context.HtmlResponseAsync(string.Format(Responses.Response500HtmlFormat,
                     errorMessage,
                     ex.StackTrace),
                 System.Net.HttpStatusCode.InternalServerError,
