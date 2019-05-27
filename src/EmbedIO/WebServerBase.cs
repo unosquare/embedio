@@ -89,73 +89,16 @@ namespace EmbedIO
                 State = WebServerState.Listening;
                 while (!cancellationToken.IsCancellationRequested && ShouldProcessMoreRequests())
                 {
-                    try
-                    {
-                        var context = await GetContextAsync(cancellationToken).ConfigureAwait(false);
-                        context.Session = new SessionProxy(context, SessionManager);
-                        try
-                        {
-                            if (cancellationToken.IsCancellationRequested)
-                                break;
+                    var context = await GetContextAsync(cancellationToken).ConfigureAwait(false);
 
-                            // Create a request endpoint string
-                            var requestEndpoint = context.Request.SafeGetRemoteEndpointStr();
-
-                            // Log the request and its ID
-                            $"[{context.Id}] Start: Source {requestEndpoint} - {context.Request.HttpMethod}: {context.Request.Url.PathAndQuery} - {context.Request.UserAgent}"
-                                .Debug(nameof(WebServerBase));
-
-                            try
-                            {
-                                // Return a 404 (Not Found) response if no module/handler handled the response.
-                                if (await _modules.DispatchRequestAsync(context, cancellationToken).ConfigureAwait(false))
-                                    continue;
-
-                                $"[{context.Id}] No module generated a response. Sending 404 - Not Found".Error(nameof(WebServerBase));
-                                context.Response.StandardResponseWithoutBody((int)HttpStatusCode.NotFound);
-                            }
-                            catch (Exception ex)
-                            {
-                                ex.Log(nameof(WebServerBase), $"[{context.Id}] Error handling request.");
-                                if (context.Response.StatusCode != (int)HttpStatusCode.Unauthorized)
-                                {
-                                    await context.Response.StandardHtmlResponseAsync(
-                                        (int)HttpStatusCode.InternalServerError,
-                                        sb => sb
-                                            .Append("<h2>Message</h2><pre>")
-                                            .Append(ex.ExceptionMessage())
-                                            .Append("</pre><h2>Stack Trace</h2><pre>\r\n")
-                                            .Append(ex.StackTrace)
-                                            .Append("</pre>"),
-                                        cancellationToken).ConfigureAwait(false);
-                                }
-                            }
-                        }
-                        finally
-                        {
-                            context.Close();
-                            $"[{context.Id}] End".Debug(nameof(WebServerBase));
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        OnException();
-
-                        if (ex is OperationCanceledException || ex is ObjectDisposedException || ex is HttpListenerException)
-                        {
-                            if (!cancellationToken.IsCancellationRequested)
-                                throw;
-
-                            return;
-                        }
-
-                        ex.Log(nameof(WebServerBase));
-                    }
+#pragma warning disable CS4014 // Call is not awaited - of course, it has to run in parallel.
+                    Task.Run(() => HandleContextAsync(context, cancellationToken), cancellationToken);
+#pragma warning restore CS4014
                 }
             }
-            catch (TaskCanceledException)
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
             {
-                // Ignore
+                "Operation canceled.".Debug(nameof(WebServerBase));
             }
             finally
             {
@@ -220,5 +163,70 @@ namespace EmbedIO
         /// <para>This method should tell the server socket to stop accepting further requests.</para>
         /// </summary>
         protected abstract void OnException();
-   }
+
+        private async Task HandleContextAsync(IHttpContextImpl context, CancellationToken cancellationToken)
+        {
+            try
+            {
+                context.Session = new SessionProxy(context, SessionManager);
+                try
+                {
+                    if (cancellationToken.IsCancellationRequested)
+                        return;
+
+                    // Create a request endpoint string
+                    var requestEndpoint = context.Request.SafeGetRemoteEndpointStr();
+
+                    // Log the request and its ID
+                    $"[{context.Id}] Start: Source {requestEndpoint} - {context.Request.HttpMethod}: {context.Request.Url.PathAndQuery} - {context.Request.UserAgent}"
+                        .Debug(nameof(WebServerBase));
+
+                    try
+                    {
+                        // Return a 404 (Not Found) response if no module handled the response.
+                        if (await _modules.DispatchRequestAsync(context, cancellationToken).ConfigureAwait(false))
+                            return;
+
+                        $"[{context.Id}] No module generated a response. Sending 404 - Not Found".Error(
+                            nameof(WebServerBase));
+                        context.Response.StandardResponseWithoutBody((int) HttpStatusCode.NotFound);
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.Log(nameof(WebServerBase), $"[{context.Id}] Error handling request.");
+                        if (context.Response.StatusCode != (int) HttpStatusCode.Unauthorized)
+                        {
+                            await context.Response.StandardHtmlResponseAsync(
+                                (int) HttpStatusCode.InternalServerError,
+                                sb => sb
+                                    .Append("<h2>Message</h2><pre>")
+                                    .Append(ex.ExceptionMessage())
+                                    .Append("</pre><h2>Stack Trace</h2><pre>\r\n")
+                                    .Append(ex.StackTrace)
+                                    .Append("</pre>"),
+                                cancellationToken).ConfigureAwait(false);
+                        }
+                    }
+                }
+                finally
+                {
+                    context.Close();
+                    $"[{context.Id}] End".Debug(nameof(WebServerBase));
+                }
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                $"[{context.Id}] Operation canceled.".Debug(nameof(WebServerBase));
+            }
+            catch (HttpListenerException ex)
+            {
+                ex.Log(nameof(WebServerBase));
+            }
+            catch (Exception ex)
+            {
+                OnException();
+                ex.Log(nameof(WebServerBase));
+            }
+        }
+    }
 }
