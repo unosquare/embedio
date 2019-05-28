@@ -22,8 +22,8 @@ before_build:
         {
             git checkout $env:APPVEYOR_REPO_BRANCH -q
             cinst docfx -y --no-progress
-            cinst resharper-clt.portable -y --no-progress
         }
+- ps: cinst resharper-clt.portable -y --no-progress
 - dotnet restore --verbosity q
 - cmd: mkdir tools
 - cmd: nuget install OpenCover -Version 4.6.519 -OutputDirectory tools
@@ -48,6 +48,7 @@ build_script:
       [xml]$xml = Get-Content inspectcode.xml
       if ($xml.Report.Issues.HasChildNodes)
       {
+            $xml.Report.Issues.ChildNodes  | foreach { Write-Output $_.InnerXml }
             throw "inspectcode.exe found issues with severity level Error; see inspectcode.xml for details"
       }
 test_script:
