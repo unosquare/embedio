@@ -25,7 +25,7 @@
         /// <value>
         /// The MIME type dictionary.
         /// </value>
-        public IReadOnlyDictionary<string, string> MimeTypes { get; } = Constants.MimeTypes.DefaultMimeTypes;
+        public IDictionary<string, string> MimeTypes { get; } = Constants.MimeTypes.DefaultMimeTypes;
 
         /// <summary>
         /// The default headers.

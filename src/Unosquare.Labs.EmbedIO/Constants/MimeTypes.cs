@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Constants
 {
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
 
     /// <summary>
@@ -15,7 +16,7 @@
         /// on 2019-04-26.
         /// Licensed under MIT license as per https://github.com/samuelneff/MimeTypeMap/blob/master/LICENSE
         /// </remarks>
-        public static IReadOnlyDictionary<string, string> DefaultMimeTypes { get; } = new Dictionary<string, string>(Strings.StandardStringComparer)
+        public static IDictionary<string, string> DefaultMimeTypes { get; } = new ConcurrentDictionary<string, string>(new Dictionary<string, string>(Strings.StandardStringComparer)
         {
             #region Big freaking list of mime types
         
@@ -699,6 +700,6 @@
             {"x-world/x-vrml", ".xof"},
 
             #endregion
-        };
+        }, Strings.StandardStringComparer);
     }
 }
