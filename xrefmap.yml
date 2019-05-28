@@ -1211,12 +1211,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.HttpContext.HttpContext
   nameWithType: HttpContext.HttpContext
-- uid: Unosquare.Labs.EmbedIO.HttpContext.AcceptWebSocketAsync(System.Int32)
-  name: AcceptWebSocketAsync(Int32)
-  href: api/Unosquare.Labs.EmbedIO.HttpContext.html#Unosquare_Labs_EmbedIO_HttpContext_AcceptWebSocketAsync_System_Int32_
-  commentId: M:Unosquare.Labs.EmbedIO.HttpContext.AcceptWebSocketAsync(System.Int32)
-  fullName: Unosquare.Labs.EmbedIO.HttpContext.AcceptWebSocketAsync(System.Int32)
-  nameWithType: HttpContext.AcceptWebSocketAsync(Int32)
+- uid: Unosquare.Labs.EmbedIO.HttpContext.AcceptWebSocketAsync(System.Int32,System.String)
+  name: AcceptWebSocketAsync(Int32, String)
+  href: api/Unosquare.Labs.EmbedIO.HttpContext.html#Unosquare_Labs_EmbedIO_HttpContext_AcceptWebSocketAsync_System_Int32_System_String_
+  commentId: M:Unosquare.Labs.EmbedIO.HttpContext.AcceptWebSocketAsync(System.Int32,System.String)
+  fullName: Unosquare.Labs.EmbedIO.HttpContext.AcceptWebSocketAsync(System.Int32, System.String)
+  nameWithType: HttpContext.AcceptWebSocketAsync(Int32, String)
 - uid: Unosquare.Labs.EmbedIO.HttpContext.AcceptWebSocketAsync*
   name: AcceptWebSocketAsync
   href: api/Unosquare.Labs.EmbedIO.HttpContext.html#Unosquare_Labs_EmbedIO_HttpContext_AcceptWebSocketAsync_
@@ -1898,12 +1898,12 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.IHttpContext
   fullName: Unosquare.Labs.EmbedIO.IHttpContext
   nameWithType: IHttpContext
-- uid: Unosquare.Labs.EmbedIO.IHttpContext.AcceptWebSocketAsync(System.Int32)
-  name: AcceptWebSocketAsync(Int32)
-  href: api/Unosquare.Labs.EmbedIO.IHttpContext.html#Unosquare_Labs_EmbedIO_IHttpContext_AcceptWebSocketAsync_System_Int32_
-  commentId: M:Unosquare.Labs.EmbedIO.IHttpContext.AcceptWebSocketAsync(System.Int32)
-  fullName: Unosquare.Labs.EmbedIO.IHttpContext.AcceptWebSocketAsync(System.Int32)
-  nameWithType: IHttpContext.AcceptWebSocketAsync(Int32)
+- uid: Unosquare.Labs.EmbedIO.IHttpContext.AcceptWebSocketAsync(System.Int32,System.String)
+  name: AcceptWebSocketAsync(Int32, String)
+  href: api/Unosquare.Labs.EmbedIO.IHttpContext.html#Unosquare_Labs_EmbedIO_IHttpContext_AcceptWebSocketAsync_System_Int32_System_String_
+  commentId: M:Unosquare.Labs.EmbedIO.IHttpContext.AcceptWebSocketAsync(System.Int32,System.String)
+  fullName: Unosquare.Labs.EmbedIO.IHttpContext.AcceptWebSocketAsync(System.Int32, System.String)
+  nameWithType: IHttpContext.AcceptWebSocketAsync(Int32, String)
 - uid: Unosquare.Labs.EmbedIO.IHttpContext.AcceptWebSocketAsync*
   name: AcceptWebSocketAsync
   href: api/Unosquare.Labs.EmbedIO.IHttpContext.html#Unosquare_Labs_EmbedIO_IHttpContext_AcceptWebSocketAsync_
@@ -2787,6 +2787,19 @@ references:
   commentId: E:Unosquare.Labs.EmbedIO.IWebServer.StateChanged
   fullName: Unosquare.Labs.EmbedIO.IWebServer.StateChanged
   nameWithType: IWebServer.StateChanged
+- uid: Unosquare.Labs.EmbedIO.IWebServer.UnhandledException
+  name: UnhandledException
+  href: api/Unosquare.Labs.EmbedIO.IWebServer.html#Unosquare_Labs_EmbedIO_IWebServer_UnhandledException
+  commentId: P:Unosquare.Labs.EmbedIO.IWebServer.UnhandledException
+  fullName: Unosquare.Labs.EmbedIO.IWebServer.UnhandledException
+  nameWithType: IWebServer.UnhandledException
+- uid: Unosquare.Labs.EmbedIO.IWebServer.UnhandledException*
+  name: UnhandledException
+  href: api/Unosquare.Labs.EmbedIO.IWebServer.html#Unosquare_Labs_EmbedIO_IWebServer_UnhandledException_
+  commentId: Overload:Unosquare.Labs.EmbedIO.IWebServer.UnhandledException
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.IWebServer.UnhandledException
+  nameWithType: IWebServer.UnhandledException
 - uid: Unosquare.Labs.EmbedIO.IWebServer.UnregisterModule(System.Type)
   name: UnregisterModule(Type)
   href: api/Unosquare.Labs.EmbedIO.IWebServer.html#Unosquare_Labs_EmbedIO_IWebServer_UnregisterModule_System_Type_
@@ -4226,6 +4239,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.OnMessageReceived
   nameWithType: WebSocketsServer.OnMessageReceived
+- uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.ResolveSubProtocol(Unosquare.Labs.EmbedIO.IHttpContext)
+  name: ResolveSubProtocol(IHttpContext)
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html#Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_ResolveSubProtocol_Unosquare_Labs_EmbedIO_IHttpContext_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.ResolveSubProtocol(Unosquare.Labs.EmbedIO.IHttpContext)
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.ResolveSubProtocol(Unosquare.Labs.EmbedIO.IHttpContext)
+  nameWithType: WebSocketsServer.ResolveSubProtocol(IHttpContext)
+- uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.ResolveSubProtocol*
+  name: ResolveSubProtocol
+  href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html#Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_ResolveSubProtocol_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.ResolveSubProtocol
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.ResolveSubProtocol
+  nameWithType: WebSocketsServer.ResolveSubProtocol
 - uid: Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.Send(Unosquare.Labs.EmbedIO.IWebSocketContext,System.Byte[])
   name: Send(IWebSocketContext, Byte[])
   href: api/Unosquare.Labs.EmbedIO.Modules.WebSocketsServer.html#Unosquare_Labs_EmbedIO_Modules_WebSocketsServer_Send_Unosquare_Labs_EmbedIO_IWebSocketContext_System_Byte___
@@ -4457,12 +4483,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Tests.TestHttpContext.TestHttpContext
   nameWithType: TestHttpContext.TestHttpContext
-- uid: Unosquare.Labs.EmbedIO.Tests.TestHttpContext.AcceptWebSocketAsync(System.Int32)
-  name: AcceptWebSocketAsync(Int32)
-  href: api/Unosquare.Labs.EmbedIO.Tests.TestHttpContext.html#Unosquare_Labs_EmbedIO_Tests_TestHttpContext_AcceptWebSocketAsync_System_Int32_
-  commentId: M:Unosquare.Labs.EmbedIO.Tests.TestHttpContext.AcceptWebSocketAsync(System.Int32)
-  fullName: Unosquare.Labs.EmbedIO.Tests.TestHttpContext.AcceptWebSocketAsync(System.Int32)
-  nameWithType: TestHttpContext.AcceptWebSocketAsync(Int32)
+- uid: Unosquare.Labs.EmbedIO.Tests.TestHttpContext.AcceptWebSocketAsync(System.Int32,System.String)
+  name: AcceptWebSocketAsync(Int32, String)
+  href: api/Unosquare.Labs.EmbedIO.Tests.TestHttpContext.html#Unosquare_Labs_EmbedIO_Tests_TestHttpContext_AcceptWebSocketAsync_System_Int32_System_String_
+  commentId: M:Unosquare.Labs.EmbedIO.Tests.TestHttpContext.AcceptWebSocketAsync(System.Int32,System.String)
+  fullName: Unosquare.Labs.EmbedIO.Tests.TestHttpContext.AcceptWebSocketAsync(System.Int32, System.String)
+  nameWithType: TestHttpContext.AcceptWebSocketAsync(Int32, String)
 - uid: Unosquare.Labs.EmbedIO.Tests.TestHttpContext.AcceptWebSocketAsync*
   name: AcceptWebSocketAsync
   href: api/Unosquare.Labs.EmbedIO.Tests.TestHttpContext.html#Unosquare_Labs_EmbedIO_Tests_TestHttpContext_AcceptWebSocketAsync_
@@ -5263,6 +5289,19 @@ references:
   commentId: E:Unosquare.Labs.EmbedIO.Tests.TestWebServer.StateChanged
   fullName: Unosquare.Labs.EmbedIO.Tests.TestWebServer.StateChanged
   nameWithType: TestWebServer.StateChanged
+- uid: Unosquare.Labs.EmbedIO.Tests.TestWebServer.UnhandledException
+  name: UnhandledException
+  href: api/Unosquare.Labs.EmbedIO.Tests.TestWebServer.html#Unosquare_Labs_EmbedIO_Tests_TestWebServer_UnhandledException
+  commentId: P:Unosquare.Labs.EmbedIO.Tests.TestWebServer.UnhandledException
+  fullName: Unosquare.Labs.EmbedIO.Tests.TestWebServer.UnhandledException
+  nameWithType: TestWebServer.UnhandledException
+- uid: Unosquare.Labs.EmbedIO.Tests.TestWebServer.UnhandledException*
+  name: UnhandledException
+  href: api/Unosquare.Labs.EmbedIO.Tests.TestWebServer.html#Unosquare_Labs_EmbedIO_Tests_TestWebServer_UnhandledException_
+  commentId: Overload:Unosquare.Labs.EmbedIO.Tests.TestWebServer.UnhandledException
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.Tests.TestWebServer.UnhandledException
+  nameWithType: TestWebServer.UnhandledException
 - uid: Unosquare.Labs.EmbedIO.Tests.TestWebServer.UnregisterModule(System.Type)
   name: UnregisterModule(Type)
   href: api/Unosquare.Labs.EmbedIO.Tests.TestWebServer.html#Unosquare_Labs_EmbedIO_Tests_TestWebServer_UnregisterModule_System_Type_
@@ -5662,6 +5701,19 @@ references:
   commentId: E:Unosquare.Labs.EmbedIO.WebServer.StateChanged
   fullName: Unosquare.Labs.EmbedIO.WebServer.StateChanged
   nameWithType: WebServer.StateChanged
+- uid: Unosquare.Labs.EmbedIO.WebServer.UnhandledException
+  name: UnhandledException
+  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_UnhandledException
+  commentId: P:Unosquare.Labs.EmbedIO.WebServer.UnhandledException
+  fullName: Unosquare.Labs.EmbedIO.WebServer.UnhandledException
+  nameWithType: WebServer.UnhandledException
+- uid: Unosquare.Labs.EmbedIO.WebServer.UnhandledException*
+  name: UnhandledException
+  href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_UnhandledException_
+  commentId: Overload:Unosquare.Labs.EmbedIO.WebServer.UnhandledException
+  isSpec: "True"
+  fullName: Unosquare.Labs.EmbedIO.WebServer.UnhandledException
+  nameWithType: WebServer.UnhandledException
 - uid: Unosquare.Labs.EmbedIO.WebServer.UnregisterModule(System.Type)
   name: UnregisterModule(Type)
   href: api/Unosquare.Labs.EmbedIO.WebServer.html#Unosquare_Labs_EmbedIO_WebServer_UnregisterModule_System_Type_
@@ -6371,12 +6423,12 @@ references:
   commentId: T:Unosquare.Net.HttpListenerContext
   fullName: Unosquare.Net.HttpListenerContext
   nameWithType: HttpListenerContext
-- uid: Unosquare.Net.HttpListenerContext.AcceptWebSocketAsync(System.Int32)
-  name: AcceptWebSocketAsync(Int32)
-  href: api/Unosquare.Net.HttpListenerContext.html#Unosquare_Net_HttpListenerContext_AcceptWebSocketAsync_System_Int32_
-  commentId: M:Unosquare.Net.HttpListenerContext.AcceptWebSocketAsync(System.Int32)
-  fullName: Unosquare.Net.HttpListenerContext.AcceptWebSocketAsync(System.Int32)
-  nameWithType: HttpListenerContext.AcceptWebSocketAsync(Int32)
+- uid: Unosquare.Net.HttpListenerContext.AcceptWebSocketAsync(System.Int32,System.String)
+  name: AcceptWebSocketAsync(Int32, String)
+  href: api/Unosquare.Net.HttpListenerContext.html#Unosquare_Net_HttpListenerContext_AcceptWebSocketAsync_System_Int32_System_String_
+  commentId: M:Unosquare.Net.HttpListenerContext.AcceptWebSocketAsync(System.Int32,System.String)
+  fullName: Unosquare.Net.HttpListenerContext.AcceptWebSocketAsync(System.Int32, System.String)
+  nameWithType: HttpListenerContext.AcceptWebSocketAsync(Int32, String)
 - uid: Unosquare.Net.HttpListenerContext.AcceptWebSocketAsync*
   name: AcceptWebSocketAsync
   href: api/Unosquare.Net.HttpListenerContext.html#Unosquare_Net_HttpListenerContext_AcceptWebSocketAsync_

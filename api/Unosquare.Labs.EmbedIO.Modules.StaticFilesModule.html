@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class StaticFilesModule
    | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 2.42.3.0">
+    <meta name="generator" content="docfx 2.42.4.0">
     
     <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -587,8 +587,7 @@ RAM Cache will only cache files that are MaxRamCacheSize in bytes or less.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Explicit RamCache will be dropped in future versions&quot;)]
-public bool UseRamCache { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool UseRamCache { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -707,7 +706,8 @@ public ReadOnlyDictionary&lt;string, string&gt; VirtualPaths { get; }</code></pr
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void RegisterVirtualPath(string virtualPath, string physicalPath)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Virtual Paths will be dropped in future versions&quot;)]
+public void RegisterVirtualPath(string virtualPath, string physicalPath)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -758,7 +758,8 @@ public ReadOnlyDictionary&lt;string, string&gt; VirtualPaths { get; }</code></pr
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void UnregisterVirtualPath(string virtualPath)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Virtual Paths will be dropped in future versions&quot;)]
+public void UnregisterVirtualPath(string virtualPath)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

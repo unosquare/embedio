@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IWebServer
    | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 2.42.3.0">
+    <meta name="generator" content="docfx 2.42.4.0">
     
     <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -256,6 +256,34 @@ to handle session data.</p>
       <tr>
         <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.WebServerState.html">WebServerState</a></td>
         <td><p>The state.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_IWebServer_UnhandledException_" data-uid="Unosquare.Labs.EmbedIO.IWebServer.UnhandledException*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_IWebServer_UnhandledException" data-uid="Unosquare.Labs.EmbedIO.IWebServer.UnhandledException">UnhandledException</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the unhandled exception.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;UnhandledException will be dropped in future versions&quot;)]
+Func&lt;IHttpContext, Exception, CancellationToken, Task&lt;bool&gt;&gt; UnhandledException { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-4">Func</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception">Exception</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;&gt;</td>
+        <td><p>The unhandled exception.</p>
 </td>
       </tr>
     </tbody>
