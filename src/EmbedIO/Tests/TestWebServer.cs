@@ -26,7 +26,6 @@ namespace EmbedIO.Tests
         {
             Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
             _listening = true;
-            State = WebServerState.Listening;
         }
 
         /// <summary>
