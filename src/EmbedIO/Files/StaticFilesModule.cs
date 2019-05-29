@@ -155,6 +155,64 @@ namespace EmbedIO.Files
 
             return value;
         }
+        
+        private static Task<bool> HandleDirectory(IHttpContext context, string localPath, CancellationToken cancellationToken)
+        {
+            var entries = new[] { context.Request.RawUrl == "/" ? string.Empty : "<a href='../'>../</a>" }
+                .Concat(
+                    Directory.GetDirectories(localPath)
+                        .Select(path =>
+                        {
+                            var name = path.Replace(
+                                localPath.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar,
+                                string.Empty);
+                            return new
+                            {
+                                Name = (name + Path.DirectorySeparatorChar).Truncate(MaxEntryLength, "..>"),
+                                Url = Uri.EscapeDataString(name) + Path.DirectorySeparatorChar,
+                                ModificationTime = new DirectoryInfo(path).LastWriteTimeUtc,
+                                Size = "-",
+                            };
+                        })
+                        .OrderBy(x => x.Name)
+                        .Union(Directory.GetFiles(localPath, "*", SearchOption.TopDirectoryOnly)
+                            .Select(path =>
+                            {
+                                var fileInfo = new FileInfo(path);
+                                var name = Path.GetFileName(path);
+
+                                return new
+                                {
+                                    Name = name.Truncate(MaxEntryLength, "..>"),
+                                    Url = Uri.EscapeDataString(name),
+                                    ModificationTime = fileInfo.LastWriteTimeUtc,
+                                    Size = fileInfo.Length.FormatBytes(),
+                                };
+                            })
+                            .OrderBy(x => x.Name))
+                        .Select(y => $"<a href='{y.Url}'>{WebUtility.HtmlEncode(y.Name)}</a>" +
+                                     new string(' ', MaxEntryLength - y.Name.Length + 1) +
+                                     y.ModificationTime.ToRfc1123String() +
+                                     new string(' ', SizeIndent - y.Size.Length) +
+                                     y.Size))
+                .Where(x => !string.IsNullOrWhiteSpace(x));
+
+            var encodedPath = WebUtility.HtmlEncode(context.Request.Url.AbsolutePath);
+            var sb = new StringBuilder()
+                .Append("<html><head><title>Index of ")
+                .Append(encodedPath)
+                .Append("</title></head><body><h1>Index of ")
+                .Append(encodedPath)
+                .Append("</h1><hr/><pre>");
+            foreach (var entry in entries)
+            {
+                sb.Append(entry).Append('\n');
+            }
+
+            sb.Append("</pre><hr/></body></html>");
+
+            return context.HtmlResponseAsync(sb.ToString(), cancellationToken: cancellationToken);
+        }
 
         private Task<bool> HandleGet(IHttpContext context, string path, bool sendBuffer, CancellationToken cancellationToken)
         {
@@ -331,64 +389,6 @@ namespace EmbedIO.Files
             return true;
         }
 
-        private Task<bool> HandleDirectory(IHttpContext context, string localPath, CancellationToken cancellationToken)
-        {
-            var entries = new[] { context.Request.RawUrl == "/" ? string.Empty : "<a href='../'>../</a>" }
-                .Concat(
-                    Directory.GetDirectories(localPath)
-                        .Select(path =>
-                        {
-                            var name = path.Replace(
-                                localPath.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar,
-                                string.Empty);
-                            return new
-                            {
-                                Name = (name + Path.DirectorySeparatorChar).Truncate(MaxEntryLength, "..>"),
-                                Url = Uri.EscapeDataString(name) + Path.DirectorySeparatorChar,
-                                ModificationTime = new DirectoryInfo(path).LastWriteTimeUtc,
-                                Size = "-",
-                            };
-                        })
-                        .OrderBy(x => x.Name)
-                        .Union(Directory.GetFiles(localPath, "*", SearchOption.TopDirectoryOnly)
-                            .Select(path =>
-                            {
-                                var fileInfo = new FileInfo(path);
-                                var name = Path.GetFileName(path);
-
-                                return new
-                                {
-                                    Name = name.Truncate(MaxEntryLength, "..>"),
-                                    Url = Uri.EscapeDataString(name),
-                                    ModificationTime = fileInfo.LastWriteTimeUtc,
-                                    Size = fileInfo.Length.FormatBytes(),
-                                };
-                            })
-                            .OrderBy(x => x.Name))
-                        .Select(y => $"<a href='{y.Url}'>{WebUtility.HtmlEncode(y.Name)}</a>" +
-                                     new string(' ', MaxEntryLength - y.Name.Length + 1) +
-                                     y.ModificationTime.ToRfc1123String() +
-                                     new string(' ', SizeIndent - y.Size.Length) +
-                                     y.Size))
-                .Where(x => !string.IsNullOrWhiteSpace(x));
-
-            var encodedPath = WebUtility.HtmlEncode(context.Request.Url.AbsolutePath);
-            var sb = new StringBuilder()
-                .Append("<html><head><title>Index of ")
-                .Append(encodedPath)
-                .Append("</title></head><body><h1>Index of ")
-                .Append(encodedPath)
-                .Append("</h1><hr/><pre>");
-            foreach (var entry in entries)
-            {
-                sb.Append(entry).Append('\n');
-            }
-
-            sb.Append("</pre><hr/></body></html>");
-
-            return context.HtmlResponseAsync(sb.ToString(), cancellationToken: cancellationToken);
-        }
-
         private Stream GetFileStream(IHttpContext context, FileSystemInfo fileInfo, bool usingPartial, out bool isTagValid)
         {
             isTagValid = false;
@@ -403,7 +403,7 @@ namespace EmbedIO.Files
                     $"RAM Cache: {localPath}".Debug(nameof(StaticFilesModule));
 
                     context.Response.AddHeader(HttpHeaderNames.ETag, currentHash);
-                    return new MemoryStream(RamCache[localPath].Buffer);
+                    return new MemoryStream(RamCache.GetBuffer(localPath));
                 }
             }
 

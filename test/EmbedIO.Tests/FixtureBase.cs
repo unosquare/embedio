@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using EmbedIO.Tests.Internal;
 using EmbedIO.Tests.TestObjects;
 using EmbedIO.Utilities;
 using NUnit.Framework;

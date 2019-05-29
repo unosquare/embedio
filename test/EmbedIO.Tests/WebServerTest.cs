@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Actions;
-using EmbedIO.Net;
 using EmbedIO.Tests.TestObjects;
 using EmbedIO.Utilities;
 using EmbedIO.WebApi;

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using EmbedIO.Actions;
-using EmbedIO.Net;
 using EmbedIO.Sessions;
 using EmbedIO.Utilities;
 using EmbedIO.Tests.TestObjects;

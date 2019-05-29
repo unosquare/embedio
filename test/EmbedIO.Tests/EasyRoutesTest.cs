@@ -1,6 +1,4 @@
 ﻿using System.Threading.Tasks;
-using EmbedIO.Net;
-using EmbedIO.Tests.Internal;
 using NUnit.Framework;
 
 namespace EmbedIO.Tests

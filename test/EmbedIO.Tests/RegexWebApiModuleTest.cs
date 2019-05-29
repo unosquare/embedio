@@ -3,8 +3,6 @@ using NUnit.Framework;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using EmbedIO.Net;
-using EmbedIO.Tests.Internal;
 using EmbedIO.Tests.TestObjects;
 using Unosquare.Swan.Formatters;
 

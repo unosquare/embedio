@@ -2,7 +2,6 @@
 using System.IO;
 using NUnit.Framework;
 using System.Threading.Tasks;
-using EmbedIO.WebApi.Internal;
 
 namespace EmbedIO.Tests
 {

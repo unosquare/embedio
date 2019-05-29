@@ -79,7 +79,7 @@ namespace EmbedIO.Cors
 
             var currentOrigin = context.RequestHeader(HttpHeaderNames.Origin);
                 
-            if (String.IsNullOrWhiteSpace(currentOrigin) && context.Request.IsLocal)
+            if (string.IsNullOrWhiteSpace(currentOrigin) && context.Request.IsLocal)
             {
                 return Task.FromResult(false);
             }
@@ -110,13 +110,13 @@ namespace EmbedIO.Cors
             var currentMethod = context.RequestHeader(HttpHeaderNames.AccessControlRequestMethod);
             var currentHeader = context.RequestHeader(HttpHeaderNames.AccessControlRequestHeaders);
 
-            if (!String.IsNullOrWhiteSpace(currentHeader))
+            if (!string.IsNullOrWhiteSpace(currentHeader))
             {
                 // TODO: I need to remove headers out from AllowHeaders
                 context.Response.AddHeader(HttpHeaderNames.AccessControlAllowHeaders, currentHeader);
             }
 
-            if (String.IsNullOrWhiteSpace(currentMethod)) 
+            if (string.IsNullOrWhiteSpace(currentMethod)) 
                 return true;
 
             var currentMethods = currentMethod.ToLowerInvariant()
