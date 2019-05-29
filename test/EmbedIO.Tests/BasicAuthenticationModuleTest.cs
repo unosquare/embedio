@@ -50,12 +50,11 @@ namespace EmbedIO.Tests
         {
             var request = new TestHttpRequest(WebServerUrl);
 
-            if (userName != null)
-            {
-                var encodedCredentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{userName}:{password}"));
-                var authHeaderValue = new System.Net.Http.Headers.AuthenticationHeaderValue("basic", encodedCredentials);
-                request.Headers.Add("Authorization", authHeaderValue.ToString());
-            }
+            if (userName == null) return SendAsync(request);
+
+            var encodedCredentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{userName}:{password}"));
+            var authHeaderValue = new System.Net.Http.Headers.AuthenticationHeaderValue("basic", encodedCredentials);
+            request.Headers.Add("Authorization", authHeaderValue.ToString());
 
             return SendAsync(request);
         }

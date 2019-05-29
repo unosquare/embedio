@@ -30,12 +30,12 @@ namespace EmbedIO.Tests.TestObjects
 </body>
 </html>";
         
-        private const string ServerAddress = "http://localhost:{0}/";
-
         public static string GetServerAddress()
         {
+            const string serverAddress = "http://localhost:{0}/";
+
             Interlocked.Increment(ref Counter);
-            return string.Format(ServerAddress, Counter);
+            return string.Format(serverAddress, Counter);
         }
     }
 }

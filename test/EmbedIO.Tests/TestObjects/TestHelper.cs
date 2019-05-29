@@ -17,8 +17,6 @@ namespace EmbedIO.Tests.TestObjects
 
         public static string[] RandomHtmls = {"abc.html", "wkp.html", "zxy.html"};
 
-        private const string Placeholder = "This is a placeholder";
-
         public static string RootPath(string folderName)
         {
             var assemblyPath = Path.GetDirectoryName(typeof(StaticFilesModuleTest).Assembly.Location);
@@ -71,34 +69,6 @@ namespace EmbedIO.Tests.TestObjects
 
         public static string SetupStaticFolder(bool onlyIndex = true) => SetupStaticFolderCore(RootPath(), onlyIndex);
 
-        public static string SetupStaticFolder(string folderName, bool onlyIndex = true) => SetupStaticFolderCore(RootPath(folderName), onlyIndex);
-
-        public static string GetStaticFolderInstanceIndexFileContents(string instanceName) =>
-            string.IsNullOrWhiteSpace(instanceName)
-                ? Resources.Index
-                : Resources.Index.Replace(Placeholder, "Instance name is " + instanceName);
-
-        public static string SetupStaticFolderInstance(string instanceName)
-        {
-            var folderName = instanceName.Replace('/', Path.DirectorySeparatorChar);
-            var location = Path.GetDirectoryName(typeof(StaticFilesModuleTest).Assembly.Location) ??
-                           throw new InvalidOperationException();
-            var folder = Path.Combine(location, folderName);
-
-            if (!Directory.Exists(folder))
-                Directory.CreateDirectory(folder);
-
-            var fileName = Path.Combine(folder, StaticFilesModule.DefaultDocumentName);
-
-            File.WriteAllText(fileName, GetStaticFolderInstanceIndexFileContents(instanceName));
-            return folder;
-        }
-
-        /// <summary>
-        /// Creates the temporary binary file.
-        /// </summary>
-        /// <param name="fileName">Name of the file.</param>
-        /// <param name="sizeInMb">The size in mb.</param>
         public static void CreateTempBinaryFile(string fileName, int sizeInMb)
         {
             // Note: block size must be a factor of 1MB to avoid rounding errors :)

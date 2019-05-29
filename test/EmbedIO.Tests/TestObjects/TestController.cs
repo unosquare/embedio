@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
@@ -13,8 +14,8 @@ namespace EmbedIO.Tests.TestObjects
         public const string EchoPath = RelativePath + "echo/";
         public const string GetPath = RelativePath + "people/";
 
-        public TestController(IHttpContext context)
-            : base(context)
+        public TestController(IHttpContext context, CancellationToken cancellationToken)
+            : base(context, cancellationToken)
         {
         }
 

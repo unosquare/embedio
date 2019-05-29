@@ -15,8 +15,10 @@ namespace EmbedIO.Tests.TestObjects
 
     public static class PeopleRepository
     {
-        public static List<Person> Database => new List<Person> {
-            new Person {
+        public static List<Person> Database => new List<Person>
+        {
+            new Person
+            {
                 Key = 1,
                 Name = "Mario Di Vece",
                 Age = 31,
@@ -24,7 +26,8 @@ namespace EmbedIO.Tests.TestObjects
                 DoB = new DateTime(1980, 1, 1),
                 MainSkill = "CSharp",
             },
-            new Person {
+            new Person
+            {
                 Key = 2,
                 Name = "Geovanni Perez",
                 Age = 32,
@@ -32,7 +35,8 @@ namespace EmbedIO.Tests.TestObjects
                 DoB = new DateTime(1980, 2, 2),
                 MainSkill = "Javascript",
             },
-            new Person {
+            new Person
+            {
                 Key = 3,
                 Name = "Luis Gonzalez",
                 Age = 29,

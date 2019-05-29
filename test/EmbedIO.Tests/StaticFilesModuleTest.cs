@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -52,81 +51,6 @@ namespace EmbedIO.Tests
                 var originalSet = TestHelper.GetBigData();
                 Buffer.BlockCopy(originalSet, offset, subset, 0, maxLength);
                 Assert.IsTrue(subset.SequenceEqual(data));
-            }
-        }
-
-        public class UseVirtualPaths : StaticFilesModuleTest
-        {
-            private const string VirtualFolderName = "virtual";
-            private const string VirtualizedFolderName = "html-virtualized";
-
-            public UseVirtualPaths()
-                : base(() => new StaticFilesModule(
-                        "/",
-                        new Dictionary<string, string>
-                    {
-                        {"/", TestHelper.SetupStaticFolder()},
-                        {"/" + VirtualFolderName, TestHelper.SetupStaticFolder(VirtualizedFolderName)},
-                    }, FileCachingMode.Complete))
-            {
-            }
-
-            private string VirtualPathUrl { get; set; }
-
-            protected override void OnAfterInit()
-            {
-                VirtualPathUrl = WebServerUrl + VirtualFolderName + "/";
-            }
-
-            [Test]
-            public async Task VirtualPathIndex()
-            {
-                using (var client = new HttpClient())
-                {
-                    var request = new HttpRequestMessage(HttpMethod.Get, VirtualPathUrl);
-
-                    using (var response = await client.SendAsync(request))
-                    {
-                        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status Code OK on virtual path");
-
-                        var html = await response.Content.ReadAsStringAsync();
-
-                        Assert.AreEqual(Resources.Index, html, "Same content index.html on virtual path");
-
-                        Assert.IsTrue(string.IsNullOrWhiteSpace(response.Headers.Pragma.ToString()), "Pragma empty");
-                    }
-
-                    WebServerInstance.Modules.OfType<StaticFilesModule>().First().DefaultHeaders
-                        .Add(HttpHeaderNames.Pragma, HeaderPragmaValue);
-
-                    request = new HttpRequestMessage(HttpMethod.Get, VirtualPathUrl);
-
-                    using (var response = await client.SendAsync(request))
-                    {
-                        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status Code OK on virtual path");
-                        Assert.AreEqual(HeaderPragmaValue, response.Headers.Pragma.ToString());
-                    }
-                }
-            }
-
-            [Test]
-            public async Task Issue68_MaliciousPath_GivesError404()
-            {
-                // Take the full path to a file that certainly exists, but is outside the virtualized folder
-                // (in this case, index.html in the "/" web folder)
-                var path = Path.Combine(TestHelper.RootPath(), StaticFilesModule.DefaultDocumentName);
-                // Add said path to a valid virtual path, resulting in "/virtual/C:\some\path"
-                var url = VirtualPathUrl + WebUtility.UrlEncode(path);
-
-                using (var client = new HttpClient())
-                {
-                    var request = new HttpRequestMessage(HttpMethod.Get, url);
-
-                    using (var response = await client.SendAsync(request))
-                    {
-                        Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode, "Status Code 404 requesting malicious path");
-                    }
-                }
             }
         }
 

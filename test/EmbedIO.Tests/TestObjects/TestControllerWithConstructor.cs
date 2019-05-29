@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
 
@@ -8,8 +9,8 @@ namespace EmbedIO.Tests.TestObjects
     {
         public const string CustomHeader = "X-Custom";
 
-        public TestControllerWithConstructor(IHttpContext context, string name = "Test")
-            : base(context)
+        public TestControllerWithConstructor(IHttpContext context, CancellationToken cancellationToken, string name = "Test")
+            : base(context, cancellationToken)
         {
             WebName = name;
         }
@@ -30,10 +31,6 @@ namespace EmbedIO.Tests.TestObjects
             return Ok(WebName);
         }
 
-        public override void SetDefaultHeaders()
-        {
-            // do nothing with cache
-            Response.AddHeader(CustomHeader, WebName);
-        }
+        protected override void OnBeforeHandler() => Response.AddHeader(CustomHeader, WebName);
     }
 }

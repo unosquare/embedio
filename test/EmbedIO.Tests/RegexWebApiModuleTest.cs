@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using EmbedIO.Tests.TestObjects;
+using EmbedIO.WebApi;
 using Unosquare.Swan.Formatters;
 
 namespace EmbedIO.Tests
@@ -12,7 +13,7 @@ namespace EmbedIO.Tests
     public class RegexWebApiModuleTest : PersonFixtureBase
     {
         public RegexWebApiModuleTest()
-            : base(ws => ws.WithWebApiController<TestController>(), true)
+            : base(ws => ws.WithWebApi("/", m => m.WithController<TestController>()), true)
         {
         }
 

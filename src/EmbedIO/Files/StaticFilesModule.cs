@@ -73,7 +73,7 @@ namespace EmbedIO.Files
         : base(baseUrlPath, useGzip)
         {
             FileSystemPath = Validate.LocalPath(nameof(fileSystemPath), fileSystemPath, true);
-            FileCachingMode = Validate.EnumValue<FileCachingMode>(nameof(fileCachingMode), fileCachingMode);
+            FileCachingMode = Validate.EnumValue(nameof(fileCachingMode), fileCachingMode);
             DefaultDocument = ValidateDefaultDocument(nameof(defaultDocument), defaultDocument);
             DefaultExtension = ValidateDefaultExtension(nameof(defaultExtension), defaultExtension);
             UseDirectoryBrowser = useDirectoryBrowser;

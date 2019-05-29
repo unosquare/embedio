@@ -18,10 +18,8 @@ namespace EmbedIO.Tests.TestObjects
         {
             switch (path)
             {
-                case RedirectUrl:
-                    context.Redirect("/" + AnotherUrl);
-                    return Task.FromResult(true);
                 case RedirectAbsoluteUrl:
+                case RedirectUrl:
                     context.Redirect("/" + AnotherUrl);
                     return Task.FromResult(true);
                 case AnotherUrl:
