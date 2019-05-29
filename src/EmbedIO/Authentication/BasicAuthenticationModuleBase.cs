@@ -55,10 +55,9 @@ namespace EmbedIO.Authentication
                 context.Response.StatusCode = 401;
             }
 
-            if (context.Response.StatusCode == 401)
-                return false;
+            if (context.Response.StatusCode != 401)
+                context.Response.AddHeader("WWW-Authenticate", _wwwAuthenticateHeaderValue);
 
-            context.Response.AddHeader("WWW-Authenticate", _wwwAuthenticateHeaderValue);
             return true;
         }
 
