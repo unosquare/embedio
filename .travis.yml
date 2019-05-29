@@ -15,4 +15,4 @@ matrix:
 install:
   - dotnet restore EmbedIO.sln
 script:
-  - dotnet test ./test/EmbedIO.Tests/EmbedIO.Tests.csproj -c Release -f netcoreapp2.2
+  - dotnet test ./test/EmbedIO.Tests/EmbedIO.Tests.csproj -c Release

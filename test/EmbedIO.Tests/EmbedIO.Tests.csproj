@@ -2,14 +2,10 @@
 
   <PropertyGroup>
     <Copyright>Copyright (c) 2016-2019 - Unosquare</Copyright>
-    <TargetFrameworks>net472;netcoreapp2.2</TargetFrameworks>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <TestProjectType>UnitTest</TestProjectType>
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
     <LangVersion>7.3</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net462|AnyCPU'">
-    <Optimize>false</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,10 +28,6 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
     <packagereference Include="NUnit3TestAdapter" Version="3.13.0"></packagereference>
     <PackageReference Include="NUnit" Version="3.12.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
-    <Reference Include="System.Net.Http" />
   </ItemGroup>
 
   <ItemGroup>

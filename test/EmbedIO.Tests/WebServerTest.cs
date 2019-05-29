@@ -93,7 +93,6 @@ namespace EmbedIO.Tests
                 Assert.AreEqual(instance.Modules.Count, 1, "It has one module");
             }
 
-#if NETCOREAPP2_2
             [Test]
             public async Task Redirect()
             {
@@ -144,7 +143,6 @@ namespace EmbedIO.Tests
                     }
                 }
             }
-#endif
         }
 
         public class General : WebServerTest

@@ -42,13 +42,12 @@ build_script:
       cd ..
       cd ..
 test_script:
-- cmd: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude=[NUnit3.TestAdapter]* test\EmbedIO.Tests\EmbedIO.Tests.csproj -c Release -f net472
+- dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude=[NUnit3.TestAdapter]* test\EmbedIO.Tests\EmbedIO.Tests.csproj -c Release
 - ps: |
         if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
         {
             tools\coveralls.net.0.7.0\tools\csmacnz.Coveralls.exe --opencover -i test\EmbedIO.Testst\coverage.opencover.xml --serviceName appveyor --jobId $Env:APPVEYOR_BUILD_NUMBER
         }
-- dotnet test test/EmbedIO.Tests/EmbedIO.Tests.csproj -c Release -f netcoreapp2.2
 after_build:
 - ps: |
         if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
