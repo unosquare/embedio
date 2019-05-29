@@ -72,6 +72,7 @@
         ///
         /// Previous values are defined to avoid caching from client.
         /// </summary>
+        [Obsolete("SetDefaultHeaders() will be replaced by OnBeforeHandler in future versions")]
         public virtual void SetDefaultHeaders() => HttpContext.NoCache();
 
         /// <summary>
@@ -110,6 +111,7 @@
         /// <returns>
         /// A task for writing the output stream.
         /// </returns>
+        [Obsolete("InternalServerError() will be replaced by HttpResultException in future versions")]
         protected virtual Task<bool> InternalServerError(
             Exception ex,
             System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.InternalServerError,
