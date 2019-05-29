@@ -1,0 +1,664 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IWebSocketContext
+   | Unosquare EmbedIO </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IWebSocketContext
+   | Unosquare EmbedIO ">
+    <meta name="generator" content="docfx 2.42.4.0">
+    
+    <link rel="shortcut icon" href="../src/Command/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/bootstrap.min.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="logo" src="../best-practices/resources/images/unosquare_logo.svg" alt="Unosquare">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar">
+          <div class="container-fluid hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container-fluid body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container-fluid body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="EmbedIO.WebSockets.IWebSocketContext">
+  
+  
+  <h1 id="EmbedIO_WebSockets_IWebSocketContext" data-uid="EmbedIO.WebSockets.IWebSocketContext" class="text-break">Interface IWebSocketContext
+  </h1>
+  <div class="markdown level0 summary"><p>Represents the context of a SystemWebSocket connection.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.WebSockets.html">EmbedIO.WebSockets</a></h6>
+  <h5 id="EmbedIO_WebSockets_IWebSocketContext_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IWebSocketContext</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="EmbedIO_WebSockets_IWebSocketContext_AcceptedProtocol_" data-uid="EmbedIO.WebSockets.IWebSocketContext.AcceptedProtocol*"></a>
+  <h4 id="EmbedIO_WebSockets_IWebSocketContext_AcceptedProtocol" data-uid="EmbedIO.WebSockets.IWebSocketContext.AcceptedProtocol">AcceptedProtocol</h4>
+  <div class="markdown level1 summary"><p>The accepted subprotocol.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string AcceptedProtocol { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_IWebSocketContext_CancellationToken_" data-uid="EmbedIO.WebSockets.IWebSocketContext.CancellationToken*"></a>
+  <h4 id="EmbedIO_WebSockets_IWebSocketContext_CancellationToken" data-uid="EmbedIO.WebSockets.IWebSocketContext.CancellationToken">CancellationToken</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="EmbedIO.WebSockets.IWebSocketContext.html#EmbedIO_WebSockets_IWebSocketContext_CancellationToken">CancellationToken</a> used to cancel operations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">CancellationToken CancellationToken { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_IWebSocketContext_Cookies_" data-uid="EmbedIO.WebSockets.IWebSocketContext.Cookies*"></a>
+  <h4 id="EmbedIO_WebSockets_IWebSocketContext_Cookies" data-uid="EmbedIO.WebSockets.IWebSocketContext.Cookies">Cookies</h4>
+  <div class="markdown level1 summary"><p>The cookies that were passed to the server during the opening handshake.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ICookieCollection Cookies { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.ICookieCollection.html">ICookieCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_IWebSocketContext_Headers_" data-uid="EmbedIO.WebSockets.IWebSocketContext.Headers*"></a>
+  <h4 id="EmbedIO_WebSockets_IWebSocketContext_Headers" data-uid="EmbedIO.WebSockets.IWebSocketContext.Headers">Headers</h4>
+  <div class="markdown level1 summary"><p>The HTTP headers that were sent to the server during the opening handshake.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">NameValueCollection Headers { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">NameValueCollection</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_IWebSocketContext_HttpContextId_" data-uid="EmbedIO.WebSockets.IWebSocketContext.HttpContextId*"></a>
+  <h4 id="EmbedIO_WebSockets_IWebSocketContext_HttpContextId" data-uid="EmbedIO.WebSockets.IWebSocketContext.HttpContextId">HttpContextId</h4>
+  <div class="markdown level1 summary"><p>Gets the unique identifier of the opening handshake HTTP context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string HttpContextId { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_IWebSocketContext_Id_" data-uid="EmbedIO.WebSockets.IWebSocketContext.Id*"></a>
+  <h4 id="EmbedIO_WebSockets_IWebSocketContext_Id" data-uid="EmbedIO.WebSockets.IWebSocketContext.Id">Id</h4>
+  <div class="markdown level1 summary"><p>Gets a unique identifier for a SystemWebSocket context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string Id { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_IWebSocketContext_IsAuthenticated_" data-uid="EmbedIO.WebSockets.IWebSocketContext.IsAuthenticated*"></a>
+  <h4 id="EmbedIO_WebSockets_IWebSocketContext_IsAuthenticated" data-uid="EmbedIO.WebSockets.IWebSocketContext.IsAuthenticated">IsAuthenticated</h4>
+  <div class="markdown level1 summary"><p>Whether the SystemWebSocket client is authenticated.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IsAuthenticated { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_IWebSocketContext_IsLocal_" data-uid="EmbedIO.WebSockets.IWebSocketContext.IsLocal*"></a>
+  <h4 id="EmbedIO_WebSockets_IWebSocketContext_IsLocal" data-uid="EmbedIO.WebSockets.IWebSocketContext.IsLocal">IsLocal</h4>
+  <div class="markdown level1 summary"><p>Whether the SystemWebSocket client connected from the local machine.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IsLocal { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_IWebSocketContext_IsSecureConnection_" data-uid="EmbedIO.WebSockets.IWebSocketContext.IsSecureConnection*"></a>
+  <h4 id="EmbedIO_WebSockets_IWebSocketContext_IsSecureConnection" data-uid="EmbedIO.WebSockets.IWebSocketContext.IsSecureConnection">IsSecureConnection</h4>
+  <div class="markdown level1 summary"><p>Whether the SystemWebSocket connection is secured using Secure Sockets Layer (SSL).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IsSecureConnection { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_IWebSocketContext_Items_" data-uid="EmbedIO.WebSockets.IWebSocketContext.Items*"></a>
+  <h4 id="EmbedIO_WebSockets_IWebSocketContext_Items" data-uid="EmbedIO.WebSockets.IWebSocketContext.Items">Items</h4>
+  <div class="markdown level1 summary"><p>Gets the dictionary of data associated with the opening handshake HTTP context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IDictionary&lt;object, object&gt; Items { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_IWebSocketContext_LocalEndPoint_" data-uid="EmbedIO.WebSockets.IWebSocketContext.LocalEndPoint*"></a>
+  <h4 id="EmbedIO_WebSockets_IWebSocketContext_LocalEndPoint" data-uid="EmbedIO.WebSockets.IWebSocketContext.LocalEndPoint">LocalEndPoint</h4>
+  <div class="markdown level1 summary"><p>Gets the server IP address and port number to which the opening handshake request is directed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IPEndPoint LocalEndPoint { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IPEndPoint</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_IWebSocketContext_Origin_" data-uid="EmbedIO.WebSockets.IWebSocketContext.Origin*"></a>
+  <h4 id="EmbedIO_WebSockets_IWebSocketContext_Origin" data-uid="EmbedIO.WebSockets.IWebSocketContext.Origin">Origin</h4>
+  <div class="markdown level1 summary"><p>The value of the Origin HTTP header included in the opening handshake.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string Origin { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_IWebSocketContext_RemoteEndPoint_" data-uid="EmbedIO.WebSockets.IWebSocketContext.RemoteEndPoint*"></a>
+  <h4 id="EmbedIO_WebSockets_IWebSocketContext_RemoteEndPoint" data-uid="EmbedIO.WebSockets.IWebSocketContext.RemoteEndPoint">RemoteEndPoint</h4>
+  <div class="markdown level1 summary"><p>Gets the client IP address and port number from which the opening handshake request originated.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IPEndPoint RemoteEndPoint { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IPEndPoint</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_IWebSocketContext_RequestedProtocols_" data-uid="EmbedIO.WebSockets.IWebSocketContext.RequestedProtocols*"></a>
+  <h4 id="EmbedIO_WebSockets_IWebSocketContext_RequestedProtocols" data-uid="EmbedIO.WebSockets.IWebSocketContext.RequestedProtocols">RequestedProtocols</h4>
+  <div class="markdown level1 summary"><p>The list of subprotocols requested by the SystemWebSocket client.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;string&gt; RequestedProtocols { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_IWebSocketContext_RequestUri_" data-uid="EmbedIO.WebSockets.IWebSocketContext.RequestUri*"></a>
+  <h4 id="EmbedIO_WebSockets_IWebSocketContext_RequestUri" data-uid="EmbedIO.WebSockets.IWebSocketContext.RequestUri">RequestUri</h4>
+  <div class="markdown level1 summary"><p>The URI requested by the SystemWebSocket client.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Uri RequestUri { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Uri</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_IWebSocketContext_Session_" data-uid="EmbedIO.WebSockets.IWebSocketContext.Session*"></a>
+  <h4 id="EmbedIO_WebSockets_IWebSocketContext_Session" data-uid="EmbedIO.WebSockets.IWebSocketContext.Session">Session</h4>
+  <div class="markdown level1 summary"><p>Gets the session proxy associated with the opening handshake HTTP context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ISessionProxy Session { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISessionProxy</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_IWebSocketContext_User_" data-uid="EmbedIO.WebSockets.IWebSocketContext.User*"></a>
+  <h4 id="EmbedIO_WebSockets_IWebSocketContext_User" data-uid="EmbedIO.WebSockets.IWebSocketContext.User">User</h4>
+  <div class="markdown level1 summary"><p>An object used to obtain identity, authentication information, and security roles for the SystemWebSocket client.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IPrincipal User { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IPrincipal</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_IWebSocketContext_WebSocket_" data-uid="EmbedIO.WebSockets.IWebSocketContext.WebSocket*"></a>
+  <h4 id="EmbedIO_WebSockets_IWebSocketContext_WebSocket" data-uid="EmbedIO.WebSockets.IWebSocketContext.WebSocket">WebSocket</h4>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="EmbedIO.WebSockets.IWebSocket.html">IWebSocket</a> interface used to interact with the SystemWebSocket connection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IWebSocket WebSocket { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.WebSockets.IWebSocket.html">IWebSocket</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_IWebSocketContext_WebSocketVersion_" data-uid="EmbedIO.WebSockets.IWebSocketContext.WebSocketVersion*"></a>
+  <h4 id="EmbedIO_WebSockets_IWebSocketContext_WebSocketVersion" data-uid="EmbedIO.WebSockets.IWebSocketContext.WebSocketVersion">WebSocketVersion</h4>
+  <div class="markdown level1 summary"><p>The value of the SecWebSocketKey HTTP header included in the opening handshake.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string WebSocketVersion { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+<h3 id="disqus_thread">Comments</h3>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://unolabs.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="doc" align="center">
+              <span class="small mobile-hide">
+                <img id="logo" class="doc-logo" src="../embedio.png" alt="">
+              </span>
+            </div>
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2017-2019 <a href="https://www.unosquare.com">Unosquare</a></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-8535255-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+  </body>
+</html>

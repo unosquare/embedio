@@ -1,0 +1,1164 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class WebSocketModule
+   | Unosquare EmbedIO </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class WebSocketModule
+   | Unosquare EmbedIO ">
+    <meta name="generator" content="docfx 2.42.4.0">
+    
+    <link rel="shortcut icon" href="../src/Command/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/bootstrap.min.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="logo" src="../best-practices/resources/images/unosquare_logo.svg" alt="Unosquare">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar">
+          <div class="container-fluid hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container-fluid body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container-fluid body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="EmbedIO.WebSockets.WebSocketModule">
+  
+  
+  <h1 id="EmbedIO_WebSockets_WebSocketModule" data-uid="EmbedIO.WebSockets.WebSocketModule" class="text-break">Class WebSocketModule
+  </h1>
+  <div class="markdown level0 summary"><p>A base class for modules that handle SystemWebSocket connections.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="EmbedIO.WebModuleBase.html">WebModuleBase</a></div>
+    <div class="level2"><span class="xref">WebSocketModule</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="EmbedIO.IWebModule.html">IWebModule</a></div>
+    <div><span class="xref">IDisposable</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_BaseUrlPath">WebModuleBase.BaseUrlPath</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_Start_CancellationToken_">WebModuleBase.Start(CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_HandleRequestAsync_EmbedIO_IHttpContext_System_String_CancellationToken_">WebModuleBase.HandleRequestAsync(IHttpContext, String, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_OnExceptionAsync_EmbedIO_IHttpContext_System_String_Exception_CancellationToken_">WebModuleBase.OnExceptionAsync(IHttpContext, String, Exception, CancellationToken)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.WebSockets.html">EmbedIO.WebSockets</a></h6>
+  <h5 id="EmbedIO_WebSockets_WebSocketModule_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class WebSocketModule : WebModuleBase, IWebModule, IDisposable</code></pre>
+  </div>
+  <h5 id="EmbedIO_WebSockets_WebSocketModule_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p><p>Each SystemWebSocket server has a list of SystemWebSocket subprotocols it can accept.</p>
+<p>When a client initiates a SystemWebSocket opening handshake:</p>
+<ul><li>if the list of accepted subprotocols is empty,
+the connection is accepted only if no <code>SecWebSocketProtocol</code>
+header is present in the request;</li><li>if the list of accepted subprotocols is not empty,
+the connection is accepted only if one or more <code>SecWebSocketProtocol</code>
+headers are present in the request and one of them specifies one
+of the subprotocols in the list. The first subprotocol specified by the client
+that is also present in the module&apos;s list is then specified in the
+handshake response.</li></ul>
+If a connection is not accepted because of a subprotocol mismatch,
+a <code>400 Bad Request</code> response is sent back to the client. The response
+contains one or more <code>SecWebSocketProtocol</code> headers that specify
+the list of accepted subprotocols (if any).</p>
+</div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule__ctor_" data-uid="EmbedIO.WebSockets.WebSocketModule.#ctor*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule__ctor_System_String_System_Boolean_" data-uid="EmbedIO.WebSockets.WebSocketModule.#ctor(System.String,System.Boolean)">WebSocketModule(String, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.WebSockets.WebSocketModule.html">WebSocketModule</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected WebSocketModule(string urlPath, bool enableConnectionWatchdog)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">urlPath</span></td>
+        <td><p>The URL path of the SystemWebSocket endpoint to serve.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">enableConnectionWatchdog</span></td>
+        <td><p>If set to <span class="xref">true</span>,
+contexts representing closed connections will automatically be purged
+from <a class="xref" href="EmbedIO.WebSockets.WebSocketModule.html#EmbedIO_WebSockets_WebSocketModule_ActiveContexts">ActiveContexts</a> every 30 seconds..</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_ActiveContexts_" data-uid="EmbedIO.WebSockets.WebSocketModule.ActiveContexts*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_ActiveContexts" data-uid="EmbedIO.WebSockets.WebSocketModule.ActiveContexts">ActiveContexts</h4>
+  <div class="markdown level1 summary"><p>Gets a list of <a class="xref" href="EmbedIO.WebSockets.IWebSocketContext.html">IWebSocketContext</a> interfaces
+representing the currently connected clients.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IReadOnlyList&lt;IWebSocketContext&gt; ActiveContexts { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="EmbedIO.WebSockets.IWebSocketContext.html">IWebSocketContext</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_Encoding_" data-uid="EmbedIO.WebSockets.WebSocketModule.Encoding*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_Encoding" data-uid="EmbedIO.WebSockets.WebSocketModule.Encoding">Encoding</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="EmbedIO.WebSockets.WebSocketModule.html#EmbedIO_WebSockets_WebSocketModule_Encoding">Encoding</a> used by the <a class="xref" href="EmbedIO.WebSockets.WebSocketModule.html#EmbedIO_WebSockets_WebSocketModule_SendAsync_EmbedIO_WebSockets_IWebSocketContext_System_String_">SendAsync(IWebSocketContext, String)</a> method
+to send a string. The default is <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.text.encoding.utf8#System_Text_Encoding_UTF8">UTF8</a> per the SystemWebSocket specification.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Encoding Encoding { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Encoding</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_KeepAliveInterval_" data-uid="EmbedIO.WebSockets.WebSocketModule.KeepAliveInterval*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_KeepAliveInterval" data-uid="EmbedIO.WebSockets.WebSocketModule.KeepAliveInterval">KeepAliveInterval</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the keep-alive interval for the SystemWebSocket connection.
+The default is 30 seconds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected TimeSpan KeepAliveInterval { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TimeSpan</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_MaxMessageSize_" data-uid="EmbedIO.WebSockets.WebSocketModule.MaxMessageSize*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_MaxMessageSize" data-uid="EmbedIO.WebSockets.WebSocketModule.MaxMessageSize">MaxMessageSize</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the maximum size of a received message.
+If a message exceeding the maximum size is received from a client,
+the connection is closed automatically.</p>
+<p>The default value is 0, which disables message size checking.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected int MaxMessageSize { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_AddProtocol_" data-uid="EmbedIO.WebSockets.WebSocketModule.AddProtocol*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_AddProtocol_System_String_" data-uid="EmbedIO.WebSockets.WebSocketModule.AddProtocol(System.String)">AddProtocol(String)</h4>
+  <div class="markdown level1 summary"><p>Adds a SystemWebSocket subprotocol to the list of protocols supported by a <a class="xref" href="EmbedIO.WebSockets.WebSocketModule.html">WebSocketModule</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void AddProtocol(string protocol)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">protocol</span></td>
+        <td><p>The protocol name to add to the list.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_WebSockets_WebSocketModule_AddProtocol_System_String__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.WebSockets.WebSocketModule.html#EmbedIO_WebSockets_WebSocketModule_AddProtocols_IEnumerable_System_String__">AddProtocols(IEnumerable&lt;String&gt;)</a></div>
+      <div><a class="xref" href="EmbedIO.WebSockets.WebSocketModule.html#EmbedIO_WebSockets_WebSocketModule_AddProtocols_System_String___">AddProtocols(String[])</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_AddProtocols_" data-uid="EmbedIO.WebSockets.WebSocketModule.AddProtocols*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_AddProtocols_IEnumerable_System_String__" data-uid="EmbedIO.WebSockets.WebSocketModule.AddProtocols(IEnumerable{System.String})">AddProtocols(IEnumerable&lt;String&gt;)</h4>
+  <div class="markdown level1 summary"><p>Adds one or more SystemWebSocket subprotocols to the list of protocols supported by a <a class="xref" href="EmbedIO.WebSockets.WebSocketModule.html">WebSocketModule</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void AddProtocols(IEnumerable&lt;string&gt; protocols)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">protocols</span></td>
+        <td><p>The protocol names to add to the list.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_WebSockets_WebSocketModule_AddProtocols_IEnumerable_System_String___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method enumerates <code data-dev-comment-type="paramref" class="paramref">protocols</code> just once; hence, if an exception is thrown
+because one of the specified protocols is <span class="xref">null</span> or contains invalid characters,
+any preceding protocol is added to the list of supported protocols.</p>
+</div>
+  <h5 id="EmbedIO_WebSockets_WebSocketModule_AddProtocols_IEnumerable_System_String___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.WebSockets.WebSocketModule.html#EmbedIO_WebSockets_WebSocketModule_AddProtocol_System_String_">AddProtocol(String)</a></div>
+      <div><a class="xref" href="EmbedIO.WebSockets.WebSocketModule.html#EmbedIO_WebSockets_WebSocketModule_AddProtocols_System_String___">AddProtocols(String[])</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_AddProtocols_" data-uid="EmbedIO.WebSockets.WebSocketModule.AddProtocols*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_AddProtocols_System_String___" data-uid="EmbedIO.WebSockets.WebSocketModule.AddProtocols(System.String[])">AddProtocols(String[])</h4>
+  <div class="markdown level1 summary"><p>Adds one or more SystemWebSocket subprotocols to the list of protocols supported by a <a class="xref" href="EmbedIO.WebSockets.WebSocketModule.html">WebSocketModule</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void AddProtocols(params string[] protocols)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
+        <td><span class="parametername">protocols</span></td>
+        <td><p>The protocol names to add to the list.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_WebSockets_WebSocketModule_AddProtocols_System_String____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method performs validation checks on all specified <code data-dev-comment-type="paramref" class="paramref">protocols</code> before adding them
+to the list of supported protocols; hence, if an exception is thrown
+because one of the specified protocols is <span class="xref">null</span> or contains invalid characters,
+none of the specified protocol names are added to the list.</p>
+</div>
+  <h5 id="EmbedIO_WebSockets_WebSocketModule_AddProtocols_System_String____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.WebSockets.WebSocketModule.html#EmbedIO_WebSockets_WebSocketModule_AddProtocol_System_String_">AddProtocol(String)</a></div>
+      <div><a class="xref" href="EmbedIO.WebSockets.WebSocketModule.html#EmbedIO_WebSockets_WebSocketModule_AddProtocols_IEnumerable_System_String__">AddProtocols(IEnumerable&lt;String&gt;)</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_BroadcastAsync_" data-uid="EmbedIO.WebSockets.WebSocketModule.BroadcastAsync*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_BroadcastAsync_System_Byte___" data-uid="EmbedIO.WebSockets.WebSocketModule.BroadcastAsync(System.Byte[])">BroadcastAsync(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Broadcasts the specified payload to all connected SystemWebSocket clients.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Task BroadcastAsync(byte[] payload)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">payload</span></td>
+        <td><p>The payload.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A <see cref="!:Task"></see> representing the ongoing operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_BroadcastAsync_" data-uid="EmbedIO.WebSockets.WebSocketModule.BroadcastAsync*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_BroadcastAsync_System_Byte___Func_EmbedIO_WebSockets_IWebSocketContext_System_Boolean__" data-uid="EmbedIO.WebSockets.WebSocketModule.BroadcastAsync(System.Byte[],Func{EmbedIO.WebSockets.IWebSocketContext,System.Boolean})">BroadcastAsync(Byte[], Func&lt;IWebSocketContext, Boolean&gt;)</h4>
+  <div class="markdown level1 summary"><p>Broadcasts the specified payload to selected SystemWebSocket clients.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Task BroadcastAsync(byte[] payload, Func&lt;IWebSocketContext, bool&gt; selector)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">payload</span></td>
+        <td><p>The payload.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Func</span>&lt;<a class="xref" href="EmbedIO.WebSockets.IWebSocketContext.html">IWebSocketContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><span class="parametername">selector</span></td>
+        <td><p>A callback function that must return <span class="xref">true</span>
+for each context to be included in the broadcast.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A <see cref="!:Task"></see> representing the ongoing operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_BroadcastAsync_" data-uid="EmbedIO.WebSockets.WebSocketModule.BroadcastAsync*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_BroadcastAsync_System_String_" data-uid="EmbedIO.WebSockets.WebSocketModule.BroadcastAsync(System.String)">BroadcastAsync(String)</h4>
+  <div class="markdown level1 summary"><p>Broadcasts the specified payload to all connected SystemWebSocket clients.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Task BroadcastAsync(string payload)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">payload</span></td>
+        <td><p>The payload.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A <see cref="!:Task"></see> representing the ongoing operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_BroadcastAsync_" data-uid="EmbedIO.WebSockets.WebSocketModule.BroadcastAsync*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_BroadcastAsync_System_String_Func_EmbedIO_WebSockets_IWebSocketContext_System_Boolean__" data-uid="EmbedIO.WebSockets.WebSocketModule.BroadcastAsync(System.String,Func{EmbedIO.WebSockets.IWebSocketContext,System.Boolean})">BroadcastAsync(String, Func&lt;IWebSocketContext, Boolean&gt;)</h4>
+  <div class="markdown level1 summary"><p>Broadcasts the specified payload to selected SystemWebSocket clients.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Task BroadcastAsync(string payload, Func&lt;IWebSocketContext, bool&gt; selector)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">payload</span></td>
+        <td><p>The payload.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Func</span>&lt;<a class="xref" href="EmbedIO.WebSockets.IWebSocketContext.html">IWebSocketContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><span class="parametername">selector</span></td>
+        <td><p>A callback function that must return <span class="xref">true</span>
+for each context to be included in the broadcast.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A <see cref="!:Task"></see> representing the ongoing operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_CloseAsync_" data-uid="EmbedIO.WebSockets.WebSocketModule.CloseAsync*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_CloseAsync_EmbedIO_WebSockets_IWebSocketContext_" data-uid="EmbedIO.WebSockets.WebSocketModule.CloseAsync(EmbedIO.WebSockets.IWebSocketContext)">CloseAsync(IWebSocketContext)</h4>
+  <div class="markdown level1 summary"><p>Closes the specified web socket, removes it and disposes it.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Task CloseAsync(IWebSocketContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.WebSockets.IWebSocketContext.html">IWebSocketContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The web socket.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A <see cref="!:Task"></see> representing the ongoing operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_Dispose_" data-uid="EmbedIO.WebSockets.WebSocketModule.Dispose*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_Dispose" data-uid="EmbedIO.WebSockets.WebSocketModule.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_Dispose_" data-uid="EmbedIO.WebSockets.WebSocketModule.Dispose*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_Dispose_System_Boolean_" data-uid="EmbedIO.WebSockets.WebSocketModule.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Releases unmanaged and - optionally - managed resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Dispose(bool disposing)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">disposing</span></td>
+        <td><p><code>true</code> to release both managed and unmanaged resources; <code>false</code> to release only unmanaged resources.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_OnClientConnectedAsync_" data-uid="EmbedIO.WebSockets.WebSocketModule.OnClientConnectedAsync*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_OnClientConnectedAsync_EmbedIO_WebSockets_IWebSocketContext_" data-uid="EmbedIO.WebSockets.WebSocketModule.OnClientConnectedAsync(EmbedIO.WebSockets.IWebSocketContext)">OnClientConnectedAsync(IWebSocketContext)</h4>
+  <div class="markdown level1 summary"><p>Called when this SystemWebSocket Server accepts a new client.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Task OnClientConnectedAsync(IWebSocketContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.WebSockets.IWebSocketContext.html">IWebSocketContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A <see cref="!:Task"></see> representing the ongoing operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_OnClientDisconnectedAsync_" data-uid="EmbedIO.WebSockets.WebSocketModule.OnClientDisconnectedAsync*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_OnClientDisconnectedAsync_EmbedIO_WebSockets_IWebSocketContext_" data-uid="EmbedIO.WebSockets.WebSocketModule.OnClientDisconnectedAsync(EmbedIO.WebSockets.IWebSocketContext)">OnClientDisconnectedAsync(IWebSocketContext)</h4>
+  <div class="markdown level1 summary"><p>Called when the server has removed a connected client for any reason.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Task OnClientDisconnectedAsync(IWebSocketContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.WebSockets.IWebSocketContext.html">IWebSocketContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A <see cref="!:Task"></see> representing the ongoing operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_OnFrameReceivedAsync_" data-uid="EmbedIO.WebSockets.WebSocketModule.OnFrameReceivedAsync*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_OnFrameReceivedAsync_EmbedIO_WebSockets_IWebSocketContext_System_Byte___EmbedIO_WebSockets_IWebSocketReceiveResult_" data-uid="EmbedIO.WebSockets.WebSocketModule.OnFrameReceivedAsync(EmbedIO.WebSockets.IWebSocketContext,System.Byte[],EmbedIO.WebSockets.IWebSocketReceiveResult)">OnFrameReceivedAsync(IWebSocketContext, Byte[], IWebSocketReceiveResult)</h4>
+  <div class="markdown level1 summary"><p>Called when this SystemWebSocket Server receives a message frame regardless if the frame represents the EndOfMessage.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Task OnFrameReceivedAsync(IWebSocketContext context, byte[] buffer, IWebSocketReceiveResult result)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.WebSockets.IWebSocketContext.html">IWebSocketContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The buffer.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.WebSockets.IWebSocketReceiveResult.html">IWebSocketReceiveResult</a></td>
+        <td><span class="parametername">result</span></td>
+        <td><p>The result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A <see cref="!:Task"></see> representing the ongoing operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_OnMessageReceivedAsync_" data-uid="EmbedIO.WebSockets.WebSocketModule.OnMessageReceivedAsync*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_OnMessageReceivedAsync_EmbedIO_WebSockets_IWebSocketContext_System_Byte___EmbedIO_WebSockets_IWebSocketReceiveResult_" data-uid="EmbedIO.WebSockets.WebSocketModule.OnMessageReceivedAsync(EmbedIO.WebSockets.IWebSocketContext,System.Byte[],EmbedIO.WebSockets.IWebSocketReceiveResult)">OnMessageReceivedAsync(IWebSocketContext, Byte[], IWebSocketReceiveResult)</h4>
+  <div class="markdown level1 summary"><p>Called when this SystemWebSocket Server receives a full message (EndOfMessage) from a client.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract Task OnMessageReceivedAsync(IWebSocketContext context, byte[] buffer, IWebSocketReceiveResult result)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.WebSockets.IWebSocketContext.html">IWebSocketContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The buffer.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.WebSockets.IWebSocketReceiveResult.html">IWebSocketReceiveResult</a></td>
+        <td><span class="parametername">result</span></td>
+        <td><p>The result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A <see cref="!:Task"></see> representing the ongoing operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_OnRequestAsync_" data-uid="EmbedIO.WebSockets.WebSocketModule.OnRequestAsync*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_OnRequestAsync_EmbedIO_IHttpContext_System_String_CancellationToken_" data-uid="EmbedIO.WebSockets.WebSocketModule.OnRequestAsync(EmbedIO.IHttpContext,System.String,CancellationToken)">OnRequestAsync(IHttpContext, String, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Called to handle a request from a client.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override sealed Task&lt;bool&gt; OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context of the request being handled.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>The requested path, relative to <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_BaseUrlPath">BaseUrlPath</a>. See the Remarks section for more information.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A <see cref="!:CancellationToken"></see> used to cancel the operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><p><span class="xref">true</span> if the request has been handled;
+<span class="xref">false</span> if the request should be passed down the module chain.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_OnRequestAsync_EmbedIO_IHttpContext_System_String_CancellationToken_">WebModuleBase.OnRequestAsync(IHttpContext, String, CancellationToken)</a></div>
+  <h5 id="EmbedIO_WebSockets_WebSocketModule_OnRequestAsync_EmbedIO_IHttpContext_System_String_CancellationToken__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The path specified in the requested URL is stripped of the <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_BaseUrlPath">BaseUrlPath</a>
+and passed in the <code data-dev-comment-type="paramref" class="paramref">path</code> parameter.</p>
+<p>The <code data-dev-comment-type="paramref" class="paramref">path</code> parameter is in itself a valid URL path, including an initial
+slash (<code>/</code>) character.</p>
+</div>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_OnStart_" data-uid="EmbedIO.WebSockets.WebSocketModule.OnStart*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_OnStart_CancellationToken_" data-uid="EmbedIO.WebSockets.WebSocketModule.OnStart(CancellationToken)">OnStart(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Called when a module is started, immediately before locking the module&apos;s configuration.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnStart(CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A <see cref="!:CancellationToken"></see> used to stop the web server.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_OnStart_CancellationToken_">WebModuleBase.OnStart(CancellationToken)</a></div>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_SendAsync_" data-uid="EmbedIO.WebSockets.WebSocketModule.SendAsync*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_SendAsync_EmbedIO_WebSockets_IWebSocketContext_System_Byte___" data-uid="EmbedIO.WebSockets.WebSocketModule.SendAsync(EmbedIO.WebSockets.IWebSocketContext,System.Byte[])">SendAsync(IWebSocketContext, Byte[])</h4>
+  <div class="markdown level1 summary"><p>Sends a binary payload.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Task SendAsync(IWebSocketContext context, byte[] payload)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.WebSockets.IWebSocketContext.html">IWebSocketContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The web socket.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">payload</span></td>
+        <td><p>The payload.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A <see cref="!:Task"></see> representing the ongoing operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebSockets_WebSocketModule_SendAsync_" data-uid="EmbedIO.WebSockets.WebSocketModule.SendAsync*"></a>
+  <h4 id="EmbedIO_WebSockets_WebSocketModule_SendAsync_EmbedIO_WebSockets_IWebSocketContext_System_String_" data-uid="EmbedIO.WebSockets.WebSocketModule.SendAsync(EmbedIO.WebSockets.IWebSocketContext,System.String)">SendAsync(IWebSocketContext, String)</h4>
+  <div class="markdown level1 summary"><p>Sends a text payload.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Task SendAsync(IWebSocketContext context, string payload)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.WebSockets.IWebSocketContext.html">IWebSocketContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The web socket.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">payload</span></td>
+        <td><p>The payload.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A <see cref="!:Task"></see> representing the ongoing operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="EmbedIO.IWebModule.html">IWebModule</a>
+  </div>
+  <div>
+      <span class="xref">IDisposable</span>
+  </div>
+
+<h3 id="disqus_thread">Comments</h3>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://unolabs.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="doc" align="center">
+              <span class="small mobile-hide">
+                <img id="logo" class="doc-logo" src="../embedio.png" alt="">
+              </span>
+            </div>
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2017-2019 <a href="https://www.unosquare.com">Unosquare</a></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-8535255-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+  </body>
+</html>

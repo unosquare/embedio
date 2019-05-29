@@ -1,0 +1,544 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class WebApiModuleBase
+   | Unosquare EmbedIO </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class WebApiModuleBase
+   | Unosquare EmbedIO ">
+    <meta name="generator" content="docfx 2.42.4.0">
+    
+    <link rel="shortcut icon" href="../src/Command/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/bootstrap.min.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="logo" src="../best-practices/resources/images/unosquare_logo.svg" alt="Unosquare">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar">
+          <div class="container-fluid hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container-fluid body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container-fluid body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="EmbedIO.WebApi.WebApiModuleBase">
+  
+  
+  <h1 id="EmbedIO_WebApi_WebApiModuleBase" data-uid="EmbedIO.WebApi.WebApiModuleBase" class="text-break">Class WebApiModuleBase
+  </h1>
+  <div class="markdown level0 summary"><p>A very simple module to register class methods as handlers.
+Public instance methods that match the WebServerModule.ResponseHandler signature, and have the WebApi handler attribute
+will be used to respond to web server requests.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">WebApiModuleBase</span></div>
+      <div class="level2"><a class="xref" href="EmbedIO.WebApi.WebApiModule.html">WebApiModule</a></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.WebApi.html">EmbedIO.WebApi</a></h6>
+  <h5 id="EmbedIO_WebApi_WebApiModuleBase_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class WebApiModuleBase : RoutingModuleBase</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="EmbedIO_WebApi_WebApiModuleBase__ctor_" data-uid="EmbedIO.WebApi.WebApiModuleBase.#ctor*"></a>
+  <h4 id="EmbedIO_WebApi_WebApiModuleBase__ctor_System_String_" data-uid="EmbedIO.WebApi.WebApiModuleBase.#ctor(System.String)">WebApiModuleBase(String)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.WebApi.WebApiModuleBase.html">WebApiModuleBase</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected WebApiModuleBase(string baseUrlPath)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">baseUrlPath</span></td>
+        <td><p>The base URL path served by this module.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_WebApi_WebApiModuleBase__ctor_System_String__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.IWebModule.html#EmbedIO_IWebModule_BaseUrlPath">BaseUrlPath</a></div>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="EmbedIO_WebApi_WebApiModuleBase_ControllerCount_" data-uid="EmbedIO.WebApi.WebApiModuleBase.ControllerCount*"></a>
+  <h4 id="EmbedIO_WebApi_WebApiModuleBase_ControllerCount" data-uid="EmbedIO.WebApi.WebApiModuleBase.ControllerCount">ControllerCount</h4>
+  <div class="markdown level1 summary"><p>Gets the number of controller types registered in this module.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ControllerCount { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="EmbedIO_WebApi_WebApiModuleBase_OnParameterConversionErrorAsync_" data-uid="EmbedIO.WebApi.WebApiModuleBase.OnParameterConversionErrorAsync*"></a>
+  <h4 id="EmbedIO_WebApi_WebApiModuleBase_OnParameterConversionErrorAsync_EmbedIO_IHttpContext_System_String_Exception_CancellationToken_" data-uid="EmbedIO.WebApi.WebApiModuleBase.OnParameterConversionErrorAsync(EmbedIO.IHttpContext,System.String,Exception,CancellationToken)">OnParameterConversionErrorAsync(IHttpContext, String, Exception, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Called when EmbedIO fails to convert a route parameter to a handler parameter type.</p>
+<p>The default behavior is to send an empty <code>400 Bad Request</code> response.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Task&lt;bool&gt; OnParameterConversionErrorAsync(IHttpContext context, string name, Exception exception, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context of the request being handled.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name of the route parameter.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Exception</span></td>
+        <td><span class="parametername">exception</span></td>
+        <td><p>The exception that was thrown.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><p><span class="xref">true</span> if the request has been handled;
+<span class="xref">false</span> if the request should be passed down the module chain.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType_" data-uid="EmbedIO.WebApi.WebApiModuleBase.RegisterControllerType*"></a>
+  <h4 id="EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType_Type_" data-uid="EmbedIO.WebApi.WebApiModuleBase.RegisterControllerType(Type)">RegisterControllerType(Type)</h4>
+  <div class="markdown level1 summary"><p><p>Registers a controller type using a constructor.</p>
+<p>In order for registration to be successful, the specified <code data-dev-comment-type="paramref" class="paramref">controllerType</code>: </p>
+<ul><li>must be a subclass of <a class="xref" href="EmbedIO.WebApi.WebApiController.html">WebApiController</a>;</li><li>must not be an abstract class;</li><li>must not be a generic type definition;</li><li>must have a public constructor with two parameters of type <a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a>
+and <see cref="!:CancellationToken"></see>, in this order.</li></ul></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RegisterControllerType(Type controllerType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">controllerType</span></td>
+        <td><p>The type of the controller.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType_Type__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>A new instance of <code data-dev-comment-type="paramref" class="paramref">controllerType</code> will be created
+for each request to handle, and dereferenced immediately afterwards,
+to be collected during next garbage collection cycle.</p>
+<p><code data-dev-comment-type="paramref" class="paramref">controllerType</code> is not required to be thread-safe,
+as it will be constructed and used in the same synchronization context.
+However, since request handling is asynchronous, the actual execution thread
+may vary during execution. Care must be exercised when using thread-sensitive
+resources or thread-static data.</p>
+<p>If <code data-dev-comment-type="paramref" class="paramref">controllerType</code> implements <see cref="!:IDisposable"></see>,
+its <see cref="!:IDisposable.Dispose">Dispose</see> method will be called when it has
+finished handling a request.</p>
+</div>
+  <h5 id="EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType_Type__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.WebApi.WebApiModuleBase.html#EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType_Type_Func_EmbedIO_IHttpContext_CancellationToken_EmbedIO_WebApi_WebApiController__">RegisterControllerType(Type, Func&lt;IHttpContext, CancellationToken, WebApiController&gt;)</a></div>
+      <div><a class="xref" href="EmbedIO.WebApi.WebApiModuleBase.html#EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType__1">RegisterControllerType&lt;TController&gt;()</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType_" data-uid="EmbedIO.WebApi.WebApiModuleBase.RegisterControllerType*"></a>
+  <h4 id="EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType_Type_Func_EmbedIO_IHttpContext_CancellationToken_EmbedIO_WebApi_WebApiController__" data-uid="EmbedIO.WebApi.WebApiModuleBase.RegisterControllerType(Type,Func{EmbedIO.IHttpContext,CancellationToken,EmbedIO.WebApi.WebApiController})">RegisterControllerType(Type, Func&lt;IHttpContext, CancellationToken, WebApiController&gt;)</h4>
+  <div class="markdown level1 summary"><p><p>Registers a controller type using a factory method.</p>
+<p>In order for registration to be successful:</p>
+<ul><li><code data-dev-comment-type="paramref" class="paramref">controllerType</code> must be a subclass of <a class="xref" href="EmbedIO.WebApi.WebApiController.html">WebApiController</a>;</li><li><code data-dev-comment-type="paramref" class="paramref">controllerType</code> must not be an abstract class;</li><li><code data-dev-comment-type="paramref" class="paramref">controllerType</code> must not be a generic type definition;</li><li><code data-dev-comment-type="paramref" class="paramref">factory</code>&apos;s return type must be either <code data-dev-comment-type="paramref" class="paramref">controllerType</code>
+or a subclass of <code data-dev-comment-type="paramref" class="paramref">controllerType</code>.</li></ul></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RegisterControllerType(Type controllerType, Func&lt;IHttpContext, CancellationToken, WebApiController&gt; factory)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">controllerType</span></td>
+        <td><p>The type of the controller.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Func</span>&lt;<a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a>, <span class="xref">CancellationToken</span>, <a class="xref" href="EmbedIO.WebApi.WebApiController.html">WebApiController</a>&gt;</td>
+        <td><span class="parametername">factory</span></td>
+        <td><p>The factory method used to construct instances of <code data-dev-comment-type="paramref" class="paramref">controllerType</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType_Type_Func_EmbedIO_IHttpContext_CancellationToken_EmbedIO_WebApi_WebApiController___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p><code data-dev-comment-type="paramref" class="paramref">factory</code>will be called once for each request to handle
+in order to obtain an instance of <code data-dev-comment-type="paramref" class="paramref">controllerType</code>.
+The returned instance will be dereferenced immediately after handling the request.</p>
+<p><code data-dev-comment-type="paramref" class="paramref">controllerType</code> is not required to be thread-safe,
+as it will be constructed and used in the same synchronization context.
+However, since request handling is asynchronous, the actual execution thread
+may vary during execution. Care must be exercised when using thread-sensitive
+resources or thread-static data.</p>
+<p>If <code data-dev-comment-type="paramref" class="paramref">controllerType</code> implements <see cref="!:IDisposable"></see>,
+its <see cref="!:IDisposable.Dispose">Dispose</see> method will be called when it has
+finished handling a request. In this case it is recommended that
+<code data-dev-comment-type="paramref" class="paramref">factory</code> return a newly-constructed instance of <code data-dev-comment-type="paramref" class="paramref">controllerType</code>
+at each invocation.</p>
+<p>If <code data-dev-comment-type="paramref" class="paramref">controllerType</code> does not implement <see cref="!:IDisposable"></see>,
+<code data-dev-comment-type="paramref" class="paramref">factory</code> may employ techniques such as instance pooling to avoid
+the overhead of constructing a new instance of <code data-dev-comment-type="paramref" class="paramref">controllerType</code>
+at each invocation. If so, resources such as file handles, database connections, etc.
+should be freed before returning from each handler method to avoid
+<a href="https://en.wikipedia.org/wiki/Starvation_(computer_science)">starvation</a>.</p>
+</div>
+  <h5 id="EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType_Type_Func_EmbedIO_IHttpContext_CancellationToken_EmbedIO_WebApi_WebApiController___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.WebApi.WebApiModuleBase.html#EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType_Type_">RegisterControllerType(Type)</a></div>
+      <div><a class="xref" href="EmbedIO.WebApi.WebApiModuleBase.html#EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType__1_Func_EmbedIO_IHttpContext_CancellationToken___0__">RegisterControllerType&lt;TController&gt;(Func&lt;IHttpContext, CancellationToken, TController&gt;)</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType_" data-uid="EmbedIO.WebApi.WebApiModuleBase.RegisterControllerType*"></a>
+  <h4 id="EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType__1" data-uid="EmbedIO.WebApi.WebApiModuleBase.RegisterControllerType``1">RegisterControllerType&lt;TController&gt;()</h4>
+  <div class="markdown level1 summary"><p><p>Registers a controller type using a constructor.</p>
+<p>In order for registration to be successful, the specified controller type:</p>
+<ul><li>must be a subclass of <a class="xref" href="EmbedIO.WebApi.WebApiController.html">WebApiController</a>;</li><li>must not be an abstract class;</li><li>must not be a generic type definition;</li><li>must have a public constructor with two parameters of type <a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a>
+and <see cref="!:CancellationToken"></see>, in this order.</li></ul></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RegisterControllerType&lt;TController&gt;()
+    where TController : WebApiController</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TController</span></td>
+        <td><p>The type of the controller.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType__1_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>A new instance of <code data-dev-comment-type="typeparamref" class="typeparamref">TController</code> will be created
+for each request to handle, and dereferenced immediately afterwards,
+to be collected during next garbage collection cycle.</p>
+<p><code data-dev-comment-type="typeparamref" class="typeparamref">TController</code> is not required to be thread-safe,
+as it will be constructed and used in the same synchronization context.
+However, since request handling is asynchronous, the actual execution thread
+may vary during execution. Care must be exercised when using thread-sensitive
+resources or thread-static data.</p>
+<p>If <code data-dev-comment-type="typeparamref" class="typeparamref">TController</code> implements <see cref="!:IDisposable"></see>,
+its <see cref="!:IDisposable.Dispose">Dispose</see> method will be called when it has
+finished handling a request.</p>
+</div>
+  <h5 id="EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType__1_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.WebApi.WebApiModuleBase.html#EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType__1_Func_EmbedIO_IHttpContext_CancellationToken___0__">RegisterControllerType&lt;TController&gt;(Func&lt;IHttpContext, CancellationToken, TController&gt;)</a></div>
+      <div><a class="xref" href="EmbedIO.WebApi.WebApiModuleBase.html#EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType_Type_">RegisterControllerType(Type)</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType_" data-uid="EmbedIO.WebApi.WebApiModuleBase.RegisterControllerType*"></a>
+  <h4 id="EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType__1_Func_EmbedIO_IHttpContext_CancellationToken___0__" data-uid="EmbedIO.WebApi.WebApiModuleBase.RegisterControllerType``1(Func{EmbedIO.IHttpContext,CancellationToken,``0})">RegisterControllerType&lt;TController&gt;(Func&lt;IHttpContext, CancellationToken, TController&gt;)</h4>
+  <div class="markdown level1 summary"><p><p>Registers a controller type using a factory method.</p>
+<p>In order for registration to be successful:</p>
+<ul><li><code data-dev-comment-type="typeparamref" class="typeparamref">TController</code> must be a subclass of <a class="xref" href="EmbedIO.WebApi.WebApiController.html">WebApiController</a>;</li><li><code data-dev-comment-type="typeparamref" class="typeparamref">TController</code> must not be an abstract class;</li><li><code data-dev-comment-type="typeparamref" class="typeparamref">TController</code> must not be a generic type definition;</li><li><code data-dev-comment-type="paramref" class="paramref">factory</code>&apos;s return type must be either <code data-dev-comment-type="typeparamref" class="typeparamref">TController</code>
+or a subclass of <code data-dev-comment-type="typeparamref" class="typeparamref">TController</code>.</li></ul></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RegisterControllerType&lt;TController&gt;(Func&lt;IHttpContext, CancellationToken, TController&gt; factory)
+    where TController : WebApiController</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Func</span>&lt;<a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a>, <span class="xref">CancellationToken</span>, TController&gt;</td>
+        <td><span class="parametername">factory</span></td>
+        <td><p>The factory method used to construct instances of <code data-dev-comment-type="typeparamref" class="typeparamref">TController</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TController</span></td>
+        <td><p>The type of the controller.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType__1_Func_EmbedIO_IHttpContext_CancellationToken___0___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p><code data-dev-comment-type="paramref" class="paramref">factory</code>will be called once for each request to handle
+in order to obtain an instance of <code data-dev-comment-type="typeparamref" class="typeparamref">TController</code>.
+The returned instance will be dereferenced immediately after handling the request.</p>
+<p><code data-dev-comment-type="typeparamref" class="typeparamref">TController</code> is not required to be thread-safe,
+as it will be constructed and used in the same synchronization context.
+However, since request handling is asynchronous, the actual execution thread
+may vary during execution. Care must be exercised when using thread-sensitive
+resources or thread-static data.</p>
+<p>If <code data-dev-comment-type="typeparamref" class="typeparamref">TController</code> implements <see cref="!:IDisposable"></see>,
+its <see cref="!:IDisposable.Dispose">Dispose</see> method will be called when it has
+finished handling a request. In this case it is recommended that
+<code data-dev-comment-type="paramref" class="paramref">factory</code> return a newly-constructed instance of <code data-dev-comment-type="typeparamref" class="typeparamref">TController</code>
+at each invocation.</p>
+<p>If <code data-dev-comment-type="typeparamref" class="typeparamref">TController</code> does not implement <see cref="!:IDisposable"></see>,
+<code data-dev-comment-type="paramref" class="paramref">factory</code> may employ techniques such as instance pooling to avoid
+the overhead of constructing a new instance of <code data-dev-comment-type="typeparamref" class="typeparamref">TController</code>
+at each invocation. If so, resources such as file handles, database connections, etc.
+should be freed before returning from each handler method to avoid
+<a href="https://en.wikipedia.org/wiki/Starvation_(computer_science)">starvation</a>.</p>
+</div>
+  <h5 id="EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType__1_Func_EmbedIO_IHttpContext_CancellationToken___0___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.WebApi.WebApiModuleBase.html#EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType__1">RegisterControllerType&lt;TController&gt;()</a></div>
+      <div><a class="xref" href="EmbedIO.WebApi.WebApiModuleBase.html#EmbedIO_WebApi_WebApiModuleBase_RegisterControllerType_Type_Func_EmbedIO_IHttpContext_CancellationToken_EmbedIO_WebApi_WebApiController__">RegisterControllerType(Type, Func&lt;IHttpContext, CancellationToken, WebApiController&gt;)</a></div>
+  </div>
+
+<h3 id="disqus_thread">Comments</h3>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://unolabs.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="doc" align="center">
+              <span class="small mobile-hide">
+                <img id="logo" class="doc-logo" src="../embedio.png" alt="">
+              </span>
+            </div>
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2017-2019 <a href="https://www.unosquare.com">Unosquare</a></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-8535255-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+  </body>
+</html>

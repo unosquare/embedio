@@ -1,0 +1,536 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class RouteResolverBase&lt;TContext, TData&gt;
+   | Unosquare EmbedIO </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class RouteResolverBase&lt;TContext, TData&gt;
+   | Unosquare EmbedIO ">
+    <meta name="generator" content="docfx 2.42.4.0">
+    
+    <link rel="shortcut icon" href="../src/Command/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/bootstrap.min.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="logo" src="../best-practices/resources/images/unosquare_logo.svg" alt="Unosquare">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar">
+          <div class="container-fluid hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container-fluid body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container-fluid body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="EmbedIO.Routing.RouteResolverBase`2">
+  
+  
+  <h1 id="EmbedIO_Routing_RouteResolverBase_2" data-uid="EmbedIO.Routing.RouteResolverBase`2" class="text-break">Class RouteResolverBase&lt;TContext, TData&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>Implements the logic for resolving a context and a URL path against a route,
+possibly handling different contexts via different handlers.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">RouteResolverBase&lt;TContext, TData&gt;</span></div>
+      <div class="level2"><a class="xref" href="EmbedIO.Routing.RouteVerbResolver.html">RouteVerbResolver</a></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Routing.html">EmbedIO.Routing</a></h6>
+  <h5 id="EmbedIO_Routing_RouteResolverBase_2_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class RouteResolverBase&lt;TContext, TData&gt; : ConfiguredObject</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TContext</span></td>
+        <td><p>The type of the context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TData</span></td>
+        <td><p>The type of the data used to select a suitable handler
+for a context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="EmbedIO_Routing_RouteResolverBase_2__ctor_" data-uid="EmbedIO.Routing.RouteResolverBase`2.#ctor*"></a>
+  <h4 id="EmbedIO_Routing_RouteResolverBase_2__ctor_System_String_" data-uid="EmbedIO.Routing.RouteResolverBase`2.#ctor(System.String)">RouteResolverBase(String)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html">RouteResolverBase&lt;TContext, TData&gt;</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected RouteResolverBase(string route)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">route</span></td>
+        <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="EmbedIO_Routing_RouteResolverBase_2_Route_" data-uid="EmbedIO.Routing.RouteResolverBase`2.Route*"></a>
+  <h4 id="EmbedIO_Routing_RouteResolverBase_2_Route" data-uid="EmbedIO.Routing.RouteResolverBase`2.Route">Route</h4>
+  <div class="markdown level1 summary"><p>Gets the route this resolver matches URL paths against.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Route { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="EmbedIO_Routing_RouteResolverBase_2_Add_" data-uid="EmbedIO.Routing.RouteResolverBase`2.Add*"></a>
+  <h4 id="EmbedIO_Routing_RouteResolverBase_2_Add__1_EmbedIO_Routing_RouteHandler__0__" data-uid="EmbedIO.Routing.RouteResolverBase`2.Add(`1,EmbedIO.Routing.RouteHandler{`0})">Add(TData, RouteHandler&lt;TContext&gt;)</h4>
+  <div class="markdown level1 summary"><p>Associates some data to a handler.</p>
+<p>The <a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_ResolveAsync__0_System_String_CancellationToken_">ResolveAsync(TContext, String, CancellationToken)</a> method calls <a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_GetContextData__0_">GetContextData(TContext)</a>
+to extract data from the context; then, for each registered data / handler pair,
+<a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_MatchContextData__1__1_">MatchContextData(TData, TData)</a> is called to determine whether <code data-dev-comment-type="paramref" class="paramref">handler</code>
+should be called.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Add(TData data, RouteHandler&lt;TContext&gt; handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TData</span></td>
+        <td><span class="parametername">data</span></td>
+        <td><p>Data used to determine which contexts are
+suitable to be handled by <code data-dev-comment-type="paramref" class="paramref">handler</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteHandler-1.html">RouteHandler</a>&lt;TContext&gt;</td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_Routing_RouteResolverBase_2_Add__1_EmbedIO_Routing_RouteHandler__0___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.Routing.RouteHandler-1.html">RouteHandler</a>&lt;TContext&gt;</div>
+      <div><a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_ResolveAsync__0_System_String_CancellationToken_">ResolveAsync(TContext, String, CancellationToken)</a></div>
+      <div><a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_GetContextData__0_">GetContextData(TContext)</a></div>
+      <div><a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_MatchContextData__1__1_">MatchContextData(TData, TData)</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_Routing_RouteResolverBase_2_Add_" data-uid="EmbedIO.Routing.RouteResolverBase`2.Add*"></a>
+  <h4 id="EmbedIO_Routing_RouteResolverBase_2_Add__1_EmbedIO_Routing_SyncRouteHandler__0__" data-uid="EmbedIO.Routing.RouteResolverBase`2.Add(`1,EmbedIO.Routing.SyncRouteHandler{`0})">Add(TData, SyncRouteHandler&lt;TContext&gt;)</h4>
+  <div class="markdown level1 summary"><p>Associates some data to a synchronous handler.</p>
+<p>The <a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_ResolveAsync__0_System_String_CancellationToken_">ResolveAsync(TContext, String, CancellationToken)</a> method calls <a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_GetContextData__0_">GetContextData(TContext)</a>
+to extract data from the context; then, for each registered data / handler pair,
+<a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_MatchContextData__1__1_">MatchContextData(TData, TData)</a> is called to determine whether <code data-dev-comment-type="paramref" class="paramref">handler</code>
+should be called.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Add(TData data, SyncRouteHandler&lt;TContext&gt; handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TData</span></td>
+        <td><span class="parametername">data</span></td>
+        <td><p>Data used to determine which contexts are
+suitable to be handled by <code data-dev-comment-type="paramref" class="paramref">handler</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.SyncRouteHandler-1.html">SyncRouteHandler</a>&lt;TContext&gt;</td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_Routing_RouteResolverBase_2_Add__1_EmbedIO_Routing_SyncRouteHandler__0___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.Routing.RouteHandler-1.html">RouteHandler</a>&lt;TContext&gt;</div>
+      <div><a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_ResolveAsync__0_System_String_CancellationToken_">ResolveAsync(TContext, String, CancellationToken)</a></div>
+      <div><a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_GetContextData__0_">GetContextData(TContext)</a></div>
+      <div><a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_MatchContextData__1__1_">MatchContextData(TData, TData)</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_Routing_RouteResolverBase_2_GetContextData_" data-uid="EmbedIO.Routing.RouteResolverBase`2.GetContextData*"></a>
+  <h4 id="EmbedIO_Routing_RouteResolverBase_2_GetContextData__0_" data-uid="EmbedIO.Routing.RouteResolverBase`2.GetContextData(`0)">GetContextData(TContext)</h4>
+  <div class="markdown level1 summary"><p>Called by <a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_ResolveAsync__0_System_String_CancellationToken_">ResolveAsync(TContext, String, CancellationToken)</a> to extract data from a context.</p>
+<p>The extracted data are then used to select which handlers are suitable
+to handle the context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract TData GetContextData(TContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TContext</span></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context to extract data from.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TData</span></td>
+        <td><p>The extracted data.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_Routing_RouteResolverBase_2_GetContextData__0__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_ResolveAsync__0_System_String_CancellationToken_">ResolveAsync(TContext, String, CancellationToken)</a></div>
+      <div><a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_MatchContextData__1__1_">MatchContextData(TData, TData)</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_Routing_RouteResolverBase_2_Lock_" data-uid="EmbedIO.Routing.RouteResolverBase`2.Lock*"></a>
+  <h4 id="EmbedIO_Routing_RouteResolverBase_2_Lock" data-uid="EmbedIO.Routing.RouteResolverBase`2.Lock">Lock()</h4>
+  <div class="markdown level1 summary"><p>Locks this instance, preventing further handler additions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Lock()</code></pre>
+  </div>
+  
+  
+  <a id="EmbedIO_Routing_RouteResolverBase_2_MatchContextData_" data-uid="EmbedIO.Routing.RouteResolverBase`2.MatchContextData*"></a>
+  <h4 id="EmbedIO_Routing_RouteResolverBase_2_MatchContextData__1__1_" data-uid="EmbedIO.Routing.RouteResolverBase`2.MatchContextData(`1,`1)">MatchContextData(TData, TData)</h4>
+  <div class="markdown level1 summary"><p>Called by <a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_ResolveAsync__0_System_String_CancellationToken_">ResolveAsync(TContext, String, CancellationToken)</a> to match data extracted from a context
+against data associated with a handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract bool MatchContextData(TData contextData, TData handlerData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TData</span></td>
+        <td><span class="parametername">contextData</span></td>
+        <td><p>The data extracted from the context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">TData</span></td>
+        <td><span class="parametername">handlerData</span></td>
+        <td><p>The data associated with the handler.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><span class="xref">true</span> if the handler should be called to handle the context;
+    otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RouteResolverBase_2_ResolveAsync_" data-uid="EmbedIO.Routing.RouteResolverBase`2.ResolveAsync*"></a>
+  <h4 id="EmbedIO_Routing_RouteResolverBase_2_ResolveAsync__0_System_String_CancellationToken_" data-uid="EmbedIO.Routing.RouteResolverBase`2.ResolveAsync(`0,System.String,CancellationToken)">ResolveAsync(TContext, String, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Asynchronously matches a URL path against <a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_Route">Route</a>;
+if the match is successful, tries to handle the specified <code data-dev-comment-type="paramref" class="paramref">context</code>
+using handlers selected according to data extracted from the context.
+<p>Registered data / handler pairs are tried in the same order they were added.</p></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;RouteResolutionResult&gt; ResolveAsync(TContext context, string path, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TContext</span></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context to handle.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>The URL path to match against <a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_Route">Route</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A <see cref="!:CancellationToken"></see> use to cancel the operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="EmbedIO.Routing.RouteResolutionResult.html">RouteResolutionResult</a>&gt;</td>
+        <td><p>A <see cref="!:Task"></see>, representing the ongoing operation,
+that will return a result in the form of one of the <a class="xref" href="EmbedIO.Routing.RouteResolutionResult.html">RouteResolutionResult</a> constants.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_Routing_RouteResolverBase_2_ResolveAsync__0_System_String_CancellationToken__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_Add__1_EmbedIO_Routing_RouteHandler__0__">Add(TData, RouteHandler&lt;TContext&gt;)</a></div>
+      <div><a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_Add__1_EmbedIO_Routing_SyncRouteHandler__0__">Add(TData, SyncRouteHandler&lt;TContext&gt;)</a></div>
+      <div><a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_GetContextData__0_">GetContextData(TContext)</a></div>
+      <div><a class="xref" href="EmbedIO.Routing.RouteResolverBase-2.html#EmbedIO_Routing_RouteResolverBase_2_MatchContextData__1__1_">MatchContextData(TData, TData)</a></div>
+  </div>
+
+<h3 id="disqus_thread">Comments</h3>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://unolabs.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="doc" align="center">
+              <span class="small mobile-hide">
+                <img id="logo" class="doc-logo" src="../embedio.png" alt="">
+              </span>
+            </div>
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2017-2019 <a href="https://www.unosquare.com">Unosquare</a></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-8535255-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+  </body>
+</html>
