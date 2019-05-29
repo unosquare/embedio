@@ -50,10 +50,8 @@ namespace EmbedIO.Routing
         /// <para>Each parameter specification must be enclosed in curly brackets (<c>'{'</c>
         /// and <c>'}'</c>. No whitespace is allowed inside a parameter specification.</para>
         /// <para>A parameter specification consists of a valid parameter name, optionally
-        /// followed by a <c>'?'</c> character to signify that it matches an empty string,
-        /// or a <c>'!'</c> character if it does not.</para>
-        /// <para>If neither <c>'?'</c> nor <c>'!'</c> are present, a parameter by default
-        /// matches an empty string.</para>
+        /// followed by a <c>'?'</c> character to signify that it will also match an empty string.</para>
+        /// <para>If <c>'?'</c> is not present, a parameter by default will NOT match an empty string.</para>
         /// <para>See <see cref="IsValidParameterName"/> for the definition of a valid parameter name.</para>
         /// <para>To include a literal open curly bracket in the route, it must be doubled (<c>"{{"</c>).</para>
         /// <para>A literal closed curly bracket (<c>'}'</c>) may be included in the route as-is.</para>
@@ -120,8 +118,9 @@ namespace EmbedIO.Routing
             // Parse the string, looking alternately for a '{', that opens a parameter specification,
             // then for a '}', that closes it.
             // Characters outside parameter specifications are Regex-escaped and added to the pattern.
-            // A parameter specification consists of a parameter name optionally followed by '?' or '!'
-            // to indicate that an empty parameter matches or not, respectively. The default is to match.
+            // A parameter specification consists of a parameter name, optionally followed by '?'
+            // to indicate that an empty parameter will match.
+            // The default is to NOT match empty parameters, consistently with ASP.NET and EmbedIO version 2.
             var inParameterSpec = false;
             for (var position = 0; ;)
             {
@@ -137,27 +136,18 @@ namespace EmbedIO.Routing
                         return new FormatException("Route syntax error: empty parameter specification.");
 
                     // Check the last character:
-                    // {name} or {name?} means empty parameter matches
-                    // {name!} means empty parameter does not match
-                    // If '?' or '!' is found, the parameter name ends before it
+                    // {name} means empty parameter does not match
+                    // {name?} means empty parameter matches
+                    // If '?'is found, the parameter name ends before it
                     var nameEndPosition = closePosition;
-                    bool allowEmpty;
-                    switch (route[closePosition - 1])
+                    var allowEmpty = false;
+                    if (route[closePosition - 1] == '?')
                     {
-                        case '!':
-                            allowEmpty = false;
-                            nameEndPosition--;
-                            break;
-                        case '?':
-                            allowEmpty = true;
-                            nameEndPosition--;
-                            break;
-                        default:
-                            allowEmpty = true;
-                            break;
+                        allowEmpty = true;
+                        nameEndPosition--;
                     }
 
-                    // Bail out if only '?' or '!' is found inside the spec.
+                    // Bail out if only '?' is found inside the spec.
                     if (nameEndPosition == position)
                         return new FormatException("Route syntax error: missing parameter name.");
 
