@@ -25,7 +25,6 @@ before_build:
         }
 - dotnet restore --verbosity q
 - cmd: mkdir tools
-- cmd: nuget install OpenCover -Version 4.6.519 -OutputDirectory tools
 - cmd: nuget install coveralls.net -Version 0.7.0 -OutputDirectory tools
 - ps: | 
         $date_now = Get-Date
@@ -43,11 +42,11 @@ build_script:
       cd ..
       cd ..
 test_script:
-- cmd: tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test test\EmbedIO.Tests\EmbedIO.Tests.csproj -c Release -f net472" -output:coverage.xml -filter:"+[EmbedIO*]* -[EmbedIO.Test*]*" -register:userdotnet
+- cmd: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude=[NUnit3.TestAdapter]* test\EmbedIO.Tests\EmbedIO.Tests.csproj -c Release -f net472
 - ps: |
         if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
         {
-            tools\coveralls.net.0.7.0\tools\csmacnz.Coveralls.exe --opencover -i coverage.xml --serviceName appveyor --jobId $Env:APPVEYOR_BUILD_NUMBER
+            tools\coveralls.net.0.7.0\tools\csmacnz.Coveralls.exe --opencover -i test\EmbedIO.Testst\coverage.opencover.xml --serviceName appveyor --jobId $Env:APPVEYOR_BUILD_NUMBER
         }
 - dotnet test test/EmbedIO.Tests/EmbedIO.Tests.csproj -c Release -f netcoreapp2.2
 after_build:
