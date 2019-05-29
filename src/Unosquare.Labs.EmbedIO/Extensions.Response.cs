@@ -231,7 +231,7 @@
             context.Response.ContentType = contentType ?? Responses.HtmlContentType;
 
             var stream = file.OpenRead();
-            return context.BinaryResponseAsync(stream, useGzip, cancellationToken: cancellationToken);
+            return context.BinaryResponseAsync(stream, useGzip, cancellationToken);
         }
 
         /// <summary>
