@@ -298,7 +298,8 @@ You must RegisterController in the Web API Module to make it active.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual Task&lt;bool&gt; InternalServerError(Exception ex, Net.HttpStatusCode statusCode = null, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;InternalServerError() will be replaced by HttpResultException in future versions&quot;)]
+protected virtual Task&lt;bool&gt; InternalServerError(Exception ex, Net.HttpStatusCode statusCode = null, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -560,7 +561,8 @@ Pragma - no-cache</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void SetDefaultHeaders()</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;SetDefaultHeaders() will be replaced by OnBeforeHandler in future versions&quot;)]
+public virtual void SetDefaultHeaders()</code></pre>
   </div>
 
 <h3 id="disqus_thread">Comments</h3>
