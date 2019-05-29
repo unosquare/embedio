@@ -43,13 +43,13 @@ build_script:
       cd ..
       cd ..
 test_script:
-- dotnet test test/EmbedIO.Tests/EmbedIO.Tests.csproj -c Release -f netcoreapp2.2
 - cmd: tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test test\EmbedIO.Tests\EmbedIO.Tests.csproj -c Release -f net472" -output:coverage.xml -filter:"+[EmbedIO*]* -[EmbedIO.Test*]*" -register:userdotnet
 - ps: |
         if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
         {
             tools\coveralls.net.0.7.0\tools\csmacnz.Coveralls.exe --opencover -i coverage.xml --serviceName appveyor --jobId $Env:APPVEYOR_BUILD_NUMBER
         }
+- dotnet test test/EmbedIO.Tests/EmbedIO.Tests.csproj -c Release -f netcoreapp2.2
 after_build:
 - ps: |
         if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
