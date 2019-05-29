@@ -46,7 +46,7 @@ namespace EmbedIO.Samples
         //
         // If the given ID cannot be converted to an integer, an exception will be thrown.
         // By default, WebApiModule will then respond with "500 Internal Server Error".
-        [RouteHandler(HttpVerbs.Get, "/people/{id!}")]
+        [RouteHandler(HttpVerbs.Get, "/people/{id}")]
         public async Task<bool> GetPeople(int id)
         {
             var single = await _dbContext.People.SingleAsync(id).ConfigureAwait(false);
