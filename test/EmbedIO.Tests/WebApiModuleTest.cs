@@ -14,7 +14,7 @@ namespace EmbedIO.Tests
     public class WebApiModuleTest : PersonFixtureBase
     {
         public WebApiModuleTest()
-            : base(ws => ws.WithWebApi("/", m => m.WithController<TestController>()))
+            : base(ws => ws.WithWebApi("/api", m => m.WithController<TestController>()))
         {
         }
 
@@ -89,7 +89,7 @@ namespace EmbedIO.Tests
                         System.Text.Encoding.UTF8,
                         MimeTypes.JsonType);
 
-                    var response = await client.PostAsync(WebServerUrl + TestController.GetPath, payloadJson);
+                    var response = await client.PostAsync(WebServerUrl + "/api/regex", payloadJson);
 
                     var result = Json.Deserialize<Person>(await response.Content.ReadAsStringAsync());
                     Assert.IsNotNull(result);
@@ -105,7 +105,7 @@ namespace EmbedIO.Tests
             {
                 using (var client = new HttpClient())
                 {
-                    var request = new HttpRequestMessage(HttpMethod.Delete, WebServerUrl + TestController.GetPath);
+                    var request = new HttpRequestMessage(HttpMethod.Delete, WebServerUrl + "/api/regex");
 
                     var response = await client.SendAsync(request);
 
@@ -177,14 +177,14 @@ namespace EmbedIO.Tests
     public class HttpGet : PersonFixtureBase
     {
         public HttpGet()
-            : base(ws => ws.WithWebApi("/", m => m.WithController<TestController>()), true)
+            : base(ws => ws.WithWebApi("/api", m => m.WithController<TestController>()), true)
         {
         }
 
         [Test]
         public async Task GetJsonData_ReturnsOk()
         {
-            var jsonBody = await GetString(TestController.GetPath);
+            var jsonBody = await GetString("/api/regex");
 
             Assert.IsNotNull(jsonBody, "Json Body is not null");
             Assert.IsNotEmpty(jsonBody, "Json Body is empty");
@@ -201,7 +201,7 @@ namespace EmbedIO.Tests
         [Test]
         public async Task JsonDataWithSelector_ReturnsOk()
         {
-            await ValidatePerson(TestController.GetPath + PeopleRepository.Database.First().Key);
+            await ValidatePerson("/api/regex/" + PeopleRepository.Database.First().Key);
         }
     }
 }

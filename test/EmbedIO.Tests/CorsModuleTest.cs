@@ -1,18 +1,13 @@
-﻿using System.Net;
-using System.Threading.Tasks;
-using EmbedIO.Actions;
-using EmbedIO.Tests.TestObjects;
-using EmbedIO.WebApi;
+﻿using EmbedIO.Tests.TestObjects;
 using NUnit.Framework;
-using Unosquare.Swan.Formatters;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace EmbedIO.Tests
 {
     [TestFixture]
     public class CorsModuleTest : FixtureBase
     {
-        private static readonly object TestObj = new { Message = "OK" };
-
         public CorsModuleTest()
             : base(
                 ws =>
@@ -22,23 +17,11 @@ namespace EmbedIO.Tests
                         "content-type",
                         "post,get");
 
-                    var webModule = new WebApiModule("/");
-                    webModule.RegisterController<TestController>();
-
-                    ws.Modules.Add(nameof(WebApiModule), webModule);
-                    ws.Modules.Add(nameof(ActionModule), new ActionModule((ctx, path, ct) => ctx.JsonResponseAsync(TestObj, ct)));
+                    ws.WithWebApi("/api", m => m.RegisterController<TestController>());
                 },
                 true)
         {
             // placeholder
-        }
-
-        [Test]
-        public async Task RequestFallback_ReturnsJsonObject()
-        {
-            var jsonBody = await GetString("invalidpath");
-
-            Assert.AreEqual(Json.Serialize(TestObj), jsonBody, "Same content");
         }
 
         [Test]
