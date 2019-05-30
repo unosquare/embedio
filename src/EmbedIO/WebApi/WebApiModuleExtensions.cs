@@ -41,7 +41,7 @@ namespace EmbedIO.WebApi
         public static WebApiModule WithController<TController>(this WebApiModule @this, Func<IHttpContext, CancellationToken, TController> factory)
             where TController : WebApiController
         {
-            @this.RegisterController<TController>(factory);
+            @this.RegisterController(factory);
             return @this;
         }
 

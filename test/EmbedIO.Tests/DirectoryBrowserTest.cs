@@ -8,7 +8,7 @@ namespace EmbedIO.Tests
     public class DirectoryBrowserTest : FixtureBase
     {
         public DirectoryBrowserTest()
-            : base(ws => ws.WithStaticFolderAt("/", TestHelper.SetupStaticFolder(false)), true)
+            : base(ws => ws.WithStaticFolderAt("/", TestHelper.SetupStaticFolder(false), useDirectoryBrowser: true), true)
         {
         }
 

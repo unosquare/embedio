@@ -1,13 +1,12 @@
-﻿using System;
+﻿using EmbedIO.Files;
+using EmbedIO.Tests.TestObjects;
+using NUnit.Framework;
+using System;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using EmbedIO.Actions;
-using EmbedIO.Files;
-using EmbedIO.Tests.TestObjects;
-using NUnit.Framework;
 
 namespace EmbedIO.Tests
 {
@@ -16,26 +15,11 @@ namespace EmbedIO.Tests
     {
         private const string HeaderPragmaValue = "no-cache";
 
-        protected StaticFilesModuleTest(Func<StaticFilesModule> buildStaticFilesModule, string fallbackUrl = null)
-            : base(ws =>
-            {
-                ws.Modules.Add("fs", buildStaticFilesModule());
-                if (fallbackUrl != null)
-                    ws.Modules.Add(nameof(RedirectModule), new RedirectModule("/", fallbackUrl));
-            })
+        protected StaticFilesModuleTest()
+            : base(ws => ws.WithStaticFolderAt("/", TestHelper.SetupStaticFolder()))
         {
         }
-
-        protected StaticFilesModuleTest(string fallbackUrl)
-            : this(() => new StaticFilesModule("/", TestHelper.SetupStaticFolder(), FileCachingMode.Complete), fallbackUrl)
-        {
-        }
-
-        public StaticFilesModuleTest()
-            : this(null)
-        {
-        }
-
+        
         private static async Task ValidatePayload(HttpResponseMessage response, int maxLength, int offset = 0)
         {
             Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
@@ -53,23 +37,7 @@ namespace EmbedIO.Tests
                 Assert.IsTrue(subset.SequenceEqual(data));
             }
         }
-
-        public class UseFallback : StaticFilesModuleTest
-        {
-            public UseFallback()
-                : base("/")
-            {
-            }
-
-            [Test]
-            public async Task FallbackIndex()
-            {
-                var html = await GetString("invalidpath");
-
-                Assert.AreEqual(Resources.Index, html, "Same content index.html");
-            }
-        }
-
+        
         public class GetFiles : StaticFilesModuleTest
         {
             [Test]
