@@ -96,14 +96,8 @@ namespace EmbedIO.Tests
 
     internal static class TestExtensions
     {
-        public static HttpRequestMessage ToHttpRequestMessage(this TestHttpRequest request)
-        {
-            return new HttpRequestMessage();
-        }
+        public static HttpRequestMessage ToHttpRequestMessage(this TestHttpRequest request) => new HttpRequestMessage();
 
-        public static TestHttpResponse ToTestHttpResponse(this HttpResponseMessage response)
-        {
-            return new TestHttpResponse();
-        }
+        public static TestHttpResponse ToTestHttpResponse(this HttpResponseMessage response) => new TestHttpResponse();
     }
 }

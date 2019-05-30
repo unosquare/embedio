@@ -7,10 +7,10 @@ namespace EmbedIO.Tests.TestObjects
 {
     public class TestLocalSessionController : WebApiController
     {
-        public const string DeleteSession = "deletesession";
-        public const string PutData = "putdata";
-        public const string GetData = "getdata";
-        public const string GetCookie = "getcookie";
+        public const string DeleteSession = "api/deletesession";
+        public const string PutData = "api/putdata";
+        public const string GetData = "api/getdata";
+        public const string GetCookie = "api/getcookie";
 
         public const string MyData = "MyData";
         public const string CookieName = "MyCookie";
@@ -48,8 +48,5 @@ namespace EmbedIO.Tests.TestObjects
         [RouteHandler(HttpVerbs.Get, "/getdata")]
         public Task<bool> GetDataSession() =>
             Ok(HttpContext.Session["sessionData"]?.ToString() ?? string.Empty);
-
-        [RouteHandler(HttpVerbs.Get, "/geterror")]
-        public bool GetError() => false;
     }
 }

@@ -31,7 +31,7 @@ namespace EmbedIO.Tests
                 .WithLocalSessionManager()
                 .WithStaticFolderAt("/", _rootPath);
 
-            Assert.AreEqual(webServer.Modules.Count, 2, "It has 2 modules loaded");
+            Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
             Assert.IsNotNull(webServer.Modules.OfType<StaticFilesModule>().FirstOrDefault(), "It has StaticFilesModule");
 
             Assert.AreEqual(
@@ -43,14 +43,14 @@ namespace EmbedIO.Tests
         [Test]
         public void FluentWithStaticFolderArgumentException()
         {
-            Assert.Throws<ArgumentNullException>(() =>
+            Assert.Throws<NullReferenceException>(() =>
                 _nullWebServer.WithStaticFolderAt("/", TestHelper.SetupStaticFolder()));
         }
 
         [Test]
         public void FluentWithLocalSessionManagerWebServerNull_ThrowsArgumentException()
         {
-            Assert.Throws<ArgumentNullException>(() => _nullWebServer.WithLocalSessionManager());
+            Assert.Throws<NullReferenceException>(() => _nullWebServer.WithLocalSessionManager());
         }
 
         [Test]
@@ -62,7 +62,7 @@ namespace EmbedIO.Tests
         [Test]
         public void FluentWithCorsArgumentException()
         {
-            Assert.Throws<ArgumentNullException>(() => _nullWebServer.WithCors());
+            Assert.Throws<NullReferenceException>(() => _nullWebServer.WithCors());
         }
     }
 }

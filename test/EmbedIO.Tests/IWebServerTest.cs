@@ -1,9 +1,7 @@
-﻿using System.Threading.Tasks;
-using EmbedIO.Actions;
-using EmbedIO.Sessions;
-using EmbedIO.Utilities;
+﻿using EmbedIO.Sessions;
 using EmbedIO.Tests.TestObjects;
 using NUnit.Framework;
+using System.Threading.Tasks;
 using Unosquare.Swan.Formatters;
 
 namespace EmbedIO.Tests
@@ -24,7 +22,7 @@ namespace EmbedIO.Tests
         {
             using (var webserver = new TestWebServer())
             {
-                webserver.Modules.Add(new ActionModule("/", HttpVerbs.Any, (ctx, path, ct) => ctx.JsonResponseAsync(nameof(TestWebServer), ct)));
+                webserver.WithCors();
 
                 Assert.AreEqual(1, webserver.Modules.Count);
             }
