@@ -14,9 +14,7 @@ namespace EmbedIO.Tests
     public class WebApiModuleTest : PersonFixtureBase
     {
         public WebApiModuleTest()
-            : base(ws => ws.WithWebApi("/api", m => m.WithController<TestController>()))
-        {
-        }
+            : base(ws => ws.WithWebApi("/api", m => m.WithController<TestController>())) { }
 
         public class WebApiWithConstructor : WebApiModuleTest
         {
@@ -25,14 +23,17 @@ namespace EmbedIO.Tests
             {
                 const string name = nameof(TestControllerWithConstructor);
 
-                WebServerInstance.Modules.OfType<WebApiModule>().First().RegisterController((ctx, ct) => new TestControllerWithConstructor(ctx, ct, name));
+                WebServerInstance.Modules.OfType<WebApiModule>().First()
+                    .RegisterController((ctx, ct) => new TestControllerWithConstructor(ctx, ct, name));
                 using (var client = new HttpClient())
                 {
                     var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "name");
 
                     using (var response = await client.SendAsync(request))
                     {
-                        Assert.AreEqual(name, response.Headers.FirstOrDefault(x => x.Key == TestControllerWithConstructor.CustomHeader).Value.FirstOrDefault());
+                        Assert.AreEqual(name,
+                            response.Headers.FirstOrDefault(x => x.Key == TestControllerWithConstructor.CustomHeader)
+                                .Value.FirstOrDefault());
                     }
                 }
             }
@@ -40,7 +41,8 @@ namespace EmbedIO.Tests
             [Test]
             public async Task GetWebApiWithCacheControlPublic_ReturnsValidResponse()
             {
-                WebServerInstance.Modules.OfType<WebApiModule>().First().RegisterController((ctx, ct) => new TestControllerWithConstructor(ctx, ct));
+                WebServerInstance.Modules.OfType<WebApiModule>().First()
+                    .RegisterController((ctx, ct) => new TestControllerWithConstructor(ctx, ct));
                 using (var client = new HttpClient())
                 {
                     var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "namePublic");
@@ -59,7 +61,8 @@ namespace EmbedIO.Tests
             [Test]
             public async Task GetWebApiWithCacheControlDefault_ReturnsValidResponse()
             {
-                WebServerInstance.Modules.OfType<WebApiModule>().First().RegisterController((ctx, ct) => new TestControllerWithConstructor(ctx, ct));
+                WebServerInstance.Modules.OfType<WebApiModule>().First()
+                    .RegisterController((ctx, ct) => new TestControllerWithConstructor(ctx, ct));
                 using (var client = new HttpClient())
                 {
                     var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "name");
@@ -83,7 +86,7 @@ namespace EmbedIO.Tests
             {
                 using (var client = new HttpClient())
                 {
-                    var model = new Person { Key = 10, Name = "Test" };
+                    var model = new Person {Key = 10, Name = "Test"};
                     var payloadJson = new StringContent(
                         Json.Serialize(model),
                         System.Text.Encoding.UTF8,
@@ -122,8 +125,7 @@ namespace EmbedIO.Tests
             {
                 using (var webClient = new HttpClient())
                 {
-                    var content = new[]
-                    {
+                    var content = new[] {
                         new KeyValuePair<string, string>("test", "data"),
                         new KeyValuePair<string, string>(label1, "1"),
                         new KeyValuePair<string, string>(label2, "2"),
@@ -147,15 +149,16 @@ namespace EmbedIO.Tests
             {
                 using (var webClient = new HttpClient())
                 {
-                    var content = new[]
-                    {
+                    var content = new[] {
                         new KeyValuePair<string, string>("test", "data"),
                         new KeyValuePair<string, string>("id", "1"),
                     };
 
                     var formContent = new FormUrlEncodedContent(content);
 
-                    var result = await webClient.PostAsync(WebServerUrl + TestController.EchoPath, formContent);
+                    var result =
+                        await webClient.PostAsync(WebServerUrl + "api/" + TestController.EchoPath, formContent);
+
                     Assert.IsNotNull(result);
                     var data = await result.Content.ReadAsStringAsync();
                     var obj = Json.Deserialize<Dictionary<string, string>>(data);
@@ -172,36 +175,62 @@ namespace EmbedIO.Tests
             public string test { get; set; }
             public List<string> id { get; set; }
         }
-    }
 
-    public class HttpGet : PersonFixtureBase
-    {
-        public HttpGet()
-            : base(ws => ws.WithWebApi("/api", m => m.WithController<TestController>()), true)
+        public class GetJsonData : WebApiModuleTest
         {
-        }
+            [Test]
+            public async Task WithoutRegex_ReturnsOk()
+            {
+                var jsonString = await GetString("/api/empty");
 
-        [Test]
-        public async Task GetJsonData_ReturnsOk()
-        {
-            var jsonBody = await GetString("/api/regex");
+                Assert.IsNotEmpty(jsonString);
+            }
 
-            Assert.IsNotNull(jsonBody, "Json Body is not null");
-            Assert.IsNotEmpty(jsonBody, "Json Body is empty");
+            [Test]
+            public async Task WithRegexId_ReturnsOk()
+            {
+                await ValidatePerson("/api/regex/1");
+            }
 
-            var remoteList = Json.Deserialize<List<Person>>(jsonBody);
+            [Test]
+            public async Task WithOptRegexIdAndValue_ReturnsOk()
+            {
+                await ValidatePerson("/api/regexopt/1");
+            }
 
-            Assert.IsNotNull(remoteList, "Json Object is not null");
-            Assert.AreEqual(
-                remoteList.Count,
-                PeopleRepository.Database.Count,
-                "Remote list count equals local list");
-        }
+            [Test]
+            public async Task WithOptRegexIdAndNonValue_ReturnsOk()
+            {
+                var jsonBody = await GetString("/api/regexopt");
+                var remoteList = Json.Deserialize<List<Person>>(jsonBody);
 
-        [Test]
-        public async Task JsonDataWithSelector_ReturnsOk()
-        {
-            await ValidatePerson("/api/regex/" + PeopleRepository.Database.First().Key);
+                Assert.AreEqual(
+                    remoteList.Count,
+                    PeopleRepository.Database.Count,
+                    "Remote list count equals local list");
+            }
+
+            [Test]
+            public async Task WithRegexDate_ReturnsOk()
+            {
+                var person = PeopleRepository.Database.First();
+                await ValidatePerson($"/api/regexdate/{person.DoB:yyyy-MM-dd}");
+            }
+
+            [Test]
+            public async Task WithRegexWithTwoParams_ReturnsOk()
+            {
+                var person = PeopleRepository.Database.First();
+                await ValidatePerson($"/api/regextwo/{person.MainSkill}/{person.Age}");
+            }
+
+            [Test]
+            public async Task WithRegexWithOptionalParams_ReturnsOk()
+            {
+                var person = PeopleRepository.Database.First();
+
+                await ValidatePerson($"/api/egexthree/{person.MainSkill}");
+            }
         }
     }
 }

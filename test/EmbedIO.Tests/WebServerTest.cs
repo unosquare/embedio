@@ -18,7 +18,6 @@ namespace EmbedIO.Tests
     [TestFixture]
     public class WebServerTest
     {
-        private const string DefaultPath = "/";
         private const int Port = 88;
         private const string Prefix = "http://localhost:9696";
 
@@ -92,57 +91,6 @@ namespace EmbedIO.Tests
 
                 Assert.AreEqual(instance.Modules.Count, 1, "It has one module");
             }
-
-            [Test]
-            public async Task Redirect()
-            {
-                var url = Resources.GetServerAddress();
-
-                using (var instance = new WebServer(url))
-                {
-                    instance.Modules.Add(nameof(TestWebModule), new TestWebModule());
-                    var runTask = instance.RunAsync();
-                    using (var handler = new HttpClientHandler())
-                    {
-                        handler.AllowAutoRedirect = false;
-                        using (var client = new HttpClient(handler))
-                        {
-                            var request = new HttpRequestMessage(HttpMethod.Get, url + TestWebModule.RedirectUrl);
-                            using (var response = await client.SendAsync(request))
-                            {
-                                Assert.AreEqual(System.Net.HttpStatusCode.Redirect, response.StatusCode);
-                            }
-                        }
-                    }
-                }
-            }
-
-            [Test]
-            public async Task AbsoluteRedirect()
-            {
-                var url = Resources.GetServerAddress();
-
-                using (var instance = new WebServer(url))
-                {
-                    instance.Modules.Add(nameof(TestWebModule), new TestWebModule());
-                    var runTask = instance.RunAsync();
-
-                    using (var handler = new HttpClientHandler())
-                    {
-                        handler.AllowAutoRedirect = false;
-                        using (var client = new HttpClient(handler))
-                        {
-                            var request =
-                                new HttpRequestMessage(HttpMethod.Get, url + TestWebModule.RedirectAbsoluteUrl);
-
-                            using (var response = await client.SendAsync(request))
-                            {
-                                Assert.AreEqual(System.Net.HttpStatusCode.NotFound, response.StatusCode);
-                            }
-                        }
-                    }
-                }
-            }
         }
 
         public class General : WebServerTest
@@ -191,7 +139,7 @@ namespace EmbedIO.Tests
 
                 using (var instance = new WebServer(url))
                 {
-                    instance.Modules.Add(nameof(ActionModule), new ActionModule((ctx, path, ct) =>
+                    instance.OnPost((ctx, path, ct) =>
                     {
                         var encoding = Encoding.GetEncoding("UTF-8");
 
@@ -219,7 +167,7 @@ namespace EmbedIO.Tests
                                 IsValid = ctx.Request.ContentEncoding.EncodingName == encoding.EncodingName,
                             },
                             ct);
-                    }));
+                    });
 
                     var runTask = instance.RunAsync();
 
@@ -228,7 +176,7 @@ namespace EmbedIO.Tests
                         client.DefaultRequestHeaders.Accept
                             .Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MimeTypes.JsonType));
 
-                        var request = new HttpRequestMessage(HttpMethod.Post, url + TestWebModule.RedirectUrl)
+                        var request = new HttpRequestMessage(HttpMethod.Post, url)
                         {
                             Content = new StringContent(
                                 "POST DATA", 

@@ -11,12 +11,7 @@ namespace EmbedIO.Tests
         public ResourceFilesModuleTest()
             : base(
                 ws =>
-                {
-                    ws.Modules.Add(nameof(ResourceFilesModule),
-                        new ResourceFilesModule("/",
-                        typeof(ResourceFilesModuleTest).Assembly,
-                        "EmbedIO.Tests.Resources"));
-                },
+                    ws.WithModule(new ResourceFilesModule("/", typeof(ResourceFilesModuleTest).Assembly, "EmbedIO.Tests.Resources")),
                 true)
         {
         }
