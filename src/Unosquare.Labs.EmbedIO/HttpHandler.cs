@@ -4,6 +4,7 @@
     using Swan;
     using System;
     using System.Linq;
+    using System.Net;
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
@@ -47,7 +48,7 @@
 
                     if (_context.WebServer.OnNotFound == null)
                     {
-                        _context.Response.StatusCode = 404;
+                        _context.Response.StandardResponseWithoutBody((int) HttpStatusCode.NotFound);
                     }
                     else
                     {
@@ -97,9 +98,9 @@
                 catch (Exception ex)
                 {
                     // Handle exceptions by returning a 500 (Internal Server Error) 
-                    if (_context.Response.StatusCode != (int) System.Net.HttpStatusCode.Unauthorized)
+                    if (_context.Response.StatusCode != (int) HttpStatusCode.Unauthorized)
                     {
-                        await ResponseServerError(ct, ex, module.Name).ConfigureAwait(false);
+                        await ResponseServerError(ct, ex).ConfigureAwait(false);
                     }
 
                     // Finally set the handled flag to true and exit.
@@ -110,24 +111,21 @@
             return false;
         }
 
-        private async Task ResponseServerError(CancellationToken ct, Exception ex, string module)
+        private async Task ResponseServerError(CancellationToken cancellationToken, Exception ex)
         {
-            if (_context.WebServer.UnhandledException != null && await _context.WebServer.UnhandledException.Invoke(_context, ex, ct))
+            if (_context.WebServer.UnhandledException != null && await _context.WebServer.UnhandledException.Invoke(_context, ex, cancellationToken))
                 return;
 
-            var priorMessage = $"Failing module name: {module}";
-            var errorMessage = ex.ExceptionMessage(priorMessage);
-
-            // Log the exception message.
-            ex.Log(nameof(HttpHandler), priorMessage);
-
             // Send the response over with the corresponding status code.
-            await _context.HtmlResponseAsync(string.Format(Responses.Response500HtmlFormat,
-                    errorMessage,
-                    ex.StackTrace),
-                System.Net.HttpStatusCode.InternalServerError,
-                true,
-                ct);
+            await _context.Response.StandardHtmlResponseAsync(
+                (int) HttpStatusCode.InternalServerError,
+                sb => sb
+                    .Append("<h2>Message</h2><pre>")
+                    .Append(ex.ExceptionMessage())
+                    .Append("</pre><h2>Stack Trace</h2><pre>\r\n")
+                    .Append(ex.StackTrace)
+                    .Append("</pre>"),
+                cancellationToken).ConfigureAwait(false);
         }
 
         private Map GetHandlerFromRegexPath(IWebModule module)

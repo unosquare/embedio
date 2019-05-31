@@ -148,7 +148,9 @@
                     throw new ArgumentOutOfRangeException(nameof(StatusCode), "StatusCode must be between 100 and 999.");
 
                 _statusCode = value;
-                StatusDescription = HttpListenerResponseHelper.GetStatusDescription(value);
+
+                if (HttpStatusDescription.TryGet(value, out var description))
+                    StatusDescription = description;
             }
         }
 

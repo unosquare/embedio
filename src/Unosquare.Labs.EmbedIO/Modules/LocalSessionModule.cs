@@ -174,9 +174,9 @@
         private void FixUpSessionCookie(IHttpContext context)
         {
             // get the real "__session" cookie value because sometimes there's more than 1 value and System.Net.Cookie only supports 1 value per cookie
-            if (context.Request.Headers[HttpHeaders.Cookie] == null) return;
+            if (context.Request.Headers[HttpHeaderNames.Cookie] == null) return;
 
-            var cookieItems = context.Request.Headers[HttpHeaders.Cookie]
+            var cookieItems = context.Request.Headers[HttpHeaderNames.Cookie]
                 .Split(Strings.CookieSplitChars, StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var cookieItem in cookieItems)

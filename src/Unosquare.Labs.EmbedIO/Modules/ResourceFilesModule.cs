@@ -61,7 +61,7 @@
             try
             {
                 var localPath = FixPath(context.RequestPathCaseSensitive());
-                var partialHeader = context.RequestHeader(HttpHeaders.Range);
+                var partialHeader = context.RequestHeader(HttpHeaderNames.Range);
 
                 $"Resource System: {localPath}".Debug(nameof(ResourceFilesModule));
 

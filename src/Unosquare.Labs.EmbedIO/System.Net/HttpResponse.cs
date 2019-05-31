@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Net
 {
     using System;
+    using Labs.EmbedIO;
     using System.Collections.Specialized;
     using System.Linq;
     using System.Net;
@@ -12,7 +13,7 @@
         internal const string SetCookie = "Set-Cookie";
 
         internal HttpResponse(HttpStatusCode code)
-          : this((int) code, HttpListenerResponseHelper.GetStatusDescription((int)code), HttpVersion.Version11, new NameValueCollection())
+          : this((int) code, HttpStatusDescription.Get(code), HttpVersion.Version11, new NameValueCollection())
         {
         }
         

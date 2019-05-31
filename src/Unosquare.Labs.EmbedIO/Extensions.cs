@@ -4,6 +4,8 @@
     using Core;
     using Swan;
     using Swan.Formatters;
+    using System.Net;
+    using System.Text;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -230,6 +232,7 @@
         /// <param name="context">The context.</param>
         /// <param name="urlPattern">The url pattern. </param>
         /// <returns>The params from the request.</returns>
+        [Obsolete("RequestRegexUrlParams() will be replaced for a new Routing class")]
         public static Dictionary<string, object> RequestRegexUrlParams(this IWebSocketContext context, string urlPattern)
           => RequestRegexUrlParams(context.RequestUri.LocalPath, urlPattern);
 
@@ -239,6 +242,7 @@
         /// <param name="context">The context.</param>
         /// <param name="basePath">The base path.</param>
         /// <returns>The params from the request.</returns>
+        [Obsolete("RequestRegexUrlParams() will be replaced for a new Routing class")]
         public static Dictionary<string, object> RequestRegexUrlParams(this IHttpContext context,
             string basePath)
             => RequestRegexUrlParams(context.RequestPath(), basePath);
@@ -252,6 +256,7 @@
         /// <returns>
         /// The params from the request.
         /// </returns>
+        [Obsolete("RequestRegexUrlParams() will be replaced for a new Routing class")]
         public static Dictionary<string, object> RequestRegexUrlParams(
             this string requestPath,
             string basePath,
@@ -379,6 +384,95 @@
             context.Response.ContentType?.StartsWith("audio") != true &&
             context.Response.ContentType?.StartsWith("video") != true;
 
+        /// <summary>
+        /// Prepares a standard response without a body for the specified status code.
+        /// </summary>
+        /// <param name="this">The <see cref="IHttpContext"/> interface on which this method is called.</param>
+        /// <param name="statusCode">The HTTP status code of the response.</param>
+        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">There is no standard status description for <paramref name="statusCode"/>.</exception>
+        public static void StandardResponseWithoutBody(this IHttpContext @this, int statusCode)
+            => @this.Response.StandardResponseWithoutBody(statusCode);
+
+        /// <summary>
+        /// Asynchronously sends a standard HTML response for the specified status code.
+        /// </summary>
+        /// <param name="this">The <see cref="IHttpContext"/> interface on which this method is called.</param>
+        /// <param name="statusCode">The HTTP status code of the response.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
+        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">There is no standard status description for <paramref name="statusCode"/>.</exception>
+        public static Task StandardHtmlResponseAsync(this IHttpContext @this, int statusCode, CancellationToken cancellationToken)
+            => StandardHtmlResponseAsync(@this, statusCode, null, cancellationToken);
+
+        /// <summary>
+        /// Asynchronously sends a standard HTML response for the specified status code.
+        /// </summary>
+        /// <param name="this">The <see cref="IHttpContext"/> interface on which this method is called.</param>
+        /// <param name="statusCode">The HTTP status code of the response.</param>
+        /// <param name="appendAdditionalHtml">A callback function that may append additional HTML code
+        /// to the response. If not <see langword="null"/>, the callback is called immediately before
+        /// closing the HTML <c>body</c> tag.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
+        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">There is no standard status description for <paramref name="statusCode"/>.</exception>
+        public static Task StandardHtmlResponseAsync(
+            this IHttpContext @this,
+            int statusCode,
+            Func<StringBuilder, StringBuilder> appendAdditionalHtml,
+            CancellationToken cancellationToken)
+            => @this.Response.StandardHtmlResponseAsync(statusCode, appendAdditionalHtml, cancellationToken);
+
+        /// <summary>
+        /// Sets a redirection status code and adds a <c>Location</c> header to the response.
+        /// </summary>
+        /// <param name="this">The <see cref="IHttpContext"/> interface on which this method is called.</param>
+        /// <param name="location">The URL to which the user agent should be redirected.</param>
+        /// <param name="statusCode">The status code to set on the response.</param>
+        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="location"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">
+        /// <para><paramref name="location"/> is not a valid relative or absolute URL.<see langword="null"/>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="statusCode"/> is not a redirection (3xx) status code.</para>
+        /// </exception>
+        [Obsolete("This method will change signature to: void Redirect(this IHttpContext @this, string location, int statusCode = (int)HttpStatusCode.Found)")]
+        public static void Redirect(this IHttpContext @this, string location, int statusCode)
+        {
+            location = ValidateUrl(nameof(location), location, @this.Request.Url);
+
+            if (statusCode < 300 || statusCode > 399)
+                throw new ArgumentException("Redirect status code is not valid.", nameof(statusCode));
+
+            @this.Response.Headers[HttpHeaders.Location] = location;
+            @this.Response.StandardResponseWithoutBody(statusCode);
+        }
+        
+        /// <summary>
+        /// Sets a response static code of 302 and adds a Location header to the response
+        /// in order to direct the client to a different URL.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="location">The location.</param>
+        /// <param name="useAbsoluteUrl">if set to <c>true</c> [use absolute URL].</param>
+        /// <returns><b>true</b> if the headers were set, otherwise <b>false</b>.</returns>
+        [Obsolete("This method will change signature to: void Redirect(this IHttpContext @this, string location, int statusCode = (int)HttpStatusCode.Found)")]
+        public static bool Redirect(this IHttpContext context, string location, bool useAbsoluteUrl = true)
+        {
+            if (useAbsoluteUrl)
+            {
+                var hostPath = context.Request.Url.GetComponents(UriComponents.Scheme | UriComponents.StrongAuthority,
+                    UriFormat.Unescaped);
+                location = hostPath + location;
+            }
+
+            context.Redirect(location, (int) HttpStatusCode.Found);
+
+            return true;
+        }
+
         #endregion
 
         #region Data Parsing Methods
@@ -498,5 +592,30 @@
 
         internal static bool IsPredefinedScheme(this string value) => value != null &&
                                                                       (value == "http" || value == "https" || value == "ws" || value == "wss");
+
+        internal static T NotNull<T>(string argumentName, T value)
+            where T : class
+            => value ?? throw new ArgumentNullException(argumentName);
+
+        internal static string ValidateUrl(string argumentName, string value, Uri baseUri, bool enforceHttp = false)
+        {
+            if (!NotNull(nameof(baseUri), baseUri).IsAbsoluteUri)
+                throw new ArgumentException("Base URI is not an absolute URI.", nameof(baseUri));
+
+            Uri uri;
+            try
+            {
+                uri = new Uri(baseUri, new Uri(NotNull(argumentName, value), UriKind.RelativeOrAbsolute));
+            }
+            catch (UriFormatException e)
+            {
+                throw new ArgumentException("URL is not valid.", argumentName, e);
+            }
+
+            if (enforceHttp && uri.IsAbsoluteUri && uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps)
+                throw new ArgumentException("URL scheme is neither HTTP nor HTTPS.", argumentName);
+
+            return uri.ToString();
+        }
     }
 }

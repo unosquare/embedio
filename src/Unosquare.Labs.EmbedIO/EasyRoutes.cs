@@ -1,7 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using System;
-    using Modules;
 
     /// <summary>
     /// Extension methods to add easily routes to a <c>IWebServer</c>.
@@ -19,7 +18,7 @@
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
         public static IWebServer OnAny(this IWebServer webserver, WebHandler action)
-            => AddFallbackModule(webserver, action, Constants.HttpVerbs.Any);
+            => webserver.WithAction(ModuleMap.AnyPath, Constants.HttpVerbs.Any, action);
 
         /// <summary>
         /// Called when any POST unhandled request (any path).
@@ -31,7 +30,7 @@
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
         public static IWebServer OnPost(this IWebServer webserver, WebHandler action)
-            => AddFallbackModule(webserver, action, Constants.HttpVerbs.Post);
+            => webserver.WithAction(ModuleMap.AnyPath, Constants.HttpVerbs.Post, action);
         
         /// <summary>
         /// Called when any GET unhandled request (any path).
@@ -43,7 +42,7 @@
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
         public static IWebServer OnGet(this IWebServer webserver, WebHandler action)
-            => AddFallbackModule(webserver, action, Constants.HttpVerbs.Get);
+            => webserver.WithAction(ModuleMap.AnyPath, Constants.HttpVerbs.Get, action);
         
         /// <summary>
         /// Called when any PUT unhandled request (any path).
@@ -55,7 +54,7 @@
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
         public static IWebServer OnPut(this IWebServer webserver, WebHandler action)
-            => AddFallbackModule(webserver, action, Constants.HttpVerbs.Put);
+            => webserver.WithAction(ModuleMap.AnyPath, Constants.HttpVerbs.Put, action);
         
         /// <summary>
         /// Called when any DELETE unhandled request (any path).
@@ -67,7 +66,7 @@
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
         public static IWebServer OnDelete(this IWebServer webserver, WebHandler action)
-            => AddFallbackModule(webserver, action, Constants.HttpVerbs.Delete);
+            => webserver.WithAction(ModuleMap.AnyPath, Constants.HttpVerbs.Delete, action);
         
         /// <summary>
         /// Called when any HEAD unhandled request (any path).
@@ -79,7 +78,7 @@
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
         public static IWebServer OnHead(this IWebServer webserver, WebHandler action)
-            => AddFallbackModule(webserver, action, Constants.HttpVerbs.Head);
+            => webserver.WithAction(ModuleMap.AnyPath, Constants.HttpVerbs.Head, action);
         
         /// <summary>
         /// Called when any OPTIONS unhandled request (any path).
@@ -91,8 +90,8 @@
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
         public static IWebServer OnOptions(this IWebServer webserver, WebHandler action)
-            => AddFallbackModule(webserver, action, Constants.HttpVerbs.Options);
-        
+            => webserver.WithAction(ModuleMap.AnyPath, Constants.HttpVerbs.Options, action);
+
         /// <summary>
         /// Called when any PATCH unhandled request (any path).
         /// </summary>
@@ -103,16 +102,6 @@
         /// </returns>
         /// <exception cref="ArgumentNullException">webserver.</exception>
         public static IWebServer OnPatch(this IWebServer webserver, WebHandler action)
-            => AddFallbackModule(webserver, action, Constants.HttpVerbs.Patch);
-
-        private static IWebServer AddFallbackModule(IWebServer webserver, WebHandler action, Constants.HttpVerbs verb)
-        {
-            if (webserver == null)
-                throw new ArgumentNullException(nameof(webserver));
-
-            webserver.RegisterModule(new FallbackModule(action, verb));
-
-            return webserver;
-        }
+            => webserver.WithAction(ModuleMap.AnyPath, Constants.HttpVerbs.Patch, action);
     }
 }

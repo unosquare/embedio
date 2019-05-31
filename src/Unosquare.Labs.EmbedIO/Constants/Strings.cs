@@ -10,8 +10,6 @@
     {
         internal const string WebSocketVersion = "13";
 
-        internal const string UrlEncodedContentType = "application/x-www-form-urlencoded";
-
         /// <summary>
         ///  Default Browser time format.
         /// </summary>

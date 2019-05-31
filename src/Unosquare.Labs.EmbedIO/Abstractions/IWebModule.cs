@@ -24,6 +24,7 @@
         /// <value>
         /// The handlers.
         /// </value>
+        [Obsolete("Server will be dropped in future versions")]
         ModuleMap Handlers { get; }
 
         /// <summary>
@@ -33,6 +34,7 @@
         /// <value>
         /// The server.
         /// </value>
+        [Obsolete("Server will be dropped in future versions")]
         IWebServer Server { get; set; }
 
         /// <summary>

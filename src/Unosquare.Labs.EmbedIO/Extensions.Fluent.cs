@@ -243,5 +243,24 @@
 
             return webserver;
         }
+        
+        /// <summary>
+        /// Creates an instance of <see cref="ActionModule"/> and adds it to a module container.
+        /// </summary>
+        /// <param name="webserver">The webserver.</param>
+        /// <param name="baseUrlPath">The base URL path.</param>
+        /// <param name="verb">The verb.</param>
+        /// <param name="handler">The handler.</param>
+        /// <returns><paramref name="this"/> with a <see cref="ActionModule"/> added.</returns>
+        /// <exception cref="ArgumentNullException">webserver</exception>
+        public static IWebServer WithAction(this IWebServer webserver, string baseUrlPath, HttpVerbs verb, WebHandler handler)
+        {
+            if (webserver == null)
+                throw new ArgumentNullException(nameof(webserver));
+
+            webserver.RegisterModule(new ActionModule(baseUrlPath, verb, handler));
+
+            return webserver;
+        }
     }
 }

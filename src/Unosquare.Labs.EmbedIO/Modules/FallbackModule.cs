@@ -17,7 +17,7 @@
         /// </summary>
         /// <param name="action">The action.</param>
         /// <param name="verb">The verb.</param>
-        [Obsolete("FallbackModule will be replaced by specific modules RedirectModule and ActionModule")]
+        [Obsolete("FallbackModule will be replaced with ActionModule")]
         public FallbackModule(WebHandler action, HttpVerbs verb = HttpVerbs.Any)
         {
             AddHandler(
@@ -32,7 +32,7 @@
         /// <param name="redirectUrl">The redirect URL.</param>
         /// <param name="verb">The verb.</param>
         /// <exception cref="ArgumentNullException">redirectUrl.</exception>
-        [Obsolete("FallbackModule will be replaced by specific modules RedirectModule and ActionModule")]
+        [Obsolete("FallbackModule will be replaced with RedirectModule ")]
         public FallbackModule(string redirectUrl, HttpVerbs verb = HttpVerbs.Any)
         {
             if (string.IsNullOrWhiteSpace(redirectUrl))
@@ -53,7 +53,7 @@
         /// <param name="contentType">Type of the content.</param>
         /// <param name="verb">The verb.</param>
         /// <exception cref="ArgumentNullException">file.</exception>
-        [Obsolete("FallbackModule will be replaced by specific modules RedirectModule and ActionModule")]
+        [Obsolete("FallbackModule will be replaced with ActionModule")]
         public FallbackModule(FileInfo file, string contentType = null, HttpVerbs verb = HttpVerbs.Any)
         {
             if (file == null)

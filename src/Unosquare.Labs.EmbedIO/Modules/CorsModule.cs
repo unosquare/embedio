@@ -55,13 +55,13 @@
                 if (origins == Strings.CorsWildcard && headers == Strings.CorsWildcard &&
                     methods == Strings.CorsWildcard)
                 {
-                    context.Response.AddHeader(HttpHeaders.AccessControlAllowOrigin, Wildcard);
+                    context.Response.AddHeader(HttpHeaderNames.AccessControlAllowOrigin, Wildcard);
                     var result = isOptions && ValidateHttpOptions(methods, context, validMethods);
 
                     return Task.FromResult(result);
                 }
 
-                var currentOrigin = context.RequestHeader(HttpHeaders.Origin);
+                var currentOrigin = context.RequestHeader(HttpHeaderNames.Origin);
                 
                 if (string.IsNullOrWhiteSpace(currentOrigin) && context.Request.IsLocal)
                 {
@@ -75,7 +75,7 @@
 
                 if (validOrigins.Contains(currentOrigin))
                 {
-                    context.Response.AddHeader(HttpHeaders.AccessControlAllowOrigin,  currentOrigin);
+                    context.Response.AddHeader(HttpHeaderNames.AccessControlAllowOrigin,  currentOrigin);
 
                     if (isOptions)
                     {
@@ -95,13 +95,13 @@
             IHttpContext context,
             IEnumerable<string> validMethods)
         {
-            var currentMethod = context.RequestHeader(HttpHeaders.AccessControlRequestMethod);
-            var currentHeader = context.RequestHeader(HttpHeaders.AccessControlRequestHeaders);
+            var currentMethod = context.RequestHeader(HttpHeaderNames.AccessControlRequestMethod);
+            var currentHeader = context.RequestHeader(HttpHeaderNames.AccessControlRequestHeaders);
 
             if (!string.IsNullOrWhiteSpace(currentHeader))
             {
                 // TODO: I need to remove headers out from AllowHeaders
-                context.Response.AddHeader(HttpHeaders.AccessControlAllowHeaders, currentHeader);
+                context.Response.AddHeader(HttpHeaderNames.AccessControlAllowHeaders, currentHeader);
             }
 
             if (string.IsNullOrWhiteSpace(currentMethod)) 
@@ -113,7 +113,7 @@
 
             if (methods == Strings.CorsWildcard || currentMethods.All(validMethods.Contains))
             {
-                context.Response.AddHeader(HttpHeaders.AccessControlAllowMethods, currentMethod);
+                context.Response.AddHeader(HttpHeaderNames.AccessControlAllowMethods, currentMethod);
 
                 return true;
             }

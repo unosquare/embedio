@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
+    using System;
     using Constants;
     using System.Collections.Generic;
 
@@ -7,6 +8,7 @@
     /// <summary>
     /// Represents a list which binds Paths and their corresponding HTTP Verbs to Method calls.
     /// </summary>
+    [Obsolete("ModuleMap will be dropped in future versions")]
     public class ModuleMap : List<Map>
     {
         /// <summary>
@@ -20,6 +22,7 @@
     /// <summary>
     /// Represents a binding of path and verb to a given method call (delegate).
     /// </summary>
+    [Obsolete("Map will be dropped in future versions")]
     public class Map
     {
         /// <summary>

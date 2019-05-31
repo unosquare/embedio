@@ -1,8 +1,11 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Constants
 {
+    using System;
+
     /// <summary>
     /// HTTP Header Constants.
     /// </summary>
+    [Obsolete("This constants will be available in the new HttpHeaderNames class")]
     public static class HttpHeaders
     {
         /// <summary>
@@ -59,6 +62,11 @@
         /// Cache-Control HTTP Header.
         /// </summary>
         public const string CacheControl = "Cache-Control";
+        
+        /// <summary>
+        /// The <c>Location</c> HTTP header.
+        /// </summary>
+        public const string Location = "Location";
 
         /// <summary>
         /// Pragma HTTP Header.

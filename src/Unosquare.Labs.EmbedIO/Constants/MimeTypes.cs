@@ -1,41 +1,56 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Constants
 {
-    using System.Collections.Concurrent;
+    using System;
     using System.Collections.Generic;
-
+    
     /// <summary>
-    /// Represents a MimeType collection.
+    /// Provides constants for commonly-used MIME types and association between file extensions and MIME types.
     /// </summary>
+    /// <seealso cref="Associations"/>
     public static class MimeTypes
     {
         /// <summary>
-        /// A big list of default MIME types.
+        /// The MIME type for HTML.
+        /// </summary>
+        public const string HtmlType = "text/html";
+
+        /// <summary>
+        /// The MIME type for JSON.
+        /// </summary>
+        public const string JsonType = "application/json";
+
+        /// <summary>
+        /// The MIME type for URL-encoded HTML form contents.
+        /// </summary>
+        internal const string UrlEncodedContentType = "application/x-www-form-urlencoded";
+
+        // -------------------------------------------------------------------------------------------------
+        //
+        //  IMPORTANT NOTE TO CONTRIBUTORS
+        //  ==============================
+        //
+        //  When you update the MIME type list, remember to:
+        //
+        //    * update the date in XML docs;
+        //
+        //    * check the LICENSE file to see if copyright year and/or license condition have changed;
+        //
+        //    * if the URL for the LICENSE file has changed, update EmbedIO's LICENSE file too.
+        //
+        // -------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// <para>Associates file extensions to MIME types.</para>
         /// </summary>
         /// <remarks>
-        /// The list below has been copied from https://raw.githubusercontent.com/samuelneff/MimeTypeMap/master/src/MimeTypes/MimeTypeMap.cs
-        /// on 2019-04-26.
-        /// Licensed under MIT license as per https://github.com/samuelneff/MimeTypeMap/blob/master/LICENSE
+        /// <para>The list of MIME types has been copied from
+        /// <see href="https://github.com/samuelneff/MimeTypeMap/blob/master/src/MimeTypes/MimeTypeMap.cs">Samuel Neff's MIME Type Map</see>
+        /// on April 26th, 2019.</para>
+        /// <para>Copyright (c) 2014 Samuel Neff. Redistributed under <see href="https://github.com/samuelneff/MimeTypeMap/blob/master/LICENSE">MIT license</see>.</para>
         /// </remarks>
-        public static IDictionary<string, string> DefaultMimeTypes { get; } = new ConcurrentDictionary<string, string>(new Dictionary<string, string>(Strings.StandardStringComparer)
+        [Obsolete("This method will be renamed as Associates")]
+        public static IReadOnlyDictionary<string, string> DefaultMimeTypes { get; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
-            #region Big freaking list of mime types
-        
-            // maps both ways,
-            // extension -> mime type
-            //   and
-            // mime type -> extension
-            //
-            // any mime types on left side not pre-loaded on right side, are added automatically
-            // some mime types can map to multiple extensions, so to get a deterministic mapping,
-            // add those to the dictionary specifcially
-            //
-            // combination of values from Windows 7 Registry and 
-            // from C:\Windows\System32\inetsrv\config\applicationHost.config
-            // some added, including .7z and .dat
-            //
-            // Some added based on http://www.iana.org/assignments/media-types/media-types.xhtml
-            // which lists mime types, but not extensions
-            //
             {".323", "text/h323"},
             {".3g2", "video/3gpp2"},
             {".3gp", "video/3gpp"},
@@ -648,58 +663,6 @@
             {".xwd", "image/x-xwindowdump"},
             {".z", "application/x-compress"},
             {".zip", "application/zip"},
-
-            {"application/fsharp-script", ".fsx"},
-            {"application/msaccess", ".adp"},
-            {"application/msword", ".doc"},
-            {"application/octet-stream", ".bin"},
-            {"application/onenote", ".one"},
-            {"application/postscript", ".eps"},
-            {"application/step", ".step"},
-            {"application/vnd.ms-excel", ".xls"},
-            {"application/vnd.ms-powerpoint", ".ppt"},
-            {"application/vnd.ms-works", ".wks"},
-            {"application/vnd.visio", ".vsd"},
-            {"application/x-director", ".dir"},
-            {"application/x-shockwave-flash", ".swf"},
-            {"application/x-x509-ca-cert", ".cer"},
-            {"application/x-zip-compressed", ".zip"},
-            {"application/xhtml+xml", ".xhtml"},
-            {"application/xml", ".xml"},  // anomoly, .xml -> text/xml, but application/xml -> many thingss, but all are xml, so safest is .xml
-            {"audio/aac", ".AAC"},
-            {"audio/aiff", ".aiff"},
-            {"audio/basic", ".snd"},
-            {"audio/mid", ".midi"},
-            {"audio/wav", ".wav"},
-            {"audio/x-m4a", ".m4a"},
-            {"audio/x-mpegurl", ".m3u"},
-            {"audio/x-pn-realaudio", ".ra"},
-            {"audio/x-smd", ".smd"},
-            {"image/bmp", ".bmp"},
-            {"image/jpeg", ".jpg"},
-            {"image/pict", ".pic"},
-            {"image/png", ".png"}, //Defined in [RFC-2045], [RFC-2048]
-            {"image/x-png", ".png"}, //See https://www.w3.org/TR/PNG/#A-Media-type :"It is recommended that implementations also recognize the media type "image/x-png"."
-            {"image/tiff", ".tiff"},
-            {"image/x-macpaint", ".mac"},
-            {"image/x-quicktime", ".qti"},
-            {"message/rfc822", ".eml"},
-            {"text/html", ".html"},
-            {"text/plain", ".txt"},
-            {"text/scriptlet", ".wsc"},
-            {"text/xml", ".xml"},
-            {"video/3gpp", ".3gp"},
-            {"video/3gpp2", ".3gp2"},
-            {"video/mp4", ".mp4"},
-            {"video/mpeg", ".mpg"},
-            {"video/quicktime", ".mov"},
-            {"video/vnd.dlna.mpeg-tts", ".m2t"},
-            {"video/x-dv", ".dv"},
-            {"video/x-la-asf", ".lsf"},
-            {"video/x-ms-asf", ".asf"},
-            {"x-world/x-vrml", ".xof"},
-
-            #endregion
-        }, Strings.StandardStringComparer);
+        };
     }
 }

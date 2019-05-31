@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO
 {
     using Constants;
+    using System.Net;
     using Swan.Formatters;
     using System;
     using System.IO;
@@ -31,28 +32,79 @@
             response.AddHeader(HttpHeaders.CacheControl, "no-store, no-cache, must-revalidate");
             response.AddHeader(HttpHeaders.Pragma, "no-cache");
         }
+        
+        /// <summary>
+        /// Prepares a standard response without a body for the specified status code.
+        /// </summary>
+        /// <param name="this">The <see cref="IHttpResponse"/> interface on which this method is called.</param>
+        /// <param name="statusCode">The HTTP status code of the response.</param>
+        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">There is no standard status description for <paramref name="statusCode"/>.</exception>
+        public static void StandardResponseWithoutBody(this IHttpResponse @this, int statusCode)
+        {
+            if (!HttpStatusDescription.TryGet(statusCode, out var statusDescription))
+                throw new ArgumentException("Status code has no standard description.", nameof(statusCode));
+
+            @this.StatusCode = statusCode;
+            @this.StatusDescription = statusDescription;
+            @this.ContentType = string.Empty;
+            @this.ContentLength64 = 0;
+        }
+        
+        /// <summary>
+        /// Asynchronously sends a standard HTML response for the specified status code.
+        /// </summary>
+        /// <param name="this">The <see cref="IHttpResponse"/> interface on which this method is called.</param>
+        /// <param name="statusCode">The HTTP status code of the response.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
+        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">There is no standard status description for <paramref name="statusCode"/>.</exception>
+        /// <seealso cref="StandardHtmlResponseAsync(IHttpResponse,int,Func{StringBuilder,StringBuilder},CancellationToken)"/>
+        public static Task StandardHtmlResponseAsync(this IHttpResponse @this, int statusCode, CancellationToken cancellationToken)
+            => StandardHtmlResponseAsync(@this, statusCode, null, cancellationToken);
 
         /// <summary>
-        /// Sets a response static code of 302 and adds a Location header to the response
-        /// in order to direct the client to a different URL.
+        /// Asynchronously sends a standard HTML response for the specified status code.
         /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="location">The location.</param>
-        /// <param name="useAbsoluteUrl">if set to <c>true</c> [use absolute URL].</param>
-        /// <returns><b>true</b> if the headers were set, otherwise <b>false</b>.</returns>
-        public static bool Redirect(this IHttpContext context, string location, bool useAbsoluteUrl = true)
+        /// <param name="this">The <see cref="IHttpResponse"/> interface on which this method is called.</param>
+        /// <param name="statusCode">The HTTP status code of the response.</param>
+        /// <param name="appendAdditionalHtml">A callback function that may append additional HTML code
+        /// to the response. If not <see langword="null"/>, the callback is called immediately before
+        /// closing the HTML <c>body</c> tag.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
+        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">There is no standard status description for <paramref name="statusCode"/>.</exception>
+        /// <seealso cref="StandardHtmlResponseAsync(IHttpResponse,int,CancellationToken)"/>
+        public static Task StandardHtmlResponseAsync(
+            this IHttpResponse @this, 
+            int statusCode, 
+            Func<StringBuilder, StringBuilder> appendAdditionalHtml, 
+            CancellationToken cancellationToken)
         {
-            if (useAbsoluteUrl)
-            {
-                var hostPath = context.Request.Url.GetComponents(UriComponents.Scheme | UriComponents.StrongAuthority,
-                    UriFormat.Unescaped);
-                location = hostPath + location;
-            }
+            if (!HttpStatusDescription.TryGet(statusCode, out var statusDescription))
+                throw new ArgumentException("Status code has no standard description.", nameof(statusCode));
 
-            context.Response.StatusCode = 302;
-            context.Response.AddHeader("Location", location);
-
-            return true;
+            @this.StatusCode = statusCode;
+            @this.StatusDescription = statusDescription;
+            @this.ContentType = MimeTypes.HtmlType;
+            var sb = new StringBuilder()
+                .Append("<html><head><meta charset=\"UTF-8\"><title>")
+                .Append(statusCode)
+                .Append(" - ")
+                .Append(statusDescription)
+                .Append("</title></head><body><h1>")
+                .Append(statusCode)
+                .Append(" - ")
+                .Append(statusDescription)
+                .Append("</h1>");
+            appendAdditionalHtml?.Invoke(sb);
+            sb.Append("</body></html>");
+            var buffer = Encoding.UTF8.GetBytes(sb.ToString());
+            sb = null; // Free some memory if next GC is near
+            @this.ContentLength64 = buffer.Length;
+            return @this.OutputStream.WriteAsync(buffer, 0, buffer.Length, cancellationToken);
         }
 
         /// <summary>
@@ -133,12 +185,12 @@
         public static Task<bool> HtmlResponseAsync(
             this IHttpContext context,
             string htmlContent,
-            System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.OK,
+            System.Net.HttpStatusCode statusCode = HttpStatusCode.OK,
             bool useGzip = true,
             CancellationToken cancellationToken = default)
         {
             context.Response.StatusCode = (int)statusCode;
-            return context.StringResponseAsync(htmlContent, Responses.HtmlContentType, null, useGzip, cancellationToken);
+            return context.StringResponseAsync(htmlContent, MimeTypes.HtmlType, null, useGzip, cancellationToken);
         }
 
         /// <summary>
@@ -178,7 +230,7 @@
         public static Task<bool> StringResponseAsync(
             this IHttpContext context,
             string content,
-            string contentType = "application/json",
+            string contentType = MimeTypes.JsonType,
             Encoding encoding = null,
             bool useGzip = true,
             CancellationToken cancellationToken = default) =>
@@ -199,7 +251,7 @@
         public static async Task<bool> StringResponseAsync(
             this IHttpResponse response,
             string content,
-            string contentType = "application/json",
+            string contentType = MimeTypes.JsonType,
             Encoding encoding = null,
             bool useGzip = false,
             CancellationToken cancellationToken = default)
@@ -228,7 +280,7 @@
             bool useGzip = true,
             CancellationToken cancellationToken = default)
         {
-            context.Response.ContentType = contentType ?? Responses.HtmlContentType;
+            context.Response.ContentType = contentType ?? MimeTypes.HtmlType;
 
             var stream = file.OpenRead();
             return context.BinaryResponseAsync(stream, useGzip, cancellationToken);

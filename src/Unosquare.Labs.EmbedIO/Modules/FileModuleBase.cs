@@ -1,6 +1,5 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
-    using Constants;
     using Swan;
     using System.Collections.Generic;
     using System.IO;
@@ -25,7 +24,7 @@
         /// <value>
         /// The MIME type dictionary.
         /// </value>
-        public IDictionary<string, string> MimeTypes { get; } = Constants.MimeTypes.DefaultMimeTypes;
+        public IDictionary<string, string> MimeTypes { get; } = Constants.MimeTypes.DefaultMimeTypes.ToDictionary(x => x.Key, x => x.Value);
 
         /// <summary>
         /// The default headers.
@@ -67,7 +66,7 @@
                 // invalid partial request
                 response.StatusCode = 416;
                 response.ContentLength64 = 0;
-                response.AddHeader(HttpHeaders.ContentRanges, $"bytes */{fileSize}");
+                response.AddHeader(HttpHeaderNames.ContentRange, $"bytes */{fileSize}");
 
                 return Task.Delay(0, ct);
             }
@@ -77,7 +76,7 @@
                 response.StatusCode = 206;
                 response.ContentLength64 = upperByteIndex - lowerByteIndex + 1;
 
-                response.AddHeader(HttpHeaders.ContentRanges,
+                response.AddHeader(HttpHeaderNames.ContentRange,
                     $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
             }
 
@@ -90,10 +89,10 @@
         /// <param name="response">The response.</param>
         protected void SetDefaultCacheHeaders(IHttpResponse response)
         {
-            response.AddHeader(HttpHeaders.CacheControl,
-                DefaultHeaders.GetValueOrDefault(HttpHeaders.CacheControl, "private"));
-            response.AddHeader(HttpHeaders.Pragma, DefaultHeaders.GetValueOrDefault(HttpHeaders.Pragma, string.Empty));
-            response.AddHeader(HttpHeaders.Expires, DefaultHeaders.GetValueOrDefault(HttpHeaders.Expires, string.Empty));
+            response.AddHeader(HttpHeaderNames.CacheControl,
+                DefaultHeaders.GetValueOrDefault(HttpHeaderNames.CacheControl, "private"));
+            response.AddHeader(HttpHeaderNames.Pragma, DefaultHeaders.GetValueOrDefault(HttpHeaderNames.Pragma, string.Empty));
+            response.AddHeader(HttpHeaderNames.Expires, DefaultHeaders.GetValueOrDefault(HttpHeaderNames.Expires, string.Empty));
         }
 
         /// <summary>
@@ -109,8 +108,8 @@
 
             SetDefaultCacheHeaders(response);
 
-            response.AddHeader(HttpHeaders.LastModified, utcFileDateString);
-            response.AddHeader(HttpHeaders.AcceptRanges, "bytes");
+            response.AddHeader(HttpHeaderNames.LastModified, utcFileDateString);
+            response.AddHeader(HttpHeaderNames.AcceptRanges, "bytes");
         }
 
         private static bool CalculateRange(string partialHeader, long fileSize, out long lowerByteIndex, out long upperByteIndex)
