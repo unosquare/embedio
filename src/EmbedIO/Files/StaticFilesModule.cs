@@ -238,7 +238,7 @@ namespace EmbedIO.Files
 
         private (PathMappingResult, string) MapUrlPathCore(string relativeUrlPath)
         {
-            var localPath = MapRelativeUrlPathToLoLocalPath(relativeUrlPath);
+            var localPath = MapRelativeUrlPathToLoLocalPath(relativeUrlPath.Substring(1));
 
             // Error 404 on failed mapping.
             var validationResult = localPath == null
