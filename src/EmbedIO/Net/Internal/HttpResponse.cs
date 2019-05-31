@@ -9,8 +9,7 @@ namespace EmbedIO.Net.Internal
 {
     internal class HttpResponse
     {
-        internal const string ServerVersion = "embedio/2.0";
-        internal const string SetCookie = "Set-Cookie";
+        internal const string ServerVersion = "embedio/3.0";
 
         internal HttpResponse(HttpStatusCode code)
           : this((int) code, HttpListenerResponseHelper.GetStatusDescription((int)code), HttpVersion.Version11, new NameValueCollection())
@@ -23,12 +22,12 @@ namespace EmbedIO.Net.Internal
             Headers = headers;
             StatusCode = code;
             Reason = reason;
-            Headers["Server"] = ServerVersion;
+            Headers[HttpHeaderNames.Server] = ServerVersion;
         }
 
         public CookieCollection Cookies =>
-            Headers?.AllKeys.Contains(SetCookie) == true
-                ? CookieCollection.ParseResponse(Headers[SetCookie])
+            Headers?.AllKeys.Contains(HttpHeaderNames.SetCookie) == true
+                ? CookieCollection.ParseResponse(Headers[HttpHeaderNames.SetCookie])
                 : new CookieCollection();
 
         public string Reason { get; }
@@ -77,8 +76,8 @@ namespace EmbedIO.Net.Internal
             var res = new HttpResponse(HttpStatusCode.SwitchingProtocols);
 
             var headers = res.Headers;
-            headers["Upgrade"] = "websocket";
-            headers["Connection"] = "Upgrade";
+            headers[HttpHeaderNames.Upgrade] = "websocket";
+            headers[HttpHeaderNames.Connection] = "Upgrade";
 
             return res;
         }
