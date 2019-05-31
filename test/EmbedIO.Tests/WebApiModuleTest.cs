@@ -14,7 +14,9 @@ namespace EmbedIO.Tests
     public class WebApiModuleTest : PersonFixtureBase
     {
         public WebApiModuleTest()
-            : base(ws => ws.WithWebApi("/api", m => m.WithController<TestController>())) { }
+            : base(ws => ws.WithWebApi("/api", m => m.WithController<TestController>()))
+        {
+        }
 
         public class WebApiWithConstructor : WebApiModuleTest
         {

@@ -22,6 +22,15 @@ namespace EmbedIO.Tests.TestObjects
         [RouteHandler(HttpVerbs.Get, "/regex")]
         public Task<bool> GetPeople() => Ok(PeopleRepository.Database);
         
+        [RouteHandler(HttpVerbs.Post, "/regex")]
+        public Task<bool> PostPeople() =>
+            Ok<Person, Person>(async (x, ct) =>
+            {
+                await Task.Delay(0, ct);
+
+                return x;
+            });
+
         [RouteHandler(HttpVerbs.Get, "/regex/{id}")]
         public Task<bool> GetPerson(int id) => CheckPerson(id);
 
