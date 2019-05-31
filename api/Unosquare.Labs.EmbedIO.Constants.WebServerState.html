@@ -5,9 +5,11 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Running EmbedIO | Unosquare EmbedIO </title>
+    <title>Enum WebServerState
+   | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Running EmbedIO | Unosquare EmbedIO ">
+    <meta name="title" content="Enum WebServerState
+   | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.42.4.0">
     
     <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
@@ -16,7 +18,7 @@
     <link rel="stylesheet" href="../styles/main.css">
     <link rel="stylesheet" href="../styles/bootstrap.min.css">
     <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -65,19 +67,81 @@
         </div>
       </div>
       <div role="main" class="container-fluid body-content hide-when-search">
-        <div class="article row grid">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="">
-<h1 id="running-embedio">Running EmbedIO</h1>
+            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.Constants.WebServerState">
+  
+  
+  <h1 id="Unosquare_Labs_EmbedIO_Constants_WebServerState" data-uid="Unosquare.Labs.EmbedIO.Constants.WebServerState" class="text-break">Enum WebServerState
+  </h1>
+  <div class="markdown level0 summary"><p>Enums the web server state.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.Constants.html">Unosquare.Labs.EmbedIO.Constants</a></h6>
+  <h5 id="Unosquare_Labs_EmbedIO_Constants_WebServerState_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public enum WebServerState</code></pre>
+  </div>
+  <h3 id="fields">Fields
+  </h3>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    <thead>
+    <tbody>
+      <tr>
+        <td id="Unosquare_Labs_EmbedIO_Constants_WebServerState_Created">Created</td>
+        <td><p>The created state.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Unosquare_Labs_EmbedIO_Constants_WebServerState_Listening">Listening</td>
+        <td><p>The listening state.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Unosquare_Labs_EmbedIO_Constants_WebServerState_Loading">Loading</td>
+        <td><p>The loading state.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Unosquare_Labs_EmbedIO_Constants_WebServerState_Stopped">Stopped</td>
+        <td><p>The stopped state.</p>
+</td>
+      </tr>
+    </tbody>
+  </thead></thead></table>
 
-<p>First, create the self-signed certified Powershell (as Admin):</p>
-<pre><code class="lang-powershell">$date_now = Get-Date
-$extended_date = $date_now.AddYears(3)
-
-$cert = New-SelfSignedCertificate -certstorelocation cert:\localmachine\my -dnsname unosquare.io -notafter $extended_date
-</code></pre><p>Add the certified to the desire port (as Admin):</p>
-<pre><code class="lang-cmd">netsh http add sslcert ipport=0.0.0.0:7876 certhash=767b9a3ad23a0cfc597df8be23d58984503c7ad8 appid={adaa04bb-8b63-4073-a12f-d6f8c0b4383f}
-</code></pre></article>
+<h3 id="disqus_thread">Comments</h3>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://unolabs.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
@@ -89,9 +153,6 @@ $cert = New-SelfSignedCertificate -certstorelocation cert:\localmachine\my -dnsn
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
-                  <li class="top-sep">
-                    <a href="https://github.com/unosquare/embedio.wiki/blob/master/Self-signed-certified-(Windows).md/#L1" class="contribution-link">Improve this Doc</a>
-                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

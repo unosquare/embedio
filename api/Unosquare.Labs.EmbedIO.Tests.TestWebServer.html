@@ -1,0 +1,743 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class TestWebServer
+   | Unosquare EmbedIO </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class TestWebServer
+   | Unosquare EmbedIO ">
+    <meta name="generator" content="docfx 2.42.4.0">
+    
+    <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Command/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/bootstrap.min.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="logo" src="../best-practices/resources/images/unosquare_logo.svg" alt="Unosquare">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar">
+          <div class="container-fluid hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container-fluid body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container-fluid body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer">
+  
+  
+  <h1 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer" class="text-break">Class TestWebServer
+  </h1>
+  <div class="markdown level0 summary"><p>Represents our tiny web server used to handle requests for testing.</p>
+<p>Use this <code>IWebServer</code> implementation to run your unit tests.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">TestWebServer</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.Labs.EmbedIO.Tests.html">Unosquare.Labs.EmbedIO.Tests</a></h6>
+  <h5 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class TestWebServer : IWebServer, IDisposable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Tests_TestWebServer__ctor_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.#ctor*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer__ctor_Unosquare_Labs_EmbedIO_Constants_RoutingStrategy_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.#ctor(Unosquare.Labs.EmbedIO.Constants.RoutingStrategy)">TestWebServer(RoutingStrategy)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Tests.TestWebServer.html">TestWebServer</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TestWebServer(RoutingStrategy routingStrategy = RoutingStrategy.Wildcard)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.html">RoutingStrategy</a></td>
+        <td><span class="parametername">routingStrategy</span></td>
+        <td><p>The routing strategy.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_Disposed_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.Disposed*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_Disposed" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.Disposed">Disposed</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this <a class="xref" href="Unosquare.Labs.EmbedIO.Tests.TestWebServer.html">TestWebServer</a> has been disposed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool Disposed { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if disposed; otherwise, <code>false</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_HttpContexts_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.HttpContexts*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_HttpContexts" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.HttpContexts">HttpContexts</h4>
+  <div class="markdown level1 summary"><p>Gets the HTTP contexts.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ConcurrentQueue&lt;IHttpContext&gt; HttpContexts { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.concurrent.concurrentqueue-1">ConcurrentQueue</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>&gt;</td>
+        <td><p>The HTTP contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_Modules_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.Modules*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_Modules" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.Modules">Modules</h4>
+  <div class="markdown level1 summary"><p>Gets a list of registered modules.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ReadOnlyCollection&lt;IWebModule&gt; Modules { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1">ReadOnlyCollection</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html">IWebModule</a>&gt;</td>
+        <td><p>The modules.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_OnMethodNotAllowed_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.OnMethodNotAllowed*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_OnMethodNotAllowed" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.OnMethodNotAllowed">OnMethodNotAllowed</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the on method not allowed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Func&lt;IHttpContext, Task&lt;bool&gt;&gt; OnMethodNotAllowed { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;&gt;</td>
+        <td><p>The on method not allowed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_OnNotFound_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.OnNotFound*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_OnNotFound" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.OnNotFound">OnNotFound</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the on not found.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Func&lt;IHttpContext, Task&lt;bool&gt;&gt; OnNotFound { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;&gt;</td>
+        <td><p>The on not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_RoutingStrategy_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.RoutingStrategy*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_RoutingStrategy" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.RoutingStrategy">RoutingStrategy</h4>
+  <div class="markdown level1 summary"><p>Gets the URL RoutingStrategy used in this instance.</p>
+<p>By default it is set to Wildcard, but Regex is the recommended value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RoutingStrategy RoutingStrategy { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.html">RoutingStrategy</a></td>
+        <td><p>The routing strategy.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_SessionModule_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.SessionModule*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_SessionModule" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.SessionModule">SessionModule</h4>
+  <div class="markdown level1 summary"><p>Gets registered SessionModule (if any).</p>
+<p>SessionModule is an implementation of <code>ISessionModule</code>
+to handle session data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ISessionWebModule SessionModule { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.ISessionWebModule.html">ISessionWebModule</a></td>
+        <td><p>The session module.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_State_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.State*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_State" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.State">State</h4>
+  <div class="markdown level1 summary"><p>Gets the state.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WebServerState State { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.WebServerState.html">WebServerState</a></td>
+        <td><p>The state.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_UnhandledException_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.UnhandledException*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_UnhandledException" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.UnhandledException">UnhandledException</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the unhandled exception.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Func&lt;IHttpContext, Exception, CancellationToken, Task&lt;bool&gt;&gt; UnhandledException { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-4">Func</a>&lt;<a class="xref" href="Unosquare.Labs.EmbedIO.IHttpContext.html">IHttpContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception">Exception</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;&gt;</td>
+        <td><p>The unhandled exception.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_Dispose_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.Dispose*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_Dispose" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_Dispose_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.Dispose*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_Dispose_System_Boolean_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Releases unmanaged and - optionally - managed resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Dispose(bool disposing)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">disposing</span></td>
+        <td><p><code>true</code> to release both managed and unmanaged resources; <code>false</code> to release only unmanaged resources.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_Finalize_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.Finalize*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_Finalize" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.Finalize">Finalize()</h4>
+  <div class="markdown level1 summary"><p>Finalizes an instance of the <a class="xref" href="Unosquare.Labs.EmbedIO.Tests.TestWebServer.html">TestWebServer</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void Finalize()</code></pre>
+  </div>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_GetClient_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.GetClient*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_GetClient" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.GetClient">GetClient()</h4>
+  <div class="markdown level1 summary"><p>Gets the test HTTP Client.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TestHttpClient GetClient()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Tests.TestHttpClient.html">TestHttpClient</a></td>
+        <td><p>A new instance of the TestHttpClient.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_Module_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.Module*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_Module__1" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.Module``1">Module&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Gets the module registered for the given type.
+Returns null if no module matches the given type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public T Module&lt;T&gt;()
+    where T : class, IWebModule</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>Module registered for the given type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type of module.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_RegisterModule_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.RegisterModule*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_RegisterModule_Unosquare_Labs_EmbedIO_IWebModule_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.RegisterModule(Unosquare.Labs.EmbedIO.IWebModule)">RegisterModule(IWebModule)</h4>
+  <div class="markdown level1 summary"><p>Registers an instance of a web module. Only 1 instance per type is allowed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RegisterModule(IWebModule webModule)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.IWebModule.html">IWebModule</a></td>
+        <td><span class="parametername">webModule</span></td>
+        <td><p>The module.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_RunAsync_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.RunAsync*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_RunAsync_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.RunAsync(System.Threading.CancellationToken)">RunAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Starts the listener and the registered modules.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task RunAsync(CancellationToken ct = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td><p>The cancellation token; when cancelled, the server cancels all pending requests and stops.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>Returns the task that the HTTP listener is running inside of, so that it can be waited upon after it&apos;s been canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_UnregisterModule_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.UnregisterModule*"></a>
+  <h4 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_UnregisterModule_System_Type_" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.UnregisterModule(System.Type)">UnregisterModule(Type)</h4>
+  <div class="markdown level1 summary"><p>Unregisters the module identified by its type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UnregisterModule(Type moduleType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">moduleType</span></td>
+        <td><p>Type of the module.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="events">Events
+  </h3>
+  
+  
+  <h4 id="Unosquare_Labs_EmbedIO_Tests_TestWebServer_StateChanged" data-uid="Unosquare.Labs.EmbedIO.Tests.TestWebServer.StateChanged">StateChanged</h4>
+  <div class="markdown level1 summary"><p>Occurs when [state changed].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event WebServerStateChangedEventHandler StateChanged</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Unosquare.Labs.EmbedIO.Core.WebServerStateChangedEventHandler.html">WebServerStateChangedEventHandler</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Unosquare.Labs.EmbedIO.IWebServer.html">IWebServer</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+  </div>
+
+<h3 id="disqus_thread">Comments</h3>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://unolabs.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="doc" align="center">
+              <span class="small mobile-hide">
+                <img id="logo" class="doc-logo" src="../embedio.png" alt="">
+              </span>
+            </div>
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2017-2019 <a href="https://www.unosquare.com">Unosquare</a></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-8535255-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+  </body>
+</html>
