@@ -17,70 +17,7 @@ namespace EmbedIO.Tests
             : base(ws => ws.WithWebApi("/api", m => m.WithController<TestController>()))
         {
         }
-
-        public class WebApiWithConstructor : WebApiModuleTest
-        {
-            [Test]
-            public async Task GetWebApiWithCustomHeader_ReturnsNameFromConstructor()
-            {
-                const string name = nameof(TestControllerWithConstructor);
-
-                WebServerInstance.Modules.OfType<WebApiModule>().First()
-                    .RegisterController((ctx, ct) => new TestControllerWithConstructor(ctx, ct, name));
-                using (var client = new HttpClient())
-                {
-                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "name");
-
-                    using (var response = await client.SendAsync(request))
-                    {
-                        Assert.AreEqual(name,
-                            response.Headers.FirstOrDefault(x => x.Key == TestControllerWithConstructor.CustomHeader)
-                                .Value.FirstOrDefault());
-                    }
-                }
-            }
-
-            [Test]
-            public async Task GetWebApiWithCacheControlPublic_ReturnsValidResponse()
-            {
-                WebServerInstance.Modules.OfType<WebApiModule>().First()
-                    .RegisterController((ctx, ct) => new TestControllerWithConstructor(ctx, ct));
-                using (var client = new HttpClient())
-                {
-                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "namePublic");
-
-                    using (var response = await client.SendAsync(request))
-                    {
-                        Assert.IsTrue(response.Headers.CacheControl.Public, "Cache is public");
-
-                        Assert.IsFalse(response.Headers.CacheControl.NoStore, "Cache is not No-Store");
-                        Assert.IsFalse(response.Headers.CacheControl.NoCache, "Cache is not No-Cache");
-                        Assert.IsFalse(response.Headers.CacheControl.MustRevalidate, "Cache is not Must-Revalidate");
-                    }
-                }
-            }
-
-            [Test]
-            public async Task GetWebApiWithCacheControlDefault_ReturnsValidResponse()
-            {
-                WebServerInstance.Modules.OfType<WebApiModule>().First()
-                    .RegisterController((ctx, ct) => new TestControllerWithConstructor(ctx, ct));
-                using (var client = new HttpClient())
-                {
-                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + "name");
-
-                    using (var response = await client.SendAsync(request))
-                    {
-                        Assert.IsFalse(response.Headers.CacheControl.Public, "Cache is not public");
-
-                        Assert.IsTrue(response.Headers.CacheControl.NoStore);
-                        Assert.IsTrue(response.Headers.CacheControl.NoCache);
-                        Assert.IsTrue(response.Headers.CacheControl.MustRevalidate);
-                    }
-                }
-            }
-        }
-
+        
         public class HttpPost : WebApiModuleTest
         {
             [Test]
