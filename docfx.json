@@ -30,13 +30,13 @@
     ],
     "resource": [
       {
-        "files": [ "best-practices/resources/**", "embedio.png"]
+        "files": [ "best-practices/resources/**", "embedio.png", "src/Unosquare.Labs.EmbedIO.Samples/html/favicon.ico"]
       }
     ],
     "globalMetadata": {
       "_appTitle": "Unosquare EmbedIO",
       "_enableSearch": true,
-      "_appFaviconPath": "src/Unosquare.Labs.EmbedIO.Command/favicon.ico",
+      "_appFaviconPath": "src/Unosquare.Labs.EmbedIO.Samples/html/favicon.ico",
       "_appLogoPath": "best-practices/resources/images/logo.png",
       "_docLogo":  "embedio.png"
     },
