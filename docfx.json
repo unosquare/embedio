@@ -30,7 +30,7 @@
     ],
     "resource": [
       {
-        "files": [ "best-practices/resources/**", "embedio.png"]
+        "files": [ "best-practices/resources/**", "embedio.png", "src/Unosquare.Labs.EmbedIO.Samples/html/favicon.ico"]
       }
     ],
     "globalMetadata": {
