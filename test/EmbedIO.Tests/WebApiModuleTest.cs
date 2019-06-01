@@ -17,7 +17,7 @@ namespace EmbedIO.Tests
             : base(ws => ws.WithWebApi("/api", m => m.WithController<TestController>()))
         {
         }
-        
+
         public class HttpPost : WebApiModuleTest
         {
             [Test]
@@ -25,7 +25,7 @@ namespace EmbedIO.Tests
             {
                 using (var client = new HttpClient())
                 {
-                    var model = new Person {Key = 10, Name = "Test"};
+                    var model = new Person { Key = 10, Name = "Test" };
                     var payloadJson = new StringContent(
                         Json.Serialize(model),
                         System.Text.Encoding.UTF8,
@@ -64,7 +64,8 @@ namespace EmbedIO.Tests
             {
                 using (var webClient = new HttpClient())
                 {
-                    var content = new[] {
+                    var content = new[]
+                    {
                         new KeyValuePair<string, string>("test", "data"),
                         new KeyValuePair<string, string>(label1, "1"),
                         new KeyValuePair<string, string>(label2, "2"),
@@ -72,7 +73,7 @@ namespace EmbedIO.Tests
 
                     var formContent = new FormUrlEncodedContent(content);
 
-                    var result = await webClient.PostAsync(WebServerUrl + TestController.EchoPath, formContent);
+                    var result = await webClient.PostAsync($"{WebServerUrl}/api/{TestController.EchoPath}", formContent);
                     Assert.IsNotNull(result);
                     var data = await result.Content.ReadAsStringAsync();
                     var obj = Json.Deserialize<FormDataSample>(data);
@@ -88,7 +89,8 @@ namespace EmbedIO.Tests
             {
                 using (var webClient = new HttpClient())
                 {
-                    var content = new[] {
+                    var content = new[] 
+                    {
                         new KeyValuePair<string, string>("test", "data"),
                         new KeyValuePair<string, string>("id", "1"),
                     };
@@ -96,7 +98,7 @@ namespace EmbedIO.Tests
                     var formContent = new FormUrlEncodedContent(content);
 
                     var result =
-                        await webClient.PostAsync(WebServerUrl + "api/" + TestController.EchoPath, formContent);
+                        await webClient.PostAsync(WebServerUrl + "/api/" + TestController.EchoPath, formContent);
 
                     Assert.IsNotNull(result);
                     var data = await result.Content.ReadAsStringAsync();
@@ -168,7 +170,7 @@ namespace EmbedIO.Tests
             {
                 var person = PeopleRepository.Database.First();
 
-                await ValidatePerson($"/api/egexthree/{person.MainSkill}");
+                await ValidatePerson($"/api/regexthree/{person.MainSkill}");
             }
         }
     }

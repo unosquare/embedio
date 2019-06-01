@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,13 +38,13 @@ namespace EmbedIO.Tests.TestObjects
         //[RouteHandler(HttpVerbs.Get, "/regexopt/{id?}")]
         //public Task<bool> GetPerson(int? id) => id.HasValue ? CheckPerson(id.Value) : Ok(PeopleRepository.Database);
 
-        //[RouteHandler(HttpVerbs.Get, "/regexdate/{date}")]
-        //public Task<bool> GetPerson(DateTime date)
-        //{
-        //    var item = PeopleRepository.Database.FirstOrDefault(p => p.DoB == date);
+        [RouteHandler(HttpVerbs.Get, "/regexdate/{date}")]
+        public Task<bool> GetPerson(DateTime date)
+        {
+            var item = PeopleRepository.Database.FirstOrDefault(p => p.DoB == date);
 
-        //    return item != null ? Ok(item) : throw new KeyNotFoundException($"Key Not Found: {date}");
-        //}
+            return item != null ? Ok(item) : throw new KeyNotFoundException($"Key Not Found: {date}");
+        }
 
         //[RouteHandler(HttpVerbs.Get, "/regextwo/{skill}/{age}")]
         //public Task<bool> GetPerson(string skill, int age)
