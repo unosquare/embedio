@@ -309,27 +309,27 @@
         /// <summary>
         /// The <c>Sec-SystemWebSocket-Accept</c> HTTP header.
         /// </summary>
-        public const string SecWebSocketAccept = "Sec-SystemWebSocket-Accept";
+        public const string SecWebSocketAccept = "Sec-WebSocket-Accept";
 
         /// <summary>
         /// The <c>Sec-SystemWebSocket-Extensions</c> HTTP header.
         /// </summary>
-        public const string SecWebSocketExtensions = "Sec-SystemWebSocket-Extensions";
+        public const string SecWebSocketExtensions = "Sec-WebSocket-Extensions";
 
         /// <summary>
         /// The <c>Sec-SystemWebSocket-Key</c> HTTP header.
         /// </summary>
-        public const string SecWebSocketKey = "Sec-SystemWebSocket-Key";
+        public const string SecWebSocketKey = "Sec-WebSocket-Key";
 
         /// <summary>
         /// The <c>Sec-SystemWebSocket-Protocol</c> HTTP header.
         /// </summary>
-        public const string SecWebSocketProtocol = "Sec-SystemWebSocket-Protocol";
+        public const string SecWebSocketProtocol = "Sec-WebSocket-Protocol";
 
         /// <summary>
         /// The <c>Sec-SystemWebSocket-Version</c> HTTP header.
         /// </summary>
-        public const string SecWebSocketVersion = "Sec-SystemWebSocket-Version";
+        public const string SecWebSocketVersion = "Sec-WebSocket-Version";
 
         /// <summary>
         /// The <c>Server</c> HTTP header.
