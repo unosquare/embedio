@@ -75,7 +75,7 @@ namespace EmbedIO.Net.Internal
         public ICookieCollection Cookies => CookieCollection;
 
         /// <inheritdoc />
-        public System.Net.WebHeaderCollection Headers => HeaderCollection;
+        public WebHeaderCollection Headers { get; } = new WebHeaderCollection();
 
         /// <inheritdoc />
         public bool KeepAlive
@@ -158,8 +158,6 @@ namespace EmbedIO.Net.Internal
             set => _cookies = value;
         }
 
-        internal System.Net.WebHeaderCollection HeaderCollection { get; set; } = new System.Net.WebHeaderCollection();
-
         internal bool HeadersSent { get; private set; }
         internal object HeadersLock { get; } = new object();
         internal bool ForceCloseChunked { get; private set; }
@@ -211,15 +209,15 @@ namespace EmbedIO.Net.Internal
                     ? $"{_contentType}; charset={Encoding.UTF8.WebName}"
                     : _contentType;
 
-                HeaderCollection.Add("Content-Type", contentTypeValue);
+                Headers.Add("Content-Type", contentTypeValue);
             }
 
             if (Headers["Server"] == null)
-                HeaderCollection.Add("Server", HttpResponse.ServerVersion);
+                Headers.Add("Server", HttpResponse.ServerVersion);
 
             var inv = CultureInfo.InvariantCulture;
             if (Headers["Date"] == null)
-                HeaderCollection.Add("Date", DateTime.UtcNow.ToString("r", inv));
+                Headers.Add("Date", DateTime.UtcNow.ToString("r", inv));
 
             if (!_chunked)
             {
@@ -230,7 +228,7 @@ namespace EmbedIO.Net.Internal
                 }
 
                 if (_clSet)
-                    HeaderCollection.Add("Content-Length", _contentLength.ToString(inv));
+                    Headers.Add("Content-Length", _contentLength.ToString(inv));
             }
 
             var v = _context.Request.ProtocolVersion;
@@ -238,10 +236,10 @@ namespace EmbedIO.Net.Internal
                 _chunked = true;
 
             //// Apache forces closing the connection for these status codes:
-            //// HttpStatusCode.BadRequest        400
+            //// HttpStatusCode.BadRequest            400
             //// HttpStatusCode.RequestTimeout        408
             //// HttpStatusCode.LengthRequired        411
-            //// HttpStatusCode.RequestEntityTooLarge     413
+            //// HttpStatusCode.RequestEntityTooLarge 413
             //// HttpStatusCode.RequestUriTooLong     414
             //// HttpStatusCode.InternalServerError   500
             //// HttpStatusCode.ServiceUnavailable    503        
@@ -249,18 +247,17 @@ namespace EmbedIO.Net.Internal
                             _statusCode == 413 || _statusCode == 414 || _statusCode == 500 ||
                             _statusCode == 503;
 
-            if (connClose == false)
-                connClose = !_context.Request.KeepAlive;
+            connClose |= !_context.Request.KeepAlive;
 
             // They sent both KeepAlive: true and Connection: close!?
             if (!_keepAlive || connClose)
             {
-                HeaderCollection.Add("Connection", "close");
+                Headers.Add("Connection", "close");
                 connClose = true;
             }
 
             if (_chunked)
-                HeaderCollection.Add("Transfer-Encoding", "chunked");
+                Headers.Add("Transfer-Encoding", "chunked");
 
             var reuses = _context.Connection.Reuses;
             if (reuses >= 100)
@@ -268,17 +265,17 @@ namespace EmbedIO.Net.Internal
                 ForceCloseChunked = true;
                 if (!connClose)
                 {
-                    HeaderCollection.Add("Connection", "close");
+                    Headers.Add("Connection", "close");
                     connClose = true;
                 }
             }
 
             if (!connClose)
             {
-                HeaderCollection.Add("Keep-Alive", $"timeout=15,max={100 - reuses}");
+                Headers.Add("Keep-Alive", $"timeout=15,max={100 - reuses}");
 
                 if (_context.Request.ProtocolVersion <= HttpVersion.Version10)
-                    HeaderCollection.Add("Connection", "keep-alive");
+                    Headers.Add("Connection", "keep-alive");
             }
 
             return WriteHeaders();
@@ -340,8 +337,8 @@ namespace EmbedIO.Net.Internal
             var sb = new StringBuilder()
                 .AppendFormat(CultureInfo.InvariantCulture, "HTTP/{0} {1} {2}\r\n", ProtocolVersion, _statusCode, StatusDescription);
 
-            foreach (var key in HeaderCollection.AllKeys.Where(x => x != "Set-Cookie"))
-                sb.AppendFormat(CultureInfo.InvariantCulture, "{0}: {1}\r\n", key, HeaderCollection[key]);
+            foreach (var key in Headers.AllKeys.Where(x => x != "Set-Cookie"))
+                sb.AppendFormat(CultureInfo.InvariantCulture, "{0}: {1}\r\n", key, Headers[key]);
             
             if (_cookies != null)
             {
@@ -349,9 +346,9 @@ namespace EmbedIO.Net.Internal
                     sb.AppendFormat(CultureInfo.InvariantCulture, "Set-Cookie: {0}\r\n", CookieToClientString(cookie));
             }
 
-            if (HeaderCollection.AllKeys.Contains("Set-Cookie"))
+            if (Headers.AllKeys.Contains("Set-Cookie"))
             {
-                foreach (var cookie in CookieCollection.ParseResponse(HeaderCollection["Set-Cookie"]))
+                foreach (var cookie in CookieCollection.ParseResponse(Headers["Set-Cookie"]))
                     sb.AppendFormat(CultureInfo.InvariantCulture, "Set-Cookie: {0}\r\n", CookieToClientString(cookie));
             }
 
