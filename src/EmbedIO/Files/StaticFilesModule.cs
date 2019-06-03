@@ -346,8 +346,8 @@ namespace EmbedIO.Files
                 // check to see if the file was modified or e-tag is the same
                 var utcFileDateString = fileInfo.LastWriteTimeUtc.ToRfc1123String();
 
-                if (!usingPartial &&
-                    (isTagValid || context.Request.Headers[HttpHeaderNames.IfModifiedSince].Equals(utcFileDateString)))
+                if (!usingPartial
+                  && (isTagValid || string.Equals(context.Request.Headers[HttpHeaderNames.IfModifiedSince], utcFileDateString)))
                 {
                     SetDefaultCacheHeaders(context.Response);
                     context.Response.SetEmptyResponse((int)HttpStatusCode.NotModified);
