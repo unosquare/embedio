@@ -1,7 +1,7 @@
 ﻿namespace EmbedIO
 {
     /// <summary>
-    /// Exposes constants for possible values of the <c>Compression</c> HTTP header.
+    /// Exposes constants for possible values of the <c>Content-Encoding</c> HTTP header.
     /// </summary>
     /// <see cref="CompressionMethod"/>
     public static class CompressionMethods
@@ -10,7 +10,7 @@
         /// Specifies no compression.
         /// </summary>
         /// <see cref="CompressionMethod.None"/>
-        public const string None = "none";
+        public const string None = "identity";
 
         /// <summary>
         /// Specifies the "Deflate" compression method.
