@@ -54,14 +54,11 @@ namespace EmbedIO.Authentication
                 }
             }
 
-            if (await IsAuthenticatedAsync().ConfigureAwait(false))
-            {
-                context.Response.AddHeader(HttpHeaderNames.WWWAuthenticate, _wwwAuthenticateHeaderValue);
-                return false;
-            }
+            if (!await IsAuthenticatedAsync().ConfigureAwait(false))
+                throw HttpException.Unauthorized();
 
-            context.Response.SetEmptyResponse((int)HttpStatusCode.Unauthorized);
-            return true;
+            context.Response.AddHeader(HttpHeaderNames.WWWAuthenticate, _wwwAuthenticateHeaderValue);
+            return false;
         }
 
         /// <summary>

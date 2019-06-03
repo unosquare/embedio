@@ -41,5 +41,15 @@ namespace EmbedIO
         /// slash (<c>/</c>) character.</para>
         /// </remarks>
         Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// <para>Gets or sets a callback that is called every time an unhandled exception
+        /// occurs during the processing of a request.</para>
+        /// <para>If this property is <see langword="null"/> (the default),
+        /// the exception will be handled by the web server, or by the containing
+        /// <see cref="ModuleGroup"/>.</para>
+        /// </summary>
+        /// <seealso cref="StandardExceptionHandlers"/>
+        WebExceptionHandler OnUnhandledException { get; set; }
     }
 }

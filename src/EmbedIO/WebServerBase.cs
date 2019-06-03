@@ -16,6 +16,8 @@ namespace EmbedIO
     {
         private readonly WebModuleCollection _modules = new WebModuleCollection(nameof(WebServerBase), "/");
 
+        private WebExceptionHandler _onUnhandledException = StandardExceptionHandlers.Default;
+
         private WebServerState _state = WebServerState.Created;
 
         private ISessionManager _sessionManager;
@@ -42,13 +44,29 @@ namespace EmbedIO
         public IComponentCollection<IWebModule> Modules => _modules;
 
         /// <inheritdoc />
+        /// <exception cref="InvalidOperationException">The server's configuration is locked.</exception>
+        /// <exception cref="ArgumentNullException">this property is being set to <see langword="null"/>.</exception>
+        /// <remarks>
+        /// <para>The default value for this property is <see cref="StandardExceptionHandlers.Default"/>.</para>
+        /// </remarks>
+        /// <seealso cref="StandardExceptionHandlers"/>
+        public WebExceptionHandler OnUnhandledException
+        {
+            get => _onUnhandledException;
+            set
+            {
+                EnsureConfigurationNotLocked();
+                _onUnhandledException = Validate.NotNull(nameof(value), value);
+            } 
+        }
+
+        /// <inheritdoc />
         public ISessionManager SessionManager
         {
             get => _sessionManager;
             set
             {
                 EnsureConfigurationNotLocked();
-
                 _sessionManager = value;
             }
         }
@@ -189,23 +207,28 @@ namespace EmbedIO
 
                         $"[{context.Id}] No module generated a response. Sending 404 - Not Found".Error(
                             nameof(WebServerBase));
-                        context.Response.StandardResponseWithoutBody((int) HttpStatusCode.NotFound);
+                        context.Response.SetEmptyResponse((int) HttpStatusCode.NotFound);
+                    }
+                    catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+                    {
+                        throw; // Let outer catch block handle it
+                    }
+                    catch (HttpListenerException)
+                    {
+                        throw; // Let outer catch block handle it
+                    }
+                    catch (HttpException ex)
+                    {
+                        $"[{context.Id}] HttpException: sending status code {ex.StatusCode}".Debug(nameof(WebServerBase));
+                        await ex.SendResponseAsync(context).ConfigureAwait(false);
                     }
                     catch (Exception ex)
                     {
-                        ex.Log(nameof(WebServerBase), $"[{context.Id}] Error handling request.");
-                        if (context.Response.StatusCode != (int) HttpStatusCode.Unauthorized)
-                        {
-                            await context.Response.StandardHtmlResponseAsync(
-                                (int) HttpStatusCode.InternalServerError,
-                                sb => sb
-                                    .Append("<h2>Message</h2><pre>")
-                                    .Append(ex.ExceptionMessage())
-                                    .Append("</pre><h2>Stack Trace</h2><pre>\r\n")
-                                    .Append(ex.StackTrace)
-                                    .Append("</pre>"),
-                                cancellationToken).ConfigureAwait(false);
-                        }
+                        ex.Log(nameof(WebServerBase), $"[{context.Id}] Unhandled exception.");
+                        context.Response.SetEmptyResponse((int)HttpStatusCode.InternalServerError);
+                        context.Response.DisableCaching();
+                        await _onUnhandledException(context, context.Request.Url.AbsolutePath, ex, cancellationToken)
+                            .ConfigureAwait(false);
                     }
                 }
                 finally
@@ -220,12 +243,12 @@ namespace EmbedIO
             }
             catch (HttpListenerException ex)
             {
-                ex.Log(nameof(WebServerBase));
+                ex.Log(nameof(WebServerBase), $"[{context.Id}] Listener exception.");
             }
             catch (Exception ex)
             {
+                ex.Log(nameof(WebServerBase), $"[{context.Id}] Fatal exception.");
                 OnFatalException();
-                ex.Log(nameof(WebServerBase));
             }
         }
     }

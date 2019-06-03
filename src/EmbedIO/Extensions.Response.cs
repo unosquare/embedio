@@ -14,12 +14,6 @@ namespace EmbedIO
     public static partial class Extensions
     {
         /// <summary>
-        /// Sends headers to disable caching on the client side.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        public static void NoCache(this IHttpContext context) => context.Response.NoCache();
-
-        /// <summary>
         /// Outputs async a Json Response given a data object.
         /// </summary>
         /// <param name="context">The context.</param>
@@ -146,7 +140,7 @@ namespace EmbedIO
             Encoding encoding = null,
             bool useGzip = true,
             CancellationToken cancellationToken = default) =>
-            context.Response.StringResponseAsync(content, contentType, encoding, useGzip && context.AcceptGzip(content.Length), cancellationToken);
+            context.Response.SendStringAsync(content, contentType, encoding, useGzip && context.AcceptGzip(content.Length), cancellationToken);
 
         /// <summary>
         /// Writes a binary response asynchronous.
@@ -187,6 +181,6 @@ namespace EmbedIO
             Stream buffer,
             bool useGzip = true,
             CancellationToken cancellationToken = default)
-            => context.Response.BinaryResponseAsync(buffer, useGzip && context.AcceptGzip(buffer.Length), cancellationToken);
+            => context.Response.SendStreamAsync(buffer, useGzip && context.AcceptGzip(buffer.Length), cancellationToken);
     }
 }

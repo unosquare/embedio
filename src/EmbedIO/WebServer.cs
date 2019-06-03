@@ -9,15 +9,10 @@ using Unosquare.Swan;
 namespace EmbedIO
 {
     /// <summary>
-    /// Represents our tiny web server used to handle requests.
-    ///
-    /// This is the default implementation of <c>IWebServer</c> and it's ready to select
-    /// the <c>IHttpListener</c> implementation via the proper constructor.
-    ///
-    /// By default, the WebServer will use the Regex RoutingStrategy for
-    /// all registered modules (<c>IWebModule</c>) and EmbedIO Listener (<c>HttpListenerMode</c>).
+    /// <para>EmbedIO's web server. This is the default implementation of <see cref="IWebServer"/>.</para>
+    /// <para>This class also contains some useful constants related to EmbedIO's internal working.</para>
     /// </summary>
-    public class WebServer : WebServerBase
+    public partial class WebServer : WebServerBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.

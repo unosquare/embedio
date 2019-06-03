@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbedIO.Files;
 using EmbedIO.Utilities;
 
 namespace EmbedIO
@@ -11,19 +9,20 @@ namespace EmbedIO
     /// <summary>
     /// Provides extension methods for types implementing <see cref="IHttpResponse"/>.
     /// </summary>
-    public static class HttpResponseExtensions
+    public static partial class HttpResponseExtensions
     {
         /// <summary>
-        /// Add the necessary headers to disable caching of a response on the client side.
+        /// Sets the necessary headers to disable caching of a response on the client side.
         /// </summary>
         /// <param name="this">The <see cref="IHttpResponse"/> interface on which this method is called.</param>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
-        public static void NoCache(this IHttpResponse @this)
+        public static void DisableCaching(this IHttpResponse @this)
         {
-            @this.AddHeader(HttpHeaderNames.Expires, "Mon, 26 Jul 1997 05:00:00 GMT");
-            @this.AddHeader(HttpHeaderNames.LastModified, DateTime.UtcNow.ToRfc1123String());
-            @this.AddHeader(HttpHeaderNames.CacheControl, "no-store, no-cache, must-revalidate");
-            @this.AddHeader(HttpHeaderNames.Pragma, "no-cache");
+            var headers = @this.Headers;
+            headers.Set(HttpHeaderNames.Expires, "Mon, 26 Jul 1997 05:00:00 GMT");
+            headers.Set(HttpHeaderNames.LastModified, DateTime.UtcNow.ToRfc1123String());
+            headers.Set(HttpHeaderNames.CacheControl, "no-store, no-cache, must-revalidate");
+            headers.Add(HttpHeaderNames.Pragma, "no-cache");
         }
 
         /// <summary>
@@ -33,7 +32,7 @@ namespace EmbedIO
         /// <param name="statusCode">The HTTP status code of the response.</param>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">There is no standard status description for <paramref name="statusCode"/>.</exception>
-        public static void StandardResponseWithoutBody(this IHttpResponse @this, int statusCode)
+        public static void SetEmptyResponse(this IHttpResponse @this, int statusCode)
         {
             if (!HttpStatusDescription.TryGet(statusCode, out var statusDescription))
                 throw new ArgumentException("Status code has no standard description.", nameof(statusCode));
@@ -45,133 +44,34 @@ namespace EmbedIO
         }
 
         /// <summary>
-        /// Asynchronously sends a standard HTML response for the specified status code.
+        /// Asynchronously copies the specified stream's contents, starting from the stream's current position,
+        /// to a response's output stream.
         /// </summary>
         /// <param name="this">The <see cref="IHttpResponse"/> interface on which this method is called.</param>
-        /// <param name="statusCode">The HTTP status code of the response.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
+        /// <param name="stream">The stream whose contents must be copied.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException">There is no standard status description for <paramref name="statusCode"/>.</exception>
-        /// <seealso cref="StandardHtmlResponseAsync(IHttpResponse,int,Func{StringBuilder,StringBuilder},CancellationToken)"/>
-        public static Task StandardHtmlResponseAsync(this IHttpResponse @this, int statusCode, CancellationToken cancellationToken)
-            => StandardHtmlResponseAsync(@this, statusCode, null, cancellationToken);
+        /// <exception cref="ArgumentNullException"><paramref name="stream"/> is <see langword="null"/>.</exception>
+        public static Task CopyStreamAsync(this IHttpResponse @this, Stream stream, CancellationToken cancellationToken)
+            => Validate.NotNull(nameof(stream), stream).CopyToAsync(@this.OutputStream, WebServer.StreamCopyBufferSize, cancellationToken);
 
         /// <summary>
-        /// Asynchronously sends a standard HTML response for the specified status code.
+        /// Asynchronously copies the specified stream's contents, starting from the specified position,
+        /// to a response's output stream.
         /// </summary>
         /// <param name="this">The <see cref="IHttpResponse"/> interface on which this method is called.</param>
-        /// <param name="statusCode">The HTTP status code of the response.</param>
-        /// <param name="appendAdditionalHtml">A callback function that may append additional HTML code
-        /// to the response. If not <see langword="null"/>, the callback is called immediately before
-        /// closing the HTML <c>body</c> tag.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
+        /// <param name="stream">The stream whose contents must be copied.</param>
+        /// <param name="position">The starting position in <paramref name="stream"/>.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException">There is no standard status description for <paramref name="statusCode"/>.</exception>
-        /// <seealso cref="StandardHtmlResponseAsync(IHttpResponse,int,CancellationToken)"/>
-        public static Task StandardHtmlResponseAsync(
-            this IHttpResponse @this, 
-            int statusCode, 
-            Func<StringBuilder, StringBuilder> appendAdditionalHtml, 
-            CancellationToken cancellationToken)
+        /// <exception cref="ArgumentNullException"><paramref name="stream"/> is <see langword="null"/>.</exception>
+        public static Task CopyStreamAsync(this IHttpResponse @this, Stream stream, long position, CancellationToken cancellationToken)
         {
-            if (!HttpStatusDescription.TryGet(statusCode, out var statusDescription))
-                throw new ArgumentException("Status code has no standard description.", nameof(statusCode));
-
-            @this.StatusCode = statusCode;
-            @this.StatusDescription = statusDescription;
-            @this.ContentType = MimeTypes.HtmlType;
-            var sb = new StringBuilder()
-                .Append("<html><head><meta charset=\"UTF-8\"><title>")
-                .Append(statusCode)
-                .Append(" - ")
-                .Append(statusDescription)
-                .Append("</title></head><body><h1>")
-                .Append(statusCode)
-                .Append(" - ")
-                .Append(statusDescription)
-                .Append("</h1>");
-            appendAdditionalHtml?.Invoke(sb);
-            sb.Append("</body></html>");
-            var buffer = Encoding.UTF8.GetBytes(sb.ToString());
-            sb = null; // Free some memory if next GC is near
-            @this.ContentLength64 = buffer.Length;
-            return @this.OutputStream.WriteAsync(buffer, 0, buffer.Length, cancellationToken);
-        }
-
-        /// <summary>
-        /// Writes a binary response asynchronous.
-        /// </summary>
-        /// <param name="response">The response.</param>
-        /// <param name="buffer">The buffer.</param>
-        /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A task for writing the output stream.
-        /// </returns>
-        public static async Task<bool> BinaryResponseAsync(
-            this IHttpResponse response,
-            Stream buffer,
-            bool useGzip = true,
-            CancellationToken cancellationToken = default)
-        {
-            if (useGzip)
-            {
-                buffer = await buffer.CompressAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
-                response.AddHeader(HttpHeaderNames.ContentEncoding, CompressionMethods.Gzip);
-            }
-
-            response.ContentLength64 = buffer.Length;
-            await response.WriteToOutputStream(buffer, 0, cancellationToken).ConfigureAwait(false);
-
-            return true;
-        }
-
-        /// <summary>
-        /// Writes to output stream.
-        /// </summary>
-        /// <param name="response">The response.</param>
-        /// <param name="buffer">The buffer.</param>
-        /// <param name="lowerByteIndex">Index of the lower byte.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A task representing the write operation to the stream.
-        /// </returns>
-        public static Task WriteToOutputStream(
-            this IHttpResponse response,
-            Stream buffer,
-            long lowerByteIndex = 0,
-            CancellationToken cancellationToken = default)
-        {
-            buffer.Position = lowerByteIndex;
-            return buffer.CopyToAsync(response.OutputStream, FileModuleBase.ChunkSize, cancellationToken);
-        }
-
-        /// <summary>
-        /// Outputs async a string response given a string.
-        /// </summary>
-        /// <param name="this">The response.</param>
-        /// <param name="content">The content.</param>
-        /// <param name="contentType">Type of the content.</param>
-        /// <param name="encoding">The encoding.</param>
-        /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A task for writing the output stream.
-        /// </returns>
-        public static async Task<bool> StringResponseAsync(
-            this IHttpResponse @this,
-            string content,
-            string contentType,
-            Encoding encoding = null,
-            bool useGzip = false,
-            CancellationToken cancellationToken = default)
-        {
-            @this.ContentType = contentType;
-
-            using (var buffer = new MemoryStream((encoding ?? Encoding.UTF8).GetBytes(content)))
-                return await BinaryResponseAsync(@this, buffer, useGzip, cancellationToken).ConfigureAwait(false);
+            stream = Validate.NotNull(nameof(stream), stream);
+            stream.Position = position;
+            return stream.CopyToAsync(@this.OutputStream, WebServer.StreamCopyBufferSize, cancellationToken);
         }
     }
 }

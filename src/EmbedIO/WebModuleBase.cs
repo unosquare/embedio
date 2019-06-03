@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Net;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
+using Unosquare.Swan;
 
 namespace EmbedIO
 {
@@ -18,12 +20,13 @@ namespace EmbedIO
     /// and the <see cref="ConfiguredObject.EnsureConfigurationNotLocked"/> method);</description></item>
     /// <item><description>a basic implementation of the <see cref="IWebModule.Start"/> method
     /// for modules that do not need to do anything upon web server startup;</description></item>
-    /// <item><description>support for module-level exception handling via the
-    /// <see cref="OnExceptionAsync"/> callback.</description></item>
+    /// <item><description>implementation of the <see cref="OnUnhandledException"/> callback property.</description></item>
     /// </list>
     /// </summary>
     public abstract class WebModuleBase : ConfiguredObject, IWebModule
     {
+        private WebExceptionHandler _onUnhandledException;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WebModuleBase"/> class.
         /// </summary>
@@ -39,6 +42,18 @@ namespace EmbedIO
 
         /// <inheritdoc />
         public string BaseUrlPath { get; }
+
+        /// <inheritdoc />
+        /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
+        public WebExceptionHandler OnUnhandledException
+        {
+            get => _onUnhandledException;
+            set
+            {
+                EnsureConfigurationNotLocked();
+                _onUnhandledException = value;
+            }
+        }
 
         /// <inheritdoc />
         /// <remarks>
@@ -57,9 +72,29 @@ namespace EmbedIO
             {
                 return await OnRequestAsync(context, path, cancellationToken).ConfigureAwait(false);
             }
-            catch (Exception e)
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
             {
-                return await OnExceptionAsync(context, path, e, cancellationToken).ConfigureAwait(false);
+                throw; // Let the web server handle it
+            }
+            catch (HttpListenerException)
+            {
+                throw; // Let the web server handle it
+            }
+            catch (HttpException)
+            {
+                throw; // Let the web server handle it
+            }
+            catch (Exception ex)
+            {
+                if (_onUnhandledException == null)
+                    throw;
+
+                ex.Log(GetType().Name, $"[{context.Id}] Unhandled exception.");
+                context.Response.SetEmptyResponse((int)HttpStatusCode.InternalServerError);
+                context.Response.DisableCaching();
+                await _onUnhandledException(context, context.Request.Url.AbsolutePath, ex, cancellationToken)
+                    .ConfigureAwait(false);
+                return true;
             }
         }
 
@@ -85,23 +120,6 @@ namespace EmbedIO
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to stop the web server.</param>
         protected virtual void OnStart(CancellationToken cancellationToken)
         {
-        }
-
-        /// <summary>
-        /// <para>Called when an exception is thrown while handling a request.</para>
-        /// <para>The default behavior is to rethrow the exception, preserving the original stack trace,
-        /// so that it may be handled by the server.</para>
-        /// </summary>
-        /// <param name="context">The context of the request being handled.</param>
-        /// <param name="path">The requested path, relative to <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
-        /// <param name="exception">The exception thrown by the controller.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-        /// <returns><see langword="true"/> if the request has been handled;
-        /// <see langword="false"/> if the request should be passed down the module chain.</returns>
-        protected virtual Task<bool> OnExceptionAsync(IHttpContext context, string path, Exception exception, CancellationToken cancellationToken)
-        {
-            ExceptionDispatchInfo.Capture(exception).Throw();
-            return Task.FromResult(false); // Silence warning about not returning a value.
         }
     }
 }
