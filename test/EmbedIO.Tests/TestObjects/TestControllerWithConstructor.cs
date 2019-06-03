@@ -27,10 +27,10 @@ namespace EmbedIO.Tests.TestObjects
         [RouteHandler(HttpVerbs.Get, "/namePublic")]
         public Task<bool> GetNamePublic()
         {
-            Response.AddHeader("Cache-Control", "public");
+            Response.Headers.Set("Cache-Control", "public");
             return Ok(WebName);
         }
 
-        protected override void OnBeforeHandler() => Response.AddHeader(CustomHeader, WebName);
+        protected override void OnBeforeHandler() => Response.Headers.Set(CustomHeader, WebName);
     }
 }

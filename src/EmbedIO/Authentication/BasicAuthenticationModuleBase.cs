@@ -57,7 +57,7 @@ namespace EmbedIO.Authentication
             if (!await IsAuthenticatedAsync().ConfigureAwait(false))
                 throw HttpException.Unauthorized();
 
-            context.Response.AddHeader(HttpHeaderNames.WWWAuthenticate, _wwwAuthenticateHeaderValue);
+            context.Response.Headers.Set(HttpHeaderNames.WWWAuthenticate, _wwwAuthenticateHeaderValue);
             return false;
         }
 

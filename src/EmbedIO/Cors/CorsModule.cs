@@ -71,7 +71,7 @@ namespace EmbedIO.Cors
             // If we allow all we don't need to filter
             if (_origins == All && _headers == All && _methods == All)
             {
-                context.Response.AddHeader(HttpHeaderNames.AccessControlAllowOrigin, All);
+                context.Response.Headers.Set(HttpHeaderNames.AccessControlAllowOrigin, All);
                 var result = isOptions && ValidateHttpOptions(_methods, context, _validMethods);
 
                 return Task.FromResult(result);
@@ -91,7 +91,7 @@ namespace EmbedIO.Cors
 
             if (_validOrigins.Contains(currentOrigin))
             {
-                context.Response.AddHeader(HttpHeaderNames.AccessControlAllowOrigin,  currentOrigin);
+                context.Response.Headers.Set(HttpHeaderNames.AccessControlAllowOrigin,  currentOrigin);
 
                 if (isOptions)
                 {
@@ -113,7 +113,7 @@ namespace EmbedIO.Cors
             if (!string.IsNullOrWhiteSpace(currentHeader))
             {
                 // TODO: I need to remove headers out from AllowHeaders
-                context.Response.AddHeader(HttpHeaderNames.AccessControlAllowHeaders, currentHeader);
+                context.Response.Headers.Set(HttpHeaderNames.AccessControlAllowHeaders, currentHeader);
             }
 
             if (string.IsNullOrWhiteSpace(currentMethod)) 
@@ -125,7 +125,7 @@ namespace EmbedIO.Cors
 
             if (option == All || currentMethods.All(options.Contains))
             {
-                context.Response.AddHeader(HttpHeaderNames.AccessControlAllowMethods, currentMethod);
+                context.Response.Headers.Set(HttpHeaderNames.AccessControlAllowMethods, currentMethod);
 
                 return true;
             }

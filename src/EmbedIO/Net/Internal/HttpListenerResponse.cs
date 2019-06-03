@@ -164,18 +164,6 @@ namespace EmbedIO.Net.Internal
 
         void IDisposable.Dispose() => Close(true);
 
-        /// <inheritdoc />
-        public void AddHeader(string name, string value)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("'name' cannot be empty", nameof(name));
-
-            if (value.Length > 65535)
-                throw new ArgumentOutOfRangeException(nameof(value));
-
-            Headers[name] = value;
-        }
-
         public void Close()
         {
             if (!_disposed) Close(false);

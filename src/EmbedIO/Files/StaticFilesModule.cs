@@ -402,7 +402,7 @@ namespace EmbedIO.Files
                 {
                     $"RAM Cache: {localPath}".Debug(nameof(StaticFilesModule));
 
-                    context.Response.AddHeader(HttpHeaderNames.ETag, currentHash);
+                    context.Response.Headers.Set(HttpHeaderNames.ETag, currentHash);
                     return new MemoryStream(RamCache.GetBuffer(localPath));
                 }
             }
@@ -448,7 +448,7 @@ namespace EmbedIO.Files
                 RamCache.Add(buffer, localPath, fileDate);
             }
 
-            response.AddHeader(HttpHeaderNames.ETag, currentHash);
+            response.Headers.Set(HttpHeaderNames.ETag, currentHash);
 
             return false;
         }

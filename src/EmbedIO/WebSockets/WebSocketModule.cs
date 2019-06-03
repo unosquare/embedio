@@ -158,7 +158,7 @@ namespace EmbedIO.WebSockets
             {
                 $"{BaseUrlPath} - Rejecting SystemWebSocket: no subprotocol was accepted.".Debug(nameof(WebSocketModule));
                 foreach (var protocol in _protocols)
-                    context.Response.AddHeader(HttpHeaderNames.SecWebSocketProtocol, protocol);
+                    context.Response.Headers.Add(HttpHeaderNames.SecWebSocketProtocol, protocol);
                 context.Response.SetEmptyResponse((int)HttpStatusCode.BadRequest);
                 return true;
             }

@@ -75,13 +75,6 @@ namespace EmbedIO
         string StatusDescription { get; set; }
 
         /// <summary>
-        /// Adds a response header.
-        /// </summary>
-        /// <param name="name">The header name.</param>
-        /// <param name="value">The value.</param>
-        void AddHeader(string name, string value);
-
-        /// <summary>
         /// Sets the cookie.
         /// </summary>
         /// <param name="cookie">The session cookie.</param>

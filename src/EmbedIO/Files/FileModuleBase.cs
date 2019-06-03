@@ -69,7 +69,7 @@ namespace EmbedIO.Files
                 // invalid partial request
                 response.StatusCode = 416;
                 response.ContentLength64 = 0;
-                response.AddHeader(HttpHeaderNames.ContentRange, $"bytes */{fileSize}");
+                response.Headers.Set(HttpHeaderNames.ContentRange, $"bytes */{fileSize}");
 
                 return Task.Delay(0, cancellationToken);
             }
@@ -79,8 +79,7 @@ namespace EmbedIO.Files
                 response.StatusCode = 206;
                 response.ContentLength64 = upperByteIndex - lowerByteIndex + 1;
 
-                response.AddHeader(HttpHeaderNames.ContentRange,
-                    $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
+                response.Headers.Set(HttpHeaderNames.ContentRange, $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
             }
 
             return response.SendStreamAsync(buffer, lowerByteIndex, UseGzip && useGzip, cancellationToken);
@@ -92,10 +91,10 @@ namespace EmbedIO.Files
         /// <param name="response">The response.</param>
         protected void SetDefaultCacheHeaders(IHttpResponse response)
         {
-            response.AddHeader(HttpHeaderNames.CacheControl,
+            response.Headers.Set(HttpHeaderNames.CacheControl,
                 DefaultHeaders.GetValueOrDefault(HttpHeaderNames.CacheControl, "private"));
-            response.AddHeader(HttpHeaderNames.Pragma, DefaultHeaders.GetValueOrDefault(HttpHeaderNames.Pragma, string.Empty));
-            response.AddHeader(HttpHeaderNames.Expires, DefaultHeaders.GetValueOrDefault(HttpHeaderNames.Expires, string.Empty));
+            response.Headers.Add(HttpHeaderNames.Pragma, DefaultHeaders.GetValueOrDefault(HttpHeaderNames.Pragma, string.Empty));
+            response.Headers.Set(HttpHeaderNames.Expires, DefaultHeaders.GetValueOrDefault(HttpHeaderNames.Expires, string.Empty));
         }
 
         /// <summary>
@@ -111,8 +110,8 @@ namespace EmbedIO.Files
 
             SetDefaultCacheHeaders(response);
 
-            response.AddHeader(HttpHeaderNames.LastModified, utcFileDateString);
-            response.AddHeader(HttpHeaderNames.AcceptRanges, "bytes");
+            response.Headers.Set(HttpHeaderNames.LastModified, utcFileDateString);
+            response.Headers.Set(HttpHeaderNames.AcceptRanges, "bytes");
         }
 
         private static bool CalculateRange(string partialHeader, long fileSize, out long lowerByteIndex, out long upperByteIndex)
