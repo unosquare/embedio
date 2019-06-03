@@ -296,7 +296,7 @@
         /// <remarks>
         /// <para>The incorrect spelling ("Referer" instead of "Referrer") is intentional
         /// and has historical reasons.</para>
-        /// <para>See the "Etimology" section of <a href="https://en.wikipedia.org/wiki/HTTP_referer">the Wikipedia article</a>
+        /// <para>See the "Etymology" section of <a href="https://en.wikipedia.org/wiki/HTTP_referer">the Wikipedia article</a>
         /// on this header for more information.</para>
         /// </remarks>
         public const string Referer = "Referer";
@@ -307,27 +307,27 @@
         public const string RetryAfter = "Retry-After";
 
         /// <summary>
-        /// The <c>Sec-SystemWebSocket-Accept</c> HTTP header.
+        /// The <c>Sec-WebSocket-Accept</c> HTTP header.
         /// </summary>
         public const string SecWebSocketAccept = "Sec-WebSocket-Accept";
 
         /// <summary>
-        /// The <c>Sec-SystemWebSocket-Extensions</c> HTTP header.
+        /// The <c>Sec-WebSocket-Extensions</c> HTTP header.
         /// </summary>
         public const string SecWebSocketExtensions = "Sec-WebSocket-Extensions";
 
         /// <summary>
-        /// The <c>Sec-SystemWebSocket-Key</c> HTTP header.
+        /// The <c>Sec-WebSocket-Key</c> HTTP header.
         /// </summary>
         public const string SecWebSocketKey = "Sec-WebSocket-Key";
 
         /// <summary>
-        /// The <c>Sec-SystemWebSocket-Protocol</c> HTTP header.
+        /// The <c>Sec-WebSocket-Protocol</c> HTTP header.
         /// </summary>
         public const string SecWebSocketProtocol = "Sec-WebSocket-Protocol";
 
         /// <summary>
-        /// The <c>Sec-SystemWebSocket-Version</c> HTTP header.
+        /// The <c>Sec-WebSocket-Version</c> HTTP header.
         /// </summary>
         public const string SecWebSocketVersion = "Sec-WebSocket-Version";
 
