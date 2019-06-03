@@ -170,18 +170,10 @@ namespace EmbedIO.WebSockets.Internal
             if (_readyState != WebSocketState.Open)
                 throw new WebSocketException(CloseStatusCode.Normal, $"This operation isn\'t available in: {_readyState.ToString()}");
 
-            WebSocketStream stream = null;
-
-            try
+            using (var stream = new WebSocketStream(data, opcode, _compression))
             {
-                stream = new WebSocketStream(data, opcode, _compression);
-
                 foreach (var frame in stream.GetFrames())
                     await Send(frame).ConfigureAwait(false);
-            }
-            finally
-            {
-                stream?.Dispose();
             }
         }
 
