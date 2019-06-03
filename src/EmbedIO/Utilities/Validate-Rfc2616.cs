@@ -41,7 +41,7 @@ namespace EmbedIO.Utilities
             value = NotNullOrEmpty(argumentName, value);
 
             if (value.Any(c => c < '\x21' || c > '\x7E' || Array.BinarySearch(ValidRfc2616TokenChars, c) < 0))
-                throw new ArgumentException("Cookie name contains one or more invalid characters.", argumentName);
+                throw new ArgumentException("Token contains one or more invalid characters.", argumentName);
 
             return value;
         }
