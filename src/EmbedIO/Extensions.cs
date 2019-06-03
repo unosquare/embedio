@@ -1,12 +1,8 @@
-﻿using System;
+﻿using EmbedIO.Internal;
+using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbedIO.Files;
-using EmbedIO.Internal;
 using Unosquare.Swan.Formatters;
 
 namespace EmbedIO

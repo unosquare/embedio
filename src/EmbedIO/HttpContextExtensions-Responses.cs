@@ -1,11 +1,6 @@
-﻿using System;
-using System.IO;
+﻿using EmbedIO.Utilities;
+using System;
 using System.Net;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using EmbedIO.Files;
-using EmbedIO.Utilities;
 
 namespace EmbedIO
 {

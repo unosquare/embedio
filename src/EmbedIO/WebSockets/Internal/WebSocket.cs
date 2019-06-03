@@ -23,11 +23,12 @@ namespace EmbedIO.WebSockets.Internal
     internal sealed class WebSocket : IWebSocket
     {
         public const string SupportedVersion = "13";
-
-        private readonly Action<MessageEventArgs> _message;
+        
         private readonly object _stateSyncRoot = new object();
         private readonly ConcurrentQueue<MessageEventArgs> _messageEventQueue = new ConcurrentQueue<MessageEventArgs>();
         private readonly Action _closeConnection;
+        private readonly TimeSpan _waitTime = TimeSpan.FromSeconds(1);
+
         private CompressionMethod _compression = CompressionMethod.None;
         private volatile WebSocketState _readyState;
         private AutoResetEvent _exitReceiving;
@@ -35,14 +36,11 @@ namespace EmbedIO.WebSockets.Internal
         private volatile bool _inMessage;
         private AutoResetEvent _receivePong;
         private Stream _stream;
-        private TimeSpan _waitTime;
 
         private WebSocket(HttpListenerContext httpContext)
         {
-            _message = Messages;
             _closeConnection = httpContext.Connection.ForceClose;
             _stream = httpContext.Connection.Stream;
-            _waitTime = TimeSpan.FromSeconds(1);
             _readyState = WebSocketState.Open;
         }
 
@@ -331,7 +329,7 @@ namespace EmbedIO.WebSockets.Internal
             _inMessage = true;
 
             if (_messageEventQueue.TryDequeue(out var e))
-                _message(e);
+                Messages(e);
         }
 
         private void Messages(MessageEventArgs e)
@@ -365,7 +363,7 @@ namespace EmbedIO.WebSockets.Internal
                 return;
             }
 
-            _message.BeginInvoke(e, ar => _message.EndInvoke(ar), null);
+            Messages(e);
         }
 
         private Task ProcessCloseFrame(WebSocketFrame frame) => InternalCloseAsync(frame.PayloadData, !frame.PayloadData.HasReservedCode, false, true);
