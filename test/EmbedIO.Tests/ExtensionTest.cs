@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading;
 using NUnit.Framework;
 using System.Threading.Tasks;
 
@@ -16,12 +17,12 @@ namespace EmbedIO.Tests
         {
             using (var ms = new MemoryStream(_buffer))
             {
-                var compressBuffer = await ms.CompressAsync(method);
+                var compressBuffer = await ms.CompressAsync(method, true, CancellationToken.None);
 
                 Assert.IsNotNull(compressBuffer);
 
                 var decompressBuffer =
-                    await compressBuffer.CompressAsync(method, System.IO.Compression.CompressionMode.Decompress);
+                    await compressBuffer.CompressAsync(method, false, CancellationToken.None);
 
                 Assert.AreEqual(decompressBuffer.ToArray(), _buffer);
             }

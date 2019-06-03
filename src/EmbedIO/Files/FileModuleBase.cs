@@ -62,7 +62,7 @@ namespace EmbedIO.Files
             
             // check if partial
             if (!CalculateRange(partialHeader, fileSize, out var lowerByteIndex, out var upperByteIndex))
-                return response.BinaryResponseAsync(buffer, UseGzip && useGzip, cancellationToken);
+                return response.SendStreamAsync(buffer, UseGzip && useGzip, cancellationToken);
 
             if (upperByteIndex > fileSize)
             {
@@ -83,7 +83,7 @@ namespace EmbedIO.Files
                     $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
             }
 
-            return response.WriteToOutputStream(buffer, lowerByteIndex, cancellationToken);
+            return response.SendStreamAsync(buffer, lowerByteIndex, UseGzip && useGzip, cancellationToken);
         }
 
         /// <summary>

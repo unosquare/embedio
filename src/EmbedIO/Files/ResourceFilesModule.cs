@@ -57,7 +57,7 @@ namespace EmbedIO.Files
             try
             {
                 var localPath = FixPath(path);
-                var partialHeader = context.RequestHeader(HttpHeaderNames.Range);
+                var partialHeader = context.Request.Headers[HttpHeaderNames.Range];
 
                 $"Resource System: {localPath}".Debug(nameof(ResourceFilesModule));
 

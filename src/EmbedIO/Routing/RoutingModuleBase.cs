@@ -320,7 +320,7 @@ namespace EmbedIO.Routing
         /// <see langword="false"/> if the request should be passed down the module chain.</returns>
         protected virtual Task<bool> OnPathNotFoundAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
-            context.Response.StandardResponseWithoutBody((int)HttpStatusCode.NotFound);
+            context.Response.SetEmptyResponse((int)HttpStatusCode.NotFound);
             return Task.FromResult(true);
         }
 
@@ -338,7 +338,7 @@ namespace EmbedIO.Routing
         /// </returns>
         protected virtual Task<bool> OnMethodNotAllowedAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
-            context.Response.StandardResponseWithoutBody((int)HttpStatusCode.MethodNotAllowed);
+            context.Response.SetEmptyResponse((int)HttpStatusCode.MethodNotAllowed);
             return Task.FromResult(true);
         }
     }

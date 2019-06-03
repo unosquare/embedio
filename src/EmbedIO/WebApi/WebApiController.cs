@@ -68,7 +68,7 @@ namespace EmbedIO.WebApi
         /// <para>The default behavior is to set response headers
         /// in order to prevent caching of the response.</para>
         /// </summary>
-        protected virtual void OnBeforeHandler() => HttpContext.NoCache();
+        protected virtual void OnBeforeHandler() => HttpContext.Response.DisableCaching();
 
         /// <summary>
         /// Outputs async a Json Response given a data object.
@@ -113,6 +113,6 @@ namespace EmbedIO.WebApi
             Encoding encoding = null,
             bool useGzip = true,
             CancellationToken cancellationToken = default) =>
-            Response.StringResponseAsync(content, contentType, encoding, useGzip && HttpContext.AcceptGzip(content.Length), cancellationToken);
+            Response.SendStringAsync(content, contentType, encoding, useGzip && HttpContext.AcceptGzip(content.Length), cancellationToken);
     }
 }

@@ -98,7 +98,7 @@ namespace EmbedIO
             }
 
             return acceptEncoding.Contains(CompressionMethods.Gzip)
-                 && length <= EmbedIOConstants.MaxGzipLength;
+                 && length <= WebServer.MaxGzipLength;
         }
 
         #endregion
@@ -121,11 +121,6 @@ namespace EmbedIO
         /// <returns>A task with a collection that represents KVPs from request data.</returns>
         public static async Task<Dictionary<string, object>> RequestFormDataDictionaryAsync(this IHttpContext context)
             => RequestFormDataDictionary(await context.Request.GetBodyAsStringAsync().ConfigureAwait(false));
-
-        #endregion
-
-        #region Hashing and Compression Methods
-
 
         #endregion
     }

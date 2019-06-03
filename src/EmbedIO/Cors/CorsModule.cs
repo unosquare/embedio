@@ -77,7 +77,7 @@ namespace EmbedIO.Cors
                 return Task.FromResult(result);
             }
 
-            var currentOrigin = context.RequestHeader(HttpHeaderNames.Origin);
+            var currentOrigin = context.Request.Headers[HttpHeaderNames.Origin];
                 
             if (string.IsNullOrWhiteSpace(currentOrigin) && context.Request.IsLocal)
             {
@@ -107,8 +107,8 @@ namespace EmbedIO.Cors
             IHttpContext context,
             IEnumerable<string> options)
         {
-            var currentMethod = context.RequestHeader(HttpHeaderNames.AccessControlRequestMethod);
-            var currentHeader = context.RequestHeader(HttpHeaderNames.AccessControlRequestHeaders);
+            var currentMethod = context.Request.Headers[HttpHeaderNames.AccessControlRequestMethod];
+            var currentHeader = context.Request.Headers[HttpHeaderNames.AccessControlRequestHeaders];
 
             if (!string.IsNullOrWhiteSpace(currentHeader))
             {

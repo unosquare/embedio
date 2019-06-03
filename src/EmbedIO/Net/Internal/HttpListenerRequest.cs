@@ -7,6 +7,7 @@ using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using EmbedIO.Internal;
 using EmbedIO.Utilities;
 
 namespace EmbedIO.Net.Internal
@@ -287,16 +288,11 @@ namespace EmbedIO.Net.Internal
                 return;
             }
 
-            Uri rawUri = null;
-            var path = RawUrl.ToLowerInvariant().MaybeUri() && Uri.TryCreate(RawUrl, UriKind.Absolute, out rawUri)
-                ? rawUri.PathAndQuery
-                : RawUrl;
+            var rawUri = UriUtility.StringToAbsoluteUri(RawUrl.ToLowerInvariant());
+            var path = rawUri?.PathAndQuery ?? RawUrl;
 
             if (string.IsNullOrEmpty(host))
-                host = UserHostAddress;
-
-            if (rawUri != null)
-                host = rawUri.Host;
+                host = rawUri?.Host ?? UserHostAddress;
 
             var colon = host.LastIndexOf(':');
             if (colon >= 0)

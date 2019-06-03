@@ -336,7 +336,7 @@ namespace EmbedIO.Files
             try
             {
                 var isTagValid = false;
-                var partialHeader = context.RequestHeader(HttpHeaderNames.Range);
+                var partialHeader = context.Request.Headers[HttpHeaderNames.Range];
                 var usingPartial = partialHeader?.StartsWith("bytes=") == true;
                 var fileInfo = new FileInfo(localPath);
 
@@ -347,10 +347,10 @@ namespace EmbedIO.Files
                 var utcFileDateString = fileInfo.LastWriteTimeUtc.ToRfc1123String();
 
                 if (!usingPartial &&
-                    (isTagValid || context.RequestHeader(HttpHeaderNames.IfModifiedSince).Equals(utcFileDateString)))
+                    (isTagValid || context.Request.Headers[HttpHeaderNames.IfModifiedSince].Equals(utcFileDateString)))
                 {
                     SetDefaultCacheHeaders(context.Response);
-                    context.Response.StandardResponseWithoutBody((int)HttpStatusCode.NotModified);
+                    context.Response.SetEmptyResponse((int)HttpStatusCode.NotModified);
                     return true;
                 }
 
@@ -396,7 +396,7 @@ namespace EmbedIO.Files
 
             if (FileCachingMode == FileCachingMode.Complete && RamCache.IsValid(localPath, fileInfo.LastWriteTime, out var currentHash))
             {
-                isTagValid = context.RequestHeader(HttpHeaderNames.IfNoneMatch) == currentHash;
+                isTagValid = context.Request.Headers[HttpHeaderNames.IfNoneMatch] == currentHash;
 
                 if (isTagValid)
                 {
@@ -417,7 +417,7 @@ namespace EmbedIO.Files
                     context.Response,
                     buffer,
                     fileInfo.LastWriteTime,
-                    context.RequestHeader(HttpHeaderNames.IfNoneMatch),
+                    context.Request.Headers[HttpHeaderNames.IfNoneMatch],
                     localPath);
             }
 

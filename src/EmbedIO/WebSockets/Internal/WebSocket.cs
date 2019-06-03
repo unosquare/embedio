@@ -382,7 +382,7 @@ namespace EmbedIO.WebSockets.Internal
         {
             if (frame.IsCompressed)
             {
-                var ms = await frame.PayloadData.ApplicationData.CompressAsync(_compression, System.IO.Compression.CompressionMode.Decompress).ConfigureAwait(false);
+                var ms = await frame.PayloadData.ApplicationData.CompressAsync(_compression, false, CancellationToken.None).ConfigureAwait(false);
 
                 _messageEventQueue.Enqueue(new MessageEventArgs(frame.Opcode, ms.ToArray()));
             }

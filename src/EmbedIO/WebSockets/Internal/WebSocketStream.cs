@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using EmbedIO.Utilities;
 
 namespace EmbedIO.WebSockets.Internal
@@ -23,7 +24,7 @@ namespace EmbedIO.WebSockets.Internal
         {
             var compressed = _compression != CompressionMethod.None;
             Stream stream = _compression != CompressionMethod.None
-                ? this.CompressAsync(_compression).Await()
+                ? this.CompressAsync(_compression, true, CancellationToken.None).Await()
                 : this;
 
             var len = stream.Length;

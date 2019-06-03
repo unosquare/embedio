@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using System.IO.Compression;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EmbedIO.WebSockets.Internal
@@ -20,7 +20,7 @@ namespace EmbedIO.WebSockets.Internal
         public async Task<MessageEventArgs> GetMessage(CompressionMethod compression)
         {
             var data = _fragmentsCompressed
-                ? await this.CompressAsync(compression, CompressionMode.Decompress).ConfigureAwait(false)
+                ? await this.CompressAsync(compression, false, CancellationToken.None).ConfigureAwait(false)
                 : this;
 
             return new MessageEventArgs(_fragmentsOpcode, data.ToArray());

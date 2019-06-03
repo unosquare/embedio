@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
+using EmbedIO.Internal;
 
 namespace EmbedIO.Net.Internal
 {
@@ -152,7 +153,7 @@ namespace EmbedIO.Net.Internal
                 }
                 else if (pair.StartsWith("commenturl", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
-                    cookie.CommentUri = GetValue(pair, true).ToUri();
+                    cookie.CommentUri = UriUtility.StringToUri(GetValue(pair, true));
                 }
                 else if (pair.StartsWith("discard", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {

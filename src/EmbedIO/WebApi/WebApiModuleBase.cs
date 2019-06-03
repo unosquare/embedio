@@ -261,7 +261,7 @@ namespace EmbedIO.WebApi
         /// </returns>
         protected virtual Task<bool> OnParameterConversionErrorAsync(IHttpContext context, string name, Exception exception, CancellationToken cancellationToken)
         {
-            context.Response.StandardResponseWithoutBody((int)HttpStatusCode.BadRequest);
+            context.Response.SetEmptyResponse((int)HttpStatusCode.BadRequest);
             return Task.FromResult(true);
         }
 

@@ -20,7 +20,7 @@ namespace EmbedIO.Tests.TestObjects
         [RouteHandler(HttpVerbs.Get, "/name")]
         public Task<bool> GetName()
         {
-            Response.NoCache();
+            Response.DisableCaching();
             return Ok(WebName);
         }
 
