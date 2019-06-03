@@ -1,6 +1,5 @@
 ﻿using System;
 using EmbedIO.Sessions;
-using EmbedIO.Utilities;
 
 namespace EmbedIO
 {
