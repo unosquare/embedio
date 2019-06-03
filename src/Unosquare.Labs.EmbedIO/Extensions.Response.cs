@@ -185,7 +185,7 @@
         public static Task<bool> HtmlResponseAsync(
             this IHttpContext context,
             string htmlContent,
-            System.Net.HttpStatusCode statusCode = HttpStatusCode.OK,
+            HttpStatusCode statusCode = HttpStatusCode.OK,
             bool useGzip = true,
             CancellationToken cancellationToken = default)
         {
@@ -207,7 +207,7 @@
         public static Task<bool> JsonExceptionResponseAsync(
             this IHttpContext context,
             Exception ex,
-            System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.InternalServerError,
+            HttpStatusCode statusCode = HttpStatusCode.InternalServerError,
             bool useGzip = true,
             CancellationToken cancellationToken = default)
         {
@@ -227,6 +227,7 @@
         /// <returns>
         /// A task for writing the output stream.
         /// </returns>
+        [Obsolete("This method will be replaced by SendStringAsync")]
         public static Task<bool> StringResponseAsync(
             this IHttpContext context,
             string content,
@@ -248,6 +249,8 @@
         /// <returns>
         /// A task for writing the output stream.
         /// </returns>
+        /// 
+        [Obsolete("This method will be replaced by SendStringAsync")]
         public static async Task<bool> StringResponseAsync(
             this IHttpResponse response,
             string content,
@@ -296,6 +299,7 @@
         /// <returns>
         /// A task for writing the output stream.
         /// </returns>
+        [Obsolete("This method will be replaced by SendStreamAsync")]
         public static Task<bool> BinaryResponseAsync(
             this IHttpContext context,
             Stream buffer,
@@ -313,6 +317,7 @@
         /// <returns>
         /// A task for writing the output stream.
         /// </returns>
+        [Obsolete("This method will be replaced by SendStreamAsync")]
         public static async Task<bool> BinaryResponseAsync(
             this IHttpResponse response,
             Stream buffer,
