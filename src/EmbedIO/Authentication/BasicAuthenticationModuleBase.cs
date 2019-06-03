@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,44 +35,51 @@ namespace EmbedIO.Authentication
         /// <summary>
         /// Gets the authentication realm.
         /// </summary>
-        /// <value>
-        /// The authentication realm.
-        /// </value>
         public string Realm { get; }
 
         /// <inheritdoc />
         protected override async Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
-            try
+            async Task<bool> IsAuthenticatedAsync()
             {
-                var (userName, password) = GetCredentials(context.Request);
-
-                if (!await VerifyCredentialsAsync(userName, password).ConfigureAwait(false))
-                    context.Response.StatusCode = 401;
+                try
+                {
+                    var (userName, password) = GetCredentials(context.Request);
+                    return await VerifyCredentialsAsync(path, userName, password, cancellationToken).ConfigureAwait(false);
+                }
+                catch (FormatException)
+                {
+                    // Credentials were not formatted correctly.
+                    return false;
+                }
             }
-            catch (FormatException)
+
+            if (await IsAuthenticatedAsync().ConfigureAwait(false))
             {
-                // Credentials were not formatted correctly.
-                context.Response.StatusCode = 401;
+                context.Response.AddHeader(HttpHeaderNames.WWWAuthenticate, _wwwAuthenticateHeaderValue);
+                return false;
             }
 
-            if (context.Response.StatusCode != 401)
-                context.Response.AddHeader("WWW-Authenticate", _wwwAuthenticateHeaderValue);
-
+            context.Response.SetEmptyResponse((int)HttpStatusCode.Unauthorized);
             return true;
         }
 
         /// <summary>
         /// Verifies the credentials given in the <c>Authentication</c> request header.
         /// </summary>
-        /// <param name="userName">The user name.</param>
-        /// <param name="password">The password.</param>
-        /// <returns><see langword="true"/> if the credentials are valid; otherwise, <see langword="false"/>.</returns>
-        protected abstract Task<bool> VerifyCredentialsAsync(string userName, string password);
+        /// <param name="path">The URL path requested by the client. Note that this is relative
+        /// to the module's <see cref="WebModuleBase.BaseUrlPath">BaseUrlPath</see>.</param>
+        /// <param name="userName">The user name, or <see langword="null" /> if none has been given.</param>
+        /// <param name="password">The password, or <see langword="null" /> if none has been given.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken" /> use to cancel the operation.</param>
+        /// <returns>
+        ///   <see langword="true" /> if the given credentials are valid; otherwise, <see langword="false" />.
+        /// </returns>
+        protected abstract Task<bool> VerifyCredentialsAsync(string path, string userName, string password, CancellationToken cancellationToken);
 
         private static (string UserName, string Password) GetCredentials(IHttpRequest request)
         {
-            var authHeader = request.Headers["Authorization"];
+            var authHeader = request.Headers[HttpHeaderNames.Authorization];
 
             if (authHeader == null)
                 return default;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EmbedIO.Authentication
@@ -34,15 +35,12 @@ namespace EmbedIO.Authentication
         public ConcurrentDictionary<string, string> Accounts { get; } = new ConcurrentDictionary<string, string>(StringComparer.InvariantCulture);
 
         /// <inheritdoc />
-        protected override Task<bool> VerifyCredentialsAsync(string userName, string password)
+        protected override Task<bool> VerifyCredentialsAsync(string path, string userName, string password, CancellationToken cancellationToken)
             => Task.FromResult(VerifyCredentialsInternal(userName, password));
 
         private bool VerifyCredentialsInternal(string userName, string password)
-        {
-            if (userName == null)
-                return false;
-
-            return Accounts.TryGetValue(userName, out var storedPassword) && string.Equals(password, storedPassword, StringComparison.Ordinal);
-        }
+            => userName != null
+            && Accounts.TryGetValue(userName, out var storedPassword)
+            && string.Equals(password, storedPassword, StringComparison.Ordinal);
     }
 }
