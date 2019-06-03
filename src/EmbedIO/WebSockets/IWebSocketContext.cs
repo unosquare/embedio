@@ -9,12 +9,12 @@ using EmbedIO.Sessions;
 namespace EmbedIO.WebSockets
 {
     /// <summary>
-    /// Represents the context of a SystemWebSocket connection.
+    /// Represents the context of a WebSocket connection.
     /// </summary>
     public interface IWebSocketContext
     {
         /// <summary>
-        /// Gets a unique identifier for a SystemWebSocket context.
+        /// Gets a unique identifier for a WebSocket context.
         /// </summary>
         string Id { get; }
 
@@ -48,7 +48,7 @@ namespace EmbedIO.WebSockets
         /// </summary>
         IPEndPoint RemoteEndPoint { get; }
 
-        /// <summary>The URI requested by the SystemWebSocket client.</summary>
+        /// <summary>The URI requested by the WebSocket client.</summary>
         Uri RequestUri { get; }
 
         /// <summary>The HTTP headers that were sent to the server during the opening handshake.</summary>
@@ -60,7 +60,7 @@ namespace EmbedIO.WebSockets
         /// <summary>The value of the SecWebSocketKey HTTP header included in the opening handshake.</summary>
         string WebSocketVersion { get; }
 
-        /// <summary>The list of subprotocols requested by the SystemWebSocket client.</summary>
+        /// <summary>The list of subprotocols requested by the WebSocket client.</summary>
         IEnumerable<string> RequestedProtocols { get; }
 
         /// <summary>The accepted subprotocol.</summary>
@@ -69,19 +69,19 @@ namespace EmbedIO.WebSockets
         /// <summary>The cookies that were passed to the server during the opening handshake.</summary>
         ICookieCollection Cookies { get; }
 
-        /// <summary>An object used to obtain identity, authentication information, and security roles for the SystemWebSocket client.</summary>
+        /// <summary>An object used to obtain identity, authentication information, and security roles for the WebSocket client.</summary>
         IPrincipal User { get; }
 
-        /// <summary>Whether the SystemWebSocket client is authenticated.</summary>
+        /// <summary>Whether the WebSocket client is authenticated.</summary>
         bool IsAuthenticated { get; }
 
-        /// <summary>Whether the SystemWebSocket client connected from the local machine.</summary>
+        /// <summary>Whether the WebSocket client connected from the local machine.</summary>
         bool IsLocal { get; }
 
-        /// <summary>Whether the SystemWebSocket connection is secured using Secure Sockets Layer (SSL).</summary>
+        /// <summary>Whether the WebSocket connection is secured using Secure Sockets Layer (SSL).</summary>
         bool IsSecureConnection { get; }
 
-        /// <summary>The <see cref="IWebSocket"/> interface used to interact with the SystemWebSocket connection.</summary>
+        /// <summary>The <see cref="IWebSocket"/> interface used to interact with the WebSocket connection.</summary>
         IWebSocket WebSocket { get; }
     }
 }

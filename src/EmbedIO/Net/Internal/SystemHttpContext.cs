@@ -78,7 +78,7 @@ namespace EmbedIO.Net.Internal
             CancellationToken cancellationToken)
         {
             if (_context == null)
-                throw new NotImplementedException("This HTTP context does not support the SystemWebSocket protocol.");
+                throw new NotImplementedException("This HTTP context does not support the WebSocket protocol.");
 
             var context = await _context.AcceptWebSocketAsync(
                 acceptedProtocol,
