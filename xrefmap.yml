@@ -746,12 +746,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.HasRequestHeader
   nameWithType: Extensions.HasRequestHeader
-- uid: Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Net.HttpStatusCode,System.Boolean,System.Threading.CancellationToken)
-  name: HtmlResponseAsync(IHttpContext, String, Net.HttpStatusCode, Boolean, CancellationToken)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_HtmlResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_Net_HttpStatusCode_System_Boolean_System_Threading_CancellationToken_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Net.HttpStatusCode,System.Boolean,System.Threading.CancellationToken)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.String, System.Net.HttpStatusCode, System.Boolean, System.Threading.CancellationToken)
-  nameWithType: Extensions.HtmlResponseAsync(IHttpContext, String, Net.HttpStatusCode, Boolean, CancellationToken)
+- uid: Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,HttpStatusCode,System.Boolean,System.Threading.CancellationToken)
+  name: HtmlResponseAsync(IHttpContext, String, HttpStatusCode, Boolean, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_HtmlResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_HttpStatusCode_System_Boolean_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,HttpStatusCode,System.Boolean,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.String, HttpStatusCode, System.Boolean, System.Threading.CancellationToken)
+  nameWithType: Extensions.HtmlResponseAsync(IHttpContext, String, HttpStatusCode, Boolean, CancellationToken)
 - uid: Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync*
   name: HtmlResponseAsync
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_HtmlResponseAsync_
@@ -772,12 +772,12 @@ references:
   isSpec: "True"
   fullName: Unosquare.Labs.EmbedIO.Extensions.InQueryString
   nameWithType: Extensions.InQueryString
-- uid: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Exception,System.Net.HttpStatusCode,System.Boolean,System.Threading.CancellationToken)
-  name: JsonExceptionResponseAsync(IHttpContext, Exception, Net.HttpStatusCode, Boolean, CancellationToken)
-  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Exception_System_Net_HttpStatusCode_System_Boolean_System_Threading_CancellationToken_
-  commentId: M:Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Exception,System.Net.HttpStatusCode,System.Boolean,System.Threading.CancellationToken)
-  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.Exception, System.Net.HttpStatusCode, System.Boolean, System.Threading.CancellationToken)
-  nameWithType: Extensions.JsonExceptionResponseAsync(IHttpContext, Exception, Net.HttpStatusCode, Boolean, CancellationToken)
+- uid: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Exception,HttpStatusCode,System.Boolean,System.Threading.CancellationToken)
+  name: JsonExceptionResponseAsync(IHttpContext, Exception, HttpStatusCode, Boolean, CancellationToken)
+  href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Exception_HttpStatusCode_System_Boolean_System_Threading_CancellationToken_
+  commentId: M:Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Exception,HttpStatusCode,System.Boolean,System.Threading.CancellationToken)
+  fullName: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext, System.Exception, HttpStatusCode, System.Boolean, System.Threading.CancellationToken)
+  nameWithType: Extensions.JsonExceptionResponseAsync(IHttpContext, Exception, HttpStatusCode, Boolean, CancellationToken)
 - uid: Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync*
   name: JsonExceptionResponseAsync
   href: api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponseAsync_

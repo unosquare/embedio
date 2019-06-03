@@ -180,7 +180,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; BinaryResponseAsync(this IHttpContext context, Stream buffer, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;This method will be replaced by SendStreamAsync&quot;)]
+public static Task&lt;bool&gt; BinaryResponseAsync(this IHttpContext context, Stream buffer, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -243,7 +244,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; BinaryResponseAsync(this IHttpResponse response, Stream buffer, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;This method will be replaced by SendStreamAsync&quot;)]
+public static Task&lt;bool&gt; BinaryResponseAsync(this IHttpResponse response, Stream buffer, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -775,13 +777,13 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_HtmlResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_HtmlResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_Net_HttpStatusCode_System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Net.HttpStatusCode,System.Boolean,System.Threading.CancellationToken)">HtmlResponseAsync(IHttpContext, String, Net.HttpStatusCode, Boolean, CancellationToken)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_HtmlResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_String_HttpStatusCode_System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.HtmlResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.String,HttpStatusCode,System.Boolean,System.Threading.CancellationToken)">HtmlResponseAsync(IHttpContext, String, HttpStatusCode, Boolean, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Outputs a HTML Response given a HTML content.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; HtmlResponseAsync(this IHttpContext context, string htmlContent, Net.HttpStatusCode statusCode = null, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; HtmlResponseAsync(this IHttpContext context, string htmlContent, HttpStatusCode statusCode = null, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -806,7 +808,7 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.net.httpstatuscode">Net.HttpStatusCode</a></td>
+        <td><span class="xref">HttpStatusCode</span></td>
         <td><span class="parametername">statusCode</span></td>
         <td><p>The status code.</p>
 </td>
@@ -895,13 +897,13 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
   
   
   <a id="Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponseAsync_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync*"></a>
-  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Exception_System_Net_HttpStatusCode_System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Exception,System.Net.HttpStatusCode,System.Boolean,System.Threading.CancellationToken)">JsonExceptionResponseAsync(IHttpContext, Exception, Net.HttpStatusCode, Boolean, CancellationToken)</h4>
+  <h4 id="Unosquare_Labs_EmbedIO_Extensions_JsonExceptionResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_Exception_HttpStatusCode_System_Boolean_System_Threading_CancellationToken_" data-uid="Unosquare.Labs.EmbedIO.Extensions.JsonExceptionResponseAsync(Unosquare.Labs.EmbedIO.IHttpContext,System.Exception,HttpStatusCode,System.Boolean,System.Threading.CancellationToken)">JsonExceptionResponseAsync(IHttpContext, Exception, HttpStatusCode, Boolean, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Outputs a JSON Response given an exception.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonExceptionResponseAsync(this IHttpContext context, Exception ex, Net.HttpStatusCode statusCode = null, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; JsonExceptionResponseAsync(this IHttpContext context, Exception ex, HttpStatusCode statusCode = null, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -926,7 +928,7 @@ Returns null if the LocalSessionWebModule has not been loaded.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.net.httpstatuscode">Net.HttpStatusCode</a></td>
+        <td><span class="xref">HttpStatusCode</span></td>
         <td><span class="parametername">statusCode</span></td>
         <td><p>The status code.</p>
 </td>
@@ -2865,7 +2867,8 @@ closing the HTML <code>body</code> tag.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; StringResponseAsync(this IHttpContext context, string content, string contentType = &quot;application/json&quot;, Encoding encoding = null, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;This method will be replaced by SendStringAsync&quot;)]
+public static Task&lt;bool&gt; StringResponseAsync(this IHttpContext context, string content, string contentType = &quot;application/json&quot;, Encoding encoding = null, bool useGzip = true, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2940,7 +2943,8 @@ closing the HTML <code>body</code> tag.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;bool&gt; StringResponseAsync(this IHttpResponse response, string content, string contentType = &quot;application/json&quot;, Encoding encoding = null, bool useGzip = false, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;This method will be replaced by SendStringAsync&quot;)]
+public static Task&lt;bool&gt; StringResponseAsync(this IHttpResponse response, string content, string contentType = &quot;application/json&quot;, Encoding encoding = null, bool useGzip = false, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
