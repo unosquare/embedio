@@ -7,7 +7,7 @@ namespace EmbedIO.WebSockets
 {
     /// <inheritdoc />
     /// <summary>
-    /// Interface to create a SystemWebSocket implementation.
+    /// Interface to create a WebSocket implementation.
     /// </summary>
     /// <seealso cref="IDisposable" />
     public interface IWebSocket : IDisposable

@@ -14,11 +14,11 @@ using Unosquare.Swan;
 namespace EmbedIO.WebSockets.Internal
 {
     /// <summary>
-    /// Implements the SystemWebSocket interface.
+    /// Implements the WebSocket interface.
     /// </summary>
     /// <remarks>
-    /// The SystemWebSocket class provides a set of methods and properties for two-way communication using
-    /// the SystemWebSocket protocol (<see href="http://tools.ietf.org/html/rfc6455">RFC 6455</see>).
+    /// The WebSocket class provides a set of methods and properties for two-way communication using
+    /// the WebSocket protocol (<see href="http://tools.ietf.org/html/rfc6455">RFC 6455</see>).
     /// </remarks>
     internal sealed class WebSocket : IWebSocket
     {
@@ -62,7 +62,7 @@ namespace EmbedIO.WebSockets.Internal
         internal bool EmitOnPing { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the SystemWebSocket connection is alive.
+        /// Gets a value indicating whether the WebSocket connection is alive.
         /// </summary>
         /// <value>
         /// <c>true</c> if the connection is alive; otherwise, <c>false</c>.
@@ -120,7 +120,7 @@ namespace EmbedIO.WebSockets.Internal
         }
 
         /// <summary>
-        /// Sends a ping using the SystemWebSocket connection.
+        /// Sends a ping using the WebSocket connection.
         /// </summary>
         /// <returns>
         /// <c>true</c> if the <see cref="WebSocket"/> receives a pong to this ping in a time;
@@ -129,7 +129,7 @@ namespace EmbedIO.WebSockets.Internal
         public Task<bool> PingAsync() => PingAsync(WebSocketFrame.EmptyPingBytes, _waitTime);
 
         /// <summary>
-        /// Sends a ping with the specified <paramref name="message"/> using the SystemWebSocket connection.
+        /// Sends a ping with the specified <paramref name="message"/> using the WebSocket connection.
         /// </summary>
         /// <returns>
         /// <c>true</c> if the <see cref="WebSocket"/> receives a pong to this ping in a time;
@@ -154,7 +154,7 @@ namespace EmbedIO.WebSockets.Internal
         }
 
         /// <summary>
-        /// Sends binary <paramref name="data" /> using the SystemWebSocket connection.
+        /// Sends binary <paramref name="data" /> using the WebSocket connection.
         /// </summary>
         /// <param name="data">An array of <see cref="byte" /> that represents the binary data to send.</param>
         /// <param name="opcode">The opcode.</param>

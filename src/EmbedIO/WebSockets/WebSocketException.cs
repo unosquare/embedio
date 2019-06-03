@@ -38,7 +38,7 @@ namespace EmbedIO.WebSockets
             switch (code)
             {
                 case CloseStatusCode.ProtocolError:
-                    return "A SystemWebSocket protocol error has occurred.";
+                    return "A WebSocket protocol error has occurred.";
                 case CloseStatusCode.UnsupportedData:
                     return "Unsupported data has been received.";
                 case CloseStatusCode.Abnormal:
@@ -50,9 +50,9 @@ namespace EmbedIO.WebSockets
                 case CloseStatusCode.TooBig:
                     return "A too big message has been received.";
                 case CloseStatusCode.MandatoryExtension:
-                    return "SystemWebSocket client didn't receive expected extension(s).";
+                    return "WebSocket client didn't receive expected extension(s).";
                 case CloseStatusCode.ServerError:
-                    return "SystemWebSocket server got an internal error.";
+                    return "WebSocket server got an internal error.";
                 case CloseStatusCode.TlsHandshakeFailure:
                     return "An error has occurred during a TLS handshake.";
                 default:

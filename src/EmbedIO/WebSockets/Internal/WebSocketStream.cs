@@ -23,7 +23,7 @@ namespace EmbedIO.WebSockets.Internal
         public IEnumerable<WebSocketFrame> GetFrames()
         {
             var compressed = _compression != CompressionMethod.None;
-            Stream stream = _compression != CompressionMethod.None
+            var stream = compressed
                 ? this.CompressAsync(_compression, true, CancellationToken.None).Await()
                 : this;
 

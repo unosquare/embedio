@@ -1,7 +1,7 @@
 ﻿namespace EmbedIO.WebSockets
 {
     /// <summary>
-    /// Interface for SystemWebSocket Receive Result object.
+    /// Interface for WebSocket Receive Result object.
     /// </summary>
     public interface IWebSocketReceiveResult
     {

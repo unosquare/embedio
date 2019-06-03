@@ -1,7 +1,7 @@
 ﻿namespace EmbedIO.WebSockets.Internal
 {
     /// <summary>
-    /// Indicates whether the payload data of a SystemWebSocket frame is masked.
+    /// Indicates whether the payload data of a WebSocket frame is masked.
     /// </summary>
     /// <remarks>
     /// The values of this enumeration are defined in

@@ -1,7 +1,7 @@
 ﻿namespace EmbedIO.WebSockets
 {
     /// <summary>
-    /// Indicates the status code for the SystemWebSocket connection close.
+    /// Indicates the status code for the WebSocket connection close.
     /// </summary>
     /// <remarks>
     ///   <para>

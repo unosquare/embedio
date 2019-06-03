@@ -13,11 +13,11 @@ using Unosquare.Swan;
 namespace EmbedIO.WebSockets
 {
     /// <summary>
-    /// A base class for modules that handle SystemWebSocket connections.
+    /// A base class for modules that handle WebSocket connections.
     /// </summary>
     /// <remarks>
-    /// <para>Each SystemWebSocket server has a list of SystemWebSocket subprotocols it can accept.</para>
-    /// <para>When a client initiates a SystemWebSocket opening handshake:</para>
+    /// <para>Each WebSocket server has a list of WebSocket subprotocols it can accept.</para>
+    /// <para>When a client initiates a WebSocket opening handshake:</para>
     /// <list type="bullet">
     /// <item><description>if the list of accepted subprotocols is empty,
     /// the connection is accepted only if no <c>SecWebSocketProtocol</c>
@@ -50,7 +50,7 @@ namespace EmbedIO.WebSockets
         /// <summary>
         /// Initializes a new instance of the <see cref="WebSocketModule" /> class.
         /// </summary>
-        /// <param name="urlPath">The URL path of the SystemWebSocket endpoint to serve.</param>
+        /// <param name="urlPath">The URL path of the WebSocket endpoint to serve.</param>
         /// <param name="enableConnectionWatchdog">If set to <see langword="true"/>,
         /// contexts representing closed connections will automatically be purged
         /// from <see cref="ActiveContexts"/> every 30 seconds..</param>
@@ -80,7 +80,7 @@ namespace EmbedIO.WebSockets
         }
 
         /// <summary>
-        /// Gets or sets the keep-alive interval for the SystemWebSocket connection.
+        /// Gets or sets the keep-alive interval for the WebSocket connection.
         /// The default is 30 seconds.
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException">This property is being set to a value
@@ -100,7 +100,7 @@ namespace EmbedIO.WebSockets
 
         /// <summary>
         /// Gets the <see cref="Encoding"/> used by the <see cref="SendAsync(IWebSocketContext,string)"/> method
-        /// to send a string. The default is <see cref="System.Text.Encoding.UTF8"/> per the SystemWebSocket specification.
+        /// to send a string. The default is <see cref="System.Text.Encoding.UTF8"/> per the WebSocket specification.
         /// </summary>
         /// <exception cref="ArgumentNullException">This property is being set to <see langword="null"/>.</exception>
         protected Encoding Encoding
@@ -143,7 +143,7 @@ namespace EmbedIO.WebSockets
         /// <inheritdoc />
         protected sealed override async Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
-            // The SystemWebSocket endpoint must match exactly, giving a path of "/".
+            // The WebSocket endpoint must match exactly, giving a path of "/".
             // In all other cases the path is longer, so there's no need to compare strings here.
             if (path.Length > 1)
                 return false;
@@ -168,7 +168,7 @@ namespace EmbedIO.WebSockets
 
             if (!acceptConnection)
             {
-                $"{BaseUrlPath} - Rejecting SystemWebSocket: no subprotocol was accepted.".Debug(nameof(WebSocketModule));
+                $"{BaseUrlPath} - Rejecting WebSocket connection: no subprotocol was accepted.".Debug(nameof(WebSocketModule));
                 foreach (var protocol in _protocols)
                     context.Response.Headers.Add(HttpHeaderNames.SecWebSocketProtocol, protocol);
                 context.Response.SetEmptyResponse((int)HttpStatusCode.BadRequest);
@@ -178,7 +178,7 @@ namespace EmbedIO.WebSockets
             if (!(context is IHttpContextImpl contextImpl))
                 throw new InvalidOperationException($"HTTP context must implement {nameof(IHttpContextImpl)}.");
 
-            $"{BaseUrlPath} - Accepting SystemWebSocket with subprotocol {acceptedProtocol ?? "<null>"}".Debug(nameof(WebSocketModule));
+            $"{BaseUrlPath} - Accepting WebSocket connection with subprotocol {acceptedProtocol ?? "<null>"}".Debug(nameof(WebSocketModule));
             var webSocketContext = await contextImpl.AcceptWebSocketAsync(requestedProtocols, acceptedProtocol, ReceiveBufferSize, KeepAliveInterval, cancellationToken)
                 .ConfigureAwait(false);
 
@@ -195,7 +195,7 @@ namespace EmbedIO.WebSockets
                 _contextsAccess.ExitWriteLock();
             }
 
-            $"{BaseUrlPath} - SystemWebSocket accepted - There are now {contextCount} sockets connected."
+            $"{BaseUrlPath} - WebSocket connection accepted - There are now {contextCount} sockets connected."
                 .Debug(nameof(WebSocketModule));
 
             await OnClientConnectedAsync(webSocketContext).ConfigureAwait(false);
@@ -222,7 +222,7 @@ namespace EmbedIO.WebSockets
             }
             finally
             {
-                // once the loop is completed or connection aborted, remove the SystemWebSocket
+                // once the loop is completed or connection aborted, remove the WebSocket
                 RemoveWebSocket(webSocketContext);
             }
 
@@ -237,7 +237,7 @@ namespace EmbedIO.WebSockets
         }
 
         /// <summary>
-        /// Adds a SystemWebSocket subprotocol to the list of protocols supported by a <see cref="WebSocketModule"/>.
+        /// Adds a WebSocket subprotocol to the list of protocols supported by a <see cref="WebSocketModule"/>.
         /// </summary>
         /// <param name="protocol">The protocol name to add to the list.</param>
         /// <exception cref="ArgumentNullException"><paramref name="protocol"/> is <see langword="null"/>.</exception>
@@ -258,13 +258,13 @@ namespace EmbedIO.WebSockets
             EnsureConfigurationNotLocked();
 
             if (_protocols.Contains(protocol))
-                throw new ArgumentException("Duplicate SystemWebSocket protocol name.", nameof(protocol));
+                throw new ArgumentException("Duplicate WebSocket protocol name.", nameof(protocol));
 
             _protocols.Add(protocol);
         }
 
         /// <summary>
-        /// Adds one or more SystemWebSocket subprotocols to the list of protocols supported by a <see cref="WebSocketModule"/>.
+        /// Adds one or more WebSocket subprotocols to the list of protocols supported by a <see cref="WebSocketModule"/>.
         /// </summary>
         /// <param name="protocols">The protocol names to add to the list.</param>
         /// <exception cref="ArgumentNullException">
@@ -298,14 +298,14 @@ namespace EmbedIO.WebSockets
             foreach (var protocol in protocols.Select(p => Validate.Rfc2616Token(nameof(protocols), p)))
             {
                 if (_protocols.Contains(protocol))
-                    throw new ArgumentException("Duplicate SystemWebSocket protocol name.", nameof(protocols));
+                    throw new ArgumentException("Duplicate WebSocket protocol name.", nameof(protocols));
 
                 _protocols.Add(protocol);
             }
         }
 
         /// <summary>
-        /// Adds one or more SystemWebSocket subprotocols to the list of protocols supported by a <see cref="WebSocketModule"/>.
+        /// Adds one or more WebSocket subprotocols to the list of protocols supported by a <see cref="WebSocketModule"/>.
         /// </summary>
         /// <param name="protocols">The protocol names to add to the list.</param>
         /// <exception cref="ArgumentNullException">
@@ -338,7 +338,7 @@ namespace EmbedIO.WebSockets
             foreach (var protocol in protocols.Select(p => Validate.Rfc2616Token(nameof(protocols), p)))
             {
                 if (_protocols.Contains(protocol))
-                    throw new ArgumentException("Duplicate SystemWebSocket protocol name.", nameof(protocols));
+                    throw new ArgumentException("Duplicate WebSocket protocol name.", nameof(protocols));
             }
 
             EnsureConfigurationNotLocked();
@@ -389,7 +389,7 @@ namespace EmbedIO.WebSockets
 #pragma warning restore CA1822
 
         /// <summary>
-        /// Broadcasts the specified payload to all connected SystemWebSocket clients.
+        /// Broadcasts the specified payload to all connected WebSocket clients.
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
@@ -397,7 +397,7 @@ namespace EmbedIO.WebSockets
             => Task.WhenAll(ActiveContexts.Select(c => SendAsync(c, payload)));
 
         /// <summary>
-        /// Broadcasts the specified payload to selected SystemWebSocket clients.
+        /// Broadcasts the specified payload to selected WebSocket clients.
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <param name="selector">A callback function that must return <see langword="true"/>
@@ -407,7 +407,7 @@ namespace EmbedIO.WebSockets
             => Task.WhenAll(ActiveContexts.Where(Validate.NotNull(nameof(selector), selector)).Select(c => SendAsync(c, payload)));
 
         /// <summary>
-        /// Broadcasts the specified payload to all connected SystemWebSocket clients.
+        /// Broadcasts the specified payload to all connected WebSocket clients.
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
@@ -415,7 +415,7 @@ namespace EmbedIO.WebSockets
             => Task.WhenAll(ActiveContexts.Select(c => SendAsync(c, payload)));
 
         /// <summary>
-        /// Broadcasts the specified payload to selected SystemWebSocket clients.
+        /// Broadcasts the specified payload to selected WebSocket clients.
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <param name="selector">A callback function that must return <see langword="true"/>
@@ -449,7 +449,7 @@ namespace EmbedIO.WebSockets
         }
 
         /// <summary>
-        /// Called when this SystemWebSocket Server receives a full message (EndOfMessage) from a client.
+        /// Called when this WebSocket server receives a full message (EndOfMessage) from a client.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="buffer">The buffer.</param>
@@ -458,7 +458,7 @@ namespace EmbedIO.WebSockets
         protected abstract Task OnMessageReceivedAsync(IWebSocketContext context, byte[] buffer, IWebSocketReceiveResult result);
 
         /// <summary>
-        /// Called when this SystemWebSocket Server receives a message frame regardless if the frame represents the EndOfMessage.
+        /// Called when this WebSocket server receives a message frame regardless if the frame represents the EndOfMessage.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="buffer">The buffer.</param>
@@ -471,7 +471,7 @@ namespace EmbedIO.WebSockets
             => Task.CompletedTask;
 
         /// <summary>
-        /// Called when this SystemWebSocket Server accepts a new client.
+        /// Called when this WebSocket server accepts a new client.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
@@ -618,7 +618,7 @@ namespace EmbedIO.WebSockets
             // define a dynamic buffer that holds multi-part receptions
             var receivedMessage = new List<byte>(receiveBuffer.Length * 2);
 
-            // poll the SystemWebSocket connections for reception
+            // poll the WebSocket connections for reception
             while (webSocket.State == WebSocketState.Open)
             {
                 // retrieve the result (blocking)

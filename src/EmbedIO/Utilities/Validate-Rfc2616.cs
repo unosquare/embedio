@@ -16,7 +16,7 @@ namespace EmbedIO.Utilities
         /// <para>RFC2616 tokens are used, for example, as:</para>
         /// <list type="bullet">
         /// <item><description>cookie names, as stated in <see href="https://tools.ietf.org/html/rfc6265#section-4.1.1">RFC6265, Section 4.1.1</see>;</description></item>
-        /// <item><description>SystemWebSocket protocol names, as stated in <see href="https://tools.ietf.org/html/rfc6455#section-4.3">RFC6455, Section 4.3</see>.</description></item>
+        /// <item><description>WebSocket protocol names, as stated in <see href="https://tools.ietf.org/html/rfc6455#section-4.3">RFC6455, Section 4.3</see>.</description></item>
         /// </list>
         /// <para>Only a restricted set of characters are allowed in tokens, including:</para>
         /// <list type="bullet">
@@ -41,7 +41,7 @@ namespace EmbedIO.Utilities
             value = NotNullOrEmpty(argumentName, value);
 
             if (value.Any(c => c < '\x21' || c > '\x7E' || Array.BinarySearch(ValidRfc2616TokenChars, c) < 0))
-                throw new ArgumentException("Cookie name contains one or more invalid characters.", argumentName);
+                throw new ArgumentException("Token contains one or more invalid characters.", argumentName);
 
             return value;
         }

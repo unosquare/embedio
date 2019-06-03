@@ -1,7 +1,7 @@
 ﻿namespace EmbedIO.WebSockets.Internal
 {
     /// <summary>
-    /// Indicates whether a SystemWebSocket frame is the final frame of a message.
+    /// Indicates whether a WebSocket frame is the final frame of a message.
     /// </summary>
     /// <remarks>
     /// The values of this enumeration are defined in

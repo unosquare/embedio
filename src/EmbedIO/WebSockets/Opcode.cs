@@ -1,7 +1,7 @@
 ﻿namespace EmbedIO.WebSockets
 {
     /// <summary>
-    /// Indicates the SystemWebSocket frame type.
+    /// Indicates the WebSocket frame type.
     /// </summary>
     /// <remarks>
     /// The values of this enumeration are defined in
