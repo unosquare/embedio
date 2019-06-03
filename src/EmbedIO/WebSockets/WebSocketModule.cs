@@ -149,12 +149,24 @@ namespace EmbedIO.WebSockets
                 return false;
 
             var requestedProtocols = context.Request.Headers.GetValues(HttpHeaderNames.SecWebSocketProtocol)
-                ?.Select(s => s.Trim())
-                .Where(s => s.Length > 0)
-                .ToArray()
-                ?? Array.Empty<string>();
-            var acceptedProtocol = requestedProtocols.FirstOrDefault(p => _protocols.Contains(p));
-            if (acceptedProtocol == null || _protocols.Count > 0)
+                                         ?.Select(s => s.Trim())
+                                         .Where(s => s.Length > 0)
+                                         .ToArray()
+                                  ?? Array.Empty<string>();
+            string acceptedProtocol;
+            bool acceptConnection;
+            if (_protocols.Count > 0)
+            {
+                acceptedProtocol = requestedProtocols.FirstOrDefault(p => _protocols.Contains(p));
+                acceptConnection = acceptedProtocol != null;
+            }
+            else
+            {
+                acceptedProtocol = null;
+                acceptConnection = requestedProtocols.Length == 0;
+            }
+
+            if (!acceptConnection)
             {
                 $"{BaseUrlPath} - Rejecting SystemWebSocket: no subprotocol was accepted.".Debug(nameof(WebSocketModule));
                 foreach (var protocol in _protocols)
@@ -163,7 +175,6 @@ namespace EmbedIO.WebSockets
                 return true;
             }
 
-            // first, accept the websocket
             if (!(context is IHttpContextImpl contextImpl))
                 throw new InvalidOperationException($"HTTP context must implement {nameof(IHttpContextImpl)}.");
 
