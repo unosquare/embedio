@@ -94,7 +94,7 @@
         /// <exception>
         /// if request isn't authorized.
         /// </exception>
-        private static KeyValuePair<string, string> GetAccountData(IHttpRequest request)
+        private static KeyValuePair<string, string> GetAccountData(IHttpBase request)
         {
             var authHeader = request.Headers["Authorization"];
             if (authHeader == null) 

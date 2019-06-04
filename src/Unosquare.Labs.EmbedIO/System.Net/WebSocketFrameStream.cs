@@ -1,4 +1,6 @@
-﻿namespace Unosquare.Net
+﻿using System.Collections.Generic;
+
+namespace Unosquare.Net
 {
     using System;
     using System.IO;
@@ -40,9 +42,9 @@
         
         private static bool IsOpcodeControl(byte opcode) => opcode > 0x7 && opcode < 0x10;
 
-        private static WebSocketFrame ProcessHeader(byte[] header)
+        private static WebSocketFrame ProcessHeader(IReadOnlyList<byte> header)
         {
-            if (header.Length != 2)
+            if (header.Count != 2)
                 throw new WebSocketException("The header of a frame cannot be read from the stream.");
 
             // FIN

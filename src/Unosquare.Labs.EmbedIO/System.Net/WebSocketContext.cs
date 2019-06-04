@@ -31,15 +31,7 @@
         /// A <see cref="NameValueCollection"/> that contains the headers.
         /// </value>
         public NameValueCollection Headers => _context.Request.Headers;
-
-        /// <summary>
-        /// Gets a value indicating whether the client connected from the local computer.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the client connected from the local computer; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsLocal => _context.Request.IsLocal;
-
+        
         /// <summary>
         /// Gets a value indicating whether the WebSocket connection is secured.
         /// </summary>
@@ -55,15 +47,7 @@
         /// <c>true</c> if the request is a WebSocket handshake request; otherwise, <c>false</c>.
         /// </value>
         public bool IsWebSocketRequest => _context.Request.IsWebSocketRequest;
-
-        /// <summary>
-        /// Gets the value of the Origin header included in the request.
-        /// </summary>
-        /// <value>
-        /// A <see cref="string"/> that represents the value of the Origin header.
-        /// </value>
-        public string Origin => _context.Request.Headers[Labs.EmbedIO.Constants.HttpHeaders.Origin];
-
+        
         /// <summary>
         /// Gets the URI requested by the client.
         /// </summary>
@@ -71,30 +55,7 @@
         /// A <see cref="Uri"/> that represents the requested URI.
         /// </value>
         public Uri RequestUri => _context.Request.Url;
-
-        /// <summary>
-        /// Gets the value of the Sec-WebSocket-Key header included in the request.
-        /// </summary>
-        /// <remarks>
-        /// This property provides a part of the information used by the server to prove that
-        /// it received a valid WebSocket handshake request.
-        /// </remarks>
-        /// <value>
-        /// A <see cref="string"/> that represents the value of the Sec-WebSocket-Key header.
-        /// </value>
-        public string SecWebSocketKey => _context.Request.Headers[Labs.EmbedIO.Constants.HttpHeaders.WebSocketKey];
-
-        /// <summary>
-        /// Gets the value of the Sec-WebSocket-Version header included in the request.
-        /// </summary>
-        /// <remarks>
-        /// This property represents the WebSocket protocol version.
-        /// </remarks>
-        /// <value>
-        /// A <see cref="string"/> that represents the value of the Sec-WebSocket-Version header.
-        /// </value>
-        public string SecWebSocketVersion => _context.Request.Headers[Labs.EmbedIO.Constants.HttpHeaders.WebSocketVersion];
-
+        
         /// <inheritdoc />
         public IWebSocket WebSocket { get; }
 

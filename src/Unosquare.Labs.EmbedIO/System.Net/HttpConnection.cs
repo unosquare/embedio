@@ -1,4 +1,6 @@
-﻿namespace Unosquare.Net
+﻿using System.Collections.Generic;
+
+namespace Unosquare.Net
 {
     using System;
     using System.IO;
@@ -311,7 +313,7 @@
             return false;
         }
 
-        private string ReadLine(byte[] buffer, int offset, int len, out int used)
+        private string ReadLine(IReadOnlyList<byte> buffer, int offset, int len, out int used)
         {
             if (_currentLine == null)
                 _currentLine = new StringBuilder(128);

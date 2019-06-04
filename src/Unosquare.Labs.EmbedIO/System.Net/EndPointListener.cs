@@ -249,7 +249,7 @@
 
         private static void OnAccept(object sender, SocketAsyncEventArgs e) => ProcessAccept(e);
 
-        private static HttpListener MatchFromList(string path, List<ListenerPrefix> list, out ListenerPrefix prefix)
+        private static HttpListener MatchFromList(string path, IReadOnlyCollection<ListenerPrefix> list, out ListenerPrefix prefix)
         {
             prefix = null;
             if (list == null)

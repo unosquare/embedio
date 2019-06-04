@@ -50,8 +50,8 @@
         /// <inheritdoc />
         public async Task<IWebSocketContext> AcceptWebSocketAsync(int receiveBufferSize, string subProtocol = null)
             => new WebSocketContext(await _context.AcceptWebSocketAsync(subProtocol,
-                receiveBufferSize: receiveBufferSize,
-                keepAliveInterval: TimeSpan.FromSeconds(30))
+                receiveBufferSize,
+                TimeSpan.FromSeconds(30))
                 .ConfigureAwait(false));
     }
 }

@@ -100,7 +100,8 @@
             $"{ServerName} - Accepting WebSocket . . .".Debug(nameof(WebSocketsServer));
 
             var subProtocol = ResolveSubProtocol(context);
-            var webSocketContext = await context.AcceptWebSocketAsync(ReceiveBufferSize, subProtocol).ConfigureAwait(false);
+            var webSocketContext =
+                await context.AcceptWebSocketAsync(ReceiveBufferSize, subProtocol).ConfigureAwait(false);
 
             // remove the disconnected clients
             CollectDisconnected();
@@ -120,7 +121,8 @@
             {
                 if (webSocketContext.WebSocket is WebSocket systemWebSocket)
                 {
-                    await ProcessSystemWebsocket(webSocketContext, systemWebSocket.SystemWebSocket, ct).ConfigureAwait(false);
+                    await ProcessSystemWebsocket(webSocketContext, systemWebSocket.SystemWebSocket, ct)
+                        .ConfigureAwait(false);
                 }
                 else
                 {
@@ -180,7 +182,8 @@
         {
             try
             {
-                await webSocket.WebSocket.SendAsync(payload ?? Array.Empty<byte>(), false, CancellationToken).ConfigureAwait(false);
+                await webSocket.WebSocket.SendAsync(payload ?? Array.Empty<byte>(), false, CancellationToken)
+                    .ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -307,8 +310,7 @@
         /// </summary>
         private void RunConnectionWatchdog()
         {
-            Task.Run(async () =>
-            {
+            Task.Run(async () => {
                 while (_isDisposing == false)
                 {
                     if (_isDisposing == false)
@@ -362,18 +364,17 @@
 
         private async Task ProcessEmbedIOWebSocket(IWebSocketContext webSocketContext, CancellationToken ct)
         {
-            ((Net.WebSocket)webSocketContext.WebSocket).OnMessage += async (s, e) =>
-           {
-               if (e.Opcode == Net.Opcode.Close)
-               {
-                   await webSocketContext.WebSocket.CloseAsync(CancellationToken).ConfigureAwait(false);
-                   return;
-               }
+            ((Net.WebSocket) webSocketContext.WebSocket).OnMessage += async (s, e) => {
+                if (e.Opcode == Net.Opcode.Close)
+                {
+                    await webSocketContext.WebSocket.CloseAsync(CancellationToken).ConfigureAwait(false);
+                    return;
+                }
 
-               OnMessageReceived(webSocketContext,
-                   e.RawData,
-                   new Net.WebSocketReceiveResult(e.RawData.Length, e.Opcode));
-           };
+                OnMessageReceived(webSocketContext,
+                    e.RawData,
+                    new Net.WebSocketReceiveResult(e.RawData.Length, e.Opcode));
+            };
 
             while (webSocketContext.WebSocket.State == Net.WebSocketState.Open ||
                    webSocketContext.WebSocket.State == Net.WebSocketState.Closing)
@@ -382,7 +383,10 @@
             }
         }
 
-        private async Task<bool> ProcessSystemWebsocket(IWebSocketContext context, System.Net.WebSockets.WebSocket webSocket, CancellationToken ct)
+        private async Task ProcessSystemWebsocket(
+            IWebSocketContext context,
+            System.Net.WebSockets.WebSocket webSocket,
+            CancellationToken ct)
         {
             // define a receive buffer
             var receiveBuffer = new byte[ReceiveBufferSize];
@@ -394,13 +398,16 @@
             while (webSocket.State == System.Net.WebSockets.WebSocketState.Open)
             {
                 // retrieve the result (blocking)
-                var receiveResult = new WebSocketReceiveResult(await webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), ct).ConfigureAwait(false));
+                var receiveResult = new WebSocketReceiveResult(await webSocket
+                    .ReceiveAsync(new ArraySegment<byte>(receiveBuffer), ct).ConfigureAwait(false));
 
-                if (receiveResult.MessageType == (int)System.Net.WebSockets.WebSocketMessageType.Close)
+                if (receiveResult.MessageType == (int) System.Net.WebSockets.WebSocketMessageType.Close)
                 {
                     // close the connection if requested by the client
-                    await webSocket.CloseAsync(System.Net.WebSockets.WebSocketCloseStatus.NormalClosure, string.Empty, ct).ConfigureAwait(false);
-                    return true;
+                    await webSocket
+                        .CloseAsync(System.Net.WebSockets.WebSocketCloseStatus.NormalClosure, string.Empty, ct)
+                        .ConfigureAwait(false);
+                    return;
                 }
 
                 var frameBytes = new byte[receiveResult.Count];
@@ -418,7 +425,7 @@
                         ct).ConfigureAwait(false);
 
                     // exit the loop; we're done
-                    return true;
+                    return;
                 }
 
                 // if we're at the end of the message, process the message
@@ -427,8 +434,6 @@
                 OnMessageReceived(context, receivedMessage.ToArray(), receiveResult);
                 receivedMessage.Clear();
             }
-
-            return false;
         }
     }
 }

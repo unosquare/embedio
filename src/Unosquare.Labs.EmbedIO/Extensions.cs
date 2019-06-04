@@ -379,7 +379,7 @@
         /// <param name="length">The length.</param>
         /// <returns><c>true</c> if a request can be gzipped; otherwise, <c>false</c>.</returns>
         public static bool AcceptGzip(this IHttpContext context, long length) =>
-            context.RequestHeader(HttpHeaders.AcceptEncoding).Contains(HttpHeaders.CompressionGzip) &&
+            context.RequestHeader(HttpHeaderNames.AcceptEncoding).Contains(HttpHeaders.CompressionGzip) &&
             length < Modules.FileModuleBase.MaxGzipInputLength &&
             context.Response.ContentType?.StartsWith("audio") != true &&
             context.Response.ContentType?.StartsWith("video") != true;

@@ -25,12 +25,7 @@
             Reason = reason;
             Headers["Server"] = ServerVersion;
         }
-
-        public CookieCollection Cookies =>
-            Headers?.AllKeys.Contains(SetCookie) == true
-                ? CookieCollection.ParseResponse(Headers[SetCookie])
-                : new CookieCollection();
-
+        
         public string Reason { get; }
 
         public int StatusCode { get; }
@@ -42,7 +37,7 @@
         public void SetCookies(CookieCollection cookies)
         {
             foreach (var cookie in cookies)
-                Headers.Add("Set-Cookie", cookie.ToString());
+                Headers.Add(HttpHeaderNames.SetCookie, cookie.ToString());
         }
 
         public override string ToString()
@@ -77,34 +72,10 @@
             var res = new HttpResponse(HttpStatusCode.SwitchingProtocols);
 
             var headers = res.Headers;
-            headers["Upgrade"] = "websocket";
-            headers["Connection"] = "Upgrade";
+            headers[HttpHeaderNames.Upgrade] = "websocket";
+            headers[HttpHeaderNames.Connection] = "Upgrade";
 
             return res;
-        }
-
-        internal static HttpResponse Parse(string[] headerParts)
-        {
-            var statusLine = headerParts[0].Split(new[] { ' ' }, 3);
-
-            if (statusLine.Length != 3)
-                throw new ArgumentException($"Invalid status line: {headerParts[0]}");
-
-            return new HttpResponse(int.Parse(statusLine[1]), statusLine[2], new Version(statusLine[0].Substring(5)), ParseHeaders(headerParts));
-        }
-        
-        protected static NameValueCollection ParseHeaders(string[] headerParts)
-        {
-            var headers = new NameValueCollection();
-
-            for (var i = 1; i < headerParts.Length; i++)
-            {
-                var parts = headerParts[i].Split(':');
-
-                headers[parts[0]] = parts[1];
-            }
-
-            return headers;
         }
     }
 }

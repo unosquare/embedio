@@ -26,11 +26,11 @@
         /// <param name="response">The response.</param>
         public static void NoCache(this IHttpResponse response)
         {
-            response.AddHeader(HttpHeaders.Expires, "Mon, 26 Jul 1997 05:00:00 GMT");
-            response.AddHeader(HttpHeaders.LastModified,
+            response.AddHeader(HttpHeaderNames.Expires, "Mon, 26 Jul 1997 05:00:00 GMT");
+            response.AddHeader(HttpHeaderNames.LastModified,
                 DateTime.UtcNow.ToString(Strings.BrowserTimeFormat, Strings.StandardCultureInfo));
-            response.AddHeader(HttpHeaders.CacheControl, "no-store, no-cache, must-revalidate");
-            response.AddHeader(HttpHeaders.Pragma, "no-cache");
+            response.AddHeader(HttpHeaderNames.CacheControl, "no-store, no-cache, must-revalidate");
+            response.AddHeader(HttpHeaderNames.Pragma, "no-cache");
         }
         
         /// <summary>

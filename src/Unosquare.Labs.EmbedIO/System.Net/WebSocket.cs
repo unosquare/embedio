@@ -75,25 +75,7 @@
                 }
             }
         }
-
-        /// <summary>
-        /// Gets the cookies.
-        /// </summary>
-        /// <value>
-        /// The cookies.
-        /// </value>
-        public IEnumerable<Cookie> Cookies
-        {
-            get
-            {
-                lock (CookieCollection.SyncRoot)
-                {
-                    foreach (var cookie in CookieCollection)
-                        yield return cookie;
-                }
-            }
-        }
-
+        
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="WebSocket"/> emits
         /// a <see cref="OnMessage"/> event when receives a ping.
@@ -103,48 +85,7 @@
         /// when receives a ping; otherwise, <c>false</c>. The default value is <c>false</c>.
         /// </value>
         public bool EmitOnPing { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the <see cref="WebSocket"/> redirects
-        /// the handshake request to the new URL located in the handshake response.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the <see cref="WebSocket"/> redirects the handshake request to
-        /// the new URL; otherwise, <c>false</c>. The default value is <c>false</c>.
-        /// </value>
-        public bool EnableRedirection
-        {
-            get => _enableRedirection;
-
-            set
-            {
-                lock (_forState)
-                {
-                    if (!_validator.CheckIfAvailable(false))
-                        return;
-
-                    _enableRedirection = value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the WebSocket extensions selected by the server.
-        /// </summary>
-        /// <value>
-        /// A <see cref="string"/> that represents the extensions if any.
-        /// The default value is <see cref="String.Empty"/>.
-        /// </value>
-        public string Extensions => _extensions ?? string.Empty;
-
-        /// <summary>
-        /// Gets a value indicating whether the WebSocket connection is alive.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the connection is alive; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsAlive => PingAsync().Result; // TODO: Change?
-
+        
         /// <summary>
         /// Gets a value indicating whether the WebSocket connection is secure.
         /// </summary>
@@ -210,30 +151,7 @@
         /// A <see cref="Uri"/> that represents the URL used to connect, or accepted.
         /// </value>
         public Uri Url => _context.RequestUri;
-
-        /// <summary>
-        /// Gets or sets the wait time for the response to the Ping or Close.
-        /// </summary>
-        /// <value>
-        /// A <see cref="TimeSpan"/> that represents the wait time. The default value is the same as
-        /// 5 seconds, or 1 second if the <see cref="WebSocket"/> is used in a server.
-        /// </value>
-        public TimeSpan WaitTime
-        {
-            get => _waitTime;
-
-            set
-            {
-                lock (_forState)
-                {
-                    if (value == TimeSpan.Zero || !_validator.CheckIfAvailable())
-                        return;
-
-                    _waitTime = value;
-                }
-            }
-        }
-
+        
         internal bool InContinuation { get; private set; }
 
         internal CookieCollection CookieCollection { get; } = new CookieCollection();
@@ -268,7 +186,7 @@
                 return InternalCloseAsync(ct: cancellationToken);
 
             var send = !IsOpcodeReserved(code);
-            return InternalCloseAsync(new PayloadData((ushort)code, reason), send, send, ct: cancellationToken);
+            return InternalCloseAsync(new PayloadData((ushort)code, reason), send, send, cancellationToken);
         }
 
         /// <summary>
