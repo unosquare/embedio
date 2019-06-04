@@ -45,7 +45,16 @@
             else
             {
                 var sslStream = new SslStream(new NetworkStream(sock, false), true);
-                sslStream.AuthenticateAsServerAsync(cert).GetAwaiter().GetResult();
+
+                try
+                {
+                    sslStream.AuthenticateAsServerAsync(cert).GetAwaiter().GetResult();
+                }
+                catch
+                {
+                    CloseSocket();
+                    throw;
+                }
 
                 Stream = sslStream;
             }

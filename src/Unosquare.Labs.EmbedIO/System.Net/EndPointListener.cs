@@ -238,7 +238,16 @@
                 return;
             }
 
-            var conn = new HttpConnection(accepted, epl, epl.Listener.Certificate);
+            HttpConnection conn = null;
+            try
+            {
+                conn = new HttpConnection(accepted, epl, epl.Listener.Certificate);
+            }
+            catch
+            {
+                return;
+            }
+
             lock (epl._unregistered)
             {
                 epl._unregistered[conn] = conn;
