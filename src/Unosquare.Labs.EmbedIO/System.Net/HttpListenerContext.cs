@@ -10,7 +10,8 @@
     /// Provides access to the request and response objects used by the HttpListener class.
     /// This class cannot be inherited.
     /// </summary>
-    public sealed class HttpListenerContext : IHttpContext
+    /// <seealso cref="Unosquare.Labs.EmbedIO.IHttpContext" />
+    internal sealed class HttpListenerContext : IHttpContext
     {
         private WebSocketContext _websocketContext;
         private Lazy<IDictionary<object, object>> _items =

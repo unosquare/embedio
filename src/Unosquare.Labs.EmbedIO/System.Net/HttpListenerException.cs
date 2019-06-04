@@ -5,7 +5,7 @@
     /// <summary>
     /// Represents an HTTP Listener's exception.
     /// </summary>
-    public class HttpListenerException : Exception
+    internal class HttpListenerException : Exception
     {
         internal HttpListenerException(int errorCode, string message) 
             : base(message)

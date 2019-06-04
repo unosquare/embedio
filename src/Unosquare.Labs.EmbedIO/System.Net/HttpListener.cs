@@ -15,7 +15,7 @@
     /// Based on MONO HttpListener class.
     /// </summary>
     /// <seealso cref="IDisposable" />
-    public sealed class HttpListener : IHttpListener
+    internal sealed class HttpListener : IHttpListener
     {
         private readonly SemaphoreSlim _ctxQueueSem = new SemaphoreSlim(0);
         private readonly ConcurrentDictionary<Guid, HttpListenerContext> _ctxQueue;

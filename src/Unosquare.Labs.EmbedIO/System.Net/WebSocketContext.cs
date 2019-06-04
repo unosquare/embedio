@@ -10,7 +10,7 @@
     /// a WebSocket handshake request received by the <see cref="HttpListener" />.
     /// </summary>
     /// <seealso cref="IWebSocketContext" />
-    public class WebSocketContext
+    internal class WebSocketContext
         : IWebSocketContext
     {
         private readonly HttpListenerContext _context;
