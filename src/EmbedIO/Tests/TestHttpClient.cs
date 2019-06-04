@@ -22,16 +22,7 @@ namespace EmbedIO.Tests
         public TestHttpClient(TestWebServer server, Encoding encoding = null)
         {
             _webServer = server;
-            Encoding = encoding ?? Encoding.UTF8;
         }
-
-        /// <summary>
-        /// Gets or sets the encoding.
-        /// </summary>
-        /// <value>
-        /// The encoding.
-        /// </value>
-        public Encoding Encoding { get; }
 
         /// <summary>
         /// Gets the asynchronous.
@@ -44,7 +35,7 @@ namespace EmbedIO.Tests
         {
             var response = await SendAsync(new TestHttpRequest($"http://test/{url}")).ConfigureAwait(false);
 
-            return ((TestHttpResponse) response).GetBodyAsString(Encoding);
+            return ((TestHttpResponse) response).GetBodyAsString();
         }
 
         /// <summary>

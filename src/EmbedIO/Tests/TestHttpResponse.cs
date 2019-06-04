@@ -84,15 +84,13 @@ namespace EmbedIO.Tests
         }
 
         /// <summary>
-        /// Gets the body as string.
+        /// Gets the response body as a string.
         /// </summary>
-        /// <param name="encoding">The encoding.</param>
-        /// <returns>A string from the body.</returns>
-        public string GetBodyAsString(Encoding encoding = null)
+        public string GetBodyAsString()
         {
             if (!(OutputStream is MemoryStream ms)) return null;
 
-            var result = (encoding ?? Encoding.UTF8).GetString(ms.ToArray());
+            var result = (ContentEncoding ?? Encoding.UTF8).GetString(ms.ToArray());
 
             // Remove BOM
             return result.Length > 0 && result[0] == 65279 ? result.Remove(0, 1) : result;
