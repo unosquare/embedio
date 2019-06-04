@@ -7284,77 +7284,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.HttpListenerException.ErrorCode
   nameWithType: HttpListenerException.ErrorCode
-- uid: Unosquare.Net.MessageEventArgs
-  name: MessageEventArgs
-  href: api/Unosquare.Net.MessageEventArgs.html
-  commentId: T:Unosquare.Net.MessageEventArgs
-  fullName: Unosquare.Net.MessageEventArgs
-  nameWithType: MessageEventArgs
-- uid: Unosquare.Net.MessageEventArgs.Data
-  name: Data
-  href: api/Unosquare.Net.MessageEventArgs.html#Unosquare_Net_MessageEventArgs_Data
-  commentId: P:Unosquare.Net.MessageEventArgs.Data
-  fullName: Unosquare.Net.MessageEventArgs.Data
-  nameWithType: MessageEventArgs.Data
-- uid: Unosquare.Net.MessageEventArgs.Data*
-  name: Data
-  href: api/Unosquare.Net.MessageEventArgs.html#Unosquare_Net_MessageEventArgs_Data_
-  commentId: Overload:Unosquare.Net.MessageEventArgs.Data
-  isSpec: "True"
-  fullName: Unosquare.Net.MessageEventArgs.Data
-  nameWithType: MessageEventArgs.Data
-- uid: Unosquare.Net.MessageEventArgs.IsBinary
-  name: IsBinary
-  href: api/Unosquare.Net.MessageEventArgs.html#Unosquare_Net_MessageEventArgs_IsBinary
-  commentId: P:Unosquare.Net.MessageEventArgs.IsBinary
-  fullName: Unosquare.Net.MessageEventArgs.IsBinary
-  nameWithType: MessageEventArgs.IsBinary
-- uid: Unosquare.Net.MessageEventArgs.IsBinary*
-  name: IsBinary
-  href: api/Unosquare.Net.MessageEventArgs.html#Unosquare_Net_MessageEventArgs_IsBinary_
-  commentId: Overload:Unosquare.Net.MessageEventArgs.IsBinary
-  isSpec: "True"
-  fullName: Unosquare.Net.MessageEventArgs.IsBinary
-  nameWithType: MessageEventArgs.IsBinary
-- uid: Unosquare.Net.MessageEventArgs.IsPing
-  name: IsPing
-  href: api/Unosquare.Net.MessageEventArgs.html#Unosquare_Net_MessageEventArgs_IsPing
-  commentId: P:Unosquare.Net.MessageEventArgs.IsPing
-  fullName: Unosquare.Net.MessageEventArgs.IsPing
-  nameWithType: MessageEventArgs.IsPing
-- uid: Unosquare.Net.MessageEventArgs.IsPing*
-  name: IsPing
-  href: api/Unosquare.Net.MessageEventArgs.html#Unosquare_Net_MessageEventArgs_IsPing_
-  commentId: Overload:Unosquare.Net.MessageEventArgs.IsPing
-  isSpec: "True"
-  fullName: Unosquare.Net.MessageEventArgs.IsPing
-  nameWithType: MessageEventArgs.IsPing
-- uid: Unosquare.Net.MessageEventArgs.IsText
-  name: IsText
-  href: api/Unosquare.Net.MessageEventArgs.html#Unosquare_Net_MessageEventArgs_IsText
-  commentId: P:Unosquare.Net.MessageEventArgs.IsText
-  fullName: Unosquare.Net.MessageEventArgs.IsText
-  nameWithType: MessageEventArgs.IsText
-- uid: Unosquare.Net.MessageEventArgs.IsText*
-  name: IsText
-  href: api/Unosquare.Net.MessageEventArgs.html#Unosquare_Net_MessageEventArgs_IsText_
-  commentId: Overload:Unosquare.Net.MessageEventArgs.IsText
-  isSpec: "True"
-  fullName: Unosquare.Net.MessageEventArgs.IsText
-  nameWithType: MessageEventArgs.IsText
-- uid: Unosquare.Net.MessageEventArgs.RawData
-  name: RawData
-  href: api/Unosquare.Net.MessageEventArgs.html#Unosquare_Net_MessageEventArgs_RawData
-  commentId: P:Unosquare.Net.MessageEventArgs.RawData
-  fullName: Unosquare.Net.MessageEventArgs.RawData
-  nameWithType: MessageEventArgs.RawData
-- uid: Unosquare.Net.MessageEventArgs.RawData*
-  name: RawData
-  href: api/Unosquare.Net.MessageEventArgs.html#Unosquare_Net_MessageEventArgs_RawData_
-  commentId: Overload:Unosquare.Net.MessageEventArgs.RawData
-  isSpec: "True"
-  fullName: Unosquare.Net.MessageEventArgs.RawData
-  nameWithType: MessageEventArgs.RawData
 - uid: Unosquare.Net.Opcode
   name: Opcode
   href: api/Unosquare.Net.Opcode.html
@@ -7513,12 +7442,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.WebSocket.IsSecure
   nameWithType: WebSocket.IsSecure
-- uid: Unosquare.Net.WebSocket.OnMessage
-  name: OnMessage
-  href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_OnMessage
-  commentId: E:Unosquare.Net.WebSocket.OnMessage
-  fullName: Unosquare.Net.WebSocket.OnMessage
-  nameWithType: WebSocket.OnMessage
 - uid: Unosquare.Net.WebSocket.Origin
   name: Origin
   href: api/Unosquare.Net.WebSocket.html#Unosquare_Net_WebSocket_Origin

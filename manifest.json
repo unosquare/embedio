@@ -945,18 +945,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Unosquare.Net.MessageEventArgs.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Unosquare.Net.MessageEventArgs.html",
-          "hash": "3lcwIN8ro8pgO5J2LLvXsw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Unosquare.Net.Opcode.yml",
       "output": {
         ".html": {
@@ -973,7 +961,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.WebSocket.html",
-          "hash": "jfCyWV9wwc3OqQL7EZ5WFA=="
+          "hash": "Wu5/v1ZsCs+K6860PQqybQ=="
         }
       },
       "is_incremental": false,
@@ -1033,7 +1021,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.html",
-          "hash": "TuqmrBMldRkAHOSxcs330w=="
+          "hash": "ADqo/lVMf9MiFX10RKXHPQ=="
         }
       },
       "is_incremental": false,
@@ -1045,7 +1033,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "+CVU5yf9JN71EaHjKIJ8HA=="
+          "hash": "37VRs7+uiGS07bc5mkfOxw=="
         }
       },
       "is_incremental": false,
@@ -1150,7 +1138,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 79,
+          "total_file_count": 78,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
