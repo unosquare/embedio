@@ -21,7 +21,6 @@
     /// </remarks>
     public class WebSocket : IWebSocket
     {
-        private readonly Action<MessageEventArgs> _message;
         private readonly object _forState = new object();
         private readonly ConcurrentQueue<MessageEventArgs> _messageEventQueue = new ConcurrentQueue<MessageEventArgs>();
         private readonly WebSocketValidator _validator;
@@ -43,8 +42,7 @@
         internal WebSocket(WebSocketContext context)
         {
             _context = context;
-
-            _message = Messages;
+            
             WebSocketKey = new WebSocketKey();
 
             IsSecure = context.IsSecureConnection;
@@ -53,10 +51,7 @@
             _validator = new WebSocketValidator(this);
         }
 
-        /// <summary>
-        /// Occurs when the <see cref="WebSocket"/> receives a message.
-        /// </summary>
-        public event EventHandler<MessageEventArgs> OnMessage;
+        internal event EventHandler<MessageEventArgs> OnMessage;
 
         /// <summary>
         /// Gets or sets the compression method used to compress a message on the WebSocket connection.
@@ -468,7 +463,7 @@
             _inMessage = true;
 
             if (_messageEventQueue.TryDequeue(out var e))
-                _message(e);
+                Messages(e);
         }
 
         private void Messages(MessageEventArgs e)
@@ -502,7 +497,7 @@
                 return;
             }
 
-            _message.BeginInvoke(e, ar => _message.EndInvoke(ar), null);
+            Messages(e);
         }
 
         private Task ProcessCloseFrame(WebSocketFrame frame) => InternalCloseAsync(frame.PayloadData, !frame.PayloadData.HasReservedCode, false, true);
