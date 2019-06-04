@@ -7087,51 +7087,6 @@ references:
   commentId: F:Unosquare.Net.Opcode.Text
   fullName: Unosquare.Net.Opcode.Text
   nameWithType: Opcode.Text
-- uid: Unosquare.Net.WebSocketReceiveResult
-  name: WebSocketReceiveResult
-  href: api/Unosquare.Net.WebSocketReceiveResult.html
-  commentId: T:Unosquare.Net.WebSocketReceiveResult
-  fullName: Unosquare.Net.WebSocketReceiveResult
-  nameWithType: WebSocketReceiveResult
-- uid: Unosquare.Net.WebSocketReceiveResult.Count
-  name: Count
-  href: api/Unosquare.Net.WebSocketReceiveResult.html#Unosquare_Net_WebSocketReceiveResult_Count
-  commentId: P:Unosquare.Net.WebSocketReceiveResult.Count
-  fullName: Unosquare.Net.WebSocketReceiveResult.Count
-  nameWithType: WebSocketReceiveResult.Count
-- uid: Unosquare.Net.WebSocketReceiveResult.Count*
-  name: Count
-  href: api/Unosquare.Net.WebSocketReceiveResult.html#Unosquare_Net_WebSocketReceiveResult_Count_
-  commentId: Overload:Unosquare.Net.WebSocketReceiveResult.Count
-  isSpec: "True"
-  fullName: Unosquare.Net.WebSocketReceiveResult.Count
-  nameWithType: WebSocketReceiveResult.Count
-- uid: Unosquare.Net.WebSocketReceiveResult.EndOfMessage
-  name: EndOfMessage
-  href: api/Unosquare.Net.WebSocketReceiveResult.html#Unosquare_Net_WebSocketReceiveResult_EndOfMessage
-  commentId: P:Unosquare.Net.WebSocketReceiveResult.EndOfMessage
-  fullName: Unosquare.Net.WebSocketReceiveResult.EndOfMessage
-  nameWithType: WebSocketReceiveResult.EndOfMessage
-- uid: Unosquare.Net.WebSocketReceiveResult.EndOfMessage*
-  name: EndOfMessage
-  href: api/Unosquare.Net.WebSocketReceiveResult.html#Unosquare_Net_WebSocketReceiveResult_EndOfMessage_
-  commentId: Overload:Unosquare.Net.WebSocketReceiveResult.EndOfMessage
-  isSpec: "True"
-  fullName: Unosquare.Net.WebSocketReceiveResult.EndOfMessage
-  nameWithType: WebSocketReceiveResult.EndOfMessage
-- uid: Unosquare.Net.WebSocketReceiveResult.MessageType
-  name: MessageType
-  href: api/Unosquare.Net.WebSocketReceiveResult.html#Unosquare_Net_WebSocketReceiveResult_MessageType
-  commentId: P:Unosquare.Net.WebSocketReceiveResult.MessageType
-  fullName: Unosquare.Net.WebSocketReceiveResult.MessageType
-  nameWithType: WebSocketReceiveResult.MessageType
-- uid: Unosquare.Net.WebSocketReceiveResult.MessageType*
-  name: MessageType
-  href: api/Unosquare.Net.WebSocketReceiveResult.html#Unosquare_Net_WebSocketReceiveResult_MessageType_
-  commentId: Overload:Unosquare.Net.WebSocketReceiveResult.MessageType
-  isSpec: "True"
-  fullName: Unosquare.Net.WebSocketReceiveResult.MessageType
-  nameWithType: WebSocketReceiveResult.MessageType
 - uid: Unosquare.Net.WebSocketState
   name: WebSocketState
   href: api/Unosquare.Net.WebSocketState.html
