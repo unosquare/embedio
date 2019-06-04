@@ -24,12 +24,7 @@ namespace EmbedIO.Net.Internal
             Reason = reason;
             Headers[HttpHeaderNames.Server] = ServerVersion;
         }
-
-        public CookieCollection Cookies =>
-            Headers?.AllKeys.Contains(HttpHeaderNames.SetCookie) == true
-                ? CookieCollection.ParseResponse(Headers[HttpHeaderNames.SetCookie])
-                : new CookieCollection();
-
+        
         public string Reason { get; }
 
         public int StatusCode { get; }

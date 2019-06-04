@@ -199,6 +199,7 @@ namespace EmbedIO.WebSockets.Internal
             var requestHeaders = httpContext.Request.Headers;
 
             var webSocketKey = requestHeaders[HttpHeaderNames.SecWebSocketKey];
+
             if (string.IsNullOrEmpty(webSocketKey))
                 throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {HttpHeaderNames.SecWebSocketKey} header, or it has an invalid value.");
 
@@ -259,7 +260,6 @@ namespace EmbedIO.WebSockets.Internal
             PayloadData payloadData = null,
             bool send = true,
             bool receive = true,
-            bool received = false,
             CancellationToken cancellationToken = default)
         {
             lock (_stateSyncRoot)
@@ -285,7 +285,7 @@ namespace EmbedIO.WebSockets.Internal
             "Begin closing the connection.".Trace(nameof(InternalCloseAsync));
 
             var bytes = send ? WebSocketFrame.CreateCloseFrame(payloadData).ToArray() : null;
-            await CloseHandshakeAsync(bytes, receive, received, cancellationToken).ConfigureAwait(false);
+            await CloseHandshakeAsync(bytes, receive, cancellationToken).ConfigureAwait(false);
             ReleaseResources();
 
             "End closing the connection.".Trace(nameof(InternalCloseAsync));
@@ -296,10 +296,9 @@ namespace EmbedIO.WebSockets.Internal
             }
         }
 
-        private async Task<bool> CloseHandshakeAsync(
+        private async Task CloseHandshakeAsync(
             byte[] frameAsBytes,
             bool receive,
-            bool received,
             CancellationToken cancellationToken)
         {
             var sent = frameAsBytes != null;
@@ -309,9 +308,8 @@ namespace EmbedIO.WebSockets.Internal
                 await _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length, cancellationToken).ConfigureAwait(false);
             }
 
-            received = received || (receive && sent && _exitReceiving != null && _exitReceiving.WaitOne(_waitTime));
-
-            return sent && received;
+            if (receive && sent)
+                _exitReceiving?.WaitOne(_waitTime);
         }
 
         private void Fatal(string message, Exception exception = null)
@@ -365,7 +363,7 @@ namespace EmbedIO.WebSockets.Internal
             Messages(e);
         }
 
-        private Task ProcessCloseFrame(WebSocketFrame frame) => InternalCloseAsync(frame.PayloadData, !frame.PayloadData.HasReservedCode, false, true);
+        private Task ProcessCloseFrame(WebSocketFrame frame) => InternalCloseAsync(frame.PayloadData, !frame.PayloadData.HasReservedCode, false);
 
         private async Task ProcessDataFrame(WebSocketFrame frame)
         {
