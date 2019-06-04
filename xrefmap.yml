@@ -4098,12 +4098,12 @@ references:
   commentId: T:Unosquare.Labs.EmbedIO.Modules.RedirectModule
   fullName: Unosquare.Labs.EmbedIO.Modules.RedirectModule
   nameWithType: RedirectModule
-- uid: Unosquare.Labs.EmbedIO.Modules.RedirectModule.#ctor(System.String,System.String,HttpStatusCode)
-  name: RedirectModule(String, String, HttpStatusCode)
-  href: api/Unosquare.Labs.EmbedIO.Modules.RedirectModule.html#Unosquare_Labs_EmbedIO_Modules_RedirectModule__ctor_System_String_System_String_HttpStatusCode_
-  commentId: M:Unosquare.Labs.EmbedIO.Modules.RedirectModule.#ctor(System.String,System.String,HttpStatusCode)
-  fullName: Unosquare.Labs.EmbedIO.Modules.RedirectModule.RedirectModule(System.String, System.String, HttpStatusCode)
-  nameWithType: RedirectModule.RedirectModule(String, String, HttpStatusCode)
+- uid: Unosquare.Labs.EmbedIO.Modules.RedirectModule.#ctor(System.String,HttpStatusCode)
+  name: RedirectModule(String, HttpStatusCode)
+  href: api/Unosquare.Labs.EmbedIO.Modules.RedirectModule.html#Unosquare_Labs_EmbedIO_Modules_RedirectModule__ctor_System_String_HttpStatusCode_
+  commentId: M:Unosquare.Labs.EmbedIO.Modules.RedirectModule.#ctor(System.String,HttpStatusCode)
+  fullName: Unosquare.Labs.EmbedIO.Modules.RedirectModule.RedirectModule(System.String, HttpStatusCode)
+  nameWithType: RedirectModule.RedirectModule(String, HttpStatusCode)
 - uid: Unosquare.Labs.EmbedIO.Modules.RedirectModule.#ctor(System.String,System.String,System.Func{Unosquare.Labs.EmbedIO.IHttpContext,System.String,System.Boolean},HttpStatusCode)
   name: RedirectModule(String, String, Func<IHttpContext, String, Boolean>, HttpStatusCode)
   href: api/Unosquare.Labs.EmbedIO.Modules.RedirectModule.html#Unosquare_Labs_EmbedIO_Modules_RedirectModule__ctor_System_String_System_String_System_Func_Unosquare_Labs_EmbedIO_IHttpContext_System_String_System_Boolean__HttpStatusCode_
