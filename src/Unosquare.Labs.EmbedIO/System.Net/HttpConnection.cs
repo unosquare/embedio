@@ -1,16 +1,15 @@
-﻿using System.Collections.Generic;
-
-namespace Unosquare.Net
+﻿namespace Unosquare.Net
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Net;
+    using System.Net.Security;
     using System.Net.Sockets;
+    using System.Security.Cryptography.X509Certificates;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Net.Security;
-    using System.Security.Cryptography.X509Certificates;
 
     internal sealed class HttpConnection : IDisposable
     {
@@ -55,8 +54,6 @@ namespace Unosquare.Net
             Init();
         }
 
-        internal X509Certificate2 ClientCertificate { get; }
-
         public int Reuses { get; private set; }
 
         public Stream Stream { get; }
@@ -68,6 +65,8 @@ namespace Unosquare.Net
         public bool IsSecure { get; }
 
         public ListenerPrefix Prefix { get; set; }
+        
+        internal X509Certificate2 ClientCertificate { get; }
 
         public async Task BeginReadRequest()
         {

@@ -10,7 +10,6 @@
     internal class HttpResponse
     {
         internal const string ServerVersion = "embedio/2.0";
-        internal const string SetCookie = "Set-Cookie";
 
         internal HttpResponse(HttpStatusCode code)
           : this((int) code, HttpStatusDescription.Get(code), HttpVersion.Version11, new NameValueCollection())
@@ -23,7 +22,7 @@
             Headers = headers;
             StatusCode = code;
             Reason = reason;
-            Headers["Server"] = ServerVersion;
+            Headers[HttpHeaderNames.Server] = ServerVersion;
         }
         
         public string Reason { get; }

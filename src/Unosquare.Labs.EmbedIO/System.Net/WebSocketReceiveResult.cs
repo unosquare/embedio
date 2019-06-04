@@ -6,7 +6,7 @@
     /// <summary>
     /// Represents a WS Receive result.
     /// </summary>
-    public class WebSocketReceiveResult : IWebSocketReceiveResult
+    internal class WebSocketReceiveResult : IWebSocketReceiveResult
     {
         internal WebSocketReceiveResult(int count, Opcode code)
         {
