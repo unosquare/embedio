@@ -10,6 +10,11 @@ namespace EmbedIO
     public static class MimeTypes
     {
         /// <summary>
+        /// The MIME type for plain text.
+        /// </summary>
+        public const string PlainTextType = "text/plain";
+
+        /// <summary>
         /// The MIME type for HTML.
         /// </summary>
         public const string HtmlType = "text/html";
