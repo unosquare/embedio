@@ -14,7 +14,7 @@ namespace EmbedIO
         /// <para>The default serializer callback used by EmbedIO.</para>
         /// <para>Equivalent to <see cref="Json"/>.</para>
         /// </summary>
-        public static SerializerCallback Default = Json;
+        public static readonly SerializerCallback Default = Json;
 
         /// <summary>
         /// Serializes data in JSON format to a HTTP response,
