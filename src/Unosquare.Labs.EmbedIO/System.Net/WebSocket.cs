@@ -19,7 +19,7 @@
     /// The WebSocket class provides a set of methods and properties for two-way communication using
     /// the WebSocket protocol (<see href="http://tools.ietf.org/html/rfc6455">RFC 6455</see>).
     /// </remarks>
-    public class WebSocket : IWebSocket
+    internal class WebSocket : IWebSocket
     {
         private readonly object _forState = new object();
         private readonly ConcurrentQueue<MessageEventArgs> _messageEventQueue = new ConcurrentQueue<MessageEventArgs>();
