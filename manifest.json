@@ -969,18 +969,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Unosquare.Net.WebSocketException.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Unosquare.Net.WebSocketException.html",
-          "hash": "LeHZOG449P6Mcz6UPahFIg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Unosquare.Net.WebSocketReceiveResult.yml",
       "output": {
         ".html": {
@@ -1009,7 +997,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.Net.html",
-          "hash": "DWnkDjfzim3qu2uNJoF5IQ=="
+          "hash": "tRibAQHAvS9rzk2os8NtiA=="
         }
       },
       "is_incremental": false,
@@ -1021,7 +1009,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "qFGs4JX8XmxC1yXjcJ4oJw=="
+          "hash": "viFuBOdcs1rCtQ+NQPsxvg=="
         }
       },
       "is_incremental": false,
@@ -1126,7 +1114,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 77,
+          "total_file_count": 76,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

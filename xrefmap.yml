@@ -7475,25 +7475,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.Net.WebSocketContext.WebSocket
   nameWithType: WebSocketContext.WebSocket
-- uid: Unosquare.Net.WebSocketException
-  name: WebSocketException
-  href: api/Unosquare.Net.WebSocketException.html
-  commentId: T:Unosquare.Net.WebSocketException
-  fullName: Unosquare.Net.WebSocketException
-  nameWithType: WebSocketException
-- uid: Unosquare.Net.WebSocketException.Code
-  name: Code
-  href: api/Unosquare.Net.WebSocketException.html#Unosquare_Net_WebSocketException_Code
-  commentId: P:Unosquare.Net.WebSocketException.Code
-  fullName: Unosquare.Net.WebSocketException.Code
-  nameWithType: WebSocketException.Code
-- uid: Unosquare.Net.WebSocketException.Code*
-  name: Code
-  href: api/Unosquare.Net.WebSocketException.html#Unosquare_Net_WebSocketException_Code_
-  commentId: Overload:Unosquare.Net.WebSocketException.Code
-  isSpec: "True"
-  fullName: Unosquare.Net.WebSocketException.Code
-  nameWithType: WebSocketException.Code
 - uid: Unosquare.Net.WebSocketReceiveResult
   name: WebSocketReceiveResult
   href: api/Unosquare.Net.WebSocketReceiveResult.html
