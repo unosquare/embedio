@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using Unosquare.Swan;
@@ -14,10 +16,6 @@ namespace EmbedIO.Files
     public abstract class FileModuleBase
         : WebModuleBase
     {
-        internal const int MaxGzipInputLength = 4 * 1024 * 1024;
-
-        internal const int ChunkSize = 256 * 1024;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="FileModuleBase" /> class.
         /// </summary>
@@ -59,16 +57,14 @@ namespace EmbedIO.Files
             CancellationToken cancellationToken = default)
         {
             var fileSize = buffer.Length;
-            
+
             // check if partial
             if (!CalculateRange(partialHeader, fileSize, out var lowerByteIndex, out var upperByteIndex))
                 return response.SendStreamAsync(buffer, UseGzip && useGzip, cancellationToken);
 
             if (upperByteIndex > fileSize)
             {
-                // invalid partial request
-                response.StatusCode = 416;
-                response.ContentLength64 = 0;
+                response.SetEmptyResponse((int) HttpStatusCode.RequestedRangeNotSatisfiable);
                 response.Headers.Set(HttpHeaderNames.ContentRange, $"bytes */{fileSize}");
 
                 return Task.CompletedTask;
@@ -119,19 +115,13 @@ namespace EmbedIO.Files
             lowerByteIndex = 0;
             upperByteIndex = fileSize - 1;
 
-            if (string.IsNullOrWhiteSpace(partialHeader)) return false;
-
-            try
-            {
-                var range = System.Net.Http.Headers.RangeHeaderValue.Parse(partialHeader).Ranges.First();
-                lowerByteIndex = range.From ?? 0;
-                upperByteIndex = range.To ?? fileSize - 1;
-                return true;
-            }
-            catch
-            {
+            if (string.IsNullOrWhiteSpace(partialHeader) || !RangeHeaderValue.TryParse(partialHeader, out var range))
                 return false;
-            }
+
+            var firstRange = range.Ranges.First();
+            lowerByteIndex = firstRange.From ?? 0;
+            upperByteIndex = firstRange.To ?? fileSize - 1;
+            return true;
         }
     }
 }

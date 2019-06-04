@@ -197,15 +197,15 @@ namespace EmbedIO.Net.Internal
                     ? $"{_contentType}; charset={Encoding.UTF8.WebName}"
                     : _contentType;
 
-                Headers.Add("Content-Type", contentTypeValue);
+                Headers.Add(HttpHeaderNames.ContentType, contentTypeValue);
             }
 
-            if (Headers["Server"] == null)
-                Headers.Add("Server", HttpResponse.ServerVersion);
+            if (Headers[HttpHeaderNames.Server] == null)
+                Headers.Add(HttpHeaderNames.Server, HttpResponse.ServerVersion);
 
             var inv = CultureInfo.InvariantCulture;
-            if (Headers["Date"] == null)
-                Headers.Add("Date", DateTime.UtcNow.ToString("r", inv));
+            if (Headers[HttpHeaderNames.Date] == null)
+                Headers.Add(HttpHeaderNames.Date, DateTime.UtcNow.ToString("r", inv));
 
             if (!_chunked)
             {
@@ -216,7 +216,7 @@ namespace EmbedIO.Net.Internal
                 }
 
                 if (_clSet)
-                    Headers.Add("Content-Length", _contentLength.ToString(inv));
+                    Headers.Add(HttpHeaderNames.ContentLength, _contentLength.ToString(inv));
             }
 
             var v = _context.Request.ProtocolVersion;
@@ -240,12 +240,12 @@ namespace EmbedIO.Net.Internal
             // They sent both KeepAlive: true and Connection: close!?
             if (!_keepAlive || connClose)
             {
-                Headers.Add("Connection", "close");
+                Headers.Add(HttpHeaderNames.Connection, "close");
                 connClose = true;
             }
 
             if (_chunked)
-                Headers.Add("Transfer-Encoding", "chunked");
+                Headers.Add(HttpHeaderNames.TransferEncoding, "chunked");
 
             var reuses = _context.Connection.Reuses;
             if (reuses >= 100)
@@ -253,17 +253,17 @@ namespace EmbedIO.Net.Internal
                 ForceCloseChunked = true;
                 if (!connClose)
                 {
-                    Headers.Add("Connection", "close");
+                    Headers.Add(HttpHeaderNames.Connection, "close");
                     connClose = true;
                 }
             }
 
             if (!connClose)
             {
-                Headers.Add("Keep-Alive", $"timeout=15,max={100 - reuses}");
+                Headers.Add(HttpHeaderNames.KeepAlive, $"timeout=15,max={100 - reuses}");
 
                 if (_context.Request.ProtocolVersion <= HttpVersion.Version10)
-                    Headers.Add("Connection", "keep-alive");
+                    Headers.Add(HttpHeaderNames.Connection, "keep-alive");
             }
 
             return WriteHeaders();
@@ -334,9 +334,9 @@ namespace EmbedIO.Net.Internal
                     sb.AppendFormat(CultureInfo.InvariantCulture, "Set-Cookie: {0}\r\n", CookieToClientString(cookie));
             }
 
-            if (Headers.AllKeys.Contains("Set-Cookie"))
+            if (Headers.AllKeys.Contains(HttpHeaderNames.SetCookie))
             {
-                foreach (var cookie in CookieCollection.ParseResponse(Headers["Set-Cookie"]))
+                foreach (var cookie in CookieCollection.ParseResponse(Headers[HttpHeaderNames.SetCookie]))
                     sb.AppendFormat(CultureInfo.InvariantCulture, "Set-Cookie: {0}\r\n", CookieToClientString(cookie));
             }
 
