@@ -5,7 +5,7 @@
     /// <summary>
     /// The exception that is thrown when a <see cref="WebSocket"/> gets a fatal error.
     /// </summary>
-    public class WebSocketException : Exception
+    internal class WebSocketException : Exception
     {
         internal WebSocketException(string message = null) 
             : this(CloseStatusCode.Abnormal, message)

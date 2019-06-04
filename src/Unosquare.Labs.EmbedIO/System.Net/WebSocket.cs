@@ -42,7 +42,7 @@
         internal WebSocket(WebSocketContext context)
         {
             _context = context;
-            
+
             WebSocketKey = new WebSocketKey();
 
             IsSecure = context.IsSecureConnection;
@@ -393,7 +393,6 @@
             PayloadData payloadData = null,
             bool send = true,
             bool receive = true,
-            bool received = false,
             CancellationToken ct = default)
         {
             lock (_forState)
@@ -419,7 +418,7 @@
             "Begin closing the connection.".Trace(nameof(InternalCloseAsync));
 
             var bytes = send ? WebSocketFrame.CreateCloseFrame(payloadData).ToArray() : null;
-            await CloseHandshakeAsync(bytes, receive, received, ct).ConfigureAwait(false);
+            await CloseHandshakeAsync(bytes, receive, ct).ConfigureAwait(false);
             ReleaseResources();
 
             "End closing the connection.".Trace(nameof(InternalCloseAsync));
@@ -430,11 +429,9 @@
             }
         }
 
-        private async Task<bool> CloseHandshakeAsync(
-            byte[] frameAsBytes,
-            bool receive,
-            bool received,
-            CancellationToken ct)
+        private async Task CloseHandshakeAsync(byte[] frameAsBytes,
+                                               bool receive,
+                                               CancellationToken ct)
         {
             var sent = frameAsBytes != null;
 
@@ -443,10 +440,8 @@
                 await _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length, ct).ConfigureAwait(false);
             }
 
-            received = received ||
-                       (receive && sent && _exitReceiving != null && _exitReceiving.WaitOne(_waitTime));
-
-            return sent && received;
+            if (receive && sent)
+                _exitReceiving?.WaitOne(_waitTime);
         }
 
         private void Fatal(string message, Exception exception = null) => Fatal(message,
@@ -500,7 +495,7 @@
             Messages(e);
         }
 
-        private Task ProcessCloseFrame(WebSocketFrame frame) => InternalCloseAsync(frame.PayloadData, !frame.PayloadData.HasReservedCode, false, true);
+        private Task ProcessCloseFrame(WebSocketFrame frame) => InternalCloseAsync(frame.PayloadData, !frame.PayloadData.HasReservedCode, false);
 
         private async Task ProcessDataFrame(WebSocketFrame frame)
         {
@@ -645,7 +640,7 @@
             _exitReceiving.Dispose();
             _exitReceiving = null;
         }
-        
+
         private Task Send(WebSocketFrame frame)
         {
             lock (_forState)
