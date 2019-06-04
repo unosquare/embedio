@@ -60,25 +60,25 @@
         }
 
         /// <inheritdoc />
-        public void Start(CancellationToken ct)
+        public void Start(CancellationToken cancellationToken)
         {
-            CancellationToken = ct;
+            CancellationToken = cancellationToken;
 
             Task.Run(async () =>
             {
                 try
                 {
-                    while (!ct.IsCancellationRequested)
+                    while (!cancellationToken.IsCancellationRequested)
                     {
                         RunWatchdog();
-                        await Task.Delay(WatchdogInterval, ct).ConfigureAwait(false);
+                        await Task.Delay(WatchdogInterval, cancellationToken).ConfigureAwait(false);
                     }
                 }
                 catch (TaskCanceledException)
                 {
                     // ignore
                 }
-            }, ct);
+            }, cancellationToken);
         }
         
         /// <inheritdoc/>
