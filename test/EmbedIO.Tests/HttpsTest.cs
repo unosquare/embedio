@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Http;
+using System.Text;
 using NUnit.Framework;
 using System.Threading.Tasks;
 using Unosquare.Swan;
@@ -30,7 +31,7 @@ namespace EmbedIO.Tests
 
             using (var webServer = new WebServer(options))
             {
-                webServer.OnAny((ctx, path, ct) => ctx.HtmlResponseAsync(DefaultMessage, cancellationToken: ct));
+                webServer.OnAny((ctx, path, ct) => ctx.SendStringAsync(DefaultMessage, MimeTypes.HtmlType, Encoding.UTF8, ct));
 
                 webServer.RunAsync();
 

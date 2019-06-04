@@ -56,7 +56,7 @@ namespace EmbedIO.Tests
         {
             using (var webserver = new TestWebServer())
             {
-                webserver.OnAny((ctx, path, ct) => ctx.JsonResponseAsync(new Person {Name = nameof(Person)}, ct));
+                webserver.OnAny((ctx, path, ct) => ctx.SendDataAsync(new Person {Name = nameof(Person)}, ct));
 
 #pragma warning disable 4014
                 webserver.RunAsync();

@@ -3,7 +3,6 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbedIO.Routing;
 using EmbedIO.Sessions;
 
 namespace EmbedIO.WebApi
@@ -74,12 +73,10 @@ namespace EmbedIO.WebApi
         /// Outputs async a Json Response given a data object.
         /// </summary>
         /// <param name="data">The data.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A <c>true</c> value if the response output was set.
         /// </returns>
-        protected virtual Task<bool> Ok(object data, CancellationToken cancellationToken = default) =>
-            HttpContext.JsonResponseAsync(data, cancellationToken);
+        protected virtual Task<bool> Ok(object data) => HttpContext.SendDataAsync(data, CancellationToken);
 
         /// <summary>
         /// Transforms the response body as JSON and write a new JSON to the request.
@@ -87,14 +84,12 @@ namespace EmbedIO.WebApi
         /// <typeparam name="TIn">The type of the input.</typeparam>
         /// <typeparam name="TOut">The type of the output.</typeparam>
         /// <param name="transformFunc">The transform function.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A task for writing the output stream.
         /// </returns>
-        protected virtual Task<bool> Ok<TIn, TOut>(Func<TIn, CancellationToken, Task<TOut>> transformFunc,
-            CancellationToken cancellationToken = default)
+        protected virtual Task<bool> Ok<TIn, TOut>(Func<TIn, CancellationToken, Task<TOut>> transformFunc)
             where TIn : class
-            => HttpContext.TransformJson(transformFunc, cancellationToken);
+            => HttpContext.TransformJsonAsync(transformFunc, CancellationToken);
 
         /// <summary>
         /// Outputs async a string response given a string.
@@ -102,8 +97,6 @@ namespace EmbedIO.WebApi
         /// <param name="content">The content.</param>
         /// <param name="contentType">Type of the content.</param>
         /// <param name="encoding">The encoding.</param>
-        /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A task for writing the output stream.
         /// </returns>
@@ -111,8 +104,7 @@ namespace EmbedIO.WebApi
             string content,
             string contentType = MimeTypes.JsonType,
             Encoding encoding = null,
-            bool useGzip = true,
-            CancellationToken cancellationToken = default) =>
-            Response.SendStringAsync(content, contentType, encoding, useGzip && HttpContext.AcceptGzip(content.Length), cancellationToken);
+            CancellationToken cancellationToken = default)
+            => HttpContext.SendStringAsync(content, contentType, encoding, cancellationToken);
     }
 }

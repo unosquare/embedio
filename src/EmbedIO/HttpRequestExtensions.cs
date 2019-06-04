@@ -1,7 +1,10 @@
-﻿using System.Globalization;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using EmbedIO.Internal;
+using Unosquare.Swan.Formatters;
 
 namespace EmbedIO
 {
@@ -53,5 +56,30 @@ namespace EmbedIO
                 return await reader.ReadToEndAsync().ConfigureAwait(false);
             }
         }
+
+        /// <summary>
+        /// Parses the JSON as a given type from the request body.
+        /// Please note the underlying input stream is not rewindable.
+        /// </summary>
+        /// <typeparam name="T">The type of specified object type.</typeparam>
+        /// <param name="this">The context.</param>
+        /// <returns>
+        /// A task with the JSON as a given type from the request body.
+        /// </returns>
+        public static async Task<T> ParseJsonAsync<T>(this IHttpRequest @this)
+            where T : class
+        {
+            var body = await @this.GetBodyAsStringAsync().ConfigureAwait(false);
+            return body == null ? null : Json.Deserialize<T>(body);
+        }
+
+        /// <summary>
+        /// Returns dictionary from Request POST data
+        /// Please note the underlying input stream is not rewindable.
+        /// </summary>
+        /// <param name="this">The context to request body as string.</param>
+        /// <returns>A task with a collection that represents KVPs from request data.</returns>
+        public static async Task<Dictionary<string, object>> GetFormDataAsync(this IHttpRequest @this)
+            => FormDataParser.ParseAsDictionary(await @this.GetBodyAsStringAsync().ConfigureAwait(false));
     }
 }

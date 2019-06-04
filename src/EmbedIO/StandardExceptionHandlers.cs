@@ -88,31 +88,27 @@ namespace EmbedIO
         /// <param name="cancellationToken">A <see cref="CancellationToken" /> used to cancel the operation.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
         public static Task HtmlResponse(IHttpContext context, string path, Exception exception, CancellationToken cancellationToken)
-            => context.Response.SendStandardHtmlAsync(
+            => context.SendStandardHtmlAsync(
                 (int)HttpStatusCode.InternalServerError,
-                sb => {
-                    sb.Append("<p>The server has encountered an error and was not able to process your request.</p>")
-                        .Append("<p>Please contact the server administrator");
+                text => {
+                    text.Write("<p>The server has encountered an error and was not able to process your request.</p>");
+                    text.Write("<p>Please contact the server administrator");
 
                     if (!string.IsNullOrEmpty(ContactInformation))
-                    {
-                        sb.Append(" (")
-                            .Append(HttpUtility.HtmlEncode(ContactInformation))
-                            .Append(')');
-                    }
+                        text.Write(" ({0})", HttpUtility.HtmlEncode(ContactInformation));
 
-                    sb.Append(", informing them of the time this error occurred and the action(s) you performed that resulted in this error.</p>")
-                        .Append("<p>The following information may help them in finding out what happened and restoring full functionality.</p>")
-                        .Append("<p><strong>Exception type:</strong> ")
-                        .Append(HttpUtility.HtmlEncode(exception.GetType().FullName ?? "<unknown>"))
-                        .Append("<p><strong>Message:</strong> ")
-                        .Append(HttpUtility.HtmlEncode(exception.ExceptionMessage()));
+                    text.Write(", informing them of the time this error occurred and the action(s) you performed that resulted in this error.</p>");
+                    text.Write("<p>The following information may help them in finding out what happened and restoring full functionality.</p>");
+                    text.Write(
+                        "<p><strong>Exception type:</strong> {0}<p><strong>Message:</strong> {1}",
+                        HttpUtility.HtmlEncode(exception.GetType().FullName ?? "<unknown>"),
+                        HttpUtility.HtmlEncode(exception.ExceptionMessage()));
 
                     if (IncludeStackTraces)
                     {
-                        sb.Append("</p><p><strong>Stack trace:</strong></p><br><pre>")
-                            .Append(HttpUtility.HtmlEncode(exception.StackTrace))
-                            .Append("</pre>");
+                        text.Write(
+                            "</p><p><strong>Stack trace:</strong></p><br><pre>{0}</pre>",
+                            HttpUtility.HtmlEncode(exception.StackTrace));
                     }
                 },
                 cancellationToken);

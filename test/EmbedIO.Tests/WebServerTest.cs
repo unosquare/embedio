@@ -161,7 +161,7 @@ namespace EmbedIO.Tests
                             Assert.Inconclusive("Invalid encoding in system");
                         }
 
-                        return ctx.JsonResponseAsync(new EncodeCheck
+                        return ctx.SendDataAsync(new EncodeCheck
                             {
                                 Encoding = encoding.EncodingName,
                                 IsValid = ctx.Request.ContentEncoding.EncodingName == encoding.EncodingName,

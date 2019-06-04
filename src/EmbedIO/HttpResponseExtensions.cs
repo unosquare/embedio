@@ -1,7 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using EmbedIO.Utilities;
 
 namespace EmbedIO
@@ -9,7 +6,7 @@ namespace EmbedIO
     /// <summary>
     /// Provides extension methods for types implementing <see cref="IHttpResponse"/>.
     /// </summary>
-    public static partial class HttpResponseExtensions
+    public static class HttpResponseExtensions
     {
         /// <summary>
         /// Sets the necessary headers to disable caching of a response on the client side.
@@ -41,37 +38,6 @@ namespace EmbedIO
             @this.StatusDescription = statusDescription;
             @this.ContentType = string.Empty;
             @this.ContentLength64 = 0;
-        }
-
-        /// <summary>
-        /// Asynchronously copies the specified stream's contents, starting from the stream's current position,
-        /// to a response's output stream.
-        /// </summary>
-        /// <param name="this">The <see cref="IHttpResponse"/> interface on which this method is called.</param>
-        /// <param name="stream">The stream whose contents must be copied.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
-        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="stream"/> is <see langword="null"/>.</exception>
-        public static Task CopyStreamAsync(this IHttpResponse @this, Stream stream, CancellationToken cancellationToken)
-            => Validate.NotNull(nameof(stream), stream).CopyToAsync(@this.OutputStream, WebServer.StreamCopyBufferSize, cancellationToken);
-
-        /// <summary>
-        /// Asynchronously copies the specified stream's contents, starting from the specified position,
-        /// to a response's output stream.
-        /// </summary>
-        /// <param name="this">The <see cref="IHttpResponse"/> interface on which this method is called.</param>
-        /// <param name="stream">The stream whose contents must be copied.</param>
-        /// <param name="position">The starting position in <paramref name="stream"/>.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
-        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="stream"/> is <see langword="null"/>.</exception>
-        public static Task CopyStreamAsync(this IHttpResponse @this, Stream stream, long position, CancellationToken cancellationToken)
-        {
-            stream = Validate.NotNull(nameof(stream), stream);
-            stream.Position = position;
-            return stream.CopyToAsync(@this.OutputStream, WebServer.StreamCopyBufferSize, cancellationToken);
         }
     }
 }

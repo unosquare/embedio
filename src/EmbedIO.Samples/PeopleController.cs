@@ -63,7 +63,7 @@ namespace EmbedIO.Samples
         [RouteHandler(HttpVerbs.Post, "/echo")]
         public async Task<bool> Echo()
         {
-            var content = await HttpContext.RequestFormDataDictionaryAsync().ConfigureAwait(false);
+            var content = await HttpContext.Request.GetFormDataAsync().ConfigureAwait(false);
             return await Ok(content).ConfigureAwait(false);
         }
     }

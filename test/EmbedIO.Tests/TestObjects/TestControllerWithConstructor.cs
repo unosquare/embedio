@@ -21,14 +21,14 @@ namespace EmbedIO.Tests.TestObjects
         public Task<bool> GetName()
         {
             Response.DisableCaching();
-            return Ok(WebName);
+            return Ok(WebName, MimeTypes.PlainTextType);
         }
 
         [RouteHandler(HttpVerbs.Get, "/namePublic")]
         public Task<bool> GetNamePublic()
         {
             Response.Headers.Set("Cache-Control", "public");
-            return Ok(WebName);
+            return Ok(WebName, MimeTypes.PlainTextType);
         }
 
         protected override void OnBeforeHandler() => Response.Headers.Set(CustomHeader, WebName);

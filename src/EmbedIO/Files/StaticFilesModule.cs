@@ -156,62 +156,65 @@ namespace EmbedIO.Files
             return value;
         }
         
-        private static Task<bool> HandleDirectory(IHttpContext context, string localPath, CancellationToken cancellationToken)
+        private static Task<bool> HandleDirectory(IHttpContext context, string localPath)
         {
             var entries = new[] { context.Request.RawUrl == "/" ? string.Empty : "<a href='../'>../</a>" }
-                .Concat(
-                    Directory.GetDirectories(localPath)
-                        .Select(path =>
-                        {
-                            var name = path.Replace(
-                                localPath.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar,
-                                string.Empty);
-                            return new
-                            {
-                                Name = (name + Path.DirectorySeparatorChar).Truncate(MaxEntryLength, "..>"),
-                                Url = Uri.EscapeDataString(name) + Path.DirectorySeparatorChar,
-                                ModificationTime = new DirectoryInfo(path).LastWriteTimeUtc,
-                                Size = "-",
-                            };
-                        })
-                        .OrderBy(x => x.Name)
-                        .Union(Directory.GetFiles(localPath, "*", SearchOption.TopDirectoryOnly)
+                    .Concat(
+                        Directory.GetDirectories(localPath)
                             .Select(path =>
                             {
-                                var fileInfo = new FileInfo(path);
-                                var name = Path.GetFileName(path);
-
+                                var name = path.Replace(
+                                    localPath.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar,
+                                    string.Empty);
                                 return new
                                 {
-                                    Name = name.Truncate(MaxEntryLength, "..>"),
-                                    Url = Uri.EscapeDataString(name),
-                                    ModificationTime = fileInfo.LastWriteTimeUtc,
-                                    Size = fileInfo.Length.FormatBytes(),
+                                    Name = (name + Path.DirectorySeparatorChar).Truncate(MaxEntryLength, "..>"),
+                                    Url = Uri.EscapeDataString(name) + Path.DirectorySeparatorChar,
+                                    ModificationTime = new DirectoryInfo(path).LastWriteTimeUtc,
+                                    Size = "-",
                                 };
                             })
-                            .OrderBy(x => x.Name))
-                        .Select(y => $"<a href='{y.Url}'>{WebUtility.HtmlEncode(y.Name)}</a>" +
-                                     new string(' ', MaxEntryLength - y.Name.Length + 1) +
-                                     y.ModificationTime.ToRfc1123String() +
-                                     new string(' ', SizeIndent - y.Size.Length) +
-                                     y.Size))
-                .Where(x => !string.IsNullOrWhiteSpace(x));
+                            .OrderBy(x => x.Name)
+                            .Union(Directory.GetFiles(localPath, "*", SearchOption.TopDirectoryOnly)
+                                .Select(path =>
+                                {
+                                    var fileInfo = new FileInfo(path);
+                                    var name = Path.GetFileName(path);
 
-            var encodedPath = WebUtility.HtmlEncode(context.Request.Url.AbsolutePath);
-            var sb = new StringBuilder()
-                .Append("<html><head><title>Index of ")
-                .Append(encodedPath)
-                .Append("</title></head><body><h1>Index of ")
-                .Append(encodedPath)
-                .Append("</h1><hr/><pre>");
-            foreach (var entry in entries)
+                                    return new
+                                    {
+                                        Name = name.Truncate(MaxEntryLength, "..>"),
+                                        Url = Uri.EscapeDataString(name),
+                                        ModificationTime = fileInfo.LastWriteTimeUtc,
+                                        Size = fileInfo.Length.FormatBytes(),
+                                    };
+                                })
+                                .OrderBy(x => x.Name))
+                            .Select(y => $"<a href='{y.Url}'>{WebUtility.HtmlEncode(y.Name)}</a>" +
+                                         new string(' ', MaxEntryLength - y.Name.Length + 1) +
+                                         y.ModificationTime.ToRfc1123String() +
+                                         new string(' ', SizeIndent - y.Size.Length) +
+                                         y.Size))
+                    .Where(x => !string.IsNullOrWhiteSpace(x));
+
+            context.Response.ContentType = MimeTypes.HtmlType;
+            using (var text = context.OpenResponseText(Encoding.UTF8))
             {
-                sb.Append(entry).Append('\n');
+                var encodedPath = WebUtility.HtmlEncode(context.Request.Url.AbsolutePath);
+                text.Write(
+                    "<html><head><title>Index of {0}</title></head><body><h1>Index of {0}</h1><hr/><pre>",
+                    encodedPath);
+
+                foreach (var entry in entries)
+                {
+                    text.Write(entry);
+                    text.Write('\n');
+                }
+
+                text.Write("</pre><hr/></body></html>");
             }
 
-            sb.Append("</pre><hr/></body></html>");
-
-            return context.HtmlResponseAsync(sb.ToString(), cancellationToken: cancellationToken);
+            return Task.FromResult(true);
         }
 
         private Task<bool> HandleGet(IHttpContext context, string path, bool sendBuffer, CancellationToken cancellationToken)
@@ -221,7 +224,7 @@ namespace EmbedIO.Files
                 case PathMappingResult.IsFile:
                     return HandleFile(context, localPath, sendBuffer, cancellationToken);
                 case PathMappingResult.IsDirectory:
-                    return HandleDirectory(context, localPath, cancellationToken);
+                    return HandleDirectory(context, localPath);
                 default:
                     return Task.FromResult(false);
             }
@@ -369,12 +372,7 @@ namespace EmbedIO.Files
                     return false;
                 }
 
-                await WriteFileAsync(
-                        partialHeader,
-                        context.Response,
-                        buffer,
-                        context.AcceptGzip(buffer.Length),
-                        cancellationToken)
+                await WriteFileAsync(partialHeader, context, buffer, cancellationToken)
                     .ConfigureAwait(false);
             }
             catch (HttpListenerException)

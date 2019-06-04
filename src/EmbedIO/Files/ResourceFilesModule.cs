@@ -76,12 +76,7 @@ namespace EmbedIO.Files
 
                     if (sendBuffer)
                     {
-                        await WriteFileAsync(
-                                partialHeader,
-                                context.Response,
-                                buffer,
-                                context.AcceptGzip(buffer.Length),
-                                cancellationToken)
+                        await WriteFileAsync(partialHeader, context, buffer, cancellationToken)
                             .ConfigureAwait(false);
                     }
                 }

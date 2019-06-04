@@ -48,37 +48,44 @@ namespace EmbedIO.Files
         /// <param name="buffer">The buffer.</param>
         /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
         /// <param name="cancellationToken">The cancellationToken.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         protected Task WriteFileAsync(
             string partialHeader,
-            IHttpResponse response,
+            IHttpContext context,
             Stream buffer,
-            bool useGzip = true,
             CancellationToken cancellationToken = default)
         {
             var fileSize = buffer.Length;
 
             // check if partial
             if (!CalculateRange(partialHeader, fileSize, out var lowerByteIndex, out var upperByteIndex))
-                return response.SendStreamAsync(buffer, UseGzip && useGzip, cancellationToken);
+            {
+                using (var stream = context.OpenResponseStream())
+                {
+                    buffer.Position = 0;
+                    return buffer.CopyToAsync(stream, WebServer.StreamCopyBufferSize, cancellationToken);
+                }
+            }
 
             if (upperByteIndex > fileSize)
             {
-                response.SetEmptyResponse((int) HttpStatusCode.RequestedRangeNotSatisfiable);
-                response.Headers.Set(HttpHeaderNames.ContentRange, $"bytes */{fileSize}");
+                context.Response.SetEmptyResponse((int) HttpStatusCode.RequestedRangeNotSatisfiable);
+                context.Response.Headers.Set(HttpHeaderNames.ContentRange, $"bytes */{fileSize}");
 
                 return Task.CompletedTask;
             }
 
             if (lowerByteIndex != 0 || upperByteIndex != fileSize)
             {
-                response.StatusCode = 206;
-                response.ContentLength64 = upperByteIndex - lowerByteIndex + 1;
-
-                response.Headers.Set(HttpHeaderNames.ContentRange, $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
+                context.Response.StatusCode = (int)HttpStatusCode.PartialContent;
+                context.Response.Headers.Set(HttpHeaderNames.ContentRange, $"bytes {lowerByteIndex}-{upperByteIndex}/{fileSize}");
             }
 
-            return response.SendStreamAsync(buffer, lowerByteIndex, UseGzip && useGzip, cancellationToken);
+            using (var stream = context.OpenResponseStream())
+            {
+                buffer.Position = lowerByteIndex;
+                return buffer.CopyToAsync(stream, WebServer.StreamCopyBufferSize, cancellationToken);
+            }
         }
 
         /// <summary>

@@ -34,7 +34,7 @@ namespace EmbedIO.Tests.TestObjects
         {
             HttpContext.Session.Delete();
 
-            return Ok("Deleted");
+            return Ok("Deleted", MimeTypes.PlainTextType);
         }
 
         [RouteHandler(HttpVerbs.Get, "/putdata")]
@@ -42,11 +42,11 @@ namespace EmbedIO.Tests.TestObjects
         {
             HttpContext.Session["sessionData"] = MyData;
 
-            return Ok(HttpContext.Session["sessionData"].ToString());
+            return Ok(HttpContext.Session["sessionData"].ToString(), MimeTypes.PlainTextType);
         }
 
         [RouteHandler(HttpVerbs.Get, "/getdata")]
         public Task<bool> GetDataSession() =>
-            Ok(HttpContext.Session["sessionData"]?.ToString() ?? string.Empty);
+            Ok(HttpContext.Session["sessionData"]?.ToString() ?? string.Empty, MimeTypes.PlainTextType);
     }
 }

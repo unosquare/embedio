@@ -71,7 +71,7 @@ namespace EmbedIO.Samples
                 .WithModule(new WebSocketChatModule("/chat"))
                 .WithModule(new WebSocketTerminalModule("/terminal"))
                 .WithStaticFolderAt("/", HtmlRootPath) // Add static files after other modules to avoid conflicts
-                .WithModule(new ActionModule("/", HttpVerbs.Any, (ctx, path, ct) => ctx.JsonResponseAsync(new { Message = "Error" }, ct)));
+                .WithModule(new ActionModule("/", HttpVerbs.Any, (ctx, path, ct) => ctx.SendDataAsync(new { Message = "Error" }, ct)));
 
             // Listen for state changes.
             server.StateChanged += (s, e) => $"WebServer New State - {e.NewState}".Info();
