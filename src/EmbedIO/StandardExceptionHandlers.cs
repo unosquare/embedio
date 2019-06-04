@@ -76,6 +76,17 @@ namespace EmbedIO
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Sends a <c>500 Internal Server Error</c> response with a HTML payload
+        /// briefly describing the error, including contact information and/or a stack trace
+        /// if specified via the <see cref="ContactInformation"/> and <see cref="IncludeStackTraces"/>
+        /// properties, respectively.
+        /// </summary>
+        /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
+        /// <param name="path">The URL path requested by the client.</param>
+        /// <param name="exception">The unhandled exception.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken" /> used to cancel the operation.</param>
+        /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
         public static Task HtmlResponse(IHttpContext context, string path, Exception exception, CancellationToken cancellationToken)
             => context.Response.SendStandardHtmlAsync(
                 (int)HttpStatusCode.InternalServerError,
