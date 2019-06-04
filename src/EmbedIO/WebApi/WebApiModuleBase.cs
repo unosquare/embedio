@@ -12,9 +12,9 @@ using EmbedIO.Utilities;
 namespace EmbedIO.WebApi
 {
     /// <summary>
-    /// A very simple module to register class methods as handlers.
-    /// Public instance methods that match the WebServerModule.ResponseHandler signature, and have the WebApi handler attribute
-    /// will be used to respond to web server requests.
+    /// <para>A module using class methods as handlers.</para>
+    /// <para>Public instance methods that match the WebServerModule.ResponseHandler signature, and have the WebApi handler attribute
+    /// will be used to respond to web server requests.</para>
     /// </summary>
     public abstract class WebApiModuleBase : RoutingModuleBase
     {

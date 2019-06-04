@@ -4,6 +4,11 @@ using EmbedIO.Utilities;
 
 namespace EmbedIO.WebApi
 {
+    /// <summary>
+    /// <para>A module using class methods as handlers.</para>
+    /// <para>Public instance methods that match the WebServerModule.ResponseHandler signature, and have the WebApi handler attribute
+    /// will be used to respond to web server requests.</para>
+    /// </summary>
     public class WebApiModule : WebApiModuleBase
     {
         /// <summary>

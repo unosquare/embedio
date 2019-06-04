@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace EmbedIO.Sessions
 {
+    /// <summary>
+    /// Provides useful constants related to session management.
+    /// </summary>
     public static class Session
     {
         /// <summary>
