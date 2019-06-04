@@ -107,10 +107,10 @@ namespace EmbedIO.WebSockets.Internal
             }
 
             if (_readyState != WebSocketState.Open)
-                return Task.Delay(0, cancellationToken);
+                return Task.CompletedTask;
 
             if (code != CloseStatusCode.Undefined && !CheckParametersForClose())
-                return Task.Delay(0, cancellationToken);
+                return Task.CompletedTask;
 
             if (code == CloseStatusCode.NoStatus)
                 return InternalCloseAsync(cancellationToken: cancellationToken);

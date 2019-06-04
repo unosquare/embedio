@@ -1,8 +1,7 @@
 ﻿using System;
-using EmbedIO.WebSockets.Internal;
 using Unosquare.Swan;
 
-namespace EmbedIO.WebSockets
+namespace EmbedIO.WebSockets.Internal
 {
     /// <summary>
     /// Represents the event data for the <see cref="Internal.WebSocket.OnMessage"/> event.
@@ -18,7 +17,7 @@ namespace EmbedIO.WebSockets
     ///   the <see cref="Data"/> or <see cref="RawData"/> property.
     ///   </para>
     /// </remarks>
-    public class MessageEventArgs : EventArgs
+    internal class MessageEventArgs : EventArgs
     {
         private readonly byte[] _rawData;
         private string _data;

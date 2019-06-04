@@ -71,7 +71,7 @@ namespace EmbedIO.Files
                 response.ContentLength64 = 0;
                 response.Headers.Set(HttpHeaderNames.ContentRange, $"bytes */{fileSize}");
 
-                return Task.Delay(0, cancellationToken);
+                return Task.CompletedTask;
             }
 
             if (lowerByteIndex != 0 || upperByteIndex != fileSize)
