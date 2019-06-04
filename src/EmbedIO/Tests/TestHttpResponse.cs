@@ -43,7 +43,7 @@ namespace EmbedIO.Tests
         public ICookieCollection Cookies { get; } = new Net.Internal.CookieCollection();
 
         /// <inheritdoc />
-        public Encoding ContentEncoding { get; } = Encoding.UTF8;
+        public Encoding ContentEncoding { get; set; } = Encoding.UTF8;
 
         /// <inheritdoc />
         public bool KeepAlive { get; set; }
