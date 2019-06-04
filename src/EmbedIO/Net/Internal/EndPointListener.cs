@@ -238,7 +238,16 @@ namespace EmbedIO.Net.Internal
                 return;
             }
 
-            var conn = new HttpConnection(accepted, epl, epl.Listener.Certificate);
+            HttpConnection conn;
+            try
+            {
+                conn = new HttpConnection(accepted, epl, epl.Listener.Certificate);
+            }
+            catch
+            {
+                return;
+            }
+
             lock (epl._unregistered)
             {
                 epl._unregistered[conn] = conn;
