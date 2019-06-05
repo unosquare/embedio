@@ -10,11 +10,17 @@ using Unosquare.Swan;
 namespace EmbedIO
 {
     /// <summary>
-    /// Base class for <see cref="IWebServer"/> implementations.
+    /// Base class for <see cref="IWebServer" /> implementations.
     /// </summary>
-    public abstract class WebServerBase : ConfiguredObject, IWebServer, IDisposable
+    /// <typeparam name="TOptions">The type of the options object used to configure an instance.</typeparam>
+    /// <seealso cref="ConfiguredObject" />
+    /// <seealso cref="IWebServer" />
+    public abstract class WebServerBase<TOptions> : ConfiguredObject, IWebServer, IDisposable
+        where TOptions : WebServerOptionsBase, new()
     {
-        private readonly WebModuleCollection _modules = new WebModuleCollection(nameof(WebServerBase), "/");
+        private readonly WebModuleCollection _modules;
+
+        private readonly bool _supportCompressedRequests;
 
         private WebExceptionHandler _onUnhandledException = StandardExceptionHandlers.Default;
 
@@ -23,14 +29,46 @@ namespace EmbedIO
         private ISessionManager _sessionManager;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebServerBase"/> class.
+        /// Initializes a new instance of the <see cref="WebServerBase{TOptions}" /> class.
         /// </summary>
         protected WebServerBase()
+            : this(new TOptions(), null)
         {
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="WebServerBase"/> class.
+        /// Initializes a new instance of the <see cref="WebServerBase{TOptions}" /> class.
+        /// </summary>
+        /// <param name="options">A <typeparamref name="TOptions"/> instance that will be used
+        /// to configure the server.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="options"/> is <see langword="null"/>.</exception>
+        protected WebServerBase(TOptions options)
+            : this(Validate.NotNull(nameof(options), options), null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebServerBase{TOptions}" /> class.
+        /// </summary>
+        /// <param name="configure">A callback that will be used to configure
+        /// the server's options.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="configure"/> is <see langword="null"/>.</exception>
+        protected WebServerBase(Action<TOptions> configure)
+            : this(new TOptions(), Validate.NotNull(nameof(configure), configure))
+        {
+        }
+
+        private WebServerBase(TOptions options, Action<TOptions> configure)
+        {
+            Options = options;
+            LogSource = GetType().Name;
+            _modules = new WebModuleCollection(LogSource, "/");
+
+            configure?.Invoke(Options);
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="WebServerBase{TOptions}"/> class.
         /// </summary>
         ~WebServerBase()
         {
@@ -42,6 +80,16 @@ namespace EmbedIO
 
         /// <inheritdoc />
         public IComponentCollection<IWebModule> Modules => _modules;
+
+        /// <summary>
+        /// Gets the options object used to configure this instance.
+        /// </summary>
+        public TOptions Options { get; }
+
+        /// <summary>
+        /// Gets a string to use as a source for log messages.
+        /// </summary>
+        protected string LogSource { get; }
 
         /// <inheritdoc />
         /// <exception cref="InvalidOperationException">The server's configuration is locked.</exception>
@@ -116,11 +164,11 @@ namespace EmbedIO
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
             {
-                "Operation canceled.".Debug(nameof(WebServerBase));
+                "Operation canceled.".Debug(LogSource);
             }
             finally
             {
-                "Cleaning up".Info(GetType().Name);
+                "Cleaning up".Info(LogSource);
                 State = WebServerState.Stopped;
             }
         }
@@ -137,6 +185,7 @@ namespace EmbedIO
         {
             base.OnBeforeLockConfiguration();
 
+            Options.Lock();
             _modules.Lock();
         }
 
@@ -197,7 +246,7 @@ namespace EmbedIO
 
                     // Log the request and its ID
                     $"[{context.Id}] Start: Source {requestEndpoint} - {context.Request.HttpMethod}: {context.Request.Url.PathAndQuery} - {context.Request.UserAgent}"
-                        .Debug(nameof(WebServerBase));
+                        .Debug(LogSource);
 
                     try
                     {
@@ -205,8 +254,7 @@ namespace EmbedIO
                         if (await _modules.DispatchRequestAsync(context, cancellationToken).ConfigureAwait(false))
                             return;
 
-                        $"[{context.Id}] No module generated a response. Sending 404 - Not Found".Error(
-                            nameof(WebServerBase));
+                        $"[{context.Id}] No module generated a response. Sending 404 - Not Found".Error(LogSource);
                         context.Response.SetEmptyResponse((int) HttpStatusCode.NotFound);
                     }
                     catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
@@ -219,12 +267,12 @@ namespace EmbedIO
                     }
                     catch (HttpException ex)
                     {
-                        $"[{context.Id}] HttpException: sending status code {ex.StatusCode}".Debug(nameof(WebServerBase));
+                        $"[{context.Id}] HttpException: sending status code {ex.StatusCode}".Debug(LogSource);
                         await ex.SendResponseAsync(context).ConfigureAwait(false);
                     }
                     catch (Exception ex)
                     {
-                        ex.Log(nameof(WebServerBase), $"[{context.Id}] Unhandled exception.");
+                        ex.Log(LogSource, $"[{context.Id}] Unhandled exception.");
                         context.Response.SetEmptyResponse((int)HttpStatusCode.InternalServerError);
                         context.Response.DisableCaching();
                         await _onUnhandledException(context, context.Request.Url.AbsolutePath, ex, cancellationToken)
@@ -234,20 +282,20 @@ namespace EmbedIO
                 finally
                 {
                     context.Close();
-                    $"[{context.Id}] End".Debug(nameof(WebServerBase));
+                    $"[{context.Id}] End".Debug(LogSource);
                 }
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
             {
-                $"[{context.Id}] Operation canceled.".Debug(nameof(WebServerBase));
+                $"[{context.Id}] Operation canceled.".Debug(LogSource);
             }
             catch (HttpListenerException ex)
             {
-                ex.Log(nameof(WebServerBase), $"[{context.Id}] Listener exception.");
+                ex.Log(LogSource, $"[{context.Id}] Listener exception.");
             }
             catch (Exception ex)
             {
-                ex.Log(nameof(WebServerBase), $"[{context.Id}] Fatal exception.");
+                ex.Log(LogSource, $"[{context.Id}] Fatal exception.");
                 OnFatalException();
             }
         }

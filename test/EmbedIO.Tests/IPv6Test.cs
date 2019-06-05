@@ -25,7 +25,7 @@ namespace EmbedIO.Tests
             if (Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
-            var instance = new WebServer(new[] { "http://*:8877" }, HttpListenerMode.EmbedIO);
+            var instance = new WebServer(HttpListenerMode.EmbedIO, "http://*:8877");
             instance.OnAny((ctx, path, ct) => ctx.SendDataAsync(DateTime.Now, ct));
 
             instance.RunAsync();
@@ -42,7 +42,7 @@ namespace EmbedIO.Tests
             if (Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
-            var instance = new WebServer(new[] { "http://[::1]:8877" }, HttpListenerMode.EmbedIO);
+            var instance = new WebServer(HttpListenerMode.EmbedIO, "http://[::1]:8877");
             instance.OnAny((ctx, path, ct) => ctx.SendDataAsync(DateTime.Now, ct));
 
             instance.RunAsync();

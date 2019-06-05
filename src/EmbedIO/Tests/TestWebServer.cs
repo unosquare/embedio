@@ -11,7 +11,7 @@ namespace EmbedIO.Tests
     ///
     /// Use this <c>IWebServer</c> implementation to run your unit tests.
     /// </summary>
-    public class TestWebServer : WebServerBase
+    public class TestWebServer : WebServerBase<TestWebServerOptions>
     {
         private readonly Queue<IHttpContextImpl> _contexts = new Queue<IHttpContextImpl>();
 

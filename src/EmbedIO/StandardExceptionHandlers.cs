@@ -26,7 +26,7 @@ namespace EmbedIO
         public static bool IncludeStackTraces { get; set; }
 
         /// <summary>
-        /// <para>Gets the default handler used by <see cref="WebServerBase"/>.</para>
+        /// <para>Gets the default handler used by <see cref="WebServerBase{TOptions}"/>.</para>
         /// <para>This is the same as <see cref="HtmlResponse"/>.</para>
         /// </summary>
         public static WebExceptionHandler Default { get; } = HtmlResponse;

@@ -12,157 +12,108 @@ namespace EmbedIO
     /// <para>EmbedIO's web server. This is the default implementation of <see cref="IWebServer"/>.</para>
     /// <para>This class also contains some useful constants related to EmbedIO's internal working.</para>
     /// </summary>
-    public partial class WebServer : WebServerBase
+    public partial class WebServer : WebServerBase<WebServerOptions>
     {
+        private readonly string _logSource;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebServer"/> class.
-        ///
-        /// Default settings are Regex RoutingStrategy, EmbedIO HttpListenerMode, and binding all
-        /// network interfaces with HTTP protocol and default port (http://*:80/).
+        /// Initializes a new instance of the <see cref="WebServer"/> class,
+        /// that will respond on HTTP port 80 on all network interfaces.
         /// </summary>
         public WebServer()
             : this(80)
         {
-            // placeholder
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebServer"/> class.
-        /// 
-        /// Default settings are Regex RoutingStrategy, EmbedIO HttpListenerMode, and binding all
-        /// network interfaces with HTTP protocol with the selected port (http://*:{port}/).
+        /// Initializes a new instance of the <see cref="WebServer"/> class,
+        /// that will respond on the specified HTTP port on all network interfaces.
         /// </summary>
         /// <param name="port">The port.</param>
         public WebServer(int port)
-            : this(new[] { $"http://*:{port}/" })
+            : this($"http://*:{port}/")
         {
-            // placeholder
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebServer" /> class.
-        ///
-        /// Default settings are Regex RoutingStrategy and EmbedIO HttpListenerMode.
+        /// Initializes a new instance of the <see cref="WebServer"/> class
+        /// with the specified URL prefixes.
         /// </summary>
-        /// <remarks>
-        /// <c>urlPrefix</c> must be specified as something similar to: http://localhost:9696/
-        /// Please notice the ending slash. -- It is important.
-        /// </remarks>
-        /// <param name="urlPrefix">The URL prefix.</param>
-        public WebServer(string urlPrefix)
-            : this(new[] { urlPrefix })
+        /// <param name="urlPrefixes">The URL prefixes to configure.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="urlPrefixes"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">
+        /// <para>One or more of the elements of <paramref name="urlPrefixes"/> is the empty string.</para>
+        /// <para>- or -</para>
+        /// <para>One or more of the elements of <paramref name="urlPrefixes"/> is already registered.</para>
+        /// </exception>
+        public WebServer(params string[] urlPrefixes)
+            : this(new WebServerOptions().WithUrlPrefixes(urlPrefixes))
         {
-            // placeholder
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebServer"/> class.
-        ///
-        /// Default settings are Regex RoutingStrategy and EmbedIO HttpListenerMode.
-        /// </summary>
-        /// <remarks>
-        /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/
-        /// Please notice the ending slash. -- It is important.
-        /// </remarks>
-        /// <param name="urlPrefixes">The URL prefix.</param>
-        /// <exception cref="ArgumentException">Validate urlPrefix must be specified.</exception>
-        public WebServer(string[] urlPrefixes)
-         : this(urlPrefixes, HttpListenerFactory.Create(HttpListenerMode.EmbedIO))
-        {
-            // placeholder
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer" /> class.
         /// </summary>
-        /// <param name="urlPrefixes">The URL prefix.</param>
-        /// <param name="mode">The mode.</param>
-        /// <exception cref="ArgumentException">Validate urlPrefix must be specified.</exception>
-        /// <remarks>
-        /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/
-        /// Please notice the ending slash. -- It is important.
-        /// </remarks>
-        public WebServer(string[] urlPrefixes, HttpListenerMode mode)
-            : this(urlPrefixes, HttpListenerFactory.Create(mode))
+        /// <param name="mode">The type of HTTP listener to configure.</param>
+        /// <param name="urlPrefixes">The URL prefixes to configure.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="urlPrefixes"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">
+        /// <para>One or more of the elements of <paramref name="urlPrefixes"/> is the empty string.</para>
+        /// <para>- or -</para>
+        /// <para>One or more of the elements of <paramref name="urlPrefixes"/> is already registered.</para>
+        /// </exception>
+        public WebServer(HttpListenerMode mode, params string[] urlPrefixes)
+            : this(new WebServerOptions().WithMode(mode).WithUrlPrefixes(urlPrefixes))
         {
-            // placeholder
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer" /> class.
         /// </summary>
-        /// <param name="urlPrefixes">The URL prefix.</param>
-        /// <param name="mode">The mode.</param>
-        /// <param name="certificate">The certificate.</param>
-        /// <exception cref="ArgumentException">Validate urlPrefix must be specified.</exception>
-        /// <remarks>
-        /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/
-        /// Please notice the ending slash. -- It is important.
-        /// </remarks>
-        public WebServer(string[] urlPrefixes, HttpListenerMode mode, X509Certificate certificate)
-            : this(urlPrefixes, HttpListenerFactory.Create(mode, certificate))
+        /// <param name="mode">The type of HTTP listener to configure.</param>
+        /// <param name="certificate">The X.509 certificate to use for SSL connections.</param>
+        /// <param name="urlPrefixes">The URL prefixes to configure.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="urlPrefixes"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">
+        /// <para>One or more of the elements of <paramref name="urlPrefixes"/> is the empty string.</para>
+        /// <para>- or -</para>
+        /// <para>One or more of the elements of <paramref name="urlPrefixes"/> is already registered.</para>
+        /// </exception>
+        public WebServer(HttpListenerMode mode, X509Certificate2 certificate, params string[] urlPrefixes)
+            : this(new WebServerOptions()
+                .WithMode(mode)
+                .WithCertificate(certificate)
+                .WithUrlPrefixes(urlPrefixes))
         {
-            // placeholder
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class.
         /// </summary>
-        /// <param name="options">The WebServer options.</param>
+        /// <param name="options">A <see cref="WebServerOptions"/> object used to configure this instance.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="options"/> is <see langword="null"/>.</exception>
         public WebServer(WebServerOptions options)
-        : this(options.UrlPrefixes, HttpListenerFactory.Create(options.Mode, options.Certificate))
+            : base(options)
         {
-            // temp placeholder
+            Listener = CreateHttpListener();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebServer" /> class.
+        /// Initializes a new instance of the <see cref="WebServer"/> class.
         /// </summary>
-        /// <param name="urlPrefixes">The URL prefix.</param>
-        /// <param name="httpListener">The HTTP listener.</param>
-        /// <exception cref="ArgumentException">Validate urlPrefix must be specified.</exception>
-        /// <remarks>
-        /// <c>urlPrefixes</c> must be specified as something similar to: http://localhost:9696/
-        /// Please notice the ending slash. -- It is important.
-        /// </remarks>
-        public WebServer(string[] urlPrefixes, IHttpListener httpListener)
+        /// <param name="configure">A callback that will be used to configure
+        /// the server's options.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="configure"/> is <see langword="null"/>.</exception>
+        public WebServer(Action<WebServerOptions> configure)
+            : base(configure)
         {
-            if (urlPrefixes == null || urlPrefixes.Length <= 0)
-                throw new ArgumentException("At least 1 URL prefix in urlPrefixes must be specified");
-
-            $"Running HTTPListener: {httpListener.Name}".Info(nameof(WebServer));
-
-            Listener = httpListener;
-
-            foreach (var prefix in urlPrefixes)
-            {
-                var urlPrefix = new string(prefix?.ToCharArray());
-
-                if (urlPrefix.EndsWith("/") == false) urlPrefix = urlPrefix + "/";
-                urlPrefix = urlPrefix.ToLowerInvariant();
-
-                Listener.AddPrefix(urlPrefix);
-                $"Web server prefix '{urlPrefix}' added.".Info(nameof(WebServer));
-            }
-
-            "Finished Loading Web Server.".Info(nameof(WebServer));
+            Listener = CreateHttpListener();
         }
 
         /// <summary>
         /// Gets the underlying HTTP listener.
         /// </summary>
-        /// <value>
-        /// The listener.
-        /// </value>
-        public IHttpListener Listener { get; protected set; }
-
-        /// <summary>
-        /// Gets the URL Prefix for which the server is serving requests.
-        /// </summary>
-        /// <value>
-        /// The URL prefix.
-        /// </value>
-        public List<string> UrlPrefixes => Listener.Prefixes;
+        public IHttpListener Listener { get; }
 
         /// <inheritdoc />
         protected override void Dispose(bool disposing)
@@ -173,12 +124,12 @@ namespace EmbedIO
                 {
                     Listener.Dispose();
                 }
-                finally
+                catch (Exception ex)
                 {
-                    Listener = null;
+                    ex.Log(LogSource, "Exception thrown while disposing HTTP listener.");
                 }
 
-                "Listener Closed.".Info(nameof(WebServer));
+                "Listener closed.".Info(LogSource);
             }
 
             base.Dispose(disposing);
@@ -187,10 +138,24 @@ namespace EmbedIO
         /// <inheritdoc />
         protected override void Prepare(CancellationToken cancellationToken)
         {
-            Listener.IgnoreWriteExceptions = true;
+            $"Running HTTPListener: {Listener.Name}".Info(LogSource);
+
+            foreach (var prefix in Options.UrlPrefixes)
+            {
+                var urlPrefix = new string(prefix?.ToCharArray());
+
+                if (urlPrefix.EndsWith("/") == false) urlPrefix = urlPrefix + "/";
+                urlPrefix = urlPrefix.ToLowerInvariant();
+
+                Listener.AddPrefix(urlPrefix);
+                $"Web server prefix '{urlPrefix}' added.".Info(LogSource);
+            }
+
+            "Finished Loading Web Server.".Info(LogSource);
+
             Listener.Start();
 
-            "Started HTTP Listener".Info(nameof(WebServer));
+            "Started HTTP Listener".Info(LogSource);
 
             // close port when the cancellation token is cancelled
             cancellationToken.Register(() => Listener?.Stop());
@@ -204,5 +169,18 @@ namespace EmbedIO
 
         /// <inheritdoc />
         protected override void OnFatalException() => Listener?.Dispose();
+
+        private IHttpListener CreateHttpListener()
+        {
+            switch (Options.Mode)
+            {
+                case HttpListenerMode.Microsoft:
+                    return System.Net.HttpListener.IsSupported
+                        ? new SystemHttpListener(new System.Net.HttpListener()) as IHttpListener
+                        : new Net.HttpListener(Options.Certificate);
+                default: // case HttpListenerMode.EmbedIO
+                    return new Net.HttpListener(Options.Certificate);
+            }
+        }
     }
 }

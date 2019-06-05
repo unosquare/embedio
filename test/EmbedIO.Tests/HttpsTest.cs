@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Security.Cryptography.X509Certificates;
+using System.Net;
 using System.Net.Http;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using NUnit.Framework;
 using System.Threading.Tasks;
+using NUnit.Framework;
 using Unosquare.Swan;
 
 namespace EmbedIO.Tests
@@ -20,24 +22,22 @@ namespace EmbedIO.Tests
             if (Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
-            // bypass certification validation
-            System.Net.ServicePointManager.ServerCertificateValidationCallback = (s, c, cert, x) => true;
+            ServicePointManager.ServerCertificateValidationCallback = ValidateCertificate;
 
-            var options = new WebServerOptions(HttpsUrl)
-            {
-                AutoLoadCertificate = true,
-                Mode = HttpListenerMode.EmbedIO,
-            };
+            var options = new WebServerOptions()
+                .WithUrlPrefix(HttpsUrl)
+                .WithAutoLoadCertificate()
+                .WithMode(HttpListenerMode.EmbedIO);
 
             using (var webServer = new WebServer(options))
             {
-                webServer.OnAny((ctx, path, ct) => ctx.SendStringAsync(DefaultMessage, MimeTypes.HtmlType, Encoding.UTF8, ct));
+                webServer.OnAny((ctx, path, ct) => ctx.SendStringAsync(DefaultMessage, MimeTypes.PlainTextType, Encoding.UTF8, ct));
 
                 webServer.RunAsync();
 
                 using (var httpClientHandler = new HttpClientHandler())
                 {
-                    httpClientHandler.ServerCertificateCustomValidationCallback = (s, c, cert, x) => true;
+                    httpClientHandler.ServerCertificateCustomValidationCallback = ValidateCertificate;
                     using (var httpClient = new HttpClient(httpClientHandler))
                     {
                         Assert.AreEqual(DefaultMessage, await httpClient.GetStringAsync(HttpsUrl));
@@ -52,10 +52,9 @@ namespace EmbedIO.Tests
             if (Runtime.OS == Unosquare.Swan.OperatingSystem.Windows)
                 Assert.Ignore("Ignore Windows");
 
-            var options = new WebServerOptions(HttpsUrl)
-            {
-                AutoLoadCertificate = true,
-            };
+            var options = new WebServerOptions()
+                .WithUrlPrefix(HttpsUrl)
+                .WithAutoLoadCertificate();
 
             Assert.Throws<InvalidOperationException>(() => new WebServer(options));
         }
@@ -66,10 +65,9 @@ namespace EmbedIO.Tests
             if (Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
-            var options = new WebServerOptions(HttpsUrl)
-            {
-                AutoRegisterCertificate = true,
-            };
+            var options = new WebServerOptions()
+                .WithUrlPrefix(HttpsUrl)
+                .WithAutoRegisterCertificate();
 
             Assert.Throws<InvalidOperationException>(() => new WebServer(options));
         }
@@ -80,13 +78,20 @@ namespace EmbedIO.Tests
             if (Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
-            var options = new WebServerOptions(HttpsUrl)
-            {
-                AutoRegisterCertificate = true,
-                Certificate = new X509Certificate2(),
-            };
+            var options = new WebServerOptions()
+                .WithUrlPrefix(HttpsUrl)
+                .WithCertificate(new X509Certificate2())
+                .WithAutoRegisterCertificate();
 
             Assert.Throws<System.Security.Cryptography.CryptographicException>(() => new WebServer(options));
         }
+
+        // Bypass certificate validation.
+        private static bool ValidateCertificate(
+            object sender,
+            X509Certificate certificate,
+            X509Chain chain,
+            SslPolicyErrors sslPolicyErrors)
+            => true;
     }
 }

@@ -1,207 +1,278 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
+using EmbedIO.Utilities;
 using Unosquare.Swan;
 
 namespace EmbedIO
 {
     /// <summary>
-    /// Options for WebServer creation.
+    /// Contains options for configuring an instance of <see cref="WebServer"/>.
     /// </summary>
-    public sealed class WebServerOptions
+    public sealed class WebServerOptions : WebServerOptionsBase
     {
+        private const string NetShLogSource = "NetSh";
+
+        private readonly List<string> _urlPrefixes = new List<string>();
+
+        private HttpListenerMode _mode = HttpListenerMode.EmbedIO;
+
         private X509Certificate2 _certificate;
+
+        private string _certificateThumbprint;
+
+        private bool _autoLoadCertificate;
+
+        private bool _autoRegisterCertificate;
+
+        private StoreName _storeName = StoreName.My;
+
+        private StoreLocation _storeLocation = StoreLocation.LocalMachine;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServerOptions" /> class.
         /// </summary>
-        /// <param name="urlPrefix">The URL prefix.</param>
-        public WebServerOptions(string urlPrefix)
-            : this(new[] { urlPrefix })
+        public WebServerOptions()
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebServerOptions"/> class.
-        /// </summary>
-        /// <param name="urlPrefixes">The urls.</param>
-        public WebServerOptions(string[] urlPrefixes)
-        {
-            UrlPrefixes = urlPrefixes;
         }
 
         /// <summary>
         /// Gets the URL prefixes.
         /// </summary>
-        /// <value>
-        /// The URL prefixes.
-        /// </value>
-        public string[] UrlPrefixes { get; }
+        public IReadOnlyList<string> UrlPrefixes => _urlPrefixes;
 
         /// <summary>
-        /// Gets or sets the mode.
+        /// Gets or sets the type of HTTP listener.
         /// </summary>
-        /// <value>
-        /// The mode.
-        /// </value>
-        public HttpListenerMode Mode { get; set; } = HttpListenerMode.EmbedIO;
+        /// <exception cref="InvalidOperationException">This property is being set,
+        /// and this instance's configuration is locked.</exception>
+        /// <seealso cref="HttpListenerMode"/>
+        public HttpListenerMode Mode
+        {
+            get => _mode;
+            set
+            {
+                EnsureConfigurationNotLocked();
+                _mode = value;
+            }
+        }
 
         /// <summary>
-        /// Gets or sets the certificate.
+        /// Gets or sets the X.509 certificate to use for SSL connections.
         /// </summary>
-        /// <value>
-        /// The certificate.
-        /// </value>
+        /// <exception cref="InvalidOperationException">This property is being set,
+        /// and this instance's configuration is locked.</exception>
         public X509Certificate2 Certificate
         {
             get
             {
                 if (AutoRegisterCertificate)
-                {
                     return TryRegisterCertificate() ? _certificate : null;
-                }
 
-                return _certificate == null && AutoLoadCertificate ? LoadCertificate() : _certificate;
+                return _certificate ?? (AutoLoadCertificate ? LoadCertificate() : null);
             }
-
-            set => _certificate = value;
+            set
+            {
+                EnsureConfigurationNotLocked();
+                _certificate = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets the certificate thumb.
+        /// Gets or sets the thumbprint of the X.509 certificate to use for SSL connections.
         /// </summary>
-        /// <value>
-        /// The certificate thumb.
-        /// </value>
-        public string CertificateThumb { get; set; }
+        /// <exception cref="InvalidOperationException">This property is being set,
+        /// and this instance's configuration is locked.</exception>
+        public string CertificateThumbprint
+        {
+            get => _certificateThumbprint;
+            set
+            {
+                EnsureConfigurationNotLocked();
+
+                // strip any non-hexadecimal values and make uppercase
+                _certificateThumbprint = value == null
+                    ? null
+                    : Regex.Replace(value, @"[^\da-fA-F]", string.Empty).ToUpper(CultureInfo.InvariantCulture);
+            }
+        }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [automatic load certificate].
+        /// Gets or sets a value indicating whether to automatically load the X.509 certificate.
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if [automatic load certificate]; otherwise, <c>false</c>.
-        /// </value>
-        public bool AutoLoadCertificate { get; set; }
+        /// <exception cref="InvalidOperationException">This property is being set,
+        /// and this instance's configuration is locked.</exception>
+        /// <exception cref="PlatformNotSupportedException">This property is being set to <see langword="true"/>
+        /// and the underlying operating system is not Windows.</exception>
+        public bool AutoLoadCertificate
+        {
+            get => _autoLoadCertificate;
+            set
+            {
+                EnsureConfigurationNotLocked();
+                if (value && Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
+                    throw new PlatformNotSupportedException("AutoLoadCertificate functionality is only available under Windows.");
+
+                _autoLoadCertificate = value;
+            }
+        }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [automatic register certificate].
+        /// Gets or sets a value indicating whether to automatically bind the X.509 certificate
+        /// to the port used for HTTPS.
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if [automatic register certificate]; otherwise, <c>false</c>.
-        /// </value>
-        public bool AutoRegisterCertificate { get; set; }
+        /// <exception cref="InvalidOperationException">This property is being set,
+        /// and this instance's configuration is locked.</exception>
+        /// <exception cref="PlatformNotSupportedException">This property is being set to <see langword="true"/>
+        /// and the underlying operating system is not Windows.</exception>
+        public bool AutoRegisterCertificate
+        {
+            get => _autoRegisterCertificate;
+            set
+            {
+                EnsureConfigurationNotLocked();
+                if (value && Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
+                    throw new PlatformNotSupportedException("AutoRegisterCertificate functionality is only available under Windows.");
+
+                _autoRegisterCertificate = value;
+            }
+        }
 
         /// <summary>
-        /// Gets or sets the name of the store.
+        /// Gets or sets a value indicating the X.509 certificate store where to load the certificate from.
         /// </summary>
-        /// <value>
-        /// The name of the store.
-        /// </value>
-        public StoreName StoreName { get; set; } = StoreName.My;
+        /// <exception cref="InvalidOperationException">This property is being set,
+        /// and this instance's configuration is locked.</exception>
+        /// <seealso cref="System.Security.Cryptography.X509Certificates.StoreName"/>
+        public StoreName StoreName
+        {
+            get => _storeName;
+            set
+            {
+                EnsureConfigurationNotLocked();
+                _storeName = value;
+            }
+        }
 
         /// <summary>
-        /// Gets or sets the store location.
+        /// Gets or sets a value indicating the location of the X.509 certificate store where to load the certificate from.
         /// </summary>
-        /// <value>
-        /// The store location.
-        /// </value>
-        public StoreLocation StoreLocation { get; set; } = StoreLocation.LocalMachine;
+        /// <exception cref="InvalidOperationException">This property is being set,
+        /// and this instance's configuration is locked.</exception>
+        /// <seealso cref="System.Security.Cryptography.X509Certificates.StoreLocation"/>
+        public StoreLocation StoreLocation
+        {
+            get => _storeLocation;
+            set
+            {
+                EnsureConfigurationNotLocked();
+                _storeLocation = value;
+            }
+        }
+
+        /// <summary>
+        /// Adds a URL prefix.
+        /// </summary>
+        /// <param name="urlPrefix">The URL prefix.</param>
+        /// <exception cref="InvalidOperationException">This instance's configuration is locked.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="urlPrefix"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">
+        /// <para><paramref name="urlPrefix"/> is the empty string.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="urlPrefix"/> is already registered.</para>
+        /// </exception>
+        public void AddUrlPrefix(string urlPrefix)
+        {
+            EnsureConfigurationNotLocked();
+
+            urlPrefix = Validate.NotNullOrEmpty(nameof(urlPrefix), urlPrefix);
+            if (_urlPrefixes.Contains(urlPrefix))
+                throw new ArgumentException("URL prefix is already registered.", nameof(urlPrefix));
+
+            _urlPrefixes.Add(urlPrefix);
+        }
 
         private X509Certificate2 LoadCertificate()
         {
-            if (!string.IsNullOrWhiteSpace(CertificateThumb)) return GetCertificate();
-
             if (Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
-                throw new InvalidOperationException("AutoLoad functionality is only available in Windows");
+                return null;
+
+            if (!string.IsNullOrWhiteSpace(_certificateThumbprint)) return GetCertificate(_certificateThumbprint);
 
             var netsh = GetNetsh("show");
 
-            var thumbPrint = string.Empty;
+            string thumbprint = null;
 
             netsh.ErrorDataReceived += (s, e) =>
             {
                 if (string.IsNullOrWhiteSpace(e.Data)) return;
 
-                e.Data.Error(nameof(netsh));
+                e.Data.Error(NetShLogSource);
             };
 
             netsh.OutputDataReceived += (s, e) =>
             {
                 if (string.IsNullOrWhiteSpace(e.Data)) return;
 
-                e.Data.Debug(nameof(netsh));
+                e.Data.Debug(NetShLogSource);
 
                 var line = e.Data.Trim();
 
                 if (line.StartsWith("Certificate Hash") && line.IndexOf(":", StringComparison.Ordinal) > -1)
-                    thumbPrint = line.Split(':')[1].Trim();
+                    thumbprint = line.Split(':')[1].Trim();
             };
 
-            if (netsh.Start())
-            {
-                netsh.BeginOutputReadLine();
-                netsh.BeginErrorReadLine();
+            if (!netsh.Start())
+                return null;
 
-                netsh.WaitForExit();
+            netsh.BeginOutputReadLine();
+            netsh.BeginErrorReadLine();
+            netsh.WaitForExit();
 
-                if (netsh.ExitCode == 0 && !string.IsNullOrWhiteSpace(thumbPrint))
-                {
-                    return GetCertificate(thumbPrint);
-                }
-            }
-
-            return null;
+            return netsh.ExitCode == 0 && !string.IsNullOrEmpty(thumbprint)
+                ? GetCertificate(thumbprint)
+                : null;
         }
 
-        private X509Certificate2 GetCertificate(string thumb = null)
+        private X509Certificate2 GetCertificate(string thumbprint = null)
         {
-            // strip any non-hexadecimal values and make uppercase
-            var thumbprint = Regex.Replace(thumb ?? CertificateThumb, @"[^\da-fA-F]", string.Empty).ToUpper(CultureInfo.InvariantCulture);
-            var store = new X509Store(StoreName, StoreLocation);
-
-            try
+            using (var store = new X509Store(StoreName, StoreLocation))
             {
                 store.Open(OpenFlags.ReadOnly);
-
-                var signingCert = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);
-
+                var signingCert = store.Certificates.Find(
+                    X509FindType.FindByThumbprint,
+                    thumbprint ?? _certificateThumbprint, 
+                    false);
                 return signingCert.Count == 0 ? null : signingCert[0];
-            }
-            finally
-            {
-                store.Close();
             }
         }
 
         private bool AddCertificateToStore()
         {
-            var store = new X509Store(StoreName, StoreLocation);
-
-            try
+            using (var store = new X509Store(StoreName, StoreLocation))
             {
-                store.Open(OpenFlags.ReadWrite);
-                store.Add(_certificate);
+                try
+                {
+                    store.Open(OpenFlags.ReadWrite);
+                    store.Add(_certificate);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
             }
-            catch
-            {
-                return false;
-            }
-            finally
-            {
-                store.Close();
-            }
-
-            return true;
         }
 
         private bool TryRegisterCertificate()
         {
             if (Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
-                throw new InvalidOperationException("AutoRegister functionality is only available in Windows");
+                return false;
 
             if (_certificate == null)
                 throw new InvalidOperationException("A certificate is required to AutoRegister");
@@ -221,7 +292,7 @@ namespace EmbedIO
                 if (string.IsNullOrWhiteSpace(e.Data)) return;
 
                 sb.AppendLine(e.Data);
-                e.Data.Error(nameof(netsh));
+                e.Data.Error(NetShLogSource);
             }
 
             netsh.OutputDataReceived += PushLine;
@@ -234,7 +305,7 @@ namespace EmbedIO
             netsh.BeginErrorReadLine();
             netsh.WaitForExit();
 
-            return netsh.ExitCode == 0 ? true : throw new InvalidOperationException($"Netsh error: {sb}");
+            return netsh.ExitCode == 0 ? true : throw new InvalidOperationException($"NetSh error: {sb}");
         }
 
         private int GetSslPort()
@@ -242,7 +313,7 @@ namespace EmbedIO
             var port = 443;
 
             foreach (var url in UrlPrefixes.Where(x =>
-                x.StartsWith("https", StringComparison.InvariantCultureIgnoreCase)))
+                x.StartsWith("https:", StringComparison.OrdinalIgnoreCase)))
             {
                 var match = Regex.Match(url, @":(\d+)");
 
@@ -262,8 +333,7 @@ namespace EmbedIO
                 RedirectStandardError = true,
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
-                Arguments =
-                    $"http {verb} sslcert ipport=0.0.0.0:{GetSslPort()} {options}",
+                Arguments = $"http {verb} sslcert ipport=0.0.0.0:{GetSslPort()} {options}",
             },
         };
     }
