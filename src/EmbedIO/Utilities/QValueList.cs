@@ -46,7 +46,7 @@ namespace EmbedIO.Utilities
         public QValueList(bool useWildcard, string headerValues)
         {
             UseWildcard = useWildcard;
-            QValues = Parse(Validate.NotNull(nameof(headerValues), headerValues));
+            QValues = Parse(headerValues);
         }
 
         /// <summary>
