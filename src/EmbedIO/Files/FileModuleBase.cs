@@ -44,12 +44,13 @@ namespace EmbedIO.Files
         /// Writes the file asynchronous.
         /// </summary>
         /// <param name="partialHeader">The partial header.</param>
-        /// <param name="response">The response.</param>
+        /// <param name="context">The context.</param>
         /// <param name="buffer">The buffer.</param>
-        /// <param name="useGzip">if set to <c>true</c> [use gzip].</param>
         /// <param name="cancellationToken">The cancellationToken.</param>
-        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
-        protected Task WriteFileAsync(
+        /// <returns>
+        /// A <see cref="Task" /> representing the ongoing operation.
+        /// </returns>
+        protected async Task WriteFileAsync(
             string partialHeader,
             IHttpContext context,
             Stream buffer,
@@ -63,7 +64,8 @@ namespace EmbedIO.Files
                 using (var stream = context.OpenResponseStream())
                 {
                     buffer.Position = 0;
-                    return buffer.CopyToAsync(stream, WebServer.StreamCopyBufferSize, cancellationToken);
+                    await buffer.CopyToAsync(stream, WebServer.StreamCopyBufferSize, cancellationToken).ConfigureAwait(false);
+                    return;
                 }
             }
 
@@ -72,7 +74,7 @@ namespace EmbedIO.Files
                 context.Response.SetEmptyResponse((int) HttpStatusCode.RequestedRangeNotSatisfiable);
                 context.Response.Headers.Set(HttpHeaderNames.ContentRange, $"bytes */{fileSize}");
 
-                return Task.CompletedTask;
+                return;
             }
 
             if (lowerByteIndex != 0 || upperByteIndex != fileSize)
@@ -84,7 +86,7 @@ namespace EmbedIO.Files
             using (var stream = context.OpenResponseStream())
             {
                 buffer.Position = lowerByteIndex;
-                return buffer.CopyToAsync(stream, WebServer.StreamCopyBufferSize, cancellationToken);
+                await buffer.CopyToAsync(stream, WebServer.StreamCopyBufferSize, cancellationToken);
             }
         }
 

@@ -2,6 +2,8 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Net.Internal
 {
@@ -96,13 +98,13 @@ namespace EmbedIO.Net.Internal
         /// <inheritdoc />
         public override void SetLength(long value) => throw new NotSupportedException();
 
-        internal void InternalWrite(byte[] buffer, int offset, int count)
+        internal async Task InternalWrite(byte[] buffer, int offset, int count)
         {
             if (_ignoreErrors)
             {
                 try
                 {
-                    _stream.Write(buffer, offset, count);
+                    await _stream.WriteAsync(buffer, offset, count).ConfigureAwait(false);
                 }
                 catch
                 {
@@ -111,7 +113,7 @@ namespace EmbedIO.Net.Internal
             }
             else
             {
-                _stream.Write(buffer, offset, count);
+                await _stream.WriteAsync(buffer, offset, count).ConfigureAwait(false);
             }
         }
 
@@ -141,13 +143,13 @@ namespace EmbedIO.Net.Internal
                             ms.Write(bytes, 0, bytes.Length);
                         }
 
-                        InternalWrite(ms.ToArray(), (int)start, (int)(ms.Length - start));
+                        InternalWrite(ms.ToArray(), (int)start, (int)(ms.Length - start)).Await();
                         _trailerSent = true;
                     }
                     else if (chunked && !_trailerSent)
                     {
                         bytes = GetChunkSizeBytes(0, true);
-                        InternalWrite(bytes, 0, bytes.Length);
+                        InternalWrite(bytes, 0, bytes.Length).Await();
                         _trailerSent = true;
                     }
                 }
