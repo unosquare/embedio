@@ -13,12 +13,17 @@ namespace EmbedIO.Tests
     {
         private const string UserName = "root";
         private const string Password = "password1234";
-        private const string WrongPassword = "wrongpaassword";
 
         public BasicAuthenticationModuleTest()
             : base(ws =>
                 {
                     ws.Modules.Add(new BasicAuthenticationModule("/").WithAccount(UserName, Password));
+                    ws.OnAny((ctx, path, ct) =>
+                    {
+                        ctx.Response.SetEmptyResponse((int)HttpStatusCode.OK);
+
+                        return Task.FromResult(true);
+                    });
                 },
                 true)
         {
@@ -35,7 +40,9 @@ namespace EmbedIO.Tests
         [Test]
         public async Task RequestWithInvalidCredentials_ReturnsUnauthorized()
         {
-            var response = await MakeRequest(UserName, WrongPassword);
+            const string wrongPassword = "wrongpaassword";
+
+            var response = await MakeRequest(UserName, wrongPassword);
             Assert.AreEqual((int)HttpStatusCode.Unauthorized, response.StatusCode, "Status Code Unauthorized");
         }
 
