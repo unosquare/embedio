@@ -22,7 +22,7 @@ namespace EmbedIO.Tests
         private const string Prefix = "http://localhost:9696";
 
         private static string[] GetMultiplePrefixes()
-            => new[] {"http://localhost:9696", "http://localhost:9697", "http://localhost:9698"};
+            => new[] { "http://localhost:9696", "http://localhost:9697", "http://localhost:9698" };
 
         [SetUp]
         public void Setup()
@@ -104,7 +104,7 @@ namespace EmbedIO.Tests
 
                     using (var instance = new WebServer(url))
                     {
-                        instance.Modules.Add(nameof(ActionModule), new ActionModule((ctx, path, ct) => 
+                        instance.Modules.Add(nameof(ActionModule), new ActionModule((ctx, path, ct) =>
                             throw new InvalidOperationException("Error")));
 
                         var runTask = instance.RunAsync();
@@ -162,10 +162,10 @@ namespace EmbedIO.Tests
                         }
 
                         return ctx.SendDataAsync(new EncodeCheck
-                            {
-                                Encoding = encoding.EncodingName,
-                                IsValid = ctx.Request.ContentEncoding.EncodingName == encoding.EncodingName,
-                            },
+                        {
+                            Encoding = encoding.EncodingName,
+                            IsValid = ctx.Request.ContentEncoding.EncodingName == encoding.EncodingName,
+                        },
                             ct);
                     });
 
@@ -179,25 +179,19 @@ namespace EmbedIO.Tests
                         var request = new HttpRequestMessage(HttpMethod.Post, url)
                         {
                             Content = new StringContent(
-                                "POST DATA", 
+                                "POST DATA",
                                 Encoding.GetEncoding(encodeName),
                                 MimeTypes.JsonType),
                         };
 
                         using (var response = await client.SendAsync(request))
                         {
-                            var stream = await response.Content.ReadAsStreamAsync();
-                            using (var ms = new MemoryStream())
-                            {
-                                stream.CopyTo(ms);
-                                var data = ms.ToArray().ToText();
+                            var data = await response.Content.ReadAsStringAsync();
+                            Assert.IsNotNull(data, "Data is not empty");
+                            var model = Json.Deserialize<EncodeCheck>(data);
 
-                                Assert.IsNotNull(data, "Data is not empty");
-                                var model = Json.Deserialize<EncodeCheck>(data);
-
-                                Assert.IsNotNull(model);
-                                Assert.IsTrue(model.IsValid);
-                            }
+                            Assert.IsNotNull(model);
+                            Assert.IsTrue(model.IsValid);
                         }
                     }
                 }
