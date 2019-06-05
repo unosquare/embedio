@@ -233,6 +233,8 @@ namespace EmbedIO
 
         private async Task HandleContextAsync(IHttpContextImpl context, CancellationToken cancellationToken)
         {
+            context.SupportCompressedRequests = Options.SupportCompressedRequests;
+
             try
             {
                 context.Session = new SessionProxy(context, SessionManager);

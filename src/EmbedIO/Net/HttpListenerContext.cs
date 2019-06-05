@@ -16,10 +16,7 @@ using HttpListenerResponse = EmbedIO.Net.Internal.HttpListenerResponse;
 
 namespace EmbedIO.Net
 {
-    /// <summary>
-    /// Provides access to the request and response objects used by the HttpListener class.
-    /// This class cannot be inherited.
-    /// </summary>
+    // Provides access to the request and response objects used by the HttpListener class.
     internal sealed class HttpListenerContext : IHttpContextImpl
     {
         private readonly Lazy<IDictionary<object, object>> _items =
@@ -40,28 +37,22 @@ namespace EmbedIO.Net
             RemoteEndPoint = Request.RemoteEndPoint;
         }
 
-        /// <inheritdoc />
         public string Id { get; }
 
-        /// <inheritdoc />
         public IPEndPoint LocalEndPoint { get; }
 
-        /// <inheritdoc />
         public IPEndPoint RemoteEndPoint { get; }
 
-        /// <inheritdoc />
         public IHttpRequest Request { get; }
 
-        /// <inheritdoc />
         public IHttpResponse Response { get; }
 
-        /// <inheritdoc />
         public IPrincipal User { get; }
 
-        /// <inheritdoc />
         public ISessionProxy Session { get; set; }
 
-        /// <inheritdoc />
+        public bool SupportCompressedRequests { get; set; }
+
         public IDictionary<object, object> Items => _items.Value;
 
         internal HttpListenerRequest HttpListenerRequest => Request as HttpListenerRequest;
@@ -76,7 +67,6 @@ namespace EmbedIO.Net
 
         internal HttpConnection Connection { get; }
 
-        /// <inheritdoc />
         public void OnClose(Action<IHttpContext> callback)
         {
             if (_closed)
@@ -85,7 +75,6 @@ namespace EmbedIO.Net
             _closeCallbacks.Push(Validate.NotNull(nameof(callback), callback));
         }
 
-        /// <inheritdoc />
         public void Close()
         {
             _closed = true;
@@ -106,7 +95,6 @@ namespace EmbedIO.Net
             }
         }
 
-        /// <inheritdoc />
         public async Task<IWebSocketContext> AcceptWebSocketAsync(
             IEnumerable<string> requestedProtocols,
             string acceptedProtocol,

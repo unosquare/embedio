@@ -60,6 +60,8 @@ namespace EmbedIO.Net.Internal
 
         public ISessionProxy Session { get; set; }
 
+        public bool SupportCompressedRequests { get; set; }
+
         public IDictionary<object, object> Items { get; } = new Dictionary<object, object>();
 
         public void OnClose(Action<IHttpContext> callback)

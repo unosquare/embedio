@@ -47,6 +47,12 @@ namespace EmbedIO
         ISessionProxy Session { get; }
 
         /// <summary>
+        /// Gets a value indicating whether compressed request bodies are supported.
+        /// </summary>
+        /// <seealso cref="WebServerOptionsBase.SupportCompressedRequests"/>
+        bool SupportCompressedRequests { get; }
+
+        /// <summary>
         /// Gets the dictionary of data to pass trough the EmbedIO pipeline.
         /// </summary>
         IDictionary<object, object> Items { get; }

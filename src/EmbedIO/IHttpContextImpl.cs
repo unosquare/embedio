@@ -23,6 +23,12 @@ namespace EmbedIO
         new ISessionProxy Session { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether compressed request bodies are supported.
+        /// </summary>
+        /// <seealso cref="WebServerOptionsBase.SupportCompressedRequests"/>
+        new bool SupportCompressedRequests { get; set; }
+
+        /// <summary>
         /// Flushes and closes the response stream, then calls any registered close callbacks.
         /// </summary>
         /// <seealso cref="IHttpContext.OnClose"/>
