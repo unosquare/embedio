@@ -86,7 +86,7 @@ namespace EmbedIO.Files
             using (var stream = context.OpenResponseStream())
             {
                 buffer.Position = lowerByteIndex;
-                await buffer.CopyToAsync(stream, WebServer.StreamCopyBufferSize, cancellationToken);
+                await buffer.CopyToAsync(stream, WebServer.StreamCopyBufferSize, cancellationToken).ConfigureAwait(false);
             }
         }
 
