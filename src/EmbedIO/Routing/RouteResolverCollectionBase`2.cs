@@ -88,7 +88,7 @@ namespace EmbedIO.Routing
             foreach (var resolver in _resolvers)
             {
                 var resolverResult = await resolver.ResolveAsync(context, path, cancellationToken).ConfigureAwait(false);
-                OnResolverCalled(context, resolver, result);
+                OnResolverCalled(context, resolver, resolverResult);
                 if (resolverResult == RouteResolutionResult.Success)
                     return RouteResolutionResult.Success;
 
