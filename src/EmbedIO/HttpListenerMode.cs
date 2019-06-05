@@ -1,17 +1,19 @@
 ﻿namespace EmbedIO
 {
     /// <summary>
-    /// Enums all the HTTP listener available.
+    /// Defines the HTTP listeners available for use in a <see cref="WebServer"/>.
     /// </summary>
     public enum HttpListenerMode
     {
         /// <summary>
-        /// The EmbedIO mode
+        /// Use EmbedIO's internal HTTP listener implementation,
+        /// based on Mono's <c>System.Net.HttpListener</c>.
         /// </summary>
         EmbedIO,
 
         /// <summary>
-        /// The Microsoft mode
+        /// Use the <see cref="System.Net.HttpListener"/> class
+        /// provided by the .NET runtime in use.
         /// </summary>
         Microsoft,
     }
