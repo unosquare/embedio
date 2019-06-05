@@ -333,7 +333,7 @@ namespace EmbedIO.WebApi
                     var exception = Expression.Variable(typeof(Exception), "exception");
                     var tryBlock = RouteParameterConverter.ConvertExpression(
                         Expression.Property(routeInLambda, "Item", Expression.Constant(index)),
-                        parameter.ParameterType);
+                        parameterType);
                     var catchBlock = Expression.Block(
                         Expression.Return(
                             returnTarget,
@@ -344,9 +344,10 @@ namespace EmbedIO.WebApi
                                 Expression.Constant(parameter.Name),
                                 exception,
                                 cancellationTokenInLambda)),
-                        Expression.Constant(parameterType.IsValueType
-                            ? Activator.CreateInstance(parameterType)
-                            : null));
+                        Expression.Constant(
+                            parameterType.IsValueType ? Activator.CreateInstance(parameterType) : null,
+                            parameterType));
+
                     handlerArguments.Add(Expression.TryCatch(tryBlock, Expression.Catch(exception, catchBlock)));
                 }
                 else

@@ -35,8 +35,8 @@ namespace EmbedIO.Tests.TestObjects
         [RouteHandler(HttpVerbs.Get, "/regex/{id}")]
         public Task<bool> GetPerson(int id) => CheckPerson(id);
 
-        //[RouteHandler(HttpVerbs.Get, "/regexopt/{id?}")]
-        //public Task<bool> GetPerson(int? id) => id.HasValue ? CheckPerson(id.Value) : Ok(PeopleRepository.Database);
+        [RouteHandler(HttpVerbs.Get, "/regexopt/{id?}")]
+        public Task<bool> GetPerson(int? id) => id.HasValue ? CheckPerson(id.Value) : Ok(PeopleRepository.Database);
 
         [RouteHandler(HttpVerbs.Get, "/regexdate/{date}")]
         public Task<bool> GetPerson(DateTime date)
@@ -46,24 +46,24 @@ namespace EmbedIO.Tests.TestObjects
             return item != null ? Ok(item) : throw new KeyNotFoundException($"Key Not Found: {date}");
         }
 
-        //[RouteHandler(HttpVerbs.Get, "/regextwo/{skill}/{age}")]
-        //public Task<bool> GetPerson(string skill, int age)
-        //{
-        //    var item = PeopleRepository.Database.FirstOrDefault(p =>
-        //        string.Equals(p.MainSkill, skill, StringComparison.CurrentCultureIgnoreCase) && p.Age == age);
+        [RouteHandler(HttpVerbs.Get, "/regextwo/{skill}/{age}")]
+        public Task<bool> GetPerson(string skill, int age)
+        {
+            var item = PeopleRepository.Database.FirstOrDefault(p =>
+                string.Equals(p.MainSkill, skill, StringComparison.CurrentCultureIgnoreCase) && p.Age == age);
 
-        //    return item != null ? Ok(item) : throw new KeyNotFoundException($"Key Not Found: {skill}-{age}");
-        //}
+            return item != null ? Ok(item) : throw new KeyNotFoundException($"Key Not Found: {skill}-{age}");
+        }
 
-        //[RouteHandler(HttpVerbs.Get, "/regexthree/{skill}/{age?}")]
-        //public Task<bool> GetOptionalPerson(string skill, int? age = null)
-        //{
-        //    var item = age == null
-        //        ? PeopleRepository.Database.FirstOrDefault(p => string.Equals(p.MainSkill, skill, StringComparison.CurrentCultureIgnoreCase))
-        //        : PeopleRepository.Database.FirstOrDefault(p => string.Equals(p.MainSkill, skill, StringComparison.CurrentCultureIgnoreCase) && p.Age == age);
+        [RouteHandler(HttpVerbs.Get, "/regexthree/{skill}/{age?}")]
+        public Task<bool> GetOptionalPerson(string skill, int? age = null)
+        {
+            var item = age == null
+                ? PeopleRepository.Database.FirstOrDefault(p => string.Equals(p.MainSkill, skill, StringComparison.CurrentCultureIgnoreCase))
+                : PeopleRepository.Database.FirstOrDefault(p => string.Equals(p.MainSkill, skill, StringComparison.CurrentCultureIgnoreCase) && p.Age == age);
 
-        //    return item != null ? Ok(item) : throw new KeyNotFoundException($"Key Not Found: {skill}-{age}");
-        //}
+            return item != null ? Ok(item) : throw new KeyNotFoundException($"Key Not Found: {skill}-{age}");
+        }
 
         [RouteHandler(HttpVerbs.Post, "/" + EchoPath)]
         public async Task<bool> PostEcho()
