@@ -62,7 +62,7 @@ namespace EmbedIO.Utilities
         public QValueList(bool useWildcard, IEnumerable<string> headerValues)
         {
             UseWildcard = useWildcard;
-            QValues = Parse(Validate.NotNull(nameof(headerValues), headerValues));
+            QValues = Parse(headerValues);
         }
 
         /// <summary>
@@ -147,6 +147,9 @@ namespace EmbedIO.Utilities
         private static IReadOnlyDictionary<string, (int Weight, int Ordinal)> Parse(IEnumerable<string> headerValues)
         {
             var result = new Dictionary<string, (int Weight, int Ordinal)>();
+
+            if (headerValues == null) return result;
+
             foreach (var headerValue in headerValues)
                 ParseCore(headerValue, result);
 

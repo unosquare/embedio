@@ -16,7 +16,7 @@ namespace EmbedIO.Tests
         private const string HeaderPragmaValue = "no-cache";
 
         protected StaticFilesModuleTest()
-            : base(ws => ws.WithStaticFolderAt("/", TestHelper.SetupStaticFolder()))
+            : base(ws => ws.WithStaticFolderAt("/", TestHelper.SetupStaticFolder(nameof(StaticFilesModuleTest))))
         {
         }
         

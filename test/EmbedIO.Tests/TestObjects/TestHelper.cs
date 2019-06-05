@@ -67,7 +67,7 @@ namespace EmbedIO.Tests.TestObjects
             return rootPath;
         }
 
-        public static string SetupStaticFolder(bool onlyIndex = true) => SetupStaticFolderCore(RootPath(), onlyIndex);
+        public static string SetupStaticFolder(string testName, bool onlyIndex = true) => SetupStaticFolderCore(RootPath(testName), onlyIndex);
 
         public static void CreateTempBinaryFile(string fileName, int sizeInMb)
         {

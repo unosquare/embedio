@@ -308,9 +308,11 @@ namespace EmbedIO.Files
             {
                 if (DefaultDocument != null)
                 {
-                    localPath = Path.Combine(localPath, DefaultDocument);
-                    if (File.Exists(localPath))
+                    if (File.Exists(Path.Combine(localPath, DefaultDocument)))
+                    {
+                        localPath = Path.Combine(localPath, DefaultDocument);
                         return PathMappingResult.IsFile;
+                    }
                 }
 
                 if (UseDirectoryBrowser)

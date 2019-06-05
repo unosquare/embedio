@@ -21,7 +21,7 @@ namespace EmbedIO.Tests
             Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
 
             _webServerUrl = Resources.GetServerAddress();
-            _rootPath = TestHelper.SetupStaticFolder();
+            _rootPath = TestHelper.SetupStaticFolder(nameof(FluentTest));
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace EmbedIO.Tests
         public void FluentWithStaticFolderArgumentException()
         {
             Assert.Throws<NullReferenceException>(() =>
-                _nullWebServer.WithStaticFolderAt("/", TestHelper.SetupStaticFolder()));
+                _nullWebServer.WithStaticFolderAt("/", TestHelper.SetupStaticFolder(nameof(FluentWithStaticFolderArgumentException))));
         }
 
         [Test]
