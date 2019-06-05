@@ -53,11 +53,9 @@ namespace EmbedIO.Samples
         // Create and configure our web server.
         private static WebServer CreateWebServer(string url)
         {
-            var options = new WebServerOptions(url) {
-                Mode = HttpListenerMode.EmbedIO
-            };
-
-            var server = new WebServer(options)
+            var server = new WebServer(o => o
+                    .WithUrlPrefix(url)
+                    .WithMode(HttpListenerMode.EmbedIO))
                 .WithLocalSessionManager()
                 .WithCors(
                     // Origins, separated by comma without last slash
