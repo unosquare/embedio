@@ -5,16 +5,13 @@ using System.Net;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbedIO.Net.Internal;
 using EmbedIO.Sessions;
 using EmbedIO.Utilities;
 using EmbedIO.WebSockets;
 using EmbedIO.WebSockets.Internal;
 using Unosquare.Swan;
-using HttpListenerRequest = EmbedIO.Net.Internal.HttpListenerRequest;
-using HttpListenerResponse = EmbedIO.Net.Internal.HttpListenerResponse;
 
-namespace EmbedIO.Net
+namespace EmbedIO.Net.Internal
 {
     // Provides access to the request and response objects used by the HttpListener class.
     internal sealed class HttpListenerContext : IHttpContextImpl
