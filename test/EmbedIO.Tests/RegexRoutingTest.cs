@@ -19,7 +19,7 @@ namespace EmbedIO.Tests
             {
                 var call = await GetString("empty");
 
-                Assert.AreEqual("data", call);
+                Assert.AreEqual(string.Empty, call);
             }
 
             [Test]
@@ -33,9 +33,9 @@ namespace EmbedIO.Tests
             [Test]
             public async Task GetDataWithMultipleRegex()
             {
-                var call = await GetString("data/1/dasdasasda");
+                var call = await GetString("data/1/2");
 
-                Assert.AreEqual("dasdasasda", call);
+                Assert.AreEqual("2", call);
             }
         }
     }

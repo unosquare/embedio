@@ -18,7 +18,7 @@ namespace EmbedIO.WebApi
     /// </summary>
     public abstract class WebApiModuleBase : RoutingModuleBase
     {
-        private static readonly MethodInfo TaskFromResultMethod = typeof(Task).GetMethod(nameof(Task.FromResult));
+        private static readonly MethodInfo TaskFromResultMethod = typeof(Task).GetMethod(nameof(Task.FromResult)).MakeGenericMethod(typeof(bool));
         private static readonly MethodInfo PreProcessRequestMethod = typeof(WebApiController).GetMethod(nameof(WebApiController.PreProcessRequest));
 
         private readonly MethodInfo _onParameterConversionErrorAsyncMethod;
