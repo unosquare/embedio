@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
@@ -8,6 +9,41 @@ namespace EmbedIO
 {
     partial class HttpContextExtensions
     {
+        /// <summary>
+        /// Asynchronously retrieves the request body as an array of <see langword="byte"/>s.
+        /// </summary>
+        /// <param name="this">The <see cref="IHttpContext"/> on which this method is called.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
+        /// <returns>A <see cref="Task{TResult}">Task</see>, representing the ongoing operation,
+        /// whose result will be an array of <see cref="byte"/>s containing the request body.</returns>
+        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        public static async Task<byte[]> GetRequestBodyAsByteArrayAsync(
+            this IHttpContext @this,
+            CancellationToken cancellationToken)
+        {
+            var buffer = new MemoryStream();
+            using (var stream = @this.OpenRequestStream())
+            {
+                await stream.CopyToAsync(buffer, WebServer.StreamCopyBufferSize, cancellationToken).ConfigureAwait(false);
+            }
+
+            return buffer.ToArray();
+        }
+
+        /// <summary>
+        /// Asynchronously buffers the request body into a read-only <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="this">The <see cref="IHttpContext"/> on which this method is called.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
+        /// <returns>A <see cref="Task{TResult}">Task</see>, representing the ongoing operation,
+        /// whose result will be a read-only <see cref="MemoryStream"/> containing the request body.</returns>
+        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        public static async Task<MemoryStream> GetRequestBodyAsMemoryStreamAsync(
+            this IHttpContext @this,
+            CancellationToken cancellationToken)
+            => new MemoryStream(
+                await GetRequestBodyAsByteArrayAsync(@this, cancellationToken).ConfigureAwait(false),
+                false);
 
         /// <summary>
         /// Asynchronously retrieves the request body as a string.
