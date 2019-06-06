@@ -37,7 +37,6 @@ namespace EmbedIO.Tests
             {
                 var instance = new WebServer();
                 Assert.IsNotNull(instance.Listener, "It has a HttpListener");
-                Assert.IsNotNull(MimeTypes.Associations, "It has MimeTypes");
             }
 
             [Test]
