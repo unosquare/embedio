@@ -63,9 +63,6 @@ namespace EmbedIO
                 }
             }
 
-            if (!buffered)
-                @this.Response.Headers.Set(HttpHeaderNames.TransferEncoding, "chunked");
-
             var stream = buffered ? new BufferingResponseStream(@this.Response) : @this.Response.OutputStream;
             switch (compression)
             {
