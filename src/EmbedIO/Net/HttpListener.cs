@@ -63,7 +63,7 @@ namespace EmbedIO.Net
             if (IsListening)
                 return;
 
-            EndPointManager.AddListener(this).Await();
+            EndPointManager.AddListener(this);
             IsListening = true;
         }
 
@@ -122,7 +122,7 @@ namespace EmbedIO.Net
 
         private void Close(bool closeExisting)
         {
-            EndPointManager.RemoveListener(this).Await();
+            EndPointManager.RemoveListener(this);
 
             var keys = _connections.Keys;
             var connections = new HttpConnection[keys.Count];

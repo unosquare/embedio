@@ -98,13 +98,13 @@ namespace EmbedIO.Net.Internal
         /// <inheritdoc />
         public override void SetLength(long value) => throw new NotSupportedException();
 
-        internal async Task InternalWrite(byte[] buffer, int offset, int count)
+        internal void InternalWrite(byte[] buffer, int offset, int count)
         {
             if (_ignoreErrors)
             {
                 try
                 {
-                    await _stream.WriteAsync(buffer, offset, count).ConfigureAwait(false);
+                    _stream.Write(buffer, offset, count);
                 }
                 catch
                 {
@@ -113,7 +113,7 @@ namespace EmbedIO.Net.Internal
             }
             else
             {
-                await _stream.WriteAsync(buffer, offset, count).ConfigureAwait(false);
+                _stream.Write(buffer, offset, count);
             }
         }
 
@@ -143,13 +143,13 @@ namespace EmbedIO.Net.Internal
                             ms.Write(bytes, 0, bytes.Length);
                         }
 
-                        InternalWrite(ms.ToArray(), (int)start, (int)(ms.Length - start)).Await();
+                        InternalWrite(ms.ToArray(), (int)start, (int)(ms.Length - start));
                         _trailerSent = true;
                     }
                     else if (chunked && !_trailerSent)
                     {
                         bytes = GetChunkSizeBytes(0, true);
-                        InternalWrite(bytes, 0, bytes.Length).Await();
+                        InternalWrite(bytes, 0, bytes.Length);
                         _trailerSent = true;
                     }
                 }

@@ -47,7 +47,7 @@ namespace EmbedIO.Net.Internal
                 var sslStream = new SslStream(new NetworkStream(sock, false), true);
                 try
                 {
-                    sslStream.AuthenticateAsServerAsync(cert).Await();
+                    sslStream.AuthenticateAsServer(cert);
                 }
                 catch
                 {
@@ -146,7 +146,7 @@ namespace EmbedIO.Net.Internal
 
             if (!forceClose)
             {
-                if (_context.HttpListenerRequest.FlushInput().Await())
+                if (_context.HttpListenerRequest.FlushInput())
                 {
                     Reuses++;
                     Unbind();

@@ -23,7 +23,7 @@ namespace EmbedIO.Net
         /// </value>
         public static bool UseIpv6 { get; set; }
 
-        internal static async Task AddListener(HttpListener listener)
+        internal static void AddListener(HttpListener listener)
         {
             var added = new List<string>();
 
@@ -31,7 +31,7 @@ namespace EmbedIO.Net
             {
                 foreach (var prefix in listener.Prefixes)
                 {
-                    await AddPrefix(prefix, listener).ConfigureAwait(false);
+                    AddPrefix(prefix, listener);
                     added.Add(prefix);
                 }
             }
@@ -39,7 +39,7 @@ namespace EmbedIO.Net
             {
                 foreach (var prefix in added)
                 {
-                    await RemovePrefix(prefix, listener).ConfigureAwait(false);
+                    RemovePrefix(prefix, listener);
                 }
 
                 throw;
@@ -59,15 +59,15 @@ namespace EmbedIO.Net
             epl.Close();
         }
 
-        internal static async Task RemoveListener(HttpListener listener)
+        internal static void RemoveListener(HttpListener listener)
         {
             foreach (var prefix in listener.Prefixes)
             {
-                await RemovePrefix(prefix, listener).ConfigureAwait(false);
+                RemovePrefix(prefix, listener);
             }
         }
 
-        internal static async Task AddPrefix(string p, HttpListener listener)
+        internal static void AddPrefix(string p, HttpListener listener)
         {
             var lp = new ListenerPrefix(p);
 
@@ -75,11 +75,11 @@ namespace EmbedIO.Net
                 throw new HttpListenerException(400, "Invalid path.");
 
             // listens on all the interfaces if host name cannot be parsed by IPAddress.
-            var epl = await GetEpListener(lp.Host, lp.Port, listener, lp.Secure).ConfigureAwait(false);
+            var epl = GetEpListener(lp.Host, lp.Port, listener, lp.Secure);
             epl.AddPrefix(lp, listener);
         }
 
-        private static async Task<EndPointListener> GetEpListener(string host, int port, HttpListener listener, bool secure = false)
+        private static EndPointListener GetEpListener(string host, int port, HttpListener listener, bool secure = false)
         {
             IPAddress address;
 
@@ -94,7 +94,7 @@ namespace EmbedIO.Net
                     var hostEntry = new IPHostEntry
                     {
                         HostName = host,
-                        AddressList = await Dns.GetHostAddressesAsync(host).ConfigureAwait(false),
+                        AddressList = Dns.GetHostAddresses(host),
                     };
 
                     address = hostEntry.AddressList[0];
@@ -111,7 +111,7 @@ namespace EmbedIO.Net
             return epl;
         }
 
-        private static async Task RemovePrefix(string prefix, HttpListener listener)
+        private static void RemovePrefix(string prefix, HttpListener listener)
         {
             try
             {
@@ -120,7 +120,7 @@ namespace EmbedIO.Net
                 if (!lp.IsValid())
                     return;
 
-                var epl = await GetEpListener(lp.Host, lp.Port, listener, lp.Secure).ConfigureAwait(false);
+                var epl = GetEpListener(lp.Host, lp.Port, listener, lp.Secure);
                 epl.RemovePrefix(lp, listener);
             }
             catch (SocketException)

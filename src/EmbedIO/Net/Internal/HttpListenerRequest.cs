@@ -374,7 +374,7 @@ namespace EmbedIO.Net.Internal
         }
 
         // returns true is the stream could be reused.
-        internal async Task<bool> FlushInput()
+        internal bool FlushInput()
         {
             if (!HasEntityBody)
                 return true;
@@ -389,7 +389,7 @@ namespace EmbedIO.Net.Internal
             {
                 try
                 {
-                    var data = await InputStream.ReadAsync(bytes, 0, length).ConfigureAwait(false);
+                    var data = InputStream.Read(bytes, 0, length);
 
                     if (data <= 0)
                         return true;

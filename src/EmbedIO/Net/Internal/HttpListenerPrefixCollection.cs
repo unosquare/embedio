@@ -20,7 +20,7 @@ namespace EmbedIO.Net.Internal
 
             base.Add(uriPrefix);
             if (_listener.IsListening)
-                EndPointManager.AddPrefix(uriPrefix, _listener).Await();
+                EndPointManager.AddPrefix(uriPrefix, _listener);
         }
     }
 }
