@@ -257,7 +257,15 @@ namespace EmbedIO
                             return;
 
                         $"[{context.Id}] No module generated a response. Sending 404 - Not Found".Error(LogSource);
-                        context.Response.SetEmptyResponse((int) HttpStatusCode.NotFound);
+                        try
+                        {
+                            context.Response.SetEmptyResponse((int)HttpStatusCode.NotFound);
+                        }
+                        catch (Exception ex)
+                        {
+                            $"[{context.Id}] Could not send 404 response ({ex.GetType().Name}) - headers were probably already sent."
+                                .Info(LogSource);
+                        }
                     }
                     catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
                     {
@@ -270,15 +278,31 @@ namespace EmbedIO
                     catch (HttpException ex)
                     {
                         $"[{context.Id}] HttpException: sending status code {ex.StatusCode}".Debug(LogSource);
-                        await ex.SendResponseAsync(context).ConfigureAwait(false);
+                        try
+                        {
+                            await ex.SendResponseAsync(context).ConfigureAwait(false);
+                        }
+                        catch (Exception ex2)
+                        {
+                            $"[{context.Id}] Could not send {ex.StatusCode} response ({ex2.GetType().Name}) - headers were probably already sent."
+                                .Info(LogSource);
+                        }
                     }
                     catch (Exception ex)
                     {
                         ex.Log(LogSource, $"[{context.Id}] Unhandled exception.");
-                        context.Response.SetEmptyResponse((int)HttpStatusCode.InternalServerError);
-                        context.Response.DisableCaching();
-                        await _onUnhandledException(context, context.Request.Url.AbsolutePath, ex, cancellationToken)
-                            .ConfigureAwait(false);
+                        try
+                        {
+                            context.Response.SetEmptyResponse((int)HttpStatusCode.InternalServerError);
+                            context.Response.DisableCaching();
+                            await _onUnhandledException(context, context.Request.Url.AbsolutePath, ex, cancellationToken)
+                                .ConfigureAwait(false);
+                        }
+                        catch (Exception ex2)
+                        {
+                            $"[{context.Id}] Could not send 500 response ({ex2.GetType().Name}) - headers were probably already sent."
+                                .Info(LogSource);
+                        }
                     }
                 }
                 finally
