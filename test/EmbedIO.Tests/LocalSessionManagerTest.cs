@@ -120,15 +120,13 @@ namespace EmbedIO.Tests
                         var content = handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl));
                         await Task.Delay(TimeSpan.FromSeconds(1));
 
-                        Task.WaitAll(
-                            new[]
-                            {
-                                Task.Factory.StartNew(() => GetFile(content)),
-                                Task.Factory.StartNew(() => GetFile(content)),
-                                Task.Factory.StartNew(() => GetFile(content)),
-                                Task.Factory.StartNew(() => GetFile(content)),
-                                Task.Factory.StartNew(() => GetFile(content)),
-                            });
+                        Task.WaitAll(new[] {
+                            Task.Run(() => GetFile(content)),
+                            Task.Run(() => GetFile(content)),
+                            Task.Run(() => GetFile(content)),
+                            Task.Run(() => GetFile(content)),
+                            Task.Run(() => GetFile(content)),
+                        });
                     }
                 }
             }
