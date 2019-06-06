@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using System.Threading.Tasks;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
 
@@ -21,32 +20,35 @@ namespace EmbedIO.Tests.TestObjects
         }
 
         [RouteHandler(HttpVerbs.Get, "/getcookie")]
-        public Task<bool> GetCookieC()
+        public object GetCookieC()
         {
             var cookie = new System.Net.Cookie(CookieName, CookieName);
             Response.Cookies.Add(cookie);
 
-            return Ok(Response.Cookies[CookieName]);
+            return Response.Cookies[CookieName];
         }
 
         [RouteHandler(HttpVerbs.Get, "/deletesession")]
-        public Task<bool> DeleteSessionC()
+        public object DeleteSessionC()
         {
             HttpContext.Session.Delete();
-
-            return Ok("Deleted", MimeTypes.PlainTextType);
+            Response.ContentType = MimeTypes.PlainTextType;
+            return "Deleted";
         }
 
         [RouteHandler(HttpVerbs.Get, "/putdata")]
-        public Task<bool> PutDataSession()
+        public object PutDataSession()
         {
             HttpContext.Session["sessionData"] = MyData;
-
-            return Ok(HttpContext.Session["sessionData"].ToString(), MimeTypes.PlainTextType);
+            Response.ContentType = MimeTypes.PlainTextType;
+            return HttpContext.Session["sessionData"].ToString();
         }
 
         [RouteHandler(HttpVerbs.Get, "/getdata")]
-        public Task<bool> GetDataSession() =>
-            Ok(HttpContext.Session["sessionData"]?.ToString() ?? string.Empty, MimeTypes.PlainTextType);
+        public object GetDataSession()
+        {
+            Response.ContentType = MimeTypes.PlainTextType;
+            return HttpContext.Session["sessionData"]?.ToString() ?? string.Empty;
+        }
     }
 }

@@ -18,24 +18,54 @@ namespace EmbedIO.WebApi
     /// </summary>
     public abstract class WebApiModuleBase : RoutingModuleBase
     {
-        private static readonly MethodInfo TaskFromResultMethod = typeof(Task).GetMethod(nameof(Task.FromResult)).MakeGenericMethod(typeof(bool));
+        private static readonly MethodInfo TaskFromResultBoolMethod = typeof(Task).GetMethod(nameof(Task.FromResult)).MakeGenericMethod(typeof(bool));
         private static readonly MethodInfo PreProcessRequestMethod = typeof(WebApiController).GetMethod(nameof(WebApiController.PreProcessRequest));
 
         private readonly MethodInfo _onParameterConversionErrorAsyncMethod;
+        private readonly MethodInfo _serializeAsyncControllerResultAsyncMethod;
+        private readonly MethodInfo _serializeNonAsyncControllerResultAsyncMethod;
 
         private readonly HashSet<Type> _controllerTypes = new HashSet<Type>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiModuleBase" /> class.
+        /// Initializes a new instance of the <see cref="WebApiModuleBase" /> class,
+        /// using the default response serializer.
         /// </summary>
         /// <param name="baseUrlPath">The base URL path served by this module.</param>
         /// <seealso cref="IWebModule.BaseUrlPath" />
         /// <seealso cref="Validate.UrlPath" />
         protected WebApiModuleBase(string baseUrlPath)
+            : this(baseUrlPath, ResponseSerializer.Default)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebApiModuleBase" /> class,
+        /// using the specified response serializer.
+        /// </summary>
+        /// <param name="baseUrlPath">The base URL path served by this module.</param>
+        /// <param name="serializer">A <see cref="ResponseSerializerCallback"/> used to serialize
+        /// the result of controller methods returning <see langword="object"/>
+        /// or <see cref="Task{TResult}">Task&lt;object&gt;</see>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="serializer"/> is <see langword="null"/>.</exception>
+        /// <seealso cref="IWebModule.BaseUrlPath" />
+        /// <seealso cref="Validate.UrlPath" />
+        protected WebApiModuleBase(string baseUrlPath, ResponseSerializerCallback serializer)
             : base(baseUrlPath)
         {
+            Serializer = Validate.NotNull(nameof(serializer), serializer);
+
             _onParameterConversionErrorAsyncMethod = new Func<IHttpContext, string, Exception, CancellationToken, Task<bool>>(OnParameterConversionErrorAsync).Method;
+            _serializeAsyncControllerResultAsyncMethod = new Func<IHttpContext, Task<object>, CancellationToken, Task<bool>>(SerializeAsyncControllerResultAsync).Method;
+            _serializeNonAsyncControllerResultAsyncMethod = new Func<IHttpContext, object, CancellationToken, Task<bool>>(SerializeNonAsyncControllerResultAsync).Method;
         }
+
+        /// <summary>
+        /// A <see cref="ResponseSerializerCallback"/> used to serialize
+        /// the result of controller methods returning <see langword="object"/>
+        /// or <see cref="Task{TResult}">Task&lt;object&gt;</see>.
+        /// </summary>
+        public ResponseSerializerCallback Serializer { get; }
 
         /// <summary>
         /// Gets the number of controller types registered in this module.
@@ -283,13 +313,18 @@ namespace EmbedIO.WebApi
         // - buildFactoryExpression is a callback that, given two Expressions for a IHttpContext
         //   and a CancellationToken, returns an Expression that builds a controller;
         // - method is a MethodInfo for a public instance method of the controller
-        //   returning either Task<bool> or bool;
+        //   returning either Task<bool>, bool, Task<object>, or object;
         // - route is the route to which the controller method is associated.
         //
         // This method builds a lambda, with the same signature as a RouteHandler<IHttpContext>, that:
         // - uses the factory Expression to build a controller;
         // - calls the controller method, passing converted route parameters for method parameters with matching names
         //   and default values for other parameters;
+        // - according to the return type of the controller method:
+        //   - if Task<bool>   - returns the result of the call;
+        //   - if bool         - returns Task.FromResult<bool>(result);
+        //   - if Task<object> - returns SerializeAsyncControllerResultAsync(context, result, cancellationToken);
+        //   - if object       - returns SerializeNonAsyncControllerResultAsync(context, result, cancellationToken);
         // - if the controller implements IDisposable, disposes it.
         private RouteHandler<IHttpContext> CompileHandler(Func<Expression, Expression, Expression> buildFactoryExpression, MethodInfo method, string route)
         {
@@ -369,10 +404,39 @@ namespace EmbedIO.WebApi
 
             // Build the handler method call
             var callMethod = Expression.Call(controller, method, handlerArguments);
-            if (!typeof(Task).IsAssignableFrom(method.ReturnType))
+            var methodReturnType = method.ReturnType;
+            if (methodReturnType == typeof(Task<bool>))
+            {
+                // Nothing to do
+            }
+            else if (methodReturnType == typeof(bool))
             {
                 // Convert bool to Task<bool>
-                callMethod = Expression.Call(TaskFromResultMethod, callMethod);
+                callMethod = Expression.Call(TaskFromResultBoolMethod, callMethod);
+            }
+            else if (methodReturnType == typeof(Task<object>))
+            {
+                // Serialize result of Task<object> and return true
+                callMethod = Expression.Call(
+                    Expression.Constant(this),
+                    _serializeAsyncControllerResultAsyncMethod,
+                    contextInLambda,
+                    callMethod,
+                    cancellationTokenInLambda);
+            }
+            else if (methodReturnType == typeof(object))
+            {
+                // Serialize object and return true
+                callMethod = Expression.Call(
+                    Expression.Constant(this),
+                    _serializeNonAsyncControllerResultAsyncMethod,
+                    contextInLambda,
+                    callMethod,
+                    cancellationTokenInLambda);
+            }
+            else
+            {
+                throw new InvalidOperationException($"EmbedIO internal error: controller method has unexpected return type {methodReturnType.FullName}");
             }
 
             // Operations to perform on the controller.
@@ -417,6 +481,29 @@ namespace EmbedIO.WebApi
                 .Compile();
         }
 
+        private async Task<bool> SerializeAsyncControllerResultAsync(
+            IHttpContext context,
+            Task<object> result,
+            CancellationToken cancellationToken)
+        {
+            await Serializer(
+                context,
+                await result.ConfigureAwait(false),
+                cancellationToken).ConfigureAwait(false);
+
+            return true;
+        }
+
+        private async Task<bool> SerializeNonAsyncControllerResultAsync(
+            IHttpContext context,
+            object result,
+            CancellationToken cancellationToken)
+        {
+            await Serializer(context, result, cancellationToken).ConfigureAwait(false);
+
+            return true;
+        }
+
         private Type ValidateControllerType(string argumentName, Type value)
         {
             value = Validate.NotNull(argumentName, value);
@@ -433,9 +520,14 @@ namespace EmbedIO.WebApi
 
         private void RegisterControllerInternal(Type controllerType, Func<Expression, Expression, Expression> buildFactoryExpression)
         {
+            bool IsValidReturnType(Type type)
+                => type == typeof(bool)
+                || type == typeof(Task<bool>)
+                || type == typeof(object)
+                || type == typeof(Task<object>);
+
             var methods = controllerType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                .Where(m => !m.ContainsGenericParameters
-                         && (m.ReturnType == typeof(bool) || m.ReturnType == typeof(Task<bool>)));
+                .Where(m => !m.ContainsGenericParameters && IsValidReturnType(m.ReturnType));
 
             foreach (var method in methods)
             {

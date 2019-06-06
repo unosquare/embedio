@@ -9,16 +9,12 @@ namespace EmbedIO.Tests
     public class CorsModuleTest : FixtureBase
     {
         public CorsModuleTest()
-            : base(
-                ws =>
-                {
-                    ws.WithCors(
-                        "http://client.cors-api.appspot.com,http://unosquare.github.io,http://run.plnkr.co",
-                        "content-type",
-                        "post,get");
-
-                    ws.WithWebApi("/api", m => m.RegisterController<TestController>());
-                },
+            : base(ws => ws
+                .WithCors(
+                    "http://client.cors-api.appspot.com,http://unosquare.github.io,http://run.plnkr.co",
+                    "content-type",
+                    "post,get")
+                .WithWebApi("/api", m => m.RegisterController<TestController>()),
                 true)
         {
             // placeholder

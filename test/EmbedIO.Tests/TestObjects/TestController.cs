@@ -18,66 +18,49 @@ namespace EmbedIO.Tests.TestObjects
         }
 
         [RouteHandler(HttpVerbs.Get, "/empty")]
-        public Task<bool> GetEmpty() => Ok(new { Ok = true });
+        public object GetEmpty() => new { Ok = true };
 
         [RouteHandler(HttpVerbs.Get, "/regex")]
-        public Task<bool> GetPeople() => Ok(PeopleRepository.Database);
-        
-        [RouteHandler(HttpVerbs.Post, "/regex")]
-        public Task<bool> PostPeople() =>
-            Ok<Person, Person>(async (x, ct) =>
-            {
-                await Task.Delay(0, ct);
+        public object GetPeople() => PeopleRepository.Database;
 
-                return x;
-            });
+        [RouteHandler(HttpVerbs.Post, "/regex")]
+        public async Task<object> PostPeople()
+            => await HttpContext.GetRequestDataAsync(RequestDeserializer.Json<Person>, CancellationToken)
+                .ConfigureAwait(false);
 
         [RouteHandler(HttpVerbs.Get, "/regex/{id}")]
-        public Task<bool> GetPerson(int id) => CheckPerson(id);
+        public object GetPerson(int id) => CheckPerson(id);
 
         [RouteHandler(HttpVerbs.Get, "/regexopt/{id?}")]
-        public Task<bool> GetPerson(int? id) => id.HasValue ? CheckPerson(id.Value) : Ok(PeopleRepository.Database);
+        public object GetPerson(int? id)
+            => id.HasValue ? CheckPerson(id.Value) : PeopleRepository.Database;
 
         [RouteHandler(HttpVerbs.Get, "/regexdate/{date}")]
-        public Task<bool> GetPerson(DateTime date)
-        {
-            var item = PeopleRepository.Database.FirstOrDefault(p => p.DoB == date);
-
-            return item != null ? Ok(item) : throw new KeyNotFoundException($"Key Not Found: {date}");
-        }
+        public object GetPerson(DateTime date)
+            => PeopleRepository.Database.FirstOrDefault(p => p.DoB == date)
+            ?? throw HttpException.NotFound();
 
         [RouteHandler(HttpVerbs.Get, "/regextwo/{skill}/{age}")]
-        public Task<bool> GetPerson(string skill, int age)
-        {
-            var item = PeopleRepository.Database.FirstOrDefault(p =>
-                string.Equals(p.MainSkill, skill, StringComparison.CurrentCultureIgnoreCase) && p.Age == age);
-
-            return item != null ? Ok(item) : throw new KeyNotFoundException($"Key Not Found: {skill}-{age}");
-        }
+        public object GetPerson(string skill, int age)
+            => PeopleRepository.Database.FirstOrDefault(p => string.Equals(p.MainSkill, skill, StringComparison.CurrentCultureIgnoreCase) && p.Age == age)
+            ?? throw HttpException.NotFound();
 
         [RouteHandler(HttpVerbs.Get, "/regexthree/{skill}/{age?}")]
-        public Task<bool> GetOptionalPerson(string skill, int? age = null)
+        public object GetOptionalPerson(string skill, int? age = null)
         {
             var item = age == null
                 ? PeopleRepository.Database.FirstOrDefault(p => string.Equals(p.MainSkill, skill, StringComparison.CurrentCultureIgnoreCase))
                 : PeopleRepository.Database.FirstOrDefault(p => string.Equals(p.MainSkill, skill, StringComparison.CurrentCultureIgnoreCase) && p.Age == age);
 
-            return item != null ? Ok(item) : throw new KeyNotFoundException($"Key Not Found: {skill}-{age}");
+            return item ?? throw HttpException.NotFound();
         }
 
         [RouteHandler(HttpVerbs.Post, "/" + EchoPath)]
-        public async Task<bool> PostEcho()
-        {
-            var content = await HttpContext.GetRequestFormDataAsync(CancellationToken);
+        public async Task<object> PostEcho()
+            => await HttpContext.GetRequestFormDataAsync(CancellationToken).ConfigureAwait(false);
 
-            return await Ok(content);
-        }
-
-        private Task<bool> CheckPerson(int id)
-        {
-            var item = PeopleRepository.Database.FirstOrDefault(p => p.Key == id);
-
-            return item != null ? Ok(item) : throw new KeyNotFoundException($"Key Not Found: {id}");
-        }
+        private object CheckPerson(int id)
+            =>PeopleRepository.Database.FirstOrDefault(p => p.Key == id)
+            ?? throw HttpException.NotFound();
     }
 }

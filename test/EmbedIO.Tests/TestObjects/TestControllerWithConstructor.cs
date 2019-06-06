@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using System.Threading.Tasks;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
 
@@ -18,17 +17,19 @@ namespace EmbedIO.Tests.TestObjects
         public string WebName { get; set; }
 
         [RouteHandler(HttpVerbs.Get, "/name")]
-        public Task<bool> GetName()
+        public object GetName()
         {
             Response.DisableCaching();
-            return Ok(WebName, MimeTypes.PlainTextType);
+            Response.ContentType = MimeTypes.PlainTextType;
+            return WebName;
         }
 
         [RouteHandler(HttpVerbs.Get, "/namePublic")]
-        public Task<bool> GetNamePublic()
+        public object GetNamePublic()
         {
             Response.Headers.Set("Cache-Control", "public");
-            return Ok(WebName, MimeTypes.PlainTextType);
+            Response.ContentType = MimeTypes.PlainTextType;
+            return WebName;
         }
 
         protected override void OnBeforeHandler() => Response.Headers.Set(CustomHeader, WebName);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using EmbedIO.Utilities;
 
 namespace EmbedIO.WebApi
@@ -12,13 +13,30 @@ namespace EmbedIO.WebApi
     public class WebApiModule : WebApiModuleBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiModule" /> class.
+        /// Initializes a new instance of the <see cref="WebApiModule" /> class,
+        /// using the default response serializer.
         /// </summary>
         /// <param name="baseUrlPath">The base URL path served by this module.</param>
         /// <seealso cref="IWebModule.BaseUrlPath" />
         /// <seealso cref="Validate.UrlPath" />
         public WebApiModule(string baseUrlPath)
             : base(baseUrlPath)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebApiModule" /> class,
+        /// using the specified response serializer.
+        /// </summary>
+        /// <param name="baseUrlPath">The base URL path served by this module.</param>
+        /// <param name="serializer">A <see cref="ResponseSerializerCallback"/> used to serialize
+        /// the result of controller methods returning <see langword="object"/>
+        /// or <see cref="Task{TResult}">Task&lt;object&gt;</see>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="serializer"/> is <see langword="null"/>.</exception>
+        /// <seealso cref="IWebModule.BaseUrlPath" />
+        /// <seealso cref="Validate.UrlPath" />
+        public WebApiModule(string baseUrlPath, ResponseSerializerCallback serializer)
+            : base(baseUrlPath, serializer)
         {
         }
 

@@ -68,43 +68,5 @@ namespace EmbedIO.WebApi
         /// in order to prevent caching of the response.</para>
         /// </summary>
         protected virtual void OnBeforeHandler() => HttpContext.Response.DisableCaching();
-
-        /// <summary>
-        /// Outputs async a Json Response given a data object.
-        /// </summary>
-        /// <param name="data">The data.</param>
-        /// <returns>
-        /// A <c>true</c> value if the response output was set.
-        /// </returns>
-        protected virtual Task<bool> Ok(object data) => HttpContext.SendDataAsync(data, CancellationToken);
-
-        /// <summary>
-        /// Transforms the response body as JSON and write a new JSON to the request.
-        /// </summary>
-        /// <typeparam name="TIn">The type of the input.</typeparam>
-        /// <typeparam name="TOut">The type of the output.</typeparam>
-        /// <param name="transformFunc">The transform function.</param>
-        /// <returns>
-        /// A task for writing the output stream.
-        /// </returns>
-        protected virtual Task<bool> Ok<TIn, TOut>(Func<TIn, CancellationToken, Task<TOut>> transformFunc)
-            where TIn : class
-            => HttpContext.TransformJsonAsync(transformFunc, CancellationToken);
-
-        /// <summary>
-        /// Outputs async a string response given a string.
-        /// </summary>
-        /// <param name="content">The content.</param>
-        /// <param name="contentType">Type of the content.</param>
-        /// <param name="encoding">The encoding.</param>
-        /// <returns>
-        /// A task for writing the output stream.
-        /// </returns>
-        protected virtual Task<bool> Ok(
-            string content,
-            string contentType = MimeTypes.JsonType,
-            Encoding encoding = null,
-            CancellationToken cancellationToken = default)
-            => HttpContext.SendStringAsync(content, contentType, encoding, cancellationToken);
     }
 }

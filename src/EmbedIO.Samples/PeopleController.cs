@@ -27,14 +27,13 @@ namespace EmbedIO.Samples
         // This will respond to 
         //     GET http://localhost:9696/api/people
         [RouteHandler(HttpVerbs.Get, "/people")]
-        public Task<bool> GetAllPeople() => Ok(_dbContext.People.SelectAll());
+        public async Task<object> GetAllPeople() => await _dbContext.People.SelectAllAsync().ConfigureAwait(false);
 
         // Gets the first record.
         // This will respond to 
         //     GET http://localhost:9696/api/people/first
         [RouteHandler(HttpVerbs.Get, "/people/first")]
-        public Task<bool> GetFirstPeople()
-            => Ok(_dbContext.People.SelectAll().First());
+        public async Task<object> GetFirstPeople() => (await _dbContext.People.SelectAllAsync().ConfigureAwait(false)).First();
 
         // Gets a single record.
         // This will respond to 
@@ -46,25 +45,20 @@ namespace EmbedIO.Samples
         //
         // If the given ID cannot be converted to an integer, an exception will be thrown.
         // By default, WebApiModule will then respond with "500 Internal Server Error".
-        [RouteHandler(HttpVerbs.Get, "/people/{id}")]
-        public async Task<bool> GetPeople(int id)
-        {
-            var single = await _dbContext.People.SingleAsync(id).ConfigureAwait(false);
-            return single != null && await Ok(single).ConfigureAwait(false);
-        }
+        [RouteHandler(HttpVerbs.Get, "/people/{id?}")]
+        public async Task<object> GetPeople(int id)
+            => await _dbContext.People.SingleAsync(id).ConfigureAwait(false)
+            ?? throw HttpException.NotFound();
 
         // Posts the people Tubular model.
         [RouteHandler(HttpVerbs.Post, "/people")]
-        public Task<bool> PostPeople() =>
-            Ok<GridDataRequest, GridDataResponse>(async (model, ct) =>
-                model.CreateGridDataResponse((await _dbContext.People.SelectAllAsync().ConfigureAwait(false)).AsQueryable()));
+        public async Task<object> PostPeople()
+            => (await HttpContext.GetRequestDataAsync(RequestDeserializer.Json<GridDataRequest>, CancellationToken).ConfigureAwait(false))
+                .CreateGridDataResponse((await _dbContext.People.SelectAllAsync().ConfigureAwait(false)).AsQueryable());
 
         // Echoes request form data in JSON format.
         [RouteHandler(HttpVerbs.Post, "/echo")]
-        public async Task<bool> Echo()
-        {
-            var content = await HttpContext.GetRequestFormDataAsync(CancellationToken).ConfigureAwait(false);
-            return await Ok(content).ConfigureAwait(false);
-        }
+        public async Task<object> Echo()
+            => await HttpContext.GetRequestFormDataAsync(CancellationToken).ConfigureAwait(false);
     }
 }
