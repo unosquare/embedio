@@ -36,10 +36,10 @@ namespace EmbedIO.WebSockets.Internal
         private AutoResetEvent _receivePong;
         private Stream _stream;
 
-        private WebSocket(HttpListenerContext httpContext)
+        private WebSocket(HttpConnection connection)
         {
-            _closeConnection = httpContext.Connection.ForceClose;
-            _stream = httpContext.Connection.Stream;
+            _closeConnection = connection.ForceClose;
+            _stream = connection.Stream;
             _readyState = WebSocketState.Open;
         }
 
@@ -223,7 +223,7 @@ namespace EmbedIO.WebSockets.Internal
 
             await httpContext.HttpListenerResponse.OutputStream.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
 
-            var socket = new WebSocket(httpContext);
+            var socket = new WebSocket(httpContext.Connection);
             socket.Open();
             return socket;
         }
