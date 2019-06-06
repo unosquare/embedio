@@ -135,9 +135,9 @@ namespace EmbedIO.Net
 
             if (!closeExisting) return;
 
-            while (_ctxQueue.IsEmpty == false)
+            while (!_ctxQueue.IsEmpty)
             {
-                foreach (var key in _ctxQueue.Keys.Select(x => x).ToList())
+                foreach (var key in _ctxQueue.Keys.ToArray())
                 {
                     if (_ctxQueue.TryGetValue(key, out var context))
                         context.Connection.Close(true);
