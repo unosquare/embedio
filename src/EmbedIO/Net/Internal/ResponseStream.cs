@@ -164,7 +164,6 @@ namespace EmbedIO.Net.Internal
             }
 
             _response.Close();
-            _stream.Dispose();
         }
 
         private static byte[] GetChunkSizeBytes(int size, bool final) => Encoding.UTF8.GetBytes($"{size:x}\r\n{(final ? "\r\n" : string.Empty)}");
