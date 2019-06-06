@@ -65,6 +65,7 @@ namespace EmbedIO
             _modules = new WebModuleCollection(LogSource, "/");
 
             configure?.Invoke(Options);
+            Options.Lock();
         }
 
         /// <summary>
@@ -185,7 +186,6 @@ namespace EmbedIO
         {
             base.OnBeforeLockConfiguration();
 
-            Options.Lock();
             _modules.Lock();
         }
 

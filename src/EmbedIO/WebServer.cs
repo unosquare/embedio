@@ -138,23 +138,7 @@ namespace EmbedIO
         /// <inheritdoc />
         protected override void Prepare(CancellationToken cancellationToken)
         {
-            $"Running HTTPListener: {Listener.Name}".Info(LogSource);
-
-            foreach (var prefix in Options.UrlPrefixes)
-            {
-                var urlPrefix = new string(prefix?.ToCharArray());
-
-                if (urlPrefix.EndsWith("/") == false) urlPrefix = urlPrefix + "/";
-                urlPrefix = urlPrefix.ToLowerInvariant();
-
-                Listener.AddPrefix(urlPrefix);
-                $"Web server prefix '{urlPrefix}' added.".Info(LogSource);
-            }
-
-            "Finished Loading Web Server.".Info(LogSource);
-
             Listener.Start();
-
             "Started HTTP Listener".Info(LogSource);
 
             // close port when the cancellation token is cancelled
@@ -172,15 +156,33 @@ namespace EmbedIO
 
         private IHttpListener CreateHttpListener()
         {
-            switch (Options.Mode)
+            IHttpListener DoCreate()
             {
-                case HttpListenerMode.Microsoft:
-                    return System.Net.HttpListener.IsSupported
-                        ? new SystemHttpListener(new System.Net.HttpListener()) as IHttpListener
-                        : new Net.HttpListener(Options.Certificate);
-                default: // case HttpListenerMode.EmbedIO
-                    return new Net.HttpListener(Options.Certificate);
+                switch (Options.Mode)
+                {
+                    case HttpListenerMode.Microsoft:
+                        return System.Net.HttpListener.IsSupported
+                            ? new SystemHttpListener(new System.Net.HttpListener()) as IHttpListener
+                            : new Net.HttpListener(Options.Certificate);
+                    default: // case HttpListenerMode.EmbedIO
+                        return new Net.HttpListener(Options.Certificate);
+                }
             }
+
+            var listener = DoCreate();
+            $"Running HTTPListener: {listener.Name}".Info(LogSource);
+            foreach (var prefix in Options.UrlPrefixes)
+            {
+                var urlPrefix = new string(prefix?.ToCharArray());
+
+                if (urlPrefix.EndsWith("/") == false) urlPrefix = urlPrefix + "/";
+                urlPrefix = urlPrefix.ToLowerInvariant();
+
+                listener.AddPrefix(urlPrefix);
+                $"Web server prefix '{urlPrefix}' added.".Info(LogSource);
+            }
+
+            return listener;
         }
     }
 }
