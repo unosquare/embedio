@@ -10,5 +10,5 @@ namespace EmbedIO
     /// <param name="data">The data to serialize.</param>
     /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
     /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
-    public delegate Task SerializerCallback(IHttpContext context, object data, CancellationToken cancellationToken);
+    public delegate Task ResponseSerializerCallback(IHttpContext context, object data, CancellationToken cancellationToken);
 }

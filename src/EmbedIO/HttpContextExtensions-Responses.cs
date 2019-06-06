@@ -123,8 +123,8 @@ namespace EmbedIO
         }
 
         /// <summary>
-        /// <para>Asynchronously sends serialized data as a response, using the default serializer.</para>
-        /// <para>As of EmbedIO version 3.0, the default serializer has the same behavior of JSON
+        /// <para>Asynchronously sends serialized data as a response, using the default response serializer.</para>
+        /// <para>As of EmbedIO version 3.0, the default response serializer has the same behavior of JSON
         /// response methods of version 2.</para>
         /// </summary>
         /// <param name="this">The <see cref="IHttpContext"/> interface on which this method is called.</param>
@@ -133,32 +133,32 @@ namespace EmbedIO
         /// <returns>A <see cref="Task"/> representing the ongoing operation, whose result will always be <see langword="true"/>.
         /// This allows a call to this method to be the last instruction in a <see cref="WebHandler"/>.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
-        /// <seealso cref="SendDataAsync(IHttpContext,SerializerCallback,object,CancellationToken)"/>
-        /// <seealso cref="Serializer.Default"/>
+        /// <seealso cref="SendDataAsync(IHttpContext,ResponseSerializerCallback,object,CancellationToken)"/>
+        /// <seealso cref="ResponseSerializer.Default"/>
         public static async Task<bool> SendDataAsync(this IHttpContext @this, object data, CancellationToken cancellationToken)
         {
-            await Serializer.Default(@this, data, cancellationToken).ConfigureAwait(false);
+            await ResponseSerializer.Default(@this, data, cancellationToken).ConfigureAwait(false);
             return true;
         }
 
         /// <summary>
-        /// <para>Asynchronously sends serialized data as a response, using the specified serializer.</para>
-        /// <para>As of EmbedIO version 3.0, the default serializer has the same behavior of JSON
+        /// <para>Asynchronously sends serialized data as a response, using the specified response serializer.</para>
+        /// <para>As of EmbedIO version 3.0, the default response serializer has the same behavior of JSON
         /// response methods of version 2.</para>
         /// </summary>
         /// <param name="this">The <see cref="IHttpContext"/> interface on which this method is called.</param>
-        /// <param name="serializer">A <see cref="SerializerCallback"/> used to prepare the response.</param>
+        /// <param name="serializer">A <see cref="ResponseSerializerCallback"/> used to prepare the response.</param>
         /// <param name="data">The data to serialize.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation, whose result will always be <see langword="true"/>.
         /// This allows a call to this method to be the last instruction in a <see cref="WebHandler"/>.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="serializer"/> is <see langword="null"/>.</exception>
-        /// <seealso cref="SendDataAsync(IHttpContext,SerializerCallback,object,CancellationToken)"/>
-        /// <seealso cref="Serializer.Default"/>
+        /// <seealso cref="SendDataAsync(IHttpContext,ResponseSerializerCallback,object,CancellationToken)"/>
+        /// <seealso cref="ResponseSerializer.Default"/>
         public static async Task<bool> SendDataAsync(
             this IHttpContext @this,
-            SerializerCallback serializer,
+            ResponseSerializerCallback serializer,
             object data,
             CancellationToken cancellationToken)
         {

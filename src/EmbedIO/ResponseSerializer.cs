@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 namespace EmbedIO
 {
     /// <summary>
-    /// Provides standard serializer callbacks.
+    /// Provides standard response serializer callbacks.
     /// </summary>
-    /// <seealso cref="SerializerCallback"/>
-    public static class Serializer
+    /// <seealso cref="ResponseSerializerCallback"/>
+    public static class ResponseSerializer
     {
         /// <summary>
-        /// <para>The default serializer callback used by EmbedIO.</para>
+        /// <para>The default response serializer callback used by EmbedIO.</para>
         /// <para>Equivalent to <see cref="Json"/>.</para>
         /// </summary>
-        public static readonly SerializerCallback Default = Json;
+        public static readonly ResponseSerializerCallback Default = Json;
 
         /// <summary>
         /// Serializes data in JSON format to a HTTP response,
