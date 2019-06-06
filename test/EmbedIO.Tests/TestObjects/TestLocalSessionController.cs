@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
 
@@ -20,35 +22,30 @@ namespace EmbedIO.Tests.TestObjects
         }
 
         [RouteHandler(HttpVerbs.Get, "/getcookie")]
-        public object GetCookieC()
+        public Task<bool> GetCookieC()
         {
             var cookie = new System.Net.Cookie(CookieName, CookieName);
             Response.Cookies.Add(cookie);
 
-            return Response.Cookies[CookieName];
+            return HttpContext.SendStringAsync(Response.Cookies[CookieName].Value, MimeTypes.PlainTextType, Encoding.UTF8, CancellationToken);
         }
 
         [RouteHandler(HttpVerbs.Get, "/deletesession")]
-        public object DeleteSessionC()
+        public Task<bool> DeleteSessionC()
         {
             HttpContext.Session.Delete();
-            Response.ContentType = MimeTypes.PlainTextType;
-            return "Deleted";
+            return HttpContext.SendStringAsync("Deleted", MimeTypes.PlainTextType, Encoding.UTF8, CancellationToken);
         }
 
         [RouteHandler(HttpVerbs.Get, "/putdata")]
-        public object PutDataSession()
+        public Task<bool> PutDataSession()
         {
             HttpContext.Session["sessionData"] = MyData;
-            Response.ContentType = MimeTypes.PlainTextType;
-            return HttpContext.Session["sessionData"].ToString();
+            return HttpContext.SendStringAsync(HttpContext.Session["sessionData"].ToString(), MimeTypes.PlainTextType, Encoding.UTF8, CancellationToken);
         }
 
         [RouteHandler(HttpVerbs.Get, "/getdata")]
-        public object GetDataSession()
-        {
-            Response.ContentType = MimeTypes.PlainTextType;
-            return HttpContext.Session["sessionData"]?.ToString() ?? string.Empty;
-        }
+        public Task<bool> GetDataSession()
+            => HttpContext.SendStringAsync(HttpContext.Session["sessionData"]?.ToString() ?? string.Empty, MimeTypes.PlainTextType, Encoding.UTF8, CancellationToken);
     }
 }
