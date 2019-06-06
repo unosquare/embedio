@@ -139,10 +139,9 @@ namespace EmbedIO.Net.Internal
 
             if (_sock == null) return;
 
-            forceClose |= !_context.Request.KeepAlive;
-
-            if (!forceClose)
-                forceClose = _context.Response.Headers["connection"] == "close";
+            forceClose = forceClose
+                      || !_context.Request.KeepAlive
+                      || _context.Response.Headers["connection"] == "close";
 
             if (!forceClose)
             {
