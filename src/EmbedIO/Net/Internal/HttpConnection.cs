@@ -157,20 +157,17 @@ namespace EmbedIO.Net.Internal
                 }
             }
 
-            var s = _sock;
-            _sock = null;
-
-            try
+            using (var s = _sock)
             {
-                s?.Shutdown(SocketShutdown.Both);
-            }
-            catch
-            {
-                // ignored
-            }
-            finally
-            {
-                s?.Dispose();
+                _sock = null;
+                try
+                {
+                    s?.Shutdown(SocketShutdown.Both);
+                }
+                catch
+                {
+                    // ignored
+                }
             }
 
             Unbind();
