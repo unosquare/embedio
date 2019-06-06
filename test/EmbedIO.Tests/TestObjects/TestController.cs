@@ -68,7 +68,7 @@ namespace EmbedIO.Tests.TestObjects
         [RouteHandler(HttpVerbs.Post, "/" + EchoPath)]
         public async Task<bool> PostEcho()
         {
-            var content = await Request.GetFormDataAsync();
+            var content = await HttpContext.GetRequestFormDataAsync(CancellationToken);
 
             return await Ok(content);
         }

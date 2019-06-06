@@ -25,9 +25,9 @@ namespace EmbedIO
         public const string JsonType = "application/json";
 
         /// <summary>
-        /// The MIME type for URL-encoded HTML form contents.
+        /// The MIME type for URL-encoded HTML forms.
         /// </summary>
-        internal const string UrlEncodedContentType = "application/x-www-form-urlencoded";
+        internal const string UrlEncodedFormType = "application/x-www-form-urlencoded";
 
         // -------------------------------------------------------------------------------------------------
         //

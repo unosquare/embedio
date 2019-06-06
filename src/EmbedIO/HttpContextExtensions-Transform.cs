@@ -6,7 +6,6 @@ namespace EmbedIO
 {
     partial class HttpContextExtensions
     {
-
         /// <summary>
         /// Parses the request body as JSON, applies a transformation function,
         /// and sends the result as a JSON response.
@@ -25,7 +24,7 @@ namespace EmbedIO
             CancellationToken cancellationToken = default)
             where TIn : class
         {
-            var requestJson = await @this.Request.ParseJsonAsync<TIn>().ConfigureAwait(false);
+            var requestJson = await @this.GetRequestDataAsync(RequestDeserializer.Json<TIn>, cancellationToken).ConfigureAwait(false);
             var responseJson = await transformFunc(requestJson, cancellationToken).ConfigureAwait(false);
             return await @this.SendDataAsync(responseJson, cancellationToken).ConfigureAwait(false);
         }
@@ -47,7 +46,7 @@ namespace EmbedIO
             CancellationToken cancellationToken = default)
             where TIn : class
         {
-            var requestJson = await @this.Request.ParseJsonAsync<TIn>().ConfigureAwait(false);
+            var requestJson = await @this.GetRequestDataAsync(RequestDeserializer.Json<TIn>, cancellationToken).ConfigureAwait(false);
             var responseJson = transformFunc(requestJson);
             return await @this.SendDataAsync(responseJson, cancellationToken).ConfigureAwait(false);
         }

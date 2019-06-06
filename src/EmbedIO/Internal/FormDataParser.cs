@@ -6,22 +6,9 @@ namespace EmbedIO.Internal
 {
     internal static class FormDataParser
     {
-        /// <summary>
-        /// Parses the form data given the request body string.
-        /// </summary>
-        /// <param name="requestBody">The request body.</param>
-        /// <param name="contentTypeHeader">The content type header.</param>
-        /// <returns>
-        /// A collection that represents the request body string.
-        /// </returns>
-        /// <exception cref="System.NotImplementedException">multipart/form-data Content Type parsing is not yet implemented.</exception>
-        internal static Dictionary<string, object> ParseAsDictionary(
-            string requestBody,
-            string contentTypeHeader = MimeTypes.UrlEncodedContentType)
+        // Parses form data from a request body.
+        internal static Dictionary<string, object> ParseAsDictionary(string requestBody)
         {
-            if (contentTypeHeader.ToLowerInvariant().StartsWith("multipart/form-data"))
-                throw new NotImplementedException("multipart/form-data Content Type parsing is not yet implemented");
-
             // verify there is data to parse
             if (string.IsNullOrWhiteSpace(requestBody)) return null;
 
