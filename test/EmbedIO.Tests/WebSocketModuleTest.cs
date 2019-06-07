@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using EmbedIO.Tests.TestObjects;
@@ -8,20 +9,35 @@ using Unosquare.Swan.Formatters;
 namespace EmbedIO.Tests
 {
     [TestFixture]
-    public class WebSocketModuleTest : WebSocketModuleTestBase
+    public class WebSocketModuleTest : FixtureBase
     {
         public WebSocketModuleTest()
             : base(
                 ws => ws
                     .WithModule(new TestWebSocket("/test"))
                     .WithModule(new BigDataWebSocket("/bigdata"))
-                    .WithModule(new CloseWebSocket("/close")),
-                "test/")
+                    .WithModule(new CloseWebSocket("/close")))
         {
         }
 
         [Test]
-        public Task TestConnectWebSocket() => ConnectWebSocket();
+        public async Task TestConnectWebSocket()
+        {
+            var websocketUrl = new Uri(WebServerUrl.Replace("http", "ws") + "test");
+            
+            var clientSocket = new System.Net.WebSockets.ClientWebSocket();
+            await clientSocket.ConnectAsync(websocketUrl, default);
+            
+            Assert.AreEqual(
+                System.Net.WebSockets.WebSocketState.Open, 
+                clientSocket.State, 
+                $"Connection should be open, but the status is {clientSocket.State} - {websocketUrl}");
+
+            var buffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes("HOLA"));
+            await clientSocket.SendAsync(buffer, System.Net.WebSockets.WebSocketMessageType.Text, true, default);
+
+            Assert.AreEqual(await ReadString(clientSocket), "HELLO");
+        }
 
         [Test]
         public async Task TestSendBigDataWebSocket()
@@ -51,6 +67,25 @@ namespace EmbedIO.Tests
 
             Assert.IsTrue(result.CloseStatus.HasValue);
             Assert.IsTrue(result.CloseStatus.Value == System.Net.WebSockets.WebSocketCloseStatus.InvalidPayloadData);
+        }
+
+        protected static async Task<string> ReadString(System.Net.WebSockets.ClientWebSocket ws)
+        {
+            var buffer = new ArraySegment<byte>(new byte[8192]);
+
+            using (var ms = new MemoryStream())
+            {
+                System.Net.WebSockets.WebSocketReceiveResult result;
+
+                do
+                {
+                    result = await ws.ReceiveAsync(buffer, default);
+                    ms.Write(buffer.Array, buffer.Offset, result.Count);
+                }
+                while (!result.EndOfMessage);
+
+                return Encoding.UTF8.GetString(ms.ToArray());
+            }
         }
     }
 }
