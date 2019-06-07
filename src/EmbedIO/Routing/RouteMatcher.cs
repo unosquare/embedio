@@ -113,7 +113,10 @@ namespace EmbedIO.Routing
 
                 string pattern = null;
                 var parameterNames = new List<string>();
-                var exception = Routing.Route.ParseInternal(route, parameterNames.Add, p => pattern = p);
+                var exception = Routing.Route.ParseInternal(route, (n, p) => {
+                    parameterNames.AddRange(n);
+                    pattern = p;
+                });
                 if (exception != null)
                 {
                     result = null;
