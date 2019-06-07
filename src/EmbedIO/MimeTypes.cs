@@ -36,9 +36,9 @@ namespace EmbedIO
         //
         //  When you update the MIME type list, remember to:
         //
-        //    * update the date in XML docs;
+        //    * update the date in XML docs below;
         //
-        //    * check the LICENSE file to see if copyright year and/or license condition have changed;
+        //    * check the LICENSE file to see if copyright year and/or license conditions have changed;
         //
         //    * if the URL for the LICENSE file has changed, update EmbedIO's LICENSE file too.
         //
