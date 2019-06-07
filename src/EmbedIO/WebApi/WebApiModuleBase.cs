@@ -531,8 +531,8 @@ namespace EmbedIO.WebApi
 
             foreach (var method in methods)
             {
-                var attributes = method.GetCustomAttributes(typeof(RouteHandlerAttribute))
-                    .OfType<RouteHandlerAttribute>()
+                var attributes = method.GetCustomAttributes(typeof(RouteAttribute))
+                    .OfType<RouteAttribute>()
                     .ToArray();
                 if (attributes.Length < 1)
                     continue;

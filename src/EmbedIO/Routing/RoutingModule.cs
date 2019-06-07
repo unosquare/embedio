@@ -53,7 +53,7 @@ namespace EmbedIO.Routing
 
         /// <summary>
         /// <para>Adds handlers, associating them with HTTP method / route pairs by means
-        /// of <see cref="RouteHandlerAttribute">RouteHandler</see> attributes.</para>
+        /// of <see cref="RouteAttribute">RouteHandler</see> attributes.</para>
         /// <para>See <see cref="RouteVerbResolverCollection.AddFrom(object)"/> for further information.</para>
         /// </summary>
         /// <param name="target">Where to look for compatible handlers.</param>

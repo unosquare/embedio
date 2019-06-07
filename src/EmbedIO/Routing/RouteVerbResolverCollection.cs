@@ -28,7 +28,7 @@ namespace EmbedIO.Routing
 
         /// <summary>
         /// <para>Adds handlers, associating them with HTTP method / route pairs by means
-        /// of <see cref="RouteHandlerAttribute">RouteHandler</see> attributes.</para>
+        /// of <see cref="RouteAttribute">RouteHandler</see> attributes.</para>
         /// <para>A compatible handler is a static or instance method that takes 3
         /// parameters having the following types, in order:</para>
         /// <list type="number">
@@ -39,7 +39,7 @@ namespace EmbedIO.Routing
         /// <para>The return type of a compatible handler may be either <see langword="bool"/>
         /// or <see cref="Task{TResult}">Task&lt;bool&gt;</see>.</para>
         /// <para>A compatible handler, in order to be added to a <see cref="RouteVerbResolverCollection"/>,
-        /// must have one or more <see cref="RouteHandlerAttribute">RouteHandler</see> attributes.
+        /// must have one or more <see cref="RouteAttribute">RouteHandler</see> attributes.
         /// The same handler will be added once for each such attribute, either declared on the handler,
         /// or inherited (if the handler is a virtual method).</para>
         /// <para>This method behaves according to the type of the <paramref name="target"/>
@@ -63,7 +63,7 @@ namespace EmbedIO.Routing
         /// <param name="target">Where to look for compatible handlers. See the Summary section for more information.</param>
         /// <returns>
         /// <para>The number of handlers that were added to the collection.</para>
-        /// <para>Note that methods with multiple <see cref="RouteHandlerAttribute">RouteHandler</see> attributes
+        /// <para>Note that methods with multiple <see cref="RouteAttribute">RouteHandler</see> attributes
         /// will count as one for each attribute.</para>
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="target"/> is <see langword="null"/>.</exception>
@@ -128,7 +128,7 @@ namespace EmbedIO.Routing
             if (!IsHandlerCompatibleMethod(method, out var isSynchronous))
                 return 0;
 
-            var attributes = method.GetCustomAttributes(typeof(RouteHandlerAttribute), true).OfType<RouteHandlerAttribute>().ToArray();
+            var attributes = method.GetCustomAttributes(typeof(RouteAttribute), true).OfType<RouteAttribute>().ToArray();
             if (attributes.Length == 0)
                 return 0;
 

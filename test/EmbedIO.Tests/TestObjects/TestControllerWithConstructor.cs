@@ -16,7 +16,7 @@ namespace EmbedIO.Tests.TestObjects
 
         public string WebName { get; set; }
 
-        [RouteHandler(HttpVerbs.Get, "/name")]
+        [Route(HttpVerbs.Get, "/name")]
         public object GetName()
         {
             Response.DisableCaching();
@@ -24,7 +24,7 @@ namespace EmbedIO.Tests.TestObjects
             return WebName;
         }
 
-        [RouteHandler(HttpVerbs.Get, "/namePublic")]
+        [Route(HttpVerbs.Get, "/namePublic")]
         public object GetNamePublic()
         {
             Response.Headers.Set("Cache-Control", "public");

@@ -26,13 +26,13 @@ namespace EmbedIO.Samples
         // Gets all records.
         // This will respond to 
         //     GET http://localhost:9696/api/people
-        [RouteHandler(HttpVerbs.Get, "/people")]
+        [Route(HttpVerbs.Get, "/people")]
         public async Task<object> GetAllPeople() => await _dbContext.People.SelectAllAsync().ConfigureAwait(false);
 
         // Gets the first record.
         // This will respond to 
         //     GET http://localhost:9696/api/people/first
-        [RouteHandler(HttpVerbs.Get, "/people/first")]
+        [Route(HttpVerbs.Get, "/people/first")]
         public async Task<object> GetFirstPeople() => (await _dbContext.People.SelectAllAsync().ConfigureAwait(false)).First();
 
         // Gets a single record.
@@ -45,19 +45,19 @@ namespace EmbedIO.Samples
         //
         // If the given ID cannot be converted to an integer, an exception will be thrown.
         // By default, WebApiModule will then respond with "500 Internal Server Error".
-        [RouteHandler(HttpVerbs.Get, "/people/{id?}")]
+        [Route(HttpVerbs.Get, "/people/{id?}")]
         public async Task<object> GetPeople(int id)
             => await _dbContext.People.SingleAsync(id).ConfigureAwait(false)
             ?? throw HttpException.NotFound();
 
         // Posts the people Tubular model.
-        [RouteHandler(HttpVerbs.Post, "/people")]
+        [Route(HttpVerbs.Post, "/people")]
         public async Task<object> PostPeople()
             => (await HttpContext.GetRequestDataAsync(RequestDeserializer.Json<GridDataRequest>, CancellationToken).ConfigureAwait(false))
                 .CreateGridDataResponse((await _dbContext.People.SelectAllAsync().ConfigureAwait(false)).AsQueryable());
 
         // Echoes request form data in JSON format.
-        [RouteHandler(HttpVerbs.Post, "/echo")]
+        [Route(HttpVerbs.Post, "/echo")]
         public async Task<object> Echo()
             => await HttpContext.GetRequestFormDataAsync(CancellationToken).ConfigureAwait(false);
     }

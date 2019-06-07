@@ -16,15 +16,15 @@ namespace EmbedIO.Tests.TestObjects
             {
             }
 
-            [RouteHandler(HttpVerbs.Any, "/data/{id}")]
+            [Route(HttpVerbs.Any, "/data/{id}")]
             public Task<bool> Id(string id)
                 => HttpContext.SendStringAsync(id, MimeTypes.PlainTextType, Encoding.UTF8, CancellationToken);
 
-            [RouteHandler(HttpVerbs.Any, "/data/{id}/{time?}")]
+            [Route(HttpVerbs.Any, "/data/{id}/{time?}")]
             public Task<bool> Time(string id, string time)
                 => HttpContext.SendStringAsync(time, MimeTypes.PlainTextType, Encoding.UTF8, CancellationToken);
 
-            [RouteHandler(HttpVerbs.Any, "/empty")]
+            [Route(HttpVerbs.Any, "/empty")]
             public bool Empty()
             {
                 HttpContext.Response.SetEmptyResponse((int) HttpStatusCode.OK);

@@ -8,10 +8,10 @@ namespace EmbedIO.Routing
     /// Method Must match the WebServerModule.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-    public class RouteHandlerAttribute : Attribute
+    public class RouteAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RouteHandlerAttribute"/> class.
+        /// Initializes a new instance of the <see cref="RouteAttribute"/> class.
         /// </summary>
         /// <param name="verb">The verb.</param>
         /// <param name="route">The route.</param>
@@ -21,7 +21,7 @@ namespace EmbedIO.Routing
         /// <para>- or -</para>
         /// <para><paramref name="route"/> does not start with a slash (<c>/</c>) character.</para>
         /// </exception>
-        public RouteHandlerAttribute(HttpVerbs verb, string route)
+        public RouteAttribute(HttpVerbs verb, string route)
         {
             Verb = verb;
             Route = Validate.Route(nameof(route), route);

@@ -17,35 +17,35 @@ namespace EmbedIO.Tests.TestObjects
         {
         }
 
-        [RouteHandler(HttpVerbs.Get, "/empty")]
+        [Route(HttpVerbs.Get, "/empty")]
         public object GetEmpty() => new { Ok = true };
 
-        [RouteHandler(HttpVerbs.Get, "/regex")]
+        [Route(HttpVerbs.Get, "/regex")]
         public object GetPeople() => PeopleRepository.Database;
 
-        [RouteHandler(HttpVerbs.Post, "/regex")]
+        [Route(HttpVerbs.Post, "/regex")]
         public async Task<object> PostPeople()
             => await HttpContext.GetRequestDataAsync(RequestDeserializer.Json<Person>, CancellationToken)
                 .ConfigureAwait(false);
 
-        [RouteHandler(HttpVerbs.Get, "/regex/{id}")]
+        [Route(HttpVerbs.Get, "/regex/{id}")]
         public object GetPerson(int id) => CheckPerson(id);
 
-        [RouteHandler(HttpVerbs.Get, "/regexopt/{id?}")]
+        [Route(HttpVerbs.Get, "/regexopt/{id?}")]
         public object GetPerson(int? id)
             => id.HasValue ? CheckPerson(id.Value) : PeopleRepository.Database;
 
-        [RouteHandler(HttpVerbs.Get, "/regexdate/{date}")]
+        [Route(HttpVerbs.Get, "/regexdate/{date}")]
         public object GetPerson(DateTime date)
             => PeopleRepository.Database.FirstOrDefault(p => p.DoB == date)
             ?? throw HttpException.NotFound();
 
-        [RouteHandler(HttpVerbs.Get, "/regextwo/{skill}/{age}")]
+        [Route(HttpVerbs.Get, "/regextwo/{skill}/{age}")]
         public object GetPerson(string skill, int age)
             => PeopleRepository.Database.FirstOrDefault(p => string.Equals(p.MainSkill, skill, StringComparison.CurrentCultureIgnoreCase) && p.Age == age)
             ?? throw HttpException.NotFound();
 
-        [RouteHandler(HttpVerbs.Get, "/regexthree/{skill}/{age?}")]
+        [Route(HttpVerbs.Get, "/regexthree/{skill}/{age?}")]
         public object GetOptionalPerson(string skill, int? age = null)
         {
             var item = age == null
@@ -55,7 +55,7 @@ namespace EmbedIO.Tests.TestObjects
             return item ?? throw HttpException.NotFound();
         }
 
-        [RouteHandler(HttpVerbs.Post, "/" + EchoPath)]
+        [Route(HttpVerbs.Post, "/" + EchoPath)]
         public async Task<object> PostEcho()
             => await HttpContext.GetRequestFormDataAsync(CancellationToken).ConfigureAwait(false);
 
