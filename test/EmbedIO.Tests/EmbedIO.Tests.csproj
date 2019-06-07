@@ -34,4 +34,8 @@
     <ProjectReference Include="..\..\src\EmbedIO\EmbedIO.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Issues\" />
+  </ItemGroup>
+
 </Project>
