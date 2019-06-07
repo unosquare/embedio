@@ -6,7 +6,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbedIO.Net;
 using EmbedIO.Net.Internal;
 using EmbedIO.Utilities;
 using Unosquare.Swan;
@@ -221,7 +220,7 @@ namespace EmbedIO.WebSockets.Internal
 
             var bytes = Encoding.UTF8.GetBytes(ret.ToString());
 
-            await httpContext.HttpListenerResponse.OutputStream.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
+            await httpContext.Connection.Stream.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
 
             var socket = new WebSocket(httpContext.Connection);
             socket.Open();

@@ -6,7 +6,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Net.Internal;
-using EmbedIO.Utilities;
 
 namespace EmbedIO.Net
 {
