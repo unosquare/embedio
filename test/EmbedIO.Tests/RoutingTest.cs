@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using EmbedIO.Routing;
 using NUnit.Framework;
 
@@ -63,6 +64,39 @@ namespace EmbedIO.Tests
             Assert.AreEqual(parameterNames.Length, matcher.ParameterNames.Count);
             for (var i = 0; i < parameterNames.Length; i++)
                 Assert.AreEqual(parameterNames[i], matcher.ParameterNames[i]);
+        }
+
+        [TestCase("/", "/")] // Root.
+        [TestCase("/abc/def", "/abc/def")]
+        [TestCase("/abc/{id}", "/abc/123", "id", "123")]
+        [TestCase("/abc/{id?}", "/abc", "id", "")]
+        [TestCase("/abc/{id}/{date}", "/abc/123/20190223", "id", "123", "date", "20190223")]
+        [TestCase("/abc/{id}/{date?}", "/abc/123", "id", "123", "date", "")]
+        [TestCase("/abc/{id?}/{date}", "/abc/20190223", "id", "", "date", "20190223")]
+        public void MatchedRoute_HasCorrectParameters(string route, string path, params string[] parameters)
+        {
+            if (parameters.Length % 2 != 0)
+                throw new InvalidOperationException("Parameters should be in name, value pairs.");
+
+            RouteMatcher.ClearCache();
+
+            var parameterCount = parameters.Length / 2;
+            Assert.IsTrue(RouteMatcher.TryParse(route, out var matcher));
+            Assert.AreEqual(parameterCount, matcher.ParameterNames.Count);
+            for (var i = 0; i < parameterCount; i++)
+                Assert.AreEqual(parameters[2 * i], matcher.ParameterNames[i]);
+
+            var match = matcher.Match(path);
+            Assert.IsNotNull(match);
+            var keys = match.Keys.ToArray();
+            var values = match.Values.ToArray();
+            Assert.AreEqual(parameterCount, keys.Length);
+            Assert.AreEqual(parameterCount, values.Length);
+            for (var i = 0; i < parameterCount; i++)
+            {
+                Assert.AreEqual(parameters[2 * i], keys[i]);
+                Assert.AreEqual(parameters[(2 * i) + 1], values[i]);
+            }
         }
     }
 }

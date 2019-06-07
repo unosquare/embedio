@@ -226,6 +226,10 @@ namespace EmbedIO.Routing
                             var openPosition = segment.IndexOf('{', position);
                             if (openPosition < 0)
                             {
+                                // If at the start of a segment, don't forget the slash.
+                                if (position == 0)
+                                    sb?.Append('/');
+
                                 // No more parameter specs: escape the remainder of the string
                                 // and add it to the pattern.
                                 sb?.Append(Regex.Escape(segment.Substring(position)));
