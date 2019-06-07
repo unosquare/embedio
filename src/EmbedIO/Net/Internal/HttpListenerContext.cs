@@ -52,6 +52,8 @@ namespace EmbedIO.Net.Internal
 
         public IDictionary<object, object> Items => _items.Value;
 
+        public MimeTypeProviderStack MimeTypeProviders { get; } = new MimeTypeProviderStack();
+
         internal HttpListenerRequest HttpListenerRequest => Request as HttpListenerRequest;
 
         internal HttpListenerResponse HttpListenerResponse => Response as HttpListenerResponse;
@@ -102,5 +104,8 @@ namespace EmbedIO.Net.Internal
             var webSocket = await WebSocket.AcceptAsync(this, acceptedProtocol).ConfigureAwait(false);
             return new WebSocketContext(this, WebSocket.SupportedVersion, requestedProtocols, acceptedProtocol, webSocket, cancellationToken);
         }
+
+        public bool TryGetMimeType(string extension, out string mimeType)
+            => MimeTypeProviders.TryGetMimeType(extension, out mimeType);
     }
 }

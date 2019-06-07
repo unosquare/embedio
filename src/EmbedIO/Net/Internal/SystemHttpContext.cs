@@ -64,6 +64,8 @@ namespace EmbedIO.Net.Internal
 
         public IDictionary<object, object> Items { get; } = new Dictionary<object, object>();
 
+        public MimeTypeProviderStack MimeTypeProviders { get; } = new MimeTypeProviderStack();
+
         public void OnClose(Action<IHttpContext> callback)
         {
             if (_closed)
@@ -109,5 +111,8 @@ namespace EmbedIO.Net.Internal
                 }
             }
         }
+
+        public bool TryGetMimeType(string extension, out string mimeType)
+            => MimeTypeProviders.TryGetMimeType(extension, out mimeType);
     }
 }

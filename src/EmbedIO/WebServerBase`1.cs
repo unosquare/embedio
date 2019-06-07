@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,6 +22,8 @@ namespace EmbedIO
         private readonly WebModuleCollection _modules;
 
         private readonly bool _supportCompressedRequests;
+
+        private readonly Dictionary<string, string> _customMimeTypes = new Dictionary<string, string>();
 
         private WebExceptionHandler _onUnhandledException = StandardExceptionHandlers.Default;
 
@@ -87,11 +90,6 @@ namespace EmbedIO
         /// </summary>
         public TOptions Options { get; }
 
-        /// <summary>
-        /// Gets a string to use as a source for log messages.
-        /// </summary>
-        protected string LogSource { get; }
-
         /// <inheritdoc />
         /// <exception cref="InvalidOperationException">The server's configuration is locked.</exception>
         /// <exception cref="ArgumentNullException">this property is being set to <see langword="null"/>.</exception>
@@ -138,6 +136,43 @@ namespace EmbedIO
 
                 StateChanged?.Invoke(this, new WebServerStateChangedEventArgs(oldState, value));
             }
+        }
+
+        /// <summary>
+        /// Gets a string to use as a source for log messages.
+        /// </summary>
+        protected string LogSource { get; }
+
+        /// <inheritdoc />
+        /// <exception cref="ArgumentNullException"><paramref name="extension"/>is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// <para>This method will only look for <paramref name="extension"/> in the custom MIME type associations
+        /// added on this instance using the <see cref="AddCustomMimeType"/> method.</para>
+        /// <para>For a complete search in both custom (added at any level) and standard MIME types,
+        /// use the <see cref="IMimeTypeProvider.TryGetMimeType">IHttpContext.TryGetMimeType</see> method.</para>
+        /// </remarks>
+        public bool TryGetMimeType(string extension, out string mimeType)
+            => _customMimeTypes.TryGetValue(
+                Validate.NotNull(nameof(extension), extension),
+                out mimeType);
+
+        /// <inheritdoc />
+        /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="extension"/>is <see langword="null"/>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="mimeType"/>is <see langword="null"/>.</para>
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <para><paramref name="extension"/>is the empty string.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="mimeType"/>is the empty string.</para>
+        /// </exception>
+        public void AddCustomMimeType(string extension, string mimeType)
+        {
+            EnsureConfigurationNotLocked();
+            _customMimeTypes[Validate.NotNullOrEmpty(nameof(extension), extension)]
+                = Validate.NotNullOrEmpty(nameof(mimeType), mimeType);
         }
 
         /// <inheritdoc />
@@ -234,6 +269,7 @@ namespace EmbedIO
         private async Task HandleContextAsync(IHttpContextImpl context, CancellationToken cancellationToken)
         {
             context.SupportCompressedRequests = Options.SupportCompressedRequests;
+            context.MimeTypeProviders.Push(this);
 
             try
             {

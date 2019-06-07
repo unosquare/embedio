@@ -361,7 +361,7 @@ namespace EmbedIO.Files
 
                 context.Response.ContentLength64 = fileInfo.Length;
 
-                SetGeneralHeaders(context.Response, utcFileDateString, fileInfo.Extension);
+                SetGeneralHeaders(context, utcFileDateString, fileInfo.Extension);
 
                 if (!sendBuffer)
                 {

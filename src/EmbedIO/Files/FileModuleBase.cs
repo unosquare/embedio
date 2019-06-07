@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Utilities;
 using Unosquare.Swan;
 
 namespace EmbedIO.Files
@@ -13,9 +15,10 @@ namespace EmbedIO.Files
     /// Represents a files module base.
     /// </summary>
     /// <seealso cref="WebModuleBase" />
-    public abstract class FileModuleBase
-        : WebModuleBase
+    public abstract class FileModuleBase : WebModuleBase, IMimeTypeCustomizer
     {
+        private readonly Dictionary<string, string> _customMimeTypes = new Dictionary<string, string>();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FileModuleBase" /> class.
         /// </summary>
@@ -39,6 +42,38 @@ namespace EmbedIO.Files
         ///   <c>true</c> if [use gzip]; otherwise, <c>false</c>.
         /// </value>
         public bool UseGzip { get; }
+
+        /// <inheritdoc />
+        /// <exception cref="ArgumentNullException"><paramref name="extension"/>is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// <para>This method will only look for <paramref name="extension"/> in the custom MIME type associations
+        /// added on this instance using the <see cref="AddCustomMimeType"/> method.</para>
+        /// <para>For a complete search in both custom (added at any level) and standard MIME types,
+        /// use the <see cref="IMimeTypeProvider.TryGetMimeType">IHttpContext.TryGetMimeType</see> method.</para>
+        /// </remarks>
+        public bool TryGetMimeType(string extension, out string mimeType)
+            => _customMimeTypes.TryGetValue(
+                Validate.NotNull(nameof(extension), extension),
+                out mimeType);
+
+        /// <inheritdoc />
+        /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="extension"/>is <see langword="null"/>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="mimeType"/>is <see langword="null"/>.</para>
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <para><paramref name="extension"/>is the empty string.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="mimeType"/>is the empty string.</para>
+        /// </exception>
+        public void AddCustomMimeType(string extension, string mimeType)
+        {
+            EnsureConfigurationNotLocked();
+            _customMimeTypes[Validate.NotNullOrEmpty(nameof(extension), extension)]
+                = Validate.NotNullOrEmpty(nameof(mimeType), mimeType);
+        }
 
         /// <summary>
         /// Writes the file asynchronous.
@@ -105,18 +140,18 @@ namespace EmbedIO.Files
         /// <summary>
         /// Sets the general headers.
         /// </summary>
-        /// <param name="response">The response.</param>
+        /// <param name="context">The HTTP context.</param>
         /// <param name="utcFileDateString">The UTC file date string.</param>
         /// <param name="fileExtension">The file extension.</param>
-        protected void SetGeneralHeaders(IHttpResponse response, string utcFileDateString, string fileExtension)
+        protected void SetGeneralHeaders(IHttpContext context, string utcFileDateString, string fileExtension)
         {
-            if (!string.IsNullOrWhiteSpace(fileExtension) && MimeTypes.Associations.TryGetValue(fileExtension, out var mimeType))
-                response.ContentType = mimeType;
+            if (!string.IsNullOrWhiteSpace(fileExtension) && context.TryGetMimeType(fileExtension, out var mimeType))
+                context.Response.ContentType = mimeType;
 
-            SetDefaultCacheHeaders(response);
+            SetDefaultCacheHeaders(context.Response);
 
-            response.Headers.Set(HttpHeaderNames.LastModified, utcFileDateString);
-            response.Headers.Set(HttpHeaderNames.AcceptRanges, "bytes");
+            context.Response.Headers.Set(HttpHeaderNames.LastModified, utcFileDateString);
+            context.Response.Headers.Set(HttpHeaderNames.AcceptRanges, "bytes");
         }
 
         private static bool CalculateRange(string partialHeader, long fileSize, out long lowerByteIndex, out long upperByteIndex)

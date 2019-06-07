@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
 using Unosquare.Swan;
@@ -33,21 +34,32 @@ namespace EmbedIO.Internal
                 return false;
 
             requestedPath = "/" + requestedPath;
-
             $"[{context.Id}] Requested path = {requestedPath}".Debug(_logSource);
+
+            var contextImpl = context as IHttpContextImpl;
             foreach (var (name, module) in WithSafeNames)
             {
-                var path = UrlPath.UnsafeStripPrefix(requestedPath, module.BaseUrlPath);
-                if (path == null)
-                {
-                    $"[{context.Id}] Skipping module {name}".Debug(_logSource);
-                    continue;
-                }
+                if (module is IMimeTypeProvider mimeTypeProvider)
+                    contextImpl?.MimeTypeProviders.Push(mimeTypeProvider);
 
-                if (await module.HandleRequestAsync(context, "/" + path, cancellationToken).ConfigureAwait(false))
+                try
                 {
-                    $"[{context.Id}] Module {name} handled the request.".Info(_logSource);
-                    return true;
+                    var path = UrlPath.UnsafeStripPrefix(requestedPath, module.BaseUrlPath);
+                    if (path == null)
+                    {
+                        $"[{context.Id}] Skipping module {name}".Debug(_logSource);
+                        continue;
+                    }
+
+                    if (await module.HandleRequestAsync(context, "/" + path, cancellationToken).ConfigureAwait(false))
+                    {
+                        $"[{context.Id}] Module {name} handled the request.".Info(_logSource);
+                        return true;
+                    }
+                }
+                finally
+                {
+                    contextImpl?.MimeTypeProviders.Pop();
                 }
             }
 

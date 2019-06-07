@@ -9,7 +9,7 @@ namespace EmbedIO
     /// <summary>
     /// Represents the context of a HTTP(s) request being handled by a web server.
     /// </summary>
-    public interface IHttpContext
+    public interface IHttpContext : IMimeTypeProvider
     {
         /// <summary>
         /// Gets a unique identifier for a HTTP context.

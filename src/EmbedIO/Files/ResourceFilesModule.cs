@@ -72,7 +72,7 @@ namespace EmbedIO.Files
 
                     context.Response.ContentLength64 = buffer.Length;
 
-                    SetGeneralHeaders(context.Response, utcFileDateString, localPath.Contains(".") ? $".{localPath.Split('.').Last()}" : ".html");
+                    SetGeneralHeaders(context, utcFileDateString, localPath.Contains(".") ? $".{localPath.Split('.').Last()}" : ".html");
 
                     if (sendBuffer)
                     {

@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Sessions;
+using EmbedIO.Utilities;
 using EmbedIO.WebSockets;
 
 namespace EmbedIO
 {
     /// <summary>
     /// <para>Represents a HTTP context implementation, i.e. a HTTP context as seen internally by EmbedIO.</para>
-    /// <para>This interface is only meant to be consumed internally by EmbedIO.</para>
+    /// <para>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</para>
     /// </summary>
     /// <seealso cref="IHttpContext" />
     public interface IHttpContextImpl : IHttpContext
     {
         /// <summary>
-        /// Gets or sets the session proxy associated with this context.
+        /// <para>Gets or sets the session proxy associated with this context.</para>
+        /// <para>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</para>
         /// </summary>
         /// <value>
         /// A <see cref="ISessionProxy"/> interface.
@@ -23,20 +25,31 @@ namespace EmbedIO
         new ISessionProxy Session { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether compressed request bodies are supported.
+        /// <para>Gets or sets a value indicating whether compressed request bodies are supported.</para>
+        /// <para>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</para>
         /// </summary>
         /// <seealso cref="WebServerOptionsBase.SupportCompressedRequests"/>
         new bool SupportCompressedRequests { get; set; }
 
         /// <summary>
-        /// Flushes and closes the response stream, then calls any registered close callbacks.
+        /// Gets the MIME type providers.
+        /// </summary>
+        /// <value>
+        /// The MIME type providers.
+        /// </value>
+        MimeTypeProviderStack MimeTypeProviders { get; }
+
+        /// <summary>
+        /// <para>Flushes and closes the response stream, then calls any registered close callbacks.</para>
+        /// <para>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</para>
         /// </summary>
         /// <seealso cref="IHttpContext.OnClose"/>
         void Close();
 
         /// <summary>
-        /// Asynchronously handles the HTTP part of a WebSocket request
-        /// and returns a newly-created <seealso cref="IWebSocketContext"/> interface.
+        /// <para>Asynchronously handles a WebSockets opening handshake
+        /// and returns a newly-created <seealso cref="IWebSocketContext"/> interface.</para>
+        /// <para>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</para>
         /// </summary>
         /// <param name="requestedProtocols">The requested WebSocket sub-protocols.</param>
         /// <param name="acceptedProtocol">The accepted WebSocket sub-protocol.</param>
