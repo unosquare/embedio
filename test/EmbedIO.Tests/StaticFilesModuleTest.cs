@@ -32,7 +32,7 @@ namespace EmbedIO.Tests
 
                 Assert.IsNotNull(data, "Data is not empty");
                 var subset = new byte[maxLength];
-                var originalSet = TestHelper.GetBigData();
+                var originalSet = TestHelper.GetBigData(nameof(StaticFilesModuleTest));
                 Buffer.BlockCopy(originalSet, offset, subset, 0, maxLength);
                 Assert.IsTrue(subset.SequenceEqual(data));
             }
@@ -224,7 +224,7 @@ namespace EmbedIO.Tests
                             var data = ms.ToArray();
 
                             Assert.IsNotNull(data, "Data is not empty");
-                            Assert.IsTrue(TestHelper.GetBigData().SequenceEqual(data));
+                            Assert.IsTrue(TestHelper.GetBigData(nameof(StaticFilesModuleTest)).SequenceEqual(data));
                         }
                     }
                 }
@@ -238,7 +238,7 @@ namespace EmbedIO.Tests
             {
                 using (var client = new HttpClient())
                 {
-                    var originalSet = TestHelper.GetBigData();
+                    var originalSet = TestHelper.GetBigData(nameof(StaticFilesModuleTest));
                     var requestHead = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
 
                     using (var res = await client.SendAsync(requestHead))
@@ -286,7 +286,7 @@ namespace EmbedIO.Tests
             {
                 using (var client = new HttpClient())
                 {
-                    var originalSet = TestHelper.GetBigData();
+                    var originalSet = TestHelper.GetBigData(nameof(StaticFilesModuleTest));
                     var requestHead = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
 
                     using (var res = await client.SendAsync(requestHead))
