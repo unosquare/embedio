@@ -39,7 +39,8 @@ namespace EmbedIO.Internal
             var contextImpl = context as IHttpContextImpl;
             foreach (var (name, module) in WithSafeNames)
             {
-                if (module is IMimeTypeProvider mimeTypeProvider)
+                var mimeTypeProvider = module as IMimeTypeProvider;
+                if (mimeTypeProvider != null)
                     contextImpl?.MimeTypeProviders.Push(mimeTypeProvider);
 
                 try
@@ -59,7 +60,8 @@ namespace EmbedIO.Internal
                 }
                 finally
                 {
-                    contextImpl?.MimeTypeProviders.Pop();
+                    if (mimeTypeProvider != null)
+                        contextImpl?.MimeTypeProviders.Pop();
                 }
             }
 
