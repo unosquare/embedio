@@ -8,8 +8,16 @@ namespace EmbedIO.Tests
     public class DirectoryBrowserTest : FixtureBase
     {
         public DirectoryBrowserTest()
-            : base(ws => ws.WithStaticFolderAt("/", TestHelper.SetupStaticFolder(nameof(DirectoryBrowserTest), false), useDirectoryBrowser: true))
+            : base(ws => ws.WithStaticFolderAt("/", StaticFolder.RootPathOf(nameof(DirectoryBrowserTest)), useDirectoryBrowser: true))
         {
+            ServedFolder = new StaticFolder.WithHtmlFiles(nameof(DirectoryBrowserTest));
+        }
+
+        protected StaticFolder.WithHtmlFiles ServedFolder { get; }
+
+        protected override void Dispose(bool disposing)
+        {
+            ServedFolder.Dispose();
         }
 
         public class Browse : DirectoryBrowserTest
@@ -21,7 +29,7 @@ namespace EmbedIO.Tests
 
                 Assert.IsNotEmpty(htmlContent);
 
-                foreach (var file in TestHelper.RandomHtmls)
+                foreach (var file in StaticFolder.WithHtmlFiles.RandomHtmls)
                     Assert.IsTrue(htmlContent.Contains(file));
             }
 
@@ -32,7 +40,7 @@ namespace EmbedIO.Tests
 
                 Assert.IsNotEmpty(htmlContent);
 
-                foreach (var file in TestHelper.RandomHtmls)
+                foreach (var file in StaticFolder.WithHtmlFiles.RandomHtmls)
                     Assert.IsTrue(htmlContent.Contains(file));
             }
         }

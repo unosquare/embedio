@@ -37,7 +37,7 @@ namespace EmbedIO.Tests
         }
 
         [SetUp]
-        public void Init()
+        public void SetUp()
         {
             WebServerUrl = Resources.GetServerAddress();
             WebServerInstance = _useTestWebServer
@@ -45,7 +45,7 @@ namespace EmbedIO.Tests
                 : new WebServer(WebServerUrl);
 
             _builder(WebServerInstance);
-            OnAfterInit();
+            OnSetUp();
             WebServerInstance.RunAsync();
         }
 
@@ -56,15 +56,12 @@ namespace EmbedIO.Tests
             WebServerInstance?.Dispose();
         }
 
-        protected virtual void OnAfterInit()
-        {
-        }
-
         [TearDown]
-        public void Kill()
+        public void TearDown()
         {
             Task.Delay(500).Await();
             WebServerInstance?.Dispose();
+            OnTearDown();
         }
 
         public async Task<string> GetString(string partialUrl = "")
@@ -91,6 +88,14 @@ namespace EmbedIO.Tests
 
                 return response.ToTestHttpResponse();
             }
+        }
+
+        protected virtual void OnSetUp()
+        {
+        }
+
+        protected virtual void OnTearDown()
+        {
         }
     }
 

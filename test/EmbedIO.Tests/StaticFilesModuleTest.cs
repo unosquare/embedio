@@ -16,11 +16,19 @@ namespace EmbedIO.Tests
         private const string HeaderPragmaValue = "no-cache";
 
         protected StaticFilesModuleTest()
-            : base(ws => ws.WithStaticFolderAt("/", TestHelper.SetupStaticFolder(nameof(StaticFilesModuleTest))))
+            : base(ws => ws.WithStaticFolderAt("/", StaticFolder.RootPathOf(nameof(StaticFilesModuleTest))))
         {
+            ServedFolder = new StaticFolder.WithDataFiles(nameof(StaticFilesModuleTest));
         }
-        
-        private static async Task ValidatePayload(HttpResponseMessage response, int maxLength, int offset = 0)
+
+        protected StaticFolder.WithDataFiles ServedFolder { get; }
+
+        protected override void Dispose(bool disposing)
+        {
+            ServedFolder.Dispose();
+        }
+
+        private async Task ValidatePayload(HttpResponseMessage response, int offset, int maxLength)
         {
             Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
 
@@ -31,10 +39,7 @@ namespace EmbedIO.Tests
                 var data = ms.ToArray();
 
                 Assert.IsNotNull(data, "Data is not empty");
-                var subset = new byte[maxLength];
-                var originalSet = TestHelper.GetBigData(nameof(StaticFilesModuleTest));
-                Buffer.BlockCopy(originalSet, offset, subset, 0, maxLength);
-                Assert.IsTrue(subset.SequenceEqual(data));
+                Assert.IsTrue(ServedFolder.BigData.Skip(offset).Take(maxLength).SequenceEqual(data));
             }
         }
         
@@ -138,64 +143,37 @@ namespace EmbedIO.Tests
                     Assert.Ignore("File-system is not case sensitive.");
                 }
 
-                var htmlUpperCase = await GetString(TestHelper.UppercaseFile);
-                Assert.AreEqual(nameof(TestHelper.UppercaseFile), htmlUpperCase, "Same content upper case");
+                var htmlUpperCase = await GetString(StaticFolder.WithDataFiles.UppercaseFile);
+                Assert.AreEqual(nameof(StaticFolder.WithDataFiles.UppercaseFile), htmlUpperCase, "Same content upper case");
 
-                var htmlLowerCase = await GetString(TestHelper.LowercaseFile);
-                Assert.AreEqual(nameof(TestHelper.LowercaseFile), htmlLowerCase, "Same content lower case");
+                var htmlLowerCase = await GetString(StaticFolder.WithDataFiles.LowercaseFile);
+                Assert.AreEqual(nameof(StaticFolder.WithDataFiles.LowercaseFile), htmlLowerCase, "Same content lower case");
             }
         }
 
         public class GetPartials : StaticFilesModuleTest
         {
-            [Test]
-            public async Task Initial()
+            [TestCase("Got initial part of file", 0, 1024)]
+            [TestCase("Got middle part of file", StaticFolder.WithDataFiles.BigDataSize / 2, 1024)]
+            [TestCase("Got final part of file", StaticFolder.WithDataFiles.BigDataSize - 1024, 1024)]
+            public async Task GetPartialContent(string message, int offset, int length)
             {
                 using (var client = new HttpClient())
                 {
-                    const int maxLength = 100;
-                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
-                    request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(0, maxLength - 1);
+                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + StaticFolder.WithDataFiles.BigDataFile);
+                    request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(offset, offset + length - 1);
 
                     using (var response = await client.SendAsync(request))
                     {
-                        await ValidatePayload(response, maxLength);
-                    }
-                }
-            }
+                        Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Responds with 216 Partial Content");
 
-            [Test]
-            public async Task Middle()
-            {
-                using (var client = new HttpClient())
-                {
-                    const int offset = 50;
-                    const int maxLength = 100;
-                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
-                    request.Headers.Range =
-                        new System.Net.Http.Headers.RangeHeaderValue(offset, maxLength + offset - 1);
-
-                    using (var response = await client.SendAsync(request))
-                    {
-                        await ValidatePayload(response, maxLength, offset);
-                    }
-                }
-            }
-
-            [Test]
-            public async Task GetLastPart()
-            {
-                using (var client = new HttpClient())
-                {
-                    const int offset = 100;
-                    const int maxLength = 100;
-                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
-                    request.Headers.Range =
-                        new System.Net.Http.Headers.RangeHeaderValue(offset, offset + maxLength - 1);
-
-                    using (var response = await client.SendAsync(request))
-                    {
-                        await ValidatePayload(response, maxLength, offset);
+                        using (var ms = new MemoryStream())
+                        {
+                            var responseStream = await response.Content.ReadAsStreamAsync();
+                            responseStream.CopyTo(ms);
+                            var data = ms.ToArray();
+                            Assert.IsTrue(ServedFolder.BigData.Skip(offset).Take(length).SequenceEqual(data), message);
+                        }
                     }
                 }
             }
@@ -205,7 +183,7 @@ namespace EmbedIO.Tests
             {
                 using (var client = new HttpClient())
                 {
-                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
+                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + StaticFolder.WithDataFiles.BigDataFile);
 
                     using (var response = await client.SendAsync(request))
                     {
@@ -218,87 +196,69 @@ namespace EmbedIO.Tests
                             var data = ms.ToArray();
 
                             Assert.IsNotNull(data, "Data is not empty");
-                            Assert.IsTrue(TestHelper.GetBigData(nameof(StaticFilesModuleTest)).SequenceEqual(data));
+                            Assert.IsTrue(ServedFolder.BigData.SequenceEqual(data));
                         }
-                    }
-                }
-            }
-        }
-
-        public class GetChunks : StaticFilesModuleTest
-        {
-            [Test]
-            public async Task GetEntireFileWithChunksUsingRange()
-            {
-                using (var client = new HttpClient())
-                {
-                    var originalSet = TestHelper.GetBigData(nameof(StaticFilesModuleTest));
-                    var requestHead = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
-
-                    using (var res = await client.SendAsync(requestHead))
-                    {
-                        var remoteSize = await res.Content.ReadAsByteArrayAsync();
-                        Assert.AreEqual(remoteSize.Length, originalSet.Length);
-
-                        var buffer = new byte[remoteSize.Length];
-                        const int chunkSize = 100000;
-                        for (var i = 0; i < (remoteSize.Length / chunkSize) + 1; i++)
-                        {
-                            var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
-                            var top = (i + 1) * chunkSize;
-
-                            request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(i * chunkSize,
-                                (top > remoteSize.Length ? remoteSize.Length : top) - 1);
-
-                            using (var response = await client.SendAsync(request))
-                            {
-                                if (remoteSize.Length < top)
-                                {
-                                    Assert.AreEqual(
-                                        response.StatusCode,
-                                        HttpStatusCode.PartialContent,
-                                        "Status Code PartialCode");
-                                }
-
-                                using (var ms = new MemoryStream())
-                                {
-                                    var stream = await response.Content.ReadAsStreamAsync();
-                                    stream.CopyTo(ms);
-                                    var data = ms.ToArray();
-                                    Buffer.BlockCopy(data, 0, buffer, i * chunkSize, data.Length);
-                                }
-                            }
-                        }
-
-                        Assert.IsTrue(originalSet.SequenceEqual(buffer));
                     }
                 }
             }
 
             [Test]
-            public async Task GetInvalidChunk()
+            public async Task ReconstructFileFromPartials()
             {
                 using (var client = new HttpClient())
                 {
-                    var originalSet = TestHelper.GetBigData(nameof(StaticFilesModuleTest));
-                    var requestHead = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
+                    var requestHead = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + StaticFolder.WithDataFiles.BigDataFile);
 
+                    int remoteSize;
                     using (var res = await client.SendAsync(requestHead))
                     {
-                        var remoteSize = await res.Content.ReadAsByteArrayAsync();
-                        Assert.AreEqual(remoteSize.Length, originalSet.Length);
+                        remoteSize = (await res.Content.ReadAsByteArrayAsync()).Length;
+                    }
 
-                        var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + TestHelper.BigDataFile);
-                        request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(0, remoteSize.Length + 10);
+                    Assert.AreEqual(remoteSize, StaticFolder.WithDataFiles.BigDataSize);
+
+                    var buffer = new byte[remoteSize];
+                    const int chunkSize = 100000;
+                    for (var offset = 0; offset < remoteSize; offset += chunkSize)
+                    {
+                        var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + StaticFolder.WithDataFiles.BigDataFile);
+                        var top = Math.Min(offset + chunkSize, remoteSize) - 1;
+
+                        request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(offset, top);
 
                         using (var response = await client.SendAsync(request))
                         {
-                            Assert.AreEqual(
-                                response.StatusCode,
-                                HttpStatusCode.RequestedRangeNotSatisfiable,
-                                "Status Code RequestedRangeNotSatisfiable");
+                            Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent);
 
-                            Assert.AreEqual(response.Content.Headers.ContentRange.Length, remoteSize.Length);
+                            using (var ms = new MemoryStream())
+                            {
+                                var stream = await response.Content.ReadAsStreamAsync();
+                                stream.CopyTo(ms);
+                                Buffer.BlockCopy(ms.GetBuffer(), 0, buffer, offset, (int)ms.Length);
+                            }
+                        }
+                    }
+
+                    Assert.IsTrue(ServedFolder.BigData.SequenceEqual(buffer));
+                }
+            }
+
+            [Test]
+            public async Task InvalidRange_RespondsWith416()
+            {
+                using (var client = new HttpClient())
+                {
+                    var requestHead = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + StaticFolder.WithDataFiles.BigDataFile);
+
+                    using (var res = await client.SendAsync(requestHead))
+                    {
+                        var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + StaticFolder.WithDataFiles.BigDataFile);
+                        request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(0, StaticFolder.WithDataFiles.BigDataSize + 10);
+
+                        using (var response = await client.SendAsync(request))
+                        {
+                            Assert.AreEqual(response.StatusCode, HttpStatusCode.RequestedRangeNotSatisfiable);
+                            Assert.AreEqual(response.Content.Headers.ContentRange.Length, StaticFolder.WithDataFiles.BigDataSize);
                         }
                     }
                 }
