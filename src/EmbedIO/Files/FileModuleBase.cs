@@ -43,15 +43,7 @@ namespace EmbedIO.Files
         /// </value>
         public bool UseGzip { get; }
 
-        /// <inheritdoc />
-        /// <exception cref="ArgumentNullException"><paramref name="extension"/>is <see langword="null"/>.</exception>
-        /// <remarks>
-        /// <para>This method will only look for <paramref name="extension"/> in the custom MIME type associations
-        /// added on this instance using the <see cref="AddCustomMimeType"/> method.</para>
-        /// <para>For a complete search in both custom (added at any level) and standard MIME types,
-        /// use the <see cref="IMimeTypeProvider.TryGetMimeType">IHttpContext.TryGetMimeType</see> method.</para>
-        /// </remarks>
-        public bool TryGetMimeType(string extension, out string mimeType)
+        bool IMimeTypeProvider.TryGetMimeType(string extension, out string mimeType)
             => _customMimeTypes.TryGetValue(
                 Validate.NotNull(nameof(extension), extension),
                 out mimeType);

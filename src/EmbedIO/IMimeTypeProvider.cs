@@ -1,4 +1,6 @@
-﻿namespace EmbedIO
+﻿using System;
+
+namespace EmbedIO
 {
     /// <summary>
     /// Represents an object that can associate a file extension to a MIME type.
@@ -14,6 +16,7 @@
         /// This parameter is passed uninitialized.</param>
         /// <returns><see langword="true"/> if a corresponding MIME type has been found;
         /// otherwise, <see langword="false"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="extension"/>is <see langword="null"/>.</exception>
         bool TryGetMimeType(string extension, out string mimeType);
     }
 }
