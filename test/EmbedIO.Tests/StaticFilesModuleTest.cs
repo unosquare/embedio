@@ -135,7 +135,7 @@ namespace EmbedIO.Tests
 
                 if (File.Exists(file.ToUpper()))
                 {
-                    Assert.Ignore("File-system is not case sensitive. Ignoring");
+                    Assert.Ignore("File-system is not case sensitive.");
                 }
 
                 var htmlUpperCase = await GetString(TestHelper.UppercaseFile);
@@ -143,12 +143,6 @@ namespace EmbedIO.Tests
 
                 var htmlLowerCase = await GetString(TestHelper.LowercaseFile);
                 Assert.AreEqual(nameof(TestHelper.LowercaseFile), htmlLowerCase, "Same content lower case");
-            }
-
-            [Test]
-            public void InvalidFilePath_ThrowsArgumentException()
-            {
-                Assert.Throws<ArgumentException>(() => new StaticFilesModule("/", "e:"));
             }
         }
 
