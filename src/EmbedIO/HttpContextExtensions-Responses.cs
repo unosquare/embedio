@@ -46,7 +46,7 @@ namespace EmbedIO
         /// <param name="encoding">The <see cref="Encoding"/> to use.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation, whose result will always be <see langword="true"/>.
-        /// This allows a call to this method to be the last instruction in a <see cref="WebHandler"/>.</returns>
+        /// This allows a call to this method to be the last instruction in a <see cref="RequestHandlerCallback"/>.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentNullException">
         /// <para><paramref name="content"/> is <see langword="null"/>.</para>
@@ -79,7 +79,7 @@ namespace EmbedIO
         /// <param name="statusCode">The HTTP status code of the response.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation, whose result will always be <see langword="true"/>.
-        /// This allows a call to this method to be the last instruction in a <see cref="WebHandler"/>.</returns>
+        /// This allows a call to this method to be the last instruction in a <see cref="RequestHandlerCallback"/>.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">There is no standard status description for <paramref name="statusCode"/>.</exception>
         /// <seealso cref="SendStandardHtmlAsync(IHttpContext,int,Action{TextWriter},CancellationToken)"/>
@@ -96,7 +96,7 @@ namespace EmbedIO
         /// If not <see langword="null"/>, the callback is called immediately before closing the HTML <c>body</c> tag.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation, whose result will always be <see langword="true"/>.
-        /// This allows a call to this method to be the last instruction in a <see cref="WebHandler"/>.</returns>
+        /// This allows a call to this method to be the last instruction in a <see cref="RequestHandlerCallback"/>.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">There is no standard status description for <paramref name="statusCode"/>.</exception>
         /// <seealso cref="SendStandardHtmlAsync(IHttpContext,int,CancellationToken)"/>
@@ -131,7 +131,7 @@ namespace EmbedIO
         /// <param name="data">The data to serialize.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation, whose result will always be <see langword="true"/>.
-        /// This allows a call to this method to be the last instruction in a <see cref="WebHandler"/>.</returns>
+        /// This allows a call to this method to be the last instruction in a <see cref="RequestHandlerCallback"/>.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <seealso cref="SendDataAsync(IHttpContext,ResponseSerializerCallback,object,CancellationToken)"/>
         /// <seealso cref="ResponseSerializer.Default"/>
@@ -151,7 +151,7 @@ namespace EmbedIO
         /// <param name="data">The data to serialize.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation, whose result will always be <see langword="true"/>.
-        /// This allows a call to this method to be the last instruction in a <see cref="WebHandler"/>.</returns>
+        /// This allows a call to this method to be the last instruction in a <see cref="RequestHandlerCallback"/>.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="serializer"/> is <see langword="null"/>.</exception>
         /// <seealso cref="SendDataAsync(IHttpContext,ResponseSerializerCallback,object,CancellationToken)"/>

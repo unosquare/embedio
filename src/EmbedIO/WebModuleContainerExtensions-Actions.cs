@@ -19,7 +19,7 @@ namespace EmbedIO
         /// <seealso cref="ActionModule"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer WithAction<TContainer>(this TContainer @this, string baseUrlPath, HttpVerbs verb, WebHandler handler)
+        public static TContainer WithAction<TContainer>(this TContainer @this, string baseUrlPath, HttpVerbs verb, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
         {
             @this.Modules.Add(new ActionModule(baseUrlPath, verb, handler));
@@ -39,7 +39,7 @@ namespace EmbedIO
         /// <seealso cref="ActionModule"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer WithAction<TContainer>(this TContainer @this, HttpVerbs verb, WebHandler handler)
+        public static TContainer WithAction<TContainer>(this TContainer @this, HttpVerbs verb, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
             => WithAction(@this, UrlPath.Root, verb, handler);
 
@@ -56,7 +56,7 @@ namespace EmbedIO
         /// <seealso cref="ActionModule"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer OnAny<TContainer>(this TContainer @this, string baseUrlPath, WebHandler handler)
+        public static TContainer OnAny<TContainer>(this TContainer @this, string baseUrlPath, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
             => WithAction(@this, baseUrlPath, HttpVerbs.Any, handler);
 
@@ -72,7 +72,7 @@ namespace EmbedIO
         /// <seealso cref="ActionModule"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer OnAny<TContainer>(this TContainer @this, WebHandler handler)
+        public static TContainer OnAny<TContainer>(this TContainer @this, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
             => WithAction(@this, UrlPath.Root, HttpVerbs.Any, handler);
 
@@ -89,7 +89,7 @@ namespace EmbedIO
         /// <seealso cref="ActionModule"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer OnDelete<TContainer>(this TContainer @this, string baseUrlPath, WebHandler handler)
+        public static TContainer OnDelete<TContainer>(this TContainer @this, string baseUrlPath, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
             => WithAction(@this, baseUrlPath, HttpVerbs.Delete, handler);
 
@@ -105,7 +105,7 @@ namespace EmbedIO
         /// <seealso cref="ActionModule"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer OnDelete<TContainer>(this TContainer @this, WebHandler handler)
+        public static TContainer OnDelete<TContainer>(this TContainer @this, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
             => WithAction(@this, UrlPath.Root, HttpVerbs.Delete, handler);
 
@@ -122,7 +122,7 @@ namespace EmbedIO
         /// <seealso cref="ActionModule"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer OnGet<TContainer>(this TContainer @this, string baseUrlPath, WebHandler handler)
+        public static TContainer OnGet<TContainer>(this TContainer @this, string baseUrlPath, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
             => WithAction(@this, baseUrlPath, HttpVerbs.Get, handler);
 
@@ -138,7 +138,7 @@ namespace EmbedIO
         /// <seealso cref="ActionModule"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer OnGet<TContainer>(this TContainer @this, WebHandler handler)
+        public static TContainer OnGet<TContainer>(this TContainer @this, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
             => WithAction(@this, UrlPath.Root, HttpVerbs.Get, handler);
 
@@ -155,7 +155,7 @@ namespace EmbedIO
         /// <seealso cref="ActionModule"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer OnHead<TContainer>(this TContainer @this, string baseUrlPath, WebHandler handler)
+        public static TContainer OnHead<TContainer>(this TContainer @this, string baseUrlPath, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
             => WithAction(@this, baseUrlPath, HttpVerbs.Head, handler);
 
@@ -171,7 +171,7 @@ namespace EmbedIO
         /// <seealso cref="ActionModule"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer OnHead<TContainer>(this TContainer @this, WebHandler handler)
+        public static TContainer OnHead<TContainer>(this TContainer @this, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
             => WithAction(@this, UrlPath.Root, HttpVerbs.Head, handler);
 
@@ -188,7 +188,7 @@ namespace EmbedIO
         /// <seealso cref="ActionModule"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer OnOptions<TContainer>(this TContainer @this, string baseUrlPath, WebHandler handler)
+        public static TContainer OnOptions<TContainer>(this TContainer @this, string baseUrlPath, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
             => WithAction(@this, baseUrlPath, HttpVerbs.Options, handler);
 
@@ -204,7 +204,7 @@ namespace EmbedIO
         /// <seealso cref="ActionModule"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer OnOptions<TContainer>(this TContainer @this, WebHandler handler)
+        public static TContainer OnOptions<TContainer>(this TContainer @this, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
             => WithAction(@this, UrlPath.Root, HttpVerbs.Options, handler);
 
@@ -221,7 +221,7 @@ namespace EmbedIO
         /// <seealso cref="ActionModule"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer OnPatch<TContainer>(this TContainer @this, string baseUrlPath, WebHandler handler)
+        public static TContainer OnPatch<TContainer>(this TContainer @this, string baseUrlPath, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
             => WithAction(@this, baseUrlPath, HttpVerbs.Patch, handler);
 
@@ -237,7 +237,7 @@ namespace EmbedIO
         /// <seealso cref="ActionModule"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer OnPatch<TContainer>(this TContainer @this, WebHandler handler)
+        public static TContainer OnPatch<TContainer>(this TContainer @this, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
             => WithAction(@this, UrlPath.Root, HttpVerbs.Patch, handler);
 
@@ -254,7 +254,7 @@ namespace EmbedIO
         /// <seealso cref="ActionModule"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer OnPost<TContainer>(this TContainer @this, string baseUrlPath, WebHandler handler)
+        public static TContainer OnPost<TContainer>(this TContainer @this, string baseUrlPath, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
             => WithAction(@this, baseUrlPath, HttpVerbs.Post, handler);
 
@@ -270,7 +270,7 @@ namespace EmbedIO
         /// <seealso cref="ActionModule"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer OnPost<TContainer>(this TContainer @this, WebHandler handler)
+        public static TContainer OnPost<TContainer>(this TContainer @this, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
             => WithAction(@this, UrlPath.Root, HttpVerbs.Post, handler);
 
@@ -287,7 +287,7 @@ namespace EmbedIO
         /// <seealso cref="ActionModule"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer OnPut<TContainer>(this TContainer @this, string baseUrlPath, WebHandler handler)
+        public static TContainer OnPut<TContainer>(this TContainer @this, string baseUrlPath, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
             => WithAction(@this, baseUrlPath, HttpVerbs.Put, handler);
 
@@ -303,7 +303,7 @@ namespace EmbedIO
         /// <seealso cref="ActionModule"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer OnPut<TContainer>(this TContainer @this, WebHandler handler)
+        public static TContainer OnPut<TContainer>(this TContainer @this, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
             => WithAction(@this, UrlPath.Root, HttpVerbs.Put, handler);
     }

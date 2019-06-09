@@ -13,7 +13,7 @@ namespace EmbedIO.Actions
     {
         private readonly HttpVerbs _verb;
 
-        private readonly WebHandler _handler;
+        private readonly RequestHandlerCallback _handler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ActionModule" /> class.
@@ -23,7 +23,7 @@ namespace EmbedIO.Actions
         /// <param name="handler">The callback used to handle requests.</param>
         /// <exception cref="ArgumentNullException"><paramref name="handler"/> is <see langword="null"/>.</exception>
         /// <seealso cref="WebModuleBase(string)"/>
-        public ActionModule(string baseUrlPath, HttpVerbs verb, WebHandler handler)
+        public ActionModule(string baseUrlPath, HttpVerbs verb, RequestHandlerCallback handler)
             : base(baseUrlPath)
         {
             _verb = verb;
@@ -34,7 +34,7 @@ namespace EmbedIO.Actions
         /// Initializes a new instance of the <see cref="ActionModule"/> class.
         /// </summary>
         /// <param name="handler">The handler.</param>
-        public ActionModule(WebHandler handler)
+        public ActionModule(RequestHandlerCallback handler)
             : this("/", HttpVerbs.Any, handler) { }
 
         /// <inheritdoc />
