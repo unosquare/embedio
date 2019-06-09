@@ -431,8 +431,8 @@ namespace EmbedIO.Files
             string requestHash,
             string localPath)
         {
-            var currentHash = _fileHashCache.TryGetValue(localPath, out var currentTuple) &&
-                              fileDate.Ticks == currentTuple.DateTicks
+            var currentHash = _fileHashCache.TryGetValue(localPath, out var currentTuple)
+                           && fileDate.Ticks == currentTuple.DateTicks
                 ? currentTuple.HashCode
                 : $"{buffer.ComputeMD5().ToUpperHex()}-{fileDate.Ticks}";
 
