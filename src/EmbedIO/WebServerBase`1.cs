@@ -25,7 +25,7 @@ namespace EmbedIO
 
         private readonly Dictionary<string, string> _customMimeTypes = new Dictionary<string, string>();
 
-        private WebExceptionHandler _onUnhandledException = StandardExceptionHandlers.Default;
+        private ExceptionHandlerCallback _onUnhandledException = ExceptionHandler.Default;
 
         private WebServerState _state = WebServerState.Created;
 
@@ -94,10 +94,10 @@ namespace EmbedIO
         /// <exception cref="InvalidOperationException">The server's configuration is locked.</exception>
         /// <exception cref="ArgumentNullException">this property is being set to <see langword="null"/>.</exception>
         /// <remarks>
-        /// <para>The default value for this property is <see cref="StandardExceptionHandlers.Default"/>.</para>
+        /// <para>The default value for this property is <see cref="ExceptionHandler.Default"/>.</para>
         /// </remarks>
-        /// <seealso cref="StandardExceptionHandlers"/>
-        public WebExceptionHandler OnUnhandledException
+        /// <seealso cref="ExceptionHandler"/>
+        public ExceptionHandlerCallback OnUnhandledException
         {
             get => _onUnhandledException;
             set

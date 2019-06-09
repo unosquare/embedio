@@ -49,7 +49,7 @@ namespace EmbedIO
         /// the exception will be handled by the web server, or by the containing
         /// <see cref="ModuleGroup"/>.</para>
         /// </summary>
-        /// <seealso cref="StandardExceptionHandlers"/>
-        WebExceptionHandler OnUnhandledException { get; set; }
+        /// <seealso cref="ExceptionHandler"/>
+        ExceptionHandlerCallback OnUnhandledException { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace EmbedIO
     /// </summary>
     public abstract class WebModuleBase : ConfiguredObject, IWebModule
     {
-        private WebExceptionHandler _onUnhandledException;
+        private ExceptionHandlerCallback _onUnhandledException;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebModuleBase"/> class.
@@ -44,7 +44,7 @@ namespace EmbedIO
 
         /// <inheritdoc />
         /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
-        public WebExceptionHandler OnUnhandledException
+        public ExceptionHandlerCallback OnUnhandledException
         {
             get => _onUnhandledException;
             set

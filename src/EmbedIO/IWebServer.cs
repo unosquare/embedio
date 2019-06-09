@@ -26,8 +26,8 @@ namespace EmbedIO
         /// occurs during the processing of a request.</para>
         /// <para>This property can never be <see langword="null"/>.</para>
         /// </summary>
-        /// <seealso cref="StandardExceptionHandlers"/>
-        WebExceptionHandler OnUnhandledException { get; set; }
+        /// <seealso cref="ExceptionHandler"/>
+        ExceptionHandlerCallback OnUnhandledException { get; set; }
 
         /// <summary>
         /// <para>Gets or sets the registered session ID manager, if any.</para>
