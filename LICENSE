@@ -25,11 +25,13 @@ SOFTWARE.
 ---------------------------------------------------------------------------
 
 Component name  : MimeTypeMap
+Used in         : EmbedIO.MimeTypes class
 Copyright holder: Samuel Neff
 License type    : MIT
 License URL     : https://github.com/samuelneff/MimeTypeMap/blob/master/LICENSE
 
 Component name  : System.Net classes
+Used in         : Several types in EmbedIO.Net and EmbedIO.Net.Internal namespaces
 Copyright holder: The .NET Foundation
 License type    : MIT X11
 License URL     : https://github.com/mono/mono/blob/master/LICENSE
