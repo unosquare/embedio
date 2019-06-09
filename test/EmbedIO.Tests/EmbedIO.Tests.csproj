@@ -18,14 +18,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="coverlet.msbuild" Version="2.6.1">
+    <PackageReference Include="coverlet.msbuild" Version="2.6.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.1" />
     <packagereference Include="NUnit3TestAdapter" Version="3.13.0"></packagereference>
     <PackageReference Include="NUnit" Version="3.12.0" />
   </ItemGroup>

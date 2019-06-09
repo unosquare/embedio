@@ -17,12 +17,12 @@
 
   <ItemGroup>
     <PackageReference Include="LiteLib" Version="0.21.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.2">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Tubular.ServerSide" Version="1.5.1" />
-    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.13" />
+    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.14" />
   </ItemGroup>
 
   <ItemGroup>
