@@ -46,6 +46,7 @@ namespace EmbedIO.WebSockets
         private int _maxMessageSize;
         private TimeSpan _keepAliveInterval;
         private Encoding _encoding;
+        private PeriodicTask _connectionWatchdog;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebSocketModule" /> class.
@@ -233,7 +234,12 @@ namespace EmbedIO.WebSockets
         protected override void OnStart(CancellationToken cancellationToken)
         {
             if (_enableConnectionWatchdog)
-                RunConnectionWatchdog(cancellationToken);
+            {
+                _connectionWatchdog = new PeriodicTask(TimeSpan.FromSeconds(30), ct => {
+                    PurgeDisconnectedContexts();
+                    return Task.CompletedTask;
+                }, cancellationToken);
+            }
         }
 
         /// <summary>
@@ -497,26 +503,12 @@ namespace EmbedIO.WebSockets
 
             if (disposing)
             {
+                _connectionWatchdog?.Dispose();
                 Task.WhenAll(ActiveContexts.Select(CloseAsync)).Await(false);
                 PurgeDisconnectedContexts();
             }
 
             _contextsAccess.Dispose();
-        }
-
-        private void RunConnectionWatchdog(CancellationToken cancellationToken)
-        {
-            Task.Run(async () =>
-            {
-                while (_isDisposing == false)
-                {
-                    if (_isDisposing == false)
-                        PurgeDisconnectedContexts();
-
-                    // TODO: make this sleep configurable.
-                    await Task.Delay(TimeSpan.FromSeconds(30), cancellationToken).ConfigureAwait(false);
-                }
-            }, cancellationToken);
         }
 
         private void RemoveWebSocket(IWebSocketContext context, bool lockAlreadyHeld = false)
