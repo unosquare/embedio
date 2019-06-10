@@ -32,7 +32,7 @@ namespace EmbedIO
         /// <param name="path">The requested path, relative to the innermost containing module's <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>This method never returns; it throws a <see cref="HttpException"/> instead.</returns>
-        public static Task<bool> Unauthorized(IHttpContext context, string path, CancellationToken cancellationToken)
+        public static Task<bool> ThrowUnauthorized(IHttpContext context, string path, CancellationToken cancellationToken)
             => throw HttpException.Unauthorized();
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace EmbedIO
         /// <param name="path">The requested path, relative to the innermost containing module's <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>This method never returns; it throws a <see cref="HttpException"/> instead.</returns>
-        public static Task<bool> NotFound(IHttpContext context, string path, CancellationToken cancellationToken)
+        public static Task<bool> ThrowNotFound(IHttpContext context, string path, CancellationToken cancellationToken)
             => throw HttpException.NotFound();
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace EmbedIO
         /// <param name="path">The requested path, relative to the innermost containing module's <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>This method never returns; it throws a <see cref="HttpException"/> instead.</returns>
-        public static Task<bool> MethodNotAllowed(IHttpContext context, string path, CancellationToken cancellationToken)
+        public static Task<bool> ThrowMethodNotAllowed(IHttpContext context, string path, CancellationToken cancellationToken)
             => throw HttpException.MethodNotAllowed();
     }
 }
