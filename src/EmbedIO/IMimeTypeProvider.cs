@@ -8,7 +8,7 @@ namespace EmbedIO
     public interface IMimeTypeProvider
     {
         /// <summary>
-        /// Attempts to get the MIME type asociated to a file extension.
+        /// Attempts to get the MIME type associated to a file extension.
         /// </summary>
         /// <param name="extension">The file extension for which a corresponding MIME type is wanted.</param>
         /// <param name="mimeType">If this method returns <see langword="true"/>, the MIME type
