@@ -34,7 +34,12 @@ namespace EmbedIO.Files
         /// <inheritdoc />
         public MappedResourceInfo MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
         {
-            var (pathResult, localPath) = MapUrlPathCore(urlPath);
+            var localPath = MapRelativeUrlPathToLoLocalPath(urlPath.Substring(1));
+
+            // Error 404 on failed mapping.
+            var pathResult = localPath == null
+                ? PathMappingResult.NotFound
+                : ValidateLocalPath(ref localPath);
 
             switch (pathResult)
             {
@@ -42,15 +47,13 @@ namespace EmbedIO.Files
                     return GetMappedFileInfo(mimeTypeProvider, localPath);
                 case PathMappingResult.IsDirectory:
                     return GetMappedDirectoryInfo(localPath);
-                case PathMappingResult.NotFound:
+                default:
                     return null;
             }
-
-            return null;
         }
 
         /// <inheritdoc />
-        public Stream OpenFile(string path) => new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        public Stream OpenFile(string path) => new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
 
         /// <inheritdoc />
         public IEnumerable<MappedResourceInfo> GetDirectoryEntries(string path, IMimeTypeProvider mimeTypeProvider)
@@ -65,18 +68,6 @@ namespace EmbedIO.Files
                 if (Directory.Exists(entry))
                     yield return GetMappedDirectoryInfo(path);
             }
-        }
-
-        private (PathMappingResult, string) MapUrlPathCore(string relativeUrlPath)
-        {
-            var localPath = MapRelativeUrlPathToLoLocalPath(relativeUrlPath.Substring(1));
-
-            // Error 404 on failed mapping.
-            var validationResult = localPath == null
-                ? PathMappingResult.NotFound
-                : ValidateLocalPath(ref localPath);
-
-            return (validationResult, localPath);
         }
 
         private string MapRelativeUrlPathToLoLocalPath(string relativeUrlPath)
@@ -130,8 +121,7 @@ namespace EmbedIO.Files
         private static MappedResourceInfo GetMappedFileInfo(IMimeTypeProvider mimeTypeProvider, string localPath)
         {
             var fileInfo = new FileInfo(localPath);
-            var mimeType = string.Empty;
-            mimeTypeProvider.TryGetMimeType(fileInfo.Extension, out mimeType);
+            mimeTypeProvider.TryGetMimeType(fileInfo.Extension, out var mimeType);
 
             return new MappedFileInfo(localPath, fileInfo.Name, fileInfo.LastWriteTimeUtc, fileInfo.Length, mimeType);
         }
