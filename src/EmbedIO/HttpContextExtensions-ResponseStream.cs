@@ -11,15 +11,14 @@ namespace EmbedIO
         /// <summary>
         /// <para>Wraps the response output stream and returns a <see cref="Stream"/> that can be used directly.</para>
         /// <para>Optional buffering is applied, so that the response may be sent as one instead of using chunked transfer.</para>
-        /// <para>If no compression method (not even <see cref="CompressionMethod.None"/>is specified, uses proactive
-        /// negotiation to select the best compression method supported by the client.</para>
+        /// <para>Proactive negotiation is performed to select the best compression method supported by the client.</para>
         /// </summary>
         /// <param name="this">The <see cref="IHttpContext"/> on which this method is called.</param>
         /// <param name="buffered">If set to <see langword="true"/>, sent data is collected
         /// in a <see cref="MemoryStream"/> and sent all at once when the returned <see cref="Stream"/>
         /// is disposed; if set to <see langword="false"/> (the default), chunked transfer will be used.</param>
-        /// <param name="compressionMethod">The compression method to use, or <see langword="null"/>
-        /// (the default) to use proactive negotiation.</param>
+        /// <param name="preferCompression"><see langword="true"/> if sending compressed data is preferred over
+        /// sending non-compressed data; otherwise, <see langword="false"/>.</param>
         /// <returns>
         /// <para>A <see cref="Stream"/> that can be used to write response data.</para>
         /// <para>This stream MUST be disposed when finished writing.</para>
@@ -92,8 +91,7 @@ namespace EmbedIO
         /// <summary>
         /// <para>Wraps the response output stream and returns a <see cref="TextWriter" /> that can be used directly.</para>
         /// <para>Optional buffering is applied, so that the response may be sent as one instead of using chunked transfer.</para>
-        /// <para>If no compression method (not even <see cref="CompressionMethod.None" />is specified, uses proactive
-        /// negotiation to select the best compression method supported by the client.</para>
+        /// <para>Proactive negotiation is performed to select the best compression method supported by the client.</para>
         /// </summary>
         /// <param name="this">The <see cref="IHttpContext" /> on which this method is called.</param>
         /// <param name="encoding">
@@ -103,18 +101,18 @@ namespace EmbedIO
         /// <param name="buffered">If set to <see langword="true" />, sent data is collected
         /// in a <see cref="MemoryStream" /> and sent all at once when the returned <see cref="Stream" />
         /// is disposed; if set to <see langword="false" /> (the default), chunked transfer will be used.</param>
-        /// <param name="compressionMethod">The compression method to use, or <see langword="null" />
-        /// (the default) to use proactive negotiation.</param>
+        /// <param name="preferCompression"><see langword="true"/> if sending compressed data is preferred over
+        /// sending non-compressed data; otherwise, <see langword="false"/>.</param>
         /// <returns>
         /// <para>A <see cref="TextWriter" /> that can be used to write response data.</para>
         /// <para>This writer MUST be disposed when finished writing.</para>
         /// </returns>
         /// <seealso cref="OpenResponseStream"/>
-        public static TextWriter OpenResponseText(this IHttpContext @this, Encoding encoding = null, bool buffered = false, CompressionMethod? compressionMethod = null)
+        public static TextWriter OpenResponseText(this IHttpContext @this, Encoding encoding = null, bool buffered = false, bool preferCompression = true)
         {
             encoding = encoding ?? Encoding.UTF8;
             @this.Response.ContentEncoding = encoding;
-            return new StreamWriter(OpenResponseStream(@this, buffered, compressionMethod), encoding);
+            return new StreamWriter(OpenResponseStream(@this, buffered, preferCompression), encoding);
         }
     }
 }
