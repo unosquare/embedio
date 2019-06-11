@@ -25,19 +25,15 @@ namespace EmbedIO
         /// <para>This stream MUST be disposed when finished writing.</para>
         /// </returns>
         /// <seealso cref="OpenResponseText"/>
-        public static Stream OpenResponseStream(this IHttpContext @this, bool buffered = false, CompressionMethod? compressionMethod = null)
+        public static Stream OpenResponseStream(this IHttpContext @this, bool buffered = false, bool preferCompression = true)
         {
-            CompressionMethod compression;
-            if (compressionMethod.HasValue)
+            CompressionMethod compression = CompressionMethod.None;
+            var acceptedEncodings = new QValueList(true, @this.Request.Headers.GetValues(HttpHeaderNames.AcceptEncoding));
+            if (acceptedEncodings.QValues.Count > 0)
             {
-                compression = compressionMethod.Value;
-            }
-            else
-            {
-                var acceptedEncodings = new QValueList(true, @this.Request.Headers.GetValues(HttpHeaderNames.AcceptEncoding));
-                if (acceptedEncodings.QValues.Count > 0)
+                @this.Response.Headers.Add(HttpHeaderNames.Vary, HttpHeaderNames.AcceptEncoding);
+                if (preferCompression)
                 {
-                    @this.Response.Headers.Add(HttpHeaderNames.Vary, HttpHeaderNames.AcceptEncoding);
                     switch (acceptedEncodings.FindPreferredIndex(
                         CompressionMethods.Gzip,
                         CompressionMethods.Deflate,
@@ -58,8 +54,23 @@ namespace EmbedIO
                 }
                 else
                 {
-                    @this.Response.Headers.Set(HttpHeaderNames.ContentEncoding, CompressionMethods.Gzip);
-                    compression = CompressionMethod.None;
+                    switch (acceptedEncodings.FindPreferredIndex(
+                        CompressionMethods.None,
+                        CompressionMethods.Gzip,
+                        CompressionMethods.Deflate))
+                    {
+                        case 0:
+                            compression = CompressionMethod.None;
+                            break;
+                        case 1:
+                            compression = CompressionMethod.Gzip;
+                            break;
+                        case 2:
+                            compression = CompressionMethod.Deflate;
+                            break;
+                        default:
+                            throw HttpException.NotAcceptable();
+                    }
                 }
             }
 
