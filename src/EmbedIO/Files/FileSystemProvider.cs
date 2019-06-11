@@ -1,8 +1,7 @@
-﻿using EmbedIO.Files.Internal;
-using EmbedIO.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Files
 {
@@ -34,44 +33,7 @@ namespace EmbedIO.Files
         /// <inheritdoc />
         public MappedResourceInfo MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
         {
-            var localPath = MapRelativeUrlPathToLoLocalPath(urlPath.Substring(1));
-
-            // Error 404 on failed mapping.
-            var pathResult = localPath == null
-                ? PathMappingResult.NotFound
-                : ValidateLocalPath(ref localPath);
-
-            switch (pathResult)
-            {
-                case PathMappingResult.IsFile:
-                    return GetMappedFileInfo(mimeTypeProvider, localPath);
-                case PathMappingResult.IsDirectory:
-                    return GetMappedDirectoryInfo(localPath);
-                default:
-                    return null;
-            }
-        }
-
-        /// <inheritdoc />
-        public Stream OpenFile(string path) => new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-
-        /// <inheritdoc />
-        public IEnumerable<MappedResourceInfo> GetDirectoryEntries(string path, IMimeTypeProvider mimeTypeProvider)
-        {
-            var entries = Directory.GetFileSystemEntries(path, "*", SearchOption.TopDirectoryOnly);
-
-            foreach (var entry in entries)
-            {
-                if (File.Exists(entry))
-                    yield return GetMappedFileInfo(mimeTypeProvider, path);
-
-                if (Directory.Exists(entry))
-                    yield return GetMappedDirectoryInfo(path);
-            }
-        }
-
-        private string MapRelativeUrlPathToLoLocalPath(string relativeUrlPath)
-        {
+            urlPath = urlPath.Substring(1); // Drop the initial slash
             string localPath;
 
             // Disable CA1031 as there's little we can do if IsPathRooted or GetFullPath fails.
@@ -88,13 +50,13 @@ namespace EmbedIO.Files
                 // Under Unix-like operating systems we have no such problems, as relativeUrlPath
                 // can never start with a slash; however, loading one more class from Swan
                 // just to check the OS type would probably outweigh calling IsPathRooted.
-                if (Path.IsPathRooted(relativeUrlPath))
+                if (Path.IsPathRooted(urlPath))
                     return null;
 
                 // Convert the relative URL path to a relative filesystem path
                 // (practically a no-op under Unix-like operating systems)
                 // and combine it with our base local path to obtain a full path.
-                localPath = Path.Combine(FileSystemPath, relativeUrlPath.Replace('/', Path.DirectorySeparatorChar));
+                localPath = Path.Combine(FileSystemPath, urlPath.Replace('/', Path.DirectorySeparatorChar));
 
                 // Use GetFullPath as an additional safety check
                 // for relative paths that contain a rooted path
@@ -115,13 +77,38 @@ namespace EmbedIO.Files
             if (!localPath.StartsWith(FileSystemPath, StringComparison.Ordinal))
                 return null;
 
-            return localPath;
+            if (File.Exists(localPath))
+                return GetMappedFileInfo(mimeTypeProvider, localPath);
+
+            if (Directory.Exists(localPath))
+                return GetMappedDirectoryInfo(localPath);
+
+            return null;
+        }
+
+        /// <inheritdoc />
+        public Stream OpenFile(string path) => new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+
+        /// <inheritdoc />
+        public IEnumerable<MappedResourceInfo> GetDirectoryEntries(string path, IMimeTypeProvider mimeTypeProvider)
+        {
+            var entries = Directory.GetFileSystemEntries(path, "*", SearchOption.TopDirectoryOnly);
+
+            foreach (var entry in entries)
+            {
+                if (File.Exists(entry))
+                    yield return GetMappedFileInfo(mimeTypeProvider, path);
+
+                if (Directory.Exists(entry))
+                    yield return GetMappedDirectoryInfo(path);
+            }
         }
         
         private static MappedResourceInfo GetMappedFileInfo(IMimeTypeProvider mimeTypeProvider, string localPath)
         {
             var fileInfo = new FileInfo(localPath);
-            mimeTypeProvider.TryGetMimeType(fileInfo.Extension, out var mimeType);
+            var mimeType = string.Empty;
+            mimeTypeProvider.TryGetMimeType(fileInfo.Extension, out mimeType);
 
             return new MappedFileInfo(localPath, fileInfo.Name, fileInfo.LastWriteTimeUtc, fileInfo.Length, mimeType);
         }
@@ -131,17 +118,6 @@ namespace EmbedIO.Files
             var directoryInfo = new DirectoryInfo(localPath);
 
             return new MappedDirectoryInfo(localPath, directoryInfo.Name, directoryInfo.LastWriteTimeUtc);
-        }
-
-        private static PathMappingResult ValidateLocalPath(ref string localPath)
-        {
-            if (File.Exists(localPath))
-                return PathMappingResult.IsFile;
-
-            if (Directory.Exists(localPath))
-                return PathMappingResult.IsDirectory;
-
-            return PathMappingResult.NotFound;
         }
     }
 }
