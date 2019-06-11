@@ -23,15 +23,15 @@ namespace EmbedIO
             
             switch (@this.Request.Headers[HttpHeaderNames.ContentEncoding]?.Trim())
             {
-                case CompressionMethods.Gzip:
+                case CompressionMethodNames.Gzip:
                     if (@this.SupportCompressedRequests)
                         return new GZipStream(stream, CompressionMode.Decompress);
                     break;
-                case CompressionMethods.Deflate:
+                case CompressionMethodNames.Deflate:
                     if (@this.SupportCompressedRequests)
                         return new DeflateStream(stream, CompressionMode.Decompress);
                     break;
-                case CompressionMethods.None:
+                case CompressionMethodNames.None:
                 case null:
                     return stream;
             }

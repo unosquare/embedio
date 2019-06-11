@@ -4,7 +4,7 @@
     /// Exposes constants for possible values of the <c>Content-Encoding</c> HTTP header.
     /// </summary>
     /// <see cref="CompressionMethod"/>
-    public static class CompressionMethods
+    public static class CompressionMethodNames
     {
         /// <summary>
         /// Specifies no compression.

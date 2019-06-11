@@ -35,9 +35,9 @@ namespace EmbedIO
                 if (preferCompression)
                 {
                     switch (acceptedEncodings.FindPreferredIndex(
-                        CompressionMethods.Gzip,
-                        CompressionMethods.Deflate,
-                        CompressionMethods.None))
+                        CompressionMethodNames.Gzip,
+                        CompressionMethodNames.Deflate,
+                        CompressionMethodNames.None))
                     {
                         case 0:
                             compression = CompressionMethod.Gzip;
@@ -55,9 +55,9 @@ namespace EmbedIO
                 else
                 {
                     switch (acceptedEncodings.FindPreferredIndex(
-                        CompressionMethods.None,
-                        CompressionMethods.Gzip,
-                        CompressionMethods.Deflate))
+                        CompressionMethodNames.None,
+                        CompressionMethodNames.Gzip,
+                        CompressionMethodNames.Deflate))
                     {
                         case 0:
                             compression = CompressionMethod.None;
@@ -78,13 +78,13 @@ namespace EmbedIO
             switch (compression)
             {
                 case CompressionMethod.Gzip:
-                    @this.Response.Headers.Set(HttpHeaderNames.ContentEncoding, CompressionMethods.Gzip);
+                    @this.Response.Headers.Set(HttpHeaderNames.ContentEncoding, CompressionMethodNames.Gzip);
                     return new GZipStream(stream, CompressionMode.Compress);
                 case CompressionMethod.Deflate:
-                    @this.Response.Headers.Set(HttpHeaderNames.ContentEncoding, CompressionMethods.Deflate);
+                    @this.Response.Headers.Set(HttpHeaderNames.ContentEncoding, CompressionMethodNames.Deflate);
                     return new DeflateStream(stream, CompressionMode.Compress);
                 default:
-                    @this.Response.Headers.Set(HttpHeaderNames.ContentEncoding, CompressionMethods.None);
+                    @this.Response.Headers.Set(HttpHeaderNames.ContentEncoding, CompressionMethodNames.None);
                     return stream;
             }
         }
