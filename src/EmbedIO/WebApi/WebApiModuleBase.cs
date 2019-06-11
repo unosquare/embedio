@@ -436,7 +436,7 @@ namespace EmbedIO.WebApi
             }
             else
             {
-                throw new InvalidOperationException($"EmbedIO internal error: controller method has unexpected return type {methodReturnType.FullName}");
+                throw new EmbedIOInternalErrorException($"Controller method has unexpected return type {methodReturnType.FullName}");
             }
 
             // Operations to perform on the controller.
