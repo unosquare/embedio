@@ -2,7 +2,6 @@
 using System.IO.Compression;
 using System.Text;
 using EmbedIO.Internal;
-using EmbedIO.Utilities;
 
 namespace EmbedIO
 {
@@ -26,64 +25,16 @@ namespace EmbedIO
         /// <seealso cref="OpenResponseText"/>
         public static Stream OpenResponseStream(this IHttpContext @this, bool buffered = false, bool preferCompression = true)
         {
-            CompressionMethod compression = CompressionMethod.None;
-            var acceptedEncodings = new QValueList(true, @this.Request.Headers.GetValues(HttpHeaderNames.AcceptEncoding));
-            if (acceptedEncodings.QValues.Count > 0)
-            {
-                @this.Response.Headers.Add(HttpHeaderNames.Vary, HttpHeaderNames.AcceptEncoding);
-                if (preferCompression)
-                {
-                    switch (acceptedEncodings.FindPreferredIndex(
-                        CompressionMethodNames.Gzip,
-                        CompressionMethodNames.Deflate,
-                        CompressionMethodNames.None))
-                    {
-                        case 0:
-                            compression = CompressionMethod.Gzip;
-                            break;
-                        case 1:
-                            compression = CompressionMethod.Deflate;
-                            break;
-                        case 2:
-                            compression = CompressionMethod.None;
-                            break;
-                        default:
-                            throw HttpException.NotAcceptable();
-                    }
-                }
-                else
-                {
-                    switch (acceptedEncodings.FindPreferredIndex(
-                        CompressionMethodNames.None,
-                        CompressionMethodNames.Gzip,
-                        CompressionMethodNames.Deflate))
-                    {
-                        case 0:
-                            compression = CompressionMethod.None;
-                            break;
-                        case 1:
-                            compression = CompressionMethod.Gzip;
-                            break;
-                        case 2:
-                            compression = CompressionMethod.Deflate;
-                            break;
-                        default:
-                            throw HttpException.NotAcceptable();
-                    }
-                }
-            }
-
+            @this.Request.TryNegotiateContentEncoding(preferCompression, out var compressionMethod, out var prepareResponse);
+            prepareResponse(@this.Response); // The callback will throw HttpNotAcceptableException if negotiationSuccess is false.
             var stream = buffered ? new BufferingResponseStream(@this.Response) : @this.Response.OutputStream;
-            switch (compression)
+            switch (compressionMethod)
             {
                 case CompressionMethod.Gzip:
-                    @this.Response.Headers.Set(HttpHeaderNames.ContentEncoding, CompressionMethodNames.Gzip);
                     return new GZipStream(stream, CompressionMode.Compress);
                 case CompressionMethod.Deflate:
-                    @this.Response.Headers.Set(HttpHeaderNames.ContentEncoding, CompressionMethodNames.Deflate);
                     return new DeflateStream(stream, CompressionMode.Compress);
                 default:
-                    @this.Response.Headers.Set(HttpHeaderNames.ContentEncoding, CompressionMethodNames.None);
                     return stream;
             }
         }
