@@ -51,8 +51,10 @@ namespace EmbedIO.Files
         /// Returns an enumeration of the entries of a directory.
         /// </summary>
         /// <param name="path">The provider-specific path for the directory.</param>
+        /// <param name="mimeTypeProvider">An <see cref="IMimeTypeProvider"/> interface to use
+        /// for determining the MIME type of files.</param>
         /// <returns>An enumeration of <see cref="MappedResourceInfo"/> objects identifying the entries
         /// in the directory identified by <paramref name="path"/>.</returns>
-        IEnumerable<MappedResourceInfo> GetDirectoryEntries(string path);
+        IEnumerable<MappedResourceInfo> GetDirectoryEntries(string path, IMimeTypeProvider mimeTypeProvider);
     }
 }
