@@ -46,12 +46,23 @@ namespace EmbedIO
         public static HttpException MethodNotAllowed() => new HttpException(HttpStatusCode.MethodNotAllowed);
 
         /// <summary>
-        /// Returns a new instance of <see cref="HttpException"/> that, when thrown,
+        /// Returns a new instance of <see cref="HttpNotAcceptableException"/> that, when thrown,
         /// will break the request handling control flow and send a <c>406 Not Acceptable</c>
         /// response to the client.
         /// </summary>
-        /// <returns>A newly-created <see cref="HttpException"/>.</returns>
-        public static HttpException NotAcceptable() => new HttpException(HttpStatusCode.NotAcceptable);
+        /// <returns>A newly-created <see cref="HttpNotAcceptableException"/>.</returns>
+        /// <seealso cref="HttpNotAcceptableException()"/>
+        public static HttpNotAcceptableException NotAcceptable() => new HttpNotAcceptableException();
+
+        /// <summary>
+        /// <para>Returns a new instance of <see cref="HttpNotAcceptableException"/> that, when thrown,
+        /// will break the request handling control flow and send a <c>406 Not Acceptable</c>
+        /// response to the client.</para>
+        /// </summary>
+        /// <param name="vary">A value, or a comma-separated list of values, to set the response's <c>Vary</c> header to.</param>
+        /// <returns>A newly-created <see cref="HttpNotAcceptableException"/>.</returns>
+        /// <seealso cref="HttpNotAcceptableException(string)"/>
+        public static HttpNotAcceptableException NotAcceptable(string vary) => new HttpNotAcceptableException(vary);
 
         /// <summary>
         /// Returns a new instance of <see cref="HttpRedirectException" /> that, when thrown,
