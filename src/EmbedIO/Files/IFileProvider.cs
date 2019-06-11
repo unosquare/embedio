@@ -37,19 +37,6 @@ namespace EmbedIO.Files
         MappedResourceInfo MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider);
 
         /// <summary>
-        /// Attempts to get information about a resource.
-        /// </summary>
-        /// <param name="path">The provider-specific path for the resource.</param>
-        /// <param name="info">When this method returns <see langword="true"/>,
-        /// either a <see cref="MappedFileInfo"/> object containing information about a file,
-        /// or a <see cref="MappedDirectoryInfo"/> object containing information about a directory;
-        /// when this method returns <see langword="false"/>, <see langword="null"/>.
-        /// This parameter is passed uninitialized.</param>
-        /// <returns><see langword="true"/> if <paramref name="path"/> identifies a file or directory;
-        /// otherwise, <see langword="false"/>.</returns>
-        bool TryGetInfo(string path, out MappedResourceInfo info);
-
-        /// <summary>
         /// Opens a file for reading.
         /// </summary>
         /// <param name="path">The provider-specific path for the file.</param>
