@@ -29,10 +29,12 @@ namespace EmbedIO.Files
         /// Maps a URL path to a provider-specific path.
         /// </summary>
         /// <param name="urlPath">The URL path.</param>
+        /// <param name="mimeTypeProvider">An <see cref="IMimeTypeProvider"/> interface to use
+        /// for determining the MIME type of a file.</param>
         /// <returns>A provider-specific path identifying a file or directory,
         /// or <see langword="null"/> if this instance cannot provide a resource associated
         /// to <paramref name="urlPath"/>.</returns>
-        MappedResourceInfo MapUrlPath(string urlPath);
+        MappedResourceInfo MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider);
 
         /// <summary>
         /// Attempts to get information about a resource.
