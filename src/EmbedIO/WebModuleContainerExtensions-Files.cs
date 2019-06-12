@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using EmbedIO.Files;
 using EmbedIO.Utilities;
@@ -68,6 +69,62 @@ namespace EmbedIO
             where TContainer : class, IWebModuleContainer
         {
             var module = new FileModule(baseUrlPath, new ResourceFileProvider(assembly, pathPrefix));
+            configure?.Invoke(module);
+            @this.Modules.Add(module);
+            return @this;
+        }
+        
+        /// <summary>
+        /// Creates an instance of <see cref="ZipFileProvider"/> using a file-system path, uses it to initialize
+        /// a <seealso cref="FileModule"/>, and adds the latter to a module container.
+        /// </summary>
+        /// <typeparam name="TContainer">The type of the module container.</typeparam>
+        /// <param name="this">The <typeparamref name="TContainer"/> on which this method is called.</param>
+        /// <param name="baseUrlPath">The base URL path of the module.</param>
+        /// <param name="zipFilePath">The zip file-system path.</param>
+        /// <param name="configure">A callback used to configure the module.</param>
+        /// <returns><paramref name="this"/> with a <see cref="FileModule"/> added.</returns>
+        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        /// <seealso cref="FileModule"/>
+        /// <seealso cref="ZipFileProvider"/>
+        /// <seealso cref="IWebModuleContainer.Modules"/>
+        /// <seealso cref="IComponentCollection{T}.Add"/>
+        public static TContainer WithZipFile<TContainer>(
+            this TContainer @this,
+            string baseUrlPath,
+            string zipFilePath,
+            Action<FileModule> configure = null)
+            where TContainer : class, IWebModuleContainer
+        {
+            var module = new FileModule(baseUrlPath, new ZipFileProvider(zipFilePath));
+            configure?.Invoke(module);
+            @this.Modules.Add(module);
+            return @this;
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="ZipFileProvider"/> using a zip file as stream, uses it to initialize
+        /// a <seealso cref="FileModule"/>, and adds the latter to a module container.
+        /// </summary>
+        /// <typeparam name="TContainer">The type of the module container.</typeparam>
+        /// <param name="this">The <typeparamref name="TContainer"/> on which this method is called.</param>
+        /// <param name="baseUrlPath">The base URL path of the module.</param>
+        /// <param name="zipFileStream">The zip file as stream.</param>
+        /// <param name="configure">A callback used to configure the module.</param>
+        /// <returns><paramref name="this"/> with a <see cref="FileModule"/> added.</returns>
+        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        /// <seealso cref="FileModule"/>
+        /// <seealso cref="ZipFileProvider"/>
+        /// <seealso cref="IWebModuleContainer.Modules"/>
+        /// <seealso cref="IComponentCollection{T}.Add"/>
+        public static TContainer WithZipFileStream<TContainer>(
+            this TContainer @this,
+            string baseUrlPath,
+            Stream zipFileStream,
+            Action<FileModule> configure = null)
+            where TContainer : class, IWebModuleContainer
+        {
+            var module = new FileModule(baseUrlPath, new ZipFileProvider(zipFileStream));
             configure?.Invoke(module);
             @this.Modules.Add(module);
             return @this;
