@@ -1,20 +1,35 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
+/*
+ * NOTE TO CONTRIBUTORS:
+ *
+ * Never use this exception directly.
+ * Use the methods in EmbedIO.Internal.SelfCheck instead.
+ */
+
 namespace EmbedIO
 {
+#pragma warning disable SA1642 // Constructor summary documentation should begin with standard text
+    /// <summary>
+    /// <para>The exception that is thrown by EmbedIO's internal diagnostic checks to signal a condition
+    /// most probably caused by an error in EmbedIO.</para>
+    /// <para>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</para>
+    /// </summary>
     [Serializable]
     public class EmbedIOInternalErrorException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmbedIOInternalErrorException"/> class.
+        /// <para>Initializes a new instance of the <see cref="EmbedIOInternalErrorException"/> class.</para>
+        /// <para>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</para>
         /// </summary>
         public EmbedIOInternalErrorException()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmbedIOInternalErrorException"/> class.
+        /// <para>Initializes a new instance of the <see cref="EmbedIOInternalErrorException"/> class.</para>
+        /// <para>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</para>
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
         public EmbedIOInternalErrorException(string message)
@@ -23,7 +38,8 @@ namespace EmbedIO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmbedIOInternalErrorException"/> class.
+        /// <para>Initializes a new instance of the <see cref="EmbedIOInternalErrorException"/> class.</para>
+        /// <para>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</para>
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.</param>
         /// <param name="innerException">The exception that is the cause of the current exception,
@@ -35,6 +51,7 @@ namespace EmbedIO
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmbedIOInternalErrorException"/> class.
+        /// <para>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</para>
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"></see> that holds the serialized object data about the exception being thrown.</param>
         /// <param name="context">The <see cref="StreamingContext"></see> that contains contextual information about the source or destination.</param>
@@ -43,4 +60,5 @@ namespace EmbedIO
         {
         }
     }
+#pragma warning restore SA1642
 }

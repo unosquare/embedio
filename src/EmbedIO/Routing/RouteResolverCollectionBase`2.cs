@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Internal;
 using EmbedIO.Utilities;
 
 namespace EmbedIO.Routing
@@ -142,8 +143,7 @@ namespace EmbedIO.Routing
             if (resolver == null)
             {
                 resolver = CreateResolver(route);
-                if (resolver == null)
-                    throw new EmbedIOInternalErrorException($"{nameof(CreateResolver)} returned null.");
+                SelfCheck.Assert(resolver != null, $"{nameof(CreateResolver)} returned null.");
 
                 _resolvers.Add(resolver);
             }

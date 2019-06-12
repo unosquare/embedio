@@ -6,6 +6,7 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Internal;
 using EmbedIO.Routing;
 using EmbedIO.Utilities;
 
@@ -436,7 +437,7 @@ namespace EmbedIO.WebApi
             }
             else
             {
-                throw new EmbedIOInternalErrorException($"Controller method has unexpected return type {methodReturnType.FullName}");
+                SelfCheck.Fail($"Controller method has unexpected return type {methodReturnType.FullName}");
             }
 
             // Operations to perform on the controller.
