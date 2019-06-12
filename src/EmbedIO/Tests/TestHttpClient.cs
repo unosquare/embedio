@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Threading.Tasks;
 using EmbedIO.Net.Internal;
 using EmbedIO.Utilities;
@@ -18,8 +17,7 @@ namespace EmbedIO.Tests
         /// Initializes a new instance of the <see cref="TestHttpClient" /> class.
         /// </summary>
         /// <param name="server">The server.</param>
-        /// <param name="encoding">The encoding.</param>
-        public TestHttpClient(TestWebServer server, Encoding encoding = null)
+        public TestHttpClient(TestWebServer server)
         {
             _webServer = server;
         }
