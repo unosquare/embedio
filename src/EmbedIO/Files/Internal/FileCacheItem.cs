@@ -57,11 +57,10 @@ namespace EmbedIO.Files.Internal
         private string _gzippedEntityTag;
         private string _deflatedEntityTag;
 
-        internal FileCacheItem(FileCache.Section section, string mimeType, DateTime lastModifiedUtc)
+        internal FileCacheItem(FileCache.Section section, DateTime lastModifiedUtc)
         {
             _section = new WeakReference<FileCache.Section>(section);
 
-            MimeType = mimeType;
             LastModifiedUtc = lastModifiedUtc;
 
             // There is no way to know the actual size of an object at runtime.
@@ -70,12 +69,8 @@ namespace EmbedIO.Files.Internal
             // https://codingsight.com/precise-computation-of-clr-object-size/
             // PreviousKey and NextKey values aren't counted in
             // because they are just references to existing strings.
-            Size = SizeOfItem
-                 + SizeOfWeakReference
-                 + GetSizeOf(MimeType);
+            Size = SizeOfItem + SizeOfWeakReference;
         }
-
-        public string MimeType { get; }
 
         public DateTime LastModifiedUtc { get; }
 
@@ -127,7 +122,6 @@ namespace EmbedIO.Files.Internal
 
             var entityTag = EntityTag.Compute(LastModifiedUtc, content);
             return SetContentAndEntityTag(compressionMethod, content, entityTag);
-
         }
 
         public (byte[], string) SetContentAndEntityTag(CompressionMethod compressionMethod, byte[] content, string entityTag)

@@ -306,6 +306,8 @@ namespace EmbedIO.Files
             if (!IsHttpMethodAllowed(context.Request, out var sendBuffer))
                 return await OnMethodNotAllowed(context, path, info, cancellationToken).ConfigureAwait(false);
 
+            var sendContent = context.Request.HttpVerb == HttpVerbs.Get;
+
             // Exactly one of these will be non-null.
             var directoryInfo = info as MappedDirectoryInfo;
             var fileInfo = info as MappedFileInfo;
@@ -313,25 +315,27 @@ namespace EmbedIO.Files
             if (directoryInfo != null && DirectoryLister == null)
                 return await OnDirectoryNotListable(context, path, info, cancellationToken).ConfigureAwait(false);
 
+            // No partials for HEAD requests.
+            var evaluatePartial = RangeHeaderPresent() && sendContent;
+
             // Partials and Content-Encoding do not mix.
             // If there is a Range header in the request,
             // try to negotiate for no compression.
             // Later, if there is compression anyway, ignore the Range header.
-            if (!context.Request.TryNegotiateContentEncoding(!RangeHeaderPresent(), out var compressionMethod, out var prepareResponse))
+            if (!context.Request.TryNegotiateContentEncoding(!evaluatePartial, out var compressionMethod, out var prepareResponse))
             {
                 prepareResponse(context.Response);
                 return true;
             }
 
-            if (!_cacheSection.TryGet(info.Path, out var cacheItem))
-            {
-                var contentType = fileInfo?.ContentType ?? DirectoryLister.ContentType;
-                cacheItem = new FileCacheItem(_cacheSection, contentType, info.LastWriteTimeUtc);
-                _cacheSection.Add(info.Path, cacheItem);
-            }
-
             string mimeType = (directoryInfo != null ? DirectoryLister.ContentType : fileInfo.ContentType)
                            ?? MimeTypes.Default;
+
+            if (!_cacheSection.TryGet(info.Path, out var cacheItem))
+            {
+                cacheItem = new FileCacheItem(_cacheSection, info.LastWriteTimeUtc);
+                _cacheSection.Add(info.Path, cacheItem);
+            }
 
             var cachingThreshold = 1024L * Cache.MaxFileSizeKb;
             var (content, entityTag) = cacheItem.GetContentAndEntityTag(compressionMethod);
@@ -471,6 +475,7 @@ namespace EmbedIO.Files
             var partialStart = 0L;
             var partialUpperBound = size - 1;
             if (Provider.CanSeekFiles
+             && evaluatePartial // Not a HEAD request and there is a Range header
              && compressionMethod == CompressionMethod.None // No compression with partials
              && RangeHeaderValue.TryParse(context.Request.Headers[HttpHeaderNames.Range], out var range)
              && range.Ranges.Count == 1)
@@ -507,6 +512,10 @@ namespace EmbedIO.Files
                     return true;
                 }
             }
+
+            // For a HEAD request we're done.
+            if (!sendContent)
+                return true;
 
             if (content != null)
             {
@@ -598,7 +607,8 @@ namespace EmbedIO.Files
                     // Look for a default document.
                     // Don't append an additional slash if the URL path is "/".
                     // The default document, if found, must be a file, not a directory.
-                    var defaultDocumentResult = Provider.MapUrlPath(urlPath + (urlPath.Length < 2 ? "/" : string.Empty) + DefaultDocument, mimeTypeProvider);
+                    var defaultDocumentPath = urlPath + (urlPath.Length > 1 ? "/" : string.Empty) + DefaultDocument;
+                    var defaultDocumentResult = Provider.MapUrlPath(defaultDocumentPath, mimeTypeProvider);
                     return defaultDocumentResult as MappedFileInfo ?? result;
             }
 
