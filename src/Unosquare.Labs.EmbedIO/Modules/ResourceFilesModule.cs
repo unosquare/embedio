@@ -14,6 +14,7 @@
     /// <summary>
     /// Represents a simple module to server resource files from the .NET assembly.
     /// </summary>
+    [Obsolete("This class will be replaced by FileModule")]
     public class ResourceFilesModule
         : FileModuleBase
     {

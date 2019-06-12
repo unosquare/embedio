@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.Labs.EmbedIO.Modules
 {
     using Swan;
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -11,6 +12,7 @@
     /// Represents a files module base.
     /// </summary>
     /// <seealso cref="WebModuleBase" />
+    [Obsolete("This class will be replaced by FileModule")]
     public abstract class FileModuleBase
         : WebModuleBase
     {

@@ -17,6 +17,7 @@
     /// <summary>
     /// Represents a simple module to server static files from the file system.
     /// </summary>
+    [Obsolete("This class will be replaced by FileModule")]
     public class StaticFilesModule : FileModuleBase, IDisposable
     {
         /// <summary>

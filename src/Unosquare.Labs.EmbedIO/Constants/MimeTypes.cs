@@ -6,7 +6,6 @@
     /// <summary>
     /// Provides constants for commonly-used MIME types and association between file extensions and MIME types.
     /// </summary>
-    /// <seealso cref="Associations"/>
     public static class MimeTypes
     {
         /// <summary>
@@ -49,7 +48,7 @@
         /// <para>Copyright (c) 2014 Samuel Neff. Redistributed under <see href="https://github.com/samuelneff/MimeTypeMap/blob/master/LICENSE">MIT license</see>.</para>
         /// </remarks>
         [Obsolete("This method will be renamed as Associates")]
-        public static IReadOnlyDictionary<string, string> DefaultMimeTypes { get; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        public static IDictionary<string, string> DefaultMimeTypes { get; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             {".323", "text/h323"},
             {".3g2", "video/3gpp2"},
