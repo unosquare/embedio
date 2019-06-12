@@ -11,6 +11,9 @@ namespace EmbedIO.Files
         /// Initializes a new instance of the <see cref="FileSystemProvider"/> class.
         /// </summary>
         /// <param name="fileSystemPath">The file system path.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="fileSystemPath"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="fileSystemPath"/> is not a valid local path.</exception>
+        /// <seealso cref="Validate.LocalPath"/>
         public FileSystemProvider(string fileSystemPath)
         {
             FileSystemPath = Validate.LocalPath(nameof(fileSystemPath), fileSystemPath, true);
