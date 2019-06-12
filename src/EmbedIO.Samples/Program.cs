@@ -68,7 +68,7 @@ namespace EmbedIO.Samples
                     .WithController<PeopleController>())
                 .WithModule(new WebSocketChatModule("/chat"))
                 .WithModule(new WebSocketTerminalModule("/terminal"))
-                .WithStaticFolderAt("/", HtmlRootPath) // Add static files after other modules to avoid conflicts
+                .WithStaticFolder("/", HtmlRootPath, true) // Add static files after other modules to avoid conflicts
                 .WithModule(new ActionModule("/", HttpVerbs.Any, (ctx, path, ct) => ctx.SendDataAsync(new { Message = "Error" }, ct)));
 
             // Listen for state changes.
