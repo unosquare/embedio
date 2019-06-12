@@ -19,6 +19,7 @@ namespace EmbedIO.Files
             : base(path, name, lastWriteTimeUtc)
         {
             Size = size;
+            ContentType = contentType;
         }
 
         /// <summary>
