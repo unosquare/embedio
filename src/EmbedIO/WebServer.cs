@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,8 +13,6 @@ namespace EmbedIO
     /// </summary>
     public partial class WebServer : WebServerBase<WebServerOptions>
     {
-        private readonly string _logSource;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServer"/> class,
         /// that will respond on HTTP port 80 on all network interfaces.

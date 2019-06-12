@@ -10,6 +10,7 @@ namespace EmbedIO
     /// <seealso cref="RequestHandlerCallback"/>
     public static class RequestHandler
     {
+#pragma warning disable CA1801 // Unused parameters
         /// <summary>
         /// <para>Unconditionally passes a request down the module chain.</para>
         /// </summary>
@@ -54,5 +55,6 @@ namespace EmbedIO
         /// <returns>This method never returns; it throws a <see cref="HttpException"/> instead.</returns>
         public static Task<bool> ThrowMethodNotAllowed(IHttpContext context, string path, CancellationToken cancellationToken)
             => throw HttpException.MethodNotAllowed();
+#pragma warning disable CA1801 // Unused parameters
     }
 }

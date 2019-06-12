@@ -244,7 +244,7 @@ namespace EmbedIO.Utilities
             => QValues.TryGetValue(value, out candidate)
             || (UseWildcard && QValues.TryGetValue(Wildcard, out candidate));
 
-        private int CompareQualities((int Weight, int Ordinal) a, (int Weight, int Ordinal) b)
+        private static int CompareQualities((int Weight, int Ordinal) a, (int Weight, int Ordinal) b)
         {
             if (a.Weight > b.Weight)
                 return 1;

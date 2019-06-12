@@ -71,7 +71,7 @@ namespace EmbedIO.Utilities
             }
         }
 
-        private TimeSpan ValidateInterval(string argumentName, TimeSpan value)
+        private static TimeSpan ValidateInterval(string argumentName, TimeSpan value)
             => value < MinInterval ? MinInterval : value;
 
         private async Task ActionLoop()

@@ -21,8 +21,6 @@ namespace EmbedIO
     {
         private readonly WebModuleCollection _modules;
 
-        private readonly bool _supportCompressedRequests;
-
         private readonly Dictionary<string, string> _customMimeTypes = new Dictionary<string, string>();
 
         private ExceptionHandlerCallback _onUnhandledException = ExceptionHandler.Default;

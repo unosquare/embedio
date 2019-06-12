@@ -21,13 +21,13 @@ namespace EmbedIO
             this IHttpContext @this,
             CancellationToken cancellationToken)
         {
-            var buffer = new MemoryStream();
+            using (var buffer = new MemoryStream())
             using (var stream = @this.OpenRequestStream())
             {
                 await stream.CopyToAsync(buffer, WebServer.StreamCopyBufferSize, cancellationToken).ConfigureAwait(false);
+                return buffer.ToArray();
             }
 
-            return buffer.ToArray();
         }
 
         /// <summary>
