@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 
 namespace EmbedIO.Files
 {
@@ -8,6 +10,12 @@ namespace EmbedIO.Files
     /// </summary>
     public interface IFileProvider
     {
+        /// <summary>
+        /// <para>Occurs when a file or directory provided by this instance is modified or removed.</para>
+        /// <para>The event's parameter is the provider-specific path of the resource that changed.</para>
+        /// </summary>
+        event Action<string> ResourceChanged;
+
         /// <summary>
         /// Gets a value indicating whether the files and directories provided by this instance
         /// will never change.
@@ -21,9 +29,10 @@ namespace EmbedIO.Files
         bool CanSeekFiles { get; }
 
         /// <summary>
-        /// <para>Occurs when a file or directory provided by this instance is modified or removed.</para>
+        /// Signals a file provider that the web server is starting.
         /// </summary>
-        event FileSystemEventHandler ResourceChanged;
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to stop the web server.</param>
+        void Start(CancellationToken cancellationToken);
 
         /// <summary>
         /// Maps a URL path to a provider-specific path.
