@@ -172,10 +172,9 @@ namespace EmbedIO.Files
         private static MappedResourceInfo GetMappedFileInfo(IMimeTypeProvider mimeTypeProvider, string localPath)
         {
             var fileInfo = new FileInfo(localPath);
-            var mimeType = string.Empty;
-            mimeTypeProvider.TryGetMimeType(fileInfo.Extension, out mimeType);
+            mimeTypeProvider.TryGetMimeType(fileInfo.Extension, out var mimeType);
 
-            return new MappedFileInfo(localPath, fileInfo.Name, fileInfo.LastWriteTimeUtc, fileInfo.Length, mimeType);
+            return new MappedFileInfo(localPath, fileInfo.Name, fileInfo.LastWriteTimeUtc, fileInfo.Length, mimeType ?? MimeTypes.Default);
         }
         
         private static MappedResourceInfo GetMappedDirectoryInfo(string localPath)
