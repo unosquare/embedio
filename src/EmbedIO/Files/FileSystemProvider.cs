@@ -1,23 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using EmbedIO.Utilities;
 
 namespace EmbedIO.Files
 {
-    public class FileSystemProvider : IFileProvider
+    /// <summary>
+    /// Provides access to the local file system to a <see cref="FileModule"/>.
+    /// </summary>
+    /// <seealso cref="IFileProvider" />
+    public class FileSystemProvider : IDisposable, IFileProvider
     {
+        private readonly FileSystemWatcher _watcher;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FileSystemProvider"/> class.
         /// </summary>
         /// <param name="fileSystemPath">The file system path.</param>
+        /// <param name="isImmutable"><see langword="true"/> if files and directories in
+        /// <paramref name="fileSystemPath"/> are not expected to change during a web server's
+        /// lifetime; <see langword="false"/> otherwise.</param>
         /// <exception cref="ArgumentNullException"><paramref name="fileSystemPath"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="fileSystemPath"/> is not a valid local path.</exception>
         /// <seealso cref="Validate.LocalPath"/>
-        public FileSystemProvider(string fileSystemPath)
+        public FileSystemProvider(string fileSystemPath, bool isImmutable)
         {
             FileSystemPath = Validate.LocalPath(nameof(fileSystemPath), fileSystemPath, true);
+            IsImmutable = isImmutable;
+
+            if (!IsImmutable)
+                _watcher = new FileSystemWatcher(FileSystemPath);
         }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="FileSystemProvider"/> class.
+        /// </summary>
+        ~FileSystemProvider()
+        {
+            Dispose(false);
+        }
+
+        /// <inheritdoc />
+        public event Action<string> ResourceChanged;
 
         /// <summary>
         /// Gets the file system path from which files are retrieved.
@@ -25,13 +50,29 @@ namespace EmbedIO.Files
         public string FileSystemPath { get; }
 
         /// <inheritdoc />
-        public bool IsImmutable => true;
+        public bool IsImmutable { get; }
 
         /// <inheritdoc />
         public bool CanSeekFiles => true;
 
         /// <inheritdoc />
-        public event FileSystemEventHandler ResourceChanged;
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <inheritdoc />
+        public void Start(CancellationToken cancellationToken)
+        {
+            if (_watcher != null)
+            {
+                _watcher.Changed += Watcher_ChangedOrDeleted;
+                _watcher.Deleted += Watcher_ChangedOrDeleted;
+                _watcher.Renamed += Watcher_Renamed;
+                _watcher.EnableRaisingEvents = true;
+            }
+        }
 
         /// <inheritdoc />
         public MappedResourceInfo MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
@@ -106,7 +147,28 @@ namespace EmbedIO.Files
                     yield return GetMappedDirectoryInfo(path);
             }
         }
-        
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources;
+        /// <see langword="false"/> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            ResourceChanged = null; // Release references to listeners
+
+            if (_watcher != null)
+            {
+                _watcher.EnableRaisingEvents = false;
+                _watcher.Changed -= Watcher_ChangedOrDeleted;
+                _watcher.Deleted -= Watcher_ChangedOrDeleted;
+                _watcher.Renamed -= Watcher_Renamed;
+
+                if (disposing)
+                    _watcher.Dispose();
+            }
+        }
+
         private static MappedResourceInfo GetMappedFileInfo(IMimeTypeProvider mimeTypeProvider, string localPath)
         {
             var fileInfo = new FileInfo(localPath);
@@ -122,5 +184,11 @@ namespace EmbedIO.Files
 
             return new MappedDirectoryInfo(localPath, directoryInfo.Name, directoryInfo.LastWriteTimeUtc);
         }
+
+        private void Watcher_ChangedOrDeleted(object sender, FileSystemEventArgs e)
+            => ResourceChanged?.Invoke(e.FullPath);
+
+        private void Watcher_Renamed(object sender, RenamedEventArgs e)
+            => ResourceChanged?.Invoke(e.OldFullPath);
     }
 }
