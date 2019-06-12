@@ -28,7 +28,7 @@ namespace EmbedIO.Tests
             var instance = new WebServer(HttpListenerMode.EmbedIO, "http://*:8877");
             instance.OnAny((ctx, path, ct) => ctx.SendDataAsync(DateTime.Now, ct));
 
-            instance.RunAsync();
+            var dump = instance.RunAsync();
 
             using (var client = new HttpClient())
             {
@@ -45,7 +45,7 @@ namespace EmbedIO.Tests
             var instance = new WebServer(HttpListenerMode.EmbedIO, "http://[::1]:8877");
             instance.OnAny((ctx, path, ct) => ctx.SendDataAsync(DateTime.Now, ct));
 
-            instance.RunAsync();
+            var dump = instance.RunAsync();
 
             using (var client = new HttpClient())
             {

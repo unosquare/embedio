@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -7,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Actions;
 using EmbedIO.Tests.TestObjects;
-using EmbedIO.Utilities;
 using EmbedIO.WebApi;
 using NUnit.Framework;
 using Unosquare.Swan;

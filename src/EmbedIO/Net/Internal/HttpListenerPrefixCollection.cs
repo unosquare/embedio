@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using EmbedIO.Utilities;
 
 namespace EmbedIO.Net.Internal
 {

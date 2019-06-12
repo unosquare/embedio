@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Net.Internal;
-using EmbedIO.Utilities;
 using Unosquare.Swan;
 
 namespace EmbedIO.WebSockets.Internal
@@ -114,7 +113,7 @@ namespace EmbedIO.WebSockets.Internal
                 return InternalCloseAsync(cancellationToken: cancellationToken);
 
             var send = !IsOpcodeReserved(code);
-            return InternalCloseAsync(new PayloadData((ushort)code, reason), send, send, cancellationToken: cancellationToken);
+            return InternalCloseAsync(new PayloadData((ushort)code, reason), send, send, cancellationToken);
         }
 
         /// <summary>

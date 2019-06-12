@@ -328,7 +328,7 @@ namespace EmbedIO.Files
                 return true;
             }
 
-            string mimeType = (directoryInfo != null ? DirectoryLister.ContentType : fileInfo.ContentType)
+            var mimeType = (directoryInfo != null ? DirectoryLister.ContentType : fileInfo?.ContentType)
                            ?? MimeTypes.Default;
 
             if (!_cacheSection.TryGet(info.Path, out var cacheItem))

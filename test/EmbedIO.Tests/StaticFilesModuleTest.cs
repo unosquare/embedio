@@ -1,5 +1,4 @@
-﻿using EmbedIO.Files;
-using EmbedIO.Tests.TestObjects;
+﻿using EmbedIO.Tests.TestObjects;
 using NUnit.Framework;
 using System;
 using System.IO;
@@ -7,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using EmbedIO.Files;
 
 namespace EmbedIO.Tests
 {
@@ -16,7 +16,7 @@ namespace EmbedIO.Tests
         private const string HeaderPragmaValue = "no-cache";
 
         protected StaticFilesModuleTest()
-            : base(ws => ws.WithStaticFolderAt("/", StaticFolder.RootPathOf(nameof(StaticFilesModuleTest))))
+            : base(ws => ws.WithStaticFolder("/", StaticFolder.RootPathOf(nameof(StaticFilesModuleTest)), true))
         {
             ServedFolder = new StaticFolder.WithDataFiles(nameof(StaticFilesModuleTest));
         }
@@ -28,21 +28,6 @@ namespace EmbedIO.Tests
             ServedFolder.Dispose();
         }
 
-        private async Task ValidatePayload(HttpResponseMessage response, int offset, int maxLength)
-        {
-            Assert.AreEqual(response.StatusCode, HttpStatusCode.PartialContent, "Status Code PartialCode");
-
-            using (var ms = new MemoryStream())
-            {
-                var responseStream = await response.Content.ReadAsStreamAsync();
-                responseStream.CopyTo(ms);
-                var data = ms.ToArray();
-
-                Assert.IsNotNull(data, "Data is not empty");
-                Assert.IsTrue(ServedFolder.BigData.Skip(offset).Take(maxLength).SequenceEqual(data));
-            }
-        }
-        
         public class GetFiles : StaticFilesModuleTest
         {
             [Test]
@@ -63,8 +48,9 @@ namespace EmbedIO.Tests
                         Assert.IsTrue(string.IsNullOrWhiteSpace(response.Headers.Pragma.ToString()), "Pragma empty");
                     }
 
-                    WebServerInstance.Modules.OfType<StaticFilesModule>().First().DefaultHeaders
-                        .Add(HttpHeaderNames.Pragma, HeaderPragmaValue);
+                    // TODO: complete
+                    //WebServerInstance.Modules.OfType<FileModule>().First().DefaultHeaders
+                    //    .Add(HttpHeaderNames.Pragma, HeaderPragmaValue);
 
                     request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
 
@@ -113,7 +99,7 @@ namespace EmbedIO.Tests
 
                 using (var server = new WebServer(endpoint))
                 {
-                    server.Modules.Add(nameof(StaticFilesModule), new StaticFilesModule("/", root));
+                    server.WithStaticFolder("/", root, false);
                     var runTask = server.RunAsync();
 
                     using (var webClient = new HttpClient())

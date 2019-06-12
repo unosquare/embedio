@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,7 +23,7 @@ namespace EmbedIO.Authentication
         /// the <see cref="Realm"/> property will be set equal to
         /// <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</para>
         /// </remarks>
-        public BasicAuthenticationModuleBase(string baseUrlPath, string realm)
+        protected BasicAuthenticationModuleBase(string baseUrlPath, string realm)
             : base(baseUrlPath)
         {
             Realm = string.IsNullOrEmpty(realm) ? BaseUrlPath : realm;

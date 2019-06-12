@@ -141,11 +141,12 @@ namespace EmbedIO.Files
         private Section GetSectionWithLeastRecentItem()
         {
             Section result = null;
-            long earliestTime = long.MaxValue;
+            var earliestTime = long.MaxValue;
             foreach (var pair in _sections)
             {
                 var section = pair.Value;
                 var time = section.GetLeastRecentUseTime();
+               
                 if (time < earliestTime)
                 {
                     result = section;

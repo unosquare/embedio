@@ -33,7 +33,7 @@ namespace EmbedIO.Tests
             {
                 webServer.OnAny((ctx, path, ct) => ctx.SendStringAsync(DefaultMessage, MimeTypes.PlainTextType, Encoding.UTF8, ct));
 
-                webServer.RunAsync();
+                var dump = webServer.RunAsync();
 
                 using (var httpClientHandler = new HttpClientHandler())
                 {

@@ -4,8 +4,6 @@ namespace EmbedIO.Tests.TestObjects
 {
     public static class Resources
     {
-        public static int Counter = 9699;
-
         public static readonly string SubIndex = @"<!DOCTYPE html>
 
 <html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
@@ -29,13 +27,15 @@ namespace EmbedIO.Tests.TestObjects
     This is a placeholder
 </body>
 </html>";
-        
+
+        private static int _counter = 9699;
+
         public static string GetServerAddress()
         {
             const string serverAddress = "http://localhost:{0}/";
 
-            Interlocked.Increment(ref Counter);
-            return string.Format(serverAddress, Counter);
+            Interlocked.Increment(ref _counter);
+            return string.Format(serverAddress, _counter);
         }
     }
 }

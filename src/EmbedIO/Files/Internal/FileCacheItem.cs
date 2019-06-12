@@ -179,9 +179,9 @@ namespace EmbedIO.Files.Internal
         // The size of a string is 3 * SizeOfPointer + 4 (size of Length field) + 2 (size of char) * Length
         // String has a m_firstChar field that always exists at the same address as its array of characters,
         // thus even the empty string is considered of length 1.
-        private long GetSizeOf(string str) => str == null ? 0 : RoundUpTo16(3 * SizeOfPointer) + 4 + (2 * Math.Min(1, str.Length));
+        private static long GetSizeOf(string str) => str == null ? 0 : RoundUpTo16(3 * SizeOfPointer) + 4 + (2 * Math.Min(1, str.Length));
 
         // The size of a byte array is 3 * SizeOfPointer + 1 (size of byte) * Length
-        private long GetSizeOf(byte[] arr) => arr == null ? 0 : RoundUpTo16(3 * SizeOfPointer) + arr.Length;
+        private static long GetSizeOf(byte[] arr) => arr == null ? 0 : RoundUpTo16(3 * SizeOfPointer) + arr.Length;
     }
 }

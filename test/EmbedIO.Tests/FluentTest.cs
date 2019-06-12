@@ -1,6 +1,5 @@
 ﻿using EmbedIO.Files;
 using EmbedIO.Tests.TestObjects;
-using EmbedIO.Utilities;
 using NUnit.Framework;
 using System;
 using System.Linq;
@@ -29,22 +28,17 @@ namespace EmbedIO.Tests
         {
             var webServer = new WebServer(_webServerUrl)
                 .WithLocalSessionManager()
-                .WithStaticFolderAt("/", _rootPath);
+                .WithStaticFolder("/", _rootPath, true);
 
             Assert.AreEqual(webServer.Modules.Count, 1, "It has 1 modules loaded");
-            Assert.IsNotNull(webServer.Modules.OfType<StaticFilesModule>().FirstOrDefault(), "It has StaticFilesModule");
-
-            Assert.AreEqual(
-                webServer.Modules.FirstOrDefaultOfType<StaticFilesModule>().FileSystemPath,
-                _rootPath,
-                "StaticFilesModule root path is equal to RootPath");
+            Assert.IsNotNull(webServer.Modules.OfType<FileModule>().FirstOrDefault(), $"It has {nameof(FileModule)}");
         }
 
         [Test]
         public void FluentWithStaticFolderArgumentException()
         {
             Assert.Throws<NullReferenceException>(() =>
-                _nullWebServer.WithStaticFolderAt("/", StaticFolder.RootPathOf(nameof(FluentWithStaticFolderArgumentException))));
+                _nullWebServer.WithStaticFolder("/", StaticFolder.RootPathOf(nameof(FluentWithStaticFolderArgumentException)), true));
         }
 
         [Test]

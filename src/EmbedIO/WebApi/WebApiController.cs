@@ -1,8 +1,5 @@
-﻿using System;
-using System.Security.Principal;
-using System.Text;
+﻿using System.Security.Principal;
 using System.Threading;
-using System.Threading.Tasks;
 using EmbedIO.Sessions;
 
 namespace EmbedIO.WebApi

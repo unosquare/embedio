@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using EmbedIO.Files;
 using EmbedIO.Tests.TestObjects;
 using NUnit.Framework;
 
@@ -8,7 +9,7 @@ namespace EmbedIO.Tests
     public class DirectoryBrowserTest : FixtureBase
     {
         public DirectoryBrowserTest()
-            : base(ws => ws.WithStaticFolderAt("/", StaticFolder.RootPathOf(nameof(DirectoryBrowserTest)), useDirectoryBrowser: true))
+            : base(ws => ws.WithStaticFolder("/", StaticFolder.RootPathOf(nameof(DirectoryBrowserTest)), true, module => module.DirectoryLister = DirectoryLister.Default))
         {
             ServedFolder = new StaticFolder.WithHtmlFiles(nameof(DirectoryBrowserTest));
         }

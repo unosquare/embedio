@@ -2,8 +2,6 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
-using EmbedIO.Utilities;
 
 namespace EmbedIO.Net.Internal
 {

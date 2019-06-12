@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using EmbedIO.Files;
 using EmbedIO.Tests.TestObjects;
 using NUnit.Framework;
 
@@ -11,7 +10,7 @@ namespace EmbedIO.Tests
         public ResourceFilesModuleTest()
             : base(
                 ws =>
-                    ws.WithModule(new ResourceFilesModule("/", typeof(ResourceFilesModuleTest).Assembly, "EmbedIO.Tests.Resources")),
+                    ws.WithEmbeddedResources("/", typeof(ResourceFilesModuleTest).Assembly, "EmbedIO.Tests.Resources"),
                 true)
         {
         }

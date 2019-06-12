@@ -13,8 +13,8 @@ namespace EmbedIO.Tests.TestObjects
             Directory.CreateDirectory(RootPath);
             Directory.CreateDirectory(PathOf("sub"));
 
-            File.WriteAllText(PathOf(StaticFilesModule.DefaultDocumentName), Resources.Index);
-            File.WriteAllText(PathOf("sub", StaticFilesModule.DefaultDocumentName), Resources.SubIndex);
+            File.WriteAllText(PathOf(FileModule.DefaultDocumentName), Resources.Index);
+            File.WriteAllText(PathOf("sub", FileModule.DefaultDocumentName), Resources.SubIndex);
         }
 
         ~StaticFolder()
