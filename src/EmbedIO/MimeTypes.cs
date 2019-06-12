@@ -10,6 +10,11 @@ namespace EmbedIO
     public static class MimeTypes
     {
         /// <summary>
+        /// The default MIME type for data whose type is unknown.
+        /// </summary>
+        public const string Default = "application/octet-stream";
+
+        /// <summary>
         /// The MIME type for plain text.
         /// </summary>
         public const string PlainTextType = "text/plain";
