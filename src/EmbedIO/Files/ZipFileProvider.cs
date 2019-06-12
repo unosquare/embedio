@@ -73,7 +73,7 @@ namespace EmbedIO.Files
                 return null;
             
             mimeTypeProvider.TryGetMimeType(Path.GetExtension(entry.Name), out var mimeType);
-            return new MappedFileInfo(urlPath, entry.Name, entry.LastWriteTime.DateTime, entry.Length, mimeType);
+            return new MappedFileInfo(entry.FullName, entry.Name, entry.LastWriteTime.DateTime, entry.Length, mimeType);
         }
 
         /// <inheritdoc />
