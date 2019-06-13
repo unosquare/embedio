@@ -34,7 +34,7 @@ namespace EmbedIO.Files
         private bool _contentCaching = true;
         private string _defaultDocument = DefaultDocumentName;
         private string _defaultExtension;
-        private IDirectoryLister _directoryLister = Files.DirectoryLister.Default;
+        private IDirectoryLister _directoryLister;
         private FileRequestHandlerCallback _onMappingFailed = FileRequestHandler.PassThrough;
         private FileRequestHandlerCallback _onDirectoryNotListable = FileRequestHandler.PassThrough;
         private FileRequestHandlerCallback _onMethodNotAllowed = FileRequestHandler.ThrowMethodNotAllowed;
@@ -154,7 +154,7 @@ namespace EmbedIO.Files
         /// <summary>
         /// <para>Gets or sets the <see cref="IDirectoryLister"/> interface used to generate
         /// directory listing in this module.</para>
-        /// <para>A value of <see langword="null"/> disables the generation
+        /// <para>A value of <see langword="null"/> (the default) disables the generation
         /// of directory listings.</para>
         /// </summary>
         /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
