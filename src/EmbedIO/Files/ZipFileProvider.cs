@@ -9,12 +9,11 @@ using System.Threading;
 namespace EmbedIO.Files
 {
     /// <summary>
-    /// Provides access to the ZIP file content to a <see cref="FileModule"/>.
+    /// Provides access to files contained in a <c>.zip</c> file to a <see cref="FileModule"/>.
     /// </summary>
     /// <seealso cref="IFileProvider" />
     public class ZipFileProvider : IDisposable, IFileProvider
     {
-        private readonly Stream _stream;
         private readonly ZipArchive _zipArchive;
 
         /// <summary>
@@ -22,18 +21,27 @@ namespace EmbedIO.Files
         /// </summary>
         /// <param name="zipFilePath">The zip file path.</param>
         public ZipFileProvider(string zipFilePath)
-            : this(new FileStream(Validate.LocalPath(nameof(zipFilePath), zipFilePath, true), FileMode.Open))
+            : this(new FileStream(Validate.LocalPath(nameof(zipFilePath), zipFilePath, true), FileMode.Open), false)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZipFileProvider"/> class.
         /// </summary>
-        /// <param name="stream">The stream.</param>
-        public ZipFileProvider(Stream stream)
+        /// <param name="stream">The stream that contains the archive.</param>
+        /// <param name="leaveOpen"><see langword="true"/> to leave the stream open after the web server
+        /// is disposed; otherwise, <see langword="false"/>.</param>
+        public ZipFileProvider(Stream stream, bool leaveOpen = false)
         {
-            _stream = stream;
-            _zipArchive = new ZipArchive(_stream, ZipArchiveMode.Read);
+            _zipArchive = new ZipArchive(stream, ZipArchiveMode.Read, leaveOpen);
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="ZipFileProvider"/> class.
+        /// </summary>
+        ~ZipFileProvider()
+        {
+            Dispose(false);
         }
 
         /// <inheritdoc />
@@ -52,8 +60,8 @@ namespace EmbedIO.Files
         /// <inheritdoc />
         public void Dispose()
         {
-            _zipArchive?.Dispose();
-            _stream?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <inheritdoc />
@@ -68,7 +76,6 @@ namespace EmbedIO.Files
                 return null;
 
             var entry = _zipArchive.GetEntry(urlPath.Substring(1));
-
             if (entry == null)
                 return null;
             
@@ -78,14 +85,23 @@ namespace EmbedIO.Files
 
         /// <inheritdoc />
         public Stream OpenFile(string path)
-        {
-            var entry = _zipArchive.GetEntry(path);
-
-            return entry?.Open();
-        }
+            => _zipArchive.GetEntry(path)?.Open();
 
         /// <inheritdoc />
         public IEnumerable<MappedResourceInfo> GetDirectoryEntries(string path, IMimeTypeProvider mimeTypeProvider)
             => Enumerable.Empty<MappedResourceInfo>();
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources;
+        /// <see langword="false"/> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing)
+                return;
+
+            _zipArchive.Dispose();
+        }
     }
 }
