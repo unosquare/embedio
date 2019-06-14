@@ -49,6 +49,9 @@ namespace EmbedIO.Tests
         public bool KeepAlive { get; set; }
 
         /// <inheritdoc />
+        public bool SendChunked { get; set; }
+
+        /// <inheritdoc />
         public Version ProtocolVersion { get; } = HttpVersion.Version11;
 
         /// <summary>

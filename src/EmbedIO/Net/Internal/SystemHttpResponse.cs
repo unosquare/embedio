@@ -66,7 +66,14 @@ namespace EmbedIO.Net.Internal
             get => _response.KeepAlive;
             set => _response.KeepAlive = value;
         }
-        
+
+        /// <inheritdoc />
+        public bool SendChunked
+        {
+            get => _response.SendChunked;
+            set => _response.SendChunked = value;
+        }
+
         /// <inheritdoc />
         public Version ProtocolVersion
         {
