@@ -285,7 +285,7 @@ namespace EmbedIO.Files
         }
 
         /// <inheritdoc />
-        protected override async Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected override Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             MappedResourceInfo info;
 
@@ -307,23 +307,79 @@ namespace EmbedIO.Files
             // For example, it may return a default resource (think a folder of images and an imageNotFound.jpg),
             // or redirect the request.
             if (info == null)
-                return await OnMappingFailed(context, path, null, cancellationToken).ConfigureAwait(false);
+                return OnMappingFailed(context, path, null, cancellationToken);
 
             // If there is a mapped resource, check that the HTTP method is either GET or HEAD.
             // Otherwise, send a "405 Method Not Allowed" response, or whatever OnMethodNotAllowed chooses to do.
             if (!IsHttpMethodAllowed(context.Request, out var sendResponseBody))
-                return await OnMethodNotAllowed(context, path, info, cancellationToken).ConfigureAwait(false);
+                return OnMethodNotAllowed(context, path, info, cancellationToken);
 
             // If a directory listing was requested, but there is no DirectoryLister,
             // send a "403 Unauthorized" response, or whatever OnDirectoryNotListable chooses to do.
             // For example, one could prefer to send "404 Not Found" instead.
             if (info.IsDirectory && DirectoryLister == null)
-                return await OnDirectoryNotListable(context, path, info, cancellationToken).ConfigureAwait(false);
+                return OnDirectoryNotListable(context, path, info, cancellationToken);
 
-            /*
-             * From this point on, we know we have a legitimate resource to serve.
-             */
+            return HandleResource(context, info, sendResponseBody, cancellationToken);
+        }
 
+        // Tells whether a request's HTTP method is suitable for processing by FileModule
+        // and, if so, whether a response body must be sent.
+        private static bool IsHttpMethodAllowed(IHttpRequest request, out bool sendResponseBody)
+        {
+            switch (request.HttpVerb)
+            {
+                case HttpVerbs.Head:
+                    sendResponseBody = false;
+                    return true;
+                case HttpVerbs.Get:
+                    sendResponseBody = true;
+                    return true;
+                default:
+                    sendResponseBody = default;
+                    return false;
+            }
+        }
+
+        // Attempts to map a module-relative URL path to a mapped resource,
+        // handling DefaultDocument and DefaultExtension.
+        // Returns null if not found.
+        // Directories mus be returned regardless of directory listing being enabled.
+        private MappedResourceInfo MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
+        {
+            var result = Provider.MapUrlPath(urlPath, mimeTypeProvider);
+
+            if (result != null)
+            {
+                // If urlPath maps to a file, no further searching is needed.
+                if (result.IsFile)
+                    return result;
+
+                // Default document takes precedence over directory listing.
+                if (DefaultDocument == null)
+                    return result;
+
+                // Look for a default document.
+                // Don't append an additional slash if the URL path is "/".
+                // The default document, if found, must be a file, not a directory.
+                var defaultDocumentPath = urlPath + (urlPath.Length > 1 ? "/" : string.Empty) + DefaultDocument;
+                var defaultDocumentResult = Provider.MapUrlPath(defaultDocumentPath, mimeTypeProvider);
+                return defaultDocumentResult?.IsFile ?? false
+                    ? defaultDocumentResult
+                    : result;
+            }
+
+            // Bail out if there is no default extension, or if the URL path is "/".
+            if (DefaultExtension == null || urlPath.Length < 2)
+                return null;
+
+            // When the default extension is applied, the result must be a file.
+            result = Provider.MapUrlPath(urlPath + DefaultExtension, mimeTypeProvider);
+            return result?.IsFile ?? false ? result : null;
+        }
+
+        private async Task<bool> HandleResource(IHttpContext context, MappedResourceInfo info, bool sendResponseBody, CancellationToken cancellationToken)
+        {
             // Try to extract resource information from cache.
             var cachingThreshold = 1024L * Cache.MaxFileSizeKb;
             if (!_cacheSection.TryGet(info.Path, out var cacheItem))
@@ -361,48 +417,21 @@ namespace EmbedIO.Files
             // is not really standardized and could lead to a world of pain.
             // Thus, if there is a Range header in the request, try to negotiate for no compression.
             // Later, if there is compression anyway, we will ignore the Range header.
-            var rangeHeader = context.Request.Headers.Get(HttpHeaderNames.Range);
-            if (!context.Request.TryNegotiateContentEncoding(rangeHeader == null, out var compressionMethod, out var setCompressionInResponse))
+            if (!context.Request.TryNegotiateContentEncoding(
+                context.Request.Headers.Get(HttpHeaderNames.Range) == null,
+                out var compressionMethod,
+                out var setCompressionInResponse))
             {
                 // If negotiation failed, the returned callback will do the right thing.
                 setCompressionInResponse(context.Response);
                 return true;
             }
 
+            var entityTag = info.GetEntityTag(compressionMethod);
+
             /*
              * Some functions are better coded here than as private methods with a bunch of parameters.
              */
-
-            var entityTag = info.GetEntityTag(compressionMethod);
-
-            // Checks whether the If-None-Match request header exists
-            // and specifies the right entity tag.
-            // RFC7232, Section 3.2
-            bool CheckIfNoneMatch(out bool headerExists)
-            {
-                var values = context.Request.Headers.GetValues(HttpHeaderNames.IfNoneMatch);
-                if (values == null)
-                {
-                    headerExists = false;
-                    return false;
-                }
-
-                headerExists = true;
-                return values.Select(t => t.Trim()).Contains(entityTag);
-            }
-
-            // Check whether the If-Modified-Since request header exists
-            // and specifies a date and time more recent than or equal to
-            // the date and time of last modification of the requested resource.
-            // RFC7232, Section 3.3
-            bool CheckIfModifiedSince()
-            {
-                var value = context.Request.Headers.Get(HttpHeaderNames.IfModifiedSince);
-                if (value == null || !TryParseRfc1123Date(value, out var dateTime))
-                    return false;
-
-                return dateTime >= info.LastModifiedUtc;
-            }
 
             // Uses DirectoryLister to generate a directory listing asynchronously.
             // Returns a tuple of the generated content and its *uncompressed* length
@@ -448,7 +477,8 @@ namespace EmbedIO.Files
             //
             // RFC7232, Section 3.3: "A recipient MUST ignore If-Modified-Since
             //                       if the request contains an If-None-Match header field."
-            if (CheckIfNoneMatch(out var ifNoneMatchExists) || (!ifNoneMatchExists && CheckIfModifiedSince()))
+            if (context.Request.CheckIfNoneMatch(entityTag, out var ifNoneMatchExists)
+             || (!ifNoneMatchExists && context.Request.CheckIfModifiedSince(info.LastModifiedUtc, out _)))
             {
                 context.Response.StatusCode = (int)HttpStatusCode.NotModified;
                 PreparePositiveResponse(context.Response);
@@ -482,73 +512,12 @@ namespace EmbedIO.Files
 
             var contentLength = content?.Length ?? info.Length;
 
-            /*
-             * More functions.
-             */
-
-            // Checks the Range request header to tell whether to send
-            // a "206 Partial Content" response.
-            bool IsPartial(out long start, out long upperBound)
-            {
-                start = 0;
-                upperBound = contentLength - 1;
-
-                // No Range header, no partial content.
-                if (rangeHeader == null)
-                    return false;
-
-                // RFC7233, Section 3.1:
-                // "A server MUST ignore a Range header field received with a request method other than GET."
-                if (!sendResponseBody)
-                    return false;
-
-                // Ignore the Range request header if compression is enabled.
-                if (compressionMethod != CompressionMethod.None)
-                    return false;
-
-                // Ignore the Range header if there is no If-Range header
-                // or if the If-Range header specifies a non-matching validator.
-                // RFC7233, Section 3.2: "If the validator given in the If-Range header field matches the
-                //                       current validator for the selected representation of the target
-                //                       resource, then the server SHOULD process the Range header field as
-                //                       requested.If the validator does not match, the server MUST ignore
-                //                       the Range header field.Note that this comparison by exact match,
-                //                       including when the validator is an HTTP-date, differs from the
-                //                       "earlier than or equal to" comparison used when evaluating an
-                //                       If-Unmodified-Since conditional."
-                var ifRange = context.Request.Headers.Get(HttpHeaderNames.IfRange)?.Trim();
-                if (ifRange != null && ifRange != entityTag)
-                {
-                    if (!TryParseRfc1123Date(ifRange, out var rangeDate))
-                        return false;
-
-                    if (rangeDate != info.LastModifiedUtc)
-                        return false;
-                }
-
-                // Ignore the Range request header if it cannot be parsed successfully.
-                if (!RangeHeaderValue.TryParse(rangeHeader, out var range))
-                    return false;
-
-                // We can't send multipart/byteranges responses (yet),
-                // thus we can only satisfy range requests that specify one range.
-                if (range.Ranges.Count != 1)
-                    return false;
-
-                var firstRange = range.Ranges.First();
-                start = firstRange.From ?? 0L;
-                upperBound = firstRange.To ?? contentLength - 1;
-                if (start >= info.Length || upperBound < start || upperBound >= info.Length)
-                    throw HttpException.RangeNotSatisfiable(contentLength);
-
-                return true;
-            }
-
-            /*
-             * Back to our control flow.
-             */
-
-            var isPartial = IsPartial(out var partialStart, out var partialUpperBound);
+            // Ignore range request is compression is enabled
+            // (or should I say forced, since negotiation has tried not to use it).
+            var partialStart = 0L;
+            var partialUpperBound = contentLength - 1;
+            var isPartial = compressionMethod == CompressionMethod.None
+                         && context.Request.IsRangeRequest(contentLength, entityTag, info.LastModifiedUtc, out partialStart, out partialUpperBound);
             var partialLength = contentLength;
             if (isPartial)
             {
@@ -664,70 +633,6 @@ namespace EmbedIO.Files
             }
 
             return true;
-        }
-
-        // Tells whether a request's HTTP method is suitable for processing by FileModule
-        // and, if so, whether a response body must be sent.
-        private static bool IsHttpMethodAllowed(IHttpRequest request, out bool sendResponseBody)
-        {
-            switch (request.HttpVerb)
-            {
-                case HttpVerbs.Head:
-                    sendResponseBody = false;
-                    return true;
-                case HttpVerbs.Get:
-                    sendResponseBody = true;
-                    return true;
-                default:
-                    sendResponseBody = default;
-                    return false;
-            }
-        }
-
-        // Attempts to parse a date and time in RFC1123 format.
-        private static bool TryParseRfc1123Date(string str, out DateTime result)
-            => DateTime.TryParseExact(
-                str,
-                "ddd, dd MMM yyyy hh: mm:ss GMT",
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.NoCurrentDateDefault | DateTimeStyles.AssumeUniversal,
-                out result);
-
-        // Attempts to map a module-relative URL path to a mapped resource,
-        // handling DefaultDocument and DefaultExtension.
-        // Returns null if not found.
-        // Directories mus be returned regardless of directory listing being enabled.
-        private MappedResourceInfo MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
-        {
-            var result = Provider.MapUrlPath(urlPath, mimeTypeProvider);
-
-            if (result != null)
-            {
-                // If urlPath maps to a file, no further searching is needed.
-                if (result.IsFile)
-                    return result;
-
-                // Default document takes precedence over directory listing.
-                if (DefaultDocument == null)
-                    return result;
-
-                // Look for a default document.
-                // Don't append an additional slash if the URL path is "/".
-                // The default document, if found, must be a file, not a directory.
-                var defaultDocumentPath = urlPath + (urlPath.Length > 1 ? "/" : string.Empty) + DefaultDocument;
-                var defaultDocumentResult = Provider.MapUrlPath(defaultDocumentPath, mimeTypeProvider);
-                return defaultDocumentResult?.IsFile ?? false
-                    ? defaultDocumentResult
-                    : result;
-            }
-
-            // Bail out if there is no default extension, or if the URL path is "/".
-            if (DefaultExtension == null || urlPath.Length < 2)
-                return null;
-
-            // When the default extension is applied, the result must be a file.
-            result = Provider.MapUrlPath(urlPath + DefaultExtension, mimeTypeProvider);
-            return result?.IsFile ?? false ? result : null;
         }
     }
 }
