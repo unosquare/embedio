@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
@@ -264,18 +266,14 @@ namespace EmbedIO
 
             try
             {
+                $"[{context.Id}] {context.Request.SafeGetRemoteEndpointStr()}: {context.Request.HttpMethod} {context.Request.Url.PathAndQuery} - {context.Request.UserAgent}"
+                    .Debug(LogSource);
+
                 context.Session = new SessionProxy(context, SessionManager);
                 try
                 {
                     if (cancellationToken.IsCancellationRequested)
                         return;
-
-                    // Create a request endpoint string
-                    var requestEndpoint = context.Request.SafeGetRemoteEndpointStr();
-
-                    // Log the request and its ID
-                    $"[{context.Id}] Start: Source {requestEndpoint} - {context.Request.HttpMethod}: {context.Request.Url.PathAndQuery} - {context.Request.UserAgent}"
-                        .Debug(LogSource);
 
                     try
                     {
@@ -334,8 +332,13 @@ namespace EmbedIO
                 }
                 finally
                 {
+                    var statusCode = context.Response.StatusCode;
+                    var statusDescription = context.Response.StatusDescription;
+                    var sendChunked = context.Response.SendChunked;
+                    var contentLength = context.Response.ContentLength64;
                     context.Close();
-                    $"[{context.Id}] End".Debug(LogSource);
+                    $"[{context.Id}] \"{statusCode} {statusDescription}\" sent in {context.Age}ms ({(sendChunked ? "chunked" : contentLength.ToString(CultureInfo.InvariantCulture) + " bytes")})"
+                        .Info(LogSource);
                 }
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)

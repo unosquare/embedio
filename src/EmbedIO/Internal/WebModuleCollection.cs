@@ -33,7 +33,6 @@ namespace EmbedIO.Internal
                 return false;
 
             requestedPath = "/" + requestedPath;
-            $"[{context.Id}] Requested path = {requestedPath}".Debug(_logSource);
 
             var contextImpl = context as IHttpContextImpl;
             foreach (var (name, module) in WithSafeNames)
@@ -46,16 +45,11 @@ namespace EmbedIO.Internal
                 {
                     var path = UrlPath.UnsafeStripPrefix(requestedPath, module.BaseUrlPath);
                     if (path == null)
-                    {
-                        $"[{context.Id}] Skipping module {name}".Debug(_logSource);
                         continue;
-                    }
 
+                    $"[{context.Id}] Processing with {name}.".Debug(_logSource);
                     if (await module.HandleRequestAsync(context, "/" + path, cancellationToken).ConfigureAwait(false))
-                    {
-                        $"[{context.Id}] Module {name} handled the request.".Info(_logSource);
                         return true;
-                    }
                 }
                 finally
                 {
@@ -64,7 +58,6 @@ namespace EmbedIO.Internal
                 }
             }
 
-            $"[{context.Id}] No module handled the request.".Info(_logSource);
             return false;
         }
     }
