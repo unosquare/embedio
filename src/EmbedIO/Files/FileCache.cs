@@ -115,20 +115,20 @@ namespace EmbedIO.Files
         {
             var timeKeeper = new TimeKeeper();
             var maxSizeKb = _maxSizeKb;
-            var initialSize = ComputeTotalSize();
-            if (initialSize <= maxSizeKb)
+            var initialSizeKb = ComputeTotalSize() / 1024L;
+            if (initialSizeKb <= maxSizeKb)
             {
-                $"Total size = {initialSize / 1024L}/{_maxSizeKb}kb, not purging.".Info(nameof(FileCache));
+                $"Total size = {initialSizeKb}/{_maxSizeKb}kb, not purging.".Info(nameof(FileCache));
                 return;
             }
 
-            $"Total size = {initialSize / 1024L}/{_maxSizeKb}kb, purging...".Debug(nameof(FileCache));
+            $"Total size = {initialSizeKb}/{_maxSizeKb}kb, purging...".Debug(nameof(FileCache));
 
             var removedCount = 0;
             var removedSize = 0L;
-            var totalSize = initialSize;
-            var threshold = 973L * maxSizeKb; // About 95% of maximum allowed size
-            while (totalSize > threshold)
+            var totalSizeKb = initialSizeKb;
+            var threshold = 973L * maxSizeKb / 1024L; // About 95% of maximum allowed size
+            while (totalSizeKb > threshold)
             {
                 if (cancellationToken.IsCancellationRequested)
                     return;
@@ -142,10 +142,10 @@ namespace EmbedIO.Files
 
                 await Task.Yield();
 
-                totalSize = ComputeTotalSize();
+                totalSizeKb = ComputeTotalSize() / 1024L;
             }
 
-            $"Purge completed in {timeKeeper.ElapsedTime}ms: removed {removedCount} items ({removedSize / 1024L}kb). Total size is now {totalSize / 1024L}kb."
+            $"Purge completed in {timeKeeper.ElapsedTime}ms: removed {removedCount} items ({removedSize / 1024L}kb). Total size is now {totalSizeKb}kb."
                 .Info(nameof(FileCache));
 
         }
