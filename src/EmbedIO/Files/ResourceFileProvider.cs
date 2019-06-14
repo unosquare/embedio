@@ -80,9 +80,13 @@ namespace EmbedIO.Files
 
             var lastSlashPos = urlPath.LastIndexOf('/');
             var name = urlPath.Substring(lastSlashPos + 1);
-            mimeTypeProvider.TryGetMimeType(Path.GetExtension(name), out var mimeType);
 
-            return new MappedFileInfo(resourceName, name, _fileTime, size, mimeType ?? MimeTypes.Default);
+            return MappedResourceInfo.ForFile(
+                resourceName, 
+                name, 
+                _fileTime, 
+                size, 
+                mimeTypeProvider.GetMimeType(Path.GetExtension(name)));
         }
 
         /// <inheritdoc />

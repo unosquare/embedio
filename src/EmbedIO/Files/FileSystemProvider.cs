@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using EmbedIO.Utilities;
 
@@ -135,18 +136,8 @@ namespace EmbedIO.Files
 
         /// <inheritdoc />
         public IEnumerable<MappedResourceInfo> GetDirectoryEntries(string path, IMimeTypeProvider mimeTypeProvider)
-        {
-            var entries = Directory.GetFileSystemEntries(path, "*", SearchOption.TopDirectoryOnly);
-
-            foreach (var entry in entries)
-            {
-                if (File.Exists(entry))
-                    yield return GetMappedFileInfo(mimeTypeProvider, path);
-
-                if (Directory.Exists(entry))
-                    yield return GetMappedDirectoryInfo(path);
-            }
-        }
+            => new DirectoryInfo(path).EnumerateFileSystemInfos()
+                .Select(fsi => GetMappedResourceInfo(mimeTypeProvider, fsi));
 
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
@@ -170,19 +161,26 @@ namespace EmbedIO.Files
         }
 
         private static MappedResourceInfo GetMappedFileInfo(IMimeTypeProvider mimeTypeProvider, string localPath)
-        {
-            var fileInfo = new FileInfo(localPath);
-            mimeTypeProvider.TryGetMimeType(fileInfo.Extension, out var mimeType);
+            => GetMappedFileInfo(mimeTypeProvider, new FileInfo(localPath));
 
-            return new MappedFileInfo(localPath, fileInfo.Name, fileInfo.LastWriteTimeUtc, fileInfo.Length, mimeType ?? MimeTypes.Default);
-        }
-        
+        private static MappedResourceInfo GetMappedFileInfo(IMimeTypeProvider mimeTypeProvider, FileInfo info)
+            => MappedResourceInfo.ForFile(
+                info.FullName, 
+                info.Name, 
+                info.LastWriteTimeUtc, 
+                info.Length, 
+                mimeTypeProvider.GetMimeType(info.Extension));
+
         private static MappedResourceInfo GetMappedDirectoryInfo(string localPath)
-        {
-            var directoryInfo = new DirectoryInfo(localPath);
+            => GetMappedDirectoryInfo(new DirectoryInfo(localPath));
 
-            return new MappedDirectoryInfo(localPath, directoryInfo.Name, directoryInfo.LastWriteTimeUtc);
-        }
+        private static MappedResourceInfo GetMappedDirectoryInfo(DirectoryInfo info)
+            => MappedResourceInfo.ForDirectory(info.FullName, info.Name, info.LastWriteTimeUtc);
+
+        private static MappedResourceInfo GetMappedResourceInfo(IMimeTypeProvider mimeTypeProvider, FileSystemInfo info)
+            => info is DirectoryInfo directoryInfo
+                ? GetMappedDirectoryInfo(directoryInfo)
+                : GetMappedFileInfo(mimeTypeProvider, (FileInfo)info);
 
         private void Watcher_ChangedOrDeleted(object sender, FileSystemEventArgs e)
             => ResourceChanged?.Invoke(e.FullPath);

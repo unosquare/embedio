@@ -28,16 +28,18 @@ namespace EmbedIO.Utilities
         public void Pop() => _providers.Pop();
 
         /// <inheritdoc />
-        /// <exception cref="ArgumentNullException"><paramref name="extension"/>is <see langword="null"/>.</exception>
-        public bool TryGetMimeType(string extension, out string mimeType)
+        public string GetMimeType(string extension)
         {
+            string result;
             foreach (var provider in _providers)
             {
-                if (provider.TryGetMimeType(extension, out mimeType))
-                    return true;
+                result = provider.GetMimeType(extension);
+                if (result != null)
+                    return result;
             }
 
-            return MimeTypes.Associations.TryGetValue(extension, out mimeType);
+            MimeTypes.Associations.TryGetValue(extension, out result);
+            return result;
         }
     }
 }

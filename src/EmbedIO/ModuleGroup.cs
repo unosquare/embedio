@@ -56,10 +56,11 @@ namespace EmbedIO
             GC.SuppressFinalize(this);
         }
 
-        bool IMimeTypeProvider.TryGetMimeType(string extension, out string mimeType)
-            => _customMimeTypes.TryGetValue(
-                Validate.NotNull(nameof(extension), extension),
-                out mimeType);
+        string IMimeTypeProvider.GetMimeType(string extension)
+        {
+            _customMimeTypes.TryGetValue(Validate.NotNull(nameof(extension), extension), out var result);
+            return result;
+        }
 
         /// <inheritdoc />
         /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>

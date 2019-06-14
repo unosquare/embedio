@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Internal;
 using Unosquare.Swan;
 
 namespace EmbedIO.Files.Internal
@@ -23,8 +24,8 @@ namespace EmbedIO.Files.Internal
 
         public string ContentType { get; } = MimeTypes.HtmlType + "; encoding=" + Encoding.UTF8.WebName;
 
-        public Task ListDirectoryAsync(
-            MappedDirectoryInfo info,
+        public async Task ListDirectoryAsync(
+            MappedResourceInfo info,
             string absoluteUrlPath,
             IEnumerable<MappedResourceInfo> entries, 
             Stream stream,
@@ -32,6 +33,8 @@ namespace EmbedIO.Files.Internal
         {
             const int MaxEntryLength = 50;
             const int SizeIndent = -20; // Negative for right alignment
+
+            SelfCheck.Assert(info.IsDirectory, $"{nameof(HtmlDirectoryLister)}.{nameof(ListDirectoryAsync)} invoked with a file, not a directory.");
 
             var encodedPath = WebUtility.HtmlEncode(absoluteUrlPath);
             using (var text = new StreamWriter(stream, Encoding.UTF8))
@@ -47,26 +50,26 @@ namespace EmbedIO.Files.Internal
 
                 entries = entries.ToArray();
 
-                foreach (var directory in entries.OfType<MappedDirectoryInfo>().OrderBy(e => e.Name))
+                foreach (var directory in entries.Where(m => m.IsDirectory).OrderBy(e => e.Name))
                 {
                     text.Write($"<a href=\"{Uri.EscapeDataString(directory.Name)}{Path.DirectorySeparatorChar}\">{WebUtility.HtmlEncode(directory.Name)}</a>");
                     text.Write(new string(' ', Math.Max(1, MaxEntryLength - directory.Name.Length + 1)));
-                    text.Write(directory.LastWriteTimeUtc.ToRfc1123String());
+                    text.Write(directory.LastModifiedUtc.ToRfc1123String());
                     text.Write('\n');
+                    await Task.Yield();
                 }
 
-                foreach (var file in entries.OfType<MappedFileInfo>().OrderBy(e => e.Name))
+                foreach (var file in entries.Where(m => m.IsFile).OrderBy(e => e.Name))
                 {
                     text.Write($"<a href=\"{Uri.EscapeDataString(file.Name)}{Path.DirectorySeparatorChar}\">{WebUtility.HtmlEncode(file.Name)}</a>");
                     text.Write(new string(' ', Math.Max(1, MaxEntryLength - file.Name.Length + 1)));
-                    text.Write(file.LastWriteTimeUtc.ToRfc1123String());
-                    text.Write($" {file.Size.ToString("#,###", CultureInfo.InvariantCulture),SizeIndent}\n");
+                    text.Write(file.LastModifiedUtc.ToRfc1123String());
+                    text.Write($" {file.Length.ToString("#,###", CultureInfo.InvariantCulture),SizeIndent}\n");
+                    await Task.Yield();
                 }
 
                 text.Write("</pre><hr/></body></html>");
             }
-
-            return Task.CompletedTask;
         }
     }
 }

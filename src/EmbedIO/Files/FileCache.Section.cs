@@ -106,13 +106,14 @@ namespace EmbedIO.Files
                 _newestKey = path;
 
                 _items[path] = item;
-                _totalSize += item.Size;
+                _totalSize += item.SizeInCache;
             }
 
             // Removes an item.
             private void RemoveItemCore(string path)
             {
-                var item = _items[path];
+                if (!_items.TryGetValue(path, out var item))
+                    return;
 
                 if (_oldestKey == path)
                     _oldestKey = item.NextKey;
@@ -130,7 +131,7 @@ namespace EmbedIO.Files
                 item.NextKey = null;
 
                 _items.Remove(path);
-                _totalSize -= item.Size;
+                _totalSize -= item.SizeInCache;
             }
 
             // Removes the least recently used item.
@@ -152,7 +153,7 @@ namespace EmbedIO.Files
                 item.NextKey = null;
 
                 _items.Remove(path);
-                _totalSize -= item.Size;
+                _totalSize -= item.SizeInCache;
             }
 
             // Moves an item to most recently used.

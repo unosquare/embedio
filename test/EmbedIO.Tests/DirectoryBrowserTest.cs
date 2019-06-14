@@ -9,7 +9,10 @@ namespace EmbedIO.Tests
     public class DirectoryBrowserTest : FixtureBase
     {
         public DirectoryBrowserTest()
-            : base(ws => ws.WithStaticFolder("/", StaticFolder.RootPathOf(nameof(DirectoryBrowserTest)), true, module => module.DirectoryLister = DirectoryLister.Default))
+            : base(ws => ws
+                .WithStaticFolder("/", StaticFolder.RootPathOf(nameof(DirectoryBrowserTest)), true, m => m
+                    .WithDirectoryLister(DirectoryLister.Html)
+                    .WithoutDefaultDocument()))
         {
             ServedFolder = new StaticFolder.WithHtmlFiles(nameof(DirectoryBrowserTest));
         }

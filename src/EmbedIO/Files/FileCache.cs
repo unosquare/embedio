@@ -76,11 +76,13 @@ namespace EmbedIO.Files
         /// <para>The default value for this property is stored in the <see cref="DefaultMaxFileSizeKb"/> constant field.</para>
         /// <para>Setting this property to a value lower than 0 has the same effect as setting it to 0, in fact
         /// completely disabling the caching of file contents for this cache.</para>
+        /// <para>This property cannot be set to a value higher than 2097151; in other words, it is not possible
+        /// to cache files bigger than two Gigabytes (1 Gigabyte = 1048576 kilobytes) minus 1 kilobyte.</para>
         /// </summary>
         public int MaxFileSizeKb
         {
             get => _maxFileSizeKb;
-            set => _maxFileSizeKb = Math.Max(value, 0);
+            set => _maxFileSizeKb = Math.Min(Math.Max(value, 0), 2097151);
         }
 
         // Cast as IDictionary because we WANT an exception to be thrown if the name exists.

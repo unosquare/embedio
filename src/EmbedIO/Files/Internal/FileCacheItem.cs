@@ -53,15 +53,13 @@ namespace EmbedIO.Files.Internal
         private byte[] _uncompressedContent;
         private byte[] _gzippedContent;
         private byte[] _deflatedContent;
-        private string _uncompressedEntityTag;
-        private string _gzippedEntityTag;
-        private string _deflatedEntityTag;
 
-        internal FileCacheItem(FileCache.Section section, DateTime lastModifiedUtc)
+        internal FileCacheItem(FileCache.Section section, DateTime lastModifiedUtc, long length)
         {
             _section = new WeakReference<FileCache.Section>(section);
 
             LastModifiedUtc = lastModifiedUtc;
+            Length = length;
 
             // There is no way to know the actual size of an object at runtime.
             // This method makes some educated guesses, based on the following
@@ -69,31 +67,35 @@ namespace EmbedIO.Files.Internal
             // https://codingsight.com/precise-computation-of-clr-object-size/
             // PreviousKey and NextKey values aren't counted in
             // because they are just references to existing strings.
-            Size = SizeOfItem + SizeOfWeakReference;
+            SizeInCache = SizeOfItem + SizeOfWeakReference;
         }
 
         public DateTime LastModifiedUtc { get; }
 
-        public long Size { get; private set; }
+        public long Length { get; }
 
-        public (byte[], string) GetContentAndEntityTag(CompressionMethod compressionMethod)
+        // This is the (approximate) in-memory size of this object.
+        // It is NOT the length of the cache resource!
+        public long SizeInCache { get; private set; }
+
+        public byte[] GetContent(CompressionMethod compressionMethod)
         {
             // If there are both entity tag and content, use them.
             switch (compressionMethod)
             {
                 case CompressionMethod.Deflate:
-                    if (_deflatedContent != null) return (_deflatedContent, _deflatedEntityTag);
+                    if (_deflatedContent != null) return _deflatedContent;
                     break;
                 case CompressionMethod.Gzip:
-                    if (_gzippedContent != null) return (_gzippedContent, _gzippedEntityTag);
+                    if (_gzippedContent != null) return _gzippedContent;
                     break;
                 default:
-                    if (_uncompressedContent != null) return (_uncompressedContent, _uncompressedEntityTag);
+                    if (_uncompressedContent != null) return _uncompressedContent;
                     break;
             }
 
             // Try to convert existing content, if any.
-            byte[] content = null;
+            byte[] content;
             if (_uncompressedContent != null)
             {
                 content = CompressionUtility.ConvertCompression(_uncompressedContent, CompressionMethod.None, compressionMethod);
@@ -108,65 +110,43 @@ namespace EmbedIO.Files.Internal
             }
             else
             {
-                // No content whatsoever: try to return at least the entity tag if it's there.
-                switch (compressionMethod)
-                {
-                    case CompressionMethod.Deflate:
-                        return (null, _deflatedEntityTag);
-                    case CompressionMethod.Gzip:
-                        return (null, _gzippedEntityTag);
-                    default:
-                        return (null, _uncompressedEntityTag);
-                }
+                // No content whatsoever.
+                return null;
             }
 
-            var entityTag = EntityTag.Compute(LastModifiedUtc, content);
-            return SetContentAndEntityTag(compressionMethod, content, entityTag);
+            return SetContent(compressionMethod, content);
         }
 
-        public (byte[], string) SetContentAndEntityTag(CompressionMethod compressionMethod, byte[] content, string entityTag)
+        public byte[] SetContent(CompressionMethod compressionMethod, byte[] content)
         {
-            // Content can be null (when FileModule.ContentCaching = false).
-            // Entity tag MUST NOT be null!
-            SelfCheck.Assert(entityTag != null,
-                $"Null {nameof(entityTag)} passed to {nameof(FileCacheItem)}.{nameof(SetContentAndEntityTag)}.");
-
             // This is the bare minimum locking we need
             // to ensure we don't mess sizes up.
             byte[] oldContent;
-            string oldEntityTag;
             lock (this)
             {
                 switch (compressionMethod)
                 {
                     case CompressionMethod.Deflate:
                         oldContent = _deflatedContent;
-                        oldEntityTag = _deflatedEntityTag;
                         _deflatedContent = content;
-                        _deflatedEntityTag = entityTag;
                         break;
                     case CompressionMethod.Gzip:
                         oldContent = _gzippedContent;
-                        oldEntityTag = _gzippedEntityTag;
                         _gzippedContent = content;
-                        _gzippedEntityTag = entityTag;
                         break;
                     default:
                         oldContent = _uncompressedContent;
-                        oldEntityTag = _uncompressedEntityTag;
                         _uncompressedContent = content;
-                        _uncompressedEntityTag = entityTag;
                         break;
                 }
             }
 
-            var sizeDelta = GetSizeOf(content) + GetSizeOf(entityTag)
-                          - GetSizeOf(oldContent) - GetSizeOf(oldEntityTag);
-            Size += sizeDelta;
+            var sizeDelta = GetSizeOf(content) - GetSizeOf(oldContent);
+            SizeInCache += sizeDelta;
             if (_section.TryGetTarget(out var section))
                 section.UpdateTotalSize(sizeDelta);
 
-            return (content, entityTag);
+            return content;
         }
 
         // Round up to a multiple of 16

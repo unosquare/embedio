@@ -13,8 +13,6 @@ namespace EmbedIO.Tests
     [TestFixture]
     public class StaticFilesModuleTest : FixtureBase
     {
-        private const string HeaderPragmaValue = "no-cache";
-
         protected StaticFilesModuleTest()
             : base(ws => ws.WithStaticFolder("/", StaticFolder.RootPathOf(nameof(StaticFilesModuleTest)), true))
         {
@@ -48,16 +46,11 @@ namespace EmbedIO.Tests
                         Assert.IsTrue(string.IsNullOrWhiteSpace(response.Headers.Pragma.ToString()), "Pragma empty");
                     }
 
-                    // TODO: complete
-                    //WebServerInstance.Modules.OfType<FileModule>().First().DefaultHeaders
-                    //    .Add(HttpHeaderNames.Pragma, HeaderPragmaValue);
-
                     request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
 
                     using (var response = await client.SendAsync(request))
                     {
                         Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
-                        Assert.AreEqual(HeaderPragmaValue, response.Headers.Pragma.ToString());
                     }
                 }
             }

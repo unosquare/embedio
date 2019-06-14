@@ -105,7 +105,7 @@ namespace EmbedIO.Net.Internal
             return new WebSocketContext(this, WebSocket.SupportedVersion, requestedProtocols, acceptedProtocol, webSocket, cancellationToken);
         }
 
-        public bool TryGetMimeType(string extension, out string mimeType)
-            => MimeTypeProviders.TryGetMimeType(extension, out mimeType);
+        public string GetMimeType(string extension)
+            => MimeTypeProviders.GetMimeType(extension);
     }
 }

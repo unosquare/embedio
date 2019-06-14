@@ -112,7 +112,7 @@ namespace EmbedIO.Net.Internal
             }
         }
 
-        public bool TryGetMimeType(string extension, out string mimeType)
-            => MimeTypeProviders.TryGetMimeType(extension, out mimeType);
+        public string GetMimeType(string extension)
+            => MimeTypeProviders.GetMimeType(extension);
     }
 }

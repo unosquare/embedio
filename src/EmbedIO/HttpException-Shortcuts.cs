@@ -65,6 +65,27 @@ namespace EmbedIO
         public static HttpNotAcceptableException NotAcceptable(string vary) => new HttpNotAcceptableException(vary);
 
         /// <summary>
+        /// Returns a new instance of <see cref="HttpRangeNotSatisfiableException"/> that, when thrown,
+        /// will break the request handling control flow and send a <c>416 Range Not Satisfiable</c>
+        /// response to the client.
+        /// </summary>
+        /// <returns>A newly-created <see cref="HttpRangeNotSatisfiableException"/>.</returns>
+        /// <seealso cref="HttpRangeNotSatisfiableException()"/>
+        public static HttpRangeNotSatisfiableException RangeNotSatisfiable() => new HttpRangeNotSatisfiableException();
+
+        /// <summary>
+        /// Returns a new instance of <see cref="HttpRangeNotSatisfiableException"/> that, when thrown,
+        /// will break the request handling control flow and send a <c>416 Range Not Satisfiable</c>
+        /// response to the client.
+        /// </summary>
+        /// <param name="contentLength">The total length of the requested resource, expressed in bytes,
+        /// or <see langword="null"/> to omit the <c>Content-Range</c> header in the response.</param>
+        /// <returns>A newly-created <see cref="HttpRangeNotSatisfiableException"/>.</returns>
+        /// <seealso cref="HttpRangeNotSatisfiableException()"/>
+        public static HttpRangeNotSatisfiableException RangeNotSatisfiable(long? contentLength)
+            => new HttpRangeNotSatisfiableException(contentLength);
+
+        /// <summary>
         /// Returns a new instance of <see cref="HttpRedirectException" /> that, when thrown,
         /// will break the request handling control flow and redirect the client
         /// to the specified location, using the specified response status code.
