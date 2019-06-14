@@ -29,6 +29,7 @@ namespace EmbedIO.Samples
         /// <inheritdoc />
         protected override Task OnClientConnectedAsync(IWebSocketContext context)
         {
+#pragma warning disable CA2000 // Call Dispose on object - will do in OnClientDisconnectedAsync.
             var process = new Process
             {
                 EnableRaisingEvents = true,
@@ -44,6 +45,7 @@ namespace EmbedIO.Samples
                     WorkingDirectory = Environment.CurrentDirectory
                 }
             };
+#pragma warning restore CA2000
 
             process.OutputDataReceived += async (s, e) => await SendBufferAsync(s as Process, e.Data).ConfigureAwait(false);
 
@@ -68,8 +70,14 @@ namespace EmbedIO.Samples
         /// <inheritdoc />
         protected override Task OnClientDisconnectedAsync(IWebSocketContext context)
         {
-            if (_processes.TryRemove(context, out var process) && !process.HasExited)
-                process.Kill();
+            if (_processes.TryRemove(context, out var process))
+            {
+                if (!process.HasExited)
+                    process.Kill();
+
+                process.Dispose();
+            }
+
             return Task.CompletedTask;
         }
 

@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Actions;
+using EmbedIO.Files;
 using EmbedIO.WebApi;
 using Unosquare.Swan;
 
@@ -53,6 +54,7 @@ namespace EmbedIO.Samples
         // Create and configure our web server.
         private static WebServer CreateWebServer(string url)
         {
+#pragma warning disable CA2000 // Call Dispose on object - this is a factory method.
             var server = new WebServer(o => o
                     .WithUrlPrefix(url)
                     .WithMode(HttpListenerMode.EmbedIO))
@@ -75,6 +77,7 @@ namespace EmbedIO.Samples
             server.StateChanged += (s, e) => $"WebServer New State - {e.NewState}".Info();
 
             return server;
+#pragma warning restore CA2000
         }
 
         // Create and run a web server.
@@ -93,11 +96,13 @@ namespace EmbedIO.Samples
             await Task.Yield();
 
             // Fire up the browser to show the content!
-            new Process {
-                StartInfo = new ProcessStartInfo(url) {
+            using (var browser = new Process())
+            {
+                browser.StartInfo = new ProcessStartInfo(url) {
                     UseShellExecute = true
-                }
-            }.Start();
+                };
+                browser.Start();
+            }
         }
 
         // Prompt the user to press any key; when a key is next pressed,
