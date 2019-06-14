@@ -402,8 +402,7 @@ namespace EmbedIO.Files
 
             /*
              * Now we have a cacheItem for the resource.
-             * It may have been just created (cacheItemIsNew == true);
-             * otherwise it may or may not have a cached content,
+             * It may have been just created, or it may or may not have a cached content,
              * depending upon the value of the ContentCaching property,
              * the size of the resource, and the value of the
              * MaxFileSizeKb of our Cache.
@@ -429,50 +428,6 @@ namespace EmbedIO.Files
 
             var entityTag = info.GetEntityTag(compressionMethod);
 
-            /*
-             * Some functions are better coded here than as private methods with a bunch of parameters.
-             */
-
-            // Uses DirectoryLister to generate a directory listing asynchronously.
-            // Returns a tuple of the generated content and its *uncompressed* length
-            // (useful to decide whether it can be cached).
-            async Task<(byte[], long)> GenerateDirectoryListingAsync()
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    long uncompressedLength;
-                    using (var stream = new CompressionStream(memoryStream, compressionMethod))
-                    {
-                        await DirectoryLister.ListDirectoryAsync(
-                            info,
-                            context.Request.Url.AbsolutePath,
-                            Provider.GetDirectoryEntries(info.Path, context),
-                            stream,
-                            cancellationToken).ConfigureAwait(false);
-
-                        uncompressedLength = stream.UncompressedLength;
-                    }
-
-                    return (memoryStream.ToArray(), uncompressedLength);
-                }
-            }
-
-            // Prepares response headers for a "200 OK" or "304 Not Modified" response.
-            // RFC7232, Section 4.1
-            void PreparePositiveResponse(IHttpResponse response)
-            {
-                setCompressionInResponse(response);
-                response.ContentType = info.ContentType ?? DirectoryLister.ContentType;
-                response.Headers.Set(HttpHeaderNames.ETag, entityTag);
-                response.Headers.Set(HttpHeaderNames.LastModified, info.LastModifiedUtc.ToRfc1123String());
-                response.Headers.Set(HttpHeaderNames.CacheControl, "max-age=0, must-revalidate");
-                response.Headers.Set(HttpHeaderNames.AcceptRanges, "bytes");
-            }
-
-            /*
-             * Back to our control flow.
-             */
-
             // Send a "304 Not Modified" response if applicable.
             //
             // RFC7232, Section 3.3: "A recipient MUST ignore If-Modified-Since
@@ -481,7 +436,7 @@ namespace EmbedIO.Files
              || (!ifNoneMatchExists && context.Request.CheckIfModifiedSince(info.LastModifiedUtc, out _)))
             {
                 context.Response.StatusCode = (int)HttpStatusCode.NotModified;
-                PreparePositiveResponse(context.Response);
+                PreparePositiveResponse(context.Response, info, entityTag, setCompressionInResponse);
                 return true;
             }
 
@@ -505,7 +460,8 @@ namespace EmbedIO.Files
             if (info.IsDirectory && content == null)
             {
                 long uncompressedLength;
-                (content, uncompressedLength) = await GenerateDirectoryListingAsync().ConfigureAwait(false);
+                (content, uncompressedLength) = await GenerateDirectoryListingAsync(context, info, compressionMethod, cancellationToken)
+                    .ConfigureAwait(false);
                 if (ContentCaching && uncompressedLength <= cachingThreshold)
                     cacheItem.SetContent(compressionMethod, content);
             }
@@ -524,13 +480,13 @@ namespace EmbedIO.Files
                 // Prepare a "206 Partial Content" response.
                 partialLength = partialUpperBound - partialStart + 1;
                 context.Response.StatusCode = (int)HttpStatusCode.PartialContent;
-                PreparePositiveResponse(context.Response);
+                PreparePositiveResponse(context.Response, info, entityTag, setCompressionInResponse);
                 context.Response.Headers.Set(HttpHeaderNames.ContentRange, $"bytes {partialStart}-{partialUpperBound}/{contentLength}");
             }
             else
             {
                 // Prepare a "200 OK" response.
-                PreparePositiveResponse(context.Response);
+                PreparePositiveResponse(context.Response, info, entityTag, setCompressionInResponse);
             }
 
             // If it's a HEAD request, we're done.
@@ -633,6 +589,46 @@ namespace EmbedIO.Files
             }
 
             return true;
+        }
+
+        // Uses DirectoryLister to generate a directory listing asynchronously.
+        // Returns a tuple of the generated content and its *uncompressed* length
+        // (useful to decide whether it can be cached).
+        private async Task<(byte[], long)> GenerateDirectoryListingAsync(
+            IHttpContext context,
+            MappedResourceInfo info, 
+            CompressionMethod compressionMethod,
+            CancellationToken cancellationToken)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                long uncompressedLength;
+                using (var stream = new CompressionStream(memoryStream, compressionMethod))
+                {
+                    await DirectoryLister.ListDirectoryAsync(
+                        info,
+                        context.Request.Url.AbsolutePath,
+                        Provider.GetDirectoryEntries(info.Path, context),
+                        stream,
+                        cancellationToken).ConfigureAwait(false);
+
+                    uncompressedLength = stream.UncompressedLength;
+                }
+
+                return (memoryStream.ToArray(), uncompressedLength);
+            }
+        }
+
+        // Prepares response headers for a "200 OK" or "304 Not Modified" response.
+        // RFC7232, Section 4.1
+        private void PreparePositiveResponse(IHttpResponse response, MappedResourceInfo info, string entityTag, Action<IHttpResponse> setCompression)
+        {
+            setCompression(response);
+            response.ContentType = info.ContentType ?? DirectoryLister.ContentType;
+            response.Headers.Set(HttpHeaderNames.ETag, entityTag);
+            response.Headers.Set(HttpHeaderNames.LastModified, info.LastModifiedUtc.ToRfc1123String());
+            response.Headers.Set(HttpHeaderNames.CacheControl, "max-age=0, must-revalidate");
+            response.Headers.Set(HttpHeaderNames.AcceptRanges, "bytes");
         }
     }
 }
