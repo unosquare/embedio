@@ -5,6 +5,7 @@ using System.Net;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Internal;
 using EmbedIO.Sessions;
 using EmbedIO.Utilities;
 using EmbedIO.WebSockets;
@@ -18,6 +19,8 @@ namespace EmbedIO.Net.Internal
     {
         private readonly Lazy<IDictionary<object, object>> _items =
             new Lazy<IDictionary<object, object>>(() => new Dictionary<object, object>(), true);
+
+        private readonly TimeKeeper _ageKeeper = new TimeKeeper();
 
         private readonly Stack<Action<IHttpContext>> _closeCallbacks = new Stack<Action<IHttpContext>>();
 
@@ -35,6 +38,8 @@ namespace EmbedIO.Net.Internal
         }
 
         public string Id { get; }
+
+        public long Age => _ageKeeper.ElapsedTime;
 
         public IPEndPoint LocalEndPoint { get; }
 

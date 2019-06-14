@@ -5,6 +5,7 @@ using System.Net;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Internal;
 using EmbedIO.Sessions;
 using EmbedIO.Tests;
 using EmbedIO.Utilities;
@@ -17,6 +18,8 @@ namespace EmbedIO.Net.Internal
     internal sealed class SystemHttpContext : IHttpContextImpl
     {
         private readonly System.Net.HttpListenerContext _context;
+
+        private readonly TimeKeeper _ageKeeper = new TimeKeeper();
 
         private readonly Stack<Action<IHttpContext>> _closeCallbacks = new Stack<Action<IHttpContext>>();
 
@@ -47,6 +50,8 @@ namespace EmbedIO.Net.Internal
         }
 
         public string Id { get; }
+
+        public long Age => _ageKeeper.ElapsedTime;
 
         public IPEndPoint LocalEndPoint { get; }
 

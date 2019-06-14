@@ -58,6 +58,11 @@ namespace EmbedIO
         IDictionary<object, object> Items { get; }
 
         /// <summary>
+        /// Gets the elapsed time, expressed in milliseconds, since the creation of this context.
+        /// </summary>
+        long Age { get; }
+
+        /// <summary>
         /// Registers a callback to be called when processing is finished on a context.
         /// </summary>
         /// <param name="callback">The callback.</param>
