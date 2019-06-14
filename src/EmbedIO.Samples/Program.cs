@@ -12,6 +12,8 @@ namespace EmbedIO.Samples
 {
     internal class Program
     {
+        private const bool OpenBrowser = true;
+
         private static void Main(string[] args)
         {
             var url = args.Length > 0 ? args[0] : "http://*:8877";
@@ -22,7 +24,7 @@ namespace EmbedIO.Samples
             {
                 Task.WaitAll(
                     RunWebServerAsync(url, ctSource.Token),
-                    ShowBrowserAsync(url.Replace("*", "localhost"), ctSource.Token),
+                    OpenBrowser ? ShowBrowserAsync(url.Replace("*", "localhost"), ctSource.Token) : Task.CompletedTask,
                     WaitForUserBreakAsync(ctSource.Cancel));
             }
 
