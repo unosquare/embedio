@@ -332,6 +332,8 @@ namespace EmbedIO
                 }
                 finally
                 {
+                    await context.Response.OutputStream.FlushAsync(cancellationToken).ConfigureAwait(false);
+
                     var statusCode = context.Response.StatusCode;
                     var statusDescription = context.Response.StatusDescription;
                     var sendChunked = context.Response.SendChunked;
