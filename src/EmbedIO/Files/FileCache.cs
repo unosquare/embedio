@@ -5,7 +5,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Internal;
 using EmbedIO.Utilities;
+using Unosquare.Swan;
 
 namespace EmbedIO.Files
 {
@@ -111,27 +113,41 @@ namespace EmbedIO.Files
 
         private async Task CheckMaxSize(CancellationToken cancellationToken)
         {
-            var totalSize = ComputeTotalSize();
-            if (totalSize > 1024L * _maxSizeKb)
+            var timeKeeper = new TimeKeeper();
+            var maxSizeKb = _maxSizeKb;
+            var initialSize = ComputeTotalSize();
+            if (initialSize <= maxSizeKb)
             {
-                var threshold = 973L * _maxSizeKb; // About 95% of maxSize
-                while (totalSize > threshold)
-                {
-                    if (cancellationToken.IsCancellationRequested)
-                        return;
-
-                    var section = GetSectionWithLeastRecentItem();
-                    if (section == null)
-                        return;
-
-                    section.RemoveLeastRecentItem();
-
-                    // Don't hog the processor.
-                    await Task.Delay(250, cancellationToken).ConfigureAwait(false);
-
-                    totalSize = ComputeTotalSize();
-                }
+                $"Total size = {initialSize / 1024L}/{_maxSizeKb}kb, not purging.".Info(nameof(FileCache));
+                return;
             }
+
+            $"Total size = {initialSize / 1024L}/{_maxSizeKb}kb, purging...".Debug(nameof(FileCache));
+
+            var removedCount = 0;
+            var removedSize = 0L;
+            var totalSize = initialSize;
+            var threshold = 973L * maxSizeKb; // About 95% of maximum allowed size
+            while (totalSize > threshold)
+            {
+                if (cancellationToken.IsCancellationRequested)
+                    return;
+
+                var section = GetSectionWithLeastRecentItem();
+                if (section == null)
+                    return;
+
+                removedSize += section.RemoveLeastRecentItem();
+                removedCount++;
+
+                await Task.Yield();
+
+                totalSize = ComputeTotalSize();
+            }
+
+            $"Purge completed in {timeKeeper.ElapsedTime}ms: removed {removedCount} items ({removedSize / 1024L}kb). Total size is now {totalSize / 1024L}kb."
+                .Info(nameof(FileCache));
+
         }
 
         // Enumerate key / value pairs because the Keys and Values property

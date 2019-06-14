@@ -59,13 +59,12 @@ namespace EmbedIO.Files
             }
 
             // Removes least recently used item.
-            // Returns new total size.
+            // Returns size of removed item.
             internal long RemoveLeastRecentItem()
             {
                 lock (_syncRoot)
                 {
-                    RemoveOldestItemCore();
-                    return _totalSize;
+                    return RemoveLeastRecentItemCore();
                 }
             }
 
@@ -135,11 +134,12 @@ namespace EmbedIO.Files
             }
 
             // Removes the least recently used item.
-            private void RemoveOldestItemCore()
+            // returns size of removed item.
+            private long RemoveLeastRecentItemCore()
             {
                 var path = _oldestKey;
                 if (path == null)
-                    return;
+                    return 0;
 
                 var item = _items[path];
 
@@ -154,6 +154,7 @@ namespace EmbedIO.Files
 
                 _items.Remove(path);
                 _totalSize -= item.SizeInCache;
+                return item.SizeInCache;
             }
 
             // Moves an item to most recently used.
