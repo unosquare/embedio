@@ -23,12 +23,6 @@ namespace EmbedIO.Files
         bool IsImmutable { get; }
 
         /// <summary>
-        /// Gets a value indicating whether streams returned by the <see cref="OpenFile"/> method
-        /// will have their <see cref="Stream.CanSeek">CanSeek</see> property set to <see langword="true"/>.
-        /// </summary>
-        bool CanSeekFiles { get; }
-
-        /// <summary>
         /// Signals a file provider that the web server is starting.
         /// </summary>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to stop the web server.</param>

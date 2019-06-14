@@ -54,9 +54,6 @@ namespace EmbedIO.Files
         public bool IsImmutable { get; }
 
         /// <inheritdoc />
-        public bool CanSeekFiles => true;
-
-        /// <inheritdoc />
         public void Dispose()
         {
             Dispose(true);

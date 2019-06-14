@@ -437,7 +437,7 @@ namespace EmbedIO.Files
                 response.Headers.Set(HttpHeaderNames.ETag, entityTag);
                 response.Headers.Set(HttpHeaderNames.LastModified, info.LastModifiedUtc.ToRfc1123String());
                 response.Headers.Set(HttpHeaderNames.CacheControl, "max-age=0, must-revalidate");
-                response.Headers.Set(HttpHeaderNames.AcceptRanges, Provider.CanSeekFiles ? "bytes" : "none");
+                response.Headers.Set(HttpHeaderNames.AcceptRanges, "bytes");
             }
 
             /*
