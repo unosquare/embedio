@@ -46,7 +46,7 @@ test_script:
 - ps: |
         if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
         {
-            tools\coveralls.net.0.7.0\tools\csmacnz.Coveralls.exe --opencover -i test\EmbedIO.Testst\coverage.opencover.xml --serviceName appveyor --jobId $Env:APPVEYOR_BUILD_NUMBER
+            tools\coveralls.net.0.7.0\tools\csmacnz.Coveralls.exe --opencover -i C:\projects\embedio\test\EmbedIO.Tests\coverage.opencover.xml --serviceName appveyor --jobId $Env:APPVEYOR_BUILD_NUMBER
         }
 after_build:
 - ps: |
