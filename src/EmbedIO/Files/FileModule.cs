@@ -524,7 +524,7 @@ namespace EmbedIO.Files
                 }
                 else
                 {
-                    context.Response.ContentLength64 = contentLength;
+                    context.Response.ContentLength64 = content.Length;
                     await context.Response.OutputStream.WriteAsync(content, 0, content.Length, cancellationToken)
                         .ConfigureAwait(false);
                 }
