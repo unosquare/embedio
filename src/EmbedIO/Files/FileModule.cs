@@ -535,10 +535,10 @@ namespace EmbedIO.Files
             // Read and transfer content without caching.
             using (var source = Provider.OpenFile(info.Path))
             {
+                context.Response.SendChunked = true;
+
                 if (isPartial)
                 {
-                    context.Response.ContentLength64 = partialLength;
-
                     var buffer = new byte[WebServer.StreamCopyBufferSize];
                     if (source.CanSeek)
                     {
@@ -579,7 +579,6 @@ namespace EmbedIO.Files
                 }
                 else
                 {
-                    context.Response.ContentLength64 = contentLength;
                     using (var compressor = new CompressionStream(context.Response.OutputStream, compressionMethod))
                     {
                         await source.CopyToAsync(compressor, WebServer.StreamCopyBufferSize, cancellationToken)
