@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,6 +46,13 @@ namespace EmbedIO.Tests
             }
 
             Assert.AreEqual(expectedText, actualText, "Content is the same as embedded resource");
+        }
+
+        [Test]
+        public void GetDirectoryEntries_ReturnsEmptyEnumerable()
+        {
+            var entries = _fileProvider.GetDirectoryEntries(string.Empty, _mimeTypeProvider);
+            Assert.IsFalse(entries.Any(), "There are no entries");
         }
     }
 }
