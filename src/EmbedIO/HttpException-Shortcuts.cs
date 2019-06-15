@@ -88,18 +88,27 @@ namespace EmbedIO
         /// <summary>
         /// Returns a new instance of <see cref="HttpRedirectException" /> that, when thrown,
         /// will break the request handling control flow and redirect the client
+        /// to the specified location, using response status code 302.
+        /// </summary>
+        /// <param name="location">The redirection target.</param>
+        /// <returns>
+        /// A newly-created <see cref="HttpRedirectException" />.
+        /// </returns>
+        public static HttpRedirectException Redirect(string location)
+            => new HttpRedirectException(location);
+
+        /// <summary>
+        /// Returns a new instance of <see cref="HttpRedirectException" /> that, when thrown,
+        /// will break the request handling control flow and redirect the client
         /// to the specified location, using the specified response status code.
         /// </summary>
         /// <param name="location">The redirection target.</param>
-        /// <param name="statusCode">
-        /// <para>The status code to set on the response, in the range from 300 to 399.</para>
-        /// <para>By default, status code 302 (<c>Found</c>) is used.</para>
-        /// </param>
+        /// <param name="statusCode">The status code to set on the response, in the range from 300 to 399.</param>
         /// <returns>
         /// A newly-created <see cref="HttpRedirectException" />.
         /// </returns>
         /// <exception cref="ArgumentException"><paramref name="statusCode"/> is not in the 300-399 range.</exception>
-        public static HttpRedirectException Redirect(string location, int statusCode = (int)HttpStatusCode.Found)
+        public static HttpRedirectException Redirect(string location, int statusCode)
             => new HttpRedirectException(location, statusCode);
 
         /// <summary>
@@ -108,15 +117,12 @@ namespace EmbedIO
         /// to the specified location, using the specified response status code.
         /// </summary>
         /// <param name="location">The redirection target.</param>
-        /// <param name="statusCode">
-        /// <para>One of the redirection status codes, to be set on the response.</para>
-        /// <para>By default, <see cref="HttpStatusCode.Found"/> is used.</para>
-        /// </param>
+        /// <param name="statusCode">One of the redirection status codes, to be set on the response.</param>
         /// <returns>
         /// A newly-created <see cref="HttpRedirectException" />.
         /// </returns>
         /// <exception cref="ArgumentException"><paramref name="statusCode"/> is not a redirection status code.</exception>
-        public static HttpRedirectException Redirect(string location, HttpStatusCode statusCode = HttpStatusCode.Found)
+        public static HttpRedirectException Redirect(string location, HttpStatusCode statusCode)
             => new HttpRedirectException(location, statusCode);
     }
 }

@@ -32,12 +32,10 @@ namespace EmbedIO
         /// Initializes a new instance of the <see cref="HttpRedirectException"/> class.
         /// </summary>
         /// <param name="location">The redirection target.</param>
-        /// <param name="statusCode">
-        /// <para>One of the redirection status codes, to be set on the response.</para>
-        /// <para>By default, <see cref="HttpStatusCode.Found"/> is used.</para>
+        /// <param name="statusCode">One of the redirection status codes, to be set on the response.</para>
         /// </param>
         /// <exception cref="ArgumentException"><paramref name="statusCode"/> is not a redirection status code.</exception>
-        public HttpRedirectException(string location, HttpStatusCode statusCode = HttpStatusCode.Found)
+        public HttpRedirectException(string location, HttpStatusCode statusCode)
             : this(location, (int)statusCode)
         {
         }
