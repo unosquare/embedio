@@ -349,33 +349,32 @@ namespace EmbedIO.Files
         {
             var result = Provider.MapUrlPath(urlPath, mimeTypeProvider);
 
-            if (result != null)
+            // If urlPath maps to a file, no further searching is needed.
+            if (result?.IsFile ?? false)
+                return result;
+
+            // Look for a default document.
+            // Don't append an additional slash if the URL path is "/".
+            // The default document, if found, must be a file, not a directory.
+            if (DefaultDocument != null)
             {
-                // If urlPath maps to a file, no further searching is needed.
-                if (result.IsFile)
-                    return result;
-
-                // Default document takes precedence over directory listing.
-                if (DefaultDocument == null)
-                    return result;
-
-                // Look for a default document.
-                // Don't append an additional slash if the URL path is "/".
-                // The default document, if found, must be a file, not a directory.
                 var defaultDocumentPath = urlPath + (urlPath.Length > 1 ? "/" : string.Empty) + DefaultDocument;
                 var defaultDocumentResult = Provider.MapUrlPath(defaultDocumentPath, mimeTypeProvider);
-                return defaultDocumentResult?.IsFile ?? false
-                    ? defaultDocumentResult
-                    : result;
+                if (defaultDocumentResult?.IsFile ?? false)
+                    return defaultDocumentResult;
             }
 
-            // Bail out if there is no default extension, or if the URL path is "/".
-            if (DefaultExtension == null || urlPath.Length < 2)
-                return null;
-
+            // Try to apply default extension (but not if the URL path is "/",
+            // i.e. the only normalized, non-base URL path that ends in a slash).
             // When the default extension is applied, the result must be a file.
-            result = Provider.MapUrlPath(urlPath + DefaultExtension, mimeTypeProvider);
-            return result?.IsFile ?? false ? result : null;
+            if (DefaultExtension != null && urlPath.Length > 1)
+            {
+                var defaultExtensionResult = Provider.MapUrlPath(urlPath + DefaultExtension, mimeTypeProvider);
+                if (defaultExtensionResult?.IsFile ?? false)
+                    return defaultExtensionResult;
+            }
+
+            return result;
         }
 
         private async Task<bool> HandleResource(IHttpContext context, MappedResourceInfo info, bool sendResponseBody, CancellationToken cancellationToken)
