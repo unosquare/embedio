@@ -23,6 +23,7 @@ namespace EmbedIO.Tests
                     ws.WithWebApi("/api", m => m.RegisterController<TestLocalSessionController>());
                     ws.OnGet((ctx, path, ct) =>
                     {
+                        ctx.Session["data"] = true;
                         ctx.Response.SetEmptyResponse((int)HttpStatusCode.OK);
                         return Task.FromResult(true);
                     });
