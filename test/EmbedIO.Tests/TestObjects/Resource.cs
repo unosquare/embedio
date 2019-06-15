@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -33,6 +34,36 @@ namespace EmbedIO.Tests.TestObjects
             using (var stream = Open(path))
             {
                 return stream.Length;
+            }
+        }
+
+        public static byte[] GetBytes(string path)
+        {
+            using (var stream = Open(path))
+            {
+                var length = (int) stream.Length;
+                if (length == 0)
+                    return Array.Empty<byte>();
+
+                var buffer = new byte[length];
+                stream.Read(buffer, 0, length);
+                return buffer;
+            }
+        }
+
+        public static byte[] GetByteRange(string path, int start, int upperBound)
+        {
+            using (var stream = Open(path))
+            {
+                var length = (int) stream.Length;
+                if (start >= length || upperBound < start || upperBound >= length)
+                    return null;
+
+                var rangeLength = upperBound - start + 1;
+                var buffer = new byte[rangeLength];
+                stream.Position = start;
+                stream.Read(buffer, 0, rangeLength);
+                return buffer;
             }
         }
 
