@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.2;net472</TargetFrameworks>
-    <AssemblyName>Unosquare.Labs.EmbedIO.Samples</AssemblyName>
+    <AssemblyName>EmbedIO.Samples</AssemblyName>
     <OutputType>Exe</OutputType>
-    <PackageId>Unosquare.Labs.EmbedIO.Samples</PackageId>
+    <IsPackable>false</IsPackable>
     <LangVersion>7.3</LangVersion>
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

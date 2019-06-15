@@ -7,7 +7,7 @@
     <Authors>Unosquare</Authors>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <AssemblyName>Unosquare.Labs.EmbedIO</AssemblyName>
+    <AssemblyName>EmbedIO</AssemblyName>
     <PackageId>EmbedIO</PackageId>
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
     <DebugType>Full</DebugType>
