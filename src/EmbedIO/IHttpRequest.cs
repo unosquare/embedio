@@ -111,10 +111,5 @@ namespace EmbedIO
         /// Gets the URL referrer.
         /// </summary>
         Uri UrlReferrer { get; }
-
-        /// <summary>
-        /// Gets the request identifier of the incoming HTTP request.
-        /// </summary>
-        Guid RequestTraceIdentifier { get; }
     }
 }

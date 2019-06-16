@@ -102,8 +102,5 @@ namespace EmbedIO.Tests
 
         /// <inheritdoc />
         public Uri UrlReferrer { get; }
-
-        /// <inheritdoc />
-        public Guid RequestTraceIdentifier { get; } = Guid.NewGuid();
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Net;
 using System.Security.Principal;
 using System.Threading;
@@ -32,7 +31,7 @@ namespace EmbedIO.Net.Internal
             Request = new SystemHttpRequest(_context);
             User = _context.User;
             Response = new SystemHttpResponse(_context);
-            Id = Request.RequestTraceIdentifier.ToString("D", CultureInfo.InvariantCulture);
+            Id = UniqueIdGenerator.GetNext();
             LocalEndPoint = Request.LocalEndPoint;
             RemoteEndPoint = Request.RemoteEndPoint;
         }
@@ -44,7 +43,7 @@ namespace EmbedIO.Net.Internal
             Request = request;
             User = null;
             Response = new TestHttpResponse();
-            Id = Request.RequestTraceIdentifier.ToString("D", CultureInfo.InvariantCulture);
+            Id = UniqueIdGenerator.GetNext();
             LocalEndPoint = Request.LocalEndPoint;
             RemoteEndPoint = Request.RemoteEndPoint;
         }

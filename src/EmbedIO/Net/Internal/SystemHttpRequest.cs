@@ -24,11 +24,6 @@ namespace EmbedIO.Net.Internal
             Enum.TryParse<HttpVerbs>(_request.HttpMethod.Trim(), true, out var verb);
             HttpVerb = verb;
             Cookies = new SystemCookieCollection(_request.Cookies);
-
-            // _request.RequestTraceIdentifier is always an empty GUID on Mono.
-            // https://github.com/mono/mono/blob/c5b88ec4f323f2bdb7c7d0a595ece28dae66579c/mcs/class/System/System.Net/HttpListenerRequest.cs#L506
-            var guid = _request.RequestTraceIdentifier;
-            RequestTraceIdentifier = guid.Equals(Guid.Empty) ? Guid.NewGuid() : guid;
         }
 
         /// <inheritdoc />
@@ -96,8 +91,5 @@ namespace EmbedIO.Net.Internal
 
         /// <inheritdoc />
         public Uri UrlReferrer => _request.UrlReferrer;
-
-        /// <inheritdoc />
-        public Guid RequestTraceIdentifier { get; }
     }
 }
