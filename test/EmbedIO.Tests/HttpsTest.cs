@@ -51,12 +51,14 @@ namespace EmbedIO.Tests
         {
             if (Runtime.OS == Unosquare.Swan.OperatingSystem.Windows)
                 Assert.Ignore("Ignore Windows");
-
-            var options = new WebServerOptions()
-                .WithUrlPrefix(HttpsUrl)
-                .WithAutoLoadCertificate();
-
-            Assert.Throws<PlatformNotSupportedException>(() => new WebServer(options));
+            
+            Assert.Throws<PlatformNotSupportedException>(() => {
+                var options = new WebServerOptions()
+                    .WithUrlPrefix(HttpsUrl)
+                    .WithAutoLoadCertificate();
+                
+                var server = new WebServer(options);
+            });
         }
 
         [Test]
