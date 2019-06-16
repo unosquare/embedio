@@ -29,24 +29,24 @@ namespace EmbedIO.Net.Internal
         {
             _context = context;
 
-            Id = _context.Request.RequestTraceIdentifier.ToString("D", CultureInfo.InvariantCulture);
-            LocalEndPoint = _context.Request.LocalEndPoint;
-            RemoteEndPoint = _context.Request.RemoteEndPoint;
             Request = new SystemHttpRequest(_context);
             User = _context.User;
             Response = new SystemHttpResponse(_context);
+            Id = Request.RequestTraceIdentifier.ToString("D", CultureInfo.InvariantCulture);
+            LocalEndPoint = Request.LocalEndPoint;
+            RemoteEndPoint = Request.RemoteEndPoint;
         }
 
         public SystemHttpContext(TestHttpRequest request)
         {
             _context = null;
 
-            Id = request.RequestTraceIdentifier.ToString("D", CultureInfo.InvariantCulture);
-            LocalEndPoint = request.LocalEndPoint;
-            RemoteEndPoint = request.RemoteEndPoint;
             Request = request;
             User = null;
             Response = new TestHttpResponse();
+            Id = Request.RequestTraceIdentifier.ToString("D", CultureInfo.InvariantCulture);
+            LocalEndPoint = Request.LocalEndPoint;
+            RemoteEndPoint = Request.RemoteEndPoint;
         }
 
         public string Id { get; }
