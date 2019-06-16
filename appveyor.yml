@@ -42,7 +42,7 @@ build_script:
       cd ..
       cd ..
 test_script:
-- dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude=[NUnit3.TestAdapter]* test\EmbedIO.Tests\EmbedIO.Tests.csproj -c Release
+- dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude=[NUnit3.TestAdapter]* test/EmbedIO.Tests/EmbedIO.Tests.csproj -c Release
 - ps: |
         if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
         {
