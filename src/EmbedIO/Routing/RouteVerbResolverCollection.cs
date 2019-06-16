@@ -89,7 +89,7 @@ namespace EmbedIO.Routing
 
         /// <inheritdoc />
         protected override void OnResolverCalled(IHttpContext context, RouteVerbResolver resolver, RouteResolutionResult result)
-            => $"[{context.Id}] Route {resolver.Route} : {result}".Debug(_logSource);
+            => $"[{context.Id}] Route {resolver.Route} : {result}".Trace(_logSource);
 
         private static bool IsHandlerCompatibleMethod(MethodInfo method, out bool isSynchronous)
         {
