@@ -56,7 +56,7 @@ namespace EmbedIO.Tests
                 .WithUrlPrefix(HttpsUrl)
                 .WithAutoLoadCertificate();
 
-            Assert.Throws<InvalidOperationException>(() => new WebServer(options));
+            Assert.Throws<PlatformNotSupportedException>(() => new WebServer(options));
         }
 
         [Test]
