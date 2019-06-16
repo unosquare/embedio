@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
@@ -339,7 +338,7 @@ namespace EmbedIO
                     var sendChunked = context.Response.SendChunked;
                     var contentLength = context.Response.ContentLength64;
                     context.Close();
-                    $"[{context.Id}] \"{statusCode} {statusDescription}\" sent in {context.Age}ms ({(sendChunked ? "chunked" : contentLength.ToString(CultureInfo.InvariantCulture) + " bytes")})"
+                    $"[{context.Id}] {context.Request.HttpMethod} {context.Request.Url.AbsolutePath}: \"{statusCode} {statusDescription}\" sent in {context.Age}ms ({(sendChunked ? "chunked" : contentLength.ToString(CultureInfo.InvariantCulture) + " bytes")})"
                         .Info(LogSource);
                 }
             }
