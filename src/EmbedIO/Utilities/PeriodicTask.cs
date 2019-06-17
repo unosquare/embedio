@@ -31,7 +31,7 @@ namespace EmbedIO.Utilities
         {
             _action = Validate.NotNull(nameof(action), action);
             _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-            _interval = ValidateInterval(nameof(interval), interval);
+            _interval = ValidateInterval(interval);
 
             Task.Run(ActionLoop);
         }
@@ -52,7 +52,7 @@ namespace EmbedIO.Utilities
         public TimeSpan Interval
         {
             get => _interval;
-            set => _interval = ValidateInterval(nameof(value), value);
+            set => _interval = ValidateInterval(value);
         }
 
         /// <inheritdoc />
@@ -71,7 +71,7 @@ namespace EmbedIO.Utilities
             }
         }
 
-        private static TimeSpan ValidateInterval(string argumentName, TimeSpan value)
+        private static TimeSpan ValidateInterval(TimeSpan value)
             => value < MinInterval ? MinInterval : value;
 
         private async Task ActionLoop()

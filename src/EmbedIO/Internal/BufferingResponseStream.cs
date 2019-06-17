@@ -80,8 +80,8 @@ namespace EmbedIO.Internal
         public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
             => _buffer.WriteAsync(buffer, offset, count, cancellationToken);
 
-        private Exception ReadingNotSupported() => new NotSupportedException("This stream does not support reading.");
+        private static Exception ReadingNotSupported() => new NotSupportedException("This stream does not support reading.");
 
-        private Exception SeekingNotSupported() => new NotSupportedException("This stream does not support seeking.");
+        private static Exception SeekingNotSupported() => new NotSupportedException("This stream does not support seeking.");
     }
 }

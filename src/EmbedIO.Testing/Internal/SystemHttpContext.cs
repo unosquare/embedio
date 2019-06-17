@@ -60,7 +60,7 @@ namespace EmbedIO.Testing.Internal
             _closeCallbacks.Push(Validate.NotNull(nameof(callback), callback));
         }
 
-        public async Task<IWebSocketContext> AcceptWebSocketAsync(IEnumerable<string> requestedProtocols,
+        public Task<IWebSocketContext> AcceptWebSocketAsync(IEnumerable<string> requestedProtocols,
                                                                   string acceptedProtocol,
                                                                   int receiveBufferSize,
                                                                   TimeSpan keepAliveInterval,

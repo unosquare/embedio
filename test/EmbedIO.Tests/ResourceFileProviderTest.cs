@@ -1,5 +1,4 @@
 ﻿using EmbedIO.Files;
-using EmbedIO.Tests.TestObjects;
 using NUnit.Framework;
 using System.IO;
 using System.Linq;

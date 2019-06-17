@@ -18,19 +18,7 @@ namespace EmbedIO.Utilities
         public static T NotNull<T>(string argumentName, T value)
             where T : class
             => value ?? throw new ArgumentNullException(argumentName);
-
-        /// <summary>
-        /// Ensures that a nullable argument is not <see langword="null"/>.
-        /// </summary>
-        /// <typeparam name="T">The base type of the argument to validate.</typeparam>
-        /// <param name="argumentName">The name of the argument to validate.</param>
-        /// <param name="value">The value to validate.</param>
-        /// <returns><paramref name="value"/> if not <see langword="null"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
-        public static T? NotNull<T>(string argumentName, T? value)
-            where T : struct
-            => value ?? throw new ArgumentNullException(argumentName);
-
+        
         /// <summary>
         /// Ensures that a <see langword="string"/> argument is neither <see langword="null"/> nor the empty string.
         /// </summary>
@@ -49,28 +37,7 @@ namespace EmbedIO.Utilities
 
             return value;
         }
-
-        /// <summary>
-        /// Ensures that the value of an argument is a valid enumeration constant.
-        /// </summary>
-        /// <typeparam name="T">The type of the argument to validate.</typeparam>
-        /// <param name="argumentName">The name of the argument to validate.</param>
-        /// <param name="value">The value to validate.</param>
-        /// <returns><paramref name="value"/> if valid.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is not valid.</exception>
-        /// <remarks>
-        /// <para>Do not use this method to validate arguments whose type
-        /// has the <see cref="FlagsAttribute">Flags</see> attribute.</para>
-        /// </remarks>
-        public static T EnumValue<T>(string argumentName, T value)
-            where T : Enum
-        {
-            if (!Enum.IsDefined(typeof(T), value))
-                throw new ArgumentException("Value is not valid.", argumentName);
-
-            return value;
-        }
-
+        
         /// <summary>
         /// Ensures that a valid URL can be constructed from a <see langword="string"/> argument.
         /// </summary>

@@ -222,7 +222,7 @@ namespace EmbedIO
         /// RFC7233-compliant.</para>
         /// <para>To make clients aware that range requests are accepted for a resource, every <c>200 OK</c>
         /// (or <c>304 Not Modified</c>) response for the same resource should include an <c>Accept-Ranges</c>
-        /// header with the string c>bytes</c> as value.</para>
+        /// header with the string <c>bytes</c> as value.</para>
         /// </remarks>
         public static bool IsRangeRequest(this IHttpRequest @this, long contentLength, string entityTag, DateTime lastModifiedUtc, out long start, out long upperBound)
         {

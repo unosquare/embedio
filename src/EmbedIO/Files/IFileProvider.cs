@@ -45,8 +45,6 @@ namespace EmbedIO.Files
         /// <param name="path">The provider-specific path for the file.</param>
         /// <returns>
         /// <para>A readable <see cref="Stream"/> of the file's contents.</para>
-        /// <para>If the <see cref="CanSeekFiles"/> property is <see langword="true"/>,
-        /// the returned stream is expected to also be seekable.</para>
         /// </returns>
         Stream OpenFile(string path);
 

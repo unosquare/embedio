@@ -235,10 +235,14 @@ namespace EmbedIO.WebSockets
         {
             if (_enableConnectionWatchdog)
             {
-                _connectionWatchdog = new PeriodicTask(TimeSpan.FromSeconds(30), ct => {
-                    PurgeDisconnectedContexts();
-                    return Task.CompletedTask;
-                }, cancellationToken);
+                _connectionWatchdog = new PeriodicTask(
+                    TimeSpan.FromSeconds(30),
+                    ct =>
+                    {
+                        PurgeDisconnectedContexts();
+                        return Task.CompletedTask;
+                    },
+                    cancellationToken);
             }
         }
 
@@ -372,7 +376,7 @@ namespace EmbedIO.WebSockets
             }
         }
 
-// Disable warning - this is an instance method for API consistency.
+        // Disable warning - this is an instance method for API consistency.
 #pragma warning disable CA1822 // Member does not use any instance data and can be declared as static.
         /// <summary>
         /// Sends a binary payload.
