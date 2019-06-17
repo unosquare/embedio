@@ -4,7 +4,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 
-namespace EmbedIO.Tests
+namespace EmbedIO.Testing
 {
     /// <summary>
     /// Represents an <c>IHttpRequest</c> implementation for unit testing.

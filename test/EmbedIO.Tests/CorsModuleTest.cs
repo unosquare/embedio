@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System.Net;
 using System.Threading.Tasks;
+using EmbedIO.Testing;
 
 namespace EmbedIO.Tests
 {

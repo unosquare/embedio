@@ -1,12 +1,11 @@
-﻿using System;
+﻿using EmbedIO.Files;
+using EmbedIO.Tests.TestObjects;
+using NUnit.Framework;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
-using EmbedIO.Files;
-using EmbedIO.Tests.TestObjects;
-using NUnit.Framework;
+using EmbedIO.Testing;
 
 namespace EmbedIO.Tests
 {

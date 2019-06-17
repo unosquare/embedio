@@ -1,40 +1,35 @@
-﻿using System;
+﻿using EmbedIO.Internal;
+using EmbedIO.Sessions;
+using EmbedIO.Utilities;
+using EmbedIO.WebSockets;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbedIO.Internal;
-using EmbedIO.Sessions;
-using EmbedIO.Utilities;
-using EmbedIO.WebSockets;
-using EmbedIO.WebSockets.Internal;
 using Unosquare.Swan;
 
-namespace EmbedIO.Net.Internal
+namespace EmbedIO.Testing.Internal
 {
     internal sealed class SystemHttpContext : IHttpContextImpl
     {
-        private readonly System.Net.HttpListenerContext _context;
-
         private readonly TimeKeeper _ageKeeper = new TimeKeeper();
 
         private readonly Stack<Action<IHttpContext>> _closeCallbacks = new Stack<Action<IHttpContext>>();
 
         private bool _closed;
 
-        public SystemHttpContext(System.Net.HttpListenerContext context)
+        public SystemHttpContext(IHttpRequest request)
         {
-            _context = context;
-
-            Request = new SystemHttpRequest(_context);
-            User = _context.User;
-            Response = new SystemHttpResponse(_context);
+            Request = request;
+            User = null;
+            Response = new TestHttpResponse();
             Id = UniqueIdGenerator.GetNext();
             LocalEndPoint = Request.LocalEndPoint;
             RemoteEndPoint = Request.RemoteEndPoint;
         }
-        
+
         public string Id { get; }
 
         public long Age => _ageKeeper.ElapsedTime;
@@ -65,20 +60,12 @@ namespace EmbedIO.Net.Internal
             _closeCallbacks.Push(Validate.NotNull(nameof(callback), callback));
         }
 
-        public async Task<IWebSocketContext> AcceptWebSocketAsync(
-            IEnumerable<string> requestedProtocols,
-            string acceptedProtocol,
-            int receiveBufferSize,
-            TimeSpan keepAliveInterval,
-            CancellationToken cancellationToken)
-        {
-            var context = await _context.AcceptWebSocketAsync(
-                acceptedProtocol,
-                receiveBufferSize,
-                keepAliveInterval)
-                .ConfigureAwait(false);
-            return new WebSocketContext(this, context.SecWebSocketVersion, requestedProtocols, acceptedProtocol, new SystemWebSocket(context.WebSocket), cancellationToken);
-        }
+        public async Task<IWebSocketContext> AcceptWebSocketAsync(IEnumerable<string> requestedProtocols,
+                                                                  string acceptedProtocol,
+                                                                  int receiveBufferSize,
+                                                                  TimeSpan keepAliveInterval,
+                                                                  CancellationToken cancellationToken)
+            => throw new NotImplementedException("This HTTP context does not support the WebSocket protocol.");
 
         public void Close()
         {

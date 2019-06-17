@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using EmbedIO.Net.Internal;
+using EmbedIO.Testing.Internal;
 using EmbedIO.Utilities;
 
-namespace EmbedIO.Tests
+namespace EmbedIO.Testing
 {
     /// <summary>
     /// Represents a HTTP Client for unit testing.
@@ -33,7 +33,7 @@ namespace EmbedIO.Tests
         {
             var response = await SendAsync(new TestHttpRequest($"http://test/{url}")).ConfigureAwait(false);
 
-            return ((TestHttpResponse) response).GetBodyAsString();
+            return response.GetBodyAsString();
         }
 
         /// <summary>

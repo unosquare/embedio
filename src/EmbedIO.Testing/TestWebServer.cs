@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Unosquare.Swan;
 
-namespace EmbedIO.Tests
+namespace EmbedIO.Testing
 {
     /// <summary>
     /// Represents our tiny web server used to handle requests for testing environments.

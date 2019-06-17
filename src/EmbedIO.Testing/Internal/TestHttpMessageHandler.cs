@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
 
-namespace EmbedIO.Tests.Internal
+namespace EmbedIO.Testing.Internal
 {
     internal sealed class TestHttpMessageHandler : HttpMessageHandler
     {

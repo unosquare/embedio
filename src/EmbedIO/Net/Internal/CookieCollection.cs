@@ -12,7 +12,7 @@ namespace EmbedIO.Net.Internal
     /// <summary>
     /// Represents Cookie collection.
     /// </summary>
-    internal sealed class CookieCollection : List<Cookie>, ICookieCollection
+    public sealed class CookieCollection : List<Cookie>, ICookieCollection
     {
         /// <inheritdoc />
         public bool IsSynchronized => false;

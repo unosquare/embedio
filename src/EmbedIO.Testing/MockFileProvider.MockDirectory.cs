@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace EmbedIO.Tests.TestObjects
+namespace EmbedIO.Testing
 {
     partial class MockFileProvider
     {

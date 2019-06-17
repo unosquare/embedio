@@ -9,15 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\sub\index.html" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\index.html" />
-    <EmbeddedResource Include="Resources\sub\index.html" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="coverlet.msbuild" Version="2.6.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -31,11 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\EmbedIO\EmbedIO.csproj" />
+    <Folder Include="Issues\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Issues\" />
+    <ProjectReference Include="..\..\src\EmbedIO.Testing\EmbedIO.Testing.csproj" />
   </ItemGroup>
 
 </Project>

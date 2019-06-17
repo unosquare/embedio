@@ -2,6 +2,7 @@
 using EmbedIO.Tests.TestObjects;
 using NUnit.Framework;
 using System.Threading.Tasks;
+using EmbedIO.Testing;
 using Unosquare.Swan.Formatters;
 
 namespace EmbedIO.Tests

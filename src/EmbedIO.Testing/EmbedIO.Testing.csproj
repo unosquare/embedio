@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Version>3.0.0</Version>
+    <AssemblyTitle>EmbedIO Web Server Testing</AssemblyTitle>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\index.html" />
+    <None Remove="Resources\sub\index.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\index.html" />
+    <EmbeddedResource Include="Resources\sub\index.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EmbedIO\EmbedIO.csproj" />
+  </ItemGroup>
+
+</Project>

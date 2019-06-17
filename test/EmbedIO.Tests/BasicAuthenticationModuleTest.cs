@@ -3,6 +3,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using EmbedIO.Authentication;
+using EmbedIO.Testing;
 using EmbedIO.Utilities;
 using NUnit.Framework;
 

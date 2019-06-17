@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using EmbedIO.Testing;
 using EmbedIO.Tests.TestObjects;
 using NUnit.Framework;
 using Unosquare.Swan;

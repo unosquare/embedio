@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 using EmbedIO.Files;
 
-namespace EmbedIO.Tests.TestObjects
+namespace EmbedIO.Testing
 {
     public sealed partial class MockFileProvider : IFileProvider
     {
@@ -44,7 +44,7 @@ namespace EmbedIO.Tests.TestObjects
             if (string.IsNullOrEmpty(urlPath))
                 return null;
 
-            if (!urlPath.StartsWith('/'))
+            if (!urlPath.StartsWith("/"))
                 return null;
 
             var path = urlPath.Substring(1);
@@ -118,9 +118,6 @@ namespace EmbedIO.Tests.TestObjects
             return default;
         }
 
-        private string AppendNameToPath(string path, string name)
-            => string.IsNullOrEmpty(path) ? name : $"{path}/{name}";
-
         private MappedResourceInfo GetResourceInfo(string path, string name, MockDirectoryEntry entry, IMimeTypeProvider mimeTypeProvider)
         {
             switch (entry)
@@ -138,5 +135,8 @@ namespace EmbedIO.Tests.TestObjects
                     return null;
             }
         }
+        
+        private static string AppendNameToPath(string path, string name)
+            => string.IsNullOrEmpty(path) ? name : $"{path}/{name}";
     }
 }

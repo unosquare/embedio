@@ -1,4 +1,4 @@
-﻿namespace EmbedIO.Tests.TestObjects
+﻿namespace EmbedIO.Testing
 {
     public class MockMimeTypeProvider : IMimeTypeProvider
     {

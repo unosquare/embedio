@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace EmbedIO.Tests.TestObjects
+namespace EmbedIO.Testing
 {
     public static class Resource
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EmbedIO.Tests.TestObjects
+namespace EmbedIO.Testing
 {
     partial class MockFileProvider
     {
