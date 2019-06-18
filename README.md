@@ -11,15 +11,15 @@
 
 *:star: Please star this project if you find it useful!*
 
-**This README is for EmbedIO v2.x. Click [here](https://github.com/unosquare/embedio/tree/v1.X) if you are still sing EmbedIO v1.x.**
+**This README is for EmbedIO v3.x. Click [here](https://github.com/unosquare/embedio/tree/v2.X) if you are still sing EmbedIO v2.x.**
 
 - [Overview](#overview)
-    - [EmbedIO 2.0 - What's new](#embedio-20---whats-new)
+    - [EmbedIO 3.0 - What's new](#embedio-30---whats-new)
     - [Some usage scenarios](#some-usage-scenarios)
 - [Installation](#installation)
 - [Usage](#usage)
     - [WebServer Setup](#webserver-setup)
-    - [IHttpContext Extension Methods](#ihttpcontext-extension-methods)
+    - [Extension Methods](#extension-methods)
     - [Easy Routes](#easy-routes)
 - [Support for SSL](#support-for-ssl)
 - [Examples](#examples)
@@ -44,31 +44,16 @@ A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework
 * Handle sessions with the built-in LocalSessionWebModule
 * WebSockets support
 * CORS support. Origin, Header and Method validation with OPTIONS preflight
-* Supports HTTP 206 Partial Content
+* HTTP 206 Partial Content support
 * Support [Xamarin Forms](https://github.com/unosquare/embedio/tree/master/src/EmbedIO.Forms.Sample)
 * And many more options in the same package
 
-
-Some notes regarding WebSocket and runtimes support:
-
-| Runtime | HTTP implementation | WebSocket support | Notes |
-| --- | --- | --- | --- |
-| NET462 | *Unosquare* and Microsoft | Yes | Support Win7+ OS, Linux and macOS.  |
-| NETSTANDARD20 | Unosquare and *Microsoft* | Yes | Support Windows, Linux and macOS using native System.Net library. |
-| NETSTANDARD13 | *Unosquare* | Yes | Support Windows, Linux and macOS using native System.Net library |
-
-### EmbedIO 2.0 - What's new
+### EmbedIO 3.0 - What's new
 
 #### Breaking changes
-* `WebApiController` is renewed. Reduce the methods overhead removing the WebServer and Context arguments. See examples below.
-* `RoutingStrategy.Regex` is the default routing scheme.
-
-#### Additional changes
-* `IHttpListener` is runtime/platform independent, you can choose Unosquare `HttpListener` implementation with NET472 or NETSTANDARD20. This separation of implementations brings new access to interfaces from common Http objects like `IHttpRequest`, `IHttpContext` and more.
-* `IWebServer` is a new interface to create custom web server implementation, like a Test Web Server where all the operations are in-memory to speed up unit testing. Similar to [TestServer from OWIN](https://msdn.microsoft.com/en-us/library/microsoft.owin.testing.testserver(v=vs.113).aspx)
-* General improvements in how the Unosquare `HttpListner` is working and code clean-up.
-
-*Note* - We encourage to upgrade to the newest EmbedIO version. Branch version 1.X will no longer be maintained, and issues will be tested against 2.X and resolved just there.
+* *TODO*
+* New Assembly name `EmbedIO.dll`.
+* New Assembly with unit Testing support classes and `TestWebServer`: `EmbedIO.Testing.dll`
 
 ### Some usage scenarios:
 
@@ -99,7 +84,7 @@ PM> Install-Package EmbedIO
 
 ### WebServer Setup
 
-### IHttpContext Extension Methods
+### Extension Methods
 
 By adding the namespace `EmbedIO` to your class, you can use some helpful extension methods for `IHttpContext`, `IHttpResponse` and `IHttpRequest`. These methods can be used in any Web module (like [Fallback Module](https://unosquare.github.io/embedio/api/EmbedIO.Modules.FallbackModule.html)) or inside a [WebAPI Controller](https://unosquare.github.io/embedio/api/EmbedIO.Modules.WebApiController.html) method.
 
