@@ -10,7 +10,7 @@ namespace EmbedIO.Files
     /// <seealso cref="FileRequestHandlerCallback"/>
     public static class FileRequestHandler
     {
-#pragma warning disable CA1801 // Unused parameters
+#pragma warning disable CA1801 // Unused parameters - Must respect FileRequestHandlerCallback signature.
         /// <summary>
         /// <para>Unconditionally passes a request down the module chain.</para>
         /// </summary>

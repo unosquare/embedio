@@ -3,12 +3,17 @@
 namespace EmbedIO.Files
 {
     /// <summary>
-    /// Static class to common Directory Listers.
+    /// Provides standard directory listers for <see cref="FileModule"/>.
     /// </summary>
+    /// <seealso cref="IDirectoryLister"/>
     public static class DirectoryLister
     {
         /// <summary>
-        /// Gets the Directory Lister with HTML output.
+        /// <para>Gets an <see cref="IDirectoryLister"/> interface
+        /// that produces a HTML listing of a directory.</para>
+        /// <para>The output of the returned directory lister
+        /// is the same as a directory listing obtained
+        /// by EmbedIO version 2.</para>
         /// </summary>
         public static IDirectoryLister Html => HtmlDirectoryLister.Instance;
     }

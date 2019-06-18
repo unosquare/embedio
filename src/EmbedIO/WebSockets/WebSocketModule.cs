@@ -376,8 +376,7 @@ namespace EmbedIO.WebSockets
             }
         }
 
-        // Disable warning - this is an instance method for API consistency.
-#pragma warning disable CA1822 // Member does not use any instance data and can be declared as static.
+#pragma warning disable CA1822 // Member can be declared as static - It is an instance method for API consistency.
         /// <summary>
         /// Sends a binary payload.
         /// </summary>
