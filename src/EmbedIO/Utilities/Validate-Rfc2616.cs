@@ -27,8 +27,8 @@ namespace EmbedIO.Utilities
         /// <c>-</c>, <c>.</c>, <c>^</c>, <c>_</c>, <c>`</c>, <c>|</c>, <c>~</c>.</description></item>
         /// </list>
         /// </summary>
-        /// <param name="argumentName">Name of the argument.</param>
-        /// <param name="value">The value.</param>
+        /// <param name="argumentName">The name of the argument to validate.</param>
+        /// <param name="value">The value to validate.</param>
         /// <returns><paramref name="value"/>, if it is a valid token.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">

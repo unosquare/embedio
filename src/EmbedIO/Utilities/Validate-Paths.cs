@@ -14,7 +14,9 @@ namespace EmbedIO.Utilities
         /// </summary>
         /// <param name="argumentName">The name of the argument to validate.</param>
         /// <param name="value">The value to validate.</param>
-        /// <param name="isBasePath">If set to <see langword="true"/><c>true</c> [is base path].</param>
+        /// <param name="isBasePath">If set to <see langword="true"/><c>true</c>, the returned path
+        /// is ensured to end in a slash (<c>/</c>) character; otherwise, the returned path is
+        /// ensured to not end in a slash character unless it is <c>"/"</c>.</param>
         /// <returns>The normalized URL path.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">
@@ -22,6 +24,7 @@ namespace EmbedIO.Utilities
         /// <para>- or -</para>
         /// <para><paramref name="value"/> does not start with a slash (<c>/</c>) character.</para>
         /// </exception>
+        /// <seealso cref="Utilities.UrlPath.Normalize"/>
         public static string UrlPath(string argumentName, string value, bool isBasePath)
         {
             var exception = Utilities.UrlPath.ValidateInternal(argumentName, value);
