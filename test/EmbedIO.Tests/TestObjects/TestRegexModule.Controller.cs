@@ -18,11 +18,11 @@ namespace EmbedIO.Tests.TestObjects
 
             [Route(HttpVerbs.Any, "/data/{id}")]
             public Task<bool> Id(string id)
-                => HttpContext.SendStringAsync(id, MimeTypes.PlainTextType, Encoding.UTF8, CancellationToken);
+                => HttpContext.SendStringAsync(id, MimeType.PlainText, Encoding.UTF8, CancellationToken);
 
             [Route(HttpVerbs.Any, "/data/{id}/{time?}")]
             public Task<bool> Time(string id, string time)
-                => HttpContext.SendStringAsync(time, MimeTypes.PlainTextType, Encoding.UTF8, CancellationToken);
+                => HttpContext.SendStringAsync(time, MimeType.PlainText, Encoding.UTF8, CancellationToken);
 
             [Route(HttpVerbs.Any, "/empty")]
             public bool Empty()

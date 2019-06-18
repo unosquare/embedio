@@ -29,7 +29,7 @@ namespace EmbedIO.Tests
                     var payloadJson = new StringContent(
                         Json.Serialize(model),
                         System.Text.Encoding.UTF8,
-                        MimeTypes.JsonType);
+                        MimeType.Json);
 
                     var response = await client.PostAsync(WebServerUrl + "/api/regex", payloadJson);
 

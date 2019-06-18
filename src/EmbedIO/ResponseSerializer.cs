@@ -26,7 +26,7 @@ namespace EmbedIO
         /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         public static async Task Json(IHttpContext context, object data, CancellationToken cancellationToken)
         {
-            context.Response.ContentType = MimeTypes.JsonType;
+            context.Response.ContentType = MimeType.Json;
             using (var text = context.OpenResponseText(Encoding.UTF8))
             {
                 await text.WriteAsync(Unosquare.Swan.Formatters.Json.Serialize(data, false)).ConfigureAwait(false);

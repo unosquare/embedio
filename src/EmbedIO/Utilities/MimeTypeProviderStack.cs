@@ -35,7 +35,7 @@ namespace EmbedIO.Utilities
                 .FirstOrDefault(m => m != null);
 
             if (result == null)
-                MimeTypes.Associations.TryGetValue(extension, out result);
+                MimeType.Associations.TryGetValue(extension, out result);
 
             return result;
         }

@@ -31,7 +31,7 @@ namespace EmbedIO.Tests
 
             using (var webServer = new WebServer(options))
             {
-                webServer.OnAny((ctx, path, ct) => ctx.SendStringAsync(DefaultMessage, MimeTypes.PlainTextType, Encoding.UTF8, ct));
+                webServer.OnAny((ctx, path, ct) => ctx.SendStringAsync(DefaultMessage, MimeType.PlainText, Encoding.UTF8, ct));
 
                 var dump = webServer.RunAsync();
 

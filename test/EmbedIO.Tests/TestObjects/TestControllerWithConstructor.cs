@@ -20,7 +20,7 @@ namespace EmbedIO.Tests.TestObjects
         public object GetName()
         {
             Response.DisableCaching();
-            Response.ContentType = MimeTypes.PlainTextType;
+            Response.ContentType = MimeType.PlainText;
             return WebName;
         }
 
@@ -28,7 +28,7 @@ namespace EmbedIO.Tests.TestObjects
         public object GetNamePublic()
         {
             Response.Headers.Set("Cache-Control", "public");
-            Response.ContentType = MimeTypes.PlainTextType;
+            Response.ContentType = MimeType.PlainText;
             return WebName;
         }
 

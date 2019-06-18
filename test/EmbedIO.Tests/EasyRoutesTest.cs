@@ -18,7 +18,7 @@ namespace EmbedIO.Tests
             using (var server = new TestWebServer())
             {
                 server
-                    .OnAny((ctx, path, ct) => ctx.SendStringAsync(Ok, MimeTypes.PlainTextType, Encoding.UTF8, ct));
+                    .OnAny((ctx, path, ct) => ctx.SendStringAsync(Ok, MimeType.PlainText, Encoding.UTF8, ct));
 
                 server.RunAsync();
 
@@ -32,7 +32,7 @@ namespace EmbedIO.Tests
             using (var server = new TestWebServer())
             {
                 server
-                    .OnGet((ctx, path, ct) => ctx.SendStringAsync(Ok, MimeTypes.PlainTextType, Encoding.UTF8, ct));
+                    .OnGet((ctx, path, ct) => ctx.SendStringAsync(Ok, MimeType.PlainText, Encoding.UTF8, ct));
 
                 server.RunAsync();
 
@@ -46,7 +46,7 @@ namespace EmbedIO.Tests
             using (var server = new TestWebServer())
             {
                 server
-                    .OnPost((ctx, path, ct) => ctx.SendStringAsync(Ok, MimeTypes.PlainTextType, Encoding.UTF8, ct));
+                    .OnPost((ctx, path, ct) => ctx.SendStringAsync(Ok, MimeType.PlainText, Encoding.UTF8, ct));
 
                 server.RunAsync();
 
@@ -62,7 +62,7 @@ namespace EmbedIO.Tests
             using (var server = new TestWebServer())
             {
                 server
-                    .OnPut((ctx, path, ct) => ctx.SendStringAsync(Ok, MimeTypes.PlainTextType, Encoding.UTF8, ct));
+                    .OnPut((ctx, path, ct) => ctx.SendStringAsync(Ok, MimeType.PlainText, Encoding.UTF8, ct));
 
                 server.RunAsync();
 
@@ -78,7 +78,7 @@ namespace EmbedIO.Tests
             using (var server = new TestWebServer())
             {
                 server
-                    .OnHead((ctx, path, ct) => ctx.SendStringAsync(Ok, MimeTypes.PlainTextType, Encoding.UTF8, ct));
+                    .OnHead((ctx, path, ct) => ctx.SendStringAsync(Ok, MimeType.PlainText, Encoding.UTF8, ct));
 
                 server.RunAsync();
 
@@ -94,7 +94,7 @@ namespace EmbedIO.Tests
             using (var server = new TestWebServer())
             {
                 server
-                    .OnDelete((ctx, path, ct) => ctx.SendStringAsync(Ok, MimeTypes.PlainTextType, Encoding.UTF8, ct));
+                    .OnDelete((ctx, path, ct) => ctx.SendStringAsync(Ok, MimeType.PlainText, Encoding.UTF8, ct));
 
                 server.RunAsync();
 
@@ -110,7 +110,7 @@ namespace EmbedIO.Tests
             using (var server = new TestWebServer())
             {
                 server
-                    .OnOptions((ctx, path, ct) => ctx.SendStringAsync(Ok, MimeTypes.PlainTextType, Encoding.UTF8, ct));
+                    .OnOptions((ctx, path, ct) => ctx.SendStringAsync(Ok, MimeType.PlainText, Encoding.UTF8, ct));
 
                 server.RunAsync();
 
@@ -126,7 +126,7 @@ namespace EmbedIO.Tests
             using (var server = new TestWebServer())
             {
                 server
-                    .OnPatch((ctx, path, ct) => ctx.SendStringAsync(Ok, MimeTypes.PlainTextType, Encoding.UTF8, ct));
+                    .OnPatch((ctx, path, ct) => ctx.SendStringAsync(Ok, MimeType.PlainText, Encoding.UTF8, ct));
 
                 server.RunAsync();
 

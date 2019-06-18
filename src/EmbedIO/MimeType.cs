@@ -7,7 +7,7 @@ namespace EmbedIO
     /// Provides constants for commonly-used MIME types and association between file extensions and MIME types.
     /// </summary>
     /// <seealso cref="Associations"/>
-    public static class MimeTypes
+    public static class MimeType
     {
         /// <summary>
         /// The default MIME type for data whose type is unknown.
@@ -17,22 +17,22 @@ namespace EmbedIO
         /// <summary>
         /// The MIME type for plain text.
         /// </summary>
-        public const string PlainTextType = "text/plain";
+        public const string PlainText = "text/plain";
 
         /// <summary>
         /// The MIME type for HTML.
         /// </summary>
-        public const string HtmlType = "text/html";
+        public const string Html = "text/html";
 
         /// <summary>
         /// The MIME type for JSON.
         /// </summary>
-        public const string JsonType = "application/json";
+        public const string Json = "application/json";
 
         /// <summary>
         /// The MIME type for URL-encoded HTML forms.
         /// </summary>
-        internal const string UrlEncodedFormType = "application/x-www-form-urlencoded";
+        internal const string UrlEncodedForm = "application/x-www-form-urlencoded";
 
         // -------------------------------------------------------------------------------------------------
         //

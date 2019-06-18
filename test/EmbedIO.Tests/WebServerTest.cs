@@ -171,14 +171,14 @@ namespace EmbedIO.Tests
                     using (var client = new HttpClient())
                     {
                         client.DefaultRequestHeaders.Accept
-                            .Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MimeTypes.JsonType));
+                            .Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MimeType.Json));
 
                         var request = new HttpRequestMessage(HttpMethod.Post, url)
                         {
                             Content = new StringContent(
                                 "POST DATA",
                                 Encoding.GetEncoding(encodeName),
-                                MimeTypes.JsonType),
+                                MimeType.Json),
                         };
 
                         using (var response = await client.SendAsync(request))

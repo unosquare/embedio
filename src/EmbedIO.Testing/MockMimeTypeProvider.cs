@@ -2,6 +2,6 @@
 {
     public class MockMimeTypeProvider : IMimeTypeProvider
     {
-        public string GetMimeType(string extension) => MimeTypes.Default;
+        public string GetMimeType(string extension) => MimeType.Default;
     }
 }

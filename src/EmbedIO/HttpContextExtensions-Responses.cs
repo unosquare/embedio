@@ -111,7 +111,7 @@ namespace EmbedIO
 
             @this.Response.StatusCode = statusCode;
             @this.Response.StatusDescription = statusDescription;
-            @this.Response.ContentType = MimeTypes.HtmlType;
+            @this.Response.ContentType = MimeType.Html;
             using (var text = @this.OpenResponseText(Encoding.UTF8))
             {
                 text.Write(StandardHtmlHeaderFormat, statusCode, statusDescription, Encoding.UTF8.WebName);

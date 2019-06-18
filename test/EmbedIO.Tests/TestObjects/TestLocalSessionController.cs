@@ -27,25 +27,25 @@ namespace EmbedIO.Tests.TestObjects
             var cookie = new System.Net.Cookie(CookieName, CookieName);
             Response.Cookies.Add(cookie);
 
-            return HttpContext.SendStringAsync(Response.Cookies[CookieName].Value, MimeTypes.PlainTextType, Encoding.UTF8, CancellationToken);
+            return HttpContext.SendStringAsync(Response.Cookies[CookieName].Value, MimeType.PlainText, Encoding.UTF8, CancellationToken);
         }
 
         [Route(HttpVerbs.Get, "/deletesession")]
         public Task<bool> DeleteSessionC()
         {
             HttpContext.Session.Delete();
-            return HttpContext.SendStringAsync("Deleted", MimeTypes.PlainTextType, Encoding.UTF8, CancellationToken);
+            return HttpContext.SendStringAsync("Deleted", MimeType.PlainText, Encoding.UTF8, CancellationToken);
         }
 
         [Route(HttpVerbs.Get, "/putdata")]
         public Task<bool> PutDataSession()
         {
             HttpContext.Session["sessionData"] = MyData;
-            return HttpContext.SendStringAsync(HttpContext.Session["sessionData"].ToString(), MimeTypes.PlainTextType, Encoding.UTF8, CancellationToken);
+            return HttpContext.SendStringAsync(HttpContext.Session["sessionData"].ToString(), MimeType.PlainText, Encoding.UTF8, CancellationToken);
         }
 
         [Route(HttpVerbs.Get, "/getdata")]
         public Task<bool> GetDataSession()
-            => HttpContext.SendStringAsync(HttpContext.Session["sessionData"]?.ToString() ?? string.Empty, MimeTypes.PlainTextType, Encoding.UTF8, CancellationToken);
+            => HttpContext.SendStringAsync(HttpContext.Session["sessionData"]?.ToString() ?? string.Empty, MimeType.PlainText, Encoding.UTF8, CancellationToken);
     }
 }

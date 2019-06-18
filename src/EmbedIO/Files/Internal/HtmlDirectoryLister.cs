@@ -22,7 +22,7 @@ namespace EmbedIO.Files.Internal
 
         public static IDirectoryLister Instance => LazyInstance.Value;
 
-        public string ContentType { get; } = MimeTypes.HtmlType + "; encoding=" + Encoding.UTF8.WebName;
+        public string ContentType { get; } = MimeType.Html + "; encoding=" + Encoding.UTF8.WebName;
 
         public async Task ListDirectoryAsync(
             MappedResourceInfo info,
