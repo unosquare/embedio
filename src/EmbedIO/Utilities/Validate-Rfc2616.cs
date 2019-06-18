@@ -40,11 +40,15 @@ namespace EmbedIO.Utilities
         {
             value = NotNullOrEmpty(argumentName, value);
 
-            if (value.Any(c => c < '\x21' || c > '\x7E' || Array.BinarySearch(ValidRfc2616TokenChars, c) < 0))
+            if (!IsRfc2616Token(value))
                 throw new ArgumentException("Token contains one or more invalid characters.", argumentName);
 
             return value;
         }
+
+        internal static bool IsRfc2616Token(string value)
+            => !string.IsNullOrEmpty(value)
+            && !value.Any(c => c < '\x21' || c > '\x7E' || Array.BinarySearch(ValidRfc2616TokenChars, c) < 0);
 
         private static char[] GetValidRfc2616TokenChars()
             => "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&'*+-.^_`|~"
