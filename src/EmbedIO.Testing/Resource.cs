@@ -8,7 +8,7 @@ namespace EmbedIO.Testing
 {
     public static class Resource
     {
-        public const string Prefix = "EmbedIO.Tests.Resources.";
+        public static readonly string Prefix = typeof(Resource).Namespace + ".Resources";
 
         private static readonly Assembly Assembly;
 
