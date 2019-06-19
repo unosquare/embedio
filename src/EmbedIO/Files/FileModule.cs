@@ -243,6 +243,15 @@ namespace EmbedIO.Files
             => _mimeTypeCustomizer.PreferCompression(mimeType, preferCompression);
 
         /// <summary>
+        /// Clears the part of <see cref="Cache"/> used by this module.
+        /// </summary>
+        public void ClearCache()
+        {
+            _mappingCache?.Clear();
+            _cacheSection?.Clear();
+        }
+
+        /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources;
