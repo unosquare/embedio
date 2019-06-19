@@ -212,7 +212,7 @@ namespace EmbedIO.WebApi
                     nameof(controllerType));
             }
 
-            RegisterControllerInternal(controllerType, (ctx, ct) => Expression.New(constructor, ctx, ct));
+            RegisterControllerTypeCore(controllerType, (ctx, ct) => Expression.New(constructor, ctx, ct));
         }
 
         /// <summary>
@@ -271,7 +271,7 @@ namespace EmbedIO.WebApi
             if (!controllerType.IsAssignableFrom(factory.Method.ReturnType))
                 throw new ArgumentException("Factory method has an incorrect return type.", nameof(factory));
 
-            RegisterControllerInternal(controllerType, (ctx, ct) => Expression.Call(
+            RegisterControllerTypeCore(controllerType, (ctx, ct) => Expression.Call(
                 factory.Target == null ? null : Expression.Constant(factory.Target),
                 factory.Method,
                 ctx, 
@@ -519,7 +519,7 @@ namespace EmbedIO.WebApi
             return value;
         }
 
-        private void RegisterControllerInternal(Type controllerType, Func<Expression, Expression, Expression> buildFactoryExpression)
+        private void RegisterControllerTypeCore(Type controllerType, Func<Expression, Expression, Expression> buildFactoryExpression)
         {
             bool IsValidReturnType(Type type)
                 => type == typeof(bool)
