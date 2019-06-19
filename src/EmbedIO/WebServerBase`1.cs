@@ -22,7 +22,7 @@ namespace EmbedIO
     {
         private readonly WebModuleCollection _modules;
 
-        private readonly Dictionary<string, string> _customMimeTypes = new Dictionary<string, string>();
+        private readonly MimeTypeCustomizer _mimeTypeCustomizer = new MimeTypeCustomizer();
 
         private ExceptionHandlerCallback _onUnhandledException = ExceptionHandler.Default;
 
@@ -143,29 +143,18 @@ namespace EmbedIO
         protected string LogSource { get; }
 
         string IMimeTypeProvider.GetMimeType(string extension)
-        {
-            _customMimeTypes.TryGetValue(Validate.NotNull(nameof(extension), extension), out var result);
-            return result;
-        }
+            => _mimeTypeCustomizer.GetMimeType(extension);
+
+        bool IMimeTypeProvider.TryDetermineCompression(string mimeType, out bool preferCompression)
+            => _mimeTypeCustomizer.TryDetermineCompression(mimeType, out preferCompression);
 
         /// <inheritdoc />
-        /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="extension"/>is <see langword="null"/>.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="mimeType"/>is <see langword="null"/>.</para>
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// <para><paramref name="extension"/>is the empty string.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="mimeType"/>is the empty string.</para>
-        /// </exception>
         public void AddCustomMimeType(string extension, string mimeType)
-        {
-            EnsureConfigurationNotLocked();
-            _customMimeTypes[Validate.NotNullOrEmpty(nameof(extension), extension)]
-                = Validate.NotNullOrEmpty(nameof(mimeType), mimeType);
-        }
+            => _mimeTypeCustomizer.AddCustomMimeType(extension, mimeType);
+
+        /// <inheritdoc />
+        public void PreferCompression(string mimeType, bool preferCompression)
+            => _mimeTypeCustomizer.PreferCompression(mimeType, preferCompression);
 
         /// <inheritdoc />
         /// <exception cref="InvalidOperationException">The method was already called.</exception>
@@ -213,6 +202,7 @@ namespace EmbedIO
         {
             base.OnBeforeLockConfiguration();
 
+            _mimeTypeCustomizer.Lock();
             _modules.Lock();
         }
 

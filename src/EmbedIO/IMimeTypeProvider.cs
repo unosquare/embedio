@@ -3,7 +3,7 @@
 namespace EmbedIO
 {
     /// <summary>
-    /// Represents an object that can associate a file extension to a MIME type.
+    /// Represents an object that contains information on specific MIME types and media ranges.
     /// </summary>
     public interface IMimeTypeProvider
     {
@@ -15,5 +15,17 @@ namespace EmbedIO
         /// otherwise, <see langword="null"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="extension"/>is <see langword="null"/>.</exception>
         string GetMimeType(string extension);
+
+        /// <summary>
+        /// Attempts to determine whether compression should be preferred
+        /// when negotiating content encoding for a response with the specified content type.
+        /// </summary>
+        /// <param name="mimeType">The MIME type to check.</param>
+        /// <param name="preferCompression">When this method returns <see langword="true"/>,
+        /// a value indicating whether compression should be preferred.
+        /// This parameter is passed uninitialized.</param>
+        /// <returns><see langword="true"/> if a value is found for <paramref name="mimeType"/>;
+        /// otherwise, <see langword="false"/>.</returns>
+        bool TryDetermineCompression(string mimeType, out bool preferCompression);
     }
 }

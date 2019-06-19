@@ -24,7 +24,7 @@ namespace EmbedIO.Files
         public const string DefaultDocumentName = "index.html";
 
         private readonly string _cacheSectionName = UniqueIdGenerator.GetNext();
-        private readonly Dictionary<string, string> _customMimeTypes = new Dictionary<string, string>();
+        private readonly MimeTypeCustomizer _mimeTypeCustomizer = new MimeTypeCustomizer();
         private readonly ConcurrentDictionary<string, MappedResourceInfo> _mappingCache;
 
         private FileCache _cache = FileCache.Default;
@@ -229,29 +229,18 @@ namespace EmbedIO.Files
         }
 
         string IMimeTypeProvider.GetMimeType(string extension)
-        {
-            _customMimeTypes.TryGetValue(Validate.NotNull(nameof(extension), extension), out var result);
-            return result;
-        }
+            => _mimeTypeCustomizer.GetMimeType(extension);
+
+        bool IMimeTypeProvider.TryDetermineCompression(string mimeType, out bool preferCompression)
+            => _mimeTypeCustomizer.TryDetermineCompression(mimeType, out preferCompression);
 
         /// <inheritdoc />
-        /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="extension"/>is <see langword="null"/>.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="mimeType"/>is <see langword="null"/>.</para>
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// <para><paramref name="extension"/>is the empty string.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="mimeType"/>is the empty string.</para>
-        /// </exception>
         public void AddCustomMimeType(string extension, string mimeType)
-        {
-            EnsureConfigurationNotLocked();
-            _customMimeTypes[Validate.NotNullOrEmpty(nameof(extension), extension)]
-                = Validate.NotNullOrEmpty(nameof(mimeType), mimeType);
-        }
+            => _mimeTypeCustomizer.AddCustomMimeType(extension, mimeType);
+
+        /// <inheritdoc />
+        public void PreferCompression(string mimeType, bool preferCompression)
+            => _mimeTypeCustomizer.PreferCompression(mimeType, preferCompression);
 
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
@@ -268,6 +257,14 @@ namespace EmbedIO.Files
                 disposableProvider.Dispose();
 
             Cache.RemoveSection(_cacheSectionName);
+        }
+
+        /// <inheritdoc />
+        protected override void OnBeforeLockConfiguration()
+        {
+            base.OnBeforeLockConfiguration();
+
+            _mimeTypeCustomizer.Lock();
         }
 
         /// <inheritdoc />
@@ -403,6 +400,8 @@ namespace EmbedIO.Files
              * MaxFileSizeKb of our Cache.
              */
 
+            var contentType = info.ContentType ?? DirectoryLister?.ContentType ?? MimeType.Default;
+
             // Next we're going to apply proactive negotiation
             // to determine whether we agree with the client upon the compression
             // (or lack of it) to use for the resource.
@@ -411,10 +410,10 @@ namespace EmbedIO.Files
             // is not really standardized and could lead to a world of pain.
             // Thus, if there is a Range header in the request, try to negotiate for no compression.
             // Later, if there is compression anyway, we will ignore the Range header.
-            if (!context.Request.TryNegotiateContentEncoding(
-                context.Request.Headers.Get(HttpHeaderNames.Range) == null,
-                out var compressionMethod,
-                out var setCompressionInResponse))
+            if (!context.TryDetermineCompression(contentType, out var preferCompression))
+                preferCompression = true;
+            preferCompression &= context.Request.Headers.Get(HttpHeaderNames.Range) == null;
+            if (!context.Request.TryNegotiateContentEncoding(preferCompression, out var compressionMethod, out var setCompressionInResponse))
             {
                 // If negotiation failed, the returned callback will do the right thing.
                 setCompressionInResponse(context.Response);
@@ -431,7 +430,7 @@ namespace EmbedIO.Files
              || (!ifNoneMatchExists && context.Request.CheckIfModifiedSince(info.LastModifiedUtc, out _)))
             {
                 context.Response.StatusCode = (int)HttpStatusCode.NotModified;
-                PreparePositiveResponse(context.Response, info, entityTag, setCompressionInResponse);
+                PreparePositiveResponse(context.Response, info, contentType, entityTag, setCompressionInResponse);
                 return true;
             }
 
@@ -475,13 +474,13 @@ namespace EmbedIO.Files
                 // Prepare a "206 Partial Content" response.
                 partialLength = partialUpperBound - partialStart + 1;
                 context.Response.StatusCode = (int)HttpStatusCode.PartialContent;
-                PreparePositiveResponse(context.Response, info, entityTag, setCompressionInResponse);
+                PreparePositiveResponse(context.Response, info, contentType, entityTag, setCompressionInResponse);
                 context.Response.Headers.Set(HttpHeaderNames.ContentRange, $"bytes {partialStart}-{partialUpperBound}/{contentLength}");
             }
             else
             {
                 // Prepare a "200 OK" response.
-                PreparePositiveResponse(context.Response, info, entityTag, setCompressionInResponse);
+                PreparePositiveResponse(context.Response, info, contentType, entityTag, setCompressionInResponse);
             }
 
             // If it's a HEAD request, we're done.
@@ -615,10 +614,10 @@ namespace EmbedIO.Files
 
         // Prepares response headers for a "200 OK" or "304 Not Modified" response.
         // RFC7232, Section 4.1
-        private void PreparePositiveResponse(IHttpResponse response, MappedResourceInfo info, string entityTag, Action<IHttpResponse> setCompression)
+        private void PreparePositiveResponse(IHttpResponse response, MappedResourceInfo info, string contentType, string entityTag, Action<IHttpResponse> setCompression)
         {
             setCompression(response);
-            response.ContentType = info.ContentType ?? DirectoryLister.ContentType;
+            response.ContentType = contentType;
             response.Headers.Set(HttpHeaderNames.ETag, entityTag);
             response.Headers.Set(HttpHeaderNames.LastModified, info.LastModifiedUtc.ToRfc1123String());
             response.Headers.Set(HttpHeaderNames.CacheControl, "max-age=0, must-revalidate");

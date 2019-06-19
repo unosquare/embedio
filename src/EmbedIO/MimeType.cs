@@ -54,24 +54,24 @@ namespace EmbedIO
             if (slashPos < 0)
                 return false;
 
-            var isWildcardType = false;
-            var type = value.Substring(0, slashPos);
-            if (type == "*")
+            var isWildcardSubtype = false;
+            var subtype = value.Substring(slashPos + 1);
+            if (subtype == "*")
             {
                 if (!acceptMediaRange)
                     return false;
 
-                isWildcardType = true;
+                isWildcardSubtype = true;
             }
-            else if (!Validate.IsRfc2616Token(type))
+            else if (!Validate.IsRfc2616Token(subtype))
             {
                 return false;
             }
 
-            var subtype = value.Substring(slashPos + 1);
-            return subtype == "*"
-                ? acceptMediaRange && isWildcardType
-                : Validate.IsRfc2616Token(subtype);
+            var type = value.Substring(0, slashPos);
+            return type == "*"
+                ? acceptMediaRange && isWildcardSubtype
+                : Validate.IsRfc2616Token(type);
         }
 
         /// <summary>

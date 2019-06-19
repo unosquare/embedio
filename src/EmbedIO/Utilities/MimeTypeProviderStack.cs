@@ -39,5 +39,18 @@ namespace EmbedIO.Utilities
 
             return result;
         }
+
+        /// <inheritdoc />
+        public bool TryDetermineCompression(string mimeType, out bool preferCompression)
+        {
+            foreach (var provider in _providers)
+            {
+                if (provider.TryDetermineCompression(mimeType, out preferCompression))
+                    return true;
+            }
+
+            preferCompression = default;
+            return false;
+        }
     }
 }

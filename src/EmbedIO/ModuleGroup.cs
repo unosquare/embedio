@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
@@ -24,8 +23,7 @@ namespace EmbedIO
     public class ModuleGroup : WebModuleBase, IDisposable, IWebModuleContainer, IMimeTypeCustomizer
     {
         private readonly WebModuleCollection _modules;
-
-        private readonly Dictionary<string, string> _customMimeTypes = new Dictionary<string, string>();
+        private readonly MimeTypeCustomizer _mimeTypeCustomizer = new MimeTypeCustomizer();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModuleGroup"/> class.
@@ -57,29 +55,18 @@ namespace EmbedIO
         }
 
         string IMimeTypeProvider.GetMimeType(string extension)
-        {
-            _customMimeTypes.TryGetValue(Validate.NotNull(nameof(extension), extension), out var result);
-            return result;
-        }
+            => _mimeTypeCustomizer.GetMimeType(extension);
+
+        bool IMimeTypeProvider.TryDetermineCompression(string mimeType, out bool preferCompression)
+            => _mimeTypeCustomizer.TryDetermineCompression(mimeType, out preferCompression);
 
         /// <inheritdoc />
-        /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="extension"/>is <see langword="null"/>.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="mimeType"/>is <see langword="null"/>.</para>
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// <para><paramref name="extension"/>is the empty string.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="mimeType"/>is the empty string.</para>
-        /// </exception>
         public void AddCustomMimeType(string extension, string mimeType)
-        {
-            EnsureConfigurationNotLocked();
-            _customMimeTypes[Validate.NotNullOrEmpty(nameof(extension), extension)]
-                = Validate.NotNullOrEmpty(nameof(mimeType), mimeType);
-        }
+            => _mimeTypeCustomizer.AddCustomMimeType(extension, mimeType);
+
+        /// <inheritdoc />
+        public void PreferCompression(string mimeType, bool preferCompression)
+            => _mimeTypeCustomizer.PreferCompression(mimeType, preferCompression);
 
         /// <inheritdoc />
         protected override Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
@@ -95,6 +82,14 @@ namespace EmbedIO
             if (!disposing) return;
 
             _modules.Dispose();
+        }
+
+        /// <inheritdoc />
+        protected override void OnBeforeLockConfiguration()
+        {
+            base.OnBeforeLockConfiguration();
+
+            _mimeTypeCustomizer.Lock();
         }
 
         /// <inheritdoc />

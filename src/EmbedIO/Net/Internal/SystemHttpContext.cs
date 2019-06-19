@@ -102,5 +102,8 @@ namespace EmbedIO.Net.Internal
 
         public string GetMimeType(string extension)
             => MimeTypeProviders.GetMimeType(extension);
+
+        public bool TryDetermineCompression(string mimeType, out bool preferCompression)
+            => MimeTypeProviders.TryDetermineCompression(mimeType, out preferCompression);
     }
 }
