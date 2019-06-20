@@ -35,6 +35,26 @@ namespace EmbedIO
         internal const string UrlEncodedForm = "application/x-www-form-urlencoded";
 
         /// <summary>
+        /// <para>Strips parameters, if present (e.g. <c>; encoding=UTF-8</c>), from a MIME type.</para>
+        /// </summary>
+        /// <param name="value">The MIME type.</param>
+        /// <returns><paramref name="value"/> without parameters.</returns>
+        /// <remarks>
+        /// <para>This method does not validate <paramref name="value"/>: if it is not
+        /// a valid MIME type or media range, it is just returned unchanged.</para>
+        /// </remarks>
+        public static string StripParameters(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return value;
+
+            var semicolonPos = value.IndexOf(';');
+            return semicolonPos < 0
+                ? value
+                : value.Substring(0, semicolonPos);
+        }
+
+        /// <summary>
         /// Determines whether the specified string is a valid MIME type or media range.
         /// </summary>
         /// <param name="value">The value.</param>
