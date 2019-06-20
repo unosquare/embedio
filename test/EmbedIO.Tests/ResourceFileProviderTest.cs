@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using EmbedIO.Files;
 using EmbedIO.Testing;
@@ -12,8 +11,8 @@ namespace EmbedIO.Tests
     public class ResourceFileProviderTest
     {
         private readonly IFileProvider _fileProvider = new ResourceFileProvider(
-            Assembly.GetExecutingAssembly(),
-            "EmbedIO.Tests.Resources");
+            typeof(TestWebServer).Assembly,
+            typeof(TestWebServer).Namespace + ".Resources");
 
         private readonly IMimeTypeProvider _mimeTypeProvider = new MockMimeTypeProvider();
 
