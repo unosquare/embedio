@@ -22,10 +22,10 @@ namespace EmbedIO.Testing
             _random = new Random();
             _randomDataFile = new MockFile(CreateRandomData(10000));
             _root = new MockDirectory {
-                { "index.html", Resource.GetBytes("index.html") },
+                { "index.html", StockResource.GetBytes("index.html") },
                 { "random.dat",  _randomDataFile },
                 { "sub", new MockDirectory {
-                    { "index.html", Resource.GetBytes("sub.index.html") },
+                    { "index.html", StockResource.GetBytes("sub.index.html") },
                 } },
             };
 

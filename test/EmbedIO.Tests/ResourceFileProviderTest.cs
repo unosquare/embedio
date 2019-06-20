@@ -1,10 +1,10 @@
-﻿using EmbedIO.Files;
-using NUnit.Framework;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using EmbedIO.Files;
 using EmbedIO.Testing;
+using NUnit.Framework;
 
 namespace EmbedIO.Tests
 {
@@ -26,7 +26,7 @@ namespace EmbedIO.Tests
             Assert.IsNotNull(info, "info != null");
             Assert.IsTrue(info.IsFile, "info.IsFile == true");
             Assert.AreEqual(name, info.Name, "info.Name has the correct value");
-            Assert.AreEqual(Resource.GetLength(urlPath), info.Length, "info.Length has the correct value");
+            Assert.AreEqual(StockResource.GetLength(urlPath), info.Length, "info.Length has the correct value");
         }
 
         [TestCase("/index.html")]
@@ -35,7 +35,7 @@ namespace EmbedIO.Tests
         {
             var info = _fileProvider.MapUrlPath(urlPath, _mimeTypeProvider);
 
-            var expectedText = Resource.GetText(urlPath, Encoding.UTF8);
+            var expectedText = StockResource.GetText(urlPath, Encoding.UTF8);
             string actualText;
             using (var stream = _fileProvider.OpenFile(info.Path))
             using (var reader = new StreamReader(stream, Encoding.UTF8, false, WebServer.StreamCopyBufferSize, true))
