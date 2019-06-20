@@ -116,7 +116,6 @@ namespace EmbedIO.WebApi
         /// <para>In order for registration to be successful:</para>
         /// <list type="bullet">
         /// <item><description><typeparamref name="TController"/> must be a subclass of <see cref="WebApiController"/>;</description></item>
-        /// <item><description><typeparamref name="TController"/> must not be an abstract class;</description></item>
         /// <item><description><typeparamref name="TController"/> must not be a generic type definition;</description></item>
         /// <item><description><paramref name="factory"/>'s return type must be either <typeparamref name="TController"/>
         /// or a subclass of <typeparamref name="TController"/>.</description></item>
@@ -197,7 +196,7 @@ namespace EmbedIO.WebApi
         {
             EnsureConfigurationNotLocked();
 
-            controllerType = ValidateControllerType(nameof(controllerType), controllerType);
+            controllerType = ValidateControllerType(nameof(controllerType), controllerType, false);
 
             var constructor = controllerType.GetConstructors().FirstOrDefault(c =>
             {
@@ -221,7 +220,6 @@ namespace EmbedIO.WebApi
         /// <para>In order for registration to be successful:</para>
         /// <list type="bullet">
         /// <item><description><paramref name="controllerType"/> must be a subclass of <see cref="WebApiController"/>;</description></item>
-        /// <item><description><paramref name="controllerType"/> must not be an abstract class;</description></item>
         /// <item><description><paramref name="controllerType"/> must not be a generic type definition;</description></item>
         /// <item><description><paramref name="factory"/>'s return type must be either <paramref name="controllerType"/>
         /// or a subclass of <paramref name="controllerType"/>.</description></item>
@@ -267,7 +265,7 @@ namespace EmbedIO.WebApi
         {
             EnsureConfigurationNotLocked();
 
-            controllerType = ValidateControllerType(nameof(controllerType), controllerType);
+            controllerType = ValidateControllerType(nameof(controllerType), controllerType, true);
             factory = Validate.NotNull(nameof(factory), factory);
             if (!controllerType.IsAssignableFrom(factory.Method.ReturnType))
                 throw new ArgumentException("Factory method has an incorrect return type.", nameof(factory));
@@ -504,13 +502,22 @@ namespace EmbedIO.WebApi
             return true;
         }
 
-        private Type ValidateControllerType(string argumentName, Type value)
+        private Type ValidateControllerType(string argumentName, Type value, bool canBeAbstract)
         {
             value = Validate.NotNull(argumentName, value);
-            if (value.IsAbstract
-             || value.IsGenericTypeDefinition
-             || !value.IsSubclassOf(typeof(WebApiController)))
-                throw new ArgumentException($"Controller type must be a non-abstract subclass of {nameof(WebApiController)}.", argumentName);
+            if (canBeAbstract)
+            {
+                if (value.IsGenericTypeDefinition
+                 || !value.IsSubclassOf(typeof(WebApiController)))
+                    throw new ArgumentException($"Controller type must be a subclass of {nameof(WebApiController)}.", argumentName);
+            }
+            else
+            {
+                if (value.IsAbstract
+                 || value.IsGenericTypeDefinition
+                 || !value.IsSubclassOf(typeof(WebApiController)))
+                    throw new ArgumentException($"Controller type must be a non-abstract subclass of {nameof(WebApiController)}.", argumentName);
+            }
 
             if (_controllerTypes.Contains(value))
                 throw new ArgumentException("Controller type is already registered in this module.", argumentName);
