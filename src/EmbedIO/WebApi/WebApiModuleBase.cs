@@ -21,6 +21,7 @@ namespace EmbedIO.WebApi
     {
         private static readonly MethodInfo TaskFromResultBoolMethod = typeof(Task).GetMethod(nameof(Task.FromResult)).MakeGenericMethod(typeof(bool));
         private static readonly MethodInfo PreProcessRequestMethod = typeof(WebApiController).GetMethod(nameof(WebApiController.PreProcessRequest));
+        private static readonly MethodInfo DisposeMethod = typeof(IDisposable).GetMethod(nameof(IDisposable.Dispose));
 
         private readonly MethodInfo _onParameterConversionErrorAsyncMethod;
         private readonly MethodInfo _serializeAsyncControllerResultAsyncMethod;
@@ -452,10 +453,6 @@ namespace EmbedIO.WebApi
             // wrap operations in a simulated using block.
             if (typeof(IDisposable).IsAssignableFrom(controllerType))
             {
-                // Implementation of IDisposable.Dispose
-                // IDisposable has only 1 method, so no need to look for the one named "Dispose"
-                var disposeMethod = controllerType.GetInterfaceMap(typeof(IDisposable)).TargetMethods[0];
-
                 // Pseudocode:
                 //     try
                 //     {
@@ -465,7 +462,9 @@ namespace EmbedIO.WebApi
                 //     {
                 //         (controller as IDisposable).Dispose();
                 //     }
-                workWithController = Expression.TryFinally(workWithController, Expression.Call(controller, disposeMethod));
+                workWithController = Expression.TryFinally(
+                    workWithController, 
+                    Expression.Call(Expression.TypeAs(controller, typeof(IDisposable)), DisposeMethod));
             }
 
             bodyContents.Add(workWithController);
