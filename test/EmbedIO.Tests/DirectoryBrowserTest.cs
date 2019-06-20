@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace EmbedIO.Tests
 {
     [TestFixture]
-    public class DirectoryBrowserTest : FixtureBase
+    public class DirectoryBrowserTest : EndToEndFixtureBase
     {
         public DirectoryBrowserTest()
             : base(ws => ws

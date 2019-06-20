@@ -7,7 +7,7 @@ using EmbedIO.Testing;
 namespace EmbedIO.Tests
 {
     [TestFixture]
-    public class CorsModuleTest : FixtureBase
+    public class CorsModuleTest : EndToEndFixtureBase
     {
         public CorsModuleTest()
             : base(ws => ws

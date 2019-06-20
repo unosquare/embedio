@@ -5,7 +5,7 @@ using EmbedIO.Tests.TestObjects;
 namespace EmbedIO.Tests
 {
     [TestFixture]
-    public class RegexRoutingTest : FixtureBase
+    public class RegexRoutingTest : EndToEndFixtureBase
     {
         public RegexRoutingTest()
             : base(ws => ws.WithModule(new TestRegexModule("/")), true)

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace EmbedIO.Tests
 {
     [TestFixture]
-    public class LocalSessionManagerTest : FixtureBase
+    public class LocalSessionManagerTest : EndToEndFixtureBase
     {
         public LocalSessionManagerTest()
             : base(ws =>

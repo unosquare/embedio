@@ -11,7 +11,7 @@ using Unosquare.Swan.Formatters;
 namespace EmbedIO.Tests
 {
     [TestFixture]
-    public class WebApiModuleTest : PersonFixtureBase
+    public class WebApiModuleTest : PersonEndToEndFixtureBase
     {
         public WebApiModuleTest()
             : base(ws => ws.WithWebApi("/api", m => m.WithController<TestController>()))

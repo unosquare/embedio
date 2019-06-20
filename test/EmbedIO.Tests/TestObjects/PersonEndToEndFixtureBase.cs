@@ -6,9 +6,9 @@ using Unosquare.Swan.Formatters;
 
 namespace EmbedIO.Tests.TestObjects
 {
-    public abstract class PersonFixtureBase : FixtureBase
+    public abstract class PersonEndToEndFixtureBase : EndToEndFixtureBase
     {
-        protected PersonFixtureBase(Action<IWebServer> builder, bool useTestWebServer = false)
+        protected PersonEndToEndFixtureBase(Action<IWebServer> builder, bool useTestWebServer = false)
             : base(builder, useTestWebServer)
         {
         }

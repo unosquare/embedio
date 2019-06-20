@@ -8,12 +8,12 @@ using Unosquare.Swan;
 
 namespace EmbedIO.Tests
 {
-    public abstract class FixtureBase : IDisposable
+    public abstract class EndToEndFixtureBase : IDisposable
     {
         private readonly Action<IWebServer> _builder;
         private readonly bool _useTestWebServer;
 
-        protected FixtureBase(Action<IWebServer> builder, bool useTestWebServer = false)
+        protected EndToEndFixtureBase(Action<IWebServer> builder, bool useTestWebServer = false)
         {
             Terminal.Settings.GlobalLoggingMessageType = LogMessageType.None;
 
@@ -21,7 +21,7 @@ namespace EmbedIO.Tests
             _useTestWebServer = useTestWebServer;
         }
 
-        ~FixtureBase()
+        ~EndToEndFixtureBase()
         {
             Dispose(false);
         }

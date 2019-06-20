@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace EmbedIO.Tests
 {
     [TestFixture]
-    public class BasicAuthenticationModuleTest : FixtureBase
+    public class BasicAuthenticationModuleTest : EndToEndFixtureBase
     {
         private const string UserName = "root";
         private const string Password = "password1234";

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace EmbedIO.Tests
 {
     [TestFixture]
-    public class StaticFilesModuleTest : FixtureBase
+    public class StaticFilesModuleTest : EndToEndFixtureBase
     {
         protected StaticFilesModuleTest()
             : base(ws => ws.WithStaticFolder("/", StaticFolder.RootPathOf(nameof(StaticFilesModuleTest)), true))

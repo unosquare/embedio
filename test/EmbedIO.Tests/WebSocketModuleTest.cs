@@ -9,7 +9,7 @@ using Unosquare.Swan.Formatters;
 namespace EmbedIO.Tests
 {
     [TestFixture]
-    public class WebSocketModuleTest : FixtureBase
+    public class WebSocketModuleTest : EndToEndFixtureBase
     {
         public WebSocketModuleTest()
             : base(
