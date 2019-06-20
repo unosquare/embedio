@@ -156,7 +156,7 @@ namespace EmbedIO.Utilities
             return result;
         }
 
-        private static void ParseCore(string text, Dictionary<string, (int Weight, int Ordinal)> dictionary)
+        private static void ParseCore(string text, IDictionary<string, (int Weight, int Ordinal)> dictionary)
         {
             if (string.IsNullOrEmpty(text))
                 return;

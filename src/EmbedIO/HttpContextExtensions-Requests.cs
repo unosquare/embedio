@@ -27,7 +27,6 @@ namespace EmbedIO
                 await stream.CopyToAsync(buffer, WebServer.StreamCopyBufferSize, cancellationToken).ConfigureAwait(false);
                 return buffer.ToArray();
             }
-
         }
 
         /// <summary>

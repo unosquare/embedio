@@ -41,15 +41,5 @@ namespace EmbedIO.Net.Internal
             // false: !(true ^ false) or !(false ^ true)
             return !(BitConverter.IsLittleEndian ^ (order == Endianness.Little));
         }
-        
-        internal static string ToExtensionString(this CompressionMethod method, params string[] parameters)
-        {
-            if (method == CompressionMethod.None)
-                return string.Empty;
-
-            var m = $"permessage-{method.ToString().ToLowerInvariant()}";
-
-            return parameters == null || parameters.Length == 0 ? m : $"{m}; {string.Join("; ", parameters)}";
-        }
     }
 }

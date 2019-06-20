@@ -12,11 +12,11 @@ namespace EmbedIO.Utilities
     /// <seealso cref="IComponentCollection{T}" />
     public class ComponentCollection<T> : ConfiguredObject, IComponentCollection<T>
     {
-        private List<T> _components = new List<T>();
+        private readonly List<T> _components = new List<T>();
         
-        private List<(string, T)> _componentsWithSafeNames = new List<(string, T)>();
+        private readonly List<(string, T)> _componentsWithSafeNames = new List<(string, T)>();
 
-        private Dictionary<string, T> _namedComponents = new Dictionary<string, T>();
+        private readonly Dictionary<string, T> _namedComponents = new Dictionary<string, T>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ComponentCollection{T}"/> class.

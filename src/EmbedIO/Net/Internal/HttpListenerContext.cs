@@ -93,7 +93,7 @@ namespace EmbedIO.Net.Internal
                 }
                 catch (Exception e)
                 {
-                    e.Log("HTTP context", $"[Id] Exception thrown by a HTTP context close callback.");
+                    e.Log("HTTP context", $"[{Id}] Exception thrown by a HTTP context close callback.");
                 }
             }
         }

@@ -76,33 +76,5 @@ namespace EmbedIO.Net.Internal
 
             return res;
         }
-
-        internal static HttpResponse Parse(string[] headerParts)
-        {
-            var statusLine = headerParts[0].Split(new[] { ' ' }, 3);
-
-            if (statusLine.Length != 3)
-                throw new ArgumentException($"Invalid status line: {headerParts[0]}");
-
-            return new HttpResponse(
-                int.Parse(statusLine[1], CultureInfo.InvariantCulture),
-                statusLine[2],
-                new Version(statusLine[0].Substring(5)),
-                ParseHeaders(headerParts));
-        }
-        
-        protected static NameValueCollection ParseHeaders(string[] headerParts)
-        {
-            var headers = new NameValueCollection();
-
-            for (var i = 1; i < headerParts.Length; i++)
-            {
-                var parts = headerParts[i].Split(':');
-
-                headers[parts[0]] = parts[1];
-            }
-
-            return headers;
-        }
     }
 }

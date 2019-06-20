@@ -19,7 +19,7 @@ namespace EmbedIO.Testing
                     : Encoding.UTF8.GetBytes(text);
             }
 
-            public byte[] Data { get; set; }
+            public byte[] Data { get; private set; }
 
             public void SetData(byte[] data)
             {

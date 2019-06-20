@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -602,7 +601,7 @@ namespace EmbedIO.Files
         // (useful to decide whether it can be cached).
         private async Task<(byte[], long)> GenerateDirectoryListingAsync(
             IHttpContext context,
-            MappedResourceInfo info, 
+            MappedResourceInfo info,
             CompressionMethod compressionMethod,
             CancellationToken cancellationToken)
         {
@@ -627,7 +626,7 @@ namespace EmbedIO.Files
 
         // Prepares response headers for a "200 OK" or "304 Not Modified" response.
         // RFC7232, Section 4.1
-        private void PreparePositiveResponse(IHttpResponse response, MappedResourceInfo info, string contentType, string entityTag, Action<IHttpResponse> setCompression)
+        private static void PreparePositiveResponse(IHttpResponse response, MappedResourceInfo info, string contentType, string entityTag, Action<IHttpResponse> setCompression)
         {
             setCompression(response);
             response.ContentType = contentType;

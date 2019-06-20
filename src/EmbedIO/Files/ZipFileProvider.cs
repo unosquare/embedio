@@ -21,7 +21,7 @@ namespace EmbedIO.Files
         /// </summary>
         /// <param name="zipFilePath">The zip file path.</param>
         public ZipFileProvider(string zipFilePath)
-            : this(new FileStream(Validate.LocalPath(nameof(zipFilePath), zipFilePath, true), FileMode.Open), false)
+            : this(new FileStream(Validate.LocalPath(nameof(zipFilePath), zipFilePath, true), FileMode.Open))
         {
         }
 

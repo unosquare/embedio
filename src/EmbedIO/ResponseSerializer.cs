@@ -29,7 +29,7 @@ namespace EmbedIO
             context.Response.ContentType = MimeType.Json;
             using (var text = context.OpenResponseText(Encoding.UTF8))
             {
-                await text.WriteAsync(Unosquare.Swan.Formatters.Json.Serialize(data, false)).ConfigureAwait(false);
+                await text.WriteAsync(Unosquare.Swan.Formatters.Json.Serialize(data)).ConfigureAwait(false);
             }
         }
     }
