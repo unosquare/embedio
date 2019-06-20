@@ -51,7 +51,7 @@ namespace EmbedIO
             var semicolonPos = value.IndexOf(';');
             return semicolonPos < 0
                 ? value
-                : value.Substring(0, semicolonPos);
+                : value.Substring(0, semicolonPos).TrimEnd();
         }
 
         /// <summary>
