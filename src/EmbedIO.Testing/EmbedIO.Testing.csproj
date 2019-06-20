@@ -5,6 +5,7 @@
     <AssemblyTitle>EmbedIO Web Server Testing</AssemblyTitle>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>7.3</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

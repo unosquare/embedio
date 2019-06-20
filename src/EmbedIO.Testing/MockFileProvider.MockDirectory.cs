@@ -9,8 +9,6 @@ namespace EmbedIO.Testing
         {
             readonly Dictionary<string, MockDirectoryEntry> _entries = new Dictionary<string, MockDirectoryEntry>();
 
-            public MockDirectory() { }
-
             public IEnumerator<KeyValuePair<string, MockDirectoryEntry>> GetEnumerator() => _entries.GetEnumerator();
 
             IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable) _entries).GetEnumerator();
