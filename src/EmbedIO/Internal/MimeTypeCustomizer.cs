@@ -7,7 +7,7 @@ namespace EmbedIO.Utilities
         private readonly Dictionary<string, string> _customMimeTypes = new Dictionary<string, string>();
         private readonly Dictionary<(string, string), bool> _data = new Dictionary<(string, string), bool>();
 
-        bool? _defaultPreferCompression;
+        private bool? _defaultPreferCompression;
 
         public string GetMimeType(string extension)
         {
