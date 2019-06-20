@@ -409,7 +409,11 @@ namespace EmbedIO.Files
              * MaxFileSizeKb of our Cache.
              */
 
+            // If the content type is not a valid MIME type, assume the default.
             var contentType = info.ContentType ?? DirectoryLister?.ContentType ?? MimeType.Default;
+            var mimeType = MimeType.StripParameters(contentType);
+            if (!MimeType.IsMimeType(mimeType, false))
+                contentType = mimeType = MimeType.Default;
 
             // Next we're going to apply proactive negotiation
             // to determine whether we agree with the client upon the compression
@@ -419,7 +423,7 @@ namespace EmbedIO.Files
             // is not really standardized and could lead to a world of pain.
             // Thus, if there is a Range header in the request, try to negotiate for no compression.
             // Later, if there is compression anyway, we will ignore the Range header.
-            if (!context.TryDetermineCompression(contentType, out var preferCompression))
+            if (!context.TryDetermineCompression(mimeType, out var preferCompression))
                 preferCompression = true;
             preferCompression &= context.Request.Headers.Get(HttpHeaderNames.Range) == null;
             if (!context.Request.TryNegotiateContentEncoding(preferCompression, out var compressionMethod, out var setCompressionInResponse))
