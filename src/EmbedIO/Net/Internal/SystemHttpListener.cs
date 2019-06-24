@@ -45,7 +45,26 @@ namespace EmbedIO.Net.Internal
 
         /// <inheritdoc />
         public async Task<IHttpContextImpl> GetContextAsync(CancellationToken cancellationToken)
-            => new SystemHttpContext(await _httpListener.GetContextAsync().ConfigureAwait(false));
+        {
+            // System.Net.HttpListener.GetContextAsync may throw ObjectDisposedException
+            // when stopping a WebServer. This has been observed on Mono 5.20.1.19
+            // on Raspberry Pi, but the fact remains that the method does not take
+            // a CancellationToken as parameter, and WebServerBase<>.RunAsync counts on it.
+            System.Net.HttpListenerContext context;
+            try
+            {
+                context = await _httpListener.GetContextAsync().ConfigureAwait(false);
+            }
+            catch (Exception e) when (cancellationToken.IsCancellationRequested)
+            {
+                throw new OperationCanceledException(
+                    "Probable cancellation detected by catching an exception in System.Net.HttpListener.GetContextAsync",
+                    e,
+                    cancellationToken);
+            }
+
+            return new SystemHttpContext(context);
+        }
 
         void IDisposable.Dispose() => ((IDisposable)_httpListener)?.Dispose();
     }
