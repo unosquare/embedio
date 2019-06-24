@@ -40,7 +40,7 @@ namespace EmbedIO.WebSockets
 
         private readonly bool _enableConnectionWatchdog;
         private readonly List<string> _protocols = new List<string>();
-        private readonly ReaderWriterLockSlim _contextsAccess = new ReaderWriterLockSlim();
+        private readonly SemaphoreSlim _contextsAccess = new SemaphoreSlim(1, 1);
         private readonly List<IWebSocketContext> _contexts = new List<IWebSocketContext>(10);
         private bool _isDisposing;
         private int _maxMessageSize;
@@ -122,14 +122,14 @@ namespace EmbedIO.WebSockets
         {
             get
             {
-                _contextsAccess.EnterReadLock();
+                _contextsAccess.Wait();
                 try
                 {
                     return _contexts.ToArray();
                 }
                 finally
                 {
-                    _contextsAccess.ExitReadLock();
+                    _contextsAccess.Release();
                 }
             }
         }
@@ -184,16 +184,16 @@ namespace EmbedIO.WebSockets
                 .ConfigureAwait(false);
 
             int contextCount;
-            _contextsAccess.EnterWriteLock();
+            await _contextsAccess.WaitAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                PurgeDisconnectedContexts(true);
+                await PurgeDisconnectedContextsAsync(true).ConfigureAwait(false);
                 _contexts.Add(webSocketContext);
                 contextCount = _contexts.Count;
             }
             finally
             {
-                _contextsAccess.ExitWriteLock();
+                _contextsAccess.Release();
             }
 
             $"{BaseUrlPath} - WebSocket connection accepted - There are now {contextCount} sockets connected."
@@ -224,7 +224,7 @@ namespace EmbedIO.WebSockets
             finally
             {
                 // once the loop is completed or connection aborted, remove the WebSocket
-                RemoveWebSocket(webSocketContext);
+                await RemoveWebSocketAsync(webSocketContext).ConfigureAwait(false);
             }
 
             return true;
@@ -237,11 +237,7 @@ namespace EmbedIO.WebSockets
             {
                 _connectionWatchdog = new PeriodicTask(
                     TimeSpan.FromSeconds(30),
-                    ct =>
-                    {
-                        PurgeDisconnectedContexts();
-                        return Task.CompletedTask;
-                    },
+                    ct => PurgeDisconnectedContextsAsync(),
                     cancellationToken);
             }
         }
@@ -453,7 +449,7 @@ namespace EmbedIO.WebSockets
             }
             finally
             {
-                RemoveWebSocket(context);
+                await RemoveWebSocketAsync(context).ConfigureAwait(false);
             }
         }
 
@@ -508,13 +504,13 @@ namespace EmbedIO.WebSockets
             {
                 _connectionWatchdog?.Dispose();
                 Task.WhenAll(ActiveContexts.Select(CloseAsync)).Await(false);
-                PurgeDisconnectedContexts();
+                PurgeDisconnectedContextsAsync().Await();
             }
 
             _contextsAccess.Dispose();
         }
 
-        private void RemoveWebSocket(IWebSocketContext context, bool lockAlreadyHeld = false)
+        private async Task RemoveWebSocketAsync(IWebSocketContext context, bool lockAlreadyHeld = false)
         {
             context.WebSocket?.Dispose();
 
@@ -524,26 +520,44 @@ namespace EmbedIO.WebSockets
             }
             else
             {
-                _contextsAccess.EnterWriteLock();
+                await _contextsAccess.WaitAsync().ConfigureAwait(false);
                 try
                 {
                     _contexts.Remove(context);
                 }
                 finally
                 {
-                    _contextsAccess.ExitWriteLock();
+                    _contextsAccess.Release();
                 }
             }
 
-            OnClientDisconnectedAsync(context).Await();
+            // OnClientDisconnectedAsync is better called in its own task,
+            // so it may call methods that require a lock on _contextsAccess.
+            // Otherwise, calling e.g. Broadcast would result in a deadlock.
+#pragma warning disable CS4014 // Call is not awaited - it is intentionally forked.
+            Task.Run(async () => {
+                try
+                {
+                    await OnClientDisconnectedAsync(context).ConfigureAwait(false);
+                }
+                catch (OperationCanceledException)
+                {
+                    $"[{context.Id}] OnClientDisconnectedAsync was canceled.".Info(nameof(WebSocketModule));
+                }
+                catch (Exception e)
+                {
+                    e.Log(nameof(WebSocketModule), $"[{context.Id}] Exception in OnClientDisconnectedAsync.");
+                }
+            });
+#pragma warning restore CS4014
         }
 
-        private void PurgeDisconnectedContexts(bool lockAlreadyHeld = false)
+        private async Task PurgeDisconnectedContextsAsync(bool lockAlreadyHeld = false)
         {
             int totalCount;
             var purgedCount = 0;
 
-            void DoPurge()
+            async Task DoPurgeAsync()
             {
                 totalCount = _contexts.Count;
                 for (var i = totalCount - 1; i >= 0; i--)
@@ -553,25 +567,25 @@ namespace EmbedIO.WebSockets
                     if (context.WebSocket == null || context.WebSocket.State == WebSocketState.Open)
                         continue;
 
-                    RemoveWebSocket(context, true);
+                    await RemoveWebSocketAsync(context, true).ConfigureAwait(false);
                     purgedCount++;
                 }
             }
 
             if (lockAlreadyHeld)
             {
-                DoPurge();
+                await DoPurgeAsync().ConfigureAwait(false);
             }
             else
             {
-                _contextsAccess.EnterWriteLock();
+                await _contextsAccess.WaitAsync().ConfigureAwait(false);
                 try
                 {
-                    DoPurge();
+                    await DoPurgeAsync().ConfigureAwait(false);
                 }
                 finally
                 {
-                    _contextsAccess.ExitWriteLock();
+                    _contextsAccess.Release();
                 }
             }
 
