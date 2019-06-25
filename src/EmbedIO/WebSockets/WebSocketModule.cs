@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Net.WebSockets;
@@ -40,8 +42,7 @@ namespace EmbedIO.WebSockets
 
         private readonly bool _enableConnectionWatchdog;
         private readonly List<string> _protocols = new List<string>();
-        private readonly SemaphoreSlim _contextsAccess = new SemaphoreSlim(1, 1);
-        private readonly List<IWebSocketContext> _contexts = new List<IWebSocketContext>(10);
+        private readonly ConcurrentDictionary<string, IWebSocketContext> _contexts = new ConcurrentDictionary<string, IWebSocketContext>();
         private bool _isDisposing;
         private int _maxMessageSize;
         private TimeSpan _keepAliveInterval;
@@ -122,15 +123,16 @@ namespace EmbedIO.WebSockets
         {
             get
             {
-                _contextsAccess.Wait();
-                try
-                {
-                    return _contexts.ToArray();
-                }
-                finally
-                {
-                    _contextsAccess.Release();
-                }
+                // ConcurrentDictionary<TKey,TValue>.Values, although declared as ICollection<TValue>,
+                // will probably return a ReadOnlyCollection<TValue>, which implements IReadOnlyList<TValue>:
+                // https://referencesource.microsoft.com/#mscorlib/system/Collections/Concurrent/ConcurrentDictionary.cs,fe55c11912af21d2
+                // https://github.com/dotnet/corefx/blob/master/src/System.Collections.Concurrent/src/System/Collections/Concurrent/ConcurrentDictionary.cs#L1990
+                // https://github.com/mono/mono/blob/master/mcs/class/referencesource/mscorlib/system/collections/Concurrent/ConcurrentDictionary.cs#L1961
+                // However there is no formal guarantee, so be ready to convert to a list, just in case.
+                var values = _contexts.Values;
+                return values is IReadOnlyList<IWebSocketContext> list
+                    ? list
+                    : values.ToList();
             }
         }
 
@@ -183,20 +185,10 @@ namespace EmbedIO.WebSockets
             var webSocketContext = await contextImpl.AcceptWebSocketAsync(requestedProtocols, acceptedProtocol, ReceiveBufferSize, KeepAliveInterval, cancellationToken)
                 .ConfigureAwait(false);
 
-            int contextCount;
-            await _contextsAccess.WaitAsync(cancellationToken).ConfigureAwait(false);
-            try
-            {
-                await PurgeDisconnectedContextsAsync(true).ConfigureAwait(false);
-                _contexts.Add(webSocketContext);
-                contextCount = _contexts.Count;
-            }
-            finally
-            {
-                _contextsAccess.Release();
-            }
+            PurgeDisconnectedContexts();
+            _contexts.TryAdd(webSocketContext.Id, webSocketContext);
 
-            $"{BaseUrlPath} - WebSocket connection accepted - There are now {contextCount} sockets connected."
+            $"{BaseUrlPath} - WebSocket connection accepted - There are now {_contexts.Count} sockets connected."
                 .Debug(nameof(WebSocketModule));
 
             await OnClientConnectedAsync(webSocketContext).ConfigureAwait(false);
@@ -224,7 +216,7 @@ namespace EmbedIO.WebSockets
             finally
             {
                 // once the loop is completed or connection aborted, remove the WebSocket
-                await RemoveWebSocketAsync(webSocketContext).ConfigureAwait(false);
+                RemoveWebSocket(webSocketContext);
             }
 
             return true;
@@ -237,7 +229,10 @@ namespace EmbedIO.WebSockets
             {
                 _connectionWatchdog = new PeriodicTask(
                     TimeSpan.FromSeconds(30),
-                    ct => PurgeDisconnectedContextsAsync(),
+                    ct => {
+                        PurgeDisconnectedContexts();
+                        return Task.CompletedTask;
+                    },
                     cancellationToken);
             }
         }
@@ -399,7 +394,7 @@ namespace EmbedIO.WebSockets
         /// <param name="payload">The payload.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         protected Task BroadcastAsync(byte[] payload)
-            => Task.WhenAll(ActiveContexts.Select(c => SendAsync(c, payload)));
+            => Task.WhenAll(_contexts.Values.Select(c => SendAsync(c, payload)));
 
         /// <summary>
         /// Broadcasts the specified payload to selected WebSocket clients.
@@ -409,7 +404,7 @@ namespace EmbedIO.WebSockets
         /// for each context to be included in the broadcast.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         protected Task BroadcastAsync(byte[] payload, Func<IWebSocketContext, bool> selector)
-            => Task.WhenAll(ActiveContexts.Where(Validate.NotNull(nameof(selector), selector)).Select(c => SendAsync(c, payload)));
+            => Task.WhenAll(_contexts.Values.Where(Validate.NotNull(nameof(selector), selector)).Select(c => SendAsync(c, payload)));
 
         /// <summary>
         /// Broadcasts the specified payload to all connected WebSocket clients.
@@ -417,7 +412,7 @@ namespace EmbedIO.WebSockets
         /// <param name="payload">The payload.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         protected Task BroadcastAsync(string payload)
-            => Task.WhenAll(ActiveContexts.Select(c => SendAsync(c, payload)));
+            => Task.WhenAll(_contexts.Values.Select(c => SendAsync(c, payload)));
 
         /// <summary>
         /// Broadcasts the specified payload to selected WebSocket clients.
@@ -427,7 +422,7 @@ namespace EmbedIO.WebSockets
         /// for each context to be included in the broadcast.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         protected Task BroadcastAsync(string payload, Func<IWebSocketContext, bool> selector)
-            => Task.WhenAll(ActiveContexts.Where(Validate.NotNull(nameof(selector), selector)).Select(c => SendAsync(c, payload)));
+            => Task.WhenAll(_contexts.Values.Where(Validate.NotNull(nameof(selector), selector)).Select(c => SendAsync(c, payload)));
 
         /// <summary>
         /// Closes the specified web socket, removes it and disposes it.
@@ -449,7 +444,7 @@ namespace EmbedIO.WebSockets
             }
             finally
             {
-                await RemoveWebSocketAsync(context).ConfigureAwait(false);
+                RemoveWebSocket(context);
             }
         }
 
@@ -503,33 +498,15 @@ namespace EmbedIO.WebSockets
             if (disposing)
             {
                 _connectionWatchdog?.Dispose();
-                Task.WhenAll(ActiveContexts.Select(CloseAsync)).Await(false);
-                PurgeDisconnectedContextsAsync().Await();
+                Task.WhenAll(_contexts.Values.Select(CloseAsync)).Await(false);
+                PurgeDisconnectedContexts();
             }
-
-            _contextsAccess.Dispose();
         }
 
-        private async Task RemoveWebSocketAsync(IWebSocketContext context, bool lockAlreadyHeld = false)
+        private void RemoveWebSocket(IWebSocketContext context)
         {
+            _contexts.TryRemove(context.Id, out _);
             context.WebSocket?.Dispose();
-
-            if (lockAlreadyHeld)
-            {
-                _contexts.Remove(context);
-            }
-            else
-            {
-                await _contextsAccess.WaitAsync().ConfigureAwait(false);
-                try
-                {
-                    _contexts.Remove(context);
-                }
-                finally
-                {
-                    _contextsAccess.Release();
-                }
-            }
 
             // OnClientDisconnectedAsync is better called in its own task,
             // so it may call methods that require a lock on _contextsAccess.
@@ -552,41 +529,18 @@ namespace EmbedIO.WebSockets
 #pragma warning restore CS4014
         }
 
-        private async Task PurgeDisconnectedContextsAsync(bool lockAlreadyHeld = false)
+        private void PurgeDisconnectedContexts()
         {
-            int totalCount;
+            var contexts = _contexts.Values;
+            var totalCount = _contexts.Count;
             var purgedCount = 0;
-
-            async Task DoPurgeAsync()
+            foreach (var context in contexts)
             {
-                totalCount = _contexts.Count;
-                for (var i = totalCount - 1; i >= 0; i--)
-                {
-                    var context = _contexts[i];
+                if (context.WebSocket == null || context.WebSocket.State == WebSocketState.Open)
+                    continue;
 
-                    if (context.WebSocket == null || context.WebSocket.State == WebSocketState.Open)
-                        continue;
-
-                    await RemoveWebSocketAsync(context, true).ConfigureAwait(false);
-                    purgedCount++;
-                }
-            }
-
-            if (lockAlreadyHeld)
-            {
-                await DoPurgeAsync().ConfigureAwait(false);
-            }
-            else
-            {
-                await _contextsAccess.WaitAsync().ConfigureAwait(false);
-                try
-                {
-                    await DoPurgeAsync().ConfigureAwait(false);
-                }
-                finally
-                {
-                    _contextsAccess.Release();
-                }
+                RemoveWebSocket(context);
+                purgedCount++;
             }
 
             $"{BaseUrlPath} - Purged {purgedCount} of {totalCount} sockets."
