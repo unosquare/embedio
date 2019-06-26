@@ -65,33 +65,16 @@ namespace EmbedIO
             out CompressionMethod compressionMethod,
             out Action<IHttpResponse> prepareResponse)
         {
-            compressionMethod = CompressionMethod.None;
             var acceptedEncodings = new QValueList(true, @this.Headers.GetValues(HttpHeaderNames.AcceptEncoding));
-            if (acceptedEncodings.QValues.Count < 1)
-            {
-                prepareResponse = r => r.Headers.Set(HttpHeaderNames.ContentEncoding, CompressionMethodNames.None);
-                return true;
-            }
-
-            var acceptableMethods = preferCompression
-                ? new[] { CompressionMethod.Gzip, CompressionMethod.Deflate, CompressionMethod.None }
-                : new[] { CompressionMethod.None, CompressionMethod.Gzip, CompressionMethod.Deflate };
-            var acceptableMethodNames = preferCompression
-                ? new[] { CompressionMethodNames.Gzip, CompressionMethodNames.Deflate, CompressionMethodNames.None }
-                : new[] { CompressionMethodNames.None, CompressionMethodNames.Gzip, CompressionMethodNames.Deflate };
-
-            var acceptableMethodIndex = acceptedEncodings.FindPreferredIndex(acceptableMethodNames);
-            if (acceptableMethodIndex < 0)
+            if (!acceptedEncodings.TryNegotiateContentEncoding(preferCompression, out compressionMethod, out var compressionMethodName))
             {
                 prepareResponse = r => throw HttpException.NotAcceptable(HttpHeaderNames.AcceptEncoding);
                 return false;
             }
 
-            compressionMethod = acceptableMethods[acceptableMethodIndex];
-            var acceptedMethodName = acceptableMethodNames[acceptableMethodIndex];
             prepareResponse = r => {
                 r.Headers.Add(HttpHeaderNames.Vary, HttpHeaderNames.AcceptEncoding);
-                r.Headers.Set(HttpHeaderNames.ContentEncoding, acceptedMethodName);
+                r.Headers.Set(HttpHeaderNames.ContentEncoding, compressionMethodName);
             };
             return true;
         }
