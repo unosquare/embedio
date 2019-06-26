@@ -147,7 +147,6 @@ namespace EmbedIO.Files
 
             $"Purge completed in {timeKeeper.ElapsedTime}ms: removed {removedCount} items ({removedSize / 1024L}kb). Total size is now {totalSizeKb}kb."
                 .Info(nameof(FileCache));
-
         }
 
         // Enumerate key / value pairs because the Keys and Values property

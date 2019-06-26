@@ -9,13 +9,8 @@ namespace EmbedIO.WebSockets.Internal
 {
     internal class WebSocketFrame
     {
-        internal static readonly byte[] EmptyPingBytes;
-
-        static WebSocketFrame()
-        {
-            EmptyPingBytes = CreatePingFrame().ToArray();
-        }
-
+        internal static readonly byte[] EmptyPingBytes = CreatePingFrame().ToArray();
+        
         internal WebSocketFrame(Opcode opcode, PayloadData payloadData)
             : this(Fin.Final, opcode, payloadData)
         {

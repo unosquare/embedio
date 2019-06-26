@@ -20,24 +20,20 @@ namespace EmbedIO.Internal
             _buffer = new MemoryStream();
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            _response.ContentLength64 = _buffer.Length;
-            _buffer.Position = 0;
-            _buffer.CopyTo(_response.OutputStream);
-
-            if (disposing)
-            {
-                _buffer.Dispose();
-            }
-        }
-
         public override bool CanRead => false;
 
         public override bool CanSeek => false;
 
         public override bool CanWrite => true;
 
+        public override long Length => _buffer.Length;
+
+        public override long Position
+        {
+            get => _buffer.Position;
+            set => throw SeekingNotSupported();
+        }
+        
         public override void Flush() => _buffer.Flush();
 
         public override Task FlushAsync(CancellationToken cancellationToken) => _buffer.FlushAsync(cancellationToken);
@@ -60,14 +56,6 @@ namespace EmbedIO.Internal
 
         public override void SetLength(long value) => throw SeekingNotSupported();
 
-        public override long Length => _buffer.Length;
-
-        public override long Position
-        {
-            get => _buffer.Position;
-            set => throw SeekingNotSupported();
-        }
-
         public override void Write(byte[] buffer, int offset, int count) => _buffer.Write(buffer, offset, count);
 
         public override void WriteByte(byte value) => _buffer.WriteByte(value);
@@ -79,6 +67,18 @@ namespace EmbedIO.Internal
 
         public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
             => _buffer.WriteAsync(buffer, offset, count, cancellationToken);
+        
+        protected override void Dispose(bool disposing)
+        {
+            _response.ContentLength64 = _buffer.Length;
+            _buffer.Position = 0;
+            _buffer.CopyTo(_response.OutputStream);
+
+            if (disposing)
+            {
+                _buffer.Dispose();
+            }
+        }
 
         private static Exception ReadingNotSupported() => new NotSupportedException("This stream does not support reading.");
 

@@ -35,7 +35,9 @@ namespace EmbedIO.Actions
         /// </summary>
         /// <param name="handler">The handler.</param>
         public ActionModule(RequestHandlerCallback handler)
-            : this("/", HttpVerbs.Any, handler) { }
+            : this("/", HttpVerbs.Any, handler)
+        {
+        }
 
         /// <inheritdoc />
         protected override async Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken) =>
