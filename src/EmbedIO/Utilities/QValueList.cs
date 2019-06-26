@@ -32,7 +32,7 @@ namespace EmbedIO.Utilities
         // The part of string after the match contains the extensions (if any).
         // If there is no match, the whole string is just value and parameters (if any).
         private static readonly Regex QualityValueRegex = new Regex(
-            @";[ \t]*q=(?:(?:(1)(?:\.(?:0{1,3}))?)|(?:(0)(?:\.(\d{1,3}))?))[ \t]*(?:;|,|$)",
+            @";[ \t]*q=(?:(?:1(?:\.(?:0{1,3}))?)|(?:(0)(?:\.(\d{1,3}))?))[ \t]*(?:;|,|$)",
             RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.Singleline);
 
         /// <summary>
