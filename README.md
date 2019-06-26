@@ -6,7 +6,7 @@
  [![NuGet](https://img.shields.io/nuget/dt/embedio.svg)](https://www.nuget.org/packages/Embedio)
 [![Coverage Status](https://coveralls.io/repos/unosquare/embedio/badge.svg?branch=master)](https://coveralls.io/r/unosquare/embedio?branch=master)
 [![BuiltWithDotnet](https://builtwithdot.net/project/105/embedio/badge)](https://builtwithdot.net/project/105/embedio)
-[![Slack](https://img.shields.io/badge/chat-slack-blue.svg)](https://join.slack.com/t/embedio/shared_invite/enQtNjI5NDQwMjI2ODA0LTk5YzMwZjMwNjIzY2ZlYTZkYmI2MzUxNzIwYjAyMWZjZGI3ZTMxZDcxYWMyNzVjZDQ0ZTBiZGFmYWVlZjZiMmU)
+[![Slack](https://img.shields.io/badge/chat-slack-blue.svg)](https://join.slack.com/t/embedio/shared_invite/enQtNjcwMjgyNDk4NzUzLWQ4YTE2MDQ2MWRhZGIyMTRmNTU0YmY4MmE3MTJmNTY4MmZiZDAzM2M4MTljMmVmNjRiZDljM2VjYjI5MjdlM2U)
 
 ![EmbedIO](https://raw.githubusercontent.com/unosquare/embedio/master/images/embedio.png)
 
