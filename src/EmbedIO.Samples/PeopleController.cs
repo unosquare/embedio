@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
@@ -15,11 +14,6 @@ namespace EmbedIO.Samples
     public sealed class PeopleController : WebApiController, IDisposable
     {
         private readonly AppDbContext _dbContext = new AppDbContext();
-
-        public PeopleController(IHttpContext context, CancellationToken cancellationToken)
-            : base(context, cancellationToken)
-        {
-        }
 
         public void Dispose() => _dbContext.Dispose();
 

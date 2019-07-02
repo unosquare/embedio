@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
 
@@ -46,24 +45,24 @@ namespace EmbedIO.WebApi
         /// for further information.</para>
         /// </summary>
         /// <typeparam name="TController">The type of the controller.</typeparam>
-        /// <seealso cref="RegisterController{TController}(Func{IHttpContext,CancellationToken,TController})"/>
+        /// <seealso cref="RegisterController{TController}(Func{TController})"/>
         /// <seealso cref="RegisterController(Type)"/>
         /// <seealso cref="WebApiModuleBase.RegisterControllerType{TController}()"/>
         public void RegisterController<TController>()
-            where TController : WebApiController
+            where TController : WebApiController, new()
             => RegisterControllerType(typeof(TController));
 
         /// <summary>
         /// <para>Registers a controller type using a factory method.</para>
-        /// <para>See <see cref="WebApiModuleBase.RegisterControllerType{TController}(Func{IHttpContext,CancellationToken,TController})"/>
+        /// <para>See <see cref="WebApiModuleBase.RegisterControllerType{TController}(Func{TController})"/>
         /// for further information.</para>
         /// </summary>
         /// <typeparam name="TController">The type of the controller.</typeparam>
         /// <param name="factory">The factory method used to construct instances of <typeparamref name="TController"/>.</param>
         /// <seealso cref="RegisterController{TController}()"/>
-        /// <seealso cref="RegisterController(Type,Func{IHttpContext,CancellationToken,WebApiController})"/>
-        /// <seealso cref="WebApiModuleBase.RegisterControllerType{TController}(Func{IHttpContext,CancellationToken,TController})"/>
-        public void RegisterController<TController>(Func<IHttpContext, CancellationToken, TController> factory)
+        /// <seealso cref="RegisterController(Type,Func{WebApiController})"/>
+        /// <seealso cref="WebApiModuleBase.RegisterControllerType{TController}(Func{TController})"/>
+        public void RegisterController<TController>(Func<TController> factory)
             where TController : WebApiController
             => RegisterControllerType(typeof(TController), factory);
 
@@ -73,7 +72,7 @@ namespace EmbedIO.WebApi
         /// for further information.</para>
         /// </summary>
         /// <param name="controllerType">The type of the controller.</param>
-        /// <seealso cref="RegisterController(Type,Func{IHttpContext,CancellationToken,WebApiController})"/>
+        /// <seealso cref="RegisterController(Type,Func{WebApiController})"/>
         /// <seealso cref="RegisterController{TController}()"/>
         /// <seealso cref="WebApiModuleBase.RegisterControllerType(Type)"/>
         public void RegisterController(Type controllerType)
@@ -81,15 +80,15 @@ namespace EmbedIO.WebApi
 
         /// <summary>
         /// <para>Registers a controller type using a factory method.</para>
-        /// <para>See <see cref="WebApiModuleBase.RegisterControllerType(Type,Func{IHttpContext,CancellationToken,WebApiController})"/>
+        /// <para>See <see cref="WebApiModuleBase.RegisterControllerType(Type,Func{WebApiController})"/>
         /// for further information.</para>
         /// </summary>
         /// <param name="controllerType">The type of the controller.</param>
         /// <param name="factory">The factory method used to construct instances of <paramref name="controllerType"/>.</param>
         /// <seealso cref="RegisterController(Type)"/>
-        /// <seealso cref="RegisterController{TController}(Func{IHttpContext,CancellationToken,TController})"/>
-        /// <seealso cref="WebApiModuleBase.RegisterControllerType(Type,Func{IHttpContext,CancellationToken,WebApiController})"/>
-        public void RegisterController(Type controllerType, Func<IHttpContext, CancellationToken, WebApiController> factory)
+        /// <seealso cref="RegisterController{TController}(Func{TController})"/>
+        /// <seealso cref="WebApiModuleBase.RegisterControllerType(Type,Func{WebApiController})"/>
+        public void RegisterController(Type controllerType, Func<WebApiController> factory)
             => RegisterControllerType(controllerType, factory);
     }
 }

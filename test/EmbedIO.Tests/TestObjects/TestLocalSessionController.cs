@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
@@ -15,11 +14,6 @@ namespace EmbedIO.Tests.TestObjects
 
         public const string MyData = "MyData";
         public const string CookieName = "MyCookie";
-
-        public TestLocalSessionController(IHttpContext context, CancellationToken cancellationToken)
-            : base(context, cancellationToken)
-        {
-        }
 
         [Route(HttpVerbs.Get, "/getcookie")]
         public Task<bool> GetCookieC()

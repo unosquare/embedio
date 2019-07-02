@@ -1,5 +1,6 @@
 ﻿using System.Security.Principal;
 using System.Threading;
+using EmbedIO.Routing;
 using EmbedIO.Sessions;
 
 namespace EmbedIO.WebApi
@@ -13,23 +14,27 @@ namespace EmbedIO.WebApi
         /// <summary>
         /// Initializes a new instance of the <see cref="WebApiController" /> class.
         /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        protected WebApiController(IHttpContext context, CancellationToken cancellationToken)
+        protected WebApiController()
         {
-            HttpContext = context;
-            CancellationToken = cancellationToken;
         }
 
         /// <summary>
-        /// Gets the HTTP context.
+        /// <para>Gets the HTTP context.</para>
+        /// <para>This property is automatically initialized upon controller creation.</para>
         /// </summary>
-        protected IHttpContext HttpContext { get; }
+        public IHttpContext HttpContext { get; internal set; }
 
         /// <summary>
-        /// Gets the cancellation token used to cancel processing of the request.
+        /// <para>Gets the resolved route.</para>
+        /// <para>This property is automatically initialized upon controller creation.</para>
         /// </summary>
-        protected CancellationToken CancellationToken { get; }
+        public RouteMatch Route { get; internal set; }
+
+        /// <summary>
+        /// <para>Gets the cancellation token used to cancel processing of the request.</para>
+        /// <para>This property is automatically initialized upon controller creation.</para>
+        /// </summary>
+        public CancellationToken CancellationToken { get; internal set; }
 
         /// <summary>
         /// Gets the HTTP request.

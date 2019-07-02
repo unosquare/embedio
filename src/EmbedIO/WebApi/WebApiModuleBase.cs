@@ -21,6 +21,9 @@ namespace EmbedIO.WebApi
     {
         private static readonly MethodInfo TaskFromResultBoolMethod = typeof(Task).GetMethod(nameof(Task.FromResult)).MakeGenericMethod(typeof(bool));
         private static readonly MethodInfo PreProcessRequestMethod = typeof(WebApiController).GetMethod(nameof(WebApiController.PreProcessRequest));
+        private static readonly MethodInfo HttpContextSetter = typeof(WebApiController).GetProperty(nameof(WebApiController.HttpContext)).GetSetMethod(true);
+        private static readonly MethodInfo RouteSetter = typeof(WebApiController).GetProperty(nameof(WebApiController.Route)).GetSetMethod(true);
+        private static readonly MethodInfo CancellationTokenSetter = typeof(WebApiController).GetProperty(nameof(WebApiController.CancellationToken)).GetSetMethod(true);
         private static readonly MethodInfo DisposeMethod = typeof(IDisposable).GetMethod(nameof(IDisposable.Dispose));
 
         private readonly MethodInfo _onParameterConversionErrorAsyncMethod;
@@ -81,8 +84,7 @@ namespace EmbedIO.WebApi
         /// <item><description>must be a subclass of <see cref="WebApiController"/>;</description></item>
         /// <item><description>must not be an abstract class;</description></item>
         /// <item><description>must not be a generic type definition;</description></item>
-        /// <item><description>must have a public constructor with two parameters of type <see cref="IHttpContext"/>
-        /// and <see cref="CancellationToken"/>, in this order.</description></item>
+        /// <item><description>must have a public parameterless constructor.</description></item>
         /// </list>
         /// </summary>
         /// <typeparam name="TController">The type of the controller.</typeparam>
@@ -105,10 +107,10 @@ namespace EmbedIO.WebApi
         /// its <see cref="IDisposable.Dispose">Dispose</see> method will be called when it has
         /// finished handling a request.</para>
         /// </remarks>
-        /// <seealso cref="RegisterControllerType{TController}(Func{IHttpContext,CancellationToken,TController})"/>
+        /// <seealso cref="RegisterControllerType{TController}(Func{TController})"/>
         /// <seealso cref="RegisterControllerType(Type)"/>
         protected void RegisterControllerType<TController>()
-            where TController : WebApiController
+            where TController : WebApiController, new()
             => RegisterControllerType(typeof(TController));
 
         /// <summary>
@@ -152,8 +154,8 @@ namespace EmbedIO.WebApi
         /// <see href="https://en.wikipedia.org/wiki/Starvation_(computer_science)">starvation</see>.</para>
         /// </remarks>
         /// <seealso cref="RegisterControllerType{TController}()"/>
-        /// <seealso cref="RegisterControllerType(Type,Func{IHttpContext,CancellationToken,WebApiController})"/>
-        protected void RegisterControllerType<TController>(Func<IHttpContext, CancellationToken, TController> factory)
+        /// <seealso cref="RegisterControllerType(Type,Func{WebApiController})"/>
+        protected void RegisterControllerType<TController>(Func<TController> factory)
             where TController : WebApiController
             => RegisterControllerType(typeof(TController), factory);
 
@@ -164,8 +166,7 @@ namespace EmbedIO.WebApi
         /// <item><description>must be a subclass of <see cref="WebApiController"/>;</description></item>
         /// <item><description>must not be an abstract class;</description></item>
         /// <item><description>must not be a generic type definition;</description></item>
-        /// <item><description>must have a public constructor with two parameters of type <see cref="IHttpContext"/>
-        /// and <see cref="CancellationToken"/>, in this order.</description></item>
+        /// <item><description>must have a public parameterless constructor.</description></item>
         /// </list>
         /// </summary>
         /// <param name="controllerType">The type of the controller.</param>
@@ -190,7 +191,7 @@ namespace EmbedIO.WebApi
         /// its <see cref="IDisposable.Dispose">Dispose</see> method will be called when it has
         /// finished handling a request.</para>
         /// </remarks>
-        /// <seealso cref="RegisterControllerType(Type,Func{IHttpContext,CancellationToken,WebApiController})"/>
+        /// <seealso cref="RegisterControllerType(Type,Func{WebApiController})"/>
         /// <seealso cref="RegisterControllerType{TController}()"/>
         protected void RegisterControllerType(Type controllerType)
         {
@@ -198,21 +199,15 @@ namespace EmbedIO.WebApi
 
             controllerType = ValidateControllerType(nameof(controllerType), controllerType, false);
 
-            var constructor = controllerType.GetConstructors().FirstOrDefault(c =>
-            {
-                var constructorParameters = c.GetParameters();
-                return constructorParameters.Length == 2
-                    && constructorParameters[0].ParameterType.IsAssignableFrom(typeof(IHttpContext))
-                    && constructorParameters[1].ParameterType.IsAssignableFrom(typeof(CancellationToken));
-            });
+            var constructor = controllerType.GetConstructors().FirstOrDefault(c => c.GetParameters().Length == 0);
             if (constructor == null)
             {
                 throw new ArgumentException(
-                    $"Controller type must have a public constructor taking a {nameof(IHttpContext)} and a {nameof(CancellationToken)} as parameters.",
+                    $"Controller type must have a public parameterless constructor.",
                     nameof(controllerType));
             }
 
-            RegisterControllerTypeCore(controllerType, (ctx, ct) => Expression.New(constructor, ctx, ct));
+            RegisterControllerTypeCore(controllerType, Expression.New(constructor));
         }
 
         /// <summary>
@@ -260,8 +255,8 @@ namespace EmbedIO.WebApi
         /// <see href="https://en.wikipedia.org/wiki/Starvation_(computer_science)">starvation</see>.</para>
         /// </remarks>
         /// <seealso cref="RegisterControllerType(Type)"/>
-        /// <seealso cref="RegisterControllerType{TController}(Func{IHttpContext,CancellationToken,TController})"/>
-        protected void RegisterControllerType(Type controllerType, Func<IHttpContext, CancellationToken, WebApiController> factory)
+        /// <seealso cref="RegisterControllerType{TController}(Func{TController})"/>
+        protected void RegisterControllerType(Type controllerType, Func<WebApiController> factory)
         {
             EnsureConfigurationNotLocked();
 
@@ -270,11 +265,9 @@ namespace EmbedIO.WebApi
             if (!controllerType.IsAssignableFrom(factory.Method.ReturnType))
                 throw new ArgumentException("Factory method has an incorrect return type.", nameof(factory));
 
-            RegisterControllerTypeCore(controllerType, (ctx, ct) => Expression.Call(
+            RegisterControllerTypeCore(controllerType, Expression.Call(
                 factory.Target == null ? null : Expression.Constant(factory.Target),
-                factory.Method,
-                ctx, 
-                ct));
+                factory.Method));
         }
 
         /// <summary>
@@ -326,7 +319,7 @@ namespace EmbedIO.WebApi
         //   - if Task<object> - returns SerializeAsyncControllerResultAsync(context, result, cancellationToken);
         //   - if object       - returns SerializeNonAsyncControllerResultAsync(context, result, cancellationToken);
         // - if the controller implements IDisposable, disposes it.
-        private RouteHandler<IHttpContext> CompileHandler(Func<Expression, Expression, Expression> buildFactoryExpression, MethodInfo method, string route)
+        private RouteHandler<IHttpContext> CompileHandler(Expression factoryExpression, MethodInfo method, string route)
         {
             // Parse the route
             var matcher = RouteMatcher.Parse(route);
@@ -397,10 +390,11 @@ namespace EmbedIO.WebApi
                 }
             }
 
-            // Create the controller
-            bodyContents.Add(Expression.Assign(
-                controller,
-                buildFactoryExpression(contextInLambda, cancellationTokenInLambda)));
+            // Create the controller and initialize its properties
+            bodyContents.Add(Expression.Assign(controller,factoryExpression));
+            bodyContents.Add(Expression.Call(controller, HttpContextSetter, contextInLambda));
+            bodyContents.Add(Expression.Call(controller, RouteSetter, routeInLambda));
+            bodyContents.Add(Expression.Call(controller, CancellationTokenSetter, cancellationTokenInLambda));
 
             // Build the handler method call
             var callMethod = Expression.Call(controller, method, handlerArguments);
@@ -525,7 +519,7 @@ namespace EmbedIO.WebApi
             return value;
         }
 
-        private void RegisterControllerTypeCore(Type controllerType, Func<Expression, Expression, Expression> buildFactoryExpression)
+        private void RegisterControllerTypeCore(Type controllerType, Expression factoryExpression)
         {
             bool IsValidReturnType(Type type)
                 => type == typeof(bool)
@@ -546,7 +540,7 @@ namespace EmbedIO.WebApi
 
                 foreach (var attribute in attributes)
                 {
-                    AddHandler(attribute.Verb, attribute.Route, CompileHandler(buildFactoryExpression, method, attribute.Route));
+                    AddHandler(attribute.Verb, attribute.Route, CompileHandler(factoryExpression, method, attribute.Route));
                 }
             }
 

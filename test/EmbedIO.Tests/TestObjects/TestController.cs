@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
@@ -10,11 +9,6 @@ namespace EmbedIO.Tests.TestObjects
     public class TestController : WebApiController
     {
         public const string EchoPath = "echo";
-
-        public TestController(IHttpContext context, CancellationToken cancellationToken)
-            : base(context, cancellationToken)
-        {
-        }
 
         [Route(HttpVerbs.Get, "/empty")]
         public object GetEmpty() => new { Ok = true };

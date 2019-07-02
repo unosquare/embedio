@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
@@ -11,11 +10,6 @@ namespace EmbedIO.Tests.TestObjects
     {
         public class Controller : WebApiController
         {
-            public Controller(IHttpContext context, CancellationToken cancellationToken)
-                : base(context, cancellationToken)
-            {
-            }
-
             [Route(HttpVerbs.Any, "/data/{id}")]
             public Task<bool> Id(string id)
                 => HttpContext.SendStringAsync(id, MimeType.PlainText, Encoding.UTF8, CancellationToken);
