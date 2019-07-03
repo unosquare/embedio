@@ -64,7 +64,10 @@ namespace EmbedIO
             encoding = Validate.NotNull(nameof(encoding), encoding);
 
             if (contentType != null)
+            {
                 @this.Response.ContentType = contentType;
+                @this.Response.ContentEncoding = encoding;
+            }
 
             using (var text = @this.OpenResponseText(encoding))
                 await text.WriteAsync(content).ConfigureAwait(false);
@@ -112,6 +115,7 @@ namespace EmbedIO
             @this.Response.StatusCode = statusCode;
             @this.Response.StatusDescription = statusDescription;
             @this.Response.ContentType = MimeType.Html;
+            @this.Response.ContentEncoding = Encoding.UTF8;
             using (var text = @this.OpenResponseText(Encoding.UTF8))
             {
                 text.Write(StandardHtmlHeaderFormat, statusCode, statusDescription, Encoding.UTF8.WebName);
