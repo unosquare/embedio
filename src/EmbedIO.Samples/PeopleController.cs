@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmbedIO.Routing;
@@ -46,13 +47,11 @@ namespace EmbedIO.Samples
 
         // Posts the people Tubular model.
         [Route(HttpVerbs.Post, "/people")]
-        public async Task<object> PostPeople()
-            => (await HttpContext.GetRequestDataAsync(RequestDeserializer.Json<GridDataRequest>, CancellationToken).ConfigureAwait(false))
-                .CreateGridDataResponse((await _dbContext.People.SelectAllAsync().ConfigureAwait(false)).AsQueryable());
+        public async Task<object> PostPeople([JsonGridDataRequest] GridDataRequest gridDataRequest)
+            => gridDataRequest.CreateGridDataResponse((await _dbContext.People.SelectAllAsync().ConfigureAwait(false)).AsQueryable());
 
         // Echoes request form data in JSON format.
         [Route(HttpVerbs.Post, "/echo")]
-        public async Task<object> Echo()
-            => await HttpContext.GetRequestFormDataAsync(CancellationToken).ConfigureAwait(false);
+        public object Echo([FormData] Dictionary<string, object> formData) => formData;
     }
 }

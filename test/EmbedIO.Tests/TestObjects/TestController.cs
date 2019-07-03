@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmbedIO.Routing;
@@ -17,9 +18,7 @@ namespace EmbedIO.Tests.TestObjects
         public object GetPeople() => PeopleRepository.Database;
 
         [Route(HttpVerbs.Post, "/regex")]
-        public async Task<object> PostPeople()
-            => await HttpContext.GetRequestDataAsync(RequestDeserializer.Json<Person>, CancellationToken)
-                .ConfigureAwait(false);
+        public async Task<object> PostPeople([JsonPerson] Person person) => person;
 
         [Route(HttpVerbs.Get, "/regex/{id}")]
         public object GetPerson(int id) => CheckPerson(id);
@@ -49,8 +48,7 @@ namespace EmbedIO.Tests.TestObjects
         }
 
         [Route(HttpVerbs.Post, "/" + EchoPath)]
-        public async Task<object> PostEcho()
-            => await HttpContext.GetRequestFormDataAsync(CancellationToken).ConfigureAwait(false);
+        public async Task<object> PostEcho([FormData] Dictionary<string, object> data) => data;
 
         private object CheckPerson(int id)
             =>PeopleRepository.Database.FirstOrDefault(p => p.Key == id)

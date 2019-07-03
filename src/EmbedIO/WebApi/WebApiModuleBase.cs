@@ -24,7 +24,10 @@ namespace EmbedIO.WebApi
         private static readonly MethodInfo HttpContextSetter = typeof(WebApiController).GetProperty(nameof(WebApiController.HttpContext)).GetSetMethod(true);
         private static readonly MethodInfo RouteSetter = typeof(WebApiController).GetProperty(nameof(WebApiController.Route)).GetSetMethod(true);
         private static readonly MethodInfo CancellationTokenSetter = typeof(WebApiController).GetProperty(nameof(WebApiController.CancellationToken)).GetSetMethod(true);
+        private static readonly MethodInfo AwaitResultMethod = typeof(WebApiModuleBase).GetMethod(nameof(AwaitResult), BindingFlags.Static | BindingFlags.NonPublic);
         private static readonly MethodInfo DisposeMethod = typeof(IDisposable).GetMethod(nameof(IDisposable.Dispose));
+
+        private static readonly string GetRequestDataAsyncMethodName = nameof(IRequestDataAttribute<WebApiController, string>.GetRequestDataAsync);
 
         private readonly MethodInfo _onParameterConversionErrorAsyncMethod;
         private readonly MethodInfo _serializeAsyncControllerResultAsyncMethod;
@@ -303,14 +306,13 @@ namespace EmbedIO.WebApi
         // Compile a handler.
         //
         // Parameters:
-        // - buildFactoryExpression is a callback that, given two Expressions for a IHttpContext
-        //   and a CancellationToken, returns an Expression that builds a controller;
+        // - factoryExpression is an Expression that builds a controller;
         // - method is a MethodInfo for a public instance method of the controller
         //   returning either Task<bool>, bool, Task<object>, or object;
         // - route is the route to which the controller method is associated.
         //
         // This method builds a lambda, with the same signature as a RouteHandler<IHttpContext>, that:
-        // - uses the factory Expression to build a controller;
+        // - uses factoryExpression to build a controller;
         // - calls the controller method, passing converted route parameters for method parameters with matching names
         //   and default values for other parameters;
         // - according to the return type of the controller method:
@@ -351,10 +353,66 @@ namespace EmbedIO.WebApi
             {
                 var parameter = parameters[i];
                 var parameterType = parameter.ParameterType;
+
+                // First, check for request data interfaces in attributes
+                var requestDataInterfaces = parameter.GetCustomAttributes<Attribute>()
+                        .Aggregate(new List<(Attribute Attr, Type Intf)>(), (list, attr) => {
+                            list.AddRange(attr.GetType().GetInterfaces()
+                                .Where(x => x.IsConstructedGenericType
+                                         && x.GetGenericTypeDefinition() == typeof(IRequestDataAttribute<,>))
+                                .Select(x => (attr, x)));
+
+                            return list;
+                        });
+
+                // If there are any...
+                if (requestDataInterfaces.Count > 0)
+                {
+                    // Take the first that applies to both controller and parameter type
+                    var requestDataInterface = requestDataInterfaces.FirstOrDefault(
+                        x => x.Intf.GenericTypeArguments[0].IsAssignableFrom(controllerType)
+                          && parameterType.IsAssignableFrom(x.Intf.GenericTypeArguments[1]));
+
+                    // Throw if there are none, as the user expects data to be injected
+                    // but provided no way of injecting the right data type.
+                    if (requestDataInterface.Attr == null)
+                        throw new InvalidOperationException($"No request data attribute for parameter {parameter.Name} of method {controllerType.Name}.{method.Name} can provide the expected data type.");
+
+                    // Use the request data interface to get a value for the parameter.
+                    // Do it inside a try / catch block.
+                    // On exception call OnParameterConversionErrorAsync and return.
+                    var exception = Expression.Variable(typeof(Exception), "exception");
+                    var useRequestDataInterface = Expression.Call(
+                        Expression.Constant(requestDataInterface.Attr),
+                        requestDataInterface.Intf.GetMethod(GetRequestDataAsyncMethodName),
+                        controller);
+                    // We should await the call to GetRequestDataAsync.
+                    // For lack of a better way, call AwaitResult with a appropriate type parameter.
+                    var tryBlock = Expression.Call(
+                        AwaitResultMethod.MakeGenericMethod(requestDataInterface.Intf.GenericTypeArguments[1]),
+                        useRequestDataInterface);
+                    var catchBlock = Expression.Block(
+                        Expression.Return(
+                            returnTarget,
+                            Expression.Call(
+                                Expression.Constant(this),
+                                _onParameterConversionErrorAsyncMethod,
+                                contextInLambda,
+                                Expression.Constant(parameter.Name),
+                                exception,
+                                cancellationTokenInLambda)),
+                        Expression.Constant(
+                            parameterType.IsValueType ? Activator.CreateInstance(parameterType) : null,
+                            parameterType));
+
+                    handlerArguments.Add(Expression.TryCatch(tryBlock, Expression.Catch(exception, catchBlock)));
+                    continue;
+                }
+
+                // Check whether the name of the handler parameter matches the name of a route parameter.
                 var index = IndexOfRouteParameter(matcher, parameter.Name);
                 if (index >= 0)
                 {
-                    // The name of a route parameter matches the name of a handler parameter.
                     // Convert the parameter to the handler's parameter type.
                     // Do it inside a try / catch block.
                     // On exception call OnParameterConversionErrorAsync and return.
@@ -377,17 +435,16 @@ namespace EmbedIO.WebApi
                             parameterType));
 
                     handlerArguments.Add(Expression.TryCatch(tryBlock, Expression.Catch(exception, catchBlock)));
+                    continue;
                 }
-                else
-                {
-                    // No route parameter has the same name as a handler parameter.
-                    // Pass the default for the parameter type.
-                    handlerArguments.Add(Expression.Constant(parameter.HasDefaultValue
-                        ? parameter.DefaultValue
-                            : parameterType.IsValueType
-                            ? Activator.CreateInstance(parameterType)
-                            : null));
-                }
+
+                // No route parameter has the same name as a handler parameter.
+                // Pass the default for the parameter type.
+                handlerArguments.Add(Expression.Constant(parameter.HasDefaultValue
+                    ? parameter.DefaultValue
+                        : parameterType.IsValueType
+                        ? Activator.CreateInstance(parameterType)
+                        : null));
             }
 
             // Create the controller and initialize its properties
@@ -430,6 +487,7 @@ namespace EmbedIO.WebApi
             }
             else
             {
+                // This is an internal error, as the return type should have been checked earlier.
                 SelfCheck.Fail($"Controller method has unexpected return type {methodReturnType.FullName}");
             }
 
@@ -472,6 +530,8 @@ namespace EmbedIO.WebApi
                 cancellationTokenInLambda)
                 .Compile();
         }
+
+        private static T AwaitResult<T>(Task<T> task) => task.ConfigureAwait(false).GetAwaiter().GetResult();
 
         private async Task<bool> SerializeAsyncControllerResultAsync(
             IHttpContext context,
