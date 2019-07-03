@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EmbedIO
@@ -50,7 +51,7 @@ namespace EmbedIO
             if (Vary != null)
                 context.Response.Headers.Add(HttpHeaderNames.Vary, Vary);
 
-            return Task.CompletedTask;
+            return base.OnSendResponseAsync(context, cancellationToken);
         }
     }
 }

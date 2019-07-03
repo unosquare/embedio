@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EmbedIO
@@ -48,7 +49,7 @@ namespace EmbedIO
         protected override Task OnSendResponseAsync(IHttpContext context, CancellationToken cancellationToken)
         {
             context.Redirect(Location, StatusCode);
-            return Task.CompletedTask;
+            return base.OnSendResponseAsync(context, cancellationToken);
         }
     }
 }

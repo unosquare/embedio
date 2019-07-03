@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EmbedIO
@@ -45,7 +46,7 @@ namespace EmbedIO
             if (ContentLength.HasValue)
                 context.Response.Headers.Set(HttpHeaderNames.ContentRange, $"bytes */{ContentLength.Value}");
 
-            return Task.CompletedTask;
+            return base.OnSendResponseAsync(context, cancellationToken);
         }
     }
 }
