@@ -27,7 +27,7 @@ namespace EmbedIO.WebApi
         private static readonly MethodInfo AwaitResultMethod = typeof(WebApiModuleBase).GetMethod(nameof(AwaitResult), BindingFlags.Static | BindingFlags.NonPublic);
         private static readonly MethodInfo DisposeMethod = typeof(IDisposable).GetMethod(nameof(IDisposable.Dispose));
 
-        private static readonly string GetRequestDataAsyncMethodName = nameof(IRequestDataAttribute<WebApiController, string>.GetRequestDataAsync);
+        private static readonly string GetRequestDataAsyncMethodName = nameof(IRequestDataAttribute<WebApiController>.GetRequestDataAsync);
 
         private readonly MethodInfo _onParameterConversionErrorAsyncMethod;
         private readonly MethodInfo _serializeAsyncControllerResultAsyncMethod;
@@ -354,7 +354,7 @@ namespace EmbedIO.WebApi
                 var parameter = parameters[i];
                 var parameterType = parameter.ParameterType;
 
-                // First, check for request data interfaces in attributes
+                // First, check for generic request data interfaces in attributes
                 var requestDataInterfaces = parameter.GetCustomAttributes<Attribute>()
                         .Aggregate(new List<(Attribute Attr, Type Intf)>(), (list, attr) => {
                             list.AddRange(attr.GetType().GetInterfaces()
@@ -382,15 +382,17 @@ namespace EmbedIO.WebApi
                     // Do it inside a try / catch block.
                     // On exception call OnParameterConversionErrorAsync and return.
                     var exception = Expression.Variable(typeof(Exception), "exception");
-                    var useRequestDataInterface = Expression.Call(
+                    Expression useRequestDataInterface = Expression.Call(
                         Expression.Constant(requestDataInterface.Attr),
                         requestDataInterface.Intf.GetMethod(GetRequestDataAsyncMethodName),
                         controller);
+
                     // We should await the call to GetRequestDataAsync.
                     // For lack of a better way, call AwaitResult with a appropriate type parameter.
-                    var tryBlock = Expression.Call(
+                    useRequestDataInterface = Expression.Call(
                         AwaitResultMethod.MakeGenericMethod(requestDataInterface.Intf.GenericTypeArguments[1]),
                         useRequestDataInterface);
+
                     var catchBlock = Expression.Block(
                         Expression.Return(
                             returnTarget,
@@ -405,7 +407,67 @@ namespace EmbedIO.WebApi
                             parameterType.IsValueType ? Activator.CreateInstance(parameterType) : null,
                             parameterType));
 
-                    handlerArguments.Add(Expression.TryCatch(tryBlock, Expression.Catch(exception, catchBlock)));
+                    handlerArguments.Add(Expression.TryCatch(useRequestDataInterface, Expression.Catch(exception, catchBlock)));
+                    continue;
+                }
+
+                // Check for non-generic request data interfaces in attributes
+                requestDataInterfaces = parameter.GetCustomAttributes<Attribute>()
+                        .Aggregate(new List<(Attribute Attr, Type Intf)>(), (list, attr) => {
+                            list.AddRange(attr.GetType().GetInterfaces()
+                                .Where(x => x.IsConstructedGenericType
+                                         && x.GetGenericTypeDefinition() == typeof(IRequestDataAttribute<>))
+                                .Select(x => (attr, x)));
+
+                            return list;
+                        });
+
+                // If there are any...
+                if (requestDataInterfaces.Count > 0)
+                {
+                    // Take the first that applies to both controller and parameter type
+                    var requestDataInterface = requestDataInterfaces.FirstOrDefault(
+                        x => x.Intf.GenericTypeArguments[0].IsAssignableFrom(controllerType));
+
+                    // Throw if there are none, as the user expects data to be injected
+                    // but provided no way of injecting the right data type.
+                    if (requestDataInterface.Attr == null)
+                        throw new InvalidOperationException($"No request data attribute for parameter {parameter.Name} of method {controllerType.Name}.{method.Name} can provide the expected data type.");
+
+                    // Use the request data interface to get a value for the parameter.
+                    // Do it inside a try / catch block.
+                    // On exception call OnParameterConversionErrorAsync and return.
+                    var exception = Expression.Variable(typeof(Exception), "exception");
+                    Expression useRequestDataInterface = Expression.Call(
+                        Expression.Constant(requestDataInterface.Attr),
+                        requestDataInterface.Intf.GetMethod(GetRequestDataAsyncMethodName),
+                        controller,
+                        Expression.Constant(parameterType));
+
+                    // We should await the call to GetRequestDataAsync.
+                    // For lack of a better way, call AwaitResult with a appropriate type parameter.
+                    useRequestDataInterface = Expression.Call(
+                        AwaitResultMethod.MakeGenericMethod(typeof(object)),
+                        useRequestDataInterface);
+
+                    // Cast the obtained object to the type of the parameter.
+                    useRequestDataInterface = Expression.Convert(useRequestDataInterface, parameterType);
+
+                    var catchBlock = Expression.Block(
+                        Expression.Return(
+                            returnTarget,
+                            Expression.Call(
+                                Expression.Constant(this),
+                                _onParameterConversionErrorAsyncMethod,
+                                contextInLambda,
+                                Expression.Constant(parameter.Name),
+                                exception,
+                                cancellationTokenInLambda)),
+                        Expression.Constant(
+                            parameterType.IsValueType ? Activator.CreateInstance(parameterType) : null,
+                            parameterType));
+
+                    handlerArguments.Add(Expression.TryCatch(useRequestDataInterface, Expression.Catch(exception, catchBlock)));
                     continue;
                 }
 

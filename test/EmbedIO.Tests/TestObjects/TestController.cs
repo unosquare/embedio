@@ -18,7 +18,7 @@ namespace EmbedIO.Tests.TestObjects
         public object GetPeople() => PeopleRepository.Database;
 
         [Route(HttpVerbs.Post, "/regex")]
-        public async Task<object> PostPeople([JsonPerson] Person person) => person;
+        public async Task<object> PostPeople([JsonData] Person person) => person;
 
         [Route(HttpVerbs.Get, "/regex/{id}")]
         public object GetPerson(int id) => CheckPerson(id);
