@@ -45,7 +45,7 @@ namespace EmbedIO
         public string Vary { get; }
 
         /// <inheritdoc />
-        protected override Task OnSendResponseAsync(IHttpContext context)
+        protected override Task OnSendResponseAsync(IHttpContext context, CancellationToken cancellationToken)
         {
             if (Vary != null)
                 context.Response.Headers.Add(HttpHeaderNames.Vary, Vary);

@@ -293,7 +293,7 @@ namespace EmbedIO
                         $"[{context.Id}] HttpException: sending status code {ex.StatusCode}".Debug(LogSource);
                         try
                         {
-                            await ex.SendResponseAsync(context).ConfigureAwait(false);
+                            await ex.SendResponseAsync(context, cancellationToken).ConfigureAwait(false);
                         }
                         catch (Exception ex2)
                         {

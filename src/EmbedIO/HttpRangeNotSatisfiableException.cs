@@ -36,7 +36,7 @@ namespace EmbedIO
         public long? ContentLength { get; }
 
         /// <inheritdoc />
-        protected override Task OnSendResponseAsync(IHttpContext context)
+        protected override Task OnSendResponseAsync(IHttpContext context, CancellationToken cancellationToken)
         {
             // RFC 7233, Section 3.1: "When this status code is generated in response
             //                        to a byte-range request, the sender

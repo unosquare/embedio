@@ -45,7 +45,7 @@ namespace EmbedIO
         public string Location { get; }
 
         /// <inheritdoc />
-        protected override Task OnSendResponseAsync(IHttpContext context)
+        protected override Task OnSendResponseAsync(IHttpContext context, CancellationToken cancellationToken)
         {
             context.Redirect(Location, StatusCode);
             return Task.CompletedTask;
