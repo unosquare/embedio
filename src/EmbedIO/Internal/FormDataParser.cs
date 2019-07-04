@@ -7,7 +7,7 @@ namespace EmbedIO.Internal
     internal static class FormDataParser
     {
         // Parses form data from a request body.
-        internal static Dictionary<string, object> ParseAsDictionary(string requestBody)
+        internal static IReadOnlyDictionary<string, object> ParseAsDictionary(string requestBody)
         {
             // verify there is data to parse
             if (string.IsNullOrWhiteSpace(requestBody)) return null;

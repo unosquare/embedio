@@ -98,9 +98,9 @@ namespace EmbedIO
         /// <param name="this">The <see cref="IHttpContext"/> on which this method is called.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>A <see cref="Task{TResult}">Task</see>, representing the ongoing operation,
-        /// whose result will be a <see cref="Dictionary{TKey,TValue}">Dictionary</see> of form field names and values.</returns>
+        /// whose result will be an <see cref="IReadOnlyDictionary{TKey,TValue}"/> interface associating form field names with their values.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
-        public static Task<Dictionary<string, object>> GetRequestFormDataAsync(
+        public static async Task<IReadOnlyDictionary<string, object>> GetRequestFormDataAsync(
             this IHttpContext @this,
             CancellationToken cancellationToken)
             => RequestParser.UrlEncodedFormData(@this, cancellationToken);
