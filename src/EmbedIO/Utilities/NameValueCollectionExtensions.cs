@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 
@@ -9,6 +10,52 @@ namespace EmbedIO.Utilities
     /// </summary>
     public static class NameValueCollectionExtensions
     {
+        /// <summary>
+        /// <para>Converts a <see cref="NameValueCollection"/> to a dictionary of objects.</para>
+        /// <para>Values in the returned dictionary will wither be strings, or arrays of strings,
+        /// depending on the presence of multiple values for the same key in the collection.</para>
+        /// </summary>
+        /// <param name="this">The <see cref="NameValueCollection"/> on which this method is called.</param>
+        /// <returns>A <see cref="Dictionary{TKey,TValue}"/> associating the collection's keys
+        /// with their values.</returns>
+        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        public static Dictionary<string, object> ToDictionary(this NameValueCollection @this)
+            => @this.Keys.Cast<string>().ToDictionary(key => key, key => {
+                var values = @this.GetValues(key);
+                if (values == null)
+                    return null;
+
+                switch (values.Length)
+                {
+                    case 0:
+                        return null;
+                    case 1:
+                        return (object)values[0];
+                    default:
+                        return (object)values;
+                }
+            });
+
+        /// <summary>
+        /// Converts a <see cref="NameValueCollection"/> to a dictionary of strings.
+        /// </summary>
+        /// <param name="this">The <see cref="NameValueCollection"/> on which this method is called.</param>
+        /// <returns>A <see cref="Dictionary{TKey,TValue}"/> associating the collection's keys
+        /// with their values (or comma-separated lists in case of multiple values).</returns>
+        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        public static Dictionary<string, string> ToStringDictionary(this NameValueCollection @this)
+            => @this.Keys.Cast<string>().ToDictionary(key => key, @this.Get);
+
+        /// <summary>
+        /// Converts a <see cref="NameValueCollection"/> to a dictionary of arrays of strings.
+        /// </summary>
+        /// <param name="this">The <see cref="NameValueCollection"/> on which this method is called.</param>
+        /// <returns>A <see cref="Dictionary{TKey,TValue}"/> associating the collection's keys
+        /// with arrays of their values.</returns>
+        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        public static Dictionary<string, string[]> ToArrayDictionary(this NameValueCollection @this)
+            => @this.Keys.Cast<string>().ToDictionary(key => key, @this.GetValues);
+
         /// <summary>
         /// Determines whether a <see cref="NameValueCollection"/> contains one or more values
         /// for the specified <paramref name="key"/>.
