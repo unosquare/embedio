@@ -114,10 +114,13 @@ namespace EmbedIO
         {
             if (!@this.Items.TryGetValue(FormDataKey, out var previousResult))
             {
-                IReadOnlyDictionary<string, object> result = null;
+                IReadOnlyDictionary<string, object> result;
                 try
                 {
-                    result = await RequestParser.UrlEncodedFormData(@this, cancellationToken).ConfigureAwait(false);
+                    using (var reader = @this.OpenRequestText())
+                    {
+                        result = FormDataParser.ParseAsDictionary(await reader.ReadToEndAsync().ConfigureAwait(false));
+                    }
                 }
                 catch (Exception e)
                 {
