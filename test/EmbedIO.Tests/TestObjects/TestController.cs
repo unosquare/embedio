@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,7 +13,7 @@ namespace EmbedIO.Tests.TestObjects
         public const string EchoPath = "echo";
 
         [Route(HttpVerbs.Get, "/empty")]
-        public object GetEmpty() => new { Ok = true };
+        public void GetEmpty() { }
 
         [Route(HttpVerbs.Get, "/regex")]
         public object GetPeople() => PeopleRepository.Database;

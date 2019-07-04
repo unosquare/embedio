@@ -18,6 +18,21 @@ namespace EmbedIO.Tests
         {
         }
 
+        public class HttpGet : WebApiModuleTest
+        {
+            [Test]
+            public async Task EmptyResponse_ReturnsOk()
+            {
+                using (var client = new HttpClient())
+                {
+                    var response = await client.GetAsync(WebServerUrl + "/api/empty");
+
+                    Assert.IsNotNull(response);
+                    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                }
+            }
+        }
+
         public class HttpPost : WebApiModuleTest
         {
             [Test]
@@ -119,14 +134,6 @@ namespace EmbedIO.Tests
 
         public class GetJsonData : WebApiModuleTest
         {
-            [Test]
-            public async Task WithoutRegex_ReturnsOk()
-            {
-                var jsonString = await GetString("/api/empty");
-
-                Assert.IsNotEmpty(jsonString);
-            }
-
             [Test]
             public async Task WithRegexId_ReturnsOk()
             {

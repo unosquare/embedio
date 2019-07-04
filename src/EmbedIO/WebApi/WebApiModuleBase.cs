@@ -25,6 +25,7 @@ namespace EmbedIO.WebApi
         private static readonly MethodInfo RouteSetter = typeof(WebApiController).GetProperty(nameof(WebApiController.Route)).GetSetMethod(true);
         private static readonly MethodInfo CancellationTokenSetter = typeof(WebApiController).GetProperty(nameof(WebApiController.CancellationToken)).GetSetMethod(true);
         private static readonly MethodInfo AwaitResultMethod = typeof(WebApiModuleBase).GetMethod(nameof(AwaitResult), BindingFlags.Static | BindingFlags.NonPublic);
+        private static readonly MethodInfo TaskToBoolTaskMethod = typeof(WebApiModuleBase).GetMethod(nameof(TaskToBoolTask), BindingFlags.Static | BindingFlags.NonPublic);
         private static readonly MethodInfo DisposeMethod = typeof(IDisposable).GetMethod(nameof(IDisposable.Dispose));
 
         private static readonly string GetRequestDataAsyncMethodName = nameof(IRequestDataAttribute<WebApiController>.GetRequestDataAsync);
@@ -320,6 +321,8 @@ namespace EmbedIO.WebApi
         //   - if bool         - returns Task.FromResult<bool>(result);
         //   - if Task<object> - returns SerializeAsyncControllerResultAsync(context, result, cancellationToken);
         //   - if object       - returns SerializeNonAsyncControllerResultAsync(context, result, cancellationToken);
+        //   - if Task         - returns TaskToBoolTask(result);
+        //   - if void         - returns Task.FromResult(true);
         // - if the controller implements IDisposable, disposes it.
         private RouteHandler<IHttpContext> CompileHandler(Expression factoryExpression, MethodInfo method, string route)
         {
@@ -516,7 +519,7 @@ namespace EmbedIO.WebApi
             bodyContents.Add(Expression.Call(controller, CancellationTokenSetter, cancellationTokenInLambda));
 
             // Build the handler method call
-            var callMethod = Expression.Call(controller, method, handlerArguments);
+            Expression callMethod = Expression.Call(controller, method, handlerArguments);
             var methodReturnType = method.ReturnType;
             if (methodReturnType == typeof(Task<bool>))
             {
@@ -546,6 +549,18 @@ namespace EmbedIO.WebApi
                     contextInLambda,
                     callMethod,
                     cancellationTokenInLambda);
+            }
+            else if (methodReturnType == typeof(Task))
+            {
+                // Await task and return true
+                callMethod = Expression.Call(Expression.Constant(this), TaskToBoolTaskMethod, callMethod);
+            }
+            else if (methodReturnType == typeof(void))
+            {
+                // Call method and return true
+                callMethod = Expression.Block(
+                    callMethod,
+                    Expression.Call(TaskFromResultBoolMethod, Expression.Constant(true)));
             }
             else
             {
@@ -594,6 +609,12 @@ namespace EmbedIO.WebApi
         }
 
         private static T AwaitResult<T>(Task<T> task) => task.ConfigureAwait(false).GetAwaiter().GetResult();
+
+        private static async Task<bool> TaskToBoolTask(Task result)
+        {
+            await result.ConfigureAwait(false);
+            return true;
+        }
 
         private async Task<bool> SerializeAsyncControllerResultAsync(
             IHttpContext context,
@@ -647,7 +668,9 @@ namespace EmbedIO.WebApi
                 => type == typeof(bool)
                 || type == typeof(Task<bool>)
                 || type == typeof(object)
-                || type == typeof(Task<object>);
+                || type == typeof(Task<object>)
+                || type == typeof(void)
+                || type == typeof(Task);
 
             var methods = controllerType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .Where(m => !m.ContainsGenericParameters && IsValidReturnType(m.ReturnType));
