@@ -39,22 +39,22 @@ namespace EmbedIO.WebApi
         /// <summary>
         /// Gets the HTTP request.
         /// </summary>
-        protected IHttpRequest Request => HttpContext.Request;
+        public IHttpRequest Request => HttpContext.Request;
 
         /// <summary>
         /// Gets the HTTP response object.
         /// </summary>
-        protected IHttpResponse Response => HttpContext.Response;
+        public IHttpResponse Response => HttpContext.Response;
 
         /// <summary>
         /// Gets the user.
         /// </summary>
-        protected IPrincipal User => HttpContext.User;
+        public IPrincipal User => HttpContext.User;
 
         /// <summary>
         /// Gets the session proxy associated with the HTTP context.
         /// </summary>
-        protected ISessionProxy Session => HttpContext.Session;
+        public ISessionProxy Session => HttpContext.Session;
 
         /// <summary>
         /// <para>This method is meant to be called internally by EmbedIO.</para>
