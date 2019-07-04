@@ -11,6 +11,19 @@ namespace EmbedIO.Utilities
     {
         /// <summary>
         /// Determines whether a <see cref="NameValueCollection"/> contains one or more values
+        /// for the specified <paramref name="key"/>.
+        /// </summary>
+        /// <param name="this">The <see cref="NameValueCollection"/> on which this method is called.</param>
+        /// <param name="key">The key to look for.</param>
+        /// <returns><see langword="true"/> if at least one value for <paramref name="key"/>
+        /// is present in the collection; otherwise, <see langword="false"/>.
+        /// </returns>
+        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        public static bool ContainsKey(this NameValueCollection @this, string key)
+            => @this.Keys.Cast<string>().Contains(key);
+
+        /// <summary>
+        /// Determines whether a <see cref="NameValueCollection"/> contains one or more values
         /// for the specified <paramref name="name"/>, at least one of which is equal to the specified
         /// <paramref name="value"/>. Value comparisons are carried out using the 
         /// <see cref="StringComparison.OrdinalIgnoreCase"/> comparison type.
