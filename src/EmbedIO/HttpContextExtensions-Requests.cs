@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Internal;
 using EmbedIO.Utilities;
 
 namespace EmbedIO
 {
     partial class HttpContextExtensions
     {
+        private static readonly object FormDataKey = new object();
+
         /// <summary>
         /// Asynchronously retrieves the request body as an array of <see langword="byte"/>s.
         /// </summary>
@@ -100,9 +104,48 @@ namespace EmbedIO
         /// <returns>A <see cref="Task{TResult}">Task</see>, representing the ongoing operation,
         /// whose result will be an <see cref="IReadOnlyDictionary{TKey,TValue}"/> interface associating form field names with their values.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// <para>This method may safely be called more than once for the same <see cref="IHttpContext"/>:
+        /// it will return the same dictionary instead of trying to parse the request body again.</para>
+        /// </remarks>
         public static async Task<IReadOnlyDictionary<string, object>> GetRequestFormDataAsync(
             this IHttpContext @this,
             CancellationToken cancellationToken)
-            => RequestParser.UrlEncodedFormData(@this, cancellationToken);
+        {
+            if (!@this.Items.TryGetValue(FormDataKey, out var previousResult))
+            {
+                IReadOnlyDictionary<string, object> result = null;
+                try
+                {
+                    result = await RequestParser.UrlEncodedFormData(@this, cancellationToken).ConfigureAwait(false);
+                }
+                catch (Exception e)
+                {
+                    @this.Items[FormDataKey] = e;
+                    throw;
+                }
+
+                @this.Items[FormDataKey] = result;
+                return result;
+            }
+
+            switch (previousResult)
+            {
+                case IReadOnlyDictionary<string, object> dictionary:
+                    return dictionary;
+
+                case Exception exception:
+                    ExceptionDispatchInfo.Capture(exception).Throw();
+                    return null;
+
+                case null:
+                    SelfCheck.Fail($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestFormDataAsync)} is null.");
+                    return null;
+
+                default:
+                    SelfCheck.Fail($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestFormDataAsync)} is of unexpected type: {previousResult.GetType().FullName}");
+                    return null;
+            }
+        }
     }
 }
