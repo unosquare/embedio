@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Runtime.ExceptionServices;
 using System.Threading;
@@ -102,24 +103,24 @@ namespace EmbedIO
         /// <param name="this">The <see cref="IHttpContext"/> on which this method is called.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>A <see cref="Task{TResult}">Task</see>, representing the ongoing operation,
-        /// whose result will be an <see cref="IReadOnlyDictionary{TKey,TValue}"/> interface associating form field names with their values.</returns>
+        /// whose result will be a read-only <see cref="NameValueCollection"/>of form field names and values.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <remarks>
         /// <para>This method may safely be called more than once for the same <see cref="IHttpContext"/>:
-        /// it will return the same dictionary instead of trying to parse the request body again.</para>
+        /// it will return the same collection instead of trying to parse the request body again.</para>
         /// </remarks>
-        public static async Task<IReadOnlyDictionary<string, object>> GetRequestFormDataAsync(
+        public static async Task<NameValueCollection> GetRequestFormDataAsync(
             this IHttpContext @this,
             CancellationToken cancellationToken)
         {
             if (!@this.Items.TryGetValue(FormDataKey, out var previousResult))
             {
-                IReadOnlyDictionary<string, object> result;
+                NameValueCollection result;
                 try
                 {
                     using (var reader = @this.OpenRequestText())
                     {
-                        result = FormDataParser.ParseAsDictionary(await reader.ReadToEndAsync().ConfigureAwait(false));
+                        result = FormDataParser.Parse(await reader.ReadToEndAsync().ConfigureAwait(false));
                     }
                 }
                 catch (Exception e)
@@ -134,8 +135,8 @@ namespace EmbedIO
 
             switch (previousResult)
             {
-                case IReadOnlyDictionary<string, object> dictionary:
-                    return dictionary;
+                case NameValueCollection collection:
+                    return collection;
 
                 case Exception exception:
                     ExceptionDispatchInfo.Capture(exception).Throw();
@@ -146,7 +147,7 @@ namespace EmbedIO
                     return null;
 
                 default:
-                    SelfCheck.Fail($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestFormDataAsync)} is of unexpected type: {previousResult.GetType().FullName}");
+                    SelfCheck.Fail($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestFormDataAsync)} is of unexpected type {previousResult.GetType().FullName}");
                     return null;
             }
         }

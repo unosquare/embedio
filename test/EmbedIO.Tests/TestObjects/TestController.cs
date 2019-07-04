@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using EmbedIO.Routing;
+using EmbedIO.Utilities;
 using EmbedIO.WebApi;
 
 namespace EmbedIO.Tests.TestObjects
@@ -48,7 +50,8 @@ namespace EmbedIO.Tests.TestObjects
         }
 
         [Route(HttpVerbs.Post, "/" + EchoPath)]
-        public async Task<object> PostEcho([FormData] Dictionary<string, object> data) => data;
+        public object PostEcho([FormData] NameValueCollection data)
+            => data.ToDictionary();
 
         private object CheckPerson(int id)
             =>PeopleRepository.Database.FirstOrDefault(p => p.Key == id)

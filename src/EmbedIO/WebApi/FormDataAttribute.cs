@@ -1,21 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Threading.Tasks;
 
 namespace EmbedIO.WebApi
 {
     /// <summary>
-    /// Specified that a parameter of a controller method will receive an <see cref="IReadOnlyDictionary{TKey,TValue}"/>
-    /// of HTML form data, obtained by deserializing a request body with a content type of <c>application/x-www-form-urlencoded</c>.
-    /// This class cannot be inherited.
+    /// <para>Specified that a parameter of a controller method will receive a <see cref="NameValueCollection"/>
+    /// of HTML form data, obtained by deserializing a request body with a content type
+    /// of <c>application/x-www-form-urlencoded</c>.</para>
+    /// <para>The received collection will be read-only.</para>
+    /// <para>This class cannot be inherited.</para>
     /// </summary>
     /// <seealso cref="Attribute" />
     /// <seealso cref="IRequestDataAttribute{TController,TData}" />
     [AttributeUsage(AttributeTargets.Parameter)]
-    public sealed class FormDataAttribute : Attribute, IRequestDataAttribute<WebApiController, IReadOnlyDictionary<string, object>>
+    public sealed class FormDataAttribute : Attribute, IRequestDataAttribute<WebApiController, NameValueCollection>
     {
         /// <inheritdoc />
-        public Task<IReadOnlyDictionary<string, object>> GetRequestDataAsync(WebApiController controller)
+        public Task<NameValueCollection> GetRequestDataAsync(WebApiController controller)
             => controller.HttpContext.GetRequestFormDataAsync(controller.CancellationToken);
     }
 }

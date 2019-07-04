@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using EmbedIO.Routing;
+using EmbedIO.Utilities;
 using EmbedIO.WebApi;
 using Unosquare.Tubular;
 using Unosquare.Tubular.ObjectModel;
@@ -52,6 +54,8 @@ namespace EmbedIO.Samples
 
         // Echoes request form data in JSON format.
         [Route(HttpVerbs.Post, "/echo")]
-        public object Echo([FormData] Dictionary<string, object> formData) => formData;
+        public object Echo([FormData] NameValueCollection data)
+            => data.ToDictionary();
+
     }
 }
