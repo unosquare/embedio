@@ -279,7 +279,7 @@ namespace EmbedIO.Tests
                 using (var client = new HttpClient())
                 {
                     var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
-                    string eTag;
+                    string entityTag;
 
                     using (var response = await client.SendAsync(request))
                     {
@@ -287,11 +287,11 @@ namespace EmbedIO.Tests
 
                         // Can't use response.Headers.Etag, it's always null
                         Assert.NotNull(response.Headers.FirstOrDefault(x => x.Key == "ETag"), "ETag is not null");
-                        eTag = response.Headers.First(x => x.Key == "ETag").Value.First();
+                        entityTag = response.Headers.First(x => x.Key == "ETag").Value.First();
                     }
 
                     var secondRequest = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
-                    secondRequest.Headers.TryAddWithoutValidation(HttpHeaderNames.IfNoneMatch, eTag);
+                    secondRequest.Headers.TryAddWithoutValidation(HttpHeaderNames.IfNoneMatch, entityTag);
 
                     using (var response = await client.SendAsync(secondRequest))
                     {
