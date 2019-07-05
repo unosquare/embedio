@@ -13,6 +13,7 @@ namespace EmbedIO
     partial class HttpContextExtensions
     {
         private static readonly object FormDataKey = new object();
+        private static readonly object QueryDataKey = new object();
 
         /// <summary>
         /// Asynchronously retrieves the request body as an array of <see langword="byte"/>s.
@@ -148,6 +149,56 @@ namespace EmbedIO
 
                 default:
                     SelfCheck.Fail($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestFormDataAsync)} is of unexpected type {previousResult.GetType().FullName}");
+                    return null;
+            }
+        }
+
+        /// <summary>
+        /// Parses a request URL query. Note that this is different from getting the <see cref="IHttpRequest.QueryString"/> property,
+        /// in that fields without an equal sign are treated as if they have an empty value, instead of their keys being grouped
+        /// as values of the <c>null</c> key.
+        /// </summary>
+        /// <param name="this">The <see cref="IHttpContext"/> on which this method is called.</param>
+        /// <returns>A read-only <see cref="NameValueCollection"/>.</returns>
+        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// <para>This method may safely be called more than once for the same <see cref="IHttpContext"/>:
+        /// it will return the same collection instead of trying to parse the request body again.</para>
+        /// </remarks>
+        public static NameValueCollection GetRequestQueryData(this IHttpContext @this)
+        {
+            if (!@this.Items.TryGetValue(QueryDataKey, out var previousResult))
+            {
+                NameValueCollection result;
+                try
+                {
+                    result = UrlEncodedDataParser.Parse(@this.Request.Url.Query);
+                }
+                catch (Exception e)
+                {
+                    @this.Items[FormDataKey] = e;
+                    throw;
+                }
+
+                @this.Items[FormDataKey] = result;
+                return result;
+            }
+
+            switch (previousResult)
+            {
+                case NameValueCollection collection:
+                    return collection;
+
+                case Exception exception:
+                    ExceptionDispatchInfo.Capture(exception).Throw();
+                    return null;
+
+                case null:
+                    SelfCheck.Fail($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestQueryData)} is null.");
+                    return null;
+
+                default:
+                    SelfCheck.Fail($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestQueryData)} is of unexpected type {previousResult.GetType().FullName}");
                     return null;
             }
         }
