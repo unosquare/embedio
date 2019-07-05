@@ -21,6 +21,16 @@ namespace EmbedIO
         string BaseUrlPath { get; }
 
         /// <summary>
+        /// <para>Gets or sets a callback that is called every time an unhandled exception
+        /// occurs during the processing of a request.</para>
+        /// <para>If this property is <see langword="null"/> (the default),
+        /// the exception will be handled by the web server, or by the containing
+        /// <see cref="ModuleGroup"/>.</para>
+        /// </summary>
+        /// <seealso cref="ExceptionHandler"/>
+        ExceptionHandlerCallback OnUnhandledException { get; set; }
+
+        /// <summary>
         /// Signals a module that the web server is starting.
         /// </summary>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to stop the web server.</param>
@@ -41,15 +51,5 @@ namespace EmbedIO
         /// slash (<c>/</c>) character.</para>
         /// </remarks>
         Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// <para>Gets or sets a callback that is called every time an unhandled exception
-        /// occurs during the processing of a request.</para>
-        /// <para>If this property is <see langword="null"/> (the default),
-        /// the exception will be handled by the web server, or by the containing
-        /// <see cref="ModuleGroup"/>.</para>
-        /// </summary>
-        /// <seealso cref="ExceptionHandler"/>
-        ExceptionHandlerCallback OnUnhandledException { get; set; }
     }
 }

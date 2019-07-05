@@ -76,7 +76,7 @@ namespace EmbedIO.Utilities
 
         private async Task ActionLoop()
         {
-            for (;;)
+            for (; ; )
             {
                 try
                 {

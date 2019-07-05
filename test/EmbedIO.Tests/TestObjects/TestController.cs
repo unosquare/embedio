@@ -15,7 +15,9 @@ namespace EmbedIO.Tests.TestObjects
         public const string QueryFieldTestPath = "testQueryField";
 
         [Route(HttpVerbs.Get, "/empty")]
-        public void GetEmpty() { }
+        public void GetEmpty()
+        {
+        }
 
         [Route(HttpVerbs.Get, "/regex")]
         public object GetPeople() => PeopleRepository.Database;

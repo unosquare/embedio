@@ -263,8 +263,8 @@ namespace EmbedIO.Tests
                             Assert.AreEqual(Resources.Index, html);
 
                             // TODO: I need to fix this
-                            //Assert.IsTrue(response.ContentEncoding.ToLower().Contains("gzip"), "Request is gziped");
-                            //var responseStream = new GZipStream(response.GetResponseStream(), CompressionMode.Decompress);
+                            // Assert.IsTrue(response.ContentEncoding.ToLower().Contains("gzip"), "Request is gziped");
+                            // var responseStream = new GZipStream(response.GetResponseStream(), CompressionMode.Decompress);
                         }
                     }
                 }

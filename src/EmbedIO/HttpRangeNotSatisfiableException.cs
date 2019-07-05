@@ -8,7 +8,9 @@ namespace EmbedIO
     /// When thrown, breaks the request handling control flow
     /// and sends a redirection response to the client.
     /// </summary>
+#pragma warning disable CA1032 // Implement standard exception constructors - they have no meaning here.
     public class HttpRangeNotSatisfiableException : HttpException
+#pragma warning restore CA1032
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpRangeNotSatisfiableException"/> class.

@@ -224,7 +224,7 @@ namespace EmbedIO.Net.Internal
         /// <summary>
         /// Gets the client certificate.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The client certificate.</returns>
         public X509Certificate2 GetClientCertificate() => _context.Connection.ClientCertificate;
 
         internal void SetRequestLine(string req)

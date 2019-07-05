@@ -4,12 +4,13 @@ using System.Collections.Generic;
 
 namespace EmbedIO
 {
-    /// <inheritdoc />
     /// <summary>
     /// Interface for Cookie Collection.
     /// </summary>
     /// <seealso cref="ICollection" />
+#pragma warning disable CA1010 // Should implement ICollection<Cookie> - not possible when wrapping System.Net.CookieCollection.
     public interface ICookieCollection : IEnumerable<Cookie>, ICollection
+#pragma warning restore CA1010
     {
         /// <summary>
         /// Gets the <see cref="Cookie"/> with the specified name.

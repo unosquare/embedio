@@ -5,7 +5,9 @@ namespace EmbedIO.WebSockets
     /// <summary>
     /// The exception that is thrown when a <see cref="Internal.WebSocket"/> gets a fatal error.
     /// </summary>
+#pragma warning disable CA1032 // Implement standard exception constructors - this class doesn't need public constructors.
     public class WebSocketException : Exception
+#pragma warning restore CA1032
     {
         internal WebSocketException(string message = null) 
             : this(CloseStatusCode.Abnormal, message)

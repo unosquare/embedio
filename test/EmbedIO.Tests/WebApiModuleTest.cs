@@ -119,15 +119,15 @@ namespace EmbedIO.Tests
 
         public class FormData : WebApiModuleTest
         {
-            [TestCase("id", "id")]
-            [TestCase("id[0]", "id[1]")]
+            [TestCase("Id", "Id")]
+            [TestCase("Id[0]", "Id[1]")]
             public async Task MultipleIndexedValues_ReturnsOk(string label1, string label2)
             {
                 using (var webClient = new HttpClient())
                 {
                     var content = new[]
                     {
-                        new KeyValuePair<string, string>("test", "data"),
+                        new KeyValuePair<string, string>("Test", "data"),
                         new KeyValuePair<string, string>(label1, "1"),
                         new KeyValuePair<string, string>(label2, "2"),
                     };
@@ -139,9 +139,9 @@ namespace EmbedIO.Tests
                     var data = await result.Content.ReadAsStringAsync();
                     var obj = Json.Deserialize<FormDataSample>(data);
                     Assert.IsNotNull(obj);
-                    Assert.AreEqual(content.First().Value, obj.test);
-                    Assert.AreEqual(2, obj.id.Count);
-                    Assert.AreEqual(content.Last().Value, obj.id.Last());
+                    Assert.AreEqual(content.First().Value, obj.Test);
+                    Assert.AreEqual(2, obj.Id.Count);
+                    Assert.AreEqual(content.Last().Value, obj.Id.Last());
                 }
             }
 
@@ -152,8 +152,8 @@ namespace EmbedIO.Tests
                 {
                     var content = new[]
                     {
-                        new KeyValuePair<string, string>("test", "data"),
-                        new KeyValuePair<string, string>("id", "1"),
+                        new KeyValuePair<string, string>("Test", "data"),
+                        new KeyValuePair<string, string>("Id", "1"),
                     };
 
                     var formContent = new FormUrlEncodedContent(content);
@@ -174,8 +174,8 @@ namespace EmbedIO.Tests
 
         internal class FormDataSample
         {
-            public string test { get; set; }
-            public List<string> id { get; set; }
+            public string Test { get; set; }
+            public List<string> Id { get; set; }
         }
 
         public class GetJsonData : WebApiModuleTest

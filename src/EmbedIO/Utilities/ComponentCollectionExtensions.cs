@@ -10,10 +10,11 @@ namespace EmbedIO.Utilities
         /// <summary>
         /// Adds the specified component to a collection, without giving it a name.
         /// </summary>
-        /// <param name="this">The <see cref="IComponentCollection{T}"/> on which this method is called.</param>
+        /// <typeparam name="T">The type of components in the collection.</typeparam>
+        /// <param name="this">The <see cref="IComponentCollection{T}" /> on which this method is called.</param>
         /// <param name="component">The component to add.</param>
-        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
-        /// <seealso cref="IComponentCollection{T}.Add"/>
+        /// <exception cref="NullReferenceException"><paramref name="this" /> is <see langword="null" />.</exception>
+        /// <seealso cref="IComponentCollection{T}.Add" />
         public static void Add<T>(this IComponentCollection<T> @this, T component) => @this.Add(null, component);
     }
 }
