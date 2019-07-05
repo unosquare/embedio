@@ -24,9 +24,10 @@ namespace EmbedIO.WebApi
         /// Initializes a new instance of the <see cref="FormFieldAttribute"/> class.
         /// </summary>
         /// <param name="fieldName">The name of the form field to extract.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="fieldName"/> is <see langword="null"/>.</exception>
         public FormFieldAttribute(string fieldName)
         {
-            FieldName = Validate.NotNullOrEmpty(nameof(fieldName), fieldName);
+            FieldName = Validate.NotNull(nameof(fieldName), fieldName);
         }
 
         /// <summary>
