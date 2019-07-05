@@ -120,7 +120,7 @@ namespace EmbedIO
                 {
                     using (var reader = @this.OpenRequestText())
                     {
-                        result = FormDataParser.Parse(await reader.ReadToEndAsync().ConfigureAwait(false));
+                        result = UrlEncodedDataParser.Parse(await reader.ReadToEndAsync().ConfigureAwait(false));
                     }
                 }
                 catch (Exception e)

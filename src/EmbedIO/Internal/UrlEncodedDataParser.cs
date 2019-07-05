@@ -3,26 +3,37 @@ using System.Collections.Specialized;
 
 namespace EmbedIO.Internal
 {
-    internal static class FormDataParser
+    internal static class UrlEncodedDataParser
     {
         // Parses form data from a request body.
-        internal static NameValueCollection Parse(string requestBody)
+        internal static NameValueCollection Parse(string source)
         {
             var result = new LockableNameValueCollection();
 
-            // Verify there is data to parse
-            if (requestBody == null)
-                return null;
+            // Verify there is data to parse; otherwise, return an empty collection.
+            if (source == null)
+            {
+                result.MakeReadOnly();
+                return result;
+            }
 
-            var length = requestBody.Length;
-            var kvpPos = 0;
+            var length = source.Length;
+            if (length == 0)
+            {
+                result.MakeReadOnly();
+                return result;
+            }
+
+            // If source is the Query property of a Uri, it can start with a question mark,
+            // that we better skip.
+            var kvpPos = source[0] == '?' ? 1 : 0;
             while (kvpPos < length)
             {
-                var separatorPos = requestBody.IndexOf('&', kvpPos);
+                var separatorPos = source.IndexOf('&', kvpPos);
                 if (separatorPos < 0)
                     separatorPos = length;
 
-                var kvp = requestBody.Substring(kvpPos, separatorPos - kvpPos);
+                var kvp = source.Substring(kvpPos, separatorPos - kvpPos);
 
                 // We don't want empty KVPs
                 if (kvp.Length == 0)
@@ -37,7 +48,7 @@ namespace EmbedIO.Internal
                 if (equalPos < 0)
                 {
                     key = kvp;
-                    value = null;
+                    value = string.Empty;
                 }
                 else
                 {
@@ -54,8 +65,7 @@ namespace EmbedIO.Internal
                     key = key.Substring(0, bracketPos);
 
                 // Decode the value.
-                if (value != null)
-                    value = System.Net.WebUtility.UrlDecode(value);
+                value = System.Net.WebUtility.UrlDecode(value);
 
                 // Add the KVP to the collection.
                 result.Add(key, value);
