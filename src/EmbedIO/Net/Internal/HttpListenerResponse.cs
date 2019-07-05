@@ -19,7 +19,7 @@ namespace EmbedIO.Net.Internal
         private long _contentLength;
         private bool _clSet;
         private string _contentType;
-        private CookieCollection _cookies;
+        private CookieList _cookies;
         private bool _keepAlive = true;
         private ResponseStream _outputStream;
         private int _statusCode = 200;
@@ -152,9 +152,9 @@ namespace EmbedIO.Net.Internal
         /// <inheritdoc />
         public string StatusDescription { get; set; } = "OK";
 
-        internal CookieCollection CookieCollection
+        internal CookieList CookieCollection
         {
-            get => _cookies ?? (_cookies = new CookieCollection());
+            get => _cookies ?? (_cookies = new CookieList());
             set => _cookies = value;
         }
 
@@ -183,7 +183,7 @@ namespace EmbedIO.Net.Internal
             }
             else
             {
-                _cookies = new CookieCollection();
+                _cookies = new CookieList();
             }
 
             _cookies.Add(cookie);
@@ -336,7 +336,7 @@ namespace EmbedIO.Net.Internal
 
             if (Headers.AllKeys.Contains(HttpHeaderNames.SetCookie))
             {
-                foreach (var cookie in CookieCollection.ParseResponse(Headers[HttpHeaderNames.SetCookie]))
+                foreach (var cookie in CookieList.Parse(Headers[HttpHeaderNames.SetCookie]))
                     sb.AppendFormat(CultureInfo.InvariantCulture, "Set-Cookie: {0}\r\n", CookieToClientString(cookie));
             }
 

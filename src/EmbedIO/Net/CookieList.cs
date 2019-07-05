@@ -6,19 +6,24 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using EmbedIO.Internal;
+using EmbedIO.Net.Internal;
 
-namespace EmbedIO.Net.Internal
+namespace EmbedIO.Net
 {
     /// <summary>
-    /// Represents Cookie collection.
+    /// <para>Provides a collection container for instances of <see cref="Cookie"/>.</para>
+    /// <para>This class is meant to be used internally by EmbedIO; you don't need to
+    /// use this class directly.</para>
     /// </summary>
-    public sealed class CookieCollection : List<Cookie>, ICookieCollection
+#pragma warning disable CA1710 // Rename class to end in 'Collection' - it ends in 'List', i.e. 'Indexed Collection'.
+    public sealed class CookieList : List<Cookie>, ICookieCollection
+#pragma warning restore CA1710
     {
         /// <inheritdoc />
         public bool IsSynchronized => false;
 
         /// <inheritdoc />
-        public object SyncRoot => ((ICollection) this).SyncRoot;
+        public object SyncRoot => ((ICollection)this).SyncRoot;
 
         /// <inheritdoc />
         public Cookie this[string name]
@@ -39,66 +44,17 @@ namespace EmbedIO.Net.Internal
             }
         }
 
-        /// <inheritdoc />
-        public new void Add(Cookie cookie)
+        /// <summary>Creates a <see cref="CookieList"/> by parsing
+        /// the value of one or more <c>Cookie</c> or <c>Set-Cookie</c> headers.</summary>
+        /// <param name="headerValue">The value, or comma-separated list of values,
+        /// of the header or headers.</param>
+        /// <returns>A newly-created instance of <see cref="CookieList"/>.</returns>
+        public static CookieList Parse(string headerValue)
         {
-            if (cookie == null)
-                throw new ArgumentNullException(nameof(cookie));
-
-            var pos = SearchCookie(cookie);
-            if (pos == -1)
-            {
-                base.Add(cookie);
-                return;
-            }
-
-            this[pos] = cookie;
-        }
-
-        /// <inheritdoc />
-        public void CopyTo(Array array, int index)
-        {
-            if (array == null)
-                throw new ArgumentNullException(nameof(array));
-
-            if (index < 0)
-                throw new ArgumentOutOfRangeException(nameof(index), "Less than zero.");
-
-            if (array.Rank > 1)
-                throw new ArgumentException("Multidimensional.", nameof(array));
-
-            if (array.Length - index < Count)
-            {
-                throw new ArgumentException(
-                    "The number of elements in this collection is greater than the available space of the destination array.");
-            }
-
-            if (array.GetType().GetElementType()?.IsAssignableFrom(typeof(Cookie)) != true)
-            {
-                throw new InvalidCastException(
-                    "The elements in this collection cannot be cast automatically to the type of the destination array.");
-            }
-
-            ((IList) this).CopyTo(array, index);
-        }
-
-        internal static string GetValue(string nameAndValue, bool unquote = false)
-        {
-            var idx = nameAndValue.IndexOf('=');
-
-            if (idx < 0 || idx == nameAndValue.Length - 1)
-                return null;
-
-            var val = nameAndValue.Substring(idx + 1).Trim();
-            return unquote ? val.Unquote() : val;
-        }
-
-        internal static CookieCollection ParseResponse(string value)
-        {
-            var cookies = new CookieCollection();
+            var cookies = new CookieList();
 
             Cookie cookie = null;
-            var pairs = SplitCookieHeaderValue(value);
+            var pairs = SplitCookieHeaderValue(headerValue);
 
             for (var i = 0; i < pairs.Length; i++)
             {
@@ -118,7 +74,7 @@ namespace EmbedIO.Net.Internal
 
                     if (!DateTime.TryParseExact(
                         buff.ToString(),
-                        new[] {"ddd, dd'-'MMM'-'yyyy HH':'mm':'ss 'GMT'", "r"},
+                        new[] { "ddd, dd'-'MMM'-'yyyy HH':'mm':'ss 'GMT'", "r" },
                         new CultureInfo("en-US"),
                         DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal,
                         out var expires))
@@ -180,6 +136,60 @@ namespace EmbedIO.Net.Internal
                 cookies.Add(cookie);
 
             return cookies;
+        }
+
+        /// <inheritdoc />
+        public new void Add(Cookie cookie)
+        {
+            if (cookie == null)
+                throw new ArgumentNullException(nameof(cookie));
+
+            var pos = SearchCookie(cookie);
+            if (pos == -1)
+            {
+                base.Add(cookie);
+                return;
+            }
+
+            this[pos] = cookie;
+        }
+
+        /// <inheritdoc />
+        public void CopyTo(Array array, int index)
+        {
+            if (array == null)
+                throw new ArgumentNullException(nameof(array));
+
+            if (index < 0)
+                throw new ArgumentOutOfRangeException(nameof(index), "Less than zero.");
+
+            if (array.Rank > 1)
+                throw new ArgumentException("Multidimensional.", nameof(array));
+
+            if (array.Length - index < Count)
+            {
+                throw new ArgumentException(
+                    "The number of elements in this collection is greater than the available space of the destination array.");
+            }
+
+            if (array.GetType().GetElementType()?.IsAssignableFrom(typeof(Cookie)) != true)
+            {
+                throw new InvalidCastException(
+                    "The elements in this collection cannot be cast automatically to the type of the destination array.");
+            }
+
+            ((IList) this).CopyTo(array, index);
+        }
+
+        private static string GetValue(string nameAndValue, bool unquote = false)
+        {
+            var idx = nameAndValue.IndexOf('=');
+
+            if (idx < 0 || idx == nameAndValue.Length - 1)
+                return null;
+
+            var val = nameAndValue.Substring(idx + 1).Trim();
+            return unquote ? val.Unquote() : val;
         }
 
         private static string[] SplitCookieHeaderValue(string value) => value.SplitHeaderValue(true).ToArray();

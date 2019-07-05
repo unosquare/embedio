@@ -22,7 +22,7 @@ namespace EmbedIO.Net.Internal
         private readonly HttpListenerContext _context;
         private Encoding _contentEncoding;
         private bool _clSet;
-        private CookieCollection _cookies;
+        private CookieList _cookies;
         private Stream _inputStream;
         private Uri _url;
         private bool _kaSet;
@@ -91,7 +91,7 @@ namespace EmbedIO.Net.Internal
         public string ContentType => Headers["content-type"];
 
         /// <inheritdoc />
-        public ICookieCollection Cookies => _cookies ?? (_cookies = new CookieCollection());
+        public ICookieCollection Cookies => _cookies ?? (_cookies = new CookieList());
         
         /// <inheritdoc />
         public bool HasEntityBody => ContentLength64 > 0;
@@ -405,7 +405,7 @@ namespace EmbedIO.Net.Internal
         private void ParseCookies(string val)
         {
             if (_cookies == null)
-                _cookies = new CookieCollection();
+                _cookies = new CookieList();
 
             var cookieStrings = val.SplitByAny(';', ',')
                 .Where(x => !string.IsNullOrEmpty(x));

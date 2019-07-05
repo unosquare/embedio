@@ -40,7 +40,7 @@ namespace EmbedIO.Testing
         public Stream OutputStream { get; } = new MemoryStream();
 
         /// <inheritdoc />
-        public ICookieCollection Cookies { get; } = new Net.Internal.CookieCollection();
+        public ICookieCollection Cookies { get; } = new Net.CookieList();
 
         /// <inheritdoc />
         public Encoding ContentEncoding { get; set; } = Encoding.UTF8;
