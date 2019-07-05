@@ -8,7 +8,7 @@ namespace EmbedIO.Utilities
     /// <summary>
     /// Schedule an action to be periodically executed on the thread pool.
     /// </summary>
-    public class PeriodicTask : IDisposable
+    public sealed class PeriodicTask : IDisposable
     {
         /// <summary>
         /// <para>The minimum interval between action invocations.</para>
