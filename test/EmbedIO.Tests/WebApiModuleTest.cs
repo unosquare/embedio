@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -71,6 +72,51 @@ namespace EmbedIO.Tests
             }
         }
 
+        public class QueryData : WebApiModuleTest
+        {
+            [Test]
+            public async Task QueryDataAttribute_ReturnsCorrectValues()
+            {
+                using (var webClient = new HttpClient())
+                {
+                    var result = await webClient.GetAsync($"{WebServerUrl}/api/{TestController.QueryTestPath}?a=first&one=1&a=second&two=2&none&equal=&a[]=third");
+                    Assert.IsNotNull(result);
+                    var data = await result.Content.ReadAsStringAsync();
+                    var dict = Json.Deserialize<Dictionary<string, object>>(data);
+                    Assert.IsNotNull(dict);
+
+                    Assert.AreEqual("1", dict["one"]);
+                    Assert.AreEqual("2", dict["two"]);
+                    Assert.AreEqual(string.Empty, dict["none"]);
+                    Assert.AreEqual(string.Empty, dict["equal"]);
+                    Assert.Throws<KeyNotFoundException>(() => {
+                        var three = dict["three"];
+                    });
+
+                    var a = dict["a"] as IEnumerable<object>;
+                    Assert.NotNull(a);
+                    var list = a.Cast<string>().ToList();
+                    Assert.AreEqual(3, list.Count);
+                    Assert.AreEqual("first", list[0]);
+                    Assert.AreEqual("second", list[1]);
+                    Assert.AreEqual("third", list[2]);
+                }
+            }
+
+            [Test]
+            public async Task QueryFieldAttribute_ReturnsCorrectValue()
+            {
+                using (var webClient = new HttpClient())
+                {
+                    var value = Guid.NewGuid().ToString();
+                    var result = await webClient.GetAsync($"{WebServerUrl}/api/{TestController.QueryFieldTestPath}?id={value}");
+                    Assert.IsNotNull(result);
+                    var returnedValue = await result.Content.ReadAsStringAsync();
+                    Assert.AreEqual(value, returnedValue);
+                }
+            }
+        }
+
         public class FormData : WebApiModuleTest
         {
             [TestCase("id", "id")]
@@ -104,7 +150,7 @@ namespace EmbedIO.Tests
             {
                 using (var webClient = new HttpClient())
                 {
-                    var content = new[] 
+                    var content = new[]
                     {
                         new KeyValuePair<string, string>("test", "data"),
                         new KeyValuePair<string, string>("id", "1"),

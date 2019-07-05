@@ -11,6 +11,8 @@ namespace EmbedIO.Tests.TestObjects
     public class TestController : WebApiController
     {
         public const string EchoPath = "echo";
+        public const string QueryTestPath = "testQuery";
+        public const string QueryFieldTestPath = "testQueryField";
 
         [Route(HttpVerbs.Get, "/empty")]
         public void GetEmpty() { }
@@ -51,6 +53,13 @@ namespace EmbedIO.Tests.TestObjects
         [Route(HttpVerbs.Post, "/" + EchoPath)]
         public object PostEcho([FormData] NameValueCollection data)
             => data.ToDictionary();
+
+        [Route(HttpVerbs.Get, "/" + QueryTestPath)]
+        public object TestQuery([QueryData] NameValueCollection data)
+            => data.ToDictionary();
+
+        [Route(HttpVerbs.Get, "/" + QueryFieldTestPath)]
+        public object TestQueryField([QueryField("id")] string id) => id;
 
         private object CheckPerson(int id)
             =>PeopleRepository.Database.FirstOrDefault(p => p.Key == id)
