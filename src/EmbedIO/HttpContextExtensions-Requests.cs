@@ -121,7 +121,7 @@ namespace EmbedIO
                 {
                     using (var reader = @this.OpenRequestText())
                     {
-                        result = UrlEncodedDataParser.Parse(await reader.ReadToEndAsync().ConfigureAwait(false));
+                        result = UrlEncodedDataParser.Parse(await reader.ReadToEndAsync().ConfigureAwait(false), false);
                     }
                 }
                 catch (Exception e)
@@ -172,7 +172,7 @@ namespace EmbedIO
                 NameValueCollection result;
                 try
                 {
-                    result = UrlEncodedDataParser.Parse(@this.Request.Url.Query);
+                    result = UrlEncodedDataParser.Parse(@this.Request.Url.Query, false);
                 }
                 catch (Exception e)
                 {
