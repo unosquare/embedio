@@ -143,10 +143,17 @@ namespace EmbedIO
         }
 
         /// <inheritdoc />
-        protected override bool ShouldProcessMoreRequests() => Listener?.IsListening ?? false;
+        protected override async Task ProcessRequestsAsync(CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested && (Listener?.IsListening ?? false))
+            {
+                var context = await Listener.GetContextAsync(cancellationToken).ConfigureAwait(false);
 
-        /// <inheritdoc />
-        protected override Task<IHttpContextImpl> GetContextAsync(CancellationToken cancellationToken) => Listener.GetContextAsync(cancellationToken);
+#pragma warning disable CS4014 // Call is not awaited - of course, it has to run in parallel.
+                Task.Run(() => DoHandleContextAsync(context, cancellationToken), cancellationToken);
+#pragma warning restore CS4014
+            }
+        }
 
         /// <inheritdoc />
         protected override void OnFatalException() => Listener?.Dispose();

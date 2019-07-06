@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Unosquare.Swan.Formatters;
@@ -8,12 +7,12 @@ namespace EmbedIO.Tests.TestObjects
 {
     public abstract class PersonEndToEndFixtureBase : EndToEndFixtureBase
     {
-        protected PersonEndToEndFixtureBase(Action<IWebServer> builder, bool useTestWebServer = false)
-            : base(builder, useTestWebServer)
+        protected PersonEndToEndFixtureBase(bool useTestWebServer)
+            : base(useTestWebServer)
         {
         }
 
-        protected async Task ValidatePerson(string url)
+        protected async Task ValidatePersonAsync(string url)
         {
             var current = PeopleRepository.Database.First();
 

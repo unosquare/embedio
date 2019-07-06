@@ -10,16 +10,23 @@ namespace EmbedIO.Tests
     public class CorsModuleTest : EndToEndFixtureBase
     {
         public CorsModuleTest()
-            : base(ws => ws
+            : base(true)
+        {
+        }
+
+        #region Overrides of EndToEndFixtureBase
+
+        protected override void OnSetUp()
+        {
+            Server
                 .WithCors(
                     "http://client.cors-api.appspot.com,http://unosquare.github.io,http://run.plnkr.co",
                     "content-type",
                     "post,get")
-                .WithWebApi("/api", m => m.RegisterController<TestController>()),
-                true)
-        {
-            // placeholder
+                .WithWebApi("/api", m => m.RegisterController<TestController>());
         }
+
+        #endregion
 
         [Test]
         public async Task RequestOptionsVerb_ReturnsOK()

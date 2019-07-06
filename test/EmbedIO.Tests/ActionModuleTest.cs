@@ -35,7 +35,7 @@ namespace EmbedIO.Tests
         public Task OnGet_ResponseOK()
         {
             void Configure(IWebServer server) => server
-                .OnAny((ctx, path, ct) => ctx.SendStringAsync(Ok, MimeType.PlainText, Encoding.UTF8, ct));
+                .OnGet((ctx, path, ct) => ctx.SendStringAsync(Ok, MimeType.PlainText, Encoding.UTF8, ct));
 
             async Task Use(HttpClient client)
             {

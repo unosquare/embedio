@@ -10,15 +10,24 @@ namespace EmbedIO.Tests
     public class DirectoryBrowserTest : EndToEndFixtureBase
     {
         public DirectoryBrowserTest()
-            : base(ws => ws
-                .WithStaticFolder("/", StaticFolder.RootPathOf(nameof(DirectoryBrowserTest)), true, m => m
-                    .WithDirectoryLister(DirectoryLister.Html)
-                    .WithoutDefaultDocument()))
+            : base(false)
         {
             ServedFolder = new StaticFolder.WithHtmlFiles(nameof(DirectoryBrowserTest));
         }
 
         protected StaticFolder.WithHtmlFiles ServedFolder { get; }
+
+        #region Overrides of EndToEndFixtureBase
+
+        protected override void OnSetUp()
+        {
+            Server
+                .WithStaticFolder("/", StaticFolder.RootPathOf(nameof(DirectoryBrowserTest)), true, m => m
+                    .WithDirectoryLister(DirectoryLister.Html)
+                    .WithoutDefaultDocument());
+        }
+
+        #endregion
 
         protected override void Dispose(bool disposing)
         {

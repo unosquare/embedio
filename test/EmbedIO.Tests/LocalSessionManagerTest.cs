@@ -13,50 +13,44 @@ namespace EmbedIO.Tests
     public class LocalSessionManagerTest : EndToEndFixtureBase
     {
         public LocalSessionManagerTest()
-            : base(ws =>
-                {
-                    ws.SessionManager = new LocalSessionManager
-                    {
-                        SessionDuration = TimeSpan.FromSeconds(1),
-                    };
-
-                    ws.WithWebApi("/api", m => m.RegisterController<TestLocalSessionController>());
-                    ws.OnGet((ctx, path, ct) =>
-                    {
-                        ctx.Session["data"] = true;
-                        ctx.Response.SetEmptyResponse((int)HttpStatusCode.OK);
-                        return Task.FromResult(true);
-                    });
-                })
+            : base(false)
         {
         }
 
-        protected async Task ValidateCookie(HttpRequestMessage request, HttpClient client, HttpClientHandler handler)
+        protected override void OnSetUp()
         {
-            using (var response = await client.SendAsync(request))
+            Server
+                .WithSessionManager(new LocalSessionManager {
+                    SessionDuration = TimeSpan.FromSeconds(1),
+                })
+                .WithWebApi("/api", m => m.RegisterController<TestLocalSessionController>())
+                .OnGet((ctx, path, ct) =>
+                {
+                    ctx.Session["data"] = true;
+                    ctx.Response.SetEmptyResponse((int)HttpStatusCode.OK);
+                    return Task.FromResult(true);
+                });
+        }
+
+        protected async Task ValidateCookie(HttpRequestMessage request)
+        {
+            using (var response = await Client.SendAsync(request))
             {
-                Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status Code OK");
             }
 
-            Assert.IsNotNull(handler.CookieContainer, "Cookies are not null");
-            Assert.Greater(handler.CookieContainer.GetCookies(new Uri(WebServerUrl)).Count,
+            Assert.IsNotNull(Client.CookieContainer, "Cookies are not null");
+            Assert.Greater(
+                Client.CookieContainer.GetCookies(new Uri(WebServerUrl)).Count,
                 0,
                 "Cookies are not empty");
         }
 
         protected async Task GetFile(string content)
         {
-            using (var handler = new HttpClientHandler())
-            {
-                handler.CookieContainer = new CookieContainer();
-
-                using (var client = new HttpClient(handler))
-                {
-                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
-                    await ValidateCookie(request, client, handler);
-                    Assert.AreNotEqual(content, handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl)));
-                }
-            }
+            var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
+            await ValidateCookie(request);
+            Assert.AreNotEqual(content, Client.CookieContainer.GetCookieHeader(new Uri(WebServerUrl)));
         }
 
         public class Sessions : LocalSessionManagerTest
@@ -64,72 +58,58 @@ namespace EmbedIO.Tests
             [Test]
             public async Task DeleteSession()
             {
-                using (var handler = new HttpClientHandler())
+                var request = new HttpRequestMessage(HttpMethod.Get,
+                    WebServerUrl + TestLocalSessionController.PutData);
+
+                using (var response = await Client.SendAsync(request))
                 {
-                    handler.CookieContainer = new CookieContainer();
-                    using (var client = new HttpClient(handler))
-                    {
-                        var request = new HttpRequestMessage(HttpMethod.Get,
-                            WebServerUrl + TestLocalSessionController.PutData);
+                    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status Code OK");
 
-                        using (var response = await client.SendAsync(request))
-                        {
-                            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                    var body = await response.Content.ReadAsStringAsync();
 
-                            var body = await response.Content.ReadAsStringAsync();
+                    Assert.AreEqual(TestLocalSessionController.MyData, body);
+                }
 
-                            Assert.AreEqual(TestLocalSessionController.MyData, body);
-                        }
+                request = new HttpRequestMessage(HttpMethod.Get,
+                    WebServerUrl + TestLocalSessionController.DeleteSession);
 
-                        request = new HttpRequestMessage(HttpMethod.Get,
-                            WebServerUrl + TestLocalSessionController.DeleteSession);
+                using (var response = await Client.SendAsync(request))
+                {
+                    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status Code OK");
 
-                        using (var response = await client.SendAsync(request))
-                        {
-                            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                    var body = await response.Content.ReadAsStringAsync();
 
-                            var body = await response.Content.ReadAsStringAsync();
+                    Assert.AreEqual("Deleted", body);
+                }
 
-                            Assert.AreEqual(body, "Deleted");
-                        }
+                request = new HttpRequestMessage(HttpMethod.Get,
+                    WebServerUrl + TestLocalSessionController.GetData);
 
-                        request = new HttpRequestMessage(HttpMethod.Get,
-                            WebServerUrl + TestLocalSessionController.GetData);
+                using (var response = await Client.SendAsync(request))
+                {
+                    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status Code OK");
 
-                        using (var response = await client.SendAsync(request))
-                        {
-                            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status Code OK");
+                    var body = await response.Content.ReadAsStringAsync();
 
-                            var body = await response.Content.ReadAsStringAsync();
-
-                            Assert.AreEqual(string.Empty, body);
-                        }
-                    }
+                    Assert.AreEqual(string.Empty, body);
                 }
             }
 
             [Test]
             public async Task GetDifferentSession()
             {
-                using (var handler = new HttpClientHandler())
-                {
-                    handler.CookieContainer = new CookieContainer();
-                    using (var client = new HttpClient(handler))
-                    {
-                        var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
-                        await ValidateCookie(request, client, handler);
-                        var content = handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl));
-                        await Task.Delay(TimeSpan.FromSeconds(1));
+                var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
+                await ValidateCookie(request);
+                var content = Client.CookieContainer.GetCookieHeader(new Uri(WebServerUrl));
+                await Task.Delay(TimeSpan.FromSeconds(1));
 
-                        Task.WaitAll(new[] {
-                            Task.Run(() => GetFile(content)),
-                            Task.Run(() => GetFile(content)),
-                            Task.Run(() => GetFile(content)),
-                            Task.Run(() => GetFile(content)),
-                            Task.Run(() => GetFile(content)),
-                        });
-                    }
-                }
+                Task.WaitAll(new[] {
+                    Task.Run(() => GetFile(content)),
+                    Task.Run(() => GetFile(content)),
+                    Task.Run(() => GetFile(content)),
+                    Task.Run(() => GetFile(content)),
+                    Task.Run(() => GetFile(content)),
+                });
             }
         }
 
@@ -138,47 +118,30 @@ namespace EmbedIO.Tests
             [Test]
             public async Task RetrieveCookie()
             {
-                using (var handler = new HttpClientHandler())
+                var request = new HttpRequestMessage(HttpMethod.Get,
+                    WebServerUrl + TestLocalSessionController.GetCookie);
+                var uri = new Uri(WebServerUrl + TestLocalSessionController.GetCookie);
+
+                using (var response = await Client.SendAsync(request))
                 {
-                    handler.CookieContainer = new CookieContainer();
+                    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status OK");
+                    var responseCookies = Client.CookieContainer.GetCookies(uri).Cast<Cookie>();
+                    Assert.IsNotNull(responseCookies, "Cookies are not null");
 
-                    using (var client = new HttpClient(handler))
-                    {
-                        var request = new HttpRequestMessage(HttpMethod.Get,
-                            WebServerUrl + TestLocalSessionController.GetCookie);
-                        var uri = new Uri(WebServerUrl + TestLocalSessionController.GetCookie);
-
-                        using (var response = await client.SendAsync(request))
-                        {
-                            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK, "Status OK");
-                            var responseCookies = handler.CookieContainer.GetCookies(uri).Cast<Cookie>();
-                            Assert.IsNotNull(responseCookies, "Cookies are not null");
-
-                            Assert.Greater(responseCookies.Count(), 0, "Cookies are not empty");
-                            var cookieName =
-                                responseCookies.FirstOrDefault(c => c.Name == TestLocalSessionController.CookieName);
-                            Assert.AreEqual(TestLocalSessionController.CookieName, cookieName?.Name);
-                        }
-                    }
+                    Assert.Greater(responseCookies.Count(), 0, "Cookies are not empty");
+                    var cookieName = responseCookies.FirstOrDefault(c => c.Name == TestLocalSessionController.CookieName);
+                    Assert.AreEqual(TestLocalSessionController.CookieName, cookieName?.Name);
                 }
             }
 
             [Test]
             public async Task GetCookie()
             {
-                using (var handler = new HttpClientHandler())
-                {
-                    handler.CookieContainer = new CookieContainer();
-
-                    using (var client = new HttpClient(handler))
-                    {
-                        var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
-
-                        await ValidateCookie(request, client, handler);
-                        Assert.IsNotEmpty(handler.CookieContainer.GetCookieHeader(new Uri(WebServerUrl)),
-                            "Cookie content is not null");
-                    }
-                }
+                var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
+                await ValidateCookie(request);
+                Assert.IsNotEmpty(
+                    Client.CookieContainer.GetCookieHeader(new Uri(WebServerUrl)),
+                    "Cookie content is not null");
             }
         }
     }

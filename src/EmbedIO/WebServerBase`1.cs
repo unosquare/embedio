@@ -16,7 +16,7 @@ namespace EmbedIO
     /// <typeparam name="TOptions">The type of the options object used to configure an instance.</typeparam>
     /// <seealso cref="ConfiguredObject" />
     /// <seealso cref="IWebServer" />
-    public abstract class WebServerBase<TOptions> : ConfiguredObject, IWebServer, IDisposable
+    public abstract class WebServerBase<TOptions> : ConfiguredObject, IWebServer, IHttpContextHandler, IDisposable
         where TOptions : WebServerOptionsBase, new()
     {
         private readonly WebModuleCollection _modules;
@@ -120,7 +120,7 @@ namespace EmbedIO
         public WebServerState State
         {
             get => _state;
-            protected set
+            private set
             {
                 if (value == _state) return;
 
@@ -134,6 +134,18 @@ namespace EmbedIO
 
                 StateChanged?.Invoke(this, new WebServerStateChangedEventArgs(oldState, value));
             }
+        }
+
+        /// <inheritdoc />
+        public Task HandleContextAsync(IHttpContextImpl context, CancellationToken cancellationToken)
+        {
+            if (State > WebServerState.Listening)
+                throw new InvalidOperationException("The web server has already been stopped.");
+
+            if (State < WebServerState.Listening)
+                throw new InvalidOperationException("The web server has not been started yet.");
+
+            return DoHandleContextAsync(context, cancellationToken);
         }
 
         /// <summary>
@@ -169,14 +181,7 @@ namespace EmbedIO
                 _modules.StartAll(cancellationToken);
 
                 State = WebServerState.Listening;
-                while (!cancellationToken.IsCancellationRequested && ShouldProcessMoreRequests())
-                {
-                    var context = await GetContextAsync(cancellationToken).ConfigureAwait(false);
-
-#pragma warning disable CS4014 // Call is not awaited - of course, it has to run in parallel.
-                    Task.Run(() => HandleContextAsync(context, cancellationToken), cancellationToken);
-#pragma warning restore CS4014
-                }
+                await ProcessRequestsAsync(cancellationToken).ConfigureAwait(false);
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
             {
@@ -196,58 +201,13 @@ namespace EmbedIO
             GC.SuppressFinalize(this);
         }
 
-        /// <inheritdoc />
-        protected override void OnBeforeLockConfiguration()
-        {
-            base.OnBeforeLockConfiguration();
-
-            _mimeTypeCustomizer.Lock();
-            _modules.Lock();
-        }
-
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
+        /// Asynchronously handles a received request.
         /// </summary>
-        /// <param name="disposing">
-        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.
-        /// </param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposing) return;
-
-            _modules.Dispose();
-        }
-
-        /// <summary>
-        /// Prepares a web server for running.
-        /// </summary>
+        /// <param name="context">The context of the request.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to stop the web server.</param>
-        protected virtual void Prepare(CancellationToken cancellationToken)
-        {
-        }
-
-        /// <summary>
-        /// <para>Tells whether a web server should continue processing requests.</para>
-        /// <para>This method is call each time before trying to accept a request.</para>
-        /// </summary>
-        /// <returns><see langword="true"/> if the web server should continue processing requests;
-        /// otherwise, <see langword="false"/>.</returns>
-        protected abstract bool ShouldProcessMoreRequests();
-
-        /// <summary>
-        /// Asynchronously waits for a request, accepts it, and returns a newly-constructed HTTP context.
-        /// </summary>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to stop the web server.</param>
-        /// <returns>An awaitable <see cref="Task"/> that returns a HTTP context.</returns>
-        protected abstract Task<IHttpContextImpl> GetContextAsync(CancellationToken cancellationToken);
-
-        /// <summary>
-        /// <para>Called when an exception is caught in the web server's request processing loop.</para>
-        /// <para>This method should tell the server socket to stop accepting further requests.</para>
-        /// </summary>
-        protected abstract void OnFatalException();
-
-        private async Task HandleContextAsync(IHttpContextImpl context, CancellationToken cancellationToken)
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
+        protected async Task DoHandleContextAsync(IHttpContextImpl context, CancellationToken cancellationToken)
         {
             context.SupportCompressedRequests = Options.SupportCompressedRequests;
             context.MimeTypeProviders.Push(this);
@@ -345,5 +305,48 @@ namespace EmbedIO
                 OnFatalException();
             }
         }
+
+        /// <inheritdoc />
+        protected override void OnBeforeLockConfiguration()
+        {
+            base.OnBeforeLockConfiguration();
+
+            _mimeTypeCustomizer.Lock();
+            _modules.Lock();
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.
+        /// </param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing) return;
+
+            _modules.Dispose();
+        }
+
+        /// <summary>
+        /// Prepares a web server for running.
+        /// </summary>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to stop the web server.</param>
+        protected virtual void Prepare(CancellationToken cancellationToken)
+        {
+        }
+
+        /// <summary>
+        /// <para>Asynchronously receives requests and processes them.</para>
+        /// </summary>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to stop the web server.</param>
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
+        protected abstract Task ProcessRequestsAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        /// <para>Called when an exception is caught in the web server's request processing loop.</para>
+        /// <para>This method should tell the server socket to stop accepting further requests.</para>
+        /// </summary>
+        protected abstract void OnFatalException();
     }
 }

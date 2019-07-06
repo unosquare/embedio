@@ -1,13 +1,13 @@
-﻿using EmbedIO.Internal;
-using EmbedIO.Sessions;
-using EmbedIO.Utilities;
-using EmbedIO.WebSockets;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Internal;
+using EmbedIO.Sessions;
+using EmbedIO.Utilities;
+using EmbedIO.WebSockets;
 using Unosquare.Swan;
 
 namespace EmbedIO.Testing.Internal
@@ -20,11 +20,11 @@ namespace EmbedIO.Testing.Internal
 
         private bool _closed;
 
-        public TestContext(IHttpRequest request)
+        internal TestContext(IHttpRequest request)
         {
             Request = request;
             User = null;
-            Response = new TestResponse();
+            TestResponse = new TestResponse();
             Id = UniqueIdGenerator.GetNext();
             LocalEndPoint = Request.LocalEndPoint;
             RemoteEndPoint = Request.RemoteEndPoint;
@@ -40,7 +40,9 @@ namespace EmbedIO.Testing.Internal
 
         public IHttpRequest Request { get; }
 
-        public IHttpResponse Response { get; }
+        public IHttpResponse Response => TestResponse;
+
+        internal TestResponse TestResponse { get; }
 
         public IPrincipal User { get; }
 

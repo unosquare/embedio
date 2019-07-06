@@ -8,9 +8,18 @@ namespace EmbedIO.Tests
     public class RegexRoutingTest : EndToEndFixtureBase
     {
         public RegexRoutingTest()
-            : base(ws => ws.WithModule(new TestRegexModule("/")), true)
+            : base(true)
         {
         }
+
+        #region Overrides of EndToEndFixtureBase
+
+        protected override void OnSetUp()
+        {
+            Server.WithModule(new TestRegexModule("/"));
+        }
+
+        #endregion
 
         public class GetData : RegexRoutingTest
         {

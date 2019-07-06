@@ -12,12 +12,16 @@ namespace EmbedIO.Tests
     public class WebSocketModuleTest : EndToEndFixtureBase
     {
         public WebSocketModuleTest()
-            : base(
-                ws => ws
-                    .WithModule(new TestWebSocket("/test"))
-                    .WithModule(new BigDataWebSocket("/bigdata"))
-                    .WithModule(new CloseWebSocket("/close")))
+            : base(false)
         {
+        }
+
+        protected override void OnSetUp()
+        {
+            Server
+                .WithModule(new TestWebSocket("/test"))
+                .WithModule(new BigDataWebSocket("/bigdata"))
+                .WithModule(new CloseWebSocket("/close"));
         }
 
         [Test]

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Http;
 using System.Threading.Tasks;
 using EmbedIO.Testing;
 using EmbedIO.Tests.TestObjects;
@@ -10,14 +9,12 @@ namespace EmbedIO.Tests
 {
     public abstract class EndToEndFixtureBase : IDisposable
     {
-        private readonly Action<IWebServer> _builder;
         private readonly bool _useTestWebServer;
 
-        protected EndToEndFixtureBase(Action<IWebServer> builder, bool useTestWebServer = false)
+        protected EndToEndFixtureBase(bool useTestWebServer)
         {
             Terminal.Settings.GlobalLoggingMessageType = LogMessageType.None;
 
-            _builder = builder;
             _useTestWebServer = useTestWebServer;
         }
 
@@ -28,9 +25,9 @@ namespace EmbedIO.Tests
 
         protected string WebServerUrl { get; private set; }
 
-        protected HttpClient Client { get; private set; }
+        protected TestHttpClient Client { get; private set; }
 
-        private IWebServer WebServerInstance { get; set; }
+        protected IWebServer Server { get; set; }
 
         public void Dispose()
         {
@@ -45,20 +42,25 @@ namespace EmbedIO.Tests
             if (_useTestWebServer)
             {
                 var testWebServer = new TestWebServer(WebServerUrl);
-                WebServerInstance = testWebServer;
+                Server = testWebServer;
                 Client = testWebServer.Client;
             }
             else
             {
-                WebServerInstance = new WebServer(WebServerUrl);
-                Client = new HttpClient {
-                    BaseAddress = new Uri(WebServerUrl),
-                };
+                Server = new WebServer(WebServerUrl);
+                Client = TestHttpClient.Create(WebServerUrl);
             }
 
-            _builder(WebServerInstance);
             OnSetUp();
-            WebServerInstance.RunAsync();
+            Server.Start();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            Task.Delay(500).Await();
+            Server?.Dispose();
+            OnTearDown();
         }
 
         protected virtual void Dispose(bool disposing)
@@ -66,15 +68,7 @@ namespace EmbedIO.Tests
             if (!disposing) return;
 
             Client?.Dispose();
-            WebServerInstance?.Dispose();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            Task.Delay(500).Await();
-            WebServerInstance?.Dispose();
-            OnTearDown();
+            Server?.Dispose();
         }
 
         protected virtual void OnSetUp()

@@ -1,27 +1,35 @@
 ﻿namespace EmbedIO
 {
+    // NOTE TO CONTRIBUTORS:
+    // =====================
+    // Do not reorder fields or change their values.
+    // It is important that WebServerState values represent,
+    // in ascending order, the stages of a web server's lifetime,
+    // so that comparisons can be made; for example,
+    // State < WebServerState.Listening means "not yet ready to accept requests".
+
     /// <summary>
-    /// Enums the web server state.
+    /// Represents the state of a web server.
     /// </summary>
     public enum WebServerState
     {
         /// <summary>
-        /// The created state.
+        /// The web server has not been started yet.
         /// </summary>
         Created,
 
         /// <summary>
-        /// The loading state.
+        /// The web server has been started but it is still initializing.
         /// </summary>
         Loading,
 
         /// <summary>
-        /// The listening state.
+        /// The web server is ready to accept incoming requests.
         /// </summary>
         Listening,
 
         /// <summary>
-        /// The stopped state.
+        /// The web server has been stopped.
         /// </summary>
         Stopped,
     }

@@ -55,17 +55,13 @@ namespace EmbedIO.Tests
         [Test]
         public async Task RunsServerAndRequestData_ReturnsValidData()
         {
-            using (var webserver = new TestWebServer())
+            using (var server = new TestWebServer())
             {
-                webserver.OnAny((ctx, path, ct) => ctx.SendDataAsync(new Person {Name = nameof(Person)}, ct));
+                server
+                    .OnAny((ctx, path, ct) => ctx.SendDataAsync(new Person {Name = nameof(Person)}, ct))
+                    .Start();
 
-#pragma warning disable 4014
-                webserver.RunAsync();
-#pragma warning restore 4014
-
-                var client = webserver.Client;
-
-                var data = await client.GetStringAsync("/");
+                var data = await server.Client.GetStringAsync("/").ConfigureAwait(false);
                 Assert.IsNotNull(data);
 
                 var person = Json.Deserialize<Person>(data);

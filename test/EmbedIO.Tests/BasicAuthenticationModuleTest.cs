@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using EmbedIO.Authentication;
-using EmbedIO.Utilities;
 using NUnit.Framework;
 
 namespace EmbedIO.Tests
@@ -16,25 +15,25 @@ namespace EmbedIO.Tests
         private const string Password = "password1234";
 
         public BasicAuthenticationModuleTest()
-            : base(ws =>
-                {
-                    ws.Modules.Add(new BasicAuthenticationModule("/").WithAccount(UserName, Password));
-                    ws.OnAny((ctx, path, ct) =>
-                    {
-                        ctx.Response.SetEmptyResponse((int)HttpStatusCode.OK);
-
-                        return Task.FromResult(true);
-                    });
-                },
-                true)
+            : base(true)
         {
-            // placeholder
+        }
+
+        protected override void OnSetUp()
+        {
+            Server
+                .WithModule(new BasicAuthenticationModule("/").WithAccount(UserName, Password))
+                .OnAny((ctx, path, ct) =>
+                {
+                    ctx.Response.SetEmptyResponse((int)HttpStatusCode.OK);
+                    return Task.FromResult(true);
+                });
         }
 
         [Test]
         public async Task RequestWithValidCredentials_ReturnsOK()
         {
-            var response = await MakeRequest(UserName, Password);
+            var response = await MakeRequest(UserName, Password).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status Code OK");
         }
 
@@ -43,14 +42,14 @@ namespace EmbedIO.Tests
         {
             const string wrongPassword = "wrongpaassword";
 
-            var response = await MakeRequest(UserName, wrongPassword);
+            var response = await MakeRequest(UserName, wrongPassword).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode, "Status Code Unauthorized");
         }
 
         [Test]
         public async Task RequestWithNoAuthorizationHeader_ReturnsUnauthorized()
         {
-            var response = await MakeRequest(null, null);
+            var response = await MakeRequest(null, null).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode, "Status Code Unauthorized");
         }
 

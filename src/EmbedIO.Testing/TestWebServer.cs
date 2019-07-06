@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbedIO.Testing.Internal;
 using EmbedIO.Utilities;
-using Unosquare.Swan;
 
 namespace EmbedIO.Testing
 {
@@ -16,18 +13,14 @@ namespace EmbedIO.Testing
     /// <para>Requests can be forwarded to the server using the <see cref="HttpClient"/> instance
     /// returned by the <see cref="Client"/> property.</para>
     /// </summary>
-    public class TestWebServer : WebServerBase<TestWebServerOptions>
+    public class TestWebServer : WebServerBase<TestWebServerOptions>, ITestWebServer
     {
         /// <summary>
         /// The base URL that a <see cref="TestWebServer"/>, by default, simulates being bound to.
         /// </summary>
         public const string DefaultBaseUrl = "http://test.example.com:8080/";
 
-        private readonly Queue<IHttpContextImpl> _contexts = new Queue<IHttpContextImpl>();
-
-        private bool _listening;
-
-        private TaskCompletionSource<IHttpContextImpl> _pendingDequeue;
+        private CancellationTokenSource _internalCancellationTokenSource;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestWebServer"/> class.
@@ -35,14 +28,8 @@ namespace EmbedIO.Testing
         /// <param name="baseUrl"></param>
         public TestWebServer(string baseUrl = DefaultBaseUrl)
         {
-            Validate.NotNullOrEmpty(nameof(baseUrl), baseUrl);
-
-            Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
-            Client = new HttpClient(new TestMessageHandler(this), true) {
-                BaseAddress = new Uri(baseUrl)
-            };
-
-            _listening = true;
+            BaseUrl = Validate.NotNullOrEmpty(nameof(baseUrl), baseUrl);
+            Client = TestHttpClient.Create(this);
         }
 
         /// <summary>
@@ -50,7 +37,14 @@ namespace EmbedIO.Testing
         /// <para>The returned client is already initialized with a base address,
         /// so requests URLs may omit the scheme and host parts.</para>
         /// </summary>
-        public HttpClient Client { get; }
+        public string BaseUrl { get; }
+
+        /// <summary>
+        /// <para>Gets a <see cref="TestHttpClient"/> that communicates with this server.</para>
+        /// <para>The returned client is already initialized with a base address,
+        /// so requests URLs may omit the scheme and host parts.</para>
+        /// </summary>
+        public TestHttpClient Client { get; }
 
         /// <summary>
         /// Encapsulates the creation and use of a <see cref="TestWebServer"/>.
@@ -72,35 +66,27 @@ namespace EmbedIO.Testing
                 configure(server);
                 using (var cancellationTokenSource = new CancellationTokenSource())
                 {
-#pragma warning disable CS4014 // Call is not awaited - it is expected to run ion parallel.
-                    Task.Run(() => server.RunAsync(cancellationTokenSource.Token));
-#pragma warning restore CS4014
+                    server.Start(cancellationTokenSource.Token);
                     await use(server.Client).ConfigureAwait(false);
                     cancellationTokenSource.Cancel();
                 }
             }
         }
 
-        internal void EnqueueContext(IHttpContextImpl context)
+        /// <inheritdoc />
+        protected override void Prepare(CancellationToken cancellationToken)
         {
-            if (!_listening)
-                throw new InvalidOperationException("Web server is not listening any longer.");
+            base.Prepare(cancellationToken);
 
-            TaskCompletionSource<IHttpContextImpl> currentDequeue = null;
-            lock (_contexts)
-            {
-                if (_pendingDequeue != null)
-                {
-                    currentDequeue = _pendingDequeue;
-                    _pendingDequeue = null;
-                }
-                else
-                {
-                    _contexts.Enqueue(context);
-                }
-            }
+            _internalCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        }
 
-            currentDequeue?.SetResult(context);
+        /// <inheritdoc />
+        protected override Task ProcessRequestsAsync(CancellationToken cancellationToken)
+        {
+            // Since there's nothing to listen to, just wait for the server to be stopped.
+            _internalCancellationTokenSource.Token.WaitHandle.WaitOne();
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />
@@ -108,56 +94,23 @@ namespace EmbedIO.Testing
         {
             if (disposing)
             {
-                TaskCompletionSource<IHttpContextImpl> currentDequeue = null;
-                lock (_contexts)
+                if (_internalCancellationTokenSource != null)
                 {
-                    if (_pendingDequeue != null)
-                    {
-                        currentDequeue = _pendingDequeue;
-                        _pendingDequeue = null;
-                    }
-                }
+                    if (!_internalCancellationTokenSource.IsCancellationRequested)
+                        _internalCancellationTokenSource.Cancel();
 
-                currentDequeue?.SetException(new ObjectDisposedException(nameof(TestWebServer)));
+                    _internalCancellationTokenSource.Dispose();
+                }
             }
 
             base.Dispose(disposing);
         }
 
         /// <inheritdoc />
-        protected override bool ShouldProcessMoreRequests()
-        {
-            lock (_contexts)
-            {
-                return _listening;
-            }
-        }
-
-        /// <inheritdoc />
-        protected override Task<IHttpContextImpl> GetContextAsync(CancellationToken cancellationToken)
-        {
-            lock (_contexts)
-            {
-                if (_contexts.Count > 0)
-                {
-                    return Task.FromResult(_contexts.Dequeue());
-                }
-
-                if (_pendingDequeue != null)
-                    throw new InvalidOperationException("Trying to dequeue two contexts at the same time.");
-
-                _pendingDequeue = new TaskCompletionSource<IHttpContextImpl>();
-                return _pendingDequeue.Task;
-            }
-        }
-
-        /// <inheritdoc />
         protected override void OnFatalException()
         {
-            lock (_contexts)
-            {
-                _listening = false;
-            }
-        } 
+            if (!(_internalCancellationTokenSource?.IsCancellationRequested ?? true))
+                _internalCancellationTokenSource.Cancel();
+        }
     }
 }

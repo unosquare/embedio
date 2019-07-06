@@ -6,13 +6,12 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using EmbedIO.Net;
-using EmbedIO.Testing.Internal;
 using EmbedIO.Utilities;
 using Unosquare.Swan;
 
-namespace EmbedIO.Testing
+namespace EmbedIO.Testing.Internal
 {
-    public class TestRequest : IHttpRequest
+    internal class TestRequest : IHttpRequest
     {
         private readonly HttpContent _content;
 
@@ -21,7 +20,6 @@ namespace EmbedIO.Testing
             _content = Validate.NotNull(nameof(clientRequest), clientRequest).Content;
 
             var headers = new NameValueCollection();
-            string cookieHeaders = null;
             foreach (var pair in clientRequest.Headers)
             {
                 var values = pair.Value.ToArray();

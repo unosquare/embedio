@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,32 +8,29 @@ namespace EmbedIO.Testing.Internal
 {
     internal sealed partial class TestMessageHandler : HttpMessageHandler
     {
-        private readonly TestWebServer _server;
+        private readonly IHttpContextHandler _handler;
 
-        public TestMessageHandler(TestWebServer server)
+        public TestMessageHandler(IHttpContextHandler handler)
         {
-            _server = Validate.NotNull(nameof(server), server);
+            _handler = Validate.NotNull(nameof(handler), handler);
+            CookieContainer = new CookieContainer();
         }
+
+        public CookieContainer CookieContainer { get; }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var serverRequest = new TestRequest(Validate.NotNull(nameof(request), request));
+            var cookiesFromContainer = CookieContainer.GetCookieHeader(serverRequest.Url);
+            if (!string.IsNullOrEmpty(cookiesFromContainer))
+                serverRequest.Headers.Add(HttpHeaderNames.Cookie, cookiesFromContainer);
+
             var context = new TestContext(serverRequest);
-
-            _server.EnqueueContext(context);
-
-            if (!(context.Response is TestResponse serverResponse))
-                throw new InvalidOperationException("The response object is invalid.");
-
-            try
-            {
-                while (!serverResponse.IsClosed)
-                    await Task.Delay(1, cancellationToken).ConfigureAwait(false);
-            }
-            catch
-            {
-                // ignore
-            }
+            await _handler.HandleContextAsync(context, cancellationToken).ConfigureAwait(false);
+            var serverResponse = context.TestResponse;
+            var responseCookies = serverResponse.Headers.Get(HttpHeaderNames.SetCookie);
+            if (!string.IsNullOrEmpty(responseCookies))
+                CookieContainer.SetCookies(serverRequest.Url, responseCookies);
 
             var response = new HttpResponseMessage((HttpStatusCode) serverResponse.StatusCode) {
                 RequestMessage = request,
@@ -47,13 +43,8 @@ namespace EmbedIO.Testing.Internal
                 switch (GetResponseHeaderType(key))
                 {
                     case ResponseHeaderType.Content:
-                    {
-                        if (response.Content != null)
-                            response.Content.Headers.Add(key, serverResponse.Headers.GetValues(key));
-
+                        response.Content?.Headers.Add(key, serverResponse.Headers.GetValues(key));
                         break;
-                    }
-
                     case ResponseHeaderType.Response:
                         response.Headers.Add(key, serverResponse.Headers.GetValues(key));
                         break;
@@ -66,8 +57,8 @@ namespace EmbedIO.Testing.Internal
         private ResponseHeaderType GetResponseHeaderType(string name)
         {
             // Not all headers are created equal in System.Net.Http.
-            // If a header is a "content" header, adding them to a HttpResponseMessage directly
-            // will throw InvalidOperationException.
+            // If a header is a "content" header, adding it to a HttpResponseMessage directly
+            // will cause an InvalidOperationException.
             // The list of known headers with their respective "header types"
             // is conveniently hidden in an internal class of System.Net.Http,
             // because nobody outside the .NET team will ever need them, right?
@@ -75,7 +66,7 @@ namespace EmbedIO.Testing.Internal
             // Here are the "content" headers, extracted on 2019-07-06:
             switch (name)
             {
-                // Content-Length is set autpmatically and shall not be touched
+                // Content-Length is set automatically and shall not be touched
                 case HttpHeaderNames.ContentLength:
                     return ResponseHeaderType.None;
 
