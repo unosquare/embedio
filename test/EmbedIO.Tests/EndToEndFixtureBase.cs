@@ -26,9 +26,11 @@ namespace EmbedIO.Tests
             Dispose(false);
         }
 
-        public string WebServerUrl { get; private set; }
+        protected string WebServerUrl { get; private set; }
 
-        public IWebServer WebServerInstance { get; private set; }
+        protected HttpClient Client { get; private set; }
+
+        private IWebServer WebServerInstance { get; set; }
 
         public void Dispose()
         {
@@ -40,9 +42,19 @@ namespace EmbedIO.Tests
         public void SetUp()
         {
             WebServerUrl = Resources.GetServerAddress();
-            WebServerInstance = _useTestWebServer
-                ? new TestWebServer() as IWebServer
-                : new WebServer(WebServerUrl);
+            if (_useTestWebServer)
+            {
+                var testWebServer = new TestWebServer(WebServerUrl);
+                WebServerInstance = testWebServer;
+                Client = testWebServer.Client;
+            }
+            else
+            {
+                WebServerInstance = new WebServer(WebServerUrl);
+                Client = new HttpClient {
+                    BaseAddress = new Uri(WebServerUrl),
+                };
+            }
 
             _builder(WebServerInstance);
             OnSetUp();
@@ -53,6 +65,7 @@ namespace EmbedIO.Tests
         {
             if (!disposing) return;
 
+            Client?.Dispose();
             WebServerInstance?.Dispose();
         }
 
@@ -64,32 +77,6 @@ namespace EmbedIO.Tests
             OnTearDown();
         }
 
-        public async Task<string> GetString(string partialUrl = "")
-        {
-            if (WebServerInstance is TestWebServer testWebServer)
-                return await testWebServer.GetClient().GetAsync(partialUrl);
-
-            using (var client = new HttpClient())
-            {
-                var uri = new Uri(new Uri(WebServerUrl), partialUrl);
-
-                return await client.GetStringAsync(uri);
-            }
-        }
-
-        public async Task<TestHttpResponse> SendAsync(TestHttpRequest request)
-        {
-            if (WebServerInstance is TestWebServer testWebServer)
-                return await testWebServer.GetClient().SendAsync(request);
-
-            using (var client = new HttpClient())
-            {
-                var response = await client.SendAsync(request.ToHttpRequestMessage());
-
-                return response.ToTestHttpResponse();
-            }
-        }
-
         protected virtual void OnSetUp()
         {
         }
@@ -97,12 +84,5 @@ namespace EmbedIO.Tests
         protected virtual void OnTearDown()
         {
         }
-    }
-
-    internal static class TestExtensions
-    {
-        public static HttpRequestMessage ToHttpRequestMessage(this TestHttpRequest request) => new HttpRequestMessage();
-
-        public static TestHttpResponse ToTestHttpResponse(this HttpResponseMessage response) => new TestHttpResponse();
     }
 }

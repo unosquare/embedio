@@ -195,7 +195,7 @@ namespace EmbedIO.Tests
             [Test]
             public async Task WithOptRegexIdAndNonValue_ReturnsOk()
             {
-                var jsonBody = await GetString("/api/regexopt");
+                var jsonBody = await Client.GetStringAsync("/api/regexopt");
                 var remoteList = Json.Deserialize<List<Person>>(jsonBody);
 
                 Assert.AreEqual(

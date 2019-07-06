@@ -1,8 +1,8 @@
-﻿using EmbedIO.Tests.TestObjects;
-using NUnit.Framework;
-using System.Net;
+﻿using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
-using EmbedIO.Testing;
+using EmbedIO.Tests.TestObjects;
+using NUnit.Framework;
 
 namespace EmbedIO.Tests
 {
@@ -24,14 +24,14 @@ namespace EmbedIO.Tests
         [Test]
         public async Task RequestOptionsVerb_ReturnsOK()
         {
-            var request = new TestHttpRequest($"{WebServerUrl}/api/empty", HttpVerbs.Options);
+            var request = new HttpRequestMessage(HttpMethod.Options, $"{WebServerUrl}/api/empty");
 
             request.Headers.Add(HttpHeaderNames.Origin, "http://unosquare.github.io");
             request.Headers.Add(HttpHeaderNames.AccessControlRequestMethod, "post");
             request.Headers.Add(HttpHeaderNames.AccessControlRequestHeaders, "content-type");
 
-            var response = await SendAsync(request);
-            Assert.AreEqual((int)HttpStatusCode.OK, response.StatusCode, "Status Code OK");
+            var response = await Client.SendAsync(request);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status Code OK");
         }
     }
 }

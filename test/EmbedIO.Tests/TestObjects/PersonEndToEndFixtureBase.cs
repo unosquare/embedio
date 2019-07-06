@@ -17,7 +17,7 @@ namespace EmbedIO.Tests.TestObjects
         {
             var current = PeopleRepository.Database.First();
 
-            var jsonBody = await GetString(url);
+            var jsonBody = await Client.GetStringAsync(url);
 
             Assert.IsNotNull(jsonBody, "Json Body is not null");
             Assert.IsNotEmpty(jsonBody, "Json Body is not empty");

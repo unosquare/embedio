@@ -17,7 +17,7 @@ namespace EmbedIO.Tests
             [Test]
             public async Task GetDataWithoutRegex()
             {
-                var call = await GetString("empty");
+                var call = await Client.GetStringAsync("empty");
 
                 Assert.AreEqual(string.Empty, call);
             }
@@ -25,7 +25,7 @@ namespace EmbedIO.Tests
             [Test]
             public async Task GetDataWithRegex()
             {
-                var call = await GetString("data/1");
+                var call = await Client.GetStringAsync("data/1");
 
                 Assert.AreEqual("1", call);
             }
@@ -33,7 +33,7 @@ namespace EmbedIO.Tests
             [Test]
             public async Task GetDataWithMultipleRegex()
             {
-                var call = await GetString("data/1/2");
+                var call = await Client.GetStringAsync("data/1/2");
 
                 Assert.AreEqual("2", call);
             }

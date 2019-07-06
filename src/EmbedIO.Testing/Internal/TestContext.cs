@@ -12,7 +12,7 @@ using Unosquare.Swan;
 
 namespace EmbedIO.Testing.Internal
 {
-    internal sealed class TestHttpContext : IHttpContextImpl
+    internal sealed class TestContext : IHttpContextImpl
     {
         private readonly TimeKeeper _ageKeeper = new TimeKeeper();
 
@@ -20,11 +20,11 @@ namespace EmbedIO.Testing.Internal
 
         private bool _closed;
 
-        public TestHttpContext(IHttpRequest request)
+        public TestContext(IHttpRequest request)
         {
             Request = request;
             User = null;
-            Response = new TestHttpResponse();
+            Response = new TestResponse();
             Id = UniqueIdGenerator.GetNext();
             LocalEndPoint = Request.LocalEndPoint;
             RemoteEndPoint = Request.RemoteEndPoint;

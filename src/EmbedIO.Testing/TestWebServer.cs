@@ -1,18 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Testing.Internal;
+using EmbedIO.Utilities;
 using Unosquare.Swan;
 
 namespace EmbedIO.Testing
 {
     /// <summary>
-    /// Represents our tiny web server used to handle requests for testing environments.
-    ///
-    /// Use this <c>IWebServer</c> implementation to run your unit tests.
+    /// <para>A Web server that does not actually communicate over the network;
+    /// instead, it manages an internal queue of requests that simulate
+    /// incoming connections.</para>
+    /// <para>Requests can be forwarded to the server using the <see cref="HttpClient"/> instance
+    /// returned by the <see cref="Client"/> property.</para>
     /// </summary>
     public class TestWebServer : WebServerBase<TestWebServerOptions>
     {
+        /// <summary>
+        /// The base URL that a <see cref="TestWebServer"/>, by default, simulates being bound to.
+        /// </summary>
+        public const string DefaultBaseUrl = "http://test.example.com:8080/";
+
         private readonly Queue<IHttpContextImpl> _contexts = new Queue<IHttpContextImpl>();
 
         private bool _listening;
@@ -22,17 +32,54 @@ namespace EmbedIO.Testing
         /// <summary>
         /// Initializes a new instance of the <see cref="TestWebServer"/> class.
         /// </summary>
-        public TestWebServer()
+        /// <param name="baseUrl"></param>
+        public TestWebServer(string baseUrl = DefaultBaseUrl)
         {
+            Validate.NotNullOrEmpty(nameof(baseUrl), baseUrl);
+
             Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
+            Client = new HttpClient(new TestMessageHandler(this), true) {
+                BaseAddress = new Uri(baseUrl)
+            };
+
             _listening = true;
         }
 
         /// <summary>
-        /// Gets the test HTTP Client.
+        /// <para>Gets a <see cref="HttpClient"/> that communicates with this server.</para>
+        /// <para>The returned client is already initialized with a base address,
+        /// so requests URLs may omit the scheme and host parts.</para>
         /// </summary>
-        /// <returns>A new instance of the TestHttpClient.</returns>
-        public TestHttpClient GetClient() => new TestHttpClient(this);
+        public HttpClient Client { get; }
+
+        /// <summary>
+        /// Encapsulates the creation and use of a <see cref="TestWebServer"/>.
+        /// </summary>
+        /// <param name="configure">A callback used to configure the server.</param>
+        /// <param name="use">A callback used to pass requests to the server.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="configure"/> is <see langword="null"/>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="use"/> is <see langword="null"/>.</para>
+        /// </exception>
+        public static async Task UseAsync(Action<IWebServer> configure, Func<HttpClient, Task> use)
+        {
+            Validate.NotNull(nameof(configure), configure);
+            Validate.NotNull(nameof(use), use);
+
+            using (var server = new TestWebServer())
+            {
+                configure(server);
+                using (var cancellationTokenSource = new CancellationTokenSource())
+                {
+#pragma warning disable CS4014 // Call is not awaited - it is expected to run ion parallel.
+                    Task.Run(() => server.RunAsync(cancellationTokenSource.Token));
+#pragma warning restore CS4014
+                    await use(server.Client).ConfigureAwait(false);
+                    cancellationTokenSource.Cancel();
+                }
+            }
+        }
 
         internal void EnqueueContext(IHttpContextImpl context)
         {

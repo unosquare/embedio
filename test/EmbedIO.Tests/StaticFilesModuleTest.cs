@@ -58,7 +58,7 @@ namespace EmbedIO.Tests
             [TestCase("sub")]
             public async Task SubFolderIndex(string url)
             {
-                var html = await GetString(url);
+                var html = await Client.GetStringAsync(url);
 
                 Assert.AreEqual(Resources.SubIndex, html, $"Same content {url}");
             }
@@ -121,10 +121,10 @@ namespace EmbedIO.Tests
                     Assert.Ignore("File-system is not case sensitive.");
                 }
 
-                var htmlUpperCase = await GetString(StaticFolder.WithDataFiles.UppercaseFile);
+                var htmlUpperCase = await Client.GetStringAsync(StaticFolder.WithDataFiles.UppercaseFile);
                 Assert.AreEqual(nameof(StaticFolder.WithDataFiles.UppercaseFile), htmlUpperCase, "Same content upper case");
 
-                var htmlLowerCase = await GetString(StaticFolder.WithDataFiles.LowercaseFile);
+                var htmlLowerCase = await Client.GetStringAsync(StaticFolder.WithDataFiles.LowercaseFile);
                 Assert.AreEqual(nameof(StaticFolder.WithDataFiles.LowercaseFile), htmlLowerCase, "Same content lower case");
             }
         }

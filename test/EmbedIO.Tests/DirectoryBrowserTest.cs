@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using EmbedIO.Files;
 using EmbedIO.Tests.TestObjects;
+using EmbedIO.Utilities;
 using NUnit.Framework;
 
 namespace EmbedIO.Tests
@@ -29,7 +30,7 @@ namespace EmbedIO.Tests
             [Test]
             public async Task Root_ReturnsFilesList()
             {
-                var htmlContent = await GetString(string.Empty);
+                var htmlContent = await Client.GetStringAsync(UrlPath.Root);
 
                 Assert.IsNotEmpty(htmlContent);
 
@@ -40,7 +41,7 @@ namespace EmbedIO.Tests
             [Test]
             public async Task Subfolder_ReturnsFilesList()
             {
-                var htmlContent = await GetString("sub");
+                var htmlContent = await Client.GetStringAsync("/sub");
 
                 Assert.IsNotEmpty(htmlContent);
 

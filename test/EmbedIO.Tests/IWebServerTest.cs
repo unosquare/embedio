@@ -63,9 +63,9 @@ namespace EmbedIO.Tests
                 webserver.RunAsync();
 #pragma warning restore 4014
 
-                var client = webserver.GetClient();
+                var client = webserver.Client;
 
-                var data = await client.GetAsync("/");
+                var data = await client.GetStringAsync("/");
                 Assert.IsNotNull(data);
 
                 var person = Json.Deserialize<Person>(data);
