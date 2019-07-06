@@ -14,8 +14,6 @@ namespace EmbedIO.Tests
         {
         }
 
-        #region Overrides of EndToEndFixtureBase
-
         protected override void OnSetUp()
         {
             Server
@@ -25,8 +23,6 @@ namespace EmbedIO.Tests
                     "post,get")
                 .WithWebApi("/api", m => m.RegisterController<TestController>());
         }
-
-        #endregion
 
         [Test]
         public async Task RequestOptionsVerb_ReturnsOK()

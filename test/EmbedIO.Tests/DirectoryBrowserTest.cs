@@ -17,8 +17,6 @@ namespace EmbedIO.Tests
 
         protected StaticFolder.WithHtmlFiles ServedFolder { get; }
 
-        #region Overrides of EndToEndFixtureBase
-
         protected override void OnSetUp()
         {
             Server
@@ -26,8 +24,6 @@ namespace EmbedIO.Tests
                     .WithDirectoryLister(DirectoryLister.Html)
                     .WithoutDefaultDocument());
         }
-
-        #endregion
 
         protected override void Dispose(bool disposing)
         {

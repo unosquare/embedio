@@ -12,14 +12,10 @@ namespace EmbedIO.Tests
         {
         }
 
-        #region Overrides of EndToEndFixtureBase
-
         protected override void OnSetUp()
         {
             Server.WithModule(new TestRegexModule("/"));
         }
-
-        #endregion
 
         public class GetData : RegexRoutingTest
         {
