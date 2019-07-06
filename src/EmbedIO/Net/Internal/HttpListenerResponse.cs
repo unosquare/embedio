@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Net.Internal
 {
@@ -288,8 +289,7 @@ namespace EmbedIO.Net.Internal
             {
                 result
                     .Append("; Expires=")
-                    .Append(cookie.Expires.ToUniversalTime().ToString("ddd, dd-MMM-yyyy HH:mm:ss", DateTimeFormatInfo.InvariantInfo))
-                    .Append(" GMT");
+                    .Append(HttpDate.Format(cookie.Expires));
             }
 
             if (!string.IsNullOrEmpty(cookie.Path))

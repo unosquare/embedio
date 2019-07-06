@@ -148,8 +148,8 @@ namespace EmbedIO
             }
 
             headerExists = true;
-            return TryParseRfc1123Date(value, out var dateTime)
-                && dateTime >= lastModifiedUtc;
+            return HttpDate.TryParse(value, out var dateTime)
+                && dateTime.UtcDateTime >= lastModifiedUtc;
         }
 
         // Checks the Range request header to tell whether to send
@@ -235,10 +235,10 @@ namespace EmbedIO
             var ifRange = @this.Headers.Get(HttpHeaderNames.IfRange)?.Trim();
             if (ifRange != null && ifRange != entityTag)
             {
-                if (!TryParseRfc1123Date(ifRange, out var rangeDate))
+                if (!HttpDate.TryParse(ifRange, out var rangeDate))
                     return false;
 
-                if (rangeDate != lastModifiedUtc)
+                if (rangeDate.UtcDateTime != lastModifiedUtc)
                     return false;
             }
 
@@ -259,14 +259,5 @@ namespace EmbedIO
 
             return true;
         }
-
-        // Attempts to parse a date and time in RFC1123 format.
-        private static bool TryParseRfc1123Date(string str, out DateTime result)
-            => DateTime.TryParseExact(
-                str,
-                "ddd, dd MMM yyyy hh: mm:ss GMT",
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.NoCurrentDateDefault | DateTimeStyles.AssumeUniversal,
-                out result);
     }
 }

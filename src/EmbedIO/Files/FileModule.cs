@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using EmbedIO.Files.Internal;
 using EmbedIO.Internal;
 using EmbedIO.Utilities;
-using Unosquare.Swan;
 
 namespace EmbedIO.Files
 {
@@ -631,7 +630,7 @@ namespace EmbedIO.Files
             setCompression(response);
             response.ContentType = contentType;
             response.Headers.Set(HttpHeaderNames.ETag, entityTag);
-            response.Headers.Set(HttpHeaderNames.LastModified, info.LastModifiedUtc.ToRfc1123String());
+            response.Headers.Set(HttpHeaderNames.LastModified, HttpDate.Format(info.LastModifiedUtc));
             response.Headers.Set(HttpHeaderNames.CacheControl, "max-age=0, must-revalidate");
             response.Headers.Set(HttpHeaderNames.AcceptRanges, "bytes");
         }

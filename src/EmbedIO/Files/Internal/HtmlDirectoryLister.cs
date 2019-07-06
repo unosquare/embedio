@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
-using Unosquare.Swan;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Files.Internal
 {
@@ -54,7 +54,7 @@ namespace EmbedIO.Files.Internal
                 {
                     text.Write($"<a href=\"{Uri.EscapeDataString(directory.Name)}{Path.DirectorySeparatorChar}\">{WebUtility.HtmlEncode(directory.Name)}</a>");
                     text.Write(new string(' ', Math.Max(1, MaxEntryLength - directory.Name.Length + 1)));
-                    text.Write(directory.LastModifiedUtc.ToRfc1123String());
+                    text.Write(HttpDate.Format(directory.LastModifiedUtc));
                     text.Write('\n');
                     await Task.Yield();
                 }
@@ -63,7 +63,7 @@ namespace EmbedIO.Files.Internal
                 {
                     text.Write($"<a href=\"{Uri.EscapeDataString(file.Name)}{Path.DirectorySeparatorChar}\">{WebUtility.HtmlEncode(file.Name)}</a>");
                     text.Write(new string(' ', Math.Max(1, MaxEntryLength - file.Name.Length + 1)));
-                    text.Write(file.LastModifiedUtc.ToRfc1123String());
+                    text.Write(HttpDate.Format(file.LastModifiedUtc));
                     text.Write($" {file.Length.ToString("#,###", CultureInfo.InvariantCulture),SizeIndent}\n");
                     await Task.Yield();
                 }

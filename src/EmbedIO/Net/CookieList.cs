@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using EmbedIO.Internal;
 using EmbedIO.Net.Internal;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Net
 {
@@ -72,16 +73,11 @@ namespace EmbedIO.Net
                     if (i < pairs.Length - 1)
                         buff.AppendFormat(CultureInfo.InvariantCulture, ", {0}", pairs[++i].Trim());
 
-                    if (!DateTime.TryParseExact(
-                        buff.ToString(),
-                        new[] { "ddd, dd'-'MMM'-'yyyy HH':'mm':'ss 'GMT'", "r" },
-                        new CultureInfo("en-US"),
-                        DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal,
-                        out var expires))
-                        expires = DateTime.Now;
+                    if (!HttpDate.TryParse(buff.ToString(), out var expires))
+                        expires = DateTimeOffset.Now;
 
                     if (cookie.Expires == DateTime.MinValue)
-                        cookie.Expires = expires.ToLocalTime();
+                        cookie.Expires = expires.LocalDateTime;
                 }
                 else if (pair.StartsWith("max-age", StringComparison.OrdinalIgnoreCase) && cookie != null)
                 {
