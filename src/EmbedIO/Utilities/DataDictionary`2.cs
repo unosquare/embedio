@@ -187,11 +187,11 @@ namespace EmbedIO.Utilities
         {
             Validate.NotNull(nameof(key), key);
 
-            if (value == null)
-                return null;
-
             if (_dictionary.TryGetValue(key, out var result))
                 return result;
+
+            if (value == null)
+                return null;
 
             _dictionary.Add(key, value);
             return value;
