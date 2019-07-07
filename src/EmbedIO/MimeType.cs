@@ -10,27 +10,29 @@ namespace EmbedIO
     public static partial class MimeType
     {
         /// <summary>
-        /// The default MIME type for data whose type is unknown.
+        /// The default MIME type for data whose type is unknown,
+        /// i.e. <c>application/octet-stream</c>.
         /// </summary>
         public const string Default = "application/octet-stream";
 
         /// <summary>
-        /// The MIME type for plain text.
+        /// The MIME type for plain text, i.e. <c>text/plain</c>.
         /// </summary>
         public const string PlainText = "text/plain";
 
         /// <summary>
-        /// The MIME type for HTML.
+        /// The MIME type for HTML, i.e. <c>text/html</c>.
         /// </summary>
         public const string Html = "text/html";
 
         /// <summary>
-        /// The MIME type for JSON.
+        /// The MIME type for JSON, i.e. <c>application/json</c>.
         /// </summary>
         public const string Json = "application/json";
 
         /// <summary>
-        /// The MIME type for URL-encoded HTML forms.
+        /// The MIME type for URL-encoded HTML forms,
+        /// i.e. <c>application/x-www-form-urlencoded</c>.
         /// </summary>
         internal const string UrlEncodedForm = "application/x-www-form-urlencoded";
 
