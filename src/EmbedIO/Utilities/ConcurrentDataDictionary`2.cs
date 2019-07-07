@@ -215,7 +215,7 @@ namespace EmbedIO.Utilities
 
         #region Implementation of IDictionary<TKey, TValue>
 
-        /// <inheritdoc cref="IDictionary{TKey,TValue}.Add"/>
+        /// <inheritdoc cref="IDictionary{TKey,TValue}.Add(TKey,TValue)"/>
         void IDictionary<TKey, TValue>.Add(TKey key, TValue value)
         {
             if (value != null)
