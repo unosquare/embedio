@@ -8,7 +8,7 @@ namespace EmbedIO.Testing
 {
     public static class StockResource
     {
-        public static readonly string Prefix = typeof(TestWebServer).Namespace + ".Resources.";
+        private static readonly string Prefix = typeof(TestWebServer).Namespace + ".Resources.";
 
         private static readonly Assembly Assembly;
 
