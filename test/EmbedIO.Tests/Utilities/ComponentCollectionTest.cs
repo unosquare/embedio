@@ -8,7 +8,6 @@ using NUnit.Framework;
 
 namespace EmbedIO.Tests.Utilities
 {
-    [TestFixture]
     public class ComponentCollectionTest
     {
         [Test]

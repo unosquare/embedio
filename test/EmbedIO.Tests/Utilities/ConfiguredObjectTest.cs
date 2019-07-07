@@ -4,7 +4,6 @@ using NUnit.Framework;
 
 namespace EmbedIO.Tests.Utilities
 {
-    [TestFixture]
     public class ConfiguredObjectTest
     {
         private class TestObject : ConfiguredObject
