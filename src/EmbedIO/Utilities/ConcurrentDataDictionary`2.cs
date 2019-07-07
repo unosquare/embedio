@@ -183,7 +183,10 @@ namespace EmbedIO.Utilities
         {
             Validate.NotNull(nameof(key), key);
 
-            return value == null ? null : _dictionary.GetOrAdd(key, value);
+            if (value != null)
+                return _dictionary.GetOrAdd(key, value);
+
+            return _dictionary.TryGetValue(key, out var retrievedValue) ? retrievedValue : null;
         }
 
         /// <inheritdoc cref="IDictionary{TKey,TValue}.Remove"/>
