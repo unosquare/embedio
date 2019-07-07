@@ -7,8 +7,7 @@ using System.Linq;
 namespace EmbedIO.Utilities
 {
     /// <summary>
-    /// Represents a non-thread-safe collection of key/value pairs that does not store null values
-    /// and can be accessed by multiple threads concurrently.
+    /// Represents a non-thread-safe collection of key/value pairs that does not store null values.
     /// </summary>
     /// <typeparam name="TKey">The type of keys in the dictionary. This must be a reference type.</typeparam>
     /// <typeparam name="TValue">The type of values in the dictionary. This must be a reference type.</typeparam>
