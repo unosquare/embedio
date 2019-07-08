@@ -214,7 +214,9 @@ namespace EmbedIO.Utilities
             if (_dictionary.ContainsKey(key))
                 return false;
 
-            _dictionary.Add(key, value);
+            if (value != null)
+                _dictionary.Add(key, value);
+
             return true;
         }
 
