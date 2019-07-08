@@ -180,13 +180,16 @@ namespace EmbedIO.Utilities
         public void Clear() => _dictionary.Clear();
 
         /// <inheritdoc cref="IDataDictionary{TKey,TValue}.ContainsKey"/>
-        public bool ContainsKey(TKey key) => _dictionary.ContainsKey(key);
+        public bool ContainsKey(TKey key)
+        {
+            // _dictionary.ContainsKey will take care of throwing on a null key.
+            return _dictionary.ContainsKey(key);
+        }
 
         /// <inheritdoc cref="ConcurrentDictionary{TKey,TValue}.GetOrAdd(TKey,TValue)"/>
         public TValue GetOrAdd(TKey key, TValue value)
         {
-            Validate.NotNull(nameof(key), key);
-
+            // _dictionary.TryGetValue will take care of throwing on a null key.
             if (_dictionary.TryGetValue(key, out var result))
                 return result;
 
@@ -198,11 +201,16 @@ namespace EmbedIO.Utilities
         }
 
         /// <inheritdoc cref="IDictionary{TKey,TValue}.Remove"/>
-        public bool Remove(TKey key) => _dictionary.Remove(key);
+        public bool Remove(TKey key)
+        {
+            // _dictionary.Remove will take care of throwing on a null key.
+            return _dictionary.Remove(key);
+        }
 
         /// <inheritdoc cref="ConcurrentDictionary{TKey,TValue}.TryAdd"/>
         public bool TryAdd(TKey key, TValue value)
         {
+            // ContainsKey will take care of throwing on a null key.
             if (_dictionary.ContainsKey(key))
                 return false;
 
@@ -216,6 +224,7 @@ namespace EmbedIO.Utilities
         /// <inheritdoc cref="IDataDictionary{TKey,TValue}.TryRemove"/>
         public bool TryRemove(TKey key, out TValue value)
         {
+            // TryGetValue will take care of throwing on a null key.
             if (!_dictionary.TryGetValue(key, out value))
                 return false;
 
@@ -226,6 +235,7 @@ namespace EmbedIO.Utilities
         /// <inheritdoc cref="ConcurrentDictionary{TKey,TValue}.TryUpdate"/>
         public bool TryUpdate(TKey key, TValue newValue, TValue comparisonValue)
         {
+            // TryGetValue will take care of throwing on a null key.
             if (!_dictionary.TryGetValue(key, out var value))
                 return false;
 
@@ -243,6 +253,14 @@ namespace EmbedIO.Utilities
         /// <inheritdoc cref="IDictionary{TKey,TValue}.Add"/>
         void IDictionary<TKey, TValue>.Add(TKey key, TValue value)
         {
+            // Validating the key seems redundant, because both Add and Remove
+            // will throw on a null key.
+            // This way, though, the code path on null key does not depend on value.
+            // Without this validation, there should be two unit tests for null key,
+            // one with a null value and one with a non-null value,
+            // which makes no sense.
+            Validate.NotNull(nameof(key), key);
+
             if (value != null)
             {
                 _dictionary.Add(key, value);
@@ -276,6 +294,9 @@ namespace EmbedIO.Utilities
         /// <inheritdoc cref="ICollection{T}.Add"/>
         void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
         {
+            if (item.Key == null)
+                throw new ArgumentException("Key cannot be null.", nameof(item));
+
             if (item.Value != null)
             {
                 ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).Add(item);
@@ -293,7 +314,13 @@ namespace EmbedIO.Utilities
         void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) => ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).CopyTo(array, arrayIndex);
 
         /// <inheritdoc cref="ICollection{T}.Remove"/>
-        bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item) => ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).Remove(item);
+        bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
+        {
+            if (item.Key == null)
+                throw new ArgumentException("Key cannot be null.", nameof(item));
+
+            return ((ICollection<KeyValuePair<TKey, TValue>>) _dictionary).Remove(item);
+        }
 
         #endregion
 
