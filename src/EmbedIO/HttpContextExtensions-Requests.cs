@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using EmbedIO.Internal;
+using EmbedIO.Utilities;
+using System;
 using System.Collections.Specialized;
 using System.IO;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbedIO.Internal;
-using EmbedIO.Utilities;
 
 namespace EmbedIO
 {

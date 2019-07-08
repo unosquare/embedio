@@ -207,7 +207,7 @@ namespace EmbedIO.WebApi
             if (constructor == null)
             {
                 throw new ArgumentException(
-                    $"Controller type must have a public parameterless constructor.",
+                    "Controller type must have a public parameterless constructor.",
                     nameof(controllerType));
             }
 
@@ -429,12 +429,12 @@ namespace EmbedIO.WebApi
                 if (requestDataInterfaces.Count > 0)
                 {
                     // Take the first that applies to both controller and parameter type
-                    var requestDataInterface = requestDataInterfaces.FirstOrDefault(
+                    var (attr, intf) = requestDataInterfaces.FirstOrDefault(
                         x => x.Intf.GenericTypeArguments[0].IsAssignableFrom(controllerType));
 
                     // Throw if there are none, as the user expects data to be injected
                     // but provided no way of injecting the right data type.
-                    if (requestDataInterface.Attr == null)
+                    if (attr == null)
                         throw new InvalidOperationException($"No request data attribute for parameter {parameter.Name} of method {controllerType.Name}.{method.Name} can provide the expected data type.");
 
                     // Use the request data interface to get a value for the parameter.
@@ -442,8 +442,8 @@ namespace EmbedIO.WebApi
                     // On exception call OnParameterConversionErrorAsync and return.
                     var exception = Expression.Variable(typeof(Exception), "exception");
                     Expression useRequestDataInterface = Expression.Call(
-                        Expression.Constant(requestDataInterface.Attr),
-                        requestDataInterface.Intf.GetMethod(GetRequestDataAsyncMethodName),
+                        Expression.Constant(attr),
+                        intf.GetMethod(GetRequestDataAsyncMethodName),
                         controller,
                         Expression.Constant(parameterType));
 
