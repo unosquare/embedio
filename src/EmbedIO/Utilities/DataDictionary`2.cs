@@ -289,7 +289,7 @@ namespace EmbedIO.Utilities
 
         /// <inheritdoc cref="ICollection{T}.IsReadOnly"/>
         /// <remarks>
-        /// <para>This property is always <see langword="false"/> for a <see cref="ConcurrentDataDictionary{TKey,TValue}"/>.</para>
+        /// <para>This property is always <see langword="false"/> for a <see cref="DataDictionary{TKey,TValue}"/>.</para>
         /// </remarks>
         bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => false;
 
