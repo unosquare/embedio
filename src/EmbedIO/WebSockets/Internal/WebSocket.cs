@@ -58,14 +58,6 @@ namespace EmbedIO.WebSockets.Internal
 
         internal bool EmitOnPing { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating whether the WebSocket connection is alive.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the connection is alive; otherwise, <c>false</c>.
-        /// </value>
-        internal bool IsAlive => PingAsync().Result; // TODO: Change?
-
         internal bool InContinuation { get; private set; }
 
         /// <inheritdoc />
