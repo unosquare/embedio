@@ -12,24 +12,25 @@ namespace EmbedIO.Utilities
     {
         /// <summary>
         /// <para>Parses a URL query or URL-encoded HTML form.</para>
-        /// <para>Unlike <see cref="HttpListenerRequest.QueryString"/>, the returned
-        /// <see cref="NameValueCollection"/> will have bracketed indexes stripped away;
+        /// <para>Unlike <see cref="HttpListenerRequest.QueryString" />, the returned
+        /// <see cref="NameValueCollection" /> will have bracketed indexes stripped away;
         /// for example, <c>a[0]=1&amp;a[1]=2</c> will yield the same result as <c>a=1&amp;a=2</c>,
-        /// i.e. a <see cref="NameValueCollection"/> with one key (<c>a</c>) associated with
+        /// i.e. a <see cref="NameValueCollection" /> with one key (<c>a</c>) associated with
         /// two values (<c>1</c> and <c>2</c>).</para>
         /// </summary>
         /// <param name="source">The string to parse.</param>
-        /// <param name="groupFlags">
-        /// <para>If this parameter is <see langword="true"/>, tokens not followed by an equal sign
+        /// <param name="groupFlags"><para>If this parameter is <see langword="true" />, tokens not followed by an equal sign
         /// (e.g. <c>this</c> in <c>a=1&amp;this&amp;b=2</c>) will be grouped as values of a <c>null</c> key.
-        /// This is the same behavior as the <see cref="IHttpRequest.QueryString"/> and
-        /// <see cref="HttpListenerRequest.QueryString"/> properties.</para>
-        /// <para>If this parameter is <see langword="false"/>, tokens not followed by an equal sign
+        /// This is the same behavior as the <see cref="IHttpRequest.QueryString" /> and
+        /// <see cref="HttpListenerRequest.QueryString" /> properties.</para>
+        /// <para>If this parameter is <see langword="false" />, tokens not followed by an equal sign
         /// (e.g. <c>this</c> in <c>a=1&amp;this&amp;b=2</c>) will be considered keys with an empty
-        /// value. This is the same behavior as the <see cref="HttpContextExtensions.GetRequestQueryData"/>
-        /// extension method.</para>
-        /// </param>
-        /// <returns>A read-only <see cref="NameValueCollection"/>.</returns>
+        /// value. This is the same behavior as the <see cref="HttpContextExtensions.GetRequestQueryData" />
+        /// extension method.</para></param>
+        /// <param name="mutableResult">if set to <c>true</c> [mutable result].</param>
+        /// <returns>
+        /// A read-only <see cref="NameValueCollection" />.
+        /// </returns>
         public static NameValueCollection Parse(string source, bool groupFlags, bool mutableResult = true)
         {
             var result = new LockableNameValueCollection();

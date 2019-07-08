@@ -20,7 +20,7 @@ namespace EmbedIO
         /// <exception cref="InvalidOperationException">The web server has already been started.</exception>
         public static void Start(this IWebServer @this, CancellationToken cancellationToken = default)
         {
-#pragma warning disable CS4014 // The call is not wawited - it is expected to run in parallel.
+#pragma warning disable CS4014 // The call is not awaited - it is expected to run in parallel.
             Task.Run(() => @this.RunAsync(cancellationToken));
 #pragma warning restore CS4014
             while (@this.State < WebServerState.Listening)
