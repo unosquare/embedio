@@ -194,12 +194,10 @@ namespace EmbedIO.WebSockets.Internal
                 throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {HttpHeaderNames.SecWebSocketKey} header, or it has an invalid value.");
 
             var webSocketVersion = requestHeaders[HttpHeaderNames.SecWebSocketVersion];
+            
             if (webSocketVersion == null || webSocketVersion != SupportedVersion)
                 throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {HttpHeaderNames.SecWebSocketVersion} header, or it has an invalid value.");
             
-            // if (string.IsNullOrWhiteSpace(requestHeaders[HttpHeaderNames.SecWebSocketExtensions]))
-            //     throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes an invalid {HttpHeaderNames.SecWebSocketExtensions} header.");
-
             var ret = HttpResponse.CreateWebSocketResponse();
 
             ret.Headers[HttpHeaderNames.SecWebSocketAccept] = CreateResponseKey(webSocketKey);
