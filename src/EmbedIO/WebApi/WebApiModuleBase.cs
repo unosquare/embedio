@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,6 +24,7 @@ namespace EmbedIO.WebApi
         private static readonly MethodInfo RouteSetter = typeof(WebApiController).GetProperty(nameof(WebApiController.Route)).GetSetMethod(true);
         private static readonly MethodInfo CancellationTokenSetter = typeof(WebApiController).GetProperty(nameof(WebApiController.CancellationToken)).GetSetMethod(true);
         private static readonly MethodInfo AwaitResultMethod = typeof(WebApiModuleBase).GetMethod(nameof(AwaitResult), BindingFlags.Static | BindingFlags.NonPublic);
+        private static readonly MethodInfo AwaitAndCastResultMethod = typeof(WebApiModuleBase).GetMethod(nameof(AwaitAndCastResult), BindingFlags.Static | BindingFlags.NonPublic);
         private static readonly MethodInfo TaskToBoolTaskMethod = typeof(WebApiModuleBase).GetMethod(nameof(TaskToBoolTask), BindingFlags.Static | BindingFlags.NonPublic);
         private static readonly MethodInfo DisposeMethod = typeof(IDisposable).GetMethod(nameof(IDisposable.Dispose));
 
@@ -352,25 +352,25 @@ namespace EmbedIO.WebApi
                 if (requestDataInterfaces.Count > 0)
                 {
                     // Take the first that applies to both controller and parameter type
-                    var requestDataInterface = requestDataInterfaces.FirstOrDefault(
+                    var (attr, intf) = requestDataInterfaces.FirstOrDefault(
                         x => x.Intf.GenericTypeArguments[0].IsAssignableFrom(controllerType)
                           && parameterType.IsAssignableFrom(x.Intf.GenericTypeArguments[1]));
 
                     // Throw if there are none, as the user expects data to be injected
                     // but provided no way of injecting the right data type.
-                    if (requestDataInterface.Attr == null)
+                    if (attr == null)
                         throw new InvalidOperationException($"No request data attribute for parameter {parameter.Name} of method {controllerType.Name}.{method.Name} can provide the expected data type.");
 
                     // Use the request data interface to get a value for the parameter.
                     Expression useRequestDataInterface = Expression.Call(
-                        Expression.Constant(requestDataInterface.Attr),
-                        requestDataInterface.Intf.GetMethod(GetRequestDataAsyncMethodName),
+                        Expression.Constant(attr),
+                        intf.GetMethod(GetRequestDataAsyncMethodName),
                         controller);
 
                     // We should await the call to GetRequestDataAsync.
-                    // For lack of a better way, call AwaitResult with a appropriate type parameter.
+                    // For lack of a better way, call AwaitResult with an appropriate type argument.
                     useRequestDataInterface = Expression.Call(
-                        AwaitResultMethod.MakeGenericMethod(requestDataInterface.Intf.GenericTypeArguments[1]),
+                        AwaitResultMethod.MakeGenericMethod(intf.GenericTypeArguments[1]),
                         useRequestDataInterface);
 
                     handlerArguments.Add(useRequestDataInterface);
@@ -391,7 +391,7 @@ namespace EmbedIO.WebApi
                 // If there are any...
                 if (requestDataInterfaces.Count > 0)
                 {
-                    // Take the first that applies to both controller and parameter type
+                    // Take the first that applies to the controller
                     var (attr, intf) = requestDataInterfaces.FirstOrDefault(
                         x => x.Intf.GenericTypeArguments[0].IsAssignableFrom(controllerType));
 
@@ -407,14 +407,15 @@ namespace EmbedIO.WebApi
                         controller,
                         Expression.Constant(parameterType));
 
-                    // We should await the call to GetRequestDataAsync.
-                    // For lack of a better way, call AwaitResult with a appropriate type parameter.
+                    // We should await the call to GetRequestDataAsync,
+                    // then cast the result to the parameter type.
+                    // For lack of a better way to do the former,
+                    // and to save one function call,
+                    // just call AwaitAndCastResult with an appropriate type argument.
                     useRequestDataInterface = Expression.Call(
-                        AwaitResultMethod.MakeGenericMethod(typeof(object)),
+                        AwaitAndCastResultMethod.MakeGenericMethod(parameterType),
+                        Expression.Constant(parameter.Name),
                         useRequestDataInterface);
-
-                    // Cast the obtained object to the type of the parameter.
-                    useRequestDataInterface = Expression.Convert(useRequestDataInterface, parameterType);
 
                     handlerArguments.Add(useRequestDataInterface);
                     continue;
@@ -539,6 +540,23 @@ namespace EmbedIO.WebApi
         }
 
         private static T AwaitResult<T>(Task<T> task) => task.ConfigureAwait(false).GetAwaiter().GetResult();
+
+        private static T AwaitAndCastResult<T>(string parameterName, Task<object> task)
+        {
+            var result = task.ConfigureAwait(false).GetAwaiter().GetResult();
+            if (result == null)
+            {
+                if (typeof(T).IsValueType && Nullable.GetUnderlyingType(typeof(T)) == null)
+                    throw new InvalidCastException($"Cannot cast null to {typeof(T).FullName} for parameter \"{parameterName}\".");
+
+                return default;
+            }
+
+            if (result is T castResult)
+                return castResult;
+
+            throw new InvalidCastException($"Cannot cast {result.GetType().FullName} to {typeof(T).FullName} for parameter \"{parameterName}\".");
+        }
 
         private static async Task<bool> TaskToBoolTask(Task result)
         {
