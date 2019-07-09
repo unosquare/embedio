@@ -19,18 +19,18 @@ namespace EmbedIO.Utilities
         /// two values (<c>1</c> and <c>2</c>).</para>
         /// </summary>
         /// <param name="source">The string to parse.</param>
-        /// <param name="groupFlags"><para>If this parameter is <see langword="true" />, tokens not followed by an equal sign
-        /// (e.g. <c>this</c> in <c>a=1&amp;this&amp;b=2</c>) will be grouped as values of a <c>null</c> key.
+        /// <param name="groupFlags"><para>If this parameter is <see langword="true" />,
+        /// tokens not followed by an equal sign (e.g. <c>this</c> in <c>a=1&amp;this&amp;b=2</c>)
+        /// will be grouped as values of a <c>null</c> key.
         /// This is the same behavior as the <see cref="IHttpRequest.QueryString" /> and
         /// <see cref="HttpListenerRequest.QueryString" /> properties.</para>
         /// <para>If this parameter is <see langword="false" />, tokens not followed by an equal sign
         /// (e.g. <c>this</c> in <c>a=1&amp;this&amp;b=2</c>) will be considered keys with an empty
         /// value. This is the same behavior as the <see cref="HttpContextExtensions.GetRequestQueryData" />
         /// extension method.</para></param>
-        /// <param name="mutableResult">if set to <c>true</c> [mutable result].</param>
-        /// <returns>
-        /// A read-only <see cref="NameValueCollection" />.
-        /// </returns>
+        /// <param name="mutableResult"><see langword="true" /> (the default) to return
+        /// a mutable (non-read-only) collection; <see langword="false" /> to return a read-only collection.</param>
+        /// <returns>A <see cref="NameValueCollection" /> containing the parsed data.</returns>
         public static NameValueCollection Parse(string source, bool groupFlags, bool mutableResult = true)
         {
             var result = new LockableNameValueCollection();
