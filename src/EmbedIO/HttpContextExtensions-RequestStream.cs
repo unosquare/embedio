@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.IO.Compression;
 using System.Text;
+using Unosquare.Swan;
 
 namespace EmbedIO
 {
@@ -20,8 +21,9 @@ namespace EmbedIO
         public static Stream OpenRequestStream(this IHttpContext @this)
         {
             var stream = @this.Request.InputStream;
-            
-            switch (@this.Request.Headers[HttpHeaderNames.ContentEncoding]?.Trim())
+
+            var encoding = @this.Request.Headers[HttpHeaderNames.ContentEncoding]?.Trim();
+            switch (encoding)
             {
                 case CompressionMethodNames.Gzip:
                     if (@this.SupportCompressedRequests)
@@ -36,7 +38,10 @@ namespace EmbedIO
                     return stream;
             }
 
-            throw HttpException.BadRequest();
+            $"[{@this.Id}] Unsupported request content encoding \"{encoding}\", sending 400 Bad Request..."
+                .Warn(nameof(OpenRequestStream));
+
+            throw HttpException.BadRequest($"Unsupported content encoding \"{encoding}\"");
         }
 
         /// <summary>

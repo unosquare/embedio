@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Unosquare.Swan;
 
 namespace EmbedIO
 {
@@ -43,7 +44,10 @@ namespace EmbedIO
             }
             catch (FormatException)
             {
-                throw HttpException.BadRequest();
+                $"[{context.Id}] Cannot convert JSON request body to {typeof(TData).Name}, sending 400 Bad Request..."
+                    .Warn($"{nameof(RequestDeserializer)}.{nameof(Json)}");
+
+                throw HttpException.BadRequest("Incorrect request data format.");
             }
         }
     }
