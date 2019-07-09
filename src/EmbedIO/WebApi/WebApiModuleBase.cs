@@ -30,7 +30,6 @@ namespace EmbedIO.WebApi
 
         private static readonly string GetRequestDataAsyncMethodName = nameof(IRequestDataAttribute<WebApiController>.GetRequestDataAsync);
 
-        private readonly MethodInfo _onParameterConversionErrorAsyncMethod;
         private readonly MethodInfo _serializeAsyncControllerResultAsyncMethod;
         private readonly MethodInfo _serializeNonAsyncControllerResultAsyncMethod;
 
@@ -64,7 +63,6 @@ namespace EmbedIO.WebApi
         {
             Serializer = Validate.NotNull(nameof(serializer), serializer);
 
-            _onParameterConversionErrorAsyncMethod = new Func<IHttpContext, string, Exception, CancellationToken, Task<bool>>(OnParameterConversionErrorAsync).Method;
             _serializeAsyncControllerResultAsyncMethod = new Func<IHttpContext, Task<object>, CancellationToken, Task<bool>>(SerializeAsyncControllerResultAsync).Method;
             _serializeNonAsyncControllerResultAsyncMethod = new Func<IHttpContext, object, CancellationToken, Task<bool>>(SerializeNonAsyncControllerResultAsync).Method;
         }
@@ -274,24 +272,6 @@ namespace EmbedIO.WebApi
                 factory.Method));
         }
 
-        /// <summary>
-        /// <para>Called when EmbedIO fails to convert a route parameter to a handler parameter type.</para>
-        /// <para>The default behavior is to send an empty <c>400 Bad Request</c> response.</para>
-        /// </summary>
-        /// <param name="context">The context of the request being handled.</param>
-        /// <param name="name">The name of the route parameter.</param>
-        /// <param name="exception">The exception that was thrown.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// <see langword="true" /> if the request has been handled;
-        /// <see langword="false" /> if the request should be passed down the module chain.
-        /// </returns>
-        protected virtual Task<bool> OnParameterConversionErrorAsync(IHttpContext context, string name, Exception exception, CancellationToken cancellationToken)
-        {
-            context.Response.SetEmptyResponse((int)HttpStatusCode.BadRequest);
-            return Task.FromResult(true);
-        }
-
         private static int IndexOfRouteParameter(RouteMatcher matcher, string name)
         {
             var names = matcher.ParameterNames;
@@ -382,9 +362,6 @@ namespace EmbedIO.WebApi
                         throw new InvalidOperationException($"No request data attribute for parameter {parameter.Name} of method {controllerType.Name}.{method.Name} can provide the expected data type.");
 
                     // Use the request data interface to get a value for the parameter.
-                    // Do it inside a try / catch block.
-                    // On exception call OnParameterConversionErrorAsync and return.
-                    var exception = Expression.Variable(typeof(Exception), "exception");
                     Expression useRequestDataInterface = Expression.Call(
                         Expression.Constant(requestDataInterface.Attr),
                         requestDataInterface.Intf.GetMethod(GetRequestDataAsyncMethodName),
@@ -396,21 +373,7 @@ namespace EmbedIO.WebApi
                         AwaitResultMethod.MakeGenericMethod(requestDataInterface.Intf.GenericTypeArguments[1]),
                         useRequestDataInterface);
 
-                    var catchBlock = Expression.Block(
-                        Expression.Return(
-                            returnTarget,
-                            Expression.Call(
-                                Expression.Constant(this),
-                                _onParameterConversionErrorAsyncMethod,
-                                contextInLambda,
-                                Expression.Constant(parameter.Name),
-                                exception,
-                                cancellationTokenInLambda)),
-                        Expression.Constant(
-                            parameterType.IsValueType ? Activator.CreateInstance(parameterType) : null,
-                            parameterType));
-
-                    handlerArguments.Add(Expression.TryCatch(useRequestDataInterface, Expression.Catch(exception, catchBlock)));
+                    handlerArguments.Add(useRequestDataInterface);
                     continue;
                 }
 
@@ -438,9 +401,6 @@ namespace EmbedIO.WebApi
                         throw new InvalidOperationException($"No request data attribute for parameter {parameter.Name} of method {controllerType.Name}.{method.Name} can provide the expected data type.");
 
                     // Use the request data interface to get a value for the parameter.
-                    // Do it inside a try / catch block.
-                    // On exception call OnParameterConversionErrorAsync and return.
-                    var exception = Expression.Variable(typeof(Exception), "exception");
                     Expression useRequestDataInterface = Expression.Call(
                         Expression.Constant(attr),
                         intf.GetMethod(GetRequestDataAsyncMethodName),
@@ -456,21 +416,7 @@ namespace EmbedIO.WebApi
                     // Cast the obtained object to the type of the parameter.
                     useRequestDataInterface = Expression.Convert(useRequestDataInterface, parameterType);
 
-                    var catchBlock = Expression.Block(
-                        Expression.Return(
-                            returnTarget,
-                            Expression.Call(
-                                Expression.Constant(this),
-                                _onParameterConversionErrorAsyncMethod,
-                                contextInLambda,
-                                Expression.Constant(parameter.Name),
-                                exception,
-                                cancellationTokenInLambda)),
-                        Expression.Constant(
-                            parameterType.IsValueType ? Activator.CreateInstance(parameterType) : null,
-                            parameterType));
-
-                    handlerArguments.Add(Expression.TryCatch(useRequestDataInterface, Expression.Catch(exception, catchBlock)));
+                    handlerArguments.Add(useRequestDataInterface);
                     continue;
                 }
 
@@ -479,27 +425,11 @@ namespace EmbedIO.WebApi
                 if (index >= 0)
                 {
                     // Convert the parameter to the handler's parameter type.
-                    // Do it inside a try / catch block.
-                    // On exception call OnParameterConversionErrorAsync and return.
-                    var exception = Expression.Variable(typeof(Exception), "exception");
-                    var tryBlock = RouteParameterConverter.ConvertExpression(
+                    var convertFromRoute = RouteParameterConverter.ConvertExpression(
                         Expression.Property(routeInLambda, "Item", Expression.Constant(index)),
                         parameterType);
-                    var catchBlock = Expression.Block(
-                        Expression.Return(
-                            returnTarget,
-                            Expression.Call(
-                                Expression.Constant(this),
-                                _onParameterConversionErrorAsyncMethod,
-                                contextInLambda,
-                                Expression.Constant(parameter.Name),
-                                exception,
-                                cancellationTokenInLambda)),
-                        Expression.Constant(
-                            parameterType.IsValueType ? Activator.CreateInstance(parameterType) : null,
-                            parameterType));
 
-                    handlerArguments.Add(Expression.TryCatch(tryBlock, Expression.Catch(exception, catchBlock)));
+                    handlerArguments.Add(convertFromRoute);
                     continue;
                 }
 
