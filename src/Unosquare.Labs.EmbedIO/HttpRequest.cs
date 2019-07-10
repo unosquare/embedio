@@ -22,6 +22,8 @@
         {
             _request = context.Request;
             Cookies = new CookieCollection(_request.Cookies);
+            LocalEndPoint = _request.LocalEndPoint;
+            RemoteEndPoint = _request.RemoteEndPoint;
         }
 
         /// <inheritdoc />
@@ -58,7 +60,7 @@
         public Encoding ContentEncoding => _request.ContentEncoding;
 
         /// <inheritdoc />
-        public IPEndPoint RemoteEndPoint => _request.RemoteEndPoint;
+        public IPEndPoint RemoteEndPoint { get; }
 
         /// <inheritdoc />
         public bool IsLocal => _request.IsLocal;
@@ -70,7 +72,7 @@
         public bool IsWebSocketRequest => _request.IsWebSocketRequest;
 
         /// <inheritdoc />
-        public IPEndPoint LocalEndPoint => _request.LocalEndPoint;
+        public IPEndPoint LocalEndPoint { get; }
 
         /// <inheritdoc />
         public string ContentType => _request.ContentType;
