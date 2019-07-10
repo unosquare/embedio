@@ -25,7 +25,6 @@ namespace EmbedIO.Net.Internal
         private ResponseStream _oStream;
         private bool _contextBound;
         private int _sTimeout = 90000; // 90k ms for first request, 15k ms from then on        
-        private IPEndPoint _localEp;
         private HttpListener _lastListener;
         private InputState _inputState = InputState.RequestLine;
         private LineState _lineState = LineState.None;
@@ -36,6 +35,8 @@ namespace EmbedIO.Net.Internal
             _sock = sock;
             _epl = epl;
             IsSecure = epl.Secure;
+            LocalEndPoint = (IPEndPoint) sock.LocalEndPoint;
+            RemoteEndPoint = (IPEndPoint) sock.RemoteEndPoint;
 
             if (!IsSecure)
             {
@@ -70,9 +71,9 @@ namespace EmbedIO.Net.Internal
 
         public Stream Stream { get; }
 
-        public IPEndPoint LocalEndPoint => _localEp ?? (_localEp = (IPEndPoint)_sock.LocalEndPoint);
+        public IPEndPoint LocalEndPoint { get; }
 
-        public IPEndPoint RemoteEndPoint => (IPEndPoint)_sock?.RemoteEndPoint;
+        public IPEndPoint RemoteEndPoint { get; }
 
         public bool IsSecure { get; }
 

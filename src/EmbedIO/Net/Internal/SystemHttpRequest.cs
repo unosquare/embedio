@@ -24,6 +24,8 @@ namespace EmbedIO.Net.Internal
             Enum.TryParse<HttpVerbs>(_request.HttpMethod.Trim(), true, out var verb);
             HttpVerb = verb;
             Cookies = new SystemCookieCollection(_request.Cookies);
+            LocalEndPoint = _request.LocalEndPoint;
+            RemoteEndPoint = _request.RemoteEndPoint;
         }
 
         /// <inheritdoc />
@@ -63,7 +65,7 @@ namespace EmbedIO.Net.Internal
         public Encoding ContentEncoding => _request.ContentEncoding;
 
         /// <inheritdoc />
-        public IPEndPoint RemoteEndPoint => _request.RemoteEndPoint;
+        public IPEndPoint RemoteEndPoint { get; }
 
         /// <inheritdoc />
         public bool IsSecureConnection => _request.IsSecureConnection;
@@ -78,7 +80,7 @@ namespace EmbedIO.Net.Internal
         public bool IsWebSocketRequest => _request.IsWebSocketRequest;
 
         /// <inheritdoc />
-        public IPEndPoint LocalEndPoint => _request.LocalEndPoint;
+        public IPEndPoint LocalEndPoint { get; }
 
         /// <inheritdoc />
         public string ContentType => _request.ContentType;
