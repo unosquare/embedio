@@ -20,8 +20,6 @@
 - [Installation](#installation)
 - [Usage](#usage)
     - [WebServer Setup](#webserver-setup)
-    - [Extension Methods](#extension-methods)
-    - [Easy Routes](#easy-routes)
 - [Support for SSL](#support-for-ssl)
 - [Examples](#examples)
     - [Basic Example](#basic-example)
@@ -85,30 +83,33 @@ PM> Install-Package EmbedIO
 
 ### WebServer Setup
 
-### Extension Methods
+### Reading from a POST body as a dictionary (application/x-www-form-urlencoded)
 
-By adding the namespace `EmbedIO` to your class, you can use some helpful extension methods for `IHttpContext`, `IHttpResponse` and `IHttpRequest`. These methods can be used in any Web module (like [Fallback Module](https://unosquare.github.io/embedio/api/EmbedIO.Modules.FallbackModule.html)) or inside a [WebAPI Controller](https://unosquare.github.io/embedio/api/EmbedIO.Modules.WebApiController.html) method.
-
-Below, some common scenarios using a WebAPI Controller method as body function:
-
-#### Reading from a POST body as a dictionary (application/x-www-form-urlencoded)
-
-For reading a dictionary from a HTTP Request body you can use [RequestFormDataDictionary](https://unosquare.github.io/embedio/api/EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionary_Unosquare_Labs_EmbedIO_IHttpContext_). This method works directly from `IHttpContext` and returns the key-value pairs sent by using the Contet-Type 'application/x-www-form-urlencoded'.
+For reading a dictionary from a HTTP Request body inside a WebAPI method you can add an argument to your method with the attribute `FormData`.
 
 ```csharp
-    [WebApiHandler(HttpVerbs.Post, "/api/data")]
-    public async Task<bool> PostData() 
+    [Route(HttpVerbs.Post, "/data")]
+    public async Task PostData([FormData] NameValueCollection data) 
     {
-        var data = HttpContext.RequestFormDataDictionary();
-	
-		// Perform an operation with the data
-		await SaveData(data);
-	
-		return true;
+        // Perform an operation with the data
+        await SaveData(data);
     }
 ```
 
-#### Reading from a POST body as a JSON payload (application/json)
+Or you can use [GetRequestFormDataAsync](#) extension method if you are working in a custom Web Module. This method works directly from `IHttpContext` and returns the key-value pairs sent by using the Contet-Type 'application/x-www-form-urlencoded'.
+
+```csharp
+    [Route(HttpVerbs.Post, "/data")]
+    public async Task PostData() 
+    {
+        var data = HttpContext.GetRequestFormDataAsync(CancellationToken);
+	
+        // Perform an operation with the data
+        await SaveData(data);
+    }
+```
+
+### Reading from a POST body as a JSON payload (application/json)
 
 For reading a JSON payload and deserialize it to an object from a HTTP Request body you can use [ParseJson<T>](https://unosquare.github.io/embedio/api/EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_ParseJson__1_Unosquare_Labs_EmbedIO_IHttpContext_). This method works directly from `IHttpContext` and returns an object of the type specified in the generic type.
 
@@ -125,13 +126,13 @@ For reading a JSON payload and deserialize it to an object from a HTTP Request b
     }
 ```
 
-#### Reading from a POST body as a FormData (multipart/form-data)
+### Reading from a POST body as a FormData (multipart/form-data)
 
 EmbedIO doesn't provide the functionality to read from a Multipart FormData stream. But you can check the [HttpMultipartParser Nuget](https://www.nuget.org/packages/HttpMultipartParser/) and connect the Request input directly to the HttpMultipartParser, very helpful and small library.
 
 There is [another solution](http://stackoverflow.com/questions/7460088/reading-file-input-from-a-multipart-form-data-post) but it requires this [Microsoft Nuget](https://www.nuget.org/packages/Microsoft.AspNet.WebApi.Client).
 
-#### Writing a binary stream
+### Writing a binary stream
 
 For writing a binary stream directly to the Response Output Stream you can use [BinaryResponseAsync](https://unosquare.github.io/embedio/api/EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_). This method has an overload to use `IHttpContext` and you need to set the Content-Type beforehand.
 
@@ -147,8 +148,6 @@ For writing a binary stream directly to the Response Output Stream you can use [
 	return await HttpContext.BinaryResponseAsync(stream);
     }
 ```
-
-### Easy Routes
 
 ## Support for SSL
 
