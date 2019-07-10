@@ -52,7 +52,8 @@ A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework
 #### Breaking changes
 * *TODO*
 * New Assembly name `EmbedIO.dll`.
-* New Assembly with unit Testing support classes and `TestWebServer`: `EmbedIO.Testing.dll`
+* New Assembly with unit Testing support classes and `TestWebServer`: `EmbedIO.Testing.dll`.
+* Remove Routing Strategy: everything is using Regex resolution of routes.
 
 ### Some usage scenarios:
 
@@ -111,18 +112,16 @@ Or you can use [GetRequestFormDataAsync](#) extension method if you are working 
 
 ### Reading from a POST body as a JSON payload (application/json)
 
-For reading a JSON payload and deserialize it to an object from a HTTP Request body you can use [ParseJson<T>](https://unosquare.github.io/embedio/api/EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_ParseJson__1_Unosquare_Labs_EmbedIO_IHttpContext_). This method works directly from `IHttpContext` and returns an object of the type specified in the generic type.
+For reading a JSON payload and deserialize it to an object from a HTTP Request body you can use [GetRequestDataAsync<T>](#). This method works directly from `IHttpContext` and returns an object of the type specified in the generic type.
 
 ```csharp
-    [WebApiHandler(HttpVerbs.Post, "/api/data")]
-    public async Task<bool> PostJsonData() 
+    [Route(HttpVerbs.Post, "/data")]
+    public async Task PostJsonData() 
     {
-        var data = HttpContext.ParseJson<MyData>();
+        var data = HttpContext.GetRequestDataAsync<MyData>(CancellationToken);
 	
-		// Perform an operation with the data
-		await SaveData(data);
-	
-		return true;
+        // Perform an operation with the data
+        await SaveData(data);
     }
 ```
 
@@ -137,7 +136,7 @@ There is [another solution](http://stackoverflow.com/questions/7460088/reading-f
 For writing a binary stream directly to the Response Output Stream you can use [BinaryResponseAsync](https://unosquare.github.io/embedio/api/EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_). This method has an overload to use `IHttpContext` and you need to set the Content-Type beforehand.
 
 ```csharp
-    [WebApiHandler(HttpVerbs.Get, "/api/binary")]
+    [Route(HttpVerbs.Get, "/binary")]
     public async Task<bool> GetBinary() 
     {
         var stream = new MemoryStream();
@@ -230,12 +229,9 @@ namespace Unosquare
 
 ### REST API Example
 
-The WebApi module supports two routing strategies: Wildcard and Regex. By default, the WebApi module will use the **Regex Routing Strategy** trying to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API. 
+The WebApi module uses the **Regex Routing Strategy** trying to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API. 
 
-A method with the following route `/api/people/{id}` is going to match any request URL with three segments: the first two `api` and `people` and the last 
-one is going to be parsed or converted to the type in the `id` argument of the handling method signature. Please read on if this was confusing as it is 
-much simpler than it sounds. Additionally, you can put multiple values to match, for example `/api/people/{mainSkill}/{age}`, and receive the 
-parsed values from the URL straight into the arguments of your handler method.
+A method with the following route `/api/people/{id}` is going to match any request URL with three segments: the first two `api` and `people` and the last one is going to be parsed or converted to the type in the `id` argument of the handling method signature. Please read on if this was confusing as it is much simpler than it sounds. Additionally, you can put multiple values to match, for example `/api/people/{mainSkill}/{age}`, and receive the parsed values from the URL straight into the arguments of your handler method.
 
 During server setup:
 
@@ -246,147 +242,68 @@ server.RegisterModule(new WebApiModule());
 server.Module<WebApiModule>().RegisterController<PeopleController>();
 ```
 
-And our controller class (using default Regex Strategy) looks like:
+And our controller class looks like:
 
 ```csharp
 // A controller is a class where the WebApi module will find available
 // endpoints. The class must extend WebApiController.
 public class PeopleController : WebApiController
 {
-    // You need to add a default constructor where the first argument
-    // is an IHttpContext
-    public PeopleController(IHttpContext context)
-        : base(context)
-    {
-    }
-
     // You need to include the WebApiHandler attribute to each method
     // where you want to export an endpoint. The method should return
     // bool or Task<bool>.
-    [WebApiHandler(HttpVerbs.Get, "/api/people/{id}")]
-    public async Task<bool> GetPersonById(int id)
+    [Route(HttpVerbs.Get, "/people/{id}")]
+    public async Task<object> GetPersonById(int id)
     {
-        try
-        {
-            // This is fake call to a Repository
-            var person = await PeopleRepository.GetById(id);
-            return await Ok(person);
-        }
-        catch (Exception ex)
-        {
-            return await InternalServerError(ex);
-        }
-    }
-    
-    // You can override the default headers and add custom headers to each API Response.
-    public override void SetDefaultHeaders() => HttpContext.NoCache();
-}
-```
-
-The `SetDefaultHeaders` method will add a no-cache policy to all Web API responses. If you plan to handle a differente policy or even custom headers to each different Web API method we recommend you override this method as you need.
-
-The previous default strategy (Wildcard) matches routes using the asterisk `*` character in the route. **For example:** 
-
-- The route `/api/people/*` will match any request with a URL starting with the two first URL segments `api` and 
-`people` and ending with anything. The route `/api/people/hello` will be matched.
-- You can also use wildcards in the middle of the route. The route `/api/people/*/details` will match requests 
-starting with the two first URL segments `api` and `people`, and end with a `details` segment. The route `/api/people/hello/details` will be matched. 
-
-During server setup:
-
-```csharp
-var server =  new WebServer("http://localhost:9696/", RoutingStrategy.Regex);
-
-server.RegisterModule(new WebApiModule());
-server.Module<WebApiModule>().RegisterController<PeopleController>();
-```
-
-```csharp
-public class PeopleController : WebApiController
-{
-    public PeopleController(IHttpContext context)
-    : base(context)
-    {
-    }
-
-    [WebApiHandler(HttpVerbs.Get, "/api/people/*")]
-    public async Task<bool> GetPeopleOrPersonById()
-    {
-        var lastSegment = Request.Url.Segments.Last();
-
-        // If the last segment is a backslash, return all
-        // the collection. This endpoint call a fake Repository.
-        if (lastSegment.EndsWith("/"))
-            return await Ok(await PeopleRepository.GetAll());
-                
-        if (int.TryParse(lastSegment, out var id))
-        {
-            return await Ok(await PeopleRepository.GetById(id));
-        }
-
-        throw new KeyNotFoundException("Key Not Found: " + lastSegment);
+        // This is fake call to a Repository
+        var person = await PeopleRepository.GetById(id);
+        return person;
     }
 }
 ```
 
 ### WebSockets Example
 
-*During server setup:*
+During server setup:
 
 ```csharp
-server.RegisterModule(new WebSocketsModule());
-server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsChatServer>("/chat");
+server..WithModule(new WebSocketChatModule("/chat"));
 ```
 
-*And our web sockets server class looks like:*
+And our web sockets server class looks like:
 
 ```csharp
 
 /// <summary>
 /// Defines a very simple chat server
 /// </summary>
-public class WebSocketsChatServer : WebSocketsServer
+public class WebSocketsChatServer : WebSocketModule
 {
-    public WebSocketsChatServer()
-        : base(true)
+    public WebSocketsChatServer(string urlPath)
+        : base(urlPath, true)
     {
         // placeholder
     }
 
-    public override string ServerName => "Chat Server";
-
-    protected override void OnMessageReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
-    {
-        foreach (var ws in WebSockets)
-        {
-            if (ws != context)
-                Send(ws, rxBuffer.ToText());
-        }
-    }
-
-    protected override void OnClientConnected(
+    /// <inheritdoc />
+    protected override Task OnMessageReceivedAsync(
         IWebSocketContext context,
-        System.Net.IPEndPoint localEndPoint,
-        System.Net.IPEndPoint remoteEndPoint)
-    {
-        Send(context, "Welcome to the chat room!");
+        byte[] rxBuffer,
+        IWebSocketReceiveResult rxResult)
+        => SendToOthersAsync(context, Encoding.GetString(rxBuffer));
+
+    /// <inheritdoc />
+    protected override Task OnClientConnectedAsync(IWebSocketContext context)
+        => Task.WhenAll(
+            SendAsync(context, "Welcome to the chat room!"),
+            SendToOthersAsync(context, "Someone joined the chat room."));
         
-        foreach (var ws in WebSockets)
-        {
-            if (ws != context)
-                Send(ws, "Someone joined the chat room.");
-        }
-    }
+    /// <inheritdoc />
+    protected override Task OnClientDisconnectedAsync(IWebSocketContext context)
+        => SendToOthersAsync(context, "Someone left the chat room.");
 
-    protected override void OnFrameReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
-    {
-        // placeholder
-    }
-
-    protected override void OnClientDisconnected(IWebSocketContext context)
-    {
-        Broadcast("Someone left the chat room.");
-    }
+    private Task SendToOthersAsync(IWebSocketContext context, string payload)
+        => BroadcastAsync(payload, c => c != context);
 }
 ```
 
