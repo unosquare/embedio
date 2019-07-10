@@ -37,6 +37,8 @@
             _sock = sock;
             _epl = epl;
             IsSecure = epl.Secure;
+            LocalEndPoint = (IPEndPoint) sock.LocalEndPoint;
+            RemoteEndPoint = (IPEndPoint) sock.RemoteEndPoint;
 
             if (!IsSecure)
             {
@@ -67,9 +69,9 @@
 
         public Stream Stream { get; }
 
-        public IPEndPoint LocalEndPoint => _localEp ?? (_localEp = (IPEndPoint)_sock.LocalEndPoint);
+        public IPEndPoint LocalEndPoint { get; }
 
-        public IPEndPoint RemoteEndPoint => (IPEndPoint)_sock?.RemoteEndPoint;
+        public IPEndPoint RemoteEndPoint { get; }
 
         public bool IsSecure { get; }
 
