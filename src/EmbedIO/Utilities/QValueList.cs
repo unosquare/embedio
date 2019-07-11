@@ -127,7 +127,7 @@ namespace EmbedIO.Utilities
         /// <param name="values">The values.</param>
         /// <returns>The index of the value preferred by the client, or -1
         /// if none of the values in <paramref name="values"/> is accepted.</returns>
-        public int FindPreferredIndex(IReadOnlyList<string> values) => FindPreferredCore(values, out _);
+        public int FindPreferredIndex(IEnumerable<string> values) => FindPreferredCore(values, out _);
 
         /// <summary>
         /// Finds the index of the value preferred by the client in an array of values.
