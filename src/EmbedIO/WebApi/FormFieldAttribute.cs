@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
 
@@ -13,12 +14,14 @@ namespace EmbedIO.WebApi
     /// <para>This class cannot be inherited.</para>
     /// </summary>
     /// <seealso cref="Attribute" />
+    /// <seealso cref="IRequestDataAttribute{TController,TData}" />
     /// <seealso cref="IRequestDataAttribute{TController}" />
     [AttributeUsage(AttributeTargets.Parameter)]
     public sealed class FormFieldAttribute : 
         Attribute,
         IRequestDataAttribute<WebApiController, string>,
-        IRequestDataAttribute<WebApiController, string[]>
+        IRequestDataAttribute<WebApiController, string[]>,
+        IRequestDataAttribute<WebApiController>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FormFieldAttribute"/> class.
@@ -69,6 +72,22 @@ namespace EmbedIO.WebApi
                 throw HttpException.BadRequest($"Missing form field {FieldName}.");
 
             return formData.GetValues(FieldName);
+        }
+
+        async Task<object> IRequestDataAttribute<WebApiController>.GetRequestDataAsync(WebApiController controller, Type type)
+        {
+            var formData = await controller.HttpContext.GetRequestFormDataAsync(controller.CancellationToken)
+                .ConfigureAwait(false);
+
+            if (!formData.ContainsKey(FieldName) && BadRequestIfMissing)
+                throw HttpException.BadRequest($"Missing form field {FieldName}.");
+
+            var fieldValue = formData.Get(FieldName);
+            var converter = TypeDescriptor.GetConverter(type);
+            if (!converter.CanConvertFrom(typeof(string)))
+                throw HttpException.BadRequest($"Cannot convert field {FieldName} to {type.Name}.");
+
+            return converter.ConvertFromInvariantString(fieldValue);
         }
     }
 }
