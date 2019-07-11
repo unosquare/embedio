@@ -8,11 +8,11 @@ namespace EmbedIO.Tests.Utilities
     {
         private class TestObject : ConfiguredObject
         {
-            public bool ConfigurationLocked => base.ConfigurationLocked;
+            public new bool ConfigurationLocked => base.ConfigurationLocked;
 
-            public void LockConfiguration() => base.LockConfiguration();
+            public new void LockConfiguration() => base.LockConfiguration();
 
-            public void EnsureConfigurationNotLocked() => base.EnsureConfigurationNotLocked();
+            public new void EnsureConfigurationNotLocked() => base.EnsureConfigurationNotLocked();
 
             public bool OnBeforeLockConfigurationCalled { get; private set; }
 
