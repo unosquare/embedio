@@ -20,6 +20,10 @@
 - [Installation](#installation)
 - [Usage](#usage)
     - [WebServer Setup](#webserver-setup)
+    - [Reading from a POST body as a dictionary (application/x-www-form-urlencoded)](#reading-from-a-post-body-as-a-json-payload-applicationjson)
+    - [Reading from a POST body as a JSON payload (application/json)](#reading-from-a-post-body-as-a-json-payload-applicationjson)
+    - [Reading from a POST body as a FormData (multipart/form-data)](#reading-from-a-post-body-as-a-formdata-multipartform-data)
+    - [Writing a binary stream](#writing-a-binary-stream)
     - [WebSockets Example](#websockets-example)
 - [Support for SSL](#support-for-ssl)
 - [Related Projects and Nugets](#related-projects-and-nugets)
@@ -207,24 +211,23 @@ There is [another solution](http://stackoverflow.com/questions/7460088/reading-f
 
 ### Writing a binary stream
 
-For writing a binary stream directly to the Response Output Stream you can use [BinaryResponseAsync](https://unosquare.github.io/embedio/api/EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_). This method has an overload to use `IHttpContext` and you need to set the Content-Type beforehand.
+You can open the Response Output Stream with the extension [OpenResponseStream]().
 
 ```csharp
     [Route(HttpVerbs.Get, "/binary")]
-    public async Task<bool> GetBinary() 
+    public async Task<true> GetBinary() 
     {
-        var stream = new MemoryStream();
-	
 	// Call a fictional external source
-	await GetExternalStream(stream);
-	
-	return await HttpContext.BinaryResponseAsync(stream);
+	using (var stream = HttpContext.OpenResponseStream())
+                await stream.WriteAsync(dataBuffer, 0, 0, CancellationToken);
+		
+	return true;
     }
 ```
 
 ### WebSockets Example
 
-During server setup:
+Working with WebSocket is pretty simple, you just need to implement the abstract class `WebSocketModule` and register the module to your Web server as follow:
 
 ```csharp
 server..WithModule(new WebSocketChatModule("/chat"));
