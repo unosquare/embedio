@@ -24,9 +24,6 @@ namespace EmbedIO.Net
         public bool IsSynchronized => false;
 
         /// <inheritdoc />
-        public object SyncRoot => ((ICollection)this).SyncRoot;
-
-        /// <inheritdoc />
         public Cookie this[string name]
         {
             get
