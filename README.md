@@ -12,7 +12,7 @@
 
 *:star: Please star this project if you find it useful!*
 
-**This README is for EmbedIO v3.x. Click [here](https://github.com/unosquare/embedio/tree/v2.X) if you are still sing EmbedIO v2.x.**
+**This README is for EmbedIO v3.x. Click [here](https://github.com/unosquare/embedio/tree/v2.X) if you are still using EmbedIO v2.x.**
 
 - [Overview](#overview)
     - [EmbedIO 3.0 - What's new](#embedio-30---whats-new)
