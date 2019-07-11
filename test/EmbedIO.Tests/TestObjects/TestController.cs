@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Threading.Tasks;
 using EmbedIO.Routing;
 using EmbedIO.Utilities;
 using EmbedIO.WebApi;

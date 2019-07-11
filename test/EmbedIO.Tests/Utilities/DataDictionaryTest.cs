@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using EmbedIO.Tests.TestObjects;
 using EmbedIO.Utilities;
 using NUnit.Framework;
