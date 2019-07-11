@@ -100,7 +100,7 @@ namespace EmbedIO.Net.Internal
             _outputStream ?? (_outputStream = _context.Connection.GetResponseStream());
 
         /// <inheritdoc />
-        public Version ProtocolVersion { get; set; } = HttpVersion.Version11;
+        public Version ProtocolVersion { get; } = HttpVersion.Version11;
 
         /// <summary>
         /// Gets or sets a value indicating whether [send chunked].

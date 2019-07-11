@@ -18,6 +18,8 @@ namespace EmbedIO.WebApi
     /// </summary>
     public abstract class WebApiModuleBase : RoutingModuleBase
     {
+        private const string GetRequestDataAsyncMethodName = nameof(IRequestDataAttribute<WebApiController>.GetRequestDataAsync);
+
         private static readonly MethodInfo TaskFromResultBoolMethod = typeof(Task).GetMethod(nameof(Task.FromResult)).MakeGenericMethod(typeof(bool));
         private static readonly MethodInfo PreProcessRequestMethod = typeof(WebApiController).GetMethod(nameof(WebApiController.PreProcessRequest));
         private static readonly MethodInfo HttpContextSetter = typeof(WebApiController).GetProperty(nameof(WebApiController.HttpContext)).GetSetMethod(true);
@@ -27,8 +29,6 @@ namespace EmbedIO.WebApi
         private static readonly MethodInfo AwaitAndCastResultMethod = typeof(WebApiModuleBase).GetMethod(nameof(AwaitAndCastResult), BindingFlags.Static | BindingFlags.NonPublic);
         private static readonly MethodInfo TaskToBoolTaskMethod = typeof(WebApiModuleBase).GetMethod(nameof(TaskToBoolTask), BindingFlags.Static | BindingFlags.NonPublic);
         private static readonly MethodInfo DisposeMethod = typeof(IDisposable).GetMethod(nameof(IDisposable.Dispose));
-
-        private static readonly string GetRequestDataAsyncMethodName = nameof(IRequestDataAttribute<WebApiController>.GetRequestDataAsync);
 
         private readonly MethodInfo _serializeAsyncControllerResultAsyncMethod;
         private readonly MethodInfo _serializeNonAsyncControllerResultAsyncMethod;
@@ -544,18 +544,17 @@ namespace EmbedIO.WebApi
         private static T AwaitAndCastResult<T>(string parameterName, Task<object> task)
         {
             var result = task.ConfigureAwait(false).GetAwaiter().GetResult();
-            if (result == null)
+            switch (result)
             {
-                if (typeof(T).IsValueType && Nullable.GetUnderlyingType(typeof(T)) == null)
+                case null when typeof(T).IsValueType && Nullable.GetUnderlyingType(typeof(T)) == null:
                     throw new InvalidCastException($"Cannot cast null to {typeof(T).FullName} for parameter \"{parameterName}\".");
-
-                return default;
+                case null:
+                    return default;
+                case T castResult:
+                    return castResult;
+                default:
+                    throw new InvalidCastException($"Cannot cast {result.GetType().FullName} to {typeof(T).FullName} for parameter \"{parameterName}\".");
             }
-
-            if (result is T castResult)
-                return castResult;
-
-            throw new InvalidCastException($"Cannot cast {result.GetType().FullName} to {typeof(T).FullName} for parameter \"{parameterName}\".");
         }
 
         private static async Task<bool> TaskToBoolTask(Task result)

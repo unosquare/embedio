@@ -62,7 +62,7 @@ namespace EmbedIO.Tests.TestObjects
         [Route(HttpVerbs.Get, "/" + QueryFieldTestPath)]
         public object TestQueryField([QueryField("id")] string id) => id;
 
-        private object CheckPerson(int id)
+        private static object CheckPerson(int id)
             =>PeopleRepository.Database.FirstOrDefault(p => p.Key == id)
             ?? throw HttpException.NotFound();
     }

@@ -104,11 +104,11 @@ namespace EmbedIO.Tests
                 await Task.Delay(TimeSpan.FromSeconds(1));
 
                 Task.WaitAll(new[] {
-                    Task.Run(() => GetFile(content)),
-                    Task.Run(() => GetFile(content)),
-                    Task.Run(() => GetFile(content)),
-                    Task.Run(() => GetFile(content)),
-                    Task.Run(() => GetFile(content)),
+                    GetFile(content),
+                    GetFile(content),
+                    GetFile(content),
+                    GetFile(content),
+                    GetFile(content),
                 });
             }
         }

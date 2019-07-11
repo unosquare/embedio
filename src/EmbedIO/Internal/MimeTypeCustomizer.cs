@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using EmbedIO.Utilities;
 
-namespace EmbedIO.Utilities
+namespace EmbedIO.Internal
 {
     internal sealed class MimeTypeCustomizer : ConfiguredObject, IMimeTypeCustomizer
     {

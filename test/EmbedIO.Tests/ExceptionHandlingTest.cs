@@ -94,7 +94,7 @@ namespace EmbedIO.Tests
                 }
 
                 [Test]
-                public async Task SecondLevelException_ServerDoesNotCrash()
+                public void SecondLevelException_ServerDoesNotCrash()
                 {
                     // When using a TestWebServer, context handling code is called by the client;
                     // hence, an unhandled second-level exception would be seen here.

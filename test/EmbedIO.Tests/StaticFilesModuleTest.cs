@@ -137,7 +137,7 @@ namespace EmbedIO.Tests
             public async Task GetPartialContent(string message, int offset, int length)
             {
                 var request = new HttpRequestMessage(HttpMethod.Get, StaticFolder.WithDataFiles.BigDataFile);
-                request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(offset, offset + length - 1);
+                request.Headers.Range = new RangeHeaderValue(offset, offset + length - 1);
 
                 using (var response = await Client.SendAsync(request))
                 {
@@ -189,7 +189,7 @@ namespace EmbedIO.Tests
                     var request = new HttpRequestMessage(HttpMethod.Get, StaticFolder.WithDataFiles.BigDataFile);
                     var top = Math.Min(offset + chunkSize, remoteSize) - 1;
 
-                    request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(offset, top);
+                    request.Headers.Range = new RangeHeaderValue(offset, top);
 
                     using (var response = await Client.SendAsync(request))
                     {
@@ -215,7 +215,7 @@ namespace EmbedIO.Tests
                 using (var res = await Client.SendAsync(requestHead))
                 {
                     var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + StaticFolder.WithDataFiles.BigDataFile);
-                    request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(0, StaticFolder.WithDataFiles.BigDataSize + 10);
+                    request.Headers.Range = new RangeHeaderValue(0, StaticFolder.WithDataFiles.BigDataSize + 10);
 
                     using (var response = await Client.SendAsync(request))
                     {

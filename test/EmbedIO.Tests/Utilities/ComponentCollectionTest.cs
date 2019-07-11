@@ -76,7 +76,7 @@ namespace EmbedIO.Tests.Utilities
         {
             var obj = new object();
             var collection = new ComponentCollection<object> {
-                { obj },
+                obj,
             };
 
             Assert.Throws<ArgumentException>(() => collection.Add(obj));

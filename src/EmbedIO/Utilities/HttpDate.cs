@@ -9,7 +9,7 @@ namespace EmbedIO.Utilities
     public static class HttpDate
     {
         // https://github.com/dotnet/corefx/blob/master/src/Common/src/System/Net/HttpDateParser.cs
-        private static readonly string[] DateFormats = new[] {
+        private static readonly string[] DateFormats = {
             // "r", // RFC 1123, required output format but too strict for input
             "ddd, d MMM yyyy H:m:s 'GMT'", // RFC 1123 (r, except it allows both 1 and 01 for date and time)
             "ddd, d MMM yyyy H:m:s 'UTC'", // RFC 1123, UTC

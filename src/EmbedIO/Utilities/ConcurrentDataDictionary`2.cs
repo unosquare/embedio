@@ -189,7 +189,7 @@ namespace EmbedIO.Utilities
             return _dictionary.TryGetValue(key, out var retrievedValue) ? retrievedValue : null;
         }
 
-        /// <inheritdoc cref="IDictionary{TKey,TValue}.Remove"/>
+        /// <inheritdoc cref="IDictionary{TKey,TValue}.Remove(TKey)"/>
         public bool Remove(TKey key) => _dictionary.TryRemove(key, out _);
 
         /// <inheritdoc cref="ConcurrentDictionary{TKey,TValue}.TryAdd"/>

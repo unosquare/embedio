@@ -87,7 +87,7 @@ namespace EmbedIO.Tests.TestObjects
 
             public IReadOnlyList<byte> SmallData { get; }
 
-            private byte[] CreateRandomData(int size)
+            private static byte[] CreateRandomData(int size)
             {
                 var rng = new Random();
                 var data = new byte[size];
@@ -98,7 +98,7 @@ namespace EmbedIO.Tests.TestObjects
 
         public sealed class WithHtmlFiles : StaticFolder
         {
-            public static readonly IReadOnlyList<string> RandomHtmls = new string[] { "abc.html", "wkp.html", "zxy.html" };
+            public static readonly IReadOnlyList<string> RandomHtmls = new[] { "abc.html", "wkp.html", "zxy.html" };
 
             public WithHtmlFiles(string folderName)
                 : base(folderName)

@@ -136,7 +136,7 @@ Extended Payload Length: {extPayloadLen}
                 header = (header << 1) + (int)Rsv3;
                 header = (header << 4) + (int)Opcode;
                 header = (header << 1) + (int)Mask;
-                header = (header << 7) + (int)PayloadLength;
+                header = (header << 7) + PayloadLength;
                 buff.Write(((ushort)header).ToByteArray(Endianness.Big), 0, 2);
 
                 if (PayloadLength > 125)

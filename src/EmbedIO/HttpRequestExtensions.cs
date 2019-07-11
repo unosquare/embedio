@@ -28,10 +28,9 @@ namespace EmbedIO
         public static string SafeGetRemoteEndpointStr(this IHttpRequest @this)
         {
             var endPoint = @this?.RemoteEndPoint;
-            if (endPoint == null)
-                return "<null>";
-
-            return $"{endPoint.Address?.ToString() ?? "<???>"}:{endPoint.Port.ToString(CultureInfo.InvariantCulture)}";
+            return endPoint == null
+                ? "<null>"
+                : $"{endPoint.Address?.ToString() ?? "<???>"}:{endPoint.Port.ToString(CultureInfo.InvariantCulture)}";
         }
 
         /// <summary>

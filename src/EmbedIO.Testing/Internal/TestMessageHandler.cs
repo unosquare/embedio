@@ -54,7 +54,7 @@ namespace EmbedIO.Testing.Internal
             return response;
         }
 
-        private ResponseHeaderType GetResponseHeaderType(string name)
+        private static ResponseHeaderType GetResponseHeaderType(string name)
         {
             // Not all headers are created equal in System.Net.Http.
             // If a header is a "content" header, adding it to a HttpResponseMessage directly

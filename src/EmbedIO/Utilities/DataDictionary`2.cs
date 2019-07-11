@@ -200,7 +200,7 @@ namespace EmbedIO.Utilities
             return value;
         }
 
-        /// <inheritdoc cref="IDictionary{TKey,TValue}.Remove"/>
+        /// <inheritdoc cref="IDictionary{TKey,TValue}.Remove(TKey)"/>
         public bool Remove(TKey key)
         {
             // _dictionary.Remove will take care of throwing on a null key.
@@ -252,7 +252,7 @@ namespace EmbedIO.Utilities
 
         #region Implementation of IDictionary<TKey, TValue>
 
-        /// <inheritdoc cref="IDictionary{TKey,TValue}.Add"/>
+        /// <inheritdoc cref="IDictionary{TKey,TValue}.Add(TKey,TValue)"/>
         void IDictionary<TKey, TValue>.Add(TKey key, TValue value)
         {
             // Validating the key seems redundant, because both Add and Remove

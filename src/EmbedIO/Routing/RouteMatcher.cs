@@ -118,10 +118,7 @@ namespace EmbedIO.Routing
                     pattern = p;
                 });
                 if (exception != null)
-                {
-                    result = null;
                     return exception;
-                }
 
                 result = new RouteMatcher(route, pattern, parameterNames);
                 _cache.Add(route, result);
