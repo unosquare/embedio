@@ -20,11 +20,8 @@
 - [Installation](#installation)
 - [Usage](#usage)
     - [WebServer Setup](#webserver-setup)
-- [Support for SSL](#support-for-ssl)
-- [Examples](#examples)
-    - [Basic Example](#basic-example)
-    - [REST API Example](#rest-api-example)
     - [WebSockets Example](#websockets-example)
+- [Support for SSL](#support-for-ssl)
 - [Related Projects and Nugets](#related-projects-and-nugets)
 - [Special Thanks](#special-thanks)
 
@@ -84,90 +81,6 @@ PM> Install-Package EmbedIO
 
 ### WebServer Setup
 
-### Reading from a POST body as a dictionary (application/x-www-form-urlencoded)
-
-For reading a dictionary from a HTTP Request body inside a WebAPI method you can add an argument to your method with the attribute `FormData`.
-
-```csharp
-    [Route(HttpVerbs.Post, "/data")]
-    public async Task PostData([FormData] NameValueCollection data) 
-    {
-        // Perform an operation with the data
-        await SaveData(data);
-    }
-```
-
-Or you can use [GetRequestFormDataAsync](#) extension method if you are working in a custom Web Module. This method works directly from `IHttpContext` and returns the key-value pairs sent by using the Contet-Type 'application/x-www-form-urlencoded'.
-
-```csharp
-    [Route(HttpVerbs.Post, "/data")]
-    public async Task PostData() 
-    {
-        var data = HttpContext.GetRequestFormDataAsync(CancellationToken);
-	
-        // Perform an operation with the data
-        await SaveData(data);
-    }
-```
-
-### Reading from a POST body as a JSON payload (application/json)
-
-For reading a JSON payload and deserialize it to an object from a HTTP Request body you can use [GetRequestDataAsync<T>](#). This method works directly from `IHttpContext` and returns an object of the type specified in the generic type.
-
-```csharp
-    [Route(HttpVerbs.Post, "/data")]
-    public async Task PostJsonData() 
-    {
-        var data = HttpContext.GetRequestDataAsync<MyData>(CancellationToken);
-	
-        // Perform an operation with the data
-        await SaveData(data);
-    }
-```
-
-### Reading from a POST body as a FormData (multipart/form-data)
-
-EmbedIO doesn't provide the functionality to read from a Multipart FormData stream. But you can check the [HttpMultipartParser Nuget](https://www.nuget.org/packages/HttpMultipartParser/) and connect the Request input directly to the HttpMultipartParser, very helpful and small library.
-
-There is [another solution](http://stackoverflow.com/questions/7460088/reading-file-input-from-a-multipart-form-data-post) but it requires this [Microsoft Nuget](https://www.nuget.org/packages/Microsoft.AspNet.WebApi.Client).
-
-### Writing a binary stream
-
-For writing a binary stream directly to the Response Output Stream you can use [BinaryResponseAsync](https://unosquare.github.io/embedio/api/EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_). This method has an overload to use `IHttpContext` and you need to set the Content-Type beforehand.
-
-```csharp
-    [Route(HttpVerbs.Get, "/binary")]
-    public async Task<bool> GetBinary() 
-    {
-        var stream = new MemoryStream();
-	
-	// Call a fictional external source
-	await GetExternalStream(stream);
-	
-	return await HttpContext.BinaryResponseAsync(stream);
-    }
-```
-
-## Support for SSL
-
-Both HTTP listeners (Microsoft and Unosquare) can open a web server using SSL. This support is for Windows only (for now) and you need to manually register your certificate or use the `WebServerOptions` class to initialize a new `WebServer` instance. This section will provide some examples of how to use SSL but first a brief explanation of how SSL works on Windows.
-
-For Windows Vista or better, Microsoft provides Network Shell (`netsh`). This command line tool allows to map an IP-port to a certificate, so incoming HTTP request can upgrade the connection to a secure stream using the provided certificate. EmbedIO can read or register certificates to a default store (My/LocalMachine) and use them against a netsh `sslcert` for binding the first `https` prefix registered.
-
-For Windows XP and Mono, you can use manually the `httpcfg` for registering the binding.
-
-### Using a PFX file and AutoRegister option
-
-The more practical case to use EmbedIO with SSL is the `AutoRegister` option. You need to create a `WebServerOptions` instance with the path to a PFX file and the `AutoRegister` flag on. This options will try to get or register the certificate to the default certificate store. Then it will use the certificate thumbprint to register with `netsh` the FIRST `https` prefix registered on the options.
-
-### Using AutoLoad option
-
-If you already have a certificate on the default certificate store and the binding is also registered in `netsh`, you can use `Autoload` flag and optionally provide a certificate thumbprint. If the certificate thumbprint is not provided, EmbedIO will read the data from `netsh`. After getting successfully the certificate from the store, the raw data is passed to the WebServer.
-
-## Examples
-
-### Basic Example
-
 Please note the comments are the important part here. More info is available in the samples.
 
 ```csharp
@@ -209,14 +122,11 @@ namespace Unosquare
                 // Once we've registered our modules and configured them, we call the RunAsync() method.
                 server.RunAsync();
 
-                // Fire up the browser to show the content if we are debugging!
-#if DEBUG
                 var browser = new System.Diagnostics.Process()
                 {
                     StartInfo = new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true }
                 };
                 browser.Start();
-#endif
                 // Wait for any key to be pressed before disposing of our web server.
                 // In a service, we'd manage the lifecycle of our web server using
                 // something like a BackgroundWorker or a ManualResetEvent.
@@ -227,39 +137,89 @@ namespace Unosquare
 }
 ```
 
-### REST API Example
+### Reading from a POST body as a dictionary (application/x-www-form-urlencoded)
 
-The WebApi module uses the **Regex Routing Strategy** trying to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API. 
-
-A method with the following route `/api/people/{id}` is going to match any request URL with three segments: the first two `api` and `people` and the last one is going to be parsed or converted to the type in the `id` argument of the handling method signature. Please read on if this was confusing as it is much simpler than it sounds. Additionally, you can put multiple values to match, for example `/api/people/{mainSkill}/{age}`, and receive the parsed values from the URL straight into the arguments of your handler method.
-
-During server setup:
+For reading a dictionary from an HTTP Request body inside a WebAPI method you can add an argument to your method with the attribute `FormData`.
 
 ```csharp
-var server =  new WebServer("http://localhost:9696/", RoutingStrategy.Regex);
-
-server.RegisterModule(new WebApiModule());
-server.Module<WebApiModule>().RegisterController<PeopleController>();
+    [Route(HttpVerbs.Post, "/data")]
+    public async Task PostData([FormData] NameValueCollection data) 
+    {
+        // Perform an operation with the data
+        await SaveData(data);
+    }
 ```
 
-And our controller class looks like:
+Or you can use [GetRequestFormDataAsync](#) extension method if you are working in a custom Web Module. This method works directly from `IHttpContext` and returns the key-value pairs sent by using the Content-Type 'application/x-www-form-urlencoded'.
 
 ```csharp
-// A controller is a class where the WebApi module will find available
-// endpoints. The class must extend WebApiController.
-public class PeopleController : WebApiController
-{
-    // You need to include the WebApiHandler attribute to each method
-    // where you want to export an endpoint. The method should return
-    // bool or Task<bool>.
-    [Route(HttpVerbs.Get, "/people/{id}")]
-    public async Task<object> GetPersonById(int id)
+    [Route(HttpVerbs.Post, "/data")]
+    public async Task PostData() 
     {
-        // This is fake call to a Repository
-        var person = await PeopleRepository.GetById(id);
-        return person;
+        var data = HttpContext.GetRequestFormDataAsync(CancellationToken);
+	
+        // Perform an operation with the data
+        await SaveData(data);
     }
-}
+```
+
+### Reading from a POST body as a JSON payload (application/json)
+
+For reading a JSON payload and deserialize it to an object from an HTTP Request body you can use [GetRequestDataAsync<T>](#). This method works directly from `IHttpContext` and returns an object of the type specified in the generic type.
+
+```csharp
+    [Route(HttpVerbs.Post, "/data")]
+    public async Task PostJsonData() 
+    {
+        var data = HttpContext.GetRequestDataAsync<MyData>(CancellationToken);
+	
+        // Perform an operation with the data
+        await SaveData(data);
+    }
+```
+
+An alternative is creating a custom Attribute implementing `IRequestDataAttribute` interface. This interface requires the implementation of a method receiving an instance of the WebAPI Controller and returning a `Task<T>`. For example, you can use the following attribute to deserialize the content of the POST body into a `GridDataRequest` object from [Tubular](https://github.com/unosquare/tubular-dotnet):
+
+```csharp
+    [AttributeUsage(AttributeTargets.Parameter)]
+    public class JsonGridDataRequestAttribute : Attribute, IRequestDataAttribute<WebApiController, GridDataRequest>
+    {
+        public Task<GridDataRequest> GetRequestDataAsync(WebApiController controller)
+            => controller.HttpContext.GetRequestDataAsync(RequestDeserializer.Json<GridDataRequest>, controller.CancellationToken);
+    }
+```
+
+This attribute can be used in the argument of a Controller method:
+
+```csharp
+    [Route(HttpVerbs.Post, "/people")]
+    public async Task<object> PostPeople([JsonGridDataRequest] GridDataRequest gridDataRequest)
+        => gridDataRequest.CreateGridDataResponse((await _dbContext.People.SelectAllAsync()).AsQueryable());
+```
+
+This way is effective if you are using the same type in multiple methods.
+
+### Reading from a POST body as a FormData (multipart/form-data)
+
+EmbedIO doesn't provide the functionality to read from a Multipart FormData stream. But you can check the [HttpMultipartParser Nuget](https://www.nuget.org/packages/HttpMultipartParser/) and connect the Request input directly to the HttpMultipartParser, very helpful and small library.
+
+There is [another solution](http://stackoverflow.com/questions/7460088/reading-file-input-from-a-multipart-form-data-post) but it requires this [Microsoft Nuget](https://www.nuget.org/packages/Microsoft.AspNet.WebApi.Client).
+
+### Writing a binary stream
+
+For writing a binary stream directly to the Response Output Stream you can use [BinaryResponseAsync](https://unosquare.github.io/embedio/api/EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpResponse_System_IO_Stream_System_Threading_CancellationToken_System_Boolean_). This method has an overload to use `IHttpContext` and you need to set the Content-Type beforehand.
+
+```csharp
+    [Route(HttpVerbs.Get, "/binary")]
+    public async Task<bool> GetBinary() 
+    {
+        var stream = new MemoryStream();
+	
+	// Call a fictional external source
+	await GetExternalStream(stream);
+	
+	return await HttpContext.BinaryResponseAsync(stream);
+    }
 ```
 
 ### WebSockets Example
@@ -306,6 +266,22 @@ public class WebSocketsChatServer : WebSocketModule
         => BroadcastAsync(payload, c => c != context);
 }
 ```
+
+## Support for SSL
+
+Both HTTP listeners (Microsoft and Unosquare) can open a web server using SSL. This support is for Windows only (for now) and you need to manually register your certificate or use the `WebServerOptions` class to initialize a new `WebServer` instance. This section will provide some examples of how to use SSL but first a brief explanation of how SSL works on Windows.
+
+For Windows Vista or better, Microsoft provides Network Shell (`netsh`). This command line tool allows to map an IP-port to a certificate, so incoming HTTP request can upgrade the connection to a secure stream using the provided certificate. EmbedIO can read or register certificates to a default store (My/LocalMachine) and use them against a netsh `sslcert` for binding the first `https` prefix registered.
+
+For Windows XP and Mono, you can use manually the `httpcfg` for registering the binding.
+
+### Using a PFX file and AutoRegister option
+
+The more practical case to use EmbedIO with SSL is the `AutoRegister` option. You need to create a `WebServerOptions` instance with the path to a PFX file and the `AutoRegister` flag on. This options will try to get or register the certificate to the default certificate store. Then it will use the certificate thumbprint to register with `netsh` the FIRST `https` prefix registered on the options.
+
+### Using AutoLoad option
+
+If you already have a certificate on the default certificate store and the binding is also registered in `netsh`, you can use `Autoload` flag and optionally provide a certificate thumbprint. If the certificate thumbprint is not provided, EmbedIO will read the data from `netsh`. After getting successfully the certificate from the store, the raw data is passed to the WebServer.
 
 ## Related Projects and Nugets
 
