@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,7 +10,7 @@ namespace EmbedIO
     /// and sends an error response to the client.
     /// </summary>
 #pragma warning disable CA1032 // Implement standard exception constructors - they have no meaning here.
-    public partial class HttpException : Exception
+    public partial class HttpException : Exception, IHttpException
 #pragma warning restore CA1032
     {
         /// <summary>
@@ -62,30 +61,13 @@ namespace EmbedIO
         /// </summary>
         public int StatusCode { get; }
 
-        /// <summary>
-        /// Asynchronously sends an error response related to the cause of this exception.
-        /// </summary>
-        /// <param name="context">The HTTP context.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
-        public Task SendResponseAsync(IHttpContext context, CancellationToken cancellationToken)
+        /// <inheritdoc />
+        /// <remarks>
+        /// <para>This method does nothing; there is no need to call
+        /// <c>base.PrepareResponse</c> in overrides of this method.</para>
+        /// </remarks>
+        public virtual void PrepareResponse(IHttpContext context)
         {
-            context.Response.SetEmptyResponse(StatusCode);
-            return OnSendResponseAsync(context, cancellationToken);
         }
-
-        /// <summary>
-        /// <para>Called by <see cref="SendResponseAsync"/> to add any necessary data
-        /// to the response, if required by a derived class.</para>
-        /// <para>The base implementation sends the <see cref="Exception.Message"/> property,
-        /// if not null or empty, as UTF-8-encoded plain text.</para>
-        /// </summary>
-        /// <param name="context">The HTTP context.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
-        protected virtual Task OnSendResponseAsync(IHttpContext context, CancellationToken cancellationToken)
-            => string.IsNullOrEmpty(Message)
-                ? Task.CompletedTask
-                : context.SendStringAsync(Message, MimeType.PlainText, Encoding.UTF8, cancellationToken);
     }
 }

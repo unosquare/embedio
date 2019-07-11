@@ -39,7 +39,7 @@ namespace EmbedIO
         public long? ContentLength { get; }
 
         /// <inheritdoc />
-        protected override Task OnSendResponseAsync(IHttpContext context, CancellationToken cancellationToken)
+        public override void PrepareResponse(IHttpContext context)
         {
             // RFC 7233, Section 3.1: "When this status code is generated in response
             //                        to a byte-range request, the sender
@@ -47,8 +47,6 @@ namespace EmbedIO
             //                        the current length of the selected representation."
             if (ContentLength.HasValue)
                 context.Response.Headers.Set(HttpHeaderNames.ContentRange, $"bytes */{ContentLength.Value}");
-
-            return base.OnSendResponseAsync(context, cancellationToken);
         }
     }
 }

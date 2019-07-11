@@ -24,6 +24,7 @@ namespace EmbedIO
         private readonly MimeTypeCustomizer _mimeTypeCustomizer = new MimeTypeCustomizer();
 
         private ExceptionHandlerCallback _onUnhandledException = ExceptionHandler.Default;
+        private HttpExceptionHandlerCallback _onHttpException = HttpExceptionHandler.Default;
 
         private WebServerState _state = WebServerState.Created;
 
@@ -103,6 +104,23 @@ namespace EmbedIO
                 EnsureConfigurationNotLocked();
                 _onUnhandledException = Validate.NotNull(nameof(value), value);
             } 
+        }
+
+        /// <inheritdoc />
+        /// <exception cref="InvalidOperationException">The server's configuration is locked.</exception>
+        /// <exception cref="ArgumentNullException">this property is being set to <see langword="null"/>.</exception>
+        /// <remarks>
+        /// <para>The default value for this property is <see cref="HttpExceptionHandler.Default"/>.</para>
+        /// </remarks>
+        /// <seealso cref="HttpExceptionHandler"/>
+        public HttpExceptionHandlerCallback OnHttpException
+        {
+            get => _onHttpException;
+            set
+            {
+                EnsureConfigurationNotLocked();
+                _onHttpException = Validate.NotNull(nameof(value), value);
+            }
         }
 
         /// <inheritdoc />
@@ -248,34 +266,15 @@ namespace EmbedIO
                     {
                         throw; // Let outer catch block handle it
                     }
-                    catch (HttpException ex)
+                    catch (Exception exception) when (exception is IHttpException)
                     {
-                        $"[{context.Id}] HttpException: sending status code {ex.StatusCode}".Debug(LogSource);
-                        try
-                        {
-                            await ex.SendResponseAsync(context, cancellationToken).ConfigureAwait(false);
-                        }
-                        catch (Exception ex2)
-                        {
-                            $"[{context.Id}] Could not send {ex.StatusCode} response ({ex2.GetType().Name}) - headers were probably already sent."
-                                .Info(LogSource);
-                        }
+                        await HttpExceptionHandler.Handle(LogSource, context, exception, _onHttpException, cancellationToken)
+                            .ConfigureAwait(false);
                     }
-                    catch (Exception ex)
+                    catch (Exception exception)
                     {
-                        ex.Log(LogSource, $"[{context.Id}] Unhandled exception.");
-                        try
-                        {
-                            context.Response.SetEmptyResponse((int)HttpStatusCode.InternalServerError);
-                            context.Response.DisableCaching();
-                            await _onUnhandledException(context, context.Request.Url.AbsolutePath, ex, cancellationToken)
-                                .ConfigureAwait(false);
-                        }
-                        catch (Exception ex2)
-                        {
-                            $"[{context.Id}] Could not send 500 response ({ex2.GetType().Name}) - headers were probably already sent."
-                                .Info(LogSource);
-                        }
+                        await ExceptionHandler.Handle(LogSource, context, exception, _onUnhandledException, cancellationToken)
+                            .ConfigureAwait(false);
                     }
                 }
                 finally

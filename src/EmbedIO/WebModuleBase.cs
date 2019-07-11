@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
@@ -25,6 +26,7 @@ namespace EmbedIO
     public abstract class WebModuleBase : ConfiguredObject, IWebModule
     {
         private ExceptionHandlerCallback _onUnhandledException;
+        private HttpExceptionHandlerCallback _onHttpException;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebModuleBase"/> class.
@@ -37,6 +39,7 @@ namespace EmbedIO
         protected WebModuleBase(string baseUrlPath)
         {
             BaseUrlPath = Validate.UrlPath(nameof(baseUrlPath), baseUrlPath, true);
+            LogSource = GetType().Name;
         }
 
         /// <inheritdoc />
@@ -51,6 +54,18 @@ namespace EmbedIO
             {
                 EnsureConfigurationNotLocked();
                 _onUnhandledException = value;
+            }
+        }
+
+        /// <inheritdoc />
+        /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
+        public HttpExceptionHandlerCallback OnHttpException
+        {
+            get => _onHttpException;
+            set
+            {
+                EnsureConfigurationNotLocked();
+                _onHttpException = value;
             }
         }
 
@@ -79,23 +94,25 @@ namespace EmbedIO
             {
                 throw; // Let the web server handle it
             }
-            catch (HttpException)
+            catch (Exception exception) when (exception is IHttpException)
             {
-                throw; // Let the web server handle it
-            }
-            catch (Exception ex)
-            {
-                if (_onUnhandledException == null)
-                    throw;
-
-                ex.Log(GetType().Name, $"[{context.Id}] Unhandled exception.");
-                context.Response.SetEmptyResponse((int)HttpStatusCode.InternalServerError);
-                context.Response.DisableCaching();
-                await _onUnhandledException(context, context.Request.Url.AbsolutePath, ex, cancellationToken)
+                await HttpExceptionHandler.Handle(LogSource, context, exception, _onHttpException, cancellationToken)
                     .ConfigureAwait(false);
-                return true;
             }
+            catch (Exception exception)
+            {
+                await ExceptionHandler.Handle(LogSource, context, exception, _onUnhandledException, cancellationToken)
+                    .ConfigureAwait(false);
+
+            }
+
+            return true;
         }
+
+        /// <summary>
+        /// Gets a string to use as a source for log messages.
+        /// </summary>
+        protected string LogSource { get; }
 
         /// <summary>
         /// Called to handle a request from a client.

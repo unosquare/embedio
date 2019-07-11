@@ -48,12 +48,10 @@ namespace EmbedIO
         public string Vary { get; }
 
         /// <inheritdoc />
-        protected override Task OnSendResponseAsync(IHttpContext context, CancellationToken cancellationToken)
+        public override void PrepareResponse(IHttpContext context)
         {
             if (Vary != null)
                 context.Response.Headers.Add(HttpHeaderNames.Vary, Vary);
-
-            return base.OnSendResponseAsync(context, cancellationToken);
         }
     }
 }

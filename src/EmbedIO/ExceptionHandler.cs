@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -14,6 +15,18 @@ namespace EmbedIO
     /// <seealso cref="IWebModule.OnUnhandledException"/>
     public static class ExceptionHandler
     {
+        /// <summary>
+        /// The name of the response header used by the <see cref="EmptyResponseWithHeaders" />
+        /// handler to transmit the type of the exception to the client.
+        /// </summary>
+        public const string ExceptionTypeHeaderName = "X-Exception-Type";
+
+        /// <summary>
+        /// The name of the response header used by the <see cref="EmptyResponseWithHeaders" />
+        /// handler to transmit the message of the exception to the client.
+        /// </summary>
+        public const string ExceptionMessageHeaderName = "X-Exception-Message";
+
         /// <summary>
         /// Gets or sets the contact information to include in exception responses.
         /// </summary>
@@ -35,19 +48,18 @@ namespace EmbedIO
         /// Sends an empty <c>500 Internal Server Error</c> response.
         /// </summary>
         /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
-        /// <param name="path">The URL path requested by the client.</param>
         /// <param name="exception">The unhandled exception.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken" /> used to cancel the operation.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
-        public static Task EmptyResponse(IHttpContext context, string path, Exception exception, CancellationToken cancellationToken)
+        public static Task EmptyResponse(IHttpContext context, Exception exception, CancellationToken cancellationToken)
         {
             context.Response.SetEmptyResponse((int) HttpStatusCode.InternalServerError);
             return Task.CompletedTask;
         }
 
         /// <summary>
-        /// Sends an empty <c>500 Internal Server Error</c> response,
-        /// with the following additional headers:
+        /// <para>Sends an empty <c>500 Internal Server Error</c> response,
+        /// with the following additional headers:</para>
         /// <list type="table">
         ///   <listheader>
         ///     <term>Header</term>
@@ -62,17 +74,18 @@ namespace EmbedIO
         ///     <description>The <see cref="Exception.Message">Message</see> property of the exception.</description>
         ///   </item>
         /// </list>
+        /// <para>The aforementioned header names are available as the <see cref="ExceptionTypeHeaderName" /> and
+        /// <see cref="ExceptionMessageHeaderName" /> properties, respectively.</para>
         /// </summary>
         /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
-        /// <param name="path">The URL path requested by the client.</param>
         /// <param name="exception">The unhandled exception.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken" /> used to cancel the operation.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
-        public static Task EmptyResponseWithHeaders(IHttpContext context, string path, Exception exception, CancellationToken cancellationToken)
+        public static Task EmptyResponseWithHeaders(IHttpContext context, Exception exception, CancellationToken cancellationToken)
         {
             context.Response.SetEmptyResponse((int)HttpStatusCode.InternalServerError);
-            context.Response.Headers["X-Exception-Type"] = Uri.EscapeDataString(exception.GetType().Name);
-            context.Response.Headers["X-Exception-Message"] = Uri.EscapeDataString(exception.Message);
+            context.Response.Headers[ExceptionTypeHeaderName] = Uri.EscapeDataString(exception.GetType().Name);
+            context.Response.Headers[ExceptionMessageHeaderName] = Uri.EscapeDataString(exception.Message);
             return Task.CompletedTask;
         }
 
@@ -83,11 +96,10 @@ namespace EmbedIO
         /// properties, respectively.
         /// </summary>
         /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
-        /// <param name="path">The URL path requested by the client.</param>
         /// <param name="exception">The unhandled exception.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken" /> used to cancel the operation.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
-        public static Task HtmlResponse(IHttpContext context, string path, Exception exception, CancellationToken cancellationToken)
+        public static Task HtmlResponse(IHttpContext context, Exception exception, CancellationToken cancellationToken)
             => context.SendStandardHtmlAsync(
                 (int)HttpStatusCode.InternalServerError,
                 text => {
@@ -112,5 +124,35 @@ namespace EmbedIO
                     }
                 },
                 cancellationToken);
+
+        internal static async Task Handle(string logSource, IHttpContext context, Exception exception, ExceptionHandlerCallback handler, CancellationToken cancellationToken)
+        {
+            if (handler == null)
+            {
+                ExceptionDispatchInfo.Capture(exception).Throw();
+                return;
+            }
+
+            exception.Log(logSource, $"[{context.Id}] Unhandled exception.");
+            try
+            {
+                context.Response.SetEmptyResponse((int)HttpStatusCode.InternalServerError);
+                context.Response.DisableCaching();
+                await handler(context, exception, cancellationToken)
+                    .ConfigureAwait(false);
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch (HttpListenerException)
+            {
+                throw;
+            }
+            catch (Exception exception2)
+            {
+                exception2.Log(logSource, $"[{context.Id}] Unhandled exception while handling exception.");
+            }
+        }
     }
 }
