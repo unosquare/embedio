@@ -50,11 +50,7 @@ A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework
 
 ### EmbedIO 3.0 - What's new
 
-#### Breaking changes
-* *TODO*
-* New Assembly name `EmbedIO.dll`.
-* New Assembly with unit Testing support classes and `TestWebServer`: `EmbedIO.Testing.dll`.
-* Remove Routing Strategy: everything is using Regex resolution of routes.
+The major version 3.0 includes a lot of changes in how the webserver process the incoming request and the pipeline of the Web Modules. You can check a complete list of changes and a upgrade guide for v2 users [here](https://github.com/unosquare/embedio/wiki/Upgrade-from-v2).
 
 ### Some usage scenarios:
 
@@ -82,6 +78,8 @@ PM> Install-Package EmbedIO
 ```
 
 ## Usage
+
+Working with EmbedIO is pretty simple, check the follow sections to start coding right away. You can find more useful recipes and implementation details in the [Cookbook](https://github.com/unosquare/embedio/wiki/Cookbook).
 
 ### WebServer Setup
 
@@ -154,19 +152,6 @@ For reading a dictionary from an HTTP Request body inside a WebAPI method you ca
     }
 ```
 
-Or you can use [GetRequestFormDataAsync](#) extension method if you are working in a custom Web Module. This method works directly from `IHttpContext` and returns the key-value pairs sent by using the Content-Type 'application/x-www-form-urlencoded'.
-
-```csharp
-    [Route(HttpVerbs.Post, "/data")]
-    public async Task PostData() 
-    {
-        var data = HttpContext.GetRequestFormDataAsync(CancellationToken);
-	
-        // Perform an operation with the data
-        await SaveData(data);
-    }
-```
-
 ### Reading from a POST body as a JSON payload (application/json)
 
 For reading a JSON payload and deserialize it to an object from an HTTP Request body you can use [GetRequestDataAsync<T>](#). This method works directly from `IHttpContext` and returns an object of the type specified in the generic type.
@@ -181,27 +166,6 @@ For reading a JSON payload and deserialize it to an object from an HTTP Request 
         await SaveData(data);
     }
 ```
-
-An alternative is creating a custom Attribute implementing `IRequestDataAttribute` interface. This interface requires the implementation of a method receiving an instance of the WebAPI Controller and returning a `Task<T>`. For example, you can use the following attribute to deserialize the content of the POST body into a `GridDataRequest` object from [Tubular](https://github.com/unosquare/tubular-dotnet):
-
-```csharp
-    [AttributeUsage(AttributeTargets.Parameter)]
-    public class JsonGridDataRequestAttribute : Attribute, IRequestDataAttribute<WebApiController, GridDataRequest>
-    {
-        public Task<GridDataRequest> GetRequestDataAsync(WebApiController controller)
-            => controller.HttpContext.GetRequestDataAsync(RequestDeserializer.Json<GridDataRequest>, controller.CancellationToken);
-    }
-```
-
-This attribute can be used in the argument of a Controller method:
-
-```csharp
-    [Route(HttpVerbs.Post, "/people")]
-    public async Task<object> PostPeople([JsonGridDataRequest] GridDataRequest gridDataRequest)
-        => gridDataRequest.CreateGridDataResponse((await _dbContext.People.SelectAllAsync()).AsQueryable());
-```
-
-This way is effective if you are using the same type in multiple methods.
 
 ### Reading from a POST body as a FormData (multipart/form-data)
 
