@@ -248,15 +248,7 @@ namespace EmbedIO
                             return;
 
                         $"[{context.Id}] No module generated a response. Sending 404 - Not Found".Error(LogSource);
-                        try
-                        {
-                            context.Response.SetEmptyResponse((int)HttpStatusCode.NotFound);
-                        }
-                        catch (Exception ex)
-                        {
-                            $"[{context.Id}] Could not send 404 response ({ex.GetType().Name}) - headers were probably already sent."
-                                .Info(LogSource);
-                        }
+                        throw HttpException.NotFound("No module was able to serve the requested path.");
                     }
                     catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
                     {
