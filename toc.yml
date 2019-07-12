@@ -1,5 +1,7 @@
 - name: API Documentation
   href: obj/api/
+- name: Upgrade from v2
+  href: wiki/Upgrade-from-v2.md
 - name: Cookbook
   href: wiki/Cookbook.md
 - name: Self signed certified
