@@ -210,7 +210,7 @@ namespace EmbedIO.Utilities
         /// <inheritdoc cref="ConcurrentDictionary{TKey,TValue}.TryAdd"/>
         public bool TryAdd(TKey key, TValue value)
         {
-            // ContainsKey will take care of throwing on a null key.
+            // _dictionary.ContainsKey will take care of throwing on a null key.
             if (_dictionary.ContainsKey(key))
                 return false;
 
@@ -296,9 +296,6 @@ namespace EmbedIO.Utilities
         /// <inheritdoc cref="ICollection{T}.Add"/>
         void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
         {
-            if (item.Key == null)
-                throw new ArgumentException("Key cannot be null.", nameof(item));
-
             if (item.Value != null)
             {
                 ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).Add(item);
@@ -310,19 +307,16 @@ namespace EmbedIO.Utilities
         }
 
         /// <inheritdoc cref="ICollection{T}.Contains"/>
-        bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item) => ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).Contains(item);
+        bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item)
+            => ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).Contains(item);
 
         /// <inheritdoc cref="ICollection{T}.CopyTo"/>
-        void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) => ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).CopyTo(array, arrayIndex);
+        void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+            => ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).CopyTo(array, arrayIndex);
 
         /// <inheritdoc cref="ICollection{T}.Remove"/>
         bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
-        {
-            if (item.Key == null)
-                throw new ArgumentException("Key cannot be null.", nameof(item));
-
-            return ((ICollection<KeyValuePair<TKey, TValue>>) _dictionary).Remove(item);
-        }
+            => ((ICollection<KeyValuePair<TKey, TValue>>) _dictionary).Remove(item);
 
         #endregion
 
