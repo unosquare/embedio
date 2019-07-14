@@ -197,7 +197,7 @@ namespace EmbedIO.Utilities
         {
             Validate.NotNull(nameof(key), key);
 
-            return value != null && _dictionary.TryAdd(key, value);
+            return value == null || _dictionary.TryAdd(key, value);
         }
 
         /// <inheritdoc cref="IDataDictionary{TKey,TValue}.TryGetValue"/>
@@ -265,13 +265,16 @@ namespace EmbedIO.Utilities
         }
 
         /// <inheritdoc cref="ICollection{T}.Contains"/>
-        bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item) => ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).Contains(item);
+        bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item)
+            => ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).Contains(item);
 
         /// <inheritdoc cref="ICollection{T}.CopyTo"/>
-        void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) => ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).CopyTo(array, arrayIndex);
+        void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+            => ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).CopyTo(array, arrayIndex);
 
         /// <inheritdoc cref="ICollection{T}.Remove"/>
-        bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item) => ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).Remove(item);
+        bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
+            => ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).Remove(item);
 
         #endregion
 
