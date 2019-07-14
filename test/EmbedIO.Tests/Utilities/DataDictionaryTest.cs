@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using EmbedIO.Tests.TestObjects;
 using EmbedIO.Utilities;
 using NUnit.Framework;
@@ -9,864 +10,811 @@ namespace EmbedIO.Tests.Utilities
 {
     public class DataDictionaryTest
     {
+        private const string InitialExistingKey = "one";
+        private const string InitialExistingKeyWithDifferentCasing = "ONE";
+        private const string InitialExistingValue = "uno";
+        private const string DifferentValueForInitialExistingKey = "otro";
+
+        private const string InitialKeyWithNullValue = "three";
+
+        private const string InitialNonExistingKey = "five";
+        private const string InitialNonExistingValue = "cinco";
+
+        private const string SomeValue = "algo";
+
+        private static readonly IReadOnlyDictionary<string, string> InitialData = new Dictionary<string, string> {
+            { "one", "uno" },
+            { "two", "dos" },
+            { "three", null },
+            { "four", "cuatro" },
+        };
+
+        private static readonly IReadOnlyList<KeyValuePair<string, string>> InitialImportedData = InitialData.Where(pair => pair.Value != null).ToArray();
+        private static readonly int InitialCount = InitialImportedData.Count;
+        private static readonly IEnumerable<string> InitialKeys = InitialImportedData.Select(pair => pair.Key);
+        private static readonly IEnumerable<string> InitialValues = InitialImportedData.Select(pair => pair.Value);
+
         [Test]
         public void DefaultConstructor_Succeeds()
         {
-            var dict = new DataDictionary<string, string>();
-            Assert.AreEqual(0, dict.Count, "Newly-created collection is empty.");
+            Assert.DoesNotThrow(
+                () => new DataDictionary<string, string>().Void());
         }
 
         [Test]
-        public void ConstructorWithNullCollection_ThrowsArgumentNullException()
+        public void DefaultConstructor_CreatesEmptyDictionary()
+        {
+            var dict = new DataDictionary<string, string>();
+            Assert.AreEqual(0, dict.Count);
+        }
+
+        [Test]
+        public void ConstructorWithCollection_OnNullCollection_ThrowsArgumentNullException()
         {
             Assert.Throws<ArgumentNullException>(
-                () => new DataDictionary<string, string>((IEnumerable<KeyValuePair<string, string>>)null).Void(),
-                "Null collection causes exception.");
+                () => new DataDictionary<string, string>((IEnumerable<KeyValuePair<string, string>>)null).Void());
         }
 
         [Test]
         public void ConstructorWithCollection_Succeeds()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            Assert.AreEqual(3, dict.Count, "Data have been copied.");
+            Assert.DoesNotThrow(
+                () => new DataDictionary<string, string>(InitialData).Void());
+        }
+
+        [Test]
+        public void ConstructorWithCollection_CopiesNonNullValues()
+        {
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.AreEqual(InitialCount, dict.Count);
         }
 
         [Test]
         public void ConstructorWithCollection_DoesNotCopyNullValues()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", null },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            Assert.AreEqual(3, dict.Count, "Only non-null values have been copied.");
-            Assert.IsFalse(dict.TryGetValue("three", out _), "Key with null value has not been copied.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.IsFalse(dict.TryGetValue(InitialKeyWithNullValue, out _));
         }
 
         [Test]
-        public void ConstructorWithNullComparer_Succeeds()
+        public void ConstructorWithComparer_OnNullComparer_Succeeds()
         {
             Assert.DoesNotThrow(
-                () => new DataDictionary<string, string>((IEqualityComparer<string>)null).Void(),
-                "Constructor with null comparer succeeds.");
+                () => new DataDictionary<string, string>((IEqualityComparer<string>)null).Void());
+        }
+
+        [Test]
+        public void ConstructorWithComparer_Succeeds()
+        {
+            Assert.DoesNotThrow(
+                () => new DataDictionary<string, string>(StringComparer.OrdinalIgnoreCase).Void());
         }
 
         [Test]
         public void ConstructorWithComparer_AppliesComparer()
         {
-            var dict = new DataDictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
-            dict.TryAdd("one", "uno");
-            Assert.IsTrue(dict.TryGetValue("ONE", out _), "Uses the given comparer.");
+            var dict = new DataDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            dict.TryAdd(InitialExistingKey, InitialExistingValue);
+            Assert.IsTrue(dict.TryGetValue(InitialExistingKeyWithDifferentCasing, out _));
+        }
+
+        [Test]
+        public void ConstructorWithCollectionAndComparer_OnNullCollection_ThrowsArgumentNullException()
+        {
+            Assert.Throws<ArgumentNullException>(
+                () => new DataDictionary<string, string>(null, StringComparer.Ordinal).Void());
+        }
+
+        [Test]
+        public void ConstructorWithCollectionAndComparer_OnNullComparer_Succeeds()
+        {
+            Assert.DoesNotThrow(
+                () => new DataDictionary<string, string>(InitialData, null).Void());
         }
 
         [Test]
         public void ConstructorWithCollectionAndComparer_Succeeds()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-            };
-            var dict = new DataDictionary<string, string>(data, StringComparer.InvariantCultureIgnoreCase);
-            Assert.AreEqual(1, dict.Count, "Data have been copied.");
-            Assert.IsTrue(dict.TryGetValue("ONE", out _), "Uses the given comparer.");
+            Assert.DoesNotThrow(
+                () => new DataDictionary<string, string>(InitialData, StringComparer.OrdinalIgnoreCase).Void());
+        }
+
+        [Test]
+        public void ConstructorWithCollectionAndComparer_CopiesNonNullValues()
+        {
+            var dict = new DataDictionary<string, string>(InitialData, StringComparer.OrdinalIgnoreCase);
+            Assert.AreEqual(InitialCount, dict.Count);
         }
 
         [Test]
         public void ConstructorWithCollectionAndComparer_DoesNotCopyNullValues()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", null },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data, StringComparer.InvariantCultureIgnoreCase);
-            Assert.AreEqual(3, dict.Count, "Only non-null values have been copied.");
-            Assert.IsFalse(dict.TryGetValue("three", out _), "Key with null value has not been copied.");
-            Assert.IsTrue(dict.TryGetValue("ONE", out _), "Uses the given comparer.");
+            var dict = new DataDictionary<string, string>(InitialData, StringComparer.OrdinalIgnoreCase);
+            Assert.IsFalse(dict.TryGetValue(InitialKeyWithNullValue, out _));
         }
 
         [Test]
-        public void ConstructorWithNullCollectionAndComparer_ThrowsArgumentNullException()
+        public void ConstructorWithCollectionAndComparer_AppliesComparer()
         {
-            Assert.Throws<ArgumentNullException>(
-                () => new DataDictionary<string, string>(null, StringComparer.Ordinal).Void(),
-                "Null collection causes exception.");
+            var dict = new DataDictionary<string, string>(InitialData, StringComparer.OrdinalIgnoreCase);
+            Assert.IsTrue(dict.TryGetValue(InitialExistingKeyWithDifferentCasing, out _));
         }
 
         [Test]
-        public void ConstructorWithNegativeCapacity_ThrowsArgumentOutOfRangeException()
+        public void ConstructorWithCapacity_OnNegativeCapacity_ThrowsArgumentOutOfRangeException()
         {
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => new DataDictionary<string, string>(-1).Void(),
-                "Negative capacity causes exception.");
+                () => new DataDictionary<string, string>(-1).Void());
         }
 
         [Test]
         public void ConstructorWithCapacity_Succeeds()
         {
             Assert.DoesNotThrow(
-                () => new DataDictionary<string, string>(5).Void(),
-                "Constructor with capacity succeeds.");
+                () => new DataDictionary<string, string>(5).Void());
+        }
+
+        [Test]
+        public void ConstructorWithCapacityCollectionAndComparer_OnNegativeCapacity_ThrowsArgumentOutOfRangeException()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(
+                () => new DataDictionary<string, string>(-1, new Dictionary<string, string>(), StringComparer.Ordinal).Void());
+        }
+
+        [Test]
+        public void ConstructorWithCapacityCollectionAndComparer_OnNullCollection_ThrowsArgumentNullException()
+        {
+            Assert.Throws<ArgumentNullException>(
+                () => new DataDictionary<string, string>(10, null, StringComparer.Ordinal).Void());
+        }
+
+        [Test]
+        public void ConstructorWithCapacityCollectionAndComparer_OnNullComparer_Succeeds()
+        {
+            Assert.DoesNotThrow(
+                () => new DataDictionary<string, string>(12, InitialData, null).Void());
         }
 
         [Test]
         public void ConstructorWithCapacityCollectionAndComparer_Succeeds()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-            };
-            var dict = new DataDictionary<string, string>(12, data, StringComparer.InvariantCultureIgnoreCase);
-            Assert.AreEqual(1, dict.Count);
-            Assert.IsFalse(dict.TryAdd("ONE", "UNO"));
+            Assert.DoesNotThrow(
+                () => new DataDictionary<string, string>(12, InitialData, StringComparer.OrdinalIgnoreCase).Void());
+        }
+
+        [Test]
+        public void ConstructorWithCapacityCollectionAndComparer_CopiesNonNullValues()
+        {
+            var dict = new DataDictionary<string, string>(10, InitialData, StringComparer.OrdinalIgnoreCase);
+            Assert.AreEqual(InitialCount, dict.Count);
         }
 
         [Test]
         public void ConstructorWithCapacityCollectionAndComparer_DoesNotCopyNullValues()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", null },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(10, data, StringComparer.InvariantCultureIgnoreCase);
-            Assert.AreEqual(3, dict.Count, "Only non-null values have been copied.");
-            Assert.IsFalse(dict.TryGetValue("three", out _), "Key with null value has not been copied.");
-            Assert.IsTrue(dict.TryGetValue("ONE", out _), "Uses the given comparer.");
+            var dict = new DataDictionary<string, string>(10, InitialData, StringComparer.InvariantCultureIgnoreCase);
+            Assert.IsFalse(dict.TryGetValue(InitialKeyWithNullValue, out _));
         }
 
         [Test]
-        public void ConstructorWithNegativeCapacityCollectionAndComparer_ThrowsArgumentOutOfRangeException()
+        public void ConstructorWithCapacityCollectionAndComparer_AppliesComparer()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(
-                () => new DataDictionary<string, string>(-1, new Dictionary<string, string>(), StringComparer.Ordinal).Void(),
-                "Negative capacity causes exception.");
-        }
-
-        [Test]
-        public void ConstructorWithCapacityNullCollectionAndComparer_ThrowsArgumentNullException()
-        {
-            Assert.Throws<ArgumentNullException>(
-                () => new DataDictionary<string, string>(10, null, StringComparer.Ordinal).Void(),
-                "Null collection causes exception.");
+            var dict = new DataDictionary<string, string>(10, InitialData, StringComparer.InvariantCultureIgnoreCase);
+            Assert.IsTrue(dict.TryGetValue(InitialExistingKeyWithDifferentCasing, out _));
         }
 
         [Test]
         public void Count_WhenEmpty_IsZero()
         {
             var dict = new DataDictionary<string, string>();
-            Assert.AreEqual(0, dict.Count, "Count of an empty collection is zero.");
+            Assert.AreEqual(0, dict.Count);
         }
 
         [Test]
         public void Count_AfterAdd_HasCorrectValue()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            Assert.AreEqual(1, dict.Count, "Count of a collection with one item is 1.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.AreEqual(InitialCount, dict.Count);
         }
 
         [Test]
         public void Count_AfterRemove_HasCorrectValue()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            dict.TryRemove("two", out _);
-            Assert.AreEqual(1, dict.Count, "Count after adding two items and removing one is 1.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            dict.TryRemove(InitialExistingKey, out _);
+            Assert.AreEqual(InitialCount - 1, dict.Count);
         }
 
         [Test]
         public void IsEmpty_WhenEmpty_IsTrue()
         {
             var dict = new DataDictionary<string, string>();
-            Assert.IsTrue(dict.IsEmpty, "IsEmpty of an empty collection is true.");
+            Assert.IsTrue(dict.IsEmpty);
         }
 
         [Test]
         public void IsEmpty_WhenNotEmpty_IsFalse()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            Assert.IsFalse(dict.IsEmpty, "ISEmpty of a non-empty collection is false.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.IsFalse(dict.IsEmpty);
         }
 
         [Test]
         public void Keys_ContainsAllKeys()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            CollectionAssert.AreEqual(data.Keys, dict.Keys, StringComparer.Ordinal, "Keys collection contains all keys.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            CollectionAssert.AreEqual(InitialKeys, dict.Keys, StringComparer.Ordinal);
         }
 
         [Test]
         public void Values_ContainsAllValues()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            CollectionAssert.AreEqual(data.Values, dict.Values, StringComparer.Ordinal, "Values collection contains all values.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            CollectionAssert.AreEqual(InitialValues, dict.Values, StringComparer.Ordinal);
         }
 
         [Test]
-        public void GetItem_WithNullKey_ThrowsArgumentNullException()
+        public void GetItem_OnNullKey_ThrowsArgumentNullException()
         {
             var dict = new DataDictionary<string, string>();
             Assert.Throws<ArgumentNullException>(
-                () => dict[null].Void(),
-                "Null key causes exception.");
+                () => dict[null].Void());
         }
 
         [Test]
-        public void GetItem_WithExistingKey_ReturnsCorrectValue()
+        public void GetItem_OnExistingKey_ReturnsCorrectValue()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            Assert.AreEqual("tres", dict["three"], "Got the correct item.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.AreEqual(InitialExistingValue, dict[InitialExistingKey]);
         }
 
         [Test]
-        public void GetItem_WithNonExistingKey_ReturnsNull()
+        public void GetItem_OnNonExistingKey_ReturnsNull()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            Assert.IsNull(dict["five"], "Got null for non-existing key.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.IsNull(dict[InitialNonExistingKey]);
         }
 
         [Test]
-        public void SetItem_WithNullKey_ThrowsArgumentNullException()
+        public void SetItem_OnNullKey_ThrowsArgumentNullException()
         {
             var dict = new DataDictionary<string, string>();
             Assert.Throws<ArgumentNullException>(
-                () => dict[null] = "algo",
-                "Null key causes exception.");
+                () => dict[null] = SomeValue);
         }
 
         [Test]
-        public void SetItem_WithNonExistingKeyAndNonNullValue_AddsKeyAndValue()
+        public void SetItem_OnNonExistingKeyAndNonNullValue_AddsKeyAndValue()
         {
             var dict = new DataDictionary<string, string> {
-                ["one"] = "uno",
+                [InitialExistingKey] = InitialExistingValue,
             };
-            Assert.AreEqual("uno", dict["one"], "Item was correctly set.");
+            Assert.AreEqual(InitialExistingValue, dict[InitialExistingKey]);
         }
 
         [Test]
-        public void SetItem_WithNonExistingKeyAndNullValue_DoesNothing()
+        public void SetItem_OnNonExistingKeyAndNullValue_DoesNothing()
         {
             var dict = new DataDictionary<string, string> {
-                ["one"] = null,
+                [InitialExistingKey] = null,
             };
-            Assert.IsTrue(dict.IsEmpty, "Key with null value was not added.");
+            Assert.IsTrue(dict.IsEmpty);
         }
 
         [Test]
-        public void SetItem_WithExistingKeyAndNonNullValue_ReplacesValue()
+        public void SetItem_OnExistingKeyAndNonNullValue_ReplacesValue()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
+            var dict = new DataDictionary<string, string>(InitialData) {
+                [InitialExistingKey] = DifferentValueForInitialExistingKey,
             };
-            var dict = new DataDictionary<string, string>(data);
-            dict["two"] = "DOS";
-            Assert.AreEqual("DOS", dict["two"], "Value was replaced.");
+            Assert.AreEqual(DifferentValueForInitialExistingKey, dict[InitialExistingKey]);
         }
 
         [Test]
-        public void SetItem_WithExistingKeyAndNullValue_RemovesKey()
+        public void SetItem_OnExistingKeyAndNullValue_RemovesKey()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
+            var dict = new DataDictionary<string, string>(InitialData) {
+                [InitialExistingKey] = null,
             };
-            var dict = new DataDictionary<string, string>(data);
-            dict["two"] = null;
-            Assert.IsFalse(dict.TryGetValue("two", out _), "Key was removed.");
+            Assert.IsFalse(dict.TryGetValue(InitialExistingKey, out _));
         }
 
         [Test]
         public void Clear_RemovesAllData()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
+            var dict = new DataDictionary<string, string>(InitialData);
             dict.Clear();
-            Assert.IsTrue(dict.IsEmpty, "Collection is empty after calling Clear.");
+            Assert.IsTrue(dict.IsEmpty);
         }
 
         [Test]
-        public void ContainsKey_WithExistingKey_ReturnsTrue()
+        public void ContainsKey_OnExistingKey_ReturnsTrue()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            Assert.IsTrue(dict.ContainsKey("two"), "ContainsKey with existing key returned true.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.IsTrue(dict.ContainsKey(InitialExistingKey));
         }
 
         [Test]
-        public void ContainsKey_WithNonExistingKey_ReturnsFalse()
+        public void ContainsKey_OnNonExistingKey_ReturnsFalse()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            Assert.IsFalse(dict.ContainsKey("five"), "ContainsKey with non-existing key returned false.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.IsFalse(dict.ContainsKey(InitialNonExistingKey));
         }
 
         [Test]
-        public void GetOrAdd_WithExistingKey_ReturnsExistingValue()
+        public void GetOrAdd_OnExistingKey_ReturnsExistingValue()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            Assert.AreEqual("uno", dict.GetOrAdd("one", "otro"), "GetOrAdd returned existing value.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.AreEqual(InitialExistingValue, dict.GetOrAdd(InitialExistingKey, DifferentValueForInitialExistingKey));
         }
 
         [Test]
-        public void GetOrAdd_WithNonExistingKeyAndNonNullValue_AddsAndReturnsValue()
+        public void GetOrAdd_OnNonExistingKeyAndNonNullValue_ReturnsValue()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            Assert.AreEqual("cinco", dict.GetOrAdd("five", "cinco"), "GetOrAdd with non-existing key returned given value.");
-            Assert.AreEqual("cinco", dict["five"], "GetOrAdd added given key and value.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.AreEqual(InitialNonExistingValue, dict.GetOrAdd(InitialNonExistingKey, InitialNonExistingValue));
         }
 
         [Test]
-        public void GetOrAdd_WithNonExistingKeyAndNullValue_ReturnsNull()
+        public void GetOrAdd_OnNonExistingKeyAndNonNullValue_AddsKeyAndValue()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            Assert.AreEqual(null, dict.GetOrAdd("five", null), "GetOrAdd with non-existing key and null value returned null.");
-            Assert.AreEqual(4, dict.Count, "GetOrAdd with non-existing key and null value did not add the key.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            dict.GetOrAdd(InitialNonExistingKey, InitialNonExistingValue);
+            Assert.AreEqual(InitialNonExistingValue, dict[InitialNonExistingKey]);
         }
 
         [Test]
-        public void Remove_WithNullKey_ThrowsArgumentNullException()
+        public void GetOrAdd_OnNonExistingKeyAndNullValue_ReturnsNull()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.AreEqual(null, dict.GetOrAdd(InitialNonExistingKey, null));
+        }
+
+        [Test]
+        public void GetOrAdd_OnNonExistingKeyAndNullValue_DoesNotAdd()
+        {
+            var dict = new DataDictionary<string, string>(InitialData);
+            dict.GetOrAdd(InitialNonExistingKey, null);
+            Assert.AreEqual(InitialCount, dict.Count);
+        }
+
+        [Test]
+        public void Remove_OnNullKey_ThrowsArgumentNullException()
+        {
+            var dict = new DataDictionary<string, string>(InitialData);
             Assert.Throws<ArgumentNullException>(
-                () => dict.Remove(null),
-                "Null key causes exception.");
+                () => dict.Remove(null));
         }
 
         [Test]
-        public void Remove_WithExistingKey_RemovesKeyAndReturnsTrue()
+        public void Remove_OnExistingKey_ReturnsTrue()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            Assert.IsTrue(dict.Remove("one"), "Remove with existing key returned true.");
-            Assert.AreEqual(3, dict.Count, "Remove with existing key removed the key.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.IsTrue(dict.Remove(InitialExistingKey));
         }
 
         [Test]
-        public void Remove_WithNonExistingKey_ReturnsFalse()
+        public void Remove_OnExistingKey_RemovesKey()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            Assert.IsFalse(dict.Remove("five"), "Remove with non-existing key returned false.");
-            Assert.AreEqual(4, dict.Count, "Remove with non-existing key did not remove the key.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            dict.Remove(InitialExistingKey);
+            Assert.AreEqual(InitialCount - 1, dict.Count);
         }
 
         [Test]
-        public void TryAdd_WithNullKey_ThrowsArgumentNullException()
+        public void Remove_OnNonExistingKey_ReturnsFalse()
+        {
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.IsFalse(dict.Remove(InitialNonExistingKey));
+        }
+
+        [Test]
+        public void Remove_OnNonExistingKey_DoesNotRemove()
+        {
+            var dict = new DataDictionary<string, string>(InitialData);
+            dict.Remove(InitialNonExistingKey);
+            Assert.AreEqual(InitialCount, dict.Count);
+        }
+
+        [Test]
+        public void TryAdd_OnNullKey_ThrowsArgumentNullException()
         {
             var dict = new DataDictionary<string, string>();
             Assert.Throws<ArgumentNullException>(
-                () => dict.TryAdd(null, "algo"),
-                "Null key causes exception.");
+                () => dict.TryAdd(null, SomeValue));
         }
 
         [Test]
-        public void TryAdd_WithExistingKey_ReturnsFalse()
+        public void TryAdd_OnExistingKey_ReturnsFalse()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            Assert.IsFalse(dict.TryAdd("one", "otro"), "TryAdd with existing key returned false.");
-            Assert.AreEqual(4, dict.Count, "TryAdd with existing key did not add any key,");
-            Assert.AreEqual("uno", dict["one"], "TryAdd with existing key did not change existing value.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.IsFalse(dict.TryAdd(InitialExistingKey, DifferentValueForInitialExistingKey));
         }
 
         [Test]
-        public void TryAdd_WithNonExistingKeyAndNonNullValue_AddsValueAndReturnsTrue()
+        public void TryAdd_OnExistingKey_DoesNotAdd()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            Assert.IsTrue(dict.TryAdd("five", "cinco"), "TryAdd with non-existing key and non-null value returned true.");
-            Assert.AreEqual(5, dict.Count, "TryAdd with non-existing key and non-null value added a key.");
-            Assert.AreEqual("cinco", dict["five"], "TryAdd with existing key and non-null value added the given key and value.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            dict.TryAdd(InitialExistingKey, DifferentValueForInitialExistingKey);
+            Assert.AreEqual(InitialCount, dict.Count);
         }
 
         [Test]
-        public void TryAdd_WithNonExistingKeyAndNullValue_ReturnsTrue()
+        public void TryAdd_OnExistingKey_DoesNotModifyValue()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            Assert.IsTrue(dict.TryAdd("five", null), "TryAdd with non-existing key and null value returned true.");
-            Assert.AreEqual(4, dict.Count, "TryAdd with non-existing key and null value did not add key.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            dict.TryAdd(InitialExistingKey, DifferentValueForInitialExistingKey);
+            Assert.AreEqual(InitialExistingValue, dict[InitialExistingKey]);
         }
 
         [Test]
-        public void TryGetValue_WithNullKey_ThrowsArgumentNullException()
+        public void TryAdd_OnNonExistingKeyAndNonNullValue_ReturnsTrue()
         {
-            var dict = new DataDictionary<string, string>();
-            Assert.Throws<ArgumentNullException>(
-                () => dict.TryGetValue(null, out _),
-                "Null key causes exception.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.IsTrue(dict.TryAdd(InitialNonExistingKey, InitialNonExistingValue));
         }
 
         [Test]
-        public void TryGetValue_WithExistingKey_SetsValueAndReturnsTrue()
+        public void TryAdd_OnNonExistingKeyAndNonNullValue_AddsKeyAndValue()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            Assert.IsTrue(dict.TryGetValue("two", out var value), "TryGetValue with existing key returned true.");
-            Assert.AreEqual("dos", value, "TryGetValue with existing key yielded existing value.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            dict.TryAdd(InitialNonExistingKey, InitialNonExistingValue);
+            Assert.AreEqual(InitialNonExistingValue, dict[InitialNonExistingKey]);
         }
 
         [Test]
-        public void TryGetValue_WithNonExistingKey_ReturnsFalse()
+        public void TryAdd_OnNonExistingKeyAndNullValue_ReturnsTrue()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            Assert.IsFalse(dict.TryGetValue("five", out _), "TryGetValue with non-existing key returned false.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.IsTrue(dict.TryAdd(InitialNonExistingKey, null));
         }
 
         [Test]
-        public void TryRemove_WithNullKey_ThrowsArgumentNullException()
+        public void TryAdd_OnNonExistingKeyAndNullValue_DoesNotAdd()
+        {
+            var dict = new DataDictionary<string, string>(InitialData);
+            dict.TryAdd(InitialNonExistingKey, null);
+            Assert.AreEqual(InitialCount, dict.Count);
+        }
+
+        [Test]
+        public void TryGetValue_OnNullKey_ThrowsArgumentNullException()
         {
             var dict = new DataDictionary<string, string>();
             Assert.Throws<ArgumentNullException>(
-                () => dict.Remove(null),
-                "Null key causes exception.");
+                () => dict.TryGetValue(null, out _));
         }
 
         [Test]
-        public void TryRemove_WithExistingKey_RemovesValueAndReturnsTrue()
+        public void TryGetValue_OnExistingKey_ReturnsTrue()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
-            Assert.IsTrue(dict.TryRemove("two", out var value), "TryRemove with existing key returned true.");
-            Assert.AreEqual("dos", value, "TryRemove with existing key yielded removed value.");
-            Assert.AreEqual(null, dict["two"], "TryRemove with existing key removed key.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.IsTrue(dict.TryGetValue(InitialExistingKey, out _));
         }
 
         [Test]
-        public void TryRemove_WithNonExistingKey_ReturnsFalse()
+        public void TryGetValue_OnExistingKey_YieldsCorrectValue()
         {
-            var dict = new DataDictionary<string, string>();
-            Assert.IsFalse(dict.TryRemove("one", out _), "TryRemove with non-existing key returned false.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            dict.TryGetValue(InitialExistingKey, out var value);
+            Assert.AreEqual(InitialExistingValue, value);
         }
 
         [Test]
-        public void TryUpdate_WithNullKey_ThrowsArgumentNullException()
+        public void TryGetValue_OnNonExistingKey_ReturnsFalse()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.IsFalse(dict.TryGetValue(InitialNonExistingKey, out _));
+        }
+
+        [Test]
+        public void TryRemove_OnNullKey_ThrowsArgumentNullException()
+        {
+            var dict = new DataDictionary<string, string>(InitialData);
             Assert.Throws<ArgumentNullException>(
-                () => dict.TryUpdate(null, "otro", "uno"),
-                "Null key causes exception.");
+                () => dict.Remove(null));
         }
 
         [Test]
-        public void TryUpdate_WithNonExistingKey_ReturnsFalse()
+        public void TryRemove_OnExistingKey_ReturnsTrue()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.IsTrue(dict.TryRemove(InitialExistingKey, out _));
+        }
+
+        [Test]
+        public void TryRemove_OnExistingKey_RemovesValue()
+        {
+            var dict = new DataDictionary<string, string>(InitialData);
+            dict.TryRemove(InitialExistingKey, out _);
+            Assert.IsNull(dict[InitialExistingKey]);
+        }
+
+        [Test]
+        public void TryRemove_OnExistingKey_YieldsRemovedValue()
+        {
+            var dict = new DataDictionary<string, string>(InitialData);
+            dict.TryRemove(InitialExistingKey, out var value);
+            Assert.AreEqual(InitialExistingValue, value);
+        }
+
+        [Test]
+        public void TryRemove_OnNonExistingKey_ReturnsFalse()
+        {
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.IsFalse(dict.TryRemove(InitialNonExistingKey, out _));
+        }
+
+        [Test]
+        public void TryUpdate_OnNullKey_ThrowsArgumentNullException()
+        {
+            var dict = new DataDictionary<string, string>(InitialData);
+            Assert.Throws<ArgumentNullException>(
+                () => dict.TryUpdate(null, DifferentValueForInitialExistingKey, InitialExistingValue));
+        }
+
+        [Test]
+        public void TryUpdate_OnNonExistingKey_ReturnsFalse()
+        {
+            var dict = new DataDictionary<string, string>(InitialData);
             Assert.IsFalse(
-                dict.TryUpdate("other", "otro", "uno"),
-                "TryUpdate with non-existing key returned false.");
+                dict.TryUpdate(InitialNonExistingKey, SomeValue, InitialNonExistingValue));
         }
 
         [Test]
-        public void TryUpdate_WithExistingKeyAndNonMatchingComparisonValue_ReturnsFalse()
+        public void TryUpdate_OnExistingKeyAndNonMatchingComparisonValue_ReturnsFalse()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
+            var dict = new DataDictionary<string, string>(InitialData);
             Assert.IsFalse(
-                dict.TryUpdate("one", "otro", "unooooo"),
-                "TryUpdate with existing key and non-matching comparisonValue returned false.");
+                dict.TryUpdate(InitialExistingKey, DifferentValueForInitialExistingKey, SomeValue));
         }
 
         [Test]
-        public void TryUpdate_WithExistingKeyAndMatchingComparisonValue_UpdatesValueAndReturnsTrue()
+        public void TryUpdate_OnExistingKeyAndNonMatchingComparisonValue_DoesNotUpdate()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
+            var dict = new DataDictionary<string, string>(InitialData);
+            dict.TryUpdate(InitialExistingKey, DifferentValueForInitialExistingKey, SomeValue);
+            Assert.AreEqual(InitialExistingValue, dict[InitialExistingKey]);
+        }
+
+        [Test]
+        public void TryUpdate_OnExistingKeyAndMatchingComparisonValue_ReturnsTrue()
+        {
+            var dict = new DataDictionary<string, string>(InitialData);
             Assert.IsTrue(
-                dict.TryUpdate("one", "otro", "uno"),
-                "TryUpdate with existing key and matching comparisonValue returned true.");
-            Assert.AreEqual("otro", dict["one"], "TryUpdate with existing key and matching comparisonValue updated value.");
+                dict.TryUpdate(InitialExistingKey, DifferentValueForInitialExistingKey, InitialExistingValue));
         }
 
         [Test]
-        public void IDictionary_Add_WithNullKey_ThrowsArgumentNullException()
+        public void TryUpdate_OnExistingKeyAndMatchingComparisonValue_UpdatesValue()
+        {
+            var dict = new DataDictionary<string, string>(InitialData);
+            dict.TryUpdate(InitialExistingKey, DifferentValueForInitialExistingKey, InitialExistingValue);
+            Assert.AreEqual(DifferentValueForInitialExistingKey, dict[InitialExistingKey]);
+        }
+
+        [Test]
+        public void IDictionary_Add_OnNullKey_ThrowsArgumentNullException()
         {
             IDictionary<string, string> dict = new DataDictionary<string, string>();
             Assert.Throws<ArgumentNullException>(
-                () => dict.Add(null, "algo"),
-                "IDictionary<,>.Add with null key threw ArgumentNullException.");
+                () => dict.Add(null, SomeValue));
         }
 
         [Test]
-        public void IDictionary_Add_WithExistingKey_ThrowsArgumentException()
+        public void IDictionary_Add_OnExistingKey_ThrowsArgumentException()
         {
-            IDictionary<string, string> dict = new DataDictionary<string, string> {
-                ["one"] = "uno",
-            };
+            IDictionary<string, string> dict = new DataDictionary<string, string>(InitialData);
             Assert.Throws<ArgumentException>(
-                () => dict.Add("one", "otro"),
-                "IDictionary<,>.Add with existing key threw ArgumentException.");
+                () => dict.Add(InitialExistingKey, DifferentValueForInitialExistingKey));
         }
 
         [Test]
-        public void IDictionary_Add_WithNonExistingKeyAndNonNullValue_AddsKeyAndValue()
+        public void IDictionary_Add_OnNonExistingKeyAndNonNullValue_AddsKeyAndValue()
         {
-            IDictionary<string, string> dict = new DataDictionary<string, string>();
-            dict.Add("one", "uno");
-            Assert.AreEqual(
-                "uno",
-                dict["one"],
-                "IDictionary<,>.Add with non-existing key and non-null value added given key and value.");
+            IDictionary<string, string> dict = new DataDictionary<string, string>(InitialData);
+            dict.Add(InitialNonExistingKey, InitialNonExistingValue);
+            Assert.AreEqual(InitialNonExistingValue, dict[InitialNonExistingKey]);
         }
 
         [Test]
-        public void IDictionary_Add_WithNonExistingKeyAndNullValue_DoesNotAddKey()
+        public void IDictionary_Add_OnNonExistingKeyAndNullValue_DoesNotAdd()
         {
-            IDictionary<string, string> dict = new DataDictionary<string, string>();
-            dict.Add("one", null);
-            Assert.IsFalse(
-                dict.TryGetValue("one", out _),
-                "IDictionary<,>.Add with non-existing key and null value did not add key.");
+            IDictionary<string, string> dict = new DataDictionary<string, string>(InitialData);
+            dict.Add(InitialNonExistingKey, null);
+            Assert.IsFalse(dict.TryGetValue(InitialNonExistingKey, out _));
         }
 
         [Test]
         public void IReadOnlyDictionary_Keys_ContainsAllKeys()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            IReadOnlyDictionary<string, string> dict = new DataDictionary<string, string>(data);
-            CollectionAssert.AreEqual(
-                data.Keys,
-                dict.Keys,
-                StringComparer.Ordinal,
-                "IReadOnlyDictionary<,>.Keys collection contains all keys.");
+            IReadOnlyDictionary<string, string> dict = new DataDictionary<string, string>(InitialData);
+            CollectionAssert.AreEqual(InitialKeys, dict.Keys, StringComparer.Ordinal);
         }
 
         [Test]
         public void IReadOnlyDictionary_Values_ContainsAllValues()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            IReadOnlyDictionary<string, string> dict = new DataDictionary<string, string>(data);
-            CollectionAssert.AreEqual(
-                data.Values,
-                dict.Values,
-                StringComparer.Ordinal,
-                "IReadOnlyDictionary<,>.Values collection contains all values.");
+            IReadOnlyDictionary<string, string> dict = new DataDictionary<string, string>(InitialData);
+            CollectionAssert.AreEqual(InitialValues, dict.Values, StringComparer.Ordinal);
         }
 
         [Test]
         public void ICollection_IsReadOnly_ReturnsFalse()
         {
             ICollection<KeyValuePair<string, string>> dict = new DataDictionary<string, string>();
-            Assert.IsFalse(dict.IsReadOnly, "ICollection<KeyValuePair<,>>.IsReadOnly returned false.");
+            Assert.IsFalse(dict.IsReadOnly);
         }
 
         [Test]
-        public void ICollection_Add_WithNullKey_ThrowsArgumentException()
+        public void ICollection_Add_OnNullKey_ThrowsArgumentNullException()
         {
             ICollection<KeyValuePair<string, string>> dict = new DataDictionary<string, string>();
+            Assert.Throws<ArgumentNullException>(
+                () => dict.Add(new KeyValuePair<string, string>(null, SomeValue)));
+        }
+
+        [Test]
+        public void ICollection_Add_OnExistingKey_ThrowsArgumentException()
+        {
+            ICollection<KeyValuePair<string, string>> dict = new DataDictionary<string, string>(InitialData);
             Assert.Throws<ArgumentException>(
-                () => dict.Add(new KeyValuePair<string, string>(null, "algo")),
-                "ICollection<KeyValuePair<,>>.Add with null key threw ArgumentException.");
+                () => dict.Add(new KeyValuePair<string, string>(InitialExistingKey, DifferentValueForInitialExistingKey)));
         }
 
         [Test]
-        public void ICollection_Add_WithExistingKey_ThrowsArgumentException()
+        public void ICollection_Add_OnNonExistingKeyAndNonNullValue_AddsKeyAndValue()
         {
-            ICollection<KeyValuePair<string, string>> dict = new DataDictionary<string, string> {
-                ["one"] = "uno",
-            };
-            Assert.Throws<ArgumentException>(
-                () => dict.Add(new KeyValuePair<string, string>("one", "otro")),
-                "ICollection<KeyValuePair<,>>.Add with existing key threw ArgumentException.");
+            var dict = new DataDictionary<string, string>(InitialData);
+            ICollection<KeyValuePair<string, string>> collection = dict;
+            collection.Add(new KeyValuePair<string, string>(InitialNonExistingKey, InitialNonExistingValue));
+            Assert.AreEqual(InitialNonExistingValue, dict[InitialNonExistingKey]);
         }
 
         [Test]
-        public void ICollection_Add_WithNonExistingKeyAndNonNullValue_AddsKeyAndValue()
+        public void ICollection_Add_OnNonExistingKeyAndNullValue_DoesNotAdd()
         {
             var dict = new DataDictionary<string, string>();
             ICollection<KeyValuePair<string, string>> collection = dict;
-            collection.Add(new KeyValuePair<string, string>("one", "uno"));
-            Assert.AreEqual(
-                "uno",
-                dict["one"],
-                "ICollection<KeyValuePair<,>>.Add with non-existing key and non-null value added given key and value.");
+            collection.Add(new KeyValuePair<string, string>(InitialNonExistingKey, null));
+            Assert.IsFalse(dict.TryGetValue(InitialNonExistingKey, out _));
         }
 
         [Test]
-        public void ICollection_Add_WithNonExistingKeyAndNullValue_DoesNotAddKey()
+        public void ICollection_Contains_OnNullKey_ThrowsArgumentNullException()
         {
-            var dict = new DataDictionary<string, string>();
+            var dict = new DataDictionary<string, string>(InitialData);
             ICollection<KeyValuePair<string, string>> collection = dict;
-            collection.Add(new KeyValuePair<string, string>("one", null));
-            Assert.IsFalse(
-                dict.TryGetValue("one", out _),
-                "ICollection<KeyValuePair<,>>.Add with non-existing key and null value did not add key.");
+            var kvp = new KeyValuePair<string, string>(null, InitialExistingValue);
+            Assert.Throws<ArgumentNullException>(
+                () => collection.Contains(kvp).Void());
         }
 
         [Test]
-        public void ICollection_Contains_WithExistingKeyValuePair_ReturnsTrue()
+        public void ICollection_Contains_OnExistingKeyValuePair_ReturnsTrue()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
+            var dict = new DataDictionary<string, string>(InitialData);
             ICollection<KeyValuePair<string, string>> collection = dict;
-            var kvp = new KeyValuePair<string, string>("three", "tres");
-            Assert.IsTrue(
-                collection.Contains(kvp),
-                "ICollection<KeyValuePair<,>>.Contains with existing key / value pair returned true.");
+            var kvp = new KeyValuePair<string, string>(InitialExistingKey, InitialExistingValue);
+            Assert.IsTrue(collection.Contains(kvp));
         }
 
         [Test]
-        public void ICollection_Contains_WithNonExistingKeyValuePair_ReturnsFalse()
+        public void ICollection_Contains_OnExistingKeyWithOtherValue_ReturnsFalse()
         {
-            var dict = new DataDictionary<string, string> {
-                ["one"] = "uno",
-                ["two"] = "dos",
-                ["three"] = "tres",
-                ["four"] = "cuatro",
-            };
+            var dict = new DataDictionary<string, string>(InitialData);
             ICollection<KeyValuePair<string, string>> collection = dict;
-            var kvp = new KeyValuePair<string, string>("three", "otros");
-            Assert.IsFalse(
-                collection.Contains(kvp),
-                "ICollection<KeyValuePair<,>>.Contains with non-existing key / value pair returned false.");
+            var kvp = new KeyValuePair<string, string>(InitialExistingKey, InitialNonExistingValue);
+            Assert.IsFalse(collection.Contains(kvp));
         }
 
         [Test]
-        public void ICollection_CopyTo_WithNullArray_ThrowsArgumentNullException()
+        public void ICollection_Contains_OnNonExistingKeyValuePair_ReturnsFalse()
         {
-            var dict = new DataDictionary<string, string>();
+            var dict = new DataDictionary<string, string>(InitialData);
+            ICollection<KeyValuePair<string, string>> collection = dict;
+            var kvp = new KeyValuePair<string, string>(InitialNonExistingKey, InitialNonExistingValue);
+            Assert.IsFalse(collection.Contains(kvp));
+        }
+
+        [Test]
+        public void ICollection_CopyTo_OnNullArray_ThrowsArgumentNullException()
+        {
+            var dict = new DataDictionary<string, string>(InitialData);
             ICollection<KeyValuePair<string, string>> collection = dict;
             Assert.Throws<ArgumentNullException>(
-                () => collection.CopyTo(null, 0),
-                "ICollection<KeyValuePair<,>>.CopyTo with null array threw ArgumentNullException.");
+                () => collection.CopyTo(null, 0));
         }
 
         [Test]
-        public void ICollection_CopyTo_WithNegativeIndex_ThrowsArgumentOutOfRangeException()
+        public void ICollection_CopyTo_OnNegativeIndex_ThrowsArgumentOutOfRangeException()
         {
-            var dict = new DataDictionary<string, string>();
+            var dict = new DataDictionary<string, string>(InitialData);
             ICollection<KeyValuePair<string, string>> collection = dict;
-            var a = new KeyValuePair<string, string>[1];
+            var a = new KeyValuePair<string, string>[InitialCount];
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => collection.CopyTo(a, -1),
-                "ICollection<KeyValuePair<,>>.CopyTo with negative index threw ArgumentOutOfRangeException.");
+                () => collection.CopyTo(a, -1));
         }
 
         [Test]
-        public void ICollection_CopyTo_WithNoRoomInArray_ThrowsArgumentException()
+        public void ICollection_CopyTo_OnNoRoomInArray_ThrowsArgumentException()
         {
-            var dict = new DataDictionary<string, string> {
-                ["one"] = "uno",
-                ["two"] = "dos",
-                ["three"] = "tres",
-                ["four"] = "cuatro",
-            };
+            var dict = new DataDictionary<string, string>(InitialData);
             ICollection<KeyValuePair<string, string>> collection = dict;
-            var a = new KeyValuePair<string, string>[4];
+            var a = new KeyValuePair<string, string>[InitialCount];
             Assert.Throws<ArgumentException>(
-                () => collection.CopyTo(a, 2),
-                "ICollection<KeyValuePair<,>>.CopyTo with not enough room in array threw ArgumentException.");
+                () => collection.CopyTo(a, 1));
         }
 
         [Test]
-        public void ICollection_Remove_WithNullKey_ThrowsArgumentException()
+        public void ICollection_Remove_OnNullKey_ThrowsArgumentNullException()
         {
             ICollection<KeyValuePair<string, string>> dict = new DataDictionary<string, string>();
-            Assert.Throws<ArgumentException>(
-                () => dict.Remove(new KeyValuePair<string, string>(null, "algo")),
-                "ICollection<KeyValuePair<,>>.Remove with null key threw ArgumentException.");
+            Assert.Throws<ArgumentNullException>(
+                () => dict.Remove(new KeyValuePair<string, string>(null, SomeValue)));
         }
 
         [Test]
-        public void ICollection_Remove_WithExistingKeyValuePair_RemovesKeyAndReturnsTrue()
+        public void ICollection_Remove_OnExistingKeyValuePair_ReturnsTrue()
         {
-            var dict = new DataDictionary<string, string> {
-                ["one"] = "uno",
-                ["two"] = "dos",
-                ["three"] = "tres",
-                ["four"] = "cuatro",
-            };
+            var dict = new DataDictionary<string, string>(InitialData);
             ICollection<KeyValuePair<string, string>> collection = dict;
-            var kvp = new KeyValuePair<string, string>("two", "dos");
-            Assert.IsTrue(
-                collection.Remove(kvp),
-                "ICollection<KeyValuePair<,>>.Remove with existing key / value pair returned true.");
-            Assert.AreEqual(null, dict["two"], "ICollection<KeyValuePair<,>>.Remove with existing key / value pair removed key.");
+            var kvp = new KeyValuePair<string, string>(InitialExistingKey, InitialExistingValue);
+            Assert.IsTrue(collection.Remove(kvp));
         }
 
         [Test]
-        public void ICollection_Remove_WithNonExistingKey_ReturnsFalse()
+        public void ICollection_Remove_OnExistingKeyValuePair_RemovesKey()
         {
-            var dict = new DataDictionary<string, string>();
+            var dict = new DataDictionary<string, string>(InitialData);
             ICollection<KeyValuePair<string, string>> collection = dict;
-            var kvp = new KeyValuePair<string, string>("one", "algo");
-            Assert.IsFalse(
-                collection.Remove(kvp),
-                "ICollection<KeyValuePair<,>>.Remove with non-existing key / value pair returned false.");
+            var kvp = new KeyValuePair<string, string>(InitialExistingKey, InitialExistingValue);
+            collection.Remove(kvp);
+            Assert.IsFalse(dict.TryGetValue(InitialExistingKey, out _));
+        }
+
+        [Test]
+        public void ICollection_Remove_OnExistingKeyWithOtherValue_ReturnsFalse()
+        {
+            var dict = new DataDictionary<string, string>(InitialData);
+            ICollection<KeyValuePair<string, string>> collection = dict;
+            var kvp = new KeyValuePair<string, string>(InitialExistingKey, InitialNonExistingValue);
+            Assert.IsFalse(collection.Remove(kvp));
+        }
+
+        [Test]
+        public void ICollection_Remove_OnExistingKeyWithOtherValue_DoesNotRemove()
+        {
+            var dict = new DataDictionary<string, string>(InitialData);
+            ICollection<KeyValuePair<string, string>> collection = dict;
+            var kvp = new KeyValuePair<string, string>(InitialExistingKey, InitialNonExistingValue);
+            collection.Remove(kvp);
+            Assert.AreEqual(InitialCount, collection.Count);
+        }
+
+        [Test]
+        public void ICollection_Remove_OnNonExistingKey_ReturnsFalse()
+        {
+            var dict = new DataDictionary<string, string>(InitialData);
+            ICollection<KeyValuePair<string, string>> collection = dict;
+            var kvp = new KeyValuePair<string, string>(InitialNonExistingKey, InitialNonExistingValue);
+            Assert.IsFalse(collection.Remove(kvp));
+        }
+
+        [Test]
+        public void ICollection_Remove_OnNonExistingKey_DoesNotRemove()
+        {
+            var dict = new DataDictionary<string, string>(InitialData);
+            ICollection<KeyValuePair<string, string>> collection = dict;
+            var kvp = new KeyValuePair<string, string>(InitialNonExistingKey, InitialNonExistingValue);
+            collection.Remove(kvp);
+            Assert.AreEqual(InitialCount, collection.Count);
         }
 
         [Test]
         public void IEnumerable_GetEnumerator_EnumeratesAllData()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
+            var dict = new DataDictionary<string, string>(InitialData);
             IEnumerable<KeyValuePair<string, string>> enumerable = dict;
 
             // Neither CollectionAssert nor LINQ give certainty
@@ -880,22 +828,13 @@ namespace EmbedIO.Tests.Utilities
                     list.Add(enumerator.Current);
             }
 
-            CollectionAssert.AreEqual(
-                data,
-                list, 
-                "IEnumerable<KeyValuePair<,>>.GetEnumerator returned a valid enumerator.");
+            CollectionAssert.AreEqual(InitialImportedData, list);
         }
 
         [Test]
         public void NonGenericIEnumerable_GetEnumerator_EnumeratesAllData()
         {
-            var data = new Dictionary<string, string> {
-                { "one", "uno" },
-                { "two", "dos" },
-                { "three", "tres" },
-                { "four", "cuatro" },
-            };
-            var dict = new DataDictionary<string, string>(data);
+            var dict = new DataDictionary<string, string>(InitialData);
             IEnumerable enumerable = dict;
 
             // Neither CollectionAssert nor LINQ give certainty
@@ -907,10 +846,7 @@ namespace EmbedIO.Tests.Utilities
             while (enumerator.MoveNext())
                 list.Add(enumerator.Current);
 
-            CollectionAssert.AreEqual(
-                data,
-                list,
-                "IEnumerable.GetEnumerator returned a valid enumerator.");
+            CollectionAssert.AreEqual(InitialImportedData, list);
         }
     }
 }
