@@ -56,5 +56,21 @@ namespace EmbedIO.Samples
         public object Echo([FormData] NameValueCollection data)
             => data.ToDictionary();
 
+
+        // Session handler
+        [Route(HttpVerbs.Get, "/session")]
+        public object GetSession()
+        {
+            var isEmpty = HttpContext.Session.IsEmpty;
+
+            HttpContext.Session["Id"] = HttpContext.Session.Count == 0 ? Guid.Empty : Guid.NewGuid();
+
+            return new
+            {
+                isEmpty,
+                Guid = HttpContext.Session["Id"],
+                HttpContext.Session.Id,
+            };
+        }
     }
 }
