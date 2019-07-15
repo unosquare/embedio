@@ -59,24 +59,10 @@ namespace EmbedIO.Sessions
         }
 
         /// <inheritdoc/>
-        public int Count
-        {
-            get
-            {
-                EnsureSessionExists();
-                return _session?.Count ?? 0;
-            }
-        }
+        public int Count => _session?.Count ?? 0;
 
         /// <inheritdoc/>
-        public bool IsEmpty
-        {
-            get
-            {
-                EnsureSessionExists();
-                return _session?.IsEmpty ?? true;
-            }
-        }
+        public bool IsEmpty => _session?.IsEmpty ?? true;
 
         /// <inheritdoc/>
         public object this[string key]

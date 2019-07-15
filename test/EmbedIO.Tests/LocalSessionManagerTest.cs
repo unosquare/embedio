@@ -32,6 +32,14 @@ namespace EmbedIO.Tests
                 });
         }
 
+        protected void ClearServerCookies()
+        {
+            foreach (var cookie in Client.CookieContainer.GetCookies(new Uri(WebServerUrl)).Cast<Cookie>())
+            {
+                cookie.Expired = true;
+            }
+        }
+
         protected async Task ValidateCookie(HttpRequestMessage request)
         {
             using (var response = await Client.SendAsync(request))
@@ -44,13 +52,6 @@ namespace EmbedIO.Tests
                 Client.CookieContainer.GetCookies(new Uri(WebServerUrl)).Count,
                 0,
                 "Cookies are not empty");
-        }
-
-        protected async Task GetFile(string content)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
-            await ValidateCookie(request);
-            Assert.AreNotEqual(content, Client.CookieContainer.GetCookieHeader(new Uri(WebServerUrl)));
         }
 
         public class Sessions : LocalSessionManagerTest
@@ -100,16 +101,17 @@ namespace EmbedIO.Tests
             {
                 var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
                 await ValidateCookie(request);
-                var content = Client.CookieContainer.GetCookieHeader(new Uri(WebServerUrl));
-                await Task.Delay(TimeSpan.FromSeconds(1));
+                var firstCookie = Client.CookieContainer.GetCookieHeader(new Uri(WebServerUrl));
 
-                Task.WaitAll(new[] {
-                    GetFile(content),
-                    GetFile(content),
-                    GetFile(content),
-                    GetFile(content),
-                    GetFile(content),
-                });
+                request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
+                await ValidateCookie(request);
+                Assert.AreEqual(firstCookie, Client.CookieContainer.GetCookieHeader(new Uri(WebServerUrl)));
+
+                ClearServerCookies();
+
+                request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
+                await ValidateCookie(request);
+                Assert.AreNotEqual(firstCookie, Client.CookieContainer.GetCookieHeader(new Uri(WebServerUrl)));
             }
         }
 

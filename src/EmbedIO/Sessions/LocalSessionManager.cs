@@ -20,7 +20,7 @@ namespace EmbedIO.Sessions
         public const string DefaultCookieName = "__session";
 
         /// <summary>
-        /// The default path for session cookies, i.e. <c>"/"</c>.
+        /// The default path for session cookies, i.e. the empty string.
         /// </summary>
         public const string DefaultCookiePath = "";
 
@@ -215,9 +215,7 @@ namespace EmbedIO.Sessions
                 {
                     id = UniqueIdGenerator.GetNext();
                     session = new SessionImpl(id, SessionDuration);
-                    
-                    if (!_sessions.TryAdd(id, session))
-                        return null;
+                    _sessions.TryAdd(id, session);
                 }
             }
 
@@ -271,7 +269,7 @@ namespace EmbedIO.Sessions
 
         private Cookie BuildSessionCookie(string id)
         {
-            var cookie = new Cookie(CookieName, id)
+            var cookie = new Cookie(CookieName, id, CookiePath)
             {
                 HttpOnly = CookieHttpOnly,
             };
