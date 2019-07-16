@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 
 namespace EmbedIO.Routing
@@ -100,7 +101,7 @@ namespace EmbedIO.Routing
                 ? new RouteMatch(
                     path,
                     ParameterNames,
-                    match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).ToArray())
+                    match.Groups.Cast<Group>().Skip(1).Select(g => WebUtility.UrlDecode(g.Value)).ToArray())
                 : null;
         }
 

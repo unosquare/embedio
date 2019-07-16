@@ -56,6 +56,11 @@ namespace EmbedIO.Samples
         public object Echo([FormData] NameValueCollection data)
             => data.ToDictionary();
 
+        // Select by name
+        [Route(HttpVerbs.Get, "/peopleByName/{name}")]
+        public async Task<object> GetPeopleByName(string name)
+            => await _dbContext.People.FirstOrDefaultAsync(nameof(Person.Name), name).ConfigureAwait(false)
+            ?? throw HttpException.NotFound();
 
         // Session handler
         [Route(HttpVerbs.Get, "/session")]
