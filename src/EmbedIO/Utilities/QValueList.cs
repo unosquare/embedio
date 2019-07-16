@@ -88,12 +88,12 @@ namespace EmbedIO.Utilities
         /// <remarks>
         /// <para>This property does not usually need to be used directly;
         /// use the <see cref="IsCandidate"/>, <see cref="FindPreferred"/>,
-        /// <see cref="FindPreferredIndex(IReadOnlyList{string})"/>, and
+        /// <see cref="FindPreferredIndex(IEnumerable{string})"/>, and
         /// <see cref="FindPreferredIndex(string[])"/> methods instead.</para>
         /// </remarks>
         /// <seealso cref="IsCandidate"/>
         /// <seealso cref="FindPreferred"/>
-        /// <seealso cref="FindPreferredIndex(IReadOnlyList{string})"/>
+        /// <seealso cref="FindPreferredIndex(IEnumerable{string})"/>
         /// <seealso cref="FindPreferredIndex(string[])"/>
         public IReadOnlyDictionary<string, (int Weight, int Ordinal)> QValues { get; }
 
