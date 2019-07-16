@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
 
@@ -83,11 +82,10 @@ namespace EmbedIO.WebApi
                 throw HttpException.BadRequest($"Missing form field {FieldName}.");
 
             var fieldValue = formData.Get(FieldName);
-            var converter = TypeDescriptor.GetConverter(type);
-            if (!converter.CanConvertFrom(typeof(string)))
+            if (!FromString.TryConvertTo(type, fieldValue, out var result))
                 throw HttpException.BadRequest($"Cannot convert field {FieldName} to {type.Name}.");
 
-            return converter.ConvertFromInvariantString(fieldValue);
+            return result;
         }
     }
 }

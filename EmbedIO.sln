@@ -22,7 +22,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbedIO.Tests", "test\Embed
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbedIO.Samples", "src\EmbedIO.Samples\EmbedIO.Samples.csproj", "{5B312B76-1C92-4C50-9A44-BAF738377306}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbedIO.Testing", "src\EmbedIO.Testing\EmbedIO.Testing.csproj", "{822A86B3-4294-44D6-8C5E-53EC508E40AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbedIO.Testing", "src\EmbedIO.Testing\EmbedIO.Testing.csproj", "{822A86B3-4294-44D6-8C5E-53EC508E40AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

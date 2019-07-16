@@ -426,9 +426,9 @@ namespace EmbedIO.WebApi
                 if (index >= 0)
                 {
                     // Convert the parameter to the handler's parameter type.
-                    var convertFromRoute = RouteParameterConverter.ConvertExpression(
-                        Expression.Property(routeInLambda, "Item", Expression.Constant(index)),
-                        parameterType);
+                    var convertFromRoute = FromString.ConvertExpressionTo(
+                        parameterType,
+                        Expression.Property(routeInLambda, "Item", Expression.Constant(index)));
 
                     handlerArguments.Add(convertFromRoute);
                     continue;

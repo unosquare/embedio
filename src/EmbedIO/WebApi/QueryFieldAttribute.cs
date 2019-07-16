@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
 
@@ -80,11 +79,10 @@ namespace EmbedIO.WebApi
                 throw HttpException.BadRequest($"Missing query field {FieldName}.");
 
             var fieldValue = queryData.Get(FieldName);
-            var converter = TypeDescriptor.GetConverter(type);
-            if (!converter.CanConvertFrom(typeof(string)))
+            if (!FromString.TryConvertTo(type, fieldValue, out var result))
                 throw HttpException.BadRequest($"Cannot convert query field {FieldName} to {type.Name}.");
 
-            return Task.FromResult(converter.ConvertFromInvariantString(fieldValue));
+            return Task.FromResult(result);
         }
     }
 }
