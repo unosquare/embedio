@@ -39,9 +39,7 @@ namespace EmbedIO.Utilities
             || @this is BadImageFormatException
             || @this is CannotUnloadAppDomainException
             || @this is InvalidProgramException
-            || @this is NullReferenceException
-            || @this is IndexOutOfRangeException
-            || @this is ArgumentException;
+            || @this is NullReferenceException;
 
         private static bool IsFatalExceptionCore(this Exception @this)
             => @this is StackOverflowException
