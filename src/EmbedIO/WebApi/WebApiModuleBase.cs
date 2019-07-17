@@ -365,7 +365,8 @@ namespace EmbedIO.WebApi
                     Expression useRequestDataInterface = Expression.Call(
                         Expression.Constant(attr),
                         intf.GetMethod(GetRequestDataAsyncMethodName),
-                        controller);
+                        controller,
+                        Expression.Constant(parameter.Name));
 
                     // We should await the call to GetRequestDataAsync.
                     // For lack of a better way, call AwaitResult with an appropriate type argument.
@@ -405,7 +406,8 @@ namespace EmbedIO.WebApi
                         Expression.Constant(attr),
                         intf.GetMethod(GetRequestDataAsyncMethodName),
                         controller,
-                        Expression.Constant(parameterType));
+                        Expression.Constant(parameterType),
+                        Expression.Constant(parameter.Name));
 
                     // We should await the call to GetRequestDataAsync,
                     // then cast the result to the parameter type.

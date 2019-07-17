@@ -16,7 +16,7 @@ namespace EmbedIO.WebApi
     public sealed class QueryDataAttribute : Attribute, IRequestDataAttribute<WebApiController, NameValueCollection>
     {
         /// <inheritdoc />
-        public Task<NameValueCollection> GetRequestDataAsync(WebApiController controller)
+        public Task<NameValueCollection> GetRequestDataAsync(WebApiController controller, string parameterName)
             => Task.FromResult(controller.HttpContext.GetRequestQueryData());
     }
 }

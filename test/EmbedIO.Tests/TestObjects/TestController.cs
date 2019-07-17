@@ -60,7 +60,7 @@ namespace EmbedIO.Tests.TestObjects
             => data.ToDictionary();
 
         [Route(HttpVerbs.Get, "/" + QueryFieldTestPath)]
-        public object TestQueryField([QueryField("id")] string id) => id;
+        public object TestQueryField([QueryField] string id) => id;
 
         private static object CheckPerson(int id)
             =>PeopleRepository.Database.FirstOrDefault(p => p.Key == id)

@@ -16,8 +16,9 @@ namespace EmbedIO.WebApi
         /// Asynchronously obtains data from a controller's context.
         /// </summary>
         /// <param name="controller">The controller.</param>
+        /// <param name="parameterName">The name of the parameter that has to receive the data.</param>
         /// <returns>a <see cref="Task"/> whose result will be the data
         /// to pass as a parameter to a controller method.</returns>
-        Task<TData> GetRequestDataAsync(TController controller);
+        Task<TData> GetRequestDataAsync(TController controller, string parameterName);
     }
 }

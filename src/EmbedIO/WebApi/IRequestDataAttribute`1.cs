@@ -17,8 +17,9 @@ namespace EmbedIO.WebApi
         /// </summary>
         /// <param name="controller">The controller.</param>
         /// <param name="type">The type of the parameter that has to receive the data.</param>
+        /// <param name="parameterName">The name of the parameter that has to receive the data.</param>
         /// <returns>a <see cref="Task"/> whose result will be the data
         /// to pass as a parameter to a controller method.</returns>
-        Task<object> GetRequestDataAsync(TController controller, Type type);
+        Task<object> GetRequestDataAsync(TController controller, Type type, string parameterName);
     }
 }
